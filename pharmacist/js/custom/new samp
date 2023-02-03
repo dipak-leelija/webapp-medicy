@@ -1,0 +1,159 @@
+
+/*##########################################################################################################################################
+#                                                                                                                                          #
+#                                                            BACK IMAGE                                                                    #
+#                                                                                                                                          #
+##########################################################################################################################################*/
+
+
+const dragAreaBack = document.querySelector('.back-image');
+const dragTextBack = document.querySelector('.upload-img-span-back');
+
+let browseBack = document.getElementById('browse-back');
+let inputBack = document.getElementById("product-image-back");
+// let input  = document.querySelector('input');
+let imageBack;
+
+browseBack.onclick = () => {
+    inputBack.click();
+};
+
+//when browse
+inputBack.addEventListener('change', function() {
+    imageBack = this.files[0];
+    dragAreaBack.classList.add('active');
+    displayImage();
+});
+
+//when image is inside tha image area
+dragAreaBack.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    dragTextBack.textContent = 'Release to Upload';
+    dragAreaBack.classList.add('active');
+    // console.log("Image in inside the image area");
+});
+
+//when Image is dragleave inside the image area
+dragAreaBack.addEventListener('dragleave', () => {
+    // console.log("Image is dragleaved");
+    dragTextBack.textContent = 'Back Image';
+    dragAreaBack.classList.remove('active');
+});
+
+//when the image is droped in image area
+dragAreaBack.addEventListener('drop', (event) => {
+    event.preventDefault();
+    imageBack = event.dataTransfer.files[0];
+    // console.log(image);
+    displayImage();
+});
+
+
+function displayImage() {
+    let imageType = imageBack.type;
+    // console.log(imageType);
+
+    let validExtensions = ['image/jpeg', 'image/jpg', 'image/png'];
+
+    if (validExtensions.includes(imageType)) {
+        let fileReader = new FileReader();
+
+        // return upload(image);
+
+        fileReader.onload = () => {
+            let fileUrl = fileReader.result;
+            // console.log(fileUrl);
+
+            let imgTag = `<img src="${fileUrl}" alt="">`;
+            dragAreaBack.innerHTML = imgTag;
+        };
+        fileReader.readAsDataURL(imageBack);
+    } else {
+        alert("Please Upload JPEG, JPG or an PNG Image.");
+    }
+    // console.log("Image is Droped");
+}
+
+
+
+
+
+
+
+
+
+<div class=" border-primary rounded">
+                                                    <div class="border p-1 rounded">
+                                                        <div class="back-image rounded">
+
+                                                            <span class="upload-img-span-back ">
+                                                                <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                                                                <small> Back Image</small>
+                                                            </span>
+                                                            <span class="upload-img-span ">
+
+                                                                <small>
+                                                                    <span class="browse-back">Drop </span>
+                                                                    Or <span class="browse-back"
+                                                                        id="browse-back">Browse</span>
+                                                                </small>
+                                                            </span>
+                                                        </div>
+                                                        <input id="product-image-back" name="product-image-back"
+                                                            type="file" hidden>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                    <div class="border p-1 rounded">
+                                                        <div class="side-image rounded" >
+
+                                                            <span class="upload-img-span-back">
+                                                                <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                                                                <small> Side Image</small>
+                                                            </span>
+                                                            <span class="upload-img-span ">
+
+                                                                <small>
+                                                                    <span class="browse">Drop </span>
+                                                                    Or <span class="browse">Browse</span>
+                                                                </small>
+                                                            </span>
+                                                        </div>
+                                                        <input id="product-image" name="product-image-side" type="file"
+                                                            hidden>
+                                                    </div>
