@@ -86,7 +86,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     <div class="card shadow mb-4" style="min-height: 70vh;">
                         <div class="card-body">
                             <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data"
-                                method="post">
+                                method="post" id="add-new-product-details">
                                 <div class="row">
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                                         <div class="col-md-12">
@@ -228,14 +228,13 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             <div class="col-12 col-sm-6 col-md-6 mt-3">
                                                 <label class="mb-0 mt-1" for="mrp">MRP ₹</label>
                                                 <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp"
-                                                    placeholder="Enter MRP" onkeyup="getMarginMrp(this.value)"
+                                                    placeholder="Enter MRP" 
                                                     step="0.25">
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-6 mt-3">
                                                 <label class="mb-0 mt-1" for="gst">GST %</label>
-                                                <select class="c-inp w-100 p-1" name="gst" id="gst"
-                                                    onchange="getMarginGst(this.value)">
+                                                <select class="c-inp w-100 p-1" name="gst" id="gst">
                                                     <option value="0">0</option>
                                                     <option value="5">5</option>
                                                     <option value="12">12</option>
@@ -253,7 +252,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                 </div>
 
                                 <div class="d-sm-flex justify-content-end mt-3">
-                                    <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button>
+                                    <button class="btn btn-danger mr-3" id="reset" type="reset">Reset</button>
                                     <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add
                                         Product</button>
 
@@ -333,20 +332,20 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 
         <script>
-        //calculating profit only after entering MRP
-        function getMarginMrp(value) {
-            this.value = parseFloat(this.value).toFixed(2);
+        /*calculating profit only after entering MRP
+        // function getMarginMrp(value) {
+        //     this.value = parseFloat(this.value).toFixed(2);
 
-            const mrp = parseFloat(value);
-            const ptr = parseFloat(document.getElementById("ptr").value);
-            const gst = parseFloat(document.getElementById("gst").value);
+        //     const mrp = parseFloat(value);
+        //     const ptr = parseFloat(document.getElementById("ptr").value);
+        //     const gst = parseFloat(document.getElementById("gst").value);
 
-            var profit = (mrp - ptr);
+        //     var profit = (mrp - ptr);
 
-            profit = parseFloat(profit - ((gst / 100) * ptr));
+        //     profit = parseFloat(profit - ((gst / 100) * ptr));
 
-            document.getElementById("profit").value = profit.toFixed(2);
-        }
+        //     document.getElementById("profit").value = profit.toFixed(2);
+        // }
 
 
         //calculate after entering PTR
@@ -373,7 +372,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             profit = parseFloat(profit - ((gst / 100) * ptr));
 
             document.getElementById("profit").value = profit.toFixed(2);
-        }
+        }*/
         </script>
         <script>
         productViewAndEdit = (productId) => {
@@ -385,7 +384,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                 url + '"></iframe>');
         }
 
-
+        
         //========================= Delete Product =========================
         $(document).ready(function() {
             $(document).on("click", "#delete-btn", function() {

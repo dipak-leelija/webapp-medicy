@@ -89,7 +89,7 @@ class Products extends DatabaseConnection{
 
     function deleteProduct($productTableId){
 
-        $Delete = "DELETE FROM `products` WHERE `products`.`id` = '$productTableId'";
+        $Delete = "DELETE FROM `products` WHERE `products`.`product_id` = '$productTableId'";
         $DeleteQuey = $this->conn->query($Delete);
         return $DeleteQuey;
 

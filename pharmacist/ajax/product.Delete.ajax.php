@@ -5,11 +5,12 @@ error_reporting(E_ALL);
 
 require_once '../../php_control/products.class.php';
 
+$Products       = new Products();
+
 
 $productTableId = $_POST['id'];
 
-$Products       = new Products();
-$deleteProduct  = $Products-> deleteProduct($productTableId);
+$deleteProduct  = $Products->deleteProduct($productTableId);
 
 if ($deleteProduct) {
     echo 1;
