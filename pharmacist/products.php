@@ -1,6 +1,6 @@
 <?php
 
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/products.class.php';
 require_once '../php_control/productsImages.class.php';
 
@@ -32,9 +32,7 @@ $allProducts = $Products->showProducts();
 
     <!-- Custom fonts for this template -->
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -71,7 +69,11 @@ $allProducts = $Products->showProducts();
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <div class="d-flex justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Total Items:<?php if($allProducts!=NULL){ echo $allProducts->num_rows; }else{ echo 0;}?></h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Total Items:<?php if ($allProducts != NULL) {
+                                                                                                    echo $allProducts->num_rows;
+                                                                                                } else {
+                                                                                                    echo 0;
+                                                                                                } ?></h6>
                                     <a class="btn btn-sm btn-primary" href="add-products.php"><i class="fas fa-plus"></i> Add</a>
                                 </div>
                             </div>
@@ -83,60 +85,58 @@ $allProducts = $Products->showProducts();
                                         <section class="gallery">
                                             <div class="row gallery-items">
 
-                                            <?php
-                                            if ($allProducts != NULL) {
-                                                foreach ($allProducts as $item) {
-                                                    $image = $ProductImages->showImageById($item['product_id']);
-                                                // echo var_dump($image);
-                                                if ($image != NULL) {
-                                                    $productImage = $image[0][2];
-                                                }else{
-                                                    $productImage = 'medicy-default-product-image.jpg';
-                                                }
-                                                if ($item['dsc'] == NULL) {
-                                                    $dsc = '';
-                                                }else {
-                                                    $dsc = $item['dsc'].'..';
-                                                }
-                                                
+                                                <?php
+                                                if ($allProducts != NULL) {
+                                                    foreach ($allProducts as $item) {
+                                                        $image = $ProductImages->showImageById($item['product_id']);
+                                                        // echo var_dump($image);
+                                                        if ($image != NULL) {
+                                                            $productImage = $image[0][2];
+                                                        } else {
+                                                            $productImage = 'medicy-default-product-image.jpg';
+                                                        }
+                                                        if ($item['dsc'] == NULL) {
+                                                            $dsc = '';
+                                                        } else {
+                                                            $dsc = $item['dsc'] . '..';
+                                                        }
 
-                                                echo '  <div class="item col-12 col-sm-6 col-md-3 ">
+
+                                                        echo '  <div class="item col-12 col-sm-6 col-md-3 ">
                                             <div class="card  m-2">
-                                            <img src="../images/product-image/'.$productImage.'" class="card-img-top" alt="...">
+                                            <img src="../images/product-image/' . $productImage . '" class="card-img-top" alt="...">
                                             <div class="card-body">
-                                            <p class="mb-0"><b>'.$item['name'].'</b></p>
-                                                    <small class="card-text mt-0">'.substr($dsc, 0, 65).'</small>
+                                            <p class="mb-0"><b>' . $item['name'] . '</b></p>
+                                                    <small class="card-text mt-0">' . substr($dsc, 0, 65) . '</small>
                                                    
                                                 </div>
                                                 <div class="row px-3 pb-2">
-                                                    <div class="col-6">₹'.$item['mrp'].'</div>
+                                                    <div class="col-6">₹' . $item['mrp'] . '</div>
                                                     <div class="col-6 d-flex justify-content-end">
-                                                    <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="'.$item['product_id'].'" onclick="viewItem(this.id)">View</button>
+                                                    <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="' . $item['product_id'] . '" onclick="viewItem(this.id)">View</button>
                                                     </div>
                                                 </div>
                                                 </div>
                                                 </div>';
-                                            }
-                                        }else{
-                                            echo "No Item Avilable";
-                                        }
-      
-                                        ?>
+                                                    }
+                                                } else {
+                                                    echo "No Item Avilable";
+                                                }
+
+                                                ?>
 
                                             </div>
                                             <div class="d-flex justify-content-end mt-3">
                                                 <nav aria-label="Page navigation">
                                                     <ul class="pagination">
-                                                        <li class="prev page-item"><a class="page-link"
-                                                                href="#">Previous</a>
+                                                        <li class="prev page-item"><a class="page-link" href="#">Previous</a>
                                                         </li>
                                                         <!-- <div id="pageNums"> -->
                                                         <li class="page page-item">
                                                             <a class="page-link">Page <span class="page-num"></a>
                                                         </li>
                                                         <!-- </div> -->
-                                                        <li class="next page-item"><a class="page-link"
-                                                                href="#">Next</a></li>
+                                                        <li class="next page-item"><a class="page-link" href="#">Next</a></li>
                                                     </ul>
                                                 </nav>
                                             </div>
@@ -154,14 +154,14 @@ $allProducts = $Products->showProducts();
 
                 </div>
                 <!-- End of container-fluid -->
-                
+
             </div>
             <!-- End of Main Content -->
 
             <!-- Footer -->
             <?php include_once 'partials/footer-text.php'; ?>
             <!-- End of Footer -->
-        
+
         </div>
         <!--End of Content Wrapper -->
 
@@ -169,7 +169,7 @@ $allProducts = $Products->showProducts();
     <!-- End of Page Wrapper -->
 
     <!-- Product Modal -->
-    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" onload="getid(this.id)">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -209,81 +209,96 @@ $allProducts = $Products->showProducts();
 
 
     <script>
-        
+        const galleryItems = document.querySelector(".gallery-items").children;
+        const prev = document.querySelector(".prev");
+        const next = document.querySelector(".next");
+        const page = document.querySelector(".page-num");
+        const maxItem = 8;
+        let index = 1;
 
-    const galleryItems = document.querySelector(".gallery-items").children;
-    const prev = document.querySelector(".prev");
-    const next = document.querySelector(".next");
-    const page = document.querySelector(".page-num");
-    const maxItem = 8;
-    let index = 1;
+        const pagination = Math.ceil(galleryItems.length / maxItem);
 
-    const pagination = Math.ceil(galleryItems.length / maxItem);
+        prev.addEventListener("click", function() {
+            index--;
+            check();
+            showItems();
+        })
+        next.addEventListener("click", function() {
+            index++;
+            check();
+            showItems();
+        })
 
-    prev.addEventListener("click", function() {
-        index--;
-        check();
-        showItems();
-    })
-    next.addEventListener("click", function() {
-        index++;
-        check();
-        showItems();
-    })
-
-    function check() {
-        if (index == pagination) {
-            next.classList.add("disabled");
-        } else {
-            next.classList.remove("disabled");
-        }
-
-        if (index == 1) {
-            prev.classList.add("disabled");
-        } else {
-            prev.classList.remove("disabled");
-        }
-    }
-
-    function showItems() {
-        for (let i = 0; i < galleryItems.length; i++) {
-            galleryItems[i].classList.remove("show");
-            galleryItems[i].classList.add("hide");
-
-
-            if (i >= (index * maxItem) - maxItem && i < index * maxItem) {
-                // if i greater than and equal to (index*maxItem)-maxItem;
-                // means  (1*8)-8=0 if index=2 then (2*8)-8=8
-                galleryItems[i].classList.remove("hide");
-                galleryItems[i].classList.add("show");
+        function check() {
+            if (index == pagination) {
+                next.classList.add("disabled");
+            } else {
+                next.classList.remove("disabled");
             }
-            page.innerHTML = index;
+
+            if (index == 1) {
+                prev.classList.add("disabled");
+            } else {
+                prev.classList.remove("disabled");
+            }
         }
 
+        function showItems() {
+            for (let i = 0; i < galleryItems.length; i++) {
+                galleryItems[i].classList.remove("show");
+                galleryItems[i].classList.add("hide");
 
-    }
 
-    window.onload = function() {
-        showItems();
-        check();
-    }
+                if (i >= (index * maxItem) - maxItem && i < index * maxItem) {
+                    // if i greater than and equal to (index*maxItem)-maxItem;
+                    // means  (1*8)-8=0 if index=2 then (2*8)-8=8
+                    galleryItems[i].classList.remove("hide");
+                    galleryItems[i].classList.add("show");
+                }
+                page.innerHTML = index;
+            }
+
+
+        }
+
+        window.onload = function() {
+            showItems();
+            check();
+        }
     </script>
     <script>
-    const viewItem = (value) => {
-        // console.info(value);
-        let url = 'ajax/productModal.ajax.php?id=' + value;
-        $(".productModal").html(
-            '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
-            url + '"></iframe>');
-    }
+        const viewItem = (value) => {
+            // console.info(value);
+            let url = 'ajax/productModal.ajax.php?id=' + value;
+
+            function getid(e) {
+                    modalID = e.id;
+                        btn = this;
+                        $.ajax({
+                            url: "ajax/productModal.ajax.php",
+                            type: "GET",
+                            data: {
+                                mid: modalID
+                            },
+                            success: function(response) {
+                                confirm(modalID)
+                            }
+                        });
+                   
+                }
+
+            $(".productModal").html(
+                '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+        }
     </script>
 
 
     <!--============WINDOW REFRESH DELETION OF A PRODUCT ======== -------------->
     <SCript>
-            function pageRelode(){
-                location.reload();
-            }
+        function pageRelode() {
+            location.reload()
+        }
     </SCript>
 </body>
 

@@ -383,55 +383,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                 '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         }
-
-        
-        //========================= Delete Product =========================
-        $(document).ready(function() {
-            $(document).on("click", "#delete-btn", function() {
-
-                swal({
-                        title: "Are you sure?",
-                        text: "Want to Delete This Manufacturer?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-
-                            productId = $(this).data("id");
-                            btn = this;
-
-                            $.ajax({
-                                url: "ajax/product.Delete.ajax.php",
-                                type: "POST",
-                                data: {
-                                    id: productId
-                                },
-                                success: function(data) {
-                                    // alert(data);
-                                    if (data == 1) {
-                                        $(btn).closest("tr").fadeOut()
-                                        swal("Deleted", "Manufacturer Has Been Deleted",
-                                            "success");
-                                    } else {
-                                        swal("Failed", "Product Deletion Failed!",
-                                            "error");
-                                        $("#error-message").html("Deletion Field !!!")
-                                            .slideDown();
-                                        $("success-message").slideUp();
-                                    }
-                                }
-                            });
-
-                        }
-                        return false;
-                    });
-
-            })
-
-        })
         </script>
+
         <script>
         $(document).on("click", ".back", function() {
             var backFile = $(this).parents().find(".back-file");

@@ -4,8 +4,6 @@ require_once "../../php_control/packagingUnit.class.php";
 require_once "../../php_control/productsImages.class.php";
 require_once "../../php_control/manufacturer.class.php";
 
-
-
 $Products       = new Products();
 $PackagingUnits = new PackagingUnits();
 $ProductImages  = new ProductImages();
@@ -65,6 +63,10 @@ $Manufacturer   = new Manufacturer();
     if (isset($_GET['id'])) {
         $product = $Products->showProductsById($_GET['id']);
 
+        print_r($product);
+        echo "<br><br>";
+        print_r($product);
+        
         $manuf  = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
 
         $image = $ProductImages->showImageById($_GET['id']);
@@ -163,9 +165,6 @@ $Manufacturer   = new Manufacturer();
                 .then((willDelete) => {
                     if (willDelete) {
 
-                        productId = $(this).data("id");
-                        btn = this;
-
                         $.ajax({
                             url: "product.Delete.ajax.php",
                             type: "POST",
@@ -175,11 +174,10 @@ $Manufacturer   = new Manufacturer();
                             success: function(data) {
                                 alert(data);
                                 if (data == 1) {
-                                    $(btn).closest().fadeOut()
                                     swal("Deleted", "Manufacturer Has Been Deleted",
                                         "success");
-                                    location.reload();
-                                    window.location='../products.php';
+                                        $('#productModal').modal('hide');
+                                        window.location= '../products.php';
 
                                 } else {
                                     swal("Failed", "Product Deletion Failed!",
@@ -188,14 +186,12 @@ $Manufacturer   = new Manufacturer();
                                         .slideDown();
                                     $("success-message").slideUp();
                                 }
-                            }
+                            }    
                         });
-
                     }
                     return false;
                 });
         }
-       
     </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
