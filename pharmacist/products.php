@@ -174,7 +174,7 @@ $allProducts = $Products->showProducts();
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">View Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pageRelode()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -209,7 +209,7 @@ $allProducts = $Products->showProducts();
 
 
     <script>
-  
+        
 
     const galleryItems = document.querySelector(".gallery-items").children;
     const prev = document.querySelector(".prev");
@@ -278,6 +278,13 @@ $allProducts = $Products->showProducts();
     }
     </script>
 
+
+    <!--============WINDOW REFRESH DELETION OF A PRODUCT ======== -------------->
+    <SCript>
+            function pageRelode(){
+                location.reload();
+            }
+    </SCript>
 </body>
 
 </html>

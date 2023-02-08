@@ -173,11 +173,13 @@ $Manufacturer   = new Manufacturer();
                                 id: btnID
                             },
                             success: function(data) {
-                                // alert(data);
+                                alert(data);
                                 if (data == 1) {
                                     $(btn).closest().fadeOut()
                                     swal("Deleted", "Manufacturer Has Been Deleted",
                                         "success");
+                                    location.reload();
+                                    window.location='../products.php';
 
                                 } else {
                                     swal("Failed", "Product Deletion Failed!",

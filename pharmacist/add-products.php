@@ -98,10 +98,10 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <div class="row p-3">
                                             <div class="col-md-6">
                                                 <input class="c-inp w-100 p-1" type="text" name="medicine-power"
-                                                    id="medicine-power" placeholder="Enter Medicine Power">
+                                                    id="medicine-power" placeholder="Enter Medicine Power" required>
                                             </div>
                                             <div class="col-md-6 mt-3 mt-md-0">
-                                                <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer">
+                                                <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer" required>
                                                     <option value="" disabled selected>Select Manufacturer</option>
                                                     <?php
                                                     foreach ($showManufacturer as $rowManufacturer) {
@@ -117,7 +117,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <div class="col-md-12 mt-3">
                                             <label for="product-descreption">Product Description</label>
                                             <textarea class="form-control" name="product-descreption"
-                                                id="product-descreption" cols="30" rows="3"></textarea>
+                                                id="product-descreption" cols="30" rows="3" required></textarea>
                                         </div>
                                     </div>
 
@@ -193,13 +193,13 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
                                                 <!-- <label class="mb-0 mt-1" for="unit-quantity">Unit Quantity</label> -->
                                                 <input type="number" class="c-inp p-1 w-100" name="unit-quantity"
-                                                    id="unit-quantity" placeholder="Enter Unit">
+                                                    id="unit-quantity" placeholder="Enter Unit" required>
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
                                                 <!-- <label class="mb-0 mt-1" for="unit">Select Unit</label> -->
-                                                <select class="c-inp p-1 w-100" name="unit" id="unit">
-                                                    <option value="" disabled selected>Select Unit</option>
+                                                <select class="c-inp p-1 w-100" name="unit" id="unit" required>
+                                                    <option value="" disabled selected >Select Unit</option>
                                                     <?php
                                                     foreach ($showMeasureOfUnits as $rowUnit) {
                                                         
@@ -211,7 +211,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
                                                 <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
                                                 <select class="c-inp p-1 w-100" name="packaging-type"
-                                                    id="packaging-type">
+                                                    id="packaging-type" required>
                                                     <option value="" disabled selected>Packaging Unit</option>
                                                     <?php
                                                     foreach ($showPackagingUnits as $rowPackagingUnits) {
@@ -229,7 +229,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <label class="mb-0 mt-1" for="mrp">MRP ₹</label>
                                                 <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp"
                                                     placeholder="Enter MRP" 
-                                                    step="0.25">
+                                                    step="0.25" required>
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-6 mt-3">
