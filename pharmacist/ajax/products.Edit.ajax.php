@@ -3,7 +3,7 @@ require_once '../../php_control/products.class.php';
 
 $Products = new Products();
 
-$updateProduct = $Products->updateProduct($_POST['id'], $_POST['name'], $_POST['power'], $_POST['manuf'], $_POST['dsc'], $_POST['packaging'], $_POST['unit-qty'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], '');
+$updateProduct = $Products->updateProduct($_POST['id'], $_POST['name'], $_POST['power'], $_POST['manuf'], $_POST['dsc'], $_POST['packaging'], $_POST['unit-qty'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added_by'], $_POST['id'] );
 if ($updateProduct) {
    echo '<div class="alert alert-primary alert-dismissible fade show mt-2" role="alert">
             <strong>Success!</strong> Product Has Been Updated!

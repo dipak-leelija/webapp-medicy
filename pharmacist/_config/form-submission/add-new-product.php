@@ -18,8 +18,6 @@ require_once '../../../php_control/productsImages.class.php';
 $Products      = new Products();
 $ProductImages = new ProductImages();
 
-
-
 if (isset($_POST['add-product'])) {
 
     //===== Main Image 
@@ -71,6 +69,11 @@ if (isset($_POST['add-product'])) {
     $productName        = str_replace(">", "&gt", $productName);
     $productName        = str_replace("'", "&#39", $productName);
 
+    $productComposition        = $_POST['product-composition'];
+    $productComposition        = str_replace("<", "&lt", $productComposition);
+    $productComposition        = str_replace(">", "&gt", $productComposition);
+    $productComposition        = str_replace("'", "&#39", $productComposition);
+
     $power              = $_POST['medicine-power'];
 
     $productDsc         = $_POST['product-descreption'];
@@ -96,7 +99,7 @@ if (isset($_POST['add-product'])) {
     $productId = 'PR'.$randNum;
 
     //Insert into products table of DB
-    $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $weatage, $unit, $mrp, $gst);
+    $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $weatage, $unit, $mrp, $gst, $productComposition);
         if($addProducts == TRUE){
             $addImage = $ProductImages->addImage($productId, $image, $backImage, $sideImage, $addedBy);
             if ($addImage == TRUE) {

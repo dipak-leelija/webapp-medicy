@@ -249,7 +249,7 @@ foreach ($showProduct as $rowProduct) {
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
                     <button class="btn btn-primary me-md-2" name="add-product" id="add-btn" type="button"
-                        onclick="updateProduct();">Update </button>
+                        onclick="updateProduct();">Update</button>
                 </div>
             </form>
         </div>

@@ -1,6 +1,6 @@
 <?php
 
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/products.class.php';
 require_once '../php_control/productsImages.class.php';
 require_once '../php_control/manufacturer.class.php';
@@ -21,12 +21,40 @@ $ProductImages      = new ProductImages();
 $showManufacturer   = $Manufacturer->showManufacturer();
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
-                                                 
-// if (isset($_POST['update-product'])) {
-    //     echo 'Hi';
-    // }
-    
 
+// if (isset($_POST['update-product'])) {
+//     echo 'Hi';
+// }
+
+if (isset($_POST['update-product'])) {
+
+    $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
+
+    if ($updateProduct == TRUE) { 
+            header("products.php");
+        ?>
+        <script>
+    //         swal("Success", "Product Details Updated!", "success")
+    //         .then((value) => {
+    //                     window.location= 'products.php';
+    //                 });
+    //     </script>
+    // <?php
+    } else { 
+        
+
+        ?>
+
+        <script>
+            // swal("Error", "Something Went Wrong!", "error")
+            //     .then(function() {
+            //         parent.location.reload();
+            //     });
+        </script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<?php
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -44,9 +72,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
     <!-- Custom fonts for this template -->
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Fontawsome Link -->
     <link rel="stylesheet" href="../css/font-awesome.css">
@@ -74,13 +100,16 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <div id="content">
 
                 <?php
-                if (isset($_GET['id'])){
+                if (isset($_GET['id'])) {
 
                     $item = $Products->showProductsById($_GET['id']);
                     $image = $ProductImages->showImageById($_GET['id']);
 
+                    //print_r($item);
                     // print_r($image);
-                    // value="<?php echo  
+                    // value="<?php echo 
+                    $id = $item[0]['id'];
+
                 ?>
                     <!-- Add Product -->
                     <div class="card shadow mb-4 h-100">
@@ -90,14 +119,16 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                                         <div class="col-md-12">
                                             <!-- <label class="mb-0 mt-1" for="product-name">Product Name</Address></label> -->
-                                            <input class="c-inp w-100 p-1" id="product-name" name="product-name"
-                                                placeholder="Product Name" value="<?php echo $item[0]['name'] ?>" required>
+                                            <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?php echo $item[0]['name'] ?>" required>
+                                        </div><br>
+
+                                        <div class="col-md-12">
+                                            <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" value="<?php echo $item[0]['product_composition'] ?>" required>
                                         </div>
 
                                         <div class="row p-3">
                                             <div class="col-md-6">
-                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power"
-                                                    id="medicine-power" placeholder="Enter Medicine Power" value="<?php echo $item[0]['power'] ?>">
+                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" value="<?php echo $item[0]['power'] ?>">
                                             </div>
                                             <div class="col-md-6 mt-3 mt-md-0">
                                                 <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer">
@@ -106,19 +137,20 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     foreach ($showManufacturer as $rowManufacturer) {
                                                         $manufId   = $rowManufacturer['id'];
                                                         $manufName = $rowManufacturer['name'];
-                                                        ?>
-                                                        <option <?php if($manufId == $item[0]['manufacturer_id']){echo 'selected';}?> value="<?php echo $manufId; ?>"><?php echo $manufName; ?></option>
-                                                        <?php
+                                                    ?>
+                                                        <option <?php if ($manufId == $item[0]['manufacturer_id']) {
+                                                                    echo 'selected';
+                                                                } ?> value="<?php echo $manufId; ?>"><?php echo $manufName; ?></option>
+                                                    <?php
                                                     }
-                                                ?>
+                                                    ?>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="col-md-12 mt-3">
                                             <label for="product-descreption">Product Description</label>
-                                            <textarea class="form-control" name="product-descreption"
-                                                id="product-descreption" cols="30" rows="3"><?php echo $item[0]['dsc'] ?></textarea>
+                                            <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3"><?php echo $item[0]['dsc'] ?></textarea>
                                         </div>
                                     </div>
 
@@ -128,8 +160,10 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="border p-1 rounded">
-                                                    <div class="image-area <?php if(count($image) != 0 ){ echo 'activeted';}?> rounded">
-                                                        <img class="browse" src="<?php echo '../images/product-image/'.$image[0]['image']; ?>" alt="">
+                                                    <div class="image-area <?php if (count($image) != 0) {
+                                                                                echo 'activeted';
+                                                                            } ?> rounded">
+                                                        <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['image']; ?>" alt="">
                                                         <!-- <h6 class="d-flex justify-content-center">Upload Product Image
                                                         </h6>
                                                         <div class="icon ">
@@ -152,14 +186,11 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                                             <div class="col-md-6 mt-2  mt-md-0">
                                                 <div>
-                                                    <input type="file" name="back-image" class="back-file" accept="image/*"
-                                                        hidden>
+                                                    <input type="file" name="back-image" class="back-file" accept="image/*" hidden>
                                                     <div class="input-group back-img-field">
-                                                        <input type="text" class="form-control" disabled
-                                                            placeholder="Upload Back Image" id="back-file">
+                                                        <input type="text" class="form-control" disabled placeholder="Upload Back Image" id="back-file">
                                                         <div class="input-group-append">
-                                                            <button type="button"
-                                                                class="back btn btn-primary">Browse</button>
+                                                            <button type="button" class="back btn btn-primary">Browse</button>
                                                         </div>
                                                     </div>
 
@@ -168,14 +199,11 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 
                                                 <div class="mt-4">
-                                                    <input type="file" name="side-image" class="side-file" accept="image/*"
-                                                        hidden>
+                                                    <input type="file" name="side-image" class="side-file" accept="image/*" hidden>
                                                     <div class="input-group side-img-field">
-                                                        <input type="text" class="form-control" disabled
-                                                            placeholder="Upload Side Image" id="side-file">
+                                                        <input type="text" class="form-control" disabled placeholder="Upload Side Image" id="side-file">
                                                         <div class="input-group-append">
-                                                            <button type="button"
-                                                                class="side btn btn-primary">Browse</button>
+                                                            <button type="button" class="side btn btn-primary">Browse</button>
                                                         </div>
                                                     </div>
 
@@ -193,8 +221,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <div class="row">
 
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
-                                                <input type="number" class="c-inp p-1 w-100" name="unit-quantity"
-                                                    id="unit-quantity" placeholder="Enter Unit" value="<?php echo $item[0]['unit_quantity'] ?>">
+                                                <input type="number" class="c-inp p-1 w-100" name="unit-quantity" id="unit-quantity" placeholder="Enter Unit" value="<?php echo $item[0]['unit_quantity'] ?>">
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
@@ -203,23 +230,26 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     <option value="" disabled selected>Select Unit</option>
                                                     <?php
                                                     foreach ($showMeasureOfUnits as $rowUnit) {
-                                                        ?>
-                                                        <option <?php if ($item[0]['unit'] == $rowUnit['short_name']) { echo 'selected';}?> value="<?php echo $rowUnit['short_name'];?>"><?php echo $rowUnit['short_name']; ?></option>';
-                                                        <?php
+                                                    ?>
+                                                        <option <?php if ($item[0]['unit'] == $rowUnit['short_name']) {
+                                                                    echo 'selected';
+                                                                } ?> value="<?php echo $rowUnit['short_name']; ?>"><?php echo $rowUnit['short_name']; ?></option>';
+                                                    <?php
                                                     }
                                                     ?>
                                                 </select>
                                             </div>
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
                                                 <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
-                                                <select class="c-inp p-1 w-100" name="packaging-type"
-                                                    id="packaging-type">
+                                                <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type">
                                                     <option value="" disabled selected>Packaging Unit</option>
                                                     <?php
                                                     foreach ($showPackagingUnits as $rowPackagingUnits) {
-                                                        ?>
-                                                        <option <?php if ($item[0]['packaging_type'] == $rowPackagingUnits['id']) { echo 'selected'; }?> value="<?php echo $rowPackagingUnits['id']?>"><?php echo $rowPackagingUnits['unit_name']?></option>';
-                                                        <?php
+                                                    ?>
+                                                        <option <?php if ($item[0]['packaging_type'] == $rowPackagingUnits['id']) {
+                                                                    echo 'selected';
+                                                                } ?> value="<?php echo $rowPackagingUnits['id'] ?>"><?php echo $rowPackagingUnits['unit_name'] ?></option>';
+                                                    <?php
                                                     }
                                                     ?>
                                                 </select>
@@ -231,20 +261,27 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-md-6 mt-3">
                                                 <label class="mb-0 mt-1" for="mrp">MRP ₹</label>
-                                                <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp"
-                                                    placeholder="Enter MRP" onkeyup="getMarginMrp(this.value)"
-                                                    step="0.25" value="<?php echo $item[0]['mrp']; ?>">
+                                                <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" onkeyup="getMarginMrp(this.value)" step="0.25" value="<?php echo $item[0]['mrp']; ?>">
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-6 mt-3">
                                                 <label class="mb-0 mt-1" for="gst">GST %</label>
-                                                <select class="c-inp w-100 p-1" name="gst" id="gst"
-                                                    onchange="getMarginGst(this.value)">
-                                                    <option <?php if($item[0]['gst'] == "0"){ echo 'selected'; }?> value="0">0</option>
-                                                    <option <?php if($item[0]['gst'] == "5"){ echo 'selected'; }?> value="5">5</option>
-                                                    <option <?php if($item[0]['gst'] == "12"){ echo 'selected'; }?> value="12">12</option>
-                                                    <option <?php if($item[0]['gst'] == "18"){ echo 'selected'; }?> value="18">18</option>
-                                                    <option <?php if($item[0]['gst'] == "28"){ echo 'selected'; }?> value="28">28</option>
+                                                <select class="c-inp w-100 p-1" name="gst" id="gst" onchange="getMarginGst(this.value)">
+                                                    <option <?php if ($item[0]['gst'] == "0") {
+                                                                echo 'selected';
+                                                            } ?> value="0">0</option>
+                                                    <option <?php if ($item[0]['gst'] == "5") {
+                                                                echo 'selected';
+                                                            } ?> value="5">5</option>
+                                                    <option <?php if ($item[0]['gst'] == "12") {
+                                                                echo 'selected';
+                                                            } ?> value="12">12</option>
+                                                    <option <?php if ($item[0]['gst'] == "18") {
+                                                                echo 'selected';
+                                                            } ?> value="18">18</option>
+                                                    <option <?php if ($item[0]['gst'] == "28") {
+                                                                echo 'selected';
+                                                            } ?> value="28">28</option>
 
                                                 </select>
 
@@ -256,6 +293,9 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                     </div>
                                 </div>
 
+                                <input type="hidden" id="id" name="id" value="<?php echo $item[0]['id'] ?>">
+                                <input type="hidden" id="added-by" name="added-by" value="<?php echo $item[0]['added_by'] ?>">
+
                                 <div class="d-sm-flex justify-content-end mt-3">
                                     <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
                                     <button class="btn btn-primary" name="update-product" id="add-btn" type="submit">Update</button>
@@ -265,9 +305,9 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                         </div>
                     </div>
                     <!-- /end Add Product  -->
-                  <?php
-                    }
-                  ?>
+                <?php
+                }
+                ?>
             </div>
             <!-- End of Content Wrapper -->
 
@@ -293,150 +333,150 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 
         <script>
-        //calculating profit only after entering MRP
-        function getMarginMrp(value) {
-            this.value = parseFloat(this.value).toFixed(2);
+            //calculating profit only after entering MRP
+            function getMarginMrp(value) {
+                this.value = parseFloat(this.value).toFixed(2);
 
-            const mrp = parseFloat(value);
-            const ptr = parseFloat(document.getElementById("ptr").value);
-            const gst = parseFloat(document.getElementById("gst").value);
+                const mrp = parseFloat(value);
+                const ptr = parseFloat(document.getElementById("ptr").value);
+                const gst = parseFloat(document.getElementById("gst").value);
 
-            var profit = (mrp - ptr);
+                var profit = (mrp - ptr);
 
-            profit = parseFloat(profit - ((gst / 100) * ptr));
+                profit = parseFloat(profit - ((gst / 100) * ptr));
 
-            document.getElementById("profit").value = profit.toFixed(2);
-        }
+                document.getElementById("profit").value = profit.toFixed(2);
+            }
 
 
-        //calculate after entering PTR
-        function getMarginPtr(value) {
-            const ptr = parseFloat(value);
-            const mrp = parseFloat(document.getElementById("mrp").value);
-            const gst = parseFloat(document.getElementById("gst").value);
+            //calculate after entering PTR
+            function getMarginPtr(value) {
+                const ptr = parseFloat(value);
+                const mrp = parseFloat(document.getElementById("mrp").value);
+                const gst = parseFloat(document.getElementById("gst").value);
 
-            var profit = parseFloat(mrp - ptr);
+                var profit = parseFloat(mrp - ptr);
 
-            profit = parseFloat(profit - ((gst / 100) * ptr));
+                profit = parseFloat(profit - ((gst / 100) * ptr));
 
-            document.getElementById("profit").value = profit.toFixed(2);
-        }
+                document.getElementById("profit").value = profit.toFixed(2);
+            }
 
-        //calculate after entering GST
-        function getMarginGst(value) {
-            const gst = parseFloat(value);
-            const ptr = parseFloat(document.getElementById("ptr").value);
-            const mrp = parseFloat(document.getElementById("mrp").value);
+            //calculate after entering GST
+            function getMarginGst(value) {
+                const gst = parseFloat(value);
+                const ptr = parseFloat(document.getElementById("ptr").value);
+                const mrp = parseFloat(document.getElementById("mrp").value);
 
-            var profit = parseFloat(mrp - ptr);
+                var profit = parseFloat(mrp - ptr);
 
-            profit = parseFloat(profit - ((gst / 100) * ptr));
+                profit = parseFloat(profit - ((gst / 100) * ptr));
 
-            document.getElementById("profit").value = profit.toFixed(2);
-        }
+                document.getElementById("profit").value = profit.toFixed(2);
+            }
         </script>
         <script>
-        productViewAndEdit = (productId) => {
-            // alert("productModalBody");
-            let ViewAndEdit = productId;
-            let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
-            $(".productModalBody").html(
-                '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
-        }
+            productViewAndEdit = (productId) => {
+                // alert("productModalBody");
+                let ViewAndEdit = productId;
+                let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
+                $(".productModalBody").html(
+                    '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
+                    url + '"></iframe>');
+            }
 
 
-        //========================= Delete Product =========================
-        // $(document).ready(function() {
-        //     $(document).on("click", "#delete-btn", function() {
+            //========================= Delete Product =========================
+            // $(document).ready(function() {
+            //     $(document).on("click", "#delete-btn", function() {
 
-        //         swal({
-        //                 title: "Are you sure?",
-        //                 text: "Want to Delete This Manufacturer?",
-        //                 icon: "warning",
-        //                 buttons: true,
-        //                 dangerMode: true,
-        //             })
-        //             .then((willDelete) => {
-        //                 if (willDelete) {
+            //         swal({
+            //                 title: "Are you sure?",
+            //                 text: "Want to Delete This Manufacturer?",
+            //                 icon: "warning",
+            //                 buttons: true,
+            //                 dangerMode: true,
+            //             })
+            //             .then((willDelete) => {
+            //                 if (willDelete) {
 
-        //                     productId = $(this).data("id");
-        //                     btn = this;
+            //                     productId = $(this).data("id");
+            //                     btn = this;
 
-        //                     $.ajax({
-        //                         url: "ajax/product.Delete.ajax.php",
-        //                         type: "POST",
-        //                         data: {
-        //                             id: productId
-        //                         },
-        //                         success: function(data) {
-        //                             // alert(data);
-        //                             if (data == 1) {
-        //                                 $(btn).closest("tr").fadeOut()
-        //                                 swal("Deleted", "Manufacturer Has Been Deleted",
-        //                                     "success");
-        //                             } else {
-        //                                 swal("Failed", "Product Deletion Failed!",
-        //                                     "error");
-        //                                 $("#error-message").html("Deletion Field !!!")
-        //                                     .slideDown();
-        //                                 $("success-message").slideUp();
-        //                             }
-        //                         }
-        //                     });
+            //                     $.ajax({
+            //                         url: "ajax/product.Delete.ajax.php",
+            //                         type: "POST",
+            //                         data: {
+            //                             id: productId
+            //                         },
+            //                         success: function(data) {
+            //                             // alert(data);
+            //                             if (data == 1) {
+            //                                 $(btn).closest("tr").fadeOut()
+            //                                 swal("Deleted", "Manufacturer Has Been Deleted",
+            //                                     "success");
+            //                             } else {
+            //                                 swal("Failed", "Product Deletion Failed!",
+            //                                     "error");
+            //                                 $("#error-message").html("Deletion Field !!!")
+            //                                     .slideDown();
+            //                                 $("success-message").slideUp();
+            //                             }
+            //                         }
+            //                     });
 
-        //                 }
-        //                 return false;
-        //             });
+            //                 }
+            //                 return false;
+            //             });
 
-        //     })
+            //     })
 
-        // })
+            // })
         </script>
         <script>
-        $(document).on("click", ".back", function() {
-            var backFile = $(this).parents().find(".back-file");
-            backFile.trigger("click");
-        });
-        $('.back-file').change(function(e) {
-            $(".back-img-field").hide();
-            $("#back-preview").show();
+            $(document).on("click", ".back", function() {
+                var backFile = $(this).parents().find(".back-file");
+                backFile.trigger("click");
+            });
+            $('.back-file').change(function(e) {
+                $(".back-img-field").hide();
+                $("#back-preview").show();
 
 
-            var fileName = e.target.files[0].name;
-            $("#back-file").val(fileName);
+                var fileName = e.target.files[0].name;
+                $("#back-file").val(fileName);
 
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                // get loaded data and render thumbnail.
-                document.getElementById("back-preview").src = e.target.result;
-            };
-            // read the image file as a data URL.
-            reader.readAsDataURL(this.files[0]);
-        });
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    // get loaded data and render thumbnail.
+                    document.getElementById("back-preview").src = e.target.result;
+                };
+                // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+            });
         </script>
 
         <script>
-        $(document).on("click", ".side", function() {
-            var SideFile = $(this).parents().find(".side-file");
-            SideFile.trigger("click");
-        });
-        $('.side-file').change(function(img) {
-            $(".side-img-field").hide();
-            $("#side-preview").show();
+            $(document).on("click", ".side", function() {
+                var SideFile = $(this).parents().find(".side-file");
+                SideFile.trigger("click");
+            });
+            $('.side-file').change(function(img) {
+                $(".side-img-field").hide();
+                $("#side-preview").show();
 
 
-            var sideImgName = img.target.files[0].name;
-            $("#side-file").val(sideImgName);
+                var sideImgName = img.target.files[0].name;
+                $("#side-file").val(sideImgName);
 
-            var reader = new FileReader();
-            reader.onload = function(img) {
-                // get loaded data and render thumbnail.
-                document.getElementById("side-preview").src = img.target.result;
-            };
-            // read the image file as a data URL.
-            reader.readAsDataURL(this.files[0]);
-        });
+                var reader = new FileReader();
+                reader.onload = function(img) {
+                    // get loaded data and render thumbnail.
+                    document.getElementById("side-preview").src = img.target.result;
+                };
+                // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+            });
         </script>
 
 

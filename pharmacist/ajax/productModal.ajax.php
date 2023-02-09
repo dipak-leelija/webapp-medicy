@@ -61,8 +61,8 @@ $Manufacturer   = new Manufacturer();
 <body>
     <?php
     if (isset($_GET['id'])) {
-        $product = $Products->showProductsById($_GET['id']);
-        $manuf  = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
+        $product        = $Products->showProductsById($_GET['id']);
+        $manuf          = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
 
         $image = $ProductImages->showImageById($_GET['id']);
         if ($image != NULL) {
@@ -112,6 +112,7 @@ $Manufacturer   = new Manufacturer();
                 <div class="">
                     <div class="text-start mb-0 pb-0">
                         <h4><?php echo $product[0]['name']; ?></h4>
+                        <h7><?php echo $product[0]['product_composition']; ?></h7>
                         <p><small><?php echo $manuf[0]['name']; ?></small></p>
                         <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span
                                 class="fs-6 fw-light"><small> MRP</small></span></h5>

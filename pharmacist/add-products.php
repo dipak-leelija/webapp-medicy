@@ -89,10 +89,13 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                 method="post" id="add-new-product-details">
                                 <div class="row">
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-6">
-                                        <div class="col-md-12">
-                                            <!-- <label class="mb-0 mt-1" for="product-name">Product Name</Address></label> -->
+                                        <div class="col-md-12"> 
                                             <input class="c-inp w-100 p-1" id="product-name" name="product-name"
                                                 placeholder="Product Name" required>
+                                        </div><br>
+                                        <div class="col-md-12"> 
+                                            <input class="c-inp w-100 p-1" id="product-composition" name="product-composition"
+                                                placeholder="Product Composition" required>
                                         </div>
 
                                         <div class="row p-3">

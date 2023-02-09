@@ -9,9 +9,9 @@ class Products extends DatabaseConnection{
 
 
 
-    function addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $unitQuantity, $unit, $mrp, $gst){
+    function addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $unitQuantity, $unit, $mrp, $gst, $productComposition){
 
-        $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `power`, `dsc`, `packaging_type`, `unit_quantity`, `unit`, `mrp`, `gst`) VALUES ('$productId', '$manufacturerid', '$productName', '$power', '$productDsc', '$packagingType', '$unitQuantity', '$unit', '$mrp', '$gst')";
+        $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `power`, `dsc`, `packaging_type`, `unit_quantity`, `unit`, `mrp`, `gst`, `product_composition`) VALUES ('$productId', '$manufacturerid', '$productName', '$power', '$productDsc', '$packagingType', '$unitQuantity', '$unit', '$mrp', '$gst', '$productComposition')";
 
         $insertProductsQuery = $this->conn->query($insertProducts);
         // echo $insertProductsQuery.$this->conn->error;
@@ -71,10 +71,10 @@ class Products extends DatabaseConnection{
 
 
 
-    function updateProduct($productid, $productname, $productPower, $productManuf, $productDsc, $productPackaging, $unitQty, $unit, $mrp, $gst, $addedBy){
+    function updateProduct($productid, $productname, $productPower, $productManuf, $productDsc, $productPackaging, $unitQty, $unit, $mrp, $gst, $addedBy, $productComposition){
 
         $updateProduct = " UPDATE `products` SET `manufacturer_id`	= '$productManuf', `name` = '$productname',
-        `power` = '$productPower', `dsc` = '$productDsc', `packaging_type` = '$productPackaging', `unit_quantity` = '$unitQty',`unit` ='$unit', `mrp` ='$mrp', `gst` = '$gst', `added_by` = '$addedBy' WHERE `products`.`id` = '$productid'";
+        `power` = '$productPower', `dsc` = '$productDsc', `packaging_type` = '$productPackaging', `unit_quantity` = '$unitQty',`unit` ='$unit', `mrp` ='$mrp', `gst` = '$gst', `added_by` = '$addedBy', `product_composition` = '$productComposition' WHERE `products`.`id` = '$productid'";
         // echo $updateProduct.$this->conn->error;
 
         $updateQuery = $this->conn->query($updateProduct);

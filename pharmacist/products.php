@@ -169,12 +169,12 @@ $allProducts = $Products->showProducts();
     <!-- End of Page Wrapper -->
 
     <!-- Product Modal -->
-    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" onload="getid(this.id)">
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">View Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pageRelode()">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -271,35 +271,13 @@ $allProducts = $Products->showProducts();
             // console.info(value);
             let url = 'ajax/productModal.ajax.php?id=' + value;
 
-            function getid(e) {
-                    modalID = e.id;
-                        btn = this;
-                        $.ajax({
-                            url: "ajax/productModal.ajax.php",
-                            type: "GET",
-                            data: {
-                                mid: modalID
-                            },
-                            success: function(response) {
-                                confirm(modalID)
-                            }
-                        });
-                   
-                }
-
             $(".productModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         }
     </script>
 
-
-    <!--============WINDOW REFRESH DELETION OF A PRODUCT ======== -------------->
-    <SCript>
-        function pageRelode() {
-            location.reload()
-        }
-    </SCript>
+    
 </body>
 
 </html>
