@@ -51,7 +51,7 @@ if (isset($_POST['update-product'])) {
             //         parent.location.reload();
             //     });
         </script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        
 <?php
     }
 }
@@ -479,7 +479,7 @@ if (isset($_POST['update-product'])) {
             });
         </script>
 
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 
 </html>
