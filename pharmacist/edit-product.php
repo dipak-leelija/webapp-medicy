@@ -27,22 +27,72 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 // }
 
 //======================== PRODUCT UPDATE BLOCK ====================================
+
 if (isset($_POST['update-product'])) {
 
-   print_r($_POST);
-?><br><br><?php
-   print_r($_FILES);
+//    print_r($_POST);
+// ?><br><br><?php
+//    print_r($_FILES);
 
-    $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
+   $imgId = $_POST['imgid'];
+
+   //===== Main Image 
+    $updtImage         = $_FILES['product-image']['name'];
+    $tempUpdtImgname   = $_FILES['product-image']['tmp_name'];
+    if (file_exists("../images/product-image/".$updtImage)) {
+        $updtImage = 'medicy-'.$updtImage;
+    }
+
+    $imgFolder     = "../images/product-image/".$updtImage;
+    move_uploaded_file($tempUpdtImgname, $imgFolder);
+    $updtImage         = str_replace("<", "&lt", $updtImage);
+    $updtImage         = str_replace(">", "&gt", $updtImage);
+    $updtImage         = str_replace("'", "&#39", $updtImage);
+
+    //========= Back Image
+    $updtBackImage         = $_FILES['back-image']['name'];
+    $tempUpdtBackImgname   = $_FILES['back-image']['tmp_name'];
+    if (file_exists("../images/product-image/".$updtBackImage)) {
+        $updtBackImage = 'medicy-'.$updtBackImage;
+    }
+
+    $imgFolder     = "../images/product-image/".$updtBackImage;
+    move_uploaded_file($tempUpdtBackImgname, $imgFolder);
+    $updtBackImage         = str_replace("<", "&lt", $updtBackImage);
+    $updtBackImage         = str_replace(">", "&gt", $updtBackImage);
+    $updtBackImage         = str_replace("'", "&#39", $updtBackImage);
+
+    //=========== Side Image
+
+    $updtSideImage         = $_FILES['side-image']['name'];
+    $tempUpdtImgname       = $_FILES['side-image']['tmp_name'];
+    if (file_exists("../images/product-image/".$updtSideImage)) {
+        $updtSideImage = 'medicy-'.$updtSideImage;
+    }
+
+    $imgFolder     = "../images/product-image/".$updtSideImage;
+    move_uploaded_file($tempUpdtImgname, $imgFolder);
+    $updtSideImage         = str_replace("<", "&lt", $updtSideImage);
+    $updtSideImage         = str_replace(">", "&gt", $updtSideImage);
+    $updtSideImage         = str_replace("'", "&#39", $updtSideImage);
+ //_________________________________________________________________________________________
+
+
+    $updateProduct = $Products-> updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
+
+    $updateImage = $ProductImages-> updateImage( $imgId, $updtImage, $updtBackImage , $updtSideImage );
 
     if($updateProduct == true){
-        ?>
-        <script>
-        window.alert("Data is Updated")
-       // parent.location.reload();
-
-      </script>
-      <?php
+        if($updateImage == true){
+            ?>
+            <script>
+            window.alert("Data is Updated")
+            parent.location.reload();
+            </script>
+          <?php
+        }
+       
+      
     }
     
 }
@@ -108,7 +158,7 @@ if (isset($_POST['update-product'])) {
                     <!-- Add Product -->
                     <div class="card shadow mb-4 h-100">
                         <div class="card-body">
-                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                                         <div class="col-md-12">

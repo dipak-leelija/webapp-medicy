@@ -277,7 +277,7 @@ $allProducts = $Products->showProducts();
         }
     </script>
 
-    
+
 </body>
 
 </html>
