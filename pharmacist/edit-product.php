@@ -26,35 +26,28 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 //     echo 'Hi';
 // }
 
+//======================== PRODUCT UPDATE BLOCK ====================================
 if (isset($_POST['update-product'])) {
+
+   print_r($_POST);
+?><br><br><?php
+   print_r($_FILES);
 
     $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
 
-    if ($updateProduct == TRUE) { 
-            header("products.php");
+    if($updateProduct == true){
         ?>
         <script>
-    //         swal("Success", "Product Details Updated!", "success")
-    //         .then((value) => {
-    //                     window.location= 'products.php';
-    //                 });
-    //     </script>
-    // <?php
-    } else { 
-        
+        window.alert("Data is Updated")
+       // parent.location.reload();
 
-        ?>
-
-        <script>
-            // swal("Error", "Something Went Wrong!", "error")
-            //     .then(function() {
-            //         parent.location.reload();
-            //     });
-        </script>
-        
-<?php
+      </script>
+      <?php
     }
+    
 }
+
+//====================== END OF PRODUCT UPDATE ========================================
 ?>
 
 <!DOCTYPE html>
@@ -105,10 +98,11 @@ if (isset($_POST['update-product'])) {
                     $item = $Products->showProductsById($_GET['id']);
                     $image = $ProductImages->showImageById($_GET['id']);
 
-                    //print_r($item);
                     // print_r($image);
-                    // value="<?php echo 
-                    $id = $item[0]['id'];
+                    // // value="<?php echo ?><br><br><?php
+                    // // $id = $item[0]['id'];
+                    // $imgId = $image[0]['id'];
+                    // echo $imgId;
 
                 ?>
                     <!-- Add Product -->
@@ -180,7 +174,8 @@ if (isset($_POST['update-product'])) {
                                                             <small><i>Formats: JPG, JPEG & PNG</i></small>
                                                         </span> -->
                                                     </div>
-                                                    <input id="product-image" name="product-image" type="file" hidden>
+                                                    <input id="product-image" name="product-image" type="file" accept="image/*" hidden>
+                                                    
                                                 </div>
                                             </div>
 
@@ -295,6 +290,9 @@ if (isset($_POST['update-product'])) {
 
                                 <input type="hidden" id="id" name="id" value="<?php echo $item[0]['id'] ?>">
                                 <input type="hidden" id="added-by" name="added-by" value="<?php echo $item[0]['added_by'] ?>">
+                                
+                                <input type="hidden" id="imgid" name="imgid" value="<?php echo $image[0]['id'] ?>">
+
 
                                 <div class="d-sm-flex justify-content-end mt-3">
                                     <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
@@ -376,15 +374,47 @@ if (isset($_POST['update-product'])) {
             }
         </script>
         <script>
-            productViewAndEdit = (productId) => {
-                // alert("productModalBody");
-                let ViewAndEdit = productId;
-                let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
-                $(".productModalBody").html(
-                    '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
-                    url + '"></iframe>');
-            }
+            // productViewAndEdit = (productId) => {
+            //     // alert("productModalBody");
+            //     let ViewAndEdit = productId;
+            //     let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
+            //     $(".productModalBody").html(
+            //         '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
+            //         url + '"></iframe>');
+            // }
 
+            // function update(e) {
+            //     btnID = e.id;
+            //     btn = this;
+            //     $.ajax({
+            //         url: "ajax/products.Edit.ajax.php",
+            //         type: "POST",
+            //         data: {
+            //             id: btnID
+            //         },
+            //         success: function(data) {
+            //             if (data == 1) {
+            //                 Swal.fire({
+            //                     position: 'top-end',
+            //                     icon: 'success',
+            //                     title: 'Your work has been saved',
+            //                     showConfirmButton: false,
+            //                     timer: 1500
+            //                 }).then(function() {
+            //                         parent.location.reload();
+            //                     })
+
+            //             } else {
+            //                 $("#error-message").html("Deletion Field !!!")
+            //                     .slideDown();
+            //                 $("success-message").slideUp();
+            //             }
+
+            //         }
+            //     });
+
+            //     return false;
+            // }
 
             //========================= Delete Product =========================
             // $(document).ready(function() {
@@ -479,7 +509,8 @@ if (isset($_POST['update-product'])) {
             });
         </script>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
 </body>
 
 </html>

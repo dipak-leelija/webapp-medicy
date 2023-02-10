@@ -20,6 +20,10 @@ $ProductImages = new ProductImages();
 
 if (isset($_POST['add-product'])) {
 
+//     print_r($_POST);
+//      ?><br><br><?php
+//    print_r($_FILES);
+
     //===== Main Image 
     $image         = $_FILES['product-image']['name'];
     $tempImgname   = $_FILES['product-image']['tmp_name'];

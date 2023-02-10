@@ -33,7 +33,8 @@ class ProductImages extends DatabaseConnection{
             return $slectAllQuery;
         }
 
-    }//eof showProducts function
+    }
+    //eof showProducts function
 
 
 
@@ -50,7 +51,8 @@ class ProductImages extends DatabaseConnection{
             }
             return $data;
         }
-    }//eof showProductsById function
+    }
+    //eof showProductsById function
 
 
     // function showProductsByTId($productTId){
@@ -68,9 +70,6 @@ class ProductImages extends DatabaseConnection{
     // }//eof showProductsById function
 
 
-
-
-
     // function updateProduct($productid, $productname, $productPower, $productManuf, $productDsc, $productPackaging, $unitQty, $unit, $mrp, $gst, $addedBy){
 
     //     $updateProduct = " UPDATE `products` SET `manufacturer_id`	= '$productManuf', `name` = '$productname',
@@ -81,7 +80,19 @@ class ProductImages extends DatabaseConnection{
 
     //     return $updateQuery;
 
-    // }// end updateProduct function
+    // }
+    
+    function updateImage($id, $productImage, $backImage, $sideImage)
+    {
+
+        $updateImage = "UPDATE `product_images` SET `image`='$productImage',`back_image`='$backImage',`side_image`='$sideImage' WHERE `product_images`.`id`=`$id`";
+
+        $updateQuery = $this->conn->query($updateImage);
+
+        return $updateQuery;
+    }
+
+    // end updateProduct function*/
 
 
 

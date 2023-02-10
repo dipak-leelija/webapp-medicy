@@ -65,6 +65,7 @@ $Manufacturer   = new Manufacturer();
         $manuf          = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
 
         $image = $ProductImages->showImageById($_GET['id']);
+
         if ($image != NULL) {
             $mainImage  = $image[0]['image'];
             $backImage  = $image[0]['back_image'];
