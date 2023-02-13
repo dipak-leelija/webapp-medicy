@@ -69,11 +69,17 @@ $allProducts = $Products->showProducts();
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <div class="d-flex justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Total Items:<?php if ($allProducts != NULL) {
-                                                                                                    echo $allProducts->num_rows;
-                                                                                                } else {
-                                                                                                    echo 0;
-                                                                                                } ?></h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Total Items:
+                                        <?php 
+                                            if ($allProducts != NULL) 
+                                            {
+                                                echo $allProducts->num_rows;
+                                            } else 
+                                            {
+                                                echo 0;
+                                            } 
+                                        ?>
+                                    </h6>
                                     <a class="btn btn-sm btn-primary" href="add-products.php"><i class="fas fa-plus"></i> Add</a>
                                 </div>
                             </div>

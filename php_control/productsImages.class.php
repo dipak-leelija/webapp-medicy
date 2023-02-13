@@ -81,12 +81,14 @@ class ProductImages extends DatabaseConnection{
     //     return $updateQuery;
 
     // }
+
     
-    function updateImage($id, $productImage, $backImage, $sideImage)
+    function updateImage($productId, $image, $backImage, $sideImage)
     {
+        
+        $updateImage = "UPDATE `product_images` SET `image`='$image', `back_image`='$backImage', `side_image`='$sideImage' WHERE `product_images`.`product_id`='$productId'";
 
-        $updateImage = "UPDATE `product_images` SET `image`='$productImage',`back_image`='$backImage',`side_image`='$sideImage' WHERE `product_images`.`id`=`$id`";
-
+    
         $updateQuery = $this->conn->query($updateImage);
 
         return $updateQuery;
@@ -107,7 +109,11 @@ class ProductImages extends DatabaseConnection{
     // }//end deleteProduct function
 
 
+    //delete product image
 
+    function deleteImage($productId){
+        $delImage = "DELETE FROM `product_images` WHERE `id`='$productId'";
+    }
 
 
 

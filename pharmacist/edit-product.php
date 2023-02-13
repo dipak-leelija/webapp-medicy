@@ -30,63 +30,63 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 if (isset($_POST['update-product'])) {
 
-//    print_r($_POST);
+    $productId = $_POST['imgid'];
+    
 // ?><br><br><?php
-//    print_r($_FILES);
-
-   $imgId = $_POST['imgid'];
 
    //===== Main Image 
-    $updtImage         = $_FILES['product-image']['name'];
-    $tempUpdtImgname   = $_FILES['product-image']['tmp_name'];
-    if (file_exists("../images/product-image/".$updtImage)) {
-        $updtImage = 'medicy-'.$updtImage;
+    $image         = $_FILES['product-image']['name'];
+    $tempImgname   = $_FILES['product-image']['tmp_name'];
+    if (file_exists("../images/product-image/".$image)) {
+        $image = 'medicy-'.$image;
     }
 
-    $imgFolder     = "../images/product-image/".$updtImage;
-    move_uploaded_file($tempUpdtImgname, $imgFolder);
-    $updtImage         = str_replace("<", "&lt", $updtImage);
-    $updtImage         = str_replace(">", "&gt", $updtImage);
-    $updtImage         = str_replace("'", "&#39", $updtImage);
+    $imgFolder     = "../images/product-image/".$image;
+    move_uploaded_file($tempImgname, $imgFolder);
+    $image         = str_replace("<", "&lt", $image);
+    $image         = str_replace(">", "&gt", $image);
+    $image         = str_replace("'", "&#39", $image);
 
-    //========= Back Image
-    $updtBackImage         = $_FILES['back-image']['name'];
-    $tempUpdtBackImgname   = $_FILES['back-image']['tmp_name'];
-    if (file_exists("../images/product-image/".$updtBackImage)) {
-        $updtBackImage = 'medicy-'.$updtBackImage;
+    //===== Back Image 
+    $backImage         = $_FILES['back-image']['name'];
+    $tempBackImg       = $_FILES['back-image']['tmp_name'];
+    if (file_exists("../images/product-image/".$backImage)) {
+        $backImage = 'medicy-'.$backImage;
     }
 
-    $imgFolder     = "../images/product-image/".$updtBackImage;
-    move_uploaded_file($tempUpdtBackImgname, $imgFolder);
-    $updtBackImage         = str_replace("<", "&lt", $updtBackImage);
-    $updtBackImage         = str_replace(">", "&gt", $updtBackImage);
-    $updtBackImage         = str_replace("'", "&#39", $updtBackImage);
+    $imgFolder     = "../images/product-image/".$backImage;
+    move_uploaded_file($tempBackImg, $imgFolder);
+    $backImage         = str_replace("<", "&lt", $backImage);
+    $backImage         = str_replace(">", "&gt", $backImage);
+    $backImage         = str_replace("'", "&#39", $backImage);
 
-    //=========== Side Image
 
-    $updtSideImage         = $_FILES['side-image']['name'];
-    $tempUpdtImgname       = $_FILES['side-image']['tmp_name'];
-    if (file_exists("../images/product-image/".$updtSideImage)) {
-        $updtSideImage = 'medicy-'.$updtSideImage;
-    }
-
-    $imgFolder     = "../images/product-image/".$updtSideImage;
-    move_uploaded_file($tempUpdtImgname, $imgFolder);
-    $updtSideImage         = str_replace("<", "&lt", $updtSideImage);
-    $updtSideImage         = str_replace(">", "&gt", $updtSideImage);
-    $updtSideImage         = str_replace("'", "&#39", $updtSideImage);
+     //===== Side Image 
+     $sideImage         = $_FILES['side-image']['name'];
+     $tempSideImg       = $_FILES['side-image']['tmp_name'];
+     if (file_exists("../images/product-image/".$sideImage)) {
+         $sideImage = 'medicy-'.$sideImage;
+     }
+ 
+     $imgFolder         = "../images/product-image/".$sideImage;
+     move_uploaded_file($tempSideImg, $imgFolder);
+     $sideImage         = str_replace("<", "&lt", $sideImage);
+     $sideImage         = str_replace(">", "&gt", $sideImage);
+     $sideImage         = str_replace("'", "&#39", $sideImage);
  //_________________________________________________________________________________________
 
 
     $updateProduct = $Products-> updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
 
-    $updateImage = $ProductImages-> updateImage( $imgId, $updtImage, $updtBackImage , $updtSideImage );
+    $updateImage = $ProductImages-> updateImage( $productId, $image, $backImage, $sideImage );
+
+    //echo $image, $backImage, $sideImage;
 
     if($updateProduct == true){
         if($updateImage == true){
             ?>
             <script>
-            window.alert("Data is Updated")
+            //window.alert("Data is Updated")
             parent.location.reload();
             </script>
           <?php
@@ -148,7 +148,9 @@ if (isset($_POST['update-product'])) {
                     $item = $Products->showProductsById($_GET['id']);
                     $image = $ProductImages->showImageById($_GET['id']);
 
-                    // print_r($image);
+
+                    //print_r($item);
+                    //print_r($image);
                     // // value="<?php echo ?><br><br><?php
                     // // $id = $item[0]['id'];
                     // $imgId = $image[0]['id'];
@@ -340,13 +342,12 @@ if (isset($_POST['update-product'])) {
 
                                 <input type="hidden" id="id" name="id" value="<?php echo $item[0]['id'] ?>">
                                 <input type="hidden" id="added-by" name="added-by" value="<?php echo $item[0]['added_by'] ?>">
-                                
-                                <input type="hidden" id="imgid" name="imgid" value="<?php echo $image[0]['id'] ?>">
-
+                                <input type="hidden" id="imgid" name="imgid" value="<?php echo $image[0]['product_id'] ?>">
+                              
 
                                 <div class="d-sm-flex justify-content-end mt-3">
                                     <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
-                                    <button class="btn btn-primary" name="update-product" id="add-btn" type="submit">Update</button>
+                                    <button class="btn btn-primary" name="update-product" id="update-btn" type="submit">Update</button>
 
                                 </div>
                             </form>
