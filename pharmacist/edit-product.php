@@ -17,7 +17,6 @@ $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
 $ProductImages      = new ProductImages();
 
-
 $showManufacturer   = $Manufacturer->showManufacturer();
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
@@ -31,73 +30,67 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 if (isset($_POST['update-product'])) {
 
     $productId = $_POST['imgid'];
-    
-// ?><br><br><?php
 
-   //===== Main Image 
-    $image         = $_FILES['product-image']['name'];
-    $tempImgname   = $_FILES['product-image']['tmp_name'];
-    if (file_exists("../images/product-image/".$image)) {
-        $image = 'medicy-'.$image;
-    }
+    //print_r($_FILES)
+    // 
+?><br><br><?php
 
-    $imgFolder     = "../images/product-image/".$image;
-    move_uploaded_file($tempImgname, $imgFolder);
-    $image         = str_replace("<", "&lt", $image);
-    $image         = str_replace(">", "&gt", $image);
-    $image         = str_replace("'", "&#39", $image);
+            //===== Main Image 
+            $image         = $_FILES['product-image']['name'];
+            $tempImgname   = $_FILES['product-image']['tmp_name'];
+            if (file_exists("../images/product-image/" . $image)) {
+                $image = 'medicy-' . $image;
+            }
 
-    //===== Back Image 
-    $backImage         = $_FILES['back-image']['name'];
-    $tempBackImg       = $_FILES['back-image']['tmp_name'];
-    if (file_exists("../images/product-image/".$backImage)) {
-        $backImage = 'medicy-'.$backImage;
-    }
+            $imgFolder     = "../images/product-image/" . $image;
+            move_uploaded_file($tempImgname, $imgFolder);
+            $image         = str_replace("<", "&lt", $image);
+            $image         = str_replace(">", "&gt", $image);
+            $image         = str_replace("'", "&#39", $image);
 
-    $imgFolder     = "../images/product-image/".$backImage;
-    move_uploaded_file($tempBackImg, $imgFolder);
-    $backImage         = str_replace("<", "&lt", $backImage);
-    $backImage         = str_replace(">", "&gt", $backImage);
-    $backImage         = str_replace("'", "&#39", $backImage);
+            //===== Back Image 
+            $backImage         = $_FILES['back-image']['name'];
+            $tempBackImg       = $_FILES['back-image']['tmp_name'];
+            if (file_exists("../images/product-image/" . $backImage)) {
+                $backImage = 'medicy-' . $backImage;
+            }
 
+            $imgFolder     = "../images/product-image/" . $backImage;
+            move_uploaded_file($tempBackImg, $imgFolder);
+            $backImage         = str_replace("<", "&lt", $backImage);
+            $backImage         = str_replace(">", "&gt", $backImage);
+            $backImage         = str_replace("'", "&#39", $backImage);
 
-     //===== Side Image 
-     $sideImage         = $_FILES['side-image']['name'];
-     $tempSideImg       = $_FILES['side-image']['tmp_name'];
-     if (file_exists("../images/product-image/".$sideImage)) {
-         $sideImage = 'medicy-'.$sideImage;
-     }
- 
-     $imgFolder         = "../images/product-image/".$sideImage;
-     move_uploaded_file($tempSideImg, $imgFolder);
-     $sideImage         = str_replace("<", "&lt", $sideImage);
-     $sideImage         = str_replace(">", "&gt", $sideImage);
-     $sideImage         = str_replace("'", "&#39", $sideImage);
- //_________________________________________________________________________________________
+            //===== Side Image 
+            $sideImage         = $_FILES['side-image']['name'];
+            $tempSideImg       = $_FILES['side-image']['tmp_name'];
+            if (file_exists("../images/product-image/" . $sideImage)) {
+                $sideImage = 'medicy-' . $sideImage;
+            }
 
+            $imgFolder         = "../images/product-image/" . $sideImage;
+            move_uploaded_file($tempSideImg, $imgFolder);
+            $sideImage         = str_replace("<", "&lt", $sideImage);
+            $sideImage         = str_replace(">", "&gt", $sideImage);
+            $sideImage         = str_replace("'", "&#39", $sideImage);
+            //_________________________________________________________________________________________
 
-    $updateProduct = $Products-> updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
+            $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
 
-    $updateImage = $ProductImages-> updateImage( $productId, $image, $backImage, $sideImage );
+            $updateImage = $ProductImages->updateImage($productId, $image, $backImage, $sideImage);
 
-    //echo $image, $backImage, $sideImage;
-
-    if($updateProduct == true){
-        if($updateImage == true){
+            if ($updateProduct == true) {
+                if ($updateImage == true) {
             ?>
             <script>
-            //window.alert("Data is Updated")
-            parent.location.reload();
+                parent.location.reload();
             </script>
-          <?php
+<?php
+                }
+            }
         }
-       
-      
-    }
-    
-}
 
-//====================== END OF PRODUCT UPDATE ========================================
+        //====================== END OF PRODUCT UPDATE ========================================
 ?>
 
 <!DOCTYPE html>
@@ -150,13 +143,14 @@ if (isset($_POST['update-product'])) {
 
 
                     //print_r($item);
-                    //print_r($image);
-                    // // value="<?php echo ?><br><br><?php
-                    // // $id = $item[0]['id'];
-                    // $imgId = $image[0]['id'];
-                    // echo $imgId;
+                    // print_r($image);
+                    // // value="<?php echo 
+                ?><br><br><?php
+                            // // $id = $item[0]['id'];
+                            // $imgId = $image[0]['id'];
+                            // echo $imgId;
 
-                ?>
+                            ?>
                     <!-- Add Product -->
                     <div class="card shadow mb-4 h-100">
                         <div class="card-body">
@@ -210,56 +204,44 @@ if (isset($_POST['update-product'])) {
                                                                                 echo 'activeted';
                                                                             } ?> rounded">
                                                         <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['image']; ?>" alt="">
-                                                        <!-- <h6 class="d-flex justify-content-center">Upload Product Image
-                                                        </h6>
-                                                        <div class="icon ">
-                                                            <i class="fa fa-file-image-o" aria-hidden="true"></i>
-                                                        </div>
 
-                                                        <span class="upload-img-span1 ">
-                                                            <small>Drag & Drop</small>
-                                                        </span>
-                                                        <span class="upload-img-span ">
-                                                            <small>Or <span class="browse">Browse</span></small>
-                                                        </span>
-                                                        <span class="upload-img-type ">
-                                                            <small><i>Formats: JPG, JPEG & PNG</i></small>
-                                                        </span> -->
                                                     </div>
                                                     <input id="product-image" name="product-image" type="file" accept="image/*" hidden>
-                                                    
+
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6 mt-2  mt-md-0">
-                                                <div>
+                                                <div class="border p-1 rounded">
+
+                                                    <img src="" id="back-preview" class="img-thumbnail">
+
                                                     <input type="file" name="back-image" class="back-file" accept="image/*" hidden>
-                                                    <div class="input-group back-img-field">
-                                                        <input type="text" class="form-control" disabled placeholder="Upload Back Image" id="back-file">
+                                                    <div class="input-group back-img-field" style="height: 3.4rem;">
+                                                        <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['back_image']; ?>" alt="">
                                                         <div class="input-group-append">
                                                             <button type="button" class="back btn btn-primary">Browse</button>
                                                         </div>
                                                     </div>
 
-                                                    <img src="" id="back-preview" class="img-thumbnail">
                                                 </div>
 
 
                                                 <div class="mt-4">
+                                                   <div class="border p-1 rounded">
+
+                                                    <img src="" id="side-preview" class="img-thumbnail">
+
                                                     <input type="file" name="side-image" class="side-file" accept="image/*" hidden>
-                                                    <div class="input-group side-img-field">
-                                                        <input type="text" class="form-control" disabled placeholder="Upload Side Image" id="side-file">
+                                                    <div class="input-group back-img-field" style="height: 3.4rem;">
+                                                        <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['side_image']; ?>" alt="">
                                                         <div class="input-group-append">
-                                                            <button type="button" class="side btn btn-primary">Browse</button>
+                                                            <button type="button" class="back btn btn-primary">Browse</button>
                                                         </div>
                                                     </div>
 
-                                                    <img src="" id="side-preview" class="img-thumbnail">
                                                 </div>
-
-
-
-
+                                                </div>
                                             </div>
                                         </div>
                                         <!--/End Product Image Row  -->
@@ -343,7 +325,7 @@ if (isset($_POST['update-product'])) {
                                 <input type="hidden" id="id" name="id" value="<?php echo $item[0]['id'] ?>">
                                 <input type="hidden" id="added-by" name="added-by" value="<?php echo $item[0]['added_by'] ?>">
                                 <input type="hidden" id="imgid" name="imgid" value="<?php echo $image[0]['product_id'] ?>">
-                              
+
 
                                 <div class="d-sm-flex justify-content-end mt-3">
                                     <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
