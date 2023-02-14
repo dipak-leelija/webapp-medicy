@@ -204,44 +204,37 @@ if (isset($_POST['update-product'])) {
                                                                                 echo 'activeted';
                                                                             } ?> rounded">
                                                         <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['image']; ?>" alt="">
-
                                                     </div>
-                                                    <input id="product-image" name="product-image" type="file" accept="image/*" hidden>
-
+                                                    <input id="product-image" name="product-image" type="file" hidden>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6 mt-2  mt-md-0">
                                                 <div class="border p-1 rounded">
-
-                                                    <img src="" id="back-preview" class="img-thumbnail">
-
-                                                    <input type="file" name="back-image" class="back-file" accept="image/*" hidden>
-                                                    <div class="input-group back-img-field" style="height: 3.4rem;">
-                                                        <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['back_image']; ?>" alt="">
-                                                        <div class="input-group-append">
-                                                            <button type="button" class="back btn btn-primary">Browse</button>
-                                                        </div>
+                                                    <input class="back-file" id="back-image" type="file" name="back-image" accept="image/*" hidden>
+                                                    <div class="back-img-field <?php if (count($image) != 0) {
+                                                                                echo 'activeted';
+                                                                            } ?> rounded" style="height: 4rem;">
+                                                        <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['back_image']; ?>" alt="" onclick="customClick1('back-image')">
                                                     </div>
 
+                                                    <img src="" id="back-preview" class="img-thumbnail">
                                                 </div>
 
 
                                                 <div class="mt-4">
-                                                   <div class="border p-1 rounded">
-
-                                                    <img src="" id="side-preview" class="img-thumbnail">
-
-                                                    <input type="file" name="side-image" class="side-file" accept="image/*" hidden>
-                                                    <div class="input-group back-img-field" style="height: 3.4rem;">
-                                                        <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['side_image']; ?>" alt="">
-                                                        <div class="input-group-append">
-                                                            <button type="button" class="back btn btn-primary">Browse</button>
+                                                    <div class="border p-1 rounded">
+                                                        <input class="side-file" id="side-image" type="file" name="side-image" accept="image/*" hidden>
+                                                        <div class="side-img-field <?php if (count($image) != 0) {
+                                                                                    echo 'activeted';
+                                                                                } ?> rounded" style="height: 4rem;">
+                                                            <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['side_image']; ?>" alt="" onclick="customClick2('side-image')">
                                                         </div>
-                                                    </div>
 
+                                                        <img src="" id="side-preview" class="img-thumbnail">
+                                                    </div>
                                                 </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                         <!--/End Product Image Row  -->
@@ -364,6 +357,16 @@ if (isset($_POST['update-product'])) {
 
 
         <script>
+            const customClick1 = (id) => {
+                document.getElementById(id).click();
+
+            }
+
+            const customClick2 = (id) => {
+                document.getElementById(id).click();
+            }
+
+
             //calculating profit only after entering MRP
             function getMarginMrp(value) {
                 this.value = parseFloat(this.value).toFixed(2);
