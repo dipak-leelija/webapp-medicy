@@ -95,8 +95,7 @@ $allProducts = $Products->showProducts();
                                                 if ($allProducts != NULL) {
                                                     foreach ($allProducts as $item) {
                                                         $image = $ProductImages->showImageById($item['product_id']);
-                                                        // echo var_dump($image);
-                                                        if ($image != NULL) {
+                                                        if ($image[0][2] != NULL) {
                                                             $productImage = $image[0][2];
                                                         } else {
                                                             $productImage = 'medicy-default-product-image.jpg';

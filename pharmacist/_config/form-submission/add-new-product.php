@@ -18,75 +18,65 @@ require_once '../../../php_control/productsImages.class.php';
 $Products      = new Products();
 $ProductImages = new ProductImages();
 
-$defaultImage = "../../../images/ default_medicine.jpg";
-print_r($defaultImage);
 
 if (isset($_POST['add-product'])) {
-
-//   print_r($_POST);
-//      ?><br><br><?php
-//   print_r($_FILES);
 
     //===== Main Image 
     $image         = $_FILES['product-image']['name'];
     $tempImgname   = $_FILES['product-image']['tmp_name'];
-    if (file_exists("../../../images/product-image/".$image)) {
-        $image = 'medicy-'.$image;
+    if ($image != null) {
+        if (file_exists("../../../images/product-image/".$image)) {
+            $image = 'medicy-'.$image;
+        }
     }
+
 
     $imgFolder     = "../../../images/product-image/".$image;
     move_uploaded_file($tempImgname, $imgFolder);
-    $image         = str_replace("<", "&lt", $image);
-    $image         = str_replace(">", "&gt", $image);
-    $image         = str_replace("'", "&#39", $image);
+    $image         = addslashes($image);
 
     //===== Back Image 
     $backImage         = $_FILES['back-image']['name'];
     $tempBackImg       = $_FILES['back-image']['tmp_name'];
-    if (file_exists("../../../images/product-image/".$backImage)) {
-        $backImage = 'medicy-'.$backImage;
+    if ($backImage != null) {
+        if (file_exists("../../../images/product-image/".$backImage)) {
+            $backImage = 'medicy-'.$backImage;
+        }
     }
+
 
     $imgFolder     = "../../../images/product-image/".$backImage;
     move_uploaded_file($tempBackImg, $imgFolder);
-    $backImage         = str_replace("<", "&lt", $backImage);
-    $backImage         = str_replace(">", "&gt", $backImage);
-    $backImage         = str_replace("'", "&#39", $backImage);
-
+    $backImage         = addslashes($backImage);
 
      //===== Side Image 
      $sideImage         = $_FILES['side-image']['name'];
      $tempSideImg       = $_FILES['side-image']['tmp_name'];
-     if (file_exists("../../../images/product-image/".$sideImage)) {
-         $sideImage = 'medicy-'.$sideImage;
-     }
+    if ($backImage != null) {
+        if (file_exists("../../../images/product-image/".$sideImage)) {
+            $sideImage = 'medicy-'.$sideImage;
+        }
+    }
+
  
      $imgFolder         = "../../../images/product-image/".$sideImage;
      move_uploaded_file($tempSideImg, $imgFolder);
-     $sideImage         = str_replace("<", "&lt", $sideImage);
-     $sideImage         = str_replace(">", "&gt", $sideImage);
-     $sideImage         = str_replace("'", "&#39", $sideImage);
+     $sideImage         = addslashes($sideImage);
 
 
 
     $manufacturerid     = $_POST['manufacturer'];
 
     $productName        = $_POST['product-name'];
-    $productName        = str_replace("<", "&lt", $productName);
-    $productName        = str_replace(">", "&gt", $productName);
-    $productName        = str_replace("'", "&#39", $productName);
+    $productName        = addslashes($productName);
 
     $productComposition        = $_POST['product-composition'];
-    $productComposition        = str_replace("<", "&lt", $productComposition);
-    $productComposition        = str_replace(">", "&gt", $productComposition);
-    $productComposition        = str_replace("'", "&#39", $productComposition);
+    $productComposition        = addslashes($productComposition);
 
     $power              = $_POST['medicine-power'];
 
     $productDsc         = $_POST['product-descreption'];
-    $productDsc         = str_replace("<", "&lt", $productDsc);
-    $productDsc         = str_replace(">", "&gt", $productDsc);
-    $productDsc         = str_replace("'", "&#39", $productDsc);
+    $productDsc         = addslashes($productDsc);
 
 
     $packagingType      = $_POST['packaging-type'];
