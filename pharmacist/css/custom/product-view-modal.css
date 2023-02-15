@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+@media (min-width: 800px) {
+   #edit2,#delete2{
+    display: none;
+   }
+   
+}
+
+@media(max-width: 1000px){
+    #edit1,#delete1{
+        display: none;
+    }
+}

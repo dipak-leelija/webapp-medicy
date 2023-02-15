@@ -20,6 +20,7 @@ $Manufacturer   = new Manufacturer();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
+     <!-- new features added (roodro) -->
     <link rel="stylesheet" href="../css/custom/product-view-modal.css">
     <style>
         #main-img {
@@ -107,9 +108,9 @@ $Manufacturer   = new Manufacturer();
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">
-                    <!-- <div class=""> -->
-                        <div class="" style="display: flex;">
-                            <div class="text-start col-9 mb-0 pb-0">
+                    <div class="">
+                        <div class="d-flex">
+                            <div class="text-start col-8 mb-0 pb-0">
                                 <h4><?php echo $product[0]['name']; ?></h4>
                                 <h7><?php echo $manuf[0]['name']; ?></h7>
                                 <p><small><?php echo $product[0]['product_composition']; ?></small></p>
@@ -121,10 +122,10 @@ $Manufacturer   = new Manufacturer();
                             </div>
                             <div class="row justify-content-center mt-6 col-6">
                                 <div class="col-4">
-                                    <button id="product-edit"><a href="../edit-product.php?id=<?php echo $_GET['id']; ?>" style="text-decoration: none;">Update</a></button>
-                                </div>  
+                                <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-primary" id="edit1">Update</a>
+                                </div>
                                 <div class="col-4">
-                                    <button id="product-delete" onclick="del(this)" id=<?php echo $_GET['id']; ?> >Delete</button>
+                                    <button class="btn btn-sm btn-danger" id="delete1" onclick="del(this)" id=<?php echo $_GET['id']; ?>>Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +138,18 @@ $Manufacturer   = new Manufacturer();
                             <p><?php echo $product[0]['dsc']; ?></p>
                         </div>
 
-                    <!-- </div> -->
+                        <div class="row justify-content-center mt-4">
+                            <div class="col-2">
+                                <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-primary" id="edit2">Edit</a>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-sm btn-danger" id="delete2" onclick="del(this)" id=<?php echo $_GET['id']; ?> >Delete</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    
 
                 </div>
             </div>
