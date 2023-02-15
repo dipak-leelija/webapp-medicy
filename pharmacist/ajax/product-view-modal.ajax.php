@@ -69,6 +69,15 @@ $CurrentStock   = new CurrentStock();
         $manuf          = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
 
+        $currentItmQTY  = $itemstock[0]['qty'];
+        
+        //echo $currentItmQTY;
+        if($currentItmQTY>0){
+            $currentItmQTY = $currentItmQTY;
+        }else{
+            $currentItmQTY = 0;
+        }
+
         $image = $ProductImages->showImageById($_GET['id']);
         
         //print_r($itemstock[0][9]);
@@ -121,14 +130,15 @@ $CurrentStock   = new CurrentStock();
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
                                 <p class="fst-normal"><?php echo $product[0]['unit_quantity']; ?>
                                     <?php echo $product[0]['unit']; ?>/<?php echo $pack[0]['unit_name']; ?></p>
-                                <p><small><mark>Currently Available <?php echo $itemstock[0]['qty'] ?></mark></small></p>
+                                <!-- <?php echo $itemstock ?> -->
+                                <p><small><mark>Currently Available <?php echo $currentItmQTY ?></mark></small></p>
                             </div>
                             <div class="row justify-content-center mt-6 col-6">
                                 <div class="col-4">
                                 <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-primary" id="edit1">Edit</a>
                                 </div>
                                 <div class="col-4">
-                                    <button class="btn btn-sm btn-danger" id="delete1" onclick="del(this)" id=<?php echo $_GET['id']; ?>>Delete</button>
+                                    <button class="btn btn-sm btn-danger"  onclick="del(this)" id=<?php echo $_GET['id']; ?>>Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -146,7 +156,7 @@ $CurrentStock   = new CurrentStock();
                                 <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-primary" id="edit2">Edit</a>
                             </div>
                             <div class="col-2">
-                                <button class="btn btn-sm btn-danger" id="delete2" onclick="del(this)" id=<?php echo $_GET['id']; ?> >Delete</button>
+                                <button class="btn btn-sm btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> >Delete</button>
                             </div>
 
                         </div>
@@ -171,6 +181,7 @@ $CurrentStock   = new CurrentStock();
 
         function del(e) {
             btnID = e.id;
+            confirm(btnID);
             btn = this;
             swal({
                     title: "Are you sure?",

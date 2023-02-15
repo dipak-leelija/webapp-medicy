@@ -18,13 +18,13 @@ require_once '../../../php_control/productsImages.class.php';
 $Products      = new Products();
 $ProductImages = new ProductImages();
 
-$defaultImage = "../../../images/ default_medicine.jpg";
+//$defaultImage = "../../../images/ default_medicine.jpg";
 
 
 if (isset($_POST['add-product'])) {
 
 //   print_r($_POST);
-//      ?><br><br><?php
+//     
 //   print_r($_FILES);
 
     //===== Main Image 
@@ -32,6 +32,9 @@ if (isset($_POST['add-product'])) {
     $tempImgname   = $_FILES['product-image']['tmp_name'];
     if (file_exists("../../../images/product-image/".$image)) {
         $image = 'medicy-'.$image;
+    }
+    else{
+        $image = $defaultImage;
     }
 
     $imgFolder     = "../../../images/product-image/".$image;
