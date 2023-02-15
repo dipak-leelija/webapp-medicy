@@ -10,6 +10,7 @@ $StockOut = new StockOut();
 $Patients = new Patients();
 
 $soldItems = $StockOut->stockOutDisplay();
+
 ?>
 
 <!DOCTYPE html>
@@ -104,7 +105,7 @@ $soldItems = $StockOut->stockOutDisplay();
 
                                             if ($patient != 'Cash Sales') {
                                                 $patientName = $Patients->patientsDisplayByPId($patient);
-                                                $patientName = $patientName[0]['name'];
+                                                //$patientName = $patientName[0]['name'];
                                             }else{
                                                 $patientName = $patient;
                                             }

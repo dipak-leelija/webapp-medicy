@@ -145,12 +145,12 @@ if (isset($_POST['update-product'])) {
                     //print_r($item);
                     // print_r($image);
                     // // value="<?php echo 
-                ?><br><br><?php
+               
                             // // $id = $item[0]['id'];
                             // $imgId = $image[0]['id'];
                             // echo $imgId;
 
-                            ?>
+                ?>
                     <!-- Add Product -->
                     <div class="card shadow mb-4 h-100">
                         <div class="card-body">

@@ -12,3 +12,8 @@
         display: none;
     }
 }
+
+mark {
+    background-color: aquamarine;
+    color: black;
+  }
