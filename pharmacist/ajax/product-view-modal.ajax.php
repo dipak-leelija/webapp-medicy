@@ -118,11 +118,10 @@ $CurrentStock   = new CurrentStock();
                             <div class="text-start col-7 mb-0 pb-0">
                                 <h4><?php echo $product[0]['name']; ?></h4>
                                 <h7><?php echo $manuf[0]['name']; ?></h7>
-                                <p><small><?php echo $product[0]['product_composition']; ?></small></p>
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
                                 <p class="fst-normal"><?php echo $product[0]['unit_quantity']; ?>
                                     <?php echo $product[0]['unit']; ?>/<?php echo $pack[0]['unit_name']; ?></p>
-                                <p><small><mark>Currently Available <?php echo $itemstock[0]['qty'] ?> Files</mark></small></p>
+                                <p><small><mark>Currently Available <?php echo $itemstock[0]['qty'] ?></mark></small></p>
                             </div>
                             <div class="row justify-content-center mt-6 col-6">
                                 <div class="col-4">
@@ -133,7 +132,7 @@ $CurrentStock   = new CurrentStock();
                                 </div>
                             </div>
                         </div>
-
+                        <p><small><?php echo $product[0]['product_composition']; ?></small></p>
                         <div class="d-flex justify-content-center">
                             <hr class="text-center w-100" style="height: 2px;">
                             <!-- <hr class="divider d-md-block" style="height: 2px;> -->

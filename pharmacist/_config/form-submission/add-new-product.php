@@ -19,7 +19,7 @@ $Products      = new Products();
 $ProductImages = new ProductImages();
 
 $defaultImage = "../../../images/ default_medicine.jpg";
-print_r($defaultImage);
+
 
 if (isset($_POST['add-product'])) {
 
