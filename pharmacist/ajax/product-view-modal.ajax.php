@@ -149,7 +149,7 @@ $CurrentStock   = new CurrentStock();
                                 <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>"
                                     class="btn btn-sm btn-primary" id="edit1">Edit</a>
                             </div>
-                            <div class="col-4">
+                            <div class="col-4" id="col4">
                                 <button class="btn btn-sm btn-danger 1" onclick="del(this)"
                                     id=<?php echo $_GET['id']; ?>>Delete</button>
                             </div>
@@ -171,8 +171,8 @@ $CurrentStock   = new CurrentStock();
                             <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-primary"
                                 id="edit2">Edit</a>
                         </div>
-                        <div class="col-2">
-                            <button class="btn btn-sm btn-danger 2" onclick="del(this)"
+                        <div class="col-2" id="col2">
+                            <button class="btn btn-sm btn-danger" onclick="del(this)"
                                 id=<?php echo $_GET['id']; ?>>Delete</button>
                         </div>
 
