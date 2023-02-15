@@ -22,7 +22,7 @@ $CurrentStock   = new CurrentStock();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
-    <!-- new features added (roodro) -->
+    <!-- new features added -->
     <link rel="stylesheet" href="../css/custom/product-view-modal.css">
     <style>
     #main-img {
@@ -68,22 +68,6 @@ $CurrentStock   = new CurrentStock();
         $product        = $Products->showProductsById($_GET['id']);
         $manuf          = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
-<<<<<<< HEAD
-        //print_r($itemstock);
-        if($itemstock == null){
-            echo "";
-        }
-        /*fetching product quentity*/
-        $currentItmQTY  = $itemstock[0]['qty'];
-        //echo $currentItmQTY;
-        if($currentItmQTY == null){
-            $currentItmQTY = 0;
-        }else{
-            $currentItmQTY = $currentItmQTY;
-        }
-
-=======
->>>>>>> 4641a2e76b478e1f20a49a1e0c6caff666789810
         $image = $ProductImages->showImageById($_GET['id']);
         
         //print_r($itemstock[0][9]);
@@ -133,52 +117,6 @@ $CurrentStock   = new CurrentStock();
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
-                <div class="col-12 col-sm-6">
-                    <div class="">
-                        <div class="d-flex">
-                            <div class="text-start col-7 mb-0 pb-0">
-                                <h4><?php echo $product[0]['name']; ?></h4>
-                                <h7><?php echo $manuf[0]['name']; ?></h7>
-                                <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
-                                <p class="fst-normal"><?php echo $product[0]['unit_quantity']; ?>
-                                    <?php echo $product[0]['unit']; ?>/<?php echo $pack[0]['unit_name']; ?></p>
-                                <!-- <?php echo $itemstock ?> -->
-                                <p><small><mark>Currently Available <?php echo $currentItmQTY ?></mark></small></p>
-                            </div>
-                            <div class="row justify-content-center mt-6 col-6">
-                                <div class="col-4">
-                                <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-primary" id="edit1">Edit</a>
-                                </div>
-                                <div class="col-4">
-                                    <button class="btn btn-sm btn-danger"  onclick="del(this)" id=<?php echo $_GET['id']; ?>>Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                        <p><small><?php echo $product[0]['product_composition']; ?></small></p>
-                        <div class="d-flex justify-content-center">
-                            <hr class="text-center w-100" style="height: 2px;">
-                            <!-- <hr class="divider d-md-block" style="height: 2px;> -->
-                        </div>
-                        <div class="text-start">
-                            <p><?php echo $product[0]['dsc']; ?></p>
-                        </div>
-
-                        <div class="row justify-content-center mt-4">
-                            <div class="col-2">
-                                <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-primary" id="edit2">Edit</a>
-                            </div>
-                            <div class="col-2">
-                                <button class="btn btn-sm btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> >Delete</button>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    
-
-                </div>
-=======
             </div>
             <div class="col-12 col-sm-6">
                 <div class="">
@@ -212,7 +150,7 @@ $CurrentStock   = new CurrentStock();
                                     class="btn btn-sm btn-primary" id="edit1">Edit</a>
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-sm btn-danger" id="delete1" onclick="del(this)"
+                                <button class="btn btn-sm btn-danger 1" onclick="del(this)"
                                     id=<?php echo $_GET['id']; ?>>Delete</button>
                             </div>
                         </div>
@@ -234,7 +172,7 @@ $CurrentStock   = new CurrentStock();
                                 id="edit2">Edit</a>
                         </div>
                         <div class="col-2">
-                            <button class="btn btn-sm btn-danger" id="delete2" onclick="del(this)"
+                            <button class="btn btn-sm btn-danger 2" onclick="del(this)"
                                 id=<?php echo $_GET['id']; ?>>Delete</button>
                         </div>
 
@@ -243,7 +181,6 @@ $CurrentStock   = new CurrentStock();
                 </div>
 
 
->>>>>>> 4641a2e76b478e1f20a49a1e0c6caff666789810
             </div>
         </div>
     </div>
@@ -259,21 +196,6 @@ $CurrentStock   = new CurrentStock();
 
     //========================= Delete Product =========================
 
-<<<<<<< HEAD
-        function del(e) {
-            btnID = e.id;
-            confirm(btnID);
-            btn = this;
-            swal({
-                    title: "Are you sure?",
-                    text: "Want to Delete This Manufacturer?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-=======
     function del(e) {
         btnID = e.id;
         btn = this;
@@ -286,7 +208,6 @@ $CurrentStock   = new CurrentStock();
             })
             .then((willDelete) => {
                 if (willDelete) {
->>>>>>> 4641a2e76b478e1f20a49a1e0c6caff666789810
 
                     $.ajax({
                         url: "product.Delete.ajax.php",
