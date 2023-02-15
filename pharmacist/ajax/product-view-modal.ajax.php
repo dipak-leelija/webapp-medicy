@@ -68,14 +68,17 @@ $CurrentStock   = new CurrentStock();
         $product        = $Products->showProductsById($_GET['id']);
         $manuf          = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
-
+        //print_r($itemstock);
+        if($itemstock == null){
+            echo "";
+        }
+        /*fetching product quentity*/
         $currentItmQTY  = $itemstock[0]['qty'];
-        
         //echo $currentItmQTY;
-        if($currentItmQTY>0){
-            $currentItmQTY = $currentItmQTY;
-        }else{
+        if($currentItmQTY == null){
             $currentItmQTY = 0;
+        }else{
+            $currentItmQTY = $currentItmQTY;
         }
 
         $image = $ProductImages->showImageById($_GET['id']);
