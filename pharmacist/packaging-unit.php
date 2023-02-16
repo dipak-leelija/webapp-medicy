@@ -214,11 +214,12 @@ $PackagingUnits = new PackagingUnits();
 
 
     //delete unit
-        //delete manufacturer
+       
         $(document).ready(function() {
         $(document).on("click", "#delete-btn", function() {
 
-            if (confirm("Are You Sure want to delete?")) {
+            //if (confirm("Are You Sure want to delete?")) 
+            {
                 unitid = $(this).data("id");
                 btn = this;
 
@@ -228,8 +229,8 @@ $PackagingUnits = new PackagingUnits();
                     data: {
                         id: unitid
                     },
-                    success: function(data) {
-                        if (data == 1) {
+                    success: function(response) {
+                        if (response.includes("1")) {
                             $(btn).closest("tr").fadeOut()
                         } else {
                             $("#error-message").html("Deletion Field !!!").slideDown();

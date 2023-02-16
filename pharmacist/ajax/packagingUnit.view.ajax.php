@@ -1,10 +1,10 @@
 <?php 
 require_once '../../php_control/packagingUnit.class.php';
-
+$PackagingUnits = new PackagingUnits();
 
 $unitId = $_GET['Id'];
 
-$PackagingUnits = new PackagingUnits();
+
 $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
 
 ?>
@@ -53,7 +53,7 @@ $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
 
     <script>
     function editUnit() {
-        let unitId    = $("#unitId").val();
+        let unitId    = document.getElementById("unitId").value;
         let unitName   = document.getElementById("unit-name").value;
 
         let url = "packagingUnit.Edit.ajax.php?id=" + escape(unitId) + "&unit-name=" + escape(unitName);
