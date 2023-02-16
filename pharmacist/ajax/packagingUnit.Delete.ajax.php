@@ -8,6 +8,8 @@ require_once '../../php_control/packagingUnit.class.php';
 
 $unitId = $_POST['id'];
 
+print_r($unitId);
+
 $PackagingUnits       = new PackagingUnits();
 $deleteUnit = $PackagingUnits->deleteUnit($unitId);
 

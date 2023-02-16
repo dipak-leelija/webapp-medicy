@@ -67,6 +67,8 @@ class Manufacturer extends DatabaseConnection{
 
     function deleteManufacturer($manufacturerId){
 
+        echo $manufacturerId;
+
         $Delete = "DELETE FROM `manufacturer` WHERE `manufacturer`.`id` = '$manufacturerId'";
         $DeleteQuey = $this->conn->query($Delete);
         return $DeleteQuey;

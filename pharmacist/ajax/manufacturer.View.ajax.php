@@ -1,10 +1,9 @@
 <?php 
 require_once '../../php_control/manufacturer.class.php';
-
+$Manufacturer = new Manufacturer();
 
 $manufacturerId = $_GET['Id'];
 
-$Manufacturer = new Manufacturer();
 $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
 
 ?>
@@ -53,9 +52,10 @@ $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
         <div class="mt-2 d-flex justify-content-end">
             <button type="button" class="btn btn-sm btn-primary" onclick="editManufacturer()">Update</button>
         </div>
-
+        
     </form>
 
+    
 
 
     <script src="../js/ajax.custom-lib.js"></script>
@@ -70,7 +70,7 @@ $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
 
     <script>
     function editManufacturer() {
-        let manufacturerId  = $("#manufacturerId").val();
+        let manufacturerId  = document.getElementById("manufacturerId").value;
         let manufacturer    = document.getElementById("manufacturer").value;
         let description     = document.getElementById("description").value;
 

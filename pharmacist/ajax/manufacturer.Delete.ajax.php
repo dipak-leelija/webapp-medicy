@@ -4,11 +4,11 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 require_once '../../php_control/manufacturer.class.php';
-
+$Manufacturer       = new Manufacturer();
 
 $manufacturerId = $_POST['id'];
+echo $manufacturerId;
 
-$Manufacturer       = new Manufacturer();
 $deleteManufacturer = $Manufacturer->deleteManufacturer($manufacturerId);
 
 if ($deleteManufacturer) {

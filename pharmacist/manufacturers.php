@@ -168,7 +168,7 @@ if (isset($_GET['return'])) {
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">View and Edit Manufacturer Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true" onclick="relode()">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body manufacturerModal">
@@ -220,12 +220,16 @@ if (isset($_GET['return'])) {
             '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
             url + '"></iframe>');
     } // end of viewAndEdit function
-
+                    // <?php 
+                    // $tp =  gettype("manufacturerId");
+                    // echo $tp;
+                    // ?>
 
     //delete manufacturer
     $(document).ready(function() {
         $(document).on("click", "#delete-btn", function() {
-
+            manufacturerId = $(this).data("id");
+            btn = this;
             swal({
                 title: "Are you sure?",
                 text: "Want to Delete This Manufacturer?",
@@ -235,19 +239,15 @@ if (isset($_GET['return'])) {
             })
             .then((willDelete) => {
                 if (willDelete) {
-
-
-                manufacturerId = $(this).data("id");
-                btn = this;
-
+                
                 $.ajax({
                     url: "ajax/manufacturer.Delete.ajax.php",
                     type: "POST",
                     data: {
                         id: manufacturerId
                     },
-                    success: function(data) {
-                        if (data == 1) {
+                    success: function(response) {
+                        if (response.includes('1')) {
                             $(btn).closest("tr").fadeOut()
                             swal("Deleted", "Manufacturer Has Been Deleted", "success");
                         } else {
@@ -263,7 +263,12 @@ if (isset($_GET['return'])) {
         });
     });
 
+    //========edit modal on close parent location reload==============
 
+    function relode(){
+        parent.location.reload();
+    }
+    
     </script>
 
 
