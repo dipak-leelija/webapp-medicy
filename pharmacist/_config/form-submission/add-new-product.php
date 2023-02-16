@@ -18,21 +18,21 @@ require_once '../../../php_control/productsImages.class.php';
 $Products      = new Products();
 $ProductImages = new ProductImages();
 
-<<<<<<< HEAD
+
 //$defaultImage = "../../../images/ default_medicine.jpg";
 
 
-if (isset($_POST['add-product'])) {
+//if (isset($_POST['add-product'])) {
 
 //   print_r($_POST);
 //     
 //   print_r($_FILES);
 
-=======
+
 
 if (isset($_POST['add-product'])) {
 
->>>>>>> 4641a2e76b478e1f20a49a1e0c6caff666789810
+
     //===== Main Image 
     $image         = $_FILES['product-image']['name'];
     $tempImgname   = $_FILES['product-image']['tmp_name'];
@@ -41,10 +41,6 @@ if (isset($_POST['add-product'])) {
             $image = 'medicy-'.$image;
         }
     }
-    else{
-        $image = $defaultImage;
-    }
-
 
     $imgFolder     = "../../../images/product-image/".$image;
     move_uploaded_file($tempImgname, $imgFolder);

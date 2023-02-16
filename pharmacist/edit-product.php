@@ -38,41 +38,41 @@ if (isset($_POST['update-product'])) {
             //===== Main Image 
             $image         = $_FILES['product-image']['name'];
             $tempImgname   = $_FILES['product-image']['tmp_name'];
-            if (file_exists("../images/product-image/" . $image)) {
-                $image = 'medicy-' . $image;
+            if ($image != null) {
+                if (file_exists("../../../images/product-image/" . $image)) {
+                    $image = 'medicy-' . $image;
+                }
             }
 
             $imgFolder     = "../images/product-image/" . $image;
             move_uploaded_file($tempImgname, $imgFolder);
-            $image         = str_replace("<", "&lt", $image);
-            $image         = str_replace(">", "&gt", $image);
-            $image         = str_replace("'", "&#39", $image);
+            $image         = addslashes($image);
 
             //===== Back Image 
             $backImage         = $_FILES['back-image']['name'];
             $tempBackImg       = $_FILES['back-image']['tmp_name'];
-            if (file_exists("../images/product-image/" . $backImage)) {
-                $backImage = 'medicy-' . $backImage;
+            if ($backImage != null) {
+                if (file_exists("../../../images/product-image/".$backImage)) {
+                    $backImage = 'medicy-'.$backImage;
+                }
             }
 
             $imgFolder     = "../images/product-image/" . $backImage;
             move_uploaded_file($tempBackImg, $imgFolder);
-            $backImage         = str_replace("<", "&lt", $backImage);
-            $backImage         = str_replace(">", "&gt", $backImage);
-            $backImage         = str_replace("'", "&#39", $backImage);
+            $backImage         = addslashes($backImage);
 
             //===== Side Image 
             $sideImage         = $_FILES['side-image']['name'];
             $tempSideImg       = $_FILES['side-image']['tmp_name'];
-            if (file_exists("../images/product-image/" . $sideImage)) {
-                $sideImage = 'medicy-' . $sideImage;
+            if ($backImage != null) {
+                if (file_exists("../../../images/product-image/".$sideImage)) {
+                    $sideImage = 'medicy-'.$sideImage;
+                }
             }
 
             $imgFolder         = "../images/product-image/" . $sideImage;
             move_uploaded_file($tempSideImg, $imgFolder);
-            $sideImage         = str_replace("<", "&lt", $sideImage);
-            $sideImage         = str_replace(">", "&gt", $sideImage);
-            $sideImage         = str_replace("'", "&#39", $sideImage);
+            $sideImage         = addslashes($sideImage);
             //_________________________________________________________________________________________
 
             $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
@@ -140,15 +140,34 @@ if (isset($_POST['update-product'])) {
 
                     $item = $Products->showProductsById($_GET['id']);
                     $image = $ProductImages->showImageById($_GET['id']);
+                    //print_r($image);
 
-
+                    if ($image != NULL) {
+                        $mainImage  = $image[0]['image'];
+                        $backImage  = $image[0]['back_image'];
+                        $SideImage = $image[0]['side_image'];
+                        if ($mainImage == NULL) {
+                            $mainImage = "medicy-default-product-image.jpg";
+                        }
+            
+                        if ($backImage == NULL) {
+                            $backImage = "medicy-default-product-image.jpg";
+                        }
+                        
+                        if ($SideImage == NULL) {
+                            $SideImage = "medicy-default-product-image.jpg";
+                        }
+                    } else {
+                        $mainImage = "medicy-default-product-image.jpg";
+                        $backImage = "medicy-default-product-image.jpg";
+                        $SideImage = "medicy-default-product-image.jpg";
+                    }
                     //print_r($item);
-                    // print_r($image);
-                    // // value="<?php echo 
-               
-                            // // $id = $item[0]['id'];
-                            // $imgId = $image[0]['id'];
-                            // echo $imgId;
+                    //print_r($image);
+
+                    // $id = $item[0]['id'];
+                    // $imgId = $image[0]['id'];
+                    // echo $imgId;
 
                 ?>
                     <!-- Add Product -->
@@ -203,7 +222,7 @@ if (isset($_POST['update-product'])) {
                                                     <div class="image-area <?php if (count($image) != 0) {
                                                                                 echo 'activeted';
                                                                             } ?> rounded">
-                                                        <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['image']; ?>" alt="">
+                                                        <img class="browse" src="<?php echo '../images/product-image/' .$mainImage ?>" alt="">
                                                     </div>
                                                     <input id="product-image" name="product-image" type="file" hidden>
                                                 </div>
@@ -213,9 +232,9 @@ if (isset($_POST['update-product'])) {
                                                 <div class="border p-1 rounded">
                                                     <input class="back-file" id="back-image" type="file" name="back-image" accept="image/*" hidden>
                                                     <div class="back-img-field <?php if (count($image) != 0) {
-                                                                                echo 'activeted';
-                                                                            } ?> rounded" style="height: 4rem;">
-                                                        <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['back_image']; ?>" alt="" onclick="customClick1('back-image')">
+                                                                                    echo 'activeted';
+                                                                                } ?> rounded" style="height: 4rem;">
+                                                        <img class="browse" src="<?php echo '../images/product-image/' . $backImage ?>" alt="" onclick="customClick1('back-image')">
                                                     </div>
 
                                                     <img src="" id="back-preview" class="img-thumbnail">
@@ -226,9 +245,9 @@ if (isset($_POST['update-product'])) {
                                                     <div class="border p-1 rounded">
                                                         <input class="side-file" id="side-image" type="file" name="side-image" accept="image/*" hidden>
                                                         <div class="side-img-field <?php if (count($image) != 0) {
-                                                                                    echo 'activeted';
-                                                                                } ?> rounded" style="height: 4rem;">
-                                                            <img class="browse" src="<?php echo '../images/product-image/' . $image[0]['side_image']; ?>" alt="" onclick="customClick2('side-image')">
+                                                                                        echo 'activeted';
+                                                                                    } ?> rounded" style="height: 4rem;">
+                                                            <img class="browse" src="<?php echo '../images/product-image/' .$SideImage?>" alt="" onclick="customClick2('side-image')">
                                                         </div>
 
                                                         <img src="" id="side-preview" class="img-thumbnail">

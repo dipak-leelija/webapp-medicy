@@ -25,40 +25,40 @@ $CurrentStock   = new CurrentStock();
     <!-- new features added -->
     <link rel="stylesheet" href="../css/custom/product-view-modal.css">
     <style>
-    #main-img {
-        animation: show .5s ease;
-    }
-
-    @keyframes show {
-        0% {
-            opacity: 0;
-            transform: scale(0.9);
+        #main-img {
+            animation: show .5s ease;
         }
 
-        100% {
-            opacity: 1;
-            transform: scale(1);
+        @keyframes show {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
-    }
 
 
-    .height-4 {
-        height: 3rem;
-    }
+        .height-4 {
+            height: 3rem;
+        }
 
-    .ob-cover {
-        width: 100%;
-        object-fit: cover;
-    }
+        .ob-cover {
+            width: 100%;
+            object-fit: cover;
+        }
 
-    #main-img {
-        width: 18rem;
-        height: 20rem;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        #main-img {
+            width: 18rem;
+            height: 20rem;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 
@@ -68,8 +68,8 @@ $CurrentStock   = new CurrentStock();
         $product        = $Products->showProductsById($_GET['id']);
         $manuf          = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
-        $image = $ProductImages->showImageById($_GET['id']);
-        
+        $image          = $ProductImages->showImageById($_GET['id']);
+
         //print_r($itemstock[0][9]);
 
         if ($image != NULL) {
@@ -78,6 +78,7 @@ $CurrentStock   = new CurrentStock();
             if ($mainImage == NULL) {
                 $mainImage = "medicy-default-product-image.jpg";
             }
+
             if ($backImage == NULL) {
                 $backImage = "medicy-default-product-image.jpg";
             }
@@ -90,169 +91,155 @@ $CurrentStock   = new CurrentStock();
             $backImage = "medicy-default-product-image.jpg";
             $SideImage = "medicy-default-product-image.jpg";
         }
-
+        
         $pack = $PackagingUnits->showPackagingUnitById($product[0]['packaging_type']);
 
     ?>
-    <div class="container-fluid d-flex justify-content-center mt-2">
-        <div class="row justify-content-center">
-            <div class="col-12 col-sm-4">
-                <div class="">
-                    <div class="text-center border d-flex justify-content-center">
-                        <img src="../../images/product-image/<?php echo $mainImage; ?>"
-                            class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
-                    </div>
-                    <div class="row height-3 mt-2 justify-content-center">
-                        <div class="col-2 border p-0">
-                            <img src="../../images/product-image/<?php echo $mainImage; ?>" id="front-img"
-                                onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+        <div class="container-fluid d-flex justify-content-center mt-2">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-4">
+                    <div class="">
+                        <div class="text-center border d-flex justify-content-center">
+                            <img src="../../images/product-image/<?php echo $mainImage; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
                         </div>
-                        <div class="col-2 border p-0" id="back-div">
-                            <img src="../../images/product-image/<?php echo $backImage; ?>" id="back-img"
-                                onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
-                        </div>
-                        <div class="col-2 border p-0" id="side-div">
-                            <img src="../../images/product-image/<?php echo $SideImage; ?>" id="side-img"
-                                onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                        <div class="row height-3 mt-2 justify-content-center">
+                            <div class="col-2 border p-0">
+                                <img src="../../images/product-image/<?php echo $mainImage; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                            </div>
+                            <div class="col-2 border p-0" id="back-div">
+                                <img src="../../images/product-image/<?php echo $backImage; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                            </div>
+                            <div class="col-2 border p-0" id="side-div">
+                                <img src="../../images/product-image/<?php echo $SideImage; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-sm-6">
-                <div class="">
-                    <div class="d-flex">
-                        <div class="text-start col-7 mb-0 pb-0">
-                            <h4><?php echo $product[0]['name']; ?></h4>
-                            <h7><?php echo $manuf[0]['name']; ?></h7>
-                            <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span
-                                    class="fs-6 fw-light"><small> MRP</small></span></h5>
-                            <p class="fst-normal"><?php echo $product[0]['unit_quantity']; ?>
-                                <?php echo $product[0]['unit']; ?>/<?php echo $pack[0]['unit_name']; ?></p>
-                            <p>
-                                <small>
-                                    <mark>
-                                        Current Stock
-                                        <?php 
+                <div class="col-12 col-sm-6">
+                    <div class="">
+                        <div class="d-flex">
+                            <div class="text-start col-7 mb-0 pb-0">
+                                <h4><?php echo $product[0]['name']; ?></h4>
+                                <h7><?php echo $manuf[0]['name']; ?></h7>
+                                <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
+                                <p class="fst-normal"><?php echo $product[0]['unit_quantity']; ?>
+                                    <?php echo $product[0]['unit']; ?>/<?php echo $pack[0]['unit_name']; ?></p>
+                                <p>
+                                    <small>
+                                        <mark>
+                                            Current Stock
+                                            <?php
                                             if ($itemstock != null) {
                                                 echo $itemstock[0]['qty'];
-                                            }else {
+                                            } else {
                                                 echo 0;
                                             }
-                                        ?>
-                                        Unit
-                                    </mark>
-                                </small>
-                            </p>
-                        </div>
-                        <div class="row justify-content-center mt-6 col-6">
-                            <div class="col-4">
-                                <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>"
-                                    class="btn btn-sm btn-primary" id="edit1">Edit</a>
+                                            ?>
+                                            Unit
+                                        </mark>
+                                    </small>
+                                </p>
                             </div>
-                            <div class="col-4" id="col4">
-                                <button class="btn btn-sm btn-danger 1" onclick="del(this)"
-                                    id=<?php echo $_GET['id']; ?>>Delete</button>
+                            <div class="row justify-content-center mt-6 col-6">
+                                <div class="col-4">
+                                    <a id="anchor1" href="../edit-product.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
+                                </div>
+                                <div class="col-4">
+                                    <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?>>Delete</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-center">
-                        <hr class="text-center w-100" style="height: 2px;">
-                        <!-- <hr class="divider d-md-block" style="height: 2px;> -->
-                    </div>
-                    <div class="text-start">
-                        <p><b>Composition: </b> <br><?php echo $product[0]['product_composition']; ?></p>
-
-                        <p><b>Description: </b> <br><?php echo $product[0]['dsc']; ?></p>
-                    </div>
-
-                    <div class="row justify-content-center mt-4">
-                        <div class="col-2">
-                            <a href="../edit-product.php?id=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-primary"
-                                id="edit2">Edit</a>
+                        <div class="d-flex justify-content-center">
+                            <hr class="text-center w-100" style="height: 2px;">
+                            <!-- <hr class="divider d-md-block" style="height: 2px;> -->
                         </div>
-                        <div class="col-2" id="col2">
-                            <button class="btn btn-sm btn-danger" onclick="del(this)"
-                                id=<?php echo $_GET['id']; ?>>Delete</button>
+                        <div class="text-start">
+                            <p><b>Composition: </b> <br><?php echo $product[0]['product_composition']; ?></p>
+
+                            <p><b>Description: </b> <br><?php echo $product[0]['dsc']; ?></p>
                         </div>
 
+                        <div class="row justify-content-center mt-4">
+                            <div class="col-2">
+                                <button class="button2 btn-primary"><a id="anchor1" href="../edit-product.php?id=<?php echo $_GET['id']; ?>">Edit</a></button>
+                            </div>
+                            <div class="col-2">
+                                <button class="button3 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?>>Delete</button>
+                            </div>
+
+                        </div>
+
                     </div>
+
 
                 </div>
-
-
             </div>
         </div>
-    </div>
     <?php
     }
     ?>
     <script src="../../js/bootstrap-js-5/bootstrap.js"></script>
     <script>
-    const setImg = (id) => {
-        img = document.getElementById(id).src;
-        document.getElementById("main-img").src = img;
-    }
+        const setImg = (id) => {
+            img = document.getElementById(id).src;
+            document.getElementById("main-img").src = img;
+        }
 
-    //========================= Delete Product =========================
+        //========================= Delete Product =========================
 
-    function del(e) {
-        btnID = e.id;
-        btn = this;
-        swal({
-                title: "Are you sure?",
-                text: "Want to Delete This Manufacturer?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
+        function del(e) {
+            btnID = e.id;
+            btn = this;
+            swal({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Manufacturer?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
 
-                    $.ajax({
-                        url: "product.Delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            id: btnID
-                        },
-                        success: function(data) {
-                            if (data == 1) {
+                        $.ajax({
+                            url: "product.Delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                id: btnID
+                            },
+                            success: function(data) {
+                                if (data == 1) {
 
-                                swal(
-                                    "Deleted",
-                                    "Manufacturer Has Been Deleted",
-                                    "success"
-                                ).then(function() {
-                                    parent.location.reload();
-                                });
+                                    swal(
+                                        "Deleted",
+                                        "Manufacturer Has Been Deleted",
+                                        "success"
+                                    ).then(function() {
+                                        parent.location.reload();
+                                    });
 
-                            } else {
-                                swal("Failed", "Product Deletion Failed!",
-                                    "error");
-                                $("#error-message").html("Deletion Field !!!")
-                                    .slideDown();
-                                $("success-message").slideUp();
+                                } else {
+                                    swal("Failed", "Product Deletion Failed!",
+                                        "error");
+                                    $("#error-message").html("Deletion Field !!!")
+                                        .slideDown();
+                                    $("success-message").slideUp();
+                                }
                             }
-                        }
-                    });
-                }
-                return false;
-            });
-    }
+                        });
+                    }
+                    return false;
+                });
+        }
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
-        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 
