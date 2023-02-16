@@ -1,98 +1,3 @@
-<?php
-
-require_once '_config/sessionCheck.php'; //check admin loggedin or not
-require_once '../php_control/products.class.php';
-require_once '../php_control/productsImages.class.php';
-require_once '../php_control/manufacturer.class.php';
-require_once '../php_control/measureOfUnit.class.php';
-require_once '../php_control/packagingUnit.class.php';
-
-
-$page = "products";
-
-//objects Initilization
-$Products           = new Products();
-$Manufacturer       = new Manufacturer();
-$MeasureOfUnits     = new MeasureOfUnits();
-$PackagingUnits     = new PackagingUnits();
-$ProductImages      = new ProductImages();
-
-$showManufacturer   = $Manufacturer->showManufacturer();
-$showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
-$showPackagingUnits = $PackagingUnits->showPackagingUnits();
-
-// if (isset($_POST['update-product'])) {
-//     echo 'Hi';
-// }
-
-//======================== PRODUCT UPDATE BLOCK ====================================
-
-if (isset($_POST['update-product'])) {
-
-    $productId = $_POST['imgid'];
-
-    //print_r($_FILES)
-    // 
-?><br><br><?php
-
-            //===== Main Image 
-            $image         = $_FILES['product-image']['name'];
-            $tempImgname   = $_FILES['product-image']['tmp_name'];
-            if ($image != null) {
-                if (file_exists("../../../images/product-image/" . $image)) {
-                    $image = 'medicy-' . $image;
-                }
-            }
-
-            $imgFolder     = "../images/product-image/" . $image;
-            move_uploaded_file($tempImgname, $imgFolder);
-            $image         = addslashes($image);
-
-            //===== Back Image 
-            $backImage         = $_FILES['back-image']['name'];
-            $tempBackImg       = $_FILES['back-image']['tmp_name'];
-            if ($backImage != null) {
-                if (file_exists("../../../images/product-image/".$backImage)) {
-                    $backImage = 'medicy-'.$backImage;
-                }
-            }
-
-            $imgFolder     = "../images/product-image/" . $backImage;
-            move_uploaded_file($tempBackImg, $imgFolder);
-            $backImage         = addslashes($backImage);
-
-            //===== Side Image 
-            $sideImage         = $_FILES['side-image']['name'];
-            $tempSideImg       = $_FILES['side-image']['tmp_name'];
-            if ($backImage != null) {
-                if (file_exists("../../../images/product-image/".$sideImage)) {
-                    $sideImage = 'medicy-'.$sideImage;
-                }
-            }
-
-            $imgFolder         = "../images/product-image/" . $sideImage;
-            move_uploaded_file($tempSideImg, $imgFolder);
-            $sideImage         = addslashes($sideImage);
-            //_________________________________________________________________________________________
-
-            $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
-
-            $updateImage = $ProductImages->updateImage($productId, $image, $backImage, $sideImage);
-
-            if ($updateProduct == true) {
-                if ($updateImage == true) {
-            ?>
-            <script>
-                parent.location.reload();
-            </script>
-<?php
-                }
-            }
-        }
-
-        //====================== END OF PRODUCT UPDATE ========================================
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,11 +25,110 @@ if (isset($_POST['update-product'])) {
     <!-- <link href="css/add-products.css" rel="stylesheet"> -->
     <link href="css/custom/add-products.css" rel="stylesheet">
 
-
+    <!-- sweetAlert link -->
+    <script src="../js/sweetAlert.min.js"></script>
 
 </head>
 
 <body id="page-top">
+
+    <?php
+
+    require_once '_config/sessionCheck.php'; //check admin loggedin or not
+    require_once '../php_control/products.class.php';
+    require_once '../php_control/productsImages.class.php';
+    require_once '../php_control/manufacturer.class.php';
+    require_once '../php_control/measureOfUnit.class.php';
+    require_once '../php_control/packagingUnit.class.php';
+
+
+    $page = "products";
+
+    //objects Initilization
+    $Products           = new Products();
+    $Manufacturer       = new Manufacturer();
+    $MeasureOfUnits     = new MeasureOfUnits();
+    $PackagingUnits     = new PackagingUnits();
+    $ProductImages      = new ProductImages();
+
+    $showManufacturer   = $Manufacturer->showManufacturer();
+    $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
+    $showPackagingUnits = $PackagingUnits->showPackagingUnits();
+
+    // if (isset($_POST['update-product'])) {
+    //     echo 'Hi';
+    // }
+
+    //======================== PRODUCT UPDATE BLOCK ====================================
+
+    if (isset($_POST['update-product'])) {
+
+        $productId = $_POST['imgid'];
+
+        //print_r($_FILES)
+        // 
+    ?><br><br><?php
+
+            //===== Main Image 
+            $image         = $_FILES['product-image']['name'];
+            $tempImgname   = $_FILES['product-image']['tmp_name'];
+            if ($image != null) {
+                if (file_exists("../../../images/product-image/" . $image)) {
+                    $image = 'medicy-' . $image;
+                }
+            }
+
+            $imgFolder     = "../images/product-image/" . $image;
+            move_uploaded_file($tempImgname, $imgFolder);
+            $image         = addslashes($image);
+
+            //===== Back Image 
+            $backImage         = $_FILES['back-image']['name'];
+            $tempBackImg       = $_FILES['back-image']['tmp_name'];
+            if ($backImage != null) {
+                if (file_exists("../../../images/product-image/" . $backImage)) {
+                    $backImage = 'medicy-' . $backImage;
+                }
+            }
+
+            $imgFolder     = "../images/product-image/" . $backImage;
+            move_uploaded_file($tempBackImg, $imgFolder);
+            $backImage         = addslashes($backImage);
+
+            //===== Side Image 
+            $sideImage         = $_FILES['side-image']['name'];
+            $tempSideImg       = $_FILES['side-image']['tmp_name'];
+            if ($backImage != null) {
+                if (file_exists("../../../images/product-image/" . $sideImage)) {
+                    $sideImage = 'medicy-' . $sideImage;
+                }
+            }
+
+            $imgFolder         = "../images/product-image/" . $sideImage;
+            move_uploaded_file($tempSideImg, $imgFolder);
+            $sideImage         = addslashes($sideImage);
+            //_________________________________________________________________________________________
+
+            $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
+
+            $updateImage = $ProductImages->updateImage($productId, $image, $backImage, $sideImage);
+
+            if ($updateProduct == true) {
+                if ($updateImage == true) {
+            ?>
+                <script>
+                    swal("Success", "Product updated successfully!", "success")
+                        .then((value) => {
+                            parent.location.reload();
+                        });
+                </script>
+    <?php
+                }
+            }
+        }
+
+        //====================== END OF PRODUCT UPDATE ========================================
+    ?>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -149,11 +153,11 @@ if (isset($_POST['update-product'])) {
                         if ($mainImage == NULL) {
                             $mainImage = "medicy-default-product-image.jpg";
                         }
-            
+
                         if ($backImage == NULL) {
                             $backImage = "medicy-default-product-image.jpg";
                         }
-                        
+
                         if ($SideImage == NULL) {
                             $SideImage = "medicy-default-product-image.jpg";
                         }
@@ -222,7 +226,7 @@ if (isset($_POST['update-product'])) {
                                                     <div class="image-area <?php if (count($image) != 0) {
                                                                                 echo 'activeted';
                                                                             } ?> rounded">
-                                                        <img class="browse" src="<?php echo '../images/product-image/' .$mainImage ?>" alt="">
+                                                        <img class="browse" src="<?php echo '../images/product-image/' . $mainImage ?>" alt="">
                                                     </div>
                                                     <input id="product-image" name="product-image" type="file" hidden>
                                                 </div>
@@ -247,7 +251,7 @@ if (isset($_POST['update-product'])) {
                                                         <div class="side-img-field <?php if (count($image) != 0) {
                                                                                         echo 'activeted';
                                                                                     } ?> rounded" style="height: 4rem;">
-                                                            <img class="browse" src="<?php echo '../images/product-image/' .$SideImage?>" alt="" onclick="customClick2('side-image')">
+                                                            <img class="browse" src="<?php echo '../images/product-image/' . $SideImage ?>" alt="" onclick="customClick2('side-image')">
                                                         </div>
 
                                                         <img src="" id="side-preview" class="img-thumbnail">

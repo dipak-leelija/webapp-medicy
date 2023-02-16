@@ -117,7 +117,7 @@ $Distributor = new Distributor();
                                             <label class="mb-0 mt-1" for="distributor-name">Distributor Name</Address>
                                             </label>
                                             <input class="form-control" id="distributor-name" name="distributor-name"
-                                                placeholder="Product Name" maxlength="155" required>
+                                                placeholder="Distributor Name" maxlength="155" required>
                                         </div>
 
                                         <div class="col-md-12">

@@ -105,7 +105,12 @@ $soldItems = $StockOut->stockOutDisplay();
 
                                             if ($patient != 'Cash Sales') {
                                                 $patientName = $Patients->patientsDisplayByPId($patient);
-                                                $patientName = $patientName[0]['name'];
+                                                if($patientName!= null){
+                                                    $patientName = $patientName[0]['name'];
+                                                }
+                                                else{
+                                                    $patientName = "";
+                                                }
                                             }else{
                                                 $patientName = $patient;
                                             }
