@@ -12,9 +12,4 @@ if (isset($_GET['product']) && isset($_GET['batch'])) {
 
 }
 
-
-
-
-
-
 ?>

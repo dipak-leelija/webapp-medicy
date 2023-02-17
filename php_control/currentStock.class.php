@@ -11,6 +11,10 @@ class CurrentStock extends DatabaseConnection{
 
     function addCurrentStock($productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy){
 
+        echo $looselyCount;
+        echo $looselyPrice;
+
+
         $insert = "INSERT INTO `current_stock` (`product_id`, `batch_no`, `exp_date`, `distributor_id`, `loosely_count`, `loosely_price`, `weightage`, `unit`, `qty`, `mrp`, `ptr`, `gst`, `added_by`) VALUES ('$productId', '$batchNo', '$expDate', '$distributorId', '$looselyCount', '$looselyPrice', '$weightage', '$unit', '$qty', '$mrp', '$ptr', '$gst', '$addedBy')";
 
         $res = $this->conn->query($insert);
@@ -87,7 +91,7 @@ class CurrentStock extends DatabaseConnection{
 
 
     function showCurrentStocByPId($productId){
-        // echo $productId;
+        //echo $productId;
         $data = array();
         $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' ORDER BY added_on ASC";
         // echo $select;

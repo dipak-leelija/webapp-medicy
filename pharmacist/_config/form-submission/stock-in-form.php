@@ -73,9 +73,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $gstPerItem     = array_shift($_POST['gstPerItem']);
                 $margin         = array_shift($_POST['margin']);
                 $amount         = array_shift($_POST['billAmount']);
+                $looselyPrice   = '';
 
                 
-                $looselyPrice = '';
+                //$looselyPrice = '';
                     
                 if ($unit == "tab" || $unit == "cap") {
 
@@ -83,8 +84,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     // $looselyPriceOnMRP = $mrp / $weightage;
                     $looselyPrice = ($mrp * $qty) / ($weightage * $qty);;     
                 }
-                // echo $looselyPrice;
-
+                
 
                 if (isset($_POST['stock-in'])) {
 

@@ -9,7 +9,7 @@ require_once '../../php_control/measureOfUnit.class.php';
 $unitId = $_POST['id'];
 
 $MeasureOfUnits       = new MeasureOfUnits();
-$deleteUnit = $MeasureOfUnits->deleteUnit($unitId);
+$deleteUnit           = $MeasureOfUnits->deleteUnit($unitId);
 
 if ($deleteUnit) {
     echo 1;

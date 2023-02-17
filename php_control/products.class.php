@@ -39,6 +39,7 @@ class Products extends DatabaseConnection{
 
 
     function showProductsById($productId){
+        //echo $productId;
         $slectProduct   	 = "SELECT * FROM products WHERE `products`.`product_id` = '$productId'";
         $slectProductQuery   = $this->conn->query($slectProduct);
         $rows                = $slectProductQuery->num_rows;

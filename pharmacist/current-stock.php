@@ -10,11 +10,11 @@ require_once '../php_control/productsImages.class.php';
 $page = "current-stock";
 
 // INITILIZATION OF CLASSES
-$CurrentStock = new CurrentStock();
-$Products     = new Products();
-$Distributor  = new Distributor();
-$ProductImages = new ProductImages();
-$Manufacturer  = new Manufacturer();
+$CurrentStock   = new CurrentStock();
+$Products       = new Products();
+$Distributor    = new Distributor();
+$ProductImages  = new ProductImages();
+$Manufacturer   = new Manufacturer();
 
 $showCurrentStock = $CurrentStock->showCurrentStock();
 
@@ -104,11 +104,13 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                         if($showCurrentStock != NULL){
 
                                             foreach ($showCurrentStock as $rowStock) {
-                                                // echo count($showCurrentStock);exit;
+                                                //print_r($rowStock);
                                                 $currentStockId      = $rowStock['id'];
+                                                //echo $currentStockId;
                                                 $productId           = $rowStock['product_id'];
+                                                //echo $productId;
                                                 $image               = $ProductImages->showImageById($productId);
-                                                // print_r($image);
+                                                //print_r($image);exit;
                                                 $mainImage = 'medicy-default-product-image.jpg';
                                                 $backImage = 'medicy-default-product-image.jpg';
                                                 if ($image != NULL) {
@@ -125,20 +127,25 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                         $backImage = $image[0]['back_image'];
                                                     }
                                                 }
-                                                $expDate             = $rowStock['exp_date'];
+                                                $expDate              = $rowStock['exp_date'];
                                                 $distributorId        = $rowStock['distributor_id'];
                                                 $looselyCount         = $rowStock['loosely_count'];
                                                 $looselyPrice         = $rowStock['loosely_price'];
                                                 $weightage            = $rowStock['weightage'];
                                                 
-                                                $productUnit        = $rowStock['unit'];
-                                                $productQty         = $rowStock['qty'];
-                                                $productMRP         = $rowStock['mrp'];
-                                                $batchNo            = $rowStock['batch_no'];
-                                                $gst                = $rowStock['gst'];
+                                                $productUnit          = $rowStock['unit'];
+                                                $productQty           = $rowStock['qty'];
+                                                $productMRP           = $rowStock['mrp'];
+                                                $batchNo              = $rowStock['batch_no'];
+                                                $gst                  = $rowStock['gst'];
 
+                                                //echo $productId;
+
+                                                
                                                 $currentProduct = $Products->showProductsById($productId);
-                                                // print_r($currentProduct[0]['manufacturer_id']);exit;
+                                                //echo "\n";
+                                                //echo $currentProduct;
+
                                                 $Manuf= $Manufacturer->showManufacturerById($currentProduct[0]['manufacturer_id']);
                                                 // print_r($Manuf[0]['name']);exit;
                                                 
@@ -160,7 +167,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                                 <td class='align-middle'>".$productName."<br>
                                                                 <small>".$Manuf[0]['name']."</small>
                                                                 </td>
-                                                                <td class='align-middle'>".$batchNo."</td>
+                                                                <td class='align-middle' id='batch-id' value='".$batchNo."'>".$batchNo."</td>
                                                                 <td class='align-middle'>".$expDate."</td>
                                                                 <td class='align-middle'>".$productQty."</td>
                                                                 <td class='align-middle'>".$productMRP."</td>
@@ -169,7 +176,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                                 
                                                                 <td class='align-middle'>
                                                                     <a class='text-primary mr-2' id='".$currentStockId."' onclick='currentStockView(this.id)' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-edit'></i></a>
-                                                                    <a class='text-danger'><i class='fas fa-trash'></i></a>
+                                                                    <a class='text-danger' id='delid' value='".$currentStockId."' onclick='customClick()'><i class='fas fa-trash' ></i></a>
                                                                 </td>
                                                             </tr>";
                                                             }
@@ -242,19 +249,33 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
     <!-- <script src="js/custom-js.js"></script> -->
     <script src="js/ajax.custom-lib.js"></script>
 
+    <!-- Sweet Alert Js  -->
+    <script src="../js/sweetAlert.min.js"></script>
+
     <script>
+
+    function customClick(id){
+            currentStockID = document.getElementById("delid").value;
+            batchNo        = document.getElementById("batch-id").value;
+
+            alert(batchNo);
+            alert(currentStockID);
+            }
+    
+
     $(document).ready(function() {
-        $(document).on("click", ".delete-btn", function() {
+        $(document).on("click", "#delete-btn, batchID", function() {
 
-            if (confirm("Are You Sure?")) {
-                apntID = $(this).data("id");
-                btn = this;
-
+                currentStockID = $(this).data("id");
+                batchNo        = $(this).data("batchID");
+                btn            = this;
+            alert(batchNo);
+            if (confirm(currentStockID)){
                 $.ajax({
-                    url: "ajax/appointment.delete.ajax.php",
+                    url: "ajax/currentStock.delete.ajax.php",
                     type: "POST",
                     data: {
-                        id: apntID
+                        id: currentStockID
                     },
                     success: function(data) {
                         if (data == 1) {
