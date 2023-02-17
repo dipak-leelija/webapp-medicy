@@ -61,5 +61,6 @@ if(isset($_POST['add-manufacturer'])){
         }
 }
     ?>
+</body>
 
 </html>

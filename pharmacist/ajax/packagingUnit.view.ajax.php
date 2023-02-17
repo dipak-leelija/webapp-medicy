@@ -4,7 +4,6 @@ $PackagingUnits = new PackagingUnits();
 
 $unitId = $_GET['Id'];
 
-
 $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
 
 ?>
@@ -30,13 +29,13 @@ $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
     <?php
         foreach ($showPackagingUnit as $rowPackagingUnit) {
             $unitId      = $rowPackagingUnit['id'];
-            $unitName = $rowPackagingUnit['unit_name'];
+            $unitName    = $rowPackagingUnit['unit_name'];
         }
     ?>
 
     <form>
         <input type="hidden" id="unitId" value="<?php echo $unitId;?>">
-
+            
             <label for="unit-name" class="form-label mb-0">Unit Name:</label>
             <input type="text" class="form-control" id="unit-name" value="<?php echo $unitName; ?>">
 
@@ -53,7 +52,7 @@ $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
 
     <script>
     function editUnit() {
-        let unitId    = document.getElementById("unitId").value;
+        let unitId     = document.getElementById("unitId").value;
         let unitName   = document.getElementById("unit-name").value;
 
         let url = "packagingUnit.Edit.ajax.php?id=" + escape(unitId) + "&unit-name=" + escape(unitName);

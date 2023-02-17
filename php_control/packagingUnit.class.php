@@ -42,8 +42,9 @@ class PackagingUnits extends DatabaseConnection{
 
 
 
-    function updateUnit($unitName, $unitId){
-
+    function updateUnit($unitId, $unitName){
+    //    echo $unitId;
+    //    echo $unitName;
         $update = "UPDATE  `packaging_unit` SET `unit_name` = '$unitName' WHERE `packaging_unit`.`id` = '$unitId'";
         $updatedQuery = $this->conn->query($update);
         return $updatedQuery;

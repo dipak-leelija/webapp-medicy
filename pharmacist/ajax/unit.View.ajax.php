@@ -1,10 +1,10 @@
 <?php 
 require_once '../../php_control/measureOfUnit.class.php';
-
+$MeasureOfUnits = new MeasureOfUnits();
 
 $unitId = $_GET['Id'];
 
-$MeasureOfUnits = new MeasureOfUnits();
+
 $showMeasureOfUnit = $MeasureOfUnits->showMeasureOfUnitsById($unitId);
 
 ?>
@@ -58,7 +58,7 @@ $showMeasureOfUnit = $MeasureOfUnits->showMeasureOfUnitsById($unitId);
 
     <script>
     function editUnit() {
-        let unitId    = $("#unitId").val();
+        let unitId    = document.getElementById("unitId").value;
         let srtName   = document.getElementById("unit-srt-name").value;
         let fullName  = document.getElementById("unit").value;
 

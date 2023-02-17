@@ -1,5 +1,5 @@
 <?php
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/packagingUnit.class.php';
 
 $page = "pack-unit";
@@ -27,9 +27,7 @@ $PackagingUnits = new PackagingUnits();
 
     <!-- Custom fonts for this template-->
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -58,80 +56,78 @@ $PackagingUnits = new PackagingUnits();
                 <?php include 'partials/topbar.php'; ?>
                 <!-- End of Topbar -->
 
-            <!-- =========================== Packaging of Units Content =========================== -->
+                <!-- =========================== Packaging of Units Content =========================== -->
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                <div class="card shadow mb-4">
-                    <!-- Page Heading -->
-                    <h1 class="h3 m-3 text-gray-800">Packaging Units</h1>
-                    <div class="row">
-                        <div class="col-md-7">
-                            <div class="card m-2">
-                                <div class="card-body">
-                                    <!-- Showing Unit Table -->
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>SL. No.</th>
-                                                    <th>Unit Name</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
+                    <div class="card shadow mb-4">
+                        <!-- Page Heading -->
+                        <h1 class="h3 m-3 text-gray-800">Packaging Units</h1>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="card m-2">
+                                    <div class="card-body">
+                                        <!-- Showing Unit Table -->
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>SL. No.</th>
+                                                        <th>Unit Name</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
 
                                                     $showPackagingUnits = $PackagingUnits->showPackagingUnits();
-                                                    foreach($showPackagingUnits as $rowPackagingUnits){
+                                                    foreach ($showPackagingUnits as $rowPackagingUnits) {
                                                         $unitId     = $rowPackagingUnits['id'];
                                                         $unitName  = $rowPackagingUnits['unit_name'];
 
-                                                        echo'<tr>
-                                                                <td>'.$unitId.'</td>
-                                                                <td>'.$unitName.'</td>
+                                                        echo '<tr>
+                                                                <td>' . $unitId . '</td>
+                                                                <td>' . $unitName . '</td>
                                                                 <td>
-                                                                    <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit('.$unitId.')"><i class="fas fa-edit"></i></a>
+                                                                    <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $unitId . ')"><i class="fas fa-edit"></i></a>
     
-                                                                    <a class="mx-1" id="delete-btn" data-id="'.$unitId.'"><i class="far fa-trash-alt"></i></a>
+                                                                    <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                             </tr>';
-
                                                     }
-                                                ?>
+                                                    ?>
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-5">
+                                <div class="card m-2">
+                                    <div class="card-body">
+                                        <form method="post" action="_config/form-submission/add-packaging-unit.php">
+
+                                            <div class="col-md-12">
+                                                <label class="mb-0 mt-1" for="unit-name">Unit Name</Address></label>
+                                                <input class="form-control" id="unit-name" name="uni-name" placeholder="Unit Name" required>
+                                            </div>
+
+
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
+                                                <button class="btn btn-primary me-md-2" name="add-unit" type="submit">Add
+                                                    Unit</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-5">
-                            <div class="card m-2">
-                                <div class="card-body">
-                                    <form method="post" action="_config/form-submission/add-packaging-unit.php">
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="unit-name">Unit Name</Address></label>
-                                            <input class="form-control" id="unit-name" name="uni-name"
-                                                placeholder="Unit Name" required>
-                                        </div>
-
-
-                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                            <button class="btn btn-primary me-md-2" name="add-unit" type="submit">Add
-                                                Unit</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
-            <!-- =========================== End of Packaging of Units Content =========================== -->
+                <!-- =========================== End of Packaging of Units Content =========================== -->
 
 
 
@@ -150,13 +146,12 @@ $PackagingUnits = new PackagingUnits();
 
 
     <!-- Manufacturer View and Edit Modal -->
-    <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="unitModalLabel">View and Edit Units</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pageReload()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -195,6 +190,8 @@ $PackagingUnits = new PackagingUnits();
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
+    <!-- Sweet Alert Js  -->
+    <script src="../js/sweetAlert.min.js"></script>
 
     <!-- Page level plugins -->
     <script src="../assets/datatables/jquery.dataTables.min.js"></script>
@@ -205,47 +202,60 @@ $PackagingUnits = new PackagingUnits();
     <script>
         //View and Edit Manufacturer function
         unitViewAndEdit = (unitId) => {
-        let ViewAndEdit = unitId;
-        let url = "ajax/packagingUnit.View.ajax.php?Id=" + ViewAndEdit;
-        $(".unitModal").html(
-            '<iframe width="99%" height="120rem" frameborder="0" allowtransparency="true" src="' +
-            url + '"></iframe>');
-    } // end of viewAndEdit function
+            let ViewAndEdit = unitId;
+            let url = "ajax/packagingUnit.View.ajax.php?Id=" + ViewAndEdit;
+            $(".unitModal").html(
+                '<iframe width="99%" height="120rem" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+        } // end of viewAndEdit function
 
 
-    //delete unit
-       
+
+        //delete unit
+
         $(document).ready(function() {
-        $(document).on("click", "#delete-btn", function() {
-
-            //if (confirm("Are You Sure want to delete?")) 
-            {
+            $(document).on("click", "#delete-btn", function() {
+                //if (confirm("Are You Sure want to delete?"))
                 unitid = $(this).data("id");
                 btn = this;
+                swal({
+                        title: "Are you sure?",
+                        text: "Want to Delete This Manufacturer?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: "ajax/packagingUnit.Delete.ajax.php",
+                                type: "POST",
+                                data: {
+                                    id: unitid
+                                },
+                                success: function(response) {
+                                    if (response.includes("1")) {
+                                        $(btn).closest("tr").fadeOut()
+                                    } else {
+                                        $("#error-message").html("Deletion Field !!!").slideDown();
+                                        $("success-message").slideUp();
+                                    }
 
-                $.ajax({
-                    url: "ajax/packagingUnit.Delete.ajax.php",
-                    type: "POST",
-                    data: {
-                        id: unitid
-                    },
-                    success: function(response) {
-                        if (response.includes("1")) {
-                            $(btn).closest("tr").fadeOut()
-                        } else {
-                            $("#error-message").html("Deletion Field !!!").slideDown();
-                            $("success-message").slideUp();
+                                }
+                            });
+
                         }
+                        return false;
+                    })
+            });
 
-                    }
-                });
-            }
-            return false;
+        });
 
-        })
 
-    })
-
+        //========================== on edit modal cloase page reload ======================
+        function pageReload() {
+            parent.location.reload();
+        }
     </script>
 
 

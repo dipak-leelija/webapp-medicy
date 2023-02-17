@@ -162,7 +162,7 @@ $MeasureOfUnits = new MeasureOfUnits();
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="unitModalLabel">View and Edit Units</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pageReload()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -198,6 +198,8 @@ $MeasureOfUnits = new MeasureOfUnits();
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
+    <!-- Sweet Alert Js  -->
+    <script src="../js/sweetAlert.min.js"></script>
 
     <!-- Page level plugins -->
     <script src="../assets/datatables/jquery.dataTables.min.js"></script>
@@ -219,36 +221,48 @@ $MeasureOfUnits = new MeasureOfUnits();
         //delete unit
         $(document).ready(function() {
             $(document).on("click", "#delete-btn", function() {
+                manufacturerId = $(this).data("id");
+                btn = this;
 
-                if (confirm("Are You Sure want to delete?")) {
-                    manufacturerId = $(this).data("id");
-                    btn = this;
+                swal({
+                        title: "Are you sure?",
+                        text: "Want to Delete This Manufacturer?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: "ajax/unit.Delete.ajax.php",
+                                type: "POST",
+                                data: {
+                                    id: manufacturerId
+                                },
+                                success: function(data) {
+                                    if (data == 1) {
+                                        $(btn).closest("tr").fadeOut()
+                                    } else {
+                                        $("#error-message").html("Deletion Field !!!").slideDown();
+                                        $("success-message").slideUp();
+                                    }
 
-                    $.ajax({
-                        url: "ajax/unit.Delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            id: manufacturerId
-                        },
-                        success: function(data) {
-                            if (data == 1) {
-                                $(btn).closest("tr").fadeOut()
-                            } else {
-                                $("#error-message").html("Deletion Field !!!").slideDown();
-                                $("success-message").slideUp();
-                            }
-
+                                }
+                            });
                         }
+                        return false;
                     });
-                }
-                return false;
+            });
 
-            })
+        });
+    
+//  =============on modal close page reload ===================== 
 
-        })
-    </script>
+function pageReload(){
+    parent.location.reload();
+}
 
-
+</script>
 </body>
 
 </html>
