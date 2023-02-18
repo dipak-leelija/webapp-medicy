@@ -108,7 +108,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <td class="d-flex justify-content-around align-middle" >
                                                     <a class="text-primary pe-auto" role="button"><i class="fas fa-eye"></i></a>
                                                     <a class="text-primary" id="'.$stockIn['distributor_bill'].'" href="stock-in-edit.php?edit='.$stockIn['distributor_bill'].'" role="button"><i class=" fas fa-edit"></i></a>
-                                                    <a class="text-danger" role="button"><i class="fas fa-trash"></i></a>
+                                                    <a class="text-danger" role="button"><i class="fas fa-trash" onclick="deleteStock()" id="del-id" value = ></i></a>
                                                 </td>
                                             </tr>
                                                 ';

@@ -1,5 +1,5 @@
 <?php
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/currentStock.class.php';
 require_once '../php_control/manufacturer.class.php';
 require_once '../php_control/distributor.class.php';
@@ -35,9 +35,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
 
     <!-- Custom fonts for this template -->
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.css" rel="stylesheet">
@@ -79,7 +77,11 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 booked_btn">
                             <h6 class="m-0 font-weight-bold text-primary">Total Avilable Stock is :
-                                <?php if($showCurrentStock != NULL){echo count($showCurrentStock);}else{ echo "No Stock";}?>
+                                <?php if ($showCurrentStock != NULL) {
+                                    echo count($showCurrentStock);
+                                } else {
+                                    echo "No Stock";
+                                } ?>
                             </h6>
                         </div>
                         <div class="card-body">
@@ -100,8 +102,8 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php 
-                                        if($showCurrentStock != NULL){
+                                        <?php
+                                        if ($showCurrentStock != NULL) {
 
                                             foreach ($showCurrentStock as $rowStock) {
                                                 //print_r($rowStock);
@@ -115,15 +117,15 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                 $backImage = 'medicy-default-product-image.jpg';
                                                 if ($image != NULL) {
                                                     // echo $mainImage;
-                                                    if($image[0]['image'] == NULL){
+                                                    if ($image[0]['image'] == NULL) {
                                                         $mainImage == 'medicy-default-product-image.jpg';
-                                                    }else {
+                                                    } else {
                                                         $mainImage = $image[0]['image'];
                                                     }
 
-                                                    if($image[0]['back_image'] == NULL){
+                                                    if ($image[0]['back_image'] == NULL) {
                                                         $backImage == 'medicy-default-product-image.jpg';
-                                                    }else{
+                                                    } else {
                                                         $backImage = $image[0]['back_image'];
                                                     }
                                                 }
@@ -132,7 +134,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                 $looselyCount         = $rowStock['loosely_count'];
                                                 $looselyPrice         = $rowStock['loosely_price'];
                                                 $weightage            = $rowStock['weightage'];
-                                                
+
                                                 $productUnit          = $rowStock['unit'];
                                                 $productQty           = $rowStock['qty'];
                                                 $productMRP           = $rowStock['mrp'];
@@ -140,50 +142,51 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                 $gst                  = $rowStock['gst'];
 
                                                 //echo $productId;
-
                                                 
+
                                                 $currentProduct = $Products->showProductsById($productId);
                                                 //echo "\n";
                                                 //echo $currentProduct;
 
-                                                $Manuf= $Manufacturer->showManufacturerById($currentProduct[0]['manufacturer_id']);
+                                                $Manuf = $Manufacturer->showManufacturerById($currentProduct[0]['manufacturer_id']);
                                                 // print_r($Manuf[0]['name']);exit;
-                                                
+
                                                 $showProducts = $Products->showProductsById($productId);
-                                                foreach($showProducts as $rowProducts){
+                                                foreach ($showProducts as $rowProducts) {
                                                     $productName = $rowProducts['name'];
                                                     $showDistributor = $Distributor->showDistributorById($distributorId);
                                                     foreach ($showDistributor as $rowDistributor) {
                                                         $distributorName = $rowDistributor['name'];
 
-                                                        echo"<tr>
-                                                        <td class='align-middle d-dlex'>";
-                                                                ?>
-                                                        <img class="p-img" src="../images/product-image/<?php echo$mainImage;?>" alt="">
-                                                        <img class="p-img ml-n4 position-absolute"
-                                                            src="../images/product-image/<?php echo$backImage;?>" alt="">
+                                                        $bacElemId = 'batch-id'.$batchNo;
 
-                                                        <?php echo"</td>
-                                                                <td class='align-middle'>".$productName."<br>
-                                                                <small>".$Manuf[0]['name']."</small>
+                                                        echo "<tr>
+                                                        <td class='align-middle d-dlex'>";
+                                        ?>
+                                                        <img class="p-img" src="../images/product-image/<?php echo $mainImage; ?>" alt="">
+                                                        <img class="p-img ml-n4 position-absolute" src="../images/product-image/<?php echo $backImage; ?>" alt="">
+
+                                        <?php echo "</td> 
+                                                                <td class='align-middle'>" . $productName . "<br>
+                                                                <small>" . $Manuf[0]['name'] . "</small>
                                                                 </td>
-                                                                <td class='align-middle' id='batch-id' value='".$batchNo."'>".$batchNo."</td>
-                                                                <td class='align-middle'>".$expDate."</td>
-                                                                <td class='align-middle'>".$productQty."</td>
-                                                                <td class='align-middle'>".$productMRP."</td>
-                                                                <td class='align-middle'>".$looselyCount."</td>
-                                                                <td class='align-middle'>".$looselyPrice."</td>
+                                                                <td class='align-middle' id='".$bacElemId."'>" . $batchNo . "</td>
+                                                                <td class='align-middle'>" . $expDate . "</td>
+                                                                <td class='align-middle'>" . $productQty . "</td>
+                                                                <td class='align-middle'>" . $productMRP . "</td>
+                                                                <td class='align-middle'>" . $looselyCount . "</td>
+                                                                <td class='align-middle'>" . $looselyPrice . "</td>
                                                                 
                                                                 <td class='align-middle'>
-                                                                    <a class='text-primary mr-2' id='".$currentStockId."' onclick='currentStockView(this.id)' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-edit'></i></a>
-                                                                    <a class='text-danger' id='delid' value='".$currentStockId."' onclick='customClick()'><i class='fas fa-trash' ></i></a>
+                                                                    <a class='text-primary mr-2' id='" . $currentStockId . "' onclick='currentStockView(this.id)' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-edit'></i></a>
+                                                                    <a class='text-danger' id='" . $currentStockId . "' onclick='customClick(this.id,\"".$bacElemId."\")'><i class='fas fa-trash'></i></a>
                                                                 </td>
                                                             </tr>";
-                                                            }
                                                     }
-                                         }
+                                                }
+                                            }
                                         }
-                                        
+
                                         ?>
                                     </tbody>
                                 </table>
@@ -214,8 +217,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
 
 
     <!-- View currentStockModal Modal -->
-    <div class="modal fade" id="currentStockModal" tabindex="-1" role="dialog"
-        aria-labelledby="currentStockModalLabel" aria-hidden="true">
+    <div class="modal fade" id="currentStockModal" tabindex="-1" role="dialog" aria-labelledby="currentStockModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -253,56 +255,57 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
     <script src="../js/sweetAlert.min.js"></script>
 
     <script>
+        const customClick = (id, batchid) => {
+            var batchNo = document.getElementById(batchid).innerHTML;
+            currentStockId = id;
 
-    function customClick(id){
-            currentStockID = document.getElementById("delid").value;
-            batchNo        = document.getElementById("batch-id").value;
-
+            alert(currentStockId);
             alert(batchNo);
-            alert(currentStockID);
-            }
-    
 
-    $(document).ready(function() {
-        $(document).on("click", "#delete-btn, batchID", function() {
+            swal({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Data?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "ajax/currentStock.delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                id: currentStockID,
+                                batchNo: batchNo
+                            },
+                            success: function(data) {
+                                if (data == 1) {
+                                    $(btn).closest("tr").fadeOut()
+                                } else {
+                                    $("#error-message").html("Deletion Field !!!").slideDown();
+                                    $("success-message").slideUp();
+                                }
 
-                currentStockID = $(this).data("id");
-                batchNo        = $(this).data("batchID");
-                btn            = this;
-            alert(batchNo);
-            if (confirm(currentStockID)){
-                $.ajax({
-                    url: "ajax/currentStock.delete.ajax.php",
-                    type: "POST",
-                    data: {
-                        id: currentStockID
-                    },
-                    success: function(data) {
-                        if (data == 1) {
-                            $(btn).closest("tr").fadeOut()
-                        } else {
-                            $("#error-message").html("Deletion Field !!!").slideDown();
-                            $("success-message").slideUp();
-                        }
-
+                            }
+                        });
                     }
+                    return false;
                 });
-            }
-            return false;
-
-        })
-
-    })
 
 
-    const currentStockView = (currentStockId) => {
-        // alert(appointmentTableID);
-        let url = "ajax/currentStock.view.ajax.php?currentStockId=" + currentStockId;
-        $(".current-stock-view").html(
-            '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
-            url + '"></iframe>');
+        }
 
-    } // end of currentStockView function
+
+
+
+        const currentStockView = (currentStockId) => {
+            // alert(appointmentTableID);
+            let url = "ajax/currentStock.view.ajax.php?currentStockId=" + currentStockId;
+            $(".current-stock-view").html(
+                '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+
+        } // end of currentStockView function
     </script>
 
     <!-- Core plugin JavaScript-->
@@ -319,4 +322,4 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
 
 </body>
 
-</html> 
+</html>

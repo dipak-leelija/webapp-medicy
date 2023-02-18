@@ -4,7 +4,7 @@ require_once '../../php_control/currentStock.class.php';
 $CurrentStock = new CurrentStock();
 
     $productId  = $_POST['id'];
-    $batchNo    = $_POST['batch_no'];
+    $batchNo    = $_POST['batchNo'];
 
 
     
