@@ -49,6 +49,9 @@ if (isset($_GET['dist-id'])) {
                 $productName = $product[0]['name'];
 
                 $stoks = $CurrentStock->checkStock($productId, $batchNo);
+                if($stoks != null){
+                    $stoks = $stoks;
+                }
                 
             ?>
 

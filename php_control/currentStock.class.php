@@ -134,7 +134,11 @@ class CurrentStock extends DatabaseConnection{
 
 
     function deleteCurrentStock($productId, $batchNo){
-        $delQry = "DELETE FROM `current_stock` WHERE product_id = '$productId' AND batch_no = '$batchNo'";
+
+        //echo $batchNo;
+        //echo $productId;
+
+        $delQry = "DELETE FROM `current_stock` WHERE `id` = '$productId' and `batch_no` = '$batchNo' ";
         // echo $delQry.$this->conn->error;exit;
         $delSql = $this->conn->query($delQry);
         return $delSql;

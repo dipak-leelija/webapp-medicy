@@ -5,7 +5,6 @@ require_once '../php_control/distributor.class.php';
 require_once '../php_control/stockIn.class.php';
 
 
-
 $page = "stock-in-details";
 
 //objects Initilization
@@ -98,17 +97,19 @@ $showDistributor       = $Distributor->showDistributor();
                                         if (count($showStockIn) > 0 ) {
                                             foreach ($showStockIn as $stockIn) {
                                                 $distributor = $Distributor->showDistributorById($stockIn['distributor_id']);
+                                                
+                                               
                                            echo '
-                                            <tr id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">
-                                                <td>'.$stockIn['distributor_bill'].'</td>
-                                                <td>'.$distributor[0][1].'</td>
-                                                <td>'.$stockIn['bill_date'].'</td>
-                                                <td>'.$stockIn['amount'].'</td>
-                                                <td>'.$stockIn['payment_mode'].'</td>
+                                            <tr>
+                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$stockIn['distributor_bill'].'</td>
+                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$distributor[0][1].'</td>
+                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$stockIn['bill_date'].'</td>
+                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$stockIn['amount'].'</td>
+                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$stockIn['payment_mode'].'</td>
                                                 <td class="d-flex justify-content-around align-middle" >
-                                                    <a class="text-primary pe-auto" role="button"><i class="fas fa-eye"></i></a>
+                                                    <a class="text-primary pe-auto" role="button" id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i></a>
                                                     <a class="text-primary" id="'.$stockIn['distributor_bill'].'" href="stock-in-edit.php?edit='.$stockIn['distributor_bill'].'" role="button"><i class=" fas fa-edit"></i></a>
-                                                    <a class="text-danger" role="button"><i class="fas fa-trash" onclick="deleteStock()" id="del-id" value = ></i></a>
+                                                    <a class="text-danger" role="button"><i class="fas fa-trash" id="'.$stockIn['id'].'" onclick="deleteStock(this.id)"></i></a>
                                                 </td>
                                             </tr>
                                                 ';
@@ -199,6 +200,58 @@ $showDistributor       = $Distributor->showDistributor();
         obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 
     }
+</script>
+<!-- Sweet Alert Js  -->
+<script src="../js/sweetAlert.min.js"></script>
+
+<script>
+
+    //=================delete stock in delete=======================
+
+    const deleteStock = (id) => {
+        //alert(id);
+            swal({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Data?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        //alert(id);
+                        $.ajax({
+                            url: "ajax/stockin.delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                Currentid: id,
+                            },
+                            success: function(response) {
+                                if (response.includes('1')) {
+                                    swal(
+                                        "Deleted",
+                                        "Manufacturer Has Been Deleted",
+                                        "success"
+                                    ).then(function() {
+                                        parent.location.reload();
+                                    });
+                                    
+                                } else {
+                                    swal("Failed", "Product Deletion Failed!",
+                                        "error");
+                                    $("#error-message").html("Deletion Field !!!")
+                                        .slideDown();
+                                    $("success-message").slideUp();
+                                }
+
+                            }
+                        });
+                    }
+                    return false;
+                });
+
+
+        }
     </script>
 
 </body>

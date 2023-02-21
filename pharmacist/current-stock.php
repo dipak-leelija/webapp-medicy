@@ -158,7 +158,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                     foreach ($showDistributor as $rowDistributor) {
                                                         $distributorName = $rowDistributor['name'];
 
-                                                        $bacElemId = 'batch-id'.$batchNo;
+                                                        $bachElemId = 'batch-id'.$batchNo;
 
                                                         echo "<tr>
                                                         <td class='align-middle d-dlex'>";
@@ -170,7 +170,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                                 <td class='align-middle'>" . $productName . "<br>
                                                                 <small>" . $Manuf[0]['name'] . "</small>
                                                                 </td>
-                                                                <td class='align-middle' id='".$bacElemId."'>" . $batchNo . "</td>
+                                                                <td class='align-middle' id='".$bachElemId."' >" . $batchNo . "</td>
                                                                 <td class='align-middle'>" . $expDate . "</td>
                                                                 <td class='align-middle'>" . $productQty . "</td>
                                                                 <td class='align-middle'>" . $productMRP . "</td>
@@ -179,7 +179,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                                 
                                                                 <td class='align-middle'>
                                                                     <a class='text-primary mr-2' id='" . $currentStockId . "' onclick='currentStockView(this.id)' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-edit'></i></a>
-                                                                    <a class='text-danger' id='" . $currentStockId . "' onclick='customClick(this.id,\"".$bacElemId."\")'><i class='fas fa-trash'></i></a>
+                                                                    <a class='text-danger' id='" . $currentStockId . "' onclick='customClick(this.id,\"".$bachElemId."\")'><i class='fas fa-trash'></i></a>
                                                                 </td>
                                                             </tr>";
                                                     }
@@ -255,12 +255,12 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
     <script src="../js/sweetAlert.min.js"></script>
 
     <script>
-        const customClick = (id, batchid) => {
-            var batchNo = document.getElementById(batchid).innerHTML;
-            currentStockId = id;
+        const customClick = (id, bachElemId) => {
+            var bachElemId    = document.getElementById(bachElemId).innerHTML;
+            //var currentStockId = id;
 
-            alert(currentStockId);
-            alert(batchNo);
+            //alert(id);
+            //alert(bachElemId);
 
             swal({
                     title: "Are you sure?",
@@ -275,14 +275,24 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                             url: "ajax/currentStock.delete.ajax.php",
                             type: "POST",
                             data: {
-                                id: currentStockID,
-                                batchNo: batchNo
+                                Currentid: id,
+                                bachElemId: bachElemId
                             },
-                            success: function(data) {
-                                if (data == 1) {
-                                    $(btn).closest("tr").fadeOut()
+                            success: function(response) {
+                                if (response.includes('1')) {
+                                    swal(
+                                        "Deleted",
+                                        "Manufacturer Has Been Deleted",
+                                        "success"
+                                    ).then(function() {
+                                        parent.location.reload();
+                                    });
+                                    
                                 } else {
-                                    $("#error-message").html("Deletion Field !!!").slideDown();
+                                    swal("Failed", "Product Deletion Failed!",
+                                        "error");
+                                    $("#error-message").html("Deletion Field !!!")
+                                        .slideDown();
                                     $("success-message").slideUp();
                                 }
 

@@ -312,7 +312,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 // showStockReturnById();
                                                 $returnBills = $StockReturn->showStockReturnDetails($_GET['returnId']);
                                                 foreach ($returnBills as $bill) {
-                                                    print_r($bill);
+                                                    //print_r($bill);
                                                     $slno += 1;
                                                 
                                                 ?>

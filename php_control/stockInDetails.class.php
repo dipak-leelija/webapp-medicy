@@ -96,5 +96,6 @@ class StockInDetails extends DatabaseConnection{
     }// eof stockInDelete
 
 
+    
 }//eof Products class
 

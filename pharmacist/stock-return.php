@@ -160,6 +160,8 @@ $empLists              = $Employees->employeesDisplay();
                                         <?php
                                             foreach ($stockReturnLists as $row) {
                                                 $dist = $Distributor->showDistributorById($row['distributor_id']);
+                                               // print_r($dist);
+                                                
                                                 if (count($dist) > 0) {
                                                     
                                                     $returnDate = date("d-m-Y", strtotime($row['return_date']));
