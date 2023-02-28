@@ -41,7 +41,7 @@ foreach($stockReturnData as $stockReturn){
     $stockReturnDetailsAddedTime         =  $stockReturn['added_time'];
 }
 
-//$stockReturnData = json_encode($stockReturnData);
+$stockReturnData = json_encode($stockReturnData);
 //==========================fetching data from stock_return table=================================
 $stockReturn = $StockReturnEdit->showStockReturnById($stockReturnDetailsStockReturnId);
 
@@ -108,7 +108,7 @@ $stockIn = $StockIn->showStockInById($StockInDetailsDistributorBillNo);
 //===============================================================================================
 
 //================================fetchin data from current stock================================
-$currentStockDetails = $CurrentStock->showCurrentStocByProductId($stockReturnDetailsProductId);
+$currentStockDetails = $CurrentStock->showCurrentStocByProductIdandBatchNo($stockReturnDetailsProductId, $stockReturnDetailsBatchNo);
 
     foreach($currentStockDetails as $currentStock){
         $stockQTY   =   $currentStock['qty'];
@@ -117,9 +117,9 @@ $currentStockDetails = $CurrentStock->showCurrentStocByProductId($stockReturnDet
 $currentStockDetails = json_encode($currentStockDetails);
 //===============================================================================================
 $stockReturnDetailsDataArry = array("id"                    =>  $stockReturnDetailsId,
+                                    "stock_return_id"       =>  $stockReturnDetailsStockReturnId,
                                     "distributor_name"      =>  $distributorName,
                                     "distributor_id"        =>  $distributorId,
-                                    "stock_return_id"       =>  $stockReturnDetailsStockReturnId,
                                     "product_id"            =>  $stockReturnDetailsProductId,
                                     "product_Name"          =>  $productName,
                                     "discount"              =>  $StockInDetailsDiscount,

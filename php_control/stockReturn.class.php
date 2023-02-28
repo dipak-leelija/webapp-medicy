@@ -66,6 +66,15 @@ class StockReturn extends DatabaseConnection{
     }//eof stockReturnStatus
 
 
+    //stockReturn Edit\update function...........
+    function stockReturnEdit($id, $distributorId, $returnDate, $items, $totalQty, $gst, $refundMode, $refundAmount, $status){
+        $update = "UPDATE `stock_return` SET `distributor_id`='$distributorId',`return_date`='$returnDate',`items`='$items',`total_qty`='$totalQty',`gst_amount`='$gst',`refund_mode`='$refundMode',`refund_amount`='$refundAmount',`status`='$status' WHERE `id`='$id' ";
+
+        $response = $this->conn->query($update);
+        return $response;
+    }
+
+
 
 ###################################################################################################################################
 #                                                                                                                                 #
@@ -105,6 +114,15 @@ function showStockReturnDetailsById($Id){
 //eof showStockReturn
 
 
+//stockReturnDetails Edit\update function...........
+
+function stockReturnDetailsEdit($id, $stockReturnId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $purchaseAmount, $gst, $returnQty, $refundAmount, $addedBy){
+    $update = "UPDATE `stock_return_details` SET `product_id`='$productId',`batch_no`='$batchNo',`exp_date`='$expDate',`unit`='$unit',`purchase_qty`='$purchaseQty',`free_qty`='$freeQty',`mrp`='$mrp',`ptr`='$ptr',`purchase_amount`='$purchaseAmount',`gst`='$gst',`return_qty`='$returnQty',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `id`='$id' AND `stock_return_id`='$stockReturnId' ";
+
+    $res = $this->conn->query($update);
+
+    return $res;
+}
 
 }
 

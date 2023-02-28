@@ -101,7 +101,7 @@ const getRefund = (returnQty) => {
         }
     } else {
         alert("NULL");
-        document.getElementById("refund-amount").value = '';
+        document.getElementById("refund-amount").value = '0';
     }
 }
 
@@ -114,7 +114,7 @@ const getRefund = (returnQty) => {
 
 const addData = async () => {
 
-    let productId = document.getElementById("product-id").value;
+    let productId = document.getElementById("product-id");
     let productName = document.getElementById('product-name');
     let batchNumber = document.getElementById("batch-number");
     let weatage = document.getElementById("weatage");
@@ -162,88 +162,93 @@ const addData = async () => {
     returnGstAmount.value = parseFloat(returnGstAmount.value) + taxAmount;
 
 
-    const appendData = () => {
+    if(expDate != null){
+        const appendData = () => {
 
-        jQuery("#dataBody")
-            .append(`<tr id="table-row-${slno}">
-                <td  style="color: red;">
-                    <i class="fas fa-trash pt-3" onclick="deleteData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
-                </td>
-                <td class="p-0 pt-3">
-                    <input class="col table-data w-12r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start;">
-                    <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;">
-                </td>
-                <td class="p-0 pt-3" >
-                    <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly>
-                </td>
-                <td class="p-0 pt-3">
-                    <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate.value}" readonly>
-                </td>
-                <td class="p-0 pt-3">
-                    <input class="col table-data w-5r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly>
-                </td>
-                <td class="p-0 pt-3">
-                    <input class="col table-data w-5r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly>
-                </td>
-                <td class="p-0 pt-3">
-                    <input class="col table-data w-5r" type="text" name="freeQty[]" value="${freeQty.value}" readonly>
-                </td>
-                <td class="p-0 pt-3">
-                    <input class="col table-data w-5r" type="text" name="mrp[]" value="${mrp.value}" readonly>
-                </td>
-                <td class="p-0 pt-3">
-                    <input class="col table-data w-6r" type="text" name="ptr[]" value="${ptr.value}" readonly>
-                </td>
-                <td class="p-0 pt-3" >
-                    <input class="col table-data w-6r" type="text" name="purchase-amount[]" value="${amount.value}" readonly>
-                </td>
-                <td class="p-0 ps-1 pt-3">
-                    <input class="col table-data w-4r" type="text" name="gst[]" value="${gst.value}" readonly>
-                </td>
-                <td class="p-0 pt-3">
-                    <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value) + parseFloat(returnFreeQty.value)}" readonly>
-                </td>
-                <td class=" amnt-td p-0 pt-3">
-                    <input class="col table-data W-6r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
-            </tr>`);
-
-        return true;
+            jQuery("#dataBody")
+                .append(`<tr id="table-row-${slno}">
+                    <td  style="color: red;">
+                        <i class="fas fa-trash pt-3" onclick="deleteData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-12r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start;">
+                        <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;">
+                    </td>
+                    <td class="p-0 pt-3" >
+                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate.value}" readonly>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-5r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-5r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-5r" type="text" name="freeQty[]" value="${freeQty.value}" readonly>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-5r" type="text" name="mrp[]" value="${mrp.value}" readonly>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-6r" type="text" name="ptr[]" value="${ptr.value}" readonly>
+                    </td>
+                    <td class="p-0 pt-3" >
+                        <input class="col table-data w-6r" type="text" name="purchase-amount[]" value="${amount.value}" readonly>
+                    </td>
+                    <td class="p-0 ps-1 pt-3">
+                        <input class="col table-data w-4r" type="text" name="gst[]" value="${gst.value}" readonly>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value) + parseFloat(returnFreeQty.value)}" readonly>
+                    </td>
+                    <td class=" amnt-td p-0 pt-3">
+                        <input class="col table-data W-6r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
+                </tr>`);
+    
+            return true;
+        }
+    
+        if (appendData() === true) {
+    
+            // document.getElementById("demo").innerHTML = await myPromise;
+            productId.value = '';
+            productName = '';
+    
+            batchNumber.value = '';
+            billDate.value = '';
+    
+            expDate.value = '';
+            weatage.value = '';
+            unit.value = '';
+            ptr.value = '';
+            discount.value = '';
+            gst.value = '';
+            taxable.value = '';
+            mrp.value = '';
+            amount.value = '';
+            purchasedQty.value = '';
+            freeQty.value = '';
+            currentQty.value = '';
+            returnQty.value = '';
+            returnFreeQty.value = '';
+            refundAmount.value = '';
+        };
+    
+    
+        if (slno > 1) {
+            let id = document.getElementById("items-qty");
+            let newId = parseFloat(id.value) + 1;
+            document.getElementById("items-qty").value = newId;
+    
+        } else {
+            document.getElementById("items-qty").value = slno;
+        }
     }
+    
 
-    if (appendData() === true) {
-
-        // document.getElementById("demo").innerHTML = await myPromise;
-        productId.value = '';
-        productName = '';
-
-        batchNumber.value = '';
-        billDate.value = '';
-
-        expDate.value = '';
-        weatage.value = '';
-        unit.value = '';
-        ptr.value = '';
-        discount.value = '';
-        gst.value = '';
-        taxable.value = '';
-        mrp.value = '';
-        amount.value = '';
-        purchasedQty.value = '';
-        freeQty.value = '';
-        currentQty.value = '';
-        returnQty.value = '';
-        returnFreeQty.value = '';
-        refundAmount.value = '';
-    };
-
-
-    if (slno > 1) {
-        let id = document.getElementById("items-qty");
-        let newId = parseFloat(id.value) + 1;
-        document.getElementById("items-qty").value = newId;
-
-    } else {
-        document.getElementById("items-qty").value = slno;
-    }
+    
 
 }
