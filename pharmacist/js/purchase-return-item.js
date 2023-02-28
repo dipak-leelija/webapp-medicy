@@ -282,7 +282,7 @@ const getRefund = (returnQty) => {
 //geeting bills by clicking on add button
 const addData = async() => {
         var distId = document.getElementById("distributor-id");
-        var billNumber = document.getElementById("bill-number");
+        //var billNumber = document.getElementById("bill-number");
         var batchNumber = document.getElementById("batch-number");
         var billDate = document.getElementById("bill-date");
         var returnMode = document.getElementById("return-mode");

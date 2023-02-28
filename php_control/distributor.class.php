@@ -21,6 +21,12 @@ class Distributor extends DatabaseConnection{
     }// end addLabTypes function
 
 
+    function distrubutorDetail($DistributorId){
+        $select = "SELECT  `name` FROM `distributor` WHERE `id` = '$DistributorId' ";
+        $selectQuery = $this->conn->query($select);
+
+        return $selectQuery;
+    }
 
     function showDistributor(){
         $select         = " SELECT * FROM distributor";
@@ -36,10 +42,6 @@ class Distributor extends DatabaseConnection{
         }
         
     }//eof showDistributor functiion
-
-    
-
-
 
     function showDistributorById($distributorId){
         $select         = " SELECT * FROM distributor WHERE `id`= '$distributorId'";

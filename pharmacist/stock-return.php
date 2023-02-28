@@ -18,6 +18,7 @@ $Employees          = new Employees();
 //function's called
 $showDistributor       = $Distributor->showDistributor();
 $stockReturnLists      = $StockReturn->showStockReturn();
+//print_r($stockReturnLists);
 $empLists              = $Employees->employeesDisplay();
 
 
@@ -311,6 +312,7 @@ $empLists              = $Employees->employeesDisplay();
                             if (data == 1) {
                                 $(t).closest("tr").css("background-color","#ff0000");
                                 $(t).closest("tr").css("color","#fff");
+                                
                             } else {
                                 // $("#error-message").html("Deletion Field !!!").slideDown();
                                 // $("success-message").slideUp();

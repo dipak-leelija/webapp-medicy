@@ -102,7 +102,17 @@ class CurrentStock extends DatabaseConnection{
         return $data;
     }//eof showCurrentStocByPId
 
-
+    function showCurrentStocByProductId($productId){
+        //echo $productId;
+        $data = array();
+        $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId'";
+        // echo $select;
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof showCurrentStocByPId
 
     
 

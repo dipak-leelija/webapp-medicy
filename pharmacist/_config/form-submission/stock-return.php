@@ -229,8 +229,6 @@ foreach ($showhelthCare as $rowhelthCare) {
                         if ($slno >1) {
                             echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                         }
-
-                        ;
                         
                         
                         // 

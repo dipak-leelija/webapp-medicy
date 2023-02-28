@@ -80,9 +80,6 @@ class StockIn extends DatabaseConnection{
     }//eof stockInByDist function
 
 
-
-
-
     function needsToPay(){
         $data = array();
         $sql = "SELECT items,amount FROM stock_in WHERE `stock_in`.`payment_mode` = 'Credit'";
@@ -103,7 +100,6 @@ class StockIn extends DatabaseConnection{
         // echo var_dump($addStockInQuery);exit;
         return $updateSql;
     }//eof addProduct function 
-
 
 
     function deleteStock($id){

@@ -80,6 +80,7 @@ function addStockReturnDetails($stockReturnId, $productId, $batchNo, $expDate, $
 }// eof addStockReturn
 
 
+//stock return start-------------------
 
 function showStockReturnDetails($returnId){
     $data = array();
@@ -89,7 +90,19 @@ function showStockReturnDetails($returnId){
         $data[] = $result;
     }
     return $data;
-}//eof showStockReturn
+}
+
+function showStockReturnDetailsById($Id){
+    
+    $data = array();
+    $sql  = "SELECT * FROM stock_return_details WHERE `id` = '$Id'";
+    $res  = $this->conn->query($sql);
+    while ($result = $res->fetch_array()) {
+        $data[] = $result;
+    }
+    return $data;
+}
+//eof showStockReturn
 
 
 
