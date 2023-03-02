@@ -13,7 +13,15 @@ const customEdit = (id, value) => {
         },
         success: function (data) {
             alert(data);
+
             var dataObject = JSON.parse(data);
+
+            var stokReturnDetailId = dataObject.id;
+            //alert(stokReturnDetailId);
+            //
+            console.log(stokReturnDetailId);
+
+            var stokReturnId = dataObject.stock_return_id;
 
             var distributor = dataObject.distributor_name;
             var distributorId = dataObject.distributor_id;
@@ -40,14 +48,17 @@ const customEdit = (id, value) => {
 
             //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
 
-            document.getElementById("distributor-name").value = distributor;
-            document.getElementById("dist-name").value = distributor;//
+            document.getElementById("stock-return-details-id").value = stokReturnDetailId;
+            document.getElementById("stock-return-id").value = stokReturnId;
+
+            document.getElementById("distributor_name").value = distributor;
+            document.getElementById("dist-name").value = distributor;
             document.getElementById("dist-id").value = distributorId;
-            document.getElementById("product-id").value = productId;//
-            document.getElementById("product-name").value = productName;//
-            document.getElementById("return-mode").value = refundMode;//
-            document.getElementById("batch-number").value = batchNumbe;//
-            document.getElementById("bill-date").value = purchaseDate;
+            document.getElementById("product-id").value = productId;
+            document.getElementById("product_name").value = productName;
+            document.getElementById("return-mode").value = refundMode;
+            document.getElementById("batch-number").value = batchNumbe;
+            document.getElementById("billDate").value = purchaseDate;
             document.getElementById("exp-date").value = expiry;
             document.getElementById("weatage").value = weatag;
             document.getElementById("unit").value = unit;
@@ -114,8 +125,11 @@ const getRefund = (returnQty) => {
 
 const addData = async () => {
 
+    let stockReturnId = document.getElementById("stock-return-id");
+    let stockReturnDetailsId = document.getElementById("stock-return-details-id");
+
     let productId = document.getElementById("product-id");
-    let productName = document.getElementById('product-name');
+    let productName = document.getElementById('product_name');
     let batchNumber = document.getElementById("batch-number");
     let weatage = document.getElementById("weatage");
     let unit = document.getElementById("unit");
@@ -134,9 +148,10 @@ const addData = async () => {
     let mrp = document.getElementById("mrp");
     let amount = document.getElementById("amount");
 
-    let billDate = document.getElementById("bill-date").value;
+    let billDate = document.getElementById("billDate").value;
 
     document.getElementById("refund-mode").value = returnMode;
+
 
 
     let slno = document.getElementById("dynamic-id").value;
@@ -162,7 +177,7 @@ const addData = async () => {
     returnGstAmount.value = parseFloat(returnGstAmount.value) + taxAmount;
 
 
-    if(expDate != null){
+    if (refundAmount.value != null) {
         const appendData = () => {
 
             jQuery("#dataBody")
@@ -170,9 +185,15 @@ const addData = async () => {
                     <td  style="color: red;">
                         <i class="fas fa-trash pt-3" onclick="deleteData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" >
                         <input class="col table-data w-12r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start;">
                         <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;">
+                    </td>
+                    <td class="p-0 pt-3" hidden>
+                        <input class="col table-data w-6r" type="text" name="stock-return-id[]" value="${stockReturnId.value}" readonly>
+                    </td>
+                    <td class="p-0 pt-3" hidden>
+                        <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" value="${stockReturnDetailsId.value}" readonly hidden>
                     </td>
                     <td class="p-0 pt-3" >
                         <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly>
@@ -207,19 +228,42 @@ const addData = async () => {
                     <td class=" amnt-td p-0 pt-3">
                         <input class="col table-data W-6r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
                 </tr>`);
-    
+
             return true;
         }
-    
+
         if (appendData() === true) {
-    
+
             // document.getElementById("demo").innerHTML = await myPromise;
+
+            if (slno > 1) {
+                let id = document.getElementById("items-qty");
+                let newId = parseFloat(id.value) + 1;
+                document.getElementById("items-qty").value = newId;
+
+            } else {
+                document.getElementById("items-qty").value = slno;
+            }
+
+            var totalQty = parseInt(returnQty.value);
+
+            if (slno > 1) {
+                let Qty = parseInt(document.getElementById("total-refund-qty").value);
+                let newQty = Qty + totalQty;
+                document.getElementById("total-refund-qty").value = newQty;
+
+            } else {
+                document.getElementById("total-refund-qty").value = totalQty;
+            }
+
+            distributor_name.value = '';
+
             productId.value = '';
-            productName = '';
-    
+            product_name.value = '';
+
             batchNumber.value = '';
             billDate.value = '';
-    
+
             expDate.value = '';
             weatage.value = '';
             unit.value = '';
@@ -236,19 +280,37 @@ const addData = async () => {
             returnFreeQty.value = '';
             refundAmount.value = '';
         };
-    
-    
-        if (slno > 1) {
-            let id = document.getElementById("items-qty");
-            let newId = parseFloat(id.value) + 1;
-            document.getElementById("items-qty").value = newId;
-    
-        } else {
-            document.getElementById("items-qty").value = slno;
-        }
-    }
-    
 
-    
+    }
+
+
+    // ================================ Delet Data ================================
+    function deleteData(slno, itemQty, gstPerItem, total) {
+        jQuery(`#table-row-${slno}`).remove();
+        slno--;
+        document.getElementById("dynamic-id").value = slno;
+
+        //minus item
+        let items = document.getElementById("items-qty");
+        let finalItem = items.value - 1;
+        items.value = finalItem;
+
+        // minus quantity
+        let qty = document.getElementById("total-refund-qty");
+        let finalQty = qty.value - itemQty
+        qty.value = finalQty;
+
+
+        // minus netAmount
+        let gst = document.getElementById("return-gst");
+        let finalGst = gst.value - gstPerItem;
+        gst.value = finalGst;
+
+        // minus netAmount
+        let net = document.getElementById("net-amount");
+        let finalAmount = net.value - total;
+        net.value = finalAmount;
+
+    }
 
 }

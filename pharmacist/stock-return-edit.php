@@ -103,7 +103,7 @@ $showDistributor       = $Distributor->showDistributor();
                                         }
                                         ?>
                                     </select> -->
-                                    <input class="upr-inp mb-1" id="distributor-name" value="" readonly>
+                                    <input class="upr-inp mb-1" id="distributor_name" value="" readonly>
                                 </div>
 
                                 <div class="col-md-7 col-12 ">
@@ -116,7 +116,7 @@ $showDistributor       = $Distributor->showDistributor();
                                         </div>
                                     </div>-->
                                     <input type="text" id="product-id" hidden>
-                                    <input class="upr-inp mb-1" id="product-name" value="" readonly>
+                                    <input class="upr-inp mb-1" id="product_name" value="" readonly>
                                 </div>
 
 
@@ -150,15 +150,21 @@ $showDistributor       = $Distributor->showDistributor();
                                             <label class="mb-1 mt-3" for="batch-number">Batch Number :</label>
                                             <input class="upr-inp mb-1" id="batch-number" value="" readonly>
                                         </div>
+                                        
+                                        <div class="col-md-6 col-12" hidden>
+                                            <label class="mb-1 mt-3" for="stock-return-details-id" >##</label>
+                                            <input class="upr-inp mb-1" id="stock-return-details-id" value="" >
+                                        </div>
+
                                         <div class="col-md-6 col-12">
                                             <label class="mb-1 mt-3" for="bill-date">Purchase Date :</label>
-                                            <input class="upr-inp mb-1" id="bill-date" value="" readonly>
+                                            <input class="upr-inp mb-1" id="billDate" value="" readonly>
                                         </div>
                                     </div>
 
                                     <div class="col-12 mt-3">
-                                        <label for="exampleFormControlTextarea1">Description</label>
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <label for="returnDescription">Description</label>
+                                        <textarea class="form-control" id="retrunDescription" rows="3"></textarea>
                                     </div>
 
                                 </div>
@@ -272,7 +278,7 @@ $showDistributor       = $Distributor->showDistributor();
 
                     <!--=========================== Show Bill Items ===========================-->
                     <div class="card shadow mb-4">
-                        <form action="_config\form-submission\stock-return.php" method="post">
+                        <form action="_config\form-submission\stock-return-edit.php" method="post">
                             <div class="card-body stock-in-summary">
                                 <div class="table-responsive">
 
@@ -282,7 +288,9 @@ $showDistributor       = $Distributor->showDistributor();
                                             <tr>
                                                 <th scope="col"><input type="number" value="0" id="dynamic-id" style="display:none"></th>
                                                 <th scope="col">Items</th>
-                                                <th scope="col">Batch</th>
+                                                <th scope="col" hidden>StockReturnId</th>
+                                                <th scope="col" hidden>StockReturnDetailsId</th>
+                                                <th scope="col">Batch No.</th>
                                                 <th scope="col">Exp</th>
                                                 <th scope="col">Unit</th>
                                                 <th scope="col">P.Qty.</th>
@@ -307,47 +315,50 @@ $showDistributor       = $Distributor->showDistributor();
                                                 $slno += 1;
                                             ?>
 
-                                                <tr id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
+                                                <tr id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>">
 
-                                                    <!-- <td style="color: red;"> <i class="fas fa-trash pt-3 " onclick="deleteData(<?php echo $slno . ',' . $bill['return_qty'] . ',' . $bill['refund_amount'] . ',' . $bill['refund_amount']; ?>)">
-                                                        </i></td> -->
                                                     <td style="color: red;"> <i class="fas fa-trash pt-3 " onclick="deleteData(<?php echo $slno . ',' . $bill['return_qty'] . ',' . $bill['refund_amount'] . ',' . $bill['refund_amount']; ?>)">
-                                                        </i></td>
-                                                    <td class="p-0 pt-3">
+                                                        </i>
+                                                    </td>
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-12r" type="text" name="productName[]" value="<?php echo $bill['product_id']; ?>" readonly style="text-align: start;">
                                                         <input class="col table-data w-12r" type="text" name="productId[]" value="<?php echo $bill['product_id']; ?>" readonly style="text-align: start;" hidden>
                                                     </td>
-                                                    <td class="p-0 pt-3">
+                                                    
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)' hidden>
+                                                        <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" id="stock-return-details-id" value="" readonly hidden>
+                                                    </td>
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-6r" type="text" name="batchNo[]" value="<?php echo $bill['batch_no']; ?>" readonly>
                                                     </td>
-                                                    <td class="p-0 pt-3">
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="expDate[]" value="<?php echo $bill['exp_date']; ?>" readonly>
                                                     </td>
-                                                    <td class="p-0 pt-3">
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="setof[]" value="<?php echo $bill['unit']; ?>" readonly>
-                                                    </td>
-                                                    <td class="p-0 pt-3">
+                                                    </td >
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="purchasedQty[]" value="<?php echo $bill['purchase_qty']; ?>" readonly>
                                                     </td>
-                                                    <td class="p-0 pt-3">
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="freeQty[]" value="<?php echo $bill['free_qty']; ?>" readonly>
                                                     </td>
-                                                    <td class="p-0 pt-3">
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="mrp[]" value="<?php echo $bill['mrp']; ?>" readonly>
                                                     </td>
-                                                    <td class="p-0 pt-3">
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-6r" type="text" name="ptr[]" value="<?php echo $bill['ptr']; ?>" readonly>
                                                     </td>
-                                                    <td class="p-0 pt-3">
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-6r" type="text" name="purchase-amount[]" value="<?php echo $bill['purchase_amount']; ?>" readonly>
                                                     </td>
-                                                    <td class="p-0 ps-1 pt-3">
+                                                    <td class="p-0 ps-1 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-4r" type="text" name="gst[]" value="<?php echo $bill['gst']; ?>" readonly>
                                                     </td>
-                                                    <td class="p-0 pt-3">
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-8r" type="text" name="return-qty[]" value="<?php echo $bill['return_qty']; ?>" readonly>
                                                     </td>
-                                                    <td class=" amnt-td p-0 pt-3">
+                                                    <td class=" amnt-td p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data W-6r" type="text" name="refund-amount[]" value="<?php echo $bill['refund_amount']; ?>" readonly>
                                                     </td>
                                                 </tr>
@@ -368,8 +379,11 @@ $showDistributor       = $Distributor->showDistributor();
                                         <p>Distributor :
                                             <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name" value="" readonly>
                                             <input class="summary-inp w-60" name="dist-id" id="dist-id" type="text" value="" hidden readonly>
+                                            <input class="summary-inp w-60" name="stock-return-id" id="stock-return-id" type="text" value="" hidden readonly>
+                                            
                                         </p>
                                     </div>
+
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
                                         <p>Return Date : <input class="summary-inp w-6r" name="return-date" id="return-date" type="text" value="<?php $today = date("d-m-Y");
                                                                                                                                                 echo $today; ?>" readonly>
@@ -385,7 +399,6 @@ $showDistributor       = $Distributor->showDistributor();
                                     </div>
 
 
-
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
                                         <p>Qty : <input class="summary-inp w-65" name="total-refund-qty" id="total-refund-qty" type="text" value="0" readonly> </p>
                                     </div>
@@ -396,7 +409,7 @@ $showDistributor       = $Distributor->showDistributor();
                                         <p>Net : <input class="summary-inp w-65" name="refund" id="refund" type="text" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 text-right">
-                                        <button class="btn btn-sm btn-primary" style="width: 50%;" type="submit" name="stock-return">Save</button>
+                                        <button class="btn btn-sm btn-primary" style="width: 50%;" type="submit" name="stock-return-edit">Save</button>
                                     </div>
                                 </div>
                             </div>

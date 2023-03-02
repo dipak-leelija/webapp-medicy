@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             for ($i=0; $i < $ids; $i++) { 
                 
                 $inStock =  $CurrentStock->checkStock($productId[$i], $batchNo[$i]);
-                print_r($inStock);
+                //print_r($inStock);
                 $newQuantity = $inStock[0]['qty']-$returnQty[$i];
                 if($inStock[0]['unit'] == 'tab' || $inStock[0]['unit'] == 'cap'){
                     $newLCount   = $inStock[0]['loosely_count'] - ($returnQty[$i] * $inStock[0]['weightage']);

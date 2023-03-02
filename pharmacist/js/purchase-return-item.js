@@ -540,14 +540,14 @@ const addData = async() => {
         }
 
 
-        // if (slno > 1) {
-        //     let id = document.getElementById("total-refund-qty");
-        //     let newId = parseFloat(id.value) + totalQty;
-        //     document.getElementById("total-refund-qty").value = newId;
+        if (slno > 1) {
+            let id = document.getElementById("total-refund-qty");
+            let newId = parseFloat(id.value) + totalQty;
+            document.getElementById("total-refund-qty").value = newId;
 
-        // } else {
-        //     document.getElementById("total-refund-qty").value = totalQty;
-        // }
+        } else {
+            document.getElementById("total-refund-qty").value = totalQty;
+        }
 
 
 
