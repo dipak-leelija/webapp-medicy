@@ -1,4 +1,4 @@
-//===================================== ON SELECT EDIT DATA ==========================================
+//===================================== ON SELECT EDIT DATA ============================RD==============
 
 const customEdit = (id, value) => {
 
@@ -283,34 +283,34 @@ const addData = async () => {
 
     }
 
-
-    // ================================ Delet Data ================================
-    function delData(slno, itemQty, gstPerItem, total) {
-        jQuery(`#table-row-${slno}`).remove();
-        slno--;
-        document.getElementById("dynamic-id").value = slno;
-
-        //minus item
-        let items = document.getElementById("items-qty");
-        let finalItem = items.value - 1;
-        items.value = finalItem;
-
-        // minus quantity
-        let qty = document.getElementById("total-refund-qty");
-        let finalQty = qty.value - itemQty
-        qty.value = finalQty;
+}
 
 
-        // minus netAmount
-        let gst = document.getElementById("return-gst");
-        let finalGst = gst.value - gstPerItem;
-        gst.value = finalGst;
+// ================================ Delet Data ================================
+const  delData = (slno) => {
+    jQuery(`#table-row-${slno}`).remove();
+    slno--;
+    document.getElementById("dynamic-id").value = slno;
 
-        // minus netAmount
-        let net = document.getElementById("net-amount");
-        let finalAmount = net.value - total;
-        net.value = finalAmount;
+    //minus item
+    let items = document.getElementById("items-qty");
+    let finalItem = items.value - 1;
+    items.value = finalItem;
 
-    }
+    // minus quantity
+    let qty = document.getElementById("total-refund-qty");
+    let finalQty = qty.value - itemQty
+    qty.value = finalQty;
+
+
+    // minus netAmount
+    let gst = document.getElementById("return-gst");
+    let finalGst = gst.value - gstPerItem;
+    gst.value = finalGst;
+
+    // minus netAmount
+    let net = document.getElementById("net-amount");
+    let finalAmount = net.value - total;
+    net.value = finalAmount;
 
 }

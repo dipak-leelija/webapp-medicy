@@ -327,7 +327,7 @@ $showDistributor       = $Distributor->showDistributor();
 
                                                 <tr id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>">
 
-                                                    <td style="color: red;"> <i class="fas fa-trash pt-3 " onclick="delData(<?php echo $slno . ',' . $bill['return_qty'] . ',' . $bill['refund_amount'] . ',' . $bill['refund_amount']; ?>)">
+                                                    <td style="color: red;"> <i class="fas fa-trash pt-3 " onclick="delData(<?php echo $slno;?>)">
                                                         </i>
                                                     </td>
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>

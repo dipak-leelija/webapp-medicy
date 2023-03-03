@@ -245,7 +245,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 const getRefund = (returnQty) => {
     returnQty = parseInt(returnQty);
-    
+
     if (isNaN(returnQty)) {
         document.getElementById("refund-amount").value = '';
         return;
@@ -281,7 +281,7 @@ const getRefund = (returnQty) => {
 // ##################################################################################
 
 //geeting bills by clicking on add button
-function addData(){
+function addData() {
     var distId = document.getElementById("distributor-id");
     //var billNumber = document.getElementById("bill-number");
     var batchNumber = document.getElementById("batch-number");
@@ -317,7 +317,7 @@ function addData(){
     var qtyVal = document.getElementById("total-refund-qty");
 
 
-    
+
 
     if (distId.value == "") {
         swal("Oops", "Please select Distributor!", "error");
@@ -458,7 +458,7 @@ function addData(){
     returnGstAmount.value = parseFloat(returnGstAmount.value) + taxAmount;
 
 
-    function appendData(){
+    const appendData = () => {
 
         jQuery("#dataBody")
             .append(`<tr id="table-row-${slno}">
@@ -508,24 +508,24 @@ function addData(){
 
     if (appendData() === true) {
 
-        
+
 
         if (slno > 1) {
             let id = document.getElementById("items-qty");
             let newId = parseFloat(id.value) + 1;
             document.getElementById("items-qty").value = newId;
-    
+
         } else {
             document.getElementById("items-qty").value = slno;
         }
-    
-        
+
+
         if (slno > 1) {
             let Qty = parseInt(qtyVal.value);
-           
-            let newQty = Qty + parseInt(returnQty.value); 
+
+            let newQty = Qty + parseInt(returnQty.value);
             document.getElementById("total-refund-qty").value = newQty;
-    
+
         } else {
             document.getElementById("total-refund-qty").value = parseInt(returnQty.value);
         }
@@ -559,7 +559,7 @@ function addData(){
 // ================================ Delet Data ================================
 
 
-function deleteData(slno, itemQty, gstPerItem, total) {
+const deleteData = (slno, itemQty, gstPerItem, total) => {
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;
