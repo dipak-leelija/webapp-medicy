@@ -245,6 +245,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 const getRefund = (returnQty) => {
     returnQty = parseInt(returnQty);
+    
     if (isNaN(returnQty)) {
         document.getElementById("refund-amount").value = '';
         return;
@@ -254,9 +255,9 @@ const getRefund = (returnQty) => {
         let ptr = document.getElementById("ptr");
         let currentQty = document.getElementById("current-qty");
         let gst = document.getElementById("gst");
-        console.log(parseInt(currentQty.value));
+        //console.log(parseInt(currentQty.value));
         if (returnQty <= currentQty.value) {
-            console.log(returnQty);
+            //console.log(returnQty);
             let subtotal = returnQty * ptr.value;
             let refund = subtotal + (gst.value / 100 * subtotal);
 
@@ -280,186 +281,187 @@ const getRefund = (returnQty) => {
 // ##################################################################################
 
 //geeting bills by clicking on add button
-const addData = async() => {
-        var distId = document.getElementById("distributor-id");
-        //var billNumber = document.getElementById("bill-number");
-        var batchNumber = document.getElementById("batch-number");
-        var billDate = document.getElementById("bill-date");
-        var returnMode = document.getElementById("return-mode");
+function addData(){
+    var distId = document.getElementById("distributor-id");
+    //var billNumber = document.getElementById("bill-number");
+    var batchNumber = document.getElementById("batch-number");
+    var billDate = document.getElementById("bill-date");
+    var returnMode = document.getElementById("return-mode");
 
-        var productId = document.getElementById("product-id");
-        var productName = document.getElementById('product-name').value;
-        // productName = productName.slice(11);
-        // alert(productId.value);
-        // alert(productName);
+    var productId = document.getElementById("product-id");
+    var productName = document.getElementById('product-name').value;
+    // productName = productName.slice(11);
+    // alert(productId.value);
+    // alert(productName);
 
-        // return;
-
-
-        var expDate = document.getElementById("exp-date");
-        var weatage = document.getElementById("weatage");
-        var unit = document.getElementById("unit");
-        var ptr = document.getElementById("ptr");
-        var discount = document.getElementById("discount");
-        var gst = document.getElementById("gst");
-        var taxable = document.getElementById("taxable");
-        var mrp = document.getElementById("mrp");
-        var amount = document.getElementById("amount");
-        var purchasedQty = document.getElementById("purchased-qty");
-        var freeQty = document.getElementById("free-qty");
-        var currentQty = document.getElementById("current-qty");
-        var returnQty = document.getElementById("return-qty");
-        var returnFreeQty = document.getElementById("return-free-qty");
-
-        var refundAmount = document.getElementById("refund-amount");
-
-        var qtyVal = document.getElementById("total-refund-qty");
+    // return;
 
 
-        if (distId.value == "") {
-            swal("Oops", "Please select Distributor!", "error");
-            distId.focus();
-            return;
-        }
-        // if (billNumber.value == "") {
-        //     swal("Oops", "Please select Bill Number!", "error");
-        //     billNumber.focus();
-        //     return;
-        // }
-        if (batchNumber.value == "") {
-            swal("Oops", "Please select Batch Number!", "error");
-            batchNumber.focus();
-            return;
-        }
-        if (billDate.value == "") {
-            swal("Oops", "Unable to Select Bill Date!", "error");
-            billDate.focus();
-            return;
-        }
-        if (returnMode.value == "") {
-            swal("Oops", "Please select your refund mode!", "error");
-            returnMode.focus();
-            return;
-        }
+    var expDate = document.getElementById("exp-date");
+    var weatage = document.getElementById("weatage");
+    var unit = document.getElementById("unit");
+    var ptr = document.getElementById("ptr");
+    var discount = document.getElementById("discount");
+    var gst = document.getElementById("gst");
+    var taxable = document.getElementById("taxable");
+    var mrp = document.getElementById("mrp");
+    var amount = document.getElementById("amount");
+    var purchasedQty = document.getElementById("purchased-qty");
+    var freeQty = document.getElementById("free-qty");
+    var currentQty = document.getElementById("current-qty");
+    var returnQty = document.getElementById("return-qty");
+    var returnFreeQty = document.getElementById("return-free-qty");
+
+    var refundAmount = document.getElementById("refund-amount");
+
+    var qtyVal = document.getElementById("total-refund-qty");
 
 
-        if (productName == "") {
-            swal("Oops", "Product name can't find!", "error");
-            return;
-        }
-        if (productId.value == "") {
-            swal("Oops", "Product name can't be empty!", "error");
-            productId.focus();
-            return;
-        }
-        if (expDate.value == "") {
-            swal("Oops", "Unable to get Expiry Date!", "error");
-            expDate.focus();
-            return;
-        }
-        if (weatage.value == "") {
-            weatage.focus();
-            swal("Oops", "Unable to get product weatage!", "error");
-            return;
-        }
-        if (unit.value == "") {
-            unit.focus();
-            swal("Oops", "Unable to get product unit!", "error");
-            return;
-        }
-        if (ptr.value == "") {
-            ptr.focus();
-            swal("Oops", "Unable to get product ptr!", "error");
-            return;
-        }
-        if (discount.value == "") {
-            discount.focus();
-            swal("Oops", "Unable to get product discount!", "error");
-            return;
-        }
-        if (gst.value == "") {
-            gst.focus();
-            swal("Oops", "Unable to get product GST!", "error");
-            return;
-        }
-        if (taxable.value == "") {
-            taxable.focus();
-            swal("Oops", "Unable to get product tax amount!", "error");
-            return;
-        }
-        if (mrp.value == "") {
-            mrp.focus();
-            swal("Oops", "Unable to get product MRP!", "error");
-            return;
-        }
-        if (amount.value == "") {
-            amount.focus();
-            swal("Oops", "Unable to get product amount!", "error");
-            return;
-        }
-        if (purchasedQty.value == "") {
-            purchasedQty.focus();
-            swal("Oops", "Unable to get product purchased quantity!", "error");
-            return;
-        }
-        if (freeQty.value == "") {
-            freeQty.focus();
-            swal("Oops", "Unable to get product free quantity!", "error");
-            return;
-        }
-        if (currentQty.value == "") {
-            currentQty.focus();
-            swal("Oops", "Unable to get product current quantity!", "error");
-            return;
-        }
-        if (returnQty.value == "") {
-            returnQty.focus();
-            swal("Oops", "Please Enter How many Quantity You Want to Return!", "error");
-            return;
-        }
-        if (returnFreeQty.value == "") {
-            returnQty.focus();
-            swal("Oops", "Free Quantity Field can not be blank!", "error");
-            return;
-        }
+    
 
-        if (refundAmount.value == "") {
-            refundAmount.focus();
-            swal("Oops", "Unable to get Refund Amount!", "error");
-            return;
-        }
+    if (distId.value == "") {
+        swal("Oops", "Please select Distributor!", "error");
+        distId.focus();
+        return;
+    }
+    // if (billNumber.value == "") {
+    //     swal("Oops", "Please select Bill Number!", "error");
+    //     billNumber.focus();
+    //     return;
+    // }
+    if (batchNumber.value == "") {
+        swal("Oops", "Please select Batch Number!", "error");
+        batchNumber.focus();
+        return;
+    }
+    if (billDate.value == "") {
+        swal("Oops", "Unable to Select Bill Date!", "error");
+        billDate.focus();
+        return;
+    }
+    if (returnMode.value == "") {
+        swal("Oops", "Please select your refund mode!", "error");
+        returnMode.focus();
+        return;
+    }
 
 
-        // swal("Nice", "Working Fine", "success")
+    if (productName == "") {
+        swal("Oops", "Product name can't find!", "error");
+        return;
+    }
+    if (productId.value == "") {
+        swal("Oops", "Product name can't be empty!", "error");
+        productId.focus();
+        return;
+    }
+    if (expDate.value == "") {
+        swal("Oops", "Unable to get Expiry Date!", "error");
+        expDate.focus();
+        return;
+    }
+    if (weatage.value == "") {
+        weatage.focus();
+        swal("Oops", "Unable to get product weatage!", "error");
+        return;
+    }
+    if (unit.value == "") {
+        unit.focus();
+        swal("Oops", "Unable to get product unit!", "error");
+        return;
+    }
+    if (ptr.value == "") {
+        ptr.focus();
+        swal("Oops", "Unable to get product ptr!", "error");
+        return;
+    }
+    if (discount.value == "") {
+        discount.focus();
+        swal("Oops", "Unable to get product discount!", "error");
+        return;
+    }
+    if (gst.value == "") {
+        gst.focus();
+        swal("Oops", "Unable to get product GST!", "error");
+        return;
+    }
+    if (taxable.value == "") {
+        taxable.focus();
+        swal("Oops", "Unable to get product tax amount!", "error");
+        return;
+    }
+    if (mrp.value == "") {
+        mrp.focus();
+        swal("Oops", "Unable to get product MRP!", "error");
+        return;
+    }
+    if (amount.value == "") {
+        amount.focus();
+        swal("Oops", "Unable to get product amount!", "error");
+        return;
+    }
+    if (purchasedQty.value == "") {
+        purchasedQty.focus();
+        swal("Oops", "Unable to get product purchased quantity!", "error");
+        return;
+    }
+    if (freeQty.value == "") {
+        freeQty.focus();
+        swal("Oops", "Unable to get product free quantity!", "error");
+        return;
+    }
+    if (currentQty.value == "") {
+        currentQty.focus();
+        swal("Oops", "Unable to get product current quantity!", "error");
+        return;
+    }
+    if (returnQty.value == "") {
+        returnQty.focus();
+        swal("Oops", "Please Enter How many Quantity You Want to Return!", "error");
+        return;
+    }
+    if (returnFreeQty.value == "") {
+        returnQty.focus();
+        swal("Oops", "Free Quantity Field can not be blank!", "error");
+        return;
+    }
 
-        let slno = document.getElementById("dynamic-id").value;
-        slno++;
-
-        document.getElementById("dynamic-id").value = slno;
-
-        //geting total qty value
-        qtyVal.value = parseFloat(returnQty.value) + parseFloat(qtyVal.value);
+    if (refundAmount.value == "") {
+        refundAmount.focus();
+        swal("Oops", "Unable to get Refund Amount!", "error");
+        return;
+    }
 
 
-        //geeting total refund amount
-        var refund = document.getElementById("refund");
-        refund.value = parseFloat(refund.value) + parseFloat(refundAmount.value);
+    // swal("Nice", "Working Fine", "success")
+
+    let slno = document.getElementById("dynamic-id").value;
+    slno++;
+
+    document.getElementById("dynamic-id").value = slno;
+
+    //geting total qty value
+    //qtyVal.value = parseFloat(returnQty.value) + parseFloat(qtyVal.value);
 
 
-        // return gst generating
-        let withoutGst = (ptr.value * returnQty.value);
-        // console.log(withoutGst);
-        let taxAmount = (gst.value / 100 * withoutGst);
-        // console.log(taxAmount);
-        var returnGstAmount = document.getElementById("return-gst");
-        returnGstAmount.value = parseFloat(returnGstAmount.value) + taxAmount;
+    //geeting total refund amount
+    var refund = document.getElementById("refund");
+    refund.value = parseFloat(refund.value) + parseFloat(refundAmount.value);
 
 
+    // return gst generating
+    let withoutGst = (ptr.value * returnQty.value);
+    // console.log(withoutGst);
+    let taxAmount = (gst.value / 100 * withoutGst);
+    // console.log(taxAmount);
+    var returnGstAmount = document.getElementById("return-gst");
+    returnGstAmount.value = parseFloat(returnGstAmount.value) + taxAmount;
 
-        const appendData = () => {
 
-            jQuery("#dataBody")
-                .append(`<tr id="table-row-${slno}">
+    function appendData(){
+
+        jQuery("#dataBody")
+            .append(`<tr id="table-row-${slno}">
                     <td  style="color: red;">
                         <i class="fas fa-trash pt-3" onclick="deleteData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
@@ -495,64 +497,64 @@ const addData = async() => {
                         <input class="col table-data w-4r" type="text" name="gst[]" value="${gst.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)+ parseFloat(returnFreeQty.value)}" readonly>
+                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value) + parseFloat(returnFreeQty.value)}" readonly>
                     </td>
                     <td class=" amnt-td p-0 pt-3">
                         <input class="col table-data W-6r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
                 </tr>`);
 
-            return true;
-        }
-        if (appendData() === true) {
+        return true;
+    }
 
-            // document.getElementById("demo").innerHTML = await myPromise;
-            productId.value = '';
-            productName = '';
+    if (appendData() === true) {
 
-            batchNumber.value = '';
-            billDate.value = '';
-
-            expDate.value = '';
-            weatage.value = '';
-            unit.value = '';
-            ptr.value = '';
-            discount.value = '';
-            gst.value = '';
-            taxable.value = '';
-            mrp.value = '';
-            amount.value = '';
-            purchasedQty.value = '';
-            freeQty.value = '';
-            currentQty.value = '';
-            returnQty.value = '';
-            returnFreeQty.value = '';
-            refundAmount.value = '';
-        };
-
+        
 
         if (slno > 1) {
             let id = document.getElementById("items-qty");
             let newId = parseFloat(id.value) + 1;
             document.getElementById("items-qty").value = newId;
-
+    
         } else {
             document.getElementById("items-qty").value = slno;
         }
-
-
+    
+        
         if (slno > 1) {
-            let id = document.getElementById("total-refund-qty");
-            let newId = parseFloat(id.value) + totalQty;
-            document.getElementById("total-refund-qty").value = newId;
-
+            let Qty = parseInt(qtyVal.value);
+           
+            let newQty = Qty + parseInt(returnQty.value); 
+            document.getElementById("total-refund-qty").value = newQty;
+    
         } else {
-            document.getElementById("total-refund-qty").value = totalQty;
+            document.getElementById("total-refund-qty").value = parseInt(returnQty.value);
         }
 
+        // document.getElementById("demo").innerHTML = await myPromise;
+        productId.value = '';
+        productName = '';
 
+        batchNumber.value = '';
+        billDate.value = '';
 
+        expDate.value = '';
+        weatage.value = '';
+        unit.value = '';
+        ptr.value = '';
+        discount.value = '';
+        gst.value = '';
+        taxable.value = '';
+        mrp.value = '';
+        amount.value = '';
+        purchasedQty.value = '';
+        freeQty.value = '';
+        currentQty.value = '';
+        returnQty.value = '';
+        returnFreeQty.value = '';
+        refundAmount.value = '';
+    };
 
-    } //eof addData  
+} //eof addData  
 
 // ================================ Delet Data ================================
 
@@ -573,14 +575,21 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     qty.value = finalQty;
 
 
-    // minus netAmount
+    // minus gst
     let gst = document.getElementById("return-gst");
     let finalGst = gst.value - gstPerItem;
     gst.value = finalGst;
 
     // minus netAmount
     let net = document.getElementById("net-amount");
-    let finalAmount = net.value - total;
-    net.value = finalAmount;
+    if (net.value == null) {
+        net.value = 0;
+        let finalAmount = net.value - total;
+        net.value = finalAmount;
+    } else {
+        let finalAmount = net.value - total;
+        net.value = finalAmount;
+    }
+
 
 }

@@ -239,8 +239,8 @@ $showDistributor       = $Distributor->showDistributor();
                                     <div class="row mt-md-2">
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="return-qty">Return Qty:</label>
-                                            <input type="text" class="upr-inp focus-border" name="return-qty"
-                                                id="return-qty" onkeyup="getRefund(this.value);">
+                                            <input type="text" class="upr-inp focus-border" id="return-qty" value="" name="return-qty" onkeyup="getRefund(this.value);">
+                                                
                                         </div>
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="return-free-qty">Free Qty:</label>
@@ -352,8 +352,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 type="text" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Net : <input class="summary-inp w-65" name="refund" id="refund" type="text"
-                                                value="0" readonly> </p>
+                                        <p>Net : <input class="summary-inp w-65" name="refund" id="refund" type="text" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 text-right">
                                         <button class="btn btn-sm btn-primary" style="width: 50%;" type="submit"
