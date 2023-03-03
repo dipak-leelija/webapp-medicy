@@ -183,7 +183,7 @@ const addData = async () => {
             jQuery("#dataBody")
                 .append(`<tr id="table-row-${slno}">
                     <td  style="color: red;">
-                        <i class="fas fa-trash pt-3" onclick="deleteData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
+                        <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
                     <td class="p-0 pt-3" >
                         <input class="col table-data w-12r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start;">
@@ -285,7 +285,7 @@ const addData = async () => {
 
 
     // ================================ Delet Data ================================
-    function deleteData(slno, itemQty, gstPerItem, total) {
+    function delData(slno, itemQty, gstPerItem, total) {
         jQuery(`#table-row-${slno}`).remove();
         slno--;
         document.getElementById("dynamic-id").value = slno;

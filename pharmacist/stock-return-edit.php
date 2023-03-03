@@ -1,7 +1,7 @@
 <?php
 
 require_once '_config/sessionCheck.php'; //check admin loggedin or not
-// require_once '../php_control/products.class.php';
+require_once '../php_control/products.class.php';
 // require_once '../php_control/manufacturer.class.php';
 require_once '../php_control/distributor.class.php';
 // require_once '../php_control/measureOfUnit.class.php';
@@ -15,7 +15,7 @@ require_once '../php_control/packagingUnit.class.php';
 $page = "purchase-management";
 
 //objects Initilization
-// $Products           = new Products();
+$products           = new Products();
 $Distributor        = new Distributor();
 $StockReturn        = new StockReturn();
 // $Manufacturer       = new Manufacturer();
@@ -309,19 +309,29 @@ $showDistributor       = $Distributor->showDistributor();
                                             $slno = 0;
                                             // showStockReturnById();
                                             $returnBills = $StockReturn->showStockReturnDetails($_GET['returnId']);
+
                                             //print_r($returnBills);
+                                            
                                             foreach ($returnBills as $bill) {
                                                 //print_r($bill['id']);
+                                                $productid = $bill['product_id'];
+                                                $productDetails = $products->showProductsById($productid); 
+                                                //print_r($productDetails);
+                                                //echo "<br><br><br>";
+                                                $productName = $productDetails[0]['name'];
+                                                $productUnit = $productDetails[0]['unit'];
+                                                
+
                                                 $slno += 1;
                                             ?>
 
                                                 <tr id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>">
 
-                                                    <td style="color: red;"> <i class="fas fa-trash pt-3 " onclick="deleteData(<?php echo $slno . ',' . $bill['return_qty'] . ',' . $bill['refund_amount'] . ',' . $bill['refund_amount']; ?>)">
+                                                    <td style="color: red;"> <i class="fas fa-trash pt-3 " onclick="delData(<?php echo $slno . ',' . $bill['return_qty'] . ',' . $bill['refund_amount'] . ',' . $bill['refund_amount']; ?>)">
                                                         </i>
                                                     </td>
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-12r" type="text" name="productName[]" value="<?php echo $bill['product_id']; ?>" readonly style="text-align: start;">
+                                                        <input class="col table-data w-12r" type="text" name="productName[]" value="<?php echo $productName; ?>" readonly style="text-align: start;">
                                                         <input class="col table-data w-12r" type="text" name="productId[]" value="<?php echo $bill['product_id']; ?>" readonly style="text-align: start;" hidden>
                                                     </td>
                                                     
@@ -335,7 +345,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                         <input class="col table-data w-5r" type="text" name="expDate[]" value="<?php echo $bill['exp_date']; ?>" readonly>
                                                     </td>
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-5r" type="text" name="setof[]" value="<?php echo $bill['unit']; ?>" readonly>
+                                                        <input class="col table-data w-5r" type="text" name="setof[]" value="<?php echo $bill['unit'],$productUnit; ?>" readonly>
                                                     </td >
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="purchasedQty[]" value="<?php echo $bill['purchase_qty']; ?>" readonly>

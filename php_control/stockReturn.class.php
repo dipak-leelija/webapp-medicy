@@ -76,6 +76,17 @@ class StockReturn extends DatabaseConnection{
         return $response;
     }
 
+    // ---------------EDIT STOCK RETURN UPDATE FUNCTION----------------RD----------------
+
+    function stockReturnEditUpdate($id, $distributorId, $returnDate, $items, $totalQty, $gst, $refundMode, $refundAmount, $addedBy, $addedOn, $addedTime){
+
+        $editANDupdate = "UPDATE `stock_return` SET `distributor_id`='$distributorId',`return_date`='$returnDate',`items`='$items',`total_qty`='$totalQty',`gst_amount`='$gst',`refund_mode`='$refundMode',`refund_amount`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn',`added_time`='$addedTime' WHERE `stock_return`.`id`='$id'";
+
+        $response = $this->conn->query($editANDupdate);
+
+        return $response;
+    }
+
 
 
 ###################################################################################################################################
@@ -125,6 +136,16 @@ function stockReturnDetailsEdit($id, $stockReturnId, $productId, $batchNo, $expD
     $res = $this->conn->query($update);
 
     return $res;
+}
+
+// ----------------- stock return details edit/update by id ----------------RD-----------
+
+function stockReturnDetailsEditUpdate($id, $returnQTY, $refundAmount, $addedBy, $addedOn, $addedTime){
+    $editUpdate = "UPDATE `stock_return_details` SET `return_qty`='$returnQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn',`added_time`='$addedTime' WHERE `stock_return_details`.`id`='$id'";
+
+    $response = $this->conn->query($editUpdate);
+
+    return $response;
 }
 
 }
