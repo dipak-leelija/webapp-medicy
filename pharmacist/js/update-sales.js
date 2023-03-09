@@ -44,9 +44,6 @@ const setCustomer = (id) => {
     document.getElementById("customer-name").value = xmlhttp.responseText;
     document.getElementById("customer-id").value = id;
 
-
-
-
     // ================ get Contact ================
     stockCheckUrl = 'ajax/customer.getDetails.ajax.php?contact=' + id;
     // alert(url);

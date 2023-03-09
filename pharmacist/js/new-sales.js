@@ -437,7 +437,8 @@ const addSummary = () => {
 
 
                                                                 jQuery("#item-body").append(`<tr id="table-row-${slno}">
-                                                <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty.value}, ${netGst}, ${mrp.value}, ${amount.value})"></i></td>
+                                                <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty.value}, ${netGst}, ${mrp.value}, ${amount.value})"></i>
+                                                </td>
                                                 <td>
                                                     <input class="summary-product" type="text" name="product-name[]" value="${productName.value}" readonly>
                                                     <input type="text" name="product-id[]" value="${productId.value}" hidden>

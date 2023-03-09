@@ -1,6 +1,7 @@
 <?php
-require_once '_config\sessionCheck.php';
+require_once '_config/sessionCheck.php';
 require_once "../php_control/doctors.class.php";
+
 
 $page = "sales";
 $Doctors = new Doctors();
@@ -277,7 +278,7 @@ $doctor = $Doctors->showDoctors();
                                         <table class="table item-table">
                                             <thead>
                                                 <tr>
-                                                    <th><input class="d-none" type="number" value="0" id="dynamic-id">
+                                                    <th scope="col"><input class="d-none" type="number" value="0" id="dynamic-id">
                                                     </th>
                                                     <th scope="col">Item Name</th>
                                                     <th scope="col">Unit/Pack</th>
@@ -306,7 +307,7 @@ $doctor = $Doctors->showDoctors();
                                         <div class="row mb-3">
                                             <div class="col-md-2 col-6   mb-3 d-flex">
                                                 Items: <input class="sumary-inp" id="items" value="00" type="text"
-                                                    name="total-items">
+                                                    name="total-items"> 
                                             </div>
                                             <div class="col-md-2 col-6  mb-3 d-flex">
                                                 Quantity: <input class="sumary-inp" id="final-qty" value="00"
@@ -371,7 +372,6 @@ $doctor = $Doctors->showDoctors();
                             </form>
                         </div>
                     </div>
-
 
                 </div>
                 <!-- /.container-fluid -->

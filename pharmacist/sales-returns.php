@@ -141,9 +141,13 @@ $Patients      = new Patients();
                                         foreach ($returns as $item) {
                                             
                                             $patient = $Patients->patientsDisplayByPId($item['patient_id']);
+                                            //print_r($patient);
+                                            
+                                            $patientName = $patient[0]['name'];
+                                            
                                             echo '<tr data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem('.$item['invoice_id'].')">
                                                     <td>'.$item['invoice_id'].'</td>
-                                                    <td>'.$patient[0]['name'].'</td>
+                                                    <td>'.$patientName.'</td>
                                                     <td>'.$item['items'].'</td>
                                                     <td>'.date('d-m-Y', strtotime($item['bill_date'])).'</td>
                                                     <td>'.date('d-m-Y', strtotime($item['return_date'])).'</td>

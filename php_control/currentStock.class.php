@@ -88,10 +88,6 @@ class CurrentStock extends DatabaseConnection{
         return $data;
     }//eof showCurrentStoc function
 
-
-
-
-
     function showCurrentStocByPId($productId){
         //echo $productId;
         $data = array();

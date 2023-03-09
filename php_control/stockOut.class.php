@@ -2,15 +2,7 @@
 
 require_once 'dbconnect.php';
 
-
-
-
-
 class StockOut extends DatabaseConnection{
-
-
-
-
 
     function addStockOut($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy){
         
@@ -58,8 +50,6 @@ class StockOut extends DatabaseConnection{
         return $updateBillQuery;
 
     }//end updateLabBill function
-
-
 
 
     function amountSoldBy($pharmacist){
@@ -114,7 +104,7 @@ class StockOut extends DatabaseConnection{
 
     ################################################################################################################################
     #                                                                                                                              #
-    #                                                      BILL/INVOICE DETAILS                                                    #
+    #                                BILL/INVOICE DETAILS                                           #
     #                                                                                                                              #
     ################################################################################################################################
 
@@ -177,8 +167,24 @@ class StockOut extends DatabaseConnection{
     }//end updateBillDetail function
 
 
-}// eof LabBilling class
+// eof LabBilling class
 
 
+###########################################################################################################
+#                                                                                                         #
+#                                            STOCK OUT DETAILS                             (RD)           #
+#                                                                                                         #
+###########################################################################################################
+
+    function addStockOutDetails($invoiceId, $productId, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $margin, $amount, $addedBy, $addedOn){
+
+        $addStockOutDetails = "INSERT INTO `stock_out_details`(`invoice_id`, `product_id`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `margin`, `amount`, `added_by`, `added_on`) VALUES ('$invoiceId','$productId','$batchNo','$expDate','$weightage','$unit','$qty','$looselyCount','$mrp','$ptr','$discount','$gst','$margin','$amount','$addedBy','$addedOn')";
+
+        $addDetails = $this->conn->query($addStockOutDetails);
+
+        return $addDetails;
+    }
+
+}
 
 ?>

@@ -44,6 +44,10 @@ class SalesReturn extends DatabaseConnection{
         return $res;
     }// eof stockOutDisplayById 
 
+    function updateSalesReturn(){
+        
+    }
+
 
 //     function updateLabBill($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy ){
 

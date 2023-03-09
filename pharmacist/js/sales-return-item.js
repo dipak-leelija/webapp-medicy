@@ -26,10 +26,6 @@ var returnQtyVal = document.getElementById("return");
 var refund = document.getElementById("refund");
 
 
-
-
-
-
 var todayDate = new Date();
 
 var date = todayDate.getDate();

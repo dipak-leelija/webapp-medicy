@@ -214,7 +214,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     <!-- /end Add Product  -->
                     <!--=========================== Show Bill Items ===========================-->
                     <div class="card shadow mb-4">
-                        <form action="_config\form-submission\sales-return-form.php" method="post">
+                        <form action="_config\form-submission\sales-return-edit.php" method="post">
                             <div class="card-body stock-in-summary">
                                 <div class="table-responsive">
                                     <table class="table item-table">
@@ -280,7 +280,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                     </div>
                                     <div class="col-md-2 mb-2 col-6 justify-content-end">
                                         <button class="btn btn-sm btn-primary" style="width: 100%;" type="submit"
-                                            name="sales-return">Return</button>
+                                            name="sales-return-edit">Return</button>
                                     </div>
                                 </div>
                             </div>

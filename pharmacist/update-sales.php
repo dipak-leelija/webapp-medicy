@@ -52,7 +52,6 @@ if ($_GET['id']) {
   
       $details = $StockOut->stockOutDetailsById($_GET['id']);
   
-  
       ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -324,7 +323,7 @@ if ($_GET['id']) {
                         <!-- card mt-md-5 -->
                         <div class=" mb-4  summary">
                             <div class="card-body fisrt-card-body">
-
+                                
                                 <form action="item-invoice.php" method="post">
                                     <div>
                                         <div class="table-responsive">

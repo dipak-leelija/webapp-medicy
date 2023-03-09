@@ -36,7 +36,6 @@ $StockInDetails  = new StockInDetails();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['sales-return'])) {
 
-        
         $products   = $_POST['productId'];
         $batchNo    = $_POST['batchNo'];
         $expdates   = $_POST['expDate'];
@@ -50,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $refunds    = $_POST['refund'];
         $billAmount = $_POST['billAmount'];
 
-        
 
         $invoice        = $_POST['invoice'];
         $billDate       = $_POST['purchased-date'];
@@ -95,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $singlePrice  = $pDetails[0]['base'] + ($pDetails[0]['gst']/100 * $pDetails[0]['base']);
                         $looselyPrice = $singlePrice * $looselyCount; 
                     }else{
-                        $looselyCount = 0;
-                        $looselyPrice = 0;
+                        $looselyCount = 1;
+                        $looselyPrice = 1;
                     }
                     
                     $addedBy = '';
