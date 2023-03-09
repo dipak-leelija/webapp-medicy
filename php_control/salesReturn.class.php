@@ -115,13 +115,13 @@ class SalesReturn extends DatabaseConnection{
 
 //     ################################################################################################################################
 //     #                                                                                                                              #
-//     #                                                      Sales Return Details                                                    #
+//     #                                    Sales Return Details                                            #
 //     #                                                                                                                              #
 //     ################################################################################################################################
 
 
     function addReturnDetails($invoiceId, $itemId, $batchNo, $weatage, $exp_date, $qty, $disc, $gst, $amount, $return, $refund, $addedBy){
-        
+
         $insert = "INSERT INTO  sales_return_details (`invoice_id`,	`product_id`, `batch_no`, `weatage`, `exp`, `qty`, `disc`, `gst`,	`amount`, `return`, `refund`, `added_by`) VALUES  ('$invoiceId', '$itemId', '$batchNo', '$weatage', '$exp_date', '$qty', '$disc', '$gst', '$amount', '$return', '$refund', '$addedBy')";
         // echo $insertEmp.$this->conn->error;
         // exit;

@@ -1,4 +1,5 @@
-<?php
+<?php      # RD #
+
 require_once "../../php_control/stockReturn.class.php";
 require_once "../../php_control/distributor.class.php";
 require_once "../../php_control/products.class.php";
@@ -57,8 +58,6 @@ foreach($stockReturn as $stocks){
 
 //$stockReturn = json_encode($stockReturn);
 //===============================================================================================
-
-
 
 //==========================fetching data from distributor table==================================
 $distributorDetails = $DistributorDetails ->showDistributorById($stockReturnDistributorId);
@@ -153,3 +152,5 @@ if($stockReturnData == true){
 }else{
     echo 0;
 }
+
+?>

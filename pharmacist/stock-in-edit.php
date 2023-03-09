@@ -490,7 +490,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="row mb-3">
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Distributor :
-                                            <input class="summary-inp6" name="distributor-id" id="distributor-name"
+                                            <input class="summary-inp" name="distributor-id" id="distributor-name"
                                                 type="text"
                                                 value="<?php if ($edit == TRUE) { echo $stockIn[0]['distributor_id']; }?>"
                                                 readonly>
@@ -504,7 +504,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     </div>
                                     <div class="col-md-3 d-flex justify-content-start">
                                         <p>Dist. Bill :
-                                            <input class="summary-inp6" name="distributor-bill" id="distributor-bill-no"
+                                            <input class="summary-inp" name="distributor-bill" id="distributor-bill-no"
                                                 type="text"
                                                 value="<?php if ($edit == TRUE) { echo $stockIn[0]['distributor_bill']; }?>"
                                                 readonly>
@@ -512,7 +512,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     </div>
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Bill Date :
-                                            <input class="summary-inp3" name="bill-date-val" id="bill-date-val"
+                                            <input class="summary-inp" name="bill-date-val" id="bill-date-val"
                                                 type="text"
                                                 value="<?php if ($edit == TRUE) { echo $stockIn[0]['bill_date']; }?>"
                                                 readonly>
@@ -520,7 +520,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     </div>
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Due Date :
-                                            <input class="summary-inp3" name="due-date-val" id="due-date-val"
+                                            <input class="summary-inp" name="due-date-val" id="due-date-val"
                                                 type="text"
                                                 value="<?php if ($edit == TRUE) { echo $stockIn[0]['due_date']; }?>"
                                                 readonly>
@@ -532,7 +532,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3 d-flex justify-content-start">
                                         <span>Payment :
-                                            <input class="summary-inp4" name="payment-mode-val" id="payment-mode-val"
+                                            <input class="summary-inp" name="payment-mode-val" id="payment-mode-val"
                                                 type="text"
                                                 value="<?php if ($edit == TRUE) { echo $stockIn[0]['payment_mode']; }?>"
                                                 readonly>
