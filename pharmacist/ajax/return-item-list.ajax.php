@@ -237,16 +237,31 @@ if (isset($_GET['invoice'])) {
     $data   = $_GET['invoice'];
 
     $invoiceDetail = $Search->searchFor($table, $column, $data);
+
+    print_r($invoiceDetail);
+    exit;
     
     if (count($invoiceDetail) > 0) {
-        foreach ($invoiceDetail as $invoice) {
-            $patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
-            $patientId = '"'.$invoice['customer_id'].'"';
-            
-            echo "<div class='invoice-item' onclick='getDtls(".$invoice['invoice_id'].", ".$patientId.");'>
-                    <p>".$patient[0]['name']."</p>
-                    <small><span class='text-dark'>#".$invoice['invoice_id']."</span> M:".$patient[0]['phno']."</small>
-                 </div>";
+        if(){
+            foreach ($invoiceDetail as $invoice) {
+                $patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
+                $patientId = '"'.$invoice['customer_id'].'"';
+                
+                echo "<div class='invoice-item' onclick='getDtls(".$invoice['invoice_id'].", ".$patientId.");'>
+                        <p>".$patient[0]['name']."</p>
+                        <small><span class='text-dark'>#".$invoice['invoice_id']."</span> M:".$patient[0]['phno']."</small>
+                     </div>";
+            }
+        }else{
+            foreach ($invoiceDetail as $invoice) {
+                $patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
+                $patientId = '"'.$invoice['customer_id'].'"';
+                
+                echo "<div class='invoice-item' onclick='getDtls(".$invoice['invoice_id'].", ".$patientId.");'>
+                        <p>".$patient[0]['name']."</p>
+                        <small><span class='text-dark'>#".$invoice['invoice_id']."</span> M:".$patient[0]['phno']."</small>
+                     </div>";
+            }
         }
     }else{
         echo '<div class="invoice-item">
@@ -258,10 +273,6 @@ if (isset($_GET['invoice'])) {
 }
 
 ?>
-
-
-
-
 
 
 <?php

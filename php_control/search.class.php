@@ -19,7 +19,6 @@ function searchForSale($data){
         return $res;
 }
 
-
 function searchCustomer($data){
     $res = array();
     $searchSql = "SELECT * FROM `patient_details` WHERE `patient_details`.`name` LIKE '%$data%' OR `patient_details`.`phno` LIKE '%$data%'";
@@ -29,7 +28,6 @@ function searchCustomer($data){
     }
     return $res;
 }
-
 
 function searchFor($table, $column, $data){
     $res = array();
