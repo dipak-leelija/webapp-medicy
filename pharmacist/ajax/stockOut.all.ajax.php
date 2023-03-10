@@ -13,16 +13,19 @@ $Products   = new Products();
 $Patients   = new Patients();
 
 
-
 // get Bill Date
 if (isset($_GET["patient"])) {
     $invoiceId = $_GET["patient"];
     $bill = $StockOut->stockOutDisplayById($invoiceId);
+    if($bill[0]['customer_id'] == "Cash Sales"){
+        $patient = "Cash Sales";
+        echo $patient;
+    }
+    else{
     $patient = $Patients->patientsDisplayByPId($bill[0]['customer_id']);
     echo $patient[0]['name'];
-
+    }
 }
-
 
 
 // get Bill Date

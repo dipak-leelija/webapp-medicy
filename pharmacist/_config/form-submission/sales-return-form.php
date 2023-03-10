@@ -43,19 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $weatage    = $_POST['setof'];
         $qtys       = $_POST['qty'];
 
-        // echo "TOTAL QUANTITY : ";
-        // print_r($qtys);
-        // echo "<br><br>";
-
         $mrp        = $_POST['mrp'];
         $discs      = $_POST['disc'];
         $gst        = $_POST['gst'];
         $totalGSt   = $_POST['taxable'];
         $returnQty  = $_POST['return'];
-
-        // echo "RETURN QUANTITY : ";
-        // print_r($returnQty);
-        // echo "<br><br>";
 
         $refunds    = $_POST['refund'];
         $billAmount = $_POST['billAmount'];
@@ -76,13 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sold     = $StockOut->stockOutDisplayById($invoiceId);
         $patient  = $Patients->patientsDisplayByPId($sold[0]['customer_id']);
 
-        // echo "STOCK OUT"; echo "<br><br>";
-        // print_r($sold);
-        // echo "<br><br>";
-        // echo "PATIENT DETAILS"; echo "<br><br>";
-        // print_r($patient);
-        // echo "<br><br>";
-
         $added_by = $_SESSION['employee_username'];
 
         // Generate Return Bill
@@ -96,25 +81,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $qty   = array_shift($_POST['qty']);
                 $returnQTY  = array_shift($_POST['return']);
 
-                // echo "RETURN qty : "; echo "<br><br>";
-                // print_r($returnQTY);
-                // echo "<br><br>";
-
                 $success = $SalesReturn->addReturnDetails($invoiceId, $productId, $batch, array_shift($_POST['setof']), array_shift($_POST['expDate']), $qty, array_shift($_POST['disc']), array_shift($_POST['gst']), array_shift($_POST['billAmount']), array_shift($_POST['return']), array_shift($_POST['refund']), $added_by);
 
                 // now insert into current stock 
                 $stock = $CurrentStock->checkStock($productId, $batch);
-                // echo "CURRENT STOCK CHECKING"; echo "<br><br>";
-                // print_r($stock);
-                // echo "<br><br>";
 
                 if (count($stock) == 0 || $stock == '') {
 
                     $pDetails = $StockInDetails->showStockInDetailsByTable('product_id', 'batch_no', $productId, $batch);
 
-                    // echo "PRODUCT STOCK IN DETAILS"; echo "<br><br>";
-                    // print_r($pDetails);
-                    // echo "<br><br>";
                     // (float) filter_var( $uWeightage, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION )
 
                     if ($pDetails[0]['unit'] == 'cap' || $pDetails[0]['unit'] == 'tab') {
@@ -128,18 +103,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     $addedBy = '';
 
-                    // echo "Loosely Count : "; echo "<br><br>";
-                    // print_r($looselyCount);
-                    // echo "<br><br>";
-                    // updateStock($productId, $batch, $newQuantity, $newLCount);
                     $CurrentStock->addCurrentStock($productId, $batch, $pDetails[0]['exp_date'], $pDetails[0]['distributor_bill'], $looselyCount, $looselyPrice, $pDetails[0]['weightage'], $pDetails[0]['unit'], $qty, $pDetails[0]['mrp'], $pDetails[0]['ptr'], $pDetails[0]['gst'], $addedBy);
                 } else {
 
                     $pDetails = $StockInDetails->showStockInDetailsByTable('product_id', 'batch_no', $productId, $batch);
-
-                    // echo "PRODUCT STOCK IN DETAILS"; echo "<br><br>";
-                    // print_r($pDetails);
-                    // echo "<br><br>";
 
                     $newQuantity = $stock[0]['qty'] + $returnQTY;
 
@@ -149,17 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $newLCount = 0;
                     }
 
-                    // echo "New Loosely Count : "; echo "<br><br>";
-                    // print_r($newLCount);
-                    // echo "<br><br>";
-
                     $CurrentStock->updateStock($productId, $batch, $newQuantity, $newLCount);
                 }
             }
         }
-
-        // $Doctors->showDoctorById($docId);
-
     }
 
 
