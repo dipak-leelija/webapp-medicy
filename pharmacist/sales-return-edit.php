@@ -9,8 +9,6 @@ $page = "sales";
 
 
 
-
-
 //class Initilization
 $Products           = new Products();
 $Distributor        = new Distributor();

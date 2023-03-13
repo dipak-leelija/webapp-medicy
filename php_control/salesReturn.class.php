@@ -44,9 +44,27 @@ class SalesReturn extends DatabaseConnection{
         return $res;
     }// eof stockOutDisplayById 
 
-    function updateSalesReturn(){
+    //--------------select sales return table by invoice id and patient id-------------- RD -------
+
+    function selectSalesReturnByInvoiceIdandPatientId($invoiceId, $patientId){
+        $response = array();
+        $selectSalesReturn = "SELECT * FROM `sales_return` WHERE `invoice_id` = '$invoiceId' AND `patient_id` = '$patientId'";
+        $query = $this->conn->query($selectSalesReturn);
+        while($result = $query->fetch_array()){
+            $response[] = $result;
+        }
+        return $response;
+    }
+
+    //------------------------------updating sales return table-------------- RD ----------------
+
+    function updateSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){    
+        
+        $updateSalesReturn = "UPDATE `sales_return` SET `bill_date`='$billdate',`return_date`='$returnDate',`items`='$items',`gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode',`added_by`='$added_by',`added_on`='$billdate' WHERE `invoice_id`='$invoiceId',`patient_id`='$patientId'";
         
     }
+
+    //end of sales return update-----------------
 
 
 //     function updateLabBill($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy ){
@@ -144,6 +162,24 @@ class SalesReturn extends DatabaseConnection{
     }//end stockOutDetailsById function
 
 
+    //--------------------update sales return details table----------------RD--------------
+
+    function selectSalesReturnDetailsbyInvoiceIdProductIdBatchNo($invoiceId, $productId, $batchNo){
+        $response = array();
+        $stockReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoiceId' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
+        $query = $this->conn->query($stockReturnDetailsData);
+        while($result = $query->fetch_array()){
+            $response[] = $result;
+        }
+        return $response;
+    }
+
+    //--------------------update sales return details table----------------RD--------------
+
+    function updateSalesReturnDetails(){
+
+    }
+    //end of salesReturnDetails Update ---------------------
 
 //     function updateBillDetail($invoiceId, $itemId, $itemName, $batchNo, $weatage, $exp_date, $qty, $looselyCount, $mrp, $disc, $dPrice, $gst, $netGst, $amount, $addedBy){
 

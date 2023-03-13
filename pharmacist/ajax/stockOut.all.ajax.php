@@ -13,10 +13,11 @@ $Products   = new Products();
 $Patients   = new Patients();
 
 
-// get Bill Date
+// get patient name
 if (isset($_GET["patient"])) {
     $invoiceId = $_GET["patient"];
     $bill = $StockOut->stockOutDisplayById($invoiceId);
+    //print_r($bill);
     if($bill[0]['customer_id'] == "Cash Sales"){
         $patient = "Cash Sales";
         echo $patient;
@@ -26,7 +27,6 @@ if (isset($_GET["patient"])) {
     echo $patient[0]['name'];
     }
 }
-
 
 // get Bill Date
 if (isset($_GET["bill-date"])) {
@@ -49,9 +49,11 @@ if (isset($_GET["products"])) {
     $invoiceId = $_GET["products"];
 
     $items = $StockOut->stockOutDetailsById($invoiceId);
+    //print_r($product);
     echo '<option value="" selected disabled>Select item</option>';
     foreach ($items as $item) {
         $product = $Products->showProductsById($item['item_id']);
+        //print_r($product); echo "<br><br>";
         echo '<option data-invoice="'.$invoiceId.'" data-batch="'.$item['batch_no'].'" value="'.$item['item_id'].'">'.$product[0]['name'].'</option>';
     }
 }
@@ -62,7 +64,6 @@ if (isset($_GET["products"])) {
 // get product exp date
 if (isset($_GET["exp-date"])) {
     $invoice = $_GET["exp-date"];
-
     $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     echo $item[0]['exp_date'];
 }
@@ -70,35 +71,36 @@ if (isset($_GET["exp-date"])) {
 // get product full unit
 if (isset($_GET["unit"])) {
     $invoice = $_GET["unit"];
-
     $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     echo $item[0]['weatage'];
 }
 
 
-
-
 // get product mrp
 if (isset($_GET["mrp"])) {
     $invoice = $_GET["mrp"];
-
     $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     echo $item[0]['mrp'];
 }
 
 
 
-// get product mrp
+// get product qty
 if (isset($_GET["qty"])) {
     $invoice = $_GET["qty"];
-
     $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-    echo $item[0]['qty'];
+    $itemCheck = $StockOut->salesReturnDetails($invoice, $_GET["p-id"], $_GET["batch"]);
+    //print_r($item);
+    if($itemCheck != null && $itemCheck[0]['return']<$item[0]['qty']){
+        echo $item[0]['qty']-$itemCheck[0]['return'];
+    }else{
+        echo $item[0]['qty'];
+    }
 }
 
 
 
-// get product mrp
+// get product discount
 if (isset($_GET["disc"])) {
     $invoice = $_GET["disc"];
 
@@ -107,7 +109,7 @@ if (isset($_GET["disc"])) {
 }
 
 
-// get product mrp
+// get product discount price
 if (isset($_GET["disc-price"])) {
     $invoice = $_GET["disc-price"];
 
@@ -116,7 +118,7 @@ if (isset($_GET["disc-price"])) {
 }
 
 
-// get product mrp
+// get product gst percentage
 if (isset($_GET["gst"])) {
     $invoice = $_GET["gst"];
 
@@ -126,7 +128,7 @@ if (isset($_GET["gst"])) {
 
 
 
-// get product full unit
+// get product taxable amount
 if (isset($_GET["taxable"])) {
     $invoice = $_GET["taxable"];
 
@@ -137,7 +139,7 @@ if (isset($_GET["taxable"])) {
 
 
 
-// get product full unit
+// get product amount
 if (isset($_GET["amount"])) {
     $invoice = $_GET["amount"];
 

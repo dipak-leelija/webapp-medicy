@@ -42,7 +42,6 @@ var todayFullDate = year + "-" + month + "-" + date;
 // console.log(todayFullDate);
 document.getElementById("bill-date").setAttribute("max", todayFullDate);
 
-
 const getCustomer = (invoice) => {
 
     if (invoice != "") {

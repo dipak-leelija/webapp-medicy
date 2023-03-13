@@ -166,7 +166,7 @@ $dist = $Distributor->showDistributorById($bill[0]["distributor_id"]);
                 $amount = 0;
 
                 $items = $StockReturn->showStockReturnDetails($returnId);
-                // print_r($items);
+                //print_r($items);
                 foreach ($items as $item) {
                     $sl     += 1;
                     // $qty    += $item['return_qty'];
@@ -175,7 +175,7 @@ $dist = $Distributor->showDistributorById($bill[0]["distributor_id"]);
 
                     $product = $Products->showProductsById($item['product_id']);
 
-                    // print_r($product);
+                    //print_r($product);
                     echo "<tr>
                             <th scope='row'>".$sl."</th>
                             <td>".$product[0][3]."</td>
@@ -219,7 +219,6 @@ $dist = $Distributor->showDistributorById($bill[0]["distributor_id"]);
 <?php
 }
 ?>
-
 <?php
 //##################################################################################################
 #                                                                                                  #
@@ -239,11 +238,6 @@ if (isset($_GET['invoice'])) {
     $data   = $_GET['invoice'];
 
     $invoiceDetail = $Search->searchFor($table, $column, $data);
-
-    print_r($invoiceDetail);
-    echo "<br><br>";
-    echo $invoiceDetail[0]['customer_id'];
-    
     
     if (count($invoiceDetail) > 0) {
         if($invoiceDetail[0]['customer_id'] == 'Cash Sales'){

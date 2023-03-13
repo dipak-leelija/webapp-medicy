@@ -35,10 +35,7 @@ $StockInDetails  = new StockInDetails();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['sales-return-edit'])) {
-
-        echo "hello check";
-        echo "<br><br>";
-
+        
         $products   = $_POST['productId'];
         $batchNo    = $_POST['batchNo'];
         $expdates   = $_POST['expDate'];
@@ -66,47 +63,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $patient        = $Patients->patientsDisplayByPId($sold[0]['customer_id']);
         $added_by       = $_SESSION['employee_username'];
 
-        // print_r($products);
-        // echo "<br><br>";
-        // print_r($batchNo);
-        // echo "<br><br>";
-        // print_r($expdates);
-        // echo "<br><br>";
-        // print_r($weatage);
-        // echo "<br><br>";
-        // print_r($qtys);
-        // echo "<br><br>";
-        // print_r($mrp);
-        // echo "<br><br>";
-        // print_r($discs);
-        // echo "<br><br>";
-        // print_r($gst);
-        // echo "<br><br>";
-        // print_r($totalGSt);
-        // echo "<br><br>";
-        // print_r($returnQty);
-        // echo "<br><br>";
-        // print_r($refunds);
-        // echo "<br><br>";
-        // print_r($billAmount);
-        // echo "<br><br>";
-        // print_r($invoiceId);
-        // echo "<br><br>";
-        // print_r($billDate);
-        // echo "<br><br>";
-        // print_r($returnDate);
-        // echo "<br><br>";
-        // print_r($items);
-        // echo "<br><br>";
-        // print_r($refundMode);
-        // echo "<br><br>";
-        // print_r($totalQtys);
-        // echo "<br><br>";
-        // print_r($gstAmount);
-        // echo "<br><br>";
-        // print_r($refundAmount);
-        // echo "<br><br>";
-        // exit;
+
+        $PatientsName = $_POST['patient-name'];
+        if($PatientsName == 'Cash Sales'){
+            $patientNm = "Cash Sales";
+            $patientPNo = " ";
+        }
+        else{
+            $patientNm = $patient[0]['name'];
+            $patientPNo = $patient[0]['phno'];
+        }
+
         // Generate Return Bill
 
         $returned = $SalesReturn->addSalesReturn($invoiceId, $sold[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by);
@@ -229,8 +196,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="row my-0">
                     <div class="col-sm-6 my-0">
                         <p style="margin-top: -3px; margin-bottom: 0px;">
-                            <small><b>Patient: </b> <?php echo $patient[0]['name']; ?>, Contact:
-                                <?php echo $patient[0]['phno']; ?>
+                            <small><b>Patient: </b> <?php echo $patientNm; ?>, Contact:
+                                <?php echo $patientPNo; ?>
                             </small>
                         </p>
 

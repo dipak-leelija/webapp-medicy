@@ -75,11 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $discount = $_POST['disc'];
     //print_r($discount); echo "<br><br>"; 
     $gst = $_POST['gst'];
-    print_r($gst);
-    echo "<br><br>";
+    // print_r($gst);
+    // echo "<br><br>";
     $amount = $_POST['amount'];
-    print_r($amount);
-    echo "<br><br>";
+    // print_r($amount);
+    // echo "<br><br>";
 
 
     if (isset($_POST['submit'])) {

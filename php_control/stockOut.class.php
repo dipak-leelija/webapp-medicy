@@ -134,10 +134,6 @@ class StockOut extends DatabaseConnection{
     }//end stockOutDetailsById function
 
 
-
-
-
-
     
     function stockOutSelect($invoice, $productId, $batchNo){
         $billData = array();
@@ -148,10 +144,7 @@ class StockOut extends DatabaseConnection{
         }
         return $billData;
         
-    }//end stockOutDetailsById function
-
-
-
+    }//end of stockOutDetail fetch from pharmacy_invoice table function
 
 
 
@@ -169,7 +162,6 @@ class StockOut extends DatabaseConnection{
 
 // eof LabBilling class
 
-
 ###########################################################################################################
 #                                                                                                         #
 #                                            STOCK OUT DETAILS                             (RD)           #
@@ -185,6 +177,18 @@ class StockOut extends DatabaseConnection{
         return $addDetails;
     }
 
+    function salesReturnDetails($invoice, $productId, $batchNo){
+        $salesReturn = array();
+        $selectBill = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoice' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
+        
+        $salesReturnQury = $this->conn->query($selectBill);
+
+        while($result = $salesReturnQury->fetch_array()){
+            $salesReturn[]	= $result;
+        }
+        return $salesReturn;
+
+    }//end of sales return details query
 }
 
 ?>

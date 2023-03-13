@@ -119,7 +119,6 @@ $Patients      = new Patients();
                                 </div>
                             </div> -->
 
-
                             <div class="table-responsive">
                                 <table class="table item-table table-sm text-dark" id="dataTable">
                                     <thead class="thead-white bg-primary text-light">
@@ -139,12 +138,15 @@ $Patients      = new Patients();
                                     $returns = $SalesReturn->salesReturnDisplay();
                                     if (count($returns) > 0) {
                                         foreach ($returns as $item) {
-                                            
-                                            $patient = $Patients->patientsDisplayByPId($item['patient_id']);
-                                            //print_r($patient);
-                                            
-                                            $patientName = $patient[0]['name'];
-                                            
+                                            //print_r($item); echo "<br><br>"; 
+                                            if($item['patient_id'] == "Cash Sales"){
+                                                $patientName = "Cash Sales";
+                                            }else{
+                                                $patient = $Patients->patientsDisplayByPId($item['patient_id']);
+                                                //print_r($patient); echo "<br><br>";
+                                                $patientName = $patient[0]['name'];
+                                            }
+                                                                                        
                                             echo '<tr data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem('.$item['invoice_id'].')">
                                                     <td>'.$item['invoice_id'].'</td>
                                                     <td>'.$patientName.'</td>
