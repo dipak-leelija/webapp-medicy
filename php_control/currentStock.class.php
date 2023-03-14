@@ -114,14 +114,16 @@ class CurrentStock extends DatabaseConnection{
 
 
     function showCurrentStocByProductIdandBatchNo($productId, $BatchNo){
-        //echo $productId;
+        //echo $productId; echo "<br>";
+        //echo $BatchNo;
         $data = array();
-        $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no`='$BatchNo'";
-        // echo $select;
+        $select = "SELECT * FROM `current_stock` WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no`='$BatchNo'";
+        //echo $select;
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;
         }
+        //print_r($data);
         return $data;
     }//eof showCurrentStocByPIdAndProductBatchNo
 

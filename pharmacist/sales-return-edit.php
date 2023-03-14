@@ -1,5 +1,5 @@
 <?php
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once "../php_control/doctors.class.php";
 require_once '../php_control/products.class.php';
 require_once '../php_control/distributor.class.php';
@@ -21,6 +21,9 @@ $showProducts          = $Products->showProducts();
 $showDistributor       = $Distributor->showDistributor();
 $showMeasureOfUnits    = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
+
+$InvoiceId = $_GET['invoice'];
+
 ?>
 
 <!DOCTYPE html>
@@ -79,14 +82,11 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                             <div class="row">
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="invoice-no">Invoice No.</label>
-                                    <input type="text" class="upr-inp" name="invoice-no" id="invoice-no"
-                                        placeholder="Search Invoice No." onkeyup="getCustomer(this.value)"
-                                        autocomplete="off">
+                                    <input type="text" class="upr-inp" name="invoice-no" id="<?php echo $InvoiceId ?>" value="<?php echo $InvoiceId ?>" onkeyup="getCustomer(this.value)" autocomplete="off" readonly>
                                 </div>
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="patient-name">Patient Name.</label>
-                                    <input type="text" class="upr-inp" name="patient-name" id="patient-name"
-                                        placeholder="Select Invoice First." autocomplete="off">
+                                    <input type="text" class="upr-inp" name="patient-name" id="patient-name" placeholder="Select Invoice First." autocomplete="off">
                                 </div>
                                 <div class="col-md-2 col-6 mt-3 ">
                                     <label class="mb-0 mt-2" for="bill-date">Bill Date</label>
@@ -123,7 +123,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                             <div class="row">
                                 <div class="col-md-8 col-12 mt-3">
                                     <label for="items-list" class="mb-0">Product Name</label>
-                                    <select id="items-list" class="upr-inp mt-1" onchange="getItemDetails(this);">
+                                    <select id="items-list" class="upr-inp mt-1" onchange="getEditItemDetails(this);">
                                         <option value="" selected disabled>Select Invoice Number First</option>
                                     </select>
                                 </div>
@@ -154,7 +154,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                 </div>
 
                                 <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="qty">Quantity</label>
+                                    <label class="mb-0 mt-1" for="qty">Returned Qty.</label>
                                     <input type="text" class="upr-inp" name="qty" id="qty" readonly>
                                 </div>
 
@@ -165,8 +165,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                                 <div class="col-md-1 col-6 mt-3">
                                     <label class="mb-0 mt-1" for="discount">D Price </label>
-                                    <input type="text" class="upr-inp" name="discount-price" id="discount-price"
-                                        value="0" readonly>
+                                    <input type="text" class="upr-inp" name="discount-price" id="discount-price" value="0" readonly>
                                 </div>
 
 
@@ -181,14 +180,12 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                 </div>
                                 <div class="col-md-1 col-6 mt-3">
                                     <label class="mb-0 mt-1" for="bill-amount">Amount</label>
-                                    <input type="any" class="upr-inp" name="bill-amount" id="bill-amount" readonly
-                                        required>
+                                    <input type="any" class="upr-inp" name="bill-amount" id="bill-amount" readonly required>
                                 </div>
 
                                 <div class="col-md-1 col-6 mt-3">
                                     <label class="mb-0 mt-1" for="return">Return</label>
-                                    <input type="number" class="upr-inp" name="return" id="return"
-                                        onkeyup="getRefund(this.value)" required>
+                                    <input type="number" class="upr-inp" name="return" id="return" onkeyup="getRefund(this.value)" required>
                                 </div>
                                 <div class="col-md-1 col-6 mt-3">
                                     <label class="mb-0 mt-1" for="refund">Refund</label>
@@ -197,8 +194,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                             </div>
                             <div class="row justify-content-end">
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                    <button class="btn btn-primary me-md-2" onclick="addData()" id="add-btn"
-                                        disabled>Add<i class="fas fa-plus"></i></button>
+                                    <button class="btn btn-primary me-md-2" onclick="addData()" id="add-btn" disabled>Add<i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
                             <!-- </div> -->
@@ -238,7 +234,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             </tr>
                                         </thead>
                                         <tbody id="dataBody">
-                                         
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -251,34 +247,28 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input class="summary-inp w-60" name="invoice" id="invoice" type="text" readonly>
                                     </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
-                                        <label for="">Return Date :</label>   
+                                        <label for="">Return Date :</label>
                                         <input class="summary-inp w-60" name="return-date" id="return-date" type="text" readonly>
-                                        <input class="d-none" name="purchased-date" id="purchased-date" type="text" > 
+                                        <input class="d-none" name="purchased-date" id="purchased-date" type="text">
                                     </div>
                                     <div class="col-md-2 col-6 mb-3  d-flex justify-content-start">
-                                        <p>Items : <input class="summary-inp w-60" name="total-items" id="total-items"
-                                                type="number" value="0" readonly></p>
+                                        <p>Items : <input class="summary-inp w-60" name="total-items" id="total-items" type="number" value="0" readonly></p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Payment : <input class="summary-inp w-60" name="refund-mode" id="refund-mode-val"
-                                                type="text" readonly> </p>
+                                        <p>Payment : <input class="summary-inp w-60" name="refund-mode" id="refund-mode-val" type="text" readonly> </p>
                                     </div>
 
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Qty : <input class="summary-inp" name="total-qty" id="total-qty" type="any"
-                                                value="0" readonly> </p>
+                                        <p>Qty : <input class="summary-inp" name="total-qty" id="total-qty" type="any" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>GST : <input class="summary-inp" name="gst-amount" id="gst-amount"
-                                                type="number" value="0" readonly> </p>
+                                        <p>GST : <input class="summary-inp" name="gst-amount" id="gst-amount" type="number" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Refund : <input class="summary-inp" name="refund-amount" id="refund-amount"
-                                                type="any" value="0" readonly> </p>
+                                        <p>Refund : <input class="summary-inp" name="refund-amount" id="refund-amount" type="any" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-2 mb-2 col-6 justify-content-end">
-                                        <button class="btn btn-sm btn-primary" style="width: 100%;" type="submit"
-                                            name="sales-return-edit">Return</button>
+                                        <button class="btn btn-sm btn-primary" style="width: 100%;" type="submit" name="sales-return-edit">Return</button>
                                     </div>
                                 </div>
                             </div>
@@ -318,7 +308,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         <script src="js/sb-admin-2.min.js"></script>
         <script src="../js/ajax.custom-lib.js"></script>
         <script src="../js/sweetAlert.min.js"></script>
-        <script src="js/sales-return-item.js"></script>
+        <script src="js/sales-return-edit.js"></script>
 
 </body>
 

@@ -84,7 +84,7 @@ const getDtls = (invoiceId, customerId) => {
     if (invoiceId != "" && customerId != "") {
 
         //==================== Reff By ====================
-        patientUrl = 'ajax/stockOut.all.ajax.php?patient=' + invoiceId;
+        patientUrl = 'ajax/salesReturnEdit.ajax.php?patient=' + invoiceId;
         // alert(url);
         xmlhttp.open("GET", patientUrl, false);
         xmlhttp.send(null);
@@ -92,7 +92,7 @@ const getDtls = (invoiceId, customerId) => {
 
 
         //==================== Bill Date ====================
-        billDateUrl = 'ajax/stockOut.all.ajax.php?bill-date=' + invoiceId;
+        billDateUrl = 'ajax/salesReturnEdit.ajax.php?bill-date=' + invoiceId;
         // alert(url);
         xmlhttp.open("GET", billDateUrl, false);
         xmlhttp.send(null);
@@ -101,7 +101,7 @@ const getDtls = (invoiceId, customerId) => {
 
 
         //==================== Reff By ====================
-        reffUrl = 'ajax/stockOut.all.ajax.php?reff-by=' + invoiceId;
+        reffUrl = 'ajax/salesReturnEdit.ajax.php?reff-by=' + invoiceId;
         // alert(url);
         xmlhttp.open("GET", reffUrl, false);
         xmlhttp.send(null);
@@ -109,7 +109,7 @@ const getDtls = (invoiceId, customerId) => {
 
 
         //==================== Products List ====================
-        productsUrl = 'ajax/stockOut.all.ajax.php?products=' + invoiceId;
+        productsUrl = 'ajax/salesReturnEdit.ajax.php?products=' + invoiceId;
         xmlhttp.open("GET", productsUrl, false);
         xmlhttp.send(null);
         itemList.innerHTML = xmlhttp.responseText;
@@ -139,7 +139,7 @@ const getRefundMode = (ref) => {
     document.getElementById("refund-mode-val").value = ref;
 }
 
-const getItemDetails = (t) => {
+const getEditItemDetails = (t) => {
     let fieldId = t.id;
     let productName = t.selectedOptions[0].text;
 
@@ -152,13 +152,13 @@ const getItemDetails = (t) => {
     if (t != "") {
 
         //==================== Exp Date Date ====================
-        let expUrl = `ajax/stockOut.all.ajax.php?exp-date=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        let expUrl = `ajax/salesReturnEdit.ajax.php?exp-date=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", expUrl, false);
         xmlhttp.send(null);
         expDate.value = xmlhttp.responseText;
 
         //==================== Unit ====================
-        let unitUrl = `ajax/stockOut.all.ajax.php?unit=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        let unitUrl = `ajax/salesReturnEdit.ajax.php?unit=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", unitUrl, false);
         xmlhttp.send(null);
         unit.value = xmlhttp.responseText;
@@ -167,44 +167,44 @@ const getItemDetails = (t) => {
         batch.value = batchNo;
 
         //==================== Mrp ====================
-        let mrpUrl = `ajax/stockOut.all.ajax.php?mrp=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        let mrpUrl = `ajax/salesReturnEdit.ajax.php?mrp=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", mrpUrl, false);
         xmlhttp.send(null);
         mrp.value = xmlhttp.responseText;
 
         //==================== QTY ====================
-        let qtyUrl = `ajax/stockOut.all.ajax.php?qty=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        let qtyUrl = `ajax/salesReturnEdit.ajax.php?qty=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", qtyUrl, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText)
         qty.value = xmlhttp.responseText;
 
         //==================== DISC ====================
-        let discUrl = `ajax/stockOut.all.ajax.php?disc=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        let discUrl = `ajax/salesReturnEdit.ajax.php?disc=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", discUrl, false);
         xmlhttp.send(null);
         discount.value = xmlhttp.responseText;
 
         //==================== DISC ====================
-        let dPriceUrl = `ajax/stockOut.all.ajax.php?disc-price=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        let dPriceUrl = `ajax/salesReturnEdit.ajax.php?disc-price=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", dPriceUrl, false);
         xmlhttp.send(null);
         discountPrice.value = xmlhttp.responseText;
 
         //==================== GST ====================
-        let gstUrl = `ajax/stockOut.all.ajax.php?gst=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        let gstUrl = `ajax/salesReturnEdit.ajax.php?gst=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", gstUrl, false);
         xmlhttp.send(null);
         gst.value = xmlhttp.responseText;
 
         //==================== Unit ====================
-        let taxableUrl = `ajax/stockOut.all.ajax.php?taxable=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        let taxableUrl = `ajax/salesReturnEdit.ajax.php?taxable=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", taxableUrl, false);
         xmlhttp.send(null);
         taxable.value = xmlhttp.responseText;
 
         //==================== Unit ====================
-        let amountUrl = `ajax/stockOut.all.ajax.php?amount=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        let amountUrl = `ajax/salesReturnEdit.ajax.php?amount=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", amountUrl, false);
         xmlhttp.send(null);
         billAmount.value = xmlhttp.responseText;
@@ -246,6 +246,11 @@ const getRefund = (returnQty) => {
         document.getElementById("refund").value = '';
         document.getElementById("add-btn").disabled = true;
     }
+
+    //================checking return quantity is not exceded than purchase quantity==================
+
+
+
 }
 
 
@@ -480,8 +485,6 @@ function deleteData(slno, returnQty, gstPerItem, itemRefund) {
         existitems[i].childNodes[3].innerText = i;
     }
 
-
-
     //minus item
     let items = document.getElementById("total-items");
     let finalItem = items.value - 1;
@@ -491,7 +494,6 @@ function deleteData(slno, returnQty, gstPerItem, itemRefund) {
     let qty = document.getElementById("total-qty");
     let finalQty = qty.value - returnQty
     qty.value = finalQty;
-
 
     // minus netAmount
     let gst = document.getElementById("gst-amount");

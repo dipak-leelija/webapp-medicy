@@ -17,8 +17,8 @@ const customEdit = (id, value) => {
             var dataObject = JSON.parse(data);
 
             var stokReturnDetailId = dataObject.id;
-            //alert(stokReturnDetailId);
-            //
+            alert(stokReturnDetailId);
+            
             console.log(stokReturnDetailId);
 
             var stokReturnId = dataObject.stock_return_id;
@@ -284,7 +284,6 @@ const addData = async () => {
     }
 
 }
-
 
 // ================================ Delet Data ================================
 const  delData = (slno) => {

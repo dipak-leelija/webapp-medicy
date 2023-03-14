@@ -1,5 +1,5 @@
-<?php      # RD #
-
+<?php      
+# RD #
 require_once "../../php_control/stockReturn.class.php";
 require_once "../../php_control/distributor.class.php";
 require_once "../../php_control/products.class.php";
@@ -110,10 +110,11 @@ $stockIn = $StockIn->showStockInById($StockInDetailsDistributorBillNo);
 $currentStockDetails = $CurrentStock->showCurrentStocByProductIdandBatchNo($stockReturnDetailsProductId, $stockReturnDetailsBatchNo);
 
     foreach($currentStockDetails as $currentStock){
-        $stockQTY   =   $currentStock['qty'];
+
+        $currentStockQty   =   $currentStock['qty'];
     }
 
-$currentStockDetails = json_encode($currentStockDetails);
+//$currentStockDetails = json_encode($currentStockDetails);
 //===============================================================================================
 $stockReturnDetailsDataArry = array("id"                    =>  $stockReturnDetailsId,
                                     "stock_return_id"       =>  $stockReturnDetailsStockReturnId,
@@ -134,7 +135,7 @@ $stockReturnDetailsDataArry = array("id"                    =>  $stockReturnDeta
                                     "purchase_amount"       =>  $stockReturnDetailsPurchaseAmount,
                                     "gst"                   =>  $stockReturnDetailsGST,
                                     "taxable_amount"        =>  $StockInDetailsGSTamount,
-                                    "current_stock_qty"     =>  $stockQTY,
+                                    "current_stock_qty"     =>  $currentStockQty,
                                     "return_qty"            =>  $stockReturnDetailsReturnQTY,
                                     "free_qty"              =>  $stockReturnDetailsFreeQTY,
                                     "refund_amount"         =>  $stockReturnDetailsRefundAmount,

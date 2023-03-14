@@ -8,10 +8,6 @@ require_once 'dbconnect.php';
 
 class SalesReturn extends DatabaseConnection{
 
-
-
-
-
     function addSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){	
         $addReturn = "INSERT INTO  sales_return (`invoice_id`, `patient_id`, `bill_date`, `return_date`, `items`, `gst_amount`, `refund_amount`, `refund_mode`, `added_by`) VALUES ('$invoiceId', '$patientId', '$billdate', '$returnDate', '$items', '$gstAmount', '$refundAmount', '$refundMode', '$added_by')";
         // echo $insertEmp.$this->conn->error;
@@ -58,11 +54,11 @@ class SalesReturn extends DatabaseConnection{
 
     //------------------------------updating sales return table-------------- RD ----------------
 
-    function updateSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){    
+    // function updateSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){    
         
-        $updateSalesReturn = "UPDATE `sales_return` SET `bill_date`='$billdate',`return_date`='$returnDate',`items`='$items',`gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode',`added_by`='$added_by',`added_on`='$billdate' WHERE `invoice_id`='$invoiceId',`patient_id`='$patientId'";
+    //     $updateSalesReturn = "UPDATE `sales_return` SET `bill_date`='$billdate',`return_date`='$returnDate',`items`='$items',`gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode',`added_by`='$added_by',`added_on`='$billdate' WHERE `invoice_id`='$invoiceId',`patient_id`='$patientId'";
         
-    }
+    // }
 
     //end of sales return update-----------------
 
@@ -77,8 +73,6 @@ class SalesReturn extends DatabaseConnection{
 //         return $updateBillQuery;
 
 //     }//end updateLabBill function
-
-
 
 
 //     function amountSoldBy($pharmacist){
@@ -162,12 +156,22 @@ class SalesReturn extends DatabaseConnection{
     }//end stockOutDetailsById function
 
 
-    //--------------------update sales return details table----------------RD--------------
+    //--------------------fetch sales return details table data----------------RD--------------
 
     function selectSalesReturnDetailsbyInvoiceIdProductIdBatchNo($invoiceId, $productId, $batchNo){
         $response = array();
-        $stockReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoiceId' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
-        $query = $this->conn->query($stockReturnDetailsData);
+        $salesReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoiceId' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
+        $query = $this->conn->query($salesReturnDetailsData);
+        while($result = $query->fetch_array()){
+            $response[] = $result;
+        }
+        return $response;
+    }
+
+    function salesReturnDetailsbyInvoiceId($invoiceId){
+        $response = array();
+        $salesReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoiceId'";
+        $query = $this->conn->query($salesReturnDetailsData);
         while($result = $query->fetch_array()){
             $response[] = $result;
         }
