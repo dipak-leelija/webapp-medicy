@@ -48,6 +48,7 @@ $InvoiceId = $_GET['invoice'];
 
     <!-- Custom CSS  -->
     <link rel="stylesheet" href="css/custom/stock-in.css">
+    <script src="../js/sweetAlert.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -154,8 +155,13 @@ $InvoiceId = $_GET['invoice'];
                                 </div>
 
                                 <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="qty">Returned Qty.</label>
+                                    <label class="mb-0 mt-1" for="qty">Quantity</label>
                                     <input type="text" class="upr-inp" name="qty" id="qty" readonly>
+                                </div>
+
+                                <div class="col-md-1 col-6 mt-3">
+                                    <label class="mb-0 mt-1" for="rtn-qty">Rtn. Qty.</label>
+                                    <input type="text" class="upr-inp" name="rtn-qty" id="rtn-qty" readonly>
                                 </div>
 
                                 <div class="col-md-1 col-6 mt-3">
@@ -275,7 +281,6 @@ $InvoiceId = $_GET['invoice'];
                         </form>
                     </div>
                     <!--=========================== Show Bill Items ===========================-->
-
 
                 </div>
                 <!-- /.container-fluid -->

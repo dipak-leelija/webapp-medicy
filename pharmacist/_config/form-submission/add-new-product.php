@@ -14,7 +14,6 @@ require_once '../../../php_control/products.class.php';
 require_once '../../../php_control/productsImages.class.php';
 
 
-
 $Products      = new Products();
 $ProductImages = new ProductImages();
 

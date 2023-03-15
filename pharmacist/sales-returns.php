@@ -124,6 +124,7 @@ $Patients      = new Patients();
                                     <thead class="thead-white bg-primary text-light">
                                         <tr>
                                             <th>Invoice</th>
+                                            <th>Sales Return Id</th>
                                             <th>Patient Name</th>
                                             <th>Items</th>
                                             <th>Bill Date</th>
@@ -149,6 +150,7 @@ $Patients      = new Patients();
                                             }
                                                                                         
                                             echo '<tr data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem('.$item['invoice_id'].')">
+                                                    <td>'.$item['invoice_id'].'</td>
                                                     <td>'.$item['invoice_id'].'</td>
                                                     <td>'.$patientName.'</td>
                                                     <td>'.$item['items'].'</td>

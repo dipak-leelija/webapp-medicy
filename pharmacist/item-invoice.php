@@ -50,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-
     $reffby         = $_POST['doctor-name'];
     $billdate       = $_POST['bill-date'];
     $totalItems     = $_POST['total-items'];
@@ -81,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // print_r($amount);
     // echo "<br><br>";
 
-
+    
     if (isset($_POST['submit'])) {
         $invoiceId = $IdGeneration->pharmecyInvoiceId();
 

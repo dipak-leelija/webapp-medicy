@@ -52,6 +52,15 @@ class SalesReturn extends DatabaseConnection{
         return $response;
     }
 
+    function selectSalesReturnByInvoiceIdandPatientIdandDateTime($invoiceId, $patientId, $timeStamp){
+        $response = array();
+        $selectSalesReturn = "SELECT * FROM `sales_return` WHERE `invoice_id` = '$invoiceId' AND `patient_id` = '$patientId' AND `added_on` = '$timeStamp'";
+        $query = $this->conn->query($selectSalesReturn);
+        while($result = $query->fetch_array()){
+            $response[] = $result;
+        }
+        return $response;
+    }
     //------------------------------updating sales return table-------------- RD ----------------
 
     // function updateSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){    
@@ -132,9 +141,9 @@ class SalesReturn extends DatabaseConnection{
 //     ################################################################################################################################
 
 
-    function addReturnDetails($invoiceId, $itemId, $batchNo, $weatage, $exp_date, $qty, $disc, $gst, $amount, $return, $refund, $addedBy){
+    function addReturnDetails($SalesReturnId, $invoiceId, $itemId, $batchNo, $weatage, $exp_date, $qty, $disc, $gst, $amount, $return, $refund, $addedBy){
 
-        $insert = "INSERT INTO  sales_return_details (`invoice_id`,	`product_id`, `batch_no`, `weatage`, `exp`, `qty`, `disc`, `gst`,	`amount`, `return`, `refund`, `added_by`) VALUES  ('$invoiceId', '$itemId', '$batchNo', '$weatage', '$exp_date', '$qty', '$disc', '$gst', '$amount', '$return', '$refund', '$addedBy')";
+        $insert = "INSERT INTO  sales_return_details (`sales_return_id`, `invoice_id`,	`product_id`, `batch_no`, `weatage`, `exp`, `qty`, `disc`, `gst`,	`amount`, `return`, `refund`, `added_by`) VALUES  ('$SalesReturnId', '$invoiceId', '$itemId', '$batchNo', '$weatage', '$exp_date', '$qty', '$disc', '$gst', '$amount', '$return', '$refund', '$addedBy')";
         // echo $insertEmp.$this->conn->error;
         // exit;
         $res = $this->conn->query($insert);

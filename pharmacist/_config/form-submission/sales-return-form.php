@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 
 require_once '../sessionCheck.php'; //check admin loggedin or not
 
-
 require_once '../../../php_control/hospital.class.php';
 require_once '../../../php_control/stockOut.class.php';
 require_once '../../../php_control/patients.class.php';
@@ -17,7 +16,6 @@ require_once '../../../php_control/stockInDetails.class.php';
 
 // require_once '../../../php_control/idsgeneration.class.php';
 
-
 //  INSTANTIATING CLASS
 $HelthCare       = new HelthCare();
 $StockOut        = new StockOut();
@@ -28,7 +26,6 @@ $SalesReturn     = new SalesReturn();
 $CurrentStock    = new CurrentStock();
 $StockInDetails  = new StockInDetails();
 // $IdGeneration    = new IdGeneration();
-
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -62,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $refundAmount   = $_POST['refund-amount'];
         $added_by = $_SESSION['employee_username'];
         $invoiceId = str_replace("#", '', $invoice);
-        
+
         //exit;
         $sold     = $StockOut->stockOutDisplayById($invoiceId);
 
@@ -72,66 +69,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // $customerId = $sold[0]['customer_id'];
         // echo $customerId;
 
-        if($sold[0]['customer_id'] == "Cash Sales"){
+        if ($sold[0]['customer_id'] == "Cash Sales") {
             $patientName = "Cash Sales";
             $patientPhNo = " ";
-        }else{
+        } else {
             $patient  = $Patients->patientsDisplayByPId($sold[0]['customer_id']);
             $patientName = $patient[0]['name'];
             $patientPhNo = $patient[0]['phno'];
         }
-        
-        // echo "invoice id"; echo "<br><br>";
-        // print_r($invoiceId); echo "<br><br>";
-        // echo "product id"; echo "<br><br>";
-        // print_r($products); echo "<br><br>";
-        // $productsSize = sizeof($products);
-        // echo "batch no"; echo "<br><br>";
-        // print_r($batchNo); echo "<br><br>";
-        // $batchNoSize = sizeof($batchNo);
-        // echo "Patient id : ", $sold[0]['customer_id']; echo "<br><br>";
 
+        $returned = $SalesReturn->addSalesReturn($invoiceId, $sold[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by);
+        $currentTime = date('Y-m-d G:i:s'); //holding date time of adding data of sales return table
 
-        // $checkSalesReturn = $SalesReturn ->selectSalesReturnByInvoiceIdandPatientId($invoiceId, $sold[0]['customer_id']);
-        // echo "Stock Return Table Data :- <br>"; print_r($checkSalesReturn); echo "<br><br>";
+        $checkReturned = $SalesReturn->selectSalesReturnByInvoiceIdandPatientIdandDateTime($invoiceId, $sold[0]['customer_id'], $currentTime);
 
-        // if($productsSize == $batchNoSize){
-        //     for($i = 0; $i<$productsSize; $i++){
-
-        //         echo "Stock Return Details Table Data :- <br>";
-
-        //         $checkSalesReturnDetails = $SalesReturn->selectSalesReturnDetailsbyInvoiceIdProductIdBatchNo($invoiceId, $products[$i], $batchNo[$i]);
-
-        //         print_r($checkSalesReturnDetails); echo "<br><br>";
-        //     }
-        // }
-        
-        
-
-        // exit;
-        //  // Generate Return Bill
-        
-        // if($checkSalesReturn == null && $checkSalesReturnDetails == null){
-            $returned = $SalesReturn->addSalesReturn($invoiceId, $sold[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by);
-
-        // }elseif($checkSalesReturn != null && $checkSalesReturnDetails == null){
-
-        //     $invoiceId = $invoiceId;
-        //     $patientId = $sold[0]['customer_id'];
-        //     $billDate = $billDate;
-        //     $returnDate = $returnDate;
-        //     $updatedItems = ;
-        //     $updatedgstAmount = ;
-        //     $updatedRefundAmount = ;
-        //     $refundMode = $refundMode;
-        //     $added_by = $added_by;
-
-        //     $returned = $SalesReturn->updateSalesReturn($invoiceId, $patientId, $billDate, $returnDate, $updatedItems, $updatedgstAmount, $updatedRefundAmount, $refundMode, $added_by);
-        // }else{
-
-        // }
-
-        // exit;
+        $SalesReturnId = $checkReturned[0]['id'];
 
         if ($returned === true) {
 
@@ -141,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $qty   = array_shift($_POST['qty']);
                 $returnQTY  = array_shift($_POST['return']);
 
-                $success = $SalesReturn->addReturnDetails($invoiceId, $productId, $batch, array_shift($_POST['setof']), array_shift($_POST['expDate']), $qty, array_shift($_POST['disc']), array_shift($_POST['gst']), array_shift($_POST['billAmount']), $returnQTY, array_shift($_POST['refund']), $added_by);
+                $success = $SalesReturn->addReturnDetails($SalesReturnId, $invoiceId, $productId, $batch, array_shift($_POST['setof']), array_shift($_POST['expDate']), $qty, array_shift($_POST['disc']), array_shift($_POST['gst']), array_shift($_POST['billAmount']), $returnQTY, array_shift($_POST['refund']), $added_by);
 
                 // now insert into current stock 
                 $stock = $CurrentStock->checkStock($productId, $batch);
@@ -182,8 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-
-    
 
     $showhelthCare = $HelthCare->showhelthCare();
     foreach ($showhelthCare as $rowhelthCare) {

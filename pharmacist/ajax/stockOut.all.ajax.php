@@ -58,7 +58,6 @@ if (isset($_GET["products"])) {
     }
 }
 
-
 // ===========================  Item Details   =========================== 
 
 // get product exp date
@@ -83,22 +82,64 @@ if (isset($_GET["mrp"])) {
     echo $item[0]['mrp'];
 }
 
+//get product purchase quantity
+if (isset($_GET["pqty"])) {
+    $invoice = $_GET["pqty"];
+    $productId = $_GET["p-id"];
+    $batchNo = $_GET["batch"];
 
+    $item = $StockOut->stockOutSelect($invoice, $productId, $batchNo);
+    $itemCheck = $StockOut->salesReturnDetails($invoice, $productId, $batchNo);
+    
 
-// get product qty
-if (isset($_GET["qty"])) {
-    $invoice = $_GET["qty"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-    $itemCheck = $StockOut->salesReturnDetails($invoice, $_GET["p-id"], $_GET["batch"]);
-    //print_r($item);
-    if($itemCheck != null && $itemCheck[0]['return']<$item[0]['qty']){
-        echo $item[0]['qty']-$itemCheck[0]['return'];
-    }else{
-        echo $item[0]['qty'];
+    if($item[0]['qty'] == "0"){
+            echo $item[0]['loosely_count'];
+    }elseif($item[0]['loosely_count'] == "0"){
+            echo $item[0]['qty'];
     }
 }
 
+// get product current qty
+if (isset($_GET["qty"])) {
+    $invoice = $_GET["qty"];
+    $productId = $_GET["p-id"];
+    $batchNo = $_GET["batch"];
+    $totalReturnQTY = 0;
 
+    $item = $StockOut->stockOutSelect($invoice, $productId, $batchNo);
+    $itemCheck = $StockOut->salesReturnDetails($invoice, $productId, $batchNo);
+    //print_r($item); echo "<br><br>";
+    //print_r($itemCheck);
+
+    $sizeOfitem = sizeof($item);
+    $sizeOfitemCheck = sizeof($itemCheck);
+
+    //if($item[0]['qty'] == "0"){
+        for($i = 0; $i<$sizeOfitemCheck; $i++){
+            $totalReturnQTY = $totalReturnQTY + $itemCheck[$i]['return'];
+        }
+    // }elseif($item[0]['loosely_count'] == "0"){
+    //     for($i = 0; $i<$sizeOfitemCheck; $i++){
+    //         $totalReturnQTY = $totalReturnQTY + $itemCheck[$i]['return'];
+    //     }
+    // }
+
+    if($item[0]['qty'] == "0"){
+        if($itemCheck != null && $totalReturnQTY <= $item[0]['loosely_count']){
+            echo $item[0]['loosely_count']-$totalReturnQTY;
+        }else{
+            echo $item[0]['loosely_count'];
+        }
+    }elseif($item[0]['loosely_count'] == "0"){
+        if($itemCheck != null && $totalReturnQTY <= $item[0]['qty']){
+            echo $item[0]['qty']-$totalReturnQTY;
+        }else{
+            echo $item[0]['qty'];
+        }
+    }
+
+    //echo $sizeOfitem, " <=> " , $sizeOfitemCheck;
+}
 
 // get product discount
 if (isset($_GET["disc"])) {

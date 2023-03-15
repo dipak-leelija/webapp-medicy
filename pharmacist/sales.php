@@ -93,7 +93,7 @@ $soldItems = $StockOut->stockOutDisplay();
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        
                                         <?php
                                         foreach ($soldItems as $soldItem) {
                                             $invoice    = $soldItem['invoice_id'];

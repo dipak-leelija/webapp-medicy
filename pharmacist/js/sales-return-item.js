@@ -11,6 +11,7 @@ expDate = document.getElementById("exp-date");
 unit = document.getElementById("unit");
 batch = document.getElementById("batch-no")
 mrp = document.getElementById("mrp");
+purchaseQuantity = document.getElementById("purchase-qty");
 qty = document.getElementById("qty");
 discount = document.getElementById("discount");
 discountPrice = document.getElementById("discount-price");
@@ -63,6 +64,7 @@ const getCustomer = (invoice) => {
         unit.value = "";
         batch.value = "";
         mrp.value = "";
+        purchaseQuantity.value = "";
         qty.value = "";
         discount.value = "";
         gst.value = "";
@@ -71,7 +73,6 @@ const getCustomer = (invoice) => {
         itemList.innerHTML = '<option value="" selected disabled>Select Invoice Number First</option>';
     };
 };
-
 
 const getReturnDate = (date) => {
     document.getElementById('return-date').value = date;
@@ -126,6 +127,7 @@ const getDtls = (invoiceId, customerId) => {
         unit.value = "";
         batchNo.value = "";
         mrp.value = "";
+        purchaseQuantity.value = "";
         qty.value = "";
         discount.value = "";
         gst.value = "";
@@ -172,11 +174,20 @@ const getItemDetails = (t) => {
         xmlhttp.send(null);
         mrp.value = xmlhttp.responseText;
 
+        //==================== PURCHASE QTY ====================
+        let purchaseqtyUrl = `ajax/stockOut.all.ajax.php?pqty=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        xmlhttp.open("GET", purchaseqtyUrl, false);
+        xmlhttp.send(null);
+        //alert(xmlhttp.responseText)
+
+        purchaseQuantity.value = xmlhttp.responseText;
+
         //==================== QTY ====================
         let qtyUrl = `ajax/stockOut.all.ajax.php?qty=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", qtyUrl, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText)
+        
         qty.value = xmlhttp.responseText;
 
         //==================== DISC ====================
@@ -185,7 +196,7 @@ const getItemDetails = (t) => {
         xmlhttp.send(null);
         discount.value = xmlhttp.responseText;
 
-        //==================== DISC ====================
+        //==================== DISCOUNT PRICE ====================
         let dPriceUrl = `ajax/stockOut.all.ajax.php?disc-price=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", dPriceUrl, false);
         xmlhttp.send(null);
@@ -203,7 +214,7 @@ const getItemDetails = (t) => {
         xmlhttp.send(null);
         taxable.value = xmlhttp.responseText;
 
-        //==================== Unit ====================
+        //==================== AMOUNT ====================
         let amountUrl = `ajax/stockOut.all.ajax.php?amount=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", amountUrl, false);
         xmlhttp.send(null);
@@ -217,6 +228,7 @@ const getItemDetails = (t) => {
         unit.value = "";
         batchNo.value = "";
         mrp.value = "";
+        purchaseQuantity.value = "";
         qty.value = "";
         discount.value = "";
         gst.value = "";
@@ -228,10 +240,9 @@ const getItemDetails = (t) => {
 
 const getRefund = (returnQty) => {
 
-
     if (returnQty != '') {
         if (parseFloat(returnQty) <= parseFloat(qty.value)) {
-            let singlePrice = parseFloat(billAmount.value) / parseFloat(qty.value);
+            let singlePrice = parseFloat(billAmount.value) / parseFloat(purchaseQuantity.value);
 
             let refund = singlePrice * returnQty;
             document.getElementById("refund").value = refund.toFixed(2);

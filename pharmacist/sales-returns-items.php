@@ -8,9 +8,6 @@ require_once '../php_control/packagingUnit.class.php';
 $page = "sales-returns";
 
 
-
-
-
 //class Initilization
 $Products           = new Products();
 $Distributor        = new Distributor();
@@ -161,6 +158,11 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                     <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
                                 </div>
 
+                                <div class="col-md-1 col-6 mt-3" hidden>
+                                    <label class="mb-0 mt-1" for="purchase-qty">P.Quantity</label>
+                                    <input type="text" class="upr-inp" name="purchase-qty" id="purchase-qty" readonly>
+                                </div>
+
                                 <div class="col-md-1 col-6 mt-3">
                                     <label class="mb-0 mt-1" for="qty">Quantity</label>
                                     <input type="text" class="upr-inp" name="qty" id="qty" readonly>
@@ -177,7 +179,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         value="0" readonly>
                                 </div>
 
-
+                                
                                 <div class="col-md-1 col-6 mt-3">
                                     <label class="mb-0 mt-1" for="gst">GST</label>
                                     <input type="text" class="upr-inp" name="gst" id="gst" readonly>

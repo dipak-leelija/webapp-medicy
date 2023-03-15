@@ -1,3 +1,4 @@
+
 const xmlhttp = new XMLHttpRequest();
 const listArea = document.getElementById("bills-list");
 
@@ -12,6 +13,7 @@ unit = document.getElementById("unit");
 batch = document.getElementById("batch-no")
 mrp = document.getElementById("mrp");
 qty = document.getElementById("qty");
+rtnqty = document.getElementById("rtn-qty");
 discount = document.getElementById("discount");
 discountPrice = document.getElementById("discount-price");
 gst = document.getElementById("gst")
@@ -64,6 +66,7 @@ const getCustomer = (invoice) => {
         batch.value = "";
         mrp.value = "";
         qty.value = "";
+        rtnqty.value = "";
         discount.value = "";
         gst.value = "";
         taxable.value = "";
@@ -127,6 +130,7 @@ const getDtls = (invoiceId, customerId) => {
         batchNo.value = "";
         mrp.value = "";
         qty.value = "";
+        rtnqty.value = "";
         discount.value = "";
         gst.value = "";
         taxable.value = "";
@@ -179,6 +183,13 @@ const getEditItemDetails = (t) => {
         // alert(xmlhttp.responseText)
         qty.value = xmlhttp.responseText;
 
+        //==================== Return QTY ====================
+        let rtnQtyUrl = `ajax/salesReturnEdit.ajax.php?rtnqty=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        xmlhttp.open("GET", rtnQtyUrl, false);
+        xmlhttp.send(null);
+        // alert(xmlhttp.responseText)
+        rtnqty.value = xmlhttp.responseText;
+
         //==================== DISC ====================
         let discUrl = `ajax/salesReturnEdit.ajax.php?disc=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", discUrl, false);
@@ -218,6 +229,7 @@ const getEditItemDetails = (t) => {
         batchNo.value = "";
         mrp.value = "";
         qty.value = "";
+        rtnqty.value = "";
         discount.value = "";
         gst.value = "";
         taxable.value = "";
@@ -230,7 +242,11 @@ const getRefund = (returnQty) => {
 
 
     if (returnQty != '') {
-        if (parseFloat(returnQty) <= parseFloat(qty.value)) {
+        if (parseFloat(returnQty) > parseFloat(qty.value)) {
+            // alert("Return Quantity must be lesser than current quantity!");
+            swal("Error", "Return Quantity must be lesser than current quantity!", "error");
+        }
+        else if (parseFloat(returnQty) <= parseFloat(qty.value)) {
             let singlePrice = parseFloat(billAmount.value) / parseFloat(qty.value);
 
             let refund = singlePrice * returnQty;
@@ -261,151 +277,152 @@ const getRefund = (returnQty) => {
 //geeting bills by clicking on add button
 const addData = () => {
 
+    //alert(invoiceNo.value);
+    
+    // if (invoiceNo.value == "") {
+    //     invoiceNo.focus();
+    //     return;
+    // }
 
-        if (invoiceNo.value == "") {
-            invoiceNo.focus();
-            return;
-        }
-
-        if (patientName.value == "") {
-            patientName.focus();
-            return;
-        }
-
-
-        if (billDate.value == "") {
-            billDate.focus();
-            return;
-        }
-
-        if (reffBy.value == "") {
-            reffBy.focus();
-            return;
-        }
+    if (patientName.value == "") {
+        patientName.focus();
+        return;
+    }
 
 
-        if (refundMode.value == "") {
-            refundMode.focus();
-            return;
-        }
+    if (billDate.value == "") {
+        billDate.focus();
+        return;
+    }
 
-        if (itemList.value == "") {
-            itemList.focus();
-        } else {}
-
-        if (expDate.value == "") {
-            expDate.focus();
-            return;
-        }
-
-        if (unit.value == "") {
-            unit.focus();
-            return;
-        }
-
-        if (batch.value == "") {
-            batch.focus();
-            return;
-        }
-
-        if (mrp.value == "") {
-            mrp.focus();
-            return;
-        }
-
-        if (qty.value == "") {
-            qty.focus();
-            return;
-        }
-
-        if (discount.value == "") {
-            discount.focus();
-            return;
-        }
-
-        if (discountPrice.value == "") {
-            discountPrice.focus();
-            return;
-        }
-
-        if (gst.value == "") {
-            gst.focus();
-            return;
-        }
-
-        if (taxable.value == "") {
-            taxable.focus();
-            return;
-        }
-
-        if (billAmount.value == "") {
-            billAmount.focus();
-            return;
-        }
-
-        if (returnQtyVal.value == "") {
-            returnQtyVal.focus();
-            return;
-        }
+    if (reffBy.value == "") {
+        reffBy.focus();
+        return;
+    }
 
 
-        if (refund.value == "") {
-            refund.focus();
-            return;
-        }
+    if (refundMode.value == "") {
+        refundMode.focus();
+        return;
+    }
 
-        let existsItems = document.querySelectorAll('tr');
-        for (let i = 0; i < existsItems.length; i++) {
-            if (i > 0) {
+    if (itemList.value == "") {
+        itemList.focus();
+    } else { }
 
-                const item = existsItems[i];
-                if (item.childNodes[5].childNodes[3].value == itemList.value) {
-                    swal("You can not add same item more than one!");
-                    expDate.value = "";
-                    unit.value = "";
-                    batch.value = "";
-                    mrp.value = "";
-                    qty.value = "";
-                    discount.value = "";
-                    gst.value = "";
-                    taxable.value = "";
-                    billAmount.value = "";
+    if (expDate.value == "") {
+        expDate.focus();
+        return;
+    }
 
-                    return;
-                }
+    if (unit.value == "") {
+        unit.focus();
+        return;
+    }
+
+    if (batch.value == "") {
+        batch.focus();
+        return;
+    }
+
+    if (mrp.value == "") {
+        mrp.focus();
+        return;
+    }
+
+    if (rtnqty.value == "") {
+        rtnqty.focus();
+        return;
+    }
+
+    if (discount.value == "") {
+        discount.focus();
+        return;
+    }
+
+    if (discountPrice.value == "") {
+        discountPrice.focus();
+        return;
+    }
+
+    if (gst.value == "") {
+        gst.focus();
+        return;
+    }
+
+    if (taxable.value == "") {
+        taxable.focus();
+        return;
+    }
+
+    if (billAmount.value == "") {
+        billAmount.focus();
+        return;
+    }
+
+    if (returnQtyVal.value == "") {
+        returnQtyVal.focus();
+        return;
+    }
+
+
+    if (refund.value == "") {
+        refund.focus();
+        return;
+    }
+
+    let existsItems = document.querySelectorAll('tr');
+    for (let i = 0; i < existsItems.length; i++) {
+        if (i > 0) {
+
+            const item = existsItems[i];
+            if (item.childNodes[5].childNodes[3].value == itemList.value) {
+                swal("You can not add same item more than one!");
+                expDate.value = "";
+                unit.value = "";
+                batch.value = "";
+                mrp.value = "";
+                qty.value = "";
+                rtnqty.value = "";
+                discount.value = "";
+                gst.value = "";
+                taxable.value = "";
+                billAmount.value = "";
+
+                return;
             }
-
         }
 
-        let itemName = itemList.selectedOptions[0].text;
+    }
 
-        let items = document.querySelectorAll('tr');
-        let slno = items.length;
-        document.getElementById("total-items").value = slno;
+    let itemName = itemList.selectedOptions[0].text;
 
-        //get total Refund Amount
-        var refundAmount = document.getElementById("refund-amount");
-        let totalRefund = parseFloat(refundAmount.value) + parseFloat(refund.value);
-        refundAmount.value = totalRefund.toFixed(2);
+    let items = document.querySelectorAll('tr');
+    let slno = items.length;
+    document.getElementById("total-items").value = slno;
 
-        //get total item qty
-        var totalQty = document.getElementById("total-qty");
-        let totalQtyTemp = parseFloat(totalQty.value) + parseFloat(returnQtyVal.value);
-        totalQty.value = totalQtyTemp;
+    //get total Refund Amount
+    var refundAmount = document.getElementById("refund-amount");
+    let totalRefund = parseFloat(refundAmount.value) + parseFloat(refund.value);
+    refundAmount.value = totalRefund.toFixed(2);
 
-
-        // generate gst and store 
-        let gstPerItem = gst.value / 100 * refund.value;
-        var gstAmount = document.getElementById("gst-amount");
-        var totalGstAmount = parseFloat(gstAmount.value) + parseFloat(gstPerItem);
-        gstAmount.value = totalGstAmount.toFixed(2);
+    //get total item qty
+    var totalQty = document.getElementById("total-qty");
+    let totalQtyTemp = parseFloat(totalQty.value) + parseFloat(returnQtyVal.value);
+    totalQty.value = totalQtyTemp;
 
 
+    // generate gst and store 
+    let gstPerItem = gst.value / 100 * refund.value;
+    var gstAmount = document.getElementById("gst-amount");
+    var totalGstAmount = parseFloat(gstAmount.value) + parseFloat(gstPerItem);
+    gstAmount.value = totalGstAmount.toFixed(2);
 
-        const appendData = () => {
 
-            jQuery("#dataBody")
-                .append(`<tr id="table-row-${slno}">
+    const appendData = () => {
+
+        jQuery("#dataBody")
+            .append(`<tr id="table-row-${slno}">
             <td class='text-danger pt-3'>
                 <i class="fas fa-trash" id="${slno}"
                     onclick="deleteData(this.id, ${parseFloat(returnQtyVal.value)}, ${gstPerItem}, ${parseFloat(refund.value)})"></i>
@@ -449,28 +466,29 @@ const addData = () => {
                 <input class="d-none" type="any" name="billAmount[]" value="${billAmount.value}" readonly>
             </td>
         </tr>`);
-            return true;
-        };
+        return true;
+    };
 
-        if (appendData() == true) {
-            itemList.remove(itemList.selectedIndex)
-            itemList.options[0].selected = true;
-            expDate.value = "";
-            unit.value = "";
-            batch.value = "";
-            mrp.value = "";
-            qty.value = "";
-            discount.value = "";
-            discountPrice.value = "";
-            gst.value = "";
-            taxable.value = "";
-            billAmount.value = "";
+    if (appendData() == true) {
+        itemList.remove(itemList.selectedIndex)
+        itemList.options[0].selected = true;
+        expDate.value = "";
+        unit.value = "";
+        batch.value = "";
+        mrp.value = "";
+        qty.value = "";
+        rtnqty.value = "";
+        discount.value = "";
+        discountPrice.value = "";
+        gst.value = "";
+        taxable.value = "";
+        billAmount.value = "";
 
-            returnQtyVal.value = "";
-            refund.value = "";
-        }
+        returnQtyVal.value = "";
+        refund.value = "";
+    }
 
-    } //eof addData  
+} //eof addData  
 
 // ================================ Delet Data ================================
 
