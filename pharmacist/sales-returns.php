@@ -151,8 +151,8 @@ $Patients      = new Patients();
                                                 $patientName = $patient[0]['name'];
                                             }
                                                                                         
-                                            echo '<tr data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem('.$item['invoice_id'].')">
-                                                    <td>'.$item['invoice_id'].'</td>
+                                            echo '<tr data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem('.$item['invoice_id'].','.$salesReturnId.')">
+                                                    <td>'.$invoiceId.'</td>
                                                     <td hidden>'.$salesReturnId.'</td>
                                                     <td>'.$patientName.'</td>
                                                     <td>'.$item['items'].'</td>
@@ -241,10 +241,10 @@ $Patients      = new Patients();
     <script src="js/demo/datatables-demo.js"></script>
 
     <script>
-    const viewReturnItem = (invoice) => {
+    const viewReturnItem = (invoice, id) => {
          
         var xmlhttp = new XMLHttpRequest();
-        let url = `ajax/viewSalesReturn.ajax.php?invoice=${invoice}`; 
+        let url = `ajax/viewSalesReturn.ajax.php?invoice=${invoice}&id=${id}`; 
         xmlhttp.open("GET", url, false);
         xmlhttp.send(null);
         document.getElementById('viewReturnModalBody').innerHTML = xmlhttp.responseText

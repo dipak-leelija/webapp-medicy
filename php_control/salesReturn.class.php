@@ -61,6 +61,16 @@ class SalesReturn extends DatabaseConnection{
         }
         return $response;
     }
+
+    function salesReturnDetailsByID($id, $invoiceId){
+        $response = array();
+        $selectSalesReturn = "SELECT * FROM `sales_return` WHERE `id`= '$id' AND `invoice_id` = '$invoiceId'";
+        $query = $this->conn->query($selectSalesReturn);
+        while($result = $query->fetch_array()){
+            $response[] = $result;
+        }
+        return $response;
+    }
     //------------------------------updating sales return table-------------- RD ----------------
 
     // function updateSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){    

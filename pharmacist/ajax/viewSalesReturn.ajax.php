@@ -10,10 +10,22 @@ $Patients       = new Patients();
 
 
 
-
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
     if (isset($_GET['invoice'])) {
-        $returnBill = $SalesReturn->selectSalesReturn('invoice_id', $_GET['invoice']);
+
+        $id = $_GET['id'];
+
+        $returnBill = $SalesReturn->salesReturnDetailsByID($id , $_GET['invoice']);
+
+        print_r($returnBill); echo "<br><br>";
+
+        $patientId = $returnBill[0]['patient_id'];
+
+        if($patientId == "Cash Sales"){
+            $patientName = "Cash Sales";
+        }else{
+            $patientName = $returnBill[0]['patient_id'];
+        }
     }
 }
 
@@ -49,8 +61,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 <p><b>Invoice No:</b> <span>#<?php echo $returnBill[0]['invoice_id']; ?></span></p>
             </div>
             <div class="col-12 col-sm-6 col-md-3">
-                <?php $patient = $Patients->patientsDisplayByPId($returnBill[0]['patient_id'])?>
-                <p><b>Patient Name:</b> <?php echo $patient[0]['name']; ?></p>
+                <?php $patient = $Patients->patientsDisplayByPId($patientId);
+                        $patientName = $patient[0]['name'];
+                ?>
+                <p><b>Patient Name:</b> <?php echo $patientName; ?></p>
             </div>
             <div class="col-12 col-sm-6 col-md-3">
                 <p><b>Return Date:</b> <span><?php echo $returnBill[0]['return_date']; ?></span></p>
