@@ -41,13 +41,14 @@ if (isset($_GET["bill-date"])) {
 if (isset($_GET["reff-by"])) {
     $invoiceId = $_GET["reff-by"];
     $bill = $StockOut->stockOutDisplayById($invoiceId);
-    echo $bill[0]['reff_by'];
+    echo $bill[0]["reff_by"];
 }
 
 // get products list
 if (isset($_GET["products"])) {
     $invoiceId = $_GET["products"];
-    $items = $salesReturn->salesReturnDetailsbyInvoiceId($invoiceId);
+    $salesRetundid = $_GET["salesreturnID"];
+    $items = $salesReturn->salesReturnbyInvoiceIdsalesReturnId($invoiceId, $salesRetundid);
     echo '<option value="" selected disabled>Select item</option>';
     print_r($items);
     foreach ($items as $item) {

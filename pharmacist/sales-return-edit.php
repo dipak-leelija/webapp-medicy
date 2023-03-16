@@ -23,7 +23,7 @@ $showMeasureOfUnits    = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 $InvoiceId = $_GET['invoice'];
-
+$salesReturnId = $_GET['salesReturnId'];
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +83,9 @@ $InvoiceId = $_GET['invoice'];
                             <div class="row">
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="invoice-no">Invoice No.</label>
-                                    <input type="text" class="upr-inp" name="invoice-no" id="<?php echo $InvoiceId ?>" value="<?php echo $InvoiceId ?>" onkeyup="getCustomer(this.value)" autocomplete="off" readonly>
+                                    <input type="text" class="upr-inp" name="invoice-no" id="<?php echo $InvoiceId ?>" value="<?php echo $InvoiceId ?>" onkeyup="getCustomer(this.id)" autocomplete="off" readonly>
+
+                                    <input type="text" class="upr-inp" name="sales-return-id" id="sales-return-id" value="<?php echo $salesReturnId ?>"  autocomplete="off" readonly hidden>
                                 </div>
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="patient-name">Patient Name.</label>

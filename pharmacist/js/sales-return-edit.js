@@ -2,6 +2,8 @@
 const xmlhttp = new XMLHttpRequest();
 const listArea = document.getElementById("bills-list");
 
+salesReturnId = document.getElementById("sales-return-id").value;
+
 patientName = document.getElementById("patient-name");
 billDate = document.getElementById("bill-date");
 reffBy = document.getElementById("reff-by");
@@ -81,7 +83,7 @@ const getReturnDate = (date) => {
 };
 
 const getDtls = (invoiceId, customerId) => {
-
+    salesReturnId = salesReturnId;
     document.getElementById('invoice').value = `#${invoiceId}`;
 
     if (invoiceId != "" && customerId != "") {
@@ -104,7 +106,7 @@ const getDtls = (invoiceId, customerId) => {
 
 
         //==================== Reff By ====================
-        reffUrl = 'ajax/salesReturnEdit.ajax.php?reff-by=' + invoiceId;
+        reffUrl = `ajax/salesReturnEdit.ajax.php?reff-by=${invoiceId}`;
         // alert(url);
         xmlhttp.open("GET", reffUrl, false);
         xmlhttp.send(null);
@@ -112,7 +114,8 @@ const getDtls = (invoiceId, customerId) => {
 
 
         //==================== Products List ====================
-        productsUrl = 'ajax/salesReturnEdit.ajax.php?products=' + invoiceId;
+        //productsUrl = 'ajax/salesReturnEdit.ajax.php?products=' + invoiceId;
+        productsUrl = `ajax/salesReturnEdit.ajax.php?products=${invoiceId}&salesreturnID=${salesReturnId}`;
         xmlhttp.open("GET", productsUrl, false);
         xmlhttp.send(null);
         itemList.innerHTML = xmlhttp.responseText;

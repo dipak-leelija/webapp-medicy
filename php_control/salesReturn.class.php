@@ -52,7 +52,7 @@ class SalesReturn extends DatabaseConnection{
         return $response;
     }
 
-    function selectSalesReturnByInvoiceIdandPatientIdandDateTime($invoiceId, $patientId, $timeStamp){
+    function seletSalesReturnByDateTime($invoiceId, $patientId, $timeStamp){
         $response = array();
         $selectSalesReturn = "SELECT * FROM `sales_return` WHERE `invoice_id` = '$invoiceId' AND `patient_id` = '$patientId' AND `added_on` = '$timeStamp'";
         $query = $this->conn->query($selectSalesReturn);
@@ -177,9 +177,9 @@ class SalesReturn extends DatabaseConnection{
         return $response;
     }
 
-    function salesReturnDetailsbyInvoiceId($invoiceId){
+    function salesReturnbyInvoiceIdsalesReturnId($invoiceId, $salesRetundid){
         $response = array();
-        $salesReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoiceId'";
+        $salesReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoiceId' AND `sales_return_id`='$salesRetundid'";
         $query = $this->conn->query($salesReturnDetailsData);
         while($result = $query->fetch_array()){
             $response[] = $result;

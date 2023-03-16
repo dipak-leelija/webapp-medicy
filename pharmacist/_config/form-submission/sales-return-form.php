@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $returned = $SalesReturn->addSalesReturn($invoiceId, $sold[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by);
         $currentTime = date('Y-m-d G:i:s'); //holding date time of adding data of sales return table
 
-        $checkReturned = $SalesReturn->selectSalesReturnByInvoiceIdandPatientIdandDateTime($invoiceId, $sold[0]['customer_id'], $currentTime);
+        $checkReturned = $SalesReturn->seletSalesReturnByDateTime($invoiceId, $sold[0]['customer_id'], $currentTime);
 
         $SalesReturnId = $checkReturned[0]['id'];
 

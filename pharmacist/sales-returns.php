@@ -124,7 +124,7 @@ $Patients      = new Patients();
                                     <thead class="thead-white bg-primary text-light">
                                         <tr>
                                             <th>Invoice</th>
-                                            <th>Sales Return Id</th>
+                                            <th hidden>Sales Return Id</th>
                                             <th>Patient Name</th>
                                             <th>Items</th>
                                             <th>Bill Date</th>
@@ -137,10 +137,12 @@ $Patients      = new Patients();
                                     <tbody id="dataBody">
                                         <?php
                                     $returns = $SalesReturn->salesReturnDisplay();
+                                    //$return = $SalesReturn->
                                     if (count($returns) > 0) {
                                         foreach ($returns as $item) {
                                             //print_r($item); echo "<br><br>"; 
                                             $invoiceId = $item['invoice_id'];
+                                            $salesReturnId = $item['id'];
                                             if($item['patient_id'] == "Cash Sales"){
                                                 $patientName = "Cash Sales";
                                             }else{
@@ -151,7 +153,7 @@ $Patients      = new Patients();
                                                                                         
                                             echo '<tr data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem('.$item['invoice_id'].')">
                                                     <td>'.$item['invoice_id'].'</td>
-                                                    <td>'.$item['invoice_id'].'</td>
+                                                    <td hidden>'.$salesReturnId.'</td>
                                                     <td>'.$patientName.'</td>
                                                     <td>'.$item['items'].'</td>
                                                     <td>'.date('d-m-Y', strtotime($item['bill_date'])).'</td>
@@ -159,7 +161,7 @@ $Patients      = new Patients();
                                                     <td>'.$item['added_by'].'</td>
                                                     <td>'.$item['refund_amount'].'</td>
                                                     <td>
-                                                        <a href="sales-return-edit.php?invoice='.$invoiceId.'" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
+                                                        <a href="sales-return-edit.php?invoice='.$invoiceId.'&salesReturnId='.$salesReturnId.'" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
                                                         <a class="text-danger ml-2" onclick="cancelSalesReturn('.$item['invoice_id'].', this)" ><i class="fas fa-window-close"></i></a>
                                                     </td> 
                                                 </tr>';
