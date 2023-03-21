@@ -1,23 +1,23 @@
 <?php
 require_once '../../php_control/salesReturn.class.php';
 require_once '../../php_control/patients.class.php';
+require_once '../../php_control/products.class.php';
 
 
 // classes initiating 
 $SalesReturn    = new SalesReturn();
 $Patients       = new Patients();
-
-
+$products       = new Products();
 
 
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
     if (isset($_GET['invoice'])) {
 
         $id = $_GET['id'];
+        
+        $returnBill = $SalesReturn->salesReturnByID($id , $_GET['invoice']);
 
-        $returnBill = $SalesReturn->salesReturnDetailsByID($id , $_GET['invoice']);
-
-        print_r($returnBill); echo "<br><br>";
+        //print_r($returnBill); echo "<br><br>";
 
         $patientId = $returnBill[0]['patient_id'];
 
@@ -28,7 +28,6 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         }
     }
 }
-
 
 ?>
 
@@ -61,8 +60,15 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 <p><b>Invoice No:</b> <span>#<?php echo $returnBill[0]['invoice_id']; ?></span></p>
             </div>
             <div class="col-12 col-sm-6 col-md-3">
-                <?php $patient = $Patients->patientsDisplayByPId($patientId);
+                <?php 
+                    if($patientId == "Cash Sales"){
+                        $patientName = "Cash Sales";
+                    }else{
+                        $patientId = $returnBill[0]['patient_id'];
+                        $patient = $Patients->patientsDisplayByPId($patientId);
                         $patientName = $patient[0]['name'];
+                    }
+                
                 ?>
                 <p><b>Patient Name:</b> <?php echo $patientName; ?></p>
             </div>
@@ -94,12 +100,15 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 <tbody>
 
                     <?php
-                    $billList = $SalesReturn->selectSalesReturnList('invoice_id', $_GET['invoice']);
+                    $billList = $SalesReturn->salesReturnbyInvoiceIdsalesReturnId($_GET['invoice'], $_GET['id']);
                     foreach ($billList as $bill) {
+
+                        $productName = $products->showProductsById($bill['product_id']);
+                        $ItemName = $productName[0]['name']; 
                     
                     echo '<tr>
                             <td>'.$bill['invoice_id'].'</td>
-                            <td>'.$bill['product_id'].'</td>
+                            <td>'.$ItemName.'</td>
                             <td>'.$bill['batch_no'].'</td>
                             <td>'.$bill['weatage'].'</td>
                             <td>'.$bill['exp'].'</td>

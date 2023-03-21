@@ -62,7 +62,7 @@ class SalesReturn extends DatabaseConnection{
         return $response;
     }
 
-    function salesReturnDetailsByID($id, $invoiceId){
+    function salesReturnByID($id, $invoiceId){
         $response = array();
         $selectSalesReturn = "SELECT * FROM `sales_return` WHERE `id`= '$id' AND `invoice_id` = '$invoiceId'";
         $query = $this->conn->query($selectSalesReturn);
@@ -73,13 +73,15 @@ class SalesReturn extends DatabaseConnection{
     }
     //------------------------------updating sales return table-------------- RD ----------------
 
-    // function updateSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){    
-        
-    //     $updateSalesReturn = "UPDATE `sales_return` SET `bill_date`='$billdate',`return_date`='$returnDate',`items`='$items',`gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode',`added_by`='$added_by',`added_on`='$billdate' WHERE `invoice_id`='$invoiceId',`patient_id`='$patientId'";
-        
-    // }
+    function updateSalesReturn($id, $returnDate, $gstAmount, $refundAmount, $refundMode, $added_by){    
+        $updateSalesReturn = "UPDATE `sales_return` SET `return_date`='$returnDate',`gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode',`added_by`='$added_by' WHERE `id`='$id'";
 
-    //end of sales return update-----------------
+        $update = $this->conn->query($updateSalesReturn);
+
+        return $update;
+    }
+
+    //end of sales return table update-----------------------------------------------------------
 
 
 //     function updateLabBill($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy ){
@@ -177,7 +179,7 @@ class SalesReturn extends DatabaseConnection{
 
     //--------------------fetch sales return details table data----------------RD--------------
 
-    function selectSalesReturnDetailsbyInvoiceIdProductIdBatchNo($invoiceId, $productId, $batchNo){
+    function salesReturnDetialSelect($invoiceId, $productId, $batchNo){
         $response = array();
         $salesReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoiceId' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
         $query = $this->conn->query($salesReturnDetailsData);
@@ -197,12 +199,30 @@ class SalesReturn extends DatabaseConnection{
         return $response;
     }
 
+    function salesReturnIdandProductId($salesRetundId, $ProductID){
+        $response = array();
+        $salesReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `product_id` = '$ProductID' AND `sales_return_id`='$salesRetundId'";
+        $query = $this->conn->query($salesReturnDetailsData);
+        while($result = $query->fetch_array()){
+            $response[] = $result;
+        }
+        return $response;
+    }
+
+
     //--------------------update sales return details table----------------RD--------------
 
-    function updateSalesReturnDetails(){
+    function updateSalesReturnDetails($salesRetunId, $invoiceId, $productID, $batchNo, $discPercent, $gstPercent, $gstAmount, $returnQTY, $refundAmount, $addedBy, $addedOn){
 
+        $updateSalseReturnDetails = "UPDATE `sales_return_details` SET `disc`='$discPercent',`gst`='$gstPercent',`amount`='$gstAmount',`return`='$returnQTY',`refund`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn' WHERE `sales_return_id`='$salesRetunId' AND `product_id`='$productID' AND `invoice_id`='$invoiceId' AND `batch_no` = '$batchNo'";
+
+        $updateDetails = $this->conn->query($updateSalseReturnDetails);
+
+        return $updateDetails;
+        
     }
-    //end of salesReturnDetails Update ---------------------
+}
+    //end of salesReturnDetails Update -------------------------------------------------------
 
 //     function updateBillDetail($invoiceId, $itemId, $itemName, $batchNo, $weatage, $exp_date, $qty, $looselyCount, $mrp, $disc, $dPrice, $gst, $netGst, $amount, $addedBy){
 
@@ -216,7 +236,7 @@ class SalesReturn extends DatabaseConnection{
 //     }//end updateBillDetail function
 
 
-}// eof LabBilling class
+// eof LabBilling class
 
 
 

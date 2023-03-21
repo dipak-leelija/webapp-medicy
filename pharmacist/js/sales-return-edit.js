@@ -2,6 +2,7 @@
 const xmlhttp = new XMLHttpRequest();
 const listArea = document.getElementById("bills-list");
 
+invoiceID = document.getElementById("invoiceID").value;
 salesReturnId = document.getElementById("sales-return-id").value;
 
 patientName = document.getElementById("patient-name");
@@ -14,6 +15,7 @@ expDate = document.getElementById("exp-date");
 unit = document.getElementById("unit");
 batch = document.getElementById("batch-no")
 mrp = document.getElementById("mrp");
+pqty = document.getElementById("P-qty");
 qty = document.getElementById("qty");
 rtnqty = document.getElementById("rtn-qty");
 discount = document.getElementById("discount");
@@ -67,6 +69,7 @@ const getCustomer = (invoice) => {
         unit.value = "";
         batch.value = "";
         mrp.value = "";
+        pqty.value = "";
         qty.value = "";
         rtnqty.value = "";
         discount.value = "";
@@ -82,64 +85,80 @@ const getReturnDate = (date) => {
     document.getElementById('return-date').value = date;
 };
 
-const getDtls = (invoiceId, customerId) => {
-    salesReturnId = salesReturnId;
-    document.getElementById('invoice').value = `#${invoiceId}`;
 
-    if (invoiceId != "" && customerId != "") {
+if(invoiceID != null){
 
-        //==================== Reff By ====================
-        patientUrl = 'ajax/salesReturnEdit.ajax.php?patient=' + invoiceId;
-        // alert(url);
-        xmlhttp.open("GET", patientUrl, false);
-        xmlhttp.send(null);
-        patientName.value = xmlhttp.responseText;
+    document.getElementById('invoice').value = `#${invoiceID}`;
 
+    productsUrl = `ajax/salesReturnEdit.ajax.php?products=${invoiceID}&salesreturnID=${salesReturnId}`;
+    xmlhttp.open("GET", productsUrl, false);
+    xmlhttp.send(null);
+    itemList.innerHTML = xmlhttp.responseText;
 
-        //==================== Bill Date ====================
-        billDateUrl = 'ajax/salesReturnEdit.ajax.php?bill-date=' + invoiceId;
-        // alert(url);
-        xmlhttp.open("GET", billDateUrl, false);
-        xmlhttp.send(null);
-        billDate.value = xmlhttp.responseText;
-        document.getElementById('purchased-date').value = xmlhttp.responseText;
+    listArea.style.display = 'none';
 
-
-        //==================== Reff By ====================
-        reffUrl = `ajax/salesReturnEdit.ajax.php?reff-by=${invoiceId}`;
-        // alert(url);
-        xmlhttp.open("GET", reffUrl, false);
-        xmlhttp.send(null);
-        reffBy.value = xmlhttp.responseText;
-
-
-        //==================== Products List ====================
-        //productsUrl = 'ajax/salesReturnEdit.ajax.php?products=' + invoiceId;
-        productsUrl = `ajax/salesReturnEdit.ajax.php?products=${invoiceId}&salesreturnID=${salesReturnId}`;
-        xmlhttp.open("GET", productsUrl, false);
-        xmlhttp.send(null);
-        itemList.innerHTML = xmlhttp.responseText;
-
-        listArea.style.display = 'none';
-
-    } else {
-
-        patientName.value = "";
-        billDate.value = "";
-        reffBy.value = "";
-
-        expDate.value = "";
-        unit.value = "";
-        batchNo.value = "";
-        mrp.value = "";
-        qty.value = "";
-        rtnqty.value = "";
-        discount.value = "";
-        gst.value = "";
-        taxable.value = "";
-        billAmount.value = "";
-    }
 }
+
+// const getDtls = (invoiceId, customerId) => {
+//     invoiceid = invoiceID;
+//     salesReturnId = salesReturnId;
+//     document.getElementById('invoice').value = `#${invoiceid}`;
+
+//     if (invoiceId != "" && customerId != "") {
+
+//         //==================== Reff By ====================
+//         patientUrl = 'ajax/salesReturnEdit.ajax.php?patient=' + invoiceId;
+//         // alert(url);
+//         xmlhttp.open("GET", patientUrl, false);
+//         xmlhttp.send(null);
+//         patientName.value = xmlhttp.responseText;
+
+
+//         //==================== Bill Date ====================
+//         billDateUrl = 'ajax/salesReturnEdit.ajax.php?bill-date=' + invoiceId;
+//         // alert(url);
+//         xmlhttp.open("GET", billDateUrl, false);
+//         xmlhttp.send(null);
+//         billDate.value = xmlhttp.responseText;
+//         document.getElementById('purchased-date').value = xmlhttp.responseText;
+
+
+//         //==================== Reff By ====================
+//         reffUrl = `ajax/salesReturnEdit.ajax.php?reff-by=${invoiceId}`;
+//         // alert(url);
+//         xmlhttp.open("GET", reffUrl, false);
+//         xmlhttp.send(null);
+//         reffBy.value = xmlhttp.responseText;
+
+
+//         //==================== Products List ====================
+//         //productsUrl = 'ajax/salesReturnEdit.ajax.php?products=' + invoiceId;
+//         // productsUrl = `ajax/salesReturnEdit.ajax.php?products=${invoiceid}&salesreturnID=${salesReturnId}`;
+//         // xmlhttp.open("GET", productsUrl, false);
+//         // xmlhttp.send(null);
+//         // itemList.innerHTML = xmlhttp.responseText;
+
+//         // listArea.style.display = 'none';
+
+//     } else {
+
+//         patientName.value = "";
+//         billDate.value = "";
+//         reffBy.value = "";
+
+//         expDate.value = "";
+//         unit.value = "";
+//         batchNo.value = "";
+//         mrp.value = "";
+//         pqty.value = "";
+//         qty.value = "";
+//         rtnqty.value = "";
+//         discount.value = "";
+//         gst.value = "";
+//         taxable.value = "";
+//         billAmount.value = "";
+//     }
+// }
 
 
 const getRefundMode = (ref) => {
@@ -179,7 +198,14 @@ const getEditItemDetails = (t) => {
         xmlhttp.send(null);
         mrp.value = xmlhttp.responseText;
 
-        //==================== QTY ====================
+        //==================== Purchase QTY ====================
+        let purchaseqtyUrl = `ajax/salesReturnEdit.ajax.php?pqty=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        xmlhttp.open("GET", purchaseqtyUrl, false);
+        xmlhttp.send(null);
+        // alert(xmlhttp.responseText)
+        pqty.value = xmlhttp.responseText;
+
+        //==================== Current QTY ====================
         let qtyUrl = `ajax/salesReturnEdit.ajax.php?qty=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", qtyUrl, false);
         xmlhttp.send(null);
@@ -231,6 +257,7 @@ const getEditItemDetails = (t) => {
         unit.value = "";
         batchNo.value = "";
         mrp.value = "";
+        pqty.value = "";
         qty.value = "";
         rtnqty.value = "";
         discount.value = "";
@@ -245,17 +272,30 @@ const getRefund = (returnQty) => {
 
 
     if (returnQty != '') {
-        if (parseFloat(returnQty) > parseFloat(qty.value)) {
-            // alert("Return Quantity must be lesser than current quantity!");
-            swal("Error", "Return Quantity must be lesser than current quantity!", "error");
-        }
-        else if (parseFloat(returnQty) <= parseFloat(qty.value)) {
-            let singlePrice = parseFloat(billAmount.value) / parseFloat(qty.value);
 
+        returnQty1 = parseFloat(pqty.value) -  parseFloat(returnQty) 
+
+
+        if (parseFloat(returnQty1) < 0) {
+            // alert("Return Quantity must be lesser than current quantity!");
+            swal("Error", "Return edit Quantity must be lesser than Purchase quantity!", "error");
+        }
+        else if (parseFloat(returnQty1) > parseFloat(pqty.value)) {
+            // alert("Return Quantity must be lesser than current quantity!");
+            swal("Error", "Enter valid quantity", "error");
+        }
+        else if (parseFloat(returnQty1) > 0 ) {
+                let singlePrice = parseFloat(billAmount.value) / parseFloat(pqty.value);
+                let refund = singlePrice * returnQty;
+                document.getElementById("refund").value = refund.toFixed(2);
+                document.getElementById("add-btn").disabled = false;
+        } 
+        else if (parseFloat(returnQty1) == 0 ) {
+            let singlePrice = parseFloat(billAmount.value) / parseFloat(pqty.value);
             let refund = singlePrice * returnQty;
             document.getElementById("refund").value = refund.toFixed(2);
             document.getElementById("add-btn").disabled = false;
-        } else {
+        }else {
             document.getElementById("refund").value = '';
             document.getElementById("add-btn").disabled = true;
             // swal("Inserted value might be grater than sold qty.");
@@ -280,6 +320,7 @@ const getRefund = (returnQty) => {
 //geeting bills by clicking on add button
 const addData = () => {
 
+    document.getElementById("salesreturnid").value = salesReturnId;
     //alert(invoiceNo.value);
     
     // if (invoiceNo.value == "") {
@@ -330,6 +371,16 @@ const addData = () => {
 
     if (mrp.value == "") {
         mrp.focus();
+        return;
+    }
+
+    if (pqty.value == "") {
+        pqty.focus();
+        return;
+    }
+
+    if (qty.value == "") {
+        qty.focus();
         return;
     }
 
@@ -385,6 +436,7 @@ const addData = () => {
                 unit.value = "";
                 batch.value = "";
                 mrp.value = "";
+                pqty.value = "";
                 qty.value = "";
                 rtnqty.value = "";
                 discount.value = "";
@@ -479,6 +531,7 @@ const addData = () => {
         unit.value = "";
         batch.value = "";
         mrp.value = "";
+        pqty.value = "";
         qty.value = "";
         rtnqty.value = "";
         discount.value = "";

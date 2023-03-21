@@ -39,7 +39,7 @@ class StockOut extends DatabaseConnection{
         return $billData;
     }// eof stockOutDisplayById 
 
-
+    
     function updateLabBill($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy ){
 
         $updateBill = "UPDATE stock_out SET `customer_id` = '$customerId', `reff_by` = '$reffBy', `items` = '$itemsNo', `qty` = '$qty', `mrp` = '$mrp', `disc` = '$disc', `gst` = '$gst', `amount` = '$amount', `payment_mode` = '$paymentMode', `bill_date` = '$billDate', `added_by` = '$addedBy' WHERE `invoice_id` = '$invoiceId'";
@@ -177,18 +177,29 @@ class StockOut extends DatabaseConnection{
         return $addDetails;
     }
 
-    function salesReturnDetails($invoice, $productId, $batchNo){
-        $salesReturn = array();
-        $selectBill = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoice' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
+    // function salesReturnDetails($invoice, $productId, $batchNo){
+    //     $salesReturn = array();
+    //     $selectBill = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoice' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
         
-        $salesReturnQury = $this->conn->query($selectBill);
+    //     $salesReturnQury = $this->conn->query($selectBill);
 
-        while($result = $salesReturnQury->fetch_array()){
-            $salesReturn[]	= $result;
+    //     while($result = $salesReturnQury->fetch_array()){
+    //         $salesReturn[]	= $result;
+    //     }
+    //     return $salesReturn;
+
+    // }//end of sales return details query
+
+    function stockOutDetailsSelect($invoice, $productId, $batchNo){
+        $stockOutDetailData = array();
+        $selectData= "SELECT * FROM `stock_out_detils` WHERE `invoice_id` = '$invoice' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
+        $dataQuery = $this->conn->query($selectData);
+        while($result = $dataQuery->fetch_array()){
+            $stockOutDetailData[]	= $result;
         }
-        return $salesReturn;
-
-    }//end of sales return details query
+        return $stockOutDetailData;
+        
+    }//end of stockOutDetail fetch from pharmacy_invoice table function
 }
 
 ?>

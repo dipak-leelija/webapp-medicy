@@ -161,7 +161,7 @@ $Patients      = new Patients();
                                                     <td>'.$item['added_by'].'</td>
                                                     <td>'.$item['refund_amount'].'</td>
                                                     <td>
-                                                        <a href="sales-return-edit.php?invoice='.$invoiceId.'&salesReturnId='.$salesReturnId.'" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
+                                                        <a href="sales-return-edit.php?invoice='.$invoiceId.'&salesReturnId='.$salesReturnId.'" class="text-primary ml-4"><i class="fas fa-edit onclick="getDetailsData('.$item['invoice_id'].','.$salesReturnId.')"></i></a>
                                                         <a class="text-danger ml-2" onclick="cancelSalesReturn('.$item['invoice_id'].', this)" ><i class="fas fa-window-close"></i></a>
                                                     </td> 
                                                 </tr>';
@@ -249,6 +249,15 @@ $Patients      = new Patients();
         xmlhttp.send(null);
         document.getElementById('viewReturnModalBody').innerHTML = xmlhttp.responseText
     }
+
+    // const getDetailsData = (invoice, id) => {
+         
+    //      var xmlhttp = new XMLHttpRequest();
+    //      let url = `ajax/salesReturnEdit.ajax.php?invoiceNo=${invoice}&salesReturnid=${id}`; 
+    //      xmlhttp.open("GET", url, false);
+    //      xmlhttp.send(null);
+    //      document.getElementById('viewReturnModalBody').innerHTML = xmlhttp.responseText
+    //  }
 
     const cancelSalesReturn =()=>{
         alert('Not Working Yet');

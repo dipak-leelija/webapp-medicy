@@ -5,6 +5,9 @@ require_once '../php_control/products.class.php';
 require_once '../php_control/distributor.class.php';
 require_once '../php_control/measureOfUnit.class.php';
 require_once '../php_control/packagingUnit.class.php';
+require_once '../php_control/salesReturn.class.php';
+require_once '../php_control/patients.class.php';
+require_once '../php_control/stockOut.class.php';
 $page = "sales";
 
 
@@ -14,16 +17,37 @@ $Products           = new Products();
 $Distributor        = new Distributor();
 $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
+$SalesReturnTable   = new SalesReturn();
+$Stockout           = new StockOut();
+$patientDetails     = new Patients();
 
 
 //function's called
 $showProducts          = $Products->showProducts();
 $showDistributor       = $Distributor->showDistributor();
 $showMeasureOfUnits    = $MeasureOfUnits->showMeasureOfUnits();
-$showPackagingUnits = $PackagingUnits->showPackagingUnits();
+$showPackagingUnits    = $PackagingUnits->showPackagingUnits();
 
 $InvoiceId = $_GET['invoice'];
 $salesReturnId = $_GET['salesReturnId'];
+
+$id = "id";
+//echo $salesReturnId;
+
+$StockoutDetails = $Stockout->stockOutDisplayById($InvoiceId); 
+$refferBy = $StockoutDetails[0]['reff_by'];
+$salesReturnTableDetails = $SalesReturnTable->selectSalesReturn($id, $salesReturnId);
+$BillDate = $salesReturnTableDetails[0]['bill_date'];
+
+$patientId = $salesReturnTableDetails[0]['patient_id'];
+
+if($patientId == 'Cash Sales'){
+    $patientName = "Cash Sales";
+}else{
+    $patientData = $patientDetails->patientsDisplayByPId($patientId);
+    $patientName = $patientData[0]['name'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -82,22 +106,26 @@ $salesReturnId = $_GET['salesReturnId'];
                             <!--============= select Bill and details =============-->
                             <div class="row">
                                 <div class="col-md-2 col-6 mt-3">
-                                    <label class="mb-0 mt-2" for="invoice-no">Invoice No.</label>
-                                    <input type="text" class="upr-inp" name="invoice-no" id="<?php echo $InvoiceId ?>" value="<?php echo $InvoiceId ?>" onkeyup="getCustomer(this.id)" autocomplete="off" readonly>
+                                    <!-- <label class="mb-0 mt-2" for="invoice-no">Invoice No.</label>
+                                    <input type="text" class="upr-inp" name="invoice-no" id="<?php echo $InvoiceId ?>" value="<?php echo $InvoiceId ?>" onkeyup="getCustomer(this.id)" autocomplete="off" readonly> -->
 
-                                    <input type="text" class="upr-inp" name="sales-return-id" id="sales-return-id" value="<?php echo $salesReturnId ?>"  autocomplete="off" readonly hidden>
+                                    <label class="mb-0 mt-2" for="invoice-no">Invoice No.</label>
+                                    <input type="text" class="upr-inp" name="invoice-no" id="invoiceID" value="<?php echo $InvoiceId ?>" autocomplete="off" readonly>
+
+                                    <input type="text" class="upr-inp" name="sales-return-id" id="sales-return-id" value="<?php echo $salesReturnId ?>" autocomplete="off" readonly hidden>
                                 </div>
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="patient-name">Patient Name.</label>
-                                    <input type="text" class="upr-inp" name="patient-name" id="patient-name" placeholder="Select Invoice First." autocomplete="off">
+                                    <input type="text" class="upr-inp" name="patient-name" id="patient-name" 
+                                    value="<?php echo $patientName ?>" placeholder="Select Invoice First." autocomplete="off">
                                 </div>
                                 <div class="col-md-2 col-6 mt-3 ">
                                     <label class="mb-0 mt-2" for="bill-date">Bill Date</label>
-                                    <input type="text" class="upr-inp" name="" id="bill-date" autocomplete="off">
+                                    <input type="text" class="upr-inp" name="" id="bill-date" value = "<?php echo $BillDate ?>" autocomplete="off">
                                 </div>
                                 <div class="col-md-2 col-6 mt-3 ">
                                     <label class="mb-0 mt-2" for="reff-by">Reff By</label>
-                                    <input type="text" class="upr-inp" id="reff-by" autocomplete="off">
+                                    <input type="text" class="upr-inp" id="reff-by" value="<?php echo $refferBy ?>" autocomplete="off">
                                 </div>
                                 <div class="col-md-2 col-12 mt-3 ">
                                     <label class="mb-0 mt-2" for="refund-mode">Refund Mode</label>
@@ -128,8 +156,9 @@ $salesReturnId = $_GET['salesReturnId'];
                                     <label for="items-list" class="mb-0">Product Name</label>
                                     <select id="items-list" class="upr-inp mt-1" onchange="getEditItemDetails(this);">
                                         <option value="" selected disabled>Select Invoice Number First</option>
-                                    </select>
+                                    </select >
                                 </div>
+
                             </div>
 
                             <div class="row">
@@ -157,7 +186,12 @@ $salesReturnId = $_GET['salesReturnId'];
                                 </div>
 
                                 <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="qty">Quantity</label>
+                                    <label class="mb-0 mt-1" for="qty">Prchs.Qt</label>
+                                    <input type="text" class="upr-inp" name="P-qty" id="P-qty" readonly>
+                                </div>
+
+                                <div class="col-md-1 col-6 mt-3">
+                                    <label class="mb-0 mt-1" for="qty">Crnt.Qty</label>
                                     <input type="text" class="upr-inp" name="qty" id="qty" readonly>
                                 </div>
 
@@ -253,7 +287,10 @@ $salesReturnId = $_GET['salesReturnId'];
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
                                         <label for="invoice">Invoice :</label>
                                         <input class="summary-inp w-60" name="invoice" id="invoice" type="text" readonly>
+
+                                        <input class="summary-inp w-60" name="salesreturnid" id="salesreturnid" type="text" readonly>
                                     </div>
+
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
                                         <label for="">Return Date :</label>
                                         <input class="summary-inp w-60" name="return-date" id="return-date" type="text" readonly>

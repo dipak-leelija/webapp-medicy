@@ -5,7 +5,6 @@ require_once 'dbconnect.php';
 
 
 
-
 class Patients extends DatabaseConnection{
 
 

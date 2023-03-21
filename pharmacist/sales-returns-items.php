@@ -158,13 +158,13 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                     <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
                                 </div>
 
-                                <div class="col-md-1 col-6 mt-3" hidden>
-                                    <label class="mb-0 mt-1" for="purchase-qty">P.Quantity</label>
+                                <div class="col-md-1 col-6 mt-3" >
+                                    <label class="mb-0 mt-1" for="purchase-qty">P.Qty</label>
                                     <input type="text" class="upr-inp" name="purchase-qty" id="purchase-qty" readonly>
                                 </div>
 
                                 <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="qty">Quantity</label>
+                                    <label class="mb-0 mt-1" for="qty">Crt. Qty</label>
                                     <input type="text" class="upr-inp" name="qty" id="qty" readonly>
                                 </div>
 

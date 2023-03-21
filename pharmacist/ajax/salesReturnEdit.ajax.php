@@ -46,11 +46,15 @@ if (isset($_GET["reff-by"])) {
 
 // get products list
 if (isset($_GET["products"])) {
+
     $invoiceId = $_GET["products"];
     $salesRetundid = $_GET["salesreturnID"];
+
+    //echo "$invoiceId<br>$salesRetundid";
+    
     $items = $salesReturn->salesReturnbyInvoiceIdsalesReturnId($invoiceId, $salesRetundid);
     echo '<option value="" selected disabled>Select item</option>';
-    print_r($items);
+    //print_r($items);
     foreach ($items as $item) {
         $product = $Products->showProductsById($item['product_id']);
         //print_r($product); echo "<br><br>";
@@ -58,12 +62,19 @@ if (isset($_GET["products"])) {
     }
 }
 
+// CHECK DATA
+// if (isset($_GET["products"])) {
+//     $invoiceId = $_GET["products"];
+//     $salesRtnId = $_GET["salesreturnID"];
+//     $bill = $StockOut->stockOutDisplayById($invoiceId);
+//     echo "$invoiceId<br>$salesRtnId";
+// }
 // ===========================  Item Details   =========================== 
 
 // get product exp date
 if (isset($_GET["exp-date"])) {
     $invoice = $_GET["exp-date"];
-    $item = $salesReturn->selectSalesReturnDetailsbyInvoiceIdProductIdBatchNo($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $salesReturn->salesReturnDetialSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     //print_r($item);
     echo $item[0]['exp'];
 }
@@ -71,7 +82,7 @@ if (isset($_GET["exp-date"])) {
 // get product full unit
 if (isset($_GET["unit"])) {
     $invoice = $_GET["unit"];
-    $item = $salesReturn->selectSalesReturnDetailsbyInvoiceIdProductIdBatchNo($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $salesReturn->salesReturnDetialSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     echo $item[0]['weatage'];
 }
 
@@ -83,12 +94,21 @@ if (isset($_GET["mrp"])) {
 }
 
 
-// get product qty
+// get product purchase qty
+if (isset($_GET["pqty"])) {
+    $invoice = $_GET["pqty"];
+    //$item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $salesReturn->salesReturnDetialSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    //print_r($item);
+    echo $item[0]['qty'];
+}
+
+// get product curretn qty
 if (isset($_GET["qty"])) {
     $invoice = $_GET["qty"];
     $totalReturnqty = 0;
     //$item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-    $item = $StockOut->salesReturnDetails($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $salesReturn->salesReturnDetialSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     //print_r($item);
     $sizeOfitem = sizeof($item);
     for($i = 0; $i<$sizeOfitem; $i++){
@@ -103,18 +123,17 @@ if (isset($_GET["qty"])) {
 if (isset($_GET["rtnqty"])) {
     $invoice = $_GET["rtnqty"];
     //$item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-    $item = $StockOut->salesReturnDetails($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $salesReturn->salesReturnDetialSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     //print_r($item);
     
     echo $item[0]['return'];
-    
 }
 
 // get product discount
 if (isset($_GET["disc"])) {
     $invoice = $_GET["disc"];
 
-    $item = $salesReturn->selectSalesReturnDetailsbyInvoiceIdProductIdBatchNo($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $salesReturn->salesReturnDetialSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     echo $item[0]['disc'];
 }
 
@@ -132,7 +151,7 @@ if (isset($_GET["disc-price"])) {
 if (isset($_GET["gst"])) {
     $invoice = $_GET["gst"];
 
-    $item = $salesReturn->selectSalesReturnDetailsbyInvoiceIdProductIdBatchNo($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $salesReturn->salesReturnDetialSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     echo $item[0]['gst'];
 }
 
@@ -150,7 +169,7 @@ if (isset($_GET["taxable"])) {
 if (isset($_GET["amount"])) {
     $invoice = $_GET["amount"];
 
-    $item = $salesReturn->selectSalesReturnDetailsbyInvoiceIdProductIdBatchNo($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $salesReturn->salesReturnDetialSelect($invoice, $_GET["p-id"], $_GET["batch"]);
     echo $item[0]['amount'];
 }
 

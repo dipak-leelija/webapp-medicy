@@ -7,11 +7,12 @@
 require_once "../../php_control/stockOut.class.php";
 require_once '../../php_control/products.class.php';
 require_once '../../php_control/patients.class.php';
+require_once '../../php_control/salesReturn.class.php';
 
 $StockOut   = new StockOut();
 $Products   = new Products();
 $Patients   = new Patients();
-
+$salesReturn = new SalesReturn();
 
 // get patient name
 if (isset($_GET["patient"])) {
@@ -89,9 +90,8 @@ if (isset($_GET["pqty"])) {
     $batchNo = $_GET["batch"];
 
     $item = $StockOut->stockOutSelect($invoice, $productId, $batchNo);
-    $itemCheck = $StockOut->salesReturnDetails($invoice, $productId, $batchNo);
+    //$itemCheck = $StockOut->stockOutDetailsSelect($invoice, $productId, $batchNo);
     
-
     if($item[0]['qty'] == "0"){
             echo $item[0]['loosely_count'];
     }elseif($item[0]['loosely_count'] == "0"){
@@ -106,39 +106,20 @@ if (isset($_GET["qty"])) {
     $batchNo = $_GET["batch"];
     $totalReturnQTY = 0;
 
-    $item = $StockOut->stockOutSelect($invoice, $productId, $batchNo);
-    $itemCheck = $StockOut->salesReturnDetails($invoice, $productId, $batchNo);
-    //print_r($item); echo "<br><br>";
-    //print_r($itemCheck);
-
-    $sizeOfitem = sizeof($item);
-    $sizeOfitemCheck = sizeof($itemCheck);
-
-    //if($item[0]['qty'] == "0"){
-        for($i = 0; $i<$sizeOfitemCheck; $i++){
-            $totalReturnQTY = $totalReturnQTY + $itemCheck[$i]['return'];
-        }
-    // }elseif($item[0]['loosely_count'] == "0"){
-    //     for($i = 0; $i<$sizeOfitemCheck; $i++){
-    //         $totalReturnQTY = $totalReturnQTY + $itemCheck[$i]['return'];
-    //     }
-    // }
-
-    if($item[0]['qty'] == "0"){
-        if($itemCheck != null && $totalReturnQTY <= $item[0]['loosely_count']){
-            echo $item[0]['loosely_count']-$totalReturnQTY;
-        }else{
-            echo $item[0]['loosely_count'];
-        }
-    }elseif($item[0]['loosely_count'] == "0"){
-        if($itemCheck != null && $totalReturnQTY <= $item[0]['qty']){
-            echo $item[0]['qty']-$totalReturnQTY;
-        }else{
-            echo $item[0]['qty'];
-        }
+    $item = $StockOut->stockOutSelect($invoice, $productId, $batchNo); // details from phermacy invoice
+    $itemChek = $salesReturn->salesReturnDetialSelect($invoice, $productId, $batchNo);
+    //print_r($itemChek);
+    //echo count($itemChek);
+    for($i = 0; $i<count($itemChek); $i++){
+        $totalReturnQTY = $itemChek[$i]['return'];
     }
-
-    //echo $sizeOfitem, " <=> " , $sizeOfitemCheck;
+    //echo $totalReturnQTY;
+    if($item[0]['qty'] == "0"){
+        echo $item[0]['loosely_count'] - $totalReturnQTY;  
+    }elseif($item[0]['loosely_count'] == "0"){ 
+        echo $item[0]['qty'] - $totalReturnQTY;  
+}
+   
 }
 
 // get product discount
@@ -205,6 +186,3 @@ if (isset($_GET["amount"])) {
 //     $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
 //     echo $item[0]['weatage'];
 // }
-?>
-
-

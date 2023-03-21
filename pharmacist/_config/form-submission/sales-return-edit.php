@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
@@ -35,7 +35,8 @@ $StockInDetails  = new StockInDetails();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['sales-return-edit'])) {
-        
+
+        $returnId   = $_POST['salesreturnid'];
         $products   = $_POST['productId'];
         $batchNo    = $_POST['batchNo'];
         $expdates   = $_POST['expDate'];
@@ -48,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $returnQty  = $_POST['return'];
         $refunds    = $_POST['refund'];
         $billAmount = $_POST['billAmount'];
-
+        print_r($refunds);
         $invoice        = $_POST['invoice'];
         $billDate       = $_POST['purchased-date'];
         $billDate       = date('Y-m-d', strtotime($billDate));
@@ -64,7 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $added_by       = $_SESSION['employee_username'];
 
 
-        $PatientsName = $_POST['patient-name'];
+        //$returnId == sales_return_id, (id of stock return tabel).....
+        //echo $returnId, "<br><br>", $invoiceId, "<br><br>";
+
+        // fetching sales return data from sales return tabel------------------
+        $checkStockOut = $SalesReturn->salesReturnByID($returnId, $invoiceId);
+        //print_r($checkStockOut);
+        //echo "<br><br>";
+
+        $PatientsName = $checkStockOut[0]['patient_id'];
         if($PatientsName == 'Cash Sales'){
             $patientNm = "Cash Sales";
             $patientPNo = " ";
@@ -74,57 +83,163 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $patientPNo = $patient[0]['phno'];
         }
 
-        // Generate Return Bill
+        foreach ($checkStockOut as $valueCheck) {
+            $checkitems = $valueCheck['items'];
+            $checkgstamount = $valueCheck['gst_amount'];
+            $checkrefundamount = $valueCheck['refund_amount'];
+            $checkrefundmode = $valueCheck['refund_mode'];
+            $checkReturnDate = $valueCheck['return_date'];
+        }
 
-        $returned = $SalesReturn->addSalesReturn($invoiceId, $sold[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by);
+        // check edited data with stock return table and update edit data in it -------------------RD 
 
+        if ($gstAmount != $checkgstamount || $refundAmount != $checkrefundamount || $refundMode != $checkrefundmode || $returnDate != $checkReturnDate) {
+            if ($gstAmount != $checkgstamount && $refundAmount != $checkrefundamount) {
+                $gstAmount = $checkgstamount + $gstAmount;
+                $refundAmount = $checkrefundamount + $refundAmount;
+                $returned = $SalesReturn->updateSalesReturn($returnId, $returnDate, $gstAmount, $refundAmount, $refundMode, $added_by);
+            } else {
+                // $gstAmount = $checkgstamount + $gstAmount;
+                // $refundAmount = $checkrefundamount + $refundAmount;
+                $returned = $SalesReturn->updateSalesReturn($returnId, $returnDate, $gstAmount, $refundAmount, $refundMode, $added_by);
+            }
+        } elseif ($gstAmount == $checkgstamount && $refundAmount == $checkrefundamount && $refundMode == $checkrefundmode && $returnDate == $checkReturnDate) {
+?>
+            <script src="../../../js/sweetAlert.min.js"></script>
+            <script>
+                swal("Error", "Can't edit update with same data!", "error");
+            </script>
+<?php
+
+            $returned = true;
+        }
+        // ------------------------------------------------------------------------------------------
+
+        //print_r($_POST['productId']);
+        //echo "<br><br>";
+
+
+        // now check and update stock return details table with edit data ---------------------- RD
         if ($returned == true) {
 
             foreach ($_POST['productId'] as $productId) {
 
-                $batch = array_shift($_POST['batchNo']);
-                $qty   = array_shift($_POST['qty']);
+                $ProductId = $productId;
+                //fetching sales return details from sales retur details table---------
+                //echo "salse-return-details table========";
+                $checkStockOutDetails = $SalesReturn->salesReturnIdandProductId($returnId, $ProductId);
+                //print_r($checkStockOutDetails);
+                //echo "<br><br>";
 
-                $success = $SalesReturn->addReturnDetails($invoiceId, $productId, $batch, array_shift($_POST['setof']), array_shift($_POST['expDate']), $qty, array_shift($_POST['disc']), array_shift($_POST['gst']), array_shift($_POST['billAmount']), array_shift($_POST['return']), array_shift($_POST['refund']), $added_by);
+                $salesReturnId = $returnId;
+                $invoiceId = $invoiceId;
+                $productID = $productId;
+                $batchNo = array_shift($_POST['batchNo']);
+
+                //echo "<br><br>";
+
+                $discountPercent = array_shift($_POST['disc']);
+                $gstPercent = array_shift($_POST['gst']);
+                $gstAmount = array_shift($_POST['billAmount']);
+                $returnQty = array_shift($_POST['return']);
+                $refundAmount = array_shift($_POST['refund']);
+                $addedBy = $added_by;
+                $addedOn = $billDate;
+
+                // echo "Sales return Id : $salesReturnId";
+                // echo "<br><br>";
+                // echo "Invoice Id : $invoiceId";
+                // echo "<br><br>";
+                // echo "Product Id : $productID";
+                // echo "<br><br>";
+                // echo "Batch no : $batchNo";
+                // echo "<br><br>";
+                // echo "Discount percent : $discountPercent";
+                // echo "<br><br>";
+                // echo "GST percent : $gstPercent";
+                // echo "<br><br>";
+                // echo "GST amount : $gstAmount";
+                // echo "<br><br>";
+                // echo "Return QTY : $returnQty";
+                // echo "<br><br>";
+                // echo "Refund Amount : $refundAmount";
+                // echo "<br><br>";
+
+                $success = $SalesReturn->updateSalesReturnDetails($salesReturnId, $invoiceId, $productID, $batchNo,  $discountPercent, $gstPercent, $gstAmount, $returnQty, $refundAmount, $addedBy, $addedOn);
 
                 // now insert into current stock 
-                $stock = $CurrentStock->checkStock($productId, $batch);
+                $stock = $CurrentStock->checkStock($productId, $batchNo);
+                //echo "current stock details : <br>";
+                //print_r($stock);
 
-                if (count($stock) == 0 || $stock == '') {
+                // if($returnQty > $checkStockOutDetails[0]['return']){
+                //     $returnQuantity = $returnQty - $checkStockOutDetails[0]['return']; //current stock -count
+                // }
+                // else if($returnQty < $checkStockOutDetails[0]['return']){
+                //     $returnQuantity = $checkStockOutDetails[0]['return'] - $returnQty; // current stock +count
+                // }
 
-                    $pDetails = $StockInDetails->showStockInDetailsByTable('product_id', 'batch_no', $productId, $batch);
-
-                    // (float) filter_var( $uWeightage, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION )
-
-                    if ($pDetails[0]['unit'] == 'cap' || $pDetails[0]['unit'] == 'tab') {
-                        $looselyCount = $qty * $pDetails[0]['weightage'];
-                        $singlePrice  = $pDetails[0]['base'] + ($pDetails[0]['gst'] / 100 * $pDetails[0]['base']);
-                        $looselyPrice = $singlePrice * $looselyCount;
+                if (count($stock) != 0 || $stock != '' && $success == true) {
+                    
+                    //fetching pharmacy invoice details
+                    $invoiceDetail = $StockOut->stockOutSelect($invoiceId, $productID, $batchNo);
+                    
+                    if ($invoiceDetail[0]['qty'] == 0) {
+                        if ($stock[0]['unit'] == 'cap' || $stock[0]['unit'] == 'tab') {
+                            //only loose sales count area
+                            $QTY = $returnQty % $stock[0]['weightage'];
+                            $prevQTY = $checkStockOutDetails[0]['return'] % $stock[0]['weightage'];
+                            $looselyCount = $returnQty - ($QTY * $stock[0]['weightage']);
+                            $prevLooselyCount = $checkStockOutDetails[0]['return'] - ($prevQTY * $stock[0])['weightage'];
+                            $updatedQTY = $stock[0]['qty'] + (- ($QTY - $prevQTY));
+                            $updateLooselyCount = $stock[0]['loosely_count'] + ( - ($looselyCount - $prevLooselyCount));
+                        } 
                     } else {
-                        $looselyCount = 0;
-                        $looselyPrice = 0;
+                        if ($stock[0]['unit'] == 'cap' || $stock[0]['unit'] == 'tab') {
+                            $looselyCount = $returnQty * $stock[0]['weightage'];
+                            $prevQTY = $checkStockOutDetails[0]['return'];
+                            $prevLooselyCount = $checkStockOutDetails[0]['return'] * $stock[0]['weightage'];
+                            $updatedQTY = $stock[0]['qty'] + (- ($returnQty - $prevQTY));
+                            $updateLooselyCount = $stock[0]['loosely_count'] + (- ($looselyCount - $prevLooselyCount));
+                        } else {
+                            $updatedQTY = $stock[0]['qty'] + (- ($returnQty - $checkStockOutDetails[0]['qty']));
+                            $updateLooselyCount = 0;
+
+                        }
                     }
-
-                    $addedBy = '';
-                    // updateStock($productId, $batch, $newQuantity, $newLCount);
-                    $CurrentStock->addCurrentStock($productId, $batch, $pDetails[0]['exp_date'], $pDetails[0]['distributor_bill'], $looselyCount, $looselyPrice, $pDetails[0]['weightage'], $pDetails[0]['unit'], $qty, $pDetails[0]['mrp'], $pDetails[0]['ptr'], $pDetails[0]['gst'], $addedBy);
-                } else {
-
-                    $newQuantity = $stock[0]['qty'] + $qty;
+                }else {
+                    $updatedQTY = $stock[0]['qty'] + $qty;
 
                     if ($stock[0]['unit'] == 'cap' || $stock[0]['unit'] == 'tab') {
-                        $newLCount   = $stock[0]['weatage'] * $newQuantity;
+                        $updateLooselyCount   = $stock[0]['weatage'] * $updatedQTY;
                     } else {
-                        $newLCount = 0;
+                        $updateLooselyCount = 0;
                     }
-                    $CurrentStock->updateStock($productId, $batch, $newQuantity, $newLCount);
+                    
                 }
+                
+                $CurrentStock->updateStock($productId, $batchNo, $updatedQTY, $updateLooselyCount);
             }
+           
         }
 
         // $Doctors->showDoctorById($docId);
 
     }
+
+    $totalRefundAmount = 0;
+    for($i = 0; $i<count($refunds); $i++){
+        $totalRefundAmount = $totalRefundAmount + $refunds[$i]; 
+    }
+
+    //print_r($batchNo);
+    // print_r();
+    // print_r();
+    // print_r();
+    // print_r();
+    // print_r();
+    // print_r();
+    // print_r();
 
 
 
@@ -139,7 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
     }
 }
-?> -->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -284,7 +399,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <small>' . array_shift($weatage) . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' . array_shift($batchNo) . '</small>
+                                        <small>' . $batchNo . '</small>
                                     </div>
                                     <div class="col-sm-1">
                                         <small>' . array_shift($expdates) . '</small>
@@ -302,7 +417,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <small>' . array_shift($billAmount) . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' . array_shift($returnQty) . '</small>
+                                        <small>' . $returnQty . '</small>
                                     </div>
                                     <div class="col-sm-1 text-end">
                                         <small>' . array_shift($refunds) . '</small>
@@ -371,7 +486,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                                 <div class="col-4 text-end">
                                     <p style="margin-top: -5px; margin-bottom: 0px;">
-                                        <small><b>₹<?php echo floatval($refundAmount); ?></b></small>
+                                        <small><b>₹<?php echo floatval($totalRefundAmount); ?></b></small>
                                     </p>
                                 </div>
                             </div>
@@ -416,6 +531,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // }
     </script>
     <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
+    <script src="../../../js/sweetAlert.min.js"></script>
 </body>
 
 </html>
