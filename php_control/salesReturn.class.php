@@ -8,8 +8,8 @@ require_once 'dbconnect.php';
 
 class SalesReturn extends DatabaseConnection{
 
-    function addSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){	
-        $addReturn = "INSERT INTO  sales_return (`invoice_id`, `patient_id`, `bill_date`, `return_date`, `items`, `gst_amount`, `refund_amount`, `refund_mode`, `added_by`) VALUES ('$invoiceId', '$patientId', '$billdate', '$returnDate', '$items', '$gstAmount', '$refundAmount', '$refundMode', '$added_by')";
+    function addSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by){	
+        $addReturn = "INSERT INTO  sales_return (`invoice_id`, `patient_id`, `bill_date`, `return_date`, `items`, `gst_amount`, `refund_amount`, `refund_mode`, `status`, `added_by`) VALUES ('$invoiceId', '$patientId', '$billdate', '$returnDate', '$items', '$gstAmount', '$refundAmount', '$refundMode', '$status', '$added_by')";
         // echo $insertEmp.$this->conn->error;
         // exit;
         $res = $this->conn->query($addReturn);
@@ -28,7 +28,6 @@ class SalesReturn extends DatabaseConnection{
         return $res;
 
     }//end employeesDisplay function
-
 
     function selectSalesReturn($table, $data){
         $res = array();
@@ -81,6 +80,14 @@ class SalesReturn extends DatabaseConnection{
         return $update;
     }
 
+    function updateStatus($id, $status){
+
+        $updateSalesReturn = "UPDATE `sales_return` SET `status` = '$status' WHERE `id`='$id'";
+
+        $update = $this->conn->query($updateSalesReturn);
+
+        return $update;
+    }
     //end of sales return table update-----------------------------------------------------------
 
 

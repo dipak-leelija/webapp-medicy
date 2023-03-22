@@ -1,11 +1,11 @@
 <?php
 $page = "sales-returns";
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/salesReturn.class.php';
 require_once '../php_control/patients.class.php';
 
 $SalesReturn   = new SalesReturn();
-$Patients      = new Patients();   
+$Patients      = new Patients();
 
 ?>
 
@@ -24,9 +24,7 @@ $Patients      = new Patients();
 
     <!-- Custom fonts for this template-->
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css//custom/return-page.css">
@@ -62,8 +60,7 @@ $Patients      = new Patients();
                     <!-- Page Heading -->
                     <div class="d-flex justify-content-between">
                         <h5 class="h4 mb-2 text-gray-800"> Return </h4>
-                            <a class="btn btn-sm btn-primary mb-3" href="sales-returns-items.php"> New <i
-                                    class="fas fa-plus"></i></a>
+                            <a class="btn btn-sm btn-primary mb-3" href="sales-returns-items.php"> New <i class="fas fa-plus"></i></a>
                     </div>
                     <!-- Showing Sell Items  -->
                     <div class="card shadow mb-2">
@@ -136,38 +133,44 @@ $Patients      = new Patients();
                                     </thead>
                                     <tbody id="dataBody">
                                         <?php
-                                    $returns = $SalesReturn->salesReturnDisplay();
-                                    //$return = $SalesReturn->
-                                    if (count($returns) > 0) {
-                                        foreach ($returns as $item) {
-                                            //print_r($item); echo "<br><br>"; 
-                                            $invoiceId = $item['invoice_id'];
-                                            $salesReturnId = $item['id'];
-                                            if($item['patient_id'] == "Cash Sales"){
-                                                $patientName = "Cash Sales";
-                                            }else{
-                                                $patient = $Patients->patientsDisplayByPId($item['patient_id']);
-                                                //print_r($patient); echo "<br><br>";
-                                                $patientName = $patient[0]['name'];
-                                            }
-                                                                                        
-                                            echo '<tr data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem('.$item['invoice_id'].','.$salesReturnId.')">
-                                                    <td>'.$invoiceId.'</td>
-                                                    <td hidden>'.$salesReturnId.'</td>
-                                                    <td>'.$patientName.'</td>
-                                                    <td>'.$item['items'].'</td>
-                                                    <td>'.date('d-m-Y', strtotime($item['bill_date'])).'</td>
-                                                    <td>'.date('d-m-Y', strtotime($item['return_date'])).'</td>
-                                                    <td>'.$item['added_by'].'</td>
-                                                    <td>'.$item['refund_amount'].'</td>
+
+                                        $table = "status";  # fetching those data whose STATUS are 
+                                        $data = "ACTIVE";   #  ACTIVE FROM SALES RETURN TABLE
+
+                                        $returns = $SalesReturn->selectSalesReturn($table, $data);
+
+                                        //print_r($returns);
+
+                                        if (count($returns) > 0) {
+                                            foreach ($returns as $item) {
+                                                //print_r($item); echo "<br><br>"; 
+                                                $invoiceId = $item['invoice_id'];
+                                                $salesReturnId = $item['id'];
+                                                if ($item['patient_id'] == "Cash Sales") {
+                                                    $patientName = "Cash Sales";
+                                                } else {
+                                                    $patient = $Patients->patientsDisplayByPId($item['patient_id']);
+                                                    //print_r($patient); echo "<br><br>";
+                                                    $patientName = $patient[0]['name'];
+                                                }
+
+                                                echo '<tr>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $invoiceId . '</td>
+                                                    <td hidden>' . $salesReturnId . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $patientName . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $item['items'] . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['bill_date'])) . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['return_date'])) . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $item['added_by'] . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $item['refund_amount'] . '</td>
                                                     <td>
-                                                        <a href="sales-return-edit.php?invoice='.$invoiceId.'&salesReturnId='.$salesReturnId.'" class="text-primary ml-4"><i class="fas fa-edit onclick="getDetailsData('.$item['invoice_id'].','.$salesReturnId.')"></i></a>
-                                                        <a class="text-danger ml-2" onclick="cancelSalesReturn('.$item['invoice_id'].', this)" ><i class="fas fa-window-close"></i></a>
+                                                        <a href="sales-return-edit.php?invoice=' . $invoiceId . '&salesReturnId=' . $salesReturnId . '" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
+                                                        <a class="text-danger ml-2" onclick="cancelSalesReturn(this)" id="'.$salesReturnId.'" ><i class="fas fa-window-close"></i></a>
                                                     </td> 
                                                 </tr>';
+                                            }
                                         }
-                                    }
-                                    ?>
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -190,8 +193,7 @@ $Patients      = new Patients();
         <!-- End of Content Wrapper -->
 
         <!-- Return View Modal" -->
-        <div class="modal fade" id="viewReturnModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="viewReturnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -241,28 +243,72 @@ $Patients      = new Patients();
     <script src="js/demo/datatables-demo.js"></script>
 
     <script>
-    const viewReturnItem = (invoice, id) => {
-         
-        var xmlhttp = new XMLHttpRequest();
-        let url = `ajax/viewSalesReturn.ajax.php?invoice=${invoice}&id=${id}`; 
-        xmlhttp.open("GET", url, false);
-        xmlhttp.send(null);
-        document.getElementById('viewReturnModalBody').innerHTML = xmlhttp.responseText
-    }
+        const viewReturnItem = (invoice, id) => {
 
-    // const getDetailsData = (invoice, id) => {
-         
-    //      var xmlhttp = new XMLHttpRequest();
-    //      let url = `ajax/salesReturnEdit.ajax.php?invoiceNo=${invoice}&salesReturnid=${id}`; 
-    //      xmlhttp.open("GET", url, false);
-    //      xmlhttp.send(null);
-    //      document.getElementById('viewReturnModalBody').innerHTML = xmlhttp.responseText
-    //  }
+            var xmlhttp = new XMLHttpRequest();
+            let url = `ajax/viewSalesReturn.ajax.php?invoice=${invoice}&id=${id}`;
+            xmlhttp.open("GET", url, false);
+            xmlhttp.send(null);
+            document.getElementById('viewReturnModalBody').innerHTML = xmlhttp.responseText
+        }
 
-    const cancelSalesReturn =()=>{
-        alert('Not Working Yet');
-    }
+        // const cancelSalesReturn =(invoiceId, salesReturnId)=>{
+        //     alert(invoiceId);
+        //     alert(salesReturnId);
+
+        //     let url = `ajax/salesReturnCancle.ajax.php?invoiceNo=${invoiceId}&salesReturnNo=${salesReturnId}`; 
+        //     xmlhttp.open("GET", url, false);
+        //     xmlhttp.send(null);
+        // }
     </script>
+
+    <script>
+        const cancelSalesReturn = (t) => {
+            
+            //alert(t.id);
+            cancelId = t.id;
+            swal({
+                    title: "Are you sure?",
+                    text: "Do you really cancel theis transaction?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                    $.ajax({
+                        url: "ajax/salesReturnCancle.ajax.php?",
+                        type: "POST",
+                        data:{
+                            id: cancelId
+                        },
+                        success: function(response) {
+                            if (response.includes('1')) {
+                                swal(
+                                    "Canceled",
+                                    "Transaction Has Been Canceled",
+                                    "success"
+                                ).then(function() {
+                                    $(t).closest("tr").fadeOut()
+
+                                });
+
+                            } else {
+                                swal("Failed", "Transaction Deletion Failed!",
+                                    "error");
+                                $("#error-message").html("Deletion Field !!!")
+                                    .slideDown();
+                                $("success-message").slideUp();
+                            }
+                        }
+                    });
+                }
+                return false;
+            });
+        }
+    </script>
+    <script src="../js/sweetAlert.min.js"></script>
 
 </body>
 
