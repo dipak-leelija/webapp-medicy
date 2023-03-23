@@ -95,8 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $qty   = array_shift($_POST['qty']);
                 $returnQTY  = array_shift($_POST['return']);
 
-                echo $batch;
-                exit;
+                //echo $batch;
+                
 
                 $success = $SalesReturn->addReturnDetails($SalesReturnId, $invoiceId, $productId, $batch, array_shift($_POST['setof']), array_shift($_POST['expDate']), $qty, array_shift($_POST['disc']), array_shift($_POST['gst']), array_shift($_POST['billAmount']), $returnQTY, array_shift($_POST['refund']), $added_by);
 
