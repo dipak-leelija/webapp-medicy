@@ -62,9 +62,6 @@ class CurrentStock extends DatabaseConnection{
     }
 
 
-
-
-
     function showCurrentStock(){
         $data = array();
         $select = "SELECT * FROM current_stock WHERE qty > 0 OR loosely_count > 0  ORDER BY added_on ASC";
@@ -74,8 +71,6 @@ class CurrentStock extends DatabaseConnection{
         }
         return $data;
     }//eof showCurrentStoc function
-
-
 
 
     function showStockExpiry($newMnth){
@@ -114,19 +109,16 @@ class CurrentStock extends DatabaseConnection{
 
 
     function showCurrentStocByProductIdandBatchNo($productId, $BatchNo){
-        //echo $productId; echo "<br>";
-        //echo $BatchNo;
         $data = array();
         $select = "SELECT * FROM `current_stock` WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no`='$BatchNo'";
-        //echo $select;
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;
         }
-        //print_r($data);
         return $data;
     }//eof showCurrentStocByPIdAndProductBatchNo
 
+    //showCurrentStocByProductIdandBatchNoDistributorId
     function showCurrentStocByProductIdandBatchNoDistributorId($productId, $BatchNo, $distributorId){
         $data = array();
         $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no`='$BatchNo' AND `current_stock`.`distributor_id`='$distributorId'";
@@ -152,8 +144,6 @@ class CurrentStock extends DatabaseConnection{
     }//eof showCurrentStocByPId
 
 
-
-
     function checkStockExist($productId){
         $data = array();
         $select = "SELECT product_id FROM current_stock WHERE `current_stock`.`product_id` = '$productId'";
@@ -163,7 +153,6 @@ class CurrentStock extends DatabaseConnection{
         }
         return $data;
     }//eof checkStockExist
-
 
 
     function deleteCurrentStock($productId, $batchNo){

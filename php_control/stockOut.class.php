@@ -191,12 +191,18 @@ class StockOut extends DatabaseConnection{
     // }//end of sales return details query
 
     function stockOutDetailsSelect($invoice, $productId, $batchNo){
+
+        //$stockOutDetailData = array();
         $stockOutDetailData = array();
-        $selectData= "SELECT * FROM `stock_out_detils` WHERE `invoice_id` = '$invoice' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
+
+        $selectData= "SELECT * FROM `stock_out_details` WHERE `stock_out_details`.`invoice_id` = '$invoice' AND `stock_out_details`.`product_id` = '$productId' AND `stock_out_details`.`batch_no` = '$batchNo'";
+        
         $dataQuery = $this->conn->query($selectData);
+
         while($result = $dataQuery->fetch_array()){
             $stockOutDetailData[]	= $result;
         }
+
         return $stockOutDetailData;
         
     }//end of stockOutDetail fetch from pharmacy_invoice table function
