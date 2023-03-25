@@ -119,7 +119,7 @@ class CurrentStock extends DatabaseConnection{
     }//eof showCurrentStocByPIdAndProductBatchNo
 
     //showCurrentStocByProductIdandBatchNoDistributorId
-    function showCurrentStocByProductIdandBatchNoDistributorId($productId, $BatchNo, $distributorId){
+    function showCurrentStocByPIdBNoDId($productId, $BatchNo, $distributorId){
         $data = array();
         $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no`='$BatchNo' AND `current_stock`.`distributor_id`='$distributorId'";
         // echo $select;

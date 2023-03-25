@@ -169,7 +169,9 @@ $Distributor = new Distributor();
                                             <button class="btn btn-primary me-md-2" name="add-distributor"
                                                 type="submit">Add Distributor</button>
                                         </div>
-                                    </form>
+                                    </
+                                    
+                                    form>
                                 </div>
                             </div>
                         </div>

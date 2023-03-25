@@ -96,11 +96,6 @@ if (isset($_POST['stock-return-edit'])) {
 
     $stockReturnEditUpdate = $StockReturn->stockReturnEditUpdate($stockReturnId, $distributorId, $returnDate, $itemQty, $totalRefundItemsQty, $returnGst, $refundMode, $refund, $addedBy, $todayDate, $addedTime);
 
-    // echo "<br>";
-    // echo $stockReturnId, "&nbsp&nbsp", $distributorId, "&nbsp&nbsp", $distributorName, "&nbsp&nbsp", $returnDate, "&nbsp&nbsp", $refundMode, "&nbsp&nbsp", $itemQty, "&nbsp&nbsp", $totalRefundItemsQty, "&nbsp&nbsp", $returnGst, "&nbsp&nbsp", $refund, "&nbsp&nbsp", $addedBy;
-    // echo "<br>";
-
-    //  fetching previous data and update with current data of stock return details tabel and current stock table
 
     if ($stockReturnEditUpdate === true) {
 
@@ -118,46 +113,36 @@ if (isset($_POST['stock-return-edit'])) {
             $prevReturnQty = $StockReturnDetailsData[0]['return_qty'];
             $currentReturnQty = $returnQty[$i];
 
-            $CurrentStockData = $CurrentStock->showCurrentStocByProductIdandBatchNoDistributorId($productId, $batchNo, $distributorId); //fetching current stock data
+            $CurrentStockData = $CurrentStock->showCurrentStocByPIdBNoDId($productId, $batchNo, $distributorId); //fetching current stock data
+            //print_r($CurrentStockData);
+            if ($CurrentStockData != null) {
 
-            $LooselyCount  = $CurrentStockData[0]['loosely_count'];
-            $QTY           = $CurrentStockData[0]['qty'];
-            $refundAmount  = $StockReturnDetailsData[0]['refund_amount'];
-            $Weatage       = $StockReturnDetailsData[0]['unit'];
-            $unit          = $CurrentStockData[0]['unit'];
+                if ($CurrentStockData[0]['loosely_count'] == '' || $CurrentStockData[0]['qty'] == '' || $CurrentStockData[0]['unit'] == '') {
+                    $LooselyCount = 0;
+                    $QTY = 0;
+                    $unit = '';
+                } else {
+                    $LooselyCount  = $CurrentStockData[0]['loosely_count'];
+                    $QTY           = $CurrentStockData[0]['qty'];
+                    $refundAmount  = $StockReturnDetailsData[0]['refund_amount'];
+                    $Weatage       = $StockReturnDetailsData[0]['unit'];
+                    $unit          = $CurrentStockData[0]['unit'];
+                }
 
-            // echo "distributor id from stock return table : ", $distributorId;
-            // echo "<br><br>";
-            // echo "product id from stock return details table : ", $productId;
-            // echo "<br><br>";
-            // echo "batch number from stock return details table : ", $batchNo;
-            // echo "<br><br>";
-            // echo "current stock loolsely count : ", $LooselyCount;
-            // echo "<br><br>";
-            // echo "current stock : ", $QTY;
-            // echo "<br><br>";
-            // echo "Stock return Details previous refund amount : ", $refundAmount;
-            // echo "<br><br>";
-            // echo "previous return qty from stock return details : ", $prevReturnQty;
-            // echo "<br><br>";
-            // echo "current return qty from edit return page : ", $currentReturnQty;
-            // echo "<br><br>";
-            // echo "unit from current stock : ", $unit;
-            // echo "<br><br>";
-            // echo "current refund amoun : ", $CurrentrefundAmount[$i];
-            // echo "<br><br>";
-            // echo "current return qty : ", $returnQTY[$i];
-            // echo "<br><br><br><br>";
+                $updatedQty = $QTY + (- ($currentReturnQty - $prevReturnQty)); //edit update total quantity of product
 
-            $updatedQty = $QTY + (- ($currentReturnQty - $prevReturnQty)); //edit update total quantity of product
-
-            //=========loosely count calculation area====================
-            if ($unit == 'tab' || $unit == 'cap') {
-                $newLooselyCount = $LooselyCount + (- (($currentReturnQty * $Weatage) - ($prevReturnQty * $Weatage)));
+                //=========loosely count calculation area====================
+                if ($unit == 'tab' || $unit == 'cap') {
+                    $newLooselyCount = $LooselyCount + (- (($currentReturnQty * $Weatage) - ($prevReturnQty * $Weatage)));
+                } else {
+                    $newLooselyCount = $LooselyCount;
+                }
+                //============================================================
             } else {
-                $newLooselyCount = $LooselyCount;
+
+                $updatedQty = '';
+                $newLooselyCount = '';
             }
-            //============================================================
 
             $CurrentStockUpdate = $CurrentStock->updateStockByReturnEdit($productId, $batchNo, $distributorId, $updatedQty, $newLooselyCount);  //updating current stock after edit purchase return
 
@@ -192,7 +177,7 @@ if (isset($_POST['stock-return-edit'])) {
         // echo $refundAmount[$i].'<br><br><br><br><br><br>';
 
         ################################# data fetching and updating end #######################################
-        
+
     }
 }
 
@@ -437,8 +422,8 @@ foreach ($showhelthCare as $rowhelthCare) {
 <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
 
 <script>
-    function backToMain(){
-        window.location.href="../../stock-return.php";
+    function backToMain() {
+        window.location.href = "../../stock-return.php";
     }
 </script>
 

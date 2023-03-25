@@ -461,7 +461,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     </div>
                     <!--=========================== Show Bill Items ===========================-->
 
-
                 </div>
                 <!-- /.container-fluid -->
                 <!-- End of Main Content -->

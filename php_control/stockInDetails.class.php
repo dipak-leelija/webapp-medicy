@@ -56,7 +56,7 @@ class StockInDetails extends DatabaseConnection{
 
 
     function showStockInDetailsByPId($productId){
-        $select = "SELECT * FROM stock_in_details WHERE `stock_in_details`.`product_id` = '$productId'";
+        $select = "SELECT * FROM `stock_in_details` WHERE `stock_in_details`.`product_id` = '$productId'";
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;

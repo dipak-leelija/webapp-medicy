@@ -110,7 +110,6 @@ const getDtls = (value) => {
     }
 }
 
-
 var todayDate = new Date();
 
 var date = todayDate.getDate();
@@ -242,8 +241,7 @@ const addData = () => {
         var gst = document.getElementById("gst");
         var base = document.getElementById("base");
         var billAmount = document.getElementById("bill-amount");
-
-
+        
         // distId
         // var packOf = (``);
         // alert(packOf);
@@ -311,10 +309,11 @@ const addData = () => {
                                                     } else {
                                                         if (mrp.value == "") {
                                                             mrp.focus();
-                                                        } else {
-                                                            if (ptr.value == "" || ptr.value > mrp.value) {
+                                                            
+                                                        } else {    
+                                                            if(ptr.value == '' || ptr.value > mrp.value){
                                                                 swal("Blank Field",
-                                                                        "Please enter price to retailer or check the entered amount ",
+                                                                        "Please check PTR value",
                                                                         "error")
                                                                     .then((value) => {
                                                                         ptr.focus();

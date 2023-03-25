@@ -123,7 +123,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        
     }
     //--------------------------------------rd finish ----------------------------------------
     
@@ -185,8 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 // echo $newLCount
                 $CurrentStock->updateStock($itemId, $uBatchNo, $newQuantity, $newLCount);
-
-
+                                
                 $StockOut->addPharmacyBillDetails($invoiceId, $itemId, array_shift($_POST['product-name']), $uBatchNo, $uWeightage, array_shift($_POST['exp-date']), $pQty, $lCount, array_shift($_POST['mrp']), array_shift($_POST['disc']), array_shift($_POST['dPrice']), array_shift($_POST['gst']), array_shift($_POST['netGst']), array_shift($_POST['amount']), $addedBy);
             }
 

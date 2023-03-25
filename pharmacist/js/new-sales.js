@@ -210,15 +210,6 @@ const stockDetails = (productId) => {
         document.getElementById("manuf").innerHTML = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
-        //==================== Margin on an Item ====================
-        marginUrl = 'ajax/product.stockDetails.getMargin.ajax.php?id=' + productId;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
-        xmlhttp.open("GET", marginUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("margin").innerHTML = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
-
         // ============== Check Loose Qty ==============
         checkLoosePackUrl = 'ajax/currentStock.checkLoosePack.ajax.php?id=' + productId;
         // alert(url);
@@ -304,8 +295,13 @@ const onQty = (qty) => {
 }
 
 const ondDisc = (disc) => {
+    
+    var xmlhttp = new XMLHttpRequest();
+    var pid = document.getElementById("product-id").value;
+    var qType = document.getElementById("qty-type").value;
     let mrp = document.getElementById("mrp").value;
     let qty = document.getElementById("qty").value;
+    let bno = document.getElementById("batch-no").value;
     // alert(disc);
 
     let subtotal = mrp * qty;
@@ -314,6 +310,16 @@ const ondDisc = (disc) => {
 
     let discPrice = amount / qty;
     document.getElementById("dPrice").value = discPrice.toFixed(2);
+
+
+    //==================== Margin on an Item ====================
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${qType}&Mrp=${mrp}&Qty=${qty}&Dprice=${discPrice}`;
+    // alert(unitUrl);
+    // window.location.href = unitUrl;
+    xmlhttp.open("GET", marginUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("margin").innerHTML = xmlhttp.responseText;
+    // alert(xmlhttp.responseText);
 
 }
 const mrpUpdate = (mrpType) => {
@@ -437,8 +443,7 @@ const addSummary = () => {
 
 
                                                                 jQuery("#item-body").append(`<tr id="table-row-${slno}">
-                                                <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty.value}, ${netGst}, ${mrp.value}, ${amount.value})"></i>
-                                                </td>
+                                                <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty.value}, ${netGst}, ${mrp.value}, ${amount.value})"></i></td>
                                                 <td>
                                                     <input class="summary-product" type="text" name="product-name[]" value="${productName.value}" readonly>
                                                     <input type="text" name="product-id[]" value="${productId.value}" hidden>

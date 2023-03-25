@@ -165,7 +165,7 @@ $doctor = $Doctors->showDoctors();
                                 <div class="col-md-1 mt-3 col-6">
                                     <label for="">Batch</label><br>
                                     <input class="sale-inp" type="text" id="batch-no" readonly>
-                                </div>
+                                </div> 
                                 <div class="col-md-1 mt-3 col-6">
                                     <label for="">Expiry</label><br>
                                     <input class="sale-inp" type="text" id="exp-date" readonly>
@@ -250,6 +250,7 @@ $doctor = $Doctors->showDoctors();
                                                 <label for="">Margin:</label>
                                                 <pre> </pre>
                                                 <span id="margin"> </span>
+                                                <!-- <input class="sale-inp" type="any" id="amount" readonly style="-moz-text-decoration-line: none;"> -->
 
                                             </div>
                                             <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
@@ -268,7 +269,7 @@ $doctor = $Doctors->showDoctors();
                         </div>
                     </div>
                     <!-- /end Add Product  -->
-                    
+
                     <div class="card mb-4 mt-md-5 summary">
                         <div class="card-body fisrt-card-body">
                             <h3 class="text-center font-weight-bolder listed-heading">Listed Items For sale</h3>
