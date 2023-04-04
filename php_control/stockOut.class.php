@@ -124,7 +124,7 @@ class StockOut extends DatabaseConnection{
     
     function stockOutDetailsById($billId){
         $billData = array();
-        $selectBill = "SELECT * FROM pharmacy_invoice WHERE `pharmacy_invoice`.`invoice_id` = '$billId'";
+        $selectBill = "SELECT * FROM `pharmacy_invoice` WHERE `pharmacy_invoice`.`invoice_id` = '$billId'";
         $billQuery = $this->conn->query($selectBill);
         while($result = $billQuery->fetch_array()){
             $billData[]	= $result;
@@ -176,6 +176,19 @@ class StockOut extends DatabaseConnection{
 
         return $addDetails;
     }
+
+
+    function stockOutDetailsDisplayById($invoiceId){
+        $billData = array();
+        $selectBill = "SELECT * FROM `stock_out_details` WHERE `invoice_id` = '$invoiceId'";
+        // echo $selectBill.$this->conn->error;
+
+        $billQuery = $this->conn->query($selectBill);
+        while($result = $billQuery->fetch_array()){
+            $billData[]	= $result;
+        }
+        return $billData;
+    }// eof stockOutDisplayById 
 
     // function salesReturnDetails($invoice, $productId, $batchNo){
     //     $salesReturn = array();

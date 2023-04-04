@@ -321,14 +321,12 @@ $showDistributor       = $Distributor->showDistributor();
                                                 $productName = $productDetails[0]['name'];
                                                 $productUnit = $productDetails[0]['unit'];
                                                 
-                                                
                                                 $slno += 1;
                                             ?>
 
                                                 <tr id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>">
 
-                                                    <td style="color: red;"> <i class="fas fa-trash pt-3 " onclick="delData(<?php echo $slno;?>)">
-                                                        </i>
+                                                    <td style="color: red;"> <i class="fas fa-trash p-0 pt-3 " onclick="delData(<?php echo $slno;?>)"></i>
                                                     </td>
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-12r" type="text" name="productName[]" value="<?php echo $productName; ?>" readonly style="text-align: start;">

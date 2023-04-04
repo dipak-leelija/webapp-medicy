@@ -18,7 +18,6 @@ require_once '../../../php_control/stockInDetails.class.php';
 // require_once '../../../php_control/idsgeneration.class.php';
 
 
-
 //  INSTANTIATING CLASS
 $HelthCare       = new HelthCare();
 $StockOut        = new StockOut();
@@ -49,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $returnQty  = $_POST['return'];
         $refunds    = $_POST['refund'];
         $billAmount = $_POST['billAmount'];
-        print_r($refunds);
+        //print_r($refunds);
         $invoice        = $_POST['invoice'];
         $billDate       = $_POST['purchased-date'];
         $billDate       = date('Y-m-d', strtotime($billDate));
@@ -166,21 +165,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo "<br><br>";
 
                 $success = $SalesReturn->updateSalesReturnDetails($salesReturnId, $invoiceId, $productID, $batchNo,  $discountPercent, $gstPercent, $gstAmount, $returnQty, $refundAmount, $addedBy, $addedOn);
-
+                //echo "<br>"; print_r($success); echo "<br>";
                 // now insert into current stock 
                 $stock = $CurrentStock->checkStock($productId, $batchNo);
+
                 //echo "current stock details : <br>";
                 //print_r($stock);
 
-                // if($returnQty > $checkStockOutDetails[0]['return']){
-                //     $returnQuantity = $returnQty - $checkStockOutDetails[0]['return']; //current stock -count
-                // }
-                // else if($returnQty < $checkStockOutDetails[0]['return']){
-                //     $returnQuantity = $checkStockOutDetails[0]['return'] - $returnQty; // current stock +count
-                // }
+                if($returnQty > $checkStockOutDetails[0]['return']){
+                    $returnQty = $returnQty - $checkStockOutDetails[0]['return']; //current stock -count
+                }
+                else if($returnQty < $checkStockOutDetails[0]['return']){
+                    $returnQty = $checkStockOutDetails[0]['return'] - $returnQty; // current stock +count
+                }
+
+                //echo "<br><br>$returnQty<br>";
 
                 if (count($stock) != 0 || $stock != '' && $success == true) {
-                    
                     //fetching pharmacy invoice details
                     $invoiceDetail = $StockOut->stockOutSelect($invoiceId, $productID, $batchNo);
                     
@@ -190,7 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $QTY = $returnQty % $stock[0]['weightage'];
                             $prevQTY = $checkStockOutDetails[0]['return'] % $stock[0]['weightage'];
                             $looselyCount = $returnQty - ($QTY * $stock[0]['weightage']);
-                            $prevLooselyCount = $checkStockOutDetails[0]['return'] - ($prevQTY * $stock[0])['weightage'];
+                            $prevLooselyCount = $checkStockOutDetails[0]['return'] - ($prevQTY * $stock[0]['weightage']);
+                            //echo "<br>$prevLooselyCount<br>";
                             $updatedQTY = $stock[0]['qty'] + (- ($QTY - $prevQTY));
                             $updateLooselyCount = $stock[0]['loosely_count'] + ( - ($looselyCount - $prevLooselyCount));
                         } 
@@ -217,9 +219,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                     
                 }
-                
+                //echo "updated count<br>";
+                //echo "$productId<br>$productId<br>$updatedQTY<br>$updateLooselyCount<br>";
                 $CurrentStock->updateStock($productId, $batchNo, $updatedQTY, $updateLooselyCount);
             }
+            
            
         }
 

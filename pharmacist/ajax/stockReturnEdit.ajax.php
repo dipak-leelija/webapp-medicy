@@ -16,7 +16,6 @@ $CurrentStock           =   new CurrentStock();
 
 $EditId = $_POST['EditId'];
 
-
 //==========================fetching data from stock return details table========================
 
 $stockReturnData = $StockReturnEdit->showStockReturnDetailsById($EditId);

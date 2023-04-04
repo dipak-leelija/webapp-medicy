@@ -104,7 +104,16 @@ if (isset($_GET['invoice'])) {
                         <tbody>
                             <?php 
                             $details = $StockOut->stockOutDetailsById($_GET['invoice']);
+                            //print_r($details);
                             foreach ($details as $detail) {
+
+                                if($detail['qty'] != 0){
+                                    $qty = $detail['qty'];
+                                }else{
+                                    $qty = $detail['loosely_count'];
+                                    $suffix = " (L)";
+                                    $qty.=$suffix;
+                                }
                                 
                                 echo'<tr>
                                         <td>'.$detail['item_name'].'</td>
@@ -112,7 +121,7 @@ if (isset($_GET['invoice'])) {
                                         <td>'.$detail['batch_no'].'</td>
                                         <td>'.$detail['exp_date'].'</td>
                                         <td>'.$detail['mrp'].'</td>
-                                        <td>'.$detail['qty'].'</td>
+                                        <td>'.$qty.'</td>
                                         <td>'.$detail['disc'].'</td>
                                         <td>'.$detail['d_price'].'</td>
                                         <td>'.$detail['gst'].'</td>

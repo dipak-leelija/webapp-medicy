@@ -405,9 +405,8 @@ const addData = () => {
         var gstAmount = document.getElementById("gst-amount");
         var totalGstAmount = parseFloat(gstAmount.value) + parseFloat(gstPerItem);
         gstAmount.value = totalGstAmount.toFixed(2);
-
-
-
+        gstPerItem = gstPerItem.toFixed(2);
+        
         const appendData = () => {
 
             jQuery("#dataBody")
@@ -465,6 +464,7 @@ const addData = () => {
             unit.value = "";
             batch.value = "";
             mrp.value = "";
+            purchaseQuantity.value="";
             qty.value = "";
             discount.value = "";
             discountPrice.value = "";

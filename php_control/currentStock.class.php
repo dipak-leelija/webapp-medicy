@@ -61,6 +61,15 @@ class CurrentStock extends DatabaseConnection{
         return $data;
     }
 
+    // function currentStock($productId, $batchNo){
+    //     $data = array();
+    //     $check = " SELECT * FROM `current_stock` WHERE product_id = '$productId' AND batch_no = '$batchNo' AND (`qty` > '0' || `loosely_count` > '0') ";
+    //     $res = $this->conn->query($check);
+    //     while ($result = $res->fetch_array()) {
+    //         $data[] = $result;
+    //     }
+    //     return $data;
+    // }
 
     function showCurrentStock(){
         $data = array();
@@ -86,7 +95,7 @@ class CurrentStock extends DatabaseConnection{
     function showCurrentStocByPId($productId){
         //echo $productId;
         $data = array();
-        $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' ORDER BY added_on ASC";
+        $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`qty` > '0' ORDER BY added_on ASC " ;
         // echo $select;
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {

@@ -98,8 +98,16 @@ class StockInDetails extends DatabaseConnection{
         return $data;
     }// fetching stock Distributor Bill no
 
+    function selectProduct($productId, $batchNo){
+        $data = array();
+        $check = " SELECT * FROM `current_stock` WHERE `product_id` = '$productId' AND `batch_no` = '$batchNo' AND (`qty` > '0' OR `loosely_count` > '0') ";
+        $res = $this->conn->query($check);
+        while ($result = $res->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }
     
-
     function stockInDelete($distBill, $batchNo){
         $delQry = "DELETE FROM stock_in_details WHERE distributor_bill = '$distBill' AND batch_no = '$batchNo'";
         $delSql = $this->conn->query($delQry);

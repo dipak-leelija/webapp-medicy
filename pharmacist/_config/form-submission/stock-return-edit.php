@@ -53,7 +53,6 @@ if (isset($_POST['stock-return-edit'])) {
     $returnQty              = $_POST['return-qty'];
     $CurrentrefundAmount    = $_POST['refund-amount'];
 
-
     // echo $stockReturnId, "&nbsp&nbsp", $distributorId, "&nbsp&nbsp", $distributorName, "&nbsp&nbsp", $returnDate, "&nbsp&nbsp", $refundMode, "&nbsp&nbsp", $itemQty, "&nbsp&nbsp", $totalRefundItemsQty, "&nbsp&nbsp", $returnGst, "&nbsp&nbsp", $refund, "&nbsp&nbsp", $addedBy;
     // echo "<br>";
 

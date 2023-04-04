@@ -13,6 +13,10 @@ if (isset($_GET["id"])) {
             echo $row["id"];
         }
     }
+
+    //`products`.`product_composition`   product_composition
+    //print_r($showProducts);
+    //echo $showProducts[0]['product_composition'];
 }
 
 if (isset($_GET["name"])) {

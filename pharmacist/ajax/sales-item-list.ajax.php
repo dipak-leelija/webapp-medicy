@@ -26,7 +26,6 @@ if(isset($_GET['data'])){
     // $searchResult = $Search->searchForSale($data);
 }
 
-
 if($searchResult){
 
     // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";

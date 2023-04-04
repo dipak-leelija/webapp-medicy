@@ -1,8 +1,10 @@
 <?php
 
 require_once '../../php_control/stockInDetails.class.php';
+require_once '../../php_control/currentStock.class.php';
 
 $StockInDetails = new StockInDetails();
+$currentStock = new CurrentStock();
 
 if (isset($_GET["Pid"])) {
 
@@ -13,12 +15,23 @@ if (isset($_GET["Pid"])) {
     $qty        = $_GET["Qty"];
     $discPrice  = $_GET["Dprice"];
 
+    //echo "<br>$productId<br>$batchNo<br>$qtyTyp<br>$mrp<br>$qty<br>$discPrice<br>";
 
-    $stockInMargin = $StockInDetails->stockDistributorBillNo($batchNo, $productId);
+    $stockInMargin = $currentStock->checkStock($productId, $batchNo);
 
     //print_r($stockInMargin);
 
-    //echo "<br>$productId<br>$batchNo<br>$qtyTyp<br>$mrp<br>$qty<br>$discPrice<br>";
+    if($mrp == null || $qty == null || $discPrice == null){
+        $mrp = 0;
+        $qty = 0;
+        $discPrice = 0;
+    }
+
+    $mrp = floatval($mrp);
+    $qty = intval($qty);
+    $discPrice = floatval($discPrice);
+
+    //echo "<br>$mrp<br>$qty<br>$discPrice<br><br>";
 
     if($qtyTyp == 'Loose'){
         $ptr = $stockInMargin[0]['ptr'];
@@ -29,7 +42,8 @@ if (isset($_GET["Pid"])) {
         $margin = ($discPrice * $qty) - ($ptr * $qty);
     }
     
-    echo $margin;
+    echo number_format($margin,2);
+
 }
 
 ?>

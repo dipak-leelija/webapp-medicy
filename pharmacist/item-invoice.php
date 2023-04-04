@@ -64,15 +64,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $addedOn        = date("Y/m/d");
 
     $prductId    = $_POST['product-id'];
-    //print_r($prductId); echo "<br><br>";
+    // print_r($prductId); echo "<br><br>";
     $batchNo     = $_POST['batch-no'];
-    //print_r($batchNo); echo "<br><br>"; 
+    // print_r($batchNo); echo "<br><br>"; 
     $qty = $_POST['qty'];
-    //print_r($qty); echo "<br><br>"; 
+    // print_r($qty); echo "<br><br>"; 
     $qtyTypes = $_POST['qty-types'];
-    //print_r($qty_types); echo "<br><br>"; 
+    // print_r($qtyTypes); echo "<br><br>"; 
     $discount = $_POST['disc'];
-    //print_r($discount); echo "<br><br>"; 
+    // print_r($discount); echo "<br><br>"; 
     $gst = $_POST['gst'];
     // print_r($gst);
     // echo "<br><br>";
@@ -80,7 +80,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // print_r($amount);
     // echo "<br><br>";
 
-    
+
+
     if (isset($_POST['submit'])) {
         $invoiceId = $IdGeneration->pharmecyInvoiceId();
 
@@ -104,28 +105,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $PTR = $productDetails[0]['ptr'];
             $GST = $productDetails[0]['gst'];
             $LooselyPrice = $productDetails[0]['loosely_price'];
-           
+
             if ($qtyTypes[$i] == 'Loose') {
                 $margin = (floatval($amount[$i]) - (((floatval($PTR)) / (floatval($Weightage))) * (intval($qty[$i]))));
+
+                if ($Unit == 'tab' || $Unit == 'cap' && $qtyTypes[$i] == 'Pack') {
+                    $looselyCount = $qty[$i];
+                    $qty[$i] = "0";
+                }else{
+                    $looselyCount = "0";
+                }
+            
             } else {
                 $margin = (floatval($amount[$i]) - ((floatval($PTR)) * (intval($qty[$i]))));
+
+                if ($Unit == 'tab' || $Unit == 'cap' && $qtyTypes[$i] == 'Pack') {
+                    $looselyCount = (intval($Weightage) * intval($qty[$i]));
+                } else {
+                    $looselyCount = "0";
+                }
             }
 
-            if ($Unit == 'tab' || $Unit == 'cap' && $qtyTypes[$i] == 'Pack') {
-                $looselyCount = (intval($Weightage) * intval($qty[$i]));
-            } else {
-                $looselyCount = $qty[$i];
-            }
+            // echo "<br>";
+            // print_r($invoiceId);
+            // echo "<br>";
+            // print_r($productID);
+            // echo "<br>";
+            // print_r($BatchNo);
+            // echo "<br>";
+            // print_r($ExpairyDate);
+            // echo "<br>";
+            // print_r($Weightage);
+            // echo "<br>";
+            // print_r($Unit);
+            // echo "<br>";
+            // print_r($qty[$i]);
+            // echo "<br>";
+            // print_r($looselyCount);
+            // echo "<br>";
+            // print_r($MRP);
+            // echo "<br>";
+            // print_r($PTR);
+            // echo "<br>";
+            // print_r($discount[$i]);
+            // echo "<br>";
+            // print_r($GST);
+            // echo "<br>";
+            // print_r($margin);
+            // echo "<br>";
+            // print_r($amount[$i]);
+            // echo "<br>";
+            // print_r($addedBy);
+            // echo "<br>";
+            // print_r($addedOn);
+            // echo "<br>";
             
+
             if ($stockOut === true) {
 
                 $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $productID, $BatchNo, $ExpairyDate, $Weightage, $Unit, $qty[$i], $looselyCount, $MRP, $PTR, $discount[$i], $GST, $margin, $amount[$i], $addedBy, $addedOn);
             }
         }
-
     }
-    //--------------------------------------rd finish ----------------------------------------
-    
+    //------------------------------------------------------------------------------
+
     if (isset($_POST['update'])) {
         $invoiceId = $_POST['invoice-id'];
 
@@ -142,13 +185,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $expdates   = $_POST['exp-date'];
         $mrp        = $_POST['mrp'];
         $qtys       = $_POST['qty']; // for printing invoice
-        $qty          = $_POST['qty']; // for inserting details
-        // print_r($qty);
+        $qty         = $_POST['qty']; // for inserting details
+        $qtyTp   = $_POST['qty-types'];
+        //print_r($qtyTp);
         $discs      = $_POST['disc'];
         $dPrices    = $_POST['dPrice'];
         $gst        = $_POST['gst'];
         $netGst     = $_POST['netGst'];
         $amounts    = $_POST['amount'];
+
         foreach ($itemIds as $itemId) {
             $uBatchNo   = array_shift($_POST['batch-no']);
             $uWeightage = array_shift($_POST['weightage']);
@@ -184,7 +229,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 // echo $newLCount
                 $CurrentStock->updateStock($itemId, $uBatchNo, $newQuantity, $newLCount);
-                                
+
                 $StockOut->addPharmacyBillDetails($invoiceId, $itemId, array_shift($_POST['product-name']), $uBatchNo, $uWeightage, array_shift($_POST['exp-date']), $pQty, $lCount, array_shift($_POST['mrp']), array_shift($_POST['disc']), array_shift($_POST['dPrice']), array_shift($_POST['gst']), array_shift($_POST['netGst']), array_shift($_POST['amount']), $addedBy);
             }
 
@@ -408,21 +453,31 @@ foreach ($showhelthCare as $rowhelthCare) {
                 $slno = 0;
                 $subTotal = floatval(00.00);
                 $itemIds    = $_POST['product-id'];
-                foreach ($itemIds as $itemId) {
+                $count = count($itemIds);
+                for ($i = 0; $i < $count; $i++) {
                     $slno++;
+
+                    // echo "<br>"; print_r($qtyTp);
+                    // echo "<br>"; print_r($qtys);
+                    // echo "<br>"; print_r($mrp);
+                    if ($qtyTp[$i] == 'Loose') {
+                        $type = " (L)";
+                        $itemQTY = $qtys[$i] . $type;
+                    } else {
+                        $itemQTY = $qtys[$i];
+                    }
+
+                    $itemQty  = $qtys[$i];
+                    $mrpOnQty = $mrp[$i];
+                    $mrpOnQty = $mrpOnQty * $itemQty;
 
                     if ($slno > 1) {
                         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                     }
 
-                    $itemQty = array_shift($qtys);
-                    $mrpOnQty = array_shift($mrp);
-                    $mrpOnQty = $mrpOnQty * $itemQty;
-
-
                     echo '<div class="col-sm-1 text-center">
                                     <small>' . $slno . '</small>
-                                </div>
+                            </div>
                                 <div class="col-sm-2 ">
                                     <small>' . substr(array_shift($itemNames), 0, 15) . '</small>
                                 </div>
@@ -439,7 +494,7 @@ foreach ($showhelthCare as $rowhelthCare) {
                                     <small>' . array_shift($expdates) . '</small>
                                 </div>
                                 <div class="col-sm-1 text-end">
-                                    <small>' . $itemQty . '</small>
+                                    <small>' . $itemQTY . '</small>
                                 </div>
                                 <div class="col-sm-1 text-end">
                                     <small>' . $mrpOnQty . '</small>

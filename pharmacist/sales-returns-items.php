@@ -124,7 +124,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                             </div>
                             <!--============= end select Bill and details =============-->
-
+                            
                             <div class="row">
                                 <div class="col-md-8 col-12 mt-3">
                                     <label for="items-list" class="mb-0">Product Name</label>
@@ -164,7 +164,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                 </div>
 
                                 <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="qty">Crt. Qty</label>
+                                    <label class="mb-0 mt-1" for="qty">Cr.Qty</label>
                                     <input type="text" class="upr-inp" name="qty" id="qty" readonly>
                                 </div>
 
@@ -174,7 +174,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                 </div>
 
                                 <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="discount">D Price </label>
+                                    <label class="mb-0 mt-1" for="discount">D.Pr </label>
                                     <input type="text" class="upr-inp" name="discount-price" id="discount-price"
                                         value="0" readonly>
                                 </div>

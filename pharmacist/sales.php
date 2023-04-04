@@ -10,7 +10,7 @@ $StockOut = new StockOut();
 $Patients = new Patients();
 
 $soldItems = $StockOut->stockOutDisplay();
-
+//print_r($soldItems);
 ?>
 
 <!DOCTYPE html>
@@ -93,7 +93,7 @@ $soldItems = $StockOut->stockOutDisplay();
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+                                    
                                         <?php
                                         foreach ($soldItems as $soldItem) {
                                             $invoice    = $soldItem['invoice_id'];
@@ -105,6 +105,7 @@ $soldItems = $StockOut->stockOutDisplay();
 
                                             if ($patient != 'Cash Sales') {
                                                 $patientName = $Patients->patientsDisplayByPId($patient);
+                                                
                                                 if($patientName!= null){
                                                     $patientName = $patientName[0]['name'];
                                                 }

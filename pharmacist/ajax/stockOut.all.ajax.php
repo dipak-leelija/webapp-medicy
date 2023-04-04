@@ -91,11 +91,14 @@ if (isset($_GET["pqty"])) {
 
     $item = $StockOut->stockOutSelect($invoice, $productId, $batchNo);
     //$itemCheck = $StockOut->stockOutDetailsSelect($invoice, $productId, $batchNo);
-    
+    //print_r($itemCheck);
     if($item[0]['qty'] == "0"){
+            $string = "(L)";
             echo $item[0]['loosely_count'];
-    }elseif($item[0]['loosely_count'] == "0"){
-            echo $item[0]['qty'];
+    // }elseif($item[0]['loosely_count'] == "0"){
+    //         echo $item[0]['qty'];
+    }else{
+        echo $item[0]['qty'];
     }
 }
 
@@ -115,10 +118,13 @@ if (isset($_GET["qty"])) {
     }
     //echo $totalReturnQTY;
     if($item[0]['qty'] == "0"){
-        echo $item[0]['loosely_count'] - $totalReturnQTY;  
-    }elseif($item[0]['loosely_count'] == "0"){ 
+        $string = "(L)";
+        echo ($item[0]['loosely_count'] - $totalReturnQTY);  
+    // }elseif($item[0]['loosely_count'] == "0"){ 
+    //     echo $item[0]['qty'] - $totalReturnQTY;  
+    }else{ 
         echo $item[0]['qty'] - $totalReturnQTY;  
-}
+    }
    
 }
 

@@ -144,201 +144,210 @@ const getbillDate = (billDate) => {
 
 
 const getBillAmount = () => {
-        // let mrp = document.getElementById("mrp").value;
-        let ptr = document.getElementById("ptr").value;
+    // let mrp = document.getElementById("mrp").value;
+    let ptr = document.getElementById("ptr").value;
 
-        // if (mrp >= ptr) {
+    // if (mrp >= ptr) {
 
-        let qty = document.getElementById("qty").value;
-        // let freeQty    = document.getElementById("free-qty").value;
-        let discount = document.getElementById("discount").value;
-        let base = document.getElementById("base");
-        let gst = document.getElementById("gst").value;
-        let billAmount = document.getElementById("bill-amount");
-        // alert(ptr)
-        // console.log(gst);
-        if (ptr == "") {
-            billAmount.value = "";
-            base.value = "";
+    let qty = document.getElementById("qty").value;
+    // let freeQty    = document.getElementById("free-qty").value;
+    let discount = document.getElementById("discount").value;
+    let base = document.getElementById("base");
+    let gst = document.getElementById("gst").value;
+    let billAmount = document.getElementById("bill-amount");
+    // alert(ptr)
+    // console.log(gst);
+    if (ptr == "") {
+        billAmount.value = "";
+        base.value = "";
 
-        }
+    }
+    if (qty != "" && ptr != "" && gst != "") {
+        subAamount = ptr * qty;
+        // console.log(subAamount);
+
+        let baseAmount = subAamount / qty;
+        // console.log(baseAmount);
+
+        base.value = parseFloat(baseAmount).toFixed(2);
+
+        let totalGst = (gst / 100 * subAamount);
+        let amount = subAamount + totalGst;
+        // console.log(amount);
+        // console.log(amount - totalGst);
+
+        billAmount.value = parseFloat(amount).toFixed(2);
+
+    }
+    if (discount != "") {
         if (qty != "" && ptr != "" && gst != "") {
-            subAamount = ptr * qty;
+
+            let subAamount = ptr * qty;
             // console.log(subAamount);
 
-            let baseAmount = subAamount / qty;
+            let afterDiscount = subAamount - (discount / 100 * subAamount);
+            // console.log(afterDiscount);
+
+            let baseAmount = afterDiscount / qty;
             // console.log(baseAmount);
 
             base.value = parseFloat(baseAmount).toFixed(2);
 
-            let totalGst = (gst / 100 * subAamount);
-            let amount = subAamount + totalGst;
+            let amount = afterDiscount + (gst / 100 * afterDiscount);
             // console.log(amount);
-            // console.log(amount - totalGst);
 
             billAmount.value = parseFloat(amount).toFixed(2);
 
         }
-        if (discount != "") {
-            if (qty != "" && ptr != "" && gst != "") {
-
-                let subAamount = ptr * qty;
-                // console.log(subAamount);
-
-                let afterDiscount = subAamount - (discount / 100 * subAamount);
-                // console.log(afterDiscount);
-
-                let baseAmount = afterDiscount / qty;
-                // console.log(baseAmount);
-
-                base.value = parseFloat(baseAmount).toFixed(2);
-
-                let amount = afterDiscount + (gst / 100 * afterDiscount);
-                // console.log(amount);
-
-                billAmount.value = parseFloat(amount).toFixed(2);
-
-            }
-        }
-        // }
-        // else{
-        //     swal(mrp);
-        // }
-    } //eof getBillAmount function
+    }
+    // }
+    // else{
+    //     swal(mrp);
+    // }
+} //eof getBillAmount function
 
 // ##################################################################################
 // ##################################################################################
 
 //geeting bills by clicking on add button
 const addData = () => {
-        var distId = document.getElementById("distributor-id");
-        var distBillid = document.getElementById("distributor-bill");
-        distBill = distBillid.value.toUpperCase();
+    var distId = document.getElementById("distributor-id");
+    var distBillid = document.getElementById("distributor-bill");
+    distBill = distBillid.value.toUpperCase();
 
-        var billDate = document.getElementById("bill-date");
-        var dueDate = document.getElementById("due-date");
-        var paymentMode = document.getElementById("payment-mode");
+    var billDate = document.getElementById("bill-date");
+    var dueDate = document.getElementById("due-date");
+    var paymentMode = document.getElementById("payment-mode");
 
-        var productName = document.getElementById("product-name");
-        var productId = document.getElementById("product-id");
-        var batch = document.getElementById("batch-no");
-        batchNo = batch.value.toUpperCase();
-        var manufId = document.getElementById("manufacturer-id");
-        var medicinePower = document.getElementById("medicine-power");
-        var expMonth = document.getElementById("exp-month");
-        var expYear = document.getElementById("exp-year");
-        var expDate = `${expMonth.value}/${expYear.value}`;
-        expDate = expDate.toString()
-            // var producDsc       = document.getElementById("product-descreption");
-        var weightage = document.getElementById("weightage");
-        var unit = document.getElementById("unit");
-        var packagingIn = document.getElementById("packaging-in");
-        var mrp = document.getElementById("mrp");
-        var ptr = document.getElementById("ptr");
-        var qty = document.getElementById("qty");
-        var freeQty = document.getElementById("free-qty");
-        var discount = document.getElementById("discount");
-        var gst = document.getElementById("gst");
-        var base = document.getElementById("base");
-        var billAmount = document.getElementById("bill-amount");
-        
-        // distId
-        // var packOf = (``);
-        // alert(packOf);
+    var productName = document.getElementById("product-name");
+    var productId = document.getElementById("product-id");
+    var batch = document.getElementById("batch-no");
+    batchNo = batch.value.toUpperCase();
+    var manufId = document.getElementById("manufacturer-id");
+    var medicinePower = document.getElementById("medicine-power");
+    var expMonth = document.getElementById("exp-month");
+    var expYear = document.getElementById("exp-year");
+    var expDate = `${expMonth.value}/${expYear.value}`;
+    expDate = expDate.toString()
+    // var producDsc       = document.getElementById("product-descreption");
+    var weightage = document.getElementById("weightage");
+    var unit = document.getElementById("unit");
+    var packagingIn = document.getElementById("packaging-in");
+    var mrp = document.getElementById("mrp");
+    var ptr = document.getElementById("ptr");
+    var qty = document.getElementById("qty");
+    var freeQty = document.getElementById("free-qty");
+    var discount = document.getElementById("discount");
+    var gst = document.getElementById("gst");
+    var base = document.getElementById("base");
+    var billAmount = document.getElementById("bill-amount");
 
-        if (distId.value == "") {
-            swal("Blank Field", "Please Selet Distributor First!", "error")
+    // distId
+    // var packOf = (``);
+    // alert(packOf);
+
+    if (distId.value == "") {
+        swal("Blank Field", "Please Selet Distributor First!", "error")
+            .then((value) => {
+                distId.focus();
+            });
+    } else {
+        if (distBillid.value == "") {
+            swal("Blank Field", "Please Enter Distributor Bill Number!", "error")
                 .then((value) => {
-                    distId.focus();
+                    distBillid.focus();
                 });
         } else {
-            if (distBillid.value == "") {
-                swal("Blank Field", "Please Enter Distributor Bill Number!", "error")
+            if (billDate.value == "") {
+                swal("Blank Field", "Please Select Bill Date!", "error")
                     .then((value) => {
-                        distBillid.focus();
+                        billDate.focus();
                     });
             } else {
-                if (billDate.value == "") {
-                    swal("Blank Field", "Please Select Bill Date!", "error")
+                if (dueDate.value == "") {
+                    swal("Blank Field", "Please Select Bill Payment Date!", "error")
                         .then((value) => {
-                            billDate.focus();
+                            dueDate.focus();
                         });
                 } else {
-                    if (dueDate.value == "") {
-                        swal("Blank Field", "Please Select Bill Payment Date!", "error")
+                    if (paymentMode.value == "") {
+                        swal("Blank Field", "Please Select Payment Mode!", "error")
                             .then((value) => {
-                                dueDate.focus();
+                                paymentMode.focus();
                             });
                     } else {
-                        if (paymentMode.value == "") {
-                            swal("Blank Field", "Please Select Payment Mode!", "error")
+                        if (productName.value == "") {
+                            swal("Blank Field", "Please Search & Select Product!", "error")
                                 .then((value) => {
-                                    paymentMode.focus();
+                                    productName.focus();
                                 });
                         } else {
-                            if (productName.value == "") {
-                                swal("Blank Field", "Please Search & Select Product!", "error")
+                            if (batch.value == "") {
+
+                                swal("Blank Field", "Please Enter Product Batch Number!", "error")
                                     .then((value) => {
-                                        productName.focus();
+                                        batch.focus();
                                     });
                             } else {
-                                if (batch.value == "") {
-
-                                    swal("Blank Field", "Please Enter Product Batch Number!", "error")
-                                        .then((value) => {
-                                            batch.focus();
-                                        });
+                                if (medicinePower.value == "") {
+                                    medicinePower.focus();
                                 } else {
-                                    if (medicinePower.value == "") {
-                                        medicinePower.focus();
+                                    if (expMonth.value == "") {
+                                        swal("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
+                                            .then((value) => {
+                                                expMonth.focus();
+                                            });
                                     } else {
-                                        if (expMonth.value == "") {
-                                            swal("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
-                                                .then((value) => {
-                                                    expMonth.focus();
-                                                });
+                                        if (weightage.value == "") {
+                                            weightage.focus();
                                         } else {
-                                            if (weightage.value == "") {
-                                                weightage.focus();
+                                            if (unit.value == "") {
+                                                unit.focus();
                                             } else {
-                                                if (unit.value == "") {
-                                                    unit.focus();
+                                                if (packagingIn.value == "") {
+                                                    packagingIn.focus();
                                                 } else {
-                                                    if (packagingIn.value == "") {
-                                                        packagingIn.focus();
+                                                    if (mrp.value == "") {
+                                                        mrp.focus();   
                                                     } else {
-                                                        if (mrp.value == "") {
-                                                            mrp.focus();
-                                                            
-                                                        } else {    
-                                                            if(ptr.value == '' || ptr.value > mrp.value){
+                                                        if (ptr.value == "") {
+                                                            swal("Blank Field",
+                                                                "Please enter PTR value",
+                                                                "error")
+                                                                .then((value) => {
+                                                                    ptr.focus();
+                                                                });
+                                                        } else {
+                                                            var Ptr = parseFloat(ptr.value);
+                                                            var Mrp = parseFloat(mrp.value);
+                                                            if (Ptr > Mrp) {
                                                                 swal("Blank Field",
-                                                                        "Please check PTR value",
-                                                                        "error")
+                                                                    "Please check PTR value",
+                                                                    "error")
                                                                     .then((value) => {
                                                                         ptr.focus();
                                                                     });
                                                             } else {
                                                                 if (qty.value == "") {
                                                                     swal("Blank Field",
-                                                                            "Please Enter Quantity",
-                                                                            "error")
+                                                                        "Please Enter Quantity",
+                                                                        "error")
                                                                         .then((value) => {
                                                                             qty.focus();
                                                                         });
                                                                 } else {
                                                                     if (freeQty.value == "") {
                                                                         swal("Blank Field",
-                                                                                "Please Enter Free Quantity",
-                                                                                "error")
+                                                                            "Please Enter Free Quantity",
+                                                                            "error")
                                                                             .then((value) => {
                                                                                 freeQty.focus();
                                                                             });
                                                                     } else {
                                                                         if (discount.value == "") {
                                                                             swal("Blank Field",
-                                                                                    "Please Enter Discount at least 0",
-                                                                                    "error")
+                                                                                "Please Enter Discount at least 0",
+                                                                                "error")
                                                                                 .then((value) => {
                                                                                     discount.focus();
                                                                                 });
@@ -367,15 +376,15 @@ const addData = () => {
 
                                                                                         var qtyVal =
                                                                                             document
-                                                                                            .getElementById(
-                                                                                                "qty-val")
-                                                                                            .value;
+                                                                                                .getElementById(
+                                                                                                    "qty-val")
+                                                                                                .value;
                                                                                         let itemQty =
                                                                                             parseFloat(qty
                                                                                                 .value) +
                                                                                             parseFloat(
                                                                                                 freeQty
-                                                                                                .value);
+                                                                                                    .value);
                                                                                         totalQty =
                                                                                             parseFloat(
                                                                                                 qtyVal) +
@@ -394,7 +403,7 @@ const addData = () => {
                                                                                                 net) +
                                                                                             parseFloat(
                                                                                                 billAmount
-                                                                                                .value
+                                                                                                    .value
                                                                                             );
                                                                                         // console.log(netAmount);
                                                                                         // console.log("Net Value");
@@ -406,23 +415,23 @@ const addData = () => {
                                                                                         let totalWithDisc =
                                                                                             total - (
                                                                                                 discount
-                                                                                                .value /
+                                                                                                    .value /
                                                                                                 100 *
                                                                                                 total);
 
                                                                                         let gstPerItem = (
-                                                                                                totalWithDisc +
-                                                                                                (gst.value /
-                                                                                                    100 *
-                                                                                                    totalWithDisc
-                                                                                                )) -
+                                                                                            totalWithDisc +
+                                                                                            (gst.value /
+                                                                                                100 *
+                                                                                                totalWithDisc
+                                                                                            )) -
                                                                                             totalWithDisc;
                                                                                         // let gstPerItem = withGst - total;
                                                                                         let gstVal =
                                                                                             document
-                                                                                            .getElementById(
-                                                                                                "gst-val")
-                                                                                            .value;
+                                                                                                .getElementById(
+                                                                                                    "gst-val")
+                                                                                                .value;
                                                                                         let onlyGst =
                                                                                             parseFloat(
                                                                                                 gstVal) +
@@ -435,21 +444,21 @@ const addData = () => {
                                                                                                 .value) * (
                                                                                                 parseFloat(
                                                                                                     qty
-                                                                                                    .value
+                                                                                                        .value
                                                                                                 ) +
                                                                                                 parseFloat(
                                                                                                     freeQty
-                                                                                                    .value)
+                                                                                                        .value)
                                                                                             );
                                                                                         // console.log(totalMrp);
                                                                                         let margin =
                                                                                             totalMrp -
                                                                                             billAmount
-                                                                                            .value;
+                                                                                                .value;
                                                                                         // console.log(margin);
                                                                                         let marginP = (
-                                                                                                margin /
-                                                                                                totalMrp) *
+                                                                                            margin /
+                                                                                            totalMrp) *
                                                                                             100;
                                                                                         // console.log(marginP);
                                                                                         // let profit
@@ -506,12 +515,32 @@ const addData = () => {
         </tr>`);
 
 
+    document.getElementById("product-name").value = "";
+    document.getElementById("manufacturer-id").value = "";
+    document.getElementById("manufacturer-name").value ="";
+    document.getElementById("weightage").value = "";
+    document.getElementById("unit").value = "";
+    document.getElementById("packaging-in").value = "";
+    document.getElementById("medicine-power").value = "";
+    document.getElementById("batch-no").value = "";
+    document.getElementById("exp-month").value = "";
+    document.getElementById("exp-year").value = "";
+    document.getElementById("mrp").value = "";
+    document.getElementById("ptr").value = "";
+    document.getElementById("qty").value = "";
+    document.getElementById("free-qty").value = "";
+    document.getElementById("packaging-type").value = "";
+    document.getElementById("discount").value = "";
+    document.getElementById("gst").value = "";
+    document.getElementById("base").value = "";
+    document.getElementById("bill-amount").value = "";
+
 
                                                                                         document
                                                                                             .getElementById(
                                                                                                 "distributor-name"
                                                                                             ).value = distId
-                                                                                            .value;
+                                                                                                .value;
 
                                                                                         document
                                                                                             .getElementById(
@@ -531,26 +560,26 @@ const addData = () => {
                                                                                                 "due-date-val"
                                                                                             )
                                                                                             .value = dueDate
-                                                                                            .value;
+                                                                                                .value;
 
                                                                                         document
                                                                                             .getElementById(
                                                                                                 "payment-mode-val"
                                                                                             ).value =
                                                                                             paymentMode
-                                                                                            .value;
+                                                                                                .value;
 
 
                                                                                         if (slno > 1) {
                                                                                             let id =
                                                                                                 document
-                                                                                                .getElementById(
-                                                                                                    "items-val"
-                                                                                                );
+                                                                                                    .getElementById(
+                                                                                                        "items-val"
+                                                                                                    );
                                                                                             let newId =
                                                                                                 parseFloat(
                                                                                                     id
-                                                                                                    .value
+                                                                                                        .value
                                                                                                 ) + 1;
                                                                                             document
                                                                                                 .getElementById(
@@ -578,7 +607,7 @@ const addData = () => {
                                                                                             .getElementById(
                                                                                                 "gst-val")
                                                                                             .value = onlyGst
-                                                                                            .toFixed(2);
+                                                                                                .toFixed(2);
                                                                                         // document.getElementById(
                                                                                         //         "margin-val")
                                                                                         //     .value = marginP.toFixed(2);
@@ -588,7 +617,7 @@ const addData = () => {
                                                                                             )
                                                                                             .value =
                                                                                             netAmount
-                                                                                            .toFixed(2);
+                                                                                                .toFixed(2);
 
                                                                                     }
                                                                                 }
@@ -611,15 +640,14 @@ const addData = () => {
             }
         }
 
+    }
 
+    // freeQty.value = '';
+    // freeQty.value = '';
 
-        // freeQty.value = '';
-        // freeQty.value = '';
+    //========== Clearing fields after adding Data =============
 
-
-
-    } //eof addData  
-
+} //eof addData  
 
 // ================================ Delet Data ================================
 
