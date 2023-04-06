@@ -148,6 +148,16 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                     <input type="text" class="upr-inp" id="unit" value="" readonly>
                                 </div>
 
+                                <div class="col-md-1 col-6 mt-3" hidden>
+                                    <label class="mb-0 mt-1" for="unitType"> UnitType</label>
+                                    <input type="text" class="upr-inp" id="unitType" value="" readonly>
+                                </div>
+
+                                <div class="col-md-1 col-6 mt-3" hidden>
+                                    <label class="mb-0 mt-1" for="Weatage"> Weatage</label>
+                                    <input type="text" class="upr-inp" id="weatage" value="" readonly>
+                                </div>
+
                                 <div class="col-md-1 col-6 mt-3">
                                     <label class="mb-0 mt-1" for="batch-no">Batch</label>
                                     <input type="text" class="upr-inp" name="batch-no" id="batch-no" readonly>
@@ -237,6 +247,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp.</th>
                                                 <th scope="col">Unit</th>
+                                                <th scope="col" hidden>Weatage</th>
+                                                <th scope="col" hidden>UnitType</th>
                                                 <th scope="col">Qty.</th>
                                                 <th scope="col">MRP</th>
                                                 <th scope="col">Disc</th>

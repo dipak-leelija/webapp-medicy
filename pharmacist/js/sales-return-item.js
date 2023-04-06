@@ -9,6 +9,8 @@ reffBy = document.getElementById("reff-by");
 itemList = document.getElementById("items-list");
 expDate = document.getElementById("exp-date");
 unit = document.getElementById("unit");
+unitType = document.getElementById("unitType");
+weatage = document.getElementById("weatage");
 batch = document.getElementById("batch-no")
 mrp = document.getElementById("mrp");
 purchaseQuantity = document.getElementById("purchase-qty");
@@ -62,6 +64,8 @@ const getCustomer = (invoice) => {
 
         expDate.value = "";
         unit.value = "";
+        unitType.value = "";
+        weatage.value = "";
         batch.value = "";
         mrp.value = "";
         purchaseQuantity.value = "";
@@ -125,6 +129,8 @@ const getDtls = (invoiceId, customerId) => {
 
         expDate.value = "";
         unit.value = "";
+        unitType.value = "";
+        weatage.value = "";
         batchNo.value = "";
         mrp.value = "";
         purchaseQuantity.value = "";
@@ -164,6 +170,20 @@ const getItemDetails = (t) => {
         xmlhttp.open("GET", unitUrl, false);
         xmlhttp.send(null);
         unit.value = xmlhttp.responseText;
+
+        //==================== UnitType ====================
+        let unitTypeUrl = `ajax/stockOut.all.ajax.php?unittype=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        xmlhttp.open("GET", unitTypeUrl, false);
+        xmlhttp.send(null);
+        unitType.value = xmlhttp.responseText;
+        console.log(xmlhttp.responseText);
+
+        //==================== Weatage ====================
+        let weatageUrl = `ajax/stockOut.all.ajax.php?weatage=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        xmlhttp.open("GET", weatageUrl, false);
+        xmlhttp.send(null);
+        weatage.value = xmlhttp.responseText;
+        console.log(xmlhttp.responseText);
 
         //==================== Batch ====================
         batch.value = batchNo;
@@ -208,7 +228,7 @@ const getItemDetails = (t) => {
         xmlhttp.send(null);
         gst.value = xmlhttp.responseText;
 
-        //==================== Unit ====================
+        //==================== Taxable ====================
         let taxableUrl = `ajax/stockOut.all.ajax.php?taxable=${invoice}&p-id=${productId}&batch=${batchNo}`;
         xmlhttp.open("GET", taxableUrl, false);
         xmlhttp.send(null);
@@ -226,6 +246,8 @@ const getItemDetails = (t) => {
 
         expDate.value = "";
         unit.value = "";
+        unitType.value = "";
+        weatage.value = "";
         batchNo.value = "";
         mrp.value = "";
         purchaseQuantity.value = "";
@@ -431,6 +453,14 @@ const addData = () => {
             <td class="pt-3">
                 <input class="table-data w-4r" type="text" name="setof[]" value="${unit.value}" readonly>
             </td>
+
+            <td class="pt-3" hidden>
+                <input class="table-data w-4r" type="text" name="unitType[]" value="${unitType.value}" readonly>
+            </td>
+            <td class="pt-3" hidden>
+                <input class="table-data w-4r" type="text" name="weatage[]" value="${weatage.value}" readonly>
+            </td>
+
             <td class="pt-3">
                 <input class="table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly>
             </td>
@@ -462,6 +492,8 @@ const addData = () => {
             itemList.options[0].selected = true;
             expDate.value = "";
             unit.value = "";
+            unitType.value = "";
+            weatage.value = "";
             batch.value = "";
             mrp.value = "";
             purchaseQuantity.value="";

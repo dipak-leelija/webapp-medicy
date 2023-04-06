@@ -13,7 +13,9 @@ reffBy = document.getElementById("reff-by");
 itemList = document.getElementById("items-list");
 expDate = document.getElementById("exp-date");
 unit = document.getElementById("unit");
-batch = document.getElementById("batch-no")
+unitType = document.getElementById("unitType");
+weatage = document.getElementById("weatage");
+batch = document.getElementById("batch-no");
 mrp = document.getElementById("mrp");
 pqty = document.getElementById("P-qty");
 qty = document.getElementById("qty");
@@ -67,6 +69,8 @@ const getCustomer = (invoice) => {
 
         expDate.value = "";
         unit.value = "";
+        unitType.value = "";
+        weatage.value = "";
         batch.value = "";
         mrp.value = "";
         pqty.value = "";
@@ -188,7 +192,23 @@ const getEditItemDetails = (t) => {
         xmlhttp.open("GET", unitUrl, false);
         xmlhttp.send(null);
         unit.value = xmlhttp.responseText;
-
+        
+        //==================== unit Type ====================
+        let unitType = `ajax/salesReturnEdit.ajax.php?unittype=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        xmlhttp.open("GET", unitType, false);
+        xmlhttp.send(null);
+        unitType = xmlhttp.responseText;
+        document.getElementById("unitType").value = unitType;
+        unitType = document.getElementById("unitType").value;
+        console.log(unitType);
+        //==================== weatage ====================
+        let weatage = `ajax/salesReturnEdit.ajax.php?weatage=${invoice}&p-id=${productId}&batch=${batchNo}`;
+        xmlhttp.open("GET", weatage, false);
+        xmlhttp.send(null);
+        weatage = xmlhttp.responseText;
+        document.getElementById("weatage").value = weatage;
+        weatage = document.getElementById("weatage").value;
+        console.log(weatage);
         //==================== Batch ====================
         batch.value = batchNo;
 
@@ -255,6 +275,8 @@ const getEditItemDetails = (t) => {
 
         expDate.value = "";
         unit.value = "";
+        unitType.value = "";
+        weatage.value = "";
         batchNo.value = "";
         mrp.value = "";
         pqty.value = "";
@@ -434,6 +456,8 @@ const addData = () => {
                 swal("You can not add same item more than one!");
                 expDate.value = "";
                 unit.value = "";
+                unitType.value = "";
+                weatage.value = "";
                 batch.value = "";
                 mrp.value = "";
                 pqty.value = "";
@@ -498,6 +522,14 @@ const addData = () => {
             <td class="pt-3">
                 <input class="table-data w-4r" type="text" name="setof[]" value="${unit.value}" readonly>
             </td>
+
+            <td class="pt-3" hidden>
+                <input class="table-data w-4r" type="text" name="unitType[]" value="${unitType.value}" readonly>
+            </td>
+            <td class="pt-3" hidden>
+                <input class="table-data w-4r" type="text" name="weatage[]" value="${weatage.value}" readonly>
+            </td>
+            
             <td class="pt-3">
                 <input class="table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly>
             </td>
@@ -529,6 +561,8 @@ const addData = () => {
         itemList.options[0].selected = true;
         expDate.value = "";
         unit.value = "";
+        unitType.value = "";
+        weatage.value = "";
         batch.value = "";
         mrp.value = "";
         pqty.value = "";

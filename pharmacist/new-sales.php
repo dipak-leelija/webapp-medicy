@@ -220,11 +220,11 @@ $doctor = $Doctors->showDoctors();
                                                     </div>
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
                                                         <label for="">Loose Stock:</label>
-                                                        <input class="sale-inp" type="any" id="loose-stock" style="border-width: 0px; margin-top: 1rem;" readonly>
+                                                        <input class="sale-inp" type="any" id="loose-stock" style="border-width: 0px;" readonly>
                                                     </div>
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
                                                         <label for="">Loose Price:</label>
-                                                        <input class="sale-inp" type="any" id="loose-price" style="border-width: 0px; margin-top: -1.6rem;" readonly>
+                                                        <input class="sale-inp" type="any" id="loose-price" style="border-width: 0px;" readonly>
                                                     </div>
                                                     <!-- </div>
 

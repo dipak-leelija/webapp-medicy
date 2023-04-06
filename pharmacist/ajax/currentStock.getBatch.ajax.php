@@ -8,5 +8,4 @@ if (isset($_GET["id"])) {
     echo $stock[0]['batch_no'];
 }
 // echo "Hi";
-
 ?> 

@@ -75,6 +75,22 @@ if (isset($_GET["unit"])) {
     echo $item[0]['weatage'];
 }
 
+//get unit & weatage==========
+
+if (isset($_GET["unittype"])) {
+    $invoice = $_GET["unittype"];
+    $item = $StockOut->stockOutDetailsSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    echo $item[0]['unit'];
+   
+}
+
+if (isset($_GET["weatage"])) {
+    $invoice = $_GET["weatage"];
+    $item = $StockOut->stockOutDetailsSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    echo $item[0]['weightage'];
+    
+}
+//============================
 
 // get product mrp
 if (isset($_GET["mrp"])) {

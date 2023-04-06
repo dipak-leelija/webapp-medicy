@@ -150,7 +150,7 @@ if($patientId == 'Cash Sales'){
 
                             </div>
                             <!--============= end select Bill and details =============-->
-
+                            
                             <div class="row">
                                 <div class="col-md-8 col-12 mt-3">
                                     <label for="items-list" class="mb-0">Product Name</label>
@@ -173,6 +173,14 @@ if($patientId == 'Cash Sales'){
                                 <div class="col-md-1 col-6 mt-3">
                                     <label class="mb-0 mt-1" for="unit"> Unit</label>
                                     <input type="text" class="upr-inp" id="unit" value="" readonly>
+                                </div>
+                                <div class="col-md-1 col-6 mt-3" hidden>
+                                    <label class="mb-0 mt-1" for="unitType"> UnitType </label>
+                                    <input type="text" class="upr-inp" id="unitType" value="" readonly>
+                                </div>
+                                <div class="col-md-1 col-6 mt-3" hidden>
+                                    <label class="mb-0 mt-1" for="weatage"> Weatage </label>
+                                    <input type="text" class="upr-inp" id="weatage" value="" readonly>
                                 </div>
 
                                 <div class="col-md-1 col-6 mt-3">
@@ -266,6 +274,8 @@ if($patientId == 'Cash Sales'){
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp.</th>
                                                 <th scope="col">Unit</th>
+                                                <th scope="col" hidden>UnitType</th>
+                                                <th scope="col" hidden>Weatage</th>
                                                 <th scope="col">Qty.</th>
                                                 <th scope="col">MRP</th>
                                                 <th scope="col">Disc</th>

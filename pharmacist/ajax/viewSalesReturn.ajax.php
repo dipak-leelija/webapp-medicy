@@ -2,13 +2,14 @@
 require_once '../../php_control/salesReturn.class.php';
 require_once '../../php_control/patients.class.php';
 require_once '../../php_control/products.class.php';
+require_once '../../php_control/stockOut.class.php';
 
 
 // classes initiating 
 $SalesReturn    = new SalesReturn();
 $Patients       = new Patients();
 $products       = new Products();
-
+$StockOut       = new StockOut();
 
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
     if (isset($_GET['invoice'])) {
@@ -103,20 +104,39 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                     $billList = $SalesReturn->salesReturnbyInvoiceIdsalesReturnId($_GET['invoice'], $_GET['id']);
                     foreach ($billList as $bill) {
 
+                        $invoice    = $bill['invoice_id'];
+                        $productId  = $bill['product_id'];
+                        $batchNo    = $bill['batch_no'];
                         $productName = $products->showProductsById($bill['product_id']);
                         $ItemName = $productName[0]['name']; 
-                    
+                        
+                        $invoicDetials = $StockOut->stockOutSelect($invoice, $productId, $batchNo);
+                        foreach($invoicDetials as $invoiceData){
+                            //print_r($invoiceData);
+                            if($invoiceData['qty'] == 0){
+                                $sting = '(L)';
+                                $pQty = $invoiceData['loosely_count'];
+                                $pQty = $pQty.$sting;
+                                $return = $bill['return'];
+                                $return = $return.$sting;
+                            }else{
+                                $pQty = $invoiceData['qty'];
+                                $return = $bill['return'];
+                            }
+                        }
+                        
+
                     echo '<tr>
                             <td>'.$bill['invoice_id'].'</td>
                             <td>'.$ItemName.'</td>
                             <td>'.$bill['batch_no'].'</td>
                             <td>'.$bill['weatage'].'</td>
                             <td>'.$bill['exp'].'</td>
-                            <td>'.$bill['qty'].'</td>
+                            <td>'.$pQty.'</td>
                             <td>'.$bill['disc'].'</td>
                             <td>'.$bill['gst'].'</td>
                             <td>'.$bill['amount'].'</td>
-                            <td>'.$bill['return'].'</td>
+                            <td>'.$return.'</td>
                             <td>'.$bill['refund'].'</td>
 
                         </tr>';
