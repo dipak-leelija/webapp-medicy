@@ -82,6 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
+
+
     if (isset($_POST['submit'])) {
         $invoiceId = $IdGeneration->pharmecyInvoiceId();
 
@@ -91,7 +93,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         for ($i = 0; $i < count($prductId); $i++) {
 
+
+            $currentStockDetails = $CurrentStock->showCurrentStocByPId($prductId[$i]);
+            print_r($currentStockDetails);
+            echo "<br>";
+            $countCurrentStockDetials = count($currentStockDetails);
+            echo $countCurrentStockDetials;
+            echo "<br>";
+            $quantity       = $_POST['qty'];
+            $qtyTyps        = $_POST['qty-types'];
+            echo "<br>"; print_r($quantity);
+            echo "<br>"; print_r($qtyTyps);
+
+            
+
+            exit;
+//==================================================testing area=============================================
             $productDetails = $CurrentStock->showCurrentStocByProductIdandBatchNo($prductId[$i], $batchNo[$i]);
+
 
             // print_r($productDetails);
             // echo "<br><br>";
@@ -163,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stockOut === true) {
 
-                $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $productID, $BatchNo, $ExpairyDate, $Weightage, $Unit, $qty[$i], $looselyCount, $MRP, $PTR, $discount[$i], $GST, $margin, $amount[$i], $addedBy, $addedOn);
+                // $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $productID, $BatchNo, $ExpairyDate, $Weightage, $Unit, $qty[$i], $looselyCount, $MRP, $PTR, $discount[$i], $GST, $margin, $amount[$i], $addedBy, $addedOn);
             }
         }
     }
@@ -228,102 +247,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $lCount       = 0;
                 }
                 // echo $newLCount
-                $CurrentStock->updateStock($itemId, $uBatchNo, $newQuantity, $newLCount);
+                //$CurrentStock->updateStock($itemId, $uBatchNo, $newQuantity, $newLCount);
 
-                $StockOut->addPharmacyBillDetails($invoiceId, $itemId, array_shift($_POST['product-name']), $uBatchNo, $uWeightage, array_shift($_POST['exp-date']), $pQty, $lCount, array_shift($_POST['mrp']), array_shift($_POST['disc']), array_shift($_POST['dPrice']), array_shift($_POST['gst']), array_shift($_POST['netGst']), array_shift($_POST['amount']), $addedBy);
+                // $StockOut->addPharmacyBillDetails($invoiceId, $itemId, array_shift($_POST['product-name']), $uBatchNo, $uWeightage, array_shift($_POST['exp-date']), $pQty, $lCount, array_shift($_POST['mrp']), array_shift($_POST['disc']), array_shift($_POST['dPrice']), array_shift($_POST['gst']), array_shift($_POST['netGst']), array_shift($_POST['amount']), $addedBy);
             }
 
-            // if (isset($_POST['update'])) {
-            //     $oldBill = $StockOut->stockOutDetailsById($invoiceId);
-            //     print_r($oldBill);
-
-            //     $oldQty       = $oldBill[0]['qty'];
-            //     $oldLCount    = $oldBill[0]['loosely_count'];
-            //     $existWeatage = $oldBill[0]['weatage'];
-
-            //     if (str_contains($existWeatage, 'tab')) {
-            //         $oldWeatage = 'tab';
-            //     }elseif(str_contains($existWeatage, 'cap')){
-            //         $oldWeatage = 'cap';
-            //     }else {
-            //         $oldWeatage = '';
-            //     }
-
-            //     if ($oldQty == 0) {
-            //         $qtyType = 'Loose';
-            //     }elseif ($oldLCount == 0 && $oldQty > 0) {
-
-
-            //         if ($oldWeatage == 'tab' || $oldWeatage == 'cap') {
-            //             $qtyType = '';
-            //             $qtyType = 'Pack';
-            //         }
-
-            //         if ($oldWeatage != 'tab' && $oldWeatage != 'cap') {
-            //             $qtyType = '';
-            //         }
-            //     }
-
-            //         if ($qtyType == "Loose") {
-
-            //             if ($oldLCount > $pQty) { 
-            //                 $updateQty = $oldLCount - $pQty;
-            //                 $newLCount = $getLCount + $updateQty;
-            //             }
-            //             elseif ($oldLCount < $pQty) {
-            //                 $updateQty = $pQty - $oldLCount;
-            //                 $newLCount = $getLCount - $updateQty;
-            //             }else{
-            //                 $newLCount = $getLCount;
-            //             }
-
-            //             $newQuantity   = intval($newLCount / $nWeightage);
-            //             $lCount         = $pQty;
-            //             $pQty           = 0;
-
-            //         }elseif($qtyType == "Pack"){
-
-            //             if ($oldQty > $pQty) { 
-            //                 $updateQty = $oldQty - $pQty;
-            //                 $newQuantity = $getQuantity + $updateQty;
-            //                 $newLCount    = $getLCount + ($updateQty * $nWeightage);
-            //             }
-            //             elseif ($oldQty < $pQty) {
-            //                 $updateQty = $pQty - $oldQty;
-            //                 $newQuantity = $getQuantity - $updateQty;
-            //                 $newLCount   = $getLCount - ($updateQty * $nWeightage);
-
-            //             }else{
-            //                 $newQuantity = $getQuantity;
-            //                 $newLCount   = $getLCount;
-            //             }
-
-            //             $lCount       = 0;
-
-            //         }else{
-
-
-
-            //             if ($oldQty > $pQty) { 
-            //                 $updateQty = $oldQty - $pQty;
-            //                 $newQuantity = $getQuantity + $updateQty;
-            //             }
-            //             elseif ($oldQty < $pQty) {
-            //                 $updateQty = $pQty - $oldQty;
-            //                 $newQuantity = $getQuantity - $updateQty;
-            //             }else{
-            //                 $newQuantity = $getQuantity;
-            //             }
-
-            //             $newLCount    = 0;
-            //             $lCount       = 0;
-            //         }
-
-            //         $CurrentStock->updateStock($itemId, $uBatchNo, $newQuantity, $newLCount);
-
-
-            //     $StockOut->updateBillDetail($invoiceId, $itemId, array_shift($_POST['product-name']), $uBatchNo, $uWeightage, array_shift($_POST['exp-date']), $pQty, $lCount, array_shift($_POST['mrp']), array_shift($_POST['disc']), array_shift($_POST['dPrice']), array_shift($_POST['gst']), array_shift($_POST['netGst']), array_shift($_POST['amount']), $addedBy);
-            // }
+            
         }
     }
 }

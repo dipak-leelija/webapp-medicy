@@ -296,6 +296,19 @@ const onQty = (qty) => {
     let disc = document.getElementById("disc").value;
     let discPrice = document.getElementById('dPrice').value;
 
+    // //==================== Quantity Availability Checking ====================
+    // qtyCalUrl = `ajax/product.availableQuantittyChecking.ajax.php?qtyId=${pid}&Bid=${bno}`;
+    // // alert(unitUrl);
+    // // window.location.href = unitUrl;
+    // xmlhttp.open("GET", qtyCalUrl, false);
+    // xmlhttp.send(null);
+    // document.getElementById("qty").value = xmlhttp.responseText;
+    // //console.log(xmlhttp.responseText);
+    // // alert(xmlhttp.responseText);
+    // qty = document.getElementById("qty").value;
+    // console.log(qty);
+    // //=======================================================================
+
     if (disc != null) {
         disc = disc;
     }
@@ -402,6 +415,10 @@ const mrpUpdate = (mrpType) => {
 
 
 const addSummary = () => {
+
+
+
+
     let billDAte = document.getElementById("bill-date");
     let customer = document.getElementById("customer");
     let doctorName = document.getElementById("doctor-name");

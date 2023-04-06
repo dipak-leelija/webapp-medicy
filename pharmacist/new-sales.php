@@ -172,6 +172,12 @@ $doctor = $Doctors->showDoctors();
                                             <label for="">Qty.</label><br>
                                             <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)">
                                         </div>
+
+                                        <!-- <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Availability.</label><br>
+                                            <input class="sale-inp" type="number" id="avl">
+                                        </div> -->
+
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="">Disc%</label><br>
                                             <input class="sale-inp" type="any" id="disc" onkeyup="ondDisc(this.value)">
