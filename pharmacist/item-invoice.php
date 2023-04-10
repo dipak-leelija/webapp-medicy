@@ -95,19 +95,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             $currentStockDetails = $CurrentStock->showCurrentStocByPId($prductId[$i]);
-            print_r($currentStockDetails);
-            echo "<br>";
-            $countCurrentStockDetials = count($currentStockDetails);
-            echo $countCurrentStockDetials;
-            echo "<br>";
-            $quantity       = $_POST['qty'];
-            $qtyTyps        = $_POST['qty-types'];
-            echo "<br>"; print_r($quantity);
-            echo "<br>"; print_r($qtyTyps);
+            // print_r($currentStockDetails);
+            // echo "<br>";
+            // $countCurrentStockDetials = count($currentStockDetails);
+            // echo $countCurrentStockDetials;
+            // echo "<br>";
+            // $quantity       = $_POST['qty'];
+            // $qtyTyps        = $_POST['qty-types'];
+            // echo "<br>"; print_r($quantity);
+            // echo "<br>"; print_r($qtyTyps);
 
             
 
-            exit;
+            // exit;
 //==================================================testing area=============================================
             $productDetails = $CurrentStock->showCurrentStocByProductIdandBatchNo($prductId[$i], $batchNo[$i]);
 
@@ -182,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stockOut === true) {
 
-                // $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $productID, $BatchNo, $ExpairyDate, $Weightage, $Unit, $qty[$i], $looselyCount, $MRP, $PTR, $discount[$i], $GST, $margin, $amount[$i], $addedBy, $addedOn);
+                $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $productID, $BatchNo, $ExpairyDate, $Weightage, $Unit, $qty[$i], $looselyCount, $MRP, $PTR, $discount[$i], $GST, $margin, $amount[$i], $addedBy, $addedOn);
             }
         }
     }
@@ -247,9 +247,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $lCount       = 0;
                 }
                 // echo $newLCount
-                //$CurrentStock->updateStock($itemId, $uBatchNo, $newQuantity, $newLCount);
+                $CurrentStock->updateStock($itemId, $uBatchNo, $newQuantity, $newLCount);
 
-                // $StockOut->addPharmacyBillDetails($invoiceId, $itemId, array_shift($_POST['product-name']), $uBatchNo, $uWeightage, array_shift($_POST['exp-date']), $pQty, $lCount, array_shift($_POST['mrp']), array_shift($_POST['disc']), array_shift($_POST['dPrice']), array_shift($_POST['gst']), array_shift($_POST['netGst']), array_shift($_POST['amount']), $addedBy);
+                $StockOut->addPharmacyBillDetails($invoiceId, $itemId, array_shift($_POST['product-name']), $uBatchNo, $uWeightage, array_shift($_POST['exp-date']), $pQty, $lCount, array_shift($_POST['mrp']), array_shift($_POST['disc']), array_shift($_POST['dPrice']), array_shift($_POST['gst']), array_shift($_POST['netGst']), array_shift($_POST['amount']), $addedBy);
             }
 
             

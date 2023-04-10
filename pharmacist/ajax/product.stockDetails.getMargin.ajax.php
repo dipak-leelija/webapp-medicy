@@ -46,4 +46,27 @@ if (isset($_GET["Pid"])) {
 
 }
 
+
+
+if (isset($_GET["qtyCheck"])) {
+    $pid = $_GET["qtyCheck"];
+    $qtype = $_GET["qtp"];
+
+    $stock = $currentStock->showCurrentStocByPId($pid);
+    
+    if((isset($_GET['batch'])) == true){
+        $batchNum = $_GET['batch'];
+    }else{
+        $batchNum = $stock[0]['batch_no'];;
+    }
+
+    $stockInQantity = $currentStock->checkStock($pid, $batchNum);
+    //print_r($stockInQantity);
+    if($qtype == 'Loose'){
+        echo $stockInQantity[0]['loosely_count'];
+    }else{
+        echo $stockInQantity[0]['qty'];
+    }
+    
+}
 ?>

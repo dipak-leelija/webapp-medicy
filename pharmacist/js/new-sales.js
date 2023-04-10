@@ -1,3 +1,5 @@
+const checkBatch = [];  //
+
 const getDate = (date) => {
     // alert(date);
     document.getElementById("final-bill-date").value = date;
@@ -113,11 +115,15 @@ const searchItem = (searchFor) => {
 ///////////////////////////////////////////////////////
 const stockDetails = (productId) => {
     document.getElementById("product-id").value = productId;
+
+    checkBatch.push(productId);
+    console.log(checkBatch);
     // alert(productId);
     // console.log(productId);
     document.getElementById("searched-items").style.display = "none";
 
     var xmlhttp = new XMLHttpRequest();
+    var qtytp = document.getElementById('qty-type').value;
 
     // ============== Check Existence ==============
     stockCheckUrl = 'ajax/stock.checkExists.ajax.php?id=' + productId;
@@ -153,23 +159,30 @@ const stockDetails = (productId) => {
         xmlhttp.send(null);
         let packUnit = xmlhttp.responseText;
         let packOf = `${packWeightage}${packUnit}`;
-
         document.getElementById("weightage").value = packOf;
 
         //==================== Batch-no ====================
-        batchUrl = 'ajax/currentStock.getBatch.ajax.php?id=' + productId;
+        batchUrl = `ajax/currentStock.getBatch.ajax.php?id=${productId}&chkBtch=${checkBatch}`;
         // alert(url);
         xmlhttp.open("GET", batchUrl, false);
         xmlhttp.send(null);
         document.getElementById("batch-no").value = xmlhttp.responseText;
 
+
+        //=========== QANTITY CHECK ON BATCH NUMBER =============
+        qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${productId}&qtp=${qtytp}`;
+        xmlhttp.open("GET", qtyChkOnBathcUrl, false);
+        xmlhttp.send(null);
+        document.getElementById("aqty").value = "hello";
+        document.getElementById("aqty").value = xmlhttp.responseText;
+        
         //==================== Expiry Date ====================
         expDateUrl = 'ajax/currentStock.getExp.ajax.php?id=' + productId;
         // alert(url);
         xmlhttp.open("GET", expDateUrl, false);
         xmlhttp.send(null);
         document.getElementById("exp-date").value = xmlhttp.responseText;
-
+        
         //==================== MRP ====================
         mrpUrl = 'ajax/product.getMrp.ajax.php?stockmrp=' + productId;
         // alert(unitUrl);
@@ -291,24 +304,34 @@ const onQty = (qty) => {
     var pid = document.getElementById("product-id").value;
     var qType = document.getElementById("qty-type").value;
     let mrp = document.getElementById("mrp").value;
+    var checkAvailibility = document.getElementById("aqty").value;
     qty = document.getElementById("qty").value;
+    let qty1 = qty; // working as qty data holdive variable
     let bno = document.getElementById("batch-no").value;
     let disc = document.getElementById("disc").value;
     let discPrice = document.getElementById('dPrice').value;
 
-    // //==================== Quantity Availability Checking ====================
-    // qtyCalUrl = `ajax/product.availableQuantittyChecking.ajax.php?qtyId=${pid}&Bid=${bno}`;
-    // // alert(unitUrl);
-    // // window.location.href = unitUrl;
-    // xmlhttp.open("GET", qtyCalUrl, false);
-    // xmlhttp.send(null);
-    // document.getElementById("qty").value = xmlhttp.responseText;
-    // //console.log(xmlhttp.responseText);
-    // // alert(xmlhttp.responseText);
-    // qty = document.getElementById("qty").value;
-    // console.log(qty);
-    // //=======================================================================
+    //=========== QANTITY CHECK ON BATCH NUMBER =================
 
+    var bNo = document.getElementById("batch-no").value;
+    qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${pid}&batch=${bNo}&qtp=${qType}`;
+    xmlhttp.open("GET", qtyChkOnBathcUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("aqty").value = "hello";
+    document.getElementById("aqty").value = xmlhttp.responseText;
+    
+    //===============================================================================================
+    checkAvailibility = Number(checkAvailibility);
+    if(qty > checkAvailibility){
+        qty = checkAvailibility;
+        document.getElementById("qty").value = qty;
+        string_1 = "Current Batch have only "
+        string_2 = " quantity of this product. please add the rest of qantity after adding this." 
+        string_3 = string_1.concat(qty).concat(string_2);
+        console.log(string_3);
+        window.alert(string_3);
+    }
+    
     if (disc != null) {
         disc = disc;
     }
@@ -343,17 +366,25 @@ const onQty = (qty) => {
     document.getElementById("margin").value = xmlhttp.responseText;
     //console.log(xmlhttp.responseText);
     // alert(xmlhttp.responseText);
+
 }
 
 const ondDisc = (disc) => {
 
     var xmlhttp = new XMLHttpRequest();
+    var checkAvailibility = document.getElementById("aqty").value;
+    console.log(checkAvailibility);
     var pid = document.getElementById("product-id").value;
     var qType = document.getElementById("qty-type").value;
     let mrp = document.getElementById("mrp").value;
     let qty = document.getElementById("qty").value;
     let bno = document.getElementById("batch-no").value;
     // alert(disc);
+
+    checkAvailibility = Number(checkAvailibility);
+    if(qty > checkAvailibility){
+        qty = checkAvailibility;
+    }
 
     let subtotal = mrp * qty;
     let amount = subtotal - (disc / 100 * subtotal);
@@ -381,6 +412,7 @@ const mrpUpdate = (mrpType) => {
     var qType = document.getElementById("qty-type").value;
     let mrp = document.getElementById("mrp").value;
     let qty = document.getElementById("qty").value;
+    //let qty1 = document.getElementById("qty").value; // working as qty data holdive variable
     let bno = document.getElementById("batch-no").value;
     let discPr = document.getElementById("dPrice").value;
     
@@ -411,13 +443,18 @@ const mrpUpdate = (mrpType) => {
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
     //console.log(xmlhttp.responseText);
+
+    //=========== QANTITY CHECK ON BATCH NUMBER =============
+    qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${productId}&batch=${bno}&qtp=${qType}`;
+    xmlhttp.open("GET", qtyChkOnBathcUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("aqty").value = "hello";
+    document.getElementById("aqty").value = xmlhttp.responseText;
+    //var checkAvailibility = document.getElementById("aqty").value;
 }
 
 
 const addSummary = () => {
-
-
-
 
     let billDAte = document.getElementById("bill-date");
     let customer = document.getElementById("customer");
@@ -432,15 +469,21 @@ const addSummary = () => {
     let batchNo = document.getElementById("batch-no");
     let expDate = document.getElementById("exp-date");
     let mrp = document.getElementById("mrp");
+
     let qty = document.getElementById("qty");
+    var checkAvailibility = document.getElementById("aqty").value;
+
     let qtyType = document.getElementById("qty-type");
     let disc = document.getElementById("disc");
     let dPrice = document.getElementById("dPrice");
     let gst = document.getElementById("gst");
     let amount = document.getElementById("amount");
 
-
-    console.log(qtyType.value);
+    checkAvailibility = Number(checkAvailibility);
+    if(qty > checkAvailibility){
+        qty = checkAvailibility;
+    }
+    
     let qval = qty.value;
     if (qtyType.value == 'Loose') {
         let typ = ' (L)';
@@ -448,6 +491,7 @@ const addSummary = () => {
     } else {
         qval = qty.value;
     }
+
     //console.log(qval);
 
     // console.log(productId.value);
@@ -538,7 +582,7 @@ const addSummary = () => {
                                                     <input class="summary-items" type="text" name="weightage[]" value="${weightage.value}" readonly>
                                                 </td>
                                                 <td>
-                                                    <input class="summary-items" type="text" name="batch-no[]" value="${batchNo.value}" readonly>
+                                                    <input class="summary-items" type="text" name="batch-no[]" id="batch-no" value="${batchNo.value}" readonly>
                                                 </td>
                                                 <td>
                                                     <input class="summary-items" type="text" name="exp-date[]" value="${expDate.value}" readonly>
@@ -568,7 +612,10 @@ const addSummary = () => {
                                                 </td>
                                             </tr>`);
 
-                                                                document.getElementById("add-item-details").reset();
+                                            
+                                            document.getElementById("aqty").value="";
+                                            document.getElementById("add-item-details").reset();
+                                            
 
                                                                 // document.getElementById("product-id").value = "";
                                                                 // document.getElementById("search-Item").value = "";
@@ -643,13 +690,14 @@ const addSummary = () => {
         swal("Failed!", "Please Enter Bill Date!", "error");
 
     }
-
     event.preventDefault();
-
 }
 
-
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
+
+    var sl = slno-1;
+    delete checkBatch[sl];
+
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;

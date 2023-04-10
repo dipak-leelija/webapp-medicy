@@ -168,6 +168,12 @@ $doctor = $Doctors->showDoctors();
                                             <label for="">MRP</label><br>
                                             <input class="sale-inp" type="text" id="mrp" readonly>
                                         </div>
+
+                                        <div class="col-md-1 mt-3 col-6" hidden>
+                                            <!--Available qty on batch no-->
+                                            <label for="">Availability</label><br> 
+                                            <input class="sale-inp" type="text" id="aqty">
+                                        </div>
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="">Qty.</label><br>
                                             <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)">
