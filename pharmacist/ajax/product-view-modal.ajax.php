@@ -65,9 +65,11 @@ $CurrentStock   = new CurrentStock();
 <body>
     <?php
     if (isset($_GET['id'])) {
+        // echo $_GET['id'];
         $product        = $Products->showProductsById($_GET['id']);
         $manuf          = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
+        // print_r($itemstock);
         $image          = $ProductImages->showImageById($_GET['id']);
 
         //print_r($itemstock[0][9]);
@@ -127,15 +129,28 @@ $CurrentStock   = new CurrentStock();
                                 <p>
                                     <small>
                                         <mark>
-                                            Current Stock
+                                            Current Stock have :
                                             <?php
                                             if ($itemstock != null) {
-                                                echo $itemstock[0]['qty'];
+                                                $qty = 0;
+                                                foreach($itemstock as $itemQty){
+                                                    $qty = $qty + $itemQty['qty'];
+                                                }
+                                                echo $qty;
                                             } else {
                                                 echo 0;
                                             }
+                                            
+                                            if($qty > 1){
+                                                ?>
+                                            Units
+                                            <?php
+                                            }else{
                                             ?>
                                             Unit
+                                            <?php
+                                            }
+                                            ?>
                                         </mark>
                                     </small>
                                 </p>
@@ -171,7 +186,6 @@ $CurrentStock   = new CurrentStock();
                         </div>
 
                     </div>
-
 
                 </div>
             </div>

@@ -1,4 +1,6 @@
 const getDtls = (value) => {
+    
+    // console.log(value);
     // alert(value);
     var xmlhttp = new XMLHttpRequest();
     if (value != "") {
@@ -9,7 +11,7 @@ const getDtls = (value) => {
         xmlhttp.open("GET", manufacturerurl, false);
         xmlhttp.send(null);
         document.getElementById("manufacturer-id").value = xmlhttp.responseText;
-
+        
         manufacturerName = 'ajax/product.getManufacturer.ajax.php?name=' + value;
         // alert(url);
         xmlhttp.open("GET", manufacturerName, false);

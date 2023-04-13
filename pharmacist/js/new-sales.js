@@ -1,4 +1,4 @@
-const checkBatch = [];  //
+const checkBatchByPid = [];  //
 
 const getDate = (date) => {
     // alert(date);
@@ -116,8 +116,10 @@ const searchItem = (searchFor) => {
 const stockDetails = (productId) => {
     document.getElementById("product-id").value = productId;
 
-    checkBatch.push(productId);
-    console.log(checkBatch);
+    var qntity = document.getElementById('qty').value;
+
+    checkBatchByPid.push(productId); //product id array
+    console.log(qntity);
     // alert(productId);
     // console.log(productId);
     document.getElementById("searched-items").style.display = "none";
@@ -162,7 +164,7 @@ const stockDetails = (productId) => {
         document.getElementById("weightage").value = packOf;
 
         //==================== Batch-no ====================
-        batchUrl = `ajax/currentStock.getBatch.ajax.php?id=${productId}&chkBtch=${checkBatch}`;
+        batchUrl = `ajax/currentStock.getBatch.ajax.php?id=${productId}&chkBtch=${checkBatchByPid}`;
         // alert(url);
         xmlhttp.open("GET", batchUrl, false);
         xmlhttp.send(null);
@@ -319,8 +321,8 @@ const onQty = (qty) => {
     xmlhttp.send(null);
     document.getElementById("aqty").value = "hello";
     document.getElementById("aqty").value = xmlhttp.responseText;
-    
     //===============================================================================================
+
     checkAvailibility = Number(checkAvailibility);
     if(qty > checkAvailibility){
         qty = checkAvailibility;
@@ -328,7 +330,7 @@ const onQty = (qty) => {
         string_1 = "Current Batch have only "
         string_2 = " quantity of this product. please add the rest of qantity after adding this." 
         string_3 = string_1.concat(qty).concat(string_2);
-        console.log(string_3);
+        //console.log(string_3);
         window.alert(string_3);
     }
     
@@ -366,6 +368,14 @@ const onQty = (qty) => {
     document.getElementById("margin").value = xmlhttp.responseText;
     //console.log(xmlhttp.responseText);
     // alert(xmlhttp.responseText);
+
+
+    //==================== Batch-no ====================
+    batchUrl = `ajax/currentStock.getBatch.ajax.php?id=${productId}&chkBtch=${checkBatchByPid}`;
+    // alert(url);
+    xmlhttp.open("GET", batchUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("batch-no").value = xmlhttp.responseText;
 
 }
 
@@ -696,7 +706,7 @@ const addSummary = () => {
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
 
     var sl = slno-1;
-    delete checkBatch[sl];
+    delete checkBatchByPid[sl];
 
     jQuery(`#table-row-${slno}`).remove();
     slno--;

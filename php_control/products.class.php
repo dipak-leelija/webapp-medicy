@@ -21,7 +21,7 @@ class Products extends DatabaseConnection{
     }//eof addProduct function
     
     
-
+    
 
     function showProducts(){
         $slectProduct   	 = "SELECT * FROM products";

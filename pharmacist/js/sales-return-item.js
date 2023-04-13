@@ -112,7 +112,6 @@ const getDtls = (invoiceId, customerId) => {
         xmlhttp.send(null);
         reffBy.value = xmlhttp.responseText;
 
-
         //==================== Products List ====================
         productsUrl = 'ajax/stockOut.all.ajax.php?products=' + invoiceId;
         xmlhttp.open("GET", productsUrl, false);

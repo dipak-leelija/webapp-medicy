@@ -43,13 +43,13 @@ class CurrentStock extends DatabaseConnection{
     }//eof updateStock
 
     //============= current stock update after edting purchase return ================== RD===========
-
     function updateStockByReturnEdit($productId, $batchNo, $distributor, $newQuantity, $newLCount){
         $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no` = '$batchNo' AND `current_stock`.`distributor_id`='$distributor' ";
         $res = $this->conn->query($editUpdate);
         return $res;
     }//eof updateStock
 
+    //==============================================
 
     function checkStock($productId, $batchNo){
         $data = array();
@@ -109,6 +109,19 @@ class CurrentStock extends DatabaseConnection{
         //echo $productId;
         $data = array();
         $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId'";
+        // echo $select;
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof showCurrentStocByProductId
+
+
+    function showCurrentStocById($stockId){
+        //echo $productId;
+        $data = array();
+        $select = "SELECT * FROM current_stock WHERE `current_stock`.`id` = '$stockId'";
         // echo $select;
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {

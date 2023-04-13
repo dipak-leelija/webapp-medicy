@@ -113,6 +113,10 @@ class ProductImages extends DatabaseConnection{
 
     function deleteImage($productId){
         $delImage = "DELETE FROM `product_images` WHERE `id`='$productId'";
+
+        $delQry = $this->conn->query($delImage);
+        
+        return $delQry;
     }
 
 

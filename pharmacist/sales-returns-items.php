@@ -307,7 +307,6 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     </div>
                     <!--=========================== Show Bill Items ===========================-->
 
-
                 </div>
                 <!-- /.container-fluid -->
 

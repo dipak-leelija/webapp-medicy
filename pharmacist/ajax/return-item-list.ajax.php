@@ -49,9 +49,10 @@ if (isset($_GET['dist-id'])) {
                 $productName = $product[0]['name'];
 
                 $stoks = $CurrentStock->checkStock($productId, $batchNo);
-                // echo $stoks;
+                // print_r($stoks);
                 if ($stoks != null) {
                     $stoks = $stoks;
+                    // print_r($stoks);
                 }
 
     ?>
@@ -166,11 +167,11 @@ if (isset($_GET['return-id'])) {
                         //print_r($items);
                         foreach ($items as $item) {
                             $sl     += 1;
-                            // $qty    += $item['return_qty'];
+                            $qty    += $item['return_qty'];
                             $gst    += $item['gst'];
                             $amount += $item['ptr'];
 
-                            $product = $Products->showProductsById($item['product_id']);
+                            // $product = $Products->showProductsById($item['product_id']);
 
                             //print_r($product);
                             echo "<tr>

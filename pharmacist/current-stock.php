@@ -17,7 +17,7 @@ $ProductImages  = new ProductImages();
 $Manufacturer   = new Manufacturer();
 
 $showCurrentStock = $CurrentStock->showCurrentStock();
-
+// print_r($showCurrentStock);
 
 ?>
 
@@ -108,7 +108,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                             foreach ($showCurrentStock as $rowStock) {
                                                 //print_r($rowStock);
                                                 $currentStockId      = $rowStock['id'];
-                                                //echo $currentStockId;
+                                                // echo "$currentStockId<br>";
                                                 $productId           = $rowStock['product_id'];
                                                 //echo $productId;
                                                 $image               = $ProductImages->showImageById($productId);
@@ -142,7 +142,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                 $gst                  = $rowStock['gst'];
 
                                                 //echo $productId;
-                                                
+
 
                                                 $currentProduct = $Products->showProductsById($productId);
                                                 //echo "\n";
@@ -158,7 +158,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                     foreach ($showDistributor as $rowDistributor) {
                                                         $distributorName = $rowDistributor['name'];
 
-                                                        $bachElemId = 'batch-id'.$batchNo;
+                                                        $bachElemId = 'batch-id' . $batchNo;
 
                                                         echo "<tr>
                                                         <td class='align-middle d-dlex'>";
@@ -170,7 +170,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                                 <td class='align-middle'>" . $productName . "<br>
                                                                 <small>" . $Manuf[0]['name'] . "</small>
                                                                 </td>
-                                                                <td class='align-middle' id='".$bachElemId."' >" . $batchNo . "</td>
+                                                                <td class='align-middle' id='" . $bachElemId . "' >" . $batchNo . "</td>
                                                                 <td class='align-middle'>" . $expDate . "</td>
                                                                 <td class='align-middle'>" . $productQty . "</td>
                                                                 <td class='align-middle'>" . $productMRP . "</td>
@@ -178,8 +178,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                                                 <td class='align-middle'>" . $looselyPrice . "</td>
                                                                 
                                                                 <td class='align-middle'>
-                                                                    <a class='text-primary mr-2' id='" . $currentStockId . "' onclick='currentStockView(this.id)' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-edit'></i></a>
-                                                                    <a class='text-danger' id='" . $currentStockId . "' onclick='customClick(this.id,\"".$bachElemId."\")'><i class='fas fa-trash'></i></a>
+                                                                    <a class='text-primary mr-2' id='" . $currentStockId . "' onclick='currentStockView(this.id)' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-eye'></i></a><a class='text-danger' id='" . $currentStockId . "' onclick='customClick(this.id,\"" . $bachElemId . "\")'><i class='fas fa-trash'></i></a>
                                                                 </td>
                                                             </tr>";
                                                     }
@@ -221,7 +220,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="currentStockModalTitle">Modal title</h5>
+                    <h5 class="modal-title" id="currentStockModalTitle">Product Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -229,11 +228,11 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                 <div class="modal-body current-stock-view">
                     <!-- Appointments Details Goes Here By Ajax -->
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-sm btn-primary" onclick="window.location.reload()">Save
-                        changes</button>
-                </div>
+                <!-- <div class="modal-footer">
+                     <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button> -->
+                    <!-- <button type="button" class="btn btn-sm btn-primary" onclick="window.location.reload()">Save
+                        changes</button> 
+                </div> -->
             </div>
         </div>
     </div>
@@ -256,7 +255,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
 
     <script>
         const customClick = (id, bachElemId) => {
-            var bachElemId    = document.getElementById(bachElemId).innerHTML;
+            var bachElemId = document.getElementById(bachElemId).innerHTML;
             //var currentStockId = id;
 
             //alert(id);
@@ -287,7 +286,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
                                     ).then(function() {
                                         parent.location.reload();
                                     });
-                                    
+
                                 } else {
                                     swal("Failed", "Product Deletion Failed!",
                                         "error");
@@ -306,13 +305,11 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
         }
 
 
-
-
         const currentStockView = (currentStockId) => {
-            // alert(appointmentTableID);
+            // alert(currentStockId);
             let url = "ajax/currentStock.view.ajax.php?currentStockId=" + currentStockId;
             $(".current-stock-view").html(
-                '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
+                '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
 
         } // end of currentStockView function

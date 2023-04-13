@@ -107,6 +107,18 @@ class StockInDetails extends DatabaseConnection{
         }
         return $data;
     }
+
+
+    // function stockDetailsbyStokInBillNo($productId, $batchNo, $distBillNo){
+    //     $data = array();
+    //     $check = " SELECT * FROM `current_stock` WHERE `product_id` = '$productId' AND `batch_no` = '$batchNo' AND `stock_in_details`.`distributor_bill` = '$distBillNo' ";
+    //     $res = $this->conn->query($check);
+    //     while ($result = $res->fetch_array()) {
+    //         $data[] = $result;
+    //     }
+    //     return $data;
+    // }
+
     
     function stockInDelete($distBill, $batchNo){
         $delQry = "DELETE FROM stock_in_details WHERE distributor_bill = '$distBill' AND batch_no = '$batchNo'";

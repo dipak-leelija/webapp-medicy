@@ -8,7 +8,6 @@ require_once 'dbconnect.php';
 class StockIn extends DatabaseConnection{
 
 
-
     function addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $addedBy){
 
         $addStockIn = "INSERT INTO `stock_in` (`distributor_id`, `distributor_bill`, `items`, `total_qty`, `bill_date`, `due_date`, `payment_mode`, `gst`, `amount`, `added_by`) VALUES ('$distributorId', '$distributorBill', '$items', '$totalQty', '$billDate', '$dueDate', '$paymentMode', '$gst', '$amount', '$addedBy')";
@@ -67,6 +66,15 @@ class StockIn extends DatabaseConnection{
         return $data;
     }//eof stockInByDate function
 
+    function stockInDistIdandDateTime($distId, $date, $time){
+        $data   = array();
+        $select = "SELECT * FROM stock_in WHERE `stock_in`.`distributor_id`= '$distId' AND `stock_in`.`added_on`= '$date' AND `stock_in`.`added_time`= '$time'";
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof stockInByDate function
     
 
     function stockInByDist($distributorId){
