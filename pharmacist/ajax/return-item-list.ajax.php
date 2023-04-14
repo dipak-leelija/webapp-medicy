@@ -23,7 +23,7 @@ if (isset($_GET['dist-id'])) {
         <div class="col-2 mb-1">Batch</div>
         <div class="col-4 col-sm-3 mb-1">Name</div>
         <div class="col-2 mb-1">Expiry</div>
-        <!-- <div class="col-2 mb-1">MRP</div> -->
+        <div class="col-2 mb-1">MRP</div>
         <div class="col-2 mb-1">PTR</div>
         <div class="col-2 mb-1">Stock</div>
     </div>
@@ -43,7 +43,6 @@ if (isset($_GET['dist-id'])) {
                 $ptr = $item['ptr'];
                 $mrp = $item['mrp'];
                 $expDate = $item['exp_date'];
-
 
                 $product = $Products->showProductsById($productId);
                 $productName = $product[0]['name'];
@@ -66,33 +65,33 @@ if (isset($_GET['dist-id'])) {
                     <div class="col-2 mb-0"><?php echo $stoks[0]['qty']; ?></div>
                 </div>
 
-
-
 <?php
             }
         }
     }
 }
 ?>
-<?php
+
+<!-- ===============================GO TO purchaseReturnItemList.ajax.php page======================== -->
+<!-- <?php
 
 
 // getBatchList function for geting bill date
-if (isset($_GET['return-id'])) {
-    $returnId = $_GET['return-id'];
+// if (isset($_GET['return-id'])) {
+//     $returnId = $_GET['return-id'];
 
 
-    $bill =  $StockReturn->showStockReturnById($returnId);
-    $dist = $Distributor->showDistributorById($bill[0]["distributor_id"]);
+//     $bill =  $StockReturn->showStockReturnById($returnId);
+//     $dist = $Distributor->showDistributorById($bill[0]["distributor_id"]);
 
 
-?>
+// ?>
 
     <!DOCTYPE html>
     <html lang="en">
 
     <head>
-        <!-- Custom fonts for this template-->
+        Custom fonts for this template
         <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -119,7 +118,7 @@ if (isset($_GET['return-id'])) {
 
     <body class="mx-0">
 
-        <!-- start container-fluid -->
+       start container-fluid 
         <div class="container-fluid">
 
             <div class="row">
@@ -204,18 +203,20 @@ if (isset($_GET['return-id'])) {
             </div>
 
         </div>
-        <!-- end container-fluid -->
+        <!-- end container-fluid 
 
 
-        <!-- Bootstrap Js -->
+        <!-- Bootstrap Js 
         <script src="../../js/bootstrap-js-5/bootstrap.js"></script>
     </body>
 
     </html>
 
 <?php
-}
-?>
+// }
+?> -->
+<!-- ===============================GO TO purchaseReturnItemList.ajax.php page======================== -->
+
 <?php
 //##################################################################################################
 #                                                                                                  #
@@ -268,7 +269,6 @@ if (isset($_GET['invoice'])) {
 
 
 <?php
-
 
 
 // // getBatchList function

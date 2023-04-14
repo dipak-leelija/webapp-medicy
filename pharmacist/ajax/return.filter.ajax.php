@@ -81,7 +81,6 @@ if (count($data) >0) {
     <!-- Core plugin JavaScript-->
     <script src="../../assets/jquery-easing/jquery.easing.min.js"></script>
 
-
     <!-- Page level custom scripts -->
     <script src="../js/demo/datatables-demo.js"></script>
 

@@ -20,8 +20,6 @@ $showDistributor       = $Distributor->showDistributor();
 $stockReturnLists      = $StockReturn->showStockReturn();
 //print_r($stockReturnLists);
 $empLists              = $Employees->employeesDisplay();
-
-
  
 ?>
 
@@ -92,17 +90,16 @@ $empLists              = $Employees->employeesDisplay();
                                 </div>
 
                                 <div class="col-md-3 col-12">
-                                    <!-- <label class="mb-0 mt-2" for="payment-mode">01/04/2022-31/03/2022</label> -->
                                     <select class="cvx-inp1" name="payment-mode" id="payment-mode">
-                                        <option value="" selected disabled>01/04/2022-31/03/2022 </option>
-                                        <option value="Credit">Today</option>
-                                        <option value="Cash">yesterday</option>
-                                        <option value="UPI">Last 7 Days</option>
-                                        <option value="Paypal">Last 30 Days</option>
-                                        <option value="Bank Transfer">Last 90 Days</option>
-                                        <option value="Credit Card">Current Fiscal Year</option>
-                                        <option value="Debit Card">Previous Fiscal Year</option>
-                                        <option value="Net Banking">Custom Range </option>
+                                        <option value="" disabled selected hidden>Select Duration</option>
+                                        <option value="">Today</option>
+                                        <option value="">yesterday</option>
+                                        <option value="">Last 7 Days</option>
+                                        <option value="">Last 30 Days</option>
+                                        <option value="">Last 90 Days</option>
+                                        <option value="">Current Fiscal Year</option>
+                                        <option value="">Previous Fiscal Year</option>
+                                        <option value="">Custom Range </option>
                                     </select>
 
                                 </div>
@@ -259,7 +256,7 @@ $empLists              = $Employees->employeesDisplay();
             xmlhttp.open("GET", filterUrl, false);
             xmlhttp.send(null);
             document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
-
+            
         }
         </script>
 
@@ -285,8 +282,8 @@ $empLists              = $Employees->employeesDisplay();
 
             var xmlhttp = new XMLHttpRequest();
 
-            // ============== Check Existence ==============
-            idUrl = `ajax/return-item-list.ajax.php?return-id=${returnId}`;
+            // ============== View Return Item in Detail ==============
+            idUrl = `ajax/purchaseReturnItemList.ajax.php?return-id=${returnId}`;
             // alert(url);
             xmlhttp.open("GET", idUrl, false);
             xmlhttp.send(null);

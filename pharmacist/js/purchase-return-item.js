@@ -21,14 +21,14 @@ const getItemList = (t) => {
 
 
 
-// const getItem = (batch) => {
-//     var xmlhttp = new XMLHttpRequest();
-//     let billIdUrl = `ajax/purchase-bill-details.ajax.php?batch-item=${batch}`;
-//     xmlhttp.open("GET", billIdUrl, false);
-//     xmlhttp.send(null);
-//     document.getElementById("product-id").innerHTML = xmlhttp.responseText;
-//     // alert(xmlhttp.responseText);
-// }
+const getItem = (batch) => {
+    var xmlhttp = new XMLHttpRequest();
+    let billIdUrl = `ajax/purchase-bill-details.ajax.php?batch-item=${batch}`;
+    xmlhttp.open("GET", billIdUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("product-id").innerHTML = xmlhttp.responseText;
+    // alert(xmlhttp.responseText);
+}
 
 
 

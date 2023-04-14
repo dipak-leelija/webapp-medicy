@@ -341,8 +341,6 @@ $showDistributor       = $Distributor->showDistributor();
                                                 id="refund-mode" type="text" readonly> </p>
                                     </div>
 
-
-
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
                                         <p>Qty : <input class="summary-inp w-65" name="total-refund-qty"
                                                 id="total-refund-qty" type="text" value="0" readonly> </p>

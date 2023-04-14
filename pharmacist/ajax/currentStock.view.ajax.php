@@ -160,17 +160,17 @@ if (isset($_GET['currentStockId'])) {
                 <div class="col-12 ps-2">
                     <div class="row p-4">
                         <div class="col-6">
-                            <strong>Distributor Id: </strong><span><?php echo $distributorId; ?></span><br>
-                            <strong>Product Id: </strong><span><?php echo $productId; ?></span><br>
+
+                            <strong>Distributor Name: </strong><span><?php echo $distributorDetails[0]['name']; ?></span><br>
                             <strong>MRP: </strong><span><?php echo $MRP; ?></span><br>
                             <strong>PTR: </strong><span><?php echo $PTR; ?></span><br>
                             <strong>Base Price: </strong><span><?php echo $BasePrice; ?></span><br>
                             <!-- <strong>Purchase Date: </strong><span>25</span><br> -->
                             <strong>Packaging Details : </strong><span><?php echo $packageDtls; ?></span><br>
-                            <strong>In Stock: </strong><span><?php echo $currentStockQTY; ?></span><br>
+                            <strong>Current Stock: </strong><span><?php echo $currentStockQTY; ?></span><br>
                         </div>
                         <div class="col-6">
-                            <strong>Distributor Name: </strong><span><?php echo $distributorDetails[0]['name']; ?></span><br>
+
                             <strong>Batch No: </strong><span><?php echo $batchNo; ?></span><br>
                             <strong>GST: </strong><span><?php echo $gstDetails; ?></span><br>
                             <strong>Discount: </strong><span><?php echo $discountParcent; ?></span><br>
