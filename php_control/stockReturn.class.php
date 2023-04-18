@@ -55,6 +55,19 @@ class StockReturn extends DatabaseConnection{
         return $data;
     }//eof stockReturnFilter
 
+    
+
+    function stockReturnFilterbyDate($table, $value1, $value2){
+        $data = array();
+        $sql  = $sql = "SELECT * FROM `stock_return` WHERE `$table`  between '$value1' and '$value2'";
+        $res  = $this->conn->query($sql);
+        while ($result = $res->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof stockReturnFilter
+
+
 
     function stockReturnStatus($returnId, $statusValue){
         $sql  = "UPDATE stock_return SET `status` = '$statusValue' WHERE `stock_return`.`id` = '$returnId'";

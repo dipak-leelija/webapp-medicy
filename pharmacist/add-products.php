@@ -7,7 +7,6 @@ require_once '../php_control/measureOfUnit.class.php';
 require_once '../php_control/packagingUnit.class.php';
 
 
-
 $page = "add-products";
 
 //objects Initilization
@@ -16,13 +15,10 @@ $Manufacturer       = new Manufacturer();
 $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
 
-
 $showManufacturer   = $Manufacturer->showManufacturer();
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                  
-
-
 ?>
 
 <!DOCTYPE html>

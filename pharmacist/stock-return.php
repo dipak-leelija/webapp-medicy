@@ -1,6 +1,6 @@
 <?php
 
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/products.class.php';
 require_once '../php_control/distributor.class.php';
 require_once '../php_control/stockReturn.class.php';
@@ -20,7 +20,9 @@ $showDistributor       = $Distributor->showDistributor();
 $stockReturnLists      = $StockReturn->showStockReturn();
 //print_r($stockReturnLists);
 $empLists              = $Employees->employeesDisplay();
- 
+
+$today = date("m-d-Y");
+
 ?>
 
 <!DOCTYPE html>
@@ -39,9 +41,7 @@ $empLists              = $Employees->employeesDisplay();
     <!-- Custom fonts for this template -->
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
 
     <!-- Custom styles for this template -->
@@ -90,16 +90,16 @@ $empLists              = $Employees->employeesDisplay();
                                 </div>
 
                                 <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="payment-mode" id="payment-mode">
-                                        <option value="" disabled selected hidden>Select Duration</option>
-                                        <option value="">Today</option>
-                                        <option value="">yesterday</option>
-                                        <option value="">Last 7 Days</option>
-                                        <option value="">Last 30 Days</option>
-                                        <option value="">Last 90 Days</option>
-                                        <option value="">Current Fiscal Year</option>
-                                        <option value="">Previous Fiscal Year</option>
-                                        <option value="">Custom Range </option>
+                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
+                                        <option value="" disabled selected>Select Duration</option>
+                                        <option value="T">Today</option>
+                                        <option value="Y">yesterday</option>
+                                        <option value="LW">Last 7 Days</option>
+                                        <option value="LM">Last 30 Days</option>
+                                        <option value="LQ">Last 90 Days</option>
+                                        <option value="CFY">Current Fiscal Year</option>
+                                        <option value="PFY">Previous Fiscal Year</option>
+                                        <option value="CR">Custom Range </option>
                                     </select>
 
                                 </div>
@@ -108,20 +108,17 @@ $empLists              = $Employees->employeesDisplay();
                                         <option value="" disabled selected>Select Staff
                                         </option>
                                         <?php
-                                                foreach($empLists as $emp){
-                                                    echo '<option value="'.$emp['employee_username'].'">'.$emp['employee_username'].'</option>';
-                                                }
+                                        foreach ($empLists as $emp) {
+                                            echo '<option value="' . $emp['employee_username'] . '">' . $emp['employee_username'] . '</option>';
+                                        }
                                         ?>
                                     </select>
                                 </div>
                                 <div class="col-md-2 col-6">
-                                    <input class="cvx-inp" type="text" placeholder="Distributor Name"
-                                        name="distributor_id" id="distributor_id" style="outline: none;"
-                                        onkeyup="returnFilter(this)">
+                                    <input class="cvx-inp" type="text" placeholder="Distributor Name" name="distributor_id" id="distributor_id" style="outline: none;" onkeyup="returnFilter(this)">
                                 </div>
                                 <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
-                                        onchange="returnFilter(this)">
+                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode" onchange="returnFilter(this)">
                                         <option value="" selected disabled>payment Mode</option>
                                         <option value="Credit">Credit</option>
                                         <option value="Cash">Cash</option>
@@ -134,14 +131,36 @@ $empLists              = $Employees->employeesDisplay();
                                     </select>
                                 </div>
                                 <div class="col-md-2 col-6 text-right">
-                                    <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i
-                                            class="fas fa-plus"></i></a>
+                                    <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i class="fas fa-plus"></i></a>
                                 </div>
                             </div>
 
+                            <!-- <from> 
+                                <div class="row mb-3 ">
+                                    <div class="col-sm-1">
+                                        <label for="starDate">FromDate </label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="date" id="fromDate" name="frmDate">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label for="starDate">To Date </label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="date" id="toDate" name="toDate">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button class="btn btn-primary" name="datePicker" id="datePicker" type="submit" onclick="returnDate()" style="height: 2rem;">Go</button>
+                                         <input type="submit" name="submit" id="submit" onclick="returnDate()"> 
+                                    </div>
+                                </div>
+                            </from> -->
+
+
                             <div class="table-responsive" id="filter-table">
-                                <table class="table table-sm table-hover" id="<?php if (count($stockReturnLists) >10) {
-                                    echo "dataTable"; } ?>" width="100%" cellspacing="0">
+                                <table class="table table-sm table-hover" id="<?php if (count($stockReturnLists) > 10) {
+                                                                                    echo "dataTable";
+                                                                                } ?>" width="100%" cellspacing="0">
                                     <thead class="bg-primary text-light">
                                         <tr>
                                             <th>Return Id</th>
@@ -156,36 +175,36 @@ $empLists              = $Employees->employeesDisplay();
                                     </thead>
                                     <tbody id="table-data">
                                         <?php
-                                            foreach ($stockReturnLists as $row) {
-                                                $dist = $Distributor->showDistributorById($row['distributor_id']);
-                                               // print_r($dist);
-                                                
-                                                if (count($dist) > 0) {
-                                                    
-                                                    $returnDate = date("d-m-Y", strtotime($row['return_date']));
-                                                    $entryDate  = date("d-m-Y", strtotime($row['added_on']));
+                                        foreach ($stockReturnLists as $row) {
+                                            $dist = $Distributor->showDistributorById($row['distributor_id']);
+                                            // print_r($dist);
 
-                                                    $check ='';
-                                                    if ($row['status'] == "cancelled") {
-                                                         $check  = 'style="background-color:#ff0000; color:#fff"';
-                                                    }
-                                                    echo '<tr '.$check.'>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems('.$row['id'].')" >'.$row['id'].'</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems('.$row['id'].')">'.$dist[0]['name'].'</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems('.$row['id'].')">'.$returnDate.'</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems('.$row['id'].')">'.$entryDate.'</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems('.$row['id'].')">'.$row['added_by'].'</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems('.$row['id'].')">'.$row['refund_mode'].'</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems('.$row['id'].')">'.$row['refund_amount'].'</td>
+                                            if (count($dist) > 0) {
+
+                                                $returnDate = date("d-m-Y", strtotime($row['return_date']));
+                                                $entryDate  = date("d-m-Y", strtotime($row['added_on']));
+
+                                                $check = '';
+                                                if ($row['status'] == "cancelled") {
+                                                    $check  = 'style="background-color:#ff0000; color:#fff"';
+                                                }
+                                                echo '<tr ' . $check . '>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')" >' . $row['id'] . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $dist[0]['name'] . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $returnDate . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $entryDate . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['added_by'] . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_mode'] . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_amount'] . '</td>
                                                         <td >
-                                                            <a href="stock-return-edit.php?returnId='.$row['id'].'" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
-                                                            <a class="text-danger ml-2" onclick="cancelPurchaseReturn('.$row['id'].', this)" ><i class="fas fa-window-close"></i></a>
+                                                            <a href="stock-return-edit.php?returnId=' . $row['id'] . '" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
+                                                            <a class="text-danger ml-2" onclick="cancelPurchaseReturn(' . $row['id'] . ', this)" ><i class="fas fa-window-close"></i></a>
                                                         </td>
                                                     </tr>';
-                                                }else{
-                                                    echo '<tr><td>No Matching Data Found</td></tr>';
-                                                }
+                                            } else {
+                                                echo '<tr><td>No Matching Data Found</td></tr>';
                                             }
+                                        }
                                         ?>
                                     </tbody>
                                 </table>
@@ -193,7 +212,7 @@ $empLists              = $Employees->employeesDisplay();
                         </div>
                     </div>
 
-                    
+
                     <!--=========================== Show Bill Items ===========================-->
 
 
@@ -203,13 +222,12 @@ $empLists              = $Employees->employeesDisplay();
             </div>
             <!-- End of Content Wrapper -->
 
-             <!-- Footer -->
-             <?php include_once 'partials/footer-text.php'; ?>
+            <!-- Footer -->
+            <?php include_once 'partials/footer-text.php'; ?>
             <!-- End of Footer -->
 
             <!-- Return View Modal" -->
-            <div class="modal fade" id="viewReturnModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="viewReturnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -244,20 +262,41 @@ $empLists              = $Employees->employeesDisplay();
         <!--End of Logout Modal-->
 
         <script>
-        const returnFilter = (t) => {
-            let table = t.id;
-            let data = t.value;
+            const returnFilter = (t) => {
+                let table = t.id;
+                let data = t.value;
 
-            var xmlhttp = new XMLHttpRequest();
+                var xmlhttp = new XMLHttpRequest();
 
-            // ============== Check Existence ==============
-            filterUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}`;
-            // alert(url);
-            xmlhttp.open("GET", filterUrl, false);
-            xmlhttp.send(null);
-            document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
-            
-        }
+                // ============== Check Existence ==============
+                filterUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}`;
+                // alert(url);
+                xmlhttp.open("GET", filterUrl, false);
+                xmlhttp.send(null);
+                document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
+
+
+                // return function(val){
+                //     val = t.value;
+
+                // }
+
+            }
+
+            const returnDate = () => {
+                let data1 = document.getElementById("fromDate").value;
+                let data2 = document.getElementById("toDate").value;
+
+                var xmlhttp = new XMLHttpRequest();
+
+                // ============== Date Range ==============
+                dateRangeUrl = `ajax/return.filter.ajax.php?fromDate=${data1}&toDate=${data2}`;
+                // alert(url);
+                xmlhttp.open("GET", fromDateUrl, false);
+                xmlhttp.send(null);
+                document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
+
+            }
         </script>
 
         <!-- Bootstrap core JavaScript-->
@@ -278,23 +317,23 @@ $empLists              = $Employees->employeesDisplay();
         <script src="js/demo/datatables-demo.js"></script>
 
         <script>
-        const viewReturnItems = (returnId) => {
+            const viewReturnItems = (returnId) => {
 
-            var xmlhttp = new XMLHttpRequest();
+                var xmlhttp = new XMLHttpRequest();
 
-            // ============== View Return Item in Detail ==============
-            idUrl = `ajax/purchaseReturnItemList.ajax.php?return-id=${returnId}`;
-            // alert(url);
-            xmlhttp.open("GET", idUrl, false);
-            xmlhttp.send(null);
-            document.getElementById("viewReturnModalBody").innerHTML = xmlhttp.responseText;
-            // alert(xmlhttp.responseText);
-        }
+                // ============== View Return Item in Detail ==============
+                idUrl = `ajax/purchaseReturnItemList.ajax.php?return-id=${returnId}`;
+                // alert(url);
+                xmlhttp.open("GET", idUrl, false);
+                xmlhttp.send(null);
+                document.getElementById("viewReturnModalBody").innerHTML = xmlhttp.responseText;
+                // alert(xmlhttp.responseText);
+            }
         </script>
 
         <script>
-        const cancelPurchaseReturn = (returnId, t) => {
-            if (confirm("Are You Sure?")) {
+            const cancelPurchaseReturn = (returnId, t) => {
+                if (confirm("Are You Sure?")) {
                     // alert(t);
 
                     $.ajax({
@@ -306,9 +345,9 @@ $empLists              = $Employees->employeesDisplay();
                         success: function(data) {
                             // alert(data);
                             if (data == 1) {
-                                $(t).closest("tr").css("background-color","#ff0000");
-                                $(t).closest("tr").css("color","#fff");
-                                
+                                $(t).closest("tr").css("background-color", "#ff0000");
+                                $(t).closest("tr").css("color", "#fff");
+
                             } else {
                                 // $("#error-message").html("Deletion Field !!!").slideDown();
                                 // $("success-message").slideUp();
@@ -319,9 +358,7 @@ $empLists              = $Employees->employeesDisplay();
                     });
                 }
                 return false;
-        }
-
-
+            }
         </script>
 
 

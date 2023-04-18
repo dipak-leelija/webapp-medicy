@@ -5,6 +5,9 @@ const customEdit = (id, value) => {
     var value;
     var row = document.getElementById(id);
 
+    console.log(value);
+    console.log(row);
+
     $.ajax({
         url: "ajax/stockReturnEdit.ajax.php",
         type: "POST",
@@ -12,14 +15,15 @@ const customEdit = (id, value) => {
             EditId: value
         },
         success: function (data) {
-            //alert(data);
+            alert(data);
 
             var dataObject = JSON.parse(data);
+            alert(dataObject);
 
             var stokReturnDetailId = dataObject.id;
-            //alert(stokReturnDetailId);
+            alert(stokReturnDetailId);
             
-            //console.log(stokReturnDetailId);
+            console.log(stokReturnDetailId);
 
             var stokReturnId = dataObject.stock_return_id;
 

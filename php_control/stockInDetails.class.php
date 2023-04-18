@@ -109,6 +109,17 @@ class StockInDetails extends DatabaseConnection{
     }
 
 
+    function stokInDetials($productId, $billNo, $batchNo){
+        $data = array();
+        $check = " SELECT * FROM `stock_in_details` WHERE `stock_in_details`.`product_id` = '$productId' AND `stock_in_details`.`batch_no` = '$batchNo' AND `stock_in_details`.`distributor_bill` ='$billNo' ";
+        $res = $this->conn->query($check);
+        while ($result = $res->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }
+
+
     // function stockDetailsbyStokInBillNo($productId, $batchNo, $distBillNo){
     //     $data = array();
     //     $check = " SELECT * FROM `current_stock` WHERE `product_id` = '$productId' AND `batch_no` = '$batchNo' AND `stock_in_details`.`distributor_bill` = '$distBillNo' ";

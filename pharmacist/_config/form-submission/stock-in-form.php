@@ -114,7 +114,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         }
                     }
                 } // end update request
-
+                
             }//eof foreach
             // $addCurrentStock = TRUE;
 

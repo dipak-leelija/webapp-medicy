@@ -14,6 +14,7 @@ $StockIn                =   new StockIn();
 $StockInDetails         =   new StockInDetails();
 $CurrentStock           =   new CurrentStock();
 
+
 $EditId = $_POST['EditId'];
 
 //==========================fetching data from stock return details table========================
@@ -41,7 +42,7 @@ foreach($stockReturnData as $stockReturn){
     $stockReturnDetailsAddedTime         =  $stockReturn['added_time'];
 }
 
-$stockReturnData = json_encode($stockReturnData);
+// $stockReturnData = json_encode($stockReturnData);
 //==========================fetching data from stock_return table=================================
 $stockReturn = $StockReturnEdit->showStockReturnById($stockReturnDetailsStockReturnId);
 
@@ -66,7 +67,7 @@ foreach($distributorDetails as $distributor){
     $distributorId      =   $distributor['id'];
 }
 
-$distributorDetails = json_encode($distributorDetails);
+// $distributorDetails = json_encode($distributorDetails);
 //===============================================================================================
 
 //==========================fetching data from products table=====================================
@@ -76,7 +77,7 @@ foreach($productDetails as $products){
     $productName    =   $products['name'];
 }
 
-$productDetails = json_encode($productDetails);
+// $productDetails = json_encode($productDetails);
 //===============================================================================================
 
 //==========================fetchin data from stock in details table=============================
@@ -92,7 +93,7 @@ $stockInDetails = $StockInDetails->stockDistributorBillNo($stockReturnDetailsBat
     }
     
 
-$stockInDetails = json_encode($stockInDetails); 
+// $stockInDetails = json_encode($stockInDetails); 
 //===============================================================================================
 
 //==========================fetchin data from stock in table=====================================
