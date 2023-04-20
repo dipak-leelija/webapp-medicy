@@ -304,7 +304,6 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
 
         }
 
-
         const currentStockView = (currentStockId) => {
             // alert(currentStockId);
             let url = "ajax/currentStock.view.ajax.php?currentStockId=" + currentStockId;

@@ -137,18 +137,21 @@ $CurrentStock   = new CurrentStock();
                                                     $qty = $qty + $itemQty['qty'];
                                                 }
                                                 echo $qty;
+                                                if($qty == 1){
+                                                    ?>
+                                                Unit
+                                                <?php
+                                                }else{
+                                                ?>
+                                                Units
+                                                <?php
+                                                }
+                                            
                                             } else {
                                                 echo 0;
-                                            }
-                                            
-                                            if($qty > 1){
                                                 ?>
-                                            Units
-                                            <?php
-                                            }else{
-                                            ?>
-                                            Unit
-                                            <?php
+                                                Unit
+                                                <?php
                                             }
                                             ?>
                                         </mark>
@@ -164,7 +167,7 @@ $CurrentStock   = new CurrentStock();
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div class="d-flex justify-content-center">
                             <hr class="text-center w-100" style="height: 2px;">
                             <!-- <hr class="divider d-md-block" style="height: 2px;> -->

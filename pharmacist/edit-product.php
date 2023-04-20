@@ -144,7 +144,7 @@
 
                     $item = $Products->showProductsById($_GET['id']);
                     $image = $ProductImages->showImageById($_GET['id']);
-                    //print_r($image);
+                    print_r($image);
 
                     if ($image != NULL) {
                         $mainImage  = $image[0]['image'];

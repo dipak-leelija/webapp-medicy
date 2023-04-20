@@ -9,4 +9,10 @@ if (isset($_GET["id"])) {
 }
 // echo "Hi";
 
+
+if (isset($_GET["Pid"])) {
+
+    $productDetails = $Products->showProductsById($_GET["Pid"]);
+    echo ($_GET["Pid"]);
+}
 ?>

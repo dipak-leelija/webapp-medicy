@@ -15,13 +15,22 @@
     require_once '../../../php_control/stockIn.class.php';
     require_once '../../../php_control/stockInDetails.class.php';
     require_once '../../../php_control/currentStock.class.php';
+    require_once '../../../php_control/distributor.class.php';
 
     $StockIn = new StockIn();
     $StockInDetails = new StockInDetails();
     $CurrentStock = new CurrentStock();
+    $distributor = new Distributor();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $distributorId      = $_POST['distributor-id'];
+        $distributorName      = $_POST['distributor-id'];
+        
+        $distributorDetial = $distributor->selectDistributorByName($distributorName);
+        // print_r($distributorDetial);
+
+        $distributorId = $distributorDetial[0]['id'];
+        // echo $distributorId;
+
         $distributorBill    = $_POST['distributor-bill'];
         // $items              = $_POST['items'];
         $items              = count($_POST['productId']);

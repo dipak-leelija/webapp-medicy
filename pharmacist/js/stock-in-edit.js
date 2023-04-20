@@ -17,73 +17,64 @@ const customClick = (id, value1, value2, value3) => {
             bhNo: batchNo
         },
         success: function (data) {
+
             alert(data);
 
-            var dataObject = JSON.parse(data, function(key,value)
-            {
-                if(key =)
-            });
-            alert(dataObject);
+            var dataObject = JSON.parse(data);
 
-            var dataObject = JSON.parse(dataObject);
-        
-            alert(dataObject);
+            var purchaseDetails = dataObject.expDate;
+            alert(purchaseDetails);
 
-            // var purchaseDetails = data.purchaseId;
-            // alert(purchaseDetails);
+            // var purchaseDetails = dataObject.productId;
+            // var purchaseDetails = dataObject.billNo;
+            // var purchaseDetails = dataObject.batchNo;
+
+            var purchaseDetails = dataObject.expDate;
+            var expMonth = purchaseDetails.slice(0, 2);
+            var expYear = purchaseDetails.slice(3, 5);
             
-            // console.log("hello");
-            // console.log(purchaseDetails);
-
-            // var stokReturnId = dataObject.stock_return_id;
-
-            // var distributor = dataObject.distributor_name;
-            // var distributorId = dataObject.distributor_id;
-            // var productId = dataObject.product_id;
-            // var productName = dataObject.product_Name;
-            // var refundMode = dataObject.refund_mode;
-            // var batchNumbe = dataObject.batch_no;
-            // var purchaseDate = dataObject.purchase_date;
-            // var expiry = dataObject.exp_date;
-            // var weatag = dataObject.weightage;
-            // var unit = dataObject.unit;
-            // var priceToRetaile = dataObject.ptr;
-            // var discountPercentage = dataObject.discount;
-            // var gstPercentage = dataObject.gst;
-            // var taxableAmount = dataObject.taxable_amount;
-            // var maxRetailPrice = dataObject.mrp;
-            // var purchaseAmount = dataObject.purchase_amount;
-            // var purchasedqty = dataObject.purchase_qty;
-            // var freeQty = dataObject.free_qty;
-            // var curretnQty = dataObject.current_stock_qty;
-            // var returnQty = dataObject.return_qty;
-            // var returnFreeqty = dataObject.free_qty;
-            // var refundAmunt = dataObject.refund_amount;
+            // var purchaseDetails = dataObject.weightage;
+            // var purchaseDetails = dataObject.unit;
+            // var purchaseDetails = dataObject.qty;
+            // var purchaseDetails = dataObject.FreeQty;
+            // var purchaseDetails = dataObject.looseQty;
+            // var purchaseDetails = dataObject.mrp;
+            // var purchaseDetails = dataObject.ptr;
+            // var purchaseDetails = dataObject.disc;
+            // var purchaseDetails = dataObject.baseAmount;
+            // var purchaseDetails = dataObject.gst;
+            // var purchaseDetails = dataObject.GstAmount;
+            // var purchaseDetails = dataObject.mrgn;
+            // var purchaseDetails = dataObject.amnt;
 
             // //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
 
-            // document.getElementById("stock-return-details-id").value = stokReturnDetailId;
-            // document.getElementById("stock-return-id").value = stokReturnId;
+            document.getElementById("purchase-details-id").value = dataObject.purchaseId;
+            document.getElementById("productId").value = dataObject.productId;
+            document.getElementById("dist-bill-no").value = dataObject.billNo;
+            document.getElementById("batch-no").value = dataObject.batchNo;
 
-            // document.getElementById("distributor_name").value = distributor;
-            // document.getElementById("dist-name").value = distributor;
-            // document.getElementById("dist-id").value = distributorId;
-            // document.getElementById("product-id").value = productId;
-            // document.getElementById("product_name").value = productName;
-            // document.getElementById("return-mode").value = refundMode;
-            // document.getElementById("batch-number").value = batchNumbe;
-            // document.getElementById("billDate").value = purchaseDate;
-            // document.getElementById("exp-date").value = expiry;
-            // document.getElementById("weatage").value = weatag;
-            // document.getElementById("unit").value = unit;
-            // document.getElementById("ptr").value = priceToRetaile;
-            // document.getElementById("discount").value = discountPercentage;
-            // document.getElementById("gst").value = gstPercentage;
-            // document.getElementById("taxable").value = taxableAmount;
-            // document.getElementById("mrp").value = maxRetailPrice;
-            // document.getElementById("amount").value = purchaseAmount;
-            // document.getElementById('purchased-qty').value = purchasedqty;
-            // document.getElementById("free-qty").value = freeQty;
+            document.getElementById("product-name").value = dataObject.productName;
+            document.getElementById("manufacturer-name").value = dataObject.manufacturer;
+            document.getElementById("weightage").value = dataObject.weightage;
+            document.getElementById("unit").value = dataObject.unit;
+            document.getElementById("packaging-in").value = dataObject.packageType;
+            document.getElementById("medicine-power").value = dataObject.power;
+
+            document.getElementById("exp-month").value = expMonth;
+            document.getElementById("exp-year").value = expYear;
+
+            document.getElementById("mrp").value = dataObject.mrp;
+            document.getElementById("ptr").value = dataObject.ptr;
+            document.getElementById("qty").value = dataObject.qty;
+            document.getElementById("free-qty").value = dataObject.FreeQty;
+            document.getElementById("packaging-type").value = dataObject.packageType;
+
+            document.getElementById("discount").value = dataObject.disc;
+            document.getElementById("gst").value = dataObject.gst;
+            document.getElementById('base').value = dataObject.baseAmount;
+            document.getElementById("bill-amount").value = dataObject.amnt;
+
             // document.getElementById("current-qty").value = curretnQty;
             // document.getElementById("return-qty").value = returnQty;
             // document.getElementById("return-free-qty").value = returnFreeqty;

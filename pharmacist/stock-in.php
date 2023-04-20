@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <?php
                                                 foreach($showDistributor as $rowDistributor){
                                                     $rowDistributor['name'];
-                                                    echo '<option value="'.$rowDistributor['id'].'">'.$rowDistributor['name'].'</option>';
+                                                    echo '<option value="'.$rowDistributor['name'].'">'.$rowDistributor['name'].'</option>';
                                                 }
                                         ?>
                                     </select>
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="col-sm-6 col-md-3">
                                     <label class="mb-1" for="distributor-bill">Distributor Bill No.</label>
                                     <input type="text" class="upr-inp " name="distributor-bill" id="distributor-bill"
-                                        placeholder="Enter Distributor Bill" autocomplete="off">
+                                        placeholder="Enter Distributor Bill" autocomplete="off" style="text-transform: uppercase;">
                                 </div>
 
                                 <div class="col-sm-6 col-md-2">
@@ -296,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <!-- <div class="row"> -->
 
                                         <div class="col-sm-6 col-md-6 mt-2">
-                                            <label class="mb-0" for="discount">Discount % / Unit</label>
+                                            <label class="mb-0" for="discount">Discount</label>
                                             <input type="number" class="upr-inp" name="discount" id="discount"
                                                 placeholder="Discount Percentage" value="0" onkeyup="getBillAmount()">
                                         </div>

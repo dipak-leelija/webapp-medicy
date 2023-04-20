@@ -1,17 +1,17 @@
 const getDtls = (value) => {
-    
+
     // console.log(value);
     // alert(value);
     var xmlhttp = new XMLHttpRequest();
     if (value != "") {
-
+        console.log(value);
         //==================== Manufacturere List ====================
         manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + value;
         // alert(url);
         xmlhttp.open("GET", manufacturerurl, false);
         xmlhttp.send(null);
         document.getElementById("manufacturer-id").value = xmlhttp.responseText;
-        
+
         manufacturerName = 'ajax/product.getManufacturer.ajax.php?name=' + value;
         // alert(url);
         xmlhttp.open("GET", manufacturerName, false);
@@ -78,6 +78,13 @@ const getDtls = (value) => {
 
         //==================== Product Id ====================
         document.getElementById("product-id").value = value;
+        
+        // idUrl = `ajax/product.getName.ajax.php?Pid=${value}`
+        // // alert(unitUrl);
+        // xmlhttp.open("GET", idUrl, false);
+        // xmlhttp.send(null);
+        // document.getElementById("product-ID").value = xmlhttp.responseText;
+        // console.log(xmlhttp.responseText);
 
         //==================== Product Name ====================
         nameUrl = 'ajax/product.getName.ajax.php?id=' + value;
@@ -85,7 +92,7 @@ const getDtls = (value) => {
         xmlhttp.open("GET", nameUrl, false);
         xmlhttp.send(null);
         document.getElementById("product-name").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
+        console.log(xmlhttp.responseText);
 
     } else {
 
@@ -148,8 +155,19 @@ const getbillDate = (billDate) => {
 const getBillAmount = () => {
     // let mrp = document.getElementById("mrp").value;
     let ptr = document.getElementById("ptr").value;
+    let Mrp = document.getElementById("mrp").value;
 
-    // if (mrp >= ptr) {
+    let PTR = parseFloat(ptr);
+    let MRP = parseFloat(Mrp);
+    if (PTR > MRP) {
+        console.log(Mrp);
+        console.log(ptr);
+        console.log("hello");
+        window.alert("Price to Retailer must be lesser of same to Maximum Retail Price");
+        document.getElementById("ptr").value = "";
+        document.getElementById("bill-amount").value = "";
+        document.getElementById("ptr").value = "";
+    }
 
     let qty = document.getElementById("qty").value;
     // let freeQty    = document.getElementById("free-qty").value;
@@ -159,6 +177,9 @@ const getBillAmount = () => {
     let billAmount = document.getElementById("bill-amount");
     // alert(ptr)
     // console.log(gst);
+
+
+
     if (ptr == "") {
         billAmount.value = "";
         base.value = "";
@@ -215,8 +236,8 @@ const getBillAmount = () => {
 const addData = () => {
     var distId = document.getElementById("distributor-id");
     var distBillid = document.getElementById("distributor-bill");
-    distBill = distBillid.value.toUpperCase();
-
+    var distBill = distBillid.value.toUpperCase();
+    
     var billDate = document.getElementById("bill-date");
     var dueDate = document.getElementById("due-date");
     var paymentMode = document.getElementById("payment-mode");
@@ -224,7 +245,7 @@ const addData = () => {
     var productName = document.getElementById("product-name");
     var productId = document.getElementById("product-id");
     var batch = document.getElementById("batch-no");
-    batchNo = batch.value.toUpperCase();
+    var batchNo = batch.value.toUpperCase();
     var manufId = document.getElementById("manufacturer-id");
     var medicinePower = document.getElementById("medicine-power");
     var expMonth = document.getElementById("exp-month");
@@ -244,6 +265,13 @@ const addData = () => {
     var base = document.getElementById("base");
     var billAmount = document.getElementById("bill-amount");
 
+
+    console.log(distBill);
+    console.log(billDate.value);
+    console.log(dueDate.value);
+    // console.log(distBill);
+    // console.log(distBill);
+    // console.log(distBill);
     // distId
     // var packOf = (``);
     // alert(packOf);
@@ -310,7 +338,7 @@ const addData = () => {
                                                     packagingIn.focus();
                                                 } else {
                                                     if (mrp.value == "") {
-                                                        mrp.focus();   
+                                                        mrp.focus();
                                                     } else {
                                                         if (ptr.value == "") {
                                                             swal("Blank Field",
@@ -330,7 +358,7 @@ const addData = () => {
                                                                         ptr.focus();
                                                                     });
                                                             } else {
-                                                                if (qty.value == "") {
+                                                                if (qty.value == "" || qty.value == 0) {
                                                                     swal("Blank Field",
                                                                         "Please Enter Quantity",
                                                                         "error")
@@ -339,8 +367,8 @@ const addData = () => {
                                                                         });
                                                                 } else {
                                                                     if (freeQty.value == "") {
-                                                                        swal("Blank Field",
-                                                                            "Please Enter Free Quantity",
+                                                                        swal("Qantity Value Zero",
+                                                                            "Qantity Cannot be 0",
                                                                             "error")
                                                                             .then((value) => {
                                                                                 freeQty.focus();
@@ -517,25 +545,25 @@ const addData = () => {
         </tr>`);
 
 
-    document.getElementById("product-name").value = "";
-    document.getElementById("manufacturer-id").value = "";
-    document.getElementById("manufacturer-name").value ="";
-    document.getElementById("weightage").value = "";
-    document.getElementById("unit").value = "";
-    document.getElementById("packaging-in").value = "";
-    document.getElementById("medicine-power").value = "";
-    document.getElementById("batch-no").value = "";
-    document.getElementById("exp-month").value = "";
-    document.getElementById("exp-year").value = "";
-    document.getElementById("mrp").value = "";
-    document.getElementById("ptr").value = "";
-    document.getElementById("qty").value = "";
-    document.getElementById("free-qty").value = "";
-    document.getElementById("packaging-type").value = "";
-    document.getElementById("discount").value = "";
-    document.getElementById("gst").value = "";
-    document.getElementById("base").value = "";
-    document.getElementById("bill-amount").value = "";
+                                                                                        document.getElementById("product-name").value = "";
+                                                                                        document.getElementById("manufacturer-id").value = "";
+                                                                                        document.getElementById("manufacturer-name").value = "";
+                                                                                        document.getElementById("weightage").value = "";
+                                                                                        document.getElementById("unit").value = "";
+                                                                                        document.getElementById("packaging-in").value = "";
+                                                                                        document.getElementById("medicine-power").value = "";
+                                                                                        document.getElementById("batch-no").value = "";
+                                                                                        document.getElementById("exp-month").value = "";
+                                                                                        document.getElementById("exp-year").value = "";
+                                                                                        document.getElementById("mrp").value = "";
+                                                                                        document.getElementById("ptr").value = "";
+                                                                                        document.getElementById("qty").value = "";
+                                                                                        document.getElementById("free-qty").value = "";
+                                                                                        document.getElementById("packaging-type").value = "";
+                                                                                        document.getElementById("discount").value = "";
+                                                                                        document.getElementById("gst").value = "";
+                                                                                        document.getElementById("base").value = "";
+                                                                                        document.getElementById("bill-amount").value = "";
 
 
                                                                                         document
@@ -631,6 +659,7 @@ const addData = () => {
                                                         }
                                                     }
                                                 }
+
                                             }
                                         }
                                     }
@@ -717,3 +746,5 @@ const setYear = (year) => {
         year.value = '';
     }
 }
+
+
