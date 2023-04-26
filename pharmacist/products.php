@@ -14,6 +14,7 @@ $ProductImages = new ProductImages();
 
 // Function INitilized 
 $allProducts = $Products->showProducts();
+// print_r($allProducts);
 
 ?>
 

@@ -20,7 +20,6 @@ const getItemList = (t) => {
 
 
 
-
 const getItem = (batch) => {
     var xmlhttp = new XMLHttpRequest();
     let billIdUrl = `ajax/purchase-bill-details.ajax.php?batch-item=${batch}`;

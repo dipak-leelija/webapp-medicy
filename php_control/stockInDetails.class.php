@@ -33,7 +33,7 @@ class StockInDetails extends DatabaseConnection{
 
     function showStockInDetailsByTable($table1, $table2, $data1, $data2){
         $data   = array();
-        $select = "SELECT * FROM stock_in_details WHERE `$table1`= '$data1' AND `$table2`= '$data2'";
+        $select = "SELECT * FROM `stock_in_details` WHERE `$table1`= '$data1' AND `$table2`= '$data2'";
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;
@@ -45,7 +45,7 @@ class StockInDetails extends DatabaseConnection{
 
 
     function showStockInDetailsById($DistBill){
-        $select = " SELECT * FROM stock_in_details WHERE  `stock_in_details`.`distributor_bill`= '$DistBill'";
+        $select = " SELECT * FROM `stock_in_details` WHERE  `stock_in_details`.`distributor_bill`= '$DistBill'";
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;

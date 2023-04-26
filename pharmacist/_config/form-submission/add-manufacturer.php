@@ -22,7 +22,6 @@ $Manufacturer = new Manufacturer();
 //Class initilization
 $Manufacturer = new Manufacturer();
 
-
 if(isset($_POST['add-manufacturer'])){
     $manufacturerName = $_POST['manufacturer-name'];
     $manufacturerName = str_replace("<", "&lt", $manufacturerName);
@@ -34,7 +33,7 @@ if(isset($_POST['add-manufacturer'])){
     $manufacturerDsc = $_POST['manufacturer-dsc'];
     $manufacturerDsc = str_replace(">", "&gt", $manufacturerDsc);
     $manufacturerDsc = str_replace(">", "&gt", $manufacturerDsc);
-
+    
     $manufacturerDsc = str_replace("'", "&#39", $manufacturerDsc);
     // echo $manufacturerDsc;
 

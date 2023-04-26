@@ -148,7 +148,6 @@ const getbillDate = (billDate) => {
     // // console.log(date2);
     var todayFullDate2 = year + "-" + month + "-" + date2;
     document.getElementById("due-date").setAttribute("max", todayFullDate2);
-
 }
 
 
@@ -162,11 +161,11 @@ const getBillAmount = () => {
     if (PTR > MRP) {
         console.log(Mrp);
         console.log(ptr);
-        console.log("hello");
-        window.alert("Price to Retailer must be lesser of same to Maximum Retail Price");
+        swal("Error Input", "PTR must be lesser than MRP. Please enter proper PTR value!", "error");
         document.getElementById("ptr").value = "";
         document.getElementById("bill-amount").value = "";
         document.getElementById("ptr").value = "";
+        
     }
 
     let qty = document.getElementById("qty").value;

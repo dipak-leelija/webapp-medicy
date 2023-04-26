@@ -284,7 +284,7 @@ $showDistributor       = $Distributor->showDistributor();
                             <div class="card-body stock-in-summary">
                                 <div class="table-responsive">
 
-
+                                
                                     <table class="table item-table">
                                         <thead class="thead-light">
                                             <tr>

@@ -20,7 +20,7 @@ $Distributor    = new Distributor();
 if (isset($_GET['dist-id'])) {
 ?>
     <div class="row border-bottom border-primary small mx-0 mb-2">
-        <div class="col-2 mb-1">Batch</div>
+        <div class="col-2 mb-1" hidden>Batch</div>
         <div class="col-4 col-sm-3 mb-1">Name</div>
         <div class="col-2 mb-1">Expiry</div>
         <div class="col-2 mb-1">MRP</div>
@@ -57,10 +57,10 @@ if (isset($_GET['dist-id'])) {
     ?>
 
                 <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
-                    <div class="col-2 mb-0"><?php echo $batchNo; ?></div>
+                    <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
                     <div class="col-4 col-sm-3 mb-0"><?php echo $productName; ?></div>
                     <div class="col-2 mb-0"><?php echo $expDate; ?></div>
-                    <!-- <div class="col-2 mb-0"><?php echo $mrp; ?></div> -->
+                    <div class="col-2 mb-0"><?php echo $mrp; ?></div>
                     <div class="col-2 mb-0"><?php echo $ptr; ?></div>
                     <div class="col-2 mb-0"><?php echo $stoks[0]['qty']; ?></div>
                 </div>
@@ -72,7 +72,7 @@ if (isset($_GET['dist-id'])) {
 }
 ?>
 
-<!-- ===============================GO TO purchaseReturnItemList.ajax.php page======================== -->
+<!-- =============================== GO TO purchaseReturnItemList.ajax.php page ======================== -->
 <!-- <?php
 
 
@@ -215,7 +215,7 @@ if (isset($_GET['dist-id'])) {
 <?php
 // }
 ?> -->
-<!-- ===============================GO TO purchaseReturnItemList.ajax.php page======================== -->
+<!-- ========================== END OF GO TO purchaseReturnItemList.ajax.php page ======================== -->
 
 <?php
 //##################################################################################################

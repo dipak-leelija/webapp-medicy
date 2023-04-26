@@ -28,7 +28,7 @@ class Distributor extends DatabaseConnection{
         return $selectQuery;
     }
 
-    function showDistributor(){
+    function showDistributor(){ 
         $select         = " SELECT * FROM distributor";
         $selectQuery    = $this->conn->query($select);
         $rows           = $selectQuery->num_rows;
@@ -44,7 +44,8 @@ class Distributor extends DatabaseConnection{
     }//eof showDistributor functiion
 
     function showDistributorById($distributorId){
-        $select         = " SELECT * FROM distributor WHERE `id`= '$distributorId'";
+        // $data = array();
+        $select         = " SELECT * FROM `distributor` WHERE `distributor`.`id`= '$distributorId'";
         $selectQuery    = $this->conn->query($select);
         while ($result  = $selectQuery->fetch_array() ) {
             $data[] = $result;

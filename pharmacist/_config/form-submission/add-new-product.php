@@ -74,7 +74,6 @@ if (isset($_POST['add-product'])) {
      $sideImage         = addslashes($sideImage);
 
 
-
     $manufacturerid     = $_POST['manufacturer'];
 
     $productName        = $_POST['product-name'];

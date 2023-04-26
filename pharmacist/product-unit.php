@@ -8,8 +8,6 @@ $page = "product-unit";
 $MeasureOfUnits = new MeasureOfUnits();
 
 
-
-
 ?>
 
 <!DOCTYPE html>

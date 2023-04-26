@@ -197,22 +197,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <div class="col-md-12 ">
                                             <div class="row ">
 
-                                                <div class="col-sm-6 col-md-3 mt-2 ">
+                                                <div class="col-sm-4 col-md-3 mt-2 ">
                                                     <label class="mb-0" for="weightage">Weightage</label>
                                                     <input type="text" class="upr-inp" id="weightage" value="" readonly>
                                                 </div>
 
-                                                <div class="col-sm-6 col-md-3 mt-2 ">
+                                                <div class="col-sm-4 col-md-3 mt-2 ">
                                                     <label class="mb-0" for="unit"> Unit</label>
                                                     <input type="text" class="upr-inp" id="unit" value="" readonly>
                                                 </div>
 
-                                                <div class="col-sm-6 col-md-3 mt-2 ">
+                                                <div class="col-sm-4 col-md-3 mt-2 ">
                                                     <label class="mb-0" for="packaging-in">Packaging-in</label>
                                                     <input type="text" class="upr-inp" id="packaging-in" value=""
                                                         readonly>
                                                 </div>
-                                                <div class="col-sm-6 col-md-3 mt-2 ">
+                                                <div class="col-sm-4 col-md-3 mt-2 ">
                                                     <label class="mb-0" for="medicine-power">Medicine Power</label>
                                                     <input class="upr-inp" type="text" name="medicine-power"
                                                         id="medicine-power">
@@ -229,7 +229,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <label class="mb-0" for="batch-no">Batch No.</label>
                                             <input type="text" class="upr-inp" name="batch-no" id="batch-no">
                                         </div>
-                                        <div class="col-sm-6 col-md-4 mt-2">
+                                        <div class="col-sm-3 col-md-4 mt-2">
+                                            <label class="mb-0 mt-1" for="exp-date">MFD</label>
+                                            <div class="d-flex date-field">
+                                                <input class="month " type="number" id="exp-month"
+                                                    onkeyup="setMonth(this);">
+                                                <span class="date-divider">&#47;</span>
+                                                <input class="year " type="number" id="exp-year"
+                                                    onkeyup="setYear(this);">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3 col-md-4 mt-2">
                                             <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                                             <div class="d-flex date-field">
                                                 <input class="month " type="number" id="exp-month"
@@ -351,6 +361,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         style="display:none"></th>
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
+                                                <th scope="col" hidden>MFD.</th>
                                                 <th scope="col">Exp.</th>
                                                 <th scope="col">Power</th>
                                                 <th scope="col">Unit</th>

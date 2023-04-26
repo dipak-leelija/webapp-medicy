@@ -15,7 +15,7 @@ class Manufacturer extends DatabaseConnection{
 
 
     function showManufacturer(){
-        $select         = " SELECT * FROM manufacturer";
+        $select         = " SELECT * FROM `manufacturer`";
         $selectQuery    = $this->conn->query($select);
         while ($result  = $selectQuery->fetch_array() ) {
             $data[] = $result;
@@ -28,7 +28,7 @@ class Manufacturer extends DatabaseConnection{
 
 
     function showManufacturerById($manufacturerId){
-        $select         = " SELECT * FROM manufacturer WHERE `manufacturer`.`id` = '$manufacturerId'";
+        $select         = " SELECT * FROM `manufacturer` WHERE `manufacturer`.`id` = '$manufacturerId'";
         $selectQuery    = $this->conn->query($select);
         $row = $selectQuery->num_rows;
         if ($row == 0) {

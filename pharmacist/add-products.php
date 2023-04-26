@@ -16,6 +16,7 @@ $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
 
 $showManufacturer   = $Manufacturer->showManufacturer();
+// print_r($showManufacturer);
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                  

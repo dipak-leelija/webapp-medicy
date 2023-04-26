@@ -487,8 +487,9 @@ const addData = () => {
         };
 
         if (appendData() == true) {
-            itemList.remove(itemList.selectedIndex)
+            itemList.remove(itemList.selectedIndex);
             itemList.options[0].selected = true;
+
             expDate.value = "";
             unit.value = "";
             unitType.value = "";
