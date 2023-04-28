@@ -58,23 +58,32 @@
     // if (isset($_POST['update-product'])) {
     //     echo 'Hi';
     // }
-
+    
     //======================== PRODUCT UPDATE BLOCK ====================================
 
     if (isset($_POST['update-product'])) {
 
         $productId = $_POST['imgid'];
-
+        $imageCheck = $ProductImages->showImageById($productId);
+        // print_r($imageCheck); echo "<br><br>";
+        foreach($imageCheck as $imgChk){
+            $mnImgChk = $imgChk['image'];
+            $sideImgChk = $imgChk['side_image'];
+            $bkImgChk = $imgChk['back_image'];
+        }
+        
         //print_r($_FILES)
-        // 
-    ?><br><br><?php
-
+       
             //===== Main Image 
             $image         = $_FILES['product-image']['name'];
             $tempImgname   = $_FILES['product-image']['tmp_name'];
             if ($image != null) {
                 if (file_exists("../../../images/product-image/" . $image)) {
                     $image = 'medicy-' . $image;
+                }
+            }elseif($image == null){
+                if($mnImgChk != null){
+                    $image = $mnImgChk;
                 }
             }
 
@@ -89,6 +98,10 @@
                 if (file_exists("../../../images/product-image/" . $backImage)) {
                     $backImage = 'medicy-' . $backImage;
                 }
+            }elseif($backImage == null){
+                if($bkImgChk != null){
+                    $backImage = $bkImgChk;
+                }
             }
 
             $imgFolder     = "../images/product-image/" . $backImage;
@@ -101,6 +114,10 @@
             if ($backImage != null) {
                 if (file_exists("../../../images/product-image/" . $sideImage)) {
                     $sideImage = 'medicy-' . $sideImage;
+                }
+            }elseif($sideImage == null){
+                if($sideImgChk != null){
+                    $sideImage = $sideImgChk;
                 }
             }
 
@@ -144,7 +161,7 @@
 
                     $item = $Products->showProductsById($_GET['id']);
                     $image = $ProductImages->showImageById($_GET['id']);
-                    print_r($image);
+                    // print_r($image);
 
                     if ($image != NULL) {
                         $mainImage  = $image[0]['image'];
