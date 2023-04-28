@@ -242,10 +242,10 @@ if (isset($_GET['currentStockId'])) {
 <script>
     // ============================ DELETE ALL STOCK DATA ================================
     const delAll = (id) => {
-        alert(id);
+        // alert(id);
         swal({
                 title: "Are you sure?",
-                text: "Want to Delete This Data?" + id,
+                text: "Want to Delete This Data?",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -260,7 +260,7 @@ if (isset($_GET['currentStockId'])) {
                             delID: id
                         },
                         success: function(response) {
-                            // alert(response);
+                            alert(response);
                             if (response.includes('1')) {
                                 swal(
                                     "Deleted",
@@ -290,9 +290,9 @@ if (isset($_GET['currentStockId'])) {
     // =================================== DELTE PERTICULER STOCK DATA =======================
 
     const customDelete = (id, value1, value2) => {
-        alert(id);
-        alert(value1);
-        alert(value2);
+        // alert(id);
+        // alert(value1);
+        // alert(value2);
         var row = document.getElementById(id);
         swal({
                 title: "Are you sure?",
@@ -303,8 +303,8 @@ if (isset($_GET['currentStockId'])) {
             })
             .then((willDelete) => {
                 if (willDelete) {
-                    alert(value1);
-                    alert(value2);
+                    // alert(value1);
+                    // alert(value2);
                     $.ajax({
                         url: "currentStock.delete.ajax.php",
                         type: "POST",
@@ -313,15 +313,15 @@ if (isset($_GET['currentStockId'])) {
                             pBatchNO: value2
                         },
                         success: function(response) {
-                            alert(response);
+                            // alert(response);
                             if (response.includes('1')) {
                                 swal(
                                     "Deleted",
                                     "Manufacturer Has Been Deleted",
                                     "success"
                                 ).then(function() {
-                                    // row.parentNode.removeChild(row);
-                                    $(id).closest("tr").fadeOut()
+                                    row.parentNode.removeChild(row);
+                                    // $(id).closest("tr").fadeOut()
                                 });
 
                             } else {

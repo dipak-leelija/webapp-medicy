@@ -113,11 +113,14 @@ $Products       = new Products();
                     $amount += $item['ptr'];
 
                     $product = $Products->showProductsById($item['product_id']);
-
+                    // print_r($product);
+                    foreach($product as $Product){
+                        $pName = $Product['name'];
+                    }
 
                     echo "<tr>
                             <th scope='row'>".$sl."</th>
-                            <td>".$product[0][3]."</td>
+                            <td>".$pName."</td>
                             <td>".$item['batch_no']."</td>
                             <td>".$item['exp_date']."</td>
                             <td>".$item['weightage']."</td>

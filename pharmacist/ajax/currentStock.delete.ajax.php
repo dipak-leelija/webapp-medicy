@@ -14,7 +14,7 @@ require_once '../../php_control/products.class.php';
 require_once '../../php_control/manufacturer.class.php';
 require_once '../../php_control/packagingUnit.class.php';
 
-$CurrentStock = new CurrentStock();
+$CurrentStock   = new CurrentStock();
 $Patients       =   new Patients();
 $IdGeneration   =   new IdGeneration();
 $StockIn        =   new StockIn();
@@ -28,10 +28,14 @@ $packagUnit     =   new PackagingUnits();
 
 if (isset($_POST['delID'])) {
     $productId =  $_POST['delID'];
+
     // echo $productId;
 
-    if($productId != null){
-        echo 1;
+    $deleteProductStock = $CurrentStock->deleteCurrentStockbyId($productId);
+
+    // var_dump($deleteProductStock);
+    if($deleteProductStock == true){
+        echo $productId;
     }else{
         echo 0;
     }
@@ -46,6 +50,8 @@ if (isset($_POST['pBatchNO'])) {
     $productId =  $_POST['pId'];
     $productBatchNo = $_POST['pBatchNO'];
     // echo $productId;
+
+    $deleteProductStockByBatch = $CurrentStock->deleteCurrentStock($productId, $productBatchNo);
 
     if($productId != null){
         echo 1;

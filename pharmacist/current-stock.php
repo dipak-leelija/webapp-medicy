@@ -20,6 +20,7 @@ $showCurrentStock = $CurrentStock->showCurrentStock();
 // print_r($showCurrentStock);
 $countCurrentStock = count($showCurrentStock);
 
+$currentStockGroup = $CurrentStock->currentStockGroupbyPid();
 
 
 ?>
@@ -90,7 +91,7 @@ $countCurrentStock = count($showCurrentStock);
                         <div class="card-header py-3 booked_btn">
                             <h6 class="m-0 font-weight-bold text-primary">Total Avilable Product is :
                                 <?php if ($showCurrentStock != NULL) {
-                                    echo count($showCurrentStock);
+                                    echo count($currentStockGroup);
                                 } else {
                                     echo "No Stock";
                                 } ?>
@@ -117,7 +118,7 @@ $countCurrentStock = count($showCurrentStock);
                                         <?php
                                         if ($showCurrentStock != NULL) {
                                                 
-                                                foreach ($currentStockData as $rowStock) {
+                                                foreach ($currentStockGroup as $rowStock) {
                                                     // print_r($rowStock);
                                                     $currentStockId      = $rowStock['id'];
                                                     // echo "$currentStockId<br>";

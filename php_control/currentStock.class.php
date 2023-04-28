@@ -192,9 +192,20 @@ class CurrentStock extends DatabaseConnection{
         //echo $batchNo;
         //echo $productId;
 
-        $delQry = "DELETE FROM `current_stock` WHERE `id` = '$productId' and `batch_no` = '$batchNo' ";
+        $delQry = "DELETE FROM `current_stock` WHERE `current_stock`.`product_id` = '$productId' and `batch_no` = '$batchNo' ";
         // echo $delQry.$this->conn->error;exit;
         $delSql = $this->conn->query($delQry);
+        return $delSql;
+    }// eof stockInDelete
+
+    function deleteCurrentStockbyId($productId){
+        //echo $batchNo;
+        // echo $productId;
+        
+        $delQry = "DELETE FROM `current_stock` WHERE `current_stock`.`product_id` = '$productId'";
+        // echo $delQry.$this->conn->error;exit;
+        $delSql = $this->conn->query($delQry);
+        var_dump($delSql);
         return $delSql;
     }// eof stockInDelete
 
