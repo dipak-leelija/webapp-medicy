@@ -120,7 +120,6 @@ $showDistributor       = $Distributor->showDistributor();
                                 </div>
 
 
-
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
                                     <label class="mb-1 mt-3" for="return-mode">Return Mode :</label>
                                     <!-- <select class="upr-inp" name="return-mode" id="return-mode" onchange="setMode(this.value)"> -->

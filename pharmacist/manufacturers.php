@@ -103,7 +103,7 @@ if (isset($_GET['return'])) {
                                                                 <td>
                                                                     <a class="" data-toggle="modal" data-target="#manufacturerModal" onclick="manufViewAndEdit('.$manufacturerId.')"><i class="fas fa-edit"></i></a>
 
-                                                                    <a class="ms-2" id="delete-btn" data-id='.$manufacturerId.'><i class="far fa-trash-alt"></i></a>
+                                                                    <a class="ms-2" id="delete-btn" data-id='.$manufacturerId.' onclick="customDel('.$manufacturerId.',this.id)"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                             </tr>';
 
@@ -226,10 +226,9 @@ if (isset($_GET['return'])) {
                     // ?>
 
     //delete manufacturer
-    $(document).ready(function() {
-        $(document).on("click", "#delete-btn", function() {
-            manufacturerId = $(this).data("id");
-            btn = this;
+    const customDel = (id)=>{
+        // alert(id);
+            
             swal({
                 title: "Are you sure?",
                 text: "Want to Delete This Manufacturer?",
@@ -244,13 +243,16 @@ if (isset($_GET['return'])) {
                     url: "ajax/manufacturer.Delete.ajax.php",
                     type: "POST",
                     data: {
-                        id: manufacturerId
+                        id: id
                     },
                     success: function(response) {
+                        // alert(response);
+                        // alert(id);
                         if (response.includes('1')) {
                             $(btn).closest("tr").fadeOut()
                             swal("Deleted", "Manufacturer Has Been Deleted", "success");
                         } else {
+                            swal("Delete Not Possible", "Manufacturer can't be deleted as its product is in stock", "warning");
                             $("#error-message").html("Deletion Field !!!").slideDown();
                             $("success-message").slideUp();
                         }
@@ -260,8 +262,9 @@ if (isset($_GET['return'])) {
                 }
             return false;
             });
-        });
-    });
+    }
+            
+    
 
     //========edit modal on close parent location reload==============
 

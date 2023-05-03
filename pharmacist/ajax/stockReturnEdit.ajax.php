@@ -109,12 +109,17 @@ $stockIn = $StockIn->showStockInById($StockInDetailsDistributorBillNo);
 //================================fetchin data from current stock================================
 $currentStockDetails = $CurrentStock->showCurrentStocByProductIdandBatchNo($stockReturnDetailsProductId, $stockReturnDetailsBatchNo);
 
+if($currentStockDetails != null){
     foreach($currentStockDetails as $currentStock){
-
         $currentStockQty   =   $currentStock['qty'];
     }
+}else{
+    $currentStockQty = 0;
+}
 
-//$currentStockDetails = json_encode($currentStockDetails);
+    
+
+$currentStockDetails = json_encode($currentStockDetails);
 //===============================================================================================
 $stockReturnDetailsDataArry = array("id"                    =>  $stockReturnDetailsId,
                                     "stock_return_id"       =>  $stockReturnDetailsStockReturnId,

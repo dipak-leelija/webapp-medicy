@@ -49,10 +49,12 @@ if (isset($_GET['dist-id'])) {
 
                 $stoks = $CurrentStock->checkStock($productId, $batchNo);
                 // print_r($stoks);
-                if ($stoks != null) {
-                    $stoks = $stoks;
-                    // print_r($stoks);
+                if($stoks !=null){
+                    $qantity = $stoks[0]['qty'];
+                }else{
+                    $qantity = 0;
                 }
+                
 
     ?>
 
@@ -62,7 +64,7 @@ if (isset($_GET['dist-id'])) {
                     <div class="col-2 mb-0"><?php echo $expDate; ?></div>
                     <div class="col-2 mb-0"><?php echo $mrp; ?></div>
                     <div class="col-2 mb-0"><?php echo $ptr; ?></div>
-                    <div class="col-2 mb-0"><?php echo $stoks[0]['qty']; ?></div>
+                    <div class="col-2 mb-0"><?php echo $qantity; ?></div>
                 </div>
 
 <?php

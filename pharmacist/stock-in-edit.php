@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     require_once '../php_control/stockIn.class.php';
     require_once '../php_control/stockInDetails.class.php';
 
+
     if (isset($_GET['edit'])) {
         $edit = TRUE;
 
@@ -45,7 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $StockInDetails     = new StockInDetails();
 
         $stockIn        = $StockIn->showStockInById($distBill);
+        // print_r($stockIn); echo "<br><br>";
         $details = $StockInDetails->showStockInDetailsById($distBill);
+        // print_r($details); echo "<br><br>";
+        // echo count($details); echo "<br><br>";
+        $distData = $Distributor->showDistributorById($stockIn[0]['distributor_id']);
+        // print_r($distData);
+        $distName = $distData[0]['name'];
+
+        $arrayCheckId = array();
+        foreach($details as $stockInId){
+            array_push($arrayCheckId,$stockInId['id']);
+        }
+        // print_r($arrayCheckId); echo "<br><br>";
+        // echo count($arrayCheckId);
     }
 }
 
@@ -124,26 +138,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="mb-1" for="distributor-bill">Distributor Bill No.</label>
-                                    <input type="text" class="upr-inp " name="distributor-bill" id="distributor-bill" value="<?php if ($edit == TRUE) {
-                                                                                                                                    echo $stockIn[0]['distributor_bill'];
-                                                                                                                                } ?>">
+                                    <input type="text" class="upr-inp " name="distributor-bill" id="distributor-bill" 
+                                    value="<?php if ($edit == TRUE) {
+                                                echo $stockIn[0]['distributor_bill'];
+                                                    } ?>">
                                 </div>
 
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="bill-date">Bill Date</label>
                                     <input type="date" class="upr-inp" name="bill-date" id="bill-date" value="<?php if ($edit == TRUE) {
-                                                                                                                    $billDate = date_create($stockIn[0]['bill_date']);
-                                                                                                                    echo date_format($billDate, "Y-m-d");
-                                                                                                                }
-                                                                                                                ?>" onchange="getbillDate(this)">
+                                            $billDate = date_create($stockIn[0]['bill_date']);
+                                            echo date_format($billDate, "Y-m-d");
+                                            } ?>" onchange="getbillDate(this)">
                                 </div>
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
-                                    <input type="date" class="upr-inp" name="due-date" id="due-date" value="<?php if ($edit == TRUE) {
-                                                                                                                $billDate = date_create($stockIn[0]['due_date']);
-                                                                                                                echo date_format($billDate, "Y-m-d");
-                                                                                                            }
-                                                                                                            ?>">
+                                    <input type="date" class="upr-inp" name="due-date" id="due-date" 
+                                    value="<?php if ($edit == TRUE) {
+                                        $billDate = date_create($stockIn[0]['due_date']);
+                                        echo date_format($billDate, "Y-m-d");
+                                    } ?>">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="mb-1" for="payment-mode">Payment Mode</label>
@@ -153,12 +167,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                                     if ($stockIn[0]['payment_mode'] == "Credit") {
                                                                         echo 'selected';
                                                                     }
-                                                                } ?>>Credit</option>
+                                                                } ?>>Credit
+                                        </option>
                                         <option value="Cash" <?php if ($edit == TRUE) {
                                                                     if ($stockIn[0]['payment_mode'] == "Cash") {
                                                                         echo 'selected';
                                                                     }
-                                                                } ?>>Cash</option>
+                                                                } ?>>Cash
+                                        </option>
                                         <option value="UPI" <?php if ($edit == TRUE) {
                                                                 if ($stockIn[0]['payment_mode'] == "UPI") {
                                                                     echo 'selected';
@@ -194,29 +210,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             </div>
                             <!-- End Distributor Details  -->
 
-
                             <!-- <div class="h-divider"></div> -->
                             <hr class="sidebar-divider">
-
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="row mt-4 mb-2">
-                                        
-                                            <div class="col-md-6" hidden>
-                                                <label class="mb-0" for="purchaseDetailId">Purchase Id</label>
-                                                <input type="text" class="upr-inp" id="purchase-details-id" value="" readonly>
-                                            </div>
-                                            <div class="col-md-6" hidden>
-                                                <label class="mb-0" for="productId">Product Id</label>
-                                                <input type="text" class="upr-inp" id="productId" value="" readonly>
-                                            </div>
-                                            <div class="col-md-6" hidden> 
-                                                <label class="mb-0" for="DistributorBillNo">Bill No</label>
-                                                <input type="text" class="upr-inp" id="dist-bill-no" value="" readonly>
-                                            </div>
-                                            
-                                        
+
+                                        <div class="col-md-6" hidden>
+                                            <label class="mb-0" for="purchaseDetailId">Purchase Id</label>
+                                            <input type="text" class="upr-inp" id="purchase-details-id" value="" readonly>
+                                        </div>
+                                        <div class="col-md-6" hidden>
+                                            <label class="mb-0" for="productId">Product Id</label>
+                                            <input type="text" class="upr-inp" id="productId" value="" readonly>
+                                        </div>
+                                        <div class="col-md-6" hidden>
+                                            <label class="mb-0" for="DistributorBillNo">Bill No</label>
+                                            <input type="text" class="upr-inp" id="dist-bill-no" value="" readonly>
+                                        </div>
 
                                         <div class="col-md-12 ">
                                             <!-- <label for="product-name" class="mb-0">Product Name</label> -->
@@ -249,7 +261,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         </div>
                                     </div>
 
-
                                     <div class="row">
                                         <div class="col-md-12 ">
                                             <div class="row ">
@@ -275,8 +286,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             </div>
                                         </div>
                                     </div>
-
-
 
                                     <div class="row">
 
@@ -333,11 +342,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <select class="upr-inp" name="packaging-type" id="packaging-type">
                                                 <option value="" disabled selected>Select Packaging Type </option>
                                                 <?php
-                                                foreach ($showPackagingUnits as $rowPackagingUnits) {
-                                                    echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
+                                                foreach ($showPackagingUnits as $rowPackagingUnits) { ?>
+                                                    <option value="<?php echo $rowPackagingUnits['id'];  
+                                                    ?>">  <?php echo$rowPackagingUnits['unit_name']; ?> </option>
+                                                <?php
                                                 }
                                                 ?>
                                             </select>
+                                            <input type="text" class="upr-inp" name="packaging-type-edit" id="packaging-type-edit" readonly hidden>
                                         </div>
 
                                         <!-- </div> -->
@@ -396,9 +408,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col"></th>
-                                                <th scope="col"><input type="number" value="<?php if ($edit == TRUE) {
-                                                                                                echo count($details);
-                                                                                            } ?>" id="dynamic-id" style="display:none"></th>
+                                                <th scope="col" hidden><input type="number" 
+                                                    value="<?php if ($edit == TRUE) {
+                                                                echo count($details);
+                                                                } ?>" 
+                                                    id="dynamic-id" style="display:none">
+                                                </th>
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp.</th>
@@ -433,7 +448,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                             </i>
                                                         </td>
 
-                                                        <td style="font-size:.8rem ; padding-top:1.2rem" scope="row" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)"><?php echo $slno ?>
+                                                        <td style="font-size:.8rem ; padding-top:1.2rem" scope="row" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" hidden><?php echo $slno ?>
                                                         </td>
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)">
@@ -505,15 +520,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="row mb-3">
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Distributor :
-                                            <input class="summary-inp" name="distributor-id" id="distributor-name" type="text" value="<?php if ($edit == TRUE) {
+                                            <input class="summary-inp" name="distributor-id" id="distributor-name" type="text" value="<?php
+                                                                                                                                        if ($edit == TRUE) {
                                                                                                                                             echo $stockIn[0]['distributor_id'];
-                                                                                                                                        } ?>" readonly>
-
-                                            <!-- <input  class="summary-inp6"
-                                                    name="distributor-id"
-                                                    id="distributor-name"
-                                                    type="text"
-                                                    readonly> -->
+                                                                                                                                        }
+                                                                                                                                        ?>" readonly hidden>
+                                            <input class="summary-inp" name="dist-name" id="dist-name" type="text" value="<?php echo $distName ?>" readonly>
                                         </p>
                                     </div>
                                     <div class="col-md-3 d-flex justify-content-start">
@@ -537,7 +549,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                                                                                                 } ?>" readonly>
                                         </p>
                                     </div>
-
                                 </div>
 
                                 <div class="row">
@@ -590,7 +601,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     ?>
 
                                 </div>
+
+                                <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($arrayCheckId) ?>" hidden>
                             </div>
+
                         </form>
                     </div>
                     <!--=========================== Show Bill Items ===========================-->

@@ -19,7 +19,6 @@ if (isset($_GET["id"])) {
     $count = $count - 1;
 
     $stock = $CurrentStock->showCurrentStocByPId($pid);
-
     
     echo $stock[$count]['batch_no'];
     

@@ -7,11 +7,12 @@ require_once '../../php_control/manufacturer.class.php';
 $Manufacturer       = new Manufacturer();
 
 $manufacturerId = $_POST['id'];
-echo $manufacturerId;
+// echo $manufacturerId;
 
 $deleteManufacturer = $Manufacturer->deleteManufacturer($manufacturerId);
-
-if ($deleteManufacturer) {
+// $data = var_dump($deleteManufacturer);
+// return $data;
+if ($deleteManufacturer == true) {
     echo 1;
 }else {
     echo 0;

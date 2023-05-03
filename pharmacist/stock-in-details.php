@@ -14,6 +14,7 @@ $StockIn            = new StockIn();
 
 //function calling
 $showStockIn           = $StockIn->showStockIn();
+// print_r($showStockIn);
 $showDistributor       = $Distributor->showDistributor();
  
 ?>
@@ -98,21 +99,21 @@ $showDistributor       = $Distributor->showDistributor();
                                             foreach ($showStockIn as $stockIn) {
                                                 $distributor = $Distributor->showDistributorById($stockIn['distributor_id']);
                                                 
-                                               
-                                           echo '
+                                        ?>       
+                                           
                                             <tr>
-                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$stockIn['distributor_bill'].'</td>
-                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$distributor[0][1].'</td>
-                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$stockIn['bill_date'].'</td>
-                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$stockIn['amount'].'</td>
-                                                <td id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal">'.$stockIn['payment_mode'].'</td>
+                                                <td id="<?php echo $stockIn['distributor_bill'] ?>" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal"><?php $stockIn['distributor_bill'] ?></td>
+                                                <td id="<?php $stockIn['distributor_bill'] ?>" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal"><?php $distributor[0][1] ?></td>
+                                                <td id="<?php $stockIn['distributor_bill'] ?>" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal"><?php $stockIn['bill_date'] ?></td>
+                                                <td id="<?php $stockIn['distributor_bill'] ?>" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal"><?php $stockIn['amount'] ?></td>
+                                                <td id="<?php $stockIn['distributor_bill'] ?>" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal"><?php $stockIn['payment_mode'] ?></td>
                                                 <td class="d-flex justify-content-around align-middle" >
-                                                    <a class="text-primary pe-auto" role="button" id="'.$stockIn['distributor_bill'].'" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i></a>
-                                                    <a class="text-primary" id="'.$stockIn['distributor_bill'].'" href="stock-in-edit.php?edit='.$stockIn['distributor_bill'].'" role="button"><i class=" fas fa-edit"></i></a>
-                                                    <a class="text-danger" role="button"><i class="fas fa-trash" id="'.$stockIn['id'].'" onclick="deleteStock(this.id)"></i></a>
+                                                    <a class="text-primary pe-auto" role="button" id="<?php $stockIn['distributor_bill'] ?>" onclick="stockDetails(this.id)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i></a>
+                                                    <a class="text-primary" id="<?php $stockIn['distributor_bill'] ?>" href="stock-in-edit.php?edit=<?php $stockIn['distributor_bill'] ?>" role="button"><i class=" fas fa-edit"></i></a>
+                                                    <a class="text-danger" role="button"><i class="fas fa-trash" id="<?php $stockIn['id'] ?>" onclick="deleteStock(this.id)"></i></a>
                                                 </td>
                                             </tr>
-                                                ';
+                                            <?php    
                                             }
                                         }
                                         ?>

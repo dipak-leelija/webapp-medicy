@@ -34,46 +34,49 @@ if ($_GET['table'] !== null && $_GET['value'] !== null) {
     // echo $table;
     // echo $value;
 
-    if($table == 'added_by' || $table == 'distributor_id' || $table == 'refund_mode' ){
+    // if($table == 'added_by' || $table == 'distributor_id' || $table == 'refund_mode' ){
         
-        $data1 = $StockReturn->stockReturnFilter($table, $value);
-        $data = $data1;
-    }elseif($table == 'added_on'){
-        if($value == 'T'){
-            $fromDate = date("Y-m-d");
-            $toDate = date("Y-m-d");
-        }elseif($value == 'Y'){
-            $fromDate = date("Y-m-d", strtotime("yesterday"));
-            $toDate = date("Y-m-d", strtotime("yesterday"));
-        }elseif($value == 'LW'){
-            $fromDate = date("Y-m-d", strtotime("-7 days"));
-            $toDate = date("Y-m-d");
-        }elseif($value == 'LM'){
-            $fromDate = date("Y-m-d", strtotime("-30 days"));
-            $toDate = date("Y-m-d");
-        }elseif($value == 'LQ'){
-            $fromDate = date("Y-m-d", strtotime("-90 days"));
-            $toDate = date("Y-m-d");
-        }
-        elseif($value == 'CFY'){
-            $fromDate = date("Y-01-01", strtotime("-90 days"));
-            $toDate = date("Y-m-d");
-        }elseif($value == 'PFY'){
-            $year = date("Y")-1;
-            $fromDate = date("$year-01-01");
-            $toDate = date("$year-12-31");
-        }
-        // elseif($value == 'CR'){
-        //     if ($_GET['fromDate'] != null && $_GET['toDate'] != null){
-        //         $fromDate = $_GET['fromDate'];
-        //         $toDate = $_GET['toDate'];
-        //     } 
-        // }
+    //     $data1 = $StockReturn->stockReturnFilter($table, $value);
+    //     $data = $data1;
+    // }elseif($table == 'added_on'){
+    //     if($value == 'T'){
+    //         $fromDate = date("Y-m-d");
+    //         $toDate = date("Y-m-d");
+    //     }elseif($value == 'Y'){
+    //         $fromDate = date("Y-m-d", strtotime("yesterday"));
+    //         $toDate = date("Y-m-d", strtotime("yesterday"));
+    //     }elseif($value == 'LW'){
+    //         $fromDate = date("Y-m-d", strtotime("-7 days"));
+    //         $toDate = date("Y-m-d");
+    //     }elseif($value == 'LM'){
+    //         $fromDate = date("Y-m-d", strtotime("-30 days"));
+    //         $toDate = date("Y-m-d");
+    //     }elseif($value == 'LQ'){
+    //         $fromDate = date("Y-m-d", strtotime("-90 days"));
+    //         $toDate = date("Y-m-d");
+    //     }
+    //     elseif($value == 'CFY'){
+    //         $fromDate = date("Y-01-01", strtotime("-90 days"));
+    //         $toDate = date("Y-m-d");
+    //     }elseif($value == 'PFY'){
+    //         $year = date("Y")-1;
+    //         $fromDate = date("$year-01-01");
+    //         $toDate = date("$year-12-31");
+    //     }
+    //     // elseif($value == 'CR'){
+    //     //     if ($_GET['fromDate'] != null && $_GET['toDate'] != null){
+    //     //         $fromDate = $_GET['fromDate'];
+    //     //         $toDate = $_GET['toDate'];
+    //     //     } 
+    //     // }
     
-        // echo $fromDate;
-        // echo $toDate;
-        $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
-        $data = $data2;
+    //     // echo $fromDate;
+    //     // echo $toDate;
+    //     $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
+    //     $data = $data2;
+
+        $data = $StockReturn->stockReturnFilter($_GET['table'], $_GET['value']);
+        print_r($data);
     }
 
     ?>
@@ -115,7 +118,7 @@ if (count($data) >0) {
         </tbody>
     </table>
     <?php
-}
+// }
 
 
 ?>

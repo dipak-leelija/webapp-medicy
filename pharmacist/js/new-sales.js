@@ -120,8 +120,9 @@ const stockDetails = (productId) => {
 
     checkBatchByPid.push(productId); //product id array
     console.log(qntity);
-    // alert(productId);
-    // console.log(productId);
+    alert(productId);
+    console.log(productId);
+    console.log(checkBatchByPid);
     document.getElementById("searched-items").style.display = "none";
 
     var xmlhttp = new XMLHttpRequest();
@@ -371,6 +372,7 @@ const onQty = (qty) => {
 
 
     //==================== Batch-no ====================
+    var productId = document.getElementById("product-id").value;
     batchUrl = `ajax/currentStock.getBatch.ajax.php?id=${productId}&chkBtch=${checkBatchByPid}`;
     // alert(url);
     xmlhttp.open("GET", batchUrl, false);

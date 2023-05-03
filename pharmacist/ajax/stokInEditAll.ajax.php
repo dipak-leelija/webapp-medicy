@@ -61,7 +61,6 @@ if(isset($_POST['blNo'])){
         $manufName = $manuf['name'];
     }
 
-
     $packagingDetails = $Packaging->showPackagingUnitById($packagingTyp);
     foreach($packagingDetails as $packageType){
         $packType = $packageType['unit_name'];

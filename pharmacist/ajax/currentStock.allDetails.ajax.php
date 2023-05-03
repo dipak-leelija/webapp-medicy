@@ -8,8 +8,12 @@ if (isset($_GET['product']) && isset($_GET['batch'])) {
     $productId = $_GET['product'];
 
     $currentQty = $CurrentStock->checkStock($productId, $batchNo);
-    echo $currentQty[0]['qty'];
-
+    if($currentQty == null){
+        $qty = 0;
+    }else{
+        $qty = $currentQty[0]['qty'];
+    }
+    echo $qty;
 }
 
 ?>

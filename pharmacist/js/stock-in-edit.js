@@ -3,6 +3,7 @@ const customClick = (id, value1, value2, value3) => {
     var prodId = value1;
     var billNo = value2;
     var batchNo = value3;
+    
     var row = document.getElementById(id);
 
     // console.log(value1);
@@ -18,12 +19,12 @@ const customClick = (id, value1, value2, value3) => {
         },
         success: function (data) {
 
-            alert(data);
+            // alert(data);
 
             var dataObject = JSON.parse(data);
 
             var purchaseDetails = dataObject.expDate;
-            alert(purchaseDetails);
+            // alert(purchaseDetails);
 
             // var purchaseDetails = dataObject.productId;
             // var purchaseDetails = dataObject.billNo;
@@ -33,19 +34,7 @@ const customClick = (id, value1, value2, value3) => {
             var expMonth = purchaseDetails.slice(0, 2);
             var expYear = purchaseDetails.slice(3, 5);
             
-            // var purchaseDetails = dataObject.weightage;
-            // var purchaseDetails = dataObject.unit;
-            // var purchaseDetails = dataObject.qty;
-            // var purchaseDetails = dataObject.FreeQty;
-            // var purchaseDetails = dataObject.looseQty;
-            // var purchaseDetails = dataObject.mrp;
-            // var purchaseDetails = dataObject.ptr;
-            // var purchaseDetails = dataObject.disc;
-            // var purchaseDetails = dataObject.baseAmount;
-            // var purchaseDetails = dataObject.gst;
-            // var purchaseDetails = dataObject.GstAmount;
-            // var purchaseDetails = dataObject.mrgn;
-            // var purchaseDetails = dataObject.amnt;
+            
 
             // //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
 
@@ -68,8 +57,9 @@ const customClick = (id, value1, value2, value3) => {
             document.getElementById("ptr").value = dataObject.ptr;
             document.getElementById("qty").value = dataObject.qty;
             document.getElementById("free-qty").value = dataObject.FreeQty;
-            document.getElementById("packaging-type").value = dataObject.packageType;
-
+            // document.getElementById("packaging-type").value = dataObject.packageType;
+            document.getElementById("packaging-type-edit").value = dataObject.packageType;
+                        
             document.getElementById("discount").value = dataObject.disc;
             document.getElementById("gst").value = dataObject.gst;
             document.getElementById('base').value = dataObject.baseAmount;
@@ -81,7 +71,6 @@ const customClick = (id, value1, value2, value3) => {
             // document.getElementById("refund-amount").value = refundAmunt;
 
             //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
-
             row.parentNode.removeChild(row);
         }
     })
@@ -559,7 +548,7 @@ const addData = () => {
                                                                                         jQuery("#dataBody")
                                                                                             .append(`<tr id="table-row-${slno}">
             <td style="color: red; padding-top:1.2rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
-            <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
+            <td style="font-size:.8rem ; padding-top:1.2rem"scope="row" hidden>${slno}</td>
             <td class="pt-3">
                 <input class="table-data w-12r" type="text" value="${productName.value}" readonly>
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
@@ -570,12 +559,12 @@ const addData = () => {
             <td class=" pt-3">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly>
             </td>
-            <td class=" pt-3">
-                <input class="table-data w-4r" type="text" name="power[]" value="${medicinePower.value}" readonly>
+            <td class=" pt-3" hidden>
+                <input class="table-data w-4r" type="text" name="power[]" value="${medicinePower.value}" readonly " style="display: none">
             </td>
             <td class=" pt-3">
                 <input class="table-data w-4r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly>
-                <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none">
+                <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none" hidden>
                 <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none">
 
             </td>

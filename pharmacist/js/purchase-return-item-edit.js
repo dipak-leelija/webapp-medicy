@@ -15,15 +15,14 @@ const customEdit = (id, value) => {
             EditId: value
         },
         success: function (data) {
-            alert(data);
-
+            // alert(data);
             var dataObject = JSON.parse(data);
-            alert(dataObject);
+            // alert(dataObject);
 
             var stokReturnDetailId = dataObject.id;
-            alert(stokReturnDetailId);
+            // alert(stokReturnDetailId);
             
-            console.log(stokReturnDetailId);
+            // console.log(stokReturnDetailId);
 
             var stokReturnId = dataObject.stock_return_id;
 
