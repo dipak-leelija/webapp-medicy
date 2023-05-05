@@ -669,7 +669,6 @@ const addData = () => {
                 }
             }
         }
-
     }
 
     // freeQty.value = '';

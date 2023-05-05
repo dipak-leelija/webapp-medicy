@@ -61,6 +61,9 @@ if(isset($_POST['blNo'])){
         $manufName = $manuf['name'];
     }
 
+    // $manufName = str_replace()
+    
+
     $packagingDetails = $Packaging->showPackagingUnitById($packagingTyp);
     foreach($packagingDetails as $packageType){
         $packType = $packageType['unit_name'];

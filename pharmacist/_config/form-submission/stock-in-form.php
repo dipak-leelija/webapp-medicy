@@ -23,16 +23,16 @@
     $distributor = new Distributor();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $distributorName      = $_POST['distributor-id'];
+        $distributorid      = $_POST['distributor-id'];
         
-        $distributorDetial = $distributor->selectDistributorByName($distributorName);
-        // print_r($distributorDetial);
+        $distributorDetial = $distributor->showDistributorById($distributorid);
+        print_r($distributorDetial);
 
         $distributorId = $distributorDetial[0]['id'];
         // echo $distributorId;
 
         $distributorBill    = $_POST['distributor-bill'];
-        // $items              = $_POST['items'];
+        $Items              = $_POST['items'];
         $items              = count($_POST['productId']);
         $totalQty           = $_POST['total-qty'];
 
@@ -46,19 +46,40 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $totalGst           = $_POST['totalGst'];
         $amount             = $_POST['netAmount'];
         $addedBy            = ''; 
+        $purchaseId         = $_POST['purchaseDetailsId'];;
+
+
+        //============= checking area=========
+        echo "<br><br>";
         
+        print_r($distributorid); echo "-> Distributor Id <br><br>";
+        print_r($distributorBill); echo "-> Bill No <br><br>";
+        print_r($items); echo "-> Items <br><br>";
+        print_r($Items); echo "-> Items Array <br><br>";
+        print_r($totalQty); echo "-> Total qty <br><br>";
+        print_r($billDate); echo "-> Bill daste <br><br>";
+        print_r($dueDate); echo "-> Due date <br><br>";
+        print_r($paymentMode); echo "-> Payment Mode <br><br>";
+        print_r($totalGst); echo "-> Total Gst <br><br>";
+        print_r($amount); echo "-> Amount <br><br>";
+        print_r($purchaseId); echo "-> Purchase Detail Id <br><br>";
+        
+exit;
+        //============ EOF CHECKING ===========
+
+
+
         $addStockIn  = FALSE;
         if (isset($_POST['stock-in'])) {
             
-            $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
+            // $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
         } // stock-in request end
 
         $updateStockIn = FALSE;
         if (isset($_POST['update'])) {
             
-            $updateStockIn = $StockIn->updateStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
+            // $updateStockIn = $StockIn->updateStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
         } // stock-in request end
-
 
 
         if ($addStockIn == TRUE || $updateStockIn == TRUE) {
@@ -84,6 +105,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $amount         = array_shift($_POST['billAmount']);
                 $looselyPrice   = '';
 
+
+
                 
                 //$looselyPrice = '';
                     
@@ -97,31 +120,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                 if (isset($_POST['stock-in'])) {
 
-                    $addStockInDetails = $StockInDetails->addStockInDetails($productId, $distributorBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, '');
+                    // $addStockInDetails = $StockInDetails->addStockInDetails($productId, $distributorBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, '');
                     // $addStockInDetails = TRUE;
-                    if ($addStockInDetails) {
+                    // if ($addStockInDetails == true) {
 
-                        // ============ CURRENT STOCK ============ 
-                        $addCurrentStock = $CurrentStock->addCurrentStock($productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty+$freeQty, $mrp, $ptr, $gst, $addedBy);
+                    //     // ============ CURRENT STOCK ============ 
+                    //     // $addCurrentStock = $CurrentStock->addCurrentStock($productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty+$freeQty, $mrp, $ptr, $gst, $addedBy);
                         
-                    }
+                    // }
                 } // end stock-in request
 
                 if (isset($_POST['update'])) {
 
-                    $deleteExists    = $StockInDetails->stockInDelete($distributorBill, $batchNo);
-                    $delCurrentStock = $CurrentStock->deleteCurrentStock($productId, $batchNo);
+                    // $deleteExists    = $StockInDetails->stockInDelete($distributorBill, $batchNo);
+                    // $delCurrentStock = $CurrentStock->deleteCurrentStock($productId, $batchNo);
                     // echo var_dump($delCurrentStock);
-                    if ($deleteExists == TRUE && $delCurrentStock == TRUE) {
+                    // if ($deleteExists == TRUE && $delCurrentStock == TRUE) {
                         
-                        $addStockInDetails = $StockInDetails->addStockInDetails($productId, $distributorBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, '');
+                    //     $addStockInDetails = $StockInDetails->addStockInDetails($productId, $distributorBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, '');
 
-                        // $addStockInDetails = TRUE;
-                        if ($addStockInDetails) {
-                            // ============ CURRENT STOCK ============ 
-                            $addCurrentStock = $CurrentStock->addCurrentStock($productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty+$freeQty, $mrp, $ptr, $gst, $addedBy);
-                        }
-                    }
+                    //     // $addStockInDetails = TRUE;
+                    //     if ($addStockInDetails) {
+                    //         // ============ CURRENT STOCK ============ 
+                    //         $addCurrentStock = $CurrentStock->addCurrentStock($productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty+$freeQty, $mrp, $ptr, $gst, $addedBy);
+                    //     }
+                    // }
                 } // end update request
                 
             }//eof foreach

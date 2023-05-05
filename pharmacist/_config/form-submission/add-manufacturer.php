@@ -31,7 +31,7 @@ if(isset($_POST['add-manufacturer'])){
 
 
     $manufacturerDsc = $_POST['manufacturer-dsc'];
-    $manufacturerDsc = str_replace(">", "&gt", $manufacturerDsc);
+    $manufacturerDsc = str_replace("<", "&lt", $manufacturerDsc);
     $manufacturerDsc = str_replace(">", "&gt", $manufacturerDsc);
     
     $manufacturerDsc = str_replace("'", "&#39", $manufacturerDsc);

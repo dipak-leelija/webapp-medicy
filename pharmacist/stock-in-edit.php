@@ -51,14 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         // print_r($details); echo "<br><br>";
         // echo count($details); echo "<br><br>";
         $distData = $Distributor->showDistributorById($stockIn[0]['distributor_id']);
-        // print_r($distData);
+        print_r($distData); echo "<br><br>";
         $distName = $distData[0]['name'];
 
         $arrayCheckId = array();
         foreach($details as $stockInId){
             array_push($arrayCheckId,$stockInId['id']);
         }
-        // print_r($arrayCheckId); echo "<br><br>";
+        print_r($arrayCheckId); echo "<br><br>";
         // echo count($arrayCheckId);
     }
 }
@@ -217,18 +217,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="col-md-6">
                                     <div class="row mt-4 mb-2">
 
-                                        <div class="col-md-6" hidden>
+                                        <div class="col-md-6" >
                                             <label class="mb-0" for="purchaseDetailId">Purchase Id</label>
-                                            <input type="text" class="upr-inp" id="purchase-details-id" value="" readonly>
+                                            <input type="text" class="upr-inp" name="purchase-details-id" id="purchase-details-id" value="" readonly>
                                         </div>
-                                        <div class="col-md-6" hidden>
-                                            <label class="mb-0" for="productId">Product Id</label>
-                                            <input type="text" class="upr-inp" id="productId" value="" readonly>
-                                        </div>
-                                        <div class="col-md-6" hidden>
+                                        <!-- <div class="col-md-6" >
+                                            <label class="mb-0" for="product-Id">Product Id</label>
+                                            <input type="text" class="upr-inp" id="product-Id" value="" readonly>
+                                        </div> -->
+                                        <!-- <div class="col-md-6" >
                                             <label class="mb-0" for="DistributorBillNo">Bill No</label>
                                             <input type="text" class="upr-inp" id="dist-bill-no" value="" readonly>
-                                        </div>
+                                        </div> -->
 
                                         <div class="col-md-12 ">
                                             <!-- <label for="product-name" class="mb-0">Product Name</label> -->
@@ -301,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <input class="year " type="number" id="exp-year" onkeyup="setYear(this);">
                                             </div>
                                         </div>
-                                        <div class="d-none col-md-4 mt-2">
+                                        <div class="col-md-4 mt-2">
                                             <label class="mb-0" for="product-id">Product Id</label>
                                             <input class="upr-inp" id="product-id" name="product-id" readonly>
                                         </div>
@@ -330,12 +330,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <div class="col-sm-6 col-md-3 mt-2">
                                             <label class="mb-0" for="qty">Quantity</label>
                                             <input type="number" class="upr-inp" name="qty" id="qty" onkeyup="getBillAmount()">
+                                            <input type="number" class="upr-inp" name="Cqty" id="Cqty" hidden>
+                                            <input type="number" class="upr-inp" name="checkQTY" id="checkQTY" hidden>
+                                            <input type="number" class="upr-inp" name="tItemsQTY" id="tItemsQTY" hidden>
                                         </div>
                                         <div class="col-sm-6 col-md-3 mt-2">
                                             <label class="mb-0" for="free-qty">Free</label>
-                                            <input type="number" class="upr-inp" name="free-qty" id="free-qty">
+                                            <input type="number" class="upr-inp" name="free-qty" id="free-qty" onkeyup="editQTY()">
+                                            <input type="number" class="upr-inp" name="CFreeQty" id="CFreeQty" hidden>
+                                            <input type="number" class="upr-inp" name="checkFQTY" id="checkFQTY" hidden>
+                                            <input type="number" class="upr-inp" name="updatedQTY" id="updatedQTY" hidden>
                                         </div>
-
+                                        
 
                                         <div class="col-sm-6 col-md-6 mt-2">
                                             <label class="mb-0" for="packaging-type">Packaging Type</label>
@@ -408,7 +414,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col"></th>
-                                                <th scope="col" hidden><input type="number" 
+                                                <th scope="col" ><input type="number" 
                                                     value="<?php if ($edit == TRUE) {
                                                                 echo count($details);
                                                                 } ?>" 
@@ -417,7 +423,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp.</th>
-                                                <th scope="col" hidden>Power</th>
+                                                <th scope="col">Power</th>
                                                 <th scope="col">Unit</th>
                                                 <th scope="col">Qty.</th>
                                                 <th scope="col">Free</th>
@@ -448,12 +454,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                             </i>
                                                         </td>
 
-                                                        <td style="font-size:.8rem ; padding-top:1.2rem" scope="row" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" hidden><?php echo $slno ?>
+                                                        <td style="font-size:.8rem ; padding-top:1.2rem" scope="row" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)"><?php echo $slno ?>
                                                         </td>
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)">
                                                             <input class="col table-data w-12r" type="text" name="productNm[]" value="<?php echo $product[0]['name'] ?>" readonly style="text-align: start;">
-                                                            <input type="text" name="productId[]" value="<?php echo $detail['product_id'] ?>" readonly hidden>
+                                                            <input type="text" name="productId[]" value="<?php echo $detail['product_id'] ?>" readonly >
                                                         </td>
 
                                                         <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)">
@@ -464,7 +470,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                             <input class="col table-data w-12r" type="text" name="expDate[]" value="<?php echo $detail['exp_date'] ?>" readonly>
                                                         </td>
 
-                                                        <td class="p-0 pt-3" hidden>
+                                                        <td class="p-0 pt-3" >
                                                             <input class="col table-data w-12r" type="text" name="power[]" value="" readonly>
                                                         </td>
 
@@ -500,7 +506,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)">
                                                             <input class="col table-data w-12r" type="text" name="gst[]" value="<?php echo $detail['gst'] ?>" readonly>
-                                                            <input type="text" name="gstPerItem[]" value="<?php echo $detail['gst_amount'] ?>" hidden>
+                                                            <input type="text" name="gstPerItem[]" value="<?php echo $detail['gst_amount'] ?>" >
                                                         </td>
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)">
@@ -524,7 +530,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                                                                                                         if ($edit == TRUE) {
                                                                                                                                             echo $stockIn[0]['distributor_id'];
                                                                                                                                         }
-                                                                                                                                        ?>" readonly hidden>
+                                                                                                                                        ?>" readonly >
                                             <input class="summary-inp" name="dist-name" id="dist-name" type="text" value="<?php echo $distName ?>" readonly>
                                         </p>
                                     </div>
@@ -570,7 +576,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     <div class="col-sm-6 col-md-2 d-flex justify-content-start">
                                         <p>Qty :
                                             <input class="summary-inp" name="total-qty" id="qty-val" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                            echo $stockIn[0]['total_qty'];
+                                                                                                                                                              $tQty =  $stockIn[0]['total_qty'];
+                                                echo $tQty;
                                                                                                                         } ?>" readonly>
                                         </p>
                                     </div>
@@ -602,7 +609,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 </div>
 
-                                <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($arrayCheckId) ?>" hidden>
+                                <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($arrayCheckId) ?>">
                             </div>
 
                         </form>
