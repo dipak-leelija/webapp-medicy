@@ -9,9 +9,9 @@ class StockInDetails extends DatabaseConnection{
 
 
 
-    function addStockInDetails($productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy){
+    function addStockInDetails($productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy){
 
-        $insert = "INSERT INTO `stock_in_details` (`product_id`, `distributor_bill`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`,	`discount`,	`base`,	`gst`, `gst_amount`, `margin`, `amount`, `added_by`) VALUES ('$productId', '$distBill', '$batchNo', '$expDate', '$weightage', '$unit', '$qty', '$freeQty', '$looselyCount', '$mrp', '$ptr', '$discount', '$base', '$gst', '$gstPerItem', '$margin', '$amount', '$addedBy')";
+        $insert = "INSERT INTO `stock_in_details` (`product_id`, `distributor_bill`, `batch_no`,`mfd_date`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`,	`discount`,	`base`,	`gst`, `gst_amount`, `margin`, `amount`, `added_by`) VALUES ('$productId', '$distBill', '$batchNo','$mfdDate','$expDate', '$weightage', '$unit', '$qty', '$freeQty', '$looselyCount', '$mrp', '$ptr', '$discount', '$base', '$gst', '$gstPerItem', '$margin', '$amount', '$addedBy')";
         // echo $insert.$this->conn->error;exit;
         $addStockInQuery = $this->conn->query($insert);
         // echo var_dump($addStockInQuery);exit;
@@ -112,6 +112,16 @@ class StockInDetails extends DatabaseConnection{
     function stokInDetials($productId, $billNo, $batchNo){
         $data = array();
         $check = " SELECT * FROM `stock_in_details` WHERE `stock_in_details`.`product_id` = '$productId' AND `stock_in_details`.`batch_no` = '$batchNo' AND `stock_in_details`.`distributor_bill` ='$billNo' ";
+        $res = $this->conn->query($check);
+        while ($result = $res->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }
+
+    function stokInDetialsbyBillNo($billNo){
+        $data = array();
+        $check = " SELECT * FROM `stock_in_details` WHERE `stock_in_details`.`distributor_bill` ='$billNo' ";
         $res = $this->conn->query($check);
         while ($result = $res->fetch_array()) {
             $data[] = $result;

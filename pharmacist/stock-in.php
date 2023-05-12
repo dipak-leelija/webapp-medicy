@@ -49,6 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 }
  
+$todayYr = date("y");
+// echo $todayYr;
 ?>
 
 <!DOCTYPE html>
@@ -230,13 +232,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <input type="text" class="upr-inp" name="batch-no" id="batch-no">
                                         </div>
                                         <div class="col-sm-3 col-md-4 mt-2">
-                                            <label class="mb-0 mt-1" for="exp-date">MFD</label>
+                                            <label class="mb-0 mt-1" for="mfd-date">MFD</label>
                                             <div class="d-flex date-field">
-                                                <input class="month " type="number" id="exp-month"
-                                                    onkeyup="setMonth(this);">
+                                                <input class="month " type="number" id="mfd-month"
+                                                    onkeyup="setMfdMonth(this);">
                                                 <span class="date-divider">&#47;</span>
-                                                <input class="year " type="number" id="exp-year"
-                                                    onkeyup="setYear(this);">
+                                                <input class="year " type="number" id="mfd-year"
+                                                    onkeyup="setMfdYear(this);">
+                                                <input type="text" class="upr-inp" name="check-year" id="check-year" value="<?php echo $todayYr ?>" hidden>
                                             </div>
                                         </div>
                                         <div class="col-sm-3 col-md-4 mt-2">
@@ -361,7 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         style="display:none"></th>
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
-                                                <th scope="col" hidden>MFD.</th>
+                                                <th scope="col">MFD.</th>
                                                 <th scope="col">Exp.</th>
                                                 <th scope="col">Power</th>
                                                 <th scope="col">Unit</th>
@@ -386,16 +389,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="row mb-3">
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Distributor :
-                                            <input class="summary-inp w-60" name="distributor-id" id="distributor-name"
-                                                type="text"
-                                                value=""
-                                                readonly>
+                                            <input class="summary-inp w-60" name="distributor-name" id="distributor-name" type="text" value="" value1="" readonly>
 
-                                            <!-- <input  class="summary-inp"
-                                                    name="distributor-id"
-                                                    id="distributor-name"
-                                                    type="text"
-                                                    readonly> -->
+                                            <!-- <input  class="summary-inp w-60" name="distributor-id"
+                                                    id="distributor-id" value="" type="text"
+                                                    readonly style="background-color: white;"> -->
                                         </p>
                                     </div>
                                     <div class="col-md-3 d-flex justify-content-start">

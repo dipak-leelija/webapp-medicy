@@ -8,9 +8,6 @@ const customClick = (id, value1, value2, value3) => {
     
     var row = document.getElementById(id);
 
-    // console.log(value1);
-    // console.log(row);
-
     $.ajax({
         url: "ajax/stokInEditAll.ajax.php",
         type: "POST",
@@ -25,26 +22,22 @@ const customClick = (id, value1, value2, value3) => {
 
             var dataObject = JSON.parse(data);
 
-            var purchaseDetails = dataObject.expDate;
-            // alert(purchaseDetails);
+            var purchaseDetailsMfdDate = dataObject.mfdDate;
+            var mfdMonth = purchaseDetailsMfdDate.slice(0, 2);
+            var mfdYear = purchaseDetailsMfdDate.slice(3, 5);
 
-            // var purchaseDetails = dataObject.productId;
-            // var purchaseDetails = dataObject.billNo;
-            // var purchaseDetails = dataObject.batchNo;
-
-            var purchaseDetails = dataObject.expDate;
-            var expMonth = purchaseDetails.slice(0, 2);
-            var expYear = purchaseDetails.slice(3, 5);
-            
+            var purchaseDetailsExpDate = dataObject.expDate;
+            var expMonth = purchaseDetailsExpDate.slice(0, 2);
+            var expYear = purchaseDetailsExpDate.slice(3, 5);
             var manuf = dataObject.manufacturer;
-            console.log(manuf);
-
+           
             manuf = manuf.replace(/&#39/g,"'");
             manuf = manuf.replace(/&lt/g,"<");
             manuf = manuf.replace(/&gt/g,">");
+
             // //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
 
-            document.getElementById("purchase-details-id").value = dataObject.purchaseId;
+            document.getElementById("purchase-id").value = dataObject.purchaseId;
             document.getElementById("product-id").value = dataObject.productId;
             // document.getElementById("dist-bill-no").value = dataObject.billNo;
             document.getElementById("batch-no").value = dataObject.batchNo;
@@ -56,6 +49,9 @@ const customClick = (id, value1, value2, value3) => {
             document.getElementById("unit").value = dataObject.unit;
             document.getElementById("packaging-in").value = dataObject.packageType;
             document.getElementById("medicine-power").value = dataObject.power;
+
+            document.getElementById("MFD-month").value = mfdMonth;
+            document.getElementById("MFD-year").value = mfdYear;
 
             document.getElementById("exp-month").value = expMonth;
             document.getElementById("exp-year").value = expYear;
@@ -71,11 +67,15 @@ const customClick = (id, value1, value2, value3) => {
             document.getElementById("gst").value = dataObject.gst;
             document.getElementById('base').value = dataObject.baseAmount;
             document.getElementById("bill-amount").value = dataObject.amnt;
+            document.getElementById("temp-bill-amount").value = dataObject.amnt;
 
             document.getElementById("Cqty").value = dataObject.qty;
             document.getElementById("CFreeQty").value = dataObject.FreeQty;
-            // document.getElementById("return-free-qty").value = returnFreeqty;
+            var check = dataObject.GstAmount;
+
+            document.getElementById("prevGstAmount").value = dataObject.GstAmount;
             // document.getElementById("refund-amount").value = refundAmunt;
+            console.log(check);
 
             //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
             row.parentNode.removeChild(row);
@@ -84,15 +84,12 @@ const customClick = (id, value1, value2, value3) => {
     return false;
 }
 
-
-
 const getDtls = (value) => {
     
-    console.log(value);
+    // console.log(value);
     // alert(value);
     var xmlhttp = new XMLHttpRequest();
     if (value != "") {
-
 
         //==================== Product Id ====================
         manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + value;
@@ -245,66 +242,53 @@ const getBillAmount = () => {
     // let mrp = document.getElementById("mrp").value;
     let ptr = document.getElementById("ptr").value;
 
-    // if (mrp >= ptr) {
-
     let qty = document.getElementById("qty").value;
     // let freeQty    = document.getElementById("free-qty").value;
     let discount = document.getElementById("discount").value;
     let base = document.getElementById("base");
     let gst = document.getElementById("gst").value;
     let billAmount = document.getElementById("bill-amount");
-    // alert(ptr)
-    // console.log(gst);
+    
     if (ptr == "") {
         billAmount.value = "";
         base.value = "";
 
     }
     if (qty != "" && ptr != "" && gst != "") {
-        subAamount = ptr * qty;
-        // console.log(subAamount);
-
+        let subAamount = ptr * qty;
+        
         let baseAmount = subAamount / qty;
-        // console.log(baseAmount);
-
+        
         base.value = parseFloat(baseAmount).toFixed(2);
 
         let totalGst = (gst / 100 * subAamount);
         let amount = subAamount + totalGst;
-        // console.log(amount);
-        // console.log(amount - totalGst);
-
+        
         billAmount.value = parseFloat(amount).toFixed(2);
-
     }
+    
     if (discount != "") {
         if (qty != "" && ptr != "" && gst != "") {
 
             let subAamount = ptr * qty;
-            // console.log(subAamount);
 
             let afterDiscount = subAamount - (discount / 100 * subAamount);
-            // console.log(afterDiscount);
 
             let baseAmount = afterDiscount / qty;
-            // console.log(baseAmount);
 
             base.value = parseFloat(baseAmount).toFixed(2);
 
             let amount = afterDiscount + (gst / 100 * afterDiscount);
-            // console.log(amount);
 
             billAmount.value = parseFloat(amount).toFixed(2);
-
         }
     }
-    // }
-    // else{
-    //     swal(mrp);
-    // }
+   
+    ///======== QUANTITY CALCULETION AFTER EDIT UPDATE ============
 
     var crntQTY = document.getElementById("qty").value;
     var prevQTY = document.getElementById("Cqty").value;
+
     if(crntQTY != prevQTY ){
         var updateQTY = (crntQTY - prevQTY);
     }else if(crntQTY == prevQTY){
@@ -312,12 +296,10 @@ const getBillAmount = () => {
     }else{
         var updateQTY = document.getElementById("qty").value;
     }
-    console.log(updateQTY);
 
     var crntFreeQTY = document.getElementById("free-qty").value;
     var prevFreeQTY = document.getElementById("CFreeQty").value;
-    // console.log(crntFreeQTY);
-    // console.log(prevFreeQTY);
+    
     if(crntFreeQTY != prevFreeQTY){
         var updateFreeQTY = (crntFreeQTY-prevFreeQTY);
     }else if(crntFreeQTY == prevFreeQTY){
@@ -329,20 +311,41 @@ const getBillAmount = () => {
     document.getElementById("checkQTY").value = updateQTY;
    
     var totalCount = Number(updateFreeQTY) +  Number(updateQTY);
-
-    console.log(totalCount);
+    // console.log(totalCount);
     document.getElementById("updatedQTY").value = totalCount;
 
     var totalItemsQty = document.getElementById("qty-val").value;
     totalItemsQty = Number(totalItemsQty) + Number(totalCount);
     document.getElementById("tItemsQTY").value = totalItemsQty;
 
-    console.log(totalItemsQty);
+
+    //=================== GST CALCULETION AFTER EDIT UPDATE =============================
+
+    let qtys = document.getElementById("qty").value;
+    let prvGstamt = document.getElementById("prevGstAmount").value;
+    let updtBasePrice = document.getElementById("base").value;
+
+    console.log("QUANTITY : ",qtys);
+    console.log("PREV GST AMOUNT : ",prvGstamt);
+    console.log("BASE PRICE : ",updtBasePrice);
+
+    if(prvGstamt != null){
+        var updtGstAmt = (Number(qtys) * Number(updtBasePrice)) * (5/100);
+    }else{
+        var updtGstAmt = 0;
+    }
+
+    console.log("Update GST amount : ",updtGstAmt);
+    // console.log("PREV GST AMOUNT : ",prvGstamt);
+    let crntGst = updtGstAmt;
+    document.getElementById("crntGstAmnt").value = crntGst;
+
 } //eof getBillAmount function
 
 const editQTY = () =>{
     var crntQTY = document.getElementById("qty").value;
     var prevQTY = document.getElementById("Cqty").value;
+
     if(crntQTY != prevQTY ){
         var updateQTY = (crntQTY-prevQTY);
     }else if(crntQTY == prevQTY){
@@ -354,8 +357,7 @@ const editQTY = () =>{
 
     var crntFreeQTY = document.getElementById("free-qty").value;
     var prevFreeQTY = document.getElementById("CFreeQty").value;
-    // console.log(crntFreeQTY);
-    // console.log(prevFreeQTY);
+    
     if(crntFreeQTY != prevFreeQTY ){
         var updateFreeQTY = (crntFreeQTY-prevFreeQTY);
     }else if(crntFreeQTY == prevFreeQTY){
@@ -369,13 +371,11 @@ const editQTY = () =>{
     var totalCount = Number(updateFreeQTY) +  Number(updateQTY);
 
     document.getElementById("updatedQTY").value = totalCount;
-    console.log(totalCount);
 
     var totalItemsQty = document.getElementById("qty-val").value;
     totalItemsQty = Number(totalItemsQty) + Number(totalCount);
     document.getElementById("tItemsQTY").value = totalItemsQty;
 
-    console.log(totalItemsQty);
 }
 // ##################################################################################
 
@@ -414,39 +414,30 @@ const addData = () => {
     var gst = document.getElementById("gst");
     var base = document.getElementById("base");
     var billAmount = document.getElementById("bill-amount");
-    var purchaseId = document.getElementById("purchase-details-id");
-
-    console.log(purchaseId.value);
-    // distId
-    // var packOf = (``);
-    // alert(packOf);
-
-    // console.log(distId.value);
-    // console.log(distBillid.value);
-    // console.log(distBill);
-    // console.log(billDate.value);
-    // console.log(dueDate.value);
-    // console.log(paymentMode.value);
-    // console.log(productName.value);
-    // console.log(productId.value);
-    // console.log(batch.value);
-    // console.log(batchNo);
-    // console.log(manufId.value);
-    // console.log(medicinePower.value);
-    // console.log(expDate.value);
-    // console.log(weightage.value);
-    // console.log(unit.value);
-    // console.log(packagingIn.value);
-    // console.log(mrp.value);
-    // console.log(ptr.value);
-    // console.log(qty.value);
-    // console.log(freeQty.value);
-    // console.log(discount.value);
-    // console.log(gst.value);
-    // console.log(base.value);
-    // console.log(billAmount.value);
+    var prevAmount = document.getElementById("temp-bill-amount");
+    var purchaseId = document.getElementById("purchase-id"); 
+    var prevGstAmount = document.getElementById("prevGstAmount");
+    var crntGstAmount = document.getElementById("crntGstAmnt");
     
+    if(purchaseId.value != null){
+        var addAmount = -(Number(prevAmount.value) - Number(billAmount.value));
+        // console.log(addAmount);
+    }else{
+        var addAmount = billAmount.value;
+        // console.log(addAmount);
+    }
 
+
+    var GstDiff = -(prevGstAmount.value - crntGstAmount.value);
+    console.log("GST DIFF : ",GstDiff);
+
+
+    if(prevGstAmount == null){
+        var GstPerItem = (Number(qty) * Number(base) * Number(gst)/100);
+    }else{
+        var GstPerItem =  GstDiff;
+    }
+    
 
     if (distId.value == "") {
         swal("Blank Field", "Please Selet Distributor First!", "error")
@@ -604,8 +595,7 @@ const addData = () => {
                                                                                             parseFloat(
                                                                                                 net) +
                                                                                             parseFloat(
-                                                                                                billAmount
-                                                                                                    .value
+                                                                                                addAmount
                                                                                             );
                                                                                         // console.log(netAmount);
                                                                                         // console.log("Net Value");
@@ -621,13 +611,7 @@ const addData = () => {
                                                                                                 100 *
                                                                                                 total);
 
-                                                                                        let gstPerItem = (
-                                                                                            totalWithDisc +
-                                                                                            (gst.value /
-                                                                                                100 *
-                                                                                                totalWithDisc
-                                                                                            )) -
-                                                                                            totalWithDisc;
+                                                                                        let gstPerItem = GstPerItem;
                                                                                         // let gstPerItem = withGst - total;
                                                                                         let gstVal =
                                                                                             document
@@ -668,9 +652,9 @@ const addData = () => {
                                                                                         jQuery("#dataBody")
                                                                                             .append(`<tr id="table-row-${slno}">
             <td style="color: red; padding-top:1.2rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
-            <td style="font-size:.8rem ; padding-top:1.2rem"scope="row" >${slno}</td>
-            <td class="pt-3"hidden>
-                <input class="table-data w-12r" type="text" name="purchaseDetailsId[]" value="${purchaseId.value}" readonly>
+            <td style="font-size:.8rem ; padding-top:1.2rem"scope="row" hidden>${slno}</td>
+            <td class="pt-3" hidden>
+                <input class="table-data w-12r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
             </td>
             <td class="pt-3">
                 <input class="table-data w-12r" type="text" value="${productName.value}" readonly>
@@ -678,7 +662,10 @@ const addData = () => {
             </td>
             <td class=" pt-3" >
                 <input class="table-data w-5r" type="text" name="batchNo[]" value="${batchNo}" readonly>
-                </td>
+            </td>
+            <td class=" pt-3">
+                <input class="table-data w-3r" type="text" name="mfdDate[]" value="${mfdDate}" readonly>
+            </td>
             <td class=" pt-3">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly>
             </td>
@@ -728,8 +715,12 @@ const addData = () => {
     document.getElementById("packaging-in").value = "";
     document.getElementById("medicine-power").value = "";
     document.getElementById("batch-no").value = "";
+
+    document.getElementById("MFD-month").value = "";
+    document.getElementById("MFD-year").value = "";
     document.getElementById("exp-month").value = "";
     document.getElementById("exp-year").value = "";
+
     document.getElementById("mrp").value = "";
     document.getElementById("ptr").value = "";
     document.getElementById("qty").value = "";
@@ -746,6 +737,12 @@ const addData = () => {
     document.getElementById("CFreeQty").value = "";
     document.getElementById("checkFQTY").value = "";
     document.getElementById("updatedQTY").value = "";
+    document.getElementById("temp-bill-amount").value = "";
+    document.getElementById("prevGstAmount").value = "";
+    document.getElementById("crntGstAmnt").value = "";
+
+
+    // document.getElementById("product-detail").reset();
 
                                                                                         document
                                                                                             .getElementById(

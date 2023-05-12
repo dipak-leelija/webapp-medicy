@@ -30,6 +30,7 @@ if(isset($_POST['blNo'])){
         $productId = $purchase['product_id']; 
         $distBillNo = $purchase['distributor_bill'];
         $prodBatchNo = $purchase['batch_no'];
+        $prodMfdDate = $purchase['mfd_date'];
         $prodExpDate = $purchase['exp_date'];
         
         $prodWeightage = $purchase['weightage'];
@@ -77,6 +78,7 @@ if(isset($_POST['blNo'])){
         "manufacturer"  => $manufName,
         "billNo"        => $distBillNo,
         "batchNo"       => $prodBatchNo,
+        "mfdDate"       => $prodMfdDate,
         "expDate"       => $prodExpDate,
         "weightage"     => $prodWeightage,
         "unit"          => $prodUnit,

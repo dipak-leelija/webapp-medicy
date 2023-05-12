@@ -78,7 +78,7 @@ const getDtls = (value) => {
 
         //==================== Product Id ====================
         document.getElementById("product-id").value = value;
-        
+
         // idUrl = `ajax/product.getName.ajax.php?Pid=${value}`
         // // alert(unitUrl);
         // xmlhttp.open("GET", idUrl, false);
@@ -165,7 +165,7 @@ const getBillAmount = () => {
         document.getElementById("ptr").value = "";
         document.getElementById("bill-amount").value = "";
         document.getElementById("ptr").value = "";
-        
+
     }
 
     let qty = document.getElementById("qty").value;
@@ -234,9 +234,10 @@ const getBillAmount = () => {
 //geeting bills by clicking on add button
 const addData = () => {
     var distId = document.getElementById("distributor-id");
+    // console.log(distId.value1);
     var distBillid = document.getElementById("distributor-bill");
     var distBill = distBillid.value.toUpperCase();
-    
+
     var billDate = document.getElementById("bill-date");
     var dueDate = document.getElementById("due-date");
     var paymentMode = document.getElementById("payment-mode");
@@ -250,7 +251,11 @@ const addData = () => {
     var expMonth = document.getElementById("exp-month");
     var expYear = document.getElementById("exp-year");
     var expDate = `${expMonth.value}/${expYear.value}`;
-    expDate = expDate.toString()
+    expDate = expDate.toString();
+    var mfdMonth = document.getElementById("mfd-month");
+    var mfdYear = document.getElementById("mfd-year");
+    var mfdDate = `${mfdMonth.value}/${mfdYear.value}`;
+    mfdDate = mfdDate.toString()
     // var producDsc       = document.getElementById("product-descreption");
     var weightage = document.getElementById("weightage");
     var unit = document.getElementById("unit");
@@ -263,17 +268,6 @@ const addData = () => {
     var gst = document.getElementById("gst");
     var base = document.getElementById("base");
     var billAmount = document.getElementById("bill-amount");
-
-
-    console.log(distBill);
-    console.log(billDate.value);
-    console.log(dueDate.value);
-    // console.log(distBill);
-    // console.log(distBill);
-    // console.log(distBill);
-    // distId
-    // var packOf = (``);
-    // alert(packOf);
 
     if (distId.value == "") {
         swal("Blank Field", "Please Selet Distributor First!", "error")
@@ -321,179 +315,185 @@ const addData = () => {
                                 if (medicinePower.value == "") {
                                     medicinePower.focus();
                                 } else {
-                                    if (expMonth.value == "") {
-                                        swal("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
+                                    if (mfdMonth.value == "") {
+                                        swal("Blank field", "Please Enter Manufacturing Date as MM/YY", "error")
                                             .then((value) => {
-                                                expMonth.focus();
+                                                mfdMonth.focus();
                                             });
                                     } else {
-                                        if (weightage.value == "") {
-                                            weightage.focus();
+                                        if (expMonth.value == "") {
+                                            swal("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
+                                                .then((value) => {
+                                                    expMonth.focus();
+                                                });
                                         } else {
-                                            if (unit.value == "") {
-                                                unit.focus();
+                                            if (weightage.value == "") {
+                                                weightage.focus();
                                             } else {
-                                                if (packagingIn.value == "") {
-                                                    packagingIn.focus();
+                                                if (unit.value == "") {
+                                                    unit.focus();
                                                 } else {
-                                                    if (mrp.value == "") {
-                                                        mrp.focus();
+                                                    if (packagingIn.value == "") {
+                                                        packagingIn.focus();
                                                     } else {
-                                                        if (ptr.value == "") {
-                                                            swal("Blank Field",
-                                                                "Please enter PTR value",
-                                                                "error")
-                                                                .then((value) => {
-                                                                    ptr.focus();
-                                                                });
+                                                        if (mrp.value == "") {
+                                                            mrp.focus();
                                                         } else {
-                                                            var Ptr = parseFloat(ptr.value);
-                                                            var Mrp = parseFloat(mrp.value);
-                                                            if (Ptr > Mrp) {
+                                                            if (ptr.value == "") {
                                                                 swal("Blank Field",
-                                                                    "Please check PTR value",
+                                                                    "Please enter PTR value",
                                                                     "error")
                                                                     .then((value) => {
                                                                         ptr.focus();
                                                                     });
                                                             } else {
-                                                                if (qty.value == "" || qty.value == 0) {
+                                                                var Ptr = parseFloat(ptr.value);
+                                                                var Mrp = parseFloat(mrp.value);
+                                                                if (Ptr > Mrp) {
                                                                     swal("Blank Field",
-                                                                        "Please Enter Quantity",
+                                                                        "Please check PTR value",
                                                                         "error")
                                                                         .then((value) => {
-                                                                            qty.focus();
+                                                                            ptr.focus();
                                                                         });
                                                                 } else {
-                                                                    if (freeQty.value == "") {
-                                                                        swal("Qantity Value Zero",
-                                                                            "Qantity Cannot be 0",
+                                                                    if (qty.value == "" || qty.value == 0) {
+                                                                        swal("Blank Field",
+                                                                            "Please Enter Quantity",
                                                                             "error")
                                                                             .then((value) => {
-                                                                                freeQty.focus();
+                                                                                qty.focus();
                                                                             });
                                                                     } else {
-                                                                        if (discount.value == "") {
-                                                                            swal("Blank Field",
-                                                                                "Please Enter Discount at least 0",
+                                                                        if (freeQty.value == "") {
+                                                                            swal("Qantity Value Zero",
+                                                                                "Qantity Cannot be 0",
                                                                                 "error")
                                                                                 .then((value) => {
-                                                                                    discount.focus();
+                                                                                    freeQty.focus();
                                                                                 });
                                                                         } else {
-                                                                            if (gst.value == "") {
-                                                                                gst.focus();
+                                                                            if (discount.value == "") {
+                                                                                swal("Blank Field",
+                                                                                    "Please Enter Discount at least 0",
+                                                                                    "error")
+                                                                                    .then((value) => {
+                                                                                        discount.focus();
+                                                                                    });
                                                                             } else {
-                                                                                if (base.value == "") {
-                                                                                    base.focus();
+                                                                                if (gst.value == "") {
+                                                                                    gst.focus();
                                                                                 } else {
-                                                                                    if (billAmount.value ==
-                                                                                        "") {
-                                                                                        billAmount.focus();
+                                                                                    if (base.value == "") {
+                                                                                        base.focus();
                                                                                     } else {
-                                                                                        let slno = document
-                                                                                            .getElementById(
-                                                                                                "dynamic-id"
-                                                                                            )
-                                                                                            .value;
-                                                                                        slno++;
-                                                                                        document
-                                                                                            .getElementById(
-                                                                                                "dynamic-id"
-                                                                                            )
-                                                                                            .value = slno;
-
-                                                                                        var qtyVal =
+                                                                                        if (billAmount.value ==
+                                                                                            "") {
+                                                                                            billAmount.focus();
+                                                                                        } else {
+                                                                                            let slno = document
+                                                                                                .getElementById(
+                                                                                                    "dynamic-id"
+                                                                                                )
+                                                                                                .value;
+                                                                                            slno++;
                                                                                             document
                                                                                                 .getElementById(
-                                                                                                    "qty-val")
-                                                                                                .value;
-                                                                                        let itemQty =
-                                                                                            parseFloat(qty
-                                                                                                .value) +
-                                                                                            parseFloat(
-                                                                                                freeQty
-                                                                                                    .value);
-                                                                                        totalQty =
-                                                                                            parseFloat(
-                                                                                                qtyVal) +
-                                                                                            itemQty;
+                                                                                                    "dynamic-id"
+                                                                                                )
+                                                                                                .value = slno;
 
-                                                                                        // console.log(totalQty);
-
-                                                                                        var net = document
-                                                                                            .getElementById(
-                                                                                                "net-amount"
-                                                                                            )
-                                                                                            .value;
-                                                                                        //    console.log(net);
-                                                                                        netAmount =
-                                                                                            parseFloat(
-                                                                                                net) +
-                                                                                            parseFloat(
-                                                                                                billAmount
-                                                                                                    .value
-                                                                                            );
-                                                                                        // console.log(netAmount);
-                                                                                        // console.log("Net Value");
-
-
-                                                                                        let total = qty
-                                                                                            .value *
-                                                                                            ptr.value;
-                                                                                        let totalWithDisc =
-                                                                                            total - (
-                                                                                                discount
-                                                                                                    .value /
-                                                                                                100 *
-                                                                                                total);
-
-                                                                                        let gstPerItem = (
-                                                                                            totalWithDisc +
-                                                                                            (gst.value /
-                                                                                                100 *
-                                                                                                totalWithDisc
-                                                                                            )) -
-                                                                                            totalWithDisc;
-                                                                                        // let gstPerItem = withGst - total;
-                                                                                        let gstVal =
-                                                                                            document
-                                                                                                .getElementById(
-                                                                                                    "gst-val")
-                                                                                                .value;
-                                                                                        let onlyGst =
-                                                                                            parseFloat(
-                                                                                                gstVal) +
-                                                                                            gstPerItem;
-
-                                                                                        //////////////////////
-                                                                                        // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
-                                                                                        let totalMrp =
-                                                                                            parseFloat(mrp
-                                                                                                .value) * (
-                                                                                                parseFloat(
-                                                                                                    qty
-                                                                                                        .value
-                                                                                                ) +
+                                                                                            var qtyVal =
+                                                                                                document
+                                                                                                    .getElementById(
+                                                                                                        "qty-val")
+                                                                                                    .value;
+                                                                                            let itemQty =
+                                                                                                parseFloat(qty
+                                                                                                    .value) +
                                                                                                 parseFloat(
                                                                                                     freeQty
-                                                                                                        .value)
-                                                                                            );
-                                                                                        // console.log(totalMrp);
-                                                                                        let margin =
-                                                                                            totalMrp -
-                                                                                            billAmount
-                                                                                                .value;
-                                                                                        // console.log(margin);
-                                                                                        let marginP = (
-                                                                                            margin /
-                                                                                            totalMrp) *
-                                                                                            100;
-                                                                                        // console.log(marginP);
-                                                                                        // let profit
+                                                                                                        .value);
+                                                                                            totalQty =
+                                                                                                parseFloat(
+                                                                                                    qtyVal) +
+                                                                                                itemQty;
 
-                                                                                        jQuery("#dataBody")
-                                                                                            .append(`<tr id="table-row-${slno}">
+                                                                                            // console.log(totalQty);
+
+                                                                                            var net = document
+                                                                                                .getElementById(
+                                                                                                    "net-amount"
+                                                                                                )
+                                                                                                .value;
+                                                                                            //    console.log(net);
+                                                                                            netAmount =
+                                                                                                parseFloat(
+                                                                                                    net) +
+                                                                                                parseFloat(
+                                                                                                    billAmount
+                                                                                                        .value
+                                                                                                );
+                                                                                            // console.log(netAmount);
+                                                                                            // console.log("Net Value");
+
+
+                                                                                            let total = qty
+                                                                                                .value *
+                                                                                                ptr.value;
+                                                                                            let totalWithDisc =
+                                                                                                total - (
+                                                                                                    discount
+                                                                                                        .value /
+                                                                                                    100 *
+                                                                                                    total);
+
+                                                                                            let gstPerItem = (
+                                                                                                totalWithDisc +
+                                                                                                (gst.value /
+                                                                                                    100 *
+                                                                                                    totalWithDisc
+                                                                                                )) -
+                                                                                                totalWithDisc;
+                                                                                            // let gstPerItem = withGst - total;
+                                                                                            let gstVal =
+                                                                                                document
+                                                                                                    .getElementById(
+                                                                                                        "gst-val")
+                                                                                                    .value;
+                                                                                            let onlyGst =
+                                                                                                parseFloat(
+                                                                                                    gstVal) +
+                                                                                                gstPerItem;
+
+                                                                                            //////////////////////
+                                                                                            // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
+                                                                                            let totalMrp =
+                                                                                                parseFloat(mrp
+                                                                                                    .value) * (
+                                                                                                    parseFloat(
+                                                                                                        qty
+                                                                                                            .value
+                                                                                                    ) +
+                                                                                                    parseFloat(
+                                                                                                        freeQty
+                                                                                                            .value)
+                                                                                                );
+                                                                                            // console.log(totalMrp);
+                                                                                            let margin =
+                                                                                                totalMrp -
+                                                                                                billAmount
+                                                                                                    .value;
+                                                                                            // console.log(margin);
+                                                                                            let marginP = (
+                                                                                                margin /
+                                                                                                totalMrp) *
+                                                                                                100;
+                                                                                            // console.log(marginP);
+                                                                                            // let profit
+
+                                                                                            jQuery("#dataBody")
+                                                                                                .append(`<tr id="table-row-${slno}">
             <td style="color: red; padding-top:1.2rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
             <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
             <td class="pt-3">
@@ -502,7 +502,10 @@ const addData = () => {
             </td>
             <td class=" pt-3" >
                 <input class="table-data w-5r" type="text" name="batchNo[]" value="${batchNo}" readonly>
-                </td>
+            </td>
+            <td class=" pt-3">
+                <input class="table-data w-3r" type="text" name="mfdDate[]" value="${mfdDate}" readonly>
+            </td>
             <td class=" pt-3">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly>
             </td>
@@ -544,110 +547,111 @@ const addData = () => {
         </tr>`);
 
 
-                                                                                        document.getElementById("product-name").value = "";
-                                                                                        document.getElementById("manufacturer-id").value = "";
-                                                                                        document.getElementById("manufacturer-name").value = "";
-                                                                                        document.getElementById("weightage").value = "";
-                                                                                        document.getElementById("unit").value = "";
-                                                                                        document.getElementById("packaging-in").value = "";
-                                                                                        document.getElementById("medicine-power").value = "";
-                                                                                        document.getElementById("batch-no").value = "";
-                                                                                        document.getElementById("exp-month").value = "";
-                                                                                        document.getElementById("exp-year").value = "";
-                                                                                        document.getElementById("mrp").value = "";
-                                                                                        document.getElementById("ptr").value = "";
-                                                                                        document.getElementById("qty").value = "";
-                                                                                        document.getElementById("free-qty").value = "";
-                                                                                        document.getElementById("packaging-type").value = "";
-                                                                                        document.getElementById("discount").value = "";
-                                                                                        document.getElementById("gst").value = "";
-                                                                                        document.getElementById("base").value = "";
-                                                                                        document.getElementById("bill-amount").value = "";
+                                                                                            document.getElementById("product-name").value = "";
+                                                                                            document.getElementById("manufacturer-id").value = "";
+                                                                                            document.getElementById("manufacturer-name").value = "";
+                                                                                            document.getElementById("weightage").value = "";
+                                                                                            document.getElementById("unit").value = "";
+                                                                                            document.getElementById("packaging-in").value = "";
+                                                                                            document.getElementById("medicine-power").value = "";
+                                                                                            document.getElementById("batch-no").value = "";
+                                                                                            document.getElementById("mfd-month").value="";
+                                                                                            document.getElementById("mfd-year").value="";
+                                                                                            document.getElementById("exp-month").value = "";
+                                                                                            document.getElementById("exp-year").value = "";
+                                                                                            document.getElementById("mrp").value = "";
+                                                                                            document.getElementById("ptr").value = "";
+                                                                                            document.getElementById("qty").value = "";
+                                                                                            document.getElementById("free-qty").value = "";
+                                                                                            document.getElementById("packaging-type").value = "";
+                                                                                            document.getElementById("discount").value = "";
+                                                                                            document.getElementById("gst").value = "";
+                                                                                            document.getElementById("base").value = "";
+                                                                                            document.getElementById("bill-amount").value = "";
 
 
-                                                                                        document
-                                                                                            .getElementById(
-                                                                                                "distributor-name"
-                                                                                            ).value = distId
-                                                                                                .value;
+                                                                                            document
+                                                                                                .getElementById("distributor-name").value = distId
+                                                                                                    .value;
 
-                                                                                        document
-                                                                                            .getElementById(
-                                                                                                "distributor-bill-no"
-                                                                                            ).value =
-                                                                                            distBill;
+                                                                                            document
+                                                                                                .getElementById(
+                                                                                                    "distributor-bill-no"
+                                                                                                ).value =
+                                                                                                distBill;
 
-                                                                                        document
-                                                                                            .getElementById(
-                                                                                                "bill-date-val"
-                                                                                            )
-                                                                                            .value =
-                                                                                            billDate.value;
+                                                                                            document
+                                                                                                .getElementById(
+                                                                                                    "bill-date-val"
+                                                                                                )
+                                                                                                .value =
+                                                                                                billDate.value;
 
-                                                                                        document
-                                                                                            .getElementById(
-                                                                                                "due-date-val"
-                                                                                            )
-                                                                                            .value = dueDate
-                                                                                                .value;
+                                                                                            document
+                                                                                                .getElementById(
+                                                                                                    "due-date-val"
+                                                                                                )
+                                                                                                .value = dueDate
+                                                                                                    .value;
 
-                                                                                        document
-                                                                                            .getElementById(
-                                                                                                "payment-mode-val"
-                                                                                            ).value =
-                                                                                            paymentMode
-                                                                                                .value;
+                                                                                            document
+                                                                                                .getElementById(
+                                                                                                    "payment-mode-val"
+                                                                                                ).value =
+                                                                                                paymentMode
+                                                                                                    .value;
 
 
-                                                                                        if (slno > 1) {
-                                                                                            let id =
+                                                                                            if (slno > 1) {
+                                                                                                let id =
+                                                                                                    document
+                                                                                                        .getElementById(
+                                                                                                            "items-val"
+                                                                                                        );
+                                                                                                let newId =
+                                                                                                    parseFloat(
+                                                                                                        id
+                                                                                                            .value
+                                                                                                    ) + 1;
                                                                                                 document
                                                                                                     .getElementById(
                                                                                                         "items-val"
-                                                                                                    );
-                                                                                            let newId =
-                                                                                                parseFloat(
-                                                                                                    id
-                                                                                                        .value
-                                                                                                ) + 1;
-                                                                                            document
-                                                                                                .getElementById(
-                                                                                                    "items-val"
-                                                                                                )
-                                                                                                .value =
-                                                                                                newId;
+                                                                                                    )
+                                                                                                    .value =
+                                                                                                    newId;
 
-                                                                                        } else {
+                                                                                            } else {
+                                                                                                document
+                                                                                                    .getElementById(
+                                                                                                        "items-val"
+                                                                                                    )
+                                                                                                    .value =
+                                                                                                    slno;
+                                                                                            }
+
                                                                                             document
                                                                                                 .getElementById(
-                                                                                                    "items-val"
+                                                                                                    "qty-val")
+                                                                                                .value =
+                                                                                                totalQty;
+
+                                                                                            document
+                                                                                                .getElementById(
+                                                                                                    "gst-val")
+                                                                                                .value = onlyGst
+                                                                                                    .toFixed(2);
+                                                                                            // document.getElementById(
+                                                                                            //         "margin-val")
+                                                                                            //     .value = marginP.toFixed(2);
+                                                                                            document
+                                                                                                .getElementById(
+                                                                                                    "net-amount"
                                                                                                 )
                                                                                                 .value =
-                                                                                                slno;
+                                                                                                netAmount
+                                                                                                    .toFixed(2);
+
                                                                                         }
-
-                                                                                        document
-                                                                                            .getElementById(
-                                                                                                "qty-val")
-                                                                                            .value =
-                                                                                            totalQty;
-
-                                                                                        document
-                                                                                            .getElementById(
-                                                                                                "gst-val")
-                                                                                            .value = onlyGst
-                                                                                                .toFixed(2);
-                                                                                        // document.getElementById(
-                                                                                        //         "margin-val")
-                                                                                        //     .value = marginP.toFixed(2);
-                                                                                        document
-                                                                                            .getElementById(
-                                                                                                "net-amount"
-                                                                                            )
-                                                                                            .value =
-                                                                                            netAmount
-                                                                                                .toFixed(2);
-
                                                                                     }
                                                                                 }
                                                                             }
@@ -657,13 +661,14 @@ const addData = () => {
                                                             }
                                                         }
                                                     }
-                                                }
 
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+
                         }
                     }
                 }
@@ -732,8 +737,35 @@ const setMonth = (month) => {
 
 }
 
+const setMfdMonth = (month) => {
+    // alert(month.value);
+    // alert(month.value.length);
+    if (month.value.length > 2) {
+        month.value = '';
+        // console.log("Ok");
+    } else {
+        if (month.value > 12) {
+            // console.log("Its Over");
+            month.value = '';
+        } else {
+            if (month.value.length == 2) {
+                document.getElementById("mfd-year").focus();
+            }
+
+        }
+    }
+
+}
+
 
 const setYear = (year) => {
+    var MFD = document.getElementById("mfd-year");
+    var EXP = document.getElementById("exp-year");
+
+    // if(MFD.value > EXP.value){
+    //     // console.log(MFD.value);
+    //     EXP.value = '';
+    // }
     // alert(month.value);
     // alert(month.value.length);
     if (year.value.length > 2) {
@@ -744,5 +776,28 @@ const setYear = (year) => {
         year.value = '';
     }
 }
+
+const setMfdYear = (year) => {
+    var MFD = document.getElementById("mfd-year");
+    // var EXP = document.getElementById("exp-year");
+    var chekYr = document.getElementById("check-year");
+
+    if (Number(MFD.value) > Number(chekYr.value)) {
+        year.value = '';
+    }
+    // console.log(chekYr.value);
+    // console.log(MFD.value);
+    // console.log(EXP.value);
+    // alert(month.value);
+    // alert(month.value.length);
+    if (year.value.length > 2) {
+        year.value = '';
+        // console.log("Ok");
+    }
+    if (year.value < 2) {
+        year.value = '';
+    }
+}
+
 
 
