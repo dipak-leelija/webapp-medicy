@@ -93,7 +93,7 @@ class CurrentStock extends DatabaseConnection{
 
     function showStockExpiry($newMnth){
         $data = array();
-        $select = "SELECT * FROM current_stock  WHERE exp_date <=  '$newMnth' ORDER BY exp_date ASC";
+        $select = "SELECT * FROM `current_stock`  WHERE `exp_date` < '$newMnth' ORDER BY `exp_date` ASC";
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;

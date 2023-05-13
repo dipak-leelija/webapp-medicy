@@ -4,7 +4,7 @@ const getDtls = (value) => {
     // alert(value);
     var xmlhttp = new XMLHttpRequest();
     if (value != "") {
-        console.log(value);
+        // console.log(value);
         //==================== Manufacturere List ====================
         manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + value;
         // alert(url);
@@ -92,7 +92,7 @@ const getDtls = (value) => {
         xmlhttp.open("GET", nameUrl, false);
         xmlhttp.send(null);
         document.getElementById("product-name").value = xmlhttp.responseText;
-        console.log(xmlhttp.responseText);
+        // console.log(xmlhttp.responseText);
 
     } else {
 
@@ -778,24 +778,24 @@ const setYear = (year) => {
 }
 
 const setMfdYear = (year) => {
-    var MFD = document.getElementById("mfd-year");
+    var MFD = document.getElementById("mfd-year").value;
     // var EXP = document.getElementById("exp-year");
-    var chekYr = document.getElementById("check-year");
+    var chekYr = document.getElementById("check-year").value;
 
-    if (Number(MFD.value) > Number(chekYr.value)) {
-        year.value = '';
+    if (Number(MFD) > Number(chekYr)) {
+        document.getElementById("mfd-year").value = '';
     }
     // console.log(chekYr.value);
     // console.log(MFD.value);
     // console.log(EXP.value);
     // alert(month.value);
     // alert(month.value.length);
-    if (year.value.length > 2) {
-        year.value = '';
+    if (MFD.length > 2) {
+        MFD.value = '';
         // console.log("Ok");
     }
-    if (year.value < 2) {
-        year.value = '';
+    if (MFD.length < 2) {
+        MFD.value = '';
     }
 }
 

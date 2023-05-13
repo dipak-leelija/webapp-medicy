@@ -35,14 +35,15 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     }
 }else {
     $currentDate = date("m/y");
-
+    echo "<br>$currentDate<br><br>";
     $addMonth  = 2;
     $newMnth = date("m/y", strtotime("+".$addMonth." months"));
+    echo "<br>$newMnth<br><br>";
 }
 
-
+echo "<br>$newMnth<br><br>";
 $showExpiry = $CurrentStock->showStockExpiry($newMnth);
-
+print_r($showExpiry);
 
 
 ?>
@@ -108,11 +109,11 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
                                 <div class="input-group h-75 w-75">
                                     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="input-group h-100 w-100">
                                         <input type="text" class="form-control h-100" placeholder="Expiring In"
-                                            aria-label="Expiring In" aria-describedby="exp-search" name="exp">
+                                            aria-label="Expiring In" aria-describedby="exp-search" name="exp" hidden>
                                         <div class="input-group-append h-100">
-                                            <button style="padding: 0.2rem 0.5rem;"
+                                            <!-- <button style="padding: 0.2rem 0.5rem;"
                                                 class="btn btn-sm btn-outline-secondary" type="submit" name="exp-search"
-                                                id="exp-search"><i class="fas fa-search"></i></button>
+                                                id="exp-search"><i class="fas fa-search"></i></button> -->
                                         </div>
                                     </form>
                                 </div>

@@ -129,6 +129,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $margin             = array_shift($_POST['margin']);
                 $amount             = array_shift($_POST['billAmount']);
                 $looselyPrice       = '';
+                $purchaseDetaislId  = array_shift($_POST['purchaseId']);
                 // $purchaseDetaislId  = array_shift($_POST['purchaseId']);
 
                 echo "<br>Product ID : ",$productId;
@@ -148,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 echo "<br>MARGIN : ",$margin;
                 echo "<br>AMOUNT : ",$amount;
                 echo "<br>LOOSELY PRICE : ",$looselyPrice;
-                // echo "<br>PURCHASE DETIALS ID : ",$purchaseDetaislId;
+                echo "<br>PURCHASE DETIALS ID : ",$purchaseDetaislId;
                 echo "<br><br><br>";
 
              
@@ -158,7 +159,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     $looselyCount = $weightage * ($qty + $freeQty);
                     // $looselyPriceOnMRP = $mrp / $weightage;
-                    $looselyPrice = ($mrp * $qty) / ($weightage * $qty);;     
+                    $looselyPrice = ($mrp * $qty) / ($weightage * $qty);  
                 }
                 
 
@@ -184,27 +185,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                 //=============== NEED TO CHEK THIS AREA ==================================
 
-                    $deleteExists    = $StockInDetails->stockInDelete($distributorBill, $batchNo);
-                    $delCurrentStock = $CurrentStock->deleteCurrentStock($productId, $batchNo);
+                    // $deleteExists    = $StockInDetails->stockInDelete($distributorBill, $batchNo);
+                    // $delCurrentStock = $CurrentStock->deleteCurrentStock($productId, $batchNo);
 
                 
-                    if ($deleteExists == TRUE && $delCurrentStock == TRUE) {
+                    // if ($deleteExists == TRUE && $delCurrentStock == TRUE) {
                         
-                        $addStockInDetails = $StockInDetails->addStockInDetails($productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, '');
+                    //     $addStockInDetails = $StockInDetails->addStockInDetails($productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, '');
 
-                        // $addStockInDetails = TRUE;
-                        if ($addStockInDetails) {
-                            // ============ CURRENT STOCK ============ 
-                            $addCurrentStock = $CurrentStock->addCurrentStock($productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty+$freeQty, $mrp, $ptr, $gst, $addedBy);
-                        }
-                    }
+                    //     // $addStockInDetails = TRUE;
+                    //     if ($addStockInDetails) {
+                    //         // ============ CURRENT STOCK ============ 
+                    //         $addCurrentStock = $CurrentStock->addCurrentStock($productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty+$freeQty, $mrp, $ptr, $gst, $addedBy);
+                    //     }
+                    // }
                     
                 // =============== NEED TO CHEK THIS AREA ==================================
                 } // end update request
                 
             }//eof foreach
             // $addCurrentStock = TRUE;
-exit;
+            exit;
             if ($addCurrentStock = TRUE) {
                 echo '
                 <script>

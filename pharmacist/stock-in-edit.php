@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <div class="col-md-6">
                                             <div class="row mt-4 mb-2">
 
-                                                <div class="d-none col-md-4 mt-2">
+                                                <div class="col-md-4 mt-2">
                                                     <label class="mb-0" for="purchase-details-id">Purchase Id</label>
                                                     <input type="text" class="upr-inp" name="purchase-id" id="purchase-id" value="" readonly>
                                                 </div>
@@ -378,7 +378,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <label class="mb-0" for="discount">Discount % / Unit</label>
                                                     <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount Percentage" value="0" onkeyup="getBillAmount()">
                                                 </div>
-                                                <div class="d-none col-md-4 mt-2">
+                                                <div class="col-md-4 mt-2">
                                                     <label class="mb-0" for="discount">Crnt Gst Amnt.</label>
                                                     <input type="number" class="upr-inp" name="crntGstAmnt" id="crntGstAmnt">
                                                 </div>
@@ -387,7 +387,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <label class="mb-0" for="gst">GST</label>
                                                     <input type="number" class="upr-inp" name="gst" id="gst" readonly>
                                                 </div>
-                                                <div class="d-none col-md-4 mt-2">
+                                                <div class="col-md-4 mt-2">
                                                     <label class="mb-0" for="bill-amount">Prev. GST Amount</label>
                                                     <input type="number" class="upr-inp" name="prevGstAmount" id="prevGstAmount" readonly>
                                                 </div>
@@ -448,7 +448,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp.</th>
-                                                <th scope="col">Power</th>
+                                                <th scope="col" hidden>Power</th>
                                                 <th scope="col">Unit</th>
                                                 <th scope="col">Qty.</th>
                                                 <th scope="col">Free</th>
@@ -458,6 +458,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <th scope="col">Margin%</th>
                                                 <th scope="col">GST%</th>
                                                 <th scope="col">Amount</th>
+                                                <th scope="col" hidden>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="dataBody">
@@ -501,7 +502,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                             <input class="col table-data w-12r" type="text" name="expDate[]" value="<?php echo $detail['exp_date'] ?>" readonly>
                                                         </td>
 
-                                                        <td class="p-0 pt-3">
+                                                        <td class="p-0 pt-3" hidden>
                                                             <input class="col table-data w-12r" type="text" name="power[]" value="" readonly>
                                                         </td>
 
@@ -561,7 +562,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                                                                                                         if ($edit == TRUE) {
                                                                                                                                             echo $stockIn[0]['distributor_id'];
                                                                                                                                         }
-                                                                                                                                        ?>" readonly>
+                                                                                                                                        ?>" readonly hidden>
                                             <input class="summary-inp" name="dist-name" id="dist-name" type="text" value="<?php echo $distName ?>" readonly>
                                         </p>
                                     </div>
