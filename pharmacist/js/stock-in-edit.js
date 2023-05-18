@@ -1,4 +1,4 @@
-const editQTYarray = [];
+// const editQTYarray = [];
 
 const customClick = (id, value1, value2, value3) => {
 
@@ -397,7 +397,6 @@ const addData = () => {
     var distId = document.getElementById("distributor-id");
     var distBillid = document.getElementById("distributor-bill");
     distBill = distBillid.value.toUpperCase();
-
     var billDate = document.getElementById("bill-date");
     var dueDate = document.getElementById("due-date");
     var paymentMode = document.getElementById("payment-mode");
@@ -432,7 +431,7 @@ const addData = () => {
     var purchaseId = document.getElementById("purchase-id");
     var prevGstAmount = document.getElementById("prevGstAmount").value;
     var crntGstAmount = document.getElementById("crntGstAmnt").value;
-
+    
     // console.log("Item qty check ",document.getElementById("qty").value);
     // console.log("Item free qty check ",document.getElementById("free-qty").value);
     // console.log("check qty ",qty.value);
@@ -451,6 +450,7 @@ const addData = () => {
    
     if(crntGstAmount == ""){
        crntGstAmount = prevGstAmount;
+       var GstDiff = -(prevGstAmount - crntGstAmount);
     }else{
         var GstDiff = -(prevGstAmount - crntGstAmount);
     }
@@ -677,6 +677,14 @@ console.log("total gst val ", gstVal);
                                                                                                 100;
                                                                                             // console.log(marginP);
                                                                                             // let profit
+                                                                                              
+            console.log("CHECK PURCHASE ID : ",purchaseId.value);
+            console.log("CHECK PRODUCT ID : ",productId.value);
+            console.log("CHECK PRODUCT BATCH NO : ",batchNo);
+            console.log("MFD DATE : ",mfdDate);
+            // console.log("CHECK PURCHASE ID : ",freeQty.value);
+            // console.log("CHECK PURCHASE ID : ",freeQty.value);
+            // console.log("CHECK PURCHASE ID : ",freeQty.value);
 
                                                                                             jQuery("#dataBody")
                                                                                                 .append(`<tr id="table-row-${slno}">
@@ -692,7 +700,7 @@ console.log("total gst val ", gstVal);
             <td class=" pt-3" >
                 <input class="table-data w-5r" type="text" name="batchNo[]" value="${batchNo}" readonly>
             </td>
-            <td class=" pt-3" hidden>
+            <td class=" pt-3">
                 <input class="table-data w-3r" type="text" name="mfdDate[]" value="${mfdDate}" readonly>
             </td>
             <td class=" pt-3">
@@ -728,13 +736,17 @@ console.log("total gst val ", gstVal);
             </td>
             <td class="pt-3">
                 <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly>
-                <input type="text" name="gstPerItem[]" value="${gstPerItem}" >
+                <input type="text" name="gstPerItem[]" value="${gstPerItem}" hidden>
             </td class="pt-3">
             <td class="amnt-td pt-3">
                 <input class="table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly>
             </td>
         </tr>`);
 
+
+        console.log("CHECK PURCHASE ID : ",purchaseId.value);
+        console.log("CHECK PRODUCT ID : ",productId.value);
+        console.log("CHECK PRODUCT BATCH NO : ",batchNo);
 
         document
                                                                                                 .getElementById(
@@ -921,7 +933,34 @@ function deleteData(slno, itemQty, gstPerItem, total) {
 
 }
 
+// ======================= Manufacturing date setting ===================
 
+const setMfdMonth = (month) =>{
+    if (month.value.length > 2) {
+        month.value = '';
+    } else {
+        if (month.value > 12) {
+            // console.log("Its Over");
+            month.value = '';
+        } else {
+            if (month.value.length == 2) {
+                document.getElementById("MFD-year").focus();
+            }
+
+        }
+    }
+}
+
+
+
+const setMfdYear = (year) => {
+    if (year.value.length > 2) {
+        year.value = '';
+    }
+    if (year.value < 2) {
+        year.value = '';
+    }
+}
 // ========================= Expiry Date Setting =========================
 
 const setMonth = (month) => {
@@ -943,7 +982,6 @@ const setMonth = (month) => {
     }
 
 }
-
 
 const setYear = (year) => {
     // alert(month.value);

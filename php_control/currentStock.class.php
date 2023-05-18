@@ -9,12 +9,12 @@ class CurrentStock extends DatabaseConnection{
 
 
 
-    function addCurrentStock($productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy){
+    function addCurrentStock($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy){
 
         // echo $looselyCount;
         // echo $looselyPrice;
 
-        $insert = "INSERT INTO `current_stock` (`product_id`, `batch_no`, `exp_date`, `distributor_id`, `loosely_count`, `loosely_price`, `weightage`, `unit`, `qty`, `mrp`, `ptr`, `gst`, `added_by`) VALUES ('$productId', '$batchNo', '$expDate', '$distributorId', '$looselyCount', '$looselyPrice', '$weightage', '$unit', '$qty', '$mrp', '$ptr', '$gst', '$addedBy')";
+        $insert = "INSERT INTO `current_stock` (`stock_in_details_id`,`product_id`, `batch_no`, `exp_date`, `distributor_id`, `loosely_count`, `loosely_price`, `weightage`, `unit`, `qty`, `mrp`, `ptr`, `gst`, `added_by`) VALUES ('$stokInDetaislId','$productId', '$batchNo', '$expDate', '$distributorId', '$looselyCount', '$looselyPrice', '$weightage', '$unit', '$qty', '$mrp', '$ptr', '$gst', '$addedBy')";
 
         $res = $this->conn->query($insert);
 
@@ -44,6 +44,15 @@ class CurrentStock extends DatabaseConnection{
     //============= current stock update after edting purchase return ================== RD===========
     function updateStockByReturnEdit($productId, $batchNo, $distributor, $newQuantity, $newLCount){
         $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no` = '$batchNo' AND `current_stock`.`distributor_id`='$distributor' ";
+        $res = $this->conn->query($editUpdate);
+        return $res;
+    }//eof updateStock
+
+
+    // ==================== current stock update after stock in edit =========================
+
+    function updateStockByStokinDetailsId($stokinDetailsId, $productId, $batchNo, $expDate, $distributorId, $newQuantity, $newLCount, $mrp, $ptr){
+        $editUpdate = " UPDATE `current_stock` SET `product_id` = '$productId', `batch_no` = '$batchNo', `exp_date` = '$expDate', `distributor_id` = '$distributorId', `loosely_count` = '$newLCount', `qty` = '$newQuantity', `mrp` = '$mrp', `ptr` = '$ptr' WHERE `current_stock`.`stock_in_details_id` = '$stokinDetailsId'";
         $res = $this->conn->query($editUpdate);
         return $res;
     }//eof updateStock
@@ -90,6 +99,16 @@ class CurrentStock extends DatabaseConnection{
         return $data;
     }//eof showCurrentStoc function
 
+
+    function showCurrentStockbyStokInId($stokInDetaislId){
+        $data = array();
+        $select = "SELECT * FROM `current_stock` WHERE `current_stock`.`stock_in_details_id` = '$stokInDetaislId'";
+        $selectQuery = $this->conn->query($select);
+        while($result = $selectQuery->fetch_array()){
+            $data[] = $result;
+        }
+        return $data;
+    }
 
     function showStockExpiry($newMnth){
         $data = array();

@@ -10,7 +10,7 @@ class StockInDetails extends DatabaseConnection{
 
 
     function addStockInDetails($productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy){
-
+        
         $insert = "INSERT INTO `stock_in_details` (`product_id`, `distributor_bill`, `batch_no`,`mfd_date`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`,	`discount`,	`base`,	`gst`, `gst_amount`, `margin`, `amount`, `added_by`) VALUES ('$productId', '$distBill', '$batchNo','$mfdDate','$expDate', '$weightage', '$unit', '$qty', '$freeQty', '$looselyCount', '$mrp', '$ptr', '$discount', '$base', '$gst', '$gstPerItem', '$margin', '$amount', '$addedBy')";
         // echo $insert.$this->conn->error;exit;
         $addStockInQuery = $this->conn->query($insert);
@@ -42,6 +42,14 @@ class StockInDetails extends DatabaseConnection{
     }//eof showStockInByTable function
 
 
+    function showStockInDetailsByStokinId($id){
+        $select = " SELECT * FROM `stock_in_details` WHERE  `stock_in_details`.`id`= '$id'";
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof showStockInDetails function
 
 
     function showStockInDetailsById($DistBill){
@@ -139,6 +147,19 @@ class StockInDetails extends DatabaseConnection{
     //     }
     //     return $data;
     // }
+
+    //======================================================================================== UPDATE TABEL
+
+    function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $addedBy){
+
+    $update = "UPDATE `stock_in_details` SET `product_id`='$productId',`distributor_bill`='$distBillNo',`batch_no`='$BatchNo',`mfd_date`='$mfd',`exp_date`='$exp',`weightage`='$weightage',`unit`='$unit',`qty`='$qty',`free_qty`='$freeQTY',`loosely_count`='$looselyCount',`mrp`='$mrp',`ptr`='$ptr',`discount`='$discount',`base`='$base',`gst`='$gst',`gst_amount`='$gstAmount',`margin`='$margin',`amount`='$amount',`added_by`='$addedBy' WHERE `id`='$id'";
+
+    $result = $this->conn->query($update);
+
+    return $result;
+    
+    }
+    //=====================================================================================================
 
     
     function stockInDelete($distBill, $batchNo){
