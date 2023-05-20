@@ -41,7 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $edit = TRUE;
 
         $distBill           = $_GET['edit'];
-
+        $stockIn_id         = $_GET['editId'];
+        // echo $stockIn_id;
         $StockIn            = new StockIn();
         $StockInDetails     = new StockInDetails();
 
@@ -142,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     <label class="mb-1" for="distributor-bill">Distributor Bill No.</label>
                                     <input type="text" class="upr-inp " name="distributor-bill" id="distributor-bill" value="<?php if ($edit == TRUE) {
                                                                                                                                     echo $stockIn[0]['distributor_bill'];
-                                                                                                                                } ?>">
+                                                                                                                                } ?>" style="text-transform: uppercase;">
                                 </div>
 
                                 <div class="col-sm-6 col-md-2">
@@ -223,6 +224,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <label class="mb-0" for="purchase-details-id">Purchase Id</label>
                                                     <input type="text" class="upr-inp" name="purchase-id" id="purchase-id" value="" readonly>
                                                 </div>
+                                                <!-- <div class="d-none col-md-4 mt-2">
+                                                    <label class="mb-0" for="purchase-details-id">Stock In Id</label>
+                                                    <input type="text" class="upr-inp" name="stock-in-id" id="stock-in-id" value="" readonly>
+                                                </div> -->
                                                 <div class="d-none col-md-4 mt-2">
                                                     <label class="mb-0" for="product-id">Product Id</label>
                                                     <input class="upr-inp" id="product-id" name="product-id" readonly>
@@ -340,18 +345,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <div class="col-sm-6 col-md-3 mt-2">
                                                     <label class="mb-0" for="qty">Quantity</label>
                                                     <input type="number" class="upr-inp" name="qty" id="qty" onkeyup="getBillAmount()">
-                                                    <input type="number" class="upr-inp" name="Cqty" id="Cqty" hidden>
-                                                    <input type="number" class="upr-inp" name="checkQTY" id="checkQTY" hidden>
-                                                    <input type="number" class="upr-inp" name="tItemsQTY" id="tItemsQTY" hidden>
+                                                                                             
                                                 </div>
+
                                                 <div class="col-sm-6 col-md-3 mt-2">
                                                     <label class="mb-0" for="free-qty">Free</label>
                                                     <input type="number" class="upr-inp" name="free-qty" id="free-qty" onkeyup="editQTY()">
-                                                    <input type="number" class="upr-inp" name="CFreeQty" id="CFreeQty" hidden>
-                                                    <input type="number" class="upr-inp" name="checkFQTY" id="checkFQTY" hidden>
-                                                    <input type="number" class="upr-inp" name="updatedQTY" id="updatedQTY" hidden>
+                                                    
                                                 </div>
-
 
                                                 <div class="col-sm-6 col-md-6 mt-2">
                                                     <label class="mb-0" for="packaging-type">Packaging Type</label>
@@ -366,6 +367,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         ?>
                                                     </select>
                                                     <input type="text" class="upr-inp" name="packaging-type-edit" id="packaging-type-edit" readonly hidden>
+
+                                                    <label class="mb-0" for="free-qty" hidden>Updtd qtys</label>
+                                                    <input type="number" class="upr-inp" name="updtQTYS" id="updtQTYS" hidden>
                                                 </div>
 
                                                 <!-- </div> -->
@@ -378,21 +382,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <label class="mb-0" for="discount">Discount % / Unit</label>
                                                     <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount Percentage" value="0" onkeyup="getBillAmount()">
                                                 </div>
-                                                <div class="d-none col-md-4 mt-2">
-                                                    <label class="mb-0" for="discount">Crnt Gst Amnt.</label>
-                                                    <input type="number" class="upr-inp" name="crntGstAmnt" id="crntGstAmnt">
-                                                </div>
-
+                                                
                                                 <div class="col-sm-6 col-md-6 mt-2">
                                                     <label class="mb-0" for="gst">GST</label>
                                                     <input type="number" class="upr-inp" name="gst" id="gst" readonly>
                                                 </div>
+
                                                 <div class="d-none col-md-4 mt-2">
-                                                    <label class="mb-0" for="bill-amount">Prev. GST Amount</label>
-                                                    <input type="number" class="upr-inp" name="prevGstAmount" id="prevGstAmount" readonly>
+                                                    <label class="mb-0" for="discount">Gst Amnt.</label>
+                                                    <input type="number" class="upr-inp" name="crntGstAmnt" id="crntGstAmnt">
                                                 </div>
 
-                                                <!-- </div> -->
                                                 <!--/End Price Row -->
 
                                                 <!-- Quantity Row  -->
@@ -436,7 +436,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="table-responsive">
 
 
-                                    <table class="table item-table">
+                                    <table class="table item-table" id="item-table">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col" hidden></th>
@@ -650,6 +650,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 </div>
 
                                 <!-- <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($arrayCheckId) ?>" hidden> -->
+
+                                <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" hidden>
                             </div>
 
                         </form>

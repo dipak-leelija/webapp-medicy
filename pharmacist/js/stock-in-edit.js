@@ -22,6 +22,15 @@ const customClick = (id, value1, value2, value3) => {
 
             var dataObject = JSON.parse(data);
 
+            var totalItmQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
+            var gstPerItem  = parseFloat(dataObject.GstAmount);
+            var totalAmnt   = parseFloat(dataObject.amnt);
+
+            var slno = 1;
+            var itemQty = totalItmQty;
+            gstPerItem = gstPerItem.toFixed(2);
+            var total = totalAmnt.toFixed(2);
+
             var purchaseDetailsMfdDate = dataObject.mfdDate;
             var mfdMonth = purchaseDetailsMfdDate.slice(0, 2);
             var mfdYear = purchaseDetailsMfdDate.slice(3, 5);
@@ -68,17 +77,14 @@ const customClick = (id, value1, value2, value3) => {
             document.getElementById('base').value = dataObject.baseAmount;
             document.getElementById("bill-amount").value = dataObject.amnt;
             document.getElementById("temp-bill-amount").value = dataObject.amnt;
-
-            document.getElementById("Cqty").value = dataObject.qty;
-            document.getElementById("CFreeQty").value = dataObject.FreeQty;
-            var check = dataObject.GstAmount;
-
-            document.getElementById("prevGstAmount").value = dataObject.GstAmount;
             // document.getElementById("refund-amount").value = refundAmunt;
-            console.log(check);
+
 
             //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
+            
             row.parentNode.removeChild(row);
+
+            deleteData(slno, itemQty, gstPerItem, total);
         }
     })
     return false;
@@ -287,105 +293,35 @@ const getBillAmount = () => {
     ///======== QUANTITY CALCULETION AFTER EDIT UPDATE ============
 
     var crntQTY = document.getElementById("qty").value;
-    var prevQTY = document.getElementById("Cqty").value;
-
-    if (crntQTY != prevQTY) {
-        var updateQTY = (crntQTY - prevQTY);
-    } else if (crntQTY == prevQTY) {
-        var updateQTY = 0;
-    } else {
-        var updateQTY = document.getElementById("qty").value;
-    }
-
     var crntFreeQTY = document.getElementById("free-qty").value;
-    var prevFreeQTY = document.getElementById("CFreeQty").value;
-
-    if (crntFreeQTY != prevFreeQTY) {
-        var updateFreeQTY = (crntFreeQTY - prevFreeQTY);
-    } else if (crntFreeQTY == prevFreeQTY) {
-        var updateFreeQTY = 0;
-    } else {
-        var updateFreeQTY = document.getElementById("free-qty").value;
-    }
-
-    document.getElementById("checkQTY").value = updateQTY;
-
-    var totalCount = Number(updateFreeQTY) + Number(updateQTY);
-    // console.log(totalCount);
-    document.getElementById("updatedQTY").value = totalCount;
-
-    var totalItemsQty = document.getElementById("qty-val").value;
-    totalItemsQty = Number(totalItemsQty) + Number(totalCount);
-    document.getElementById("tItemsQTY").value = totalItemsQty;
-
+    document.getElementById("updtQTYS").value = Number(crntQTY) + Number(crntFreeQTY);
 
     //=================== GST CALCULETION AFTER EDIT UPDATE =============================
 
     let qtys = document.getElementById("qty").value;
-    let prvGstamt = document.getElementById("prevGstAmount").value;
     let updtBasePrice = document.getElementById("base").value;
     let GST = document.getElementById("gst").value;
 
-    if(GST != 0){
-        var gstVal = Number(GST)/100;
-    }else{
+    if (GST != 0) {
+        var gstVal = parseFloat(GST) / 100;
+    } else {
         var gstVal = 0;
     }
-    
 
-    console.log("GST VALUE : ", gstVal);
-    console.log("QUANTITY : ", qtys);
-    console.log("PREV GST AMOUNT : ", prvGstamt);
-    console.log("BASE PRICE : ", updtBasePrice);
+    updtGstAmt = parseFloat(qtys) * parseFloat(updtBasePrice) * parseFloat(gstVal);
 
-    if (prvGstamt != null) {
-        var updtGstAmt = (Number(qtys) * Number(updtBasePrice)) * Number(gstVal);
-    } else {
-        var updtGstAmt = 0;
-    }
-
-    console.log("Update GST amount : ", updtGstAmt);
-    // console.log("PREV GST AMOUNT : ",prvGstamt);
     document.getElementById("crntGstAmnt").value = updtGstAmt;
 
+    console.log("GST AMNT => ", updtGstAmt);
     //eof gst calculetion after edit data ---------------
 
 } //eof getBillAmount function
 
+// ============= QTY CALCULETION ON FREE QTY UPDATE ==================
 const editQTY = () => {
     var crntQTY = document.getElementById("qty").value;
-    var prevQTY = document.getElementById("Cqty").value;
-
-    if (crntQTY != prevQTY) {
-        var updateQTY = (crntQTY - prevQTY);
-    } else if (crntQTY == prevQTY) {
-        var updateQTY = 0;
-    } else {
-        var updateQTY = document.getElementById("qty").value;
-    }
-    document.getElementById("checkQTY").value = updateQTY;
-
     var crntFreeQTY = document.getElementById("free-qty").value;
-    var prevFreeQTY = document.getElementById("CFreeQty").value;
-
-    if (crntFreeQTY != prevFreeQTY) {
-        var updateFreeQTY = (crntFreeQTY - prevFreeQTY);
-    } else if (crntFreeQTY == prevFreeQTY) {
-        var updateFreeQTY = 0;
-    } else {
-        var updateFreeQTY = document.getElementById("free-qty").value;
-    }
-
-    document.getElementById("checkFQTY").value = updateFreeQTY;
-
-    var totalCount = Number(updateFreeQTY) + Number(updateQTY);
-
-    document.getElementById("updatedQTY").value = totalCount;
-
-    var totalItemsQty = document.getElementById("qty-val").value;
-    totalItemsQty = Number(totalItemsQty) + Number(totalCount);
-    document.getElementById("tItemsQTY").value = totalItemsQty;
-
+    document.getElementById("updtQTYS").value = Number(crntQTY) + Number(crntFreeQTY);
 }
 // ##################################################################################
 
@@ -429,35 +365,10 @@ const addData = () => {
     var billAmount = document.getElementById("bill-amount");
     var prevAmount = document.getElementById("temp-bill-amount");
     var purchaseId = document.getElementById("purchase-id");
-    var prevGstAmount = document.getElementById("prevGstAmount").value;
-    var crntGstAmount = document.getElementById("crntGstAmnt").value;
+    var crntGstAmount = document.getElementById("crntGstAmnt");
+    var itemQty = document.getElementById("updtQTYS").value;
+
     
-    // console.log("Item qty check ",document.getElementById("qty").value);
-    // console.log("Item free qty check ",document.getElementById("free-qty").value);
-    // console.log("check qty ",qty.value);
-    // console.log("check free qty ",freeQty.value);
-
-    if (purchaseId.value != null) {
-        var addAmount = -(Number(prevAmount.value) - Number(billAmount.value));
-        // console.log(addAmount);
-    } else {
-        var addAmount = billAmount.value;
-        // console.log(addAmount);
-    }
-
-
-    console.log("Current gst amnt : ", crntGstAmount);
-   
-    if(crntGstAmount == ""){
-       crntGstAmount = prevGstAmount;
-       var GstDiff = -(prevGstAmount - crntGstAmount);
-    }else{
-        var GstDiff = -(prevGstAmount - crntGstAmount);
-    }
-
-
-    console.log("GST PER ITEM : ", GstDiff);
-
 
     if (distId.value == "") {
         swal("Blank Field", "Please Selet Distributor First!", "error")
@@ -598,16 +509,17 @@ const addData = () => {
                                                                                                     .getElementById(
                                                                                                         "qty-val")
                                                                                                     .value;
-                                                                                            let itemQty =
-                                                                                                parseFloat(qty
-                                                                                                    .value) +
-                                                                                                parseFloat(
-                                                                                                    freeQty
-                                                                                                        .value);
+                                                                                            // let itemQty =
+                                                                                            //     parseFloat(qty
+                                                                                            //         .value) +
+                                                                                            //     parseFloat(
+                                                                                            //         freeQty
+                                                                                            //             .value);
+
                                                                                             totalQty =
                                                                                                 parseFloat(
                                                                                                     qtyVal) +
-                                                                                                itemQty;
+                                                                                                parseFloat(itemQty);
 
                                                                                             // console.log(totalQty);
 
@@ -617,13 +529,13 @@ const addData = () => {
                                                                                                 )
                                                                                                 .value;
                                                                                             //    console.log(net);
+                                                                                            var addAmount = parseFloat(billAmount.value);
                                                                                             netAmount =
                                                                                                 parseFloat(
                                                                                                     net) +
-                                                                                                parseFloat(
-                                                                                                    addAmount
-                                                                                                );
-                                                                                            // console.log(netAmount);
+                                                                                                addAmount;
+
+                                                                                            console.log("net amnt =>", netAmount);
                                                                                             // console.log("Net Value");
 
 
@@ -637,21 +549,21 @@ const addData = () => {
                                                                                                     100 *
                                                                                                     total);
 
-                                                                                            let gstPerItem = GstDiff;
+                                                                                            let gstPerItem = parseFloat(crntGstAmount.value);
                                                                                             // let gstPerItem = withGst - total;
-    console.log("gst per item ", gstPerItem);
+
                                                                                             let gstVal =
                                                                                                 document
                                                                                                     .getElementById(
                                                                                                         "gst-val")
                                                                                                     .value;
-console.log("total gst val ", gstVal);  
+
                                                                                             let onlyGst =
-                                                                                                Number(
+                                                                                                parseFloat(
                                                                                                     gstVal) +
                                                                                                 gstPerItem;
-                                                                                                onlyGst = onlyGst.toFixed(2);
- console.log("updated total gst val : ", onlyGst);
+                                                                                            onlyGst = onlyGst.toFixed(2);
+
                                                                                             //////////////////////
                                                                                             // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
                                                                                             let totalMrp =
@@ -677,14 +589,6 @@ console.log("total gst val ", gstVal);
                                                                                                 100;
                                                                                             // console.log(marginP);
                                                                                             // let profit
-                                                                                              
-            console.log("CHECK PURCHASE ID : ",purchaseId.value);
-            console.log("CHECK PRODUCT ID : ",productId.value);
-            console.log("CHECK PRODUCT BATCH NO : ",batchNo);
-            console.log("MFD DATE : ",mfdDate);
-            // console.log("CHECK PURCHASE ID : ",freeQty.value);
-            // console.log("CHECK PURCHASE ID : ",freeQty.value);
-            // console.log("CHECK PURCHASE ID : ",freeQty.value);
 
                                                                                             jQuery("#dataBody")
                                                                                                 .append(`<tr id="table-row-${slno}">
@@ -743,15 +647,9 @@ console.log("total gst val ", gstVal);
             </td>
         </tr>`);
 
-
-        console.log("CHECK PURCHASE ID : ",purchaseId.value);
-        console.log("CHECK PRODUCT ID : ",productId.value);
-        console.log("CHECK PRODUCT BATCH NO : ",batchNo);
-
-        document
-                                                                                                .getElementById(
-                                                                                                    "distributor-name"
-                                                                                                ).value = distId
+                                                                                            document.getElementById(
+                                                                                                "distributor-name"
+                                                                                            ).value = distId
                                                                                                     .value;
 
                                                                                             document
@@ -781,32 +679,15 @@ console.log("total gst val ", gstVal);
                                                                                                 paymentMode
                                                                                                     .value;
 
+                                                                                            //item-table
 
                                                                                             if (slno > 1) {
-                                                                                                let id =
-                                                                                                    document
-                                                                                                        .getElementById(
-                                                                                                            "items-val"
-                                                                                                        );
-                                                                                                let newId =
-                                                                                                    parseFloat(
-                                                                                                        id
-                                                                                                            .value
-                                                                                                    ) + 1;
-                                                                                                document
-                                                                                                    .getElementById(
-                                                                                                        "items-val"
-                                                                                                    )
-                                                                                                    .value =
-                                                                                                    newId;
+                                                                                                let id = document.getElementById("items-val");
+                                                                                                let newId = parseFloat(id.value) + 1;
+                                                                                                document.getElementById("items-val").value = newId;
 
                                                                                             } else {
-                                                                                                document
-                                                                                                    .getElementById(
-                                                                                                        "items-val"
-                                                                                                    )
-                                                                                                    .value =
-                                                                                                    slno;
+                                                                                                document.getElementById("items-val").value = slno;
                                                                                             }
 
                                                                                             document
@@ -827,11 +708,10 @@ console.log("total gst val ", gstVal);
                                                                                                     "net-amount"
                                                                                                 )
                                                                                                 .value =
-                                                                                                netAmount
-                                                                                                    .toFixed(2);
+                                                                                                netAmount.toFixed(2);
 
 
-        // clearing all fied value                                                                    
+                                                                                            // clearing all fied value                                                                    
                                                                                             document.getElementById("product-name").value = "";
                                                                                             document.getElementById("manufacturer-id").value = "";
                                                                                             document.getElementById("manufacturer-name").value = "";
@@ -856,20 +736,15 @@ console.log("total gst val ", gstVal);
                                                                                             document.getElementById("base").value = "";
                                                                                             document.getElementById("bill-amount").value = "";
                                                                                             document.getElementById("purchase-id").value = "";
-                                                                                            document.getElementById("Cqty").value = "";
-                                                                                            document.getElementById("checkQTY").value = "";
-                                                                                            document.getElementById("tItemsQTY").value = "";
-                                                                                            document.getElementById("CFreeQty").value = "";
-                                                                                            document.getElementById("checkFQTY").value = "";
-                                                                                            document.getElementById("updatedQTY").value = "";
+                                                                                            document.getElementById("updtQTYS").value = "";
                                                                                             document.getElementById("temp-bill-amount").value = "";
-                                                                                            document.getElementById("prevGstAmount").value = "";
+                                                                                            
                                                                                             document.getElementById("crntGstAmnt").value = "";
 
-        console.log("updt gst val : ", onlyGst);
+                                                                                            // 
                                                                                             // document.getElementById("product-detail").reset();
 
-                                                                                            
+
 
                                                                                         }
                                                                                     }
@@ -921,21 +796,21 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     qty.value = finalQty;
 
 
-    // minus netAmount
+    // minus gst
     let gst = document.getElementById("gst-val");
     let finalGst = gst.value - gstPerItem;
-    gst.value = finalGst;
+    gst.value = finalGst.toFixed(2);
 
     // minus netAmount
     let net = document.getElementById("net-amount");
     let finalAmount = net.value - total;
-    net.value = finalAmount;
+    net.value = finalAmount.toFixed(2);
 
 }
 
 // ======================= Manufacturing date setting ===================
 
-const setMfdMonth = (month) =>{
+const setMfdMonth = (month) => {
     if (month.value.length > 2) {
         month.value = '';
     } else {

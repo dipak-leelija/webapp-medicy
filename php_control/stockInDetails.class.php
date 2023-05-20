@@ -9,9 +9,9 @@ class StockInDetails extends DatabaseConnection{
 
 
 
-    function addStockInDetails($productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy){
+    function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy){
         
-        $insert = "INSERT INTO `stock_in_details` (`product_id`, `distributor_bill`, `batch_no`,`mfd_date`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`,	`discount`,	`base`,	`gst`, `gst_amount`, `margin`, `amount`, `added_by`) VALUES ('$productId', '$distBill', '$batchNo','$mfdDate','$expDate', '$weightage', '$unit', '$qty', '$freeQty', '$looselyCount', '$mrp', '$ptr', '$discount', '$base', '$gst', '$gstPerItem', '$margin', '$amount', '$addedBy')";
+        $insert = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`,`mfd_date`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`,	`discount`,	`base`,	`gst`, `gst_amount`, `margin`, `amount`, `added_by`) VALUES ('$stokInid','$productId', '$distBill', '$batchNo','$mfdDate','$expDate', '$weightage', '$unit', '$qty', '$freeQty', '$looselyCount', '$mrp', '$ptr', '$discount', '$base', '$gst', '$gstPerItem', '$margin', '$amount', '$addedBy')";
         // echo $insert.$this->conn->error;exit;
         $addStockInQuery = $this->conn->query($insert);
         // echo var_dump($addStockInQuery);exit;
@@ -168,7 +168,11 @@ class StockInDetails extends DatabaseConnection{
         return $delSql;
     }// eof stockInDelete
 
-
+    function stockInDeletebyId($stockInId){
+        $delQry = "DELETE FROM `stock_in_details` WHERE `stokIn_id` = '$stockInId'";
+        $delSql = $this->conn->query($delQry);
+        return $delSql;
+    }// eof stockInDelete
     
 }//eof Products class
 

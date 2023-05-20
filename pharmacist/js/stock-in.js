@@ -761,11 +761,11 @@ const setMfdMonth = (month) => {
 const setYear = (year) => {
     var MFD = document.getElementById("mfd-year");
     var EXP = document.getElementById("exp-year");
-
-    // if(MFD.value > EXP.value){
-    //     // console.log(MFD.value);
-    //     EXP.value = '';
-    // }
+    console.log("first",MFD.value);
+    console.log("second",EXP.value);
+    var check = EXP.value;
+    console.log("third",check);
+    
     // alert(month.value);
     // alert(month.value.length);
     if (year.value.length > 2) {
@@ -774,6 +774,11 @@ const setYear = (year) => {
     }
     if (year.value < 2) {
         year.value = '';
+    }
+    
+    if(MFD.value > EXP.value){
+        // console.log(MFD.value);
+        EXP.value = '';
     }
 }
 

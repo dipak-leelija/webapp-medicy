@@ -229,7 +229,7 @@ $todayYr = date("y");
 
                                         <div class="col-sm-6 col-md-4 mt-2">
                                             <label class="mb-0" for="batch-no">Batch No.</label>
-                                            <input type="text" class="upr-inp" name="batch-no" id="batch-no">
+                                            <input type="text" class="upr-inp" name="batch-no" id="batch-no" >
                                         </div>
                                         <div class="col-sm-3 col-md-4 mt-2">
                                             <label class="mb-0 mt-1" for="mfd-date">MFD</label>

@@ -100,9 +100,9 @@ class StockIn extends DatabaseConnection{
 
 
 
-    function updateStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $addedBy){
+    function updateStockIn($stockInid, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $addedBy){
 
-        $updateQry = "UPDATE `stock_in` SET `stock_in`.`items` = '$items', `stock_in`.`total_qty` = '$totalQty', `stock_in`.`bill_date` = '$billDate', `stock_in`.`due_date` = '$dueDate', `stock_in`.`payment_mode` = '$paymentMode', `stock_in`.`gst` = '$gst', `stock_in`.`amount` = '$amount', `stock_in`.`added_by` = '$addedBy' WHERE `stock_in`.`distributor_bill` = '$distributorBill' AND `stock_in`.`distributor_id` = '$distributorId'";
+        $updateQry = "UPDATE `stock_in` SET `distributor_bill` = '$distributorBill', `distributor_id` = '$distributorId', `items` = '$items', `total_qty` = '$totalQty', `bill_date` = '$billDate', `due_date` = '$dueDate', `payment_mode` = '$paymentMode', `gst` = '$gst', `amount` = '$amount', `added_by` = '$addedBy' WHERE `stock_in`.`id` = '$stockInid'";
         // echo $addStockIn.$this->conn->error;exit;
         $updateSql = $this->conn->query($updateQry);
         // echo var_dump($addStockInQuery);exit;
