@@ -158,6 +158,18 @@ class CurrentStock extends DatabaseConnection{
         return $data;
     }//eof showCurrentStocByProductId
 
+    function showCurrentStocByStokInDetialsId($stockInDetialsId){
+        //echo $productId;
+        $data = array();
+        $select = "SELECT * FROM `current_stock` WHERE `stock_in_details_id` = '$stockInDetialsId'";
+        // echo $select;
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof showCurrentStocByProductId
+
 
     function showCurrentStocByProductIdandBatchNo($productId, $BatchNo){
         $data = array();

@@ -30,9 +30,9 @@ $manufacturer   =   new Manufacturer();
 $packagUnit     =   new PackagingUnits();
 
 
-if (isset($_GET['currentStockId'])) {
-    $productId =  $_GET['currentStockId'];
-    $showStock = $currentStock->showCurrentStocByPId($productId);
+if (isset($_GET['stokInDetialId'])) {
+    $stokInDetialId =  $_GET['stokInDetialId'];
+    $showStock = $currentStock->showCurrentStocByStokInDetialsId($stokInDetialId);
     // print_r($showStock);
     // echo count($showStock);
 
@@ -106,7 +106,7 @@ if (isset($_GET['currentStockId'])) {
     <div class="container-fluid d-flex justify-content-center mt-2">
         <div class="container-fluid">
             <div class="row p-4 justify-content-left">
-                <div class="col-sm-3 justify-content-center">
+                <div class="col-sm-5 justify-content-center">
                     <div class="text-center border d-flex justify-content-center">
                         <img src="../../images/product-image/<?php echo $productImage ?>" class="img-fluid rounded" alt="...">
                         <!-- <hr class="hl justify-content-center" style="color: black;"> -->
@@ -115,17 +115,17 @@ if (isset($_GET['currentStockId'])) {
                 <!-- <div class="col-sm-1 justify-content-center">
                  <div class="vl justify-content-center"></div> 
                 </div> -->
-                <div class="col-sm-6 justify-content-center" flex>
+                <div class="col-sm-7 justify-content-center" flex>
                     <h3><?php echo $prodcutDetails[0]['name']; ?></h3>
                     <h7>[<?php echo $prodcutDetails[0]['product_composition']; ?>]</h6>
                         <h5><?php echo $manufDetails[0]['name']; ?></h6>
                 </div>
-                <div class="col-sm-1 justify-content-center">
+                <!-- <div class="col-sm-1 justify-content-center">
 
-                </div>
-                <div class="col-sm-2 justify-content-center">
+                </div> -->
+                <!-- <div class="col-sm-2 justify-content-center">
                     <button class="button btn-danger" id="<?php echo $productId ?>" onclick="delAll(this.id)">Delete All</button>
-                </div>
+                </div> -->
             </div>
             <div class="d-flex justify-content-top">
                 <hr class="text-center w-100" style="height: 2px; color:black">
@@ -187,10 +187,6 @@ if (isset($_GET['currentStockId'])) {
 
 
                 // ================== product details ======================
-
-
-
-
             ?>
                 <div class="row mt-2 justify-content-center" flex id="<?php echo 'table-row-' . $slNo ?>">
                     <div class="col-12 ps-2">
@@ -200,7 +196,7 @@ if (isset($_GET['currentStockId'])) {
                                 <strong>Distributor Name: </strong><span><?php echo $distName ?></span><br>
                                 <strong>Batch No: </strong><span><?php echo $batchNo ?></span><br>
                                 <strong>Purchase Date: </strong><span><?php echo $purchaseDate ?></span><br>
-                                <strong>MFD: </strong><span><?php echo $expDate ?></span><br>
+                                <strong>MFD: </strong><span><?php echo $mfd ?></span><br>
                                 <strong>Exp Date: </strong><span><?php echo $expDate ?></span><br>
                                 <strong>Packaging Details : </strong><span><?php echo $packagingDetail . $pacakagingUnitName ?></span><br>
                                 <strong>Purchase Quantity: </strong><?php echo $purchaseQTY . " " . $pacakagingUnitName ?></span><br>
@@ -208,7 +204,7 @@ if (isset($_GET['currentStockId'])) {
 
                             </div>
 
-                            <div class="col-5">
+                            <div class="col-6">
 
                                 <strong>MRP: </strong><span><?php echo $MRP ?></span><br>
                                 <strong>PTR: </strong><span><?php echo $PTR ?></span><br>
@@ -222,9 +218,9 @@ if (isset($_GET['currentStockId'])) {
 
                             </div>
 
-                            <div class="col-1">
+                            <!-- <div class="col-1">
                                 <button class="button btn-danger" id="<?php echo 'table-row-' . $slNo ?>" value1="<?php echo $productId ?>" value2="<?php echo $batchNo ?>" onclick="customDelete('<?php echo 'table-row-' . $slNo ?>','<?php echo $productId ?>','<?php echo $batchNo ?>',this.id, this.value1,this.value2)">Delete</button>
-                            </div>
+                            </div> -->
 
                         </div>
                     </div>

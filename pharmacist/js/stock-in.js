@@ -135,13 +135,8 @@ var todayFullDate = year + "-" + month + "-" + date;
 // console.log(todayFullDate);
 document.getElementById("bill-date").setAttribute("max", todayFullDate);
 
-const getbillDate = (billDate) => {
-    // billDate = document.getElementById("bill-date").value;
-    // alert(billDate.value);
+const getbillDate = (billDate) => {  
     billDate = billDate.value;
-    // alert(billDate.substr(0, 4));
-    // alert(billDate.substr(5, 2));
-    // alert(billDate.substr(8, 2));
     document.getElementById("due-date").setAttribute("min", billDate);
 
     var date2 = todayDate.getDate() + 7;
@@ -715,35 +710,33 @@ function deleteData(slno, itemQty, gstPerItem, total) {
 }
 
 
-// ========================= Expiry Date Setting =========================
+// ========================= Mfd and Expiry Date Setting =========================
 
 const setMonth = (month) => {
-    // alert(month.value);
-    // alert(month.value.length);
     if (month.value.length > 2) {
         month.value = '';
-        // console.log("Ok");
     } else {
         if (month.value > 12) {
-            // console.log("Its Over");
             month.value = '';
         } else {
             if (month.value.length == 2) {
                 document.getElementById("exp-year").focus();
             }
-
         }
     }
-
 }
 
 const setMfdMonth = (month) => {
-    // alert(month.value);
-    // alert(month.value.length);
+    const m = new Date();
+    let mnth = m.getMonth();
+    mnth = mnth+1;
+    console.log(mnth);
     if (month.value.length > 2) {
         month.value = '';
         // console.log("Ok");
-    } else {
+    }else if(month.value>mnth){
+        month.value = '';
+    }else {
         if (month.value > 12) {
             // console.log("Its Over");
             month.value = '';
@@ -751,53 +744,41 @@ const setMfdMonth = (month) => {
             if (month.value.length == 2) {
                 document.getElementById("mfd-year").focus();
             }
-
         }
     }
-
 }
 
 
 const setYear = (year) => {
     var MFD = document.getElementById("mfd-year");
     var EXP = document.getElementById("exp-year");
-    console.log("first",MFD.value);
-    console.log("second",EXP.value);
-    var check = EXP.value;
-    console.log("third",check);
-    
-    // alert(month.value);
-    // alert(month.value.length);
+    // var check = EXP.value;
+        
     if (year.value.length > 2) {
         year.value = '';
-        // console.log("Ok");
     }
+
     if (year.value < 2) {
         year.value = '';
     }
-    
-    if(MFD.value > EXP.value){
-        // console.log(MFD.value);
-        EXP.value = '';
-    }
+
+    // if(MFD.value > EXP.value){
+    //     EXP.value = '';
+    // }
 }
 
 const setMfdYear = (year) => {
     var MFD = document.getElementById("mfd-year").value;
-    // var EXP = document.getElementById("exp-year");
-    var chekYr = document.getElementById("check-year").value;
-
-    if (Number(MFD) > Number(chekYr)) {
+    const y = new Date();
+    let yr = y.getFullYear();
+    yr = yr.toString();
+    yr = yr.substring(2,5);
+    
+    if (Number(MFD) > Number(yr)) {
         document.getElementById("mfd-year").value = '';
     }
-    // console.log(chekYr.value);
-    // console.log(MFD.value);
-    // console.log(EXP.value);
-    // alert(month.value);
-    // alert(month.value.length);
     if (MFD.length > 2) {
         MFD.value = '';
-        // console.log("Ok");
     }
     if (MFD.length < 2) {
         MFD.value = '';

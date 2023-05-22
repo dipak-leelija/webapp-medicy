@@ -142,29 +142,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
                                                             $backImage = $image[0]['back_image'];
                                                         }
                                                     }
-                                                    // $expDate              = $rowStock['exp_date'];
-                                                    // $distributorId        = $rowStock['distributor_id'];
-                                                    // $productDetails = $CurrentStock->showCurrentStocByPId($productId);
-                                                    // print_r($productDetails);
-                                                        
-                                                        // $looselyCount       = $rowStock['loosely_count'];
                                                     
-                                                        // $looselyPrice         = $rowStock['loosely_price'];
-                                                        // // echo $looselyPrice;
-                                                        // $weightage            = $rowStock['weightage'];
-                                                        // // echo $weightage;
-                                                        // $productUnit          = $rowStock['unit'];
-                                                        // // echo $productUnit;
-                                                        
-                                                        // // echo $productQty;
-                                                        // $productMRP           = $rowStock['mrp'];
-                                                        // // echo $productMRP;
-                                                        
-                                                        // $batchNo              = $rowStock['batch_no'];
-    
-                                                        // $gst                  = $rowStock['gst'];
-                                                        // echo $gst;
-                                                        //echo $productId;
     
                                                         $productData = $CurrentStock->showCurrentStocByPId($productId);
                                                        
@@ -287,14 +265,8 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body current-stock-view">
-                    <!-- Appointments Details Goes Here By Ajax -->
+                <div class="modal-body current-stock-view"> 
                 </div>
-                <!-- <div class="modal-footer">
-                     <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button> -->
-                <!-- <button type="button" class="btn btn-sm btn-primary" onclick="window.location.reload()">Save
-                        changes</button> 
-                </div> -->
             </div>
         </div>
     </div>
@@ -349,58 +321,6 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
                 url + '"></iframe>');
 
         } // end of currentStockView function
-
-        //==================================================================================================
-
-        // const customClick = (id) => {
-        //     // var bachElemId = document.getElementById(bachElemId).innerHTML;
-        //     //var currentStockId = id;
-
-        //     //alert(id);
-        //     //alert(bachElemId);
-
-        //     swal({
-        //             title: "Are you sure?",
-        //             text: "Want to Delete This Data?",
-        //             icon: "warning",
-        //             buttons: true,
-        //             dangerMode: true,
-        //         })
-        //         .then((willDelete) => {
-        //             if (willDelete) {
-        //                 $.ajax({
-        //                     url: "ajax/currentStock.delete.ajax.php",
-        //                     type: "POST",
-        //                     data: {
-        //                         Currentid: id
-        //                         // bachElemId: bachElemId
-        //                     },
-        //                     success: function(response) {
-        //                         if (response.includes('1')) {
-        //                             swal(
-        //                                 "Deleted",
-        //                                 "Manufacturer Has Been Deleted",
-        //                                 "success"
-        //                             ).then(function() {
-        //                                 parent.location.reload();
-        //                             });
-
-        //                         } else {
-        //                             swal("Failed", "Product Deletion Failed!",
-        //                                 "error");
-        //                             $("#error-message").html("Deletion Field !!!")
-        //                                 .slideDown();
-        //                             $("success-message").slideUp();
-        //                         }
-
-        //                     }
-        //                 });
-        //             }
-        //             return false;
-        //         });
-
-
-        // }
 
         //======================================= CURRENT STOCK VIEW ========================================
 

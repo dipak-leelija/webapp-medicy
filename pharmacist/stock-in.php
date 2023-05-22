@@ -239,7 +239,6 @@ $todayYr = date("y");
                                                 <span class="date-divider">&#47;</span>
                                                 <input class="year " type="number" id="mfd-year"
                                                     onkeyup="setMfdYear(this);">
-                                                <input type="text" class="upr-inp" name="check-year" id="check-year" value="<?php echo $todayYr ?>" hidden>
                                             </div>
                                         </div>
                                         <div class="col-sm-3 col-md-4 mt-2">
