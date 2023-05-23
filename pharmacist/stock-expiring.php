@@ -139,9 +139,26 @@ echo "check months for november and december";
                                         <?php
                                         foreach ($showExpiry as $item) {
                                             $expDate        = $item['exp_date'];
-                                            $expYr = substr($expDate, 3);
-                                            // echo "<br>exp yr check-> $expYr<br>";
-                                            if ($expYr == $year) {
+
+                                            $expiaryDt = str_replace("/", "", $expDate);
+                                            $expiaryDtMnth = intval(substr($expiaryDt,0,2));
+                                            $expiaryDtYr = substr($expiaryDt,2);
+                                            
+                                            $today = date("m/y");
+                                            $chkMnth = substr($today,0,2);
+
+                                            $chekExpMnth = substr($today,0,2) + 2;
+                                            
+                                            $chekExpMnth = $chekExpMnth % 12;
+                                            
+                                            if($chkMnth == 11 || $chkMnth == 12){
+                                                $chkYr = date("y") + 1;
+                                            }else{
+                                                $chkYr = date("y");
+                                            }
+                                            
+                                            // echo $chekExpMnth;
+                                            if ($expiaryDtMnth <= $chekExpMnth && $expiaryDtYr == $chkYr) {
                                                 $stokInDetialId = $item['stock_in_details_id'];
                                                 $productId      = $item['product_id'];
 
@@ -200,7 +217,7 @@ echo "check months for november and december";
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="currentStockModalTitle">Product Details</h5>
+                    <h5 class="modal-title" id="productDetialsModalTitle">Expiring Product Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
