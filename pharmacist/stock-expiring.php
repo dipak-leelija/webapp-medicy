@@ -9,11 +9,8 @@ $CurrentStock = new CurrentStock();
 $products = new Products();
 
 $currentDate = date("m/y");
-echo "check current month and year => $currentDate<br>";
-$month       = date("m");
-echo "check curretn month => $month<br>";
-$year        = date("y");
-echo "check current year => $year<br>";
+$month       = date("m");        
+$year        = date("y");              
 // echo gettype($year);
 if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     if (isset($_POST['exp-search'])) {
@@ -44,14 +41,13 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     // echo "<br>$currentDate<br><br>";
     $addMonth  = 2;
     $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
-    echo "<br>New month -> $newMnth<br><br>";
+            
 }
 
 // echo "<br>$newMnth<br><br>";
 $showExpiry = $CurrentStock->showStockExpiry($newMnth);
-echo "check months for november and december";
-// print_r($showExpiry);
 
+// print_r($showExpiry);
 
 ?>
 

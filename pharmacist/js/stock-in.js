@@ -728,14 +728,11 @@ const setMonth = (month) => {
 
 const setMfdMonth = (month) => {
     const m = new Date();
-    let mnth = m.getMonth();
-    mnth = mnth+1;
-    console.log(mnth);
+
     if (month.value.length > 2) {
         month.value = '';
         // console.log("Ok");
-    }else if(month.value>mnth){
-        month.value = '';
+
     }else {
         if (month.value > 12) {
             // console.log("Its Over");

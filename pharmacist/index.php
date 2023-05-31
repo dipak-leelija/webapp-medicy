@@ -43,7 +43,7 @@ $today = date("Y-m-d");
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet">
-    <link href="css/custom/custom.css" rel="stylesheet">
+    <link href="../css/custom/custom-form-style.css" rel="stylesheet">
     <link rel="stylesheet" href="css/custom-dashboard.css">
 
 
@@ -234,7 +234,6 @@ $today = date("Y-m-d");
         // executes when HTML-Document is loaded and DOM is ready
         console.log("document is ready");
 
-
         $(".card").hover(
             function() {
                 $(this).addClass('shadow').css('cursor', 'pointer');
@@ -253,7 +252,6 @@ $today = date("Y-m-d");
             }
         );
 
-        // document ready  
     });
     </script>
 

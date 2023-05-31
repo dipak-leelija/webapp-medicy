@@ -64,9 +64,9 @@ class StockOut extends DatabaseConnection{
 
 
 
-    function soldByDate($billDate){
+    function soldByDate($billFromDate, $billToDate){
         $data = array();
-        $sql = "SELECT items,amount FROM stock_out WHERE `stock_out`.`added_on` = '$billDate'";
+        $sql = "SELECT items,amount FROM stock_out WHERE `stock_out`.`added_on` BETWEEN $billFromDate AND $billToDate";
         $sqlQuery = $this->conn->query($sql);
         while($result = $sqlQuery->fetch_array()){
             $data[]	= $result;

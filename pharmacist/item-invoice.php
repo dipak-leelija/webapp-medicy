@@ -49,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $patientPhno = 'M: ' . $patientName[0]['phno'];
     }
 
-
     $reffby         = $_POST['doctor-name'];
     $billdate       = $_POST['bill-date'];
     $totalItems     = $_POST['total-items'];
@@ -63,25 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $addedBy        = $_SESSION['employee_username'];
     $addedOn        = date("Y/m/d");
 
-    $prductId    = $_POST['product-id'];
-    // print_r($prductId); echo "<br><br>";
-    $batchNo     = $_POST['batch-no'];
-    // print_r($batchNo); echo "<br><br>"; 
-    $qty = $_POST['qty'];
-    // print_r($qty); echo "<br><br>"; 
-    $qtyTypes = $_POST['qty-types'];
-    // print_r($qtyTypes); echo "<br><br>"; 
-    $discount = $_POST['disc'];
-    // print_r($discount); echo "<br><br>"; 
-    $gst = $_POST['gst'];
-    // print_r($gst);
-    // echo "<br><br>";
-    $amount = $_POST['amount'];
-    // print_r($amount);
-    // echo "<br><br>";
-
-
-
+    $prductId    = $_POST['product-id'];           
+    $batchNo     = $_POST['batch-no'];         
+    $qty = $_POST['qty'];       
+    $qtyTypes = $_POST['qty-types'];      
+    $discount = $_POST['disc'];         
+    $gst = $_POST['gst'];         
+    $amount = $_POST['amount'];                           
 
 
     if (isset($_POST['submit'])) {
@@ -95,25 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             $currentStockDetails = $CurrentStock->showCurrentStocByPId($prductId[$i]);
-            // print_r($currentStockDetails);
-            // echo "<br>";
-            // $countCurrentStockDetials = count($currentStockDetails);
-            // echo $countCurrentStockDetials;
-            // echo "<br>";
-            // $quantity       = $_POST['qty'];
-            // $qtyTyps        = $_POST['qty-types'];
-            // echo "<br>"; print_r($quantity);
-            // echo "<br>"; print_r($qtyTyps);
-
-            
-
-            // exit;
-//==================================================testing area=============================================
+  
             $productDetails = $CurrentStock->showCurrentStocByProductIdandBatchNo($prductId[$i], $batchNo[$i]);
-
-
-            // print_r($productDetails);
-            // echo "<br><br>";
 
             $productID = $productDetails[0]['product_id'];
             $BatchNo = $productDetails[0]['batch_no'];
@@ -144,41 +114,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $looselyCount = "0";
                 }
             }
-
-            // echo "<br>";
-            // print_r($invoiceId);
-            // echo "<br>";
-            // print_r($productID);
-            // echo "<br>";
-            // print_r($BatchNo);
-            // echo "<br>";
-            // print_r($ExpairyDate);
-            // echo "<br>";
-            // print_r($Weightage);
-            // echo "<br>";
-            // print_r($Unit);
-            // echo "<br>";
-            // print_r($qty[$i]);
-            // echo "<br>";
-            // print_r($looselyCount);
-            // echo "<br>";
-            // print_r($MRP);
-            // echo "<br>";
-            // print_r($PTR);
-            // echo "<br>";
-            // print_r($discount[$i]);
-            // echo "<br>";
-            // print_r($GST);
-            // echo "<br>";
-            // print_r($margin);
-            // echo "<br>";
-            // print_r($amount[$i]);
-            // echo "<br>";
-            // print_r($addedBy);
-            // echo "<br>";
-            // print_r($addedOn);
-            // echo "<br>";
-            
 
             if ($stockOut === true) {
 
@@ -278,7 +213,7 @@ foreach ($showhelthCare as $rowhelthCare) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicy Health Care Lab Test Bill</title>
+    <title>Medicy Health Care Sales Bill</title>
     <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="../css/custom/test-bill.css">
 

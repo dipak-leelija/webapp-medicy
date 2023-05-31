@@ -347,7 +347,7 @@ $todayYr = date("y");
                         </div>
                     </div>
                     <!-- /end Add Product  -->
-
+                    
                     <!--=========================== Show Bill Items ===========================-->
                     <div class="card shadow mb-4">
                         <form action="_config\form-submission\stock-in-form.php" method="post">

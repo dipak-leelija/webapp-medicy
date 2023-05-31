@@ -56,14 +56,13 @@ class Distributor extends DatabaseConnection{
 
 
     function selectDistributorByName($distributorName){
-        print_r($distributorName);
         $select         = " SELECT * FROM `distributor` WHERE `distributor`.`name`= '$distributorName'";
         $selectQuery    = $this->conn->query($select);
         while ($result  = $selectQuery->fetch_array() ) {
             $data[] = $result;
         }
         return $data;
-    }//eof showDistributorById functiion
+    }//eof showDistributorByName functiion
 
 
 

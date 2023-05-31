@@ -185,8 +185,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
 
                     // ============= add into current stock if product id and batch no is not extists in current stock but exists in stock in detials (old stock sales return)====================
+                    $stokIndata = $StockInDetails->selectProduct($productId, $batch);
+                    foreach($stokIndata as $stokdata){
+                        $stokInDetailsId = $stokdata["stokIn_id"];
+                    }
 
-                    $CurrentStock->addCurrentStock($productId, $batch, $pDetails[0]['exp_date'], $pDetails[0]['distributor_bill'], $looselyCount, $looselyPrice, $pDetails[0]['weightage'], $pDetails[0]['unit'], $returnQTY, $pDetails[0]['mrp'], $pDetails[0]['ptr'], $pDetails[0]['gst'], $addedBy);
+                    $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batch, $pDetails[0]['exp_date'], $pDetails[0]['distributor_bill'], $looselyCount, $looselyPrice, $pDetails[0]['weightage'], $pDetails[0]['unit'], $returnQTY, $pDetails[0]['mrp'], $pDetails[0]['ptr'], $pDetails[0]['gst'], $addedBy);
                 } else {
                     if ($unitType == 'cap' || $unitType == 'tab') {
                         if ($salesDetails[0]['qty'] == '0') {

@@ -268,7 +268,7 @@ $doctor = $Doctors->showDoctors();
                         </div>
                     </div>
                     <!-- /end Add Product  -->
-
+                    
                     <div class="card mb-4 mt-md-5 summary">
                         <div class="card-body fisrt-card-body">
                             <h3 class="text-center font-weight-bolder listed-heading">Listed Items For sale</h3>

@@ -76,7 +76,7 @@ $showDistributor       = $Distributor->showDistributor();
 
             <!-- Main Content -->
             <div id="content">
-
+                
                 <!-- Topbar -->
                 <?php include 'partials/topbar.php'; ?>
                 <!-- End of Topbar -->
