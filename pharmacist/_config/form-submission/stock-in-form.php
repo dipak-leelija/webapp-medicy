@@ -379,6 +379,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $subTotal = floatval(00.00);
                 $itemIds    = $_POST['productId'];
                 $itemBillNo    = $_POST['distributor-bill'];
+                $distributorId = $distributorId;
                 $itemBatchNo    = $updtBatchNoArry;
                 // $stokInId = $stokInid;
                 
@@ -592,6 +593,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="justify-content-center print-sec d-flex my-5">
         <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
         <button class="btn btn-primary shadow mx-2" onclick="back()">Add New</button>
+        <button class="btn btn-primary shadow mx-2" id="<?php echo $distributorId ?>" value="<?php echo $itemBillNo ?>" onclick="goBack('<?php echo $distributorId ?>','<?php echo $itemBillNo ?>', this.id, this.value)">Go Back</button>
         <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
     </div>
     </div>
@@ -601,6 +603,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script>
 const back = () => {
     window.location.replace("../../../pharmacist/stock-in.php")
+}
+
+const goBack = (id, value) =>{
+    console.log(id);
+    console.log(value);
+    location.href=`../../stock-in-edit.php?edit=${value}&editId=${id}`;
 }
 </script>
 

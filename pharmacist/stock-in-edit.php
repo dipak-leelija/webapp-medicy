@@ -625,7 +625,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <p>GST :
                                             <input class="summary-inp" name="totalGst" id="gst-val" type="text" value="<?php if ($edit == TRUE) {
                                                                                                                             echo $stockIn[0]['gst'];
-                                                                                                                        } ?>" readonly>
+                                                                                                                    } ?>" readonly>
                                         </p>
                                     </div>
                                     <div class="col-sm-6 col-md-3  d-flex justify-content-start">

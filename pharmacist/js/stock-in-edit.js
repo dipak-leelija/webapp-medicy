@@ -26,7 +26,7 @@ const customClick = (id, value1, value2, value3) => {
             var gstPerItem  = parseFloat(dataObject.GstAmount);
             var totalAmnt   = parseFloat(dataObject.amnt);
 
-            var slno = 1;
+            // var slno = 5;
             var itemQty = totalItmQty;
             gstPerItem = gstPerItem.toFixed(2);
             var total = totalAmnt.toFixed(2);
@@ -825,7 +825,6 @@ const setMfdMonth = (month) => {
         }
     }
 }
-
 
 
 const setMfdYear = (year) => {
