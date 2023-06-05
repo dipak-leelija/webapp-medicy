@@ -92,6 +92,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $expDate            = $_POST['expDate'];
 
         $crrntDt = date("d-m-Y");
+
+        // ===================================== CHECKING ===========================================    
+    
     }
 
     $addStockIn  = FALSE;
@@ -141,6 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $looselyPrice       = '';
             $addedOn            = date("Y-m-d h:m:s");
 
+
             $looselyPrice = '';
 
             if ($unit == "tab" || $unit == "cap") {
@@ -175,50 +179,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST['update'])) {
 
                 $purchaseId         = array_shift($_POST['purchaseId']);
-
+                
                 if ($purchaseId != null) {
 
-                    $selectStockInDetail = $StockInDetails->showStockInDetailsByStokinId($purchaseId);
-                    // print_r($selectStockInDetail);
-                    foreach ($selectStockInDetail as $stockDetailsData) {
-                        $stokInDetaislId = $stockDetailsData["id"];
-                        $QTY = $stockDetailsData["qty"];
-                        $FreeQTY = $stockDetailsData["free_qty"];
-                        $LooseCount = $stockDetailsData["loosely_count"];
-                        $Weightage = $stockDetailsData["weightage"];
-                        $Unit = $stockDetailsData["unit"];
+                    $selectStockInDetails = $StockInDetails->showStockInDetailsByStokinId($purchaseId);
+                    
+                    foreach($selectStockInDetails as $prevStockInDetails){
+                        $prevStockInQty = $prevStockInDetails['qty'];
+                        $prevStockInfreeQty = $prevStockInDetails['free_qty'];
+                        $prevStockInLQty = $prevStockInDetails['loosely_count'];
                     }
 
-                    $QTY = - ($qty - $QTY);
-                    $FreeQTY = - ($freeQty - $FreeQTY);
-
-                    $totalQty = $QTY + $FreeQTY;
-
-                    $selectCurrentStockDetaisl = $CurrentStock->showCurrentStockbyStokInId($stokInDetaislId);
-
-                    // print_r($selectCurrentStockDetaisl);
-
-                    foreach ($selectCurrentStockDetaisl as $currentStockData) {
-
-                        $newQuantity = $currentStockData["qty"];
-                        $newLCount = $currentStockData["loosely_count"];
-                    }
-
-                    $newQuantity = $totalQty;
+                    $newQuantity = intval($freeQty) + intval($qty);
 
                     if ($unit == "tab" || $unit == "cap") {
-                        $looselyCount = $weightage * $newQuantity;
+                        $newLooselyCount = $weightage * $newQuantity;
                     }
 
-                    // $newLCount = $newLCount + (- ($newLCount - $looselyCount));
-
-                    // ================== eof data fetch ======================
-
                     $updateStokInDetails = $StockInDetails->updateStockInDetailsById($purchaseId, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy, $addedOn);
+                
+        // ==================================== current stock update area ===============================
+
+                    $stokInDetaislId = $purchaseId;
+                    $selectCurrentStockDetaisl = $CurrentStock->showCurrentStockbyStokInId($stokInDetaislId);
+
+                    foreach ($selectCurrentStockDetaisl as $currentStockData) {
+                        $Quantity   = $currentStockData["qty"];
+                        $LCount     = $currentStockData["loosely_count"];
+                    }
+
+                    $UpdatedQuantity = intval($newQuantity) - ((intval($prevStockInQty) + intval($prevStockInfreeQty)) - intval($Quantity));
+                    $UpdatedLQantity = intval($newLooselyCount)-(intval($prevStockInLQty)-intval($LCount));
 
                     //update current stock
 
-                    $updateCurrentStock = $CurrentStock->updateStockByStokinDetailsId($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $newQuantity, $newLCount, $mrp, $ptr);
+                    $updateCurrentStock = $CurrentStock->updateStockByStokinDetailsId($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $UpdatedQuantity, $UpdatedLQantity, $mrp, $ptr);
+
                 } else {
 
                     //select star form stok in by $distributorBill

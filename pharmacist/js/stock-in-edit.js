@@ -26,7 +26,9 @@ const customClick = (id, value1, value2, value3) => {
             var gstPerItem  = parseFloat(dataObject.GstAmount);
             var totalAmnt   = parseFloat(dataObject.amnt);
 
-            // var slno = 5;
+            var slno = id;
+            slno = slno.replace(/\D/g, '');
+            console.log(slno);
             var itemQty = totalItmQty;
             gstPerItem = gstPerItem.toFixed(2);
             var total = totalAmnt.toFixed(2);
@@ -44,6 +46,7 @@ const customClick = (id, value1, value2, value3) => {
             manuf = manuf.replace(/&lt/g, "<");
             manuf = manuf.replace(/&gt/g, ">");
 
+            var totalQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
             // //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
 
             document.getElementById("purchase-id").value = dataObject.purchaseId;
@@ -69,11 +72,12 @@ const customClick = (id, value1, value2, value3) => {
             document.getElementById("ptr").value = dataObject.ptr;
             document.getElementById("qty").value = dataObject.qty;
             document.getElementById("free-qty").value = dataObject.FreeQty;
-            // document.getElementById("packaging-type").value = dataObject.packageType;
+            document.getElementById("updtQTYS").value = totalQty;
             document.getElementById("packaging-type-edit").value = dataObject.packageType;
 
             document.getElementById("discount").value = dataObject.disc;
             document.getElementById("gst").value = dataObject.gst;
+            document.getElementById("crntGstAmnt").value = dataObject.GstAmount;
             document.getElementById('base').value = dataObject.baseAmount;
             document.getElementById("bill-amount").value = dataObject.amnt;
             document.getElementById("temp-bill-amount").value = dataObject.amnt;
@@ -82,8 +86,8 @@ const customClick = (id, value1, value2, value3) => {
 
             //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
             
-            row.parentNode.removeChild(row);
-
+            // row.parentNode.removeChild(row);
+            
             deleteData(slno, itemQty, gstPerItem, total);
         }
     })
@@ -310,9 +314,9 @@ const getBillAmount = () => {
 
     updtGstAmt = parseFloat(qtys) * parseFloat(updtBasePrice) * parseFloat(gstVal);
 
-    document.getElementById("crntGstAmnt").value = updtGstAmt;
+    document.getElementById("crntGstAmnt").value = updtGstAmt.toFixed(2);
 
-    console.log("GST AMNT => ", updtGstAmt);
+    console.log("GST AMNT => ", updtGstAmt.toFixed(2));
     //eof gst calculetion after edit data ---------------
 
 } //eof getBillAmount function
@@ -359,6 +363,7 @@ const addData = () => {
     var ptr = document.getElementById("ptr");
     var qty = document.getElementById("qty");
     var freeQty = document.getElementById("free-qty");
+    
     var discount = document.getElementById("discount");
     var gst = document.getElementById("gst");
     var base = document.getElementById("base");
@@ -367,6 +372,9 @@ const addData = () => {
     var purchaseId = document.getElementById("purchase-id");
     var crntGstAmount = document.getElementById("crntGstAmnt");
     var itemQty = document.getElementById("updtQTYS").value;
+    
+    
+    // alert("gst : ",gst);
 
     
 
@@ -593,7 +601,7 @@ const addData = () => {
                                                                                             jQuery("#dataBody")
                                                                                                 .append(`<tr id="table-row-${slno}">
             <td style="color: red; padding-top:1.2rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
-            <td style="font-size:.8rem ; padding-top:1.2rem"scope="row" hidden>${slno}</td>
+            <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
             <td class="pt-3" hidden>
                 <input class="table-data w-12r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
             </td>
@@ -781,6 +789,7 @@ const addData = () => {
 
 
 function deleteData(slno, itemQty, gstPerItem, total) {
+    alert(slno);
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;

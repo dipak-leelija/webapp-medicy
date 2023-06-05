@@ -388,7 +388,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <input type="number" class="upr-inp" name="gst" id="gst" readonly>
                                                 </div>
 
-                                                <div class="d-none col-md-4 mt-2">
+                                                <div class="col-md-4 mt-2">
                                                     <label class="mb-0" for="discount">Gst Amnt.</label>
                                                     <input type="number" class="upr-inp" name="crntGstAmnt" id="crntGstAmnt">
                                                 </div>
@@ -445,6 +445,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                                                             } ?>" id="dynamic-id" style="display:none">
                                                 </th>
                                                 <th scope="col" hidden>StockInDetaislId</th>
+                                                <th scope="col"></th>
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">MFD.</th>
@@ -483,7 +484,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                             </i>
                                                         </td>
 
-                                                        <td style="font-size:.8rem ; padding-top:1.2rem" scope="row" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no']?>', this.id, this.value1, this.value2, this.value3)" hidden><?php echo $slno ?>
+                                                        <td style="font-size:.8rem ; padding-top:1.2rem" scope="row" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no']?>', this.id, this.value1, this.value2, this.value3)"><?php echo $slno ?>
                                                         </td>
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" hidden>

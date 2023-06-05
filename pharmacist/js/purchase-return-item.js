@@ -508,7 +508,6 @@ function addData() {
     if (appendData() === true) {
 
 
-
         if (slno > 1) {
             let id = document.getElementById("items-qty");
             let newId = parseFloat(id.value) + 1;
