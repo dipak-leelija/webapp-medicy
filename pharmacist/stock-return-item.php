@@ -280,7 +280,7 @@ $showDistributor       = $Distributor->showDistributor();
 
                     <!--=========================== Show Bill Items ===========================-->
                     <div class="card shadow mb-4">
-                        <form action="_config\form-submission\stock-return.php" method="post">
+                        <form action="_config\form-submission\stock-return-form.php" method="post">
                             <div class="card-body stock-in-summary">
                                 <div class="table-responsive">
 

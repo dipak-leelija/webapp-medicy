@@ -9,79 +9,111 @@
     <link href="../../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../vendor/product-table/dataTables.bootstrap4.css">
+    
 </head>
 
 <body>
 
     <?php
-require_once "../../php_control/stockReturn.class.php";
+    require_once "../../php_control/stockReturn.class.php";
 
 
-$StockReturn    = new StockReturn();
+    $StockReturn    = new StockReturn();
 
-$today = date("Y-m-d");
-$value1 = date("Y-m-d");
-$value2 = date("Y-m-d");
+    $today = date("Y-m-d");
+    $value1 = date("Y-m-d");
+    $value2 = date("Y-m-d");
 
-if ($_GET['table'] !== null && $_GET['value'] !== null) {
+    if ($_GET['table'] !== null && $_GET['value'] !== null) {
 
-    // print_r($_GET['table']); echo "<br>";
-    // print_r($_GET['value']); echo "<br>";
+        echo "<br>Table : ";
+        print_r($_GET['table']);
+        echo "<br>Value : ";
+        print_r($_GET['value']);
 
-    $table = ($_GET['table']);
-    $value = ($_GET['value']); 
+        $table = ($_GET['table']);
+        $value = ($_GET['value']);
 
-    // echo $table;
-    // echo $value;
+        echo "<br>Table Name : $table";
+        echo "<br>Table Value : $value";
 
-    // if($table == 'added_by' || $table == 'distributor_id' || $table == 'refund_mode' ){
-        
-    //     $data1 = $StockReturn->stockReturnFilter($table, $value);
-    //     $data = $data1;
-    // }elseif($table == 'added_on'){
-    //     if($value == 'T'){
-    //         $fromDate = date("Y-m-d");
-    //         $toDate = date("Y-m-d");
-    //     }elseif($value == 'Y'){
-    //         $fromDate = date("Y-m-d", strtotime("yesterday"));
-    //         $toDate = date("Y-m-d", strtotime("yesterday"));
-    //     }elseif($value == 'LW'){
-    //         $fromDate = date("Y-m-d", strtotime("-7 days"));
-    //         $toDate = date("Y-m-d");
-    //     }elseif($value == 'LM'){
-    //         $fromDate = date("Y-m-d", strtotime("-30 days"));
-    //         $toDate = date("Y-m-d");
-    //     }elseif($value == 'LQ'){
-    //         $fromDate = date("Y-m-d", strtotime("-90 days"));
-    //         $toDate = date("Y-m-d");
-    //     }
-    //     elseif($value == 'CFY'){
-    //         $fromDate = date("Y-01-01", strtotime("-90 days"));
-    //         $toDate = date("Y-m-d");
-    //     }elseif($value == 'PFY'){
-    //         $year = date("Y")-1;
-    //         $fromDate = date("$year-01-01");
-    //         $toDate = date("$year-12-31");
-    //     }
-    //     // elseif($value == 'CR'){
-    //     //     if ($_GET['fromDate'] != null && $_GET['toDate'] != null){
-    //     //         $fromDate = $_GET['fromDate'];
-    //     //         $toDate = $_GET['toDate'];
-    //     //     } 
-    //     // }
-    
-    //     // echo $fromDate;
-    //     // echo $toDate;
-    //     $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
-    //     $data = $data2;
+        if ($table == 'added_by' || $table == 'distributor_id' || $table == 'refund_mode') {
+            $n = 1;
+        } elseif ($table == 'added_on' && $value != 'CR') {
+            $n = 2;
+        }elseif ($table == 'added_on' && $value == 'CR') {
+            $n = 3;
+        }
 
-        $data = $StockReturn->stockReturnFilter($_GET['table'], $_GET['value']);
+        // echo "<br>check switch : $n";
+
+        switch ($n) {
+            case 1:
+                echo "<br>this is case 1";
+                $data1 = $StockReturn->stockReturnFilter($table, $value);
+                $data = $data1;
+                break;
+            case 2:
+                echo "<br>this is case 2";
+                if ($value == 'T') {
+                    $fromDate = date("Y-m-d");
+                    $toDate = date("Y-m-d");
+                } elseif ($value == 'Y') {
+                    $fromDate = date("Y-m-d", strtotime("yesterday"));
+                    $toDate = date("Y-m-d", strtotime("yesterday"));
+                } elseif ($value == 'LW') {
+                    $fromDate = date("Y-m-d", strtotime("-7 days"));
+                    $toDate = date("Y-m-d");
+                } elseif ($value == 'LM') {
+                    $fromDate = date("Y-m-d", strtotime("-30 days"));
+                    $toDate = date("Y-m-d");
+                } elseif ($value == 'LQ') {
+                    $fromDate = date("Y-m-d", strtotime("-90 days"));
+                    $toDate = date("Y-m-d");
+                } elseif ($value == 'CFY') {
+                    $crntYear = date("Y");
+                    $crntMnth = date("m");
+                    if ($crntMnth < 4) {
+                        $yr = $crntYear - 1;
+                        $fromDate = date("$yr-04-01");
+                        $toDate = date("Y-m-d");
+                    } else {
+                        $fromDate = date("Y-04-01");
+                        $toDate = date("Y-m-d");
+                    }
+                } elseif ($value == 'PFY') {
+                    $crntYear = date("Y");
+                    $crntMnth = date("m");
+                    $yr = $crntYear - 1;
+                    if ($crntMnth < 4) {
+                        $frmYr = $crntYear - 2;
+                        $toYr = $crntYear - 1;
+                        $fromDate = date("$frmYrr-04-01");
+                        $toDate = date("$toYr-03-31");
+                    } else {
+                        $frmYr = $crntYear - 1;
+                        $toYr = $crntYear;
+                        $fromDate = date("$frmYr-04-01");
+                        $toDate = date("$toYr-03-31");
+                    }
+                } 
+
+                echo "<br>from date : $fromDate";
+                echo "<br>to date : $toDate";
+
+                $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
+                $data = $data2;
+                break;
+            case 3:
+                echo "<br>this is case 3";
+            default:
+                echo "<br>default case";
+        }
         print_r($data);
     }
 
     ?>
-    <table class="table table-sm table-hover" id="dataTable" width="100%"
-        cellspacing="0">
+    <table class="table table-sm table-hover" id="dataTable" width="100%" cellspacing="0">
         <thead class="bg-primary text-light">
             <tr>
                 <th>Return Id</th>
@@ -95,33 +127,33 @@ if ($_GET['table'] !== null && $_GET['value'] !== null) {
         </thead>
         <tbody>
             <?php
-        
-if (count($data) >0) {
-    foreach ($data as $row) {
-    echo '<tr>
-    <td>'.$row['id'].'</td>
-    <td>'.$row['distributor_id'].'</td>
-    <td>'.$row['return_date'].'</td>
-    <td>'.$row['added_on'].'</td>
-    <td>'.$row['added_by'].'</td>
-    <td>'.$row['refund_mode'].'</td>
-    <td>'.$row['refund_amount'].'</td>
-</tr>';    
-}
-}else{
-    echo '<tr>
+
+            if (count($data) > 0) {
+                foreach ($data as $row) {
+                    echo '<tr>
+    <td>' . $row['id'] . '</td>
+    <td>' . $row['distributor_id'] . '</td>
+    <td>' . $row['return_date'] . '</td>
+    <td>' . $row['added_on'] . '</td>
+    <td>' . $row['added_by'] . '</td>
+    <td>' . $row['refund_mode'] . '</td>
+    <td>' . $row['refund_amount'] . '</td>
+</tr>';
+                }
+            } else {
+                echo '<tr>
             <td>No Data</td>
          </tr>';
-}
+            }
 
-        ?>
+            ?>
         </tbody>
     </table>
     <?php
-// }
+    // }
 
 
-?>
+    ?>
 
 
     <!-- Bootstrap core JavaScript-->

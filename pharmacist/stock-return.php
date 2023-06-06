@@ -51,6 +51,8 @@ $today = date("m-d-Y");
     <!-- Datatable Style CSS -->
     <link href="vendor/product-table/dataTables.bootstrap4.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </head>
 
@@ -88,7 +90,7 @@ $today = date("m-d-Y");
                                     <label for="">Filter By:</label>
 
                                 </div>
-                                
+
                                 <div class="col-md-3 col-12">
                                     <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
                                         <option value="" disabled selected>Select Duration</option>
@@ -133,6 +135,17 @@ $today = date("m-d-Y");
                                 <div class="col-md-2 col-6 text-right">
                                     <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i class="fas fa-plus"></i></a>
                                 </div>
+                            </div>
+
+                            <div id="hiddenDiv" class="hidden" style="display: none;">
+                                <div id=" date-range-container">
+                                    <label for="start-date">Start Date:</label>
+                                    <input type="date" id="from-date" name="from-date">
+                                    <label for="end-date">End Date:</label>
+                                    <input type="date" id="to-date" name="to-date">
+                                    <button class="btn btn-primary" name="datePicker" id="datePicker" type="submit" onclick="returnDate()" style="height: 2rem;">Go</button>
+                                </div>
+
                             </div>
 
                             <!-- <from> 
@@ -262,26 +275,49 @@ $today = date("m-d-Y");
         <!--End of Logout Modal-->
 
         <script>
+
+            //================ CALENDER TABLE DATA CONTROL =======================
             const returnFilter = (t) => {
+
                 let table = t.id;
                 let data = t.value;
 
-                var xmlhttp = new XMLHttpRequest();
-
-                // ============== Check Existence ==============
-                filterUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}`;
-                // alert(url);
-                xmlhttp.open("GET", filterUrl, false);
-                xmlhttp.send(null);
-                document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
-
-
-                // return function(val){
-                //     val = t.value;
-
-                // }
+                showHiddenDiv(table,data);
 
             }
+
+            //========================= DATE PICKER DIV CONTROL =======================
+
+            const showHiddenDiv = (table,data) => {
+                
+                var xmlhttp = new XMLHttpRequest();
+
+                if(data == 'CR'){
+
+                    var div = document.getElementById('hiddenDiv');
+                    div.style.display = 'block';
+
+                }
+
+                alert("check3",table);
+                alert("check3",data);
+
+                if(table == 'added_on' && data != 'CR'){
+
+                    var div = document.getElementById('hiddenDiv');
+                    div.style.display = 'none';
+
+                    
+
+                    filterUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}`;
+                    xmlhttp.open("GET", filterUrl, false);
+                    xmlhttp.send(null);
+                    document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
+                }
+                    
+                
+            }// =============== EOF DATE PICKER DIV CONTROL =====================
+
 
             const returnDate = () => {
                 let data1 = document.getElementById("fromDate").value;
@@ -297,6 +333,7 @@ $today = date("m-d-Y");
                 document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
 
             }
+
         </script>
 
         <!-- Bootstrap core JavaScript-->

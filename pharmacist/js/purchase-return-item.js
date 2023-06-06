@@ -58,7 +58,6 @@ const setMode = (returnMode) => {
     document.getElementById("refund-mode").value = returnMode;
 }
 
-
 const getDtls = (batchNo, productId, productName, billdate) => {
 
     document.getElementById('batch-number').value = batchNo;

@@ -12,9 +12,6 @@ require_once '../../../php_control/idsgeneration.class.php';
 require_once '../../../php_control/currentStock.class.php';
 
 
-
-
-
 //  INSTANTIATING CLASS
 $HelthCare       = new HelthCare();
 $StockReturn     = new StockReturn();
