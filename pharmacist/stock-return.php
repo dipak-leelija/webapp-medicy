@@ -139,13 +139,12 @@ $today = date("m-d-Y");
 
                             <div id="hiddenDiv" class="hidden" style="display: none;">
                                 <div id=" date-range-container">
-                                    <label for="start-date">Start Date:</label>
+                                    <label for="start-date">From Date:</label>
                                     <input type="date" id="from-date" name="from-date">
-                                    <label for="end-date">End Date:</label>
+                                    <label for="end-date">To Date:</label>
                                     <input type="date" id="to-date" name="to-date">
-                                    <button class="btn btn-primary" name="datePicker" id="datePicker" type="submit" onclick="returnDate()" style="height: 2rem;">Go</button>
+                                    <button id="added_on" value="CR" onclick="getDates(this.id, this.value)" style="height: 2rem;">Find</button>
                                 </div>
-
                             </div>
 
                             <!-- <from> 
@@ -275,60 +274,68 @@ $today = date("m-d-Y");
         <!--End of Logout Modal-->
 
         <script>
-
             //================ CALENDER TABLE DATA CONTROL =======================
             const returnFilter = (t) => {
 
                 let table = t.id;
                 let data = t.value;
 
-                showHiddenDiv(table,data);
+                // alert(table);
+                // alert(data);
 
-            }
-
-            //========================= DATE PICKER DIV CONTROL =======================
-
-            const showHiddenDiv = (table,data) => {
-                
                 var xmlhttp = new XMLHttpRequest();
 
-                if(data == 'CR'){
-
-                    var div = document.getElementById('hiddenDiv');
-                    div.style.display = 'block';
-
+                if (table == 'added_on' && data == 'CR') {
+                    // window.alert(table);
+                    // window.alert(data);
+                    showHiddenDiv1();
                 }
 
-                alert("check3",table);
-                alert("check3",data);
-
-                if(table == 'added_on' && data != 'CR'){
-
-                    var div = document.getElementById('hiddenDiv');
-                    div.style.display = 'none';
-
-                    
-
-                    filterUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}`;
+                if (table == 'added_on' && data != 'CR') {
+                    showHiddenDiv2();
+                    let frmDate = 'fdate';
+                    let toDate = 'tdate';
+                    filterUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}&fromDate=${frmDate}&toDate=${toDate}`;
                     xmlhttp.open("GET", filterUrl, false);
                     xmlhttp.send(null);
                     document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
                 }
-                    
-                
-            }// =============== EOF DATE PICKER DIV CONTROL =====================
 
+                if(table != 'added_on'){
+                    let frmDate = 'fdate';
+                    let toDate = 'tdate';
+                    filterUrl2 = `ajax/return.filter.ajax.php?table=${table}&value=${data}&fromDate=${frmDate}&toDate=${toDate}`;
+                    xmlhttp.open("GET", filterUrl2, false);
+                    xmlhttp.send(null);
+                    document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
+                }
+            }
 
-            const returnDate = () => {
-                let data1 = document.getElementById("fromDate").value;
-                let data2 = document.getElementById("toDate").value;
+            //========================= DATE PICKER DIV CONTROL =======================
+            const showHiddenDiv1 = () => {
+                var div = document.getElementById('hiddenDiv');
+                div.style.display = 'block';
+            }
 
+            const showHiddenDiv2 = () => {
+                var div = document.getElementById('hiddenDiv');
+                div.style.display = 'none';
+            }
+            // =============== EOF DATE PICKER DIV CONTROL =====================
+
+            const getDates = (id, val) => {
+                let frmDate = document.getElementById("from-date").value;
+                let toDate = document.getElementById("to-date").value;
+                let table = id;
+                let data = val;
+                // window.alert(table);
+                // window.alert(data);
                 var xmlhttp = new XMLHttpRequest();
 
                 // ============== Date Range ==============
-                dateRangeUrl = `ajax/return.filter.ajax.php?fromDate=${data1}&toDate=${data2}`;
-                // alert(url);
-                xmlhttp.open("GET", fromDateUrl, false);
+                dateRangeUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}&fromDate=${frmDate}&toDate=${toDate}`;
+                // alert(dateRangeUrl);
+                xmlhttp.open("GET", dateRangeUrl, false);
                 xmlhttp.send(null);
                 document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
 

@@ -24,18 +24,17 @@
     $value1 = date("Y-m-d");
     $value2 = date("Y-m-d");
 
-    if ($_GET['table'] !== null && $_GET['value'] !== null) {
-
-        echo "<br>Table : ";
-        print_r($_GET['table']);
-        echo "<br>Value : ";
-        print_r($_GET['value']);
-
+    if ($_GET['table'] !== null && $_GET['value'] !== null && $_GET['fromDate'] !== null && $_GET['toDate'] !== null) {
+        
         $table = ($_GET['table']);
         $value = ($_GET['value']);
+        $from_date = ($_GET['fromDate']);
+        $to_date = ($_GET['toDate']);
 
         echo "<br>Table Name : $table";
         echo "<br>Table Value : $value";
+        echo "<br>From Date : $from_date";
+        echo "<br>To Date : $to_date";
 
         if ($table == 'added_by' || $table == 'distributor_id' || $table == 'refund_mode') {
             $n = 1;
@@ -49,12 +48,12 @@
 
         switch ($n) {
             case 1:
-                echo "<br>this is case 1";
+                // echo "<br>this is case 1";
                 $data1 = $StockReturn->stockReturnFilter($table, $value);
                 $data = $data1;
                 break;
             case 2:
-                echo "<br>this is case 2";
+                // echo "<br>this is case 2";
                 if ($value == 'T') {
                     $fromDate = date("Y-m-d");
                     $toDate = date("Y-m-d");
@@ -98,18 +97,27 @@
                     }
                 } 
 
-                echo "<br>from date : $fromDate";
-                echo "<br>to date : $toDate";
+                // echo "<br>from date : $fromDate";
+                // echo "<br>to date : $toDate";
 
                 $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
                 $data = $data2;
                 break;
             case 3:
-                echo "<br>this is case 3";
+                // echo "<br>this is case 3";
+                $fromDate = $from_date;
+                $toDate = $to_date;
+                if($fromDate <= $toDate){
+                    $data3 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
+                    $data = $data3;
+                }else{
+                    echo "DATE RANGE IS NOT ACCURATE";
+                }
+                break;
             default:
                 echo "<br>default case";
         }
-        print_r($data);
+        // print_r($data);
     }
 
     ?>
