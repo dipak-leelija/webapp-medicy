@@ -53,12 +53,9 @@ if (isset($_POST['stock-return-edit'])) {
     $returnQty              = $_POST['return-qty'];
     $CurrentrefundAmount    = $_POST['refund-amount'];
 
-    // echo $stockReturnId, "&nbsp&nbsp", $distributorId, "&nbsp&nbsp", $distributorName, "&nbsp&nbsp", $returnDate, "&nbsp&nbsp", $refundMode, "&nbsp&nbsp", $itemQty, "&nbsp&nbsp", $totalRefundItemsQty, "&nbsp&nbsp", $returnGst, "&nbsp&nbsp", $refund, "&nbsp&nbsp", $addedBy;
-    // echo "<br>";
 
     // print_r($stockReturnDetailsId);
     // echo "<br>";
-    // //------------
     // print_r($productId);
     // echo "<br>";
     // print_r($productName);
@@ -87,7 +84,7 @@ if (isset($_POST['stock-return-edit'])) {
     // echo "<br>";
     // print_r($returnQTY);
     // echo "<br><br>";
-
+// exit;
     //================== Updating Stock Return tabele hear ========================================
 
     $addedTime = date("h:i:sa");

@@ -9,38 +9,41 @@
     <link href="../../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../vendor/product-table/dataTables.bootstrap4.css">
-    
+
 </head>
 
 <body>
 
     <?php
     require_once "../../php_control/stockReturn.class.php";
+    require_once "../../php_control/distributor.class.php";
 
 
     $StockReturn    = new StockReturn();
+    $Distributor = new Distributor();
+
 
     $today = date("Y-m-d");
     $value1 = date("Y-m-d");
     $value2 = date("Y-m-d");
 
     if ($_GET['table'] !== null && $_GET['value'] !== null && $_GET['fromDate'] !== null && $_GET['toDate'] !== null) {
-        
+
         $table = ($_GET['table']);
         $value = ($_GET['value']);
         $from_date = ($_GET['fromDate']);
         $to_date = ($_GET['toDate']);
 
-        echo "<br>Table Name : $table";
-        echo "<br>Table Value : $value";
-        echo "<br>From Date : $from_date";
-        echo "<br>To Date : $to_date";
+        // echo "<br>Table Name : $table";
+        // echo "<br>Table Value : $value";
+        // echo "<br>From Date : $from_date";
+        // echo "<br>To Date : $to_date";
 
         if ($table == 'added_by' || $table == 'distributor_id' || $table == 'refund_mode') {
             $n = 1;
         } elseif ($table == 'added_on' && $value != 'CR') {
             $n = 2;
-        }elseif ($table == 'added_on' && $value == 'CR') {
+        } elseif ($table == 'added_on' && $value == 'CR') {
             $n = 3;
         }
 
@@ -95,7 +98,7 @@
                         $fromDate = date("$frmYr-04-01");
                         $toDate = date("$toYr-03-31");
                     }
-                } 
+                }
 
                 // echo "<br>from date : $fromDate";
                 // echo "<br>to date : $toDate";
@@ -107,11 +110,11 @@
                 // echo "<br>this is case 3";
                 $fromDate = $from_date;
                 $toDate = $to_date;
-                if($fromDate <= $toDate){
+                if ($fromDate <= $toDate) {
                     $data3 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
                     $data = $data3;
-                }else{
-                    echo "DATE RANGE IS NOT ACCURATE";
+                } else {
+                    echo "DATE RANGE IS NOT ACCURATE"; 
                 }
                 break;
             default:
@@ -131,29 +134,44 @@
                 <th>Entry By</th>
                 <th>Payment Mode</th>
                 <th>Amount</th>
+                <th class="text-center">Action</th>
             </tr>
         </thead>
         <tbody>
             <?php
 
             if (count($data) > 0) {
-                foreach ($data as $row) {
-                    echo '<tr>
-    <td>' . $row['id'] . '</td>
-    <td>' . $row['distributor_id'] . '</td>
-    <td>' . $row['return_date'] . '</td>
-    <td>' . $row['added_on'] . '</td>
-    <td>' . $row['added_by'] . '</td>
-    <td>' . $row['refund_mode'] . '</td>
-    <td>' . $row['refund_amount'] . '</td>
-</tr>';
-                }
-            } else {
-                echo '<tr>
-            <td>No Data</td>
-         </tr>';
-            }
+                // print_r($data);
+                foreach ($data as $row) { 
+                    $distId = $row['distributor_id'];
+                    $distributorData = $Distributor->showDistributorById($distId);
+                    // print_r($distData);
+                    foreach($distributorData as $distData){
+                        $distName = $distData['name'];
+                    }
 
+                    ?>
+    <tr>
+        <td><?php echo $row['id'] ?></td>
+        <td><?php echo $distName ?></td>
+        <td><?php echo $row['return_date'] ?></td>
+        <td><?php echo $row['added_on'] ?></td>
+        <td><?php echo $row['added_by'] ?></td>
+        <td><?php echo $row['refund_mode'] ?></td>
+        <td><?php echo $row['refund_amount'] ?></td>
+        <td >
+            <a href="stock-return-edit.php?returnId='<?php echo $row['id'] ?>'" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
+            <a class="text-danger ml-2" onclick="cancelPurchaseReturn('<?php echo $row['id'] ?>', this)" ><i class="fas fa-window-close"></i></a>
+        </td>
+    </tr>
+    <?php
+                }
+            } else { ?>
+        <tr>
+            <td> <?php echo "No Data" ?></td>
+         </tr>
+         <?php
+            }
             ?>
         </tbody>
     </table>

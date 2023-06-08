@@ -51,6 +51,15 @@ class StockInDetails extends DatabaseConnection{
         return $data;
     }//eof showStockInDetails function
 
+    function showStockInDetailsByStokId($StockId){
+        $select = " SELECT * FROM `stock_in_details` WHERE  `stock_in_details`.`stokIn_id`= '$StockId'";
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof showStockInDetails function
+
 
     function showStockInDetailsById($DistBill){
         $select = " SELECT * FROM `stock_in_details` WHERE  `stock_in_details`.`distributor_bill`= '$DistBill'";

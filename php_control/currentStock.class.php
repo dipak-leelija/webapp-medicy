@@ -34,6 +34,16 @@ class CurrentStock extends DatabaseConnection{
     }//eof incrementCurrentStock function 
 
 
+// ========================== CURRENT STOCK UPDATE AFTER PURCHASE RETURN =============================
+
+    function updateStockBStockDetialsId($stockInDetailsId, $newQuantity, $newLCount){
+        $sale = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count` = '$newLCount' WHERE `stock_in_details_id` = '$stockInDetailsId'";
+        $res = $this->conn->query($sale);
+        return $res;
+    }//eof updateStock
+
+// ========================== END OF CURRENT STOCK UPDATE AFTER PURCHASE RETURN =============================
+
 
     function updateStock($productId, $batchNo, $newQuantity, $newLCount){
         $sale = " UPDATE `current_stock` SET qty = '$newQuantity', loosely_count = '$newLCount' WHERE product_id = '$productId' AND batch_no = '$batchNo'";

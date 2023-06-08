@@ -136,6 +136,7 @@ $today = date("m-d-Y");
                                     <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i class="fas fa-plus"></i></a>
                                 </div>
                             </div>
+                <!-- ============================= date picker div ================================== -->
 
                             <div id="hiddenDiv" class="hidden" style="display: none;">
                                 <div id=" date-range-container">
@@ -143,31 +144,11 @@ $today = date("m-d-Y");
                                     <input type="date" id="from-date" name="from-date">
                                     <label for="end-date">To Date:</label>
                                     <input type="date" id="to-date" name="to-date">
-                                    <button id="added_on" value="CR" onclick="getDates(this.id, this.value)" style="height: 2rem;">Find</button>
+                                    <button class="btn btn-sm btn-primary" id="added_on" value="CR" onclick="getDates(this.id, this.value)" style="height: 2rem;">Find</button>
                                 </div>
                             </div>
 
-                            <!-- <from> 
-                                <div class="row mb-3 ">
-                                    <div class="col-sm-1">
-                                        <label for="starDate">FromDate </label>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="date" id="fromDate" name="frmDate">
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <label for="starDate">To Date </label>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="date" id="toDate" name="toDate">
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <button class="btn btn-primary" name="datePicker" id="datePicker" type="submit" onclick="returnDate()" style="height: 2rem;">Go</button>
-                                         <input type="submit" name="submit" id="submit" onclick="returnDate()"> 
-                                    </div>
-                                </div>
-                            </from> -->
-
+                <!-- ============================ eof date picker div ================================ -->
 
                             <div class="table-responsive" id="filter-table">
                                 <table class="table table-sm table-hover" id="<?php if (count($stockReturnLists) > 10) {
@@ -223,7 +204,6 @@ $today = date("m-d-Y");
                             </div>
                         </div>
                     </div>
-
 
                     <!--=========================== Show Bill Items ===========================-->
 
@@ -301,7 +281,7 @@ $today = date("m-d-Y");
                     document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
                 }
 
-                if(table != 'added_on'){
+                if (table != 'added_on') {
                     let frmDate = 'fdate';
                     let toDate = 'tdate';
                     filterUrl2 = `ajax/return.filter.ajax.php?table=${table}&value=${data}&fromDate=${frmDate}&toDate=${toDate}`;
@@ -330,35 +310,25 @@ $today = date("m-d-Y");
                 let data = val;
                 // window.alert(table);
                 // window.alert(data);
-                var xmlhttp = new XMLHttpRequest();
 
-                // ============== Date Range ==============
-                dateRangeUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}&fromDate=${frmDate}&toDate=${toDate}`;
-                // alert(dateRangeUrl);
-                xmlhttp.open("GET", dateRangeUrl, false);
-                xmlhttp.send(null);
-                document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
-
+                if (frmDate < toDate) {
+                    var xmlhttp = new XMLHttpRequest();
+                    // ============== Date Range ==============
+                    dateRangeUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}&fromDate=${frmDate}&toDate=${toDate}`;
+                    // alert(dateRangeUrl);
+                    xmlhttp.open("GET", dateRangeUrl, false);
+                    xmlhttp.send(null);
+                    document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
+                } else {
+                    // Swal.fire(
+                    //     'Check From Date?',
+                    //     'From Date must be smaller than To Date!',
+                    //     'info'
+                    // )
+                    window.alert("Check From Date. From Date must be smaller than To Date!")
+                }
             }
-
         </script>
-
-        <!-- Bootstrap core JavaScript-->
-        <script src="../assets/jquery/jquery.min.js"></script>
-        <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
-
-        <script src="vendor/product-table/jquery.dataTables.js"></script>
-        <script src="vendor/product-table/dataTables.bootstrap4.js"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
-
-
-        <!-- Page level custom scripts -->
-        <script src="js/demo/datatables-demo.js"></script>
 
         <script>
             const viewReturnItems = (returnId) => {
@@ -406,6 +376,24 @@ $today = date("m-d-Y");
         </script>
 
 
+        <!-- Bootstrap core JavaScript-->
+        <script src="../assets/jquery/jquery.min.js"></script>
+        <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+
+        <script src="vendor/product-table/jquery.dataTables.js"></script>
+        <script src="vendor/product-table/dataTables.bootstrap4.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
+
+
+        <!-- Page level custom scripts -->
+        <script src="js/demo/datatables-demo.js"></script>
+
+        <script src="../js/sweetAlert.min.js"></script>
 </body>
 
 </html>

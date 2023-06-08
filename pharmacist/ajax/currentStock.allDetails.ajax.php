@@ -3,11 +3,10 @@ require_once '../../php_control/currentStock.class.php';
 
 $CurrentStock = new CurrentStock();
 
-if (isset($_GET['product']) && isset($_GET['batch'])) {
-    $batchNo =  $batchNo = $_GET['batch'];
-    $productId = $_GET['product'];
+if (isset($_GET['currentQTY'])) {
+    $stockInDetailsId = $_GET['currentQTY'];
 
-    $currentQty = $CurrentStock->checkStock($productId, $batchNo);
+    $currentQty = $CurrentStock->showCurrentStockbyStokInId($stockInDetailsId);
     if($currentQty == null){
         $qty = 0;
     }else{

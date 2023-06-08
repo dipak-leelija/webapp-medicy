@@ -108,8 +108,8 @@ class StockReturn extends DatabaseConnection{
 #                                                                                                                                 #
 ###################################################################################################################################
 
-function addStockReturnDetails($stockReturnId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $purchaseAmount, $gst, $returnQty, $refundAmount, $addedBy){
-    $sql = "INSERT INTO stock_return_details (`stock_return_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `purchase_amount`, `gst`, `return_qty`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$productId', '$batchNo', '$expDate', '$unit', '$purchaseQty', '$freeQty', '$mrp', '$ptr', '$purchaseAmount', '$gst', '$returnQty', '$refundAmount', '$addedBy')";
+function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $purchaseAmount, $gst, $returnQty, $returnFQty, $refundAmount, $addedBy){
+    $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `purchase_amount`, `gst`, `return_qty`, `return_free_qty`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$stockInDetailsId', '$productId', '$batchNo', '$expDate', '$unit', '$purchaseQty', '$freeQty', '$mrp', '$ptr', '$purchaseAmount', '$gst', '$returnQty', '$returnFQty', '$refundAmount', '$addedBy')";
     $res = $this->conn->query($sql);
     return $res;
 }// eof addStockReturn
@@ -126,6 +126,18 @@ function showStockReturnDetails($returnId){
     }
     return $data;
 }
+
+
+function showStockReturnDataByStokinId($stockInDetailsId){
+    $data = array();
+    $sql  = "SELECT * FROM stock_return_details WHERE `stokIn_details_id` = '$stockInDetailsId'";
+    $res  = $this->conn->query($sql);
+    while ($result = $res->fetch_array()) {
+        $data[] = $result;
+    }
+    return $data;
+}
+
 
 function showStockReturnDetailsById($Id){
     

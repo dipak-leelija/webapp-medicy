@@ -18,9 +18,6 @@ $StockReturn     = new StockReturn();
 $IdGeneration    = new IdGeneration();
 $CurrentStock    =  new CurrentStock();
 
-
-
-
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['stock-return'])) {
         
@@ -34,17 +31,31 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // $billNo          = $_POST['bill-no'];
         $stockReturnId   = $IdGeneration->stockReturnId();
         $itemQty         = $_POST['items-qty'];
-        $totalRefundQty  = $_POST['total-refund-qty'];
+        $totalReturnQty  = $_POST['total-return-qty'];
         $returnGst       = $_POST['return-gst'];
         $refund          = $_POST['refund'];
 
         $addedBy         = $_SESSION['employee_username'];
 
-        $returned = $StockReturn->addStockReturn($stockReturnId, $distributorId, $returnDate, $itemQty, $totalRefundQty, $returnGst, $refundMode, $refund, $addedBy);
+
+        // echo "<br>Distributor Id : "; print_r($distributorId);
+        // echo "<br>Distributor Name : "; print_r($distributorName);
+        // echo "<br>Return Date : "; print_r($returnDate);
+        // echo "<br>Refund Mode : "; print_r($refundMode);
+        // echo "<br>Stock Return Id : "; print_r($stockReturnId);
+        // echo "<br>Item Qantity : "; print_r($itemQty);
+        // echo "<br>Total Return Qantity : "; print_r($totalReturnQty);
+        // echo "<br>Refund GST amount : "; print_r($returnGst);
+        // echo "<br>Refund Amount : "; print_r($refund);
+    
+        
+
+        $returned = $StockReturn->addStockReturn($stockReturnId, $distributorId, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $addedBy);
 
         if($returned === true){
 
             //arrays
+            $stokInDetailsId = $_POST['stok-in-details-id'];
             $productId      = $_POST['productId'];
             $productName    = $_POST['productName'];
             $ids            = count($productId);
@@ -59,26 +70,47 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $purchaseAmount = $_POST['purchase-amount'];
             $gst            = $_POST['gst'];
             $returnQty      = $_POST['return-qty'];
+            $returnFQty     = $_POST['return-free-qty'];
             $refundAmount   = $_POST['refund-amount'];
-            
-            
+
+        // echo "<br><br>";
+        // echo "<br>stokInDetailsId : "; print_r($stokInDetailsId);
+        // echo "<br>Product Id : "; print_r($productId);
+        // echo "<br>Product Name : "; print_r($productName);
+        // echo "<br>Batch No : "; print_r($batchNo);
+        // echo "<br>EXP Date : "; print_r($expDate);
+        // echo "<br>Set Of : "; print_r($setof);
+        // echo "<br>Purchase QTY : "; print_r($purchasedQty);
+        // echo "<br>Free QTY : "; print_r($freeQty);
+        // echo "<br>MRP : "; print_r($mrp);
+        // echo "<br>PTR : "; print_r($ptr);
+        // echo "<br>Purchase Amount : "; print_r($purchaseAmount);
+        // echo "<br>GST : "; print_r($gst);
+        // echo "<br>Return QTY : "; print_r($returnQty);
+        // echo "<br>Return F QTY : "; print_r($returnFQty);
+        // echo "<br>Refund Amount : "; print_r($refundAmount);
+
+
             
             for ($i=0; $i < $ids; $i++) { 
+            
+                $inStock =  $CurrentStock->showCurrentStockbyStokInId($stokInDetailsId[$i]);
+                // echo "<br><br>";
+                // print_r($inStock);
                 
-                $inStock =  $CurrentStock->checkStock($productId[$i], $batchNo[$i]);
-                //print_r($inStock);
-                $newQuantity = $inStock[0]['qty']-$returnQty[$i];
+                $newQuantity = $inStock[0]['qty'] - (intVal($returnQty[$i]) + intval($returnFQty[$i]));
+
                 if($inStock[0]['unit'] == 'tab' || $inStock[0]['unit'] == 'cap'){
-                    $newLCount   = $inStock[0]['loosely_count'] - ($returnQty[$i] * $inStock[0]['weightage']);
+                    $newLCount   = $inStock[0]['loosely_count'] - ((intVal($returnQty[$i]) + intval($returnFQty[$i])) * $inStock[0]['weightage']);
                 }else{
                     $newLCount = $inStock[0]['loosely_count'];
                 }
                 
                 
-                $stockUpdate = $CurrentStock->updateStock($productId[$i], $batchNo[$i], $newQuantity, $newLCount);
+                $stockUpdate = $CurrentStock->updateStockBStockDetialsId($stokInDetailsId[$i], $newQuantity, $newLCount);
             
 
-                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], $purchasedQty[$i], $freeQty[$i], $mrp[$i], $ptr[$i], $purchaseAmount[$i], $gst[$i], $returnQty[$i], $refundAmount[$i], $addedBy);
+                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, $stokInDetailsId[$i], $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], $purchasedQty[$i], $freeQty[$i], $mrp[$i], $ptr[$i], $purchaseAmount[$i], $gst[$i], $returnQty[$i], $returnFQty[$i], $refundAmount[$i], $addedBy);
 
 
                 // echo $productId[$i].'<br>';
@@ -207,7 +239,10 @@ foreach ($showhelthCare as $rowhelthCare) {
                     <small><b>P.Amount</b></small>
                 </div>
                 <div class="col-sm-1">
-                    <small><b>Return</b></small>
+                    <small><b>Return QTY</b></small>
+                </div>
+                <div class="col-sm-1">
+                    <small><b>Return F.QTY</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
                     <small><b>Refund</b></small>
@@ -264,6 +299,9 @@ foreach ($showhelthCare as $rowhelthCare) {
                     <div class="col-sm-1">
                         <small>'.$returnQty[$i].'</small>
                     </div>
+                    <div class="col-sm-1">
+                        <small>'.$returnFQty[$i].'</small>
+                    </div>
                     <div class="col-sm-1 text-end">
                         <small>'.$refundAmount[$i].'</small>
                     </div>';
@@ -317,7 +355,7 @@ foreach ($showhelthCare as $rowhelthCare) {
                     <div class="col-4">
                         <div class="row text-end">
                             <small class="pt-0 mt-0">Total Items <b><?php echo $itemQty;?></b> & Total Units
-                                <b><?php echo $totalRefundQty; ?></b></small>
+                                <b><?php echo $totalReturnQty; ?></b></small>
                         </div>
                         <div class="row text-end mt-1">
                             <h5 class="mb-0 pb-0">Total Refund: <b>₹<?php echo floatval($refund); ?></b></h5>

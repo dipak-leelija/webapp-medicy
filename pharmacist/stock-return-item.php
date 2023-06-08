@@ -142,6 +142,10 @@ $showDistributor       = $Distributor->showDistributor();
                             <div class="row">
                                 <div class="col-md-6 col-12 ">
                                     <div class="row">
+                                        <div class="col-md-6 col-12" hidden>
+                                            <label class="mb-1 mt-3" for="stokInDetailsId">Stock In Detaisl Id :</label>
+                                            <input class="upr-inp mb-1" id="stokInDetailsId" readonly>
+                                        </div>
                                         <div class="col-md-6 col-12">
                                             <label class="mb-1 mt-3" for="batch-number">Batch Number :</label>
                                             <input class="upr-inp mb-1" id="batch-number" readonly>
@@ -220,7 +224,7 @@ $showDistributor       = $Distributor->showDistributor();
                                             <input type="any" class="upr-inp" name="amount" id="amount" readonly>
                                         </div>
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="purchased-qty">Purchased Qty: </label>
+                                            <label class="mb-0 mt-1" for="purchased-qty">Buy Qty: </label>
                                             <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
                                         </div>
 
@@ -229,24 +233,42 @@ $showDistributor       = $Distributor->showDistributor();
                                             <input type="text" class="upr-inp" name="free-qty" id="free-qty">
                                         </div>
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-qty">Current Qty:</label>
+                                            <label class="mb-0 mt-1" for="net-buy-qty">Net Buy Qty:</label>
+                                            <input type="text" class="upr-inp" name="net-buy-qty" id="net-buy-qty">
+                                        </div>
+                                    </div>
+                                    <!-- ent fo third row -->
+
+                                    <!-- Fourth row -->
+                                    <div class="row mt-md-2">
+                                        <div class="col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="current-purchase-qty">Live Buy Qty:</label>
+                                            <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="current-free-qty">Live Free Qty:</label>
+                                            <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="current-qty">Live Net Qty:</label>
                                             <input type="text" class="upr-inp" name="current-qty" id="current-qty">
                                         </div>
                                     </div>
-                                    <!-- end third row  -->
+                                    <!-- end fourth row  -->
 
-                                    <!-- fourth row  -->
+                                    <!-- fifth row  -->
                                     <div class="row mt-md-2">
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="return-qty">Return Qty:</label>
-                                            <input type="text" class="upr-inp focus-border" id="return-qty" value="" name="return-qty" onkeyup="getRefund(this.value);">
-                                                
+                                            <label class="mb-0 mt-1" for="return-qty">Return B.Qty:</label>
+                                            <input type="text" class="upr-inp focus-border" id="return-qty" value="" name="return-qty" onkeyup="getRefund(this.value);">  
                                         </div>
+
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="return-free-qty">Free Qty:</label>
+                                            <label class="mb-0 mt-1" for="return-free-qty">Return F.Qty:</label>
                                             <input type="text" class="upr-inp focus-border" name="return-free-qty"
                                                 id="return-free-qty" value="0">
                                         </div>
+
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="refund-amount">Refund:</label>
                                             <input type="text" class="upr-inp focus-border" name="refund-amount"
@@ -291,6 +313,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <th scope="col">
                                                     <input type="number" value="0" id="dynamic-id" style="display:none">
                                                 </th>
+                                                <th scope="col" hidden>StockInDetailsId</th>
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp</th>
@@ -302,6 +325,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <th scope="col">P.Amount</th>
                                                 <th scope="col">GST</th>
                                                 <th scope="col">Return Qty</th>
+                                                <th scope="col">Return F.Qty</th>
                                                 <th scope="col">Refund</th>
 
                                             </tr>
@@ -342,8 +366,8 @@ $showDistributor       = $Distributor->showDistributor();
                                     </div>
 
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Qty : <input class="summary-inp w-65" name="total-refund-qty"
-                                                id="total-refund-qty" type="text" value="0" readonly> </p>
+                                        <p>Qty : <input class="summary-inp w-65" name="total-return-qty"
+                                                id="total-return-qty" type="text" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
                                         <p>GST : <input class="summary-inp w-65" name="return-gst" id="return-gst"

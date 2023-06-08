@@ -58,8 +58,9 @@ const setMode = (returnMode) => {
     document.getElementById("refund-mode").value = returnMode;
 }
 
-const getDtls = (batchNo, productId, productName, billdate) => {
-
+const getDtls = (stokInDetialsId, batchNo, productId, productName, billdate) => {
+    // alert(stokInDetialsId);
+    document.getElementById('stokInDetailsId').value = stokInDetialsId;
     document.getElementById('batch-number').value = batchNo;
     document.getElementById('product-name').value = productName;
     document.getElementById('bill-date').value = billdate;
@@ -70,7 +71,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
         document.getElementById("product-id").value = productId;
 
         //==================== Expiry Date ====================
-        let expUrl = `ajax/stockIn.all.ajax.php?stock-exp=${batchNo}`;
+        let expUrl = `ajax/stockIn.all.ajax.php?stock-exp=${stokInDetialsId}`;
         // alert(expUrl);
         xmlhttp.open("GET", expUrl, false);
         xmlhttp.send(null);
@@ -78,7 +79,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
         // alert(xmlhttp.responseText);
 
         //==================== Weightage ====================
-        let weatageUrl = `ajax/stockIn.all.ajax.php?weightage=${batchNo}`;
+        let weatageUrl = `ajax/stockIn.all.ajax.php?weightage=${stokInDetialsId}`;
         // alert(url);
         xmlhttp.open("GET", weatageUrl, false);
         xmlhttp.send(null);
@@ -86,7 +87,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
         // alert(xmlhttp.responseText);
 
         //==================== Unit ====================
-        let unitUrl = `ajax/stockIn.all.ajax.php?unit=${batchNo}`;
+        let unitUrl = `ajax/stockIn.all.ajax.php?unit=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
@@ -96,7 +97,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 
         //==================== PTR ====================
-        let ptrUrl = `ajax/stockIn.all.ajax.php?ptr=${batchNo}`;
+        let ptrUrl = `ajax/stockIn.all.ajax.php?ptr=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", ptrUrl, false);
@@ -106,7 +107,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 
         //==================== DISC ====================
-        let discUrl = `ajax/stockIn.all.ajax.php?discount=${batchNo}`;
+        let discUrl = `ajax/stockIn.all.ajax.php?discount=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", discUrl, false);
@@ -116,7 +117,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 
         //==================== GST ====================
-        let gstUrl = `ajax/stockIn.all.ajax.php?gst=${batchNo}`;
+        let gstUrl = `ajax/stockIn.all.ajax.php?gst=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", gstUrl, false);
@@ -126,7 +127,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 
         //==================== Taxable ====================
-        let taxableUrl = `ajax/stockIn.all.ajax.php?taxableUrl=${batchNo}`;
+        let taxableUrl = `ajax/stockIn.all.ajax.php?taxableUrl=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", taxableUrl, false);
@@ -136,7 +137,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 
         //==================== MRP ====================
-        let mrpUrl = `ajax/stockIn.all.ajax.php?mrp=${batchNo}`;
+        let mrpUrl = `ajax/stockIn.all.ajax.php?mrp=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", mrpUrl, false);
@@ -146,7 +147,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 
         //==================== Amount ====================
-        let amountUrl = `ajax/stockIn.all.ajax.php?amount=${batchNo}`;
+        let amountUrl = `ajax/stockIn.all.ajax.php?amount=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", amountUrl, false);
@@ -156,7 +157,7 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 
         //==================== QTY ====================
-        let qtyUrl = `ajax/stockIn.all.ajax.php?purchased-qty=${batchNo}`;
+        let qtyUrl = `ajax/stockIn.all.ajax.php?purchased-qty=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", qtyUrl, false);
@@ -166,16 +167,44 @@ const getDtls = (batchNo, productId, productName, billdate) => {
 
 
         //==================== FREE QTY ====================
-        let freeQtyUrl = `ajax/stockIn.all.ajax.php?free-qty=${batchNo}`;
+        let freeQtyUrl = `ajax/stockIn.all.ajax.php?free-qty=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", freeQtyUrl, false);
         xmlhttp.send(null);
         document.getElementById("free-qty").value = xmlhttp.responseText;
 
+        //==================== NET BUY QTY ====================
+        let netBuyQtyUrl = `ajax/stockIn.all.ajax.php?net-buy-qty=${stokInDetialsId}`;
+        // alert(unitUrl);
+        // window.location.href = unitUrl;
+        xmlhttp.open("GET", netBuyQtyUrl, false);
+        xmlhttp.send(null);
+        document.getElementById("net-buy-qty").value = xmlhttp.responseText;
+
+
+        //==================== LIVE BUY QTY ====================
+        let liveBuyQtyUrl = `ajax/stokReturn.allDetails.ajax.php?current-stock-qty=${stokInDetialsId}`;
+        // alert(currentQtyUrl);
+        // window.location.href = unitUrl;
+        xmlhttp.open("GET", liveBuyQtyUrl, false);
+        xmlhttp.send(null);
+        document.getElementById("current-purchase-qty").value = xmlhttp.responseText;
+        // alert(xmlhttp.responseText);
+
+
+        //==================== LIVE FREE QTY ====================
+        let liveFreeQtyUrl = `ajax/stokReturn.allDetails.ajax.php?current-free-qty=${stokInDetialsId}`;
+        // alert(currentQtyUrl);
+        // window.location.href = unitUrl;
+        xmlhttp.open("GET", liveFreeQtyUrl, false);
+        xmlhttp.send(null);
+        document.getElementById("current-free-qty").value = xmlhttp.responseText;
+        // alert(xmlhttp.responseText);
+
 
         //==================== CURRENT QTY ====================
-        let currentQtyUrl = `ajax/currentStock.allDetails.ajax.php?batch=${batchNo}&product=${productId}`;
+        let currentQtyUrl = `ajax/currentStock.allDetails.ajax.php?currentQTY=${stokInDetialsId}`;
         // alert(currentQtyUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", currentQtyUrl, false);
@@ -282,6 +311,7 @@ const getRefund = (returnQty) => {
 function addData() {
     var distId = document.getElementById("distributor-id");
     //var billNumber = document.getElementById("bill-number");
+    var stokInDetailsId = document.getElementById("stokInDetailsId");
     var batchNumber = document.getElementById("batch-number");
     var billDate = document.getElementById("bill-date");
     var returnMode = document.getElementById("return-mode");
@@ -293,8 +323,7 @@ function addData() {
     // alert(productName);
 
     // return;
-
-
+    
     var expDate = document.getElementById("exp-date");
     var weatage = document.getElementById("weatage");
     var unit = document.getElementById("unit");
@@ -312,7 +341,7 @@ function addData() {
 
     var refundAmount = document.getElementById("refund-amount");
 
-    var qtyVal = document.getElementById("total-refund-qty");
+    var qtyVal = document.getElementById("total-return-qty");
 
 
 
@@ -463,6 +492,9 @@ function addData() {
                     <td  style="color: red;">
                         <i class="fas fa-trash pt-3" onclick="deleteData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
+                    <td class="p-0 pt-3" hidden>
+                        <input class="col table-data w-6r" type="text" name="stok-in-details-id[]" value="${stokInDetailsId.value}" readonly>
+                    </td>
                     <td class="p-0 pt-3">
                         <input class="col table-data w-12r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start;">
                         <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;" hidden>
@@ -495,7 +527,10 @@ function addData() {
                         <input class="col table-data w-4r" type="text" name="gst[]" value="${gst.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value) + parseFloat(returnFreeQty.value)}" readonly>
+                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-8r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly>
                     </td>
                     <td class=" amnt-td p-0 pt-3">
                         <input class="col table-data W-6r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
@@ -516,40 +551,43 @@ function addData() {
             document.getElementById("items-qty").value = slno;
         }
 
-
         if (slno > 1) {
             let Qty = parseInt(qtyVal.value);
 
             let newQty = Qty + parseInt(returnQty.value);
-            document.getElementById("total-refund-qty").value = newQty;
+            document.getElementById("total-return-qty").value = newQty;
 
         } else {
-            document.getElementById("total-refund-qty").value = parseInt(returnQty.value);
+            document.getElementById("total-return-qty").value = parseInt(returnQty.value);
         }
 
         // document.getElementById("demo").innerHTML = await myPromise;
-        productId.value = '';
-        productName = '';
+        document.getElementById("stokInDetailsId").value = '';
+        document.getElementById("product-id").value = '';
+        document.getElementById('product-name').value = '';
 
-        batchNumber.value = '';
-        billDate.value = '';
+        document.getElementById("batch-number").value = '';
+        document.getElementById("bill-date").value = '';
+        document.getElementById("exp-date").value = '';
+        document.getElementById("weatage").value = '';
+        document.getElementById("unit").value = '';
+        
+        document.getElementById("ptr").value = '';
+        document.getElementById("discount").value = '';
+        document.getElementById("gst").value = '';
+        document.getElementById("taxable").value = '';
+        document.getElementById("mrp").value = '';
+        document.getElementById("amount").value = '';
 
-        expDate.value = '';
-        weatage.value = '';
-        unit.value = '';
-        ptr.value = '';
-        discount.value = '';
-        gst.value = '';
-        taxable.value = '';
-        mrp.value = '';
-        amount.value = '';
-        purchasedQty.value = '';
-        freeQty.value = '';
-        currentQty.value = '';
-        returnQty.value = '';
-        returnFreeQty.value = '';
-        refundAmount.value = '';
-    };
+        document.getElementById("purchased-qty").value = '';
+        document.getElementById("free-qty").value = '';
+        document.getElementById("net-buy-qty").value = '';
+        document.getElementById("current-qty").value = '';
+        document.getElementById("return-qty").value = '';
+        document.getElementById("return-free-qty").value = '';
+        document.getElementById("refund-amount").value = '';
+
+    }
 
 } //eof addData  
 
@@ -567,7 +605,7 @@ const deleteData = (slno, itemQty, gstPerItem, total) => {
     items.value = finalItem;
 
     // minus quantity
-    let qty = document.getElementById("total-refund-qty");
+    let qty = document.getElementById("total-return-qty");
     let finalQty = qty.value - itemQty
     qty.value = finalQty;
 

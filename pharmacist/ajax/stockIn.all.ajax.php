@@ -6,8 +6,8 @@ $StockInDetails = new StockInDetails();
 //get expiry date
 if (isset($_GET["stock-exp"])) {
     // echo "error";
-    $batchNo = $_GET["stock-exp"];
-    $stock = $StockInDetails->showStockInByBatch($batchNo);
+    $id = $_GET["stock-exp"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     echo $stock[0]['exp_date'];
     // print_r($stock);
 }
@@ -15,8 +15,8 @@ if (isset($_GET["stock-exp"])) {
 
 //get waitage
 if (isset($_GET["weightage"])) {
-    $batchId = $_GET["weightage"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["weightage"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['weightage'];
     }
@@ -25,8 +25,8 @@ if (isset($_GET["weightage"])) {
 
 //get unit
 if (isset($_GET["unit"])) {
-    $batchId = $_GET["unit"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["unit"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['unit'];
     }
@@ -35,8 +35,8 @@ if (isset($_GET["unit"])) {
 
 //get mrp
 if (isset($_GET["mrp"])) {
-    $batchId = $_GET["mrp"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["mrp"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['mrp'];
     }
@@ -45,8 +45,8 @@ if (isset($_GET["mrp"])) {
 
 //get gst
 if (isset($_GET["gst"])) {
-    $batchId = $_GET["gst"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["gst"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['gst'];
     }
@@ -55,8 +55,8 @@ if (isset($_GET["gst"])) {
 
 //get ptr
 if (isset($_GET["ptr"])) {
-    $batchId = $_GET["ptr"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["ptr"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['ptr'];
     }
@@ -65,8 +65,8 @@ if (isset($_GET["ptr"])) {
 
 //get discount
 if (isset($_GET["discount"])) {
-    $batchId = $_GET["discount"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["discount"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['discount'];
     }
@@ -74,8 +74,8 @@ if (isset($_GET["discount"])) {
 
 //get taxableUrl
 if (isset($_GET["taxableUrl"])) {
-    $batchId = $_GET["taxableUrl"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["taxableUrl"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['gst_amount'];
     }
@@ -84,8 +84,8 @@ if (isset($_GET["taxableUrl"])) {
 
 // get amount
 if (isset($_GET["amount"])) {
-    $batchId = $_GET["amount"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["amount"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['amount'];
     }
@@ -94,8 +94,8 @@ if (isset($_GET["amount"])) {
 
 // get purchased qty
 if (isset($_GET["purchased-qty"])) {
-    $batchId = $_GET["purchased-qty"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["purchased-qty"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['qty'];
     }
@@ -104,10 +104,22 @@ if (isset($_GET["purchased-qty"])) {
 
 // get free-qty
 if (isset($_GET["free-qty"])) {
-    $batchId = $_GET["free-qty"];
-    $stock = $StockInDetails->showStockInByBatch($batchId);
+    $id = $_GET["free-qty"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['free_qty'];
+    }
+}
+
+
+//get net-buy-qty
+if (isset($_GET["net-buy-qty"])) {
+    $id = $_GET["net-buy-qty"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
+    if ($stock > 0) {
+        $fqty =  $stock[0]['free_qty'];
+        $qty = $stock[0]['qty'];;
+        echo $fqty+$qty;
     }
 }
 

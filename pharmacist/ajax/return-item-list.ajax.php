@@ -30,45 +30,45 @@ if (isset($_GET['dist-id'])) {
     <?php
     $distributorId = $_GET['dist-id'];
     $details = $StockIn->stockInByDist($distributorId);
+    // print_r($details);
     foreach ($details as $detail) {
-
         $billDate = $detail['bill_date'];
-        $details = $StockInDetails->showStockInDetailsById($detail['distributor_bill']);
-        foreach ($details as $detail) {
-            $batchNo = $detail['batch_no'];
+        $details = $StockInDetails->showStockInDetailsByStokId($detail['id']);
+        // print_r($details);
+        foreach ($details as $item) {
+            $stokInDetailsId = $item['id'];
+            $batchNo = $item['batch_no'];
+            $productId = $item['product_id'];
+            $ptr = $item['ptr'];
+            $mrp = $item['mrp'];
+            $expDate = $item['exp_date'];
 
-            $items = $StockInDetails->showStockInByBatch($batchNo);
-            foreach ($items as $item) {
-                $productId = $item['product_id'];
-                $ptr = $item['ptr'];
-                $mrp = $item['mrp'];
-                $expDate = $item['exp_date'];
+            $product = $Products->showProductsById($productId);
+            $productName = $product[0]['name'];
 
-                $product = $Products->showProductsById($productId);
-                $productName = $product[0]['name'];
+            $stoks = $CurrentStock->checkStock($productId, $batchNo);
+            // print_r($stoks);
+            if ($stoks != null) {
+                $qantity = $stoks[0]['qty'];
+            } else {
+                $qantity = 0;
+            }
 
-                $stoks = $CurrentStock->checkStock($productId, $batchNo);
-                // print_r($stoks);
-                if($stoks !=null){
-                    $qantity = $stoks[0]['qty'];
-                }else{
-                    $qantity = 0;
-                }
-                
 
     ?>
 
-                <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
-                    <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
-                    <div class="col-4 col-sm-3 mb-0"><?php echo $productName; ?></div>
-                    <div class="col-2 mb-0"><?php echo $expDate; ?></div>
-                    <div class="col-2 mb-0"><?php echo $mrp; ?></div>
-                    <div class="col-2 mb-0"><?php echo $ptr; ?></div>
-                    <div class="col-2 mb-0"><?php echo $qantity; ?></div>
-                </div>
+            <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $stokInDetailsId; ?>','<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
+                <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
+                <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
+                <div class="col-4 col-sm-3 mb-0"><?php echo $productName; ?></div>
+                <div class="col-2 mb-0"><?php echo $expDate; ?></div>
+                <div class="col-2 mb-0"><?php echo $mrp; ?></div>
+                <div class="col-2 mb-0"><?php echo $ptr; ?></div>
+                <div class="col-2 mb-0"><?php echo $qantity; ?></div>
+            </div>
 
 <?php
-            }
+
         }
     }
 }
@@ -78,16 +78,17 @@ if (isset($_GET['dist-id'])) {
 <!-- <?php
 
 
-// getBatchList function for geting bill date
-// if (isset($_GET['return-id'])) {
-//     $returnId = $_GET['return-id'];
+        // getBatchList function for geting bill date
+        // if (isset($_GET['return-id'])) {
+        //     $returnId = $_GET['return-id'];
 
 
-//     $bill =  $StockReturn->showStockReturnById($returnId);
-//     $dist = $Distributor->showDistributorById($bill[0]["distributor_id"]);
+        //     $bill =  $StockReturn->showStockReturnById($returnId);
+        //     $dist = $Distributor->showDistributorById($bill[0]["distributor_id"]);
 
 
-// ?>
+        // 
+        ?>
 
     <!DOCTYPE html>
     <html lang="en">
@@ -244,7 +245,7 @@ if (isset($_GET['invoice'])) {
             foreach ($invoiceDetail as $invoice) {
                 //$patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
                 $patientId = "Cash Sales";
-                echo "<div class='invoice-item' onclick='getDtls(" . $invoice['invoice_id'] .");'>
+                echo "<div class='invoice-item' onclick='getDtls(" . $invoice['invoice_id'] . ");'>
                          <p>" . $patientId . "</p> 
                         <small><span class='text-dark'>#" . $invoice['invoice_id'] . "</span></small>
                      </div>";
@@ -253,7 +254,7 @@ if (isset($_GET['invoice'])) {
             foreach ($invoiceDetail as $invoice) {
                 $patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
                 $patientId = '"' . $invoice['customer_id'] . '"';
-                echo "<div class='invoice-item' onclick='getDtls(".$invoice['invoice_id'].", ".$patientId.");'>
+                echo "<div class='invoice-item' onclick='getDtls(" . $invoice['invoice_id'] . ", " . $patientId . ");'>
                         <p>" . $patient[0]['name'] . "</p>
                         <small><span class='text-dark'>#" . $invoice['invoice_id'] . "</span> M:" . $patient[0]['phno'] . "</small>
                      </div>";
