@@ -204,7 +204,7 @@ const getDtls = (stokInDetialsId, batchNo, productId, productName, billdate) => 
 
 
         //==================== CURRENT QTY ====================
-        let currentQtyUrl = `ajax/currentStock.allDetails.ajax.php?currentQTY=${stokInDetialsId}`;
+        let currentQtyUrl = `ajax/currentStock.liveQtyDetails.ajax.php?currentQTY=${stokInDetialsId}`;
         // alert(currentQtyUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", currentQtyUrl, false);
@@ -269,9 +269,26 @@ const getDtls = (stokInDetialsId, batchNo, productId, productName, billdate) => 
 //     // document.getElementById("due-date").setAttribute("max", todayFullDate2);
 
 // }
+const checkFQty = (returnFqty) =>{
+    returnFqty = parseInt(returnFqty);
+    var CurrentFQty = document.getElementById("current-free-qty").value;
+
+    if(CurrentFQty < returnFqty){
+        swal("Oops", "Return Quantity must be leser than Current Free Qantity!", "error")
+        document.getElementById("return-free-qty").value = 0;
+    }
+}
+
+
 
 const getRefund = (returnQty) => {
     returnQty = parseInt(returnQty);
+    let currentQTY = document.getElementById("current-purchase-qty").value;
+
+    if(parseInt(currentQTY) < returnQty){
+        swal("Oops", "Return Quantity must be leser than Current Buy Qantity!", "error")
+        document.getElementById("return-qty").value = 0;
+    }
 
     if (isNaN(returnQty)) {
         document.getElementById("refund-amount").value = '';

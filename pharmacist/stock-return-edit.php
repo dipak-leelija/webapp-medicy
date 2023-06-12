@@ -34,6 +34,21 @@ $showDistributor       = $Distributor->showDistributor();
 // $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 
+if(isset($_GET["returnId"])){
+    $returnId = $_GET["returnId"];
+    
+    $table = 'id';
+    $value = $returnId;
+    $stokReturnData = $StockReturn->stockReturnFilter($table, $value);
+    $distId = $stokReturnData[0]["distributor_id"];
+
+    $distData = $Distributor->showDistributorById($distId);
+    $distName = $distData[0]["name"];
+    
+
+    // print_r($distData);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -92,8 +107,8 @@ $showDistributor       = $Distributor->showDistributor();
                             <div class="row ">
                                 <div class="col-md-3 col-12 ">
 
-                                    <label class="mb-1 mt-3" for="distributor-id">Distributor :</label>
-                                    <!-- <select class="upr-inp mb-1" id="distributor-id" onchange="getItemList(this)" readonly>
+                                     <label class="mb-1 mt-3" for="distributor-id">Distributor :</label>
+                                    <!--<select class="upr-inp mb-1" id="distributor-id" onchange="getItemList(this)" readonly>
                                         <option value="" disabled selected>Select Distributor</option>
                                         <?php
                                         foreach ($showDistributor as $rowDistributor) {
@@ -103,22 +118,37 @@ $showDistributor       = $Distributor->showDistributor();
                                         }
                                         ?>
                                     </select> -->
-                                    <input class="upr-inp mb-1" id="distributor_name" value="" readonly>
+                                    <input class="upr-inp mb-1" id="distributor_name" name ="<?php echo $distId ?>" value="<?php echo $distName ?>" onload="getItemList(this)" readonly>
                                 </div>
 
                                 <div class="col-md-7 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
-                                    <!-- <input class="upr-inp mb-1" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
-                                     onchange="getDtls(this);" 
-                                    <div class="p-2 bg-light " id="product-select">
+                                    <!-- <input class="upr-inp mb-1" id="product_name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
+                                     <!-- onchange="getDtls(this);"  -->
+                                    <!-- <div class="p-2 bg-light " id="product-select">
                                         <div class="m-0 text-danger text-center">
                                             <b> Select Distributor First </b>
                                         </div>
                                     </div>-->
-                                    <input type="text" id="product-id" hidden>
+                                    <input type="text" id="product-id" hidden> 
                                     <input class="upr-inp mb-1" id="product_name" value="" readonly>
                                 </div>
 
+                <!-- ==================================== CHECKING ======================================= -->
+                                <!-- <div class="col-md-7 col-12 ">
+                                    <label for="product-name" class="mb-1 mt-3">Product Name</label>
+                                    <input class="upr-inp mb-1" id="product-name" name="product-name"
+                                        placeholder="Search Product" onkeyup="searchItem(this.value)"
+                                        autocomplete="off">
+                                    <!-- onchange="getDtls(this);" --
+                                    <div class="p-2 bg-light " id="product-select">
+                                        <div class="m-0 text-danger text-center">
+                                            <b> Select Distributor First </b>
+                                        </div>
+                                    </div>
+                                    <input type="text" id="product-id" hidden>
+                                </div> -->
+                <!-- ===================================================================================== -->
 
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
                                     <label class="mb-1 mt-3" for="return-mode">Return Mode :</label>
@@ -151,7 +181,12 @@ $showDistributor       = $Distributor->showDistributor();
                                         </div>
 
                                         <div class="col-md-6 col-12" hidden>
-                                            <label class="mb-1 mt-3" for="stock-return-details-id">##</label>
+                                            <label class="mb-1 mt-3" for="stock-return-id">Stock Return Id</label>
+                                            <input class="upr-inp mb-1" id="stock-return-id" value="">
+                                        </div>
+
+                                        <div class="col-md-6 col-12" hidden>
+                                            <label class="mb-1 mt-3" for="stock-return-details-id">Stock Return Details Id</label>
                                             <input class="upr-inp mb-1" id="stock-return-details-id" value="">
                                         </div>
 
@@ -226,7 +261,7 @@ $showDistributor       = $Distributor->showDistributor();
                                             <input type="any" class="upr-inp" name="amount" id="amount" readonly>
                                         </div>
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="purchased-qty">Purchased Qty: </label>
+                                            <label class="mb-0 mt-1" for="purchased-qty">Buy Qty: </label>
                                             <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
                                         </div>
 
@@ -244,12 +279,12 @@ $showDistributor       = $Distributor->showDistributor();
                                     <!-- fourth row  -->
                                     <div class="row mt-md-2">
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="return-qty">Return Qty:</label>
+                                            <label class="mb-0 mt-1" for="return-qty">Returned Qty:</label>
                                             <input type="text" class="upr-inp focus-border" name="return-qty" id="return-qty" value="" onkeyup="getRefund(this.value);">
                                         </div>
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="return-free-qty">Free Qty:</label>
-                                            <input type="text" class="upr-inp focus-border" name="return-free-qty" id="return-free-qty" value="">
+                                            <label class="mb-0 mt-1" for="return-free-qty">Return F.Qty:</label>
+                                            <input type="text" class="upr-inp focus-border" name="return-free-qty" id="return-free-qty" value="" onkeyup="checkReturn(this.value)">
                                         </div>
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="refund-amount">Refund:</label>
@@ -299,6 +334,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <th scope="col">P.Amount</th>
                                                 <th scope="col">GST</th>
                                                 <th scope="col">Return Qty</th>
+                                                <th scope="col">Return Free Qty</th>
                                                 <th scope="col">Refund</th>
 
                                             </tr>
@@ -309,10 +345,10 @@ $showDistributor       = $Distributor->showDistributor();
                                             // showStockReturnById();
                                             $returnBills = $StockReturn->showStockReturnDetails($_GET['returnId']);
 
-                                            //print_r($returnBills);
+                                            // print_r($returnBills);
 
                                             foreach ($returnBills as $bill) {
-                                                //print_r($bill['id']);
+                                                // print_r($bill['id']);
                                                 $productid = $bill['product_id'];
                                                 $productDetails = $products->showProductsById($productid);
                                                 //print_r($productDetails);
@@ -334,38 +370,57 @@ $showDistributor       = $Distributor->showDistributor();
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)' hidden>
-                                                        <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" id="stock-return-details-id" value="" readonly hidden>
+                                                        <input class="col table-data w-6r" type="text" name="stock-return-id[]" id="stock-return-id" value="<?php echo $bill['stock_return_id']; ?>" readonly >
                                                     </td>
+
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)' hidden>
+                                                        <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" id="stock-return-details-id" value="<?php echo $bill['id']; ?>" readonly>
+                                                    </td>
+
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-6r" type="text" name="batchNo[]" value="<?php echo $bill['batch_no']; ?>" readonly>
                                                     </td>
+
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="expDate[]" value="<?php echo $bill['exp_date']; ?>" readonly>
                                                     </td>
+
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="setof[]" value="<?php echo $bill['unit'], $productUnit; ?>" readonly>
                                                     </td>
+
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="purchasedQty[]" value="<?php echo $bill['purchase_qty']; ?>" readonly>
                                                     </td>
+
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="freeQty[]" value="<?php echo $bill['free_qty']; ?>" readonly>
                                                     </td>
+
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-5r" type="text" name="mrp[]" value="<?php echo $bill['mrp']; ?>" readonly>
                                                     </td>
+
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-6r" type="text" name="ptr[]" value="<?php echo $bill['ptr']; ?>" readonly>
                                                     </td>
+
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-6r" type="text" name="purchase-amount[]" value="<?php echo $bill['purchase_amount']; ?>" readonly>
                                                     </td>
+
                                                     <td class="p-0 ps-1 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-4r" type="text" name="gst[]" value="<?php echo $bill['gst']; ?>" readonly>
                                                     </td>
+
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-8r" type="text" name="return-qty[]" value="<?php echo $bill['return_qty']; ?>" readonly>
                                                     </td>
+
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
+                                                        <input class="col table-data w-8r" type="text" name="return-free-qty[]" value="<?php echo $bill['return_free_qty']; ?>" readonly>
+                                                    </td>
+
                                                     <td class=" amnt-td p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data W-6r" type="text" name="refund-amount[]" value="<?php echo $bill['refund_amount']; ?>" readonly>
                                                     </td>
@@ -385,9 +440,9 @@ $showDistributor       = $Distributor->showDistributor();
                                 <div class="row ">
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
                                         <p>Distributor :
-                                            <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name" value="" readonly>
+                                            <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name" value="<?php echo $distName ?>" readonly>
                                             <input class="summary-inp w-60" name="dist-id" id="dist-id" type="text" value="" hidden readonly>
-                                            <input class="summary-inp w-60" name="stock-return-id" id="stock-return-id" type="text" value="" hidden readonly>
+                                            <input class="summary-inp w-60" name="stock-returned-id" id="stock-returned-id" type="text" value="" hidden readonly>
 
                                         </p>
                                     </div>

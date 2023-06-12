@@ -266,7 +266,7 @@ $showDistributor       = $Distributor->showDistributor();
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="return-free-qty">Return F.Qty:</label>
                                             <input type="text" class="upr-inp focus-border" name="return-free-qty"
-                                                id="return-free-qty" value="0">
+                                                id="return-free-qty" value="0" onkeyup="checkFQty(this.value);">
                                         </div>
 
                                         <div class="col-md-3 col-6">

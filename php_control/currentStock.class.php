@@ -42,7 +42,7 @@ class CurrentStock extends DatabaseConnection{
         return $res;
     }//eof updateStock
 
-// ========================== END OF CURRENT STOCK UPDATE AFTER PURCHASE RETURN =============================
+    //================ END OF CURRENT STOCK UPDATE AFTER PURCHASE RETURN =============
 
 
     function updateStock($productId, $batchNo, $newQuantity, $newLCount){
@@ -52,8 +52,8 @@ class CurrentStock extends DatabaseConnection{
     }//eof updateStock
 
     //============= current stock update after edting purchase return ================== RD===========
-    function updateStockByReturnEdit($productId, $batchNo, $distributor, $newQuantity, $newLCount){
-        $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no` = '$batchNo' AND `current_stock`.`distributor_id`='$distributor' ";
+    function updateStockByReturnEdit($stokInDetaislId, $newQuantity, $newLCount){
+        $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `current_stock`.`stock_in_details_id` = '$stokInDetaislId'";
         $res = $this->conn->query($editUpdate);
         return $res;
     }//eof updateStock

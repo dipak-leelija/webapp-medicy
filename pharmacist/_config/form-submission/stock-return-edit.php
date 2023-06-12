@@ -21,7 +21,8 @@ $CurrentStock    =  new CurrentStock();
 
 if (isset($_POST['stock-return-edit'])) {
 
-    $stockReturnId          = $_POST['stock-return-id']; //
+    $stockReturnIdArray     = $_POST['stock-return-id']; //
+    $stockReturnId          = $_POST['stock-returned-id'];
     $distributorId          = $_POST['dist-id'];
     $distributorName        = $_POST['dist-name'];
     $returnDate             = $_POST['return-date'];
@@ -51,128 +52,130 @@ if (isset($_POST['stock-return-edit'])) {
     $purchaseAmount         = $_POST['purchase-amount'];
     $gst                    = $_POST['gst'];
     $returnQty              = $_POST['return-qty'];
+    $returnFQty              = $_POST['return-free-qty'];
     $CurrentrefundAmount    = $_POST['refund-amount'];
 
+    // echo "<br>Distributor Id : ";print_r($distributorId);
+    // echo "<br>Distributor Name : ";print_r($distributorName);
+    // echo "<br>Return Date : "; print_r($returnDate);
+    // echo "<br>Refund Mode : "; print_r($refundMode);
+    // echo "<br>Item qty : "; print_r($itemQty);
+    // echo "<br>Id s : "; print_r($ids);
+    // echo "<br>Total return Item Qty : "; print_r($totalRefundItemsQty);
+    // echo "<br>Return Gst : "; print_r($returnGst);
+    // echo "<br>Refund Amount: "; print_r($refund);
+    // echo "<br>Added By : "; print_r($addedBy);
+    // echo "<br>Stock return Id : $stockReturnId";
+    
+    // echo "<br><br><br>ARRAYS ----------- <br>";
+    // echo "<br>STOK RETURN DETAILS ID : "; print_r($stockReturnDetailsId);
+    // echo "<br>Product Id : ";print_r($productId);
+    // echo "<br>Product Name : ";print_r($productName);
+    // echo "<br>STOK RETURN ID : "; print_r($stockReturnIdArray);
+    // echo "<br>Batch No : "; print_r($batchNo);
+    // echo "<br>Exp Date : "; print_r($expDate);
+    // echo "<br>Set of : "; print_r($setof);
 
-    // print_r($stockReturnDetailsId);
-    // echo "<br>";
-    // print_r($productId);
-    // echo "<br>";
-    // print_r($productName);
-    // echo "<br>";
-    // print_r($ids);
-    // echo "<br>";
-    // print_r($batchNo);
-    // echo "<br>";
-    // print_r($expDate);
-    // echo "<br>";
-    // print_r($setof);
-    // echo "<br>";
-    // print_r($purchasedQty);
-    // echo "<br>";
-    // print_r($freeQty);
-    // echo "<br>";
-    // print_r($mrp);
-    // echo "<br>";
-    // print_r($ptr);
-    // echo "<br>";
-    // print_r($purchaseAmount);
-    // echo "<br>";
-    // print_r($gst);
-    // echo "<br>";
-    // print_r($CurrentrefundAmount);
-    // echo "<br>";
-    // print_r($returnQTY);
-    // echo "<br><br>";
-// exit;
+    // echo "<br>Purchase QTY : "; print_r($purchasedQty);
+    // echo "<br>Free qty : "; print_r($freeQty);
+    // echo "<br>MRP : "; print_r($mrp);
+    // echo "<br>PTR : "; print_r($ptr);
+    // echo "<br>Purchase Amount : "; print_r($purchaseAmount);
+    // echo "<br>GST : "; print_r($gst);
+    // echo "<br>Current Refund Amount : "; print_r($CurrentrefundAmount);
+    // echo "<br> Return QTY : "; print_r($returnQty);
+    // echo "<br> Return Free QTY : "; print_r($returnFQty);
+    // echo "<br>Refund Amount : "; print_r($refundAmount);
+    // echo "<br>Return QTY : "; print_r($returnQTY);
+    
+    
+
     //================== Updating Stock Return tabele hear ========================================
 
     $addedTime = date("h:i:sa");
     $todayDate = date("Y/m/d");
 
     $stockReturnEditUpdate = $StockReturn->stockReturnEditUpdate($stockReturnId, $distributorId, $returnDate, $itemQty, $totalRefundItemsQty, $returnGst, $refundMode, $refund, $addedBy, $todayDate, $addedTime);
-
+    // $stockReturnEditUpdate = true;
 
     if ($stockReturnEditUpdate === true) {
 
         for ($i = 0; $i < $ids; $i++) {
+            // echo "<br>hello check";
+            $StockReturnDetailsid = $stockReturnDetailsId[$i];
+            // echo "<br>Data Value : $StockReturnDetailsid";
+            $prevStokReturnDetailsData = $StockReturn->showStockReturnDetailsById($StockReturnDetailsid);
+            // echo "<br>Previous Stock return details : "; print_r($prevStokReturnDetailsData);
+            foreach($prevStokReturnDetailsData as $prevStockReturnData){
+                $prevReturnQty = $prevStockReturnData['return_qty'];
+                // echo "<br><br>Prev return qty : $prevReturnQty";
+                $prevReturnFQty = $prevStockReturnData['return_free_qty'];
+                // echo "<br>Prev return F qty : $prevReturnFQty"; 
+                $stockInDetailsId = $prevStockReturnData['stokIn_details_id'];
+                // echo "<br>Prev stokIN details Id : $stockInDetailsId";
+                $totalPrevReturn = intval($prevReturnQty) + intval($prevReturnFQty);
+                // echo "<br>Total Prev Return qty : $totalPrevReturn";
+                $prevReturnWeatage = $prevStockReturnData['unit'];
+                // echo "<br>Prev return weatage : $prevReturnWeatage";
+            }
 
-            $id_s = $stockReturnDetailsId[$i];
+            $unit = preg_replace("/[^a-z]+/", "", $setof[$i]);
+            // echo "<br>Unit : $unit";
+            $weatage = preg_replace("/[^0-9]+/", "", $setof[$i]);
+            // echo "<br>Weatage : $weatage";
 
-            $StockReturnData = $StockReturn->showStockReturnById($stockReturnId);  //data from stock return table
-            $StockReturnDetailsData = $StockReturn->showStockReturnDetailsById($id_s); //data of stockReturnDetails table
+           if ($unit == 'tab' || $unit == 'cap') {
+                $prevReturnLooselyCount = intval($totalPrevReturn) * intval($weatage);
+                $currentReturnLooselyCount = ((intval($returnQty[$i])+intval($returnFQty[$i])) * intval($weatage));
+            } else {
+                $prevReturnLooselyCount = 0;
+                $currentReturnLooselyCount = 0;
+            }
 
-            $distributorId = $StockReturnData[0]['distributor_id'];
-            $productId     = $StockReturnDetailsData[0]['product_id'];
-            $batchNo       = $StockReturnDetailsData[0]['batch_no'];
+            // echo "<br>Prev Return loose qty : $prevReturnLooselyCount";
+            // echo "<br>Current Return  qty : ",$currentReturnLooselyCount / intval($weatage);
+            // echo "<br>Current Return loose qty : $currentReturnLooselyCount";
+            // echo "<br>",$returnQty[$i] + $returnFQty[$i];
 
-            $prevReturnQty = $StockReturnDetailsData[0]['return_qty'];
-            $currentReturnQty = $returnQty[$i];
 
-            $CurrentStockData = $CurrentStock->showCurrentStocByPIdBNoDId($productId, $batchNo, $distributorId); //fetching current stock data
-            //print_r($CurrentStockData);
+ //==================================== need to check from this area ========================================
+            $CurrentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId); //
+            // echo "<br>Current stok data on stock in detials id : "; print_r($CurrentStockData);
+            
             if ($CurrentStockData != null) {
 
-                if ($CurrentStockData[0]['loosely_count'] == '' || $CurrentStockData[0]['qty'] == '' || $CurrentStockData[0]['unit'] == '') {
-                    $LooselyCount = 0;
-                    $QTY = 0;
-                    $unit = '';
-                } else {
-                    $LooselyCount  = $CurrentStockData[0]['loosely_count'];
-                    $QTY           = $CurrentStockData[0]['qty'];
-                    $refundAmount  = $StockReturnDetailsData[0]['refund_amount'];
-                    $Weatage       = $StockReturnDetailsData[0]['unit'];
-                    $unit          = $CurrentStockData[0]['unit'];
+                foreach($CurrentStockData as $currentStock){
+                    $CurrentStockLooselyCount  = $currentStock['loosely_count'];
+                    // echo "<br>Current Stock loosely count : $CurrentStockLooselyCount";
+                    $CurrentStockQTY           = $currentStock['qty'];
+                    // echo "<br>Current qty : $CurrentStockQTY";
                 }
 
-                $updatedQty = $QTY + (- ($currentReturnQty - $prevReturnQty)); //edit update total quantity of product
 
-                //=========loosely count calculation area====================
-                if ($unit == 'tab' || $unit == 'cap') {
-                    $newLooselyCount = $LooselyCount + (- (($currentReturnQty * $Weatage) - ($prevReturnQty * $Weatage)));
-                } else {
-                    $newLooselyCount = $LooselyCount;
-                }
-                //============================================================
+                // echo "<br><br>TOTAL RETURN QTY : ";
+                $totalCrrntReturnQty =  intval($returnQty[$i]) + intval($returnFQty[$i]);
+                $totalPrevReturnQty = (intval($prevReturnQty)) + (intval($prevReturnFQty));
+                $updatedReturnQty = $totalCrrntReturnQty - $totalPrevReturnQty;
+                // echo $updatedReturnQty;
+
+                $updatedQty = intval($CurrentStockQTY) +  ($updatedReturnQty); //edit update total quantity of product   
+                // echo "<br>Updated qty : $updatedQty";
+                $newLooselyCount = intval($CurrentStockLooselyCount) + ($currentReturnLooselyCount - $prevReturnLooselyCount);
+                // echo "<br>Updated loose qty : $newLooselyCount";
+
             } else {
 
                 $updatedQty = '';
                 $newLooselyCount = '';
+
             }
+            
+            $CurrentStockUpdate = $CurrentStock->updateStockByReturnEdit($stockInDetailsId, $updatedQty, $newLooselyCount);  //updating current stock after edit purchase return
 
-            $CurrentStockUpdate = $CurrentStock->updateStockByReturnEdit($productId, $batchNo, $distributorId, $updatedQty, $newLooselyCount);  //updating current stock after edit purchase return
-
-            $stockReturnDetailsEdit = $StockReturn->stockReturnDetailsEditUpdate($id_s, $returnQTY[$i], $CurrentrefundAmount[$i], $addedBy, $returnDate, $addedTime);  //updating stock return details table
-
-
-
-            // echo "updated qty : ", $updatedQty;
-            // echo "<br><br>";
-            // echo "updated loosely count : ", $newLooselyCount;
-            // echo "<br><br>";
-            // print_r($StockReturnData);
-            // echo "<br><br>";
-            // print_r($StockReturnDetailsData);
-            // echo "<br><br>";
-            // print_r($CurrentStockData);
-            // echo "<br><br>";
-            // echo "<br><br>";
+            $stockReturnDetailsEdit = $StockReturn->stockReturnDetailsEditUpdate($StockReturnDetailsid, $returnQty[$i], $returnFQty[$i], $refundAmount[$i], $addedBy, $returnDate, $addedTime);  //updating stock return details table
         }
 
-        // echo $productId[$i].'<br>';
-        // echo $batchNo[$i].'<br>';
-        // echo $expDate[$i].'<br>';
-        // echo $setof[$i].'<br>';
-        // echo $purchasedQty[$i].'<br>';
-        // echo $freeQty[$i].'<br>';
-        // echo $mrp[$i].'<br>';
-        // echo $ptr[$i].'<br>';
-        // echo $purchaseAmount[$i].'<br>';
-        // echo $gst[$i].'<br>';
-        // echo $returnQty[$i].'<br>';
-        // echo $refundAmount[$i].'<br><br><br><br><br><br>';
-
-        ################################# data fetching and updating end #######################################
+        ############################## data fetching and updating end ###################################
 
     }
 }

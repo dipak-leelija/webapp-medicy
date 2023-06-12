@@ -165,11 +165,11 @@ function stockReturnDetailsEdit($id, $stockReturnId, $productId, $batchNo, $expD
 
 // ----------------- stock return details edit/update by id ----------------RD-----------
 
-function stockReturnDetailsEditUpdate($id, $returnQTY, $refundAmount, $addedBy, $addedOn, $addedTime){
-    $editUpdate = "UPDATE `stock_return_details` SET `return_qty`='$returnQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn',`added_time`='$addedTime' WHERE `stock_return_details`.`id`='$id'";
+function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $addedBy, $addedOn, $addedTime){
+    $editUpdate = "UPDATE `stock_return_details` SET `return_qty`='$returnQTY', `return_free_qty` = '$returnFQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn',`added_time`='$addedTime' WHERE `stock_return_details`.`id`='$id'";
 
     $response = $this->conn->query($editUpdate);
-
+    
     return $response;
 }
 

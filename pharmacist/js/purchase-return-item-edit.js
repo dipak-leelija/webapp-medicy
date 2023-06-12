@@ -15,16 +15,16 @@ const customEdit = (id, value) => {
             EditId: value
         },
         success: function (data) {
-            // alert(data);
+            alert(data);
             var dataObject = JSON.parse(data);
             // alert(dataObject);
 
-            var stokReturnDetailId = dataObject.id;
+            // var stokReturnDetailId = dataObject.id;
             // alert(stokReturnDetailId);
             
             // console.log(stokReturnDetailId);
 
-            var stokReturnId = dataObject.stock_return_id;
+            // var stokReturnId = dataObject.stock_return_id;
 
             var distributor = dataObject.distributor_name;
             var distributorId = dataObject.distributor_id;
@@ -50,12 +50,12 @@ const customEdit = (id, value) => {
             var refundAmunt = dataObject.refund_amount;
 
             //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
-
-            document.getElementById("stock-return-details-id").value = stokReturnDetailId;
-            document.getElementById("stock-return-id").value = stokReturnId;
-
-            document.getElementById("distributor_name").value = distributor;
-            document.getElementById("dist-name").value = distributor;
+        
+            document.getElementById("stock-return-details-id").value = dataObject.id;
+            document.getElementById("stock-return-id").value = dataObject.stock_return_id;
+            document.getElementById("stock-returned-id").value = dataObject.stock_return_id;
+            // document.getElementById("distributor_name").value = distributor;
+            // document.getElementById("dist-name").value = distributor;
             document.getElementById("dist-id").value = distributorId;
             document.getElementById("product-id").value = productId;
             document.getElementById("product_name").value = productName;
@@ -90,9 +90,74 @@ const customEdit = (id, value) => {
 //========================================================================================================//
 //########################################################################################################//
 
+// const getItemList = (t) => {
+
+//     let id = t.name;
+//     let distributirName = t.selectedOptions[0].text;
+//     console.log(id);
+
+//     var xmlhttp = new XMLHttpRequest();
+//     let billIdUrl = `ajax/return-item-list.ajax.php?dist-id=${id}`;
+//     xmlhttp.open("GET", billIdUrl, false);
+//     xmlhttp.send(null);
+//     document.getElementById("product-select").innerHTML = xmlhttp.responseText;
+//     // alert(xmlhttp.responseText);
+
+//     document.getElementById("dist-id").value = id;
+//     document.getElementById("dist-name").value = distributirName;
+
+//     document.getElementById("product-select").style.display = "block";
+// }
+
+
+// function searchItem(input) {
+//     if (input != '') {
+//         document.getElementById("product-select").style.display = "block";
+
+//         // let input = document.getElementById('searchbar').value
+//         input = input.toLowerCase();
+//         let x = document.getElementsByClassName('item-list');
+
+//         for (i = 0; i < x.length; i++) {
+//             if (!x[i].innerHTML.toLowerCase().includes(input)) {
+//                 x[i].style.display = "none";
+//             } else {
+//                 x[i].style.display = "flex";
+//             }
+//         }
+//     } else {
+//         document.getElementById("product-select").style.display = "none";
+
+//     }
+// }
+
+
+//========================================================================================================//
+
+const checkReturn = (returnFQty) => {
+    let qty = document.getElementById("return-qty").value;
+    let currentQty = document.getElementById("current-qty").value;
+
+    if((parseInt(returnFQty) + parseInt(qty)) > currentQty){
+        swal("Error", "SUM of Return Quantitys Must Less Then Avilable Quantity", "error")
+        document.getElementById("return-qty").value = "";
+        document.getElementById("return-free-qty").value = "";
+    }
+}
+
 
 const getRefund = (returnQty) => {
     returnQty = parseInt(returnQty);
+
+    let Fqty = document.getElementById("return-free-qty").value;
+    let currentQty = document.getElementById("current-qty").value;
+
+    if((parseInt(Fqty) + returnQty) > currentQty){
+        swal("Error", "SUM of Return Quantitys Must Less Then Avilable Quantity", "error")
+        document.getElementById("return-qty").value = "";
+        document.getElementById("return-free-qty").value = "";
+    }
+
     if (isNaN(returnQty)) {
         document.getElementById("refund-amount").value = '';
         return;
@@ -102,7 +167,7 @@ const getRefund = (returnQty) => {
         let ptr = document.getElementById("ptr");
         let currentQty = document.getElementById("current-qty");
         let gst = document.getElementById("gst");
-        console.log(parseInt(currentQty.value));
+        // console.log(parseInt(currentQty.value));
         if (returnQty <= currentQty.value) {
             console.log(returnQty);
             let subtotal = returnQty * ptr.value;
@@ -194,7 +259,7 @@ const addData = async () => {
                         <input class="col table-data w-6r" type="text" name="stock-return-id[]" value="${stockReturnId.value}" readonly>
                     </td>
                     <td class="p-0 pt-3" hidden>
-                        <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" value="${stockReturnDetailsId.value}" readonly hidden>
+                        <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" value="${stockReturnDetailsId.value}" readonly>
                     </td>
                     <td class="p-0 pt-3" >
                         <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly>
@@ -224,7 +289,10 @@ const addData = async () => {
                         <input class="col table-data w-4r" type="text" name="gst[]" value="${gst.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value) + parseFloat(returnFreeQty.value)}" readonly>
+                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly>
+                    </td>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-8r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly>
                     </td>
                     <td class=" amnt-td p-0 pt-3">
                         <input class="col table-data W-6r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
@@ -257,7 +325,7 @@ const addData = async () => {
                 document.getElementById("total-refund-qty").value = totalQty;
             }
 
-            distributor_name.value = '';
+            // distributor_name.value = '';
 
             productId.value = '';
             product_name.value = '';

@@ -24,6 +24,7 @@ $stockReturnData = $StockReturnEdit->showStockReturnDetailsById($EditId);
 foreach($stockReturnData as $stockReturn){
     $stockReturnDetailsId                =  $stockReturn['id'];
     $stockReturnDetailsStockReturnId     =  $stockReturn['stock_return_id'];
+    $stokinDetialsID                     =  $stockReturn['stokIn_details_id'];
     $stockReturnDetailsProductId         =  $stockReturn['product_id'];
     $stockReturnDetailsBatchNo           =  $stockReturn['batch_no'];
     $stockReturnDetailsExpDate           =  $stockReturn['exp_date'];
@@ -107,8 +108,8 @@ $stockIn = $StockIn->showStockInById($StockInDetailsDistributorBillNo);
 //===============================================================================================
 
 //================================fetchin data from current stock================================
-$currentStockDetails = $CurrentStock->showCurrentStocByProductIdandBatchNo($stockReturnDetailsProductId, $stockReturnDetailsBatchNo);
-
+$currentStockDetails = $CurrentStock->showCurrentStocByStokInDetialsId($stokinDetialsID);
+// print_r()
 if($currentStockDetails != null){
     foreach($currentStockDetails as $currentStock){
         $currentStockQty   =   $currentStock['qty'];
