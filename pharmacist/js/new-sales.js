@@ -47,8 +47,6 @@ const setCustomer = (id) => {
     document.getElementById("customer-id").value = id;
 
 
-
-
     // ================ get Contact ================
     stockCheckUrl = 'ajax/customer.getDetails.ajax.php?contact=' + id;
     // alert(url);
@@ -139,7 +137,7 @@ const stockDetails = (productId) => {
         document.getElementById("exta-details").style.display = "block";
 
         // ============== Product Name ==============
-        stockItemUrl = 'ajax/product.getName.ajax.php?id=' + productId;
+        stockItemUrl = 'ajax/getProductDetails.ajax.php?id=' + productId;
         // alert(url);
         xmlhttp.open("GET", stockItemUrl, false);
         xmlhttp.send(null);
@@ -147,15 +145,15 @@ const stockDetails = (productId) => {
         // alert(xmlhttp.responseText);
 
         //==================== Weightage ====================
-        weightage = 'ajax/product.getWeightage.ajax.php?id=' + productId;
+        weightageUrl = 'ajax/getProductDetails.ajax.php?weightage=' + productId;
         // alert(url);
-        xmlhttp.open("GET", weightage, false);
+        xmlhttp.open("GET", weightageUrl, false);
         xmlhttp.send(null);
         let packWeightage = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
         //==================== Unit ====================
-        unitUrl = 'ajax/product.getUnit.ajax.php?id=' + productId;
+        unitUrl = 'ajax/getProductDetails.ajax.php?unit=' + productId;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
@@ -171,7 +169,6 @@ const stockDetails = (productId) => {
         xmlhttp.send(null);
         document.getElementById("batch-no").value = xmlhttp.responseText;
 
-
         //=========== QANTITY CHECK ON BATCH NUMBER =============
         qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${productId}&qtp=${qtytp}`;
         xmlhttp.open("GET", qtyChkOnBathcUrl, false);
@@ -180,7 +177,7 @@ const stockDetails = (productId) => {
         document.getElementById("aqty").value = xmlhttp.responseText;
         
         //==================== Expiry Date ====================
-        expDateUrl = 'ajax/currentStock.getExp.ajax.php?id=' + productId;
+        expDateUrl = 'ajax/getProductDetails.ajax.php?exp=' + productId;
         // alert(url);
         xmlhttp.open("GET", expDateUrl, false);
         xmlhttp.send(null);
