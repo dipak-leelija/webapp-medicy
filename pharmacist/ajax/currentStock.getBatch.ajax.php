@@ -6,9 +6,17 @@ if (isset($_GET["id"])) {
 
     $pid = $_GET["id"];
     $productIds = $_GET["chkBtch"];
+    // print_r($productIds); 
     $productIds = explode (",", $productIds);
+    // print_r($productIds);
     $count = 0;
-    $flag =0;
+    $flag = 0;
+
+    $arrSize = count($productIds);
+    $checkBatch = $productIds[$arrSize-1];
+    $batchArray = $CurrentStock->fetchAllBatchnoByPid($checkBatch);
+    // print_r($batchArray);
+    $batchArrayCount = count($batchArray);
 
     for($i = 0; $i<count($productIds); $i++){
         if($productIds[$i] == $pid){
@@ -16,11 +24,20 @@ if (isset($_GET["id"])) {
         }
     }
 
+    // count()
+
     $count = $count - 1;
 
     $stock = $CurrentStock->showCurrentStocByPId($pid);
     
-    echo $stock[$count]['batch_no'];
+    if($batchArrayCount == 1){
+        foreach ($batchArray as $batchNo) {
+            echo $batchNo["batch_no"];
+        }
+    } 
+    else{
+        echo $stock[$count]['batch_no'];
+    }
     
 }
 ?> 

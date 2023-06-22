@@ -19,7 +19,7 @@ if (isset($_GET["Pid"])) {
 
     $stockInMargin = $currentStock->checkStock($productId, $batchNo);
 
-    //print_r($stockInMargin);
+    // print_r($stockInMargin);
 
     if($mrp == null || $qty == null || $discPrice == null){
         $mrp = 0;
@@ -61,7 +61,7 @@ if (isset($_GET["qtyCheck"])) {
     }
 
     $stockInQantity = $currentStock->checkStock($pid, $batchNum);
-    //print_r($stockInQantity);
+    // print_r($stockInQantity);
     if($qtype == 'Loose'){
         echo $stockInQantity[0]['loosely_count'];
     }else{

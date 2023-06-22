@@ -25,6 +25,7 @@ $Doctors         = new Doctors();
 $SalesReturn     = new SalesReturn();
 $CurrentStock    = new CurrentStock();
 $StockInDetails  = new StockInDetails();
+
 // $IdGeneration    = new IdGeneration();
 
 
@@ -34,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //-------Array elements------------------
         $products   = $_POST['productId'];
         $batchNo    = $_POST['batchNo'];
-        print_r($batchNo);
+        // print_r($batchNo);
         $expdates   = $_POST['expDate'];
         $weatage    = $_POST['setof'];
         $unitType    = $_POST['unitType'];
@@ -77,10 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br> Return QTY : "; print_r($returnQty);
         // echo "<br> Refund Amount : "; print_r($refunds);
         // echo "<br> Bill Amount : "; print_r($billAmount);
+        // echo "<br><br> ============ END OF ARRAY ============ <br>";
         // echo "<br> Invoice No : "; print_r($invoice);
         // echo "<br> Bill Date : "; print_r($billDate);
-        // echo "<br> "; print_r($billDate);
-        // echo "<br>"; print_r($returnDate);
+        // echo "<br> Bill Date :"; print_r($billDate);
+        // echo "<br> Return Date : "; print_r($returnDate);
         // echo "<br> Items : "; print_r($items);
         // echo "<br> Refund Mode : "; print_r($refundMode);
         // echo "<br> Total Qtys : "; print_r($totalQtys);
@@ -113,6 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $returned = $SalesReturn->addSalesReturn($invoiceId, $sold[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by);
 
+        // exit;
+
         $currentTime = date('Y-m-d G:i:s'); //holding current date time for fetchin data of sales return table
 
         $checkReturned = $SalesReturn->seletSalesReturnByDateTime($invoiceId, $sold[0]['customer_id'], $currentTime);
@@ -136,12 +140,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $unitType = array_shift($_POST['unitType']);
                 $unitWeatage = array_shift($_POST['weatage']);
                 $addedBy = '';
-                // echo "<br>Prodcut id : <br>$productId<br>";
-                // echo "<br>Batch no :<br>$batch<br>";
-                // echo "<br>Purchase Qty : <br>$qty<br>";
-                // echo "<br>return Qty :<br>$returnQTY<br>";
-                // echo "<br>unit Type :<br>$unitType<br>";
-                // echo "<br>unit Weatage :<br>$unitWeatage<br>";
+                // echo "<br>Prodcut id : $productId";
+                // echo "<br>Batch no :$batch";
+                // echo "<br>Purchase Qty : $qty";
+                // echo "<br>return Qty :$returnQTY";
+                // echo "<br>unit Type :$unitType";
+                // echo "<br>unit Weatage :$unitWeatage<br>";
 
 
                 $success = $SalesReturn->addReturnDetails($SalesReturnId, $invoiceId, $productId, $batch, array_shift($_POST['setof']), array_shift($_POST['expDate']), $qty, array_shift($_POST['disc']), array_shift($_POST['gst']), array_shift($_POST['billAmount']), $returnQTY, array_shift($_POST['refund']), $added_by);
@@ -155,64 +159,99 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo "stock in details : ======== : ";
                 $pDetails = $StockInDetails->showStockInDetailsByTable('product_id', 'batch_no', $productId, $batch);
 
+                
 
-                if (count($stock) == 0 || $stock == '') {
-                    // (float) filter_var( $uWeightage, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION )
-                    if ($unitType == 'cap' || $unitType == 'tab') {
-                        if ($salesDetails[0]['qty'] == '0') {
-                            if ($returnQTY >= $unitWeatage) {
+                if($unitType == 'cap' || $unitType == 'tab'){
+                    $pharmacyInvoicDetials = $StockOut->stockOutDetailsById($invoiceId);
+                    foreach($pharmacyInvoicDetials as $invoiceData){
+                        // echo"<br>Pharmacy Invoice Detials -->"; print_r($invoiceData);
+                        if($invoiceData['qty'] == 0){
+                            if ($returnQTY >= $unitWeatage){
                                 $looselyCount = $returnQTY;
                                 $returnQTY = ($returnQTY % $unitWeatage);
-                                $Price = $pDetails[0]['mrp'];
-                                $looselyPrice = $pDetails[0]['mrp'] / $pDetails[0]['weightage'];
-                            } else {
+                            }
+                            if ($returnQTY < $unitWeatage){
                                 $looselyCount = $returnQTY;
                                 $returnQTY = 0;
-                                $Price = $pDetails[0]['mrp'];
-                                $looselyPrice = $pDetails[0]['mrp'] / $pDetails[0]['weightage'];
                             }
-                        } else {
+                        }
+                        if($invoiceData['qty'] != 0){
                             $looselyCount = $returnQTY * $unitWeatage;
                             $returnQTY = $returnQTY;
-                            $Price  = $pDetails[0]['mrp'];
-                            $looselyPrice = $Price / $unitWeatage;
                         }
-                    } else {
-                        $returnQTY = $returnQTY;
-                        $looselyCount = 0;
-                        $looselyPrice = 0;
-                        $Price  = $pDetails[0]['mrp'];
                     }
+                }else{
+                    $returnQTY = $returnQTY;
+                    $looselyCount = 0;
+                }
 
-                    // ============= add into current stock if product id and batch no is not extists in current stock but exists in stock in detials (old stock sales return)====================
-                    $stokIndata = $StockInDetails->selectProduct($productId, $batch);
-                    foreach($stokIndata as $stokdata){
-                        $stokInDetailsId = $stokdata["stokIn_id"];
-                    }
+                $newQuantity = $stock[0]['qty'] + $returnQTY;
+                $newLCount = $stock[0]['loosely_count'] + $looselyCount;
+                $newQuantity = $newLCount / $unitWeatage;
+                // echo "<br>New Quantity : $newQuantity";
+                // echo "<br>New L Quantity : $newLCount";
 
-                    $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batch, $pDetails[0]['exp_date'], $pDetails[0]['distributor_bill'], $looselyCount, $looselyPrice, $pDetails[0]['weightage'], $pDetails[0]['unit'], $returnQTY, $pDetails[0]['mrp'], $pDetails[0]['ptr'], $pDetails[0]['gst'], $addedBy);
-                } else {
-                    if ($unitType == 'cap' || $unitType == 'tab') {
-                        if ($salesDetails[0]['qty'] == '0') {
-                            if ($returnQTY >= $unitWeatage) {
-                                $newLCount = $stock[0]['loosely_count'] + $returnQTY;
-                                $newQuantity = $stock[0]['qty'] + (intdiv($returnQTY , $unitWeatage));
-                            } else {
-                                $newLCount = $stock[0]['loosely_count'] + $returnQTY;;
-                                $newQuantity = $stock[0]['qty'];
-                            }
-                        } else {
-                            $newQuantity = $stock[0]['qty'] + $returnQTY;
-                            $newLCount = $stock[0]['loosely_count'] + ($returnQTY * $unitWeatage);
-                        }
-                    } else {
-                        $newQuantity = $stock[0]['qty'] + $returnQTY;
-                        $newLCount = '0';
-                    }
-                    // echo "<br>$productId<br>$batch<br>$newQuantity<br>$newLCount";
-                    //======= update current stock with return items ==========================
-                    $CurrentStock->updateStock($productId, $batch, $newQuantity, $newLCount);
-                }    
+                $CurrentStock->updateStock($productId, $batch, $newQuantity, $newLCount);
+
+                // exit;
+
+                // if (count($stock) == 0 || $stock == '') {
+                //     // (float) filter_var( $uWeightage, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION )
+                //     if ($unitType == 'cap' || $unitType == 'tab') {
+                //         if ($salesDetails[0]['qty'] == '0') {
+                //             if ($returnQTY >= $unitWeatage) {
+                //                 $looselyCount = $returnQTY;
+                //                 $returnQTY = ($returnQTY % $unitWeatage);
+                //                 $Price = $pDetails[0]['mrp'];
+                //                 $looselyPrice = $pDetails[0]['mrp'] / $pDetails[0]['weightage'];
+                //             } else {
+                //                 $looselyCount = $returnQTY;
+                //                 $returnQTY = 0;
+                //                 $Price = $pDetails[0]['mrp'];
+                //                 $looselyPrice = $pDetails[0]['mrp'] / $pDetails[0]['weightage'];
+                //             }
+                //         } else {
+                //             $looselyCount = $returnQTY * $unitWeatage;
+                //             $returnQTY = $returnQTY;
+                //             $Price  = $pDetails[0]['mrp'];
+                //             $looselyPrice = $Price / $unitWeatage;
+                //         }
+                //     } else {
+                //         $returnQTY = $returnQTY;
+                //         $looselyCount = 0;
+                //         $looselyPrice = 0;
+                //         $Price  = $pDetails[0]['mrp'];
+                //     }
+
+                //     // ============= add into current stock if product id and batch no is not extists in current stock but exists in stock in detials (old stock sales return)====================
+                //     $stokIndata = $StockInDetails->selectProduct($productId, $batch);
+                //     foreach($stokIndata as $stokdata){
+                //         $stokInDetailsId = $stokdata["stokIn_id"];
+                //     }
+
+                //     $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batch, $pDetails[0]['exp_date'], $pDetails[0]['distributor_bill'], $looselyCount, $looselyPrice, $pDetails[0]['weightage'], $pDetails[0]['unit'], $returnQTY, $pDetails[0]['mrp'], $pDetails[0]['ptr'], $pDetails[0]['gst'], $addedBy);
+                // } else {
+                //     if ($unitType == 'cap' || $unitType == 'tab') {
+                //         if ($salesDetails[0]['qty'] == '0') {
+                //             if ($returnQTY >= $unitWeatage) {
+                //                 $newLCount = $stock[0]['loosely_count'] + $returnQTY;
+                //                 $newQuantity = $stock[0]['qty'] + (intdiv($returnQTY , $unitWeatage));
+                //             } else {
+                //                 $newLCount = $stock[0]['loosely_count'] + $returnQTY;;
+                //                 $newQuantity = $stock[0]['qty'];
+                //             }
+                //         } else {
+                //             $newQuantity = $stock[0]['qty'] + $returnQTY;
+                //             $newLCount = $stock[0]['loosely_count'] + ($returnQTY * $unitWeatage);
+                //         }
+                //     } else {
+                //         $newQuantity = $stock[0]['qty'] + $returnQTY;
+                //         $newLCount = '0';
+                //     }
+                //     // echo "<br>$productId<br>$batch<br>$newQuantity<br>$newLCount";
+                //     //======= update current stock with return items ==========================
+                //     $CurrentStock->updateStock($productId, $batch, $newQuantity, $newLCount);
+                // }    
             }
         }
     }

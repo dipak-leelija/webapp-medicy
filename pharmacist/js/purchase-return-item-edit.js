@@ -46,7 +46,8 @@ const customEdit = (id, value) => {
             var freeQty = dataObject.free_qty;
             var curretnQty = dataObject.current_stock_qty;
             var returnQty = dataObject.return_qty;
-            var returnFreeqty = dataObject.free_qty;
+            var returnFreeqty = dataObject.return_free_qty;
+            alert(returnFreeqty);
             var refundAmunt = dataObject.refund_amount;
 
             //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++

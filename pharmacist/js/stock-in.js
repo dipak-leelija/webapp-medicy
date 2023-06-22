@@ -13,44 +13,45 @@ const getDtls = (value) => {
         document.getElementById("manufacturer-id").value = xmlhttp.responseText;
 
         manufacturerName = 'ajax/product.getManufacturer.ajax.php?name=' + value;
-        // alert(url);
         xmlhttp.open("GET", manufacturerName, false);
         xmlhttp.send(null);
+        // alert(xmlhttp.responseText);
         document.getElementById("manufacturer-name").value = xmlhttp.responseText;
 
         //==================== Medicine Power ====================
-        powerurl = 'ajax/product.getMedicinePower.ajax.php?id=' + value;
+        powerurl = 'ajax/product.getMedicineDetails.ajax.php?power=' + value;
         // alert(url);
         xmlhttp.open("GET", powerurl, false);
         xmlhttp.send(null);
-        document.getElementById("medicine-power").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
+        document.getElementById("medicine-power").value = xmlhttp.responseText;
 
         //==================== Packaging Type ====================
-        packTypeUrl = 'ajax/product.getpackType.ajax.php?id=' + value;
+        packTypeUrl = 'ajax/product.getMedicineDetails.ajax.php?pType=' + value;
         // alert(url);
         xmlhttp.open("GET", packTypeUrl, false);
         xmlhttp.send(null);
+        // alert(xmlhttp.responseText);
         document.getElementById("packaging-type").innerHTML = xmlhttp.responseText;
 
-        packTypeFieldUrl = 'ajax/product.getpackTypefield.ajax.php?id=' + value;
+        packTypeFieldUrl = 'ajax/product.getMedicineDetails.ajax.php?packegeIn=' + value;
         // // alert(url);
         xmlhttp.open("GET", packTypeFieldUrl, false);
         xmlhttp.send(null);
+        // alert(xmlhttp.responseText);
         document.getElementById("packaging-in").value = xmlhttp.responseText;
 
-        // alert(xmlhttp.responseText);
-
         //==================== Weightage ====================
-        weightage = 'ajax/product.getWeightage.ajax.php?id=' + value;
+        weightage = 'ajax/product.getMedicineDetails.ajax.php?weightage=' + value;
         // alert(url);
         xmlhttp.open("GET", weightage, false);
         xmlhttp.send(null);
-        document.getElementById("weightage").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
+        document.getElementById("weightage").value = xmlhttp.responseText;
+        
 
         //==================== Unit ====================
-        unitUrl = 'ajax/product.getUnit.ajax.php?id=' + value;
+        unitUrl = 'ajax/product.getMedicineDetails.ajax.php?unit=' + value;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
@@ -87,7 +88,7 @@ const getDtls = (value) => {
         // console.log(xmlhttp.responseText);
 
         //==================== Product Name ====================
-        nameUrl = 'ajax/product.getName.ajax.php?id=' + value;
+        nameUrl = 'ajax/product.getMedicineDetails.ajax.php?pName=' + value;
         // alert(unitUrl);
         xmlhttp.open("GET", nameUrl, false);
         xmlhttp.send(null);

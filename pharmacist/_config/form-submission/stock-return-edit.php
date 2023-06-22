@@ -88,8 +88,7 @@ if (isset($_POST['stock-return-edit'])) {
     // echo "<br>Refund Amount : "; print_r($refundAmount);
     // echo "<br>Return QTY : "; print_r($returnQTY);
     
-    
-
+// exit;
     //================== Updating Stock Return tabele hear ========================================
 
     $addedTime = date("h:i:sa");
@@ -137,8 +136,8 @@ if (isset($_POST['stock-return-edit'])) {
             // echo "<br>Current Return loose qty : $currentReturnLooselyCount";
             // echo "<br>",$returnQty[$i] + $returnFQty[$i];
 
-
  //==================================== need to check from this area ========================================
+
             $CurrentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId); //
             // echo "<br>Current stok data on stock in detials id : "; print_r($CurrentStockData);
             
@@ -158,9 +157,9 @@ if (isset($_POST['stock-return-edit'])) {
                 $updatedReturnQty = $totalCrrntReturnQty - $totalPrevReturnQty;
                 // echo $updatedReturnQty;
 
-                $updatedQty = intval($CurrentStockQTY) +  ($updatedReturnQty); //edit update total quantity of product   
+                $updatedQty = intval($CurrentStockQTY) +  (-($updatedReturnQty)); //edit update total quantity of product   
                 // echo "<br>Updated qty : $updatedQty";
-                $newLooselyCount = intval($CurrentStockLooselyCount) + ($currentReturnLooselyCount - $prevReturnLooselyCount);
+                $newLooselyCount = intval($CurrentStockLooselyCount) + (-($currentReturnLooselyCount - $prevReturnLooselyCount));
                 // echo "<br>Updated loose qty : $newLooselyCount";
 
             } else {

@@ -118,7 +118,7 @@ const stockDetails = (productId) => {
 
     checkBatchByPid.push(productId); //product id array
     console.log(qntity);
-    alert(productId);
+    // alert(productId);
     console.log(productId);
     console.log(checkBatchByPid);
     document.getElementById("searched-items").style.display = "none";

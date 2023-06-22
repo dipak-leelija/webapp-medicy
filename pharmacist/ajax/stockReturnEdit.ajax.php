@@ -36,7 +36,7 @@ foreach($stockReturnData as $stockReturn){
     $stockReturnDetailsPurchaseAmount    =  $stockReturn['purchase_amount'];
     $stockReturnDetailsGST               =  $stockReturn['gst'];
     $stockReturnDetailsReturnQTY         =  $stockReturn['return_qty'];
-    $stockReturnDetailsFreeQTY           =  $stockReturn['free_qty'];
+    $stockReturnDetailsReturnFreeQTY     =  $stockReturn['return_free_qty'];
     $stockReturnDetailsRefundAmount      =  $stockReturn['refund_amount'];
     $stockReturnDetailsAddedBy           =  $stockReturn['added_by'];
     $stockReturnDetailsAddedOn           =  $stockReturn['added_on'];
@@ -143,7 +143,7 @@ $stockReturnDetailsDataArry = array("id"                    =>  $stockReturnDeta
                                     "taxable_amount"        =>  $StockInDetailsGSTamount,
                                     "current_stock_qty"     =>  $currentStockQty,
                                     "return_qty"            =>  $stockReturnDetailsReturnQTY,
-                                    "free_qty"              =>  $stockReturnDetailsFreeQTY,
+                                    "return_free_qty"       =>  $stockReturnDetailsReturnFreeQTY,
                                     "refund_amount"         =>  $stockReturnDetailsRefundAmount,
                                     "refund_mode"           =>  $stockReturnRefundMode,
                                     "added_by"              =>  $stockReturnDetailsAddedBy,

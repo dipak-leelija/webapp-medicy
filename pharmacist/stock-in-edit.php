@@ -388,7 +388,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <input type="number" class="upr-inp" name="gst" id="gst" readonly>
                                                 </div>
 
-                                                <div class="col-md-4 mt-2">
+                                                <div class="d-none col-md-4 mt-2">
                                                     <label class="mb-0" for="discount">Gst Amnt.</label>
                                                     <input type="number" class="upr-inp" name="crntGstAmnt" id="crntGstAmnt">
                                                 </div>
