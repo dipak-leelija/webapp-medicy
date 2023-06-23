@@ -9,8 +9,8 @@ $CurrentStock = new CurrentStock();
 $products = new Products();
 
 $currentDate = date("m/y");
-$month       = date("m");        
-$year        = date("y");              
+$month       = date("m");
+$year        = date("y");
 // echo gettype($year);
 if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     if (isset($_POST['exp-search'])) {
@@ -41,7 +41,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     // echo "<br>$currentDate<br><br>";
     $addMonth  = 2;
     $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
-            
 }
 
 // echo "<br>$newMnth<br><br>";
@@ -137,37 +136,44 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
                                             $expDate        = $item['exp_date'];
 
                                             $expiaryDt = str_replace("/", "", $expDate);
-                                            $expiaryDtMnth = intval(substr($expiaryDt,0,2));
-                                            $expiaryDtYr = substr($expiaryDt,2);
-                                            
-                                            $today = date("m/y");
-                                            $chkMnth = substr($today,0,2);
+                                            $expiaryDtMnth = intval(substr($expiaryDt, 0, 2));
+                                            $expiaryDtYr = substr($expiaryDt, 2);
 
-                                            $chekExpMnth = substr($today,0,2) + 2;
-                                            
+                                            $today = date("m/y");
+                                            $chkMnth = substr($today, 0, 2);
+
+                                            $chekExpMnth = substr($today, 0, 2) + 2;
+
                                             $chekExpMnth = $chekExpMnth % 12;
-                                            
-                                            if($chkMnth == 11 || $chkMnth == 12){
+
+                                            if ($chkMnth == 11 || $chkMnth == 12) {
                                                 $chkYr = date("y") + 1;
-                                            }else{
+                                            } else {
                                                 $chkYr = date("y");
                                             }
-                                            
+
                                             // echo $chekExpMnth;
-                                            if ($expiaryDtMnth <= $chekExpMnth && $expiaryDtYr == $chkYr) {
-                                                $stokInDetialId = $item['stock_in_details_id'];
-                                                $productId      = $item['product_id'];
+                                            if ($expiaryDtMnth >= $chkMnth) {
+                                                if ($expiaryDtMnth <= $chekExpMnth) {
+                                                    if ($expiaryDtYr == $chkYr) {
+                                                        // echo "<br>Expiary Date Month : $expiaryDtMnth";
+                                                        // echo "<br>Expiary Date Year : $expiaryDtYr";
+                                                        // echo "<br>Chk exp mnth : $chekExpMnth";
+                                                        // echo "<br>Chk exp yr : $chkYr";
 
-                                                $productData = $products->showProductsById($productId);
-                                                foreach ($productData as $data) {
-                                                    $prodName = $data['name'];
-                                                }
+                                                        $stokInDetialId = $item['stock_in_details_id'];
+                                                        $productId      = $item['product_id'];
 
-                                                $batch          = $item['batch_no'];
-                                                $qty            = $item['qty'];
-                                                $lCount         = $item['loosely_count'];
+                                                        $productData = $products->showProductsById($productId);
+                                                        foreach ($productData as $data) {
+                                                            $prodName = $data['name'];
+                                                        }
 
-                                                echo "<tr>
+                                                        $batch          = $item['batch_no'];
+                                                        $qty            = $item['qty'];
+                                                        $lCount         = $item['loosely_count'];
+
+                                                        echo "<tr>
                                                     <td hidden>" . $stokInDetialId . "</td>
                                                     <td>" . $prodName . "</td>
                                                     <td>" . $batch . "</td>
@@ -181,6 +187,8 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
                                                     <a class='ms-2' id='delete-btn' data-id=" . $productId . " hidden><i class='far fa-trash-alt'></i></a>
                                                 </td>
                                                 </tr>";
+                                                    }
+                                                }
                                             }
                                         }
                                         ?>
