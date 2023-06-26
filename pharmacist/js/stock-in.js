@@ -2,7 +2,7 @@ const getDtls = (value) => {
 
     // console.log(value);
     // alert(value);
-    var xmlhttp = new XMLHttpRequest();
+    let xmlhttp = new XMLHttpRequest();
     if (value != "") {
         // console.log(value);
         //==================== Manufacturere List ====================
@@ -229,41 +229,41 @@ const getBillAmount = () => {
 
 //geeting bills by clicking on add button
 const addData = () => {
-    var distId = document.getElementById("distributor-id");
+    let distId = document.getElementById("distributor-id");
     // console.log(distId.value1);
-    var distBillid = document.getElementById("distributor-bill");
-    var distBill = distBillid.value.toUpperCase();
+    let distBillid = document.getElementById("distributor-bill");
+    let distBill = distBillid.value.toUpperCase();
 
-    var billDate = document.getElementById("bill-date");
-    var dueDate = document.getElementById("due-date");
-    var paymentMode = document.getElementById("payment-mode");
+    let billDate = document.getElementById("bill-date");
+    let dueDate = document.getElementById("due-date");
+    let paymentMode = document.getElementById("payment-mode");
 
-    var productName = document.getElementById("product-name");
-    var productId = document.getElementById("product-id");
-    var batch = document.getElementById("batch-no");
-    var batchNo = batch.value.toUpperCase();
-    var manufId = document.getElementById("manufacturer-id");
-    var medicinePower = document.getElementById("medicine-power");
-    var expMonth = document.getElementById("exp-month");
-    var expYear = document.getElementById("exp-year");
-    var expDate = `${expMonth.value}/${expYear.value}`;
+    let productName = document.getElementById("product-name");
+    let productId = document.getElementById("product-id");
+    let batch = document.getElementById("batch-no");
+    let batchNo = batch.value.toUpperCase();
+    let manufId = document.getElementById("manufacturer-id");
+    let medicinePower = document.getElementById("medicine-power");
+    let expMonth = document.getElementById("exp-month");
+    let expYear = document.getElementById("exp-year");
+    let expDate = `${expMonth.value}/${expYear.value}`;
     expDate = expDate.toString();
-    var mfdMonth = document.getElementById("mfd-month");
-    var mfdYear = document.getElementById("mfd-year");
-    var mfdDate = `${mfdMonth.value}/${mfdYear.value}`;
+    let mfdMonth = document.getElementById("mfd-month");
+    let mfdYear = document.getElementById("mfd-year");
+    let mfdDate = `${mfdMonth.value}/${mfdYear.value}`;
     mfdDate = mfdDate.toString()
     // var producDsc       = document.getElementById("product-descreption");
-    var weightage = document.getElementById("weightage");
-    var unit = document.getElementById("unit");
-    var packagingIn = document.getElementById("packaging-in");
-    var mrp = document.getElementById("mrp");
-    var ptr = document.getElementById("ptr");
-    var qty = document.getElementById("qty");
-    var freeQty = document.getElementById("free-qty");
-    var discount = document.getElementById("discount");
-    var gst = document.getElementById("gst");
-    var base = document.getElementById("base");
-    var billAmount = document.getElementById("bill-amount");
+    let weightage = document.getElementById("weightage");
+    let unit = document.getElementById("unit");
+    let packagingIn = document.getElementById("packaging-in");
+    let mrp = document.getElementById("mrp");
+    let ptr = document.getElementById("ptr");
+    let qty = document.getElementById("qty");
+    let freeQty = document.getElementById("free-qty");
+    let discount = document.getElementById("discount");
+    let gst = document.getElementById("gst");
+    let base = document.getElementById("base");
+    let billAmount = document.getElementById("bill-amount");
 
     if (distId.value == "") {
         swal("Blank Field", "Please Selet Distributor First!", "error")

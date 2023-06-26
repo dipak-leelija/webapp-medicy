@@ -197,6 +197,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stock = $CurrentStock->checkStock($productId, $batchNo);
                 // echo "<br><br>Current stock details==";
                 // print_r($stock);
+                foreach($stock as $crntStock){
+                    $crntQTY = $crntStock['qty'];
+                    $crntLQTY = $crntStock['loosely_count'];
+                }
 
                 //============== fetching stok out details and sales return details ============
                 $invoiceDetail = $StockOut->stockOutSelect($invoiceId, $productID, $batchNo);
@@ -214,19 +218,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($stock[0]['unit'] == 'cap' || $stock[0]['unit'] == 'tab') {
                     if ($invoiceDetail[0]['qty'] == 0) {
                         if ($returnQty > $unitPower) {
-                            $looselyCount = $stock[0]['loosely_count'] + (- ($prevReturnQty - $returnQty));
-                            $updatedQTY = $stock[0]['qty'] + intdiv($returnQty, $unitPower);
+                            $looselyCount = $crntLQTY + (- ($prevReturnQty - $returnQty));
+                            $updatedQTY = $crntQTY + intdiv($returnQty, $unitPower);
                         } else {
-                            $looselyCount = $stock[0]['loosely_count'] + (- ($prevReturnQty - $returnQty));
-                            $updatedQTY = $stock[0]['qty'];
+                            $looselyCount = $crntLQTY + (- ($prevReturnQty - $returnQty));
+                            $updatedQTY = $crntQTY;
                         }
                     } else {
-                        $looselyCount = $stock[0]['loosely_count'] + (-(($prevReturnQty * $unitPower) -($returnQty * $unitPower) ));
-                        $updatedQTY = $stock[0]['qty'] + (- ($prevReturnQty - $returnQty));
+                        $looselyCount = $crntLQTY + (-(($prevReturnQty * $unitPower) -($returnQty * $unitPower) ));
+                        $updatedQTY = $crntQTY + (- ($prevReturnQty - $returnQty));
                     }
                 } else {
                     $looselyCount = 0;
-                    $updatedQTY = $stock[0]['qty'] + (- (- $prevReturnQty - $returnQty));
+                    $updatedQTY = $crntQTY + (- ($prevReturnQty - $returnQty));
                 }
                 //===========================================================================================
 
@@ -237,15 +241,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo "<br>Update qty before : $updatedQTY";
                 // echo "<br>Loosely Count : $looselyCount";
                 // echo "<br>Unit Power : $unitPower";
-                $updatedQTY = $looselyCount / $unitPower;
+             
+                if ($stock[0]['unit'] == 'cap' || $stock[0]['unit'] == 'tab') {
+                    $updatedQTY = $looselyCount / $unitPower;
+                }else{
+                    $updatedQTY = $updatedQTY;
+                }
+
                 // echo "<br>Update qty after : $updatedQTY";
                 $CurrentStock->updateStock($productId, $batchNo, $updatedQTY, $looselyCount);
             }
+            
             $totalRefundAmount = 0;
             for ($i = 0; $i < count($refunds); $i++) {
                 $totalRefundAmount = $totalRefundAmount + $refunds[$i];
             }
         }
+
         $showhelthCare = $HelthCare->showhelthCare();
         foreach ($showhelthCare as $rowhelthCare) {
             $healthCareName     = $rowhelthCare['hospital_name'];

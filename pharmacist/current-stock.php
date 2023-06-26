@@ -320,7 +320,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
                 '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
 
-        } // end of currentStockView function
+        } // end of customDelete function
 
         //======================================= CURRENT STOCK VIEW ========================================
 

@@ -200,7 +200,7 @@ if (isset($_GET['currentStockId'])) {
                                 <strong>Distributor Name: </strong><span><?php echo $distName ?></span><br>
                                 <strong>Batch No: </strong><span><?php echo $batchNo ?></span><br>
                                 <strong>Purchase Date: </strong><span><?php echo $purchaseDate ?></span><br>
-                                <strong>MFD: </strong><span><?php echo $expDate ?></span><br>
+                                <strong>MFD: </strong><span><?php echo $mfd ?></span><br>
                                 <strong>Exp Date: </strong><span><?php echo $expDate ?></span><br>
                                 <strong>Packaging Details : </strong><span><?php echo $packagingDetail . $pacakagingUnitName ?></span><br>
                                 <strong>Purchase Quantity: </strong><?php echo $purchaseQTY . " " . $pacakagingUnitName ?></span><br>

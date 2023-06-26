@@ -493,8 +493,9 @@ const addData = () => {
 
     // generate gst and store 
     let gstPerItem = gst.value / 100 * refund.value;
-    var gstAmount = document.getElementById("gst-amount");
-    var totalGstAmount = parseFloat(gstAmount.value) + parseFloat(gstPerItem);
+    let gstAmount = document.getElementById("gst-amount");
+    let totalGstAmount = parseFloat(gstAmount.value) + parseFloat(gstPerItem);
+    let taxableAmnt = gstPerItem.toFixed(2);
     gstAmount.value = totalGstAmount.toFixed(2);
 
 
@@ -543,7 +544,7 @@ const addData = () => {
                 <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly>
             </td>
             <td class="pt-3">
-                <input class="table-data w-5r" type="text" name="taxable[]" value="${gstPerItem}" >
+                <input class="table-data w-5r" type="text" name="taxable[]" value="${taxableAmnt}" >
             </td>
             <td class="ps-1 pt-3">
                 <input class="table-data w-4r" type="text" name="return[]" value="${returnQtyVal.value}" readonly>

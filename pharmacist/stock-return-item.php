@@ -10,8 +10,6 @@ require_once '../php_control/distributor.class.php';
 require_once '../php_control/packagingUnit.class.php';
 
 
-
-
 $page = "stock-return";
 
 //objects Initilization
@@ -232,27 +230,32 @@ $showDistributor       = $Distributor->showDistributor();
                                             <label class="mb-0 mt-1" for="free-qty">Free Qty:</label>
                                             <input type="text" class="upr-inp" name="free-qty" id="free-qty">
                                         </div>
-                                        <div class="col-md-3 col-6">
+                                        <div class="d-none col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="net-buy-qty">Net Buy Qty:</label>
                                             <input type="text" class="upr-inp" name="net-buy-qty" id="net-buy-qty">
+                                        </div>
+
+                                        <div class="col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="current-qty">Live Net Qty:</label>
+                                            <input type="text" class="upr-inp" name="current-qty" id="current-qty">
                                         </div>
                                     </div>
                                     <!-- ent fo third row -->
 
                                     <!-- Fourth row -->
-                                    <div class="row mt-md-2">
+                                    <div class="d-none row mt-md-2">
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="current-purchase-qty">Live Buy Qty:</label>
                                             <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
                                         </div>
-                                        <div class="col-md-3 col-6">
+                                        <div class="d-none col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="current-free-qty">Live Free Qty:</label>
                                             <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
                                         </div>
-                                        <div class="col-md-3 col-6">
+                                        <!-- <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="current-qty">Live Net Qty:</label>
                                             <input type="text" class="upr-inp" name="current-qty" id="current-qty">
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <!-- end fourth row  -->
 

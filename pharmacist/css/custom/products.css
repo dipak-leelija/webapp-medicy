@@ -21,9 +21,11 @@
 
 .gallery .gallery-items .item.show {
     display: block;
-    min-width: 19rem;
+    /* min-width: 19rem; */
     animation: show .5s ease;
 }
+
+
 
 @keyframes show {
     0% {

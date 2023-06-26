@@ -91,9 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br> Added By : "; print_r($added_by);
         // echo "<br> Invoice Id : "; print_r($invoiceId);
 
-        /// 
-
-
         $sold     = $StockOut->stockOutDisplayById($invoiceId);
         // echo "<br>"; print_r($sold);
         // echo "Stock Out tabel data:- <br>"; print_r($sold); echo "<br><br>";
@@ -159,41 +156,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo "stock in details : ======== : ";
                 $pDetails = $StockInDetails->showStockInDetailsByTable('product_id', 'batch_no', $productId, $batch);
 
-                
 
-                if($unitType == 'cap' || $unitType == 'tab'){
+
+                if ($unitType == 'cap' || $unitType == 'tab') {
                     $pharmacyInvoicDetials = $StockOut->stockOutDetailsById($invoiceId);
-                    foreach($pharmacyInvoicDetials as $invoiceData){
+                    foreach ($pharmacyInvoicDetials as $invoiceData) {
                         // echo"<br>Pharmacy Invoice Detials -->"; print_r($invoiceData);
-                        if($invoiceData['qty'] == 0){
-                            if ($returnQTY >= $unitWeatage){
+                        if ($invoiceData['qty'] == 0) {
+                            if ($returnQTY >= $unitWeatage) {
                                 $looselyCount = $returnQTY;
                                 $returnQTY = ($returnQTY % $unitWeatage);
                             }
-                            if ($returnQTY < $unitWeatage){
+                            if ($returnQTY < $unitWeatage) {
                                 $looselyCount = $returnQTY;
                                 $returnQTY = 0;
                             }
                         }
-                        if($invoiceData['qty'] != 0){
+                        if ($invoiceData['qty'] != 0) {
                             $looselyCount = $returnQTY * $unitWeatage;
                             $returnQTY = $returnQTY;
                         }
                     }
-                }else{
+                } else {
                     $returnQTY = $returnQTY;
                     $looselyCount = 0;
                 }
 
-                $newQuantity = $stock[0]['qty'] + $returnQTY;
-                $newLCount = $stock[0]['loosely_count'] + $looselyCount;
-                $newQuantity = $newLCount / $unitWeatage;
+                foreach ($stock as $currentStock) {
+                    $currentStockQTY = $currentStock['qty'];
+                    $currentStockLQTY = $currentStock['loosely_count'];
+                }
+
+                // echo "<br>CurrentStock qty : $currentStockQTY";
+                // echo "<br>CurrentStock Loose qty : $currentStockLQTY";
+                // echo "<br>Return qty : $returnQTY";
+
+                if ($unitType == 'cap' || $unitType == 'tab') {
+                    $newQuantity = $currentStockQTY + $returnQTY;
+                    $newLCount = $currentStockLQTY + $looselyCount;
+                    $newQuantity = $newLCount / $unitWeatage;
+                } else {
+                    $newQuantity = $currentStockQTY + $returnQTY;
+                    $newLCount = $currentStockLQTY + $looselyCount;
+                    // $newQuantity = $newLCount / $unitWeatage;
+                }
+
                 // echo "<br>New Quantity : $newQuantity";
                 // echo "<br>New L Quantity : $newLCount";
 
                 $CurrentStock->updateStock($productId, $batch, $newQuantity, $newLCount);
 
-                // exit;
+
 
                 // if (count($stock) == 0 || $stock == '') {
                 //     // (float) filter_var( $uWeightage, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION )
@@ -392,21 +405,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // print_r($products);
                 // print_r($batchNo);
                 // print_r($invoiceId);
-                
+
                 foreach ($products as $product) {
                     $i = 0;
                     //print_r($batchNo);
                     //$batchNo   = array_shift($_POST['batchNo']);
                     //echo $batchNo;
                     //echo "$product<br>$invoiceId<br>$batchNo[$i]";
-                   
+
                     $slno++;
                     if ($slno > 1) {
                         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                     }
-                    
+
                     //$printReturnQty = array_shift($_POST['return']);
-                    
+
 
                     $returnQtyPrint = array_shift($returnQty);
 
@@ -419,14 +432,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if ($salesDetails != null) {
                         if ($salesDetails[0]['qty'] == 0) {
                             $string = "(L)";
-                            $itemQty = $itemQty.$string;
-                            $returnQtyPrint = $returnQtyPrint.$string;
+                            $itemQty = $itemQty . $string;
+                            $returnQtyPrint = $returnQtyPrint . $string;
                         } else {
                             $itemQty = $itemQty;
                             $returnQtyPrint = $returnQtyPrint;
                         }
                     }
-// echo $i;
+                    // echo $i;
                     $showProducts = $Products->showProductsById($product);
                     echo '
                                 <div class="row">
@@ -465,7 +478,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <small>' . array_shift($refunds) . '</small>
                                     </div>
                                 </div>';
-                                $i++;
+                    $i++;
                 }
                 ?>
 

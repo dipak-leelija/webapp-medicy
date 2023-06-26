@@ -11,7 +11,6 @@ $page = "products";
 $Products      = new Products();
 $ProductImages = new ProductImages();
 
-
 // Function INitilized 
 $allProducts = $Products->showProducts();
 // print_r($allProducts);
@@ -71,14 +70,12 @@ $allProducts = $Products->showProducts();
                             <div class="card-header py-3">
                                 <div class="d-flex justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Total Items:
-                                        <?php 
-                                            if ($allProducts != NULL) 
-                                            {
-                                                echo $allProducts->num_rows;
-                                            } else 
-                                            {
-                                                echo 0;
-                                            } 
+                                        <?php
+                                        if ($allProducts != NULL) {
+                                            echo $allProducts->num_rows;
+                                        } else {
+                                            echo 0;
+                                        }
                                         ?>
                                     </h6>
                                     <a class="btn btn-sm btn-primary" href="add-products.php"><i class="fas fa-plus"></i> Add</a>
@@ -106,24 +103,27 @@ $allProducts = $Products->showProducts();
                                                         } else {
                                                             $dsc = $item['dsc'] . '..';
                                                         }
+                                                ?>
+
+                                                        <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
+                                                            <div class="card  m-2">
+                                                                <img src="../images/product-image/<?php echo $productImage ?>" class="card-img-top" alt="...">
+                                                                <div class="card-body">
+                                                                    <p class="mb-0"><b><?php $item['name'] ?></b></p>
+                                                                    <small class="card-text mt-0"><?php echo substr($dsc, 0, 65) ?></small>
+
+                                                                </div>
 
 
-                                                        echo '  <div class="item col-12 col-sm-6 col-md-3 ">
-                                            <div class="card  m-2">
-                                            <img src="../images/product-image/' . $productImage . '" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                            <p class="mb-0"><b>' . $item['name'] . '</b></p>
-                                                    <small class="card-text mt-0">' . substr($dsc, 0, 65) . '</small>
-                                                   
-                                                </div>
-                                                <div class="row px-3 pb-2">
-                                                    <div class="col-6">₹' . $item['mrp'] . '</div>
-                                                    <div class="col-6 d-flex justify-content-end">
-                                                    <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="' . $item['product_id'] . '" onclick="viewItem(this.id)">View</button>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                </div>';
+                                                                <div class="row px-3 pb-2">
+                                                                    <div class="col-6">₹ <?php echo $item['mrp'] ?></div>
+                                                                    <div class="col-6 d-flex justify-content-end">
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item['product_id'] ?>" onclick="viewItem(this.id)">View</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                <?php
                                                     }
                                                 } else {
                                                     echo "No Item Avilable";
