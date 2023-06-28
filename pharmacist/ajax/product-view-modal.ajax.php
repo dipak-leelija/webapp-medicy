@@ -65,7 +65,7 @@ $CurrentStock   = new CurrentStock();
 <body>
     <?php
     if (isset($_GET['id'])) {
-        // echo $_GET['id'];
+        $productId = $_GET['id'];
         $product        = $Products->showProductsById($_GET['id']);
         $manuf          = $Manufacturer->showManufacturerById($product[0]['manufacturer_id']);
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
@@ -93,7 +93,7 @@ $CurrentStock   = new CurrentStock();
             $backImage = "medicy-default-product-image.jpg";
             $SideImage = "medicy-default-product-image.jpg";
         }
-        
+
         $pack = $PackagingUnits->showPackagingUnitById($product[0]['packaging_type']);
 
     ?>
@@ -133,25 +133,25 @@ $CurrentStock   = new CurrentStock();
                                             <?php
                                             if ($itemstock != null) {
                                                 $qty = 0;
-                                                foreach($itemstock as $itemQty){
+                                                foreach ($itemstock as $itemQty) {
                                                     $qty = $qty + $itemQty['qty'];
                                                 }
                                                 echo $qty;
-                                                if($qty == 1){
-                                                    ?>
-                                                Unit
+                                                if ($qty == 1) {
+                                            ?>
+                                                    Unit
                                                 <?php
-                                                }else{
+                                                } else {
                                                 ?>
-                                                Units
+                                                    Units
                                                 <?php
                                                 }
-                                            
                                             } else {
                                                 echo 0;
                                                 ?>
                                                 Unit
-                                                <?php
+                                            <?php
+                                                $qty = 0;
                                             }
                                             ?>
                                         </mark>
@@ -163,11 +163,11 @@ $CurrentStock   = new CurrentStock();
                                     <a id="anchor1" href="../edit-product.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
                                 </div>
                                 <div class="col-4">
-                                    <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?>>Delete</button>
+                                    <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="d-flex justify-content-center">
                             <hr class="text-center w-100" style="height: 2px;">
                             <!-- <hr class="divider d-md-block" style="height: 2px;> -->
@@ -183,7 +183,7 @@ $CurrentStock   = new CurrentStock();
                                 <button class="button2 btn-primary"><a id="anchor1" href="../edit-product.php?id=<?php echo $_GET['id']; ?>">Edit</a></button>
                             </div>
                             <div class="col-2">
-                                <button class="button3 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?>>Delete</button>
+                                <button class="button3 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
                             </div>
 
                         </div>
@@ -205,48 +205,61 @@ $CurrentStock   = new CurrentStock();
 
         //========================= Delete Product =========================
 
-        function del(e) {
+        const del = (e) => {
             btnID = e.id;
+            btnVal = e.value;
             btn = this;
-            swal({
-                    title: "Are you sure?",
-                    text: "Want to Delete This Manufacturer?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
+            // alert(btnVal);
+
+            if (btnVal > 0) {
+                swal({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Current Stock have this product.'
                 })
-                .then((willDelete) => {
-                    if (willDelete) {
+            }
+            
+            if (btnVal == 0) {
+                swal({
+                        title: "Are you sure?",
+                        text: "Want to Delete This Manufacturer?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
 
-                        $.ajax({
-                            url: "product.Delete.ajax.php",
-                            type: "POST",
-                            data: {
-                                id: btnID
-                            },
-                            success: function(data) {
-                                if (data == 1) {
+                            $.ajax({
+                                url: "product.Delete.ajax.php",
+                                type: "POST",
+                                data: {
+                                    id: btnID
+                                },
+                                success: function(data) {
+                                    if (data == 1) {
 
-                                    swal(
-                                        "Deleted",
-                                        "Manufacturer Has Been Deleted",
-                                        "success"
-                                    ).then(function() {
-                                        parent.location.reload();
-                                    });
+                                        swal(
+                                            "Deleted",
+                                            "Manufacturer Has Been Deleted",
+                                            "success"
+                                        ).then(function() {
+                                            parent.location.reload();
+                                        });
 
-                                } else {
-                                    swal("Failed", "Product Deletion Failed!",
-                                        "error");
-                                    $("#error-message").html("Deletion Field !!!")
-                                        .slideDown();
-                                    $("success-message").slideUp();
+                                    } else {
+                                        swal("Failed", "Product Deletion Failed!",
+                                            "error");
+                                        $("#error-message").html("Deletion Field !!!")
+                                            .slideDown();
+                                        $("success-message").slideUp();
+                                    }
                                 }
-                            }
-                        });
-                    }
-                    return false;
-                });
+                            });
+                        }
+                        return false;
+                    });
+            }
         }
     </script>
 

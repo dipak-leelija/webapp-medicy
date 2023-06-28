@@ -21,7 +21,7 @@
 
 .gallery .gallery-items .item.show {
     display: block;
-    /* min-width: 19rem; */
+    min-width: 15rem;
     animation: show .5s ease;
 }
 

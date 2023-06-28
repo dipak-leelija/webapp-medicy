@@ -497,7 +497,7 @@ const addData = () => {
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
             </td>
             <td class=" pt-3" >
-                <input class="table-data w-5r" type="text" name="batchNo[]" value="${batchNo}" readonly>
+                <input class="table-data w-5r" type="text" name="batchNo[]" value="${batchNo}" readonly style="width: 6rem;">
             </td>
             <td class=" pt-3">
                 <input class="table-data w-3r" type="text" name="mfdDate[]" value="${mfdDate}" readonly>

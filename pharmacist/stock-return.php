@@ -347,9 +347,9 @@ $today = date("m-d-Y");
 
         <script>
             const cancelPurchaseReturn = (returnId, t) => {
+                alert(returnId);
+                alert(t);
                 if (confirm("Are You Sure?")) {
-                    // alert(t);
-
                     $.ajax({
                         url: "ajax/return.Cancel.ajax.php",
                         type: "POST",
@@ -367,7 +367,6 @@ $today = date("m-d-Y");
                                 // $("success-message").slideUp();
                                 alert("Cancelation Failed !");
                             }
-
                         }
                     });
                 }

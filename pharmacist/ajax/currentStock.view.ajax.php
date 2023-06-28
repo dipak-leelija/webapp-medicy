@@ -20,7 +20,7 @@ require_once '../../php_control/packagingUnit.class.php';
 //Classes Initilizing
 // $Patients       =   new Patients();
 $IdGeneration   =   new IdGeneration();
-$currentStock   =   new CurrentStock();
+$CurrentStock   =   new CurrentStock();
 $StockIn        =   new StockIn();
 $StockInDetail  =   new StockInDetails();
 $Product        =   new Products();
@@ -32,7 +32,7 @@ $packagUnit     =   new PackagingUnits();
 
 if (isset($_GET['currentStockId'])) {
     $productId =  $_GET['currentStockId'];
-    $showStock = $currentStock->showCurrentStocByPId($productId);
+    $showStock = $CurrentStock->showCurrentStocByPId($productId);
     // print_r($showStock);
     // echo count($showStock);
 
@@ -57,6 +57,36 @@ if (isset($_GET['currentStockId'])) {
         $productImage = $image[0][2];
     } else {
         $productImage = 'medicy-default-product-image.jpg';
+    }
+
+    // ================= PRODUCT TOTAL STOCK IN QTY ==============
+    $StockinQty = $StockInDetail->showStockInDetailsByPId($productId);
+    // print_r($StockinQty); echo "<br><br>";
+    if ($StockinQty != null) {
+        $overallStockInQTY = 0;
+        foreach ($StockinQty as $stockinQ) {
+            $purchaseQty = $stockinQ['qty'];
+            $freeQty = $stockinQ['free_qty'];
+            $totalQ = intval($purchaseQty) + intval($freeQty);
+            $overallStockInQTY += $totalQ;
+        }
+    }
+    if ($StockinQty == null) {
+        $overallStockInQTY = 0;
+    }
+
+    // ================= PRODUCT CURRENT STOCK IN QTY ============
+    $currentStockQty = $CurrentStock->showCurrentStocByPId($productId);
+    // print_r($currentStockQty);
+    if ($currentStockQty != null) {
+        $overallCurrentStock = 0;
+        foreach ($currentStockQty as $currentQty) {
+            $currentQty = $currentQty['qty'];
+            $overallCurrentStock += $currentQty;
+        }
+    }
+    if ($overallCurrentStock == null) {
+        $overallCurrentStock = 0;
     }
 }
 
@@ -123,10 +153,13 @@ if (isset($_GET['currentStockId'])) {
                 <div class="col-sm-1 justify-content-center">
 
                 </div>
+
                 <div class="col-sm-2 justify-content-center">
-                    <button class="button btn-danger" id="<?php echo $productId ?>" onclick="delAll(this.id)">Delete All</button>
+                    <button class="button btn-danger" id="<?php echo $productId ?>" value1="<?php echo $overallStockInQTY ?>" value2="<?php echo $overallCurrentStock ?>" onclick="delAll('<?php echo $productId ?>', '<?php echo $overallStockInQTY ?>', '<?php echo $overallCurrentStock ?>', this.id, this.value1, this.value2)">Delete All</button>
                 </div>
+
             </div>
+
             <div class="d-flex justify-content-top">
                 <hr class="text-center w-100" style="height: 2px; color:black">
             </div>
@@ -134,6 +167,7 @@ if (isset($_GET['currentStockId'])) {
             $slNo = 1;
             foreach ($showStock as $stock) {
                 // print_r($stock);
+                $stokInID = $stock['stock_in_details_id'];
                 $batchNo = $stock['batch_no'];
                 $distId = $stock['distributor_id'];
                 $currentStock = $stock['qty'];
@@ -151,6 +185,7 @@ if (isset($_GET['currentStockId'])) {
                 $stockInData = $StockInDetail->showStockInDetailsByTable($stokInDetailsCol1, $stokInDetailsCol2, $productId,  $batchNo);
                 // echo "<br><br>";
                 // print_r($stockInData);
+                // $overallQTY = 0;
                 foreach ($stockInData as $stockData) {
                     $purchaseDate = $stockData['added_on'];
                     $purchaseDate = date("d/m/Y", strtotime($purchaseDate));
@@ -175,16 +210,16 @@ if (isset($_GET['currentStockId'])) {
                     $productUnit = $stockData['unit'];
 
                     $packagingDetail = $ProductWeightage . " " . $productUnit . " / ";
-                }
 
+                    $totalStockinQty = intval($purchaseQTY) + intval($freeQTY);
+
+                    // $overallQTY = 0;
+                }
 
                 //=================== Packaging Detials ===================
                 $packagingType = $prodcutDetails[0]['packaging_type'];
-
                 $packagignData = $packagUnit->showPackagingUnitById($packagingType);
                 $pacakagingUnitName = $packagignData[0]['unit_name'];
-
-
 
                 // ================== product details ======================
 
@@ -219,11 +254,10 @@ if (isset($_GET['currentStockId'])) {
                                 <strong>Current Stock: </strong><span><?php echo $currentStock ?></span><br>
                                 <strong>Loose Stock: </strong><span><?php echo $looseStock ?></span><br>
                                 <strong>Row Serial No: </strong><span><?php echo $slNo ?></span><br>
-
                             </div>
 
                             <div class="col-1">
-                                <button class="button btn-danger" id="<?php echo 'table-row-' . $slNo ?>" value1="<?php echo $productId ?>" value2="<?php echo $batchNo ?>" onclick="customDelete('<?php echo 'table-row-' . $slNo ?>','<?php echo $productId ?>','<?php echo $batchNo ?>',this.id, this.value1,this.value2)">Delete</button>
+                                <button class="button btn-danger" id="<?php echo $stokInID ?>" value1="<?php echo $productId ?>" value2="<?php echo $batchNo ?>" value3="<?php echo $currentStock ?>" value4="<?php echo 'table-row-' . $slNo ?>" value5="<?php echo $totalStockinQty ?>" onclick="customDelete('<?php echo $stokInID ?>','<?php echo $productId ?>','<?php echo $batchNo ?>','<?php echo $currentStock ?>','<?php echo 'table-row-' . $slNo ?>','<?php echo $totalStockinQty ?>', this.id, this.value1, this.value2, this.value3, this.value4, this.value5)">Delete</button>
                             </div>
 
                         </div>
@@ -242,105 +276,135 @@ if (isset($_GET['currentStockId'])) {
 
 <script>
     // ============================ DELETE ALL STOCK DATA ================================
-    const delAll = (id) => {
+    const delAll = (id, value1, value2) => {
         // alert(id);
-        swal({
-                title: "Are you sure?",
-                text: "Want to Delete This Data?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
+        // alert(value1);
+        // alert(value2);
+        let stokInQty = value1;
+        let currentQty = value2;
+
+        if (stokInQty != currentQty) {
+            swal({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Some customer have this product'
             })
-            .then((willDelete) => {
-                if (willDelete) {
-                    // alert(id)
-                    $.ajax({
-                        url: "currentStock.delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            delID: id
-                        },
-                        success: function(response) {
-                            alert(response);
-                            if (response.includes('1')) {
-                                swal(
-                                    "Deleted",
-                                    "Manufacturer Has Been Deleted",
-                                    "success"
-                                ).then(function() {
-                                    parent.location.reload();
-                                });
+        }
 
-                            } else {
-                                swal("Failed", "Product Deletion Failed!",
-                                    "error");
-                                $("#error-message").html("Deletion Field !!!")
-                                    .slideDown();
-                                $("success-message").slideUp();
+        if (stokInQty == currentQty) {
+            swal({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Data?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        // alert(id)
+                        $.ajax({
+                            url: "currentStock.delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                delID: id
+                            },
+                            success: function(response) {
+                                alert(response);
+                                if (response.includes('1')) {
+                                    swal(
+                                        "Deleted",
+                                        "Manufacturer Has Been Deleted",
+                                        "success"
+                                    ).then(function() {
+                                        parent.location.reload();
+                                    });
+
+                                } else {
+                                    swal("Failed", "Product Deletion Failed!",
+                                        "error");
+                                    $("#error-message").html("Deletion Field !!!")
+                                        .slideDown();
+                                    $("success-message").slideUp();
+                                }
+
                             }
-
-                        }
-                    });
-                }
-                return false;
-            });
-
+                        });
+                    }
+                    return false;
+                });
+        }
 
     }
 
     // =================================== DELTE PERTICULER STOCK DATA =======================
 
-    const customDelete = (id, value1, value2) => {
-        // alert(id);
-        // alert(value1);
-        // alert(value2);
-        var row = document.getElementById(id);
-        swal({
-                title: "Are you sure?",
-                text: "Want to Delete This Data?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
+    const customDelete = (id, value1, value2, value3, value4, value5) => {
+
+        // alert(id);     // stok in detials id
+        // alert(value1); // product Id
+        // alert(value2); // batch not
+        // alert(value3); // current stock count
+        // alert(value4); // row number
+        // alert(value5); // total stock in qty 
+
+        let btnId = document.getElementById(id);
+        let row = document.getElementById(value4);
+
+        if (value3 != value5) {
+            swal({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Some customer have this product'
             })
-            .then((willDelete) => {
-                if (willDelete) {
-                    // alert(value1);
-                    // alert(value2);
-                    $.ajax({
-                        url: "currentStock.delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            pId: value1,
-                            pBatchNO: value2
-                        },
-                        success: function(response) {
-                            // alert(response);
-                            if (response.includes('1')) {
-                                swal(
-                                    "Deleted",
-                                    "Manufacturer Has Been Deleted",
-                                    "success"
-                                ).then(function() {
-                                    row.parentNode.removeChild(row);
-                                    // $(id).closest("tr").fadeOut()
-                                });
+        }
 
-                            } else {
-                                swal("Failed", "Product Deletion Failed!",
-                                    "error");
-                                $("#error-message").html("Deletion Field !!!")
-                                    .slideDown();
-                                $("success-message").slideUp();
+        if (value3 == value5) {
+            swal({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Data?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        // alert(value1);
+                        // alert(value2);
+                        $.ajax({
+                            url: "currentStock.delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                pId: value1,
+                                pBatchNO: value2
+                            },
+                            success: function(response) {
+                                // alert(response);
+                                if (response.includes('1')) {
+                                    swal(
+                                        "Deleted",
+                                        "Manufacturer Has Been Deleted",
+                                        "success"
+                                    ).then(function() {
+                                        row.parentNode.removeChild(row);
+                                        // $(id).closest("tr").fadeOut()
+                                    });
+
+                                } else {
+                                    swal("Failed", "Product Deletion Failed!",
+                                        "error");
+                                    $("#error-message").html("Deletion Field !!!")
+                                        .slideDown();
+                                    $("success-message").slideUp();
+                                }
+
+                                // row.parentNode.removeChild(row);
+
                             }
-
-                            // row.parentNode.removeChild(row);
-
-                        }
-                    });
-                }
-                return false;
-            });
-
+                        });
+                    }
+                    return false;
+                });
+        }
 
     }
 </script>

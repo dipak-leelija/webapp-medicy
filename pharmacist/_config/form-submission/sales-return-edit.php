@@ -210,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // print_r($salesReturnDetials);
                 $prevReturnQty = $salesReturnDetials[0]['return'];
                 if ($returnQty == 0) {
-                    $prevReturnQty = -$prevReturnQty;
+                    $prevReturnQty = $prevReturnQty;
                 }
         
                 //======================= calculation for edit return =================================
@@ -220,17 +220,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         if ($returnQty > $unitPower) {
                             $looselyCount = $crntLQTY + (- ($prevReturnQty - $returnQty));
                             $updatedQTY = $crntQTY + intdiv($returnQty, $unitPower);
-                        } else {
-                            $looselyCount = $crntLQTY + (- ($prevReturnQty - $returnQty));
+                            // echo "<br>Update L qty (qty == 0 && qty > unit power): $looselyCount";
+                        } 
+                        if ($returnQty < $unitPower){
+                            $looselyCount = intval($crntLQTY) + intval(-($prevReturnQty - $returnQty));
                             $updatedQTY = $crntQTY;
+                            // echo "<br>Prev return L qty : $prevReturnQty";
+                            // echo "<br>Return L qty : $returnQty";
+                            // echo "<br>Update L qty (qty == 0 && qty < unit power): $looselyCount";
                         }
-                    } else {
+                    } 
+                    if ($invoiceDetail[0]['qty'] != 0) {
                         $looselyCount = $crntLQTY + (-(($prevReturnQty * $unitPower) -($returnQty * $unitPower) ));
                         $updatedQTY = $crntQTY + (- ($prevReturnQty - $returnQty));
+                        // echo "<br>Update L qty (qty != 0 ): $looselyCount";
                     }
                 } else {
                     $looselyCount = 0;
                     $updatedQTY = $crntQTY + (- ($prevReturnQty - $returnQty));
+                    // echo "<br>Update L qty (not cap or tab ) : $looselyCount";
                 }
                 //===========================================================================================
 
@@ -243,12 +251,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo "<br>Unit Power : $unitPower";
              
                 if ($stock[0]['unit'] == 'cap' || $stock[0]['unit'] == 'tab') {
-                    $updatedQTY = $looselyCount / $unitPower;
+                    $updatedQTY = intval($looselyCount / $unitPower);
                 }else{
                     $updatedQTY = $updatedQTY;
                 }
 
-                // echo "<br>Update qty after : $updatedQTY";
+                // echo "<br>Batch No : $batchNo";
+                // echo "<br>Update qty : $updatedQTY";
+                // echo "<br>Update L qty : $looselyCount";
+
                 $CurrentStock->updateStock($productId, $batchNo, $updatedQTY, $looselyCount);
             }
             
@@ -270,6 +281,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
