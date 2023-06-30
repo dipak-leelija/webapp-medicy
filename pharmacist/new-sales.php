@@ -169,7 +169,7 @@ $doctor = $Doctors->showDoctors();
                                             <input class="sale-inp" type="text" id="mrp" readonly>
                                         </div>
 
-                                        <div class="col-md-1 mt-3 col-6" hidden>
+                                        <div class="d-none col-md-1 mt-3 col-6" >
                                             <!--Available qty on batch no-->
                                             <label for="">Availability</label><br> 
                                             <input class="sale-inp" type="text" id="aqty">
@@ -201,17 +201,20 @@ $doctor = $Doctors->showDoctors();
                                             <input class="sale-inp" type="any" id="amount" readonly>
                                         </div>
                                     </div>
+
                                     <div id="searched-items">
 
                                     </div>
+                                    
                                     <div id="exta-details">
 
                                         <div class=" row mt-4">
                                             <div class="col-md-6">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-8 d-flex">
+                                                    <div class="col-md-12 col-12 d-flex">
                                                         <label for="" style="margin-top: .3rem;">Manf.</label><br>
-                                                        <input class="sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly>
+                                                        <input class="sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly hidden>
+                                                        <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:auto" readonly>
                                                     </div>
 
                                                     <div class="col-md-12 d-flex">

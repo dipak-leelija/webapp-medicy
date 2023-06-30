@@ -76,17 +76,18 @@ if($searchResult){
                 }
             }
 
-            echo '
-            <div class="row mx-2 p-1 border-bottom searched-list" id="'.$productId.'" onclick="stockDetails(this.id);">
-                <div class="col-md-6">'.$productName, $power.'<br>
-                <small>'.$manufacturerName.'</small></div>
-                <div class="col-md-3"><small>'.$packOf.'</small></div>
-                <div class="col-md-3"><small>'.$stockQty;
+            ?>
+            <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" onclick="stockDetails(this.id);">
+                <div class="col-md-6"><?php echo $productName, $power ?><br>
+                <small><?php echo $manufacturerName ?></small></div>
+                <div class="col-md-3"><small><?php echo $packOf ?></small></div>
+                <div class="col-md-3"><small><?php echo $stockQty;
                 if($looseQty > 0){
-                    echo '('.$looseQty.')';
+                    echo "($looseQty)";
                 } 
-                echo'</small></div>
-            </div>';
+                echo "" ?> </small></div>
+            </div> 
+<?php
 
     }
 

@@ -1,8 +1,27 @@
+function searchItem(input) {
+    // console.log(value);
+    // alert(value);
+    let xmlhttp = new XMLHttpRequest();
+
+    let searchReult = document.getElementById('searched-items');
+    document.getElementById("searched-items").style.display = "block";
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            searchReult.innerHTML = xmlhttp.responseText;
+        }
+    };
+    xmlhttp.open('GET', 'ajax/purchase-item-list.ajax.php?data=' + input, true);
+    xmlhttp.send();
+}
+
+
 const getDtls = (value) => {
 
     // console.log(value);
     // alert(value);
     let xmlhttp = new XMLHttpRequest();
+
     if (value != "") {
         // console.log(value);
         //==================== Manufacturere List ====================
@@ -118,6 +137,7 @@ const getDtls = (value) => {
         document.getElementById("product-name").value = "";
 
     }
+    document.getElementById("searched-items").style.display = "none";
 }
 
 var todayDate = new Date();
@@ -493,52 +513,53 @@ const addData = () => {
             <td style="color: red; padding-top:1.2rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
             <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
             <td class="pt-3">
-                <input class="table-data w-12r" type="text" value="${productName.value}" readonly>
+                <input class="table-data w-3r" type="text" value="${productName.value}" style="word-wrap: break-word; width:4rem" readonly>
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
             </td>
             <td class=" pt-3" >
-                <input class="table-data w-5r" type="text" name="batchNo[]" value="${batchNo}" readonly style="width: 6rem;">
+                <input class="table-data w-3r" type="text" name="batchNo[]" value="${batchNo}" readonly style="width: 4rem;">
             </td>
             <td class=" pt-3">
-                <input class="table-data w-3r" type="text" name="mfdDate[]" value="${mfdDate}" readonly>
+                <input class="table-data w-3r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="width: 3rem;">
             </td>
             <td class=" pt-3">
-                <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly>
+                <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly style="width: 3rem;">
             </td>
             <td class=" pt-3">
-                <input class="table-data w-4r" type="text" name="power[]" value="${medicinePower.value}" readonly>
+                <input class="table-data w-3r" type="text" name="power[]" value="${medicinePower.value}" readonly style="width: 3rem;">
             </td>
             <td class=" pt-3">
-                <input class="table-data w-4r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly>
+                <input class="table-data w-3r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly style="width: 3rem;">
                 <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none">
                 <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none">
 
             </td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly>
+                <input class="table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="width: 2rem;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly>
+                <input class="table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="width: 2rem;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly></td class="p-0">
+                <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="width: 2rem;">
+            </td>
             <td class="pt-3">
-                <input class="table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly>
+                <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="width: 2rem;">
             </td>
             <td class="pt-3">
                 <input type="text" name="base[]" value="${base.value}" style="display: none">
                 <input  type="text" name="discount[]" value="${discount.value}" style="display: none ;">
-                <p style="color: #000; font-size: .8rem;">${base.value} <span class="bg-primary text-light p-1 disc-span" style="border-radius: 28%; font-size: .6rem;">${discount.value}%</span> </p>
+                <p style="color: #000; font-size: .8rem;">${base.value} <span class="bg-primary text-light p-1 disc-span" style="border-radius: 28%; font-size: .6rem; width:2rem;">${discount.value}%</span> </p>
             </td>
             <td class="ps-1 pt-3">
-                <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}" readonly>
+                <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}" readonly style="width: 2rem;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly>
+                <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly style="width: 2rem;">
                 <input type="text" name="gstPerItem[]" value="${gstPerItem}" hidden>
             </td class="pt-3">
             <td class="amnt-td pt-3">
-                <input class="table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly>
+                <input class="table-data w-3r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="width: 3rem;">
             </td>
         </tr>`);
 
@@ -657,14 +678,12 @@ const addData = () => {
                                                             }
                                                         }
                                                     }
-
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-
                         }
                     }
                 }
@@ -707,7 +726,6 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     let net = document.getElementById("net-amount");
     let finalAmount = net.value - total;
     net.value = finalAmount;
-
 }
 
 
@@ -728,60 +746,68 @@ const setMonth = (month) => {
 }
 
 const setMfdMonth = (month) => {
-    const m = new Date();
-
-    if (month.value.length > 2) {
+   
+    if (month.value > 12) {
+        // console.log("Its Over");
         month.value = '';
-        // console.log("Ok");
+    } 
 
-    }else {
-        if (month.value > 12) {
-            // console.log("Its Over");
-            month.value = '';
-        } else {
-            if (month.value.length == 2) {
-                document.getElementById("mfd-year").focus();
-            }
+    if (month.value.length == 2) {
+        document.getElementById("mfd-year").focus();
+    }
+}
+
+function setMfdYear(year){
+    let thisYear = new Date().getFullYear();
+    let thisMnth = new Date().getMonth();
+    let yr = year.value;
+    let mnthChk = document.getElementById("mfd-month").value;
+    console.log("CHECK YEAR");
+    console.log(thisYear);
+    console.log(yr);
+    console.log("CHECK Month");
+    console.log(mnthChk);
+
+    if(yr > thisYear){
+        document.getElementById("mfd-year").value = "";
+    }
+
+    if(yr == thisYear){
+        if(mnthChk > thisMnth){
+            document.getElementById("mfd-month").value = "";
+            document.getElementById("mfd-year").value = "";
+            document.getElementById("mfd-month").focus();
         }
     }
 }
 
-
 const setYear = (year) => {
     var MFD = document.getElementById("mfd-year");
-    var EXP = document.getElementById("exp-year");
-    // var check = EXP.value;
-        
-    if (year.value.length > 2) {
+    // var EXP = document.getElementById("exp-year");
+    // var check = EXP.value; 
+    if (year.value.length > 4 ) {
         year.value = '';
     }
 
-    if (year.value < 2) {
-        year.value = '';
-    }
-
-    // if(MFD.value > EXP.value){
-    //     EXP.value = '';
-    // }
 }
 
-const setMfdYear = (year) => {
-    var MFD = document.getElementById("mfd-year").value;
-    const y = new Date();
-    let yr = y.getFullYear();
-    yr = yr.toString();
-    yr = yr.substring(2,5);
+// const setMfdYear = (year) => {
+//     var MFD = document.getElementById("mfd-year").value;
+//     const y = new Date();
+//     let yr = y.getFullYear();
+//     yr = yr.toString();
+//     yr = yr.substring(2,5);
     
-    if (Number(MFD) > Number(yr)) {
-        document.getElementById("mfd-year").value = '';
-    }
-    if (MFD.length > 2) {
-        MFD.value = '';
-    }
-    if (MFD.length < 2) {
-        MFD.value = '';
-    }
-}
+//     if (Number(MFD) > Number(yr)) {
+//         document.getElementById("mfd-year").value = '';
+//     }
+//     if (MFD.length > 2) {
+//         MFD.value = '';
+//     }
+//     if (MFD.length < 2) {
+//         MFD.value = '';
+//     }
+// }
 
 
 

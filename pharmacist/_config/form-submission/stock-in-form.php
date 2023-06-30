@@ -322,7 +322,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="col-sm-1 text-center">
                     <small><b>SL.</b></small>
                 </div>
-                <div class="col-sm-1b">
+                <div class="col-sm-1b" hidden>
                     <small><b>P Id</b></small>
                 </div>
                 <div class="col-sm-1b ">
@@ -451,7 +451,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="col-sm-1 text-center">
                         <small> <?php echo "$slno" ?></small>
                     </div>
-                    <div class="col-sm-1b ">
+                    <div class="col-sm-1b " hidden>
                         <small><?php echo "$prodId" ?></small>
                     </div>
                     <div class="col-sm-1b">

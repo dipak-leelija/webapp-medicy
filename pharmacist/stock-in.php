@@ -24,6 +24,7 @@ $PackagingUnits     = new PackagingUnits();
 
 //function's called
 $showProducts          = $Products->showProducts();
+// print_r($showProducts);
 $showDistributor       = $Distributor->showDistributor();
 // $showManufacturer      = $Manufacturer->showManufacturer();
 $showMeasureOfUnits    = $MeasureOfUnits->showMeasureOfUnits();
@@ -163,17 +164,24 @@ $todayYr = date("y");
                                             <!-- <label for="product-name" class="mb-0">Product Name</label> -->
                                             <input class="upr-inp mt-2" list="datalistOptions" id="product-name"
                                                 name="product-name" placeholder="Search Product"
-                                                onchange="getDtls(this.value);" autocomplete="off">
-                                            <datalist id="datalistOptions">
+                                                onkeyup="searchItem(this.value);" autocomplete="off">
+                                            <!-- <datalist id="datalistOptions">
                                                 <?php
                                                 foreach($showProducts as $rowProducts){
                                                     $productId   = $rowProducts['product_id'];
-                                                    $productName = $rowProducts['name'];
-                                                    echo '<option value="'.$productId.'">'.$productName.'</option>';
+                                                    $productName = $rowProducts['name']; ?>
+                                                    <option value="<?php echo $productId  ?>"><?php echo $productName ?>
+                                                    </option>
+                                                <?php    
                                                 }
                                                 ?>
-                                            </datalist>
+                                            </datalist> -->
                                         </div>
+
+                                        <div id="searched-items">
+                                        
+                                        </div>
+
                                     </div>
 
 
@@ -229,7 +237,7 @@ $todayYr = date("y");
 
                                         <div class="col-sm-6 col-md-4 mt-2">
                                             <label class="mb-0" for="batch-no">Batch No.</label>
-                                            <input type="text" class="upr-inp" name="batch-no" id="batch-no" >
+                                            <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                                         </div>
                                         <div class="col-sm-3 col-md-4 mt-2">
                                             <label class="mb-0 mt-1" for="mfd-date">MFD</label>
@@ -366,14 +374,14 @@ $todayYr = date("y");
                                                 <th scope="col">MFD.</th>
                                                 <th scope="col">Exp.</th>
                                                 <th scope="col">Power</th>
-                                                <th scope="col">Unit</th>
-                                                <th scope="col">Qty.</th>
-                                                <th scope="col">Free</th>
-                                                <th scope="col">MRP</th>
-                                                <th scope="col">PTR</th>
-                                                <th scope="col">Base</th>
-                                                <th scope="col">Margin%</th>
-                                                <th scope="col">GST%</th>
+                                                <th scope="col" style="width: 2rem;">Unit</th>
+                                                <th scope="col" style="width: 2rem;">Qty.</th>
+                                                <th scope="col" style="width: 2rem;">Free</th>
+                                                <th scope="col" style="width: 2rem;">MRP</th>
+                                                <th scope="col" style="width: 2rem;">PTR</th>
+                                                <th scope="col" style="width: 2rem;">Base</th>
+                                                <th scope="col" style="width: 2rem;">Margin%</th>
+                                                <th scope="col" style="width: 2rem;">GST%</th>
                                                 <th scope="col">Amount</th>
                                             </tr>
                                         </thead>

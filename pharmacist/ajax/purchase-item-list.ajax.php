@@ -12,6 +12,7 @@ require_once '../../php_control/manufacturer.class.php';
 
 $CurrentStock = new CurrentStock();
 $Manufacturer = new Manufacturer();
+$Search       = new Search();
 
 
 require_once '../../employee/config/dbconnect.php';
@@ -22,11 +23,11 @@ if(isset($_GET['data'])){
 
     $searchSql ="Select * From `products` WHERE `products`.`name` LIKE '%$data%'";
     $searchResult = mysqli_query($conn, $searchSql) or die ("Connection Error") ;
+    // $searchResult = $Search->searchForSale($data);
 }
 
-
-
 if($searchResult){
+
     // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";
     ?>
 <div class="row mx-2 p-1 text-muted border-bottom">
@@ -35,10 +36,8 @@ if($searchResult){
     <div class="col-md-3">Stock</div>
 </div>
 <?php
-    while($result = mysqli_fetch_array($searchResult)){
-        print_r($result);
-        foreach( $result as $resultRow){
-        
+    while($resultRow = mysqli_fetch_array($searchResult)){
+
         $productId  = $resultRow['product_id'];
         $productName = $resultRow['name'];
         $weightage   = $resultRow['unit_quantity'];
@@ -57,38 +56,39 @@ if($searchResult){
             $power = ' | '.$resultRow['power'];
         }
 
-        // echo array_shift($productId);
+        if ($unit == "tab" || $unit == "cap") {
+            $unitType = 'loosely_count';
+            $stock = $CurrentStock->showCurrentStocByUnit($productId, $unitType);
+        }else{
+            $unitType = 'qty';
+            $stock = $CurrentStock->showCurrentStocByUnit($productId, $unitType);
+        }
 
-        $stock = $CurrentStock->showCurrentStocByPId($productId);
-        // echo $productId;
-        print_r($stock);
+
         $stockQty = 0;
         $looseQty = 0;
         
-            // if ($stock != NULL) {
+            if ($stock != NULL) {
                 foreach ($stock as $row) {
-                    $stockQty = $row['qty'];
-                   echo $looseQty = $row['loosely_count'];
+                    $stockQty += $row['qty'];
+                    $looseQty += $row['loosely_count'];
 
-            //         echo '
-            // <div class="row mx-2 p-1 border-bottom searched-list" id="'.$productId.'" onclick="stockDetails(this.id);">
-            //     <div class="col-md-6">'.$productName, $power.'<br>
-            //     <small>'.$manufacturerName.'</small></div>
-            //     <div class="col-md-3"><small>'.$packOf.'</small></div>
-            //     <div class="col-md-3"><small>'.$stockQty;
-            //     if($looseQty > 0){
-            //         echo '('.$looseQty.')';
-            //     } 
-            //     echo'</small></div>
-            // </div>';
-
-            
                 }
-                // exit;
-            // }
+            }
 
-        }
-            
+            ?>
+            <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" onclick="getDtls(this.id);">
+                <div class="col-md-6"><?php echo $productName, $power ?><br>
+                <small><?php echo $manufacturerName ?></small></div>
+                <div class="col-md-3"><small><?php echo $packOf ?></small></div>
+                <div class="col-md-3"><small><?php echo $stockQty;
+                if($looseQty > 0){
+                    echo "($looseQty)";
+                } 
+                echo "" ?> </small></div>
+            </div> 
+<?php
+
     }
 
 }

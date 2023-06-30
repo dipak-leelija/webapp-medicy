@@ -11,8 +11,34 @@ if (isset($_GET["id"])) {
     // print_r($manufacturerList);
     if ($manufacturerList != NULL) {   
         foreach ($manufacturerList as $row) {
-            echo $row["id"];
+            $manufId =  $row["id"];
+            $manufName =  $row["name"];
+            $manufName = str_replace("&lt", "<", $manufName);
+            $manufName = str_replace("&gt", ">", $manufName);
+            $manufName = str_replace("&#39", "'", $manufName);
         }
+        echo $row["id"];
+    }
+
+    //`products`.`product_composition`   product_composition
+    //print_r($showProducts);
+    //echo $showProducts[0]['product_composition'];
+}
+
+if (isset($_GET["manufName"])) {
+    $showProducts = $Products->showProductsById($_GET["manufName"]);
+    // $manufacturerList = $Manufacturer->showManufacturer();
+    $manufacturerList = $Manufacturer->showManufacturerById($showProducts[0]['manufacturer_id']);
+    // print_r($manufacturerList);
+    if ($manufacturerList != NULL) {   
+        foreach ($manufacturerList as $row) {
+            $manufId =  $row["id"];
+            $manufName =  $row["name"];
+            $manufName = str_replace("&lt", "<", $manufName);
+            $manufName = str_replace("&gt", ">", $manufName);
+            $manufName = str_replace("&#39", "'", $manufName);
+        }
+        echo $manufName;
     }
 
     //`products`.`product_composition`   product_composition

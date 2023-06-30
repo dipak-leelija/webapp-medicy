@@ -53,7 +53,6 @@ function searchItem(input) {
     }
 }
 
-
 const setMode = (returnMode) => {
     document.getElementById("refund-mode").value = returnMode;
 }

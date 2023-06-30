@@ -224,6 +224,17 @@ const stockDetails = (productId) => {
         document.getElementById("manuf").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
+
+        manufNameUrl = 'ajax/product.getManufacturer.ajax.php?manufName=' + productId;
+        //console.log(productId);
+        // alert(unitUrl);
+        // window.location.href = unitUrl;
+        xmlhttp.open("GET", manufNameUrl, false);
+        xmlhttp.send(null);
+        // alert(xmlhttp.responseText);
+        document.getElementById("manufName").value = xmlhttp.responseText;
+        
+
         //==================== Content ====================
         contentUrl = 'ajax/product.getContent.ajax.php?pid=' + productId;
         //console.log(productId);

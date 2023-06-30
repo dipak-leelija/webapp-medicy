@@ -93,8 +93,10 @@ $allProducts = $Products->showProducts();
                                                 if ($allProducts != NULL) {
                                                     foreach ($allProducts as $item) {
                                                         $image = $ProductImages->showImageById($item['product_id']);
+                                                        // print_r($image);
                                                         if ($image[0][2] != NULL) {
-                                                            $productImage = $image[0][2];
+                                                            // $productImage = $image[0][2];
+                                                            $productImage = 'medicy-default-product-image.jpg';
                                                         } else {
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }
