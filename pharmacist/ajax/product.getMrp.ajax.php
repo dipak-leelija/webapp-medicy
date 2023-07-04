@@ -17,4 +17,18 @@ if (isset($_GET["stockmrp"])) {
     $stock = $CurrentStock->showCurrentStocByPId($_GET["stockmrp"]);
     echo $stock[0]['mrp'];
 }
+
+
+// =============== ptr check =====================
+
+if (isset($_GET["ptrChk"])) {
+    $showProducts = $Products->showProductsById($_GET["ptrChk"]);
+    $mrp = $showProducts[0]['mrp'];
+    $gst = $showProducts[0]['gst'];
+
+    $maxptr = ($mrp*100)/($gst+100);
+    $maxptr = number_format($maxptr, 2);
+    
+    echo $maxptr;
+}
 ?>

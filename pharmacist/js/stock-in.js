@@ -1,10 +1,17 @@
 function searchItem(input) {
-    // console.log(value);
+    console.log(input);
     // alert(value);
     let xmlhttp = new XMLHttpRequest();
 
-    let searchReult = document.getElementById('searched-items');
-    document.getElementById("searched-items").style.display = "block";
+    let searchReult = document.getElementById('product-select');
+
+    if (input == "") {
+        document.getElementById("product-select").style.display = "none";
+    }
+
+    if (input != "") {
+        document.getElementById("product-select").style.display = "block";
+    }
 
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -67,7 +74,7 @@ const getDtls = (value) => {
         xmlhttp.send(null);
         // alert(xmlhttp.responseText);
         document.getElementById("weightage").value = xmlhttp.responseText;
-        
+
 
         //==================== Unit ====================
         unitUrl = 'ajax/product.getMedicineDetails.ajax.php?unit=' + value;
@@ -86,6 +93,18 @@ const getDtls = (value) => {
         xmlhttp.send(null);
         document.getElementById("mrp").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
+
+        //==================== ptr check url ===================
+
+        chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + value;
+        // alert(unitUrl);
+        // window.location.href = unitUrl;
+        xmlhttp.open("GET", chkPtr, false);
+        xmlhttp.send(null);
+        // alert(xmlhttp.responseText);
+        document.getElementById("chk-ptr").value = xmlhttp.responseText;
+        document.getElementById("ptr").value = xmlhttp.responseText;
+
 
         //==================== GST ====================
         gstUrl = 'ajax/product.getGst.ajax.php?id=' + value;
@@ -137,7 +156,7 @@ const getDtls = (value) => {
         document.getElementById("product-name").value = "";
 
     }
-    document.getElementById("searched-items").style.display = "none";
+    document.getElementById("product-select").style.display = "none";
 }
 
 var todayDate = new Date();
@@ -156,7 +175,7 @@ var todayFullDate = year + "-" + month + "-" + date;
 // console.log(todayFullDate);
 document.getElementById("bill-date").setAttribute("max", todayFullDate);
 
-const getbillDate = (billDate) => {  
+const getbillDate = (billDate) => {
     billDate = billDate.value;
     document.getElementById("due-date").setAttribute("min", billDate);
 
@@ -171,77 +190,65 @@ const getBillAmount = () => {
     // let mrp = document.getElementById("mrp").value;
     let ptr = document.getElementById("ptr").value;
     let Mrp = document.getElementById("mrp").value;
+    let chkPtr = document.getElementById("chk-ptr").value;
 
     let PTR = parseFloat(ptr);
     let MRP = parseFloat(Mrp);
-    if (PTR > MRP) {
-        console.log(Mrp);
-        console.log(ptr);
-        swal("Error Input", "PTR must be lesser than MRP. Please enter proper PTR value!", "error");
+    let ChkPtr = parseFloat(chkPtr);
+
+    if (PTR > ChkPtr) {
+        // console.log(Mrp);
+        // console.log(ptr);
+        swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
         document.getElementById("ptr").value = "";
         document.getElementById("bill-amount").value = "";
         document.getElementById("ptr").value = "";
-
     }
 
     let qty = document.getElementById("qty").value;
     // let freeQty    = document.getElementById("free-qty").value;
     let discount = document.getElementById("discount").value;
-    let base = document.getElementById("base");
+
+    //========= base amount calculation area ===========
+    // console.log("check ptr");
+    // console.log(PTR);
+    let base = PTR - ((PTR * discount)/100);
+    // console.log("base amount check : ");
+    // console.log(base);
+    document.getElementById("base").value = parseFloat(base).toFixed(2);
+    // ======= eof base amount calculation =============
+
     let gst = document.getElementById("gst").value;
+
     let billAmount = document.getElementById("bill-amount");
     // alert(ptr)
     // console.log(gst);
 
 
-
     if (ptr == "") {
         billAmount.value = "";
-        base.value = "";
-
+        base = "";
     }
+
     if (qty != "" && ptr != "" && gst != "") {
-        subAamount = ptr * qty;
+        subAamount = base * qty;
+
+        // console.log("subamount check : ");
         // console.log(subAamount);
 
-        let baseAmount = subAamount / qty;
-        // console.log(baseAmount);
-
-        base.value = parseFloat(baseAmount).toFixed(2);
-
-        let totalGst = (gst / 100 * subAamount);
+        let totalGst = ((gst / 100) * subAamount);
         let amount = subAamount + totalGst;
         // console.log(amount);
         // console.log(amount - totalGst);
+        let chkBillAmount = MRP*qty;
+
+        if(amount > chkBillAmount){
+            amount = chkBillAmount;
+        }
 
         billAmount.value = parseFloat(amount).toFixed(2);
-
     }
-    if (discount != "") {
-        if (qty != "" && ptr != "" && gst != "") {
 
-            let subAamount = ptr * qty;
-            // console.log(subAamount);
-
-            let afterDiscount = subAamount - (discount / 100 * subAamount);
-            // console.log(afterDiscount);
-
-            let baseAmount = afterDiscount / qty;
-            // console.log(baseAmount);
-
-            base.value = parseFloat(baseAmount).toFixed(2);
-
-            let amount = afterDiscount + (gst / 100 * afterDiscount);
-            // console.log(amount);
-
-            billAmount.value = parseFloat(amount).toFixed(2);
-
-        }
-    }
-    // }
-    // else{
-    //     swal(mrp);
-    // }
 } //eof getBillAmount function
 
 // ##################################################################################
@@ -513,11 +520,11 @@ const addData = () => {
             <td style="color: red; padding-top:1.2rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
             <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" value="${productName.value}" style="word-wrap: break-word; width:4rem" readonly>
+                <input class="table-data w-3r" type="text" value="${productName.value}" style="word-wrap: break-word; width:5rem" readonly>
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
             </td>
             <td class=" pt-3" >
-                <input class="table-data w-3r" type="text" name="batchNo[]" value="${batchNo}" readonly style="width: 4rem;">
+                <input class="table-data w-3r" type="text" name="batchNo[]" value="${batchNo}" readonly style="width: 5rem;">
             </td>
             <td class=" pt-3">
                 <input class="table-data w-3r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="width: 3rem;">
@@ -526,40 +533,40 @@ const addData = () => {
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly style="width: 3rem;">
             </td>
             <td class=" pt-3">
-                <input class="table-data w-3r" type="text" name="power[]" value="${medicinePower.value}" readonly style="width: 3rem;">
+                <input class="table-data w-3r" type="text" name="power[]" value="${medicinePower.value}" readonly style="width: 2rem;">
             </td>
             <td class=" pt-3">
-                <input class="table-data w-3r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly style="width: 3rem;">
-                <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none">
-                <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none">
+                <input class="table-data w-3r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly style="width: 2rem;">
+                <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none" hidden>
+                <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none" hidden>
 
             </td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="width: 2rem;">
+                <input class="table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="width: 2rem; padding: 0%;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="width: 2rem;">
+                <input class="table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="width: 2rem; padding: 0%;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="width: 2rem;">
+                <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="width: 2rem; padding: 0%;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="width: 2rem;">
+                <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="width: 3rem; padding: 0%;">
             </td>
             <td class="pt-3">
                 <input type="text" name="base[]" value="${base.value}" style="display: none">
                 <input  type="text" name="discount[]" value="${discount.value}" style="display: none ;">
-                <p style="color: #000; font-size: .8rem;">${base.value} <span class="bg-primary text-light p-1 disc-span" style="border-radius: 28%; font-size: .6rem; width:2rem;">${discount.value}%</span> </p>
+                <p style="color: #000; font-size: .8rem;">${base.value} <span class="bg-primary text-light p-1 disc-span" style="border-radius: 28%; font-size: .6rem; width:2rem; padding: 0%;">${discount.value}%</span> </p>
             </td>
             <td class="ps-1 pt-3">
-                <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}" readonly style="width: 2rem;">
+                <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(0)}%" readonly style="width: 2rem; padding: 0%;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly style="width: 2rem;">
+                <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly style="width: 2rem; padding: 0%;">
                 <input type="text" name="gstPerItem[]" value="${gstPerItem}" hidden>
             </td class="pt-3">
             <td class="amnt-td pt-3">
-                <input class="table-data w-3r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="width: 3rem;">
+                <input class="table-data w-3r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="width: 4rem; padding: 0%;">
             </td>
         </tr>`);
 
@@ -572,8 +579,8 @@ const addData = () => {
                                                                                             document.getElementById("packaging-in").value = "";
                                                                                             document.getElementById("medicine-power").value = "";
                                                                                             document.getElementById("batch-no").value = "";
-                                                                                            document.getElementById("mfd-month").value="";
-                                                                                            document.getElementById("mfd-year").value="";
+                                                                                            document.getElementById("mfd-month").value = "";
+                                                                                            document.getElementById("mfd-year").value = "";
                                                                                             document.getElementById("exp-month").value = "";
                                                                                             document.getElementById("exp-year").value = "";
                                                                                             document.getElementById("mrp").value = "";
@@ -746,68 +753,110 @@ const setMonth = (month) => {
 }
 
 const setMfdMonth = (month) => {
-   
+
     if (month.value > 12) {
         // console.log("Its Over");
         month.value = '';
-    } 
+    }
 
     if (month.value.length == 2) {
         document.getElementById("mfd-year").focus();
     }
 }
 
-function setMfdYear(year){
+function setMfdYear(year) {
     let thisYear = new Date().getFullYear();
     let thisMnth = new Date().getMonth();
     let yr = year.value;
     let mnthChk = document.getElementById("mfd-month").value;
-    console.log("CHECK YEAR");
-    console.log(thisYear);
-    console.log(yr);
-    console.log("CHECK Month");
-    console.log(mnthChk);
+    // console.log("CHECK YEAR");
+    // console.log(thisYear);
+    // console.log(yr);
+    // console.log("CHECK Month");
+    // console.log(mnthChk);
 
-    if(yr > thisYear){
-        document.getElementById("mfd-year").value = "";
-    }
+    if (year.value.length == 2) {
+        let shrtThisYr = thisYear % 100;
 
-    if(yr == thisYear){
-        if(mnthChk > thisMnth){
-            document.getElementById("mfd-month").value = "";
+        if (yr > shrtThisYr) {
             document.getElementById("mfd-year").value = "";
-            document.getElementById("mfd-month").focus();
+        }
+
+        if (yr == shrtThisYr) {
+            if (mnthChk > thisMnth) {
+                document.getElementById("mfd-month").value = "";
+                document.getElementById("mfd-year").value = "";
+                document.getElementById("mfd-month").focus();
+            }
         }
     }
+
+    if (year.value.length == 4) {
+        if (yr > thisYear) {
+            document.getElementById("mfd-year").value = "";
+        }
+
+        if (yr == thisYear) {
+            if (mnthChk > thisMnth) {
+                document.getElementById("mfd-month").value = "";
+                document.getElementById("mfd-year").value = "";
+                document.getElementById("mfd-month").focus();
+            }
+        }
+    }
+
 }
 
 const setYear = (year) => {
     var MFD = document.getElementById("mfd-year");
-    // var EXP = document.getElementById("exp-year");
-    // var check = EXP.value; 
-    if (year.value.length > 4 ) {
-        year.value = '';
+    var mfdMnth = document.getElementById("mfd-month");
+    var expMnth = document.getElementById("exp-month").value;
+    var mfdLn = MFD.value.length;
+
+    // console.log(mfdLn);
+
+    if (mfdLn == year.value.length) {
+        if (year.value < MFD.value) {
+            document.getElementById("exp-year").value = "";
+        }
     }
 
+    if (mfdLn == 4) {
+        if (year.value.length == 2) {
+            MFD = MFD.value % 100;
+            if (MFD < year.value) {
+                swal("error! expiary year must be bigger than mfd year.")
+                document.getElementById("exp-year").value = "";
+            }
+
+            if (MFD == year.value) {
+                if (mfdMnth.value > expMnth) {
+                    swal("error! expiary month must be bigger or equals with manufacturing month.");
+                    document.getElementById("exp-month").value = "";
+                }
+            }
+        }
+    }
+
+    if (mfdLn == 2) {
+        if (year.value.length == 4) {
+            let expYr = year.value % 100;
+            if (MFD.value < expYr) {
+                swal("error! expiary year must be bigger than mfd year.")
+                document.getElementById("exp-year").value = "";
+            }
+
+            if (MFD.value == expYr) {
+                if (mfdMnth.value > expMnth) {
+                    swal("error! expiary month must be bigger or equals with manufacturing month.");
+                    document.getElementById("exp-month").value = "";
+                }
+            }
+        }
+    }
 }
 
-// const setMfdYear = (year) => {
-//     var MFD = document.getElementById("mfd-year").value;
-//     const y = new Date();
-//     let yr = y.getFullYear();
-//     yr = yr.toString();
-//     yr = yr.substring(2,5);
-    
-//     if (Number(MFD) > Number(yr)) {
-//         document.getElementById("mfd-year").value = '';
-//     }
-//     if (MFD.length > 2) {
-//         MFD.value = '';
-//     }
-//     if (MFD.length < 2) {
-//         MFD.value = '';
-//     }
-// }
+
 
 
 

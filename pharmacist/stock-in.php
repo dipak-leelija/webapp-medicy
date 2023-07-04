@@ -164,7 +164,7 @@ $todayYr = date("y");
                                             <!-- <label for="product-name" class="mb-0">Product Name</label> -->
                                             <input class="upr-inp mt-2" list="datalistOptions" id="product-name"
                                                 name="product-name" placeholder="Search Product"
-                                                onkeyup="searchItem(this.value);" autocomplete="off">
+                                                onkeyup="searchItem(this.value);" autocomplete="off" value="">
                                             <!-- <datalist id="datalistOptions">
                                                 <?php
                                                 foreach($showProducts as $rowProducts){
@@ -176,15 +176,12 @@ $todayYr = date("y");
                                                 }
                                                 ?>
                                             </datalist> -->
+                                            
+                                            <div class="p-2 bg-light" id="product-select">
+                                            </div>
                                         </div>
-
-                                        <div id="searched-items">
-                                        
-                                        </div>
-
                                     </div>
-
-
+                            
                                     <div class="row">
                                         <div class="col-md-12 mt-2">
                                             <label class="mb-0" for="manufacturer-id">Manufacturer</label>
@@ -281,6 +278,11 @@ $todayYr = date("y");
                                             <input type="number" class="upr-inp" name="ptr" id="ptr"
                                                 onkeyup="getBillAmount()">
                                         </div>
+
+                                        <div class="d-none col-sm-6 col-md-6 mt-2">
+                                            <label class="mb-0" for="purchase-price">Check PTR</label>
+                                            <input type="number" class="upr-inp" name="ptr" id="chk-ptr">
+                                        </div>
                                     </div>
                                     <!--/End Price Row -->
 
@@ -367,25 +369,26 @@ $todayYr = date("y");
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col"></th>
-                                                <th scope="col"><input type="number" value="0" id="dynamic-id"
-                                                        style="display:none"></th>
-                                                <th scope="col">Items</th>
-                                                <th scope="col">Batch</th>
-                                                <th scope="col">MFD.</th>
-                                                <th scope="col">Exp.</th>
-                                                <th scope="col">Power</th>
-                                                <th scope="col" style="width: 2rem;">Unit</th>
-                                                <th scope="col" style="width: 2rem;">Qty.</th>
-                                                <th scope="col" style="width: 2rem;">Free</th>
-                                                <th scope="col" style="width: 2rem;">MRP</th>
-                                                <th scope="col" style="width: 2rem;">PTR</th>
-                                                <th scope="col" style="width: 2rem;">Base</th>
-                                                <th scope="col" style="width: 2rem;">Margin%</th>
-                                                <th scope="col" style="width: 2rem;">GST%</th>
+                                                <th scope="col">
+                                                    <input type="number" value="0" id="dynamic-id" style="display:none" >
+                                                </th>
+                                                <th scope="col" style="width: 5rem;">Items</th>
+                                                <th scope="col" style="width: 5rem;">Batch</th>
+                                                <th scope="col" style="width: 3rem;">MFD.</th>
+                                                <th scope="col" style="width: 3rem;">Exp.</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%;">Power</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%;">Unit</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%;">Qty.</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%;">Free</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%;">MRP</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%;">PTR</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%;">Base</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%;">Margin%</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%;">GST%</th>
                                                 <th scope="col">Amount</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="dataBody">
+                                        <tbody id="dataBody" >
                                             
                                         </tbody>
                                     </table>

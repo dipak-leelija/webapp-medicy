@@ -95,8 +95,8 @@ $allProducts = $Products->showProducts();
                                                         $image = $ProductImages->showImageById($item['product_id']);
                                                         // print_r($image);
                                                         if ($image[0][2] != NULL) {
-                                                            // $productImage = $image[0][2];
-                                                            $productImage = 'medicy-default-product-image.jpg';
+                                                            $productImage = $image[0][2];
+                                                            // $productImage = 'medicy-default-product-image.jpg';
                                                         } else {
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }

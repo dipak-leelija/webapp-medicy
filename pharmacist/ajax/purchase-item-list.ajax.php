@@ -9,11 +9,13 @@
 require_once '../../php_control/search.class.php';
 require_once '../../php_control/currentStock.class.php';
 require_once '../../php_control/manufacturer.class.php';
+require_once '../../php_control/packagingUnit.class.php';
+
 
 $CurrentStock = new CurrentStock();
 $Manufacturer = new Manufacturer();
 $Search       = new Search();
-
+$PackagingUnits = new PackagingUnits();
 
 require_once '../../employee/config/dbconnect.php';
 
@@ -30,7 +32,7 @@ if($searchResult){
 
     // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";
     ?>
-<div class="row mx-2 p-1 text-muted border-bottom">
+<div class="row border-bottom border-primary small mx-0 mb-2">
     <div class="col-md-6">Searched For</div>
     <div class="col-md-3">Unit/Pack</div>
     <div class="col-md-3">Stock</div>
@@ -42,7 +44,12 @@ if($searchResult){
         $productName = $resultRow['name'];
         $weightage   = $resultRow['unit_quantity'];
         $unit        = $resultRow['unit'];
-        $packOf      = $weightage.'/'.$unit;
+        $packagingType = $resultRow['packaging_type'];
+        $packDetails = $PackagingUnits->showPackagingUnitById($packagingType);
+        foreach($packDetails as $packData){
+            $packageType = $packData['unit_name'];
+        }
+        $packOf      = $weightage.$unit.'/'.$packageType;
         $manufacturerId = $resultRow['manufacturer_id'];
         $manufacturer = $Manufacturer->showManufacturerById($manufacturerId);
 
@@ -77,7 +84,7 @@ if($searchResult){
             }
 
             ?>
-            <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" onclick="getDtls(this.id);">
+            <div class="row mx-0 py-2 border-bottom p-row item-list" id="<?php echo $productId ?>" onclick="getDtls(this.id);">
                 <div class="col-md-6"><?php echo $productName, $power ?><br>
                 <small><?php echo $manufacturerName ?></small></div>
                 <div class="col-md-3"><small><?php echo $packOf ?></small></div>
