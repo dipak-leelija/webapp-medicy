@@ -92,7 +92,7 @@ $showDistributor       = $Distributor->showDistributor();
                                 <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
                                     <thead class="bg-primary text-light">
                                         <tr>
-                                            <th>Sl No.</th>
+                                            <th>Sl.</th>
                                             <th>Dist. Bill No</th>
                                             <th>Dist. Name</th>
                                             <th>Date</th>
@@ -105,15 +105,12 @@ $showDistributor       = $Distributor->showDistributor();
                                         <?php
                                         if (count($showStockIn) > 0) {
                                             $StockInId = $showStockIn[0]['id'];
+                                            $id = $showStockIn[0]['id'];
+                                            $slNo = $id - $StockInId;
                                             foreach ($showStockIn as $stockIn) {
                                                 $distributor = $Distributor->showDistributorById($stockIn['distributor_id']);
-
-                                                // print_r($distributor);
-
-                                                $id = $stockIn['id'];
-                                                $slNo = $id - $StockInId;
+                                                
                                                 $slNo++;
-                                                // echo "<br>$slNo";
 
                                         ?>
 

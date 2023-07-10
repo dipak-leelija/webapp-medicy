@@ -7,6 +7,7 @@ const customEdit = (id, value) => {
 
     console.log(value);
     console.log(row);
+    console.log(id);
 
     $.ajax({
         url: "ajax/stockReturnEdit.ajax.php",
@@ -18,7 +19,7 @@ const customEdit = (id, value) => {
             alert(data);
             var dataObject = JSON.parse(data);
             // alert(dataObject);
-
+            slno = id.replace(/\D/g, '');
             // var stokReturnDetailId = dataObject.id;
             // alert(stokReturnDetailId);
             
@@ -81,7 +82,8 @@ const customEdit = (id, value) => {
 
             //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
 
-            row.parentNode.removeChild(row);
+            // row.parentNode.removeChild(row);
+            delData (slno);
         }
     })
     return false;
@@ -357,6 +359,7 @@ const addData = async () => {
 
 // ================================ Delet Data ================================
 const  delData = (slno) => {
+    alert(slno);
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;
@@ -368,7 +371,7 @@ const  delData = (slno) => {
 
     // minus quantity
     let qty = document.getElementById("total-refund-qty");
-    let finalQty = qty.value - itemQty
+    let finalQty = qty.value - itemQty;
     qty.value = finalQty;
 
 

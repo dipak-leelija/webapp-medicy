@@ -164,6 +164,10 @@ border-top: 1px solid #e3e6f0;
     width: 3rem;
 }
 
+.w-2r {
+    width: 2rem;
+}
+
 .summary-inp {
     /* width: 6rem; */
     margin-left: 0.3rem;

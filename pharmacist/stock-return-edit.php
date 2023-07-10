@@ -321,6 +321,7 @@ if(isset($_GET["returnId"])){
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col"><input type="number" value="0" id="dynamic-id" style="display:none"></th>
+                                                <th scope="col">Sl</th>
                                                 <th scope="col">Items</th>
                                                 <th scope="col" hidden>StockReturnId</th>
                                                 <th scope="col" hidden>StockReturnDetailsId</th>
@@ -333,8 +334,8 @@ if(isset($_GET["returnId"])){
                                                 <th scope="col">PTR</th>
                                                 <th scope="col">P.Amount</th>
                                                 <th scope="col">GST</th>
-                                                <th scope="col">Return Qty</th>
-                                                <th scope="col">Return Free Qty</th>
+                                                <th scope="col">Ret Qty</th>
+                                                <th scope="col">Ret F Qty</th>
                                                 <th scope="col">Refund</th>
 
                                             </tr>
@@ -365,6 +366,10 @@ if(isset($_GET["returnId"])){
                                                     </td>
                                                     
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
+                                                        <input class="col table-data w-1r" type="text" name="slNo[]" value="<?php echo $slno; ?>" readonly style="text-align: start; width:3rem">
+                                                    </td>
+
+                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-12r" type="text" name="productName[]" value="<?php echo $productName; ?>" readonly style="text-align: start;">
                                                         <input class="col table-data w-12r" type="text" name="productId[]" value="<?php echo $bill['product_id']; ?>" readonly style="text-align: start;" hidden>
                                                     </td>
@@ -378,35 +383,35 @@ if(isset($_GET["returnId"])){
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="<?php echo $bill['batch_no']; ?>" readonly>
+                                                        <input class="col table-data w-8r" type="text" name="batchNo[]" value="<?php echo $bill['batch_no']; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-5r" type="text" name="expDate[]" value="<?php echo $bill['exp_date']; ?>" readonly>
+                                                        <input class="col table-data w-4r" type="text" name="expDate[]" value="<?php echo $bill['exp_date']; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-5r" type="text" name="setof[]" value="<?php echo $bill['unit'], $productUnit; ?>" readonly>
+                                                        <input class="col table-data w-4r" type="text" name="setof[]" value="<?php echo $bill['unit'], $productUnit; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-5r" type="text" name="purchasedQty[]" value="<?php echo $bill['purchase_qty']; ?>" readonly>
+                                                        <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="<?php echo $bill['purchase_qty']; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-5r" type="text" name="freeQty[]" value="<?php echo $bill['free_qty']; ?>" readonly>
+                                                        <input class="col table-data w-3r" type="text" name="freeQty[]" value="<?php echo $bill['free_qty']; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-5r" type="text" name="mrp[]" value="<?php echo $bill['mrp']; ?>" readonly>
+                                                        <input class="col table-data w-4r" type="text" name="mrp[]" value="<?php echo $bill['mrp']; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-6r" type="text" name="ptr[]" value="<?php echo $bill['ptr']; ?>" readonly>
+                                                        <input class="col table-data w-4r" type="text" name="ptr[]" value="<?php echo $bill['ptr']; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-6r" type="text" name="purchase-amount[]" value="<?php echo $bill['purchase_amount']; ?>" readonly>
+                                                        <input class="col table-data w-4r" type="text" name="purchase-amount[]" value="<?php echo $bill['purchase_amount']; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 ps-1 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
@@ -414,15 +419,15 @@ if(isset($_GET["returnId"])){
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="<?php echo $bill['return_qty']; ?>" readonly>
+                                                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="<?php echo $bill['return_qty']; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-8r" type="text" name="return-free-qty[]" value="<?php echo $bill['return_free_qty']; ?>" readonly>
+                                                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="<?php echo $bill['return_free_qty']; ?>" readonly>
                                                     </td>
 
                                                     <td class=" amnt-td p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data W-6r" type="text" name="refund-amount[]" value="<?php echo $bill['refund_amount']; ?>" readonly>
+                                                        <input class="col table-data W-4r" type="text" name="refund-amount[]" value="<?php echo $bill['refund_amount']; ?>" readonly>
                                                     </td>
                                                 </tr>
 
