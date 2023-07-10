@@ -92,7 +92,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         </div><br>
                                         <div class="col-md-12"> 
                                             <input class="c-inp w-100 p-1" id="product-composition" name="product-composition"
-                                                placeholder="Product Composition" required>
+                                                placeholder="Product Composition" required >
                                         </div>
 
                                         <div class="row p-3">
@@ -193,7 +193,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
                                                 <!-- <label class="mb-0 mt-1" for="unit-quantity">Unit Quantity</label> -->
                                                 <input type="number" class="c-inp p-1 w-100" name="unit-quantity"
-                                                    id="unit-quantity" placeholder="Enter Unit" required>
+                                                    id="unit-quantity" placeholder="Enter Unit" step="0.01" required>
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
@@ -229,7 +229,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <label class="mb-0 mt-1" for="mrp">MRP ₹</label>
                                                 <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp"
                                                     placeholder="Enter MRP" 
-                                                    step="0.25" required>
+                                                    step="0.01" required>
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-6 mt-3">

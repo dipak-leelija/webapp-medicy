@@ -29,7 +29,15 @@ class StockIn extends DatabaseConnection{
         return $data;
     }//eof showStockIn function
 
-
+    function showStockInDecendingOrder(){
+        $data   = array();
+        $select = "SELECT * FROM stock_in ORDER BY stock_in.id ASC";
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof showStockIn function
 
     function showStockInByTable($table1, $table2, $data1, $data2){
         $data   = array();

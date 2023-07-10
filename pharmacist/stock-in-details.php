@@ -1,6 +1,6 @@
 <?php
 
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/distributor.class.php';
 require_once '../php_control/stockIn.class.php';
 
@@ -13,10 +13,20 @@ $StockIn            = new StockIn();
 
 
 //function calling
-$showStockIn           = $StockIn->showStockIn();
-// print_r($showStockIn); echo "<br><br>";
+$showStockIn = $StockIn->showStockInDecendingOrder();
+// print_r($showStockIn);
+// echo "<br><br>";
+$StockInId = $showStockIn[0]['id'];
+// echo "<br>check stokinid : $StockInId";
+// foreach($showStockIn as $stokIn){
+//     // print_r($stokIn);
+//     $id = $stokIn['id'];
+//     $slNo = $id - $StockInId;
+//     $slNo++;
+//     echo "<br>$slNo";
+// }
 $showDistributor       = $Distributor->showDistributor();
- 
+
 ?>
 
 <!DOCTYPE html>
@@ -36,9 +46,7 @@ $showDistributor       = $Distributor->showDistributor();
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <!-- <link rel="stylesheet" href="../css/font-awesome-6.1.1-pro.css"> -->
 
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -84,7 +92,7 @@ $showDistributor       = $Distributor->showDistributor();
                                 <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
                                     <thead class="bg-primary text-light">
                                         <tr>
-                                            <!-- <th>ID</th> -->
+                                            <th>Sl No.</th>
                                             <th>Dist. Bill No</th>
                                             <th>Dist. Name</th>
                                             <th>Date</th>
@@ -95,29 +103,36 @@ $showDistributor       = $Distributor->showDistributor();
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if (count($showStockIn) > 0 ) {
+                                        if (count($showStockIn) > 0) {
+                                            $StockInId = $showStockIn[0]['id'];
                                             foreach ($showStockIn as $stockIn) {
                                                 $distributor = $Distributor->showDistributorById($stockIn['distributor_id']);
 
                                                 // print_r($distributor);
-                                                
-                                        ?>       
-                                           
-                                            <tr>
-                                                <td id="<?php echo $stockIn['distributor_bill'] ?>" value = "<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['distributor_bill'] ?></td>
-                                                <td id="<?php echo $stockIn['distributor_bill'] ?>" value = "<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $distributor[0][1] ?></td>
-                                                <td id="<?php echo $stockIn['distributor_bill'] ?>" value = "<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['bill_date'] ?></td>
-                                                <td id="<?php echo $stockIn['distributor_bill'] ?>" value = "<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['amount'] ?></td>
-                                                <td id="<?php echo $stockIn['distributor_bill'] ?>" value = "<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['payment_mode'] ?></td>
-                                                <td class="d-flex justify-content-around align-middle" >
-                                                    <a class="text-primary pe-auto" role="button" id="<?php echo $stockIn['distributor_bill'] ?>" value = "<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i>
-                                                </a>
-                                                    <a class="text-primary" id="<?php echo $stockIn['distributor_bill'] ?>" href="stock-in-edit.php?edit=<?php echo $stockIn['distributor_bill'] ?>&editId=<?php echo $stockIn['id'] ?>" role="button"><i class=" fas fa-edit"></i>
-                                                </a>
-                                                    <a class="text-danger" role="button"><i class="fas fa-trash" id="<?php echo $stockIn['id'] ?>" onclick="deleteStock(this.id)"></i></a>
-                                                </td>
-                                            </tr>
-                                            <?php    
+
+                                                $id = $stockIn['id'];
+                                                $slNo = $id - $StockInId;
+                                                $slNo++;
+                                                // echo "<br>$slNo";
+
+                                        ?>
+
+                                                <tr>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $slNo ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['distributor_bill'] ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $distributor[0][1] ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['bill_date'] ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['amount'] ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['payment_mode'] ?></td>
+                                                    <td class="d-flex justify-content-around align-middle">
+                                                        <a class="text-primary pe-auto" role="button" id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i>
+                                                        </a>
+                                                        <a class="text-primary" id="<?php echo $stockIn['distributor_bill'] ?>" href="stock-in-edit.php?edit=<?php echo $stockIn['distributor_bill'] ?>&editId=<?php echo $stockIn['id'] ?>" role="button"><i class=" fas fa-edit"></i>
+                                                        </a>
+                                                        <a class="text-danger" role="button"><i class="fas fa-trash" id="<?php echo $stockIn['id'] ?>" onclick="deleteStock(this.id)"></i></a>
+                                                    </td>
+                                                </tr>
+                                        <?php
                                             }
                                         }
                                         ?>
@@ -134,8 +149,7 @@ $showDistributor       = $Distributor->showDistributor();
             <!-- End of Main Content -->
 
             <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -190,30 +204,29 @@ $showDistributor       = $Distributor->showDistributor();
     <script src="js/demo/datatables-demo.js"></script>
 
     <script>
-    const stockDetails = (distBill) => {
-        // alert(distBill);
-        url = `ajax/stockInDetails.view.ajax.php?distBill=${distBill}`;
+        const stockDetails = (distBill) => {
+            // alert(distBill);
+            url = `ajax/stockInDetails.view.ajax.php?distBill=${distBill}`;
 
-        $(".stockDetails").html(
-            '<iframe width="99%" height="350px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
-            url + '"></iframe>');
+            $(".stockDetails").html(
+                '<iframe width="99%" height="350px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
+                url + '"></iframe>');
 
-    } // end of viewAndEdit function
-    // 
-    function resizeIframe(obj) {
-        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+        } // end of viewAndEdit function
+        // 
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 
-    }
-</script>
-<!-- Sweet Alert Js  -->
-<script src="../js/sweetAlert.min.js"></script>
+        }
+    </script>
+    <!-- Sweet Alert Js  -->
+    <script src="../js/sweetAlert.min.js"></script>
 
-<script>
+    <script>
+        //=================delete stock in delete=======================
 
-    //=================delete stock in delete=======================
-
-    const deleteStock = (id) => {
-        // alert(id);
+        const deleteStock = (id) => {
+            // alert(id);
             swal({
                     title: "Are you sure?",
                     text: "Want to Delete This Data?",
@@ -239,7 +252,7 @@ $showDistributor       = $Distributor->showDistributor();
                                     ).then(function() {
                                         parent.location.reload();
                                     });
-                                    
+
                                 } else {
                                     swal("Failed", "Product Deletion Failed!",
                                         "error");

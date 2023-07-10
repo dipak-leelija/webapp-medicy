@@ -7,6 +7,7 @@ $page = "sales";
 $Doctors = new Doctors();
 
 $doctor = $Doctors->showDoctors();
+// print_r($doctor);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -111,14 +112,28 @@ $doctor = $Doctors->showDoctors();
                                             <div class="col-md-9 col-10">
                                                 <label for="">Doctor</label><br>
 
-                                                <input class="customer-search" list="datalistOptions" id="doctor-name" placeholder="Doctor Name" onkeyup="getDoctor(this.value)">
+                                                <!-- <input class="customer-search" list="datalistOptions" id="doctor-name" placeholder="Doctor Name" onclick="getDoctor(this.value)"> -->
+
+                                                <select class="doctor-select" id="doctor-select" onchange="getDoctor(this.value)">
+                                                    <option value="" selected disabled>Select Doctor</option>
+                                                    <?php
+                                                    foreach ($doctor as $doc) {
+                                                        // print_r($row);
+                                                        echo $doctorName = $doc['doctor_name'];
+                                                        echo '<option value="' . $doctorName . '" style="color: black;">' . $doctorName . '</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+
+                                                <!-- <div class="p-2 bg-light" id="select-doctor" style="max-height: 20rem; max-width: 98%; background: #8584e9;" >
                                                 <datalist id="datalistOptions">
                                                     <?php
                                                     foreach ($doctor as $row) {
                                                         echo '<option value="' . $row['doctor_name'] . '">';
                                                     }
                                                     ?>
-                                                </datalist>
+                                                </datalist> --
+                                                </div> -->
 
                                             </div>
                                         </div>
@@ -169,9 +184,9 @@ $doctor = $Doctors->showDoctors();
                                             <input class="sale-inp" type="text" id="mrp" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-6" >
+                                        <div class="d-none col-md-1 mt-3 col-6">
                                             <!--Available qty on batch no-->
-                                            <label for="">Availability</label><br> 
+                                            <label for="">Availability</label><br>
                                             <input class="sale-inp" type="text" id="aqty">
                                         </div>
                                         <div class="col-md-1 mt-3 col-6">
@@ -205,21 +220,21 @@ $doctor = $Doctors->showDoctors();
                                     <div id="searched-items">
 
                                     </div>
-                                    
+
                                     <div id="exta-details">
 
                                         <div class=" row mt-4">
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
-                                                        <label for="" style="margin-top: .3rem;">Manf.</label><br>
+                                                        <label for="">Manf:</label><br>
                                                         <input class="sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly hidden>
-                                                        <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:auto" readonly>
+                                                        <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
 
-                                                    <div class="col-md-12 d-flex">
-                                                        <label for="" style="margin-top: 5px;"> Content.</label>
-                                                        <input class="sale-inp" type="any" id="productComposition" style="border-width: 0px;  width: auto;" readonly>
+                                                    <div class="col-md-12 d-flex" style="word-wrap: break-word;">
+                                                        <label for="" style="margin-top: 5px;">Content:</label>
+                                                        <input class="sale-inp" type="textarea" id="productComposition" style="border-width: 0px;  width: 30rem; word-wrap: break-word;" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -271,7 +286,7 @@ $doctor = $Doctors->showDoctors();
                         </div>
                     </div>
                     <!-- /end Add Product  -->
-                    
+
                     <div class="card mb-4 mt-md-5 summary">
                         <div class="card-body fisrt-card-body">
                             <h3 class="text-center font-weight-bolder listed-heading">Listed Items For sale</h3>
@@ -281,19 +296,23 @@ $doctor = $Doctors->showDoctors();
                                         <table class="table item-table">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col"><input class="d-none" type="number" value="0" id="dynamic-id">
+                                                    <th scope="col" style="width: .3rem; padding: .5rem;"></th>
+                                                    <th scope="col" style="width: .3rem; padding: .5rem;">
+                                                        <input type="number" value="0" id="dynamic-id" style="display:none">
                                                     </th>
-                                                    <th scope="col">Item Name</th>
-                                                    <th scope="col">Unit/Pack</th>
-                                                    <th scope="col">Batch</th>
-                                                    <th scope="col">Expiry</th>
-                                                    <th scope="col">MRP</th>
-                                                    <th scope="col">Qty.</th>
+                                                    <!-- <th scope="col"><input class="d-none" type="number" value="0" id="dynamic-id">
+                                                    </th> -->
+                                                    <th scope="col" style="width: 9rem; padding: .5rem;">Item Name</th>
+                                                    <th scope="col" style="width: 7rem; padding: .5rem;">Batch</th>
+                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Unit/Pack</th>
+                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Expiry</th>
+                                                    <th scope="col" style="width: 3rem; padding: .5rem;">MRP</th>
+                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Qty.</th>
                                                     <th scope="col" hidden>Qty.Typ</th>
-                                                    <th scope="col">Disc%</th>
-                                                    <th scope="col">D.Price</th>
-                                                    <th scope="col">GST%</th>
-                                                    <th scope="col">Amount</th>
+                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Disc%</th>
+                                                    <th scope="col" style="width: 3rem; padding: .5rem;">D.Price</th>
+                                                    <th scope="col" style="width: 3rem; padding: .5rem;">GST%</th>
+                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="item-body">

@@ -165,19 +165,8 @@ $todayYr = date("y");
                                             <input class="upr-inp mt-2" list="datalistOptions" id="product-name"
                                                 name="product-name" placeholder="Search Product"
                                                 onkeyup="searchItem(this.value);" autocomplete="off" value="">
-                                            <!-- <datalist id="datalistOptions">
-                                                <?php
-                                                foreach($showProducts as $rowProducts){
-                                                    $productId   = $rowProducts['product_id'];
-                                                    $productName = $rowProducts['name']; ?>
-                                                    <option value="<?php echo $productId  ?>"><?php echo $productName ?>
-                                                    </option>
-                                                <?php    
-                                                }
-                                                ?>
-                                            </datalist> -->
                                             
-                                            <div class="p-2 bg-light" id="product-select">
+                                            <div class="p-2 bg-light" id="product-select" style="max-height: 20rem; max-width: 100%;">
                                             </div>
                                         </div>
                                     </div>
@@ -365,30 +354,30 @@ $todayYr = date("y");
                                 <div class="table-responsive">
 
 
-                                    <table class="table item-table">
+                                    <table class="table item-table" style="font-size: .7rem;">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th scope="col"></th>
-                                                <th scope="col">
+                                                <th scope="col" style="width: 1rem; padding: .5rem;"></th>
+                                                <th scope="col" style="width: 1rem; padding: .5rem;">
                                                     <input type="number" value="0" id="dynamic-id" style="display:none" >
                                                 </th>
-                                                <th scope="col" style="width: 5rem;">Items</th>
-                                                <th scope="col" style="width: 5rem;">Batch</th>
-                                                <th scope="col" style="width: 3rem;">MFD.</th>
-                                                <th scope="col" style="width: 3rem;">Exp.</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%;">Power</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%;">Unit</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%;">Qty.</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%;">Free</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%;">MRP</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%;">PTR</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%;">Base</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%;">Margin%</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%;">GST%</th>
-                                                <th scope="col">Amount</th>
+                                                <th scope="col" style="width: 9rem; font-size: .7rem; padding: .5rem;">Items</th>
+                                                <th scope="col" style="width: 6rem; font-size: .7rem; padding: .5rem;">Batch</th>
+                                                <th scope="col" style="width: 3rem; font-size: .7rem; padding: .5rem;">MFD.</th>
+                                                <th scope="col" style="width: 3rem; font-size: .7rem; padding: .5rem;">Exp.</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Power</th>
+                                                <th scope="col" style="width: 3rem; margin: 0%; font-size: .7rem; padding: .5rem;">Unit</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Qty.</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Free</th>
+                                                <th scope="col" style="width: 3rem; margin: 0%; font-size: .7rem; padding: .5rem;">MRP</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">PTR</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Base</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Margin%</th>
+                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">GST%</th>
+                                                <th scope="col" style="width: 3rem; font-size:  .7rem; padding: .5rem;">Amount</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="dataBody" >
+                                        <tbody id="dataBody">
                                             
                                         </tbody>
                                     </table>

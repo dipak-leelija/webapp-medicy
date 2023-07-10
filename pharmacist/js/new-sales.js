@@ -70,7 +70,32 @@ const counterBill = () => {
 
 
 const getDoctor = (doctor) => {
+
+    console.log(doctor);
+    // // alert(value);
+    // let xmlhttp = new XMLHttpRequest();
+
+    // let searchReult = document.getElementById('select-doctor');
+
+    // if (input == "") {
+    //     document.getElementById("select-doctor").style.display = "none";
+    // }
+
+    // if (input != "") {
+    //     document.getElementById("select-doctor").style.display = "block";
+    // }
+
+    // xmlhttp.onreadystatechange = function () {
+    //     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    //         searchReult.innerHTML = xmlhttp.responseText;
+    //     }
+    // };
+    // xmlhttp.open('GET', 'ajax/getDoctorDetails.ajax.php?data=' + doctor, true);
+    // xmlhttp.send();
+
+    // let DoctorName = document.getElementById("doctor-name").value;
     document.getElementById("final-doctor-name").value = doctor;
+
 } // end getCustomer
 
 const getPaymentMode = (mode) => {
@@ -478,7 +503,7 @@ const addSummary = () => {
 
     let billDAte = document.getElementById("bill-date");
     let customer = document.getElementById("customer");
-    let doctorName = document.getElementById("doctor-name");
+    let doctorName = document.getElementById("doctor-select");
     let paymentMode = document.getElementById("payment-mode");
 
 
@@ -512,19 +537,18 @@ const addSummary = () => {
         qval = qty.value;
     }
 
-    //console.log(qval);
-
-    // console.log(productId.value);
-    // console.log(productName.value);
-    // console.log(weightage.value);
-    // console.log(batchNo.value);
-    // console.log(expDate.value);
-    // console.log(mrp.value);
-    // console.log(qty.value);
-    // console.log(disc.value);
-    // console.log(dPrice.value);
-    // console.log(gst.value);
-    // console.log(amount.value);
+    console.log(qval);
+    console.log(productId.value);
+    console.log(productName.value);
+    console.log(weightage.value);
+    console.log(batchNo.value);
+    console.log(expDate.value);
+    console.log(mrp.value);
+    console.log(qty.value);
+    console.log(disc.value);
+    console.log(dPrice.value);
+    console.log(gst.value);
+    console.log(amount.value);
 
     if (billDAte.value != '') {
         if (customer.value != '') {
@@ -591,44 +615,47 @@ const addSummary = () => {
                                                                 document.getElementById("payable").value = sum.toFixed(2);
 
                                                                 jQuery("#item-body").append(`<tr id="table-row-${slno}">
-                                                <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty.value}, ${netGst}, ${mrp.value}, ${amount.value})"></i></td>
-                                                <td>
-                                                    <input class="summary-product" type="text" name="product-name[]" value="${productName.value}" readonly>
+                                                <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty.value}, ${netGst}, ${mrp.value}, ${amount.value})" style="font-size:.7rem; width: .3rem"></i></td>
+                                                <td style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-product" type="text" name="product-name[]" value="${productName.value}" style="word-wrap: break-word; width:9rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                     <input type="text" name="product-id[]" value="${productId.value}" hidden>
                                                     <input type="text" name="Manuf[]" value="${Manuf.value}" hidden>
 
                                                 </td>
-                                                <td>
-                                                    <input class="summary-items" type="text" name="weightage[]" value="${weightage.value}" readonly>
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-items" type="text" name="batch-no[]" id="batch-no" value="${batchNo.value}" style="word-wrap: break-word; width:7rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td>
-                                                    <input class="summary-items" type="text" name="batch-no[]" id="batch-no" value="${batchNo.value}" readonly>
+
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-items" type="text" name="weightage[]" value="${weightage.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td>
-                                                    <input class="summary-items" type="text" name="exp-date[]" value="${expDate.value}" readonly>
+                                                
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-items" type="text" name="exp-date[]" value="${expDate.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td>
-                                                    <input class="summary-items" type="text" name="mrp[]" value="${mrp.value}" readonly>
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-items" type="text" name="mrp[]" value="${mrp.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td>
-                                                    <input class="summary-items" type="text" name="qtyT[]" value="${qval}" readonly>
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-items" type="text" name="qtyT[]" value="${qval}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                     <input class="summary-items" type="text" name="qty[]" value="${qty.value}" readonly hidden>
                                                 </td>
                                                 <td hidden>
                                                     <input type="text" id="qty-types" name="qty-types[]" value="${qtyType.value}" hidden>
                                                 </td>
-                                                <td>
-                                                    <input class="summary-items" type="text" name="disc[]" value="${disc.value}" readonly>
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-items" type="text" name="disc[]" value="${disc.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td>
-                                                    <input class="summary-items" type="text" name="dPrice[]" value="${dPrice.value}" readonly>
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-items" type="text" name="dPrice[]" value="${dPrice.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td>
-                                                    <input class="summary-items" type="text" name="gst[]" value="${gst.value}" readonly>
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-items" type="text" name="gst[]" value="${gst.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                     <input type="text" name="netGst[]" value="${netGst}" hidden>
                                                 </td>
-                                                <td>
-                                                    <input class="summary-items" type="text" name="amount[]" value="${amount.value}" readonly>
+                                                <td style="padding: .3rem;">
+                                                    <input class="summary-items" type="text" name="amount[]" value="${amount.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
                                             </tr>`);
 

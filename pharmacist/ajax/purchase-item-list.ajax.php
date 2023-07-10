@@ -29,19 +29,22 @@ if(isset($_GET['data'])){
 }
 
 if($searchResult){
-
+    
     // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";
     ?>
 <div class="row border-bottom border-primary small mx-0 mb-2">
-    <div class="col-md-6">Searched For</div>
-    <div class="col-md-3">Unit/Pack</div>
-    <div class="col-md-3">Stock</div>
+    <div class="col-md-4">Searched For</div>
+    <div class="col-md-4">Composition</div>
+    <div class="col-md-2">Unit/Pack</div>
+    <div class="col-md-2">Stock</div>
 </div>
 <?php
     while($resultRow = mysqli_fetch_array($searchResult)){
+        // print_r($resultRow);
 
         $productId  = $resultRow['product_id'];
         $productName = $resultRow['name'];
+        $pComposition = $resultRow['product_composition'];
         $weightage   = $resultRow['unit_quantity'];
         $unit        = $resultRow['unit'];
         $packagingType = $resultRow['packaging_type'];
@@ -85,10 +88,11 @@ if($searchResult){
 
             ?>
             <div class="row mx-0 py-2 border-bottom p-row item-list" id="<?php echo $productId ?>" onclick="getDtls(this.id);">
-                <div class="col-md-6"><?php echo $productName, $power ?><br>
+                <div class="col-md-4"><?php echo $productName, $power ?><br>
                 <small><?php echo $manufacturerName ?></small></div>
-                <div class="col-md-3"><small><?php echo $packOf ?></small></div>
-                <div class="col-md-3"><small><?php echo $stockQty;
+                <div class="col-md-4"><small><?php echo $pComposition ?></small></div>
+                <div class="col-md-2"><small><?php echo $packOf ?></small></div>
+                <div class="col-md-2"><small><?php echo $stockQty;
                 if($looseQty > 0){
                     echo "($looseQty)";
                 } 
@@ -97,10 +101,13 @@ if($searchResult){
 <?php
 
     }
-
 }
 else{
-    echo "Result Not Found";
+    ?>
+    <div class="row mx-0 py-2 border-bottom p-row item-list">
+        <?php echo "Result Not Found"; ?>
+    </div>
+    <?php
 }
 
 ?>

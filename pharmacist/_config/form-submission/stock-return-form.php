@@ -97,7 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $inStock =  $CurrentStock->showCurrentStockbyStokInId($stokInDetailsId[$i]);
                 // echo "<br><br>";
                 // print_r($inStock);
-                
+                // echo "<br><br>";
+
                 $newQuantity = $inStock[0]['qty'] - (intVal($returnQty[$i]) + intval($returnFQty[$i]));
 
                 if($inStock[0]['unit'] == 'tab' || $inStock[0]['unit'] == 'cap'){
@@ -106,6 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     $newLCount = $inStock[0]['loosely_count'];
                 }
                 
+                // echo "<br>New qantity : $newQuantity";
+                // echo "<br>New Loose qantity : $newLCount";
                 
                 $stockUpdate = $CurrentStock->updateStockBStockDetialsId($stokInDetailsId[$i], $newQuantity, $newLCount);
             

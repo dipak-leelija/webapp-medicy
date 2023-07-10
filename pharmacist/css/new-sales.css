@@ -129,6 +129,16 @@
     color: #FFFFFF;
 }
 
+.doctor-select {
+    border: none;
+    outline: none;
+    border-bottom: 0.1rem solid #FFFFFF;
+    /* font-size: 1.1rem; */
+    margin-top: 0.3rem;
+    background: transparent;
+    color: #FFFFFF;
+}
+
 select.payment-mode option {
     color: #000;
 }
