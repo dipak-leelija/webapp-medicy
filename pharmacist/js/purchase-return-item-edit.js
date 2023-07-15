@@ -28,6 +28,7 @@ const customEdit = (id, value) => {
             // var stokReturnId = dataObject.stock_return_id;
 
             var distributor = dataObject.distributor_name;
+            alert(distributor);
             var distributorId = dataObject.distributor_id;
             var productId = dataObject.product_id;
             var productName = dataObject.product_Name;
@@ -81,7 +82,6 @@ const customEdit = (id, value) => {
             document.getElementById("refund-amount").value = refundAmunt;
 
             //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
-
             // row.parentNode.removeChild(row);
             delData (slno);
         }
@@ -251,11 +251,12 @@ const addData = async () => {
 
             jQuery("#dataBody")
                 .append(`<tr id="table-row-${slno}">
-                    <td  style="color: red;">
+                    <td  style="color: red; padding: 0.015rem">
                         <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
-                    <td class="p-0 pt-3" >
-                        <input class="col table-data w-12r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start;">
+                    <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
+                    <td class="p-0 pt-3" style="width:8rem">
+                        <input class="col table-data w-8r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start;>
                         <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;">
                     </td>
                     <td class="p-0 pt-3" hidden>
@@ -264,41 +265,41 @@ const addData = async () => {
                     <td class="p-0 pt-3" hidden>
                         <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" value="${stockReturnDetailsId.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3" >
-                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly>
+                    <td class="p-0 pt-3" style="width:5rem">
+                        <input class="col table-data w-5r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate.value}" readonly>
+                    <td class="p-0 pt-3" style="width:4rem">
+                        <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly>
+                    <td class="p-0 pt-3" style="width:4rem">
+                        <input class="col table-data w-34r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly>
+                    <td class="p-0 pt-3" style="width:3rem">
+                        <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="freeQty[]" value="${freeQty.value}" readonly>
+                    <td class="p-0 pt-3" style="width:2rem">
+                        <input class="col table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="mrp[]" value="${mrp.value}" readonly>
+                    <td class="p-0 pt-3" style="width:4rem">
+                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-6r" type="text" name="ptr[]" value="${ptr.value}" readonly>
+                    <td class="p-0 pt-3" style="width:4rem">
+                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3" >
-                        <input class="col table-data w-6r" type="text" name="purchase-amount[]" value="${amount.value}" readonly>
+                    <td class="p-0 pt-3" style="width:3rem">
+                        <input class="col table-data w-3r" type="text" name="purchase-amount[]" value="${amount.value}" readonly>
                     </td>
-                    <td class="p-0 ps-1 pt-3">
-                        <input class="col table-data w-4r" type="text" name="gst[]" value="${gst.value}" readonly>
+                    <td class="p-0 ps-1 pt-3" style="width:3rem">
+                        <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly>
+                    <td class="p-0 pt-3" style="width:3rem">
+                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly>
                     </td>
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-8r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly>
+                    <td class="d-none p-0 pt-3" style="width:3rem"> 
+                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly>
                     </td>
-                    <td class=" amnt-td p-0 pt-3">
-                        <input class="col table-data W-6r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
+                    <td class=" amnt-td p-0 pt-3" style="width:5rem">
+                        <input class="col table-data W-5r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
                 </tr>`);
 
             return true;

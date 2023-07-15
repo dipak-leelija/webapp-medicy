@@ -332,10 +332,10 @@ if(isset($_GET["returnId"])){
                                                 <th scope="col">Free</th>
                                                 <th scope="col">MRP</th>
                                                 <th scope="col">PTR</th>
-                                                <th scope="col">P.Amount</th>
+                                                <th scope="col">P.Amnt</th>
                                                 <th scope="col">GST</th>
                                                 <th scope="col">Ret Qty</th>
-                                                <th scope="col">Ret F Qty</th>
+                                                <th scope="col" hidden>Ret F Qty</th>
                                                 <th scope="col">Refund</th>
 
                                             </tr>
@@ -362,7 +362,7 @@ if(isset($_GET["returnId"])){
 
                                                 <tr id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>">
 
-                                                    <td style="color: red;"> <i class="fas fa-trash p-0 pt-3 " onclick="delData(<?php echo $slno; ?>)"></i>
+                                                    <td style="color: red;" style="padding-top: 0rem"> <i class="fas fa-trash p-0 pt-3 " onclick="delData(<?php echo $slno; ?>)"></i>
                                                     </td>
                                                     
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
@@ -422,7 +422,7 @@ if(isset($_GET["returnId"])){
                                                         <input class="col table-data w-3r" type="text" name="return-qty[]" value="<?php echo $bill['return_qty']; ?>" readonly>
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
+                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="<?php echo $bill['return_free_qty']; ?>" readonly>
                                                     </td>
 

@@ -606,7 +606,7 @@ const addData = () => {
             <td class="pt-3" hidden>
                 <input class="table-data w-12r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
             </td>
-            <td class="pt-3" style="width:9rem; padding:0.5rem">
+            <td class="pt-3" style="width:12rem; padding:0.5rem">
                 <input class="table-data w-12r" type="text" value="${productName.value}" readonly style="font-size:0.65rem; padding:.15rem; width:9rem;">
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
             </td>

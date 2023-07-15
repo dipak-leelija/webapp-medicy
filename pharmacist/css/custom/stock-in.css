@@ -123,16 +123,14 @@ input[type=number] {
 }
 
 
-/* .table,
+.table,
 .item-table td {
-    // padding-top: 0.75rem; 
-
 padding: 0.75rem;
 vertical-align: top;
 border-top: 1px solid #e3e6f0;
 
 }
-*/
+
 
 .table-data {
     background: transparent;
@@ -322,3 +320,7 @@ margin-top: 0.1rem;
 margin-left: -1rem;
 width: 20rem;
 max-height: 16.5rem; */
+
+
+/* ############################### FOR STOK RETURN EDIT TABLE ############################### */
+

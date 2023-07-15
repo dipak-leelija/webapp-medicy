@@ -297,7 +297,6 @@ $showDistributor       = $Distributor->showDistributor();
 
                         </div>
                         <div class="row">
-
                             <!-- </form> -->
                         </div>
                     </div>
