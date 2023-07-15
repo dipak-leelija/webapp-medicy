@@ -80,7 +80,7 @@ input[type=number] {
 
 .item-table {
     color: #000;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
 }
 
 .line-input {
@@ -140,6 +140,14 @@ border-top: 1px solid #e3e6f0;
 
 .w-12r {
     width: 12rem;
+}
+
+.w-10r {
+    width: 10rem;
+}
+
+.w-9r {
+    width: 9rem;
 }
 
 .w-8r {

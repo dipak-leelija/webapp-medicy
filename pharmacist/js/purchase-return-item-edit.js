@@ -16,7 +16,7 @@ const customEdit = (id, value) => {
             EditId: value
         },
         success: function (data) {
-            alert(data);
+            // alert(data);
             var dataObject = JSON.parse(data);
             // alert(dataObject);
             slno = id.replace(/\D/g, '');
@@ -28,7 +28,7 @@ const customEdit = (id, value) => {
             // var stokReturnId = dataObject.stock_return_id;
 
             var distributor = dataObject.distributor_name;
-            alert(distributor);
+            // alert(distributor);
             var distributorId = dataObject.distributor_id;
             var productId = dataObject.product_id;
             var productName = dataObject.product_Name;
@@ -255,9 +255,9 @@ const addData = async () => {
                         <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
                     <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
-                    <td class="p-0 pt-3" style="width:8rem">
-                        <input class="col table-data w-8r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start;>
-                        <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;">
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-9r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start; font-size:0.75rem">
+                        <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;" hidden>
                     </td>
                     <td class="p-0 pt-3" hidden>
                         <input class="col table-data w-6r" type="text" name="stock-return-id[]" value="${stockReturnId.value}" readonly>
@@ -265,41 +265,42 @@ const addData = async () => {
                     <td class="p-0 pt-3" hidden>
                         <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" value="${stockReturnDetailsId.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3" style="width:5rem">
-                        <input class="col table-data w-5r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly>
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-8r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly style="font-size:0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:4rem">
-                        <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate.value}" readonly font-size:0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:4rem">
-                        <input class="col table-data w-34r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly>
+                        <input class="col table-data w-34r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly font-size:0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:3rem">
-                        <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly>
+                        <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly font-size:0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:2rem">
-                        <input class="col table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly>
+                        <input class="col table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly font-size:0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:4rem">
-                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly font-size:0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:4rem">
-                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly font-size:0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:3rem">
-                        <input class="col table-data w-3r" type="text" name="purchase-amount[]" value="${amount.value}" readonly>
+                        <input class="col table-data w-3r" type="text" name="purchase-amount[]" value="${amount.value}" readonly font-size:0.75rem">
                     </td>
                     <td class="p-0 ps-1 pt-3" style="width:3rem">
-                        <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly>
+                        <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly font-size:0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:3rem">
-                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly>
+                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly font-size:0.75rem">
                     </td>
-                    <td class="d-none p-0 pt-3" style="width:3rem"> 
-                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly>
+                    <td class="p-0 pt-3" style="width:3rem"> 
+                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly font-size:0.75rem">
                     </td>
                     <td class=" amnt-td p-0 pt-3" style="width:5rem">
-                        <input class="col table-data W-5r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
+                        <input class="col table-data W-5r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly font-size:0.75rem">
+                    </td>
                 </tr>`);
 
             return true;
@@ -360,7 +361,7 @@ const addData = async () => {
 
 // ================================ Delet Data ================================
 const  delData = (slno) => {
-    alert(slno);
+    // alert(slno);
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;

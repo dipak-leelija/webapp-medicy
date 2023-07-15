@@ -388,11 +388,11 @@ $todayYr = date("y");
                                 <div class="row mb-3">
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Distributor :
-                                            <input class="summary-inp w-60" name="distributor-name" id="distributor-name" type="text" value="" value1="" readonly>
+                                            <input class="summary-inp w-60" name="distributor-name" id="distributor-name" type="text" value="" value1="" readonly style="/*margin-left: 0rem;*/ word-wrap: break-word;">
 
                                             <!-- <input  class="summary-inp w-60" name="distributor-id"
                                                     id="distributor-id" value="" type="text"
-                                                    readonly style="background-color: white;"> -->
+                                                    readonly style="word-wrap: break-word;"> -->
                                         </p>
                                     </div>
                                     <div class="col-md-3 d-flex justify-content-start">
@@ -408,7 +408,7 @@ $todayYr = date("y");
                                             <input class="summary-inp w-65" name="bill-date-val" id="bill-date-val"
                                                 type="text"
                                                 value=""
-                                                readonly>
+                                                readonly style="margin-left: 0rem;">
                                         </p>
                                     </div>
                                     <div class="col-md-3  d-flex justify-content-start">
@@ -416,7 +416,7 @@ $todayYr = date("y");
                                             <input class="summary-inp w-65" name="due-date-val" id="due-date-val"
                                                 type="text"
                                                 value="<?php if ($edit == TRUE) { echo $stockIn[0]['due_date']; }?>"
-                                                readonly>
+                                                readonly style="margin-left: 0rem;">
                                         </p>
                                     </div>
 
@@ -428,34 +428,34 @@ $todayYr = date("y");
                                             <input class="summary-inp w-65" name="payment-mode-val" id="payment-mode-val"
                                                 type="text"
                                                 value="0"
-                                                readonly>
+                                                readonly style="margin-left: 0rem;">
                                         </span>
                                     </div>
 
                                     <div class="col-sm-6 col-md-2  d-flex justify-content-start">
                                         <p>Items :
                                             <input class="summary-inp w-65" name="items" id="items-val" type="text"
-                                                value="0" readonly>
+                                                value="0" readonly style="margin-left: 0rem;">
                                         </p>
                                     </div>
                                     <div class="col-sm-6 col-md-2 d-flex justify-content-start">
                                         <p>Qty :
                                             <input class="summary-inp w-65" name="total-qty" id="qty-val" type="text"
                                                 value="0"
-                                                readonly>
+                                                readonly style="margin-left: 0rem;">
                                         </p>
                                     </div>
                                     <div class="col-sm-6 col-md-2 d-flex justify-content-start">
                                         <p>GST :
                                             <input class="summary-inp w-65" name="totalGst" id="gst-val" type="text"
-                                                value="0" readonly>
+                                                value="0" readonly style="margin-left: 0rem;">
                                         </p>
                                     </div>
                                     <div class="col-sm-6 col-md-3  d-flex justify-content-start">
                                         <p>Net :
                                             <input class="summary-inp w-65" name="netAmount" id="net-amount" type="text"
                                                 value="0"
-                                                readonly>
+                                                readonly style="margin-left: 0rem;">
                                         </p>
                                     </div>
                                 </div>

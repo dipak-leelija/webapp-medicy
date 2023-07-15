@@ -297,6 +297,7 @@ $showDistributor       = $Distributor->showDistributor();
 
                         </div>
                         <div class="row">
+
                             <!-- </form> -->
                         </div>
                     </div>
@@ -313,9 +314,10 @@ $showDistributor       = $Distributor->showDistributor();
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col">
-                                                    <input type="number" value="0" id="dynamic-id" style="display:none">
+                                                    <input type="number" value="0" id="dynamic-id" style="display: none;">
                                                 </th>
                                                 <th scope="col" hidden>StockInDetailsId</th>
+                                                <th scope="col"></th>
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp</th>
@@ -324,10 +326,10 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <th scope="col">Free</th>
                                                 <th scope="col">MRP</th>
                                                 <th scope="col">PTR</th>
-                                                <th scope="col">P.Amount</th>
+                                                <th scope="col">P.Amnt</th>
                                                 <th scope="col">GST</th>
-                                                <th scope="col">Return Qty</th>
-                                                <th scope="col">Return F.Qty</th>
+                                                <th scope="col">Ret Qty</th>
+                                                <th scope="col" >Ret F.Qty</th>
                                                 <th scope="col">Refund</th>
 
                                             </tr>
@@ -345,7 +347,7 @@ $showDistributor       = $Distributor->showDistributor();
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
                                         <p>Distributor :
                                             <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name"
-                                                readonly>
+                                                readonly style="margin-left: 0rem;">
                                             <input class="summary-inp w-60" name="dist-id" id="dist-id" type="text"
                                                 hidden readonly>
                                         </p>

@@ -508,48 +508,49 @@ function addData() {
                     <td  style="color: red;">
                         <i class="fas fa-trash pt-3" onclick="deleteData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
+                    <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
                     <td class="p-0 pt-3" hidden>
                         <input class="col table-data w-6r" type="text" name="stok-in-details-id[]" value="${stokInDetailsId.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-12r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start;">
+                        <input class="col table-data w-10r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start;">
                         <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;" hidden>
                     </td>
                     <td class="p-0 pt-3" >
                         <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="freeQty[]" value="${freeQty.value}" readonly>
+                        <input class="col table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-5r" type="text" name="mrp[]" value="${mrp.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-6r" type="text" name="ptr[]" value="${ptr.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly>
                     </td>
                     <td class="p-0 pt-3" >
-                        <input class="col table-data w-6r" type="text" name="purchase-amount[]" value="${amount.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="purchase-amount[]" value="${amount.value}" readonly>
                     </td>
                     <td class="p-0 ps-1 pt-3">
                         <input class="col table-data w-4r" type="text" name="gst[]" value="${gst.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-8r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly>
+                        <input class="col table-data w-4r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-8r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly>
+                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly>
                     </td>
                     <td class=" amnt-td p-0 pt-3">
-                        <input class="col table-data W-6r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
+                        <input class="col table-data W-4r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly></td>
                 </tr>`);
 
         return true;
