@@ -55,40 +55,40 @@ if (isset($_POST['stock-return-edit'])) {
     $returnFQty              = $_POST['return-free-qty'];
     $CurrentrefundAmount    = $_POST['refund-amount'];
 
-    // echo "<br>Distributor Id : ";print_r($distributorId);
-    // echo "<br>Distributor Name : ";print_r($distributorName);
-    // echo "<br>Return Date : "; print_r($returnDate);
-    // echo "<br>Refund Mode : "; print_r($refundMode);
-    // echo "<br>Item qty : "; print_r($itemQty);
-    // echo "<br>Id s : "; print_r($ids);
-    // echo "<br>Total return Item Qty : "; print_r($totalRefundItemsQty);
-    // echo "<br>Return Gst : "; print_r($returnGst);
-    // echo "<br>Refund Amount: "; print_r($refund);
-    // echo "<br>Added By : "; print_r($addedBy);
-    // echo "<br>Stock return Id : $stockReturnId";
+    echo "<br>Distributor Id : ";print_r($distributorId);
+    echo "<br>Distributor Name : ";print_r($distributorName);
+    echo "<br>Return Date : "; print_r($returnDate);
+    echo "<br>Refund Mode : "; print_r($refundMode);
+    echo "<br>Item qty : "; print_r($itemQty);
+    echo "<br>Id s : "; print_r($ids);
+    echo "<br>Total return Item Qty : "; print_r($totalRefundItemsQty);
+    echo "<br>Return Gst : "; print_r($returnGst);
+    echo "<br>Refund Amount: "; print_r($refund);
+    echo "<br>Added By : "; print_r($addedBy);
+    echo "<br>Stock return Id : $stockReturnId";
     
-    // echo "<br><br><br>ARRAYS ----------- <br>";
-    // echo "<br>STOK RETURN DETAILS ID : "; print_r($stockReturnDetailsId);
-    // echo "<br>Product Id : ";print_r($productId);
-    // echo "<br>Product Name : ";print_r($productName);
-    // echo "<br>STOK RETURN ID : "; print_r($stockReturnIdArray);
-    // echo "<br>Batch No : "; print_r($batchNo);
-    // echo "<br>Exp Date : "; print_r($expDate);
-    // echo "<br>Set of : "; print_r($setof);
+    echo "<br><br><br>ARRAYS ----------- <br>";
+    echo "<br>STOK RETURN DETAILS ID : "; print_r($stockReturnDetailsId);
+    echo "<br>Product Id : ";print_r($productId);
+    echo "<br>Product Name : ";print_r($productName);
+    echo "<br>STOK RETURN ID : "; print_r($stockReturnIdArray);
+    echo "<br>Batch No : "; print_r($batchNo);
+    echo "<br>Exp Date : "; print_r($expDate);
+    echo "<br>Set of : "; print_r($setof);
 
-    // echo "<br>Purchase QTY : "; print_r($purchasedQty);
-    // echo "<br>Free qty : "; print_r($freeQty);
-    // echo "<br>MRP : "; print_r($mrp);
-    // echo "<br>PTR : "; print_r($ptr);
-    // echo "<br>Purchase Amount : "; print_r($purchaseAmount);
-    // echo "<br>GST : "; print_r($gst);
-    // echo "<br>Current Refund Amount : "; print_r($CurrentrefundAmount);
-    // echo "<br> Return QTY : "; print_r($returnQty);
-    // echo "<br> Return Free QTY : "; print_r($returnFQty);
-    // echo "<br>Refund Amount : "; print_r($refundAmount);
-    // echo "<br>Return QTY : "; print_r($returnQTY);
+    echo "<br>Purchase QTY : "; print_r($purchasedQty);
+    echo "<br>Free qty : "; print_r($freeQty);
+    echo "<br>MRP : "; print_r($mrp);
+    echo "<br>PTR : "; print_r($ptr);
+    echo "<br>Purchase Amount : "; print_r($purchaseAmount);
+    echo "<br>GST : "; print_r($gst);
+    echo "<br>Current Refund Amount : "; print_r($CurrentrefundAmount);
+    echo "<br> Return QTY : "; print_r($returnQty);
+    echo "<br> Return Free QTY : "; print_r($returnFQty);
+    echo "<br>Refund Amount : "; print_r($refundAmount);
+    echo "<br>Return QTY : "; print_r($returnQTY);
     
-// exit;
+exit;
     //================== Updating Stock Return tabele hear ========================================
 
     $addedTime = date("h:i:sa");

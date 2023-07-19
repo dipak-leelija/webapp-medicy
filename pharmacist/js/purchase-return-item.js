@@ -513,7 +513,7 @@ function addData() {
                         <input class="col table-data w-6r" type="text" name="stok-in-details-id[]" value="${stokInDetailsId.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-10r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start;">
+                        <input class="col table-data w-12r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start;">
                         <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;" hidden>
                     </td>
                     <td class="p-0 pt-3" >

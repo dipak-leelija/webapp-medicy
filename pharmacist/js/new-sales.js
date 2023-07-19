@@ -617,44 +617,44 @@ const addSummary = () => {
                                                                 jQuery("#item-body").append(`<tr id="table-row-${slno}">
                                                 <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty.value}, ${netGst}, ${mrp.value}, ${amount.value})" style="font-size:.7rem; width: .3rem"></i></td>
                                                 <td style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-product" type="text" name="product-name[]" value="${productName.value}" style="word-wrap: break-word; width:9rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                     <input type="text" name="product-id[]" value="${productId.value}" hidden>
                                                     <input type="text" name="Manuf[]" value="${Manuf.value}" hidden>
 
                                                 </td>
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-items" type="text" name="batch-no[]" id="batch-no" value="${batchNo.value}" style="word-wrap: break-word; width:7rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
 
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-items" type="text" name="weightage[]" value="${weightage.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
                                                 
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-items" type="text" name="exp-date[]" value="${expDate.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-items" type="text" name="mrp[]" value="${mrp.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-items" type="text" name="qtyT[]" value="${qval}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                     <input class="summary-items" type="text" name="qty[]" value="${qty.value}" readonly hidden>
                                                 </td>
                                                 <td hidden>
                                                     <input type="text" id="qty-types" name="qty-types[]" value="${qtyType.value}" hidden>
                                                 </td>
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-items" type="text" name="disc[]" value="${disc.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-items" type="text" name="dPrice[]" value="${dPrice.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-items" type="text" name="gst[]" value="${gst.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                     <input type="text" name="netGst[]" value="${netGst}" hidden>
                                                 </td>
-                                                <td style="padding: .3rem;">
+                                                <td>
                                                     <input class="summary-items" type="text" name="amount[]" value="${amount.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
                                             </tr>`);

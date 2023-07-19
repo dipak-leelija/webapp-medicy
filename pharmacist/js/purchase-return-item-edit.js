@@ -16,10 +16,11 @@ const customEdit = (id, value) => {
             EditId: value
         },
         success: function (data) {
-            // alert(data);
+            alert(data);
             var dataObject = JSON.parse(data);
             // alert(dataObject);
             slno = id.replace(/\D/g, '');
+            
             // var stokReturnDetailId = dataObject.id;
             // alert(stokReturnDetailId);
             
@@ -52,6 +53,9 @@ const customEdit = (id, value) => {
             // alert(returnFreeqty);
             var refundAmunt = dataObject.refund_amount;
 
+            let gstPerItem = dataObject.gst;
+            let ReturnQty = dataObject.return_qty;
+            let refund = dataObject.refund_amount;
             //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
         
             document.getElementById("stock-return-details-id").value = dataObject.id;
@@ -83,7 +87,7 @@ const customEdit = (id, value) => {
 
             //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
             // row.parentNode.removeChild(row);
-            delData (slno);
+            delData (slno, gstPerItem, ReturnQty, refund);
         }
     })
     return false;
@@ -251,7 +255,7 @@ const addData = async () => {
 
             jQuery("#dataBody")
                 .append(`<tr id="table-row-${slno}">
-                    <td  style="color: red; padding: 0.015rem">
+                    <td  style="color: red;">
                         <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
                     <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
@@ -360,7 +364,7 @@ const addData = async () => {
 }
 
 // ================================ Delet Data ================================
-const  delData = (slno) => {
+const  delData = (slno, gstPerItem, ReturnQty, refund) => {
     // alert(slno);
     jQuery(`#table-row-${slno}`).remove();
     slno--;
@@ -373,7 +377,7 @@ const  delData = (slno) => {
 
     // minus quantity
     let qty = document.getElementById("total-refund-qty");
-    let finalQty = qty.value - itemQty;
+    let finalQty = qty.value - ReturnQty;
     qty.value = finalQty;
 
 
@@ -384,7 +388,6 @@ const  delData = (slno) => {
 
     // minus netAmount
     let net = document.getElementById("net-amount");
-    let finalAmount = net.value - total;
+    let finalAmount = net.value - refund;
     net.value = finalAmount;
-
 }

@@ -60,7 +60,12 @@ const customClick = (id, value1, value2, value3) => {
 
             document.getElementById("weightage").value = dataObject.weightage;
             document.getElementById("unit").value = dataObject.unit;
+
             document.getElementById("packaging-in").value = dataObject.packageType;
+            // let check1 = document.getElementById("packaging-in").value;
+            // console.log("checking1");
+            // console.log(check1);
+
             document.getElementById("medicine-power").value = dataObject.power;
 
             document.getElementById("MFD-month").value = mfdMonth;
@@ -74,7 +79,17 @@ const customClick = (id, value1, value2, value3) => {
             document.getElementById("qty").value = dataObject.qty;
             document.getElementById("free-qty").value = dataObject.FreeQty;
             document.getElementById("updtQTYS").value = totalQty;
+
+            document.getElementById("packaging-type").value = dataObject.packageType;
+            // let check2 = document.getElementById("packaging-type").value;
+            // console.log("checking2");
+            // console.log(check2);
+
+            // console.log(dataObject.packageType);
             document.getElementById("packaging-type-edit").value = dataObject.packageType;
+            // let check3 = document.getElementById("packaging-type").value;
+            // console.log("checking3");
+            // console.log(check3);
 
             document.getElementById("discount").value = dataObject.disc;
             document.getElementById("gst").value = dataObject.gst;
@@ -95,8 +110,33 @@ const customClick = (id, value1, value2, value3) => {
     return false;
 }
 
-const getDtls = (value) => {
 
+
+function searchItem (input){
+    // console.log(input);
+    // alert(value);
+    let xmlhttp = new XMLHttpRequest();
+
+    let searchReult = document.getElementById('product-select');
+
+    if (input == "") {
+        document.getElementById("product-select").style.display = "none";
+    }
+
+    if (input != "") {
+        document.getElementById("product-select").style.display = "block";
+    }
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            searchReult.innerHTML = xmlhttp.responseText;
+        }
+    };
+    xmlhttp.open('GET', 'ajax/purchase-item-list.ajax.php?data=' + input, true);
+    xmlhttp.send();
+}
+
+const getDtls = (value) => {
     // console.log(value);
     // alert(value);
     var xmlhttp = new XMLHttpRequest();
@@ -123,7 +163,7 @@ const getDtls = (value) => {
         document.getElementById("manufacturer-name").value = xmlhttp.responseText;
 
         //==================== Medicine Power ====================
-        powerurl = 'ajax/product.getMedicinePower.ajax.php?id=' + value;
+        powerurl = 'ajax/product.getMedicineDetails.ajax.php?power=' + value;
         // alert(url);
         xmlhttp.open("GET", powerurl, false);
         xmlhttp.send(null);
@@ -131,13 +171,13 @@ const getDtls = (value) => {
         // alert(xmlhttp.responseText);
 
         //==================== Packaging Type ====================
-        packTypeUrl = 'ajax/product.getpackType.ajax.php?id=' + value;
+        packTypeUrl = 'ajax/product.getMedicineDetails.ajax.php?pType=' + value;
         // alert(url);
         xmlhttp.open("GET", packTypeUrl, false);
         xmlhttp.send(null);
         document.getElementById("packaging-type").innerHTML = xmlhttp.responseText;
 
-        packTypeFieldUrl = 'ajax/product.getpackTypefield.ajax.php?id=' + value;
+        packTypeFieldUrl = 'ajax/product.getMedicineDetails.ajax.php?packegeIn=' + value;
         // // alert(url);
         xmlhttp.open("GET", packTypeFieldUrl, false);
         xmlhttp.send(null);
@@ -146,7 +186,7 @@ const getDtls = (value) => {
         // alert(xmlhttp.responseText);
 
         //==================== Weightage ====================
-        weightage = 'ajax/product.getWeightage.ajax.php?id=' + value;
+        weightage = 'ajax/product.getMedicineDetails.ajax.php?weightage=' + value;
         // alert(url);
         xmlhttp.open("GET", weightage, false);
         xmlhttp.send(null);
@@ -154,7 +194,7 @@ const getDtls = (value) => {
         // alert(xmlhttp.responseText);
 
         //==================== Unit ====================
-        unitUrl = 'ajax/product.getUnit.ajax.php?id=' + value;
+        unitUrl = 'ajax/product.getMedicineDetails.ajax.php?unit=' + value;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
@@ -171,6 +211,17 @@ const getDtls = (value) => {
         document.getElementById("mrp").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
+        //==================== ptr check url ===================
+
+        chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + value;
+        // alert(unitUrl);
+        // window.location.href = unitUrl;
+        xmlhttp.open("GET", chkPtr, false);
+        xmlhttp.send(null);
+        // alert(xmlhttp.responseText);
+        document.getElementById("chk-ptr").value = xmlhttp.responseText;
+        document.getElementById("ptr").value = xmlhttp.responseText;
+
         //==================== GST ====================
         gstUrl = 'ajax/product.getGst.ajax.php?id=' + value;
         // alert(unitUrl);
@@ -184,7 +235,7 @@ const getDtls = (value) => {
         document.getElementById("product-id").value = value;
 
         //==================== Product Name ====================
-        nameUrl = 'ajax/product.getName.ajax.php?id=' + value;
+        nameUrl = 'ajax/product.getMedicineDetails.ajax.php?pName=' + value;
         // alert(unitUrl);
         xmlhttp.open("GET", nameUrl, false);
         xmlhttp.send(null);
@@ -214,6 +265,7 @@ const getDtls = (value) => {
         document.getElementById("product-name").value = "";
 
     }
+    document.getElementById("product-select").style.display = "none";
 }
 
 var todayDate = new Date();
@@ -252,47 +304,50 @@ const getbillDate = (billDate) => {
 const getBillAmount = () => {
     // let mrp = document.getElementById("mrp").value;
     let ptr = document.getElementById("ptr").value;
+    let Mrp = document.getElementById("mrp").value;
+    let chkPtr = document.getElementById("chk-ptr").value;
+
+    let PTR = parseFloat(ptr);
+    let MRP = parseFloat(Mrp);
+    let ChkPtr = parseFloat(chkPtr);
+
+    if (PTR > ChkPtr) {
+        swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
+        document.getElementById("ptr").value = "";
+        document.getElementById("bill-amount").value = "";
+        document.getElementById("ptr").value = "";
+    }
 
     let qty = document.getElementById("qty").value;
-    // let freeQty    = document.getElementById("free-qty").value;
     let discount = document.getElementById("discount").value;
-    let base = document.getElementById("base");
-    let gst = document.getElementById("gst").value;
-    let billAmount = document.getElementById("bill-amount");
 
+    //========= base amount calculation area ===========
+    let base = PTR - ((PTR * discount) / 100);
+    document.getElementById("base").value = parseFloat(base).toFixed(2);
+    // ======= eof base amount calculation =============
+
+    let gst = document.getElementById("gst").value;
+
+    let billAmount = document.getElementById("bill-amount");
+    
     if (ptr == "") {
         billAmount.value = "";
-        base.value = "";
-
+        base = "";
     }
+
     if (qty != "" && ptr != "" && gst != "") {
-        let subAamount = ptr * qty;
+        subAamount = base * qty;
 
-        let baseAmount = subAamount / qty;
-
-        base.value = parseFloat(baseAmount).toFixed(2);
-
-        let totalGst = (gst / 100 * subAamount);
+        let totalGst = ((gst / 100) * subAamount);
         let amount = subAamount + totalGst;
+       
+        let chkBillAmount = MRP * qty;
+
+        if (amount > chkBillAmount) {
+            amount = chkBillAmount;
+        }
 
         billAmount.value = parseFloat(amount).toFixed(2);
-    }
-
-    if (discount != "") {
-        if (qty != "" && ptr != "" && gst != "") {
-
-            let subAamount = ptr * qty;
-
-            let afterDiscount = subAamount - (discount / 100 * subAamount);
-
-            let baseAmount = afterDiscount / qty;
-
-            base.value = parseFloat(baseAmount).toFixed(2);
-
-            let amount = afterDiscount + (gst / 100 * afterDiscount);
-
-            billAmount.value = parseFloat(amount).toFixed(2);
-        }
     }
 
     ///======== QUANTITY CALCULETION AFTER EDIT UPDATE ============

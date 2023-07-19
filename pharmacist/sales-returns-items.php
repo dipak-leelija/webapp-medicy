@@ -243,19 +243,19 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <th scope="col">
                                                     <!-- <input type="number" value="0" id="slno" style="display:none"> -->
                                                 </th>
-                                                <th scope="col">Items</th>
-                                                <th scope="col">Batch</th>
-                                                <th scope="col">Exp.</th>
-                                                <th scope="col">Unit</th>
+                                                <th scope="col" style="font-size: .7rem;">Items</th>
+                                                <th scope="col" style="font-size: .7rem;">Batch</th>
+                                                <th scope="col" style="font-size: .7rem;">Exp.</th>
+                                                <th scope="col" style="font-size: .7rem;">Unit</th>
                                                 <th scope="col" hidden>Weatage</th>
                                                 <th scope="col" hidden>UnitType</th>
-                                                <th scope="col">Qty.</th>
-                                                <th scope="col">MRP</th>
-                                                <th scope="col">Disc</th>
-                                                <th scope="col">GST%</th>
-                                                <th scope="col">Taxable</th>
-                                                <th scope="col">Return</th>
-                                                <th scope="col">Refund</th>
+                                                <th scope="col" style="font-size: .7rem;">Qty.</th>
+                                                <th scope="col" style="font-size: .7rem;">MRP</th>
+                                                <th scope="col" style="font-size: .7rem;">Disc</th>
+                                                <th scope="col" style="font-size: .7rem;">GST%</th>
+                                                <th scope="col" style="font-size: .7rem;">Taxable</th>
+                                                <th scope="col" style="font-size: .7rem;">Return</th>
+                                                <th scope="col" style="font-size: .7rem;">Refund</th>
                                             </tr>
                                         </thead>
                                         <tbody id="dataBody">

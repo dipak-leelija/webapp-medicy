@@ -302,17 +302,17 @@ $doctor = $Doctors->showDoctors();
                                                     </th>
                                                     <!-- <th scope="col"><input class="d-none" type="number" value="0" id="dynamic-id">
                                                     </th> -->
-                                                    <th scope="col" style="width: 9rem; padding: .5rem;">Item Name</th>
-                                                    <th scope="col" style="width: 7rem; padding: .5rem;">Batch</th>
-                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Unit/Pack</th>
-                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Expiry</th>
-                                                    <th scope="col" style="width: 3rem; padding: .5rem;">MRP</th>
-                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Qty.</th>
+                                                    <th scope="col">Item Name</th>
+                                                    <th scope="col">Batch</th>
+                                                    <th scope="col">Unit/Pack</th>
+                                                    <th scope="col">Expiry</th>
+                                                    <th scope="col">MRP</th>
+                                                    <th scope="col">Qty.</th>
                                                     <th scope="col" hidden>Qty.Typ</th>
-                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Disc%</th>
-                                                    <th scope="col" style="width: 3rem; padding: .5rem;">D.Price</th>
-                                                    <th scope="col" style="width: 3rem; padding: .5rem;">GST%</th>
-                                                    <th scope="col" style="width: 3rem; padding: .5rem;">Amount</th>
+                                                    <th scope="col">Disc%</th>
+                                                    <th scope="col">D.Price</th>
+                                                    <th scope="col">GST%</th>
+                                                    <th scope="col">Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="item-body">

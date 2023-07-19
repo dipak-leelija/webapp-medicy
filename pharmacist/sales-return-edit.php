@@ -264,25 +264,25 @@ if($patientId == 'Cash Sales'){
                                     <table class="table item-table">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th scope="col">
-                                                    <!-- <input type="number" value="0" id="dynamic-id" style="display:none"> -->
+                                                <th scope="col" style="width: 1rem;">
+                                                    <input type="number" value="0" id="dynamic-id" style="display:none">
                                                 </th>
-                                                <th scope="col">
-                                                    <!-- <input type="number" value="0" id="slno" style="display:none"> -->
+                                                <th scope="col" style="width: 0.5rem;">
+                                                    <input type="number" value="0" id="slno" style="display:none">
                                                 </th>
-                                                <th scope="col">Items</th>
-                                                <th scope="col">Batch</th>
-                                                <th scope="col">Exp.</th>
-                                                <th scope="col">Unit</th>
+                                                <th scope="col" style="font-size: 0.8rem;">Items</th>
+                                                <th scope="col" style="font-size: 0.8rem;">Batch</th>
+                                                <th scope="col" style="font-size: 0.8rem;">Exp.</th>
+                                                <th scope="col" style="font-size: 0.8rem;">Unit</th>
                                                 <th scope="col" hidden>UnitType</th>
                                                 <th scope="col" hidden>Weatage</th>
-                                                <th scope="col">Qty.</th>
-                                                <th scope="col">MRP</th>
-                                                <th scope="col">Disc</th>
-                                                <th scope="col">GST%</th>
-                                                <th scope="col">Taxable</th>
-                                                <th scope="col">Return</th>
-                                                <th scope="col">Refund</th>
+                                                <th scope="col" style="font-size: 0.8rem;">Qty.</th>
+                                                <th scope="col" style="font-size: 0.8rem;">MRP</th>
+                                                <th scope="col" style="font-size: 0.8rem;">Disc</th>
+                                                <th scope="col" style="font-size: 0.8rem;">GST%</th>
+                                                <th scope="col" style="font-size: 0.8rem;">Taxable</th>
+                                                <th scope="col" style="font-size: 0.8rem;">Return</th>
+                                                <th scope="col" style="font-size: 0.8rem;">Refund</th>
                                             </tr>
                                         </thead>
                                         <tbody id="dataBody">
@@ -298,7 +298,7 @@ if($patientId == 'Cash Sales'){
                                         <label for="invoice">Invoice :</label>
                                         <input class="summary-inp w-60" name="invoice" id="invoice" type="text" readonly>
 
-                                        <input class="summary-inp w-60" name="salesreturnid" id="salesreturnid" type="text" readonly>
+                                        <input class="d-none summary-inp w-60" name="salesreturnid" id="salesreturnid" type="text" readonly>
                                     </div>
 
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">

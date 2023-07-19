@@ -507,50 +507,50 @@ const addData = () => {
                 <i class="fas fa-trash" id="${slno}"
                     onclick="deleteData(this.id, ${parseFloat(returnQtyVal.value)}, ${gstPerItem}, ${parseFloat(refund.value)})"></i>
             </td>
-            <td class="pt-3">${slno}</td>
+            <td class="pt-3" style="width: 0.5rem">${slno}</td>
             <td class="pt-3">
-                <input class="table-data w-12r" type="text" value="${itemName}" readonly >
+                <input class="table-data w-10r" type="text" value="${itemName}" readonly style="font-size: 0.7rem;">
                 <input class="d-none" type="text" name="productId[]" value="${itemList.value}">
 
             </td>
             <td class="pt-3">
-                <input class="table-data w-6r" type="text" name="batchNo[]" value="${batch.value}" readonly>
+                <input class="table-data w-5r" type="text" name="batchNo[]" value="${batch.value}" readonly style="font-size: 0.7rem;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-4r" type="text" name="expDate[]" value="${expDate.value}" readonly>
+                <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate.value}" readonly style="font-size: 0.7rem;">
             </td>
 
             <td class="pt-3">
-                <input class="table-data w-4r" type="text" name="setof[]" value="${unit.value}" readonly>
+                <input class="table-data w-3r" type="text" name="setof[]" value="${unit.value}" readonly style="font-size: 0.7rem;">
             </td>
 
             <td class="pt-3" hidden>
-                <input class="table-data w-4r" type="text" name="unitType[]" value="${unitType.value}" readonly>
+                <input class="d-none table-data w-3r" type="text" name="unitType[]" value="${unitType.value}" readonly>
             </td>
             <td class="pt-3" hidden>
-                <input class="table-data w-4r" type="text" name="weatage[]" value="${weatage.value}" readonly>
+                <input class="d-none table-data w-4r" type="text" name="weatage[]" value="${weatage.value}" readonly>
             </td>
             
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly>
+                <input class="table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size: 0.7rem;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly>
+                <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size: 0.7rem;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-4r" type="text" name="disc[]" value="${discount.value}" readonly>
+                <input class="table-data w-3r" type="text" name="disc[]" value="${discount.value}" readonly style="font-size: 0.7rem;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly>
+                <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly style="font-size: 0.7rem;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-5r" type="text" name="taxable[]" value="${taxableAmnt}" >
+                <input class="table-data w-3r" type="text" name="taxable[]" value="${taxableAmnt}"  style="font-size: 0.7rem;">
             </td>
             <td class="ps-1 pt-3">
-                <input class="table-data w-4r" type="text" name="return[]" value="${returnQtyVal.value}" readonly>
+                <input class="table-data w-3r" type="text" name="return[]" value="${returnQtyVal.value}" readonly style="font-size: 0.7rem;">
             </td>
             <td class="pt-3">
-                <input class="table-data w-5r" type="any" name="refund[]" value="${refund.value}" readonly>
+                <input class="table-data w-4r" type="any" name="refund[]" value="${refund.value}" readonly style="font-size: 0.7rem;">
                 <input class="d-none" type="any" name="billAmount[]" value="${billAmount.value}" readonly>
             </td>
         </tr>`);

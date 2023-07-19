@@ -36,11 +36,20 @@ $showDistributor       = $Distributor->showDistributor();
 
 if(isset($_GET["returnId"])){
     $returnId = $_GET["returnId"];
-    
+    // echo $returnId;
     $table = 'id';
     $value = $returnId;
     $stokReturnData = $StockReturn->stockReturnFilter($table, $value);
-    $distId = $stokReturnData[0]["distributor_id"];
+    // print_r($stokReturnData);
+    foreach($stokReturnData as $returnData){
+        $ReturnItemsCount = $returnData["items"];
+        $ReturnItemsQty = $returnData["total_qty"];
+        $NetRefundAmount = $returnData["refund_amount"];
+        $NetReturnGST = $returnData["gst_amount"];
+        $refundMode = $returnData["refund_mode"];
+        $distId = $returnData["distributor_id"];
+    }
+    
 
     $distData = $Distributor->showDistributorById($distId);
     $distName = $distData[0]["name"];
@@ -349,7 +358,13 @@ if(isset($_GET["returnId"])){
                                             // print_r($returnBills);
 
                                             foreach ($returnBills as $bill) {
-                                                // print_r($bill['id']);
+
+                                                // print_r($bill);
+                                                
+                                                // $gstPerItem = $bill[''];
+                                                // $returnQTYperItems = ;
+                                                // $refundAmountPerItem = ;
+
                                                 $productid = $bill['product_id'];
                                                 $productDetails = $products->showProductsById($productid);
                                                 //print_r($productDetails);
@@ -362,7 +377,7 @@ if(isset($_GET["returnId"])){
 
                                                 <tr id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>">
 
-                                                    <td style="color: red;" style="padding-top: 0rem"> <i class="fas fa-trash p-0 pt-3 " onclick="delData(<?php echo $slno; ?>)"></i>
+                                                    <td style="color: red;" style="padding-top: 0rem"> <i class="fas fa-trash p-0 pt-3 " onclick="delData(<?php echo $slno; ?>, , value1, value2, value3)"></i>
                                                     </td>
                                                     
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
@@ -459,22 +474,22 @@ if(isset($_GET["returnId"])){
                                     </div>
 
                                     <div class="col-md-3 col-6 mb-3  d-flex justify-content-start">
-                                        <p>Items : <input class="summary-inp w-6r" name="items-qty" id="items-qty" type="text" value="0" readonly></p>
+                                        <p>Items : <input class="summary-inp w-6r" name="items-qty" id="items-qty" type="text" value="<?php echo $ReturnItemsCount ?>" readonly></p>
                                     </div>
 
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Refund Mode : <input class="summary-inp w-6r" name="refund-mode" id="refund-mode" type="text" readonly> </p>
+                                        <p>Refund Mode : <input class="summary-inp w-6r" name="refund-mode" id="refund-mode" value="<?php echo $refundMode ?>" type="text" readonly> </p>
                                     </div>
 
 
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Qty : <input class="summary-inp w-65" name="total-refund-qty" id="total-refund-qty" type="text" value="0" readonly> </p>
+                                        <p>Qty : <input class="summary-inp w-65" name="total-refund-qty" id="total-refund-qty" type="text" value="<?php echo $ReturnItemsQty ?>" readonly> </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>GST : <input class="summary-inp w-65" name="return-gst" id="return-gst" type="text" value="0" readonly> </p>
+                                        <p>GST : <input class="summary-inp w-65" name="return-gst" id="return-gst" type="text" value="<?php echo $NetReturnGST ?>" readonly> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Net : <input class="summary-inp w-65" name="refund" id="refund" type="text" value="0" readonly> </p>
+                                        <p>Net : <input class="summary-inp w-65" name="refund" id="refund" type="text" value="<?php echo $NetRefundAmount ?>" readonly> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 text-right">
                                         <button class="btn btn-sm btn-primary" style="width: 50%;" type="submit" name="stock-return-edit">Save</button>

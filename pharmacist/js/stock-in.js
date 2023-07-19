@@ -1,5 +1,5 @@
 function searchItem(input) {
-    console.log(input);
+    // console.log(input);
     // alert(value);
     let xmlhttp = new XMLHttpRequest();
 
@@ -25,7 +25,7 @@ function searchItem(input) {
 
 const getDtls = (value) => {
 
-    // console.log(value);
+    console.log(value);
     // alert(value);
     let xmlhttp = new XMLHttpRequest();
 
