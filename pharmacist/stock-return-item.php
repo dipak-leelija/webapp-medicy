@@ -318,7 +318,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 </th>
                                                 <th scope="col" hidden>StockInDetailsId</th>
                                                 <th scope="col"></th>
-                                                <th scope="col" style="width: 12rem;">Items</th>
+                                                <th scope="col" style="width: 12rem  ;">Items</th>
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp</th>
                                                 <th scope="col">Unit</th>

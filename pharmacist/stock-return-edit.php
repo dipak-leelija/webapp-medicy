@@ -361,9 +361,9 @@ if(isset($_GET["returnId"])){
 
                                                 // print_r($bill);
                                                 
-                                                // $gstPerItem = $bill[''];
-                                                // $returnQTYperItems = ;
-                                                // $refundAmountPerItem = ;
+                                                $gstPerItem = $bill['gst'];
+                                                $returnQTYperItems = $bill['return_qty'];
+                                                $refundAmountPerItem = $bill['refund_amount'];
 
                                                 $productid = $bill['product_id'];
                                                 $productDetails = $products->showProductsById($productid);
@@ -377,7 +377,7 @@ if(isset($_GET["returnId"])){
 
                                                 <tr id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>">
 
-                                                    <td style="color: red;" style="padding-top: 0rem"> <i class="fas fa-trash p-0 pt-3 " onclick="delData(<?php echo $slno; ?>, , value1, value2, value3)"></i>
+                                                    <td style="color: red;" style="padding-top: 0rem"> <i class="fas fa-trash p-0 pt-3 " onclick="delData(<?php echo $slno; ?>, <?php echo $gstPerItem; ?>, <?php echo $returnQTYperItems; ?>, <?php echo $refundAmountPerItem; ?>)"></i>
                                                     </td>
                                                     
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
