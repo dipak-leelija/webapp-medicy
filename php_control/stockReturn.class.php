@@ -108,8 +108,8 @@ class StockReturn extends DatabaseConnection{
 #                                                                                                                                 #
 ###################################################################################################################################
 
-function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $purchaseAmount, $gst, $returnQty, $returnFQty, $refundAmount, $addedBy){
-    $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `purchase_amount`, `gst`, `return_qty`, `return_free_qty`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$stockInDetailsId', '$productId', '$batchNo', '$expDate', '$unit', '$purchaseQty', '$freeQty', '$mrp', '$ptr', '$purchaseAmount', '$gst', '$returnQty', '$returnFQty', '$refundAmount', '$addedBy')";
+function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $purchaseAmount, $gst, $gstAmount, $returnQty, $returnFQty, $refundAmount, $addedBy){
+    $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `purchase_amount`, `gst`, `gst_amount`, `return_qty`, `return_free_qty`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$stockInDetailsId', '$productId', '$batchNo', '$expDate', '$unit', '$purchaseQty', '$freeQty', '$mrp', '$ptr', '$purchaseAmount', '$gst', '$gstAmount', '$returnQty', '$returnFQty', '$refundAmount', '$addedBy')";
     $res = $this->conn->query($sql);
     return $res;
 }// eof addStockReturn

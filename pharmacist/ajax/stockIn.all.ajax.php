@@ -81,6 +81,17 @@ if (isset($_GET["taxableUrl"])) {
     }
 }
 
+//return gst amount calculation
+if (isset($_GET["gstAmountPerQuantity"])) {
+    $id = $_GET["gstAmountPerQuantity"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
+    if ($stock > 0) {
+        $totalGst =  $stock[0]['gst_amount'];
+        $purchaseQTY = $stock[0]['qty'];
+        $gstPerUnit = $totalGst/$purchaseQTY;
+        echo number_format($gstPerUnit,2);
+    }
+}
 
 // get amount
 if (isset($_GET["amount"])) {

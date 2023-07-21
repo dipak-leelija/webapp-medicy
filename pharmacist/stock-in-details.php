@@ -16,7 +16,11 @@ $StockIn            = new StockIn();
 $showStockIn = $StockIn->showStockInDecendingOrder();
 // print_r($showStockIn);
 // echo "<br><br>";
-$StockInId = $showStockIn[0]['id'];
+if($showStockIn != null){
+    $StockInId = $showStockIn[0]['id'];
+    // echo $StockInId;
+}
+
 // echo "<br>check stokinid : $StockInId";
 // foreach($showStockIn as $stokIn){
 //     // print_r($stokIn);
@@ -115,14 +119,14 @@ $showDistributor       = $Distributor->showDistributor();
                                         ?>
 
                                                 <tr>
-                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $slNo ?></td>
-                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['distributor_bill'] ?></td>
-                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $distributor[0][1] ?></td>
-                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['bill_date'] ?></td>
-                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['amount'] ?></td>
-                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['payment_mode'] ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>", value1="<?php echo $StockInId ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>', this.id, this.value, this.value1)" data-toggle="modal" data-target="#exampleModal"><?php echo $slNo ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" value1="<?php echo $StockInId ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>', this.id, this.value, this.value1)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['distributor_bill'] ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" value1="<?php echo $StockInId ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>', this.id, this.value, this.value1)" data-toggle="modal" data-target="#exampleModal"><?php echo $distributor[0][1] ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" value1="<?php echo $StockInId ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>', this.id, this.value, this.value1)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['bill_date'] ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" value1="<?php echo $StockInId ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>', this.id, this.value, this.value1)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['amount'] ?></td>
+                                                    <td id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" value1="<?php echo $StockInId ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>', this.id, this.value, this.value1)" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['payment_mode'] ?></td>
                                                     <td class="d-flex justify-content-around align-middle">
-                                                        <a class="text-primary pe-auto" role="button" id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>', this.id, this.value)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i>
+                                                        <a class="text-primary pe-auto" role="button" id="<?php echo $stockIn['distributor_bill'] ?>" value="<?php echo $stockIn['id'] ?>" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>', this.id, this.value, this.value1)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i>
                                                         </a>
                                                         <a class="text-primary" id="<?php echo $stockIn['distributor_bill'] ?>" href="stock-in-edit.php?edit=<?php echo $stockIn['distributor_bill'] ?>&editId=<?php echo $stockIn['id'] ?>" role="button"><i class=" fas fa-edit"></i>
                                                         </a>
@@ -202,7 +206,9 @@ $showDistributor       = $Distributor->showDistributor();
 
     <script>
         const stockDetails = (distBill) => {
-            // alert(distBill);
+            alert(distBill);
+            // alert(id);
+            // alert(value);
             url = `ajax/stockInDetails.view.ajax.php?distBill=${distBill}`;
 
             $(".stockDetails").html(

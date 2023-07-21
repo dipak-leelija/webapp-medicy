@@ -42,6 +42,7 @@ const customEdit = (id, value) => {
             var priceToRetaile = dataObject.ptr;
             var discountPercentage = dataObject.discount;
             var gstPercentage = dataObject.gst;
+            var gstPerItem = dataObject.gstAmount;
             var taxableAmount = dataObject.taxable_amount;
             var maxRetailPrice = dataObject.mrp;
             var purchaseAmount = dataObject.purchase_amount;
@@ -53,9 +54,10 @@ const customEdit = (id, value) => {
             // alert(returnFreeqty);
             var refundAmunt = dataObject.refund_amount;
 
-            let gstPerItem = dataObject.gst;
             let ReturnQty = dataObject.return_qty;
             let refund = dataObject.refund_amount;
+
+            var gstPerQtyCalculation = gstPerItem/returnQty;
             //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
         
             document.getElementById("stock-return-details-id").value = dataObject.id;
@@ -75,6 +77,7 @@ const customEdit = (id, value) => {
             document.getElementById("ptr").value = priceToRetaile;
             document.getElementById("discount").value = discountPercentage;
             document.getElementById("gst").value = gstPercentage;
+            document.getElementById("gstAmount").value = gstPerItem;
             document.getElementById("taxable").value = taxableAmount;
             document.getElementById("mrp").value = maxRetailPrice;
             document.getElementById("amount").value = purchaseAmount;
@@ -85,6 +88,7 @@ const customEdit = (id, value) => {
             document.getElementById("return-free-qty").value = returnFreeqty;
             document.getElementById("refund-amount").value = refundAmunt;
 
+            document.getElementById("gstPerItem").value = gstPerQtyCalculation;
             //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
             // row.parentNode.removeChild(row);
             delData (slno, gstPerItem, ReturnQty, refund);
@@ -176,7 +180,7 @@ const getRefund = (returnQty) => {
         let gst = document.getElementById("gst");
         // console.log(parseInt(currentQty.value));
         if (returnQty <= currentQty.value) {
-            console.log(returnQty);
+            // console.log(returnQty);
             let subtotal = returnQty * ptr.value;
             let refund = subtotal + (gst.value / 100 * subtotal);
 
@@ -189,6 +193,17 @@ const getRefund = (returnQty) => {
         alert("NULL");
         document.getElementById("refund-amount").value = '0';
     }
+
+    let perQtyGst = document.getElementById("gstPerItem").value;
+    console.log("perQtyGst=>");
+    console.log(perQtyGst);
+
+    let updatedGstAmount = parseFloat(perQtyGst) * returnQty;
+    console.log("perQtyGst=>");
+    console.log(perQtyGst);
+
+    document.getElementById("updatedGSTamount").value = updatedGstAmount;
+
 }
 
 
@@ -211,6 +226,7 @@ const addData = async () => {
     let ptr = document.getElementById("ptr");
     let discount = document.getElementById("discount");
     let gst = document.getElementById("gst");
+    let gstAmount = document.getElementById("updatedGSTamount").value;
     let purchasedQty = document.getElementById("purchased-qty");
     let freeQty = document.getElementById("free-qty");
     let currentQty = document.getElementById("current-qty");
@@ -233,21 +249,34 @@ const addData = async () => {
 
     document.getElementById("dynamic-id").value = slno;
 
-    //geting total qty value
-    //qtyVal.value = parseFloat(returnQty.value) + parseFloat(qtyVal.value);
-
-
-    //geeting total refund amount
-    var refund = document.getElementById("refund");
-    refund.value = parseFloat(refund.value) + parseFloat(refundAmount.value);
-
     // return gst generating
     let withoutGst = (ptr.value * returnQty.value);
     // console.log(withoutGst);
     let taxAmount = (gst.value / 100 * withoutGst);
     // console.log(taxAmount);
     var returnGstAmount = document.getElementById("return-gst");
-    returnGstAmount.value = parseFloat(returnGstAmount.value) + taxAmount;
+    returnGstAmount = parseFloat(returnGstAmount.value) + taxAmount;
+    returnGstAmount = returnGstAmount.toFixed(2);
+    document.getElementById("return-gst").value = returnGstAmount;
+    
+
+    if(gstAmount!= ""){
+        gstAmount = gstAmount;
+    }
+    if(gstAmount == ""){
+        gstAmount = document.getElementById("gstAmount").value;
+    }
+    gstAmount = parseFloat(gstAmount);
+    gstAmount = gstAmount.toFixed(2);
+    // console.log("updated gst amount check=>");
+    // console.log(gstAmount);
+
+
+    let netAmountCalculation = document.getElementById("NetRefund");
+    netAmountCalculation = parseFloat(netAmountCalculation.value) + parseFloat(refundAmount.value);
+    // console.log("Updated refund amount=>");
+    // console.log(netAmountCalculation);
+    document.getElementById("NetRefund").value = netAmountCalculation;
 
 
     if (refundAmount.value != null) {
@@ -258,52 +287,56 @@ const addData = async () => {
                     <td  style="color: red;">
                         <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
-                    <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
+                    <td class="p-0 pt-3" style="padding:1rem; text-align: center; font-size:0.75rem;" scope="row">${slno}</td>
+
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-9r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start; font-size:0.75rem">
+                        <input class="col table-data w-9r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start; font-size:0.75rem; padding-left: 1%">
                         <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;" hidden>
                     </td>
                     <td class="p-0 pt-3" hidden>
-                        <input class="col table-data w-6r" type="text" name="stock-return-id[]" value="${stockReturnId.value}" readonly>
+                        <input class="col table-data w-4r" type="text" name="stock-return-id[]" value="${stockReturnId.value}" readonly style="padding-right: 0.15rem;">
                     </td>
                     <td class="p-0 pt-3" hidden>
-                        <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" value="${stockReturnDetailsId.value}" readonly>
+                        <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" value="${stockReturnDetailsId.value}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-8r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly style="font-size:0.75rem">
+                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:4rem">
-                        <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate.value}" readonly font-size:0.75rem">
+                        <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate.value}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:4rem">
-                        <input class="col table-data w-34r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly font-size:0.75rem">
+                        <input class="col table-data w-34r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:3rem">
-                        <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly font-size:0.75rem">
+                        <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:2rem">
-                        <input class="col table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly font-size:0.75rem">
+                        <input class="col table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:4rem">
-                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly font-size:0.75rem">
+                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:4rem">
-                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly font-size:0.75rem">
+                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:3rem">
-                        <input class="col table-data w-3r" type="text" name="purchase-amount[]" value="${amount.value}" readonly font-size:0.75rem">
+                        <input class="col table-data w-3r" type="text" name="purchase-amount[]" value="${amount.value}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class="p-0 ps-1 pt-3" style="width:3rem">
-                        <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly font-size:0.75rem">
+                        <input class="col table-data w-4r" type="text" name="gstAmount[]" value="${gstAmount}" readonly style="font-size: 0.75rem">
+                        <input class="col table-data w-4r" type="text" name="gst[]" value="${gst.value}%" readonly style="border-radius: 40%; font-size: .7rem; width:3rem; background-color: #4e73df!important; margine-left: 0.5rem; text-align: center;"> 
                     </td>
+
                     <td class="p-0 pt-3" style="width:3rem">
-                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly font-size:0.75rem">
+                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class="p-0 pt-3" style="width:3rem"> 
-                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly font-size:0.75rem">
+                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly style="font-size: 0.75rem">
                     </td>
                     <td class=" amnt-td p-0 pt-3" style="width:5rem">
-                        <input class="col table-data W-5r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly font-size:0.75rem">
+                        <input class="col table-data W-5r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly style="font-size: 0.75rem">
                     </td>
                 </tr>`);
 
@@ -323,6 +356,7 @@ const addData = async () => {
                 document.getElementById("items-qty").value = slno;
             }
 
+            // var Qantity = document.getElementById("total-refund-qty");
             var totalQty = parseInt(returnQty.value);
 
             if (slno > 1) {
@@ -333,6 +367,9 @@ const addData = async () => {
             } else {
                 document.getElementById("total-refund-qty").value = totalQty;
             }
+
+            var netRefund = document.getElementById("NetRefund").value;
+            // netRefund = netRefund + 
 
             // distributor_name.value = '';
 
@@ -387,7 +424,7 @@ const  delData = (slno, gstPerItem, ReturnQty, refund) => {
     gst.value = finalGst;
 
     // minus netAmount
-    let net = document.getElementById("net-amount");
+    let net = document.getElementById("NetRefund");
     let finalAmount = net.value - refund;
     net.value = finalAmount;
 }

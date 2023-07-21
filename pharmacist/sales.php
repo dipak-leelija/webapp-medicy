@@ -4,7 +4,6 @@ require_once '_config/sessionCheck.php';//check admin loggedin or not
 require_once "../php_control/stockOut.class.php";
 require_once "../php_control/patients.class.php";
 
-
 // CLASS INTIATING 
 $StockOut = new StockOut();
 $Patients = new Patients();

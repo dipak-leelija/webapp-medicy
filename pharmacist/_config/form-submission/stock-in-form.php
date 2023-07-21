@@ -93,12 +93,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $crrntDt = date("d-m-Y");
 
-
         // ===================================== CHECKING ===========================================    
-        // echo "<br>Batch number Array =>"; print_r($updtBatchNoArry); echo "<br>";
+        echo "<br>Stok in id Array =>"; print_r($stockIn_Id); echo "<br>";
 
     }
-// exit;
+exit;
     $addStockIn  = FALSE;
     if (isset($_POST['stock-in'])) {
         $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);

@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $mrp        = $_POST['mrp'];
         $discs      = $_POST['disc'];
+        // $gstPercent = $_POST['gst'];
         $gst        = $_POST['gst'];
         $totalGSt   = $_POST['taxable'];
         $returnQty  = $_POST['return'];

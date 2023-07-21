@@ -201,6 +201,11 @@ $showDistributor       = $Distributor->showDistributor();
                                             <input type="text" class="upr-inp" name="gst" id="gst" readonly>
                                         </div>
 
+                                        <div class="d-none col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="gstAmountPerQty">GST Amount Per Quantity</label>
+                                            <input type="text" class="upr-inp" name="gstAmountPerQty" id="gstAmountPerQty" readonly>
+                                        </div>
+
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="taxable">Taxable</label>
                                             <input type="any" class="upr-inp" name="taxable" id="taxable" readonly>
@@ -272,6 +277,12 @@ $showDistributor       = $Distributor->showDistributor();
                                                 id="return-free-qty" value="0" onkeyup="checkFQty(this.value);">
                                         </div>
 
+                                        <div class="d-none col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="return-gst-amount">Return GST Amount </label>
+                                            <input type="text" class="upr-inp focus-border"
+                                            name="return-gst-amount" id="return-gst-amount" value="">
+                                        </div>
+
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="refund-amount">Refund:</label>
                                             <input type="text" class="upr-inp focus-border" name="refund-amount"
@@ -318,7 +329,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 </th>
                                                 <th scope="col" hidden>StockInDetailsId</th>
                                                 <th scope="col"></th>
-                                                <th scope="col" style="width: 12rem  ;">Items</th>
+                                                <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp</th>
                                                 <th scope="col">Unit</th>
@@ -374,7 +385,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 id="total-return-qty" type="text" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>GST : <input class="summary-inp w-65" name="return-gst" id="return-gst"
+                                        <p>GST : <input class="summary-inp w-65" name="return-gst-val" id="return-gst-val"
                                                 type="text" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 mb-2 d-flex justify-content-start">

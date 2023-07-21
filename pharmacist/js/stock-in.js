@@ -556,13 +556,13 @@ const addData = () => {
             <td class="pt-3" style="padding: .3rem;">
                 <input type="text" name="base[]" value="${base.value}" style="display: none">
                 <input  type="text" name="discount[]" value="${discount.value}" style="display: none ;">
-                <p style="color: #000; font-size: .7rem; ">${base.value} <span class="bg-primary text-light p-1 disc-span" style="border-radius: 27%; font-size: .7rem; width:2rem; padding: 0%;">${discount.value}%</span> </p>
+                <p style="color: #000; font-size: .7rem; ">${base.value} <span class="bg-primary text-light p-1 disc-span" style="border-radius: 27%; font-size: .7rem; width:2rem; padding: 0%;">${discount.value}%</span> </p> 
             </td>
             <td class="ps-1 pt-3" style="padding: .3rem;">
                 <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(0)}%" readonly style="width: 2rem; padding: 0%; font-size: .7rem;">
             </td>
             <td class="pt-3" style="padding: .3rem;">
-                <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly style="width: 2rem; padding: 0%; font-size: .7rem;">
+                <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="width: 2rem; padding: 0%; font-size: .7rem;">
                 <input type="text" name="gstPerItem[]" value="${gstPerItem}" hidden>
             </td class="pt-3">
             <td class="amnt-td pt-3" style="padding: .3rem;">

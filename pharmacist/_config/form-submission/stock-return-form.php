@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $stockReturnId   = $IdGeneration->stockReturnId();
         $itemQty         = $_POST['items-qty'];
         $totalReturnQty  = $_POST['total-return-qty'];
-        $returnGst       = $_POST['return-gst'];
+        $returnGst       = $_POST['return-gst-val'];
         $refund          = $_POST['refund'];
 
         $addedBy         = $_SESSION['employee_username'];
@@ -68,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $mrp            = $_POST['mrp'];
             $ptr            = $_POST['ptr'];
             $purchaseAmount = $_POST['purchase-amount'];
-            $gst            = $_POST['gst'];
+            $gstPercent     = $_POST['gst'];
+            $gstAmount            = $_POST['ReturnGstAmount'];
             $returnQty      = $_POST['return-qty'];
             $returnFQty     = $_POST['return-free-qty'];
             $refundAmount   = $_POST['refund-amount'];
@@ -113,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $stockUpdate = $CurrentStock->updateStockBStockDetialsId($stokInDetailsId[$i], $newQuantity, $newLCount);
             
 
-                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, $stokInDetailsId[$i], $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], $purchasedQty[$i], $freeQty[$i], $mrp[$i], $ptr[$i], $purchaseAmount[$i], $gst[$i], $returnQty[$i], $returnFQty[$i], $refundAmount[$i], $addedBy);
+                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, $stokInDetailsId[$i], $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], $purchasedQty[$i], $freeQty[$i], $mrp[$i], $ptr[$i], $purchaseAmount[$i], $gstPercent[$i], $gstAmount[$i], $returnQty[$i], $returnFQty[$i], $refundAmount[$i], $addedBy);
 
 
                 // echo $productId[$i].'<br>';
@@ -214,7 +215,7 @@ foreach ($showhelthCare as $rowhelthCare) {
             <div class="row">
                 <!-- table heading -->
 
-                <div class="col-sm-2 ">
+                <div class="col-sm-2">
                     <small><b>Name</b></small>
                 </div>
                 <div class="col-sm-1">
@@ -226,10 +227,10 @@ foreach ($showhelthCare as $rowhelthCare) {
                 <div class="col-sm-1">
                     <small><b>Exp.</b></small>
                 </div>
-                <div class="col-sm-1">
+                <div class="col-sm-1" style="width: 7%;">
                     <small><b>P.Qty</b></small>
                 </div>
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-1 text-end" style="width: 5%;">
                     <small><b>Free</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
@@ -238,14 +239,14 @@ foreach ($showhelthCare as $rowhelthCare) {
                 <div class="col-sm-1 text-end">
                     <small><b>MRP</b></small>
                 </div>
-                <div class="col-sm-1 text-end">
-                    <small><b>P.Amount</b></small>
+                <div class="col-sm-1 text-end" style="width: 7%;">
+                    <small><b>P.Sum</b></small>
                 </div>
-                <div class="col-sm-1">
-                    <small><b>Return QTY</b></small>
+                <div class="col-sm-1" style="width: 7%;">
+                    <small><b>R.QTY</b></small>
                 </div>
-                <div class="col-sm-1">
-                    <small><b>Return F.QTY</b></small>
+                <div class="col-sm-1" style="width: 7%;">
+                    <small><b>R.F.QTY</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
                     <small><b>Refund</b></small>
@@ -284,10 +285,10 @@ foreach ($showhelthCare as $rowhelthCare) {
                     <div class="col-sm-1">
                         <small>'.$expDate[$i].'</small>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-1" style="width: 7%;">
                         <small>'.$purchasedQty[$i].'</small>
                     </div>
-                    <div class="col-sm-1 text-end">
+                    <div class="col-sm-1 text-end" style="width: 5%;">
                         <small>'.$freeQty[$i].'</small>
                     </div>
                     <div class="col-sm-1 text-end">
@@ -296,13 +297,13 @@ foreach ($showhelthCare as $rowhelthCare) {
                     <div class="col-sm-1 text-end">
                         <small>'.$mrp[$i].'</small>
                     </div>
-                    <div class="col-sm-1 text-end">
+                    <div class="col-sm-1 text-end" style="width: 7%;">
                         <small>'.$purchaseAmount[$i].'</small>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-1" style="width: 7%;">
                         <small>'.$returnQty[$i].'</small>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-1" style="width: 7%;">
                         <small>'.$returnFQty[$i].'</small>
                     </div>
                     <div class="col-sm-1 text-end">

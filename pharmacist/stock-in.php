@@ -299,7 +299,7 @@ $todayYr = date("y");
                                                     ?>
                                             </select>
                                         </div>
-
+                                        
                                         <!-- </div> -->
                                         <!--/End Quantity Row  -->
 
@@ -357,24 +357,24 @@ $todayYr = date("y");
                                     <table class="table item-table" style="font-size: .7rem;">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th scope="col" style="width: 1rem; padding: .5rem;"></th>
-                                                <th scope="col" style="width: 1rem; padding: .5rem;">
+                                                <th scope="col"></th>
+                                                <th scope="col">
                                                     <input type="number" value="0" id="dynamic-id" style="display:none" >
                                                 </th>
-                                                <th scope="col" style="width: 9rem; font-size: .7rem; padding: .5rem;">Items</th>
-                                                <th scope="col" style="width: 6rem; font-size: .7rem; padding: .5rem;">Batch</th>
-                                                <th scope="col" style="width: 3rem; font-size: .7rem; padding: .5rem;">MFD.</th>
-                                                <th scope="col" style="width: 3rem; font-size: .7rem; padding: .5rem;">Exp.</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Power</th>
-                                                <th scope="col" style="width: 3rem; margin: 0%; font-size: .7rem; padding: .5rem;">Unit</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Qty.</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Free</th>
-                                                <th scope="col" style="width: 3rem; margin: 0%; font-size: .7rem; padding: .5rem;">MRP</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">PTR</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Base</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">Margin%</th>
-                                                <th scope="col" style="width: 2rem; margin: 0%; font-size: .7rem; padding: .5rem;">GST%</th>
-                                                <th scope="col" style="width: 3rem; font-size:  .7rem; padding: .5rem;">Amount</th>
+                                                <th scope="col">Items</th>
+                                                <th scope="col">Batch</th>
+                                                <th scope="col">MFD.</th>
+                                                <th scope="col">Exp.</th>
+                                                <th scope="col">Power</th>
+                                                <th scope="col">Unit</th>
+                                                <th scope="col">Qty.</th>
+                                                <th scope="col">Free</th>
+                                                <th scope="col">MRP</th>
+                                                <th scope="col">PTR</th>
+                                                <th scope="col">Base</th>
+                                                <th scope="col">Margin%</th>
+                                                <th scope="col">GST%</th>
+                                                <th scope="col">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody id="dataBody">
