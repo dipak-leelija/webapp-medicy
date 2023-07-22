@@ -52,7 +52,7 @@ class StockInDetails extends DatabaseConnection{
     }//eof showStockInDetails function
 
     function showStockInDetailsByStokId($StockId){
-        $select = " SELECT * FROM `stock_in_details` WHERE  `stock_in_details`.`stokIn_id`= '$StockId'";
+        $select = " SELECT * FROM `stock_in_details` WHERE `stokIn_id`= '$StockId'";
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;
@@ -179,6 +179,12 @@ class StockInDetails extends DatabaseConnection{
 
     function stockInDeletebyId($stockInId){
         $delQry = "DELETE FROM `stock_in_details` WHERE `stokIn_id` = '$stockInId'";
+        $delSql = $this->conn->query($delQry);
+        return $delSql;
+    }// eof stockInDelete
+
+    function stockInDeletebyDetailsId($Id){
+        $delQry = "DELETE FROM `stock_in_details` WHERE `id` = '$Id'";
         $delSql = $this->conn->query($delQry);
         return $delSql;
     }// eof stockInDelete

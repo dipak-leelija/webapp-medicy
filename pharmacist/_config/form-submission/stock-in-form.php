@@ -58,6 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (isset($_POST['update'])) {
 
         $stockIn_Id         = $_POST['stok-in-id'];
+        // echo $stockIn_Id,"<br>";
+    
         $distributorId      = $_POST['distributor-id'];
 
         $distributorDetial = $distributor->showDistributorById($distributorId);
@@ -94,10 +96,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $crrntDt = date("d-m-Y");
 
         // ===================================== CHECKING ===========================================    
-        echo "<br>Stok in id Array =>"; print_r($stockIn_Id); echo "<br>";
+        // echo "<br>Stok in id Array =>"; print_r($stockIn_Id); echo "<br>";
 
     }
-exit;
+// exit;
     $addStockIn  = FALSE;
     if (isset($_POST['stock-in'])) {
         $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
@@ -121,6 +123,13 @@ exit;
     } // stock-in request end
 
     if ($addStockIn == TRUE || $updateStockIn == TRUE) {
+
+
+
+        ///================ counter check ============================
+        // if (isset($_POST['update'])) {
+                
+        //     }
 
         //=========== STOCK IN DETAILS ===========
         foreach ($_POST['productId'] as $productId) {
@@ -178,9 +187,31 @@ exit;
             } // end stock-in request
 
             if (isset($_POST['update'])) {
-
-                $purchaseId         = array_shift($_POST['purchaseId']);
                 
+                $purchaseIds = ($_POST['purchaseId']); //updated array
+                print_r($purchaseIds); echo "<br>";
+                $purchaseId = array_shift($_POST['purchaseId']); //purchaseId = stock In Details id
+
+                $stockIn_id = $_POST['stok-in-id'];
+                // echo $stockIn_Id;
+                $stockInDetailsCheck = $StockInDetails->showStockInDetailsByStokId($stockIn_id);
+                // print_r($stockInDetailsCheck);
+                
+                $stokInIdArray = [];
+                foreach($stockInDetailsCheck as $StokInids){
+                    array_push($stokInIdArray, $StokInids['id']);
+                }
+                
+                $arrayidsdiff = array_diff($stokInIdArray,$purchaseIds);
+                $arrayidsdiff = array_values($arrayidsdiff); // reseting array keys
+                print_r($arrayidsdiff); echo "<br>";
+                
+                for($i =0; $i<count($arrayidsdiff); $i++){
+                    echo $arrayidsdiff[$i];
+                    $deleteStokInDetailsData = $StockInDetails->stockInDeletebyDetailsId($arrayidsdiff[$i]);
+                    $deleteCurrentStokData = $CurrentStock->deleteCurrentStockbyStockIndetailsId($arrayidsdiff[$i]);
+                }
+
                 if ($purchaseId != null) {
 
                     $selectStockInDetails = $StockInDetails->showStockInDetailsByStokinId($purchaseId);
@@ -198,8 +229,8 @@ exit;
                     }
 
                     $updateStokInDetails = $StockInDetails->updateStockInDetailsById($purchaseId, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy, $addedOn);
-                
-        // ==================================== current stock update area ===============================
+                    
+                    // ========================= current stock update area =====================
 
                     $stokInDetaislId = $purchaseId;
                     $selectCurrentStockDetaisl = $CurrentStock->showCurrentStockbyStokInId($stokInDetaislId);
@@ -215,7 +246,7 @@ exit;
                     //update current stock
 
                     $updateCurrentStock = $CurrentStock->updateStockByStokinDetailsId($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $UpdatedQuantity, $UpdatedLQantity, $mrp, $ptr);
-
+                    
                 } else {
 
                     //select star form stok in by $distributorBill
@@ -239,6 +270,7 @@ exit;
                         $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty + $freeQty, $mrp, $ptr, $gst, $addedBy);
                     }
                 }
+                
             }
         } //eof foreach
         // // $addCurrentStock = TRUE;

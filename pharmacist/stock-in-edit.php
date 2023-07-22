@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $edit = TRUE;
 
         $distBill           = $_GET['edit'];
+        // echo $distBill ,"<br>";
         $stockIn_id         = $_GET['editId'];
         // echo $stockIn_id;
         $StockIn            = new StockIn();
