@@ -92,6 +92,14 @@ class StockInDetails extends DatabaseConnection{
         return $data;
     } // eof showStockInMargin
 
+    function seletStokInItemsIds($stockInId){
+        $select = "SELECT id FROM stock_in_details WHERE `stock_in_details`.`stokIn_id` = '$stockInId'";
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    } // eof showStockInMargin
 
 
     function showStockInByBatch($batchNo){

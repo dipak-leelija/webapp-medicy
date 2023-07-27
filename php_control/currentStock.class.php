@@ -277,7 +277,7 @@ class CurrentStock extends DatabaseConnection{
         $delQry = "DELETE FROM `current_stock` WHERE `stock_in_details_id` = '$stockIndetailsID'";
         // echo $delQry.$this->conn->error;exit;
         $delSql = $this->conn->query($delQry);
-        var_dump($delSql);
+        // var_dump($delSql);
         return $delSql;
     }// eof stockInDelete
 

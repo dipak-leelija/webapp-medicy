@@ -818,7 +818,6 @@ const setYear = (year) => {
 
     // console.log(mfdLn);
 
-
     if (year.value.length == 4) {
         if (year.value < MFDYR.value ) {
             document.getElementById("exp-year").value = "";
