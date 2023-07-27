@@ -658,7 +658,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 <!-- <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($arrayCheckId) ?>" hidden> -->
 
-                                <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" hidden>
+                                <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" >
                             </div>
 
                         </form>

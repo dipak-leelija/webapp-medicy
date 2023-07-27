@@ -126,10 +126,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-        ///================ counter check ============================
-        // if (isset($_POST['update'])) {
+        ///================ updated stock delete item area ============================
+        if (isset($_POST['update'])) {
+
+                $UpdatedPurchaseItemsIds = ($_POST['purchaseId']); //updated items ids array  $purchaseIds
+                // print_r($UpdatedPurchaseItemsIds); echo "  updated items ids array<br><br>";
                 
-        //     }
+                $stockIn_id = $_POST['stok-in-id'];
+
+                $stockInDetailsCheck = $StockInDetails->showStockInDetailsByStokId($stockIn_id);
+                // print_r($stockInDetailsCheck); echo "<br><br>";
+                
+                $stokInItemIdArray= [];
+                foreach($stockInDetailsCheck as $StokInids){
+                    array_push($stokInItemIdArray, $StokInids['id']);
+                } 
+
+                // print_r($stokInItemIdArray); echo "  Previous items ids Array <br><br>"; 
+                $ItemArrayIdsDiff = array_diff($stokInItemIdArray,$UpdatedPurchaseItemsIds);
+                // print_r($ItemArrayIdsDiff); echo " change in array items ids <br>";
+                
+                $delItemsCount = count($ItemArrayIdsDiff);
+
+                if($delItemsCount>0){
+                    foreach($ItemArrayIdsDiff as $deleteItemId){
+                        // echo "<br>Deleted item Id : $deleteItemId";
+                        $deleteCurrentStokData = $CurrentStock->deleteCurrentStockbyStockIndetailsId    ($deleteItemId);
+                        $deleteStokInDetailsData = $StockInDetails->stockInDeletebyDetailsId($deleteItemId);
+                    }
+                }  
+            }
+        /// ======================== eof updated stock delete item area  ==============================
 
         //=========== STOCK IN DETAILS ===========
         foreach ($_POST['productId'] as $productId) {
@@ -158,7 +185,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $looselyPrice = '';
 
             if ($unit == "tab" || $unit == "cap") {
-
                 $looselyCount = $weightage * ($qty + $freeQty);
                 $looselyPrice = ($mrp * $qty) / ($weightage * $qty);
             }
@@ -187,34 +213,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } // end stock-in request
 
             if (isset($_POST['update'])) {
-                
-                $purchaseIds = ($_POST['purchaseId']); //updated array
-                print_r($purchaseIds); echo "<br>";
-                $purchaseId = array_shift($_POST['purchaseId']); //purchaseId = stock In Details id
 
-                $stockIn_id = $_POST['stok-in-id'];
-                // echo $stockIn_Id;
-                $stockInDetailsCheck = $StockInDetails->showStockInDetailsByStokId($stockIn_id);
-                // print_r($stockInDetailsCheck);
-                
-                $stokInIdArray = [];
-                foreach($stockInDetailsCheck as $StokInids){
-                    array_push($stokInIdArray, $StokInids['id']);
-                }
-                
-                $arrayidsdiff = array_diff($stokInIdArray,$purchaseIds);
-                $arrayidsdiff = array_values($arrayidsdiff); // reseting array keys
-                print_r($arrayidsdiff); echo "<br>";
-                
-                for($i =0; $i<count($arrayidsdiff); $i++){
-                    echo $arrayidsdiff[$i];
-                    $deleteStokInDetailsData = $StockInDetails->stockInDeletebyDetailsId($arrayidsdiff[$i]);
-                    $deleteCurrentStokData = $CurrentStock->deleteCurrentStockbyStockIndetailsId($arrayidsdiff[$i]);
-                }
-
-                if ($purchaseId != null) {
-
-                    $selectStockInDetails = $StockInDetails->showStockInDetailsByStokinId($purchaseId);
+                $PurchaseItemId = array_shift($_POST['purchaseId']); //stock In Details item id
+                if ($PurchaseItemId != null) {
+                    // $purchaseId
+                    $selectStockInDetails = $StockInDetails->showStockInDetailsByStokinId($PurchaseItemId);
                     
                     foreach($selectStockInDetails as $prevStockInDetails){
                         $prevStockInQty = $prevStockInDetails['qty'];
@@ -228,11 +231,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $newLooselyCount = $weightage * $newQuantity;
                     }
 
-                    $updateStokInDetails = $StockInDetails->updateStockInDetailsById($purchaseId, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy, $addedOn);
+                    $updateStokInDetails = $StockInDetails->updateStockInDetailsById($PurchaseItemId, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy, $addedOn);
                     
                     // ========================= current stock update area =====================
 
-                    $stokInDetaislId = $purchaseId;
+                    $stokInDetaislId = $PurchaseItemId;
                     $selectCurrentStockDetaisl = $CurrentStock->showCurrentStockbyStokInId($stokInDetaislId);
 
                     foreach ($selectCurrentStockDetaisl as $currentStockData) {
@@ -241,20 +244,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
                     $UpdatedQuantity = intval($newQuantity) - ((intval($prevStockInQty) + intval($prevStockInfreeQty)) - intval($Quantity));
-                    $UpdatedLQantity = intval($newLooselyCount)-(intval($prevStockInLQty)-intval($LCount));
 
+                    if ($unit == "tab" || $unit == "cap") {
+                        $UpdatedLQantity = intval($newLooselyCount)-(intval($prevStockInLQty)-intval($LCount));
+                    }else{
+                        $UpdatedLQantity = 0;
+                    }
                     //update current stock
 
                     $updateCurrentStock = $CurrentStock->updateStockByStokinDetailsId($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $UpdatedQuantity, $UpdatedLQantity, $mrp, $ptr);
                     
                 } else {
 
-                    //select star form stok in by $distributorBill
-                    $stockInData = $StockIn->showStockInById($distributorBill);
-
-                    $stokInid = $stockInData[0]["id"];
+                    $stokInid = $_POST['stok-in-id'];
 
                     $addStockInDetails = FALSE;
+
+                    // if ($unit == "tab" || $unit == "cap") {
+                    //     $looselyCount = $qty * $weightage;
+                    //     looselyPrice = 
+                    // }
+
                     $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, '');
 
                     $selectStockInDetail = $StockInDetails->stokInDetials($productId, $distributorBill, $batchNo);

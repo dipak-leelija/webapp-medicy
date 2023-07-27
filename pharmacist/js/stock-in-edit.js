@@ -17,8 +17,7 @@ const customClick = (id, value1, value2, value3) => {
             bhNo: batchNo
         },
         success: function (data) {
-
-            alert(data);
+            // alert(data);
 
             var dataObject = JSON.parse(data);
 
@@ -876,60 +875,104 @@ function deleteData(slno, itemQty, gstPerItem, total) {
 // ======================= Manufacturing date setting ===================
 
 const setMfdMonth = (month) => {
-    if (month.value.length > 2) {
+    if (month.value > 12) {
         month.value = '';
-    } else {
-        if (month.value > 12) {
-            // console.log("Its Over");
-            month.value = '';
-        } else {
-            if (month.value.length == 2) {
-                document.getElementById("MFD-year").focus();
-            }
+    }
 
-        }
+    if (month.value.length == 2) {
+        document.getElementById("mfd-year").focus();
     }
 }
 
+function setMfdYear(year) {
+    let thisYear = new Date().getFullYear();
+    let thisMnth = new Date().getMonth();
+    
+    let mnthChk = document.getElementById("mfd-month").value;
 
-const setMfdYear = (year) => {
-    if (year.value.length > 2) {
-        year.value = '';
+    if (year.value.length == 2) {
+        thisYear = thisYear % 100;
+        if (year.value > thisYear) {
+            document.getElementById("mfd-year").value = "";
+            ocument.getElementById("mfd-month").focus();
+        }
     }
-    if (year.value < 2) {
-        year.value = '';
+
+    if (year.value.length == 4) {
+        if (year.value > thisYear) {
+            document.getElementById("mfd-year").value = "";
+            ocument.getElementById("mfd-month").focus();
+        }
+
+        if (year.value == thisYear) {
+            if (mnthChk > thisMnth) {
+                document.getElementById("mfd-month").value = "";
+                document.getElementById("mfd-year").value = "";
+                document.getElementById("mfd-month").focus();
+            }
+        }
+
+        document.getElementById("exp-month").focus();
     }
 }
 // ========================= Expiry Date Setting =========================
 
 const setMonth = (month) => {
-    // alert(month.value);
-    // alert(month.value.length);
     if (month.value.length > 2) {
         month.value = '';
-        // console.log("Ok");
     } else {
         if (month.value > 12) {
-            // console.log("Its Over");
             month.value = '';
         } else {
             if (month.value.length == 2) {
                 document.getElementById("exp-year").focus();
             }
-
         }
     }
-
 }
 
 const setYear = (year) => {
-    // alert(month.value);
-    // alert(month.value.length);
-    if (year.value.length > 2) {
-        year.value = '';
-        // console.log("Ok");
+    var MFDYR = document.getElementById("mfd-year");
+    var mfdMnth = document.getElementById("mfd-month");
+    var expMnth = document.getElementById("exp-month");
+    // var mfdLn = MFD.value.length;
+
+    // console.log(mfdLn);
+
+    if (year.value.length == 4) {
+        if (year.value < MFDYR.value ) {
+            document.getElementById("exp-year").value = "";
+            document.getElementById("exp-year").focus();
+        }
+
+        if (year.value == MFDYR.value) {
+            if (mfdMnth.value > expMnth.value) {
+                document.getElementById("exp-month").value = "";
+                document.getElementById("exp-month").focus();
+            }
+        }
     }
-    if (year.value < 2) {
-        year.value = '';
+
+    if (year.value.length == 2) {
+        if(MFDYR.value.length == 4){
+            MFDYR = MFDYR.value % 100;
+            if(MFDYR < year.value){
+                document.getElementById("exp-year").value="";
+                document.getElementById("exp-year").focus();
+            }
+        }
+        if(MFDYR.value.length == 2){
+            if(year.value < MFDYR.value){
+                document.getElementById("exp-year").value="";
+                document.getElementById("exp-year").focus();
+            }
+        }
+
+        if(MFDYR.value.length == year.value.length){
+            if (mfdMnth.value > expMnth.value) {
+                document.getElementById("exp-month").value = "";
+                document.getElementById("exp-month").focus();
+            }
+        }
     }
 }

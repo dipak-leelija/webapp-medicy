@@ -206,8 +206,8 @@ $showDistributor       = $Distributor->showDistributor();
 
     <script>
         const stockDetails = (distBill,id) => {
-            alert(distBill);
-            alert(id);
+            // alert(distBill);
+            // alert(id);
             // alert(value);
             url = `ajax/stockInDetails.view.ajax.php?distBill=${distBill}`;
 
