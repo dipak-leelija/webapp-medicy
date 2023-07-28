@@ -21,7 +21,7 @@ $CurrentStock    =  new CurrentStock();
 
 if (isset($_POST['stock-return-edit'])) {
 
-    $stockReturnIdArray     = $_POST['stock-return-id']; //
+    // $stockReturnIdArray     = $_POST['stock-return-id']; //
     $stockReturnId          = $_POST['stock-returned-id'];
     $distributorId          = $_POST['dist-id'];
     $distributorName        = $_POST['dist-name'];
@@ -31,13 +31,13 @@ if (isset($_POST['stock-return-edit'])) {
     $itemQty                = $_POST['items-qty'];
     $totalRefundItemsQty         = $_POST['total-refund-qty'];
     $returnGst              = $_POST['return-gst']; //
-    $refund                 = $_POST['refund'];
+    $refund                 = $_POST['NetRefund'];
     $addedBy                = $_SESSION['employee_username'];
 
     $refundAmount           = $_POST['refund-amount'];
     $returnQTY              = $_POST['return-qty'];
 
-    //arrays
+    // arrays
     $stockReturnDetailsId   = $_POST['stock-return-details-id'];
     $productId              = $_POST['productId'];
     $productName            = $_POST['productName'];
@@ -67,7 +67,7 @@ if (isset($_POST['stock-return-edit'])) {
     echo "<br>Added By : "; print_r($addedBy);
     echo "<br>Stock return Id : $stockReturnId";
     
-    echo "<br><br><br>ARRAYS ----------- <br>";
+    // echo "<br><br><br>ARRAYS ----------- <br>";
     echo "<br>STOK RETURN DETAILS ID : "; print_r($stockReturnDetailsId);
     echo "<br>Product Id : ";print_r($productId);
     echo "<br>Product Name : ";print_r($productName);
@@ -75,7 +75,7 @@ if (isset($_POST['stock-return-edit'])) {
     echo "<br>Batch No : "; print_r($batchNo);
     echo "<br>Exp Date : "; print_r($expDate);
     echo "<br>Set of : "; print_r($setof);
-
+// exit;
     echo "<br>Purchase QTY : "; print_r($purchasedQty);
     echo "<br>Free qty : "; print_r($freeQty);
     echo "<br>MRP : "; print_r($mrp);

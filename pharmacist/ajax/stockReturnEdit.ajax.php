@@ -131,7 +131,7 @@ $stockReturnDetailsDataArry = array("id"                    =>  $stockReturnDeta
                                     "product_Name"          =>  $productName,
                                     "discount"              =>  $StockInDetailsDiscount,
                                     "batch_no"              =>  $stockReturnDetailsBatchNo,
-                                    "purchase_date"         =>  $stockInBillDate,
+                                    "return_date"         =>  $stockInBillDate,
                                     "exp_date"              =>  $stockReturnDetailsExpDate,
                                     "unit"                  =>  $StockInDetailsUnit,
                                     "weightage"             =>  $StockInDetailsWeatage,

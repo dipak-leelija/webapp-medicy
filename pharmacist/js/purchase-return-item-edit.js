@@ -5,9 +5,9 @@ const customEdit = (id, value) => {
     var value;
     var row = document.getElementById(id);
 
-    console.log(value);
-    console.log(row);
-    console.log(id);
+    // console.log(value);
+    // console.log(row);
+    // console.log(id);
 
     $.ajax({
         url: "ajax/stockReturnEdit.ajax.php",
@@ -35,7 +35,7 @@ const customEdit = (id, value) => {
             var productName = dataObject.product_Name;
             var refundMode = dataObject.refund_mode;
             var batchNumbe = dataObject.batch_no;
-            var purchaseDate = dataObject.purchase_date;
+            var purchaseDate = dataObject.return_date;
             var expiry = dataObject.exp_date;
             var weatag = dataObject.weightage;
             var unit = dataObject.unit;
@@ -70,7 +70,7 @@ const customEdit = (id, value) => {
             document.getElementById("product_name").value = productName;
             document.getElementById("return-mode").value = refundMode;
             document.getElementById("batch-number").value = batchNumbe;
-            document.getElementById("billDate").value = purchaseDate;
+            document.getElementById("returnDate").value = purchaseDate;
             document.getElementById("exp-date").value = expiry;
             document.getElementById("weatage").value = weatag;
             document.getElementById("unit").value = unit;
@@ -164,8 +164,10 @@ const getRefund = (returnQty) => {
     let currentQty = document.getElementById("current-qty").value;
 
     if((parseInt(Fqty) + returnQty) > currentQty){
-        swal("Error", "SUM of Return Quantitys Must Less Then Avilable Quantity", "error")
+        swal("Error", "SUM of Return Quantitys Must Less Then Avilable Quantity", "error");
+        // console.log("check return");
         document.getElementById("return-qty").value = "";
+        // console.log("check return");
         document.getElementById("return-free-qty").value = "";
     }
 
@@ -190,17 +192,17 @@ const getRefund = (returnQty) => {
             swal("Error", "Return Quantity Must Less Then Avilable Quantity", "error");
         }
     } else {
-        alert("NULL");
+        // alert("NULL");
         document.getElementById("refund-amount").value = '0';
     }
 
     let perQtyGst = document.getElementById("gstPerItem").value;
-    console.log("perQtyGst=>");
-    console.log(perQtyGst);
+    // console.log("perQtyGst=>");
+    // console.log(perQtyGst);
 
     let updatedGstAmount = parseFloat(perQtyGst) * returnQty;
-    console.log("perQtyGst=>");
-    console.log(perQtyGst);
+    // console.log("perQtyGst=>");
+    // console.log(perQtyGst);
 
     document.getElementById("updatedGSTamount").value = updatedGstAmount;
 
@@ -216,7 +218,7 @@ const getRefund = (returnQty) => {
 const addData = async () => {
 
     let stockReturnId = document.getElementById("stock-return-id");
-    let stockReturnDetailsId = document.getElementById("stock-return-details-id");
+    let stockReturnDetailsId = document.getElementById("stock-return-details-item-id");
 
     let productId = document.getElementById("product-id");
     let productName = document.getElementById('product_name');
@@ -256,7 +258,9 @@ const addData = async () => {
     // console.log(taxAmount);
     var returnGstAmount = document.getElementById("return-gst");
     returnGstAmount = parseFloat(returnGstAmount.value) + taxAmount;
+    // console.log("tax amount : ",taxAmount);
     returnGstAmount = returnGstAmount.toFixed(2);
+    // console.log("teturn gst amount : ",returnGstAmount);
     document.getElementById("return-gst").value = returnGstAmount;
     
 
@@ -285,43 +289,54 @@ const addData = async () => {
             jQuery("#dataBody")
                 .append(`<tr id="table-row-${slno}">
                     <td  style="color: red;">
-                        <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
+                        <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${taxAmount}, ${returnQty.value}, ${refundAmount.value})"></i>
                     </td>
-                    <td class="p-0 pt-3" style="padding:1rem; text-align: center; font-size:0.75rem;" scope="row">${slno}</td>
+
+                    <td class="p-0 pt-3" style="padding:2rem; text-align: center; font-size:0.75rem;" scope="row">${slno}</td>
 
                     <td class="p-0 pt-3">
                         <input class="col table-data w-9r" type="text" name="productName[]" value="${productName.value}" readonly style="text-align: start; font-size:0.75rem; padding-left: 1%">
                         <input class="col table-data w-12r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;" hidden>
                     </td>
-                    <td class="p-0 pt-3" hidden>
+
+                    <td class="p-0 pt-3">
                         <input class="col table-data w-4r" type="text" name="stock-return-id[]" value="${stockReturnId.value}" readonly style="padding-right: 0.15rem;">
                     </td>
+
                     <td class="p-0 pt-3" hidden>
                         <input class="col table-data w-6r" type="text" name="stock-return-details-id[]" value="${stockReturnDetailsId.value}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class="p-0 pt-3">
                         <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class="p-0 pt-3" style="width:4rem">
                         <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate.value}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class="p-0 pt-3" style="width:4rem">
                         <input class="col table-data w-34r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class="p-0 pt-3" style="width:3rem">
                         <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class="p-0 pt-3" style="width:2rem">
                         <input class="col table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class="p-0 pt-3" style="width:4rem">
                         <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class="p-0 pt-3" style="width:4rem">
                         <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size: 0.75rem">
                     </td>
-                    <td class="p-0 pt-3" style="width:3rem">
-                        <input class="col table-data w-3r" type="text" name="purchase-amount[]" value="${amount.value}" readonly style="font-size: 0.75rem">
+
+                    <td class="p-0 pt-3">
+                        <input class="col table-data w-5r" type="text" name="purchase-amount[]" value="${amount.value}" readonly style="font-size: 0.75rem">
                     </td>
 
                     <td class="p-0 ps-1 pt-3" style="width:3rem">
@@ -332,9 +347,11 @@ const addData = async () => {
                     <td class="p-0 pt-3" style="width:3rem">
                         <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class="p-0 pt-3" style="width:3rem"> 
                         <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly style="font-size: 0.75rem">
                     </td>
+
                     <td class=" amnt-td p-0 pt-3" style="width:5rem">
                         <input class="col table-data W-5r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly style="font-size: 0.75rem">
                     </td>
@@ -394,6 +411,7 @@ const addData = async () => {
             returnQty.value = '';
             returnFreeQty.value = '';
             refundAmount.value = '';
+            stockReturnDetailsId = '';
         };
 
     }
