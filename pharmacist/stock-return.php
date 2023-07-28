@@ -190,8 +190,8 @@ $today = date("m-d-Y");
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_mode'] . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_amount'] . '</td>
                                                         <td >
-                                                            <a href="stock-return-edit.php?returnId=' . $row['id'] . '" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
-                                                            <a class="text-danger ml-2" onclick="cancelPurchaseReturn(' . $row['id'] . ', this)" ><i class="fas fa-window-close"></i></a>
+                                                            <a href="stock-return-edit.php?returnId=' . $row['id'] . '" class="text-primary ml-4" id="'.$row['id'].'"><i class="fas fa-edit" ></i></a>
+                                                            <a class="text-danger ml-2" id="'.$row['id'].'"onclick="cancelPurchaseReturn(' . $row['id'] . ', this)" ><i class="fas fa-window-close" ></i></a>
                                                         </td>
                                                     </tr>';
                                             } else {
@@ -347,8 +347,13 @@ $today = date("m-d-Y");
 
         <script>
             const cancelPurchaseReturn = (returnId, t) => {
-                alert(returnId);
-                alert(t);
+                // alert(returnId);
+                // alert(t);
+                // var t = JSON.parse(t);
+                let btn = document.getElementById(returnId);
+
+                console.log(btn);
+            
                 if (confirm("Are You Sure?")) {
                     $.ajax({
                         url: "ajax/return.Cancel.ajax.php",
@@ -361,7 +366,7 @@ $today = date("m-d-Y");
                             if (data == 1) {
                                 $(t).closest("tr").css("background-color", "#ff0000");
                                 $(t).closest("tr").css("color", "#fff");
-
+                                $(btn).off('click');
                             } else {
                                 // $("#error-message").html("Deletion Field !!!").slideDown();
                                 // $("success-message").slideUp();

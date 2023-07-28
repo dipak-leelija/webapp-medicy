@@ -89,7 +89,7 @@ class StockReturn extends DatabaseConnection{
         return $response;
     }
 
-    // ---------------EDIT STOCK RETURN UPDATE FUNCTION----------------RD----------------
+    // ---------------EDIT STOCK RETURN UPDATE FUNCTION----------------------------
 
     function stockReturnEditUpdate($id, $distributorId, $returnDate, $items, $totalQty, $gst, $refundMode, $refundAmount, $addedBy, $addedOn, $addedTime){
 
@@ -101,7 +101,13 @@ class StockReturn extends DatabaseConnection{
     }
 
 
+    // ------------------------- DELETE STOCK RETURN DATA -----------------------------
 
+    function delteStockReturnData($stockReturnId){
+        $delQuary = "DELETE FROM `stock_return` WHERE `id`='$stockReturnId'";
+        $delFromStockReturn = $this->conn->query($delQuary);
+        return $delFromStockReturn;
+    }
 ###################################################################################################################################
 #                                                                                                                                 #
 #                                           Stock Return Details Functions(stock_return_details)                                  #
@@ -173,7 +179,18 @@ function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmoun
     return $response;
 }
 
+// ---------------------- STOCK RETURN DETAILS ITEMS DELETE -----------------------------
+
+function delteStockReturnDetailsbyReturnId($stockReturnedId){
+    $delQuary = "DELETE FROM `stock_return_details` WHERE `stock_return_id`='$stockReturnedId'";
+    $delByReturnId = $this->conn->query($delQuary);
+    return $delByReturnId;
 }
 
+function delteStockReturnDetailsbyItemId($stockReturnDetailsId){
+    $delQuary = "DELETE FROM `stock_return_details` WHERE `id`='$stockReturnDetailsId'";
+    $delbyId = $this->conn->query($delQuary);
+    return $delbyId;
+}
 
-?>
+}
