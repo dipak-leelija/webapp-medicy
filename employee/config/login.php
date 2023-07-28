@@ -73,7 +73,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
 
    <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
-   <!-- <script src="../require/js/bootstrap.js"></script> -->
+   <script src="../../js/bootstrap-js-5/bootstrap.js"></script>
 
     <!-- ===== CUSTOM CSS ===== -->
 
