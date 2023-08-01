@@ -375,8 +375,10 @@ function addData() {
 
     var qtyVal = document.getElementById("total-return-qty");
 
-
-
+    console.log("return free qty : ",returnFreeQty.value);
+    console.log("return qty : ",returnQty.value);
+    var totalReturnQty = parseInt(returnFreeQty.value) + parseInt(returnQty.value);
+    console.log("total return qty : ",totalReturnQty);
 
     if (distId.value == "") {
         swal("Oops", "Please select Distributor!", "error");
@@ -596,11 +598,11 @@ function addData() {
         if (slno > 1) {
             let Qty = parseInt(qtyVal.value);
 
-            let newQty = Qty + parseInt(returnQty.value);
+            let newQty = Qty + totalReturnQty;
             document.getElementById("total-return-qty").value = newQty;
 
         } else {
-            document.getElementById("total-return-qty").value = parseInt(returnQty.value);
+            document.getElementById("total-return-qty").value = totalReturnQty;
         }
 
         // document.getElementById("demo").innerHTML = await myPromise;

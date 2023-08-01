@@ -226,12 +226,12 @@ $showDistributor       = $Distributor->showDistributor();
                                             <label class="mb-0 mt-1" for="amount">Amount</label>
                                             <input type="any" class="upr-inp" name="amount" id="amount" readonly>
                                         </div>
-                                        <div class="col-md-3 col-6">
+                                        <div class="d-none col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="purchased-qty">Buy Qty: </label>
                                             <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
                                         </div>
 
-                                        <div class="col-md-3 col-6">
+                                        <div class="d-none col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="free-qty">Free Qty:</label>
                                             <input type="text" class="upr-inp" name="free-qty" id="free-qty">
                                         </div>
@@ -241,27 +241,36 @@ $showDistributor       = $Distributor->showDistributor();
                                         </div>
 
                                         <div class="col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="current-purchase-qty">Live Qty:</label>
+                                            <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="current-free-qty">Live Free Qty:</label>
+                                            <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
+                                        </div>
+
+                                        <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="current-qty">Live Net Qty:</label>
                                             <input type="text" class="upr-inp" name="current-qty" id="current-qty">
                                         </div>
                                     </div>
                                     <!-- ent fo third row -->
 
-                                    <!-- Fourth row -->
-                                    <div class="d-none row mt-md-2">
+                                    <!-- Fourth row 
+                                    <div class="row mt-md-2">
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-purchase-qty">Live Buy Qty:</label>
+                                            <label class="mb-0 mt-1" for="current-purchase-qty">Live Qty:</label>
                                             <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
                                         </div>
-                                        <div class="d-none col-md-3 col-6">
+                                        <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="current-free-qty">Live Free Qty:</label>
                                             <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
                                         </div>
-                                        <!-- <div class="col-md-3 col-6">
+                                            <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="current-qty">Live Net Qty:</label>
                                             <input type="text" class="upr-inp" name="current-qty" id="current-qty">
-                                        </div> -->
-                                    </div>
+                                        </div> 
+                                    </div> -->
                                     <!-- end fourth row  -->
 
                                     <!-- fifth row  -->

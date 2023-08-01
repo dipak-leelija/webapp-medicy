@@ -133,7 +133,6 @@ function showStockReturnDetails($returnId){
     return $data;
 }
 
-
 function showStockReturnDataByStokinId($stockInDetailsId){
     $data = array();
     $sql  = "SELECT * FROM stock_return_details WHERE `stokIn_details_id` = '$stockInDetailsId'";
@@ -143,7 +142,6 @@ function showStockReturnDataByStokinId($stockInDetailsId){
     }
     return $data;
 }
-
 
 function showStockReturnDetailsById($Id){
     
