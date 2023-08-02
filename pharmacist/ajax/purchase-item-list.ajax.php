@@ -98,15 +98,10 @@ if ($searchResult) {
                                             }
                                             echo "" ?> </small></div>
         </div>
-    <?php
+<?php
 
     }
 } else {
-    ?>
-    <div class="row mx-0 py-2 border-bottom p-row item-list">
-        <?php echo "Result Not Found"; ?>
-    </div>
-<?php
+    echo "Result Not Found";
 }
-
 ?>

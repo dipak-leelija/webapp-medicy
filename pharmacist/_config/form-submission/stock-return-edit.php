@@ -5,7 +5,6 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 require_once '../sessionCheck.php'; //check admin loggedin or not
 
-
 require_once '../../../php_control/hospital.class.php';
 require_once '../../../php_control/stockReturn.class.php';
 require_once '../../../php_control/idsgeneration.class.php';
@@ -21,7 +20,6 @@ $StokInDetails   = new StockInDetails();
 
 if (isset($_POST['stock-return-edit'])) {
 
-
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $distributorId          = $_POST['dist-id'];
     $distributorName        = $_POST['dist-name'];
@@ -29,7 +27,7 @@ if (isset($_POST['stock-return-edit'])) {
     $returnDate             = date("Y-m-d", strtotime($returnDate)); //
     $refundMode             = $_POST['refund-mode']; //
     $itemQty                = $_POST['items-qty'];
-    $totalRefundItemsQty         = $_POST['total-refund-qty']; // FREE QUANTITY + RETURN QANTITY
+    $totalRefundItemsQty         = $_POST['total-return-qty']; // FREE QUANTITY + RETURN QANTITY
     $returnGst              = $_POST['return-gst']; // TOTAL RETURN GST
     $refund                 = $_POST['NetRefund'];
     $addedBy                = $_SESSION['employee_username'];
@@ -400,37 +398,37 @@ foreach ($showhelthCare as $rowhelthCare) {
 
                     echo '
                     <div class="col-sm-2 ">
-                        <small>' . substr($productName[$i], 0, 15) . '</small>
+                        <small>' . substr($productName, 0, 15) . '</small>
                     </div>
                     <div class="col-sm-1">
-                        <small>' . strtoupper($batchNo[$i]) . '</small>
+                        <small>' . strtoupper($batchNo) . '</small>
                     </div>
                     <div class="col-sm-1">
-                        <small>' . $setof[$i] . '</small>
+                        <small>' . $setof . '</small>
                     </div>
                     <div class="col-sm-1">
-                        <small>' . $expDate[$i] . '</small>
+                        <small>' . $expDate . '</small>
                     </div>
                     <div class="col-sm-1">
-                        <small>' . $purchasedQty[$i] . '</small>
+                        <small>' . $purchasedQty . '</small>
                     </div>
                     <div class="col-sm-1 text-end">
-                        <small>' . $freeQty[$i] . '</small>
+                        <small>' . $freeQty . '</small>
                     </div>
                     <div class="col-sm-1 text-end">
-                        <small>' . $ptr[$i] . '</small>
+                        <small>' . $ptr. '</small>
                     </div>
                     <div class="col-sm-1 text-end">
-                        <small>' . $mrp[$i] . '</small>
+                        <small>' . $mrp . '</small>
                     </div>
                     <div class="col-sm-1 text-end">
-                        <small>' . $purchaseAmount[$i] . '</small>
+                        <small>' . $purchaseAmount . '</small>
                     </div>
                     <div class="col-sm-1">
-                        <small>' . $returnQty[$i] . '</small>
+                        <small>' . $returnQTY . '</small>
                     </div>
                     <div class="col-sm-1 text-end">
-                        <small>' . $CurrentrefundAmount[$i] . '</small>
+                        <small>' . $PerItemsRefundAmount . '</small>
                     </div>';
                 }
 

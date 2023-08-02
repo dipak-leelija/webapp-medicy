@@ -89,12 +89,14 @@ const customEdit = (id, value) => {
             document.getElementById("return-qty").value = returnQty;
             document.getElementById("return-free-qty").value = returnFreeqty;
             document.getElementById("refund-amount").value = refundAmunt;
-
             document.getElementById("gstPerItem").value = gstPerQtyCalculation;
             //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
             // row.parentNode.removeChild(row);
-            delData (slno, gstPerItem, ReturnQty, refund);
+            var totalReturnQty = parseInt(returnQty) + parseInt(returnFreeqty);
+
+            delData (slno, gstPerItem, totalReturnQty, refund);
         }
+        
     })
     return false;
 }
@@ -291,7 +293,7 @@ const addData = async () => {
             jQuery("#dataBody")
                 .append(`<tr id="table-row-${slno}">
                     <td  style="color: red;">
-                        <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${taxAmount}, ${returnQty.value}, ${refundAmount.value})"></i>
+                        <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${taxAmount}, ${parseInt(returnQty.value)+parseInt(returnFreeQty.value)}, ${refundAmount.value})"></i>
                     </td>
 
                     <td class="p-0 pt-3" style="padding:1.2rem; text-align: center; font-size:0.75rem;" scope="row">${slno}</td>
@@ -376,15 +378,15 @@ const addData = async () => {
             }
 
             // var Qantity = document.getElementById("total-refund-qty");
-            var totalQty = parseInt(returnQty.value);
+            var totalQty = parseInt(returnQty.value) + parseInt(returnFreeQty.value);
 
             if (slno > 1) {
-                let Qty = parseInt(document.getElementById("total-refund-qty").value);
+                let Qty = parseInt(document.getElementById("total-return-qty").value);
                 let newQty = Qty + totalQty;
-                document.getElementById("total-refund-qty").value = newQty;
+                document.getElementById("total-return-qty").value = newQty;
 
             } else {
-                document.getElementById("total-refund-qty").value = totalQty;
+                document.getElementById("total-return-qty").value = totalQty;
             }
 
             var netRefund = document.getElementById("NetRefund").value;
@@ -422,7 +424,7 @@ const addData = async () => {
 
 // ================================ Delet Data ================================
 const  delData = (slno, gstPerItem, ReturnQty, refund) => {
-    // alert(slno);
+    alert(ReturnQty);
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;
@@ -433,7 +435,7 @@ const  delData = (slno, gstPerItem, ReturnQty, refund) => {
     items.value = finalItem;
 
     // minus quantity
-    let qty = document.getElementById("total-refund-qty");
+    let qty = document.getElementById("total-return-qty");
     let finalQty = qty.value - ReturnQty;
     qty.value = finalQty;
 

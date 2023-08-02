@@ -114,7 +114,7 @@ $doctor = $Doctors->showDoctors();
 
                                                 <!-- <input class="customer-search" list="datalistOptions" id="doctor-name" placeholder="Doctor Name" onclick="getDoctor(this.value)"> -->
 
-                                                <select class="doctor-select" id="doctor-select" onchange="getDoctor(this.value)">
+                                                <select class="doctor-select" id="doctor-select">
                                                     <option value="" selected disabled>Select Doctor</option>
                                                     <?php
                                                     foreach ($doctor as $doc) {
@@ -167,14 +167,18 @@ $doctor = $Doctors->showDoctors();
                                             <input type="any" id="product-id" style="display: none;">
                                             <input type="text" id="search-Item" class="sale-inp-item" onkeyup="searchItem(this.value)" autocomplete="off">
                                         </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Batch</label><br>
+                                            <input type="any" id="batch_no" style="display: none;">
+                                            <input class="sale-inp" type="text" id="batch-no" readonly>
+                                        </div>
+
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="">Unit/Pack</label><br>
                                             <input class="sale-inp" type="text" id="weightage" readonly>
                                         </div>
-                                        <div class="col-md-1 mt-3 col-6">
-                                            <label for="">Batch</label><br>
-                                            <input class="sale-inp" type="text" id="batch-no" readonly>
-                                        </div>
+
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="">Expiry</label><br>
                                             <input class="sale-inp" type="text" id="exp-date" readonly>
@@ -215,14 +219,19 @@ $doctor = $Doctors->showDoctors();
                                             <label for="">Amount</label><br>
                                             <input class="sale-inp" type="any" id="amount" readonly>
                                         </div>
+
+                                        <div class="d-flex col-md-12">
+                                            <div class="p-2 bg-light col-md-6" id="searched-items" style="max-height: 15rem; max-width: 100%; overflow: auto;">
+                                            </div>
+
+                                            <div class="p-2 bg-light col-md-6" id="searched-batchNo" style="max-height: 10rem; max-width: 70rem; margin-left: 15rem; overflow: auto">
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div id="searched-items">
 
-                                    </div>
 
                                     <div id="exta-details">
-
                                         <div class=" row mt-4">
                                             <div class="col-md-6">
                                                 <div class="row">
@@ -310,8 +319,9 @@ $doctor = $Doctors->showDoctors();
                                                     <th scope="col">Qty.</th>
                                                     <th scope="col" hidden>Qty.Typ</th>
                                                     <th scope="col">Disc%</th>
-                                                    <th scope="col">D.Price</th>
+                                                    <th scope="col">NET AMT</th>
                                                     <th scope="col">GST%</th>
+                                                    <th scope="col">GST AMOUNT</th>
                                                     <th scope="col">Amount</th>
                                                 </tr>
                                             </thead>

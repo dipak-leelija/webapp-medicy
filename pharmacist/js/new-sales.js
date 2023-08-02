@@ -1,4 +1,4 @@
-const checkBatchByPid = [];  //
+// const checkBatchByPid = [];  //
 
 const getDate = (date) => {
     // alert(date);
@@ -69,35 +69,6 @@ const counterBill = () => {
 }
 
 
-const getDoctor = (doctor) => {
-
-    console.log(doctor);
-    // // alert(value);
-    // let xmlhttp = new XMLHttpRequest();
-
-    // let searchReult = document.getElementById('select-doctor');
-
-    // if (input == "") {
-    //     document.getElementById("select-doctor").style.display = "none";
-    // }
-
-    // if (input != "") {
-    //     document.getElementById("select-doctor").style.display = "block";
-    // }
-
-    // xmlhttp.onreadystatechange = function () {
-    //     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-    //         searchReult.innerHTML = xmlhttp.responseText;
-    //     }
-    // };
-    // xmlhttp.open('GET', 'ajax/getDoctorDetails.ajax.php?data=' + doctor, true);
-    // xmlhttp.send();
-
-    // let DoctorName = document.getElementById("doctor-name").value;
-    document.getElementById("final-doctor-name").value = doctor;
-
-} // end getCustomer
-
 const getPaymentMode = (mode) => {
     document.getElementById("final-payment").value = mode;
 
@@ -134,30 +105,119 @@ const searchItem = (searchFor) => {
     }
 }
 
+const itemsBatchDetails = (prodcutId, name, stock) => {
+    // console.log("chek prod id for batch no : ", prodcutId);
+    // console.log("chek prod name for batch no : ", name);
+    // console.log("chek prod stock for batch no : ", stock);
+
+    if (stock > 0) {
+        // ==================== SEARCH PRODUCT NAME =====================
+        document.getElementById("search-Item").value = name;
+        document.getElementById("searched-items").style.display = "none";
+        // ==================== EOF PRODUCT NAME SEARCH ================
+
+        let searchReult = document.getElementById('searched-batchNo');
+
+        document.getElementById("searched-batchNo").style.display = "block";
+        document.getElementById("exta-details").style.display = "none";
+
+        // if (searchFor.length == 0) {
+        //     searchReult.innerHTML = '';
+
+        document.getElementById("batch-no").value = '';
+
+        document.getElementById("weightage").value = '';
+
+        document.getElementById("exp-date").value = '';
+
+        document.getElementById("mrp").value = '';
+
+        document.getElementById("gst").value = '';
+
+
+        var XML = new XMLHttpRequest();
+        XML.onreadystatechange = function () {
+            if (XML.readyState == 4 && XML.status == 200) {
+                searchReult.innerHTML = XML.responseText;
+            }
+        };
+        XML.open('GET', 'ajax/sales-item-batch-list.ajax.php?batchDetails=' + prodcutId, true);
+        XML.send();
+
+        
+    } 
+
+    if (stock <= 0) {
+    
+        document.getElementById("search-Item").value = '';
+
+        document.getElementById("weightage").value = '';
+
+        document.getElementById("batch-no").value = '';
+
+        document.getElementById("exp-date").value = '';
+
+        document.getElementById("mrp").value = '';
+
+        document.getElementById("gst").value = '';
+        document.getElementById("qty-type").setAttribute("disabled", true);
+
+        document.getElementById("loose-stock").value = 'None';
+        document.getElementById("loose-price").value = 'None';
+
+        document.getElementById("exta-details").style.display = "none";
+
+        document.getElementById("searched-items").style.display = "none";
+
+        swal({
+            title: "Want Add This Item?",
+            text: "This Item is not avilable in your stock, do you want to add?",
+            // icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = "stock-in.php";
+                }
+            });
+
+    }
+}
+
+
+
 ////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
-const stockDetails = (productId) => {
+const stockDetails = (productId, batchNo) => {
+
+    // console.log("BATCH SEARCHED PRODUCT ID : ",productId);
+    // console.log("BATCH SEARCHED PRODUCT BATCH NO : ",batchNo);
+
     document.getElementById("product-id").value = productId;
+    document.getElementById("batch_no").value = batchNo;
+    document.getElementById("batch-no").value = batchNo;
+    document.getElementById("searched-batchNo").style.display = "none";
 
-    var qntity = document.getElementById('qty').value;
+    // var qntity = document.getElementById('qty').value;
 
-    checkBatchByPid.push(productId); //product id array
-    console.log(qntity);
+    // checkBatchByPid.push(productId); //product id array
+    // console.log(qntity);
     // alert(productId);
-    console.log(productId);
-    console.log(checkBatchByPid);
-    document.getElementById("searched-items").style.display = "none";
+    // console.log(productId);
+    // console.log(checkBatchByPid);
 
     var xmlhttp = new XMLHttpRequest();
     var qtytp = document.getElementById('qty-type').value;
 
     // ============== Check Existence ==============
-    stockCheckUrl = 'ajax/stock.checkExists.ajax.php?id=' + productId;
+    stockCheckUrl = `ajax/stock.checkExists.ajax.php?Pid=${productId}&batchNo=${batchNo}`;
     // alert(url);
     xmlhttp.open("GET", stockCheckUrl, false);
     xmlhttp.send(null);
     exist = xmlhttp.responseText;
-    // alert(exist);
+    // console.log("STOCK EXIST ALERT", exist);
+
     if (exist == 1) {
         document.getElementById("exta-details").style.display = "block";
 
@@ -170,7 +230,7 @@ const stockDetails = (productId) => {
         // alert(xmlhttp.responseText);
 
         //==================== Weightage ====================
-        weightageUrl = 'ajax/getProductDetails.ajax.php?weightage=' + productId;
+        weightageUrl = `ajax/getProductDetails.ajax.php?weightage=${productId}`;
         // alert(url);
         xmlhttp.open("GET", weightageUrl, false);
         xmlhttp.send(null);
@@ -187,29 +247,22 @@ const stockDetails = (productId) => {
         let packOf = `${packWeightage}${packUnit}`;
         document.getElementById("weightage").value = packOf;
 
-        //==================== Batch-no ====================
-        batchUrl = `ajax/currentStock.getBatch.ajax.php?id=${productId}&chkBtch=${checkBatchByPid}`;
-        // alert(url);
-        xmlhttp.open("GET", batchUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("batch-no").value = xmlhttp.responseText;
+        // //=========== QANTITY CHECK ON BATCH NUMBER =============
+        // qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${productId}&qtp=${qtytp}`;
+        // xmlhttp.open("GET", qtyChkOnBathcUrl, false);
+        // xmlhttp.send(null);
+        // document.getElementById("aqty").value = "hello";
+        // document.getElementById("aqty").value = xmlhttp.responseText;
 
-        //=========== QANTITY CHECK ON BATCH NUMBER =============
-        qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${productId}&qtp=${qtytp}`;
-        xmlhttp.open("GET", qtyChkOnBathcUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("aqty").value = "hello";
-        document.getElementById("aqty").value = xmlhttp.responseText;
-        
         //==================== Expiry Date ====================
-        expDateUrl = 'ajax/getProductDetails.ajax.php?exp=' + productId;
+        expDateUrl = `ajax/getProductDetails.ajax.php?exp=${productId}&batchNo=${batchNo}`;
         // alert(url);
         xmlhttp.open("GET", expDateUrl, false);
         xmlhttp.send(null);
         document.getElementById("exp-date").value = xmlhttp.responseText;
-        
+
         //==================== MRP ====================
-        mrpUrl = 'ajax/product.getMrp.ajax.php?stockmrp=' + productId;
+        mrpUrl = `ajax/getProductDetails.ajax.php?stockmrp=${productId}&batchNo=${batchNo}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", mrpUrl, false);
@@ -218,8 +271,8 @@ const stockDetails = (productId) => {
         // alert(xmlhttp.responseText);
 
         //==================== PTR ====================
-        ptrUrl = 'ajax/currentStock.getPtr.ajax.php?stockptr=' + productId;
-        // alert(unitUrl);
+        ptrUrl = `ajax/getProductDetails.ajax.php?stockptr=${productId}&batchNo=${batchNo}`;
+        // alert(ptrUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", ptrUrl, false);
         xmlhttp.send(null);
@@ -258,26 +311,20 @@ const stockDetails = (productId) => {
         xmlhttp.send(null);
         // alert(xmlhttp.responseText);
         document.getElementById("manufName").value = xmlhttp.responseText;
-        
 
         //==================== Content ====================
         contentUrl = 'ajax/product.getContent.ajax.php?pid=' + productId;
-        //console.log(productId);
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
         xmlhttp.open("GET", contentUrl, false);
         xmlhttp.send(null);
         document.getElementById("productComposition").value = xmlhttp.responseText;
-        //let test = document.getElementById("productComposition").value;
-        //console.log(test);
-        //alert(xmlhttp.responseText);
-        //console.log(productId);
+
         // ============== Check Loose Qty ==============
-        checkLoosePackUrl = 'ajax/currentStock.checkLoosePack.ajax.php?id=' + productId;
-        // alert(url);
+        checkLoosePackUrl =`ajax/getProductDetails.ajax.php?loosePack=${productId}&batchNo=${batchNo} `;
+        // alert(checkLoosePackUrl);
         xmlhttp.open("GET", checkLoosePackUrl, false);
         xmlhttp.send(null);
         let loosePack = xmlhttp.responseText;
+
         if (loosePack > 0) {
             document.getElementById("mrp").value = '';
             document.getElementById("loose-stock").value = ' ' + loosePack;
@@ -295,11 +342,10 @@ const stockDetails = (productId) => {
             document.getElementById("qty-type").setAttribute("disabled", true);
             document.getElementById("loose-stock").value = 'None';
             document.getElementById("loose-price").value = 'None';
-
         }
         // alert(xmlhttp.responseText);   
     } else {
-        document.getElementById("search-Item").value = '';
+        // document.getElementById("search-Item").value = '';
 
         document.getElementById("weightage").value = '';
 
@@ -316,22 +362,7 @@ const stockDetails = (productId) => {
         document.getElementById("loose-price").value = 'None';
 
         document.getElementById("exta-details").style.display = "none";
-
-        swal({
-            title: "Want Add This Item?",
-            text: "This Item is not avilable in your stock, do you want to add?",
-            // icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    window.location.href = "stock-in.php";
-                }
-            });
-
     }
-
 }
 
 const onQty = (qty) => {
@@ -348,26 +379,25 @@ const onQty = (qty) => {
     let discPrice = document.getElementById('dPrice').value;
 
     //=========== QANTITY CHECK ON BATCH NUMBER =================
-
     var bNo = document.getElementById("batch-no").value;
     qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${pid}&batch=${bNo}&qtp=${qType}`;
     xmlhttp.open("GET", qtyChkOnBathcUrl, false);
     xmlhttp.send(null);
     document.getElementById("aqty").value = "hello";
     document.getElementById("aqty").value = xmlhttp.responseText;
-    //===============================================================================================
 
+    //===============================================================================================
     checkAvailibility = Number(checkAvailibility);
-    if(qty > checkAvailibility){
+    if (qty > checkAvailibility) {
         qty = checkAvailibility;
         document.getElementById("qty").value = qty;
         string_1 = "Current Batch have only "
-        string_2 = " quantity of this product. please add the rest of qantity after adding this." 
+        string_2 = " quantity of this product. please add the rest of qantity after adding this."
         string_3 = string_1.concat(qty).concat(string_2);
         //console.log(string_3);
         window.alert(string_3);
     }
-    
+
     if (disc != null) {
         disc = disc;
     }
@@ -376,10 +406,6 @@ const onQty = (qty) => {
     }
 
     if (qty > 0) {
-        //let mrp = document.getElementById("mrp").value;
-
-        // alert(disc.value);
-
         let subtotal = mrp * qty;
         let amount = subtotal - (disc / 100 * subtotal);
         document.getElementById("amount").value = amount.toFixed(2);
@@ -403,19 +429,18 @@ const onQty = (qty) => {
     //console.log(xmlhttp.responseText);
     // alert(xmlhttp.responseText);
 
-
     //==================== Batch-no ====================
-    var productId = document.getElementById("product-id").value;
-    batchUrl = `ajax/currentStock.getBatch.ajax.php?id=${productId}&chkBtch=${checkBatchByPid}`;
-    // alert(url);
-    xmlhttp.open("GET", batchUrl, false);
-    xmlhttp.send(null);
-    document.getElementById("batch-no").value = xmlhttp.responseText;
-
+    // var productId = document.getElementById("product-id").value;
+    // batchUrl = `ajax/currentStock.getBatch.ajax.php?id=${productId}&chkBtch=${checkBatchByPid}`;
+    // // alert(url);
+    // xmlhttp.open("GET", batchUrl, false);
+    // xmlhttp.send(null);
+    // document.getElementById("batch-no").value = xmlhttp.responseText;
 }
 
-const ondDisc = (disc) => {
 
+const ondDisc = (disc) => {
+    
     var xmlhttp = new XMLHttpRequest();
     var checkAvailibility = document.getElementById("aqty").value;
     console.log(checkAvailibility);
@@ -427,7 +452,7 @@ const ondDisc = (disc) => {
     // alert(disc);
 
     checkAvailibility = Number(checkAvailibility);
-    if(qty > checkAvailibility){
+    if (qty > checkAvailibility) {
         qty = checkAvailibility;
     }
 
@@ -447,39 +472,41 @@ const ondDisc = (disc) => {
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
     //console.log(xmlhttp.responseText);
-
 }
-const mrpUpdate = (mrpType) => {
 
+const mrpUpdate = (mrpType) => {
+    // console.log("mrp update check : ", mrpType);
     let xmlhttp = new XMLHttpRequest();
     let productId = document.getElementById("product-id").value;
+    let batchNo = document.getElementById("batch_no").value;
 
     var qType = document.getElementById("qty-type").value;
+
     let mrp = document.getElementById("mrp").value;
     let qty = document.getElementById("qty").value;
-    //let qty1 = document.getElementById("qty").value; // working as qty data holdive variable
+
     let bno = document.getElementById("batch-no").value;
     let discPr = document.getElementById("dPrice").value;
-    
+
+    // console.log("mrp update check batch no & product id : ", bno, productId);
+
     if (mrpType == "Pack") {
-        mrpUrl = 'ajax/product.getMrp.ajax.php?stockmrp=' + productId;
+        mrpUrl = `ajax/getProductDetails.ajax.php?crntStockMrp=${productId}&batchNo=${batchNo}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", mrpUrl, false);
         xmlhttp.send(null);
         document.getElementById("mrp").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
-
     } else {
-        loosePriceUrl = 'ajax/currentStock.looseMrp.ajax.php?id=' + productId;
-        // alert(url);
+        loosePriceUrl = `ajax/getProductDetails.ajax.php?crntStockLoosePrice=${productId}&batchNo=${batchNo}`;
+        // alert(loosePriceUrl);
         xmlhttp.open("GET", loosePriceUrl, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText);
         document.getElementById("mrp").value = xmlhttp.responseText;
     }
-
-
+    
     //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${productId}&Bid=${bno}&qtype=${qType}&Mrp=${mrp}&Qty=${qty}&Dprice=${discPr}`;
     // alert(unitUrl);
@@ -525,10 +552,10 @@ const addSummary = () => {
     let amount = document.getElementById("amount");
 
     checkAvailibility = Number(checkAvailibility);
-    if(qty > checkAvailibility){
+    if (qty > checkAvailibility) {
         qty = checkAvailibility;
     }
-    
+
     let qval = qty.value;
     if (qtyType.value == 'Loose') {
         let typ = ' (L)';
@@ -537,17 +564,17 @@ const addSummary = () => {
         qval = qty.value;
     }
 
-    console.log(qval);
-    console.log(productId.value);
-    console.log(productName.value);
-    console.log(weightage.value);
-    console.log(batchNo.value);
-    console.log(expDate.value);
-    console.log(mrp.value);
-    console.log(qty.value);
-    console.log(disc.value);
-    console.log(dPrice.value);
-    console.log(gst.value);
+    // console.log(qval);
+    // console.log(productId.value);
+    // console.log(productName.value);
+    // console.log(weightage.value);
+    // console.log(batchNo.value);
+    // console.log(expDate.value);
+    // console.log(mrp.value);
+    // console.log(qty.value);
+    // console.log(disc.value);
+    // console.log(dPrice.value);
+    console.log("check gst % : ",gst.value);
     console.log(amount.value);
 
     if (billDAte.value != '') {
@@ -652,17 +679,21 @@ const addSummary = () => {
                                                 </td>
                                                 <td>
                                                     <input class="summary-items" type="text" name="gst[]" value="${gst.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
-                                                    <input type="text" name="netGst[]" value="${netGst}" hidden>
                                                 </td>
+
+                                                <td>
+                                                    <input class="summary-items" type="text" name="gstVal[]" value="${netGst}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
+                                                </td>
+
                                                 <td>
                                                     <input class="summary-items" type="text" name="amount[]" value="${amount.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
                                             </tr>`);
 
-                                            
-                                            document.getElementById("aqty").value="";
-                                            document.getElementById("add-item-details").reset();
-                                            
+
+                                                                document.getElementById("aqty").value = "";
+                                                                document.getElementById("add-item-details").reset();
+
 
                                                                 // document.getElementById("product-id").value = "";
                                                                 // document.getElementById("search-Item").value = "";
@@ -742,8 +773,7 @@ const addSummary = () => {
 
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
 
-    var sl = slno-1;
-    delete checkBatchByPid[sl];
+    var sl = slno - 1;
 
     jQuery(`#table-row-${slno}`).remove();
     slno--;
