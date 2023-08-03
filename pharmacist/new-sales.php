@@ -163,38 +163,38 @@ $doctor = $Doctors->showDoctors();
                                 <div>
                                     <div class="row">
                                         <div class="col-md-3 mt-3 col-12">
-                                            <label for="">Item Name</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Item Name</label><br>
                                             <input type="any" id="product-id" style="display: none;">
                                             <input type="text" id="search-Item" class="sale-inp-item" onkeyup="searchItem(this.value)" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-1 mt-3 col-6">
-                                            <label for="">Batch</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Batch</label><br>
                                             <input type="any" id="batch_no" style="display: none;">
                                             <input class="sale-inp" type="text" id="batch-no" readonly>
                                         </div>
 
                                         <div class="col-md-1 mt-3 col-6">
-                                            <label for="">Unit/Pack</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Unit/Pack</label><br>
                                             <input class="sale-inp" type="text" id="weightage" readonly>
                                         </div>
 
                                         <div class="col-md-1 mt-3 col-6">
-                                            <label for="">Expiry</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Expiry</label><br>
                                             <input class="sale-inp" type="text" id="exp-date" readonly>
                                         </div>
                                         <div class="col-md-1 mt-3 col-6">
-                                            <label for="">MRP</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">MRP</label><br>
                                             <input class="sale-inp" type="text" id="mrp" readonly>
                                         </div>
 
                                         <div class="d-none col-md-1 mt-3 col-6">
                                             <!--Available qty on batch no-->
-                                            <label for="">Availability</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Availability</label><br>
                                             <input class="sale-inp" type="text" id="aqty">
                                         </div>
                                         <div class="col-md-1 mt-3 col-6">
-                                            <label for="">Qty.</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Qty.</label><br>
                                             <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)">
                                         </div>
 
@@ -204,19 +204,30 @@ $doctor = $Doctors->showDoctors();
                                         </div> -->
 
                                         <div class="col-md-1 mt-3 col-6">
-                                            <label for="">Disc%</label><br>
+                                            <label for="" style="font-size: 0.96rem;  font-weight: bold;">Disc%</label><br>
                                             <input class="sale-inp" type="any" id="disc" onkeyup="ondDisc(this.value)">
                                         </div>
                                         <div class="col-md-1 mt-3 col-6">
-                                            <label for="">D.Price</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">D.Price</label><br>
                                             <input class="sale-inp" type="any" id="dPrice" readonly>
                                         </div>
                                         <div class="col-md-1 mt-3 col-6">
-                                            <label for="">GST%</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">GST%</label><br>
                                             <input class="sale-inp" type="text" id="gst" readonly>
                                         </div>
+
+                                        <!-- <div class=" col-md-1 mt-3 col-6">
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable Calculate</label><br>
+                                            <input class="sale-inp" type="text" id="taxableAmnt" readonly>
+                                        </div> -->
+
+                                        <div class="d-none col-md-1 mt-3 col-6">
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable</label><br>
+                                            <input class="sale-inp" type="text" id="taxable" readonly>
+                                        </div>
+                                        
                                         <div class="col-md-1 mt-3 col-12">
-                                            <label for="">Amount</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Net AMT</label><br>
                                             <input class="sale-inp" type="any" id="amount" readonly>
                                         </div>
 
@@ -277,9 +288,8 @@ $doctor = $Doctors->showDoctors();
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
                                                         <label for="" style="margin-top: 6px;">Margin:</label>
                                                         <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
-                                                        <!-- <input class="sale-inp" type="any" id="amount" readonly style="-moz-text-decoration-line: none;"> -->
-
                                                     </div>
+
                                                     <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
                                                         <button class="btn btn-sm btn-primary w-100" onclick="addSummary()"><i class="fas fa-check-circle"></i>
                                                             Add</button>
@@ -315,14 +325,14 @@ $doctor = $Doctors->showDoctors();
                                                     <th scope="col">Batch</th>
                                                     <th scope="col">Unit/Pack</th>
                                                     <th scope="col">Expiry</th>
-                                                    <th scope="col">MRP</th>
+                                                    <th scope="col" style="text-align: right;">MRP</th>
                                                     <th scope="col">Qty.</th>
                                                     <th scope="col" hidden>Qty.Typ</th>
                                                     <th scope="col">Disc%</th>
-                                                    <th scope="col">NET AMT</th>
+                                                    <th scope="col">Taxable</th>
                                                     <th scope="col">GST%</th>
-                                                    <th scope="col">GST AMOUNT</th>
-                                                    <th scope="col">Amount</th>
+                                                    <th scope="col" hidden>GST AMOUNT</th>
+                                                    <th scope="col">Net Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="item-body">

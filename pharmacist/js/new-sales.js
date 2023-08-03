@@ -59,6 +59,10 @@ const setCustomer = (id) => {
 
 }
 
+// ========= set doctor name =============
+// const getDoctor = (docname) =>{
+//     console.log(docname);
+// }
 
 const counterBill = () => {
     document.getElementById("contact").innerHTML = "";
@@ -71,7 +75,6 @@ const counterBill = () => {
 
 const getPaymentMode = (mode) => {
     document.getElementById("final-payment").value = mode;
-
 }
 
 const searchItem = (searchFor) => {
@@ -248,11 +251,11 @@ const stockDetails = (productId, batchNo) => {
         document.getElementById("weightage").value = packOf;
 
         // //=========== QANTITY CHECK ON BATCH NUMBER =============
-        // qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${productId}&qtp=${qtytp}`;
-        // xmlhttp.open("GET", qtyChkOnBathcUrl, false);
-        // xmlhttp.send(null);
-        // document.getElementById("aqty").value = "hello";
-        // document.getElementById("aqty").value = xmlhttp.responseText;
+        qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${productId}&qtp=${qtytp}`;
+        xmlhttp.open("GET", qtyChkOnBathcUrl, false);
+        xmlhttp.send(null);
+        document.getElementById("aqty").value = "hello";
+        document.getElementById("aqty").value = xmlhttp.responseText;
 
         //==================== Expiry Date ====================
         expDateUrl = `ajax/getProductDetails.ajax.php?exp=${productId}&batchNo=${batchNo}`;
@@ -343,7 +346,15 @@ const stockDetails = (productId, batchNo) => {
             document.getElementById("loose-stock").value = 'None';
             document.getElementById("loose-price").value = 'None';
         }
-        // alert(xmlhttp.responseText);   
+
+        // ============== TAXABLE AMOUNT CALCULATION ==============
+        // taxableAmntCalculateUrl = `ajax/getProductDetails.ajax.php?getTaxable=${productId}&batchNo=${batchNo}`;
+        // // alert(ptrUrl);
+        // // window.location.href = unitUrl;
+        // xmlhttp.open("GET", taxableAmntCalculateUrl, false);
+        // xmlhttp.send(null);
+        // document.getElementById("taxableAmnt").value = xmlhttp.responseText;
+         
     } else {
         // document.getElementById("search-Item").value = '';
 
@@ -368,16 +379,18 @@ const stockDetails = (productId, batchNo) => {
 const onQty = (qty) => {
 
     var xmlhttp = new XMLHttpRequest();
+
     var pid = document.getElementById("product-id").value;
     var qType = document.getElementById("qty-type").value;
     let mrp = document.getElementById("mrp").value;
     var checkAvailibility = document.getElementById("aqty").value;
     qty = document.getElementById("qty").value;
-    let qty1 = qty; // working as qty data holdive variable
     let bno = document.getElementById("batch-no").value;
     let disc = document.getElementById("disc").value;
     let discPrice = document.getElementById('dPrice').value;
+    let gst = document.getElementById('gst').value;
 
+    
     //=========== QANTITY CHECK ON BATCH NUMBER =================
     var bNo = document.getElementById("batch-no").value;
     qtyChkOnBathcUrl = `ajax/product.stockDetails.getMargin.ajax.php?qtyCheck=${pid}&batch=${bNo}&qtp=${qType}`;
@@ -385,8 +398,10 @@ const onQty = (qty) => {
     xmlhttp.send(null);
     document.getElementById("aqty").value = "hello";
     document.getElementById("aqty").value = xmlhttp.responseText;
-
     //===============================================================================================
+
+    console.log("check availibility check : ",checkAvailibility);
+
     checkAvailibility = Number(checkAvailibility);
     if (qty > checkAvailibility) {
         qty = checkAvailibility;
@@ -398,7 +413,7 @@ const onQty = (qty) => {
         window.alert(string_3);
     }
 
-    if (disc != null) {
+    if (disc!= null) {
         disc = disc;
     }
     else {
@@ -406,19 +421,22 @@ const onQty = (qty) => {
     }
 
     if (qty > 0) {
-        let subtotal = mrp * qty;
-        let amount = subtotal - (disc / 100 * subtotal);
-        document.getElementById("amount").value = amount.toFixed(2);
-
-        discPrice = amount / qty;
+        discPrice = parseFloat(mrp) - ((parseFloat(mrp) * disc)/100)
         document.getElementById("dPrice").value = discPrice.toFixed(2);
-        discPrice = document.getElementById("dPrice").value;
+
+        let taxable = (discPrice * 100) / (100 + parseInt(gst));
+        let subtotal = discPrice * parseInt(qty);
+
+        // console.log("taxable check on qty : ", taxable);
+
+        document.getElementById('taxable').value = taxable;
+        document.getElementById('amount').value = subtotal.toFixed(2);
     } else {
         document.getElementById("dPrice").value = '';
         document.getElementById("amount").value = '';
-
     }
 
+    console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
     //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${qType}&Mrp=${mrp}&Qty=${qty}&Dprice=${discPrice}`;
     // alert(unitUrl);
@@ -440,15 +458,16 @@ const onQty = (qty) => {
 
 
 const ondDisc = (disc) => {
-    
+
     var xmlhttp = new XMLHttpRequest();
     var checkAvailibility = document.getElementById("aqty").value;
-    console.log(checkAvailibility);
+    // console.log(checkAvailibility);
     var pid = document.getElementById("product-id").value;
     var qType = document.getElementById("qty-type").value;
     let mrp = document.getElementById("mrp").value;
     let qty = document.getElementById("qty").value;
     let bno = document.getElementById("batch-no").value;
+    let gst = document.getElementById('gst').value;
     // alert(disc);
 
     checkAvailibility = Number(checkAvailibility);
@@ -456,14 +475,29 @@ const ondDisc = (disc) => {
         qty = checkAvailibility;
     }
 
-    let subtotal = mrp * qty;
-    let amount = subtotal - (disc / 100 * subtotal);
-    document.getElementById("amount").value = amount.toFixed(2);
+    if (disc!= null) {
+        disc = disc;
+    }
+    else {
+        disc = 0;
+    }
 
-    let discPrice = amount / qty;
-    document.getElementById("dPrice").value = discPrice.toFixed(2);
+    if (qty > 0) {
+        discPrice = parseFloat(mrp) - ((parseFloat(mrp) * disc)/100)
+        document.getElementById("dPrice").value = discPrice.toFixed(2);
 
+        let taxable = (discPrice * 100) / (100 + parseInt(gst));
+        let subtotal = discPrice * parseInt(qty);
 
+        // console.log("taxable check on qty : ", taxable);
+
+        document.getElementById('taxable').value = taxable;
+        document.getElementById('amount').value = subtotal.toFixed(2);
+    } else {
+        document.getElementById("dPrice").value = '';
+        document.getElementById("amount").value = '';
+    }
+    
     //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${qType}&Mrp=${mrp}&Qty=${qty}&Dprice=${discPrice}`;
     // alert(unitUrl);
@@ -533,7 +567,6 @@ const addSummary = () => {
     let doctorName = document.getElementById("doctor-select");
     let paymentMode = document.getElementById("payment-mode");
 
-
     let productId = document.getElementById("product-id");
     let productName = document.getElementById("search-Item");
     let Manuf = document.getElementById("manuf");
@@ -548,8 +581,18 @@ const addSummary = () => {
     let qtyType = document.getElementById("qty-type");
     let disc = document.getElementById("disc");
     let dPrice = document.getElementById("dPrice");
+    let marginAmount = document.getElementById("margin");
     let gst = document.getElementById("gst");
     let amount = document.getElementById("amount");
+
+    // ============= per item taxable amount ==============
+    let taxableAmount = document.getElementById('taxable').value;
+    taxableAmount = parseFloat(taxableAmount);
+
+    // ============== per item gst amount calculation ============
+    let netGstAmount = (amount.value - taxableAmount * qty.value);
+    netGstAmount = parseFloat(netGstAmount);
+    // ============ end of amount calculation ==============
 
     checkAvailibility = Number(checkAvailibility);
     if (qty > checkAvailibility) {
@@ -574,8 +617,10 @@ const addSummary = () => {
     // console.log(qty.value);
     // console.log(disc.value);
     // console.log(dPrice.value);
-    console.log("check gst % : ",gst.value);
-    console.log(amount.value);
+    // console.log("check gst % : ",gst.value);
+    // console.log("check net payble amount : ",amount.value);
+    // console.log("taxable amount check : ",taxableAmount); 
+    // console.log("net gst amount check : ",netGstAmount); 
 
     if (billDAte.value != '') {
         if (customer.value != '') {
@@ -607,12 +652,12 @@ const addSummary = () => {
                                                                 // console.log(totalQty);
                                                                 finalQty.value = totalQty;
 
-                                                                ////////////////TOTAL GST CALCULATION//////////////////////
+                                                                ///////////TOTAL GST CALCULATION////////////
                                                                 let existsGst = parseFloat(document.getElementById("total-gst").value);
-                                                                var itemAmount = parseFloat(amount.value); // perticular item amount
-                                                                var itemGst = parseFloat(gst.value); // percentage on the perticular item
-                                                                let withoutGst = itemAmount - (itemGst / 100 * itemAmount)
-                                                                let netGst = itemAmount - withoutGst;
+                                                                // var itemAmount = parseFloat(amount.value); // perticular item amount
+                                                                // var itemGst = parseFloat(gst.value); // percentage on the perticular item
+                                                                // let withoutGst = itemAmount - (itemGst / 100 * itemAmount)
+                                                                let netGst = netGstAmount;
                                                                 let totalGst = existsGst + netGst;
                                                                 // console.log(totalGst);
                                                                 document.getElementById("total-gst").value = totalGst.toFixed(2);
@@ -621,7 +666,7 @@ const addSummary = () => {
 
 
 
-                                                                ////////////////TOTAL MRP CALCULATION//////////////////////
+                                                                /////////NET MRP CALCULATION//////////
                                                                 let totalPrice = document.getElementById("total-price").value;
                                                                 let existsPrice = parseFloat(totalPrice);
                                                                 var itemMrp = parseFloat(mrp.value);
@@ -633,7 +678,7 @@ const addSummary = () => {
 
 
 
-                                                                /////////////////TOTAL PAYABLE ///////////////////////
+                                                                ////////////TOTAL PAYABLE //////////////
                                                                 let payable = document.getElementById("payable").value;
                                                                 let existsPayable = parseFloat(payable);
                                                                 itemAmount = parseFloat(amount.value);
@@ -642,7 +687,7 @@ const addSummary = () => {
                                                                 document.getElementById("payable").value = sum.toFixed(2);
 
                                                                 jQuery("#item-body").append(`<tr id="table-row-${slno}">
-                                                <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty.value}, ${netGst}, ${mrp.value}, ${amount.value})" style="font-size:.7rem; width: .3rem"></i></td>
+                                                <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty.value}, ${netGst.toFixed(2)}, ${itemMrp.toFixed(2)}, ${amount.value})" style="font-size:.7rem; width: .3rem"></i></td>
                                                 <td style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
                                                 <td>
                                                     <input class="summary-product" type="text" name="product-name[]" value="${productName.value}" style="word-wrap: break-word; width:9rem; font-size: .7rem; margin-top: .7rem;" readonly>
@@ -662,7 +707,7 @@ const addSummary = () => {
                                                     <input class="summary-items" type="text" name="exp-date[]" value="${expDate.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
                                                 <td>
-                                                    <input class="summary-items" type="text" name="mrp[]" value="${mrp.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
+                                                    <input class="summary-items" type="text" name="mrp[]" value="${mrp.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem; text-align: right;" readonly>
                                                 </td>
                                                 <td>
                                                     <input class="summary-items" type="text" name="qtyT[]" value="${qval}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
@@ -675,22 +720,23 @@ const addSummary = () => {
                                                     <input class="summary-items" type="text" name="disc[]" value="${disc.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
                                                 <td>
-                                                    <input class="summary-items" type="text" name="dPrice[]" value="${dPrice.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
+                                                    <input class="summary-items" type="text" name="taxable[]" value="${taxableAmount.toFixed(2)}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem; text-align: center" readonly>
                                                 </td>
                                                 <td>
                                                     <input class="summary-items" type="text" name="gst[]" value="${gst.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
                                                 </td>
 
-                                                <td>
-                                                    <input class="summary-items" type="text" name="gstVal[]" value="${netGst}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
+                                                <td class="d-none">
+                                                    <input class="summary-items" type="text" name="gstVal[]" value="${netGst.toFixed(2)}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem; text-align: right;" readonly>
                                                 </td>
 
                                                 <td>
-                                                    <input class="summary-items" type="text" name="amount[]" value="${amount.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem;" readonly>
+                                                    <input class="summary-items" type="text" name="amount[]" value="${amount.value}" style="word-wrap: break-word; width:3rem; font-size: .7rem; margin-top: .7rem; text-align: right;" readonly>
                                                 </td>
                                             </tr>`);
 
 
+                                            document.getElementById('final-doctor-name').value = doctorName.value;
                                                                 document.getElementById("aqty").value = "";
                                                                 document.getElementById("add-item-details").reset();
 

@@ -94,4 +94,18 @@ if (isset($_GET["loosePack"])) {
     }
 }
 
+// ========================== CURRENT STOCK ITEM LOOSE STOCK CHECKING =============================
+// if (isset($_GET["getTaxable"])) {
+//     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["getTaxable"], $_GET["batchNo"]);
+//     // print_r($stock);
+//     if ($stock) {
+//         foreach($stock as $stock){
+//             $mrp = $stock['mrp'];
+//             $gstPercent = $stock['gst'];
+//         }
+//         $taxableAmount = ($mrp * 100)/(100+$gstPercent);
+//     }
+//     echo $taxableAmount;
+// }
+
 ?>
