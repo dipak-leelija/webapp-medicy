@@ -20,7 +20,6 @@ require_once '../../employee/config/dbconnect.php';
 $searchBatch = FALSE;
 if(isset($_GET['batchDetails'])){
     $productID = $_GET['batchDetails'];
-
     $ProductBatchData = $CurrentStock->showCurrentStocByProductId($productID);
 }
 

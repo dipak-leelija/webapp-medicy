@@ -35,9 +35,8 @@ if (isset($_GET["weightage"])) {
 if (isset($_GET["unit"])) {
     $prodId = $_GET["unit"];
     $showProducts = $Products->showProductsById($prodId);
-    echo $showProducts[0]['unit']; 
+    echo $showProducts[0]['unit'];
 }
-
 
 // ======== get curretn stock expiary date =========
 
@@ -52,46 +51,58 @@ if (isset($_GET["exp"])) {
 
 if (isset($_GET["stockmrp"])) {
     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["stockmrp"], $_GET["batchNo"]);
-    // echo $stock[0]['mrp'];
+    echo $stock[0]['mrp'];
 }
-        //------- MRP CHECK ON PACK OR LOOSE --------
-
-        if (isset($_GET["crntStockMrp"])) {
-            $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["crntStockMrp"], $_GET["batchNo"]);
-            echo $stock[0]['mrp'];
-        }
-
-        // ---------- loose mrp check ---------------
-        if (isset($_GET["crntStockLoosePrice"])) {
-            $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["crntStockLoosePrice"], $_GET["batchNo"]);
-                echo $stock[0]['loosely_price'];
-                // print_r($stock);
-        }
-//=========================== end of mrp access ===========================
-
 
 // ======================= PTR ACCESS FROM CURRENT STOCK =====================
 
 if (isset($_GET["stockptr"])) {
     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["stockptr"], $_GET["batchNo"]);
-        echo $stock[0]['ptr'];
-        // print_r($stock);
+    echo $stock[0]['ptr'];
+    // print_r($stock);
 }
 
 // ============ CURRENT STOCK ITEM LOOSE STOCK CHEK BLOCK ===============
-if (isset($_GET["stockmrp"])) {
-    $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["stockmrp"], $_GET["batchNo"]);
-    echo $stock[0]['mrp'];
+if (isset($_GET["looseStock"])) {
+    $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["looseStock"], $_GET["batchNo"]);
+    foreach ($stock as $stock) {
+        if ($stock['unit'] == 'tab' || $stock['unit'] == 'cap') {
+            $looseCount = $stock['loosely_count'];
+        } else {
+            $looseCount = null;
+        }
+    }
+    echo $looseCount;
 }
 
 
-// ========================== CURRENT STOCK ITEM LOOSE STOCK CHECKING =============================
-if (isset($_GET["loosePack"])) {
-    $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["loosePack"], $_GET["batchNo"]);
-    if ($stock) {
-        echo $stock[0]['loosely_count'];
-        // print_r($stock);
+// ========================== CURRENT STOCK ITEM LOOSE PRICE CHECKING =============================
+if (isset($_GET["loosePrice"])) {
+
+    $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["loosePrice"], $_GET["batchNo"]);
+    foreach($stock as $stock){
+        if ($stock['unit'] == 'tab' || $stock['unit'] == 'cap') {
+            $loosePrice = $stock['loosely_price'];
+        } else {
+            $loosePrice = null;
+        }
     }
+    echo $loosePrice;
+}
+
+
+// ========================== CURRENT STOCK AVAILIBILITY CHECK =============================
+if (isset($_GET["availibility"])) {
+
+    $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["availibility"], $_GET["batchNo"]);
+    foreach($stock as $stock){
+        if ($stock['unit'] == 'tab' || $stock['unit'] == 'cap') {
+            $availibility = $stock['loosely_count'];
+        } else {
+            $availibility = $stock['qty'];
+        }
+    }
+    echo $availibility;
 }
 
 // ========================== CURRENT STOCK ITEM LOOSE STOCK CHECKING =============================
@@ -107,5 +118,3 @@ if (isset($_GET["loosePack"])) {
 //     }
 //     echo $taxableAmount;
 // }
-
-?>

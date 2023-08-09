@@ -165,7 +165,7 @@ $doctor = $Doctors->showDoctors();
                                         <div class="col-md-3 mt-3 col-12">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Item Name</label><br>
                                             <input type="any" id="product-id" style="display: none;">
-                                            <input type="text" id="search-Item" class="sale-inp-item" onkeyup="searchItem(this.value)" autocomplete="off">
+                                            <input type="text" id="product-name" class="sale-inp-item" onkeyup="searchItem(this.value)" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-1 mt-3 col-6">
@@ -179,35 +179,47 @@ $doctor = $Doctors->showDoctors();
                                             <input class="sale-inp" type="text" id="weightage" readonly>
                                         </div>
 
+                                        <div class="d-none col-md-1 mt-3 col-6">
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Weightage</label><br>
+                                            <input class="sale-inp" type="text" id="item-weightage" readonly>
+                                        </div>
+
+                                        <div class="d-none col-md-1 mt-3 col-6">
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Unit typ</label><br>
+                                            <input class="sale-inp" type="text" id="item-unit-type" readonly>
+                                        </div>
+
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Expiry</label><br>
                                             <input class="sale-inp" type="text" id="exp-date" readonly>
                                         </div>
+
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">MRP</label><br>
                                             <input class="sale-inp" type="text" id="mrp" readonly>
                                         </div>
 
                                         <div class="d-none col-md-1 mt-3 col-6">
-                                            <!--Available qty on batch no-->
+                                            <!-- Available qty on batch no -->
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Availability</label><br>
                                             <input class="sale-inp" type="text" id="aqty">
                                         </div>
+
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Qty.</label><br>
                                             <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)">
                                         </div>
 
-                                        <!-- <div class="col-md-1 mt-3 col-6">
-                                            <label for="">Availability.</label><br>
-                                            <input class="sale-inp" type="number" id="avl">
-                                        </div> -->
+                                        <div class="d-none col-md-1 mt-3 col-6">
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Typ Chk.</label><br>
+                                            <input class="sale-inp" type="text" id="type-check" disabled>
+                                        </div>
 
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem;  font-weight: bold;">Disc%</label><br>
                                             <input class="sale-inp" type="any" id="disc" onkeyup="ondDisc(this.value)">
                                         </div>
-                                        <div class="col-md-1 mt-3 col-6">
+                                        <div class="d-none col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">D.Price</label><br>
                                             <input class="sale-inp" type="any" id="dPrice" readonly>
                                         </div>
@@ -221,11 +233,11 @@ $doctor = $Doctors->showDoctors();
                                             <input class="sale-inp" type="text" id="taxableAmnt" readonly>
                                         </div> -->
 
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable</label><br>
                                             <input class="sale-inp" type="text" id="taxable" readonly>
                                         </div>
-                                        
+
                                         <div class="col-md-1 mt-3 col-12">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Net AMT</label><br>
                                             <input class="sale-inp" type="any" id="amount" readonly>
@@ -248,7 +260,7 @@ $doctor = $Doctors->showDoctors();
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly hidden>
+                                                        <input class="sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly>
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
 
@@ -260,14 +272,15 @@ $doctor = $Doctors->showDoctors();
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="row mt-3">
-                                                    <div class="col-md-4  col-6 mb-4 d-flex">
+                                                    <!-- <div class="col-md-4  col-6 mb-4 d-flex">
                                                         <label for="" style="margin-top: 9px;">Qty.Type:</label>
+                                                        -- <input class="sale-inp" type="any" id="qty-type" style="border-width: 0px;" readonly> --
                                                         <select class="sale-inp qty-type" id="qty-type" onchange="mrpUpdate(this.value);" disabled>
                                                             <option value="" selected disabled>Select</option>
                                                             <option value="Pack">Pack</option>
                                                             <option value="Loose">Loose</option>
                                                         </select>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
                                                         <label for="">Loose Stock:</label>
                                                         <input class="sale-inp" type="any" id="loose-stock" style="border-width: 0px;" readonly>
@@ -291,7 +304,7 @@ $doctor = $Doctors->showDoctors();
                                                     </div>
 
                                                     <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
-                                                        <button class="btn btn-sm btn-primary w-100" onclick="addSummary()"><i class="fas fa-check-circle"></i>
+                                                        <button type="button" class="btn btn-sm btn-primary w-100" onclick="addSummary()"><i class="fas fa-check-circle"></i>
                                                             Add</button>
                                                     </div>
                                                 </div>
@@ -315,23 +328,29 @@ $doctor = $Doctors->showDoctors();
                                         <table class="table item-table">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" style="width: .3rem; padding: .5rem;"></th>
-                                                    <th scope="col" style="width: .3rem; padding: .5rem;">
-                                                        <input type="number" value="0" id="dynamic-id" style="display:none">
+                                                    <th scope="col" style="width: .3rem; padding: .5rem;" >
+                                                        <input type="number" value="0" id="dynamic-id" class="d-none">
                                                     </th>
                                                     <!-- <th scope="col"><input class="d-none" type="number" value="0" id="dynamic-id">
                                                     </th> -->
+                                                    <th scope="col"></th>
                                                     <th scope="col">Item Name</th>
+                                                    <th scope="col" class="d-none">Manuf Data</th>
                                                     <th scope="col">Batch</th>
                                                     <th scope="col">Unit/Pack</th>
+                                                    <th scope="col" class="d-none">Weightage</th>
+                                                    <th scope="col" class="d-none">Unit Type</th>
                                                     <th scope="col">Expiry</th>
-                                                    <th scope="col" style="text-align: right;">MRP</th>
+                                                    <th scope="col" style="text-align: center;">MRP</th>
+                                                    <th scope="col" style="text-align: center;">PTR.</th>
+                                                    <th scope="col" class="d-none">Qty.Typ</th>
                                                     <th scope="col">Qty.</th>
-                                                    <th scope="col" hidden>Qty.Typ</th>
                                                     <th scope="col">Disc%</th>
+                                                    <th scope="col" class="d-none">NET AFTER DISC</th>
                                                     <th scope="col">Taxable</th>
                                                     <th scope="col">GST%</th>
-                                                    <th scope="col" hidden>GST AMOUNT</th>
+                                                    <th scope="col" class="d-none">GST AMOUNT</th>
+                                                    <th scope="col" class="d-none">MARGIN</th>
                                                     <th scope="col">Net Amount</th>
                                                 </tr>
                                             </thead>

@@ -78,7 +78,7 @@ if($searchResult){
 
             ?>
             <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" value1="<?php echo $productName ?>" value2="<?php echo $stockQty ?>" onclick="itemsBatchDetails('<?php echo $productId ?>','<?php echo $productName ?>','<?php echo $stockQty ?>', this.id, this.value1, this.value2);">
-                <div class="col-md-6"><?php echo $productName, $power, "hello" ?><br>
+                <div class="col-md-6"><?php echo $productName, $power?><br>
                 <small><?php echo $manufacturerName ?></small></div>
                 <div class="col-md-3"><small><?php echo $packOf ?></small></div>
                 <div class="col-md-3"><small><?php echo $stockQty;

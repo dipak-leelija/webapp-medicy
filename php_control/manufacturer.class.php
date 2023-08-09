@@ -4,8 +4,8 @@ require_once 'dbconnect.php';
 
 class Manufacturer extends DatabaseConnection{
 
-    function addManufacturer( $manufacturerName, $manufacturerDsc){
-        $insert = "INSERT INTO manufacturer (`name`, `dsc`) VALUES ('$manufacturerName', '$manufacturerDsc')";
+    function addManufacturer( $manufacturerName, $shortName, $manufacturerDsc){
+        $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`) VALUES ('$manufacturerName', '$shortName', '$manufacturerDsc')";
 
         $insertQuery    =   $this->conn->query($insert);
 
@@ -55,9 +55,9 @@ class Manufacturer extends DatabaseConnection{
 
 
 
-    function updateManufacturer($manufacturerName, $manufacturerDsc, $manufacturerId){
+    function updateManufacturer($manufacturerName, $manufacturerDsc, $manufacturerId, $manufShortName){
 
-        $update = "UPDATE  `manufacturer` SET `name` = '$manufacturerName', `dsc` = '$manufacturerDsc' WHERE `manufacturer`.`id` = '$manufacturerId'";
+        $update = "UPDATE  `manufacturer` SET `name` = '$manufacturerName', `dsc` = '$manufacturerDsc', `short_name` = '$manufShortName' WHERE `id` = '$manufacturerId'";
         $updatedQuery = $this->conn->query($update);
         return $updatedQuery;
 

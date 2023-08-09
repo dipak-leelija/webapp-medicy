@@ -498,7 +498,6 @@ function addData() {
 
     let slno = document.getElementById("dynamic-id").value;
     slno++;
-
     document.getElementById("dynamic-id").value = slno;
 
     //geting total qty value
@@ -516,15 +515,15 @@ function addData() {
     let taxAmount = (gst.value / 100 * withoutGst);
     // console.log(taxAmount);
     var returnGstAmountPerItem = document.getElementById('return-gst-amount').value;
-    console.log("return gst amount =>");
-    console.log(returnGstAmountPerItem);
+    // console.log("return gst amount =>");
+    // console.log(returnGstAmountPerItem);
     var returnGstAmount = document.getElementById("return-gst-val").value;
-    console.log("return gst total amount =>");
-    console.log(returnGstAmount);
+    // console.log("return gst total amount =>");
+    // console.log(returnGstAmount);
     returnGstAmount = parseFloat(returnGstAmount) + parseFloat(returnGstAmountPerItem);
     ReturnGstAmount = returnGstAmount.toFixed(2);
-    console.log("return gst total amount calculation =>");
-    console.log(ReturnGstAmount);
+    // console.log("return gst total amount calculation =>");
+    // console.log(ReturnGstAmount);
     document.getElementById("return-gst-val").value = ReturnGstAmount;
 
     const appendData = () => {
