@@ -82,8 +82,10 @@ const getReturnDate = (date) => {
 };
 
 const getDtls = (invoiceId, customerId) => {
-
-    document.getElementById('invoice').value = `#${invoiceId}`;
+    
+    document.getElementById('invoice').value = invoiceId;
+    console.log(invoiceId);
+    console.log(customerId);
 
     if (invoiceId != "" && customerId != "") {
 
@@ -504,7 +506,6 @@ const addData = () => {
             gst.value = "";
             taxable.value = "";
             billAmount.value = "";
-
             returnQtyVal.value = "";
             refund.value = "";
         }

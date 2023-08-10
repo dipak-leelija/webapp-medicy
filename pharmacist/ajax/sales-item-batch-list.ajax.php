@@ -26,10 +26,10 @@ if(isset($_GET['batchDetails'])){
 if($ProductBatchData != null){
     // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";
     ?>
-<div class="row mx-2 p-1 text-muted border-bottom">
-    <div class="col-md-5">Preoduct</div>
-    <div class="col-md-4">Batch no</div>
-    <div class="col-md-3">Stock</div>
+<div class="row mx-2 p-1 text-muted border-bottom" style="max-width: 20rem;">
+    <!-- <div class="col-md-5">Preoduct</div> -->
+    <div class="col-md-6">Batch no</div>
+    <div class="col-md-6">Stock</div>
 </div>
 <?php
     foreach($ProductBatchData as $itemData){
@@ -49,9 +49,9 @@ if($ProductBatchData != null){
         $packOf      = $weightage.'/'.$unit;
         ?>
             <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" value="<?php echo $prodBatch ?>" onclick="stockDetails('<?php echo $productId ?>','<?php echo $prodBatch ?>',this.id, this.value);">
-                <div class="col-md-5"><?php echo $prodName ?></div>
-                <div class="col-md-4"><?php echo $prodBatch ?></div>
-                <div class="col-md-3"><?php echo $qantity;
+                <!-- <div class="col-md-5"><?php echo $prodName ?></div> -->
+                <div class="col-md-6"><?php echo $prodBatch ?></div>
+                <div class="col-md-6"><?php echo $qantity;
                 if($looseQty > 0){
                     echo "($looseQty)";
                 }else

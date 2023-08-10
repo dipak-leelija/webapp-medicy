@@ -149,6 +149,8 @@ $currentStock  = new CurrentStock();
                                                 //print_r($item); echo "<br><br>"; 
                                                 $invoiceId = $item['invoice_id'];
                                                 $salesReturnId = $item['id'];
+                                                echo $invoiceId,"<br>";
+                                                echo $salesReturnId;
                                                 if ($item['patient_id'] == "Cash Sales") {
                                                     $patientName = "Cash Sales";
                                                 } else {
@@ -157,14 +159,14 @@ $currentStock  = new CurrentStock();
                                                     $patientName = $patient[0]['name'];
                                                 }
                                                 echo '<tr>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $invoiceId . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $invoiceId . '</td>
                                                     <td hidden>' . $salesReturnId . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $patientName . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $item['items'] . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['bill_date'])) . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['return_date'])) . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $item['added_by'] . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $item['invoice_id'] . ',' . $salesReturnId . ')">' . $item['refund_amount'] . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $patientName . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['items'] . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['bill_date'])) . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['return_date'])) . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['added_by'] . '</td>
+                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' .$invoiceId . ',' . $salesReturnId . ')">' . $item['refund_amount'] . '</td>
                                                     <td>
                                                         <a href="sales-return-edit.php?invoice=' . $invoiceId . '&salesReturnId=' . $salesReturnId . '" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
                                                         <a class="text-danger ml-2" onclick="cancelSalesReturn(this)" id="'.$salesReturnId.'" ><i class="fas fa-window-close"></i></a>
@@ -246,7 +248,6 @@ $currentStock  = new CurrentStock();
 
     <script>
         const viewReturnItem = (invoice, id) => {
-
             var xmlhttp = new XMLHttpRequest();
             let url = `ajax/viewSalesReturn.ajax.php?invoice=${invoice}&id=${id}`;
             xmlhttp.open("GET", url, false);

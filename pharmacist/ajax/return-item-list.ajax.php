@@ -239,25 +239,31 @@ if (isset($_GET['invoice'])) {
     $data   = $_GET['invoice'];
 
     $invoiceDetail = $Search->searchFor($table, $column, $data);
+    // print_r($invoiceDetail);
 
     if (count($invoiceDetail) > 0) {
-        if ($invoiceDetail[0]['customer_id'] == 'Cash Sales') {
-            foreach ($invoiceDetail as $invoice) {
+        foreach ($invoiceDetail as $invoice) {
+            if ($invoice['customer_id'] == 'Cash Sales') {
                 //$patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
                 $patientId = "Cash Sales";
-                echo "<div class='invoice-item' onclick='getDtls(" . $invoice['invoice_id'] . ");'>
-                         <p>" . $patientId . "</p> 
-                        <small><span class='text-dark'>#" . $invoice['invoice_id'] . "</span></small>
-                     </div>";
-            }
-        } else {
-            foreach ($invoiceDetail as $invoice) {
+?>
+                <div class='invoice-item' onclick="getDtls(<?php echo $invoice['invoice_id'] ?> );">
+                    <p><?php echo $patientId ?></p>
+                    <small><span class='text-dark'><?php echo $invoice['invoice_id'] ?></span></small>
+                </div>
+            <?php
+
+            } else {
                 $patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
-                $patientId = '"' . $invoice['customer_id'] . '"';
-                echo "<div class='invoice-item' onclick='getDtls(" . $invoice['invoice_id'] . ", " . $patientId . ");'>
-                        <p>" . $patient[0]['name'] . "</p>
-                        <small><span class='text-dark'>#" . $invoice['invoice_id'] . "</span> M:" . $patient[0]['phno'] . "</small>
-                     </div>";
+                // print_r($patient);
+                $patientId = $invoice['customer_id'];
+            ?>
+                <div class='invoice-item' onclick="getDtls('<?php echo $invoice['invoice_id'] ?>', '<?php echo $patientId ?>')" ;>
+                    <p><?php echo $patient[0]['name'] ?></p>
+                    <small><span class='text-dark'>#<?php echo $invoice['invoice_id'] ?></span> M: <?php echo $patient[0]['phno'] ?></small>
+                </div>
+<?php
+
             }
         }
     } else {
@@ -307,9 +313,5 @@ if (isset($_GET['invoice'])) {
 //         echo '<option value="'.$productId.'">'.$product[0]['name'].'</option>';  
 //     }
 // }
-
-
-
-
 
 ?>

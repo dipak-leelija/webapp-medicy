@@ -95,7 +95,7 @@ $doctor = $Doctors->showDoctors();
                                             <div class="col-md-4 col-4" onclick="counterBill()">
                                                 <div class="rounded counter-bill">
                                                     Counter Bill <i class="fas fa-plus-circle"></i></div>
-                                                <div class="contact-box">
+                                                <div class="d-none contact-box">
                                                     <span id="contact"></span>
                                                 </div>
                                             </div>
@@ -244,10 +244,10 @@ $doctor = $Doctors->showDoctors();
                                         </div>
 
                                         <div class="d-flex col-md-12">
-                                            <div class="p-2 bg-light col-md-6" id="searched-items" style="max-height: 15rem; max-width: 100%; overflow: auto;">
+                                            <div class="p-2 bg-light col-md-6" id="searched-items" style="max-height: 15rem; max-width: 100%; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">
                                             </div>
 
-                                            <div class="p-2 bg-light col-md-6" id="searched-batchNo" style="max-height: 10rem; max-width: 70rem; margin-left: 15rem; overflow: auto">
+                                            <div class="p-2 bg-light col-md-3" id="searched-batchNo" style="max-height: 7rem; max-width: 30rem; margin-left: 19rem; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">
                                             </div>
                                         </div>
                                     </div>
@@ -260,7 +260,7 @@ $doctor = $Doctors->showDoctors();
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly>
+                                                        <input class="d-none sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly>
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
 
@@ -271,7 +271,25 @@ $doctor = $Doctors->showDoctors();
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
+
                                                 <div class="row mt-3">
+                                                    <div class="col-md-4 col-6 mb-4 d-flex">
+                                                        <label for="" style="margin-top: 6px;">PTR:</label>
+                                                        <input class="sale-inp" type="any" id="ptr" style="border-width: 0px;" readonly>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-6 mb-4 d-flex">
+                                                        <label for="" style="margin-top: 6px;">Margin:</label>
+                                                        <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
+                                                        <button type="button" class="btn btn-sm btn-primary w-100" onclick="addSummary()"><i class="fas fa-check-circle"></i>
+                                                            Add</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-none row mt-3">
                                                     <!-- <div class="col-md-4  col-6 mb-4 d-flex">
                                                         <label for="" style="margin-top: 9px;">Qty.Type:</label>
                                                         -- <input class="sale-inp" type="any" id="qty-type" style="border-width: 0px;" readonly> --
@@ -289,25 +307,8 @@ $doctor = $Doctors->showDoctors();
                                                         <label for="">Loose Price:</label>
                                                         <input class="sale-inp" type="any" id="loose-price" style="border-width: 0px;" readonly>
                                                     </div>
-                                                    <!-- </div>
-
-
-                                           <div class="row mt-3"> -->
-                                                    <div class="col-md-4 col-6 mb-4 d-flex">
-                                                        <label for="" style="margin-top: 6px;">PTR:</label>
-                                                        <input class="sale-inp" type="any" id="ptr" style="border-width: 0px;" readonly>
-                                                    </div>
-
-                                                    <div class="col-md-4 col-6 mb-4 d-flex">
-                                                        <label for="" style="margin-top: 6px;">Margin:</label>
-                                                        <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
-                                                    </div>
-
-                                                    <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
-                                                        <button type="button" class="btn btn-sm btn-primary w-100" onclick="addSummary()"><i class="fas fa-check-circle"></i>
-                                                            Add</button>
-                                                    </div>
                                                 </div>
+                                    
                                             </div>
 
                                         </div>
@@ -328,7 +329,7 @@ $doctor = $Doctors->showDoctors();
                                         <table class="table item-table">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col" style="width: .3rem; padding: .5rem;" >
+                                                    <th scope="col" style="width: .3rem; padding: .5rem;">
                                                         <input type="number" value="0" id="dynamic-id" class="d-none">
                                                     </th>
                                                     <!-- <th scope="col"><input class="d-none" type="number" value="0" id="dynamic-id">

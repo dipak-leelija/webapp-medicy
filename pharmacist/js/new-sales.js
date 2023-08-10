@@ -17,7 +17,7 @@ const getCustomer = (customer) => {
                 document.getElementById("customer-list").style.display = "block";
                 document.getElementById("customer-list").innerHTML = xmlhttp.responseText;
             }
-        }; 
+        };
         xmlhttp.open("GET", `ajax/customerSearch.ajax.php?data=${customer}`, true);
         xmlhttp.send();
     } else {
@@ -56,10 +56,17 @@ const getPaymentMode = (mode) => {
 }
 
 const searchItem = (searchFor) => {
+
     let searchReult = document.getElementById('searched-items');
     document.getElementById("searched-items").style.display = "block";
     document.getElementById("exta-details").style.display = "none";
-    if (searchFor.length == 0) {
+
+    if (document.getElementById("product-name").value == "") {
+        document.getElementById("searched-items").style.display = "none";
+        document.getElementById("searched-batchNo").style.display = "none";
+    }
+
+    if (searchFor.length == "") {
         searchReult.innerHTML = '';
 
         document.getElementById("product-name").value = '';
@@ -68,7 +75,7 @@ const searchItem = (searchFor) => {
         document.getElementById("exp-date").value = '';
         document.getElementById("mrp").value = '';
         document.getElementById("gst").value = '';
-        
+
         document.getElementById("item-weightage").value = '';
         document.getElementById("item-unit-type").value = '';
         document.getElementById("aqty").value = '';
@@ -77,7 +84,7 @@ const searchItem = (searchFor) => {
         document.getElementById("disc").value = '';
         document.getElementById("dPrice").value = '';
         document.getElementById("taxable").value = '';
-        document.getElementById("amount").value = '';     
+        document.getElementById("amount").value = '';
     } else {
         var XML = new XMLHttpRequest();
         XML.onreadystatechange = function () {
@@ -91,7 +98,7 @@ const searchItem = (searchFor) => {
 }
 
 const itemsBatchDetails = (prodcutId, name, stock) => {
-    
+
     if (stock > 0) {
         // ==================== SEARCH PRODUCT NAME =====================
         document.getElementById("product-name").value = name;
@@ -117,7 +124,7 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         document.getElementById("disc").value = '';
         document.getElementById("dPrice").value = '';
         document.getElementById("taxable").value = '';
-        document.getElementById("amount").value = '';    
+        document.getElementById("amount").value = '';
 
         var XML = new XMLHttpRequest();
         XML.onreadystatechange = function () {
@@ -127,6 +134,8 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         };
         XML.open('GET', 'ajax/sales-item-batch-list.ajax.php?batchDetails=' + prodcutId, true);
         XML.send();
+
+
     }
 
     if (stock <= 0) {
@@ -146,12 +155,12 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         document.getElementById("disc").value = '';
         document.getElementById("dPrice").value = '';
         document.getElementById("taxable").value = '';
-        document.getElementById("amount").value = ''; 
+        document.getElementById("amount").value = '';
         document.getElementById("loose-stock").value = 'None';
-        document.getElementById("loose-price").value = 'None';   
+        document.getElementById("loose-price").value = 'None';
 
         // document.getElementById("qty-type").setAttribute("disabled", true);
-        
+
         document.getElementById("exta-details").style.display = "none";
         document.getElementById("searched-items").style.display = "none";
 
@@ -162,11 +171,11 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
             buttons: true,
             dangerMode: true,
         })
-        .then((willDelete) => {
-            if (willDelete) {
-                window.location.href = "stock-in.php";
-            }
-        });
+            .then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = "stock-in.php";
+                }
+            });
     }
 }
 
@@ -205,8 +214,8 @@ const stockDetails = (productId, batchNo) => {
         xmlhttp.send(null);
         let packWeightage = xmlhttp.responseText;
         document.getElementById("item-weightage").value = xmlhttp.responseText;
-         // alert(xmlhttp.responseText);
- 
+        // alert(xmlhttp.responseText);
+
         //==================== Unit ====================
         unitUrl = 'ajax/getProductDetails.ajax.php?unit=' + productId;
         // alert(unitUrl);
@@ -317,7 +326,7 @@ const stockDetails = (productId, batchNo) => {
         document.getElementById("weightage").value = '';
         document.getElementById("batch-no").value = '';
         document.getElementById("exp-date").value = '';
-        
+
         document.getElementById("mrp").value = '';
         document.getElementById("gst").value = '';
 
@@ -329,8 +338,8 @@ const stockDetails = (productId, batchNo) => {
         document.getElementById("disc").value = '';
         document.getElementById("dPrice").value = '';
         document.getElementById("taxable").value = '';
-        document.getElementById("amount").value = '';    
-        
+        document.getElementById("amount").value = '';
+
         // document.getElementById("qty-type").setAttribute("disabled", true);
         document.getElementById("loose-stock").value = 'None';
         document.getElementById("loose-price").value = 'None';
@@ -361,20 +370,20 @@ const onQty = (qty) => {
     let checkSum = '';
     let itemPackType = '';
 
-    if(unitType == 'tab' || unitType == 'cap'){
-        checkSum = parseInt(qty) % parseInt(itemWeightage); 
-        if(checkSum == 0){
+    if (unitType == 'tab' || unitType == 'cap') {
+        checkSum = parseInt(qty) % parseInt(itemWeightage);
+        if (checkSum == 0) {
             itemPackType = 'Pack';
-        }else{
+        } else {
             itemPackType = 'Loose';
         }
-    }else{
+    } else {
         itemPackType = '';
     }
-    
+
     document.getElementById("type-check").value = itemPackType;
     // =========================== ========================== ====================
-    
+
     var pid = document.getElementById("product-id").value;
     var bno = document.getElementById("batch-no").value;
     let mrp = document.getElementById("mrp").value;
@@ -392,16 +401,16 @@ const onQty = (qty) => {
     // console.log("discount percent check on qty : ", disc);
 
     if (qty > 0) {
-        if(itemPackType == ''){
+        if (itemPackType == '') {
             discPrice = parseFloat(mrp) - ((parseFloat(mrp) * disc) / 100);
             document.getElementById("dPrice").value = discPrice.toFixed(2);
-            
+
             let taxable = ((discPrice * 100) / (100 + parseInt(gst)));
             let subtotal = discPrice * parseInt(qty);
 
             document.getElementById('taxable').value = taxable * parseInt(qty);
             document.getElementById('amount').value = subtotal.toFixed(2);
-        }else{
+        } else {
             mrp = parseFloat(loosePrice);
             discPrice = parseFloat(mrp) - ((parseFloat(mrp) * disc) / 100)
             document.getElementById("dPrice").value = discPrice.toFixed(2);
@@ -432,7 +441,7 @@ const onQty = (qty) => {
 const ondDisc = (disc) => {
 
     var xmlhttp = new XMLHttpRequest();
-    
+
     var pid = document.getElementById("product-id").value;
     var bno = document.getElementById("batch-no").value;
     let mrp = document.getElementById("mrp").value;
@@ -464,36 +473,36 @@ const ondDisc = (disc) => {
         disc = 0;
     }
 
-        if (qty > 0) {
-            if(itemTypeCheck == ''){
-                discPrice = parseFloat(mrp) - ((parseFloat(mrp) * disc) / 100);
-                document.getElementById("dPrice").value = parseFloat(discPrice).toFixed(2);
-                
-                let taxable = (discPrice * 100) / (100 + parseInt(gst));
-                let subtotal = discPrice * parseInt(qty);
-    
-                document.getElementById('taxable').value = taxable * parseInt(qty);
-                document.getElementById('amount').value = subtotal.toFixed(2);
-            }else{
-                mrp = parseFloat(loosePrice);
-                discPrice = parseFloat(mrp) - ((parseFloat(mrp) * disc) / 100)
-                document.getElementById("dPrice").value = discPrice.toFixed(2);
-    
-                let taxable = (discPrice * 100) / (100 + parseInt(gst));
-                let subtotal = discPrice * parseInt(qty);
-    
-                document.getElementById('taxable').value = parseFloat(taxable) * parseInt(qty);
-                document.getElementById('amount').value = subtotal.toFixed(2);
-                document.getElementById('dPrice').value = discPrice;
-            }
-            
+    if (qty > 0) {
+        if (itemTypeCheck == '') {
+            discPrice = parseFloat(mrp) - ((parseFloat(mrp) * disc) / 100);
+            document.getElementById("dPrice").value = parseFloat(discPrice).toFixed(2);
+
+            let taxable = (discPrice * 100) / (100 + parseInt(gst));
+            let subtotal = discPrice * parseInt(qty);
+
+            document.getElementById('taxable').value = taxable * parseInt(qty);
+            document.getElementById('amount').value = subtotal.toFixed(2);
         } else {
-            document.getElementById("dPrice").value = '';
-            document.getElementById("amount").value = '';
-            document.getElementById("type-check").value = '';
-            document.getElementById('dPrice').value = '';
+            mrp = parseFloat(loosePrice);
+            discPrice = parseFloat(mrp) - ((parseFloat(mrp) * disc) / 100)
+            document.getElementById("dPrice").value = discPrice.toFixed(2);
+
+            let taxable = (discPrice * 100) / (100 + parseInt(gst));
+            let subtotal = discPrice * parseInt(qty);
+
+            document.getElementById('taxable').value = parseFloat(taxable) * parseInt(qty);
+            document.getElementById('amount').value = subtotal.toFixed(2);
+            document.getElementById('dPrice').value = discPrice;
         }
-    
+
+    } else {
+        document.getElementById("dPrice").value = '';
+        document.getElementById("amount").value = '';
+        document.getElementById("type-check").value = '';
+        document.getElementById('dPrice').value = '';
+    }
+
     //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&Dprice=${discPrice}`;
     xmlhttp.open("GET", marginUrl, false);
@@ -514,7 +523,7 @@ const addSummary = () => {
     let batchNo = document.getElementById("batch-no").value;
     let weightage = document.getElementById("weightage").value;
     let itemWeightage = document.getElementById('item-weightage').value;
-    let unitType  = document.getElementById('item-unit-type').value;
+    let unitType = document.getElementById('item-unit-type').value;
     let expDate = document.getElementById("exp-date").value;
     let mrp = document.getElementById("mrp").value;
     let available = document.getElementById('aqty').value;
@@ -525,6 +534,7 @@ const addSummary = () => {
     let manufName = document.getElementById("manufName").value;
     // let rplceStrngManufName = document.getElementById("manufNameStrngReplace").value;
     let discPercent = document.getElementById("disc").value;
+    // console.log("on add customer name check : ", customer);
     let discPrice = document.getElementById("dPrice").value;
     let gst = document.getElementById("gst").value;
     let taxable = document.getElementById("taxable").value;
@@ -536,300 +546,301 @@ const addSummary = () => {
     let ptr = document.getElementById("ptr").value;
     let marginAmount = document.getElementById("margin").value;
 
-    
+
     // ============== per item gst amount calculation ============
     let netGstAmount = (parseFloat(amount) - parseFloat(taxable));
     netGstAmount = netGstAmount.toFixed(2);
     // console.log("net gst amount : ",netGstAmount);
     // ============ end of amount calculation ==============
-
-    if(customer.value != null){
-        customer = customer
+    // ============ MRP SET ======================
+    if (loosePrice != '') {
+        calculatedMRP = loosePrice;
     }else{
-        customer = "counter bill";
+        calculatedMRP = mrp;
     }
+    console.log("mrp check : ",calculatedMRP);
+    //===========================================
 
-    if (billDAte != '') {
-        if (customer != '') {
-            if (doctorName != '') {
-                if (paymentMode != '') {
-                    if (productId != '') {
-                        if (productName != '') {
-                            if (batchNo != '') {
-                                if (weightage != '') {
-                                    if (expDate != '') {
-                                        if (mrp != '') {
-                                            if (qty != '') {
-                                                if (disc != '') {
-                                                    if (dPrice != '') {
-                                                        if (gst != '') {
-                                                            if (amount != '') {
-
-                                                                // console.log("Working Fine");
-
-                                                                document.getElementById("no-item").style.display = "none";
-
-                                                                /////// SERIAL NUMBER SET /////////
-                                                                let slno = document.getElementById("dynamic-id").value;
-                                                                slno++;
-                                                                document.getElementById("dynamic-id").value = slno;
-
-                                                                ////////// ITEMS COUNT ////////////
-
-                                                                document.getElementById("items").value = slno;
-
-                                                                /// TOTAL QUANTITY COUNT CALCULATION ///
-                                                                let finalQty = document.getElementById("final-qty");
-                                                                let totalQty = parseInt(finalQty.value) + parseInt(qty);
-                                                                document.getElementById("final-qty").value = totalQty;
-
-                                                                ///////////TOTAL GST CALCULATION////////////
-                                                                let existsGst = parseFloat(document.getElementById("total-gst").value);
-                                                                let netGst = parseFloat(netGstAmount);
-                                                                let totalGst = existsGst + netGst;
-                                                                document.getElementById("total-gst").value = totalGst.toFixed(2);
-                                                                // =========================================
-
-                                                                /////////NET MRP CALCULATION//////////
-                                                                let totalPrice = document.getElementById("total-price").value;
-                                                                let existsPrice = parseFloat(totalPrice);
-                                                                var itemMrp = parseFloat(mrp);
-                                                                let itemQty = parseInt(qty);
-                                                                itemMrp = itemQty * itemMrp;
-                                                                let totalMrp = existsPrice + itemMrp;
-                                                                document.getElementById("total-price").value = totalMrp.toFixed(2);
-
-
-                                                                ////////////TOTAL PAYABLE //////////////
-                                                                let payable = document.getElementById("payable").value;
-                                                                let existsPayable = parseFloat(payable);
-                                                                let itemAmount = parseFloat(amount);
-                                                                let sum = existsPayable + itemAmount;
-                                                                document.getElementById("payable").value = sum.toFixed(2);
-
-                                                                jQuery("#item-body").append(`<tr id="table-row-${slno}">
-                                                <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty}, ${netGst.toFixed(2)}, ${itemMrp.toFixed(2)}, ${amount})" style="font-size:.7rem; width: .3rem"></i></td>
-
-                                                <td style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
-
-                                                <td id="${slno}">
-                                                    <input class="summary-product" type="text" name="product-name[]" value="${productName}" style="word-wrap: break-word; width:9rem; font-size: .7rem;" readonly>
-                                                    <input type="text" class="d-none" name="product-id[]" value="${productId}" >
-                                                </td>
-
-                                                <td class="d-none">
-                                                    <input type="text" name="ManufId[]" value="${Manuf}">
-                                                    <input type="text" name="ManufName[]" value="${manufName}">
-                                                </td>
-
-                                                <td id="${batchNo}">
-                                                    <input class="summary-items" type="text" name="batch-no[]" id="batch-no" value="${batchNo}" style="word-wrap: break-word; width:7rem; font-size: .7rem; " readonly>
-                                                </td>
-
-                                                <td id="${weightage}">
-                                                    <input class="summary-items" type="text" name="weightage[]" value="${weightage}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
-                                                </td>
-
-                                                <td class="d-none" id="${slno}">
-                                                    <input class="summary-items" type="text" name="ItemWeightage[]" value="${itemWeightage}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
-                                                </td>
-
-                                                <td class="d-none" id="${slno}">
-                                                    <input class="summary-items" type="text" name="ItemUnit[]" value="${unitType}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
-                                                </td>
-                                                
-                                                <td id="${expDate}">
-                                                    <input class="summary-items" type="text" name="exp-date[]" value="${expDate}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
-                                                </td>
-
-                                                <td id="${mrp}">
-                                                    <input class="summary-items" type="text" name="mrp[]" value="${mrp}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
-                                                </td>
-
-                                                <td id="${ptr}">
-                                                    <input class="summary-items" type="text" name="itemPtr[]" value="${ptr}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
-                                                </td>
-
-                                                <td class="d-none" id="${slno}">
-                                                    <input class="summary-items" type="text" name="qtyTp[]" value="${qtyTypeCheck}" style="word-wrap: break-word; width:3rem; font-size: .7rem;" readonly>
-                                                </td>
-
-                                                <td id="${qty}">
-                                                    <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
-                                                </td>
-
-                                                <td id="${discPercent}">
-                                                    <input class="summary-items" type="text" name="discPercent[]" value="${discPercent}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
-                                                </td>
-
-                                                <td class="d-none" id="${slno}">
-                                                    <input class="summary-items" type="text" name="discPrice[]" value="${discPrice}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
-                                                </td>
-
-                                                <td id="${taxableAmount}">
-                                                    <input class="summary-items" type="text" name="taxable[]" value="${taxableAmount.toFixed(2)}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: center" readonly>
-                                                </td>
-
-                                                <td id="${gst}">
-                                                    <input class="summary-items" type="text" name="gst[]" value="${gst}" style="word-wrap: break-word; width:3rem; font-size: .7rem;" readonly>
-                                                </td>
-
-                                                <td class="d-none" id="${slno}">
-                                                    <input class="summary-items" type="text" name="gstVal[]" value="${netGst.toFixed(2)}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
-                                                </td>
-
-                                                <td class="d-none" id="${marginAmount}">
-                                                    <input class="summary-items" type="text" name="marginAmount[]" value="${marginAmount}" style="word-wrap: break-word; width:3rem; font-size: .7rem;" readonly>
-                                                </td>
-
-                                                <td id="${amount}">
-                                                    <input class="summary-items" type="text" name="amount[]" value="${amount}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
-                                                </td>
-
-                                                ////////////////////// EXTRA DATA /////////////////////
-
-                                                <td class="d-none" id="${slno}">
-                                                    <input class="summary-items" type="text" name="LooseStock[]" value="${looseStock}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
-                                                </td>
-
-                                                <td class="d-none" id="${slno}">
-                                                    <input class="summary-items" type="text" name="LoosePrice[]" value="${loosePrice}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
-                                                </td>
-
-                                                <td class="d-none" id="${slno}">
-                                                    <input class="summary-items" type="text" name="availibility[]" value="${available}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
-                                                </td>
-
-                                                <td class="d-none" id="${slno}">
-                                                    <input class="summary-items" type="text" name="itemComposition[]" value="${itemComposition}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
-                                                </td>
-
-                                                //////////////////////////////////////////////////
-                                            </tr>`);
-
-                                            ////// TUPLE DECLEARATION and ON CLICK FUNCTION CALL///////
-
-                                           taxable = taxableAmount.toFixed(2);
-                                          
-                                            const dataTuple = {
-                                                slno : slno,
-                                                productId : productId,
-                                                batchNo : batchNo,
-                                                productName : productName,
-                                                ManufId : Manuf,
-                                                manufName : manufName,
-                                                weightage : weightage,
-                                                itemWeightage : itemWeightage,
-                                                unitType : unitType,
-                                                expDate : expDate,
-                                                mrp : mrp,
-                                                ptr : ptr,
-                                                qtyTypeCheck : qtyTypeCheck,
-                                                qty : qty,
-                                                discPercent : discPercent,
-                                                discPrice : discPrice,
-                                                taxable : taxable,
-                                                gst : gst,
-                                                gstAmountPerItem : netGst,
-                                                marginAmount : marginAmount,
-                                                amount : amount,
-                                                looseStock : looseStock,
-                                                loosePrice : loosePrice,
-                                                available : available,
-                                                itemComposition : itemComposition
-                                            };
-                                            
-                                            let tupleData = JSON.stringify(dataTuple);
-
-                                            document.getElementById(slno).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(batchNo).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(weightage).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(expDate).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(mrp).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(ptr).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(qty).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(discPercent).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(taxableAmount).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(gst).onclick = function() {
-                                                editItem(tupleData);
-                                              };
-                                              document.getElementById(amount).onclick = function(){
-                                                editItem(tupleData);
-                                              };
-                                            //////////////////////////////////////////
-
-                                                                                     
-                                                                document.getElementById('final-doctor-name').value = doctorName;
-                                                                document.getElementById("aqty").value = "";
-                                                                document.getElementById("add-item-details").reset();
-
-                                                            } else {
-                                                                swal("Failed!", "Total Amount Not Found!", "error");
-                                                            }
-                                                        } else {
-                                                            swal("Failed!", "GST Not Found!", "error");
-                                                        }
-                                                    } else {
-                                                        swal("Failed!", "Discounted Price Not Found!", "error");
-                                                    }
-                                                } else {
-                                                    swal("Failed!", "Please Enter Discount Minimum: 0", "error");
-                                                }
-                                            } else {
-                                                swal("Failed!", "Please Enter Quantity:", "error");
-                                            }
-                                        } else {
-                                            swal("Failed!", "MRP Not Found!", "error");
-                                        }
-
-                                    } else {
-                                        swal("Failed!", "Expiry Date Not Found!", "error");
-                                    }
-
-                                } else {
-                                    swal("Failed!", "Batch No Not Found!", "error");
-                                }
-
-                            } else {
-                                swal("Failed!", "Product Weatage/Unit Not Found!", "error");
-                            }
-                        } else {
-                            swal("Failed!", "Product Name Not Found!", "error");
-                        }
-
-                    } else {
-                        swal("Failed!", "Product ID Not Found!", "error");
-                    }
-                } else {
-                    swal("Failed!", "Please Select a Payment Mode!", "error");
-                }
-            } else {
-                swal("Failed!", "Please Select/Enter Doctor Name!", "error");
-            }
-        } else {
-            swal("Failed!", "Please Select Customer Name!", "error");
-        }
-    } else{
+    if (billDAte == '') {
         swal("Failed!", "Please Select Bill Date!", "error");
+        return;
     }
+    if (customer == '') {
+        swal("Failed!", "Please Select Customer Name!", "error");
+        return;
+    }
+    if (doctorName =='') {
+        swal("Failed!", "Please Select/Enter Doctor Name!", "error");
+        return;
+    }
+    if (paymentMode == '') {
+        swal("Failed!", "Please Select a Payment Mode!", "error");
+        return;
+    }
+    if (productId == '') {
+        swal("Failed!", "Product ID Not Found!", "error");
+        return;
+    }
+    if (productName == '') {
+        swal("Failed!", "Product Name Not Found!", "error");
+        return;
+    }
+    if (batchNo == '') {
+        swal("Failed!", "Batch No Not Found!", "error");
+        return;
+    }
+    if (weightage == '') {
+        swal("Failed!", "Product Weatage/Unit Not Found!", "error");
+        return;
+    }
+    if (expDate == '') {
+        swal("Failed!", "Expiry Date Not Found!", "error");
+        return;
+    }
+    if (mrp == '') {
+        swal("Failed!", "MRP Not Found!", "error");
+        return;
+    }
+    if (qty == '') {
+        swal("Failed!", "Please Enter Quantity:", "error");
+        return;
+    }
+    if (discPercent == '') {
+        swal("Failed!", "Please Enter Discount Minimum: 0", "error");
+        return;
+    }
+    if (discPrice == '') {
+        swal("Failed!", "Discounted Price Not Found!", "error");
+        return;
+    }
+    if (gst == '') {
+        swal("Failed!", "GST Not Found!", "error");
+        return;
+    }
+    if (amount == '') {
+        swal("Failed!", "Total Amount Not Found!", "error");
+        return;
+    }
+
+    // console.log("Working Fine");
+
+    document.getElementById("no-item").style.display = "none";
+
+    /////// SERIAL NUMBER SET /////////
+    let slno = document.getElementById("dynamic-id").value;
+    slno++;
+    document.getElementById("dynamic-id").value = slno;
+
+    ////////// ITEMS COUNT ////////////
+
+    document.getElementById("items").value = slno;
+
+    /// TOTAL QUANTITY COUNT CALCULATION ///
+    let finalQty = document.getElementById("final-qty");
+    let totalQty = parseInt(finalQty.value) + parseInt(qty);
+    document.getElementById("final-qty").value = totalQty;
+
+    ///////////TOTAL GST CALCULATION////////////
+    let existsGst = parseFloat(document.getElementById("total-gst").value);
+    let netGst = parseFloat(netGstAmount);
+    let totalGst = existsGst + netGst;
+    document.getElementById("total-gst").value = totalGst.toFixed(2);
+    // =========================================
+
+    /////////NET MRP CALCULATION//////////
+    let totalPrice = document.getElementById("total-price").value;
+    let existsPrice = parseFloat(totalPrice);
+    var itemMrp = parseFloat(calculatedMRP);
+    let itemQty = parseInt(qty);
+    itemMrp = itemQty * itemMrp;
+    let totalMrp = existsPrice + itemMrp;
+    document.getElementById("total-price").value = totalMrp.toFixed(2);
+
+
+    ////////////TOTAL PAYABLE //////////////
+    let payable = document.getElementById("payable").value;
+    let existsPayable = parseFloat(payable);
+    let itemAmount = parseFloat(amount);
+    let sum = existsPayable + itemAmount;
+    document.getElementById("payable").value = sum.toFixed(2);
+
+    jQuery("#item-body").append(`<tr id="table-row-${slno}">
+
+        <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty}, ${netGst.toFixed(2)}, ${itemMrp.toFixed(2)}, ${amount})" style="font-size:.7rem; width: .3rem"></i></td>
+
+        <td style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
+
+        <td id="${slno}">
+            <input class="summary-product" type="text" name="product-name[]" value="${productName}" style="word-wrap: break-word; width:9rem; font-size: .7rem;" readonly>
+            <input type="text" class="d-none" name="product-id[]" value="${productId}" >
+        </td>
+
+        <td class="d-none">
+            <input type="text" name="ManufId[]" value="${Manuf}">
+            <input type="text" name="ManufName[]" value="${manufName}">
+        </td>
+
+        <td id="${batchNo}">
+            <input class="summary-items" type="text" name="batch-no[]" id="batch-no" value="${batchNo}" style="word-wrap: break-word; width:7rem; font-size: .7rem; " readonly>
+        </td>
+
+        <td id="${weightage}">
+            <input class="summary-items" type="text" name="weightage[]" value="${weightage}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
+        </td>
+
+        <td class="d-none" id="${slno}">
+            <input class="summary-items" type="text" name="ItemWeightage[]" value="${itemWeightage}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
+        </td>
+
+        <td class="d-none" id="${slno}">
+            <input class="summary-items" type="text" name="ItemUnit[]" value="${unitType}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
+        </td>
+                                                
+        <td id="${expDate}">
+            <input class="summary-items" type="text" name="exp-date[]" value="${expDate}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
+        </td>
+
+        <td id="${mrp}">
+            <input class="summary-items" type="text" name="mrp[]" value="${mrp}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        </td>
+
+        <td id="${ptr}">
+            <input class="summary-items" type="text" name="itemPtr[]" value="${ptr}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        </td>
+
+        <td class="d-none" id="${slno}">
+            <input class="summary-items" type="text" name="qtyTp[]" value="${qtyTypeCheck}" style="word-wrap: break-word; width:3rem; font-size: .7rem;" readonly>
+        </td>
+
+        <td id="${qty}">
+            <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
+        </td>
+
+        <td id="${discPercent}">
+            <input class="summary-items" type="text" name="discPercent[]" value="${discPercent}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
+        </td>
+
+        <td class="d-none" id="${slno}">
+            <input class="summary-items" type="text" name="discPrice[]" value="${discPrice}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
+        </td>
+
+        <td id="${taxableAmount}">
+            <input class="summary-items" type="text" name="taxable[]" value="${taxableAmount.toFixed(2)}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: center" readonly>
+        </td>
+
+        <td id="${gst}">
+            <input class="summary-items" type="text" name="gst[]" value="${gst}" style="word-wrap: break-word; width:3rem; font-size: .7rem;" readonly>
+        </td>
+
+        <td class="d-none" id="${slno}">
+            <input class="summary-items" type="text" name="gstVal[]" value="${netGst.toFixed(2)}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        </td>
+
+        <td class="d-none" id="${marginAmount}">
+            <input class="summary-items" type="text" name="marginAmount[]" value="${marginAmount}" style="word-wrap: break-word; width:3rem; font-size: .7rem;" readonly>
+        </td>
+
+        <td id="${amount}">
+            <input class="summary-items" type="text" name="amount[]" value="${amount}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        </td>
+
+        /////////////////////\\\\\\\\\\\\\\\\\\\ EXTRA DATA /////////////////////\\\\\\\\\\\\\\\\\\\\
+
+        <td class="d-none" id="${slno}">
+            <input class="summary-items" type="text" name="LooseStock[]" value="${looseStock}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        </td>
+
+        <td class="d-none" id="${slno}">
+            <input class="summary-items" type="text" name="LoosePrice[]" value="${loosePrice}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        </td>
+
+        <td class="d-none" id="${slno}">
+            <input class="summary-items" type="text" name="availibility[]" value="${available}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        </td>
+
+        <td class="d-none" id="${slno}">
+            <input class="summary-items" type="text" name="itemComposition[]" value="${itemComposition}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        </td>
+
+        //////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    </tr>`);
+
+    ////// TUPLE DECLEARATION and ON CLICK FUNCTION CALL///////
+
+    taxable = taxableAmount.toFixed(2);
+
+    const dataTuple = {
+        slno: slno,
+        productId: productId,
+        batchNo: batchNo,
+        productName: productName,
+        ManufId: Manuf,
+        manufName: manufName,
+        weightage: weightage,
+        itemWeightage: itemWeightage,
+        unitType: unitType,
+        expDate: expDate,
+        mrp: mrp,
+        ptr: ptr,
+        qtyTypeCheck: qtyTypeCheck,
+        qty: qty,
+        discPercent: discPercent,
+        discPrice: discPrice,
+        taxable: taxable,
+        gst: gst,
+        gstAmountPerItem: netGst,
+        marginAmount: marginAmount,
+        amount: amount,
+        looseStock: looseStock,
+        loosePrice: loosePrice,
+        available: available,
+        itemComposition: itemComposition
+    };
+
+    let tupleData = JSON.stringify(dataTuple);
+
+    document.getElementById(slno).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(batchNo).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(weightage).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(expDate).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(mrp).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(ptr).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(qty).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(discPercent).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(taxableAmount).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(gst).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(amount).onclick = function () {
+        editItem(tupleData);
+    };
+    //////////////////////////////////////////
+
+
+    document.getElementById('final-doctor-name').value = doctorName;
+    document.getElementById("aqty").value = "";
+    document.getElementById("add-item-details").reset();
+
+
+
     event.preventDefault();
 
 }
@@ -871,12 +882,12 @@ const editItem = (tuple) => {
     Tupledata = JSON.parse(tuple);
 
 
-    document.getElementById("product-id").value =  Tupledata.productId;
+    document.getElementById("product-id").value = Tupledata.productId;
     document.getElementById("product-name").value = Tupledata.productName;
     document.getElementById("batch-no").value = Tupledata.batchNo;
     document.getElementById("batch_no").value = Tupledata.batchNo;
-    
-    document.getElementById("weightage").value =  Tupledata.weightage;
+
+    document.getElementById("weightage").value = Tupledata.weightage;
     document.getElementById('item-weightage').value = Tupledata.itemWeightage;
     document.getElementById('item-unit-type').value = Tupledata.unitType;
 
@@ -888,7 +899,7 @@ const editItem = (tuple) => {
     document.getElementById("type-check").value = Tupledata.qtyTypeCheck;
     document.getElementById("manuf").value = Tupledata.ManufId;
     document.getElementById("manufName").value = Tupledata.manufName;
-    
+
     document.getElementById("disc").value = Tupledata.discPercent;
     document.getElementById("dPrice").value = Tupledata.discPrice;
     document.getElementById("gst").value = Tupledata.gst;

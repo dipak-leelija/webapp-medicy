@@ -85,8 +85,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="invoice-no">Invoice No.</label>
                                     <input type="text" class="upr-inp" name="invoice-no" id="invoice-no"
-                                        placeholder="Search Invoice No." onkeyup="getCustomer(this.value)"
-                                        autocomplete="off">
+                                    placeholder="Search Invoice No." onkeyup="getCustomer(this.value)" value="">
                                 </div>
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="patient-name">Patient Name.</label>
