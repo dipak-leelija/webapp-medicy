@@ -877,10 +877,9 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
 
 const editItem = (tuple) => {
 
-    window.alert(tuple);
+    // window.alert(tuple);
 
     Tupledata = JSON.parse(tuple);
-
 
     document.getElementById("product-id").value = Tupledata.productId;
     document.getElementById("product-name").value = Tupledata.productName;

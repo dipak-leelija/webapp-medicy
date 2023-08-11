@@ -162,7 +162,7 @@ class SalesReturn extends DatabaseConnection{
 
     function addReturnDetails($SalesReturnId, $invoiceId, $itemId, $batchNo, $weatage, $exp_date, $qty, $disc, $gst, $amount, $return, $refund, $addedBy){
 
-        $insert = "INSERT INTO  sales_return_details (`sales_return_id`, `invoice_id`,	`product_id`, `batch_no`, `weatage`, `exp`, `qty`, `disc`, `gst`,	`amount`, `return`, `refund`, `added_by`) VALUES  ('$SalesReturnId', '$invoiceId', '$itemId', '$batchNo', '$weatage', '$exp_date', '$qty', '$disc', '$gst', '$amount', '$return', '$refund', '$addedBy')";
+        $insert = "INSERT INTO  sales_return_details (`sales_return_id`, `invoice_id`,	`product_id`, `batch_no`, `weatage`, `exp`, `qty`, `disc`, `gst`,	`taxable`, `return_qty`, `refund_amount`, `added_by`) VALUES  ('$SalesReturnId', '$invoiceId', '$itemId', '$batchNo', '$weatage', '$exp_date', '$qty', '$disc', '$gst', '$amount', '$return', '$refund', '$addedBy')";
         // echo $insertEmp.$this->conn->error;
         // exit;
         $res = $this->conn->query($insert);

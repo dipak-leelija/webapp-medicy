@@ -124,7 +124,7 @@ class StockOut extends DatabaseConnection{
     
     function stockOutDetailsById($billId){
         $billData = array();
-        $selectBill = "SELECT * FROM `pharmacy_invoice` WHERE `pharmacy_invoice`.`invoice_id` = '$billId'";
+        $selectBill = "SELECT * FROM `pharmacy_invoice` WHERE `invoice_id` = '$billId'";
         $billQuery = $this->conn->query($selectBill);
         while($result = $billQuery->fetch_array()){
             $billData[]	= $result;
@@ -135,9 +135,9 @@ class StockOut extends DatabaseConnection{
 
 
     
-    function stockOutSelect($invoice, $productId, $batchNo){
+    function stockOutSelect($invoice, $itemId){
         $billData = array();
-        $selectBill = "SELECT * FROM pharmacy_invoice WHERE `invoice_id` = '$invoice' AND `item_id` = '$productId' AND `batch_no` = '$batchNo'";
+        $selectBill = "SELECT * FROM pharmacy_invoice WHERE `invoice_id` = '$invoice' AND `item_id` = '$itemId'";
         $billQuery = $this->conn->query($selectBill);
         while($result = $billQuery->fetch_array()){
             $billData[]	= $result;

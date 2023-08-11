@@ -247,7 +247,7 @@ if (isset($_GET['invoice'])) {
                 //$patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
                 $patientId = "Cash Sales";
 ?>
-                <div class='invoice-item' onclick="getDtls(<?php echo $invoice['invoice_id'] ?> );">
+                <div class='invoice-item' onclick="getDtls('<?php echo $invoice['invoice_id'] ?>','<?php echo $patientId ?>' );">
                     <p><?php echo $patientId ?></p>
                     <small><span class='text-dark'><?php echo $invoice['invoice_id'] ?></span></small>
                 </div>
