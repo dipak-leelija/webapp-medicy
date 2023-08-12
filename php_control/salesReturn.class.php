@@ -61,9 +61,9 @@ class SalesReturn extends DatabaseConnection{
         return $response;
     }
 
-    function salesReturnByID($id, $invoiceId){
+    function salesReturnByID($invoiceId){
         $response = array();
-        $selectSalesReturn = "SELECT * FROM `sales_return` WHERE `id`= '$id' AND `invoice_id` = '$invoiceId'";
+        $selectSalesReturn = "SELECT * FROM `sales_return` WHERE `invoice_id` = '$invoiceId'";
         $query = $this->conn->query($selectSalesReturn);
         while($result = $query->fetch_array()){
             $response[] = $result;
@@ -160,9 +160,9 @@ class SalesReturn extends DatabaseConnection{
 //     ################################################################################################################################
 
 
-    function addReturnDetails($SalesReturnId, $invoiceId, $itemId, $batchNo, $weatage, $exp_date, $qty, $disc, $gst, $amount, $return, $refund, $addedBy){
+    function addReturnDetails($SalesReturnId, $itemId, $batchNo, $weatage, $exp_date, $qty, $disc, $gst, $amount, $return, $refund, $addedBy){
 
-        $insert = "INSERT INTO  sales_return_details (`sales_return_id`, `invoice_id`,	`product_id`, `batch_no`, `weatage`, `exp`, `qty`, `disc`, `gst`,	`taxable`, `return_qty`, `refund_amount`, `added_by`) VALUES  ('$SalesReturnId', '$invoiceId', '$itemId', '$batchNo', '$weatage', '$exp_date', '$qty', '$disc', '$gst', '$amount', '$return', '$refund', '$addedBy')";
+        $insert = "INSERT INTO  sales_return_details (`sales_return_id`, `item_id`, `batch_no`, `weatage`, `exp`, `qty`, `disc`, `gst`,	`taxable`, `return_qty`, `refund_amount`, `added_by`) VALUES  ('$SalesReturnId', '$itemId', '$batchNo', '$weatage', '$exp_date', '$qty', '$disc', '$gst', '$amount', '$return', '$refund', '$addedBy')";
         // echo $insertEmp.$this->conn->error;
         // exit;
         $res = $this->conn->query($insert);

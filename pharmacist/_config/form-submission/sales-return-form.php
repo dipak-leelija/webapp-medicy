@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['sales-return'])) {
 
         //-------Array elements------------------
-        $products   = $_POST['productId'];
+        $itemID   = $_POST['itemId'];
         $batchNo    = $_POST['batchNo'];
         // print_r($batchNo);
         $expdates   = $_POST['expDate'];
@@ -47,7 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $totalGSt   = $_POST['taxable'];
         $returnQty  = $_POST['return'];
         $perItemRefund    = $_POST['refundPerItem'];
-       
+
+
+        // --------------------------------------
+        $itemWeatage = preg_replace('/[a-z]/','',$weatage);
+        $unitType = preg_replace('/[0-9]/','',$weatage);
+        
         //---------------------------------------
 
         $invoice        = $_POST['invoice'];
@@ -63,10 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $invoiceId = str_replace("#", '', $invoice);
 
 
-        echo "<br> Product id : "; print_r($products);
+        echo "<br> Product id : "; print_r($itemID);
         echo "<br> Batch no : "; print_r($batchNo);
         echo "<br> expiry Date : "; print_r($expdates);
         echo "<br> weatage : "; print_r($weatage);
+        echo "<br> Unit Type : "; print_r($unitType);
+        echo "<br> Item weatage : "; print_r($itemWeatage);
         echo "<br> Qantity : "; print_r($qtys);
         echo "<br> MRP : "; print_r($mrp);
         echo "<br> Discount : "; print_r($discs);
@@ -97,83 +104,81 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // $returned = $SalesReturn->addSalesReturn($invoiceId, $sold[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by);
         $returned = true;
 
-        
         if ($returned === true) {
 
-            $count = count($_POST['productId']);
-            $productId = $_POST['productId'];
+            $count = count($_POST['itemId']);
+            $itemId = $_POST['itemId'];
 
-            foreach ($products as $productId) {
+            foreach ($itemId as $itemId) {
 
                 $batch = array_shift($_POST['batchNo']);
                 $qty   = array_shift($_POST['qty']);
                 $returnQTY  = array_shift($_POST['return']);
                 $unit = array_shift($_POST['setof']);
+    
+                $itemWeatage = preg_replace('/[a-z]/','',$unit);
+                $unitType = preg_replace('/[0-9]/','',$unit);
+                
                 $addedBy = '';
-                echo "<br>Prodcut id : $productId";
-                echo "<br>Batch no :$batch";
+                echo "<br><br>Prodcut id : $itemId";
+                echo "<br>Batch no : $batch";
                 echo "<br>Purchase Qty : $qty";
-                echo "<br>return Qty :$returnQTY";
-                echo "<br>unit Type :$unit";
+                echo "<br>return Qty : $returnQTY";
+                echo "<br>unit Type : $unit";
+                echo "<br>Item unit : $unitType";
+                echo "<br>Item weatage : $itemWeatage";
+                
+                echo "<br>";
+                
+                $SalesReturnId = $SalesReturn->salesReturnByID($invoiceId);
+
+                // $success = $SalesReturn->addReturnDetails($SalesReturnId[0]['id'], $itemId, $batch, array_shift($_POST['setof']), array_shift($_POST['expDate']), $qty, array_shift($_POST['disc']), array_shift($_POST['gst']), array_shift($_POST['billAmount']), $returnQTY, array_shift($_POST['refund']), $added_by);
+
+                // ============================ CHECK FROM THIS AREA ===============================
+                // $attribute1 = 'invoice_id';
+                // $data1 = $invoiceId;
+                // $attribute2 = 'item_id';
+                // $data2 = $itemId;
+                // $StockOutDetaisl = $StockOut->stokOutDetailsData($attribute1, $data1, $attribute2, $data2);
+
+                // echo "<br>STOCK OUT DETIALS DATA : ";
+                // print_r($StockOutDetaisl);
+                // echo "<br>";
+                // foreach($StockOutDetaisl as $StockOutDetaisl){
+                //     $StockOutItemUnit = $StockOutDetaisl['unit'];
+                //     if($StockOutItemUnit == 'tab' || $StockOutItemUnit == 'cap'){
+                //         $StockOutQty = $StockOutDetaisl['loosely_count'];
+                //     }else{
+                //         $StockOutQty = $StockOutDetaisl['qty'];
+                //     }
+                // }
                 
 
+                $currentStockDetaisl = $CurrentStock->showCurrentStocById($itemId);
+                echo "<br>CURRENT STOCK DETIALS DATA : ";
+                print_r($currentStockDetaisl);
+                echo "<br><br>";
 
-                // $success = $SalesReturn->addReturnDetails($SalesReturnId, $invoiceId, $productId, $batch, array_shift($_POST['setof']), array_shift($_POST['expDate']), $qty, array_shift($_POST['disc']), array_shift($_POST['gst']), array_shift($_POST['billAmount']), $returnQTY, array_shift($_POST['refund']), $added_by);
-
-    // ================================ CHECK FROM THIS AREA ============================================
-           
-                $stock = $CurrentStock->checkStock($productId, $batch);
-                
-                $salesDetails = $StockOut->stockOutDetailsSelect($invoiceId, $productId, $batch);
-                
-                $pDetails = $StockInDetails->showStockInDetailsByTable('product_id', 'batch_no', $productId, $batch);
-
-                if ($unitType == 'cap' || $unitType == 'tab') {
-                    $pharmacyInvoicDetials = $StockOut->stockOutDetailsById($invoiceId);
-                    foreach ($pharmacyInvoicDetials as $invoiceData) {
-                        // echo"<br>Pharmacy Invoice Detials -->"; print_r($invoiceData);
-                        if ($invoiceData['qty'] == 0) {
-                            if ($returnQTY >= $unitWeatage) {
-                                $looselyCount = $returnQTY;
-                                $returnQTY = ($returnQTY % $unitWeatage);
-                            }
-                            if ($returnQTY < $unitWeatage) {
-                                $looselyCount = $returnQTY;
-                                $returnQTY = 0;
-                            }
-                        }
-                        if ($invoiceData['qty'] != 0) {
-                            $looselyCount = $returnQTY * $unitWeatage;
-                            $returnQTY = $returnQTY;
-                        }
+                foreach($currentStockDetaisl as $currentStockDetaisl){
+                    $currentStockItemUnit = $currentStockDetaisl['unit'];
+                    if($currentStockItemUnit == 'tab' || $currentStockItemUnit == 'cap'){
+                        $curretnStockQty = $currentStockDetaisl['loosely_count'];
+                    }else{
+                        $curretnStockQty = $currentStockDetaisl['qty'];
                     }
-                } else {
-                    $returnQTY = $returnQTY;
-                    $looselyCount = 0;
                 }
 
-                foreach ($stock as $currentStock) {
-                    $currentStockQTY = $currentStock['qty'];
-                    $currentStockLQTY = $currentStock['loosely_count'];
-                }
+                echo "<br>Current Stock item quantity : $curretnStockQty";
 
-
-                if ($unitType == 'cap' || $unitType == 'tab') {
-                    $newQuantity = $currentStockQTY + $returnQTY;
-                    $newLCount = $currentStockLQTY + $looselyCount;
-                    $newQuantity = $newLCount / $unitWeatage;
-                } else {
-                    $newQuantity = $currentStockQTY + $returnQTY;
-                    $newLCount = $currentStockLQTY + $looselyCount;
-                    // $newQuantity = $newLCount / $unitWeatage;
-                }
+                $currentStockUpdatedQty = intval($curretnStockQty) + intval($returnQTY);
+                echo "<br>CURRENT STOCK UPDATED QTY : $currentStockUpdatedQty";
 
                 
-                // ============================= CURRENT STOCK UPDATE STRING =======================
+                // ========================= CURRENT STOCK UPDATE STRING ============================
 
                 // $CurrentStock->updateStock($productId, $batch, $newQuantity, $newLCount);
 
-                // ====================================================================================
+    // ====================================================================================================
               
                 // if (count($stock) == 0 || $stock == '') {
                 //     // (float) filter_var( $uWeightage, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION )

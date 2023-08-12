@@ -190,18 +190,18 @@ class StockOut extends DatabaseConnection{
         return $billData;
     }// eof stockOutDisplayById 
 
-    // function salesReturnDetails($invoice, $productId, $batchNo){
-    //     $salesReturn = array();
-    //     $selectBill = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoice' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
+    function stokOutDetailsData($table1, $data1, $table2, $data2){
+        $stockOutSelect = array();
+        $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table1` = '$data1' AND `$table2` = '$data2'";
         
-    //     $salesReturnQury = $this->conn->query($selectBill);
+        $stockOutDataQuery = $this->conn->query($selectBill);
 
-    //     while($result = $salesReturnQury->fetch_array()){
-    //         $salesReturn[]	= $result;
-    //     }
-    //     return $salesReturn;
+        while($result = $stockOutDataQuery->fetch_array()){
+            $stockOutSelect[]	= $result;
+        }
+        return $stockOutSelect;
 
-    // }//end of sales return details query
+    }//eof stockOut details by tabel and data
 
     function stockOutDetailsSelect($invoice, $productId, $batchNo){
 

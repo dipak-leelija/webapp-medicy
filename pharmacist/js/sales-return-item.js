@@ -88,8 +88,6 @@ const getReturnDate = (date) => {
 
 const getDtls = (invoiceId, customerId) => {
 
-    document.getElementById("invoice").value = invoiceId;
-
     if (invoiceId != "" && customerId != "") {
 
         //==================== Reff By ====================
@@ -275,8 +273,20 @@ const addData = () => {
     let taxable = document.getElementById("taxable").value;
     let billAmount = document.getElementById("bill-amount").value;
     
-    
+    //============================ set and filter invoice number ==================================
     let invoiceNo = document.getElementById("invoice-no").value;
+    let returnInvoiceId = document.getElementById('invoice').value;
+    if(returnInvoiceId != ""){
+        if(returnInvoiceId != invoiceNo){
+            window.alert("INVOICE NUMBER CHANGED");
+            window.location.reload();
+        }
+    }else{
+        document.getElementById('invoice').value = invoiceNo;
+    }
+
+    //=============================================================================================
+
     let refundMode = document.getElementById("refund-mode").value;
     
     let returnQtyVal = document.getElementById("return").value;
@@ -460,7 +470,7 @@ const addData = () => {
             <td class="pt-3" style="font-size: 0.7rem;">${slno}</td>
             <td class="pt-3">
                 <input class="table-data w-10r" type="text" value="${itemName}" readonly style="font-size: .65rem;">
-                <input class="d-none" type="text" name="productId[]" value="${itemList.value}">
+                <input class="" type="text" name="itemId[]" value="${itemList.value}">
 
             </td>
             <td class="pt-3">
