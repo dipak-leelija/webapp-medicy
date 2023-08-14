@@ -244,7 +244,7 @@ $doctor = $Doctors->showDoctors();
                                         </div>
 
                                         <div class="d-flex col-md-12">
-                                            <div class="p-2 bg-light col-md-6" id="searched-items" style="max-height: 15rem; max-width: 100%; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">
+                                            <div class="p-2 bg-light col-md-6" id="searched-items"style="max-height: 15rem; max-width: 100%; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">
                                             </div>
 
                                             <div class="p-2 bg-light col-md-3" id="searched-batchNo" style="max-height: 7rem; max-width: 30rem; margin-left: 19rem; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">

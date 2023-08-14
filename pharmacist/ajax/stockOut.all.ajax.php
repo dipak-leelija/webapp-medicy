@@ -101,25 +101,48 @@ if (isset($_GET["p_qty"])) {
 // get product current qty
 if (isset($_GET["qty"])) {
     $invoice = $_GET["qty"];
-    $productId = $_GET["p-id"];
+    $itemId = $_GET["p-id"];
     $batchNo = $_GET["batch"];
     $totalReturnQTY = 0;
 
-    $item = $StockOut->stockOutSelect($invoice, $productId); // details from phermacy invoice
+    $item = $StockOut->stockOutSelect($invoice, $itemId); // details from phermacy invoice
     $itemWeatage = $item[0]['weatage'];
     $itemType = preg_replace('/[0-9]/', '', $itemWeatage);
 
-    $itemChek = $salesReturn->salesReturnDetialSelect($invoice, $productId, $batchNo);
-    for($i = 0; $i<count($itemChek); $i++){
-        $totalReturnQTY = $itemChek[$i]['return'];
+    $table = 'invoice_id';
+    $salesReturnData = $salesReturn->selectSalesReturn($table, $invoice);
+    if($salesReturnData != null){
+        $id = $salesReturnData[0]['id'];
+    }else{
+        $id = null;
     }
-    //echo $totalReturnQTY;
+
+    $tabel1 = 'sales_return_id';
+    $tabel2 = 'item_id';
+    $itemChek = $salesReturn->seletReturnDetailsBy($tabel1, $id, $tabel2, $itemId);
+    foreach($itemChek as $itemChek){
+        $totalReturnQTY = $itemChek['return'];
+    }
+
+    if($salesReturnData != null){
+        if($itemChek != null){
+            $totalReturnQTY = $totalReturnQTY;
+        }else{
+            $totalReturnQTY = 0;
+        }
+
+    }else{
+        $totalReturnQTY = 0;
+    }
+    
     if($itemType == 'tab' || $itemType == 'cap'){
-        echo ($item[0]['loosely_count'] - $totalReturnQTY); 
+        $currentQty = ($item[0]['loosely_count'] - intval($totalReturnQTY)); 
     }
     else{ 
-        echo $item[0]['qty'] - $totalReturnQTY;  
+        $currentQty =  $item[0]['qty'] - intval($totalReturnQTY);  
     }
+
+    echo $currentQty;
 }
 
 // get product discount

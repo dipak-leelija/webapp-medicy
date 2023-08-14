@@ -180,8 +180,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input type="text" class="upr-inp" name="gst" id="gst" readonly>
                                     </div>
 
-                                    <div class="col-md-1 col-6 mt-3">
-                                        <label class="mb-0 mt-1" for="taxable">Taxable</label>
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="taxable">Sales Taxable</label>
                                         <input type="any" class="upr-inp" name="taxable" id="taxable">
                                     </div>
                                     <div class="col-md-1 col-6 mt-3">
@@ -194,8 +194,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input type="number" class="upr-inp" name="return" id="return" onkeyup="getRefund(this.value)" required>
                                     </div>
 
-                                    <div class="d-none col-md-1 col-6 mt-3">
-                                        <label class="mb-0 mt-1" for="return">Refund Taxable</label>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="return">Taxable</label>
                                         <input type="number" class="upr-inp" name="refund-taxable" id="refund-taxable" onkeyup="getRefund(this.value)" required>
                                     </div>
 

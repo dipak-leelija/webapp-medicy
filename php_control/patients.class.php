@@ -83,7 +83,7 @@ class Patients extends DatabaseConnection{
 
     function patientsDisplayById($patientId){
         $data = array();
-        $selectById = "SELECT * FROM patient_details WHERE `patient_details`.`id`= '$patientId'";
+        $selectById = "SELECT * FROM patient_details WHERE `id`= '$patientId'";
         $selectByIdQuery = $this->conn->query($selectById);
         // echo var_dump($selectByIdQuery);
         while($result = $selectByIdQuery->fetch_array()){

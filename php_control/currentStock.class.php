@@ -34,7 +34,7 @@ class CurrentStock extends DatabaseConnection{
     }//eof incrementCurrentStock function 
 
 
-// ========================== CURRENT STOCK UPDATE AFTER PURCHASE RETURN =============================
+// ========================== CURRENT STOCK UPDATE AFTER sales RETURN =============================
 
     function updateStockBStockDetialsId($stockInDetailsId, $newQuantity, $newLCount){
         $sale = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count` = '$newLCount' WHERE `stock_in_details_id` = '$stockInDetailsId'";
@@ -42,16 +42,16 @@ class CurrentStock extends DatabaseConnection{
         return $res;
     }//eof updateStock
 
-    //================ END OF CURRENT STOCK UPDATE AFTER PURCHASE RETURN =============
 
-
-    function updateStock($productId, $batchNo, $newQuantity, $newLCount){
-        $sale = " UPDATE `current_stock` SET qty = '$newQuantity', loosely_count = '$newLCount' WHERE product_id = '$productId' AND batch_no = '$batchNo'";
+    function updateStockByItemId($id, $newQty, $newLqty){
+        $sale = " UPDATE `current_stock` SET qty = '$newQty', loosely_count = '$newLqty' WHERE `id` = '$id'";
         $res = $this->conn->query($sale);
         return $res;
     }//eof updateStock
 
-    //============= current stock update after edting purchase return ================== RD===========
+
+    // ==================== CURRENT STOCK UPDATE UPDATE SLESE RETURN EDIT =====================
+    
     function updateStockByReturnEdit($stokInDetaislId, $newQuantity, $newLCount){
         $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `current_stock`.`stock_in_details_id` = '$stokInDetaislId'";
         $res = $this->conn->query($editUpdate);

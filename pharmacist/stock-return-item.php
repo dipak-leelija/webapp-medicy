@@ -15,22 +15,8 @@ $page = "stock-return";
 //objects Initilization
 // $Products           = new Products();
 $Distributor        = new Distributor();
-// $Manufacturer       = new Manufacturer();
-// $MeasureOfUnits     = new MeasureOfUnits();
-// $StockIn            = new StockIn();
-// $CurrentStock       = new CurrentStock();
-// $PackagingUnits     = new PackagingUnits();
-
-
-//function's called
-// $showStockIn           = $StockIn->showStockIn();
-// $showProducts          = $Products->showProducts();
 $showDistributor       = $Distributor->showDistributor();
-// $showManufacturer      = $Manufacturer->showManufacturer();
-// $showMeasureOfUnits    = $MeasureOfUnits->showMeasureOfUnits();
-// $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
- 
 ?>
 
 <!DOCTYPE html>

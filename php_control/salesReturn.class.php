@@ -160,9 +160,9 @@ class SalesReturn extends DatabaseConnection{
 //     ################################################################################################################################
 
 
-    function addReturnDetails($SalesReturnId, $itemId, $batchNo, $weatage, $exp_date, $qty, $disc, $gst, $amount, $return, $refund, $addedBy){
+    function addReturnDetails($SalesReturnId, $itemId, $batchNo, $weatage, $exp_date, $disc, $gst, $taxable, $returnQty, $refund){
 
-        $insert = "INSERT INTO  sales_return_details (`sales_return_id`, `item_id`, `batch_no`, `weatage`, `exp`, `qty`, `disc`, `gst`,	`taxable`, `return_qty`, `refund_amount`, `added_by`) VALUES  ('$SalesReturnId', '$itemId', '$batchNo', '$weatage', '$exp_date', '$qty', '$disc', '$gst', '$amount', '$return', '$refund', '$addedBy')";
+        $insert = "INSERT INTO  sales_return_details (`sales_return_id`, `item_id`, `batch_no`, `weatage`, `exp`, `disc`, `gst`,	`taxable`, `return_qty`, `refund_amount`) VALUES  ('$SalesReturnId', '$itemId', '$batchNo', '$weatage', '$exp_date', '$disc', '$gst', '$taxable', '$returnQty', '$refund')";
         // echo $insertEmp.$this->conn->error;
         // exit;
         $res = $this->conn->query($insert);
@@ -171,8 +171,8 @@ class SalesReturn extends DatabaseConnection{
     }//end addPharmacyBillDetails function
 
 
+    //--------------------fetch sales return details table data----------------RD--------------
 
-    
     function selectSalesReturnList($table, $data){
         $res = array();
         $sql = "SELECT * FROM sales_return_details WHERE `$table` = '$data'";
@@ -182,9 +182,6 @@ class SalesReturn extends DatabaseConnection{
         }
         return $res;
     }//end stockOutDetailsById function
-
-
-    //--------------------fetch sales return details table data----------------RD--------------
 
     function salesReturnDetialSelect($invoiceId, $productId, $batchNo){
         $response = array();
@@ -206,9 +203,9 @@ class SalesReturn extends DatabaseConnection{
         return $response;
     }
 
-    function salesReturnIdandProductId($salesRetundId, $ProductID){
+    function seletReturnDetailsBy($table1, $data1, $table2, $data2){
         $response = array();
-        $salesReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `product_id` = '$ProductID' AND `sales_return_id`='$salesRetundId'";
+        $salesReturnDetailsData = "SELECT * FROM `sales_return_details` WHERE `$table1` = '$data1' AND `$table2`='$data2'";
         $query = $this->conn->query($salesReturnDetailsData);
         while($result = $query->fetch_array()){
             $response[] = $result;

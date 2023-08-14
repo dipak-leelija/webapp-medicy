@@ -19,7 +19,7 @@ $PackagingUnits = new PackagingUnits();
 
 require_once '../../employee/config/dbconnect.php';
 
-$searchResult = FALSE;
+$searchResult = null;
 if (isset($_GET['data'])) {
     $data = $_GET['data'];
 
@@ -28,7 +28,7 @@ if (isset($_GET['data'])) {
     // $searchResult = $Search->searchForSale($data);
 }
 
-if ($searchResult) {
+if ($searchResult != null) {
 
     // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";
 ?>
@@ -101,7 +101,10 @@ if ($searchResult) {
 <?php
 
     }
-} else {
-    echo "Result Not Found";
+} 
+else{
+    echo '<div class="row border-bottom border-primary small mx-0 mb-2">
+    "Result Not Found";
+    </div>';
 }
 ?>

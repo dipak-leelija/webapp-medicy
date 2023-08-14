@@ -62,7 +62,7 @@ const getCustomer = (invoice) => {
         billDate.value = "";
         reffBy.value = "";
 
-        currentItemID.value ="";
+        currentItemID.value = "";
         expDate.value = "";
         unit.value = "";
         batch.value = "";
@@ -153,7 +153,7 @@ const getItemDetails = (t) => {
         xmlhttp.open("GET", expUrl, false);
         xmlhttp.send(null);
         expDate.value = xmlhttp.responseText;
-        
+
         //==================== Unit ====================
         let unitUrl = `ajax/stockOut.all.ajax.php?unit=${invoice}&p-id=${itemId}`;
         xmlhttp.open("GET", unitUrl, false);
@@ -176,14 +176,14 @@ const getItemDetails = (t) => {
         xmlhttp.open("GET", purchaseqtyUrl, false);
         xmlhttp.send(null);
         purchaseQuantity.value = xmlhttp.responseText;
-        
+
         //==================== QTY ====================
         let qtyUrl = `ajax/stockOut.all.ajax.php?qty=${invoice}&p-id=${itemId}&batch=${batchNo}`;
         xmlhttp.open("GET", qtyUrl, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText)
         qty.value = xmlhttp.responseText;
-        
+
         //==================== DISC ====================
         let discUrl = `ajax/stockOut.all.ajax.php?disc=${invoice}&p-id=${itemId}`;
         xmlhttp.open("GET", discUrl, false);
@@ -195,7 +195,7 @@ const getItemDetails = (t) => {
         xmlhttp.open("GET", gstUrl, false);
         xmlhttp.send(null);
         gst.value = xmlhttp.responseText;
-        
+
         //==================== Taxable ====================
         let taxableUrl = `ajax/stockOut.all.ajax.php?taxable=${invoice}&p-id=${itemId}`;
         xmlhttp.open("GET", taxableUrl, false);
@@ -213,8 +213,10 @@ const getItemDetails = (t) => {
         returnQtyVal.value = "";
         refundAmount.value = "";
 
+        document.getElementById('return').focus();
+
     } else {
-        currentItemID.value ="";
+        currentItemID.value = "";
         expDate.value = "";
         unit.value = "";
         batchNo.value = "";
@@ -224,36 +226,35 @@ const getItemDetails = (t) => {
         discount.value = "";
         gst.value = "";
         taxable.value = "";
-        refundAmount.value ="";
+        refundAmount.value = "";
         billAmount.value = "";
     }
 }
 
 const getRefund = (returnQty) => {
-// console.log(returnQty);
-    if (returnQty != '') {
-        if (parseFloat(returnQty) <= parseFloat(qty.value)) {
-            let calculatedRefundAmount = (parseFloat(billAmount.value) / parseInt(purchaseQuantity.value)) * returnQty;
-            let calculatedRefundTaxable = (parseFloat(taxable.value) / parseInt(purchaseQuantity.value)) * returnQty;
-            document.getElementById("refund").value = calculatedRefundAmount;
-            document.getElementById("refund-taxable").value = calculatedRefundTaxable;
-        } else {
-            document.getElementById("refund").value = '';
-            document.getElementById("add-btn").disabled = true;
-            swal({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Inserted value might be grater than sold qty.',
-              })
-        }
-    } else {
-        // swal("Return Quantity can not be blank.");
+    let currenQty = document.getElementById('qty').value;
+
+    console.log(currenQty);
+    console.log(returnQty);
+
+    if (parseInt(returnQty) <= parseInt(currenQty)) {
+        let calculatedRefundAmount = (parseFloat(billAmount.value) / parseInt(purchaseQuantity.value)) * returnQty;
+        let calculatedRefundTaxable = (parseFloat(taxable.value) / parseInt(purchaseQuantity.value)) * returnQty;
+        document.getElementById("refund").value = calculatedRefundAmount;
+        document.getElementById("refund-taxable").value = calculatedRefundTaxable;
+    } 
+
+    if (parseInt(returnQty) > parseInt(currenQty)) {
         document.getElementById("refund").value = '';
         document.getElementById("add-btn").disabled = true;
+        swal({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Inserted value might be grater than sold qty.',
+        })
     }
 }
 
-// console.log(xmlhttp.responseText);
 
 // ##################################################################################
 // ##################################################################################
@@ -272,23 +273,23 @@ const addData = () => {
     let gst = document.getElementById("gst").value;
     let taxable = document.getElementById("taxable").value;
     let billAmount = document.getElementById("bill-amount").value;
-    
+
     //============================ set and filter invoice number ==================================
     let invoiceNo = document.getElementById("invoice-no").value;
     let returnInvoiceId = document.getElementById('invoice').value;
-    if(returnInvoiceId != ""){
-        if(returnInvoiceId != invoiceNo){
+    if (returnInvoiceId != "") {
+        if (returnInvoiceId != invoiceNo) {
             window.alert("INVOICE NUMBER CHANGED");
             window.location.reload();
         }
-    }else{
+    } else {
         document.getElementById('invoice').value = invoiceNo;
     }
 
     //=============================================================================================
 
     let refundMode = document.getElementById("refund-mode").value;
-    
+
     let returnQtyVal = document.getElementById("return").value;
     let refundTaxable = document.getElementById("refund-taxable").value;
     refundTaxable = parseFloat(refundTaxable);
@@ -297,172 +298,172 @@ const addData = () => {
 
 
 
-        if (invoiceNo.value == "") {
-            swal("Failed!", "Please Select invoice no!", "error");
-            invoiceNo.focus();
-            return;
-        }
+    if (invoiceNo.value == "") {
+        swal("Failed!", "Please Select invoice no!", "error");
+        invoiceNo.focus();
+        return;
+    }
 
-        if (patientName.value == "") {
-            swal("Failed!", "Patient name must be not noull", "error");
-            patientName.focus();
-            return;
-        }
-
-
-        if (billDate.value == "") {
-            swal("Failed!", "Please enter Date!", "error");
-            billDate.focus();
-            return;
-        }
-
-        if (reffBy.value == "") {
-            swal("Failed!", "Doctor name must be not null", "error");
-            reffBy.focus();
-            return;
-        }
+    if (patientName.value == "") {
+        swal("Failed!", "Patient name must be not noull", "error");
+        patientName.focus();
+        return;
+    }
 
 
-        if (refundMode.value == "") {
-            swal("Failed!", "Please Select refund mode!", "error");
-            refundMode.focus();
-            return;
-        }
+    if (billDate.value == "") {
+        swal("Failed!", "Please enter Date!", "error");
+        billDate.focus();
+        return;
+    }
 
-        if (itemList.value == "") {
-            swal("Failed!", "Please Select returning item!", "error");
-            itemList.focus();
-        } else {}
+    if (reffBy.value == "") {
+        swal("Failed!", "Doctor name must be not null", "error");
+        reffBy.focus();
+        return;
+    }
 
-        if (currentItemID.value == "") {
-            swal("Failed!", "Please select an item", "error");
-            expDate.focus();
-            return;
-        }
 
-        if (expDate.value == "") {
-            swal("Failed!", "Expiary date must be not null!", "error");
-            expDate.focus();
-            return;
-        }
+    if (refundMode.value == "") {
+        swal("Failed!", "Please Select refund mode!", "error");
+        refundMode.focus();
+        return;
+    }
 
-        if (unit.value == "") {
-            swal("Failed!", "Unit value must be not null!", "error");
-            unit.focus();
-            return;
-        }
+    if (itemList.value == "") {
+        swal("Failed!", "Please Select returning item!", "error");
+        itemList.focus();
+    } else { }
 
-        if (batch.value == "") {
-            swal("Failed!", "Batch number must be not null", "error");
-            batch.focus();
-            return;
-        }
+    if (currentItemID.value == "") {
+        swal("Failed!", "Please select an item", "error");
+        expDate.focus();
+        return;
+    }
 
-        if (mrp.value == "") {
-            swal("Failed!", "MRP must be not null!", "error");
-            mrp.focus();
-            return;
-        }
+    if (expDate.value == "") {
+        swal("Failed!", "Expiary date must be not null!", "error");
+        expDate.focus();
+        return;
+    }
 
-        if (qty.value == "") {
-            swal("Failed!", "Qantity must be not null", "error");
-            qty.focus();
-            return;
-        }
+    if (unit.value == "") {
+        swal("Failed!", "Unit value must be not null!", "error");
+        unit.focus();
+        return;
+    }
 
-        if (discount.value == "") {
-            swal("Failed!", "Discount must be not null", "error");
-            discount.focus();
-            return;
-        }
+    if (batch.value == "") {
+        swal("Failed!", "Batch number must be not null", "error");
+        batch.focus();
+        return;
+    }
 
-        if (gst.value == "") {
-            swal("Failed!", "GST must be not null!", "error");
-            gst.focus();
-            return;
-        }
+    if (mrp.value == "") {
+        swal("Failed!", "MRP must be not null!", "error");
+        mrp.focus();
+        return;
+    }
 
-        if (taxable.value == "") {
-            swal("Failed!", "taxable must be not null!", "error");
-            taxable.focus();
-            return;
-        }
+    if (qty.value == "") {
+        swal("Failed!", "Qantity must be not null", "error");
+        qty.focus();
+        return;
+    }
 
-        if (billAmount.value == "") {
-            swal("Failed!", "bill amount must be not null!", "error");
-            billAmount.focus();
-            return;
-        }
+    if (discount.value == "") {
+        swal("Failed!", "Discount must be not null", "error");
+        discount.focus();
+        return;
+    }
 
-        if (returnQtyVal.value == "") {
-            swal("Failed!", "return qantity must be not null!", "error");
-            returnQtyVal.focus();
-            return;
-        }
+    if (gst.value == "") {
+        swal("Failed!", "GST must be not null!", "error");
+        gst.focus();
+        return;
+    }
 
-        if (refundTaxable.value == "") {
-            swal("Failed!", "refund amount must be not null!", "error");
-            refund.focus();
-            return;
-        }
+    if (taxable.value == "") {
+        swal("Failed!", "taxable must be not null!", "error");
+        taxable.focus();
+        return;
+    }
 
-        if (refundAmount.value == "") {
-            swal("Failed!", "refund amount must be not null!", "error");
-            refund.focus();
-            return;
-        }
+    if (billAmount.value == "") {
+        swal("Failed!", "bill amount must be not null!", "error");
+        billAmount.focus();
+        return;
+    }
 
-        let existsItems = document.querySelectorAll('tr');
-        for (let i = 0; i < existsItems.length; i++) {
-            if (i > 0) {
+    if (returnQtyVal.value == "") {
+        swal("Failed!", "return qantity must be not null!", "error");
+        returnQtyVal.focus();
+        return;
+    }
 
-                const item = existsItems[i];
-                if (item.childNodes[5].childNodes[3].value == itemList.value) {
-                    swal("You can not add same item more than one!");
-                    expDate.value = "";
-                    unit.value = "";
-                    batch.value = "";
-                    mrp.value = "";
-                    qty.value = "";
-                    discount.value = "";
-                    gst.value = "";
-                    taxable.value = "";
-                    billAmount.value = "";
-                    refundTaxable.value = "";
-                    refundAmount.value = "";
-                    return;
-                }
+    if (refundTaxable.value == "") {
+        swal("Failed!", "refund amount must be not null!", "error");
+        refund.focus();
+        return;
+    }
+
+    if (refundAmount.value == "") {
+        swal("Failed!", "refund amount must be not null!", "error");
+        refund.focus();
+        return;
+    }
+
+    let existsItems = document.querySelectorAll('tr');
+    for (let i = 0; i < existsItems.length; i++) {
+        if (i > 0) {
+
+            const item = existsItems[i];
+            if (item.childNodes[5].childNodes[3].value == itemList.value) {
+                swal("You can not add same item more than one!");
+                expDate.value = "";
+                unit.value = "";
+                batch.value = "";
+                mrp.value = "";
+                qty.value = "";
+                discount.value = "";
+                gst.value = "";
+                taxable.value = "";
+                billAmount.value = "";
+                refundTaxable.value = "";
+                refundAmount.value = "";
+                return;
             }
-
         }
 
-        let itemName = itemList.selectedOptions[0].text;
+    }
 
-        let items = document.querySelectorAll('tr');
-        let slno = items.length;
-        document.getElementById("total-items").value = slno;
+    let itemName = itemList.selectedOptions[0].text;
 
-        //total Refund Amount
-        var totalRefund = document.getElementById("refund-amount");
-        let netRefund = parseFloat(totalRefund.value) + parseFloat(refundAmount);
-        // console.log(netRefund);
-        totalRefund.value = netRefund.toFixed(2);
-        
-        //total item qty
-        var totalQty = document.getElementById("total-qty");
-        let totalQtyTemp = parseFloat(totalQty.value) + parseFloat(returnQtyVal);
-        totalQty.value = totalQtyTemp;
+    let items = document.querySelectorAll('tr');
+    let slno = items.length;
+    document.getElementById("total-items").value = slno;
 
-        // generate gst amount on refund
-        var netGstAmount = document.getElementById("gst-amount");
-        var totalGstAmount = parseFloat(refundAmount) - parseFloat(refundTaxable);
-        netGstAmount.value = totalGstAmount.toFixed(2);
-        let gstPerItem = totalGstAmount.toFixed(2);
-        
-        const appendData = () => {
+    //total Refund Amount
+    var totalRefund = document.getElementById("refund-amount");
+    let netRefund = parseFloat(totalRefund.value) + parseFloat(refundAmount);
+    // console.log(netRefund);
+    totalRefund.value = netRefund.toFixed(2);
 
-            jQuery("#dataBody")
-                .append(`<tr id="table-row-${slno}">
+    //total item qty
+    var totalQty = document.getElementById("total-qty");
+    let totalQtyTemp = parseFloat(totalQty.value) + parseFloat(returnQtyVal);
+    totalQty.value = totalQtyTemp;
+
+    // generate gst amount on refund
+    var netGstAmount = document.getElementById("gst-amount");
+    var totalGstAmount = parseFloat(refundAmount) - parseFloat(refundTaxable);
+    netGstAmount.value = totalGstAmount.toFixed(2);
+    let gstPerItem = totalGstAmount.toFixed(2);
+
+    const appendData = () => {
+
+        jQuery("#dataBody")
+            .append(`<tr id="table-row-${slno}">
             <td class='text-danger pt-3'>
                 <i class="fas fa-trash" id="${slno}"
                     onclick="deleteData(this.id, ${parseFloat(returnQtyVal)}, ${gstPerItem}, ${refundAmount.toFixed(2)})"></i>
@@ -470,7 +471,7 @@ const addData = () => {
             <td class="pt-3" style="font-size: 0.7rem;">${slno}</td>
             <td class="pt-3">
                 <input class="table-data w-10r" type="text" value="${itemName}" readonly style="font-size: .65rem;">
-                <input class="" type="text" name="itemId[]" value="${itemList.value}">
+                <input class="d-none" type="text" name="itemId[]" value="${itemList.value}">
 
             </td>
             <td class="pt-3">
@@ -506,18 +507,18 @@ const addData = () => {
             <input class="table-data w-3r" type="any" name="refundPerItem[]" value="${refundAmount.toFixed(2)}" readonly style="font-size: 0.65rem;">
             </td>
         </tr>`);
-            return true;
-        };
+        return true;
+    };
 
-        if (appendData() == true) {
-            itemList.remove(itemList.selectedIndex);
-            itemList.options[0].selected = true;
+    if (appendData() == true) {
+        itemList.remove(itemList.selectedIndex);
+        itemList.options[0].selected = true;
 
-           
 
-        }
-        document.getElementById("return-item-details").reset();
-    } //eof addData  
+
+    }
+    document.getElementById("return-item-details").reset();
+} //eof addData  
 
 
 
