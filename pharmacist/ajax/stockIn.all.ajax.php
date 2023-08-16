@@ -72,12 +72,35 @@ if (isset($_GET["discount"])) {
     }
 }
 
-//get taxableUrl
-if (isset($_GET["taxableUrl"])) {
-    $id = $_GET["taxableUrl"];
+//get base price per item
+if (isset($_GET["base"])) {
+    $id = $_GET["base"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
+    if ($stock > 0) {
+        echo $stock[0]['base'];
+    }
+}
+
+//get gst amount
+if (isset($_GET["gstAmountUrl"])) {
+    $id = $_GET["gstAmountUrl"];
     $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['gst_amount'];
+    }
+}
+
+if (isset($_GET["taxable"])) {
+    $id = $_GET["taxable"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
+    if ($stock > 0) {
+        foreach($stock as $stockInData){
+            $itemPtr = $stockInData['ptr'];
+            $discPercent = $stockInData['discount'];
+            $qty = $stockInData['qty'];
+            $taxable = (floatval($itemPtr) - (floatval($itemPtr) * floatval($discPercent)/100)) * $qty;
+            echo $taxable;
+        }
     }
 }
 

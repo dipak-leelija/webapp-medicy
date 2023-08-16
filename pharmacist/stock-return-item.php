@@ -41,7 +41,7 @@ $showDistributor       = $Distributor->showDistributor();
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/custom/stock-in.css">
+    <link rel="stylesheet" href="css/custom/stock-return-item.css">
 
 
 </head>
@@ -75,10 +75,9 @@ $showDistributor       = $Distributor->showDistributor();
                     <div class="card shadow mb-3">
                         <div class="card-body">
                             <div class="row ">
-                                <div class="col-md-3 col-12 ">
-
+                                <div class="col-md-2 col-12 ">
                                     <label class="mb-1 mt-3" for="distributor-id">Distributor :</label>
-                                    <select class="upr-inp mb-1" id="distributor-id" onchange="getItemList(this)">
+                                    <select class="upr-inp mb-1" id="distributor-id" onchange="getBillList(this)">
                                         <option value="" disabled selected>Select Distributor</option>
                                         <?php
                                                 foreach($showDistributor as $rowDistributor){
@@ -90,19 +89,34 @@ $showDistributor       = $Distributor->showDistributor();
                                     </select>
                                 </div>
 
-                                <div class="col-md-7 col-12 ">
+                                <div class="col-md-3 col-12 ">
+                                    <label for="product-name" class="mb-1 mt-3">Select Bill No.</label>
+                                    <input class="upr-inp mb-1" id="select-bill-no" name="select-bill-no"
+                                        placeholder="Search Product" onkeyup="getItemList(this.value)"
+                                        autocomplete="off">
+                                    <!-- onchange="getDtls(this);" -->
+                                    <div class="p-2 bg-light " id="select-bill" style="max-height: 15rem; max-width: 100%; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">
+                                        <div class="m-0 text-danger text-center">
+                                            <b> Select Distributor First </b>
+                                        </div>
+                                    </div>
+                                    <input type="text" id="bill-no" hidden>
+                                </div>
+
+                                <div class="col-md-5 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
                                     <input class="upr-inp mb-1" id="product-name" name="product-name"
                                         placeholder="Search Product" onkeyup="searchItem(this.value)"
                                         autocomplete="off">
                                     <!-- onchange="getDtls(this);" -->
-                                    <div class="p-2 bg-light " id="product-select">
+                                    <div class="p-2 bg-light " id="product-select" >
                                         <div class="m-0 text-danger text-center">
                                             <b> Select Distributor First </b>
                                         </div>
                                     </div>
                                     <input type="text" id="product-id" hidden>
                                 </div>
+
 
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
                                     <label class="mb-1 mt-3" for="return-mode">Return Mode :</label>
@@ -119,9 +133,7 @@ $showDistributor       = $Distributor->showDistributor();
                                         <option value="Net Banking">Net Banking</option>
                                     </select>
                                 </div>
-
                             </div>
-                            <hr>
 
                             <div class="row">
                                 <div class="col-md-6 col-12 ">
@@ -130,13 +142,17 @@ $showDistributor       = $Distributor->showDistributor();
                                             <label class="mb-1 mt-3" for="stokInDetailsId">Stock In Detaisl Id :</label>
                                             <input class="upr-inp mb-1" id="stokInDetailsId" readonly>
                                         </div>
-                                        <div class="col-md-6 col-12">
+                                        <div class="col-md-4 col-12">
                                             <label class="mb-1 mt-3" for="batch-number">Batch Number :</label>
                                             <input class="upr-inp mb-1" id="batch-number" readonly>
                                         </div>
-                                        <div class="col-md-6 col-12">
+                                        <div class="col-md-4 col-12">
                                             <label class="mb-1 mt-3" for="bill-date">Purchase Date :</label>
                                             <input class="upr-inp mb-1" id="bill-date" readonly>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <label class="mb-1 mt-3" for="exp-date">Expiry</label>
+                                            <input class="upr-inp mb-1" type="text" id="exp-date" readonly>
                                         </div>
                                     </div>
 
@@ -151,10 +167,10 @@ $showDistributor       = $Distributor->showDistributor();
                                 <div class="col-md-6 col-12 mt-3">
                                     <!-- first row  -->
                                     <div class="row">
-                                        <div class="col-md-3 col-6">
+                                        <!-- <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="exp-date">Expiry</label>
                                             <input class="upr-inp" type="text" id="exp-date" readonly>
-                                        </div>
+                                        </div> -->
 
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="scheme">Weatage</label>
@@ -166,6 +182,10 @@ $showDistributor       = $Distributor->showDistributor();
                                             <input type="text" class="upr-inp" id="unit" value="" readonly>
                                         </div>
 
+                                        <div class="col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="mrp">MRP</label>
+                                            <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
+                                        </div>
 
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="ptr">PTR</label>
@@ -179,11 +199,11 @@ $showDistributor       = $Distributor->showDistributor();
                                         <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="discount">Disc% </label>
                                             <input type="text" class="upr-inp" name="discount" id="discount"
-                                                placeholder="Discount Percentage" value="0" readonly>
+                                                value="0" readonly>
                                         </div>
 
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="gst">GST</label>
+                                            <label class="mb-0 mt-1" for="gst">GST%</label>
                                             <input type="text" class="upr-inp" name="gst" id="gst" readonly>
                                         </div>
 
@@ -193,14 +213,19 @@ $showDistributor       = $Distributor->showDistributor();
                                         </div>
 
                                         <div class="col-md-3 col-6">
+                                            <label class="mb-0 mt-1" for="taxable">Base Price</label>
+                                            <input type="any" class="upr-inp" name="base" id="base" readonly>
+                                        </div>
+
+                                        <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="taxable">Taxable</label>
                                             <input type="any" class="upr-inp" name="taxable" id="taxable" readonly>
                                         </div>
 
-                                        <div class="col-md-3 col-6">
+                                        <!-- <div class="col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="mrp">MRP</label>
                                             <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
-                                        </div>
+                                        </div> -->
 
 
                                     </div>
@@ -258,7 +283,7 @@ $showDistributor       = $Distributor->showDistributor();
                                         </div> 
                                     </div> -->
                                     <!-- end fourth row  -->
-
+ 
                                     <!-- fifth row  -->
                                     <div class="row mt-md-2">
                                         <div class="col-md-3 col-6">
@@ -302,10 +327,7 @@ $showDistributor       = $Distributor->showDistributor();
                             </div> -->
 
                         </div>
-                        <div class="row">
 
-                            <!-- </form> -->
-                        </div>
                     </div>
                     <!-- /end Add Product  -->
 
@@ -332,8 +354,8 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <th scope="col">Free</th>
                                                 <th scope="col">MRP</th>
                                                 <th scope="col">PTR</th>
-                                                <th scope="col">P.Amnt</th>
-                                                <th scope="col">GST</th>
+                                                <th scope="col">Disc%</th>
+                                                <th scope="col">GST%</th>
                                                 <th scope="col">Ret Qty</th>
                                                 <th scope="col" >Ret F.Qty</th>
                                                 <th scope="col">Refund</th>
@@ -356,6 +378,8 @@ $showDistributor       = $Distributor->showDistributor();
                                                 readonly style="margin-left: 0rem;">
                                             <input class="summary-inp w-60" name="dist-id" id="dist-id" type="text"
                                                 hidden readonly>
+                                            <input class="summary-inp w-60" name="dist-bill-no" id="dist-bill-no" type="text"
+                                                 readonly>
                                         </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">

@@ -16,9 +16,9 @@ $StockReturn    = new StockReturn();
 $Distributor    = new Distributor();
 
 
-// getBillList function
-if (isset($_GET['dist-id'])) {
-?>
+// getItemList function
+if (isset($_GET['bill-no'])) {
+    ?>
     <div class="row border-bottom border-primary small mx-0 mb-2">
         <div class="col-2 mb-1" hidden>Batch</div>
         <div class="col-4 col-sm-3 mb-1">Name</div>
@@ -29,8 +29,10 @@ if (isset($_GET['dist-id'])) {
     </div>
     <?php
     $distributorId = $_GET['dist-id'];
-    $details = $StockIn->stockInByDist($distributorId);
-    // print_r($details);
+    $billNo = $_GET['bill-no'];
+
+    $details = $StockIn->stockIndataOnBillno($distributorId, $billNo);
+
     foreach ($details as $detail) {
         $billDate = $detail['bill_date'];
         $details = $StockInDetails->showStockInDetailsByStokId($detail['id']);
@@ -57,15 +59,15 @@ if (isset($_GET['dist-id'])) {
 
     ?>
 
-            <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $stokInDetailsId; ?>','<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
-                <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
-                <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
-                <div class="col-4 col-sm-3 mb-0"><?php echo $productName; ?></div>
-                <div class="col-2 mb-0"><?php echo $expDate; ?></div>
-                <div class="col-2 mb-0"><?php echo $mrp; ?></div>
-                <div class="col-2 mb-0"><?php echo $ptr; ?></div>
-                <div class="col-2 mb-0"><?php echo $qantity; ?></div>
-            </div>
+         <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $stokInDetailsId; ?>','<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
+             <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
+             <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
+             <div class="col-4 col-sm-3 mb-0"><?php echo $productName; ?></div>
+             <div class="col-2 mb-0"><?php echo $expDate; ?></div>
+             <div class="col-2 mb-0"><?php echo $mrp; ?></div>
+             <div class="col-2 mb-0"><?php echo $ptr; ?></div>
+             <div class="col-2 mb-0"><?php echo $qantity; ?></div>
+         </div>
 
 <?php
 
@@ -196,7 +198,6 @@ if (isset($_GET['dist-id'])) {
                     </tbody>
                 </table>
             </div>
-
             <div class="row summary rounded align-middle">
                 <div class="col-6 col-sm-3">Items: <?php echo count($items); ?></div>
                 <div class="col-6 col-sm-3">Quantity: <?php echo count($items) ?></div>

@@ -22,40 +22,39 @@ $EditId = $_POST['EditId'];
 $stockReturnData = $StockReturnEdit->showStockReturnDetailsById($EditId);
 
 foreach($stockReturnData as $stockReturn){
-    $stockReturnDetailsId                =  $stockReturn['id'];
-    $stockReturnDetailsStockReturnId     =  $stockReturn['stock_return_id'];
-    $stokinDetialsID                     =  $stockReturn['stokIn_details_id'];
-    $stockReturnDetailsProductId         =  $stockReturn['product_id'];
-    $stockReturnDetailsBatchNo           =  $stockReturn['batch_no'];
-    $stockReturnDetailsExpDate           =  $stockReturn['exp_date'];
-    $stockReturnDetailsUnit              =  $stockReturn['unit'];
-    $stockReturnDetailsPurchaseQTY       =  $stockReturn['purchase_qty'];
-    $stockReturnDetailsFreeQTY           =  $stockReturn['free_qty'];
-    $stockReturnDetailsMRP               =  $stockReturn['mrp'];
-    $stockReturnDetailsPTR               =  $stockReturn['ptr'];
-    $stockReturnDetailsPurchaseAmount    =  $stockReturn['purchase_amount'];
-    $stockReturnDetailsGST               =  $stockReturn['gst'];
-    $stockReturnDetailsGSTAmount         =  $stockReturn['gst_amount'];
-    $stockReturnDetailsReturnQTY         =  $stockReturn['return_qty'];
-    $stockReturnDetailsReturnFreeQTY     =  $stockReturn['return_free_qty'];
-    $stockReturnDetailsRefundAmount      =  $stockReturn['refund_amount'];
-    $stockReturnDetailsAddedBy           =  $stockReturn['added_by'];
-    $stockReturnDetailsAddedOn           =  $stockReturn['added_on'];
-    $stockReturnDetailsAddedTime         =  $stockReturn['added_time'];
+    $Id                =  $stockReturn['id'];
+    $StockReturnId     =  $stockReturn['stock_return_id'];
+    $stokinDetialsID   =  $stockReturn['stokIn_details_id'];
+    $ProductId         =  $stockReturn['product_id'];
+    $BatchNo           =  $stockReturn['batch_no'];
+    $ExpDate           =  $stockReturn['exp_date'];
+    $Unit              =  $stockReturn['unit'];
+    $PurchaseQTY       =  $stockReturn['purchase_qty'];
+    $FreeQTY           =  $stockReturn['free_qty'];
+    $MRP               =  $stockReturn['mrp'];
+    $PTR               =  $stockReturn['ptr'];
+    $GST               =  $stockReturn['gst'];
+    $discount          =  $stockReturn['disc'];
+    $ReturnQTY         =  $stockReturn['return_qty'];
+    $ReturnFreeQTY     =  $stockReturn['return_free_qty'];
+    $RefundAmount      =  $stockReturn['refund_amount'];
+
+    $AddedBy           =  $stockReturn['added_by'];
+    $AddedOn           =  $stockReturn['added_on'];
 }
 
 // $stockReturnData = json_encode($stockReturnData);
 //==========================fetching data from stock_return table=================================
-$stockReturn = $StockReturnEdit->showStockReturnById($stockReturnDetailsStockReturnId);
+$stockReturn = $StockReturnEdit->showStockReturnById($StockReturnId);
 
 foreach($stockReturn as $stocks){
-    $stockReturnId              =   $stocks['id'];
-    $stockReturnDistributorId   =   $stocks['distributor_id'];
-    $stockReturnReturnDate      =   $stocks['return_date'];
-    $stockReturnItems           =   $stocks['items'];
-    $stockReturnTotalQTY        =   $stocks['total_qty'];
-    $stockReturnGSTamount       =   $stocks['gst_amount'];
-    $stockReturnRefundMode      =   $stocks['refund_mode'];
+    $DistributorId   =   $stocks['distributor_id'];
+    $ReturnDate      =   $stocks['return_date'];
+    $RefundMode      =   $stocks['refund_mode'];
+    $Items           =   $stocks['items'];
+    $TotalQTY        =   $stocks['total_qty'];
+    $GSTamount       =   $stocks['gst_amount'];
+    $RefundAmount    =   $stocks['refund_amount'];
 }
 
 //$stockReturn = json_encode($stockReturn);
@@ -73,7 +72,7 @@ foreach($distributorDetails as $distributor){
 //===============================================================================================
 
 //==========================fetching data from products table=====================================
-$productDetails = $ProdcutDetails -> showProductsById($stockReturnDetailsProductId);
+$productDetails = $ProdcutDetails -> showProductsById($ProductId);
 
 foreach($productDetails as $products){
     $productName    =   $products['name'];
@@ -83,7 +82,7 @@ foreach($productDetails as $products){
 //===============================================================================================
 
 //==========================fetchin data from stock in details table=============================
-$stockInDetails = $StockInDetails->stockDistributorBillNo($stockReturnDetailsBatchNo, $stockReturnDetailsProductId);
+$stockInDetails = $StockInDetails->stockDistributorBillNo($BatchNo, $ProductId);
 
     foreach($stockInDetails as $stockindetail){
         $StockInDetailsDistributorBillNo    =   $stockindetail['distributor_bill'];
@@ -119,34 +118,36 @@ if($currentStockDetails != null){
     $currentStockQty = 0;
 }
 
-    
-
 $currentStockDetails = json_encode($currentStockDetails);
 //===============================================================================================
-$stockReturnDetailsDataArry = array("StokReturnDetailsItemId"   =>  $stockReturnDetailsId,
-                                    "stock_return_id"           =>  $stockReturnDetailsStockReturnId,
+
+$stockReturnDetailsDataArry = array(
+                                    "StokReturnDetailsId"   =>  $Id,
+                                    "stock_return_id"           =>  $StockReturnId,
                                     "distributor_name"          =>  $distributorName,
                                     "distributor_id"            =>  $distributorId,
-                                    "product_id"                =>  $stockReturnDetailsProductId,
+                                    "product_id"                =>  $ProductId,
                                     "product_Name"              =>  $productName,
+                                    "batch_no"                  =>  $BatchNo,
                                     "discount"                  =>  $StockInDetailsDiscount,
-                                    "batch_no"                  =>  $stockReturnDetailsBatchNo,
                                     "return_date"               =>  $stockInBillDate,
-                                    "exp_date"                  =>  $stockReturnDetailsExpDate,
+                                    "exp_date"                  =>  $ExpDate,
                                     "unit"                      =>  $StockInDetailsUnit,
                                     "weightage"                 =>  $StockInDetailsWeatage,
-                                    "purchase_qty"              =>  $stockReturnDetailsPurchaseQTY,
-                                    "free_qty"                  =>  $stockReturnDetailsFreeQTY,
-                                    "mrp"                       =>  $stockReturnDetailsMRP,
-                                    "ptr"                       =>  $stockReturnDetailsPTR,
-                                    "purchase_amount"           =>  $stockReturnDetailsPurchaseAmount,
-                                    "gst"                       =>  $stockReturnDetailsGST,
-                                    "gstAmount"                 =>  $stockReturnDetailsGSTAmount,
-                                    "taxable_amount"            =>  $StockInDetailsGSTamount,
+                                    "purchase_qty"              =>  $PurchaseQTY,
+                                    "free_qty"                  =>  $FreeQTY,
+                                    "mrp"                       =>  $MRP,
+                                    "ptr"                       =>  $PTR,
+    
+                                    "gst"                       =>  $GST,
+                                    "disParcent"                =>  $discount,
+                                    "return_qty"                =>  $ReturnQTY,
+                                    "return_free_qty"           =>  $ReturnFreeQTY,
+                                    "refund_amount"             =>  $RefundAmount,
+
                                     "current_stock_qty"         =>  $currentStockQty,
-                                    "return_qty"                =>  $stockReturnDetailsReturnQTY,
-                                    "return_free_qty"           =>  $stockReturnDetailsReturnFreeQTY,
-                                    "refund_amount"             =>  $stockReturnDetailsRefundAmount,
+                                    
+                                   
                                     "refund_mode"               =>  $stockReturnRefundMode,
                                     "added_by"                  =>  $stockReturnDetailsAddedBy,
                                     "added_on"                  =>  $stockReturnDetailsAddedOn,

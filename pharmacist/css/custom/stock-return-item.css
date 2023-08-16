@@ -12,7 +12,8 @@
     height: calc(1.2em + .72rem + 1px);
     border-radius: 0.1rem;
     padding: 0 0.3rem;
-    font-size: 0.9rem;
+    font-size: 0.9
+    rem
 }
 
 .upr-inp:focus {

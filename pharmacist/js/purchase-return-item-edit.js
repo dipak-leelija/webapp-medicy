@@ -22,13 +22,6 @@ const customEdit = (id, value) => {
             // alert("hello");
             // alert(dataObject.StokReturnDetailsItemId);
             slno = id.replace(/\D/g, '');
-            
-            // var stokReturnDetailId = dataObject.id;
-            // alert(stokReturnDetailId);
-            
-            // console.log(stokReturnDetailId);
-
-            // var stokReturnId = dataObject.stock_return_id;
 
             var distributor = dataObject.distributor_name;
             // alert(distributor);
@@ -62,7 +55,7 @@ const customEdit = (id, value) => {
             var gstPerQtyCalculation = gstPerItem/returnQty;
             //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
             
-            document.getElementById("stock-returned-details-item-id").value = dataObject.StokReturnDetailsItemId;
+            document.getElementById("stock-returned-details-item-id").value = dataObject.StokReturnDetailsId;
             document.getElementById("stock-return-id").value = dataObject.stock_return_id;
             // document.getElementById("stock-returned-id").value = dataObject.stock_return_id;
             // document.getElementById("distributor_name").value = distributor;

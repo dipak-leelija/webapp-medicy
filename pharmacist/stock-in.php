@@ -174,8 +174,6 @@ $todayYr = date("y");
                                             </select> -->
                                                 <input class="upr-inp d-none" id="manufacturer-id" name="manufacturer-id" value="">
                                                 <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
-
-
                                             </div>
                                         </div>
 
@@ -389,9 +387,10 @@ $todayYr = date("y");
                                                         <th scope="col">Qty.</th>
                                                         <th scope="col">Free</th>
                                                         <th scope="col">MRP</th>
-                                                        <th scope="col" hidden>PTR</th>
-                                                        <th scope="col">Base</th>
-                                                        <th scope="col">Margin%</th>
+                                                        <th scope="col">PTR</th>
+                                                        <th scope="col" hidden>Base</th>
+                                                        <th scope="col" hidden>Margin%</th>
+                                                        <th scope="col">DISC%</th>
                                                         <th scope="col">GST%</th>
                                                         <th scope="col">Amount</th>
                                                     </tr>

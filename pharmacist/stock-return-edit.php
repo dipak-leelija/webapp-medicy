@@ -140,7 +140,7 @@ if (isset($_GET["returnId"])) {
                                             <b> Select Distributor First </b>
                                         </div>
                                     </div>-->
-                                    <input type="text" id="product-id" hidden>
+                                    <input type="text" id="product-id" >
                                     <input class="upr-inp mb-1" id="product_name" value="" readonly>
                                 </div>
 
@@ -312,7 +312,7 @@ if (isset($_GET["returnId"])) {
                                             <input type="text" class="upr-inp focus-border" name="refund-amount" id="refund-amount" value="">
                                         </div>
 
-                                        <div class="d-none col-md-3 col-6">
+                                        <div class=" col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="updatedGSTamount">Updated Gst Amount:</label>
                                             <input type="text" class="upr-inp focus-border" name="updatedGSTamount" id="updatedGSTamount" value="">
                                         </div>
@@ -349,17 +349,18 @@ if (isset($_GET["returnId"])) {
                                                 <th scope="col"><input type="number" value="0" id="dynamic-id" style="display:none"></th>
                                                 <th scope="col" style="width: 0.5rem; padding:0%"></th>
                                                 <th scope="col" style="font-size: 0.7rem;">Items</th>
-                                                <th scope="col" hidden>StockReturnId</th>
-                                                <th scope="col" hidden>StockReturnDetailsId</th>
+                                                <th scope="col" >StockReturnId</th>
+                                                <th scope="col" >StockReturnDetailsId</th>
+                                                <th scope="col">StockInDetailsId</th>
                                                 <th scope="col" style="font-size: 0.7rem; width: 4rem;">Batch No.</th>
                                                 <th scope="col" style="font-size: 0.7rem;">Exp</th>
                                                 <th scope="col" style="font-size: 0.7rem;">Unit</th>
-                                                <th scope="col" style="font-size: 0.7rem;">P.Qty.</th>
-                                                <th scope="col" style="font-size: 0.7rem;">Free</th>
+                                                <th scope="col" style="font-size: 0.7rem;" hidden>P.Qty.</th>
+                                                <th scope="col" style="font-size: 0.7rem;" hidden>Free</th>
                                                 <th scope="col" style="font-size: 0.7rem;">MRP</th>
                                                 <th scope="col" style="font-size: 0.7rem;">PTR</th>
-                                                <th scope="col" style="font-size: 0.7rem;">P.Amnt</th>
-                                                <th scope="col" style="font-size: 0.7rem;">GST</th>
+                                                <th scope="col" style="font-size: 0.7rem;">Disc%</th>
+                                                <th scope="col" style="font-size: 0.7rem;">GST%</th>
                                                 <th scope="col" style="font-size: 0.7rem;">Rt.Qty</th>
                                                 <th scope="col" style="font-size: 0.7rem;">Rt.F.Qty</th>
                                                 <th scope="col" style="font-size: 0.7rem;">Refund</th>
@@ -378,7 +379,6 @@ if (isset($_GET["returnId"])) {
 
                                                 // print_r($bill);
 
-                                                $gstPerItem = $bill['gst_amount'];
                                                 // echo $gstPerItem;
                                                 $returnQTYperItems = $bill['return_qty'];
                                                 // echo $returnQTYperItems;
@@ -408,15 +408,19 @@ if (isset($_GET["returnId"])) {
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-9r" type="text" name="productName[]" value="<?php echo $productName; ?>" readonly style="text-align: start; font-size: 0.7rem; padding-left: 2%; padding-right: 2%;">
-                                                        <input class="col table-data w-10r" type="text" name="productId[]" value="<?php echo $bill['product_id']; ?>" readonly style="text-align: start;" hidden>
+                                                        <input class="col table-data w-10r" type="text" name="productId[]" value="<?php echo $bill['product_id']; ?>" readonly style="text-align: start;" >
                                                     </td>
 
-                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
+                                                    <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-6r" type="text" name="stock-return-id[]" id="stock-return-id" value="<?php echo $bill['stock_return_id']; ?>" readonly>
                                                     </td>
 
-                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
+                                                    <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-6r" type="text" name="stock-return-details-item-id[]" id="stock-return-details-item-id" value="<?php echo $bill['id']; ?>" readonly>
+                                                    </td>
+
+                                                    <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
+                                                        <input class="col table-data w-6r" type="text" name="stockin-details-item-id[]" id="stockin-details-item-id" value="<?php echo $bill['stokIn_details_id']; ?>" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
@@ -428,14 +432,14 @@ if (isset($_GET["returnId"])) {
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-4r" type="text" name="setof[]" value="<?php echo $bill['unit'], $productUnit; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                        <input class="col table-data w-4r" type="text" name="setof[]" value="<?php echo $bill['unit']; ?>" readonly style="text-align: start; font-size: 0.6rem">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
+                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="<?php echo $bill['purchase_qty']; ?>" readonly style="text-align: end; font-size: 0.6rem">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
+                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
                                                         <input class="col table-data w-2r" type="text" name="freeQty[]" value="<?php echo $bill['free_qty']; ?>" readonly style="text-align: end; font-size: 0.6rem">
                                                     </td>
 
@@ -448,12 +452,11 @@ if (isset($_GET["returnId"])) {
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-5r" type="text" name="purchase-amount[]" value="<?php echo $bill['purchase_amount']; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                        <input class="col table-data w-5r" type="text" name="disc-percent[]" value="<?php echo $bill['disc'].'%'; ?>" readonly style="text-align: start; font-size: 0.6rem">
                                                     </td>
 
                                                     <td class="p-0 ps-1 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
-                                                        <input class="col table-data w-4r" type="text" name="gstAmount[]" value="<?php echo $bill['gst_amount']; ?>" readonly style="text-align: start; font-size: 0.6rem"><br>
-                                                        <input class="col table-data w-3r" type="text" name="gst[]" value="<?php echo $bill['gst']; ?>%" readonly style="border-radius: 40%; font-size: .6rem; width:2.75rem; background-color: #4e73df!important; margine-left: 0.5rem; text-align: center;">
+                                                        <input class="col table-data w-3r" type="text" name="gst[]" value="<?php echo $bill['gst']; ?>%" readonly>
                                                     </td>
 
                                                     <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>", this.id, this.value)'>
@@ -504,7 +507,6 @@ if (isset($_GET["returnId"])) {
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
                                         <p>Refund Mode : <input class="summary-inp w-6r" name="refund-mode" id="refund-mode" value="<?php echo $refundMode ?>" type="text" readonly> </p>
                                     </div>
-
 
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
                                         <p>Qty : <input class="summary-inp w-65" name="total-return-qty" id="total-return-qty" type="text" value="<?php echo $ReturnItemsQty ?>" readonly> </p>

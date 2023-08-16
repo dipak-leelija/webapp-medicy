@@ -248,7 +248,6 @@ const getBillAmount = () => {
 
         billAmount.value = parseFloat(amount).toFixed(2);
     }
-
 } //eof getBillAmount function
 
 // ##################################################################################
@@ -477,6 +476,8 @@ const addData = () => {
     // console.log(marginP);
     // let profit
 
+    console.log("discount percent check : ", discount.value);
+
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slno}">
             <td style="color: red; padding-top:1.2rem;" <i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})" style="font-size:.7rem;"></i></td>
@@ -512,17 +513,21 @@ const addData = () => {
             <td class="pt-3">
                 <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size: .7rem;">
             </td>
-            <td class="d-none pt-3">
+            <td class="pt-3">
                 <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size: .7rem;">
             </td>
-            <td class="pt-3">
+            <td class="d-none pt-3">
                 <input type="text" name="base[]" value="${base.value}" style="display: none">
-                <input  type="text" name="discount[]" value="${discount.value}" style="display: none ;">
                 <p style="color: #000; font-size: .7rem; ">${base.value} <span class="bg-primary text-light p-1 disc-span" style="border-radius: 27%; font-size: .6rem; width:2rem; padding: 0%;">${discount.value}%</span> </p> 
             </td>
-            <td class="ps-1 pt-3" style="width: 2rem;">
+            <td class="d-none ps-1 pt-3" style="width: 2rem;">
                 <input class="table-data w-2r" type="text" name="margin[]" value="${marginP.toFixed(0)}%" readonly style="font-size: .7rem;">
             </td>
+
+            <td class="pt-3">
+                <input class="table-data w-2r"  type="text" name="discount[]" value="${discount.value}" style="font-size: .7rem;">
+            </td>
+            
             <td class="pt-3" style="width: 2rem;">
                 <input class="table-data w-2r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size: .7rem;">
                 <input type="text" name="gstPerItem[]" value="${gstPerItem}" hidden>
