@@ -93,7 +93,7 @@ class StockInDetails extends DatabaseConnection{
     } // eof showStockInMargin
 
     function seletStokInItemsIds($stockInId){
-        $select = "SELECT id FROM stock_in_details WHERE `stock_in_details`.`stokIn_id` = '$stockInId'";
+        $select = "SELECT id FROM stock_in_details WHERE `stokIn_id` = '$stockInId'";
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;

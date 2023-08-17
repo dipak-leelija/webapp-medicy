@@ -252,11 +252,11 @@ $showDistributor       = $Distributor->showDistributor();
                                         </div>
 
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-purchase-qty">Live Qty:</label>
+                                            <label class="mb-0 mt-1" for="current-purchase-qty">Qty:</label>
                                             <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
                                         </div>
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-free-qty">Live Free Qty:</label>
+                                            <label class="mb-0 mt-1" for="current-free-qty">Free Qty:</label>
                                             <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
                                         </div>
 
@@ -287,7 +287,7 @@ $showDistributor       = $Distributor->showDistributor();
                                     <!-- fifth row  -->
                                     <div class="row mt-md-2">
                                         <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="return-qty">Return B.Qty:</label>
+                                            <label class="mb-0 mt-1" for="return-qty">Return Qty:</label>
                                             <input type="text" class="upr-inp focus-border" id="return-qty" value="" name="return-qty" onkeyup="getRefund(this.value);">  
                                         </div>
 
