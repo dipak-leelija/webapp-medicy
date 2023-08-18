@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $distributorName = $_POST['dist-name'];
         $distBillNo = $_POST['dist-bill-no'];
         
-
         $returnDate      = $_POST['return-date'];
         $returnDate      = date("Y-m-d", strtotime($returnDate));
 
@@ -124,9 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                 $updateCurrentStock = $CurrentStock->updateStockByReturnEdit($stokInDetailsId[$i], $updatedQty, $updatedLooseQty);
 
-
                 $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, $stokInDetailsId[$i], $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], $purchasedQty[$i], $freeQty[$i], $mrp[$i], $ptr[$i], $gstPercent[$i], $discParcent[$i], $returnQty[$i], $returnFQty[$i], $refundAmount[$i], $addedBy);
-
 
                 // echo $productId[$i].'<br>';
                 // echo $batchNo[$i].'<br>';
@@ -274,15 +271,15 @@ foreach ($showhelthCare as $rowhelthCare) {
                             echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                         }
                         
-                        $stirng1 = '(';
-                        $stirng2 = 'F';
-                        $stirng3 = ')';
-                        if($returnFQty[$i] != 0){
-                            $returnQty = $returnQty[$i].$stirng1.$returnFQty[$i].$stirng2.$stirng3;
-                        }else{
-                            $returnQty = $returnQty[$i];
-                        }
-                        
+                        // $stirng1 = '(';
+                        // $stirng2 = 'F';
+                        // $stirng3 = ')';
+                        // if($returnFQty[$i] > 0){
+                        //     $returnQty = $returnQty[$i].$stirng1.$returnFQty[$i].$stirng2.$stirng3;
+                        // }else{
+                        //     $returnQty = $returnQty[$i];
+                        // }
+                        // echo $returnQty[$i];
                 echo '
                     <div class="col-sm-2 ">
                         <small>'.substr($productName[$i], 0, 15).'</small>
@@ -315,7 +312,7 @@ foreach ($showhelthCare as $rowhelthCare) {
                         <small>'.$discParcent[$i].'</small>
                     </div>
                     <div class="col-sm-1" style="width: 7%;">
-                        <small>'.$returnQty.'</small>
+                        <small>'.$returnQty[$i].'('.$returnFQty[$i].'F'.')'.'</small>
                     </div>
                     <div class="col-sm-1 text-end">
                         <small>'.$refundAmount[$i].'</small>

@@ -52,8 +52,8 @@ class CurrentStock extends DatabaseConnection{
 
     // ==================== CURRENT STOCK UPDATE UPDATE SLESE RETURN EDIT =====================
     
-    function updateStockByReturnEdit($stokInDetaislId, $newQuantity, $newLCount){
-        $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `current_stock`.`stock_in_details_id` = '$stokInDetaislId'";
+    function updateStockByReturnEdit($stokInDetailsId, $newQuantity, $newLCount){
+        $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `stock_in_details_id` = '$stokInDetailsId'";
         $res = $this->conn->query($editUpdate);
         return $res;
     }//eof updateStock

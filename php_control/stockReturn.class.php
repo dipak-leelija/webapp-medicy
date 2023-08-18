@@ -91,9 +91,9 @@ class StockReturn extends DatabaseConnection{
 
     // ---------------EDIT STOCK RETURN UPDATE FUNCTION----------------------------
 
-    function stockReturnEditUpdate($id, $distributorId, $returnDate, $items, $totalQty, $gst, $refundMode, $refundAmount, $addedBy, $addedOn, $addedTime){
+    function stockReturnEditUpdate($id, $distributorId, $returnDate, $items, $totalQty, $gst, $refundMode, $refundAmount, $addedBy){
 
-        $editANDupdate = "UPDATE `stock_return` SET `distributor_id`='$distributorId',`return_date`='$returnDate',`items`='$items',`total_qty`='$totalQty',`gst_amount`='$gst',`refund_mode`='$refundMode',`refund_amount`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn',`added_time`='$addedTime' WHERE `stock_return`.`id`='$id'";
+        $editANDupdate = "UPDATE `stock_return` SET `distributor_id`='$distributorId',`return_date`='$returnDate',`items`='$items',`total_qty`='$totalQty',`gst_amount`='$gst',`refund_mode`='$refundMode',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `stock_return`.`id`='$id'";
 
         $response = $this->conn->query($editANDupdate);
 
@@ -169,8 +169,8 @@ function stockReturnDetailsEdit($id, $stockReturnId, $productId, $batchNo, $expD
 
 // ----------------- stock return details edit/update by id ----------------RD-----------
 
-function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $addedBy, $addedOn, $addedTime){
-    $editUpdate = "UPDATE `stock_return_details` SET `return_qty`='$returnQTY', `return_free_qty` = '$returnFQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn',`added_time`='$addedTime' WHERE `stock_return_details`.`id`='$id'";
+function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $addedBy){
+    $editUpdate = "UPDATE `stock_return_details` SET  `return_qty`='$returnQTY', `return_free_qty` = '$returnFQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `stock_return_details`.`id`='$id'";
 
     $response = $this->conn->query($editUpdate);
     
@@ -187,6 +187,12 @@ function delteStockReturnDetailsbyReturnId($stockReturnedId){
 
 function delteStockReturnDetailsbyItemId($stockReturnDetailsId){
     $delQuary = "DELETE FROM `stock_return_details` WHERE `id`='$stockReturnDetailsId'";
+    $delbyId = $this->conn->query($delQuary);
+    return $delbyId;
+}
+
+function deleteStockByTableData($table, $data){
+    $delQuary = "DELETE FROM `stock_return_details` WHERE `$table`='$data'";
     $delbyId = $this->conn->query($delQuary);
     return $delbyId;
 }

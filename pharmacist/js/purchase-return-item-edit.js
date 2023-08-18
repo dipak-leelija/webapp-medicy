@@ -16,7 +16,7 @@ const customEdit = (id, value) => {
             EditId: value
         },
         success: function (data) {
-            // alert(data);
+            alert(data);
 
             var dataObject = JSON.parse(data);
             // alert("hello");
@@ -96,11 +96,11 @@ const customEdit = (id, value) => {
 
 // ======= set refund mode ===========
 
-const setReturnMode = (t) =>{
-    value = t.value;
-    console.log(value);
-    document.getElementById("refund-mode").value = value;
-}
+// const setReturnMode = (t) =>{
+//     value = t.value;
+//     console.log(value);
+//     document.getElementById("refund-mode").value = value;
+// }
 
 // const returnCheck = (freeQty) =>{
 //     let freeReturnQty = parseInt(freeQty);
@@ -179,6 +179,8 @@ const getRefund = (returnQty) => {
 
 const addData = async () => {
 
+    let paymentMode = document.getElementById("return-mode").value;
+    
     let stockReturnId = document.getElementById("stock-return-id").value; 
     let stockReturnDetailsItemId = document.getElementById("stock-returned-details-item-id").value;
     let stockInItemId = document.getElementById("stock-in-item-id").value;
@@ -204,18 +206,21 @@ const addData = async () => {
     slno++;
     document.getElementById("dynamic-id").value = slno;
 
-    // return gst generating
-    let withoutGst = (ptr.value * returnQty.value);
-    // console.log(withoutGst);
-    let taxAmount = (gst.value / 100 * withoutGst);
-    // console.log(taxAmount);
-    var returnGstAmount = document.getElementById("return-gst");
-    returnGstAmount = parseFloat(returnGstAmount.value) + taxAmount;
-    // console.log("tax amount : ",taxAmount);
-    returnGstAmount = returnGstAmount.toFixed(2);
-    // console.log("teturn gst amount : ",returnGstAmount);
-    document.getElementById("return-gst").value = returnGstAmount;
+    // // return gst generating
+    // let withoutGst = (ptr.value * returnQty.value);
+    // let taxAmount = (gst.value / 100 * withoutGst);
 
+    // var returnGstAmount = document.getElementById("return-gst");
+    // returnGstAmount = parseFloat(returnGstAmount.value) + taxAmount;
+    // // console.log("tax amount : ",taxAmount);
+    // returnGstAmount = returnGstAmount.toFixed(2);
+    // // console.log("teturn gst amount : ",returnGstAmount);
+    // document.getElementById("return-gst").value = returnGstAmount;
+    if(paymentMode == ""){
+        window.alert("select payment mode");
+        document.getElementById("return-mode").value = focus();
+        return;
+    }
 
     if (refundAmount != null) {
         const appendData = () => {
@@ -223,26 +228,26 @@ const addData = async () => {
             jQuery("#dataBody")
                 .append(`<tr id="table-row-${slno}">
                     <td  style="color: red;">
-                        <i class="fas fa-trash pt-3" onclick="delData(${slno}, ${GSTAmount}, ${parseInt(returnQty) + parseInt(returnFreeQty)}, ${refundAmount})"></i>
+                        <i class="fas fa-trash pt-2" onclick="delData(${slno}, ${GSTAmount}, ${parseInt(returnQty) + parseInt(returnFreeQty)}, ${refundAmount})"></i>
                     </td>
 
                     <td class="p-0 pt-3" style="padding:1.2rem; text-align: center; font-size:0.75rem;" scope="row">${slno}</td>
 
-                    <td class=" p-0 pt-3">
+                    <td class="d-none p-0 pt-3">
                         <input class="col table-data w-4r" type="text" name="stock-return-id[]" value="${stockReturnId}" readonly >
                     </td>
 
-                    <td class=" p-0 pt-3">
+                    <td class="d-none p-0 pt-3">
                         <input class="col table-data w-6r" type="text" name="stock-return-details-item-id[]" value="${stockReturnDetailsItemId}" readonly style="font-size: 0.75rem">
                     </td>
 
-                    <td class="p-0 pt-3">
+                    <td class="d-none p-0 pt-3">
                         <input class="col table-data w-6r" type="text" name="stock-in-details-item-id[]" value="${stockInItemId}" readonly style="font-size: 0.75rem">
                     </td>
 
                     <td class="p-0 pt-3">
                         <input class="col table-data w-9r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start; font-size:0.6rem;">
-                        <input class="col table-data w-9r" type="text" name="productId[]" value="${productId}" readonly style="text-align: start;" hidden>
+                        <input class="d-none col table-data w-9r" type="text" name="productId[]" value="${productId}" readonly style="text-align: start;" hidden>
                     </td>
 
                     <td class="p-0 pt-3">
@@ -291,6 +296,8 @@ const addData = async () => {
 
         if (appendData() === true) {
 
+            document.getElementById("refund-mode").value = paymentMode;
+
 
             if (slno != null) {
                 let id = document.getElementById("items-qty");
@@ -324,7 +331,7 @@ const addData = async () => {
             let perItemGstAmount = document.getElementById("gst-amount").value;
             if (slno != null) {
                 var netGst = document.getElementById("return-gst").value;
-                console.log(perItemGstAmount);
+                console.log(netGst);
                 netGst = parseFloat(netGst) + parseFloat(perItemGstAmount);
                 document.getElementById("return-gst").value = netGst.toFixed(2);
             } else {
@@ -370,9 +377,10 @@ const addData = async () => {
     }
 }
 
+
 // ================================ Delet Data ================================
 const delData = (slno, gstPerItem, ReturnQty, refund) => {
-
+    // console.log(slno, gstPerItem, ReturnQty, refund)
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;
