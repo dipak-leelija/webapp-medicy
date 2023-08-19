@@ -9,6 +9,7 @@ let reffBy = document.getElementById("reff-by");
 let itemList = document.getElementById("items-list");
 
 let currentItemID = document.getElementById("item-id");
+let ProductID = document.getElementById("prod-id");
 let expDate = document.getElementById("exp-date");
 let unit = document.getElementById("unit");
 let batch = document.getElementById("batch-no")
@@ -63,6 +64,7 @@ const getCustomer = (invoice) => {
         reffBy.value = "";
 
         currentItemID.value = "";
+        ProductID.value = "";
         expDate.value = "";
         unit.value = "";
         batch.value = "";
@@ -85,6 +87,7 @@ const getRefundMode = (ref) => {
 const getReturnDate = (date) => {
     document.getElementById('return-date').value = date;
 };
+
 
 const getDtls = (invoiceId, customerId) => {
 
@@ -128,6 +131,7 @@ const getDtls = (invoiceId, customerId) => {
         billDate.value = "";
         reffBy.value = "";
         currentItemID.value = "";
+        ProductID.value = "";
         expDate.value = "";
         unit.value = "";
         batchNo.value = "";
@@ -145,9 +149,17 @@ const getItemDetails = (t) => {
 
     let invoice = t.selectedOptions[0].getAttribute('data-invoice');
     let itemId = t.value;
+    console.log(itemId);
     let batchNo = t.selectedOptions[0].getAttribute('data-batch');
 
     if (itemId != "") {
+
+        //==================== Product id ====================
+        let productId = `ajax/stockOut.all.ajax.php?prod-id=${invoice}&p-id=${itemId}`;
+        xmlhttp.open("GET", productId, false);
+        xmlhttp.send(null);
+        ProductID.value = xmlhttp.responseText;
+
         //==================== Exp Date ====================
         let expUrl = `ajax/stockOut.all.ajax.php?exp-date=${invoice}&p-id=${itemId}`;
         xmlhttp.open("GET", expUrl, false);
@@ -217,6 +229,7 @@ const getItemDetails = (t) => {
 
     } else {
         currentItemID.value = "";
+        ProductID.value = "";
         expDate.value = "";
         unit.value = "";
         batchNo.value = "";
@@ -263,6 +276,7 @@ const getRefund = (returnQty) => {
 const addData = () => {
 
     let currentItemID = document.getElementById("item-id").value;
+    let pId = document.getElementById("prod-id").value;
     let expDate = document.getElementById("exp-date").value;
     let unit = document.getElementById("unit").value;
     let batch = document.getElementById("batch-no").value;
@@ -420,6 +434,7 @@ const addData = () => {
             const item = existsItems[i];
             if (item.childNodes[5].childNodes[3].value == itemList.value) {
                 swal("You can not add same item more than one!");
+                ProductID.value = "";
                 expDate.value = "";
                 unit.value = "";
                 batch.value = "";
@@ -473,6 +488,9 @@ const addData = () => {
                 <input class="table-data w-10r" type="text" value="${itemName}" readonly style="font-size: .65rem;">
                 <input class="d-none" type="text" name="itemId[]" value="${itemList.value}">
 
+            </td>
+            <td class="d-none pt-3">
+                <input class="table-data w-6r" type="text" name="productId[]" value="${pId}" readonly style="font-size: 0.65rem;">
             </td>
             <td class="pt-3">
                 <input class="table-data w-6r" type="text" name="batchNo[]" value="${batch}" readonly style="font-size: 0.65rem;">

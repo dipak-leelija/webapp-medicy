@@ -28,8 +28,9 @@ const customEdit = (id, value) => {
             let purchaseFreeQty = dataObject.free_qty;
             let returnQty = dataObject.return_qty;
             let returnFreeQty = dataObject.return_free_qty;
-            let currentQty = parseInt(purchaseQty) - parseInt(returnQty);
+            let currentStockQty = dataObject.current_stock_qty;
             let currentFreeQty = parseInt(purchaseFreeQty) - parseInt(returnFreeQty);
+            let currentByuQty = parseInt(currentStockQty) - parseInt(currentFreeQty);
 
             let totalReturnQty = parseInt(returnQty) + parseInt(returnFreeQty);
 
@@ -60,7 +61,7 @@ const customEdit = (id, value) => {
             // document.getElementById("return-mode").value = refundMode;
 
             document.getElementById("unit").value = dataObject.unit;
-            document.getElementById('current-qty').value = currentQty;
+            document.getElementById('current-qty').value = currentByuQty;
             document.getElementById("current-free-qty").value = currentFreeQty;
 
             document.getElementById("mrp").value = dataObject.mrp;

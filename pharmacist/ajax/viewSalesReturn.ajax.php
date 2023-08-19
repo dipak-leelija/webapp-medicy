@@ -16,10 +16,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
         $SalesReturnid = $_GET['id'];
         $invoiceID = $_GET['invoice'];
-        echo $SalesReturnid,"<br>",$invoiceID;
+        // echo "Sales return id : ",$SalesReturnid,"<br>Invoice id : ",$invoiceID;
         $returnBill = $SalesReturn->salesReturnByID($SalesReturnid , $invoiceID);
-        echo "<br>";
-        print_r($returnBill); echo "<br><br>";
+        // echo "<br>";
+        // print_r($returnBill); echo "<br><br>";
 
         $patientId = $returnBill[0]['patient_id'];
 
@@ -102,32 +102,24 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 <tbody>
 
                     <?php
-                    $billList = $SalesReturn->salesReturnbyInvoiceIdsalesReturnId($invoiceID, $SalesReturnid);
+                    $attribute = 'sales_return_id';
+                    $billList = $SalesReturn->selectSalesReturnList($attribute, $SalesReturnid);
                     print_r($billList);
                     echo "<br><br>";
                     foreach ($billList as $bill) {
 
-                        $invoice    = $bill['invoice_id'];
-                        $productId  = $bill['product_id'];
-                        $batchNo    = $bill['batch_no'];
-                        $productName = $products->showProductsById($bill['product_id']);
+                        $invoice    = $invoiceID;
+                        $attribute = "invoice_id";
+                        $invoicDetials = $StockOut->invoiceDetialsByTableData($attribute, $invoice);
+                        print_r($invoicDetials); echo "<br><br>";
+
+                        foreach($invoicDetials as $invoiceData){
+                            $productId = $invoiceData['product_id'];
+                        }
+
+                        $productName = $products->showProductsById($productId);
                         $ItemName = $productName[0]['name']; 
                         
-                        $invoicDetials = $StockOut->stockOutSelect($invoice, $productId, $batchNo);
-                        print_r($invoicDetials); echo "<br><br>";
-                        // foreach($invoicDetials as $invoiceData){
-                            
-                        //     if($invoiceData['qty'] == 0){
-                        //         $sting = '(L)';
-                        //         $pQty = $invoiceData['loosely_count'];
-                        //         $pQty = $pQty.$sting;
-                        //         $return = $bill['return'];
-                        //         $return = $return.$sting;
-                        //     }else{
-                        //         $pQty = $invoiceData['qty'];
-                        //         $return = $bill['return'];
-                        //     }
-                        // }
                         
 
                     echo '<tr>

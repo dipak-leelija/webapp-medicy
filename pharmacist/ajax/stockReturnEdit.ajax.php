@@ -105,7 +105,7 @@ if($currentStockDetails != null){
 }else{
     $currentStockQty = 0;
 }
-
+ 
 $currentStockDetails = json_encode($currentStockDetails);
 //===============================================================================================
 

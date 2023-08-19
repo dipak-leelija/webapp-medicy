@@ -56,7 +56,6 @@ if (isset($_GET['bill-no'])) {
                 $qantity = 0;
             }
 
-
     ?>
 
          <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $stokInDetailsId; ?>','<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">

@@ -214,10 +214,10 @@ if (isset($_POST['stock-return-edit'])) {
                     $updatedQty = intval($currentQty) + (intval($itemRetundQtyDiff));
                 }
 
-                // echo "<br><br>current qantity after update : $updatedQty";
-                // echo "<br>current Loose qantity after update : $updatedLooseQty";
+                echo "<br><br>current qantity after update : $updatedQty";
+                echo "<br>current Loose qantity after update : $updatedLooseQty";
                 
-                $CurrentStockUpdate = $CurrentStock->updateStockByReturnEdit($stockInDetailsId, $updatedQty, $newLooselyCount);  //updating current stock after edit purchase return
+                $CurrentStockUpdate = $CurrentStock->updateStockByReturnEdit($stockInDetailsItemId[$i], $updatedQty, $updatedLooseQty);  //updating current stock after edit purchase return
 
                 $stockReturnDetailsEdit = $StockReturn->stockReturnDetailsEditUpdate($itemId, $editReturnQTY[$i], $editReturnFQty[$i], $PerItemsRefundAmount[$i], $addedBy);  //updating stock return details table
 

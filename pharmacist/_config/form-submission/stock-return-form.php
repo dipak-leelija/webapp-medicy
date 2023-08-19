@@ -99,9 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // echo "<br>Return QTY : "; print_r($returnQty);
         // echo "<br>Return F QTY : "; print_r($returnFQty);
         // echo "<br>Refund Amount : "; print_r($refundAmount);
-            
+        
             for ($i=0; $i < $ids; $i++) { 
-            
                 $currentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]);
                 foreach($currentStockData as $currentData){
                     $wholeQty = $currentData['qty'];

@@ -60,6 +60,18 @@ if (isset($_GET["products"])) {
 
 // ===========================  Item Details   =========================== 
 
+
+//product id
+if (isset($_GET["prod-id"])) {
+    $invoice = $_GET["prod-id"];
+    $attribute1 = 'invoice_id';
+    $attribute2 = 'item_id';
+    $item = $StockOut->stokOutDetailsData($attribute1, $invoice, $attribute2, $_GET["p-id"]);
+    // print_r( $item);
+    echo $item[0]['product_id'];
+}
+
+
 // get product exp date
 if (isset($_GET["exp-date"])) {
     $invoice = $_GET["exp-date"];
@@ -121,7 +133,7 @@ if (isset($_GET["qty"])) {
     $tabel2 = 'item_id';
     $itemChek = $salesReturn->seletReturnDetailsBy($tabel1, $id, $tabel2, $itemId);
     foreach($itemChek as $itemChek){
-        $totalReturnQTY = $itemChek['return'];
+        $totalReturnQTY = $itemChek['return_qty'];
     }
 
     if($salesReturnData != null){
@@ -148,11 +160,9 @@ if (isset($_GET["qty"])) {
 // get product discount
 if (isset($_GET["disc"])) {
     $invoice = $_GET["disc"];
-
     $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
     echo $item[0]['disc'];
 }
-
 
 // get product gst percentage
 if (isset($_GET["gst"])) {

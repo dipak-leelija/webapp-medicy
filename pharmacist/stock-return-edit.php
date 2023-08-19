@@ -205,7 +205,7 @@ if (isset($_GET["returnId"])) {
                                             <input class="upr-inp mb-1" id="stock-return-id" value="" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-6 col-12">
+                                        <div class=" col-md-6 col-12">
                                             <label class="mb-1 mt-3" for="stock-returned-details-item-id">Stock Return Details Item Id</label>
                                             <input class="upr-inp mb-1" id="stock-returned-details-item-id" value="" readonly>
                                         </div>
@@ -287,22 +287,22 @@ if (isset($_GET["returnId"])) {
                                             <input type="text" class="upr-inp" name="current-total-qty" id="current-total-qty" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-3 col-6">
+                                        <div class=" col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="purchse-qty">Purchase Qty:</label>
                                             <input type="text" class="upr-inp" name="purchse-qty" id="purchse-qty" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-3 col-6">
+                                        <div class=" col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="purchse-free-qty">Free Qty:</label>
                                             <input type="text" class="upr-inp" name="purchse-free-qty" id="purchse-free-qty" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-3 col-6">
+                                        <div class=" col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="prev-ret-qty">Prev return Qty:</label>
                                             <input type="text" class="upr-inp" name="prev-ret-qty" id="prev-ret-qty" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-3 col-6">
+                                        <div class=" col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="prev-ret-free-qty">Rrev Free Return Qty:</label>
                                             <input type="text" class="upr-inp" name="prev-ret-free-qty" id="prev-ret-free-qty" readonly>
                                         </div>
@@ -327,7 +327,7 @@ if (isset($_GET["returnId"])) {
                                             <input type="text" class="upr-inp focus-border" name="refund-amount" id="refund-amount" value="">
                                         </div>
 
-                                        <div class="d-none col-md-3 col-6">
+                                        <div class=" col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="gst-amount">Gst Amount:</label>
                                             <input type="text" class="upr-inp focus-border" name="gst-amount" id="gst-amount" value="">
                                         </div>

@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $disc = $totalMrp - $billAmout;
 
     $addedBy        = $_SESSION['employee_username'];
-    $addedOn        = date("Y/m/d");
+    // $addedOn        = date("Y/m/d");
 
     // echo "<br>customer name check : $customerName<br>";
     // echo "Paticent id check : $patientId<br>";
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // echo "total payble amount : $billAmout<br>";
     // echo "bill discount amount : $disc<br>";
 
-    // echo "<br>======= ARRAYS SECTION ==========<br>";
+    echo "<br>======= ARRAYS SECTION ==========<br>";
     // ================ ARRAYS ======================
 
     $prductId           = $_POST['product-id'];
@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // print_r($batchNo);
     // echo "<br>items WEIGHTAGE arrya : ";
     // print_r($weightage);
-    // echo "<br>items item weightage array : "; print_r($ItemWeightage);
+    // echo "<br>items item weightage array : "; print_r($itemWeightage);
     // echo "<br>items item unit : "; print_r($ItemUnit);
     // echo "<br>items expiary date : ";
     // print_r($expDate);
@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $invoiceId = $IdGeneration->pharmecyInvoiceId();
 
         $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $billdate, $addedBy);
-        // $stockOut = true;
+        $stockOut = true;
 
         if ($stockOut === true) {
             for ($i = 0; $i < count($prductId); $i++) {
@@ -186,11 +186,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>Item current stock qantity : $itemQty";
                 // echo "<br>Item current stock Loose qantity : $itemLooseQty";
 
-                $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $prductId[$i], $batchNo[$i], $expDate[$i], $ItemWeightage, $ItemUnit, $wholeCount, $looseCount, $mrp[$i], $ptr[$i], $discountPercent[$i], $gstparcent[$i], $marginPerItem[$i], $amount[$i], $addedBy, $addedOn);
+                echo "<br><br>Invoice ids : $invoiceId";
+                echo "<br>Item id: $itemId";
+                echo "<br>Product id : $prductId[$i]";
+                echo "<br>BATCH NUMBER : $batchNo[$i]";
+                echo "<br>items exp date array : $expDate[$i]";
+                echo "<br>Item weightage : $ItemWeightage";
+                echo "<br>Item unit  : $ItemUnit";
+                echo "<br>Whole count : $wholeCount";
+                echo "<br>Loose Count : $looseCount";
+                echo "<br>items MRP array : $mrp[$i]";
+                echo "<br>items PTR array : $ptr[$i]";
+                echo "<br>PER ITEM DISCOUNT PERCENT : $discountPercent[$i]";
+                echo "<br>PER ITEM gst PERCENT : $gstparcent[$i]";
+                echo "<br>PER ITEM MARGINE AMOUNT array : $marginPerItem[$i]";
+                echo "<br>PER ITEM AMOUNT : $amount[$i]";
+                
+                $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $itemId, $prductId[$i], $batchNo[$i], $expDate[$i], $ItemWeightage, $ItemUnit, $wholeCount, $looseCount, $mrp[$i], $ptr[$i], $discountPercent[$i], $gstparcent[$i], $marginPerItem[$i], $amount[$i], $addedBy);
 
                 // echo "<br><br>product ids array : $prductId[$i]";
                 // echo "<br>Product name array : $prodName[$i]";
-                // echo "<br>Manufacturur array : $manuf[$i]";
+                // echo "<br>Manufacturur id  : $manufId[$i]";
+                // echo "<br>Manufacturur name  : $manufName[$i]";
                 // echo "<br>BATCH NUMBER array : $batchNo[$i]";
                 // echo "<br>items WEIGHTAGE arrya : $weightage[$i]";
                 // echo "<br>items exp date array : $expDate[$i]";
@@ -198,20 +215,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>items PTR array : $ptr[$i]";
                 // // echo "<br><br> qtyT arrya check : $qtyT[$i]";;
                 // echo "<br>QANTITY array : $qty[$i]";
-                // echo "<br>QUANTITY TYPE array : $qtyTypes[$i]";
-                // echo "<br>PER ITEM DISCOUNT PERCENT array : $discount[$i]";
+                // echo "<br>QUANTITY TYPE array : $qtyTp[$i]";
+                // echo "<br>PER ITEM DISCOUNT PERCENT array : $discountPercent[$i]";
                 // echo "<br>PER ITEM MARGINE AMOUNT array : $marginPerItem[$i]";
                 // echo "<br>PER ITEM TAXABLE array : $taxable[$i]";
-                // echo "<br>PER ITEM GST PERCENT array : $gst[$i]";
-                // echo "<br>PER ITEM GST AMOUNT array : $gstPerItem[$i]";
+                // echo "<br>PER ITEM GST PERCENT array : $gstparcent[$i]";
+                // echo "<br>PER ITEM GST AMOUNT array : $gstAmountPerItem[$i]";
                 // echo "<br>PER ITEM PAYBLE AMOUNT array : $amount[$i]";
 
                 // echo "<br><br>";
                 // echo "<br>extra check invoice id : $invoiceId";
                 // echo "<br>extra check item id : $itemId";
-                // echo "<br>extra check loose count : $looselyCount";
+                // echo "<br>extra check loose count : $itemLooseQty";
 
-                $StockOut->addPharmacyBillDetails($invoiceId, $itemId, array_shift($_POST['product-name']), array_shift($_POST['batch-no']), array_shift($_POST['weightage']), array_shift($_POST['exp-date']), $wholeCount, $looseCount, array_shift($_POST['mrp']), array_shift($_POST['discPercent']), array_shift($_POST['taxable']), array_shift($_POST['gst']), array_shift($_POST['gstVal']), array_shift($_POST['amount']), $addedBy);
+                // $StockOut->addPharmacyBillDetails($invoiceId, $itemId, array_shift($_POST['product-name']), array_shift($_POST['batch-no']), array_shift($_POST['weightage']), array_shift($_POST['exp-date']), $wholeCount, $looseCount, array_shift($_POST['mrp']), array_shift($_POST['discPercent']), array_shift($_POST['taxable']), array_shift($_POST['gst']), array_shift($_POST['gstVal']), array_shift($_POST['amount']), $addedBy);
 
                 // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
 
@@ -228,7 +245,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br><br>UPDATED CURRENT STOCK QTY : $UpdatedNewQuantity";
                 // echo "<br>UPDATED CURRENT LOOSE QTY : $updatedLooseCount";
 
-                $CurrentStock->updateStock($itemId, $batchNo[$i], $UpdatedNewQuantity, $updatedLooseCount);
+                // $CurrentStock->updateStockByItemId($itemId, $UpdatedNewQuantity, $updatedLooseCount);
             }
         }
     }

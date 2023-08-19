@@ -138,6 +138,13 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         </div>
                                     </div>
 
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="prod-id">Product Id</label>
+                                        <div class="d-flex date-field">
+                                            <input type="text" class="upr-inp" id="prod-id" readonly>
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="exp-date">Expiry</label>
                                         <div class="d-flex date-field">

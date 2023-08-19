@@ -237,7 +237,7 @@ $doctor = $Doctors->showDoctors();
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable</label><br>
                                             <input class="sale-inp" type="text" id="taxable" readonly>
                                         </div>
-
+                                        
                                         <div class="col-md-1 mt-3 col-12">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Net AMT</label><br>
                                             <input class="sale-inp" type="any" id="amount" readonly>

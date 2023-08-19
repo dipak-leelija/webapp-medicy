@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         //-------Array elements------------------
         $itemID   = $_POST['itemId'];
+        $procutId = $_POST['productId'];
         $batchNo    = $_POST['batchNo'];
         // print_r($batchNo);
         $expdates   = $_POST['expDate'];
@@ -126,9 +127,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo $itemWeatage; echo "<br><br><br>";
                 
                 $addedBy = '';
-                
-                $SalesReturnId = $SalesReturn->salesReturnByID($invoiceId);
-                // print_r($SalesReturnId[0]['id']); echo "<br>";
+
+                $attribute = 'invoice_id'; 
+                $SalesReturnId = $SalesReturn->selectSalesReturn($attribute, $invoiceId);
+                // print_r($SalesReturnId); echo "<br>";
 
                 // echo "$itemID[$i]<br>";
                 // echo "$batchNo[$i]<br>";
@@ -142,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                
                 // ========================= ADD TO SALES RETURN DETAILS =============================
                 
-                $addSalesReturndDetails = $SalesReturn->addReturnDetails($SalesReturnId[0]['id'], $itemID[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $disc[$i], $gst[$i], $taxableArray[$i], $returnQty[$i], $perItemRefund[$i]) ;
+                $addSalesReturndDetails = $SalesReturn->addReturnDetails($SalesReturnId[0]['id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $disc[$i], $gst[$i], $taxableArray[$i], $returnQty[$i], $perItemRefund[$i]) ;
 
                 // ============= CURRENT STOCK UPDATE AREA ===========================
                 
@@ -153,7 +155,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if($currentStockItemUnit == 'tab' || $currentStockItemUnit == 'cap'){
                         $curretnStockQty = $currentStockDetaisl['loosely_count'];
                         $UpdatedLooseQty = intval($curretnStockQty) + intval(array_shift($_POST['return']));
-                        // echo intval($itemWeatage);
                         $UpdatedQty = intdiv(intval($UpdatedLooseQty), intval($itemWeatage));
                     }else{
                         $curretnStockQty = $currentStockDetaisl['qty'];
@@ -169,8 +170,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // ========================= CURRENT STOCK UPDATE STRING ============================
 
                 $updateCurrentStock = $CurrentStock->updateStockByItemId($itemID[$i], $UpdatedQty, $UpdatedLooseQty);
-
-
             }
         }
     }

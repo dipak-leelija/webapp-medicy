@@ -133,6 +133,16 @@ class StockOut extends DatabaseConnection{
         
     }//end stockOutDetailsById function
 
+    function invoiceDetialsByTableData($table, $data){
+        $billData = array();
+        $selectBill = "SELECT * FROM pharmacy_invoice WHERE `$table` = '$data'";
+        $billQuery = $this->conn->query($selectBill);
+        while($result = $billQuery->fetch_array()){
+            $billData[]	= $result;
+        }
+        return $billData;
+        
+    }//end of stockOutDetail fetch from pharmacy_invoice table function
 
     
     function stockOutSelect($invoice, $itemId){
@@ -168,12 +178,11 @@ class StockOut extends DatabaseConnection{
 #                                                                                                         #
 ###########################################################################################################
 
-    function addStockOutDetails($invoiceId, $productId, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $margin, $amount, $addedBy, $addedOn){
-
-        $addStockOutDetails = "INSERT INTO `stock_out_details`(`invoice_id`, `product_id`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `margin`, `amount`, `added_by`, `added_on`) VALUES ('$invoiceId','$productId','$batchNo','$expDate','$weightage','$unit','$qty','$looselyCount','$mrp','$ptr','$discount','$gst','$margin','$amount','$addedBy','$addedOn')";
+    function addStockOutDetails($invoiceId, $itemId, $productId, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $margin, $amount, $addedBy){
+    
+        $addStockOutDetails = "INSERT INTO `stock_out_details`(`invoice_id`, `item_id`, `product_id`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `margin`, `amount`, `added_by`) VALUES ('$invoiceId','$itemId','$productId','$batchNo','$expDate','$weightage','$unit','$qty','$looselyCount','$mrp','$ptr','$discount','$gst','$margin','$amount','$addedBy')";
 
         $addDetails = $this->conn->query($addStockOutDetails);
-
         return $addDetails;
     }
 
