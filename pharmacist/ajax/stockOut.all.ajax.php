@@ -86,6 +86,24 @@ if (isset($_GET["unit"])) {
     echo $item[0]['weatage'];
 }
 
+// get product item unit
+if (isset($_GET["itemUnit"])) {
+    $invoice = $_GET["itemUnit"];
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $unit =  $item[0]['weatage'];
+    $itemUnit = preg_replace('/[0-9]/','',$unit);
+    echo $itemUnit;
+}
+
+// get product item weatage
+if (isset($_GET["itemWeatage"])) {
+    $invoice = $_GET["itemWeatage"];
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $unit =  $item[0]['weatage'];
+    $itemWeatage = preg_replace('/[a-z]/','',$unit);
+    echo $itemWeatage;
+}
+
 // get product mrp
 if (isset($_GET["mrp"])) {
     $invoice = $_GET["mrp"];
@@ -110,7 +128,7 @@ if (isset($_GET["p_qty"])) {
     }
 }
 
-// get product current qty
+// ======================== get product current qty =========================================
 if (isset($_GET["qty"])) {
     $invoice = $_GET["qty"];
     $itemId = $_GET["p-id"];
@@ -155,7 +173,7 @@ if (isset($_GET["qty"])) {
     }
 
     echo $currentQty;
-}
+}//====================================================================================================
 
 // get product discount
 if (isset($_GET["disc"])) {

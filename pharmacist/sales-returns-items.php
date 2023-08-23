@@ -157,6 +157,16 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input type="text" class="upr-inp" id="unit" value="" readonly>
                                     </div>
 
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="unit"> Item Unit</label>
+                                        <input type="text" class="upr-inp" id="item-unit" value="" readonly>
+                                    </div>
+
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="unit">Item Weatage</label>
+                                        <input type="text" class="upr-inp" id="item-weatage" value="" readonly>
+                                    </div>
+
                                     <div class="col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="batch-no">Batch</label>
                                         <input type="text" class="upr-inp" name="batch-no" id="batch-no" readonly>
@@ -217,11 +227,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                     </div>
                                 </div>
                             </form>
+                        </div>
 
-                        </div>
-                        <div class="row">
-                            <!-- </form> -->
-                        </div>
                     </div>
                     <!-- /end Add Product  -->
                     <!--=========================== Show Bill Items ===========================-->

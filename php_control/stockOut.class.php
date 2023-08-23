@@ -141,7 +141,6 @@ class StockOut extends DatabaseConnection{
             $billData[]	= $result;
         }
         return $billData;
-        
     }//end of stockOutDetail fetch from pharmacy_invoice table function
 
     

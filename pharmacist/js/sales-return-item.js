@@ -12,7 +12,10 @@ let currentItemID = document.getElementById("item-id");
 let ProductID = document.getElementById("prod-id");
 let expDate = document.getElementById("exp-date");
 let unit = document.getElementById("unit");
-let batch = document.getElementById("batch-no")
+let itemUnit = document.getElementById("item-unit");
+let itemWeatage = document.getElementById("item-weatage");
+let batch = document.getElementById("batch-no");
+
 let mrp = document.getElementById("mrp");
 let purchaseQuantity = document.getElementById("purchase-qty");
 let qty = document.getElementById("qty");
@@ -67,6 +70,8 @@ const getCustomer = (invoice) => {
         ProductID.value = "";
         expDate.value = "";
         unit.value = "";
+        itemUnit.value = "";
+        itemWeatage.value = "";
         batch.value = "";
         mrp.value = "";
         purchaseQuantity.value = "";
@@ -134,6 +139,8 @@ const getDtls = (invoiceId, customerId) => {
         ProductID.value = "";
         expDate.value = "";
         unit.value = "";
+        itemUnit.value = "";
+        itemWeatage.value = "";
         batchNo.value = "";
         mrp.value = "";
         purchaseQuantity.value = "";
@@ -171,6 +178,16 @@ const getItemDetails = (t) => {
         xmlhttp.open("GET", unitUrl, false);
         xmlhttp.send(null);
         unit.value = xmlhttp.responseText;
+
+        let itemUnitUrl = `ajax/stockOut.all.ajax.php?itemUnit=${invoice}&p-id=${itemId}`;
+        xmlhttp.open("GET", itemUnitUrl, false);
+        xmlhttp.send(null);
+        itemUnit.value = xmlhttp.responseText;
+
+        let itemWeatageUrl = `ajax/stockOut.all.ajax.php?itemWeatage=${invoice}&p-id=${itemId}`;
+        xmlhttp.open("GET", itemWeatageUrl, false);
+        xmlhttp.send(null);
+        itemWeatage.value = xmlhttp.responseText;
 
         //==================== Batch ====================
         batch.value = batchNo;
@@ -232,6 +249,8 @@ const getItemDetails = (t) => {
         ProductID.value = "";
         expDate.value = "";
         unit.value = "";
+        itemUnit.value = "";
+        itemWeatage.value = "";
         batchNo.value = "";
         mrp.value = "";
         purchaseQuantity.value = "";
@@ -244,17 +263,33 @@ const getItemDetails = (t) => {
     }
 }
 
+
 const getRefund = (returnQty) => {
+    console.log("return qantity test", returnQty);
+    
     let currenQty = document.getElementById('qty').value;
-
-    console.log(currenQty);
-    console.log(returnQty);
-
+    let mrp = document.getElementById('mrp').value;
+    let disc = document.getElementById('discount').value;
+    let gst = document.getElementById('gst').value;
+    let weatage = document.getElementById('item-weatage').value;
+    let itemUnit = document.getElementById('item-unit').value;
+    
     if (parseInt(returnQty) <= parseInt(currenQty)) {
-        let calculatedRefundAmount = (parseFloat(billAmount.value) / parseInt(purchaseQuantity.value)) * returnQty;
-        let calculatedRefundTaxable = (parseFloat(taxable.value) / parseInt(purchaseQuantity.value)) * returnQty;
-        document.getElementById("refund").value = calculatedRefundAmount;
-        document.getElementById("refund-taxable").value = calculatedRefundTaxable;
+        if(itemUnit == 'tab' || itemUnit == 'cap'){
+            let refundAmount = ((parseFloat(mrp) / parseInt(weatage)) - ((parseFloat(mrp) / parseInt(weatage)) * parseFloat(disc)/100)) * parseInt(returnQty);
+
+            refundTaxable = (parseFloat(refundAmount) * 100) / (parseFloat(gst) + 100);
+
+            document.getElementById('refund').value = refundAmount.toFixed(2);
+            document.getElementById('refund-taxable').value = refundTaxable.toFixed(2);
+        }else{
+            let refundAmount = (parseFloat(mrp) - (parseFloat(mrp) * parseFloat(disc)/100)) * returnQty;
+
+            refundTaxable = (parseFloat(refundAmount) * 100) / (parseFloat(gst) + 100);
+
+            document.getElementById('refund').value = refundAmount.toFixed(2);
+            document.getElementById('refund-taxable').value = refundTaxable.toFixed(2);
+        }
     } 
 
     if (parseInt(returnQty) > parseInt(currenQty)) {
@@ -437,6 +472,8 @@ const addData = () => {
                 ProductID.value = "";
                 expDate.value = "";
                 unit.value = "";
+                itemUnit.value = "";
+                itemWeatage.value = "";
                 batch.value = "";
                 mrp.value = "";
                 qty.value = "";

@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                
                 // ========================= ADD TO SALES RETURN DETAILS =============================
                 
-                $addSalesReturndDetails = $SalesReturn->addReturnDetails($SalesReturnId[0]['id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $disc[$i], $gst[$i], $taxableArray[$i], $returnQty[$i], $perItemRefund[$i]) ;
+                $addSalesReturndDetails = $SalesReturn->addReturnDetails($SalesReturnId[0]['id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $mrp[$i], $disc[$i], $gst[$i], $taxableArray[$i], $returnQty[$i], $perItemRefund[$i]) ;
 
                 // ============= CURRENT STOCK UPDATE AREA ===========================
                 

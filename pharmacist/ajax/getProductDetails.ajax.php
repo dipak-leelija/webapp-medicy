@@ -77,18 +77,18 @@ if (isset($_GET["looseStock"])) {
 
 
 // ========================== CURRENT STOCK ITEM LOOSE PRICE CHECKING =============================
-if (isset($_GET["loosePrice"])) {
+// if (isset($_GET["loosePrice"])) {
 
-    $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["loosePrice"], $_GET["batchNo"]);
-    foreach($stock as $stock){
-        if ($stock['unit'] == 'tab' || $stock['unit'] == 'cap') {
-            $loosePrice = $stock['loosely_price'];
-        } else {
-            $loosePrice = null;
-        }
-    }
-    echo $loosePrice;
-}
+//     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["loosePrice"], $_GET["batchNo"]);
+//     foreach($stock as $stock){
+//         if ($stock['unit'] == 'tab' || $stock['unit'] == 'cap') {
+//             $loosePrice = $stock['loosely_price'];
+//         } else {
+//             $loosePrice = null;
+//         }
+//     }
+//     echo $loosePrice;
+// }
 
 
 // ========================== CURRENT STOCK AVAILIBILITY CHECK =============================

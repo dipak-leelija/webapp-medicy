@@ -16,7 +16,7 @@ const customEdit = (id, value) => {
             EditId: value
         },
         success: function (data) {
-            alert(data);
+            // alert(data);
 
             var dataObject = JSON.parse(data);
             // alert("hello");
@@ -72,8 +72,8 @@ const customEdit = (id, value) => {
             document.getElementById("purchse-qty").value = dataObject.purchase_qty;
             document.getElementById("purchse-free-qty").value = dataObject.free_qty;
 
-            document.getElementById("prev-ret-qty").value = dataObject.return_qty;
-            document.getElementById("prev-ret-free-qty").value = dataObject.return_free_qty;
+            // document.getElementById("prev-ret-qty").value = dataObject.return_qty;
+            // document.getElementById("prev-ret-free-qty").value = dataObject.return_free_qty;
 
             document.getElementById("return-qty").value = dataObject.return_qty;
             document.getElementById("ret-free-qty").value = dataObject.return_free_qty;
@@ -129,6 +129,22 @@ const customEdit = (id, value) => {
 //     }
 // }
 
+const freeReturnCheck = () =>{
+    let editFreeRetunr = document.getElementById('ret-free-qty').value;
+    console.log("edit free return qty : ", editFreeRetunr);
+    let currentFreeQty = document.getElementById('current-free-qty').value;
+    let purchaseFreeQty = document.getElementById('purchse-free-qty').value;
+    let currenQty = document.getElementById('current-total-qty').value;
+    if(parseInt(currenQty) < parseInt(purchaseFreeQty)){
+        swal("Error", "Return Quantity Must Less Then Avilable Quantity", "error");
+        document.getElementById('ret-free-qty').value = currenQty;
+    }else if(parseInt(editFreeRetunr) > parseInt(purchaseFreeQty)){
+        swal("Error", "Return Quantity Must Less Then Avilable Quantity", "error");
+        document.getElementById('ret-free-qty').value = purchaseFreeQty;
+    }
+}
+
+
 const getRefund = (returnQty) => {
     returnQty = parseInt(returnQty);
 
@@ -143,16 +159,10 @@ const getRefund = (returnQty) => {
         let disc = document.getElementById("discount").value;
         let gstParcent = document.getElementById("gst").value;
 
-        let purchaeQty = document.getElementById("purchse-qty").value;
-
-        let prevReturnQty = document.getElementById("prev-ret-qty").value;
-        let currentFreeQty = document.getElementById("current-free-qty").value;
-        let currentQty = document.getElementById("current-total-qty").value;
-
-        let checkReturn = returnQty - parseInt(prevReturnQty);
+        let livePurchseQty = document.getElementById('current-qty').value;
 
         // console.log(parseInt(currentQty.value));
-        if (checkReturn <= (parseInt(currentQty) - parseInt(currentFreeQty))) {
+        if (returnQty <= parseInt(livePurchseQty)) {
             let taxable = (parseFloat(ptr) - (parseFloat(ptr) * parseFloat(disc) / 100)) * returnQty;
             let refund = taxable + (taxable * parseFloat(gstParcent) / 100);
             // console.log(refund);
@@ -368,8 +378,8 @@ const addData = async () => {
 
             document.getElementById("purchse-qty").value = '';
             document.getElementById("purchse-free-qty").value = '';
-            document.getElementById("prev-ret-qty").value = '';
-            document.getElementById("prev-ret-free-qty").value = '';
+            // document.getElementById("prev-ret-qty").value = '';
+            // document.getElementById("prev-ret-free-qty").value = '';
 
             document.getElementById("bill-date").value = '';
             document.getElementById("returnDate").value = '';

@@ -72,8 +72,8 @@ class SalesReturn extends DatabaseConnection{
     }
     //------------------------------updating sales return table-------------- RD ----------------
 
-    function updateSalesReturn($id, $returnDate, $gstAmount, $refundAmount, $refundMode, $added_by){    
-        $updateSalesReturn = "UPDATE `sales_return` SET `return_date`='$returnDate',`gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode',`added_by`='$added_by' WHERE `id`='$id'";
+    function updateSalesReturn($id, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){    
+        $updateSalesReturn = "UPDATE `sales_return` SET `return_date`='$returnDate',`items` = '$items', `gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode',`added_by`='$added_by' WHERE `id`='$id'";
 
         $update = $this->conn->query($updateSalesReturn);
 
@@ -160,9 +160,9 @@ class SalesReturn extends DatabaseConnection{
 //     ################################################################################################################################
 
 
-    function addReturnDetails($SalesReturnId, $itemId, $productId, $batchNo, $weatage, $exp_date, $disc, $gst, $taxable, $returnQty, $refund){
+    function addReturnDetails($SalesReturnId, $itemId, $productId, $batchNo, $weatage, $exp_date, $mrp, $disc, $gst, $taxable, $returnQty, $refund){
 
-        $insert = "INSERT INTO  sales_return_details (`sales_return_id`, `item_id`, `product_id`, `batch_no`, `weatage`, `exp`, `disc`, `gst`,	`taxable`, `return_qty`, `refund_amount`) VALUES  ('$SalesReturnId', '$itemId', '$productId', '$batchNo', '$weatage', '$exp_date', '$disc', '$gst', '$taxable', '$returnQty', '$refund')";
+        $insert = "INSERT INTO  sales_return_details (`sales_return_id`, `item_id`, `product_id`, `batch_no`, `weatage`, `exp`, `mrp`, `disc`, `gst`, `taxable`, `return_qty`, `refund_amount`) VALUES  ('$SalesReturnId', '$itemId', '$productId', '$batchNo', '$weatage', '$exp_date', '$mrp', '$disc', '$gst', '$taxable', '$returnQty', '$refund')";
         // echo $insertEmp.$this->conn->error;
         // exit;
         $res = $this->conn->query($insert);
@@ -216,9 +216,9 @@ class SalesReturn extends DatabaseConnection{
 
     //--------------------update sales return details table----------------RD--------------
 
-    function updateSalesReturnDetails($salesRetunId, $invoiceId, $productID, $batchNo, $discPercent, $gstPercent, $gstAmount, $returnQTY, $refundAmount, $addedBy, $addedOn){
-
-        $updateSalseReturnDetails = "UPDATE `sales_return_details` SET `disc`='$discPercent',`gst`='$gstPercent',`amount`='$gstAmount',`return`='$returnQTY',`refund`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn' WHERE `sales_return_id`='$salesRetunId' AND `product_id`='$productID' AND `invoice_id`='$invoiceId' AND `batch_no` = '$batchNo'";
+    function updateSalesReturnDetails($salesRetunId, $taxable, $returnQTY, $refundAmount, $addedBy){
+       
+        $updateSalseReturnDetails = "UPDATE `sales_return_details` SET `taxable` = '$taxable', `return_qty`='$returnQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `id`='$salesRetunId'";
 
         $updateDetails = $this->conn->query($updateSalseReturnDetails);
 

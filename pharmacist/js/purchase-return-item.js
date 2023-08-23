@@ -332,7 +332,6 @@ function addData() {
     // productName = productName.slice(11);
     // alert(productId.value);
     // alert(productName);
-
     // return;
 
     var expDate = document.getElementById("exp-date");

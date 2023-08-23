@@ -135,7 +135,6 @@ if (isset($_GET["purchased-qty"])) {
     }
 }
 
-
 // get free-qty
 if (isset($_GET["free-qty"])) {
     $id = $_GET["free-qty"];
@@ -144,7 +143,6 @@ if (isset($_GET["free-qty"])) {
         echo $stock[0]['free_qty'];
     }
 }
-
 
 //get net-buy-qty
 if (isset($_GET["net-buy-qty"])) {

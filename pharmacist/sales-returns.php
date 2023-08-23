@@ -142,15 +142,13 @@ $currentStock  = new CurrentStock();
 
                                         $returns = $SalesReturn->selectSalesReturn($table, $data);
 
-                                        //print_r($returns);
-
                                         if (count($returns) > 0) {
                                             foreach ($returns as $item) {
                                                 //print_r($item); echo "<br><br>"; 
                                                 $invoiceId = $item['invoice_id'];
                                                 $salesReturnId = $item['id'];
-                                                echo $invoiceId,"<br>";
-                                                echo $salesReturnId;
+                                                // echo $invoiceId,"<br>";
+                                                // echo $salesReturnId;
                                                 if ($item['patient_id'] == "Cash Sales") {
                                                     $patientName = "Cash Sales";
                                                 } else {

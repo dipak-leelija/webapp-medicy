@@ -179,12 +179,12 @@ $doctor = $Doctors->showDoctors();
                                             <input class="sale-inp" type="text" id="weightage" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class="d-none ol-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Weightage</label><br>
                                             <input class="sale-inp" type="text" id="item-weightage" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class="d-none ol-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Unit typ</label><br>
                                             <input class="sale-inp" type="text" id="item-unit-type" readonly>
                                         </div>
@@ -219,7 +219,7 @@ $doctor = $Doctors->showDoctors();
                                             <label for="" style="font-size: 0.96rem;  font-weight: bold;">Disc%</label><br>
                                             <input class="sale-inp" type="any" id="disc" onkeyup="ondDisc(this.value)">
                                         </div>
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class="d-none ol-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">D.Price</label><br>
                                             <input class="sale-inp" type="any" id="dPrice" readonly>
                                         </div>
