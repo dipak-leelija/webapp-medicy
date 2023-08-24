@@ -120,7 +120,7 @@ $currentStock  = new CurrentStock();
                             </div> -->
 
                             <div class="table-responsive">
-                                <table class="table item-table table-sm text-dark" id="dataTable">
+                                <table class="table item-table table-sm text-dark" id="dataTable" style="width: 100%;">
                                     <thead class="thead-white bg-primary text-light">
                                         <tr>
                                             <th>Invoice</th>

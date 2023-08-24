@@ -343,7 +343,7 @@ $doctor = $Doctors->showDoctors();
                                                     <th scope="col" class="d-none">Unit Type</th>
                                                     <th scope="col">Expiry</th>
                                                     <th scope="col" style="text-align: center;">MRP</th>
-                                                    <th scope="col" style="text-align: center;">PTR.</th>
+                                                    <th scope="col" class="d-none">PTR.</th>
                                                     <th scope="col" class="d-none">Qty.Typ</th>
                                                     <th scope="col">Qty.</th>
                                                     <th scope="col">Disc%</th>

@@ -186,6 +186,7 @@ class StockOut extends DatabaseConnection{
     }
 
 
+
     function stockOutDetailsDisplayById($invoiceId){
         $billData = array();
         $selectBill = "SELECT * FROM `stock_out_details` WHERE `invoice_id` = '$invoiceId'";
@@ -198,6 +199,8 @@ class StockOut extends DatabaseConnection{
         return $billData;
     }// eof stockOutDisplayById 
 
+
+
     function stokOutDetailsData($table1, $data1, $table2, $data2){
         $stockOutSelect = array();
         $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table1` = '$data1' AND `$table2` = '$data2'";
@@ -208,8 +211,23 @@ class StockOut extends DatabaseConnection{
             $stockOutSelect[]	= $result;
         }
         return $stockOutSelect;
-
     }//eof stockOut details by tabel and data
+
+
+    
+    function stokOutDetailsDataOnTable($table1, $data1){
+        $stockOutSelect = array();
+        $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table1` = '$data1'";
+        
+        $stockOutDataQuery = $this->conn->query($selectBill);
+
+        while($result = $stockOutDataQuery->fetch_array()){
+            $stockOutSelect[]	= $result;
+        }
+        return $stockOutSelect;
+    }//eof stockOut details by tabel and data
+
+
 
     function stockOutDetailsSelect($invoice, $productId, $batchNo){
 

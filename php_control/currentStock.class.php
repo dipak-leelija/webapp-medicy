@@ -160,7 +160,7 @@ class CurrentStock extends DatabaseConnection{
     function showCurrentStocByProductId($productId){
         //echo $productId;
         $data = array();
-        $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId'";
+        $select = "SELECT * FROM current_stock WHERE `product_id` = '$productId'";
         // echo $select;
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {

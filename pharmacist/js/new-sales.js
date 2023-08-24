@@ -134,8 +134,6 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         };
         XML.open('GET', 'ajax/sales-item-batch-list.ajax.php?batchDetails=' + prodcutId, true);
         XML.send();
-
-
     }
 
     if (stock <= 0) {
@@ -656,7 +654,6 @@ const addSummary = () => {
     document.getElementById("dynamic-id").value = slno;
 
     ////////// ITEMS COUNT ////////////
-
     document.getElementById("items").value = slno;
 
     /// TOTAL QUANTITY COUNT CALCULATION ///
@@ -728,7 +725,7 @@ const addSummary = () => {
             <input class="summary-items" type="text" name="mrp[]" value="${mrp}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
         </td>
 
-        <td id="${ptr}">
+        <td class="d-none" id="${ptr}">
             <input class="summary-items" type="text" name="itemPtr[]" value="${ptr}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
         </td>
 
