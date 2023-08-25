@@ -188,13 +188,18 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
 /////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //////////////////////////////////////////////////////////////////////////////
 
-const stockDetails = (productId, batchNo) => {
+const stockDetails = (productId, batchNo, itemId) => {
 
     document.getElementById("product-id").value = productId;
     document.getElementById("batch-no").value = batchNo;
 
+    document.getElementById("exta-details").style.display = "block";
     document.getElementById("searched-items").style.display = "none";
     document.getElementById("select-batch").style.display = "none";
+
+    let currenStockItemId = itemId;
+    document.getElementById("item-id").value = currenStockItemId;
+    // console.log(currenStockItemId);
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -371,6 +376,7 @@ const onQty = (qty) => {
     if (qty > availibility) {
         qty = '';
         document.getElementById("qty").value = qty;
+        document.getElementById('taxable').value = '';
         string_1 = "Please selet another batch or input ";
         string_2 = availibility;
         string_3 = " as qantity.";
@@ -449,7 +455,7 @@ const onQty = (qty) => {
     // console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
 
     //==================== Margin on an Item ====================
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&Dprice=${discPrice}`;
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
     xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
@@ -530,7 +536,7 @@ const ondDisc = (disc) => {
     }
 
     //==================== Margin on an Item ====================
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&Dprice=${discPrice}`;
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
     xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
@@ -542,42 +548,68 @@ const ondDisc = (disc) => {
 const addSummary = () => {
 
     let billDAte = document.getElementById("bill-dt").value;
-    console.log(billDAte);
     let customer = document.getElementById("customer").value;
     let doctorName = document.getElementById("doctor-select").value;
     let paymentMode = document.getElementById("payment-mode").value;
 
+    let invoiceNo = document.getElementById("invoice-id").value;
+    let pharmacyDataId = document.getElementById("pharmacy-data-id").value;
+    let stockOutDetailsId = document.getElementById("stock-out-details-id").value;
+    let itemId = document.getElementById("item-id").value;
+
+    let itemEditTrigger = '';
+    if(pharmacyDataId == '' && stockOutDetailsId == ''){
+        itemEditTrigger = 'new';
+    }else{
+        itemEditTrigger = 'old';
+    }
+
+    console.log("edit type check : ",itemEditTrigger);
+
+    let Manuf = document.getElementById("manuf").value;
+
     let productId = document.getElementById("product-id").value;
     let productName = document.getElementById("search-Item").value;
-    let Manuf = document.getElementById("manuf").value;
-    let weightage = document.getElementById("weightage").value;
     let batchNo = document.getElementById("batch-no").value;
+    
+    let weightage = document.getElementById("weightage").value;
+    let itemUnit = document.getElementById("item-weightage").value;
+    let itemPower = document.getElementById("item-unit-type").value;
     let expDate = document.getElementById("exp-date").value;
     let mrp = document.getElementById("mrp").value;
-    let loosePrice = document.getElementById("loose-price").value;
+    mrp = parseFloat(mrp);
+
+    let availabel = document.getElementById('aqty').value;
     let qty = document.getElementById("qty").value;
     let qtyType = document.getElementById("type-check").value;
+
+    
     let disc = document.getElementById("disc").value;
     let dPrice = document.getElementById("dPrice").value;
     let gst = document.getElementById("gst").value;
+    let taxable = document.getElementById('taxable').value;
     let amount = document.getElementById("amount").value;
 
+    let looseStock = document.getElementById("loose-stock").value;
+    let loosePrice = document.getElementById("loose-price").value;
+    let itemPtr = document.getElementById("ptr").value;
+    let margin = document.getElementById("margin").value;
     
     // ============== per item gst amount calculation ============
     let netGstAmount = (parseFloat(amount) - parseFloat(taxable));
     netGstAmount = netGstAmount.toFixed(2);
     // console.log("net gst amount : ",netGstAmount);
     // ============ end of amount calculation ==============
-    // ============ MRP SET ======================
-    if (loosePrice != '') {
-        mrp = loosePrice;
-    }else{
-        mrp = mrp;
-    }
+
+    // // ============ MRP SET ======================
+    // if (loosePrice != '') {
+    //     mrp = loosePrice;
+    // }else{
+    //     mrp = mrp;
+    // }
     
-    console.log("mrp check : ",mrp);
-    mrp = parseFloat(mrp);
-    console.log("mrp check : ",mrp.toFixed(2));
+    // mrp = parseFloat(mrp);
+   
 
 ////////////////////////////////////////////////////////////////////////////////////////////
     if (billDAte == '') {
@@ -643,21 +675,30 @@ const addSummary = () => {
     // console.log("Working Fine");
 
 
+
+    /////////////////// sl no control area \\\\\\\\\\\\\\\\\\\\\
+    let editRow = document.getElementById('edit-row').value;
     let slno = document.getElementById("dynamic-id").value;
     slno++;
     document.getElementById("dynamic-id").value = slno;
     document.getElementById("items").value = slno;
 
+    if(editRow == ''){
+        slno = slno;
+    }else{
+        slno = editRow;
+    }
+
     ////////////////////// total qantity count \\\\\\\\\\\\\\\\\\\\\\\\\\
     let finalQty = document.getElementById("final-qty");
-    let totalQty = parseFloat(finalQty.value) + parseFloat(qty.value);
+    let totalQty = parseFloat(finalQty.value) + parseFloat(qty);
     // console.log(totalQty);
     finalQty.value = totalQty;
 
     ////////////////TOTAL GST CALCULATION//////////////////////
     let existsGst = parseFloat(document.getElementById("total-gst").value);
-    var itemAmount = parseFloat(amount.value);
-    var itemGst = parseFloat(gst.value);
+    var itemAmount = parseFloat(amount);
+    var itemGst = parseFloat(gst);
     let withoutGst = itemAmount - (itemGst / 100 * itemAmount)
     let netGst = itemAmount - withoutGst;
     let totalGst = existsGst + netGst;
@@ -671,23 +712,21 @@ const addSummary = () => {
     ////////////////TOTAL MRP CALCULATION//////////////////////
     let totalPrice = document.getElementById("total-price").value;
     let existsPrice = parseFloat(totalPrice);
-    var itemMrp = parseFloat(mrp.value);
-    itemQty = parseFloat(qty.value);
+    var itemMrp = parseFloat(mrp);
+    itemQty = parseFloat(qty);
     itemMrp = itemQty * itemMrp;
     let totalMrp = existsPrice + itemMrp;
     // console.log(totalMrp);
     document.getElementById("total-price").value = totalMrp.toFixed(2);
 
 
-
     /////////////////TOTAL PAYABLE ///////////////////////
     let payable = document.getElementById("payable").value;
     let existsPayable = parseFloat(payable);
-    itemAmount = parseFloat(amount.value);
+    itemAmount = parseFloat(amount);
     let sum = existsPayable + itemAmount;
     // console.log(sum);
     document.getElementById("payable").value = sum.toFixed(2);
-
 
     jQuery("#item-body").append(`<tr id="table-row-${slno}">
 
@@ -697,41 +736,78 @@ const addSummary = () => {
 
             <td>
                 <input class="summary-product" type="text" name="product-name[]" value="${productName}" readonly>
-                <input type="text" name="product-id[]" value="${productId}" hidden>
-                <input type="text" name="Manuf[]" value="${Manuf.innerText}" hidden>
+                <input type="text" name="product-id[]" value="${productId}">
+                <input type="text" name="item-id[]" value="${itemId}">
+                <input type="text" name="Manuf[]" value="${Manuf}">
+            </td>
+
+            <td>
+                <input class="" type="text" name="pharmacy-data-id[]" value="${pharmacyDataId}" readonly style="width:3rem">
+
+                <input class="" type="text" name="stockOut-details-id[]" value="${stockOutDetailsId}" readonly style="width:3rem">
+            </td>
+
+            <td>
+                <input class="summary-items" type="text" name="batch-no[]" value="${batchNo}" readonly>
             </td>
 
             <td>
                 <input class="summary-items" type="text" name="weightage[]" value="${weightage}" readonly>
+                <input class="summary-items" type="text" name="ItemUnit[]" value="${itemUnit}" readonly style="width:3rem">
+                <input class="summary-items" type="text" name="ItemPower[]" value="${itemPower}" readonly style="width:3rem">
             </td>
-            <td>
-                <input class="summary-items" type="text" name="batch-no[]" value="${batchNo}" readonly>
-            </td>
+            
             <td>
                 <input class="summary-items" type="text" name="exp-date[]" value="${expDate}" readonly>
             </td>
+
             <td>
                 <input class="summary-items" type="text" name="mrp[]" value="${mrp}" readonly>
             </td>
-            <td>
-                <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
-                <input type="text" id="qty-types" name="qty-types[]" value="${qtyType}" hidden>
 
-            </td>
             <td>
                 <input class="summary-items" type="text" name="disc[]" value="${disc}" readonly>
-            </td>
-            <td>
                 <input class="summary-items" type="text" name="dPrice[]" value="${dPrice}" readonly>
             </td>
+
             <td>
                 <input class="summary-items" type="text" name="gst[]" value="${gst}" readonly>
-                <input type="text" name="netGst[]" value="${netGst}" hidden>
+                <input type="text" name="gst-amount[]" value="${netGstAmount}" style="width:3rem">
             </td>
+            
+            <td>
+                <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
+                <input class="" type="text" name="qty-type[]" value="${qtyType}" readonly style="width:3rem">
+            </td>
+
+            <td>
+                <input class="summary-items" type="text" name="taxable[]" value="${taxable}" readonly>
+            </td>
+            
             <td>
                 <input class="summary-items" type="text" name="amount[]" value="${amount}" readonly>
             </td>
+
+
+            /////////////////////////////// EXTRA DATA /////////////////////////////
+
+            <td>
+                <input type="text" id="LStock" name="lStock[]" value="${looseStock}" style="width:3rem>
+            </td>
+            <td>
+                <input type="text" id="loosePrice" name="lPrice[]" value="${loosePrice}" style="width:3rem>
+            </td>
+            <td>
+                <input type="text" id="ptr" name="pterPerItem[]" value="${itemPtr}" style="width:3rem>
+            </td>
+            <td>
+                <input type="text" id="margin" name="marginPerItem[]" value="${margin}" style="width:3rem>
+            </td>
         </tr>`);
+
+        
+
+        document.getElementById('sales-edit-form').reset();
 }
 
 
@@ -748,18 +824,27 @@ const editItem = (itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) =>{
             alert(data);
             var dataObject = JSON.parse(data);
 
-            var sellQty = dataObject.sellQty;
+            var sellQty = parseInt(dataObject.sellQty);
             var mrp = parseFloat(dataObject.Mrp);
             var itemUnit = dataObject.itemUnit;
             var itemWeatage = parseInt(dataObject.itemWeatage);
             var discPercent = parseFloat(dataObject.dicPercent);
+            var looseStock = '';
             var loosePrice = '';
             var typeCheck = '';
 
             if(itemUnit == 'tab' || itemUnit == 'cap'){
+                looseStock = dataObject.availableQty;;
                 loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
+                if(sellQty % itemWeatage == 0){
+                    typeCheck = 'Pack';
+                }else{
+                    typeCheck = 'Loose';
+                }
             }else{
-                loosePrice = mrp;
+                looseStock = '';
+                loosePrice = '';
+                typeCheck = '';
             }
 
             var discPrice = parseFloat(mrp) - (parseFloat(mrp) * parseFloat(discPercent) / 100);
@@ -770,17 +855,21 @@ const editItem = (itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) =>{
             document.getElementById('item-id').value = dataObject.itemId;
             document.getElementById('product-id').value = dataObject.productId;
             document.getElementById('search-Item').value = dataObject.productName;
+            document.getElementById('manuf').value = dataObject.manufId;
+            document.getElementById('manufName').value = dataObject.manufName;
+            document.getElementById('productComposition').value = dataObject.productComposition;
             document.getElementById('batch-no').value = dataObject.batchNo;
             document.getElementById('weightage').value = dataObject.packOf;
             document.getElementById('item-weightage').value = dataObject.itemWeatage;
             document.getElementById('item-unit-type').value = dataObject.itemUnit;
             document.getElementById('exp-date').value = dataObject.expDate;
             document.getElementById('mrp').value = dataObject.Mrp;
-            // document.getElementById('loose-price').value = ;
+            document.getElementById('loose-price').value = loosePrice;
             document.getElementById('ptr').value = dataObject.Ptr;
             document.getElementById('aqty').value = dataObject.availableQty;
+            document.getElementById('loose-stock').value = looseStock;
             document.getElementById('qty').value = dataObject.sellQty;
-            // document.getElementById('type-check').value = ;
+            document.getElementById('type-check').value = typeCheck;
             document.getElementById('disc').value = dataObject.dicPercent;
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('gst').value = dataObject.gstPercent;
@@ -788,9 +877,8 @@ const editItem = (itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) =>{
             document.getElementById('taxable').value = dataObject.taxable;
             document.getElementById('amount').value = dataObject.paybleAmount;
 
-            
-           //=======> need to calculate loose price, type-check, dPrice
-
+           
+            document.getElementById("exta-details").style.display = "block";
             deleteItem(slno, itemQty, gstamnt, mrpPerItem, payblePerItem);
         } 
     })
@@ -798,14 +886,15 @@ const editItem = (itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) =>{
 
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
     
-    
+    document.getElementById('edit-row').value = slno;
+
     jQuery(`#table-row-${slno}`).remove();
     
     slno = document.getElementById("dynamic-id").value;
     slno--;
     document.getElementById("dynamic-id").value = slno;
 
-    ////////////// details data control on delete\\\\\\\\\\\\\
+    ////////////// details data control on delete \\\\\\\\\\\\\
     var items = document.getElementById("items");
     leftItems = items.value - 1;
     items.value = leftItems;
@@ -819,7 +908,6 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
     leftGst = parseFloat(leftGst);
     leftGst = leftGst.toFixed(2);
     existGst.value = leftGst;
-
 
     var existMrp = document.getElementById("total-price");
     leftMrp = parseFloat(existMrp.value) - parseFloat(totalMrp);

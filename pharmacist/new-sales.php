@@ -323,7 +323,7 @@ $doctor = $Doctors->showDoctors();
                     <div class="card mb-4 mt-md-5 summary">
                         <div class="card-body fisrt-card-body">
                             <h3 class="text-center font-weight-bolder listed-heading">Listed Items For sale</h3>
-                            <form action="item-invoice.php" method="post">
+                            <form action="_config/form-submission/item-invoice.php" method="post">
                                 <div>
                                     <div class="table-responsive">
                                         <table class="table item-table">

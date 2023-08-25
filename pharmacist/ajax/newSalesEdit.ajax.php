@@ -2,10 +2,12 @@
 require_once '../../php_control/stockOut.class.php';
 require_once '../../php_control/products.class.php';
 require_once '../../php_control/currentStock.class.php';
+require_once '../../php_control/manufacturer.class.php';
 
 $StockOut = new StockOut();
 $Products = new Products();
 $CurrentStock = new CurrentStock();
+$Manufacturer = new Manufacturer();
 
 
 $itemId = $_POST['Stock_out_item_id'];
@@ -76,6 +78,15 @@ foreach($currentStockData as $currenStock){
 }
 
 
+// ============================== MANUFACTURUR DETAILS ===================================
+$prodDetails = $Products->showProductsById($stockOutDetailsProductId);
+$composition = $prodDetails[0]['product_composition'];
+
+$manufData = $Manufacturer->showManufacturerById($prodDetails[0]['manufacturer_id']);
+foreach($manufData as $manufData){
+    $manufId = $manufData['id'];
+    $manufName = $manufData['name'];
+}
 //////////////////////\\\\\\\\\\\\\\\\\\\\\\\\================///////////////////////\\\\\\\\\\\\\\\\\\\\\\
 $stockOutDetailsDataArry = array(
     "pharmacyId"                =>  $pharmacyId,
@@ -84,6 +95,9 @@ $stockOutDetailsDataArry = array(
     "itemId"                    =>  $pharmacyItemId,
     "productId"                 =>  $stockOutDetailsProductId,
     "productName"               =>  $pharmacyItemName,
+    "manufId"                   =>  $manufId,                   
+    "manufName"                 =>  $manufName,
+    "productComposition"        =>  $composition,
     "batchNo"                   =>  $pharmacyBatchNo,
     "packOf"                    =>  $pharmacyItemPackOf,
     "itemWeatage"               =>  $stockOutDetailsItemWeatage,

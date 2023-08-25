@@ -179,12 +179,14 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
 
 ////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
-const stockDetails = (productId, batchNo) => {
+const stockDetails = (productId, batchNo, itemId) => {
 
     document.getElementById("product-id").value = productId;
     document.getElementById("batch_no").value = batchNo;
     document.getElementById("batch-no").value = batchNo;
     document.getElementById("searched-batchNo").style.display = "none";
+
+    let currenStockItemId = itemId;
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -446,7 +448,7 @@ const onQty = (qty) => {
     // console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
 
     //==================== Margin on an Item ====================
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&Dprice=${discPrice}`;
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
     xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
@@ -527,7 +529,7 @@ const ondDisc = (disc) => {
     }
 
     //==================== Margin on an Item ====================
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&Dprice=${discPrice}`;
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
     xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;

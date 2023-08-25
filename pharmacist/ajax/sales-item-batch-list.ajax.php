@@ -35,6 +35,7 @@ if($ProductBatchData != null){
     foreach($ProductBatchData as $itemData){
         // print_r($itemData);
         $productId  = $itemData['product_id'];
+        $id = $itemData['id'];
 
         $prodNameFetch = $Products->showProductsById($productId);
         foreach($prodNameFetch as $productData){
@@ -48,7 +49,7 @@ if($ProductBatchData != null){
         $unit        = $itemData['unit'];
         $packOf      = $weightage.'/'.$unit;
         ?>
-            <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" value="<?php echo $prodBatch ?>" onclick="stockDetails('<?php echo $productId ?>','<?php echo $prodBatch ?>',this.id, this.value);">
+            <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" value="<?php echo $prodBatch ?>" value1="<?php echo $id ?>" onclick="stockDetails('<?php echo $productId ?>','<?php echo $prodBatch ?>', '<?php echo $id ?>', this.id, this.value, this.value1);">
                 <!-- <div class="col-md-5"><?php echo $prodName ?></div> -->
                 <div class="col-md-6"><?php echo $prodBatch ?></div>
                 <div class="col-md-6"><?php echo $qantity;

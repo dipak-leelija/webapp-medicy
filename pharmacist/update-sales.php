@@ -195,167 +195,178 @@ if ($_GET['id']) {
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="row ">
 
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Invoice Number</label><br>
-                                        <input class="sale-inp" type="text" id="invoice-id" readonly>
-                                    </div>
+                                <form id='sales-edit-form'>
+                                    <div class="row ">
 
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Pharmacy data Id</label><br>
-                                        <input class="sale-inp" type="text" id="pharmacy-data-id" readonly>
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Stock Out Details Id</label><br>
-                                        <input class="sale-inp" type="text" id="stock-out-details-id" readonly>
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Item Id</label><br>
-                                        <input class="sale-inp" type="text" id="item-id" readonly>
-                                    </div>
-
-                                    <div class="col-md-3 mt-3 col-12">
-                                        <label for="">Item Name</label><br>
-                                        <input type="any" id="product-id">
-                                        <input type="text" id="search-Item" class="sale-inp-item" onkeyup="searchItem(this.value)">
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Batch</label><br>
-                                        <input class="sale-inp" type="text" id="batch-no" readonly>
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Unit/Pack</label><br>
-                                        <input class="sale-inp" type="text" id="weightage" readonly>
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Item Weatage</label><br>
-                                        <input class="sale-inp" type="text" id="item-weightage" readonly>
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Item Unit</label><br>
-                                        <input class="sale-inp" type="text" id="item-unit-type" readonly>
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Expiry</label><br>
-                                        <input class="sale-inp" type="text" id="exp-date" readonly>
-
-                                    </div>
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">MRP</label><br>
-                                        <input class="sale-inp" type="text" id="mrp" readonly>
-                                    </div>
-
-                                    <div class=" col-md-1 mt-3 col-6">
-                                        <!-- Available qty on batch no -->
-                                        <label for="" style="font-size: 0.96rem; font-weight: bold;">Availability</label><br>
-                                        <input class="sale-inp" type="text" id="aqty">
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Qty.</label><br>
-                                        <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)">
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="" style="font-size: 0.96rem; font-weight: bold;">Typ Chk.</label><br>
-                                        <input class="sale-inp" type="text" id="type-check" disabled>
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">Disc%</label><br>
-                                        <input class="sale-inp" type="any" id="disc" onkeyup="ondDisc(this.value)">
-
-                                    </div>
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">D.Price</label><br>
-                                        <input class="sale-inp" type="any" id="dPrice" readonly>
-
-                                    </div>
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="">GST%</label><br>
-                                        <input class="sale-inp" type="text" id="gst" readonly>
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-6">
-                                        <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable</label><br>
-                                        <input class="sale-inp" type="text" id="taxable" readonly>
-                                    </div>
-
-                                    <div class="col-md-1 mt-3 col-12">
-                                        <label for="">Amount</label><br>
-                                        <input class="sale-inp" type="any" id="amount" readonly>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="d-flex col-md-12">
-                                    <div class="p-2 bg-light col-md-6" id="searched-items" style="max-height: 15rem; max-width: 100%; overflow: auto; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%); display: none;">
-                                    </div>
-
-                                    <div class="p-2 bg-light col-md-3" id="select-batch" style="max-height: 7rem; max-width: 30rem; margin-left: 19rem; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">
-                                    </div>
-                                </div>
-
-
-
-                                <div id="exta-details">
-                                    <div class=" row mt-4">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-12 col-12 d-flex">
-                                                    <label for="">Manf:</label><br>
-                                                    <input class=" sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly>
-                                                    <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-12 d-flex" style="word-wrap: break-word;">
-                                                    <label for="" style="margin-top: 5px;">Content:</label>
-                                                    <input class="sale-inp" type="textarea" id="productComposition" style="border-width: 0px;  width: 30rem; word-wrap: break-word;" readonly>
-                                                </div>
-                                            </div>
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Edit row</label><br>
+                                            <input class="sale-inp" type="text" id="edit-row" readonly>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <div class="row mt-3">
-                                                <div class="col-md-4 col-6 mb-4 d-flex">
-                                                    <label for="">Loose Stock:</label>
-                                                    <input class="sale-inp" type="any" id="loose-stock" style="border-width: 0px;" readonly>
-                                                </div>
-                                                <div class="col-md-4 col-6 mb-4 d-flex">
-                                                    <label for="">Loose Price:</label>
-                                                    <input class="sale-inp" type="any" id="loose-price" style="border-width: 0px;" readonly>
-                                                </div>
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Invoice Number</label><br>
+                                            <input class="sale-inp" type="text" id="invoice-id" readonly>
+                                        </div>
 
-                                                <div class="col-md-4 col-6 mb-4 d-flex">
-                                                    <label for="" style="margin-top: 6px;">PTR:</label>
-                                                    <input class="sale-inp" type="any" id="ptr" style="border-width: 0px;" readonly>
-                                                </div>
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Pharmacy data Id</label><br>
+                                            <input class="sale-inp" type="text" id="pharmacy-data-id" readonly>
+                                        </div>
 
-                                                <div class="col-md-4 col-6 mb-4 d-flex">
-                                                    <label for="" style="margin-top: 6px;">Margin:</label>
-                                                    <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
-                                                </div>
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Stock Out Details Id</label><br>
+                                            <input class="sale-inp" type="text" id="stock-out-details-id" readonly>
+                                        </div>
 
-                                                <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
-                                                    <button class="btn btn-sm btn-primary w-100" onclick="addSummary()"><i class="fas fa-check-circle"></i>Add</button>
-                                                </div>
-                                            </div>
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Item Id</label><br>
+                                            <input class="sale-inp" type="text" id="item-id" readonly>
+                                        </div>
+
+                                        <div class="col-md-3 mt-3 col-12">
+                                            <label for="">Item Name</label><br>
+                                            <input type="any" id="product-id">
+                                            <input type="text" id="search-Item" class="sale-inp-item" onkeyup="searchItem(this.value)">
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Batch</label><br>
+                                            <input class="sale-inp" type="text" id="batch-no" readonly>
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Unit/Pack</label><br>
+                                            <input class="sale-inp" type="text" id="weightage" readonly>
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Item Weatage</label><br>
+                                            <input class="sale-inp" type="text" id="item-weightage" readonly>
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Item Unit</label><br>
+                                            <input class="sale-inp" type="text" id="item-unit-type" readonly>
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Expiry</label><br>
+                                            <input class="sale-inp" type="text" id="exp-date" readonly>
+
+                                        </div>
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">MRP</label><br>
+                                            <input class="sale-inp" type="text" id="mrp" readonly>
+                                        </div>
+
+                                        <div class=" col-md-1 mt-3 col-6">
+                                            <!-- Available qty on batch no -->
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Availability</label><br>
+                                            <input class="sale-inp" type="text" id="aqty">
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Qty.</label><br>
+                                            <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)">
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Typ Chk.</label><br>
+                                            <input class="sale-inp" type="text" id="type-check" disabled>
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">Disc%</label><br>
+                                            <input class="sale-inp" type="any" id="disc" onkeyup="ondDisc(this.value)">
+
+                                        </div>
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">D.Price</label><br>
+                                            <input class="sale-inp" type="any" id="dPrice" readonly>
+
+                                        </div>
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="">GST%</label><br>
+                                            <input class="sale-inp" type="text" id="gst" readonly>
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-6">
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable</label><br>
+                                            <input class="sale-inp" type="text" id="taxable" readonly>
+                                        </div>
+
+                                        <div class="col-md-1 mt-3 col-12">
+                                            <label for="">Amount</label><br>
+                                            <input class="sale-inp" type="any" id="amount" readonly>
+
                                         </div>
 
                                     </div>
 
-                                </div>
+                                    <div class="d-flex col-md-12">
+                                        <div class="p-2 bg-light col-md-6" id="searched-items" style="max-height: 15rem; max-width: 100%; overflow: auto; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%); display: none;">
+                                        </div>
+
+                                        <div class="p-2 bg-light col-md-3" id="select-batch" style="max-height: 7rem; max-width: 30rem; margin-left: 19rem; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div id="exta-details">
+                                        <div class=" row mt-4">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-12 d-flex">
+                                                        <label for="">Manf:</label><br>
+                                                        <input class=" sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly>
+                                                        <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 d-flex" style="word-wrap: break-word;">
+                                                        <label for="" style="margin-top: 5px;">Content:</label>
+                                                        <input class="sale-inp" type="textarea" id="productComposition" style="border-width: 0px;  width: 30rem; word-wrap: break-word;" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="row mt-3">
+                                                    <div class="col-md-4 col-6 mb-4 d-flex">
+                                                        <label for="">Loose Stock:</label>
+                                                        <input class="sale-inp" type="any" id="loose-stock" style="border-width: 0px;" readonly>
+                                                    </div>
+                                                    <div class="col-md-4 col-6 mb-4 d-flex">
+                                                        <label for="">Loose Price:</label>
+                                                        <input class="sale-inp" type="any" id="loose-price" style="border-width: 0px;" readonly>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-6 mb-4 d-flex">
+                                                        <label for="" style="margin-top: 6px;">PTR:</label>
+                                                        <input class="sale-inp" type="any" id="ptr" style="border-width: 0px;" readonly>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-6 mb-4 d-flex">
+                                                        <label for="" style="margin-top: 6px;">Margin:</label>
+                                                        <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
+                                                        <button type='button' class="btn btn-sm btn-primary w-100" onclick="addSummary()"><i class="fas fa-check-circle"></i>Add</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </form>
+
+
+
 
                             </div>
                             <!-- /end Add Product  -->
@@ -363,7 +374,7 @@ if ($_GET['id']) {
                             <!-- card mt-md-5 -->
                             <div class=" mb-4  summary">
                                 <div class="card-body fisrt-card-body">
-                                    <form action="item-invoice.php" method="post">
+                                    <form action="_config/form-submission/new-sell-edit.php" method="post">
                                         <div>
                                             <div class="table-responsive">
                                                 <table class="table item-table">
@@ -373,6 +384,7 @@ if ($_GET['id']) {
                                                             <th scope="col"></th>
                                                             <th scope="col">Item Name</th>
                                                             <th scope="col" hidden>Item Id</th>
+                                                            <th scope="col">Phamacy data id</th>
                                                             <th scope="col">Batch</th>
                                                             <th scope="col">Unit/Pack</th>
                                                             <th scope="col">Expiry</th>
@@ -388,20 +400,32 @@ if ($_GET['id']) {
                                                         <?php
                                                         $slno = 0;
                                                         foreach ($details as $detail) {
-
+                                                            
                                                             $mrp = $detail['mrp'];
-
                                                             $itemUnit = preg_replace('/[0-9]/', '', $detail['weatage']);
                                                             $itemWeatage = preg_replace('/[a-z]/', '', $detail['weatage']);
-
+                                                            //========================
                                                             if ($itemUnit == 'tab' || $itemUnit == 'cap') {
                                                                 $qty = $detail['loosely_count'];
                                                                 $MRP = floatval($mrp) / intval($itemWeatage);
                                                                 $billAmountPerItem = floatval($MRP) * intval($qty);
+                                                                
+                                                                if((intval($qty) % intval($itemWeatage)) == 0){
+                                                                    $qtyType = 'Pack';
+                                                                }else{
+                                                                    $qtyType = 'Loose';
+                                                                }
+                                                                
                                                             } else {
                                                                 $qty = $detail['qty'];
                                                                 $billAmountPerItem = floatval($mrp) * intval($qty);
+
+                                                                $qtyType = '';
                                                             }
+                                                            //=======================
+                                                            $productData = $Products->showProductsById($stockOutDetails[0]['product_id']);
+                                                            $manufId = $productData[0]['manufacturer_id'];
+                                                            //=======================
 
                                                             $slno = $slno + 1;
 
@@ -423,6 +447,14 @@ if ($_GET['id']) {
 
                                                                     <input type="text" name="product-id[]" value="<?php echo $stockOutDetails[0]['product_id']; ?>">
 
+                                                                    <input type="text" name="product-id[]" value="<?php echo $manufId; ?>">
+
+                                                                </td>
+
+                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
+                                                                    <input class="summary-product" type="text" name="pharmacy-data-id[]" value="<?php echo $detail['id']; ?>" readonly>
+
+                                                                    <input class="summary-product" type="text" name="stockOut-details-id[]" value="" readonly>
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
@@ -431,6 +463,10 @@ if ($_GET['id']) {
 
                                                                 <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
                                                                     <input class="summary-items" type="text" name="weightage[]" value="<?php echo $detail['weatage']; ?>" readonly>
+
+                                                                    <!-- <input class="summary-items" type="text" name="weightage[]" value="<?php echo $detail['weatage']; ?>" readonly>
+
+                                                                    <input class="summary-items" type="text" name="weightage[]" value="<?php echo $detail['weatage']; ?>" readonly> -->
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
@@ -447,11 +483,14 @@ if ($_GET['id']) {
 
                                                                 <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
                                                                     <input class="summary-items" type="text" name="gst[]" value="<?php echo $detail['gst']; ?>" readonly>
+
                                                                     <input type="text" style="width: 3rem;" name="netGst[]" value="<?php echo $detail['gst_amount']; ?>">
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
                                                                     <input class="summary-items" type="text" name="qty[]" value="<?php echo $qty; ?>" readonly>
+                                                                    
+                                                                    <input class="summary-items" type="text" name="qty-type[]" value="<?php echo $qtyType; ?>" readonly>
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
@@ -473,9 +512,11 @@ if ($_GET['id']) {
 
                                             <div class="listed-sumary p-3 text-light rounded">
                                                 <div class="row mb-3">
-                                                    <div class="col-md-2 col-6   mb-3 d-flex">
+                                                    <div class="col-md-2 col-6 mb-3 d-flex">
                                                         Items: <input class="sumary-inp" id="items" value="<?php echo $items; ?>" type="text" name="total-items">
                                                     </div>
+
+
                                                     <div class="col-md-2 col-6  mb-3 d-flex">
                                                         Quantity: <input class="sumary-inp" id="final-qty" value="<?php echo $temQtys; ?>" type="text" name="total-qty">
                                                     </div>
@@ -489,8 +530,8 @@ if ($_GET['id']) {
                                                     <div class="col-md-3 d-flex">
                                                         Payable: <input class="sumary-inp" id="payable" value="<?php echo $billAmout; ?>" type="any" name="bill-amount">
                                                     </div>
-
                                                 </div>
+
                                                 <div class="row">
                                                     <div class="col-md-2 col-6  mb-3 b-right d-flex">
                                                         <span>
@@ -504,10 +545,10 @@ if ($_GET['id']) {
                                                             <i class="fas fa-user"></i>
                                                         </span>
                                                         <input class="sumary-inp" type="text" id="customer-name" name="customer-name" value="<?php echo $patientName; ?>" readonly>
+
                                                         <input class="" type="text" id="customer-id" name="customer-id" value="<?php echo $patientId; ?>">
 
                                                         <input class="" type="text" id="invoice-id" name="invoice-id" value="<?php echo $invoiceId; ?>">
-
 
                                                     </div>
 
@@ -517,12 +558,14 @@ if ($_GET['id']) {
                                                         </span>
                                                         <input class="sumary-inp" type="text" id="final-doctor-name" name="final-doctor-name" value="<?php echo $reffby; ?>" readonly>
                                                     </div>
+                                                    
                                                     <div class="  col-md-2 col-4  mb-3 b-right d-flex">
                                                         <span>
                                                             <i class="fas fa-wallet"></i>
                                                         </span>
                                                         <input class="sumary-inp" type="text" id="final-payment" name="payment-mode" value="<?php echo $pMode; ?>" readonly>
                                                     </div>
+
                                                     <div class="col-md-2  mb-3">
                                                         <div class="d-md-flex justify-content-end">
                                                             <button type="submit" name="update" class="btn btn-sm btn-primary w-100">Update Bill</button>

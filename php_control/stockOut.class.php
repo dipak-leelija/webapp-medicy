@@ -201,6 +201,19 @@ class StockOut extends DatabaseConnection{
 
 
 
+    function stokOutDetailsDataOnTables($table1, $data1, $table2, $data2, $table3, $data3,){
+        $stockOutSelect = array();
+        $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table1` = '$data1' AND `$table2` = '$data2' AND `$table3` = '$data3'";
+        
+        $stockOutDataQuery = $this->conn->query($selectBill);
+
+        while($result = $stockOutDataQuery->fetch_array()){
+            $stockOutSelect[]	= $result;
+        }
+        return $stockOutSelect;
+    }//eof stockOut details by tabel and data
+
+
     function stokOutDetailsData($table1, $data1, $table2, $data2){
         $stockOutSelect = array();
         $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table1` = '$data1' AND `$table2` = '$data2'";

@@ -4,16 +4,15 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-require_once '_config/sessionCheck.php'; //check admin loggedin or not
+require_once '../../_config/sessionCheck.php';//check admin loggedin or not
 
-
-require_once '../php_control/hospital.class.php';
-require_once '../php_control/doctors.class.php';
-require_once '../php_control/idsgeneration.class.php';
-require_once '../php_control/patients.class.php';
-require_once '../php_control/stockOut.class.php';
-require_once '../php_control/currentStock.class.php';
-require_once '../php_control/manufacturer.class.php';
+require_once '../../../php_control/hospital.class.php';
+require_once '../../../php_control/doctors.class.php';
+require_once '../../../php_control/idsgeneration.class.php';
+require_once '../../../php_control/patients.class.php';
+require_once '../../../php_control/stockOut.class.php';
+require_once '../../../php_control/currentStock.class.php';
+require_once '../../../php_control/manufacturer.class.php';
 
 
 //  INSTANTIATING CLASS
@@ -204,6 +203,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $itemId, $prductId[$i], $batchNo[$i], $expDate[$i], $ItemWeightage, $ItemUnit, $wholeCount, $looseCount, $mrp[$i], $ptr[$i], $discountPercent[$i], $gstparcent[$i], $marginPerItem[$i], $amount[$i], $addedBy);
 
+                // $stockOutDetailsId = $StockOut->
+
                 // echo "<br><br>product ids array : $prductId[$i]";
                 // echo "<br>Product name array : $prodName[$i]";
                 // echo "<br>Manufacturur id  : $manufId[$i]";
@@ -278,8 +279,8 @@ foreach ($showhelthCare as $rowhelthCare) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Sales Bill</title>
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/custom/test-bill.css">
+    <link rel="stylesheet" href="../../../css/bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="../../../css/custom/test-bill.css">
 
 </head>
 
@@ -292,7 +293,7 @@ foreach ($showhelthCare as $rowhelthCare) {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="../images/logo-p.jpg" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="../../../images/logo-p.jpg" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
@@ -544,6 +545,6 @@ foreach ($showhelthCare as $rowhelthCare) {
 
     ?>
 </body>
-<script src="../js/bootstrap-js-5/bootstrap.js"></script>
+<script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
 
 </html>
