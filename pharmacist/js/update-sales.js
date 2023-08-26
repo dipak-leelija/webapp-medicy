@@ -594,6 +594,9 @@ const addSummary = () => {
     let loosePrice = document.getElementById("loose-price").value;
     let itemPtr = document.getElementById("ptr").value;
     let margin = document.getElementById("margin").value;
+
+    console.log("item ptr check : ",itemPtr);
+    console.log("item margin check : ",margin);
     
     // ============== per item gst amount calculation ============
     let netGstAmount = (parseFloat(amount) - parseFloat(taxable));
@@ -777,7 +780,7 @@ const addSummary = () => {
             
             <td>
                 <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
-                <input class="" type="text" name="qty-type[]" value="${qtyType}" readonly style="width:3rem">
+                <input class="summary-items" type="text" name="qty-type[]" value="${qtyType}" readonly style="width:3rem">
             </td>
 
             <td>
@@ -792,16 +795,17 @@ const addSummary = () => {
             /////////////////////////////// EXTRA DATA /////////////////////////////
 
             <td>
-                <input type="text" id="LStock" name="lStock[]" value="${looseStock}" style="width:3rem>
+                
             </td>
             <td>
-                <input type="text" id="loosePrice" name="lPrice[]" value="${loosePrice}" style="width:3rem>
+                
+            </td>
+
+            <td>
+                <input class="summary-items" type="text" name="ptr[]" value="${itemPtr}" readonly>
             </td>
             <td>
-                <input type="text" id="ptr" name="pterPerItem[]" value="${itemPtr}" style="width:3rem>
-            </td>
-            <td>
-                <input type="text" id="margin" name="marginPerItem[]" value="${margin}" style="width:3rem>
+                <input class="summary-items" type="text" name="margin[]" value="${margin}" readonly>
             </td>
         </tr>`);
 

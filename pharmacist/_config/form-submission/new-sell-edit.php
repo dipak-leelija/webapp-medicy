@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $customerName = 'Cash Sales';
     }
 
-    print_r($_POST);
+    // print_r($_POST);
 
     echo "<br>Added by : $addedBy<br>";
 
@@ -104,8 +104,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // $looseStock         = $_POST['lStock'];
     // $looselyPrice       = $_POST['lPrice'];    
-    // $ptrPerItem         = $_POST['pterPerItem'];    
-    // $marginPerItem      = $_POST['marginPerItem'];
+    $ptrPerItem         = $_POST['ptr'];    
+    $marginPerItem      = $_POST['margin'];
 
     
     echo "<br><br>================== data arrays ====================== <br>";
@@ -131,18 +131,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "<br>Net payble per item : "; print_r($amount);
     // echo "<br>Loose Stock : "; print_r($looseStock);
     // echo "<br>Loose Price : "; print_r($looselyPrice);
-    // echo "<br>PTR per Item : "; print_r($ptrPerItem);
-    // echo "<br>Margin amount per item : "; print_r($marginPerItem);
+    echo "<br>PTR per Item : "; print_r($ptrPerItem);
+    echo "<br>Margin amount per item : "; print_r($marginPerItem);
     
-exit;
+
     
     
 
     //========================== STOCK OUT AND SALES EDIT UPDATE AREA ==========================
     if (isset($_POST['update'])) {
-        $invoiceId = $_POST['invoice-id'];
+    
+        $discountAmount = floatval($totalMRP) - floatval($netPaybleAmount);
 
-        $stockOutUpdate = $StockOut->updateLabBill($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $billdate, $addedBy);
+        // $stockOutUpdate = $StockOut->updateLabBill($invoiceNo, $customerId, $doctorName, $itemsCount, $totalItemsQantity, $totalMRP, $discountAmount, $totalGstAmount, $netPaybleAmount, $paymentMode, $billDAte, $addedBy);
+        $stockOutUpdate = true;
+
+        if($stockOutUpdate == true){
+
+            $invoiceIdList = [];
+            $pharmacyInvoiceData = $StockOut->stockOutDetailsById($invoiceNo);
+            foreach($pharmacyInvoiceData as $pharmacyInvoiceData){
+                array_push($invoiceIdList, $pharmacyInvoiceData['id']);
+            }
+            echo "<br><br><br><br>Pharmacy id list : "; print_r($invoiceIdList);
+
+            $pharmacyIdArraydiff = array_diff($invoiceIdList, $pharmacyDataId);
+
+            echo "<br> Pharmacy id diff list : "; print_r($pharmacyIdArraydiff);
+
+            $stockOutDetailsIdList = [];
+            $stockOutDetails = $StockOut->stockOutDetailsDisplayById($invoiceNo);
+            foreach($stockOutDetails as $stockOutDetails){
+                array_push($stockOutDetailsIdList, $stockOutDetails['id']);
+            }
+            echo "<br><br><br>Stock out details id list : "; print_r($stockOutDetailsIdList);
+
+            $stockOutDetailsIdArrayDiff = array_diff($stockOutDetailsIdList, $stockOutDataId);
+
+            echo "<br>Stock out details id diff list : "; print_r($stockOutDetailsIdArrayDiff);
+
+
+            exit;
+
+        }
     }
 }
 

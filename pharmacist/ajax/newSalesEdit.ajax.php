@@ -18,7 +18,7 @@ $table = 'item_id';
 //==================== ITEM DETAILS FROM PHARMACY INVOICE TABLE =====================
 $itemInvoiceData = $StockOut->invoiceDetialsByTableData($table, $itemId);
 foreach($itemInvoiceData as $itemSellData){
-    $pharmacyId = $itemSellData['id'];
+    // $pharmacyId = $itemSellData['id'];
     $pharmacyInvoiceId = $itemSellData['invoice_id'];
     $pharmacyItemId = $itemSellData['item_id'];
     $pharmacyItemName = $itemSellData['item_name'];
@@ -34,6 +34,11 @@ foreach($itemInvoiceData as $itemSellData){
     $pharmacyItemGstAmount = $itemSellData['gst_amount'];
     $pharmacyItemAmount = $itemSellData['amount'];
 }
+
+$table1 = 'invoice_id';
+$table2 = 'batch_no';
+$itemInvoiceDataId = $StockOut->invoiceDetialsByTables($table1, $pharmacyInvoiceId, $table2, $pharmacyBatchNo);
+$pharmacyId = $pharmacyInvoiceId;
 
 //==================== ITEM DETAILS FROM STOK OUT DETAILS TABLE =====================
 $stockOutItemDetails = $StockOut->stokOutDetailsDataOnTable($table, $itemId);

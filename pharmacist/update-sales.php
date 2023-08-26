@@ -399,14 +399,21 @@ if ($_GET['id']) {
                                                     <tbody id="item-body">
                                                         <?php
                                                         $slno = 0;
-                                                        foreach ($details as $detail) {
-                                                            
-                                                            $mrp = $detail['mrp'];
-                                                            $itemUnit = preg_replace('/[0-9]/', '', $detail['weatage']);
-                                                            $itemWeatage = preg_replace('/[a-z]/', '', $detail['weatage']);
+                                                        // foreach ($details as $detail && $stockOutDetails as $stockOutData) 
+                                                        for($i = 0; $i<count($details) &&  $i<count($stockOutDetails); $i++){
+
+                                                            // print_r($details[$i]);
+                                                            // echo "<br><br>";
+                                                            // print_r($stockOutDetails[$i]);
+                                                            // echo "<br><br>";
+
+                                                            $mrp = $details[$i]['mrp'];
+
+                                                            $itemUnit = preg_replace('/[0-9]/', '', $details[$i]['weatage']);
+                                                            $itemWeatage = preg_replace('/[a-z]/', '', $details[$i]['weatage']);
                                                             //========================
                                                             if ($itemUnit == 'tab' || $itemUnit == 'cap') {
-                                                                $qty = $detail['loosely_count'];
+                                                                $qty = $details[$i]['loosely_count'];
                                                                 $MRP = floatval($mrp) / intval($itemWeatage);
                                                                 $billAmountPerItem = floatval($MRP) * intval($qty);
                                                                 
@@ -417,14 +424,15 @@ if ($_GET['id']) {
                                                                 }
                                                                 
                                                             } else {
-                                                                $qty = $detail['qty'];
+                                                                $qty = $details[$i]['qty'];
                                                                 $billAmountPerItem = floatval($mrp) * intval($qty);
 
                                                                 $qtyType = '';
                                                             }
                                                             //=======================
-                                                            $productData = $Products->showProductsById($stockOutDetails[0]['product_id']);
-                                                            $manufId = $productData[0]['manufacturer_id'];
+                                                            $table = 'product_id';
+                                                            $productData = $Products->showProductsById($stockOutDetails[$i]['product_id']);
+                                                            
                                                             //=======================
 
                                                             $slno = $slno + 1;
@@ -433,73 +441,92 @@ if ($_GET['id']) {
 
                                                             <tr id="table-row-<?php echo $slno; ?>">
                                                                 <td style="color: red;">
-                                                                    <i class="fas fa-trash" onclick="deleteItem(<?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)"></i>
+                                                                    <i class="fas fa-trash" onclick="deleteItem(<?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)"></i>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
                                                                     <input class="summary-items" type="text" name="sl-no[]" value="<?php echo $slno; ?>" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
-                                                                    <input class="summary-product" type="text" name="product-name[]" value="<?php echo $detail['item_name']; ?>" readonly>
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-product" type="text" name="product-name[]" value="<?php echo $productData[0]['name']; ?>" readonly>
 
-                                                                    <input type="text" style="width: 4rem;" name="item-id[]" value="<?php echo $detail['item_id']; ?>">
+                                                                    <input type="text" style="width: 4rem;" name="item-id[]" value="<?php echo $details[$i]['item_id']; ?>">
 
-                                                                    <input type="text" name="product-id[]" value="<?php echo $stockOutDetails[0]['product_id']; ?>">
+                                                                    <input type="text" name="product-id[]" value="<?php echo $stockOutDetails[$i]['product_id']; ?>">
 
-                                                                    <input type="text" name="product-id[]" value="<?php echo $manufId; ?>">
+                                                                    <input type="text" name="Manuf[]" value="<?php echo $productData[0]['manufacturer_id']; ?>">
 
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
-                                                                    <input class="summary-product" type="text" name="pharmacy-data-id[]" value="<?php echo $detail['id']; ?>" readonly>
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-product" type="text" name="pharmacy-data-id[]" value="<?php echo $details[$i]['id']; ?>" readonly>
 
-                                                                    <input class="summary-product" type="text" name="stockOut-details-id[]" value="" readonly>
+                                                                    <input class="summary-product" type="text" name="stockOut-details-id[]" value="<?php echo $stockOutDetails[$i]['id']; ?>" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
-                                                                    <input class="summary-items" type="text" name="batch-no[]" value="<?php echo $detail['batch_no']; ?>" readonly>
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="batch-no[]" value="<?php echo $details[$i]['batch_no']; ?>" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
-                                                                    <input class="summary-items" type="text" name="weightage[]" value="<?php echo $detail['weatage']; ?>" readonly>
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="weightage[]" value="<?php echo $details[$i]['weatage']; ?>" readonly>
 
-                                                                    <!-- <input class="summary-items" type="text" name="weightage[]" value="<?php echo $detail['weatage']; ?>" readonly>
+                                                                    <!-- <input class="summary-items" type="text" name="weightage[]" value="<?php echo $details[$i]['weatage']; ?>" readonly>
 
-                                                                    <input class="summary-items" type="text" name="weightage[]" value="<?php echo $detail['weatage']; ?>" readonly> -->
+                                                                    <input class="summary-items" type="text" name="weightage[]" value="<?php echo $details[$i]['weatage']; ?>" readonly> -->
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
-                                                                    <input class="summary-items" type="text" name="exp-date[]" value="<?php echo $detail['exp_date']; ?>" readonly>
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="exp-date[]" value="<?php echo $details[$i]['exp_date']; ?>" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
                                                                     <input class="summary-items" type="text" name="mrp[]" value="<?php echo $mrp; ?>" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
-                                                                    <input class="summary-items" type="text" name="disc[]" value="<?php echo $detail['disc']; ?>" readonly>
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="disc[]" value="<?php echo $details[$i]['disc']; ?>" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
-                                                                    <input class="summary-items" type="text" name="gst[]" value="<?php echo $detail['gst']; ?>" readonly>
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="gst[]" value="<?php echo $details[$i]['gst']; ?>" readonly>
 
-                                                                    <input type="text" style="width: 3rem;" name="netGst[]" value="<?php echo $detail['gst_amount']; ?>">
+                                                                    <input type="text" style="width: 3rem;" name="netGst[]" value="<?php echo $details[$i]['gst_amount']; ?>">
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
                                                                     <input class="summary-items" type="text" name="qty[]" value="<?php echo $qty; ?>" readonly>
                                                                     
                                                                     <input class="summary-items" type="text" name="qty-type[]" value="<?php echo $qtyType; ?>" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
-                                                                    <input class="summary-items" type="text" name="taxable[]" value="<?php echo $detail['taxable']; ?>" readonly>
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="taxable[]" value="<?php echo $details[$i]['taxable']; ?>" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $detail['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $detail['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $detail['amount'] ?>)">
-                                                                    <input class="summary-items" type="text" name="amount[]" value="<?php echo $detail['amount']; ?>" readonly>
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="amount[]" value="<?php echo $details[$i]['amount']; ?>" readonly>
                                                                 </td>
+
+                                                                <!-------- extra data --------->
+
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="extra1[]" value="" readonly>
+                                                                </td>
+
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="extra2[]" value="" readonly>
+                                                                </td>
+
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="ptr[]" value="<?php echo $stockOutDetails[$i]['ptr']; ?>" readonly>
+                                                                </td>
+
+                                                                <td onclick="editItem(<?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+                                                                    <input class="summary-items" type="text" name="margin[]" value="<?php echo $stockOutDetails[$i]['margin']; ?>" readonly>
+                                                                </td>
+
                                                             </tr>
 
                                                         <?php

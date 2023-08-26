@@ -143,6 +143,18 @@ class StockOut extends DatabaseConnection{
         return $billData;
     }//end of stockOutDetail fetch from pharmacy_invoice table function
 
+
+
+    function invoiceDetialsByTables($table1, $data1, $table2, $data2){
+        $billData = array();
+        $selectBill = "SELECT * FROM pharmacy_invoice WHERE `$table1` = '$data1' AND `$table2` = '$data2'";
+        $billQuery = $this->conn->query($selectBill);
+        while($result = $billQuery->fetch_array()){
+            $billData[]	= $result;
+        }
+        return $billData;
+    }//end of stockOutDetail fetch from pharmacy_invoice table function
+
     
     function stockOutSelect($invoice, $itemId){
         $billData = array();
