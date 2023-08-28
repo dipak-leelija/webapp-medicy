@@ -7,9 +7,6 @@ $page = "pack-unit";
 //Class Initilization
 $PackagingUnits = new PackagingUnits();
 
-
-
-
 ?>
 
 <!DOCTYPE html>

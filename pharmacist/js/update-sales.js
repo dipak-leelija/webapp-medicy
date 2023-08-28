@@ -272,17 +272,17 @@ const stockDetails = (productId, batchNo, itemId) => {
         // window.location.href = unitUrl;
         xmlhttp.open("GET", looseStockUrl, false);
         xmlhttp.send(null);
-        document.getElementById("loose-stock").value = xmlhttp.responseText;
+        // document.getElementById("loose-stock").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
         //==================== Loose Price ====================
-        // loosePriceUrl = `ajax/getProductDetails.ajax.php?loosePrice=${productId}&batchNo=${batchNo}`;
-        // // alert(ptrUrl);
-        // // window.location.href = unitUrl;
-        // xmlhttp.open("GET", loosePriceUrl, false);
-        // xmlhttp.send(null);
-        // document.getElementById("loose-price").value = xmlhttp.responseText;
-        // // alert(xmlhttp.responseText);
+        loosePriceUrl = `ajax/getProductDetails.ajax.php?loosePrice=${productId}&batchNo=${batchNo}`;
+        // alert(ptrUrl);
+        // window.location.href = unitUrl;
+        xmlhttp.open("GET", loosePriceUrl, false);
+        xmlhttp.send(null);
+        document.getElementById("loose-price").value = xmlhttp.responseText;
+        // alert(xmlhttp.responseText);
 
         // ======================= AVAILIBILITY ===========================
         itemAvailibilityUrl = `ajax/getProductDetails.ajax.php?availibility=${productId}&batchNo=${batchNo}`;
@@ -573,8 +573,8 @@ const addSummary = () => {
     let batchNo = document.getElementById("batch-no").value;
     
     let weightage = document.getElementById("weightage").value;
-    let itemUnit = document.getElementById("item-weightage").value;
-    let itemPower = document.getElementById("item-unit-type").value;
+    let itemUnit = document.getElementById("item-unit-type").value;
+    let itemPower = document.getElementById("item-weightage").value;
     let expDate = document.getElementById("exp-date").value;
     let mrp = document.getElementById("mrp").value;
     mrp = parseFloat(mrp);
@@ -717,7 +717,13 @@ const addSummary = () => {
     let existsPrice = parseFloat(totalPrice);
     var itemMrp = parseFloat(mrp);
     itemQty = parseFloat(qty);
-    itemMrp = itemQty * itemMrp;
+    if(itemUnit == 'tab' || itemUnit == 'cap'){
+        itemMrp = itemQty * (itemMrp / parseFloat(itemPower));
+    }else{
+        itemMrp = itemQty * itemMrp;
+    }
+    console.log("item type : ",itemUnit);
+    console.log("item mrp : ",itemMrp);
     let totalMrp = existsPrice + itemMrp;
     // console.log(totalMrp);
     document.getElementById("total-price").value = totalMrp.toFixed(2);
@@ -739,15 +745,15 @@ const addSummary = () => {
 
             <td>
                 <input class="summary-product" type="text" name="product-name[]" value="${productName}" readonly>
-                <input type="text" name="product-id[]" value="${productId}">
-                <input type="text" name="item-id[]" value="${itemId}">
-                <input type="text" name="Manuf[]" value="${Manuf}">
+                <input type="text" name="product-id[]" value="${productId}" hidden>
+                <input type="text" name="item-id[]" value="${itemId}" hidden>
+                <input type="text" name="Manuf[]" value="${Manuf}" hidden>
             </td>
 
-            <td>
-                <input class="" type="text" name="pharmacy-data-id[]" value="${pharmacyDataId}" readonly style="width:3rem">
+            <td hidden>
+                <input class="d-none" type="text" name="pharmacy-data-id[]" value="${pharmacyDataId}" readonly style="width:3rem">
 
-                <input class="" type="text" name="stockOut-details-id[]" value="${stockOutDetailsId}" readonly style="width:3rem">
+                <input class="d-none" type="text" name="stockOut-details-id[]" value="${stockOutDetailsId}" readonly style="width:3rem">
             </td>
 
             <td>
@@ -756,12 +762,12 @@ const addSummary = () => {
 
             <td>
                 <input class="summary-items" type="text" name="weightage[]" value="${weightage}" readonly>
-                <input class="summary-items" type="text" name="ItemUnit[]" value="${itemUnit}" readonly style="width:3rem">
-                <input class="summary-items" type="text" name="ItemPower[]" value="${itemPower}" readonly style="width:3rem">
+                <input class="d-none summary-items" type="text" name="ItemUnit[]" value="${itemUnit}" readonly style="width:3rem">
+                <input class="d-none summary-items" type="text" name="ItemPower[]" value="${itemPower}" readonly style="width:3rem">
             </td>
             
             <td>
-                <input class="summary-items" type="text" name="exp-date[]" value="${expDate}" readonly>
+                <input class="summary-items" type="text" name="exp-date[]" value="${expDate}" readonly style="width : 4rem;">
             </td>
 
             <td>
@@ -770,17 +776,17 @@ const addSummary = () => {
 
             <td>
                 <input class="summary-items" type="text" name="disc[]" value="${disc}" readonly>
-                <input class="summary-items" type="text" name="dPrice[]" value="${dPrice}" readonly>
+                <input class="d-none summary-items" type="text" name="dPrice[]" value="${dPrice}" readonly>
             </td>
 
             <td>
                 <input class="summary-items" type="text" name="gst[]" value="${gst}" readonly>
-                <input type="text" name="gst-amount[]" value="${netGstAmount}" style="width:3rem">
+                <input type="text" name="gst-amount[]" value="${netGstAmount}" style="width:3rem" hidden>
             </td>
             
             <td>
                 <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
-                <input class="summary-items" type="text" name="qty-type[]" value="${qtyType}" readonly style="width:3rem">
+                <input class="d-none summary-items" type="text" name="qty-type[]" value="${qtyType}" readonly style="width:3rem">
             </td>
 
             <td>
@@ -802,31 +808,37 @@ const addSummary = () => {
             </td>
 
             <td>
-                <input class="summary-items" type="text" name="ptr[]" value="${itemPtr}" readonly>
+                <input class="d-none summary-items" type="text" name="ptr[]" value="${itemPtr}" readonly>
             </td>
             <td>
-                <input class="summary-items" type="text" name="margin[]" value="${margin}" readonly>
+                <input class="d-none summary-items" type="text" name="margin[]" value="${margin}" readonly>
             </td>
         </tr>`);
 
         
 
         document.getElementById('sales-edit-form').reset();
+        document.getElementById("exta-details").style.display = "none";
+
 }
 
 
 
 
-const editItem = (itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) =>{   
+const editItem = (pharmacyId, stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) =>{   
+   
     $.ajax({
         url: "ajax/newSalesEdit.ajax.php",
         type: "POST",
         data: {
+            pharmacy_details_id : pharmacyId,
+            stock_out_details_id : stockOutId,
             Stock_out_item_id: itemId
         },
         success: function (data) {
             alert(data);
             var dataObject = JSON.parse(data);
+            // alert(dataObject);
 
             var sellQty = parseInt(dataObject.sellQty);
             var mrp = parseFloat(dataObject.Mrp);

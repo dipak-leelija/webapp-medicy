@@ -58,6 +58,12 @@ class CurrentStock extends DatabaseConnection{
         return $res;
     }//eof updateStock
 
+    function updateCurrentStockById($id, $newQuantity, $newLCount){
+        $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `id` = '$id'";
+        $res = $this->conn->query($editUpdate);
+        return $res;
+    }//eof updateStock
+
 
     // ==================== current stock update after stock in edit =========================
 

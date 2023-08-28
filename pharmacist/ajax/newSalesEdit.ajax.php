@@ -9,16 +9,17 @@ $Products = new Products();
 $CurrentStock = new CurrentStock();
 $Manufacturer = new Manufacturer();
 
-
+$pharmacyDetialsId = $_POST['pharmacy_details_id'];
+$StockOutDetaislId = $_POST['stock_out_details_id'];
 $itemId = $_POST['Stock_out_item_id'];
-$table = 'item_id';
+$table = 'id';
 
 ////////////// STOCK OUT DATA AND SALES ITEM DATA FETCH AREA \\\\\\\\\\\\\\\\\
 
 //==================== ITEM DETAILS FROM PHARMACY INVOICE TABLE =====================
-$itemInvoiceData = $StockOut->invoiceDetialsByTableData($table, $itemId);
+$itemInvoiceData = $StockOut->invoiceDetialsByTableData($table, $pharmacyDetialsId);
 foreach($itemInvoiceData as $itemSellData){
-    // $pharmacyId = $itemSellData['id'];
+    $PharmacyId = $itemSellData['id'];
     $pharmacyInvoiceId = $itemSellData['invoice_id'];
     $pharmacyItemId = $itemSellData['item_id'];
     $pharmacyItemName = $itemSellData['item_name'];
@@ -35,13 +36,8 @@ foreach($itemInvoiceData as $itemSellData){
     $pharmacyItemAmount = $itemSellData['amount'];
 }
 
-$table1 = 'invoice_id';
-$table2 = 'batch_no';
-$itemInvoiceDataId = $StockOut->invoiceDetialsByTables($table1, $pharmacyInvoiceId, $table2, $pharmacyBatchNo);
-$pharmacyId = $pharmacyInvoiceId;
-
-//==================== ITEM DETAILS FROM STOK OUT DETAILS TABLE =====================
-$stockOutItemDetails = $StockOut->stokOutDetailsDataOnTable($table, $itemId);
+// // //==================== ITEM DETAILS FROM STOK OUT DETAILS TABLE =====================
+$stockOutItemDetails = $StockOut->stokOutDetailsDataOnTable($table, $StockOutDetaislId);
 foreach($stockOutItemDetails as $selsItemData){
     $stockOutDetailsId = $selsItemData['id'];
     $stockOutDetailsInvoiceId = $selsItemData['invoice_id'];
@@ -68,7 +64,7 @@ foreach($stockOutItemDetails as $selsItemData){
     }
 }
 
-//================== AVAILIBILITY CHECK FROM CURRENT STOCK ====================
+// // //================== AVAILIBILITY CHECK FROM CURRENT STOCK ====================
 $currentStockData = $CurrentStock->showCurrentStocById($stockOutDetailsItemId);
 foreach($currentStockData as $currenStock){
     $currentStockUnit = $currenStock['unit'];
@@ -83,7 +79,7 @@ foreach($currentStockData as $currenStock){
 }
 
 
-// ============================== MANUFACTURUR DETAILS ===================================
+// // // ============================== MANUFACTURUR DETAILS ===================================
 $prodDetails = $Products->showProductsById($stockOutDetailsProductId);
 $composition = $prodDetails[0]['product_composition'];
 
@@ -92,9 +88,10 @@ foreach($manufData as $manufData){
     $manufId = $manufData['id'];
     $manufName = $manufData['name'];
 }
-//////////////////////\\\\\\\\\\\\\\\\\\\\\\\\================///////////////////////\\\\\\\\\\\\\\\\\\\\\\
+
+// // //////////////////////\\\\\\\\\\\\\\\\\\\\\\\\================///////////////////////\\\\\\\\\\\\\\\\\\\\\\
 $stockOutDetailsDataArry = array(
-    "pharmacyId"                =>  $pharmacyId,
+    "pharmacyId"                =>  $PharmacyId,
     "stockOutDetailsId"         =>  $stockOutDetailsId,
     "invoiceId"                 =>  $pharmacyInvoiceId,
     "itemId"                    =>  $pharmacyItemId,
@@ -127,6 +124,8 @@ $stockOutDetailsDataArry = json_encode($stockOutDetailsDataArry);
 
 if ($itemId == true) {
     echo $stockOutDetailsDataArry;
+    // echo $StockOutDetaislId;
+    // echo $itemId;
 } else {
     echo 0;
 }
