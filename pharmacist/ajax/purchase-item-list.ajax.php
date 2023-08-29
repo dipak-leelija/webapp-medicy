@@ -19,7 +19,7 @@ $PackagingUnits = new PackagingUnits();
 
 require_once '../../employee/config/dbconnect.php';
 
-$searchResult = FALSE;
+$searchResult = null;
 if (isset($_GET['data'])) {
     $data = $_GET['data'];
 
@@ -30,7 +30,7 @@ if (isset($_GET['data'])) {
 
 if ($searchResult) {
 
-    // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";
+    // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$searchResult."</a></h5>";
 ?>
     <div class="row border-bottom border-primary small mx-0 mb-2">
         <div class="col-md-4">Searched For</div>
@@ -98,15 +98,12 @@ if ($searchResult) {
                                             }
                                             echo "" ?> </small></div>
         </div>
-    <?php
+<?php
 
     }
 } else {
-    ?>
-    <div class="row mx-0 py-2 border-bottom p-row item-list">
-        <?php echo "Result Not Found"; ?>
-    </div>
-<?php
+    echo '<div class="row border-bottom border-primary small mx-0 mb-2">
+    "Result Not Found";
+    </div>';
 }
-
 ?>

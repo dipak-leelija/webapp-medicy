@@ -33,12 +33,16 @@ if(isset($_POST['add-manufacturer'])){
     $manufacturerDsc = $_POST['manufacturer-dsc'];
     $manufacturerDsc = str_replace("<", "&lt", $manufacturerDsc);
     $manufacturerDsc = str_replace(">", "&gt", $manufacturerDsc);
-    
     $manufacturerDsc = str_replace("'", "&#39", $manufacturerDsc);
     // echo $manufacturerDsc;
 
+    $shortName = $_POST['manufacturer-short-name'];
+    $shortName = str_replace("<", "&lt", $shortName);
+    $shortName = str_replace(">", "&gt", $shortName);
+    $shortName = str_replace("'", "&#39", $shortName);
+
     //Inserting Manufacturer Into Database
-    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $manufacturerDsc);
+    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc);
         if ($addManufacturer) {
             ?> 
              <script>

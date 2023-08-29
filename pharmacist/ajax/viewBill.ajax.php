@@ -96,7 +96,7 @@ if (isset($_GET['invoice'])) {
                                 <th scope="col">MRP</th>
                                 <th scope="col">Qty.</th>
                                 <th scope="col">Disc %</th>
-                                <th scope="col">D.Price</th>
+                                <th scope="col">Taxable</th>
                                 <th scope="col">GST %</th>
                                 <th scope="col" class="text-right">Amount</th>
                             </tr>
@@ -104,26 +104,30 @@ if (isset($_GET['invoice'])) {
                         <tbody>
                             <?php 
                             $details = $StockOut->stockOutDetailsById($_GET['invoice']);
-                            //print_r($details);
+                            // print_r($details);
                             foreach ($details as $detail) {
+                                // print_r($detail);
+                                $weatage = $detail['weatage'];
+                                $itemUnit = preg_replace('/[0-9]/','',$weatage);
+                                echo $itemUnit;
 
-                                if($detail['qty'] != 0){
-                                    $qty = $detail['qty'];
-                                }else{
+                                if($itemUnit == 'tab' || $itemUnit == 'cap'){
                                     $qty = $detail['loosely_count'];
                                     $suffix = " (L)";
-                                    $qty.=$suffix;
+                                }else{
+                                    $qty = $detail['qty'];
+                                    $suffix = "";
                                 }
-                                
+                            
                                 echo'<tr>
                                         <td>'.$detail['item_name'].'</td>
                                         <td>'.$detail['weatage'].'</td>
                                         <td>'.$detail['batch_no'].'</td>
                                         <td>'.$detail['exp_date'].'</td>
                                         <td>'.$detail['mrp'].'</td>
-                                        <td>'.$qty.'</td>
+                                        <td>'.$qty.$suffix.'</td>
                                         <td>'.$detail['disc'].'</td>
-                                        <td>'.$detail['d_price'].'</td>
+                                        <td>'.$detail['taxable'].'</td>
                                         <td>'.$detail['gst'].'</td>
                                         <td class="text-right">'.$detail['amount'].'</td>
                                     </tr>';

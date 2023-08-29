@@ -8,7 +8,7 @@ $manufacturerDsc    = $_GET['dsc'];
 
 
 $Manufacturer = new Manufacturer();
-$updateManufacturer = $Manufacturer->updateManufacturer($manufacturerName, $manufacturerDsc, $manufacturerId);
+$updateManufacturer = $Manufacturer->updateManufacturer($manufacturerName, $manufacturerDsc, $manufShortName, $manufacturerId);
 
 //check if the data has been updated or not
 if($updateManufacturer){

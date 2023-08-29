@@ -102,16 +102,16 @@ class StockOut extends DatabaseConnection{
     }//end cancelLabBill function
 
 
-    ################################################################################################################################
-    #                                                                                                                              #
-    #                                BILL/INVOICE DETAILS                                           #
-    #                                                                                                                              #
-    ################################################################################################################################
+    #############################################################################################################
+    #                                                                                                           #
+    #                                BILL/INVOICE DETAILS                         #
+    #                                                                                                           #
+    #############################################################################################################
 
 
-    function addPharmacyBillDetails($invoiceId,	$itemId, $itemName,	$batchNo, $weatage,	$exp_date, $qty, $looselyCount, $mrp, $disc, $dPrice, $gst,	$netGst, $amount, $addedBy){
+    function addPharmacyBillDetails($invoiceId,	$itemId, $itemName,	$batchNo, $weatage,	$exp_date, $qty, $looselyCount, $mrp, $disc, $taxable, $gst,	$netGst, $amount, $addedBy){
         
-        $insert = "INSERT INTO  pharmacy_invoice (`invoice_id`,	`item_id`, `item_name`,	`batch_no`,	`weatage`,	`exp_date`, `qty`, `loosely_count`, `mrp`, `disc`, `d_price`, `gst`, `gst_amount`, `amount`, `added_by`) VALUES  ('$invoiceId', '$itemId', '$itemName',	'$batchNo', '$weatage',	'$exp_date', '$qty', '$looselyCount', '$mrp', '$disc', '$dPrice', '$gst', '$netGst', '$amount', '$addedBy')";
+        $insert = "INSERT INTO  pharmacy_invoice (`invoice_id`,	`item_id`, `item_name`,	`batch_no`,	`weatage`,	`exp_date`, `qty`, `loosely_count`, `mrp`, `disc`, `taxable`, `gst`, `gst_amount`, `amount`, `added_by`) VALUES  ('$invoiceId', '$itemId', '$itemName',	'$batchNo', '$weatage',	'$exp_date', '$qty', '$looselyCount', '$mrp', '$disc', '$taxable', '$gst', '$netGst', '$amount', '$addedBy')";
         // echo $insertEmp.$this->conn->error;
         // exit;
         $insertQuery = $this->conn->query($insert);
@@ -124,7 +124,7 @@ class StockOut extends DatabaseConnection{
     
     function stockOutDetailsById($billId){
         $billData = array();
-        $selectBill = "SELECT * FROM `pharmacy_invoice` WHERE `pharmacy_invoice`.`invoice_id` = '$billId'";
+        $selectBill = "SELECT * FROM `pharmacy_invoice` WHERE `invoice_id` = '$billId'";
         $billQuery = $this->conn->query($selectBill);
         while($result = $billQuery->fetch_array()){
             $billData[]	= $result;
@@ -133,11 +133,32 @@ class StockOut extends DatabaseConnection{
         
     }//end stockOutDetailsById function
 
+    function invoiceDetialsByTableData($table, $data){
+        $billData = array();
+        $selectBill = "SELECT * FROM pharmacy_invoice WHERE `$table` = '$data'";
+        $billQuery = $this->conn->query($selectBill);
+        while($result = $billQuery->fetch_array()){
+            $billData[]	= $result;
+        }
+        return $billData;
+    }//end of stockOutDetail fetch from pharmacy_invoice table function
+
+
+
+    function invoiceDetialsByTables($table1, $data1, $table2, $data2){
+        $billData = array();
+        $selectBill = "SELECT * FROM pharmacy_invoice WHERE `$table1` = '$data1' AND `$table2` = '$data2'";
+        $billQuery = $this->conn->query($selectBill);
+        while($result = $billQuery->fetch_array()){
+            $billData[]	= $result;
+        }
+        return $billData;
+    }//end of stockOutDetail fetch from pharmacy_invoice table function
 
     
-    function stockOutSelect($invoice, $productId, $batchNo){
+    function stockOutSelect($invoice, $itemId){
         $billData = array();
-        $selectBill = "SELECT * FROM pharmacy_invoice WHERE `invoice_id` = '$invoice' AND `item_id` = '$productId' AND `batch_no` = '$batchNo'";
+        $selectBill = "SELECT * FROM pharmacy_invoice WHERE `invoice_id` = '$invoice' AND `item_id` = '$itemId'";
         $billQuery = $this->conn->query($selectBill);
         while($result = $billQuery->fetch_array()){
             $billData[]	= $result;
@@ -148,16 +169,35 @@ class StockOut extends DatabaseConnection{
 
 
 
-    function updateBillDetail($invoiceId, $itemId, $itemName, $batchNo, $weatage, $exp_date, $qty, $looselyCount, $mrp, $disc, $dPrice, $gst, $netGst, $amount, $addedBy){
+    // function updateBillDetail($invoiceId, $itemId, $itemName, $batchNo, $weatage, $exp_date, $qty, $looselyCount, $mrp, $disc, $dPrice, $gst, $netGst, $amount, $addedBy){
 
-        $updateBill = "UPDATE pharmacy_invoice SET `item_name` = '$itemName',	`batch_no` = '$batchNo', `weatage` = '$weatage', `exp_date` = '$exp_date', `qty` = '$qty', `loosely_count` = '$looselyCount', `mrp` = '$mrp', `disc` = '$disc', `d_price` = '$dPrice', `gst` = '$gst', `gst_amount` = '$netGst', `amount` = '$amount', `added_by` = '$addedBy' WHERE `invoice_id` = '$invoiceId' AND `item_id` = '$itemId'";
+    //     $updateBill = "UPDATE `pharmacy_invoice` SET `item_name` = '$itemName',	`batch_no` = '$batchNo', `weatage` = '$weatage', `exp_date` = '$exp_date', `qty` = '$qty', `loosely_count` = '$looselyCount', `mrp` = '$mrp', `disc` = '$disc', `d_price` = '$dPrice', `gst` = '$gst', `gst_amount` = '$netGst', `amount` = '$amount', `added_by` = '$addedBy' WHERE `invoice_id` = '$invoiceId' AND `item_id` = '$itemId'";
 
-        // echo $insertEmp.$this->conn->error;
-        // exit;
-        $updateBillQuery = $this->conn->query($updateBill);
+    //     // echo $insertEmp.$this->conn->error;
+    //     // exit;
+    //     $updateBillQuery = $this->conn->query($updateBill);
+    //     return $updateBillQuery;
+
+    // }//end updateBillDetail function
+
+
+
+    function updatePharmacyDataById($id, $qty, $looseCount, $disc, $taxable, $gstAmount, $Amount, $addedBy){
+        
+        $updateDetails = "UPDATE `pharmacy_invoice` SET `qty`='$qty',`loosely_count`='$looseCount',`disc`='$disc',`taxable`='$taxable',`gst_amount`= '$gstAmount',`amount`='$Amount',`added_by`='$addedBy' WHERE `id`='$id'";
+
+        $updateBillQuery = $this->conn->query($updateDetails);
         return $updateBillQuery;
 
-    }//end updateBillDetail function
+    }
+
+    //======= delet function === delete from item_invocie table =================
+
+    function delteItemFromInvoice($id){
+        $delete = "DELETE FROM `pharmacy_invoice` WHERE `id` = '$id'";
+        $delteQuery = $this->conn->query($delete);
+        return $delteQuery;
+    }
 
 
 // eof LabBilling class
@@ -168,14 +208,14 @@ class StockOut extends DatabaseConnection{
 #                                                                                                         #
 ###########################################################################################################
 
-    function addStockOutDetails($invoiceId, $productId, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $margin, $amount, $addedBy, $addedOn){
-
-        $addStockOutDetails = "INSERT INTO `stock_out_details`(`invoice_id`, `product_id`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `margin`, `amount`, `added_by`, `added_on`) VALUES ('$invoiceId','$productId','$batchNo','$expDate','$weightage','$unit','$qty','$looselyCount','$mrp','$ptr','$discount','$gst','$margin','$amount','$addedBy','$addedOn')";
+    function addStockOutDetails($invoiceId, $itemId, $productId, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $margin, $amount, $addedBy){
+    
+        $addStockOutDetails = "INSERT INTO `stock_out_details`(`invoice_id`, `item_id`, `product_id`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `margin`, `amount`, `added_by`) VALUES ('$invoiceId','$itemId','$productId','$batchNo','$expDate','$weightage','$unit','$qty','$looselyCount','$mrp','$ptr','$discount','$gst','$margin','$amount','$addedBy')";
 
         $addDetails = $this->conn->query($addStockOutDetails);
-
         return $addDetails;
     }
+
 
 
     function stockOutDetailsDisplayById($invoiceId){
@@ -190,18 +230,48 @@ class StockOut extends DatabaseConnection{
         return $billData;
     }// eof stockOutDisplayById 
 
-    // function salesReturnDetails($invoice, $productId, $batchNo){
-    //     $salesReturn = array();
-    //     $selectBill = "SELECT * FROM `sales_return_details` WHERE `invoice_id` = '$invoice' AND `product_id` = '$productId' AND `batch_no` = '$batchNo'";
+
+
+    function stokOutDetailsDataOnTables($table1, $data1, $table2, $data2, $table3, $data3,){
+        $stockOutSelect = array();
+        $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table1` = '$data1' AND `$table2` = '$data2' AND `$table3` = '$data3'";
         
-    //     $salesReturnQury = $this->conn->query($selectBill);
+        $stockOutDataQuery = $this->conn->query($selectBill);
 
-    //     while($result = $salesReturnQury->fetch_array()){
-    //         $salesReturn[]	= $result;
-    //     }
-    //     return $salesReturn;
+        while($result = $stockOutDataQuery->fetch_array()){
+            $stockOutSelect[]	= $result;
+        }
+        return $stockOutSelect;
+    }//eof stockOut details by tabel and data
 
-    // }//end of sales return details query
+
+    function stokOutDetailsData($table1, $data1, $table2, $data2){
+        $stockOutSelect = array();
+        $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table1` = '$data1' AND `$table2` = '$data2'";
+        
+        $stockOutDataQuery = $this->conn->query($selectBill);
+
+        while($result = $stockOutDataQuery->fetch_array()){
+            $stockOutSelect[]	= $result;
+        }
+        return $stockOutSelect;
+    }//eof stockOut details by tabel and data
+
+
+    
+    function stokOutDetailsDataOnTable($table1, $data1){
+        $stockOutSelect = array();
+        $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table1` = '$data1'";
+        
+        $stockOutDataQuery = $this->conn->query($selectBill);
+
+        while($result = $stockOutDataQuery->fetch_array()){
+            $stockOutSelect[]	= $result;
+        }
+        return $stockOutSelect;
+    }//eof stockOut details by tabel and data
+
+
 
     function stockOutDetailsSelect($invoice, $productId, $batchNo){
 
@@ -219,6 +289,24 @@ class StockOut extends DatabaseConnection{
         return $stockOutDetailData;
         
     }//end of stockOutDetail fetch from pharmacy_invoice table function
-}
 
-?>
+
+
+    function updateStockOutDetaislById($id, $qty, $looseQty, $disc, $margin, $amount, $addedBy){
+        $updateQuerry = "UPDATE `stock_out_details` SET `qty`='$qty',`loosely_count`='$looseQty',`discount`='$disc',`margin`='$margin',`amount`='$amount',`added_by`='$addedBy' WHERE `id`='$id'";
+
+        $updateStockOutDetails = $this->conn->query($updateQuerry);
+        return $updateStockOutDetails;
+        
+    }
+
+
+
+    function deleteFromStockOutDetailsOnId($id){
+        
+            $delete = "DELETE FROM `stock_out_details` WHERE `id` = '$id'";
+            $delteQuery = $this->conn->query($delete);
+            return $delteQuery;
+        }
+
+}

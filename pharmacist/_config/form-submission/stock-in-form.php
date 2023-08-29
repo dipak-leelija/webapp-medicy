@@ -456,7 +456,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         $manufDetails = $Manufacturer->showManufacturerById($pManfId);
                         foreach ($manufDetails as $manufData) {
-                            $manufName = $manufData['name'];
+                            $manufName = $manufData['short_name'];
                         }
 
 
@@ -632,8 +632,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="justify-content-center print-sec d-flex my-5">
         <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
         <button class="btn btn-primary shadow mx-2" onclick="back()">Add New</button>
-        <button class="btn btn-primary shadow mx-2" id="<?php echo $distributorId ?>" value="<?php echo $itemBillNo ?>" onclick="goBack('<?php echo $distributorId ?>','<?php echo $itemBillNo ?>', this.id, this.value)">Go Back</button>
-        <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
+        <button class="btn btn-secondary shadow mx-2" style="background-color: #e7e7e7; color: black;" id="<?php echo $distributorId ?>" value="<?php echo $itemBillNo ?>" onclick="goBack('<?php echo $distributorId ?>','<?php echo $itemBillNo ?>', this.id, this.value)">Go Back</button>
+        <button class="btn btn-primary shadow mx-2" style="background-color: #4CAF50;" onclick="window.print()">Print Bill</button>
     </div>
     </div>
 

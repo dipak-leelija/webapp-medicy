@@ -16,9 +16,9 @@ $StockReturn    = new StockReturn();
 $Distributor    = new Distributor();
 
 
-// getBillList function
-if (isset($_GET['dist-id'])) {
-?>
+// getItemList function
+if (isset($_GET['bill-no'])) {
+    ?>
     <div class="row border-bottom border-primary small mx-0 mb-2">
         <div class="col-2 mb-1" hidden>Batch</div>
         <div class="col-4 col-sm-3 mb-1">Name</div>
@@ -29,8 +29,10 @@ if (isset($_GET['dist-id'])) {
     </div>
     <?php
     $distributorId = $_GET['dist-id'];
-    $details = $StockIn->stockInByDist($distributorId);
-    // print_r($details);
+    $billNo = $_GET['bill-no'];
+
+    $details = $StockIn->stockIndataOnBillno($distributorId, $billNo);
+
     foreach ($details as $detail) {
         $billDate = $detail['bill_date'];
         $details = $StockInDetails->showStockInDetailsByStokId($detail['id']);
@@ -54,18 +56,17 @@ if (isset($_GET['dist-id'])) {
                 $qantity = 0;
             }
 
-
     ?>
 
-            <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $stokInDetailsId; ?>','<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
-                <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
-                <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
-                <div class="col-4 col-sm-3 mb-0"><?php echo $productName; ?></div>
-                <div class="col-2 mb-0"><?php echo $expDate; ?></div>
-                <div class="col-2 mb-0"><?php echo $mrp; ?></div>
-                <div class="col-2 mb-0"><?php echo $ptr; ?></div>
-                <div class="col-2 mb-0"><?php echo $qantity; ?></div>
-            </div>
+         <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $stokInDetailsId; ?>','<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
+             <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
+             <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
+             <div class="col-4 col-sm-3 mb-0"><?php echo $productName; ?></div>
+             <div class="col-2 mb-0"><?php echo $expDate; ?></div>
+             <div class="col-2 mb-0"><?php echo $mrp; ?></div>
+             <div class="col-2 mb-0"><?php echo $ptr; ?></div>
+             <div class="col-2 mb-0"><?php echo $qantity; ?></div>
+         </div>
 
 <?php
 
@@ -196,7 +197,6 @@ if (isset($_GET['dist-id'])) {
                     </tbody>
                 </table>
             </div>
-
             <div class="row summary rounded align-middle">
                 <div class="col-6 col-sm-3">Items: <?php echo count($items); ?></div>
                 <div class="col-6 col-sm-3">Quantity: <?php echo count($items) ?></div>
@@ -239,25 +239,31 @@ if (isset($_GET['invoice'])) {
     $data   = $_GET['invoice'];
 
     $invoiceDetail = $Search->searchFor($table, $column, $data);
+    // print_r($invoiceDetail);
 
     if (count($invoiceDetail) > 0) {
-        if ($invoiceDetail[0]['customer_id'] == 'Cash Sales') {
-            foreach ($invoiceDetail as $invoice) {
+        foreach ($invoiceDetail as $invoice) {
+            if ($invoice['customer_id'] == 'Cash Sales') {
                 //$patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
                 $patientId = "Cash Sales";
-                echo "<div class='invoice-item' onclick='getDtls(" . $invoice['invoice_id'] . ");'>
-                         <p>" . $patientId . "</p> 
-                        <small><span class='text-dark'>#" . $invoice['invoice_id'] . "</span></small>
-                     </div>";
-            }
-        } else {
-            foreach ($invoiceDetail as $invoice) {
+?>
+                <div class='invoice-item' onclick="getDtls('<?php echo $invoice['invoice_id'] ?>','<?php echo $patientId ?>' );">
+                    <p><?php echo $patientId ?></p>
+                    <small><span class='text-dark'><?php echo $invoice['invoice_id'] ?></span></small>
+                </div>
+            <?php
+
+            } else {
                 $patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
-                $patientId = '"' . $invoice['customer_id'] . '"';
-                echo "<div class='invoice-item' onclick='getDtls(" . $invoice['invoice_id'] . ", " . $patientId . ");'>
-                        <p>" . $patient[0]['name'] . "</p>
-                        <small><span class='text-dark'>#" . $invoice['invoice_id'] . "</span> M:" . $patient[0]['phno'] . "</small>
-                     </div>";
+                // print_r($patient);
+                $patientId = $invoice['customer_id'];
+            ?>
+                <div class='invoice-item' onclick="getDtls('<?php echo $invoice['invoice_id'] ?>', '<?php echo $patientId ?>')" ;>
+                    <p><?php echo $patient[0]['name'] ?></p>
+                    <small><span class='text-dark'>#<?php echo $invoice['invoice_id'] ?></span> M: <?php echo $patient[0]['phno'] ?></small>
+                </div>
+<?php
+
             }
         }
     } else {
@@ -307,9 +313,5 @@ if (isset($_GET['invoice'])) {
 //         echo '<option value="'.$productId.'">'.$product[0]['name'].'</option>';  
 //     }
 // }
-
-
-
-
 
 ?>

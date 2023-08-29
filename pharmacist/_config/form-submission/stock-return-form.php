@@ -11,7 +11,6 @@ require_once '../../../php_control/stockReturn.class.php';
 require_once '../../../php_control/idsgeneration.class.php';
 require_once '../../../php_control/currentStock.class.php';
 
-
 //  INSTANTIATING CLASS
 $HelthCare       = new HelthCare();
 $StockReturn     = new StockReturn();
@@ -23,9 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         
         $distributorId   = $_POST['dist-id'];
         $distributorName = $_POST['dist-name'];
+        $distBillNo = $_POST['dist-bill-no'];
+        
         $returnDate      = $_POST['return-date'];
         $returnDate      = date("Y-m-d", strtotime($returnDate));
-
 
         $refundMode      = $_POST['refund-mode'];
         // $billNo          = $_POST['bill-no'];
@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         $addedBy         = $_SESSION['employee_username'];
 
-
         // echo "<br>Distributor Id : "; print_r($distributorId);
         // echo "<br>Distributor Name : "; print_r($distributorName);
+        // echo "<br>Distributor bill no : "; print_r($distBillNo);
         // echo "<br>Return Date : "; print_r($returnDate);
         // echo "<br>Refund Mode : "; print_r($refundMode);
         // echo "<br>Stock Return Id : "; print_r($stockReturnId);
@@ -48,9 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // echo "<br>Refund GST amount : "; print_r($returnGst);
         // echo "<br>Refund Amount : "; print_r($refund);
     
-        
-
-        $returned = $StockReturn->addStockReturn($stockReturnId, $distributorId, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $addedBy);
+        $returned = $StockReturn->addStockReturn($stockReturnId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $addedBy);
+        // $returned = true;
 
         if($returned === true){
 
@@ -62,14 +61,22 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             
             $batchNo        = $_POST['batchNo'];
             $expDate        = $_POST['expDate'];
+
             $setof          = $_POST['setof'];
+            $unit           = preg_replace('/[0-9]/','',$setof);
+            $weightage      = preg_replace('/[a-z]/','',$setof);
+
             $purchasedQty   = $_POST['purchasedQty'];
             $freeQty        = $_POST['freeQty'];
             $mrp            = $_POST['mrp'];
             $ptr            = $_POST['ptr'];
-            $purchaseAmount = $_POST['purchase-amount'];
+            
             $gstPercent     = $_POST['gst'];
-            $gstAmount            = $_POST['ReturnGstAmount'];
+            $gstPercent     = preg_replace('/[%]/','',$gstPercent);
+
+            $discParcent    = $_POST['disc-percent'];
+            $discParcent    = preg_replace('/[%]/','',$discParcent);
+
             $returnQty      = $_POST['return-qty'];
             $returnFQty     = $_POST['return-free-qty'];
             $refundAmount   = $_POST['refund-amount'];
@@ -81,41 +88,41 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // echo "<br>Batch No : "; print_r($batchNo);
         // echo "<br>EXP Date : "; print_r($expDate);
         // echo "<br>Set Of : "; print_r($setof);
+        // echo "<br>ITEM UNIT Of : "; print_r($unit);
+        // echo "<br> Item weaitage : "; print_r($weightage);
         // echo "<br>Purchase QTY : "; print_r($purchasedQty);
         // echo "<br>Free QTY : "; print_r($freeQty);
         // echo "<br>MRP : "; print_r($mrp);
         // echo "<br>PTR : "; print_r($ptr);
-        // echo "<br>Purchase Amount : "; print_r($purchaseAmount);
-        // echo "<br>GST : "; print_r($gst);
+        // echo "<br>DISCOUNT PARCENT ON PURCHASE : "; print_r($discParcent);
+        // echo "<br>GST parcent : "; print_r($gstPercent);
         // echo "<br>Return QTY : "; print_r($returnQty);
         // echo "<br>Return F QTY : "; print_r($returnFQty);
         // echo "<br>Refund Amount : "; print_r($refundAmount);
-
-
-            
+        
             for ($i=0; $i < $ids; $i++) { 
-            
-                $inStock =  $CurrentStock->showCurrentStockbyStokInId($stokInDetailsId[$i]);
-                // echo "<br><br>";
-                // print_r($inStock);
-                // echo "<br><br>";
-
-                $newQuantity = $inStock[0]['qty'] - (intVal($returnQty[$i]) + intval($returnFQty[$i]));
-
-                if($inStock[0]['unit'] == 'tab' || $inStock[0]['unit'] == 'cap'){
-                    $newLCount   = $inStock[0]['loosely_count'] - ((intVal($returnQty[$i]) + intval($returnFQty[$i])) * $inStock[0]['weightage']);
-                }else{
-                    $newLCount = $inStock[0]['loosely_count'];
+                $currentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]);
+                foreach($currentStockData as $currentData){
+                    $wholeQty = $currentData['qty'];
+                    $looseQty = $currentData['loosely_count'];
+                    // echo "<br><br>current stock loose count : $looseQty";
+                    // echo "<br>current stock whole count : $wholeQty";
                 }
-                
-                // echo "<br>New qantity : $newQuantity";
-                // echo "<br>New Loose qantity : $newLCount";
-                
-                $stockUpdate = $CurrentStock->updateStockBStockDetialsId($stokInDetailsId[$i], $newQuantity, $newLCount);
+
+                if($unit[$i] == 'tab' || $unit[$i] == 'cap'){
+                    $updatedLooseQty = intval($looseQty) - ((intval($returnQty[$i]) +  intval($returnFQty[$i])) * $weightage[$i]);
+                    $updatedQty = intdiv($updatedLooseQty, $weightage[$i]);
+                }else{
+                    $updatedLooseQty = 0;
+                    $updatedQty = intval($wholeQty) - (intval($returnQty[$i]) +  intval($returnFQty[$i]));
+                }
             
+                // echo "<br><br>updated loose qty check : $updatedLooseQty";
+                // echo "<br>updated qty check : $updatedQty";
 
-                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, $stokInDetailsId[$i], $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], $purchasedQty[$i], $freeQty[$i], $mrp[$i], $ptr[$i], $purchaseAmount[$i], $gstPercent[$i], $gstAmount[$i], $returnQty[$i], $returnFQty[$i], $refundAmount[$i], $addedBy);
+                $updateCurrentStock = $CurrentStock->updateStockByReturnEdit($stokInDetailsId[$i], $updatedQty, $updatedLooseQty);
 
+                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, $stokInDetailsId[$i], $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], $purchasedQty[$i], $freeQty[$i], $mrp[$i], $ptr[$i], $gstPercent[$i], $discParcent[$i], $returnQty[$i], $returnFQty[$i], $refundAmount[$i], $addedBy);
 
                 // echo $productId[$i].'<br>';
                 // echo $batchNo[$i].'<br>';
@@ -133,9 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
     }
 }
-
-
-
 
 
 $showhelthCare = $HelthCare->showhelthCare();
@@ -234,19 +238,19 @@ foreach ($showhelthCare as $rowhelthCare) {
                     <small><b>Free</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
-                    <small><b>PTR</b></small>
-                </div>
-                <div class="col-sm-1 text-end">
                     <small><b>MRP</b></small>
                 </div>
+                <div class="col-sm-1 text-end">
+                    <small><b>PTR</b></small>
+                </div>
                 <div class="col-sm-1 text-end" style="width: 7%;">
-                    <small><b>P.Sum</b></small>
+                    <small><b>GST%</b></small>
                 </div>
                 <div class="col-sm-1" style="width: 7%;">
-                    <small><b>R.QTY</b></small>
+                    <small><b>DISC%</b></small>
                 </div>
                 <div class="col-sm-1" style="width: 7%;">
-                    <small><b>R.F.QTY</b></small>
+                    <small><b>Return</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
                     <small><b>Refund</b></small>
@@ -266,12 +270,15 @@ foreach ($showhelthCare as $rowhelthCare) {
                             echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                         }
                         
-                        
-                        // 
-                        // 
-                        // $returnQty[$i]
-                        // $gst[$i]
-                        
+                        // $stirng1 = '(';
+                        // $stirng2 = 'F';
+                        // $stirng3 = ')';
+                        // if($returnFQty[$i] > 0){
+                        //     $returnQty = $returnQty[$i].$stirng1.$returnFQty[$i].$stirng2.$stirng3;
+                        // }else{
+                        //     $returnQty = $returnQty[$i];
+                        // }
+                        // echo $returnQty[$i];
                 echo '
                     <div class="col-sm-2 ">
                         <small>'.substr($productName[$i], 0, 15).'</small>
@@ -292,19 +299,19 @@ foreach ($showhelthCare as $rowhelthCare) {
                         <small>'.$freeQty[$i].'</small>
                     </div>
                     <div class="col-sm-1 text-end">
-                        <small>'.$ptr[$i].'</small>
-                    </div>
-                    <div class="col-sm-1 text-end">
                         <small>'.$mrp[$i].'</small>
                     </div>
+                    <div class="col-sm-1 text-end">
+                        <small>'.$ptr[$i].'</small>
+                    </div>
                     <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small>'.$purchaseAmount[$i].'</small>
+                        <small>'.$gstPercent[$i].'</small>
                     </div>
                     <div class="col-sm-1" style="width: 7%;">
-                        <small>'.$returnQty[$i].'</small>
+                        <small>'.$discParcent[$i].'</small>
                     </div>
                     <div class="col-sm-1" style="width: 7%;">
-                        <small>'.$returnFQty[$i].'</small>
+                        <small>'.$returnQty[$i].'('.$returnFQty[$i].'F'.')'.'</small>
                     </div>
                     <div class="col-sm-1 text-end">
                         <small>'.$refundAmount[$i].'</small>

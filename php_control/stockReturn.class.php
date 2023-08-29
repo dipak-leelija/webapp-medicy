@@ -14,8 +14,8 @@ class StockReturn extends DatabaseConnection{
 #                                                                                                                                #
 ##################################################################################################################################
     
-    function addStockReturn($stockReturnId, $distributorId, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $addedBy){
-        $sql = "INSERT INTO `stock_return` (`id`, `distributor_id`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$distributorId', '$returnDate', '$items', '$totalQty', '$returnGst', '$refundMode', '$refundAmount', '$addedBy')";
+    function addStockReturn($stockReturnId, $distributorId, $billNo, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $addedBy){
+        $sql = "INSERT INTO `stock_return` (`id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$distributorId', '$billNo', '$returnDate', '$items', '$totalQty', '$returnGst', '$refundMode', '$refundAmount', '$addedBy')";
         $res = $this->conn->query($sql);
         return $res;
     }// eof addStockReturn
@@ -89,11 +89,11 @@ class StockReturn extends DatabaseConnection{
         return $response;
     }
 
-    // ---------------EDIT STOCK RETURN UPDATE FUNCTION----------------RD----------------
+    // ---------------EDIT STOCK RETURN UPDATE FUNCTION----------------------------
 
-    function stockReturnEditUpdate($id, $distributorId, $returnDate, $items, $totalQty, $gst, $refundMode, $refundAmount, $addedBy, $addedOn, $addedTime){
+    function stockReturnEditUpdate($id, $distributorId, $returnDate, $items, $totalQty, $gst, $refundMode, $refundAmount, $addedBy){
 
-        $editANDupdate = "UPDATE `stock_return` SET `distributor_id`='$distributorId',`return_date`='$returnDate',`items`='$items',`total_qty`='$totalQty',`gst_amount`='$gst',`refund_mode`='$refundMode',`refund_amount`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn',`added_time`='$addedTime' WHERE `stock_return`.`id`='$id'";
+        $editANDupdate = "UPDATE `stock_return` SET `distributor_id`='$distributorId',`return_date`='$returnDate',`items`='$items',`total_qty`='$totalQty',`gst_amount`='$gst',`refund_mode`='$refundMode',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `stock_return`.`id`='$id'";
 
         $response = $this->conn->query($editANDupdate);
 
@@ -101,15 +101,21 @@ class StockReturn extends DatabaseConnection{
     }
 
 
+    // ------------------------- DELETE STOCK RETURN DATA -----------------------------
 
+    function delteStockReturnData($stockReturnId){
+        $delQuary = "DELETE FROM `stock_return` WHERE `id`='$stockReturnId'";
+        $delFromStockReturn = $this->conn->query($delQuary);
+        return $delFromStockReturn;
+    }
 ###################################################################################################################################
 #                                                                                                                                 #
 #                                           Stock Return Details Functions(stock_return_details)                                  #
 #                                                                                                                                 #
 ###################################################################################################################################
 
-function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $purchaseAmount, $gst, $gstAmount, $returnQty, $returnFQty, $refundAmount, $addedBy){
-    $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `purchase_amount`, `gst`, `gst_amount`, `return_qty`, `return_free_qty`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$stockInDetailsId', '$productId', '$batchNo', '$expDate', '$unit', '$purchaseQty', '$freeQty', '$mrp', '$ptr', '$purchaseAmount', '$gst', '$gstAmount', '$returnQty', '$returnFQty', '$refundAmount', '$addedBy')";
+function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc,  $returnQty, $returnFQty, $refundAmount, $addedBy){
+    $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`, `return_qty`,  `return_free_qty`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$stockInDetailsId', '$productId', '$batchNo', '$expDate', '$unit', '$purchaseQty', '$freeQty', '$mrp', '$ptr', '$gst', '$disc', '$returnQty', '$returnFQty', '$refundAmount', '$addedBy')";
     $res = $this->conn->query($sql);
     return $res;
 }// eof addStockReturn
@@ -127,7 +133,6 @@ function showStockReturnDetails($returnId){
     return $data;
 }
 
-
 function showStockReturnDataByStokinId($stockInDetailsId){
     $data = array();
     $sql  = "SELECT * FROM stock_return_details WHERE `stokIn_details_id` = '$stockInDetailsId'";
@@ -137,7 +142,6 @@ function showStockReturnDataByStokinId($stockInDetailsId){
     }
     return $data;
 }
-
 
 function showStockReturnDetailsById($Id){
     
@@ -165,15 +169,32 @@ function stockReturnDetailsEdit($id, $stockReturnId, $productId, $batchNo, $expD
 
 // ----------------- stock return details edit/update by id ----------------RD-----------
 
-function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $addedBy, $addedOn, $addedTime){
-    $editUpdate = "UPDATE `stock_return_details` SET `return_qty`='$returnQTY', `return_free_qty` = '$returnFQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy',`added_on`='$addedOn',`added_time`='$addedTime' WHERE `stock_return_details`.`id`='$id'";
+function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $addedBy){
+    $editUpdate = "UPDATE `stock_return_details` SET  `return_qty`='$returnQTY', `return_free_qty` = '$returnFQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `stock_return_details`.`id`='$id'";
 
     $response = $this->conn->query($editUpdate);
     
     return $response;
 }
 
+// ---------------------- STOCK RETURN DETAILS ITEMS DELETE -----------------------------
+
+function delteStockReturnDetailsbyReturnId($stockReturnedId){
+    $delQuary = "DELETE FROM `stock_return_details` WHERE `stock_return_id`='$stockReturnedId'";
+    $delByReturnId = $this->conn->query($delQuary);
+    return $delByReturnId;
 }
 
+function delteStockReturnDetailsbyItemId($stockReturnDetailsId){
+    $delQuary = "DELETE FROM `stock_return_details` WHERE `id`='$stockReturnDetailsId'";
+    $delbyId = $this->conn->query($delQuary);
+    return $delbyId;
+}
 
-?>
+function deleteStockByTableData($table, $data){
+    $delQuary = "DELETE FROM `stock_return_details` WHERE `$table`='$data'";
+    $delbyId = $this->conn->query($delQuary);
+    return $delbyId;
+}
+
+}

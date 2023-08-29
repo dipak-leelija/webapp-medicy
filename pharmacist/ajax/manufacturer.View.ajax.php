@@ -29,6 +29,7 @@ $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
     <?php
         foreach ($showManufacturer as $rowManufacturer) {
             $manufacturerName = $rowManufacturer['name'];
+            $shortName = $rowManufacturer['short_name'];
             $manufacturerDsc  = $rowManufacturer['dsc'];
         }
     ?>
@@ -39,6 +40,10 @@ $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
             <label for="manufacturer" class="form-label mb-0">Manufacturer Name:</label>
             <input type="text" class="form-control" id="manufacturer" value="<?php echo $manufacturerName; ?>">
         <!-- </div> -->
+
+            <label for="manufacturer" class="form-label mb-0">Manufacturer Mark:</label>
+            <input type="text" class="form-control" id="manufShortName" value="<?php echo $shortName; ?>">
+
         <!-- <div class="form-group"> -->
             <label for="description" class="form-label mb-0 mt-2">Description:</label>
             <textarea class="form-control" id="description" rows="4"><?php echo $manufacturerDsc; ?></textarea>
@@ -72,9 +77,10 @@ $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
     function editManufacturer() {
         let manufacturerId  = document.getElementById("manufacturerId").value;
         let manufacturer    = document.getElementById("manufacturer").value;
+        let manufShortName = document.getElementById("manufShortName").value;
         let description     = document.getElementById("description").value;
 
-        let url = "manufacturer.Edit.ajax.php?id=" + escape(manufacturerId) + "&name=" + escape(manufacturer) + "&dsc=" + escape(description);
+        let url = "manufacturer.Edit.ajax.php?id=" + escape(manufacturerId) + "&name=" + escape(manufacturer) + "&name=" + escape(manufShortName) + "&dsc=" + escape(description);
         
         request.open('GET', url, true);
  

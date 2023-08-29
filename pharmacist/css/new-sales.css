@@ -172,7 +172,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     outline: none;
     background: transparent;
     border-bottom: 0.125rem solid #8c54f5;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 /*=========================================================================================*/
@@ -281,6 +281,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     background: transparent;
 }
 
+.searched-items{
+    max-height: 15rem; 
+    max-width: 100%;
+    display: none; 
+    transition: 50ms; 
+    box-shadow: 0 5px 8px rgb(0 0 6 / 28%);
+}
+
 @media screen and (min-width: 768px) {
     .customer-search {
         width: 12rem;
@@ -354,4 +362,13 @@ margin-top: 1rem;
     .summary {
         margin-top: 1rem;
     }
+}
+
+@media screen and (max-width: 767px){
+    .searched-items{
+        margin-top: -23rem;
+        max-width: 30rem;
+
+    }
+
 }

@@ -49,135 +49,151 @@ if (isset($_GET["reff-by"])) {
 if (isset($_GET["products"])) {
     $invoiceId = $_GET["products"];
 
-    $items = $StockOut->stockOutDetailsById($invoiceId);
-    
-    echo '<option value="" selected disabled>Select item</option>';
+    $items = $StockOut->stockOutDetailsById($invoiceId); // bill invoice details
+    // print_r($items);
+
+    echo '<option value="" selected enable>Select item</option>';
     foreach ($items as $item) {
-        $product = $Products->showProductsById($item['item_id']);
-        
-        echo '<option data-invoice="'.$invoiceId.'" data-batch="'.$item['batch_no'].'" value="'.$item['item_id'].'">'.$product[0]['name'].'</option>';
+        echo '<option data-invoice="'.$invoiceId.'" data-batch="'.$item['batch_no'].'" value="'.$item['item_id'].'">'.$item['item_name'].'</option>';
     }
 }
 
 // ===========================  Item Details   =========================== 
 
+
+//product id
+if (isset($_GET["prod-id"])) {
+    $invoice = $_GET["prod-id"];
+    $attribute1 = 'invoice_id';
+    $attribute2 = 'item_id';
+    $item = $StockOut->stokOutDetailsData($attribute1, $invoice, $attribute2, $_GET["p-id"]);
+    // print_r( $item);
+    echo $item[0]['product_id'];
+}
+
+
 // get product exp date
 if (isset($_GET["exp-date"])) {
     $invoice = $_GET["exp-date"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
     echo $item[0]['exp_date'];
 }
 
 // get product full unit
 if (isset($_GET["unit"])) {
     $invoice = $_GET["unit"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
     echo $item[0]['weatage'];
 }
 
-//get unit & weatage==========
-
-if (isset($_GET["unittype"])) {
-    $invoice = $_GET["unittype"];
-    $item = $StockOut->stockOutDetailsSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-    echo $item[0]['unit'];
-   
+// get product item unit
+if (isset($_GET["itemUnit"])) {
+    $invoice = $_GET["itemUnit"];
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $unit =  $item[0]['weatage'];
+    $itemUnit = preg_replace('/[0-9]/','',$unit);
+    echo $itemUnit;
 }
 
-if (isset($_GET["weatage"])) {
-    $invoice = $_GET["weatage"];
-    $item = $StockOut->stockOutDetailsSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-    echo $item[0]['weightage'];
-    
+// get product item weatage
+if (isset($_GET["itemWeatage"])) {
+    $invoice = $_GET["itemWeatage"];
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $unit =  $item[0]['weatage'];
+    $itemWeatage = preg_replace('/[a-z]/','',$unit);
+    echo $itemWeatage;
 }
-//============================
 
 // get product mrp
 if (isset($_GET["mrp"])) {
     $invoice = $_GET["mrp"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
     echo $item[0]['mrp'];
 }
 
 //get product purchase quantity
-if (isset($_GET["pqty"])) {
-    $invoice = $_GET["pqty"];
-    $productId = $_GET["p-id"];
-    $batchNo = $_GET["batch"];
+if (isset($_GET["p_qty"])) {
+    $invoice = $_GET["p_qty"];
+    $itemId = $_GET["p-id"];
 
-    $item = $StockOut->stockOutSelect($invoice, $productId, $batchNo);
-    //$itemCheck = $StockOut->stockOutDetailsSelect($invoice, $productId, $batchNo);
-    //print_r($itemCheck);
-    if($item[0]['qty'] == "0"){
-            $string = "(L)";
-            echo $item[0]['loosely_count'];
-    // }elseif($item[0]['loosely_count'] == "0"){
-    //         echo $item[0]['qty'];
-    }else{
-        echo $item[0]['qty'];
+    $item = $StockOut->stockOutSelect($invoice, $itemId);
+    foreach($item as $item){
+        $itemWeatage = $item['weatage'];
+        $itemType = preg_replace('/[0-9]/', '', $itemWeatage);
+        if($itemType == 'tab' || $itemType == 'cap'){
+            echo $item['loosely_count'];
+        }else{
+            echo $item['qty'];
+        }
     }
 }
 
-// get product current qty
+// ======================== get product current qty =========================================
 if (isset($_GET["qty"])) {
     $invoice = $_GET["qty"];
-    $productId = $_GET["p-id"];
+    $itemId = $_GET["p-id"];
     $batchNo = $_GET["batch"];
     $totalReturnQTY = 0;
 
-    $item = $StockOut->stockOutSelect($invoice, $productId, $batchNo); // details from phermacy invoice
-    $itemChek = $salesReturn->salesReturnDetialSelect($invoice, $productId, $batchNo);
-    //print_r($itemChek);
-    //echo count($itemChek);
-    for($i = 0; $i<count($itemChek); $i++){
-        $totalReturnQTY = $itemChek[$i]['return'];
+    $item = $StockOut->stockOutSelect($invoice, $itemId); // details from phermacy invoice
+    $itemWeatage = $item[0]['weatage'];
+    $itemType = preg_replace('/[0-9]/', '', $itemWeatage);
+
+    $table = 'invoice_id';
+    $salesReturnData = $salesReturn->selectSalesReturn($table, $invoice);
+    if($salesReturnData != null){
+        $id = $salesReturnData[0]['id'];
+    }else{
+        $id = null;
     }
-    //echo $totalReturnQTY;
-    if($item[0]['qty'] == "0"){
-        $string = "(L)";
-        echo ($item[0]['loosely_count'] - $totalReturnQTY);  
-    // }elseif($item[0]['loosely_count'] == "0"){ 
-    //     echo $item[0]['qty'] - $totalReturnQTY;  
-    }else{ 
-        echo $item[0]['qty'] - $totalReturnQTY;  
+
+    $tabel1 = 'sales_return_id';
+    $tabel2 = 'item_id';
+    $itemChek = $salesReturn->seletReturnDetailsBy($tabel1, $id, $tabel2, $itemId);
+    foreach($itemChek as $itemChek){
+        $totalReturnQTY = $itemChek['return_qty'];
     }
-   
-}
+
+    if($salesReturnData != null){
+        if($itemChek != null){
+            $totalReturnQTY = $totalReturnQTY;
+        }else{
+            $totalReturnQTY = 0;
+        }
+
+    }else{
+        $totalReturnQTY = 0;
+    }
+    
+    if($itemType == 'tab' || $itemType == 'cap'){
+        $currentQty = ($item[0]['loosely_count'] - intval($totalReturnQTY)); 
+    }
+    else{ 
+        $currentQty =  $item[0]['qty'] - intval($totalReturnQTY);  
+    }
+
+    echo $currentQty;
+}//====================================================================================================
 
 // get product discount
 if (isset($_GET["disc"])) {
     $invoice = $_GET["disc"];
-
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
     echo $item[0]['disc'];
 }
-
-
-// get product discount price
-if (isset($_GET["disc-price"])) {
-    $invoice = $_GET["disc-price"];
-
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-    echo $item[0]['d_price'];
-}
-
 
 // get product gst percentage
 if (isset($_GET["gst"])) {
     $invoice = $_GET["gst"];
-
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
     echo $item[0]['gst'];
 }
-
-
 
 // get product taxable amount
 if (isset($_GET["taxable"])) {
     $invoice = $_GET["taxable"];
-
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-    echo $item[0]['gst_amount'];
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    echo $item[0]['taxable'];
 }
 
 
@@ -185,26 +201,7 @@ if (isset($_GET["taxable"])) {
 // get product amount
 if (isset($_GET["amount"])) {
     $invoice = $_GET["amount"];
-
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
+    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
     echo $item[0]['amount'];
 }
 
-
-// // get product full unit
-// if (isset($_GET["unit"])) {
-//     $invoice = $_GET["unit"];
-
-//     $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-//     echo $item[0]['weatage'];
-// }
-
-
-
-// // get product full unit
-// if (isset($_GET["unit"])) {
-//     $invoice = $_GET["unit"];
-
-//     $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-//     echo $item[0]['weatage'];
-// }

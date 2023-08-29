@@ -1,9 +1,9 @@
-<style>
+<!-- <style>
 .searched-list:hover {
     background: #3e059b26;
     cursor: pointer;
 }
-</style>
+</style> -->
 
 <?php
 require_once '../../php_control/search.class.php';
@@ -18,6 +18,8 @@ $Search       = new Search();
 require_once '../../employee/config/dbconnect.php';
 
 $searchResult = FALSE;
+ 
+
 if(isset($_GET['data'])){
     $data = $_GET['data'];
 
@@ -27,7 +29,6 @@ if(isset($_GET['data'])){
 }
 
 if($searchResult){
-
     // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";
     ?>
 <div class="row mx-2 p-1 text-muted border-bottom">
@@ -72,13 +73,12 @@ if($searchResult){
                 foreach ($stock as $row) {
                     $stockQty += $row['qty'];
                     $looseQty += $row['loosely_count'];
-
                 }
             }
 
             ?>
-            <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" onclick="stockDetails(this.id);">
-                <div class="col-md-6"><?php echo $productName, $power ?><br>
+            <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" value1="<?php echo $productName ?>" value2="<?php echo $stockQty ?>" onclick="itemsBatchDetails('<?php echo $productId ?>','<?php echo $productName ?>','<?php echo $stockQty ?>');">
+                <div class="col-md-6"><?php echo $productName, $power?><br>
                 <small><?php echo $manufacturerName ?></small></div>
                 <div class="col-md-3"><small><?php echo $packOf ?></small></div>
                 <div class="col-md-3"><small><?php echo $stockQty;
@@ -90,10 +90,9 @@ if($searchResult){
 <?php
 
     }
-
 }
 else{
     echo "Result Not Found";
 }
-
 ?>
+

@@ -503,7 +503,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         </td>
 
                                                         <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 7rem; padding: .5rem;">
-                                                            <input class="col table-data w-12r" type="text" name="batchNo[]" value="<?php echo $detail['batch_no'] ?>" readonly style="text-align: start; padding:.15rem; width: 7rem; font-size: 0.65rem">
+                                                            <input class="col table-data w-6r" type="text" name="batchNo[]" value="<?php echo $detail['batch_no'] ?>" readonly style="text-align: start; padding:.15rem; width: 7rem; font-size: 0.65rem">
                                                         </td>
 
                                                         <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 4rem; padding: .5rem;">
@@ -656,9 +656,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 </div>
 
-                                <!-- <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($arrayCheckId) ?>" hidden> -->
+                                <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($arrayCheckId) ?>" hidden>
 
-                                <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" >
+                                <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" hidden>
                             </div>
 
                         </form>

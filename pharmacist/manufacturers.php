@@ -128,6 +128,13 @@ if (isset($_GET['return'])) {
                                                 placeholder="Manufacturer Name" required>
                                         </div>
 
+                                        <div class="col-md-12">
+                                            <label class="mb-0" for="manufacturer-name">Manufacturer Mark</Address>
+                                            </label>
+                                            <input class="form-control" id="manufacturer-short-name" name="manufacturer-short-name"
+                                                placeholder="Manufacturer Mark" required>
+                                        </div>
+
                                         <div class="col-md-12 mt-2">
                                             <label class="mb-0" for="manufacturer-dsc">Description</Address></label>
                                             <textarea name="manufacturer-dsc" id="manufacturer-dsc" class="form-control"

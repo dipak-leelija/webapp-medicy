@@ -4,6 +4,7 @@ require_once '_config/sessionCheck.php';//check admin loggedin or not
 require_once "../php_control/stockOut.class.php";
 require_once "../php_control/patients.class.php";
 
+
 // CLASS INTIATING 
 $StockOut = new StockOut();
 $Patients = new Patients();
@@ -134,7 +135,7 @@ $soldItems = $StockOut->stockOutDisplay();
                                                     <td>
                                                     <a class='ml-2' href='update-sales.php?id=".$invoice."'><i class='fas fa-edit'></i></a>
                                                     
-                                                    <a class='ml-2' href='item-invoice-reprint.php?id=".$invoice."'><i class='fas fa-print'></i></a>
+                                                    <a class='ml-2' href='_config/form-submission/item-invoice-reprint.php?id=".$invoice."'><i class='fas fa-print'></i></a>
 
                                                     <a class='ml-2' data-id=".$invoice."><i class='fab fa-whatsapp'></i></i></a>
 

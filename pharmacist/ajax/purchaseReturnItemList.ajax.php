@@ -13,6 +13,7 @@ if (isset($_GET['return-id'])) {
     // echo $returnId;
     $bill =  $PurchaseReturn->showStockReturnById($returnId);
     // print_r($bill);
+    $totalQty = $bill[0]['total_qty'];
     $dist = $DistributorDetils->showDistributorById($bill[0]["distributor_id"]);
 
 ?>
@@ -79,7 +80,7 @@ if (isset($_GET['return-id'])) {
                             <th>PTR</th>
                             <th>MRP</th>
                             <th>GST</th>
-                            <th>PTR.Amount</th>
+                            <th>Disc</th>
                             <th>Return Qty</th>
                             <th>Refund</th>
                         </tr>
@@ -104,6 +105,16 @@ if (isset($_GET['return-id'])) {
                             // print_r($productData);
                             foreach($productData as $pData){
                                 $name = $pData['name'];
+                                $itemReturnQty = $item['return_qty'];
+                                $itemReturnFreeQty = $item['return_free_qty'];
+                                $string1 = '(';
+                                $string2 = 'F';
+                                $string3 = ')';
+                                if($itemReturnFreeQty == 0){
+                                    $returnQty = $itemReturnQty;
+                                }else{
+                                    $returnQty = $itemReturnQty.$string1.$itemReturnFreeQty.$string2.$string3;
+                                }
                             }
 
                             echo "<tr>
@@ -117,8 +128,8 @@ if (isset($_GET['return-id'])) {
                             <td>" . $item['ptr'] . "</td>
                             <td>" . $item['mrp'] . "</td>
                             <td>" . $item['gst'] . "%</td>
-                            <td>" . $item['purchase_amount'] . "</td>
-                            <td>" . $item['return_qty'] . "</td>
+                            <td>" . $item['disc'] . "</td>
+                            <td>" . $returnQty . "</td>
                             <td>" . $item['refund_amount'] . "</td>
                           </tr>";
                         }
@@ -129,7 +140,7 @@ if (isset($_GET['return-id'])) {
 
             <div class="row summary rounded align-middle">
                 <div class="col-6 col-sm-3">Items: <?php echo count($items); ?></div>
-                <div class="col-6 col-sm-3">Quantity: <?php echo count($items) ?></div>
+                <div class="col-6 col-sm-3">Quantity: <?php echo $totalQty; ?></div>
                 <div class="col-6 col-sm-3">GST: <?php echo $bill[0]['gst_amount']; ?></div>
                 <div class="col-6 col-sm-3">Amount: <?php echo $bill[0]['refund_amount']; ?></div>
 

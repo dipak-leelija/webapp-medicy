@@ -1,5 +1,5 @@
 <?php
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once "../php_control/doctors.class.php";
 require_once '../php_control/products.class.php';
 require_once '../php_control/distributor.class.php';
@@ -41,9 +41,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
     <!-- Custom fonts for this template-->
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -84,22 +82,19 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                             <div class="row">
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="invoice-no">Invoice No.</label>
-                                    <input type="text" class="upr-inp" name="invoice-no" id="invoice-no"
-                                        placeholder="Search Invoice No." onkeyup="getCustomer(this.value)"
-                                        autocomplete="off">
+                                    <input type="text" class="upr-inp" name="invoice-no" id="invoice-no" placeholder="Search Invoice No." onkeyup="getCustomer(this.value)" value="">
                                 </div>
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="patient-name">Patient Name.</label>
-                                    <input type="text" class="upr-inp" name="patient-name" id="patient-name"
-                                        placeholder="Select Invoice First." autocomplete="off">
+                                    <input type="text" class="upr-inp" name="patient-name" id="patient-name" placeholder="Select Invoice First." autocomplete="off" readonly>
                                 </div>
                                 <div class="col-md-2 col-6 mt-3 ">
                                     <label class="mb-0 mt-2" for="bill-date">Bill Date</label>
-                                    <input type="text" class="upr-inp" name="" id="bill-date" autocomplete="off">
+                                    <input type="text" class="upr-inp" name="" id="bill-date" autocomplete="off" readonly>
                                 </div>
                                 <div class="col-md-2 col-6 mt-3 ">
                                     <label class="mb-0 mt-2" for="reff-by">Reff By</label>
-                                    <input type="text" class="upr-inp" id="reff-by" autocomplete="off">
+                                    <input type="text" class="upr-inp" id="reff-by" autocomplete="off" readonly>
                                 </div>
                                 <div class="col-md-2 col-12 mt-3 ">
                                     <label class="mb-0 mt-2" for="refund-mode">Refund Mode</label>
@@ -124,7 +119,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                             </div>
                             <!--============= end select Bill and details =============-->
-                            
+
                             <div class="row">
                                 <div class="col-md-8 col-12 mt-3">
                                     <label for="items-list" class="mb-0">Product Name</label>
@@ -134,99 +129,106 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-1 col-6 mt-3">
-
-                                    <label class="mb-0 mt-1" for="exp-date">Expiry</label>
-                                    <div class="d-flex date-field">
-                                        <input type="text" class="upr-inp" id="exp-date" readonly>
+                            <form id="return-item-details">
+                                <div class="row">
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="item-id">Item Id</label>
+                                        <div class="d-flex date-field">
+                                            <input type="text" class="upr-inp" id="item-id" readonly>
+                                        </div>
                                     </div>
 
-                                </div>
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="unit"> Unit</label>
-                                    <input type="text" class="upr-inp" id="unit" value="" readonly>
-                                </div>
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="prod-id">Product Id</label>
+                                        <div class="d-flex date-field">
+                                            <input type="text" class="upr-inp" id="prod-id" readonly>
+                                        </div>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3" hidden>
-                                    <label class="mb-0 mt-1" for="unitType"> UnitType</label>
-                                    <input type="text" class="upr-inp" id="unitType" value="" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="exp-date">Expiry</label>
+                                        <div class="d-flex date-field">
+                                            <input type="text" class="upr-inp" id="exp-date" readonly>
+                                        </div>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3" hidden>
-                                    <label class="mb-0 mt-1" for="Weatage"> Weatage</label>
-                                    <input type="text" class="upr-inp" id="weatage" value="" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="unit"> Unit</label>
+                                        <input type="text" class="upr-inp" id="unit" value="" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="batch-no">Batch</label>
-                                    <input type="text" class="upr-inp" name="batch-no" id="batch-no" readonly>
-                                </div>
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="unit"> Item Unit</label>
+                                        <input type="text" class="upr-inp" id="item-unit" value="" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="mrp">MRP</label>
-                                    <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
-                                </div>
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="unit">Item Weatage</label>
+                                        <input type="text" class="upr-inp" id="item-weatage" value="" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3" >
-                                    <label class="mb-0 mt-1" for="purchase-qty">P.Qty</label>
-                                    <input type="text" class="upr-inp" name="purchase-qty" id="purchase-qty" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="batch-no">Batch</label>
+                                        <input type="text" class="upr-inp" name="batch-no" id="batch-no" readonly>
+                                    </div>
 
-                                <div class="d-none col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="qty">Cr.Qty</label>
-                                    <input type="text" class="upr-inp" name="qty" id="qty" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="mrp">MRP</label>
+                                        <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="discount">Disc% </label>
-                                    <input type="text" class="upr-inp" name="discount" id="discount" value="0" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="purchase-qty">P.Qty</label>
+                                        <input type="text" class="upr-inp" name="purchase-qty" id="purchase-qty" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="discount">D.Pr </label>
-                                    <input type="text" class="upr-inp" name="discount-price" id="discount-price"
-                                        value="0" readonly>
-                                </div>
+                                    <div class=" col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="qty">Cr.Qty</label>
+                                        <input type="text" class="upr-inp" name="qty" id="qty" readonly>
+                                    </div>
 
-                                
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="gst">GST</label>
-                                    <input type="text" class="upr-inp" name="gst" id="gst" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="discount">Disc% </label>
+                                        <input type="text" class="upr-inp" name="discount" id="discount" value="" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="taxable">Taxable</label>
-                                    <input type="any" class="upr-inp" name="taxable" id="taxable">
-                                </div>
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="bill-amount">Amount</label>
-                                    <input type="any" class="upr-inp" name="bill-amount" id="bill-amount" readonly
-                                        required>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="gst">GST</label>
+                                        <input type="text" class="upr-inp" name="gst" id="gst" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="return">Return</label>
-                                    <input type="number" class="upr-inp" name="return" id="return"
-                                        onkeyup="getRefund(this.value)" required>
-                                </div>
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="refund">Refund</label>
-                                    <input type="any" class="upr-inp" name="refund" id="refund" required>
-                                </div>
-                            </div>
-                            <div class="row justify-content-end">
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                    <button class="btn btn-primary me-md-2" onclick="addData()" id="add-btn"
-                                        disabled>Add<i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                            <!-- </div> -->
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="taxable">Sales Taxable</label>
+                                        <input type="any" class="upr-inp" name="taxable" id="taxable">
+                                    </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="bill-amount">Amount</label>
+                                        <input type="any" class="upr-inp" name="bill-amount" id="bill-amount" readonly required>
+                                    </div>
 
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="return">Return</label>
+                                        <input type="number" class="upr-inp" name="return" id="return" onkeyup="getRefund(this.value)" required>
+                                    </div>
+
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="return">Taxable</label>
+                                        <input type="number" class="upr-inp" name="refund-taxable" id="refund-taxable" onkeyup="getRefund(this.value)" required>
+                                    </div>
+
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="refund">Refund</label>
+                                        <input type="any" class="upr-inp" name="refund" id="refund" required>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
+                                        <button type="button" class="btn btn-primary me-md-2" onclick="addData()" id="add-btn">Add<i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="row">
-                            <!-- </form> -->
-                        </div>
+
                     </div>
                     <!-- /end Add Product  -->
                     <!--=========================== Show Bill Items ===========================-->
@@ -247,8 +249,6 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <th scope="col" style="font-size: .7rem;">Batch</th>
                                                 <th scope="col" style="font-size: .7rem;">Exp.</th>
                                                 <th scope="col" style="font-size: .7rem;">Unit</th>
-                                                <th scope="col" hidden>Weatage</th>
-                                                <th scope="col" hidden>UnitType</th>
                                                 <th scope="col" style="font-size: .7rem;">Qty.</th>
                                                 <th scope="col" style="font-size: .7rem;">MRP</th>
                                                 <th scope="col" style="font-size: .7rem;">Disc</th>
@@ -259,7 +259,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             </tr>
                                         </thead>
                                         <tbody id="dataBody">
-                                         
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -272,34 +272,28 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input class="summary-inp w-60" name="invoice" id="invoice" type="text" readonly required>
                                     </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
-                                        <label for="">Return Date :</label>   
+                                        <label for="">Return Date :</label>
                                         <input class="summary-inp w-60" name="return-date" id="return-date" type="text" readonly required>
-                                        <input class="d-none" name="purchased-date" id="purchased-date" type="text" > 
+                                        <input class="d-none" name="purchased-date" id="purchased-date" type="text">
                                     </div>
                                     <div class="col-md-2 col-6 mb-3  d-flex justify-content-start">
-                                        <p>Items : <input class="summary-inp w-60" name="total-items" id="total-items"
-                                                type="number" value="0" readonly required></p>
+                                        <p>Items : <input class="summary-inp w-60" name="total-items" id="total-items" type="number" value="0" readonly required></p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Payment : <input class="summary-inp w-60" name="refund-mode" id="refund-mode-val"
-                                                type="text" readonly required> </p>
+                                        <p>Refund Mode : <input class="summary-inp w-60" name="refund-mode" id="refund-mode-val" type="text" readonly required> </p>
                                     </div>
 
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Qty : <input class="summary-inp" name="total-qty" id="total-qty" type="any"
-                                                value="0" readonly required> </p>
+                                        <p>Qty : <input class="summary-inp" name="total-qty" id="total-qty" type="any" value="0" readonly required> </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>GST : <input class="summary-inp" name="gst-amount" id="gst-amount"
-                                                type="number" value="0" readonly required> </p>
+                                        <p>GST : <input class="summary-inp" name="gst-amount" id="gst-amount" type="number" value="0" readonly required> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 mb-2 d-flex justify-content-start">
-                                        <p>Refund : <input class="summary-inp" name="refund-amount" id="refund-amount"
-                                                type="any" value="0" readonly required> </p>
+                                        <p>Refund : <input class="summary-inp" name="refund-amount" id="refund-amount" type="any" value="0" readonly required> </p>
                                     </div>
                                     <div class="col-md-2 mb-2 col-6 justify-content-end">
-                                        <button class="btn btn-sm btn-primary" style="width: 100%;" type="submit"
-                                            name="sales-return">Return</button>
+                                        <button class="btn btn-sm btn-primary" style="width: 100%;" type="submit" name="sales-return">Return</button>
                                     </div>
                                 </div>
                             </div>

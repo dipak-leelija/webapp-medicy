@@ -3,6 +3,7 @@ require_once '../../php_control/salesReturn.class.php';
 require_once '../../php_control/patients.class.php';
 require_once '../../php_control/products.class.php';
 require_once '../../php_control/stockOut.class.php';
+require_once '../../php_control/packagingUnit.class.php';
 
 
 // classes initiating 
@@ -10,21 +11,24 @@ $SalesReturn    = new SalesReturn();
 $Patients       = new Patients();
 $products       = new Products();
 $StockOut       = new StockOut();
+$Packeging      = new PackagingUnits();
 
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['invoice'])) {
 
-        $id = $_GET['id'];
-        
-        $returnBill = $SalesReturn->salesReturnByID($id , $_GET['invoice']);
-
-        //print_r($returnBill); echo "<br><br>";
+        $SalesReturnid = $_GET['id'];
+        $invoiceID = $_GET['invoice'];
+        // echo "Sales return id : ",$SalesReturnid,"<br>Invoice id : ",$invoiceID;
+        $returnBill = $SalesReturn->salesReturnByID($SalesReturnid);
+        // echo "<br>";
+        // print_r($returnBill); echo "Sales return Data from sales return table <br><br>";
 
         $patientId = $returnBill[0]['patient_id'];
 
-        if($patientId == "Cash Sales"){
+        if ($patientId == "Cash Sales") {
             $patientName = "Cash Sales";
-        }else{
+        } else {
             $patientName = $returnBill[0]['patient_id'];
         }
     }
@@ -41,17 +45,17 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-<style>
-    .summary{
-        margin-top: auto;
-        min-height: 3rem;
-        background: #af3636;
-        align-items: center;
-        color: #fff;
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-</style>
+    <style>
+        .summary {
+            margin-top: auto;
+            min-height: 3rem;
+            background: #af3636;
+            align-items: center;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+    </style>
 </head>
 
 <body>
@@ -61,15 +65,15 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 <p><b>Invoice No:</b> <span>#<?php echo $returnBill[0]['invoice_id']; ?></span></p>
             </div>
             <div class="col-12 col-sm-6 col-md-3">
-                <?php 
-                    if($patientId == "Cash Sales"){
-                        $patientName = "Cash Sales";
-                    }else{
-                        $patientId = $returnBill[0]['patient_id'];
-                        $patient = $Patients->patientsDisplayByPId($patientId);
-                        $patientName = $patient[0]['name'];
-                    }
-                
+                <?php
+                if ($patientId == "Cash Sales") {
+                    $patientName = "Cash Sales";
+                } else {
+                    $patientId = $returnBill[0]['patient_id'];
+                    $patient = $Patients->patientsDisplayByPId($patientId);
+                    $patientName = $patient[0]['name'];
+                }
+
                 ?>
                 <p><b>Patient Name:</b> <?php echo $patientName; ?></p>
             </div>
@@ -90,58 +94,59 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                         <th>Batch</th>
                         <th>Exp Date</th>
                         <th>Weatage</th>
-                        <th>Qty</th>
+                        <th>Purchase Qty</th>
                         <th>Disc</th>
                         <th>GST</th>
-                        <th>Amount</th>
                         <th>Return</th>
+                        <th>taxable</th>
                         <th>Refund</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     <?php
-                    $billList = $SalesReturn->salesReturnbyInvoiceIdsalesReturnId($_GET['invoice'], $_GET['id']);
-                    foreach ($billList as $bill) {
+                    //================ Invoice Details ===============
+                    $table = 'sales_return_id';
+                    $SalesReturnDetials = $SalesReturn->selectSalesReturnList($table, $SalesReturnid);
+                    // print_r($SalesReturnDetials);
+                    foreach ($SalesReturnDetials as $returnData) {
+                        $itemId = $returnData['item_id'];
+                        $weatage = $returnData['weatage'];
+                        $discount = $returnData['disc'];; 
+                        $gst = $returnData['gst'];
+                        $returnqty = $returnData['return_qty'];
+                        $taxable = $returnData['taxable'];
+                        $refundAmount = $returnData['refund_amount'];
 
-                        $invoice    = $bill['invoice_id'];
-                        $productId  = $bill['product_id'];
-                        $batchNo    = $bill['batch_no'];
-                        $productName = $products->showProductsById($bill['product_id']);
-                        $ItemName = $productName[0]['name']; 
-                        
-                        $invoicDetials = $StockOut->stockOutSelect($invoice, $productId, $batchNo);
-                        foreach($invoicDetials as $invoiceData){
-                            //print_r($invoiceData);
-                            if($invoiceData['qty'] == 0){
-                                $sting = '(L)';
-                                $pQty = $invoiceData['loosely_count'];
-                                $pQty = $pQty.$sting;
-                                $return = $bill['return'];
-                                $return = $return.$sting;
+                        $invoiceDetials = $StockOut->stockOutSelect($invoiceID, $itemId);
+                        foreach ($invoiceDetials as $invoiceData) {
+                            $itemName = $invoiceData['item_name'];
+                            $batchNo  = $invoiceData['batch_no'];
+                            $exp_date = $invoiceData['exp_date'];
+                            if($invoiceData['loosely_count'] == 0){
+                                $purchaseQty = $invoiceData['qty'];
                             }else{
-                                $pQty = $invoiceData['qty'];
-                                $return = $bill['return'];
+                                $purchaseQty = $invoiceData['loosely_count'];
                             }
                         }
-                        
 
-                    echo '<tr>
-                            <td>'.$bill['invoice_id'].'</td>
-                            <td>'.$ItemName.'</td>
-                            <td>'.$bill['batch_no'].'</td>
-                            <td>'.$bill['weatage'].'</td>
-                            <td>'.$bill['exp'].'</td>
-                            <td>'.$pQty.'</td>
-                            <td>'.$bill['disc'].'</td>
-                            <td>'.$bill['gst'].'</td>
-                            <td>'.$bill['amount'].'</td>
-                            <td>'.$return.'</td>
-                            <td>'.$bill['refund'].'</td>
-
-                        </tr>';
-                }
-                ?>
+                    ?>
+                        <tr>
+                            <th><?php echo $invoiceID ?></th>
+                            <th><?php echo $itemName ?></th>
+                            <th><?php echo $batchNo ?></th>
+                            <th><?php echo $exp_date ?></th>
+                            <th><?php echo $weatage ?></th>
+                            <th><?php echo $purchaseQty ?></th>
+                            <th><?php echo $discount ?></th>
+                            <th><?php echo $gst ?></th>
+                            <th><?php echo $returnqty ?></th>
+                            <th><?php echo $taxable ?></th>
+                            <th><?php echo $refundAmount ?></th>
+                        </tr>
+                    <?php
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
