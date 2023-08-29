@@ -23,29 +23,29 @@ function searchItem(input) {
 }
 
 
-const getDtls = (value) => {
+const getDtls = (productId) => {
 
-    console.log(value);
-    // alert(value);
+    console.log(productId);
+    // alert(productId);
     let xmlhttp = new XMLHttpRequest();
 
-    if (value != "") {
-        // console.log(value);
+    if (productId != "") {
+        // console.log(productId);
         //==================== Manufacturere List ====================
-        manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + value;
+        manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + productId;
         // alert(url);
         xmlhttp.open("GET", manufacturerurl, false);
         xmlhttp.send(null);
         document.getElementById("manufacturer-id").value = xmlhttp.responseText;
 
-        manufacturerName = 'ajax/product.getManufacturer.ajax.php?name=' + value;
+        manufacturerName = 'ajax/product.getManufacturer.ajax.php?name=' + productId;
         xmlhttp.open("GET", manufacturerName, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText);
         document.getElementById("manufacturer-name").value = xmlhttp.responseText;
 
         //==================== Medicine Power ====================
-        powerurl = 'ajax/product.getMedicineDetails.ajax.php?power=' + value;
+        powerurl = 'ajax/product.getMedicineDetails.ajax.php?power=' + productId;
         // alert(url);
         xmlhttp.open("GET", powerurl, false);
         xmlhttp.send(null);
@@ -53,14 +53,14 @@ const getDtls = (value) => {
         document.getElementById("medicine-power").value = xmlhttp.responseText;
 
         //==================== Packaging Type ====================
-        packTypeUrl = 'ajax/product.getMedicineDetails.ajax.php?pType=' + value;
+        packTypeUrl = 'ajax/product.getMedicineDetails.ajax.php?pType=' + productId;
         // alert(url);
         xmlhttp.open("GET", packTypeUrl, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText);
         document.getElementById("packaging-type").innerHTML = xmlhttp.responseText;
 
-        packTypeFieldUrl = 'ajax/product.getMedicineDetails.ajax.php?packegeIn=' + value;
+        packTypeFieldUrl = 'ajax/product.getMedicineDetails.ajax.php?packegeIn=' + productId;
         // // alert(url);
         xmlhttp.open("GET", packTypeFieldUrl, false);
         xmlhttp.send(null);
@@ -68,7 +68,7 @@ const getDtls = (value) => {
         document.getElementById("packaging-in").value = xmlhttp.responseText;
 
         //==================== Weightage ====================
-        weightage = 'ajax/product.getMedicineDetails.ajax.php?weightage=' + value;
+        weightage = 'ajax/product.getMedicineDetails.ajax.php?weightage=' + productId;
         // alert(url);
         xmlhttp.open("GET", weightage, false);
         xmlhttp.send(null);
@@ -77,7 +77,7 @@ const getDtls = (value) => {
 
 
         //==================== Unit ====================
-        unitUrl = 'ajax/product.getMedicineDetails.ajax.php?unit=' + value;
+        unitUrl = 'ajax/product.getMedicineDetails.ajax.php?unit=' + productId;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
@@ -86,7 +86,7 @@ const getDtls = (value) => {
         // alert(xmlhttp.responseText);
 
         //==================== MRP ====================
-        mrpUrl = 'ajax/product.getMrp.ajax.php?id=' + value;
+        mrpUrl = 'ajax/product.getMrp.ajax.php?id=' + productId;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", mrpUrl, false);
@@ -95,7 +95,7 @@ const getDtls = (value) => {
         // alert(xmlhttp.responseText);
 
         //==================== ptr check url ===================
-        chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + value;
+        chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + productId;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", chkPtr, false);
@@ -105,7 +105,7 @@ const getDtls = (value) => {
         document.getElementById("ptr").value = xmlhttp.responseText;
 
         //==================== GST ====================
-        gstUrl = 'ajax/product.getGst.ajax.php?id=' + value;
+        gstUrl = 'ajax/product.getGst.ajax.php?id=' + productId;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", gstUrl, false);
@@ -114,9 +114,9 @@ const getDtls = (value) => {
         // alert(xmlhttp.responseText);
 
         //==================== Product Id ====================
-        document.getElementById("product-id").value = value;
+        document.getElementById("product-id").value = productId;
 
-        // idUrl = `ajax/product.getName.ajax.php?Pid=${value}`
+        // idUrl = `ajax/product.getName.ajax.php?Pid=${productId}`
         // // alert(unitUrl);
         // xmlhttp.open("GET", idUrl, false);
         // xmlhttp.send(null);
@@ -124,7 +124,7 @@ const getDtls = (value) => {
         // console.log(xmlhttp.responseText);
 
         //==================== Product Name ====================
-        nameUrl = 'ajax/product.getMedicineDetails.ajax.php?pName=' + value;
+        nameUrl = 'ajax/product.getMedicineDetails.ajax.php?pName=' + productId;
         // alert(unitUrl);
         xmlhttp.open("GET", nameUrl, false);
         xmlhttp.send(null);
