@@ -52,7 +52,7 @@ document.getElementById("bill-date").setAttribute("max", todayFullDate);
 const getCustomer = (invoice) => {
 
     if (invoice != "") {
-        invoiceUrl = `ajax/return-item-list.ajax.php?invoice=${invoice}`;
+        let invoiceUrl = `ajax/return-item-list.ajax.php?invoice=${invoice}`;
         // alert(invoiceUrl);
         xmlhttp.open("GET", invoiceUrl, false);
         xmlhttp.send(null);

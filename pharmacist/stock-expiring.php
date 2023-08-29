@@ -45,8 +45,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
 
 // echo "<br>$newMnth<br><br>";
 $showExpiry = $CurrentStock->showStockExpiry($newMnth);
-
-print_r($showExpiry);
+// print_r($showExpiry);
 
 ?>
 

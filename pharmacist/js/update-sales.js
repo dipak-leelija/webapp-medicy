@@ -836,7 +836,7 @@ const editItem = (pharmacyId, stockOutId, itemId, slno, itemQty, gstamnt, mrpPer
             Stock_out_item_id: itemId
         },
         success: function (data) {
-            alert(data);
+            // alert(data);
             var dataObject = JSON.parse(data);
             // alert(dataObject);
 
