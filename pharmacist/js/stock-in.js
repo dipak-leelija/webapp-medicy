@@ -95,7 +95,6 @@ const getDtls = (value) => {
         // alert(xmlhttp.responseText);
 
         //==================== ptr check url ===================
-
         chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + value;
         // alert(unitUrl);
         // window.location.href = unitUrl;
@@ -104,7 +103,6 @@ const getDtls = (value) => {
         // alert(xmlhttp.responseText);
         document.getElementById("chk-ptr").value = xmlhttp.responseText;
         document.getElementById("ptr").value = xmlhttp.responseText;
-
 
         //==================== GST ====================
         gstUrl = 'ajax/product.getGst.ajax.php?id=' + value;
@@ -132,6 +130,9 @@ const getDtls = (value) => {
         xmlhttp.send(null);
         document.getElementById("product-name").value = xmlhttp.responseText;
         // console.log(xmlhttp.responseText);
+
+
+        document.getElementById('qty').focus();
 
     } else {
 
@@ -203,6 +204,7 @@ const getBillAmount = () => {
         document.getElementById("ptr").value = "";
         document.getElementById("bill-amount").value = "";
         document.getElementById("ptr").value = "";
+        document.getElementById("ptr").focus();
     }
 
     let qty = document.getElementById("qty").value;
@@ -442,8 +444,8 @@ const addData = () => {
 
     let slno = document.getElementById("dynamic-id").value;
     slno++;
-
     document.getElementById("dynamic-id").value = slno;
+
 
     var qtyVal = document.getElementById("qty-val").value;
     let itemQty = parseFloat(qty.value) + parseFloat(freeQty.value);
@@ -452,12 +454,8 @@ const addData = () => {
     // console.log(totalQty);
 
     var net = document.getElementById("net-amount").value;
-    //    console.log(net);
     netAmount = parseFloat(net) + parseFloat(billAmount.value);
-    // console.log(netAmount);
-    // console.log("Net Value");
-
-
+    
     let total = qty.value * ptr.value;
     let totalWithDisc = total - (discount.value / 100 * total);
 
@@ -585,9 +583,11 @@ const addData = () => {
 
 
 function deleteData(slno, itemQty, gstPerItem, total) {
+   
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;
+
 
     //minus item
     let items = document.getElementById("items-val");
@@ -680,48 +680,54 @@ function setMfdYear(year) {
 }
 
 const setYear = (year) => {
-    var MFDYR = document.getElementById("mfd-year");
-    var mfdMnth = document.getElementById("mfd-month");
-    var expMnth = document.getElementById("exp-month");
+    let chkYear = year.value;
+    var MFDYR = document.getElementById("mfd-year").value;
+    var mfdMnth = document.getElementById("mfd-month").value;
+    var expMnth = document.getElementById("exp-month").value;
     // var mfdLn = MFD.value.length;
 
     // console.log(mfdLn);
 
-    if (year.value.length == 4) {
-        if (year.value < MFDYR.value) {
+    if (chkYear.length == 4) {
+        if (chkYear < MFDYR) {
             document.getElementById("exp-year").value = "";
             document.getElementById("exp-year").focus();
         }
 
-        if (year.value == MFDYR.value) {
-            if (mfdMnth.value > expMnth.value) {
+        if (chkYear == MFDYR) {
+            if (mfdMnth > expMnth) {
                 document.getElementById("exp-month").value = "";
                 document.getElementById("exp-month").focus();
             }
         }
     }
 
-    if (year.value.length == 2) {
-        if (MFDYR.value.length == 4) {
-            MFDYR = MFDYR.value % 100;
-            if (MFDYR < year.value) {
+    if (chkYear.length == 2) {
+        if (MFDYR.length == 4) {
+            MFDYR = MFDYR % 100;
+            if (MFDYR < chkYear) {
                 document.getElementById("exp-year").value = "";
                 document.getElementById("exp-year").focus();
             }
         }
-        if (MFDYR.value.length == 2) {
-            if (year.value < MFDYR.value) {
+        if (MFDYR.length == 2) {
+            if (chkYear < MFDYR) {
                 document.getElementById("exp-year").value = "";
                 document.getElementById("exp-year").focus();
             }
         }
 
-        if (MFDYR.value.length == year.value.length) {
-            if (mfdMnth.value > expMnth.value) {
+        if (MFDYR.length == chkYear.length) {
+            if (mfdMnth > expMnth) {
                 document.getElementById("exp-month").value = "";
                 document.getElementById("exp-month").focus();
             }
         }
+    }
+
+    if(chkYear.length > 4){
+        document.getElementById('exp-year').value = '';
+        document.getElementById('exp-year').focus();
     }
 }
 

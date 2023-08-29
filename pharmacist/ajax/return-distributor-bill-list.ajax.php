@@ -18,9 +18,10 @@ $Distributor    = new Distributor();
 // getBillList function
 if (isset($_GET['dist-id'])) {
 ?>
-    <div class="row border-bottom border-primary small mx-2 p-1">
-        <div class="col-3 mb-1">Bill No</div>
+    <div class="row mx-2 p-1 text-muted border-bottom" style="max-width: 20rem;">
+        <div class="col-md-9">Bill No</div>
     </div>
+
     <?php
     $distributorId = $_GET['dist-id'];
     $attribute = 'distributor_id';
@@ -29,8 +30,8 @@ if (isset($_GET['dist-id'])) {
         $billNo = $details['distributor_bill'];
     ?>
 
-    <div class="row mx-2 p-1 border-bottom p-row item-list" onclick="getItemList('<?php echo $distributorId; ?>','<?php echo $billNo; ?>');">
-                <div class="col-6 mb-0"><?php echo $billNo; ?></div>
+    <div class="row mx-2 p-1 border-bottom item-list" onclick="getItemList('<?php echo $distributorId; ?>','<?php echo $billNo; ?>');">
+                <div class="col-md-9"><?php echo $billNo; ?></div>
             </div>
     <?php
     }

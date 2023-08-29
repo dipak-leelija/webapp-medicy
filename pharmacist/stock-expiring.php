@@ -46,7 +46,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
 // echo "<br>$newMnth<br><br>";
 $showExpiry = $CurrentStock->showStockExpiry($newMnth);
 
-// print_r($showExpiry);
+print_r($showExpiry);
 
 ?>
 
@@ -134,36 +134,37 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
                                         <?php
                                         foreach ($showExpiry as $item) {
                                             $expDate        = $item['exp_date'];
-
+                                            
                                             $expiaryDt = str_replace("/", "", $expDate);
                                             $expiaryDtMnth = intval(substr($expiaryDt, 0, 2));
                                             $expiaryDtYr = substr($expiaryDt, 2);
-
+                                            
                                             $today = date("m/y");
                                             $chkMnth = substr($today, 0, 2);
 
                                             $chekExpMnth = substr($today, 0, 2) + 2;
-
+                                            
                                             $chekExpMnth = $chekExpMnth % 12;
-
+                                            
                                             if ($chkMnth == 11 || $chkMnth == 12) {
-                                                $chkYr = date("y") + 1;
+                                                $chkYr = date("Y") + 1;
                                             } else {
-                                                $chkYr = date("y");
+                                                $chkYr = date("Y");
                                             }
-
-                                            // echo $chekExpMnth;
-                                            if ($expiaryDtMnth >= $chkMnth) {
+                                            // echo $chkYr;                            
+                                            if ($expiaryDtMnth >= $chkMnth) {   
                                                 if ($expiaryDtMnth <= $chekExpMnth) {
                                                     if ($expiaryDtYr == $chkYr) {
+                                                        // echo "<br>$expDate";
+                                                        // echo "<br>$productId";
                                                         // echo "<br>Expiary Date Month : $expiaryDtMnth";
                                                         // echo "<br>Expiary Date Year : $expiaryDtYr";
                                                         // echo "<br>Chk exp mnth : $chekExpMnth";
                                                         // echo "<br>Chk exp yr : $chkYr";
-
+                                                        
                                                         $stokInDetialId = $item['stock_in_details_id'];
                                                         $productId      = $item['product_id'];
-
+                                                      
                                                         $productData = $products->showProductsById($productId);
                                                         foreach ($productData as $data) {
                                                             $prodName = $data['name'];

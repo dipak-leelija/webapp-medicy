@@ -456,7 +456,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         $manufDetails = $Manufacturer->showManufacturerById($pManfId);
                         foreach ($manufDetails as $manufData) {
-                            $manufName = $manufData['name'];
+                            $manufName = $manufData['short_name'];
                         }
 
 

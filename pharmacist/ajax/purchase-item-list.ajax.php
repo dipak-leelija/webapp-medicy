@@ -28,9 +28,9 @@ if (isset($_GET['data'])) {
     // $searchResult = $Search->searchForSale($data);
 }
 
-if ($searchResult != null) {
+if ($searchResult) {
 
-    // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";
+    // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$searchResult."</a></h5>";
 ?>
     <div class="row border-bottom border-primary small mx-0 mb-2">
         <div class="col-md-4">Searched For</div>
@@ -101,8 +101,7 @@ if ($searchResult != null) {
 <?php
 
     }
-} 
-else{
+} else {
     echo '<div class="row border-bottom border-primary small mx-0 mb-2">
     "Result Not Found";
     </div>';

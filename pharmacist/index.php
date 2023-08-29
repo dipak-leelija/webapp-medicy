@@ -19,7 +19,6 @@ $totalAppointments = $appoinments->appointmentsDisplay();
 
 $today = date("Y-m-d"); 
 
-
 ?>
 
 <!DOCTYPE html>
@@ -105,8 +104,7 @@ $today = date("Y-m-d");
                        
                     </div>
                     <!-- ================ END FIRST ROW ================ -->
-
-
+                    
                     <!-- ================== SECOND ROW ================== -->
                     <div class="row">
                         <div class="col-xl-6 col-md-12">

@@ -159,7 +159,7 @@ $todayYr = date("y");
                                                 <!-- <label for="product-name" class="mb-0">Product Name</label> -->
                                                 <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" autocomplete="off" value="">
 
-                                                <div class="p-2 bg-light" id="product-select" style="max-height: 20rem; max-width: 100%;">
+                                                <div class="p-2 bg-light" id="product-select" style="max-height: 25rem; max-width: 100%;">
                                                 </div>
                                             </div>
                                         </div>
@@ -176,8 +176,6 @@ $todayYr = date("y");
                                                 <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
                                             </div>
                                         </div>
-
-
 
                                         <div class="d-none row">
                                             <div class="col-md-12 ">
@@ -205,12 +203,11 @@ $todayYr = date("y");
                                             </div>
                                         </div>
 
-
                                         <div class="row">
 
                                             <div class="col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="mrp">MRP/Package</label>
-                                                <input type="number" class="upr-inp" name="mrp" id="mrp">
+                                                <input type="number" class="upr-inp" name="mrp" id="mrp" readonly>
                                             </div>
 
                                             <div class="col-sm-6 col-md-6 mt-2">
@@ -219,8 +216,6 @@ $todayYr = date("y");
                                             </div>
 
                                         </div>
-
-
 
                                         <div class="row">
 
@@ -320,7 +315,7 @@ $todayYr = date("y");
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="base">Base</label>
-                                                    <input type="number" class="upr-inp" name="base" id="base">
+                                                    <input type="number" class="upr-inp" name="base" id="base" readonly>
                                                 </div>
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
@@ -370,13 +365,12 @@ $todayYr = date("y");
                                     <div class="card-body stock-in-summary">
                                         <div class="table-responsive">
 
-
                                             <table class="table item-table" style="font-size: .7rem;">
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th scope="col"></th>
                                                         <th scope="col">
-                                                            <input type="number" value="0" id="dynamic-id" style="display:none">
+                                                            <input class="d-none" type="number" value="0" id="dynamic-id" >
                                                         </th>
                                                         <th scope="col">Items</th>
                                                         <th scope="col">Batch</th>

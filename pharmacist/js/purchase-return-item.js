@@ -2,7 +2,6 @@ const getBillList = (t) => {
 
     let id = t.value;
     let distributirName = t.selectedOptions[0].text;
-
     var xmlhttp = new XMLHttpRequest();
     let distIdUrl = `ajax/return-distributor-bill-list.ajax.php?dist-id=${id}`;
     xmlhttp.open("GET", distIdUrl, false);
