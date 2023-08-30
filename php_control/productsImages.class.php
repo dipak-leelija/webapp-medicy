@@ -21,6 +21,16 @@ class ProductImages extends DatabaseConnection{
     }//eof addProduct function
     
     
+    function addImages($productId, $productImage, $addedBy){
+
+        $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`) VALUES ('$productId', '$productImage', '$addedBy')";
+
+        $insertImageQuery = $this->conn->query($insertImage);
+        // echo $insertProductsQuery.$this->conn->error;
+        // exit;
+
+        return $insertImageQuery;
+    }//eof addProduct function
 
 
     function showImages(){

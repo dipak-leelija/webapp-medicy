@@ -1,6 +1,6 @@
 <?php
 
-require_once '_config/sessionCheck.php';//check admin loggedin or not
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/products.class.php';
 require_once '../php_control/manufacturer.class.php';
 require_once '../php_control/measureOfUnit.class.php';
@@ -19,7 +19,7 @@ $showManufacturer   = $Manufacturer->showManufacturer();
 // print_r($showManufacturer);
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
-                                                 
+
 ?>
 
 <!DOCTYPE html>
@@ -37,9 +37,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
     <!-- Custom fonts for this template -->
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Fontawsome Link -->
     <link rel="stylesheet" href="../css/font-awesome.css">
@@ -82,23 +80,19 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     <!-- Add Product -->
                     <div class="card shadow mb-4" style="min-height: 70vh;">
                         <div class="card-body">
-                            <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data"
-                                method="post" id="add-new-product-details">
+                            <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
                                 <div class="row">
                                     <div class="col-12 col-sm-12 col-md-12 col-lg-6">
-                                        <div class="col-md-12"> 
-                                            <input class="c-inp w-100 p-1" id="product-name" name="product-name"
-                                                placeholder="Product Name" required>
+                                        <div class="col-md-12">
+                                            <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
                                         </div><br>
-                                        <div class="col-md-12"> 
-                                            <input class="c-inp w-100 p-1" id="product-composition" name="product-composition"
-                                                placeholder="Product Composition" required >
+                                        <div class="col-md-12">
+                                            <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" required>
                                         </div>
 
                                         <div class="row p-3">
                                             <div class="col-md-6">
-                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power"
-                                                    id="medicine-power" placeholder="Enter Medicine Power" required>
+                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" required>
                                             </div>
                                             <div class="col-md-6 mt-3 mt-md-0">
                                                 <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer" required>
@@ -107,26 +101,96 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     foreach ($showManufacturer as $rowManufacturer) {
                                                         $manufId   = $rowManufacturer['id'];
                                                         $manufName = $rowManufacturer['name'];
-                                                        echo '<option value="'.$manufId.'">'.$manufName.'</option>';
+                                                        echo '<option value="' . $manufId . '">' . $manufName . '</option>';
                                                     }
-                                                ?>
+                                                    ?>
                                                 </select>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-12 mt-3">
-                                            <label for="product-descreption">Product Description</label>
-                                            <textarea class="form-control" name="product-descreption"
-                                                id="product-descreption" cols="30" rows="3" required></textarea>
+                                        <!-- Price Row -->
+                                        <div class="row p-3">
+
+                                            <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                                <!-- <label class="mb-0 mt-1" for="unit-quantity">Unit Quantity</label> -->
+                                                <input type="number" class="c-inp p-1 w-100" name="unit-quantity" id="unit-quantity" placeholder="Enter Unit" step="0.01" required>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                                <!-- <label class="mb-0 mt-1" for="unit">Select Unit</label> -->
+                                                <select class="c-inp p-1 w-100" name="unit" id="unit" required>
+                                                    <option value="" disabled selected>Select Unit</option>
+                                                    <?php
+                                                    foreach ($showMeasureOfUnits as $rowUnit) {
+
+                                                        echo '<option value="' . $rowUnit['short_name'] . '">' . $rowUnit['short_name'] . '</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                                <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
+                                                <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type" required>
+                                                    <option value="" disabled selected>Packaging Unit</option>
+                                                    <?php
+                                                    foreach ($showPackagingUnits as $rowPackagingUnits) {
+                                                        echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
                                         </div>
+                                        <!--/End Price Row -->
+
+                                        <!-- Price Row -->
+                                        <div class="row p-3">
+                                            <div class="col-12 col-sm-6 col-md-6 mt-3">
+                                                <!-- <label class="mb-0 mt-1" for="mrp">MRP ₹</label> -->
+                                                <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" step="0.01" required>
+                                            </div>
+
+                                            <div class="col-12 col-sm-6 col-md-6 mt-3">
+                                                <!-- <label class="mb-0 mt-1" for="gst">GST %</label> -->
+                                                <select class="c-inp w-100 p-1" name="gst" id="gst">
+                                                    <option value="" disabled selected>GST%</option>
+                                                    <option value="0">0</option>
+                                                    <option value="5">5</option>
+                                                    <option value="12">12</option>
+                                                    <option value="18">18</option>
+                                                    <option value="28">28</option>
+
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                        <!--/End Price Row -->
+
+                                        <div class="col-md-12 mt-3">
+                                            <!-- <label for="product-descreption">Product Description</label> -->
+                                            <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3" placeholder="Product Description" required></textarea>
+                                        </div>
+
+
                                     </div>
 
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mt-2 mt-md-0 px-4 px-md-2">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                                        <div id="img-div">
+                                            <div class="container-fluid" id="img-container">
+                                                <input type="file" name="img-files[]" id="img-file-input" accept="image/png, image/jpeg" onchange="preview()" multiple>
+                                                <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
+                                                <p id="num-of-files">No files chosen</p>
+                                                <div id="images">
 
-                                        <!-- Product Image Row  -->
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="border p-1 rounded">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- Product Image Row  --
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                 <div class="border p-1 rounded">
                                                     <div class="image-area rounded">
                                                         <h6 class="d-flex justify-content-center">Upload Product Image
                                                         </h6>
@@ -145,10 +209,10 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                         </span>
                                                     </div>
                                                     <input id="product-image" name="product-image" type="file" hidden>
-                                                </div>
-                                            </div>
+                                                </div> 
+                                            </div> -->
 
-                                            <div class="col-md-6 mt-2  mt-md-0">
+                                        <!-- <div class="col-md-6 mt-2  mt-md-0">
                                                 <div>
                                                     <input type="file" name="back-image" class="back-file" accept="image/*"
                                                         hidden>
@@ -179,51 +243,47 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                                                     <img src="" id="side-preview" class="img-thumbnail">
                                                 </div>
-
-
-
-
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <!--/End Product Image Row  -->
 
-                                        <!-- Price Row -->
+                                        <!-- Price Row --
                                         <div class="row">
 
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
-                                                <!-- <label class="mb-0 mt-1" for="unit-quantity">Unit Quantity</label> -->
+                                                <-- <label class="mb-0 mt-1" for="unit-quantity">Unit Quantity</label> --
                                                 <input type="number" class="c-inp p-1 w-100" name="unit-quantity"
                                                     id="unit-quantity" placeholder="Enter Unit" step="0.01" required>
                                             </div>
 
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
-                                                <!-- <label class="mb-0 mt-1" for="unit">Select Unit</label> -->
+                                                <-- <label class="mb-0 mt-1" for="unit">Select Unit</label> --
                                                 <select class="c-inp p-1 w-100" name="unit" id="unit" required>
                                                     <option value="" disabled selected >Select Unit</option>
                                                     <?php
                                                     foreach ($showMeasureOfUnits as $rowUnit) {
-                                                        
-                                                        echo '<option value="'.$rowUnit['short_name'].'">'.$rowUnit['short_name'].'</option>';
+
+                                                        echo '<option value="' . $rowUnit['short_name'] . '">' . $rowUnit['short_name'] . '</option>';
                                                     }
                                                     ?>
                                                 </select>
                                             </div>
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
-                                                <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
+                                                <-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> --
                                                 <select class="c-inp p-1 w-100" name="packaging-type"
                                                     id="packaging-type" required>
                                                     <option value="" disabled selected>Packaging Unit</option>
                                                     <?php
                                                     foreach ($showPackagingUnits as $rowPackagingUnits) {
-                                                        echo '<option value="'.$rowPackagingUnits['id'].'">'.$rowPackagingUnits['unit_name'].'</option>';
+                                                        echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
                                                     }
                                                     ?>
                                                 </select>
                                             </div>
                                         </div>
-                                        <!--/End Price Row -->
+                                        <--/End Price Row --
 
-                                        <!-- Price Row -->
+                                        <-- Price Row --
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-md-6 mt-3">
                                                 <label class="mb-0 mt-1" for="mrp">MRP ₹</label>
@@ -246,7 +306,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             </div>
 
                                         </div>
-                                        <!--/End Price Row -->
+                                        <--/End Price Row -->
 
                                     </div>
                                 </div>
@@ -261,26 +321,25 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                         </div>
                     </div>
                     <!-- /end Add Product  -->
-                    
+
 
                 </div>
                 <!-- /.container-fluid -->
                 <!-- End of Main Content -->
-                
+
             </div>
             <!-- End of Content Wrapper -->
 
             <!-- Footer -->
             <?php include_once 'partials/footer-text.php'; ?>
-                <!-- End of Footer -->
+            <!-- End of Footer -->
 
         </div>
         <!-- End of Page Wrapper -->
 
         <!-- Product modal -->
         <!-- bd-example-modal-lg -->
-        <div class="modal fade productModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-            aria-hidden="true">
+        <div class="modal fade productModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -332,7 +391,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 
         <script>
-        /*calculating profit only after entering MRP
+            /*calculating profit only after entering MRP
         // function getMarginMrp(value) {
         //     this.value = parseFloat(this.value).toFixed(2);
 
@@ -375,60 +434,64 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         }*/
         </script>
         <script>
-        productViewAndEdit = (productId) => {
-            // alert("productModalBody");
-            let ViewAndEdit = productId;
-            let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
-            $(".productModalBody").html(
-                '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
-        }
+            productViewAndEdit = (productId) => {
+                // alert("productModalBody");
+                let ViewAndEdit = productId;
+                let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
+                $(".productModalBody").html(
+                    '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
+                    url + '"></iframe>');
+            }
         </script>
 
         <script>
-        $(document).on("click", ".back", function() {
-            var backFile = $(this).parents().find(".back-file");
-            backFile.trigger("click");
-        });
-        $('.back-file').change(function(e) {
-            $(".back-img-field").hide();
-            $("#back-preview").show();
+            $(document).on("click", ".back", function() {
+                var backFile = $(this).parents().find(".back-file");
+                backFile.trigger("click");
+            });
+            $('.back-file').change(function(e) {
+                $(".back-img-field").hide();
+                $("#back-preview").show();
 
 
-            var fileName = e.target.files[0].name;
-            $("#back-file").val(fileName);
+                var fileName = e.target.files[0].name;
+                $("#back-file").val(fileName);
 
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                // get loaded data and render thumbnail.
-                document.getElementById("back-preview").src = e.target.result;
-            };
-            // read the image file as a data URL.
-            reader.readAsDataURL(this.files[0]);
-        });
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    // get loaded data and render thumbnail.
+                    document.getElementById("back-preview").src = e.target.result;
+                };
+                // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+            });
         </script>
 
         <script>
-        $(document).on("click", ".side", function() {
-            var SideFile = $(this).parents().find(".side-file");
-            SideFile.trigger("click");
-        });
-        $('.side-file').change(function(img) {
-            $(".side-img-field").hide();
-            $("#side-preview").show();
+            $(document).on("click", ".side", function() {
+                var SideFile = $(this).parents().find(".side-file");
+                SideFile.trigger("click");
+            });
+            $('.side-file').change(function(img) {
+                $(".side-img-field").hide();
+                $("#side-preview").show();
 
 
-            var sideImgName = img.target.files[0].name;
-            $("#side-file").val(sideImgName);
+                var sideImgName = img.target.files[0].name;
+                $("#side-file").val(sideImgName);
 
-            var reader = new FileReader();
-            reader.onload = function(img) {
-                // get loaded data and render thumbnail.
-                document.getElementById("side-preview").src = img.target.result;
-            };
-            // read the image file as a data URL.
-            reader.readAsDataURL(this.files[0]);
-        });
+                var reader = new FileReader();
+                reader.onload = function(img) {
+                    // get loaded data and render thumbnail.
+                    document.getElementById("side-preview").src = img.target.result;
+                };
+                // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+            });
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+           
         </script>
 
 

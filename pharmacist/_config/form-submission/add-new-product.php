@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,139 +8,148 @@
     <title>Add New Product</title>
     <script src="../../../js/sweetAlert.min.js"></script>
 </head>
+
 <body>
+    <?php
+    require_once '../../../php_control/products.class.php';
+    require_once '../../../php_control/productsImages.class.php';
+    require_once '../../_config/sessionCheck.php';
 
-<?php
-require_once '../../../php_control/products.class.php';
-require_once '../../../php_control/productsImages.class.php';
-
-
-$Products      = new Products();
-$ProductImages = new ProductImages();
-
-
-//$defaultImage = "../../../images/ default_medicine.jpg";
+    $Products      = new Products();
+    $ProductImages = new ProductImages();
+    $Session = new SessionHandler();
 
 
-//if (isset($_POST['add-product'])) {
+    if (isset($_POST['add-product'])) {
 
-//   print_r($_POST);
-//     
-//   print_r($_FILES);
+        // print_r($_FILES);
+        // echo "<br><br>";
+        $imageName         = $_FILES['img-files']['name'];
+        $tempImgName   = $_FILES['img-files']['tmp_name'];
+        $imageArrayCaount = count($imageName);
+        $tempImageNameArrayCaount = count($tempImgName);
+        // print_r($imageName);
+        // echo "<br><br>";
+        // print_r($tempImgName);
+        // echo "<br><br>";
+        // echo "<br>$imageArrayCaount<br>";
+        // echo "<br>$tempImageNameArrayCaount<br>";
 
+        $productName        = $_POST['product-name'];
+        $productName        = addslashes($productName);
 
+        $productComposition        = $_POST['product-composition'];
+        $productComposition        = addslashes($productComposition);
 
-if (isset($_POST['add-product'])) {
-
-
-    //===== Main Image 
-    $image         = $_FILES['product-image']['name'];
-    $tempImgname   = $_FILES['product-image']['tmp_name'];
-    if ($image != null) {
-        if (file_exists("../../../images/product-image/".$image)) {
-            $image = 'medicy-'.$image;
-        }
-    }
-
-    $imgFolder     = "../../../images/product-image/".$image;
-    move_uploaded_file($tempImgname, $imgFolder);
-    $image         = addslashes($image);
-
-    //===== Back Image 
-    $backImage         = $_FILES['back-image']['name'];
-    $tempBackImg       = $_FILES['back-image']['tmp_name'];
-    if ($backImage != null) {
-        if (file_exists("../../../images/product-image/".$backImage)) {
-            $backImage = 'medicy-'.$backImage;
-        }
-    }
+        $power              = $_POST['medicine-power'];
+        $manufacturerid     = $_POST['manufacturer'];
 
 
-    $imgFolder     = "../../../images/product-image/".$backImage;
-    move_uploaded_file($tempBackImg, $imgFolder);
-    $backImage         = addslashes($backImage);
+        $weatage            = $_POST['unit-quantity'];
+        $unit               = $_POST['unit'];
+        $packagingType      = $_POST['packaging-type'];
+        $mrp                = $_POST['mrp'];
+        $gst                = $_POST['gst'];
 
-     //===== Side Image 
-     $sideImage         = $_FILES['side-image']['name'];
-     $tempSideImg       = $_FILES['side-image']['tmp_name'];
-    if ($backImage != null) {
-        if (file_exists("../../../images/product-image/".$sideImage)) {
-            $sideImage = 'medicy-'.$sideImage;
-        }
-    }
+        $productDsc         = $_POST['product-descreption'];
+        $productDsc         = addslashes($productDsc);
 
- 
-     $imgFolder         = "../../../images/product-image/".$sideImage;
-     move_uploaded_file($tempSideImg, $imgFolder);
-     $sideImage         = addslashes($sideImage);
+        $addedBy            = $_SESSION['employee_username'];
 
+        // echo "<br>Product Name : $productName";
+        // echo "<br>Product Composition : $productComposition";
+        // echo "<br>Power : $power";
+        // echo "<br>Manufacture id : $manufacturerid";
+        // echo "<br>Product weatage : $weatage";
+        // echo "<br>Product Unit : $unit";
+        // echo "<br>Packaging Type : $packagingType";
+        // echo "<br>MRP : $mrp";
+        // echo "<br>GST parcent : $gst";
+        // echo "<br>Product Description : $productDsc";
+        // echo "<br>Added by : $addedBy";
+        // echo "<br><br><br>";
 
-    $manufacturerid     = $_POST['manufacturer'];
-    $productName        = $_POST['product-name'];
-    $productName        = addslashes($productName);
+        //ProductId Generation
+        $randNum = rand(1, 999999999999);
+        $productId = 'PR' . $randNum;
 
-    $productComposition        = $_POST['product-composition'];
-    $productComposition        = addslashes($productComposition);
+        //Insert into products table of DB
+        $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $weatage, $unit, $mrp, $gst, $productComposition);
+        // $addProducts = TRUE;
+        // IMAGE UPLOAD SECTION ====================
+        if ($addProducts == TRUE) {
 
-    $power              = $_POST['medicine-power'];
+            for ($j = 0; $j<$imageArrayCaount && $j<$tempImageNameArrayCaount; $j++) {
+                ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
 
-    $productDsc         = $_POST['product-descreption'];
-    $productDsc         = addslashes($productDsc);
+                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $randomString = '';
+                for ($i = 0; $i < 18; $i++) {
+                    $randomString .= $characters[rand(0, strlen($characters) - 1)];
+                }
 
+                $randomString = $randomString;
 
-    $packagingType      = $_POST['packaging-type'];
-    // $weatage            = $_POST['unit-quantity'];
-    // $unit               = $_POST['unit'];
-    $mrp                = $_POST['mrp'];
-    $gst                = $_POST['gst'];
+                ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+                //===== Main Image 
+                $image         = $imageName[$j];
+                $tempImgname   = $tempImgName[$j];
 
-    $weatage            = $_POST['unit-quantity'];
-    $unit               = $_POST['unit'];
-    // $unit               = $weatage.' '.$unit;
+                if ($image != null) {
+                    if (file_exists("../../../images/product-image/".$randomString.'_'.$image)) {
+                        $image = 'medicy-'.$randomString.$image;
+                        echo "<br>if file exists : $image";
+                    }
+                }
 
-    $addedBy            = '';
+                $image         = $randomString.'_'.$image;
+                $imgFolder     = "../../../images/product-image/".$image;
+              
+                move_uploaded_file($tempImgname, $imgFolder);
+                $image         = addslashes($image);
+                
+                // =========================================
+                // echo "<br>product id on image : $productId";
+                // echo "<br>image name : $image";
+                // echo "<br>image temp name : $tempImgname";
+                // echo "<br><br><br>";
 
-    //ProductId Generation
-    $randNum = rand(1, 9999999999);
-    $productId = 'PR'.$randNum;
+                $addImage = $ProductImages->addImages($productId, $image, $addedBy);
+            }
 
-    //Insert into products table of DB
-    $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $weatage, $unit, $mrp, $gst, $productComposition);
-        if($addProducts == TRUE){
-            $addImage = $ProductImages->addImage($productId, $image, $backImage, $sideImage, $addedBy);
             if ($addImage == TRUE) {
-                ?>
+    ?>
                 <script>
-                swal("Success", "Product Added!", "success")
-                    .then((value) => {
-                        window.location= '../../add-products.php';
-                    });
+                    swal("Success", "Product Added!", "success")
+                        .then((value) => {
+                            window.location = '../../add-products.php';
+                        });
                 </script>
-                <?php
-            }else{
-                ?>
+            <?php
+            } else {
+            ?>
                 <script>
                     swal("Error", "Image Not Added!", "error")
                         .then((value) => {
-                        window.location= '../../add-products.php';
-                });
-             </script>
-             <?php
+                            window.location = '../../add-products.php';
+                        });
+                </script>
+            <?php
             }
-        }else{
+        } else {
             ?>
-             <script>
-            swal("Error", "Product Insertion Faield!", "error")
-                .then((value) => {
-                    window.location= '../../add-products.php';
-                });
-             </script>
-             <?php
+            <script>
+                swal("Error", "Product Insertion Faield!", "error")
+                    .then((value) => {
+                        window.location = '../../add-products.php';
+                    });
+            </script>
+    <?php
         }
+    }
 
-}
+    ?>
 
-?>
-    
 </body>
+
 </html>
