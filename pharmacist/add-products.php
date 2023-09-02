@@ -82,112 +82,118 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                         <div class="card-body">
                             <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
                                 <div class="row">
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-6">
-                                        <div class="col-md-12">
-                                            <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
-                                        </div><br>
-                                        <div class="col-md-12">
-                                            <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" required>
+                                    <div class="col-md-6">
+                                        <div class="col-12">
+                                            <div class="col-md-12">
+                                                <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
+                                            </div><br>
+                                            <div class="col-md-12">
+                                                <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" required>
+                                            </div>
+
+                                            <div class="row p-3">
+                                                <div class="col-md-6">
+                                                    <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" required>
+                                                </div>
+                                                <div class="col-md-6 mt-3 mt-md-0">
+                                                    <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer" required>
+                                                        <option value="" disabled selected>Select Manufacturer</option>
+                                                        <?php
+                                                        foreach ($showManufacturer as $rowManufacturer) {
+                                                            $manufId   = $rowManufacturer['id'];
+                                                            $manufName = $rowManufacturer['name'];
+                                                            echo '<option value="' . $manufId . '">' . $manufName . '</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Price Row -->
+                                            <div class="row p-3">
+
+                                                <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                                    <!-- <label class="mb-0 mt-1" for="unit-quantity">Unit Quantity</label> -->
+                                                    <input type="number" class="c-inp p-1 w-100" name="unit-quantity" id="unit-quantity" placeholder="Enter Unit" step="0.01" required>
+                                                </div>
+
+                                                <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                                    <!-- <label class="mb-0 mt-1" for="unit">Select Unit</label> -->
+                                                    <select class="c-inp p-1 w-100" name="unit" id="unit" required>
+                                                        <option value="" disabled selected>Select Unit</option>
+                                                        <?php
+                                                        foreach ($showMeasureOfUnits as $rowUnit) {
+
+                                                            echo '<option value="' . $rowUnit['short_name'] . '">' . $rowUnit['short_name'] . '</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                                    <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
+                                                    <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type" required>
+                                                        <option value="" disabled selected>Packaging Unit</option>
+                                                        <?php
+                                                        foreach ($showPackagingUnits as $rowPackagingUnits) {
+                                                            echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--/End Price Row -->
+
+                                            <!-- Price Row -->
+                                            <div class="row p-3">
+                                                <div class="col-12 col-sm-6 col-md-6 mt-3">
+                                                    <!-- <label class="mb-0 mt-1" for="mrp">MRP ₹</label> -->
+                                                    <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" step="0.01" required>
+                                                </div>
+
+                                                <div class="col-12 col-sm-6 col-md-6 mt-3">
+                                                    <!-- <label class="mb-0 mt-1" for="gst">GST %</label> -->
+                                                    <select class="c-inp w-100 p-1" name="gst" id="gst">
+                                                        <option value="" disabled selected>GST%</option>
+                                                        <option value="0">0</option>
+                                                        <option value="5">5</option>
+                                                        <option value="12">12</option>
+                                                        <option value="18">18</option>
+                                                        <option value="28">28</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+                                            <!--/End Price Row -->
+
+                                            <div class="col-md-12 mt-3">
+                                                <!-- <label for="product-descreption">Product Description</label> -->
+                                                <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3" placeholder="Product Description" required></textarea>
+                                            </div>
+
+
                                         </div>
-
-                                        <div class="row p-3">
-                                            <div class="col-md-6">
-                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" required>
-                                            </div>
-                                            <div class="col-md-6 mt-3 mt-md-0">
-                                                <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer" required>
-                                                    <option value="" disabled selected>Select Manufacturer</option>
-                                                    <?php
-                                                    foreach ($showManufacturer as $rowManufacturer) {
-                                                        $manufId   = $rowManufacturer['id'];
-                                                        $manufName = $rowManufacturer['name'];
-                                                        echo '<option value="' . $manufId . '">' . $manufName . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Price Row -->
-                                        <div class="row p-3">
-
-                                            <div class="col-12 col-sm-6 col-md-4 mt-3">
-                                                <!-- <label class="mb-0 mt-1" for="unit-quantity">Unit Quantity</label> -->
-                                                <input type="number" class="c-inp p-1 w-100" name="unit-quantity" id="unit-quantity" placeholder="Enter Unit" step="0.01" required>
-                                            </div>
-
-                                            <div class="col-12 col-sm-6 col-md-4 mt-3">
-                                                <!-- <label class="mb-0 mt-1" for="unit">Select Unit</label> -->
-                                                <select class="c-inp p-1 w-100" name="unit" id="unit" required>
-                                                    <option value="" disabled selected>Select Unit</option>
-                                                    <?php
-                                                    foreach ($showMeasureOfUnits as $rowUnit) {
-
-                                                        echo '<option value="' . $rowUnit['short_name'] . '">' . $rowUnit['short_name'] . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <div class="col-12 col-sm-6 col-md-4 mt-3">
-                                                <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
-                                                <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type" required>
-                                                    <option value="" disabled selected>Packaging Unit</option>
-                                                    <?php
-                                                    foreach ($showPackagingUnits as $rowPackagingUnits) {
-                                                        echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <!--/End Price Row -->
-
-                                        <!-- Price Row -->
-                                        <div class="row p-3">
-                                            <div class="col-12 col-sm-6 col-md-6 mt-3">
-                                                <!-- <label class="mb-0 mt-1" for="mrp">MRP ₹</label> -->
-                                                <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" step="0.01" required>
-                                            </div>
-
-                                            <div class="col-12 col-sm-6 col-md-6 mt-3">
-                                                <!-- <label class="mb-0 mt-1" for="gst">GST %</label> -->
-                                                <select class="c-inp w-100 p-1" name="gst" id="gst">
-                                                    <option value="" disabled selected>GST%</option>
-                                                    <option value="0">0</option>
-                                                    <option value="5">5</option>
-                                                    <option value="12">12</option>
-                                                    <option value="18">18</option>
-                                                    <option value="28">28</option>
-
-                                                </select>
-
-                                            </div>
-
-                                        </div>
-                                        <!--/End Price Row -->
-
-                                        <div class="col-md-12 mt-3">
-                                            <!-- <label for="product-descreption">Product Description</label> -->
-                                            <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3" placeholder="Product Description" required></textarea>
-                                        </div>
-
 
                                     </div>
 
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-6">
-                                        <div id="img-div">
-                                            <div class="container-fluid" id="img-container">
-                                                <input type="file" name="img-files[]" id="img-file-input" accept="image/png, image/jpeg" onchange="preview()" multiple>
-                                                <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
-                                                <p id="num-of-files">No files chosen</p>
-                                                <div id="images">
 
+
+                                    <div class="col-md-6">
+                                        <div class="col-12">
+                                            <div id="img-div">
+                                                <div class="container-fluid" id="img-container">
+                                                    <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
+                                                    <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
+                                                    <p id="num-of-files">No files chosen</p>
+                                                    <div id="images">
+
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
 
-                                        <!-- Product Image Row  --
+                                            <!-- Product Image Row  --
                                         <div class="container">
                                             <div class="col-md-12">
                                                  <div class="border p-1 rounded">
@@ -212,7 +218,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 </div> 
                                             </div> -->
 
-                                        <!-- <div class="col-md-6 mt-2  mt-md-0">
+                                            <!-- <div class="col-md-6 mt-2  mt-md-0">
                                                 <div>
                                                     <input type="file" name="back-image" class="back-file" accept="image/*"
                                                         hidden>
@@ -245,9 +251,9 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 </div>
                                             </div>
                                         </div> -->
-                                        <!--/End Product Image Row  -->
+                                            <!--/End Product Image Row  -->
 
-                                        <!-- Price Row --
+                                            <!-- Price Row --
                                         <div class="row">
 
                                             <div class="col-12 col-sm-6 col-md-4 mt-3">
@@ -307,16 +313,22 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                                         </div>
                                         <--/End Price Row -->
+                                        </div>
+                                        <br>
+                                        <div class="col-12">
+                                            <button class="btn btn-danger mr-3" id="reset" type="reset"> Reset</button>
+                                            <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add
+                                                Product</button>
+
+                                        </div>
 
                                     </div>
-                                </div>
 
-                                <div class="d-sm-flex justify-content-end mt-3">
-                                    <button class="btn btn-danger mr-3" id="reset" type="reset">Reset</button>
-                                    <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add
-                                        Product</button>
+
 
                                 </div>
+
+
                             </form>
                         </div>
                     </div>
@@ -490,8 +502,6 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             });
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-           
         </script>
 
 

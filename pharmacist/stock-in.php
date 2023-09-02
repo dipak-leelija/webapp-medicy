@@ -147,7 +147,6 @@ $todayYr = date("y");
                             </div>
                             <!-- End Distributor Details  -->
 
-
                             <!-- <div class="h-divider"></div> -->
                             <hr class="sidebar-divider">
 
@@ -228,15 +227,15 @@ $todayYr = date("y");
                                                 <div class="d-flex date-field">
                                                     <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);">
                                                     <span class="date-divider">&#47;</span>
-                                                    <input class="year " type="number" id="mfd-year" onkeyup="setMfdYear(this);">
+                                                    <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);">
                                                 </div>
                                             </div>
                                             <div class="col-sm-4 mt-2">
                                                 <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                                                 <div class="d-flex date-field">
-                                                    <input class="month " type="number" id="exp-month" onkeyup="setMonth(this);">
+                                                    <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);">
                                                     <span class="date-divider">&#47;</span>
-                                                    <input class="year " type="number" id="exp-year" onkeyup="setYear(this);">
+                                                    <input class="year " type="number" id="exp-year"  onfocusout="setExpYear(this);">
                                                 </div>
                                             </div>
                                             <div class="d-none col-md-4 mt-2">
@@ -365,7 +364,7 @@ $todayYr = date("y");
                                     <div class="card-body stock-in-summary">
                                         <div class="table-responsive">
 
-                                            <table class="table item-table" style="font-size: .7rem;">
+                                            <table class="table item-table" id="stock-in-data-table" style="font-size: .7rem;">
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th scope="col"></th>

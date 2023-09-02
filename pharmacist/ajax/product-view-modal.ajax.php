@@ -71,48 +71,41 @@ $CurrentStock   = new CurrentStock();
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
         // print_r($itemstock);
         $image          = $ProductImages->showImageById($_GET['id']);
-
-        //print_r($itemstock[0][9]);
+        // print_r($image);
 
         if ($image != NULL) {
-            $mainImage  = $image[0]['image'];
-            $backImage  = $image[0]['back_image'];
-            if ($mainImage == NULL) {
-                $mainImage = "medicy-default-product-image.jpg";
+            foreach($image as $image){
+                $Images = $image['image'];
             }
-
-            if ($backImage == NULL) {
-                $backImage = "medicy-default-product-image.jpg";
-            }
-            $SideImage = $image[0]['side_image'];
-            if ($SideImage == NULL) {
-                $SideImage = "medicy-default-product-image.jpg";
-            }
-        } else {
-            $mainImage = "medicy-default-product-image.jpg";
-            $backImage = "medicy-default-product-image.jpg";
-            $SideImage = "medicy-default-product-image.jpg";
+            
+            if ($Images == NULL) {
+                $Images = "medicy-default-product-image.jpg";
+            }   
+        } 
+        
+        if($image == NULL){
+            $Images = "medicy-default-product-image.jpg";
         }
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]['packaging_type']);
-
     ?>
+
         <div class="container-fluid d-flex justify-content-center mt-2">
             <div class="row justify-content-center">
                 <div class="col-12 col-sm-4">
                     <div class="">
                         <div class="text-center border d-flex justify-content-center">
-                            <img src="../../images/product-image/<?php echo $mainImage; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
+                            <img src="../../images/product-image/<?php echo $Images; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
                         </div>
                         <div class="row height-3 mt-2 justify-content-center">
                             <div class="col-2 border p-0">
-                                <img src="../../images/product-image/<?php echo $mainImage; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="../../images/product-image/<?php echo $Images; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                             <div class="col-2 border p-0" id="back-div">
-                                <img src="../../images/product-image/<?php echo $backImage; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="../../images/product-image/<?php echo $Images; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                             <div class="col-2 border p-0" id="side-div">
-                                <img src="../../images/product-image/<?php echo $SideImage; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="../../images/product-image/<?php echo $Images; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                         </div>
                     </div>

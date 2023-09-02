@@ -143,13 +143,14 @@ img {
 
 /* image div controler start */
 #img-div{
-    padding: 1rem !important;
+    padding: 1rem;
     margin: 0;
-    box-sizing: border-box !important;
-    background-color: #f5f8ff !important;
+    height: 20rem;
+    box-sizing: border-box ;
+    background-color: #f5f8ff;
     font-family: "Rubik",sans-serif;
-    max-height: 450px;
-    overflow: scroll;
+    max-height: 20rem;
+    overflow: auto;
 }
 
 .img-container{

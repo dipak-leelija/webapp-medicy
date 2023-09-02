@@ -25,6 +25,9 @@
     animation: show .5s ease;
 }
 
+#allProducts{
+    min-height: 25rem!important;
+}
 
 
 @keyframes show {

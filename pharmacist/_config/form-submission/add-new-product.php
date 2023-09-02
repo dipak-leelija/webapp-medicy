@@ -28,13 +28,15 @@
         $tempImgName   = $_FILES['img-files']['tmp_name'];
         $imageArrayCaount = count($imageName);
         $tempImageNameArrayCaount = count($tempImgName);
-        // print_r($imageName);
-        // echo "<br><br>";
-        // print_r($tempImgName);
-        // echo "<br><br>";
-        // echo "<br>$imageArrayCaount<br>";
-        // echo "<br>$tempImageNameArrayCaount<br>";
 
+        // print_r($imageName);
+        // echo "<br>";
+        // print_r($tempImgName);
+        // echo "<br>";
+        // echo $imageArrayCaount;
+        // echo "<br>";
+        // echo $tempImageNameArrayCaount;
+        
         $productName        = $_POST['product-name'];
         $productName        = addslashes($productName);
 
@@ -56,19 +58,6 @@
 
         $addedBy            = $_SESSION['employee_username'];
 
-        // echo "<br>Product Name : $productName";
-        // echo "<br>Product Composition : $productComposition";
-        // echo "<br>Power : $power";
-        // echo "<br>Manufacture id : $manufacturerid";
-        // echo "<br>Product weatage : $weatage";
-        // echo "<br>Product Unit : $unit";
-        // echo "<br>Packaging Type : $packagingType";
-        // echo "<br>MRP : $mrp";
-        // echo "<br>GST parcent : $gst";
-        // echo "<br>Product Description : $productDsc";
-        // echo "<br>Added by : $addedBy";
-        // echo "<br><br><br>";
-
         //ProductId Generation
         $randNum = rand(1, 999999999999);
         $productId = 'PR' . $randNum;
@@ -84,7 +73,7 @@
 
                 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $randomString = '';
-                for ($i = 0; $i < 18; $i++) {
+                for ($i = 0; $i < 9; $i++) {
                     $randomString .= $characters[rand(0, strlen($characters) - 1)];
                 }
 
@@ -95,28 +84,64 @@
                 $image         = $imageName[$j];
                 $tempImgname   = $tempImgName[$j];
 
-                if ($image != null) {
-                    if (file_exists("../../../images/product-image/".$randomString.'_'.$image)) {
-                        $image = 'medicy-'.$randomString.$image;
-                        echo "<br>if file exists : $image";
+                $ImgNm = '';
+                $extention ='';
+                $countImageLen = 0;
+                
+
+                // echo "<br>Checking image name on entry : $image";
+
+                if($image != ''){
+                    if ($image != null) {
+                        if (file_exists("../../../images/product-image/".$randomString.'_'.$image)) {
+                            $image = 'medicy-'.$randomString.$image;
+                            echo "<br>if file exists : $image";
+                        }
                     }
+
+                    
+                    $countImageLen = strlen($image);
+                    for($l=0; $l<intval($countImageLen)-4; $l++){
+                        $ImgNm .= $image[$l];
+                    }
+                    for($k=intval($countImageLen)-4; $k<$countImageLen; $k++){
+                        $extention .= $image[$k];
+                    }
+                
+                    $image         = $ImgNm.'-'.$randomString.$extention;
+                    $imgFolder     = "../../../images/product-image/".$image;
+                  
+                    move_uploaded_file($tempImgname, $imgFolder);
+                    $image         = addslashes($image);
                 }
 
-                $image         = $randomString.'_'.$image;
-                $imgFolder     = "../../../images/product-image/".$image;
-              
-                move_uploaded_file($tempImgname, $imgFolder);
-                $image         = addslashes($image);
-                
-                // =========================================
-                // echo "<br>product id on image : $productId";
-                // echo "<br>image name : $image";
-                // echo "<br>image temp name : $tempImgname";
-                // echo "<br><br><br>";
+                if($image == ''){
+                    $image = '';
+                }
 
+                // if($image == ''){
+                //     // echo "<br>no images";
+                //     if ($image != null) {
+                //         if (file_exists("../../../images/product-image/".$image)) {
+                //             $image = 'medicy-'.$randomString.$image;
+                //             echo "<br>if file exists : $image";
+                //         }
+                //     }
+    
+                //     $image         = $image;
+                //     $imgFolder     = "../../../images/product-image/".$image;
+                  
+                //     move_uploaded_file($tempImgname, $imgFolder);
+                //     $image         = addslashes($image);
+                // }
+
+                // echo "<br>$productId";
+                // echo "<br>$image";
+                // echo "<br>$addedBy<br>";
+                
                 $addImage = $ProductImages->addImages($productId, $image, $addedBy);
             }
-
+            exit;
             if ($addImage == TRUE) {
     ?>
                 <script>

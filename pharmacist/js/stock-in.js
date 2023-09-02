@@ -1,16 +1,23 @@
 function searchItem(input) {
     // console.log(input);
     // alert(value);
+    let checkLength = input.length;
+
     let xmlhttp = new XMLHttpRequest();
 
     let searchReult = document.getElementById('product-select');
+
+    xmlhttp.open('GET', 'ajax/purchase-item-list.ajax.php?data=' + input, true);
+    xmlhttp.send();
 
     if (input == "") {
         document.getElementById("product-select").style.display = "none";
     }
 
-    if (input != "") {
-        document.getElementById("product-select").style.display = "block";
+    if (checkLength > 2) {
+        if (input != "") {
+            document.getElementById("product-select").style.display = "block";
+        }
     }
 
     xmlhttp.onreadystatechange = function () {
@@ -18,14 +25,13 @@ function searchItem(input) {
             searchReult.innerHTML = xmlhttp.responseText;
         }
     };
-    xmlhttp.open('GET', 'ajax/purchase-item-list.ajax.php?data=' + input, true);
-    xmlhttp.send();
-}
 
+
+}
 
 const getDtls = (productId) => {
 
-    console.log(productId);
+    // console.log(productId);
     // alert(productId);
     let xmlhttp = new XMLHttpRequest();
 
@@ -412,8 +418,8 @@ const addData = () => {
         return;
     }
     if (freeQty.value == "") {
-        swal("Qantity Value Zero",
-            "Qantity Cannot be 0",
+        swal("Free Qantity value is null",
+            "Free Qantity Cannot be null. Minimum value 0",
             "error")
             .then((value) => {
                 freeQty.focus();
@@ -446,7 +452,6 @@ const addData = () => {
     slno++;
     document.getElementById("dynamic-id").value = slno;
 
-
     var qtyVal = document.getElementById("qty-val").value;
     let itemQty = parseFloat(qty.value) + parseFloat(freeQty.value);
     totalQty = parseFloat(qtyVal) + itemQty;
@@ -455,7 +460,7 @@ const addData = () => {
 
     var net = document.getElementById("net-amount").value;
     netAmount = parseFloat(net) + parseFloat(billAmount.value);
-    
+
     let total = qty.value * ptr.value;
     let totalWithDisc = total - (discount.value / 100 * total);
 
@@ -474,12 +479,12 @@ const addData = () => {
     // console.log(marginP);
     // let profit
 
-    console.log("discount percent check : ", discount.value);
+    // console.log("discount percent check : ", discount.value);
 
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slno}">
             <td style="color: red; padding-top:1.2rem;" <i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})" style="font-size:.7rem;"></i></td>
-            <td style="font-size:.7rem; padding-top:1.2rem; " scope="row">${slno}</td>
+            <td id="cell2" style="font-size:.7rem; padding-top:1.2rem; " scope="row">${slno}</td>
             <td class="pt-3">
                 <input class="table-data w-8r" type="text" value="${productName.value}" style="word-wrap: break-word; font-size: .7rem;" readonly>
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
@@ -576,14 +581,24 @@ const addData = () => {
     document.getElementById("qty-val").value = totalQty;
     document.getElementById("gst-val").value = onlyGst.toFixed(2);
     document.getElementById("net-amount").value = netAmount.toFixed(2);
-    
+
+
+    // let tableId = document.getElementById("stock-in-data-table");
+    // let tbody = tableId.getElementsByTagName("tbody")[0];
+    // let rowCount = tbody.rows.length;
+    // console.log("on add table row count : ",rowCount);
+
 }
 
 // ================================ Delet Data ================================
 
-
 function deleteData(slno, itemQty, gstPerItem, total) {
-   
+
+    // == tabel row lenth and deleted row number ===
+    let delRow = slno;
+    rowAdjustment(delRow);
+    //  ============================================
+
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;
@@ -609,125 +624,144 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     let net = document.getElementById("net-amount");
     let finalAmount = net.value - total;
     net.value = finalAmount.toFixed(2);
+
+}
+
+function rowAdjustment(delRow) {
+
+    console.log("value of deleted row : ", delRow);
+    let tableId = document.getElementById("dataBody");
+    let rowCount = tableId.rows.length;
+ 
+    let j = 0;
+    for (let i = 1;  i <= rowCount; i++) {
+        if (i == delRow) {
+            i++;
+        }
+        j++;
+
+        console.log("value of i check : ", i);
+        console.log("value of J check : ", j);
+        let childOfRow = document.getElementById(`table-row-${i}`).children.id('cell2');
+        console.log(childOfRow);
+        childOfRow.id = j;
+        document.getElementById(`table-row-${i}`).id = `table-row-${j}`;
+    }
 }
 
 
 // ========================= Mfd and Expiry Date Setting =========================
 
-const setMonth = (month) => {
+const setMfdMonth = (month) => {
+    let yr = new Date();
+    let thisMonth = yr.getMonth();
 
     if (month.value.length > 2) {
         month.value = '';
+        month.focus();
     } else {
         if (month.value > 12) {
             month.value = '';
+            month.focus();
         } else {
             if (month.value.length == 2) {
-                document.getElementById("exp-year").focus();
+                document.getElementById("mfd-year").focus();
             }
         }
     }
 }
 
-const setMfdMonth = (month) => {
+const setExpMonth = (month) => {
 
-    if (month.value > 12) {
-        // console.log("Its Over");
+    let expYr = document.getElementById('exp-year').value;
+    let mfdYr = document.getElementById('mfd-year').value;
+
+    if (month.value.length > 2) {
         month.value = '';
+        month.focus();
+    } else if (month.value > 12) {
+        month.value = '';
+        month.focus();
+    } else if (month.value.length == 2) {
+        document.getElementById("exp-year").focus();
+    } else if (month.value.length < 2) {
+        document.getElementById("exp-month").focus();
+
     }
 
-    if (month.value.length == 2) {
-        document.getElementById("mfd-year").focus();
-    }
 }
 
+
+
 function setMfdYear(year) {
-    let thisYear = new Date().getFullYear();
-    let thisMnth = new Date().getMonth();
-    // let yr = year.value;
-    let mnthChk = document.getElementById("mfd-month").value;
-    // console.log("CHECK YEAR");
-    // console.log(thisYear);
-    // console.log(yr);
-    // console.log("CHECK Month");
-    // console.log(mnthChk);
+    let yr = new Date();
+    let thisYear = yr.getFullYear();
+    let thisMonth = yr.getMonth();
+    let mfdMnth = document.getElementById("mfd-month").value;
 
-    if (year.value.length == 2) {
-        thisYear = thisYear % 100;
-        if (year.value > thisYear) {
-            document.getElementById("mfd-year").value = "";
-            ocument.getElementById("mfd-month").focus();
-        }
+    if (year.value.length < 4) {
+        document.getElementById("mfd-year").value = '';
+        document.getElementById("mfd-year").focus();
     }
-
     if (year.value.length == 4) {
         if (year.value > thisYear) {
-            document.getElementById("mfd-year").value = "";
-            ocument.getElementById("mfd-month").focus();
+            document.getElementById("mfd-year").value = '';
+            document.getElementById("mfd-year").focus();
+        }
+
+        if (year.value < thisYear) {
+            document.getElementById("exp-month").focus();
         }
 
         if (year.value == thisYear) {
-            if (mnthChk > thisMnth) {
-                document.getElementById("mfd-month").value = "";
-                document.getElementById("mfd-year").value = "";
+            if (mfdMnth > thisMonth) {
+                document.getElementById("mfd-month").value = '';
                 document.getElementById("mfd-month").focus();
+            } else if (mfdMnth <= thisMonth) {
+                document.getElementById("exp-month").focus();
             }
         }
 
         document.getElementById("exp-month").focus();
     }
-
+    if (year.value.length > 4) {
+        document.getElementById("mfd-year").value = '';
+        document.getElementById("mfd-year").focus();
+    }
 }
 
-const setYear = (year) => {
-    let chkYear = year.value;
+
+const setExpYear = (year) => {
+    // let chkYear = year.value;
     var MFDYR = document.getElementById("mfd-year").value;
     var mfdMnth = document.getElementById("mfd-month").value;
     var expMnth = document.getElementById("exp-month").value;
-    // var mfdLn = MFD.value.length;
 
-    // console.log(mfdLn);
+    if (year.value.length < 4) {
+        year.value = '';
+        year.focus();
+    }
 
-    if (chkYear.length == 4) {
-        if (chkYear < MFDYR) {
-            document.getElementById("exp-year").value = "";
-            document.getElementById("exp-year").focus();
-        }
-
-        if (chkYear == MFDYR) {
-            if (mfdMnth > expMnth) {
-                document.getElementById("exp-month").value = "";
+    if (year.value.length == 4) {
+        if (year.value == MFDYR) {
+            if (expMnth > mfdMnth) {
+                document.getElementById("exp-month").value = '';
                 document.getElementById("exp-month").focus();
             }
+
+            if (expMnth < mfdMnth) {
+                document.getElementById("exp-month").value = '';
+                document.getElementById("exp-month").focus();
+            }
+        } else if (year.value < MFDYR) {
+            year.value = '';
+            year.focus();
         }
     }
 
-    if (chkYear.length == 2) {
-        if (MFDYR.length == 4) {
-            MFDYR = MFDYR % 100;
-            if (MFDYR < chkYear) {
-                document.getElementById("exp-year").value = "";
-                document.getElementById("exp-year").focus();
-            }
-        }
-        if (MFDYR.length == 2) {
-            if (chkYear < MFDYR) {
-                document.getElementById("exp-year").value = "";
-                document.getElementById("exp-year").focus();
-            }
-        }
-
-        if (MFDYR.length == chkYear.length) {
-            if (mfdMnth > expMnth) {
-                document.getElementById("exp-month").value = "";
-                document.getElementById("exp-month").focus();
-            }
-        }
-    }
-
-    if(chkYear.length > 4){
-        document.getElementById('exp-year').value = '';
-        document.getElementById('exp-year').focus();
+    if (year.value.length > 4) {
+        year.value = '';
+        year.focus();
     }
 }
 

@@ -110,12 +110,12 @@ $allProducts = $Products->showProducts();
                                                 ?>
 
                                                         <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
-                                                            <div class="card  m-2">
+                                                            <div class="card  m-2" id="allProducts">
                                                                 <img src="../images/product-image/<?php echo $productImage ?>" class="card-img-top" alt="...">
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item['name']; ?></b></label>
                                                                     <p class="mb-0"><b><?php $item['name'] ?></b></p>
-                                                                    <small class="card-text mt-0"><?php echo substr($dsc, 0, 65) ?>...</small>
+                                                                    <small class="card-text mt-0" style="text-align: justify;"><?php echo substr($dsc, 0, 65) ?>...</small>
 
                                                                 </div>
 

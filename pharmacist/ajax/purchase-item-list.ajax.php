@@ -22,13 +22,18 @@ require_once '../../employee/config/dbconnect.php';
 $searchResult = null;
 if (isset($_GET['data'])) {
     $data = $_GET['data'];
-
+    
+    $resultData = array();
     $searchSql = "Select * From `products` WHERE `products`.`name` LIKE '%$data%'";
     $searchResult = mysqli_query($conn, $searchSql) or die("Connection Error");
+    while ($result = $searchResult->fetch_array()) {
+        $resultData[] = $result;
+    }
     // $searchResult = $Search->searchForSale($data);
+    
 }
 
-if ($searchResult) {
+if ($resultData) {
 
     // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$searchResult."</a></h5>";
 ?>
@@ -39,8 +44,7 @@ if ($searchResult) {
         <div class="col-md-2">Stock</div>
     </div>
     <?php
-    while ($resultRow = mysqli_fetch_array($searchResult)) {
-        // print_r($resultRow);
+    foreach ($resultData as $resultRow) {
 
         $productId  = $resultRow['product_id'];
         $productName = $resultRow['name'];
@@ -101,9 +105,10 @@ if ($searchResult) {
 <?php
 
     }
+
 } else {
     echo '<div class="row border-bottom border-primary small mx-0 mb-2">
-    "Result Not Found";
+    <label style="color: red;"><b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"Product Not Found / Check Spelling";</b></label>
     </div>';
 }
 ?>

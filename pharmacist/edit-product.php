@@ -58,81 +58,81 @@
     // if (isset($_POST['update-product'])) {
     //     echo 'Hi';
     // }
-    
+
     //======================== PRODUCT UPDATE BLOCK ====================================
 
     if (isset($_POST['update-product'])) {
 
-        $productId = $_POST['imgid'];
-        $imageCheck = $ProductImages->showImageById($productId);
-        // print_r($imageCheck); echo "<br><br>";
-        foreach($imageCheck as $imgChk){
-            $mnImgChk = $imgChk['image'];
-            $sideImgChk = $imgChk['side_image'];
-            $bkImgChk = $imgChk['back_image'];
-        }
-        
-        //print_r($_FILES)
-       
-            //===== Main Image 
-            $image         = $_FILES['product-image']['name'];
-            $tempImgname   = $_FILES['product-image']['tmp_name'];
-            if ($image != null) {
-                if (file_exists("../../../images/product-image/" . $image)) {
-                    $image = 'medicy-' . $image;
-                }
-            }elseif($image == null){
-                if($mnImgChk != null){
-                    $image = $mnImgChk;
-                }
-            }
+        // $productId = $_POST['imgid'];
+        // $imageCheck = $ProductImages->showImageById($productId);
+        // // print_r($imageCheck); echo "<br><br>";
+        // foreach ($imageCheck as $imgChk) {
+        //     $mnImgChk = $imgChk['image'];
+        //     $sideImgChk = $imgChk['side_image'];
+        //     $bkImgChk = $imgChk['back_image'];
+        // }
 
-            $imgFolder     = "../images/product-image/" . $image;
-            move_uploaded_file($tempImgname, $imgFolder);
-            $image         = addslashes($image);
+        // //print_r($_FILES)
 
-            //===== Back Image 
-            $backImage         = $_FILES['back-image']['name'];
-            $tempBackImg       = $_FILES['back-image']['tmp_name'];
-            if ($backImage != null) {
-                if (file_exists("../../../images/product-image/" . $backImage)) {
-                    $backImage = 'medicy-' . $backImage;
-                }
-            }elseif($backImage == null){
-                if($bkImgChk != null){
-                    $backImage = $bkImgChk;
-                }
-            }
+        // //===== Main Image 
+        // $image         = $_FILES['product-image']['name'];
+        // $tempImgname   = $_FILES['product-image']['tmp_name'];
+        // if ($image != null) {
+        //     if (file_exists("../../../images/product-image/" . $image)) {
+        //         $image = 'medicy-' . $image;
+        //     }
+        // } elseif ($image == null) {
+        //     if ($mnImgChk != null) {
+        //         $image = $mnImgChk;
+        //     }
+        // }
 
-            $imgFolder     = "../images/product-image/" . $backImage;
-            move_uploaded_file($tempBackImg, $imgFolder);
-            $backImage         = addslashes($backImage);
+        // $imgFolder     = "../images/product-image/" . $image;
+        // move_uploaded_file($tempImgname, $imgFolder);
+        // $image         = addslashes($image);
 
-            //===== Side Image 
-            $sideImage         = $_FILES['side-image']['name'];
-            $tempSideImg       = $_FILES['side-image']['tmp_name'];
-            if ($backImage != null) {
-                if (file_exists("../../../images/product-image/" . $sideImage)) {
-                    $sideImage = 'medicy-' . $sideImage;
-                }
-            }elseif($sideImage == null){
-                if($sideImgChk != null){
-                    $sideImage = $sideImgChk;
-                }
-            }
+        // //===== Back Image 
+        // $backImage         = $_FILES['back-image']['name'];
+        // $tempBackImg       = $_FILES['back-image']['tmp_name'];
+        // if ($backImage != null) {
+        //     if (file_exists("../../../images/product-image/" . $backImage)) {
+        //         $backImage = 'medicy-' . $backImage;
+        //     }
+        // } elseif ($backImage == null) {
+        //     if ($bkImgChk != null) {
+        //         $backImage = $bkImgChk;
+        //     }
+        // }
 
-            $imgFolder         = "../images/product-image/" . $sideImage;
-            move_uploaded_file($tempSideImg, $imgFolder);
-            $sideImage         = addslashes($sideImage);
-            //_________________________________________________________________________________________
+        // $imgFolder     = "../images/product-image/" . $backImage;
+        // move_uploaded_file($tempBackImg, $imgFolder);
+        // $backImage         = addslashes($backImage);
 
-            $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
+        // //===== Side Image 
+        // $sideImage         = $_FILES['side-image']['name'];
+        // $tempSideImg       = $_FILES['side-image']['tmp_name'];
+        // if ($backImage != null) {
+        //     if (file_exists("../../../images/product-image/" . $sideImage)) {
+        //         $sideImage = 'medicy-' . $sideImage;
+        //     }
+        // } elseif ($sideImage == null) {
+        //     if ($sideImgChk != null) {
+        //         $sideImage = $sideImgChk;
+        //     }
+        // }
 
-            $updateImage = $ProductImages->updateImage($productId, $image, $backImage, $sideImage);
+        // $imgFolder         = "../images/product-image/" . $sideImage;
+        // move_uploaded_file($tempSideImg, $imgFolder);
+        // $sideImage         = addslashes($sideImage);
+        //_________________________________________________________________________________________
 
-            if ($updateProduct == true) {
-                if ($updateImage == true) {
-            ?>
+        $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
+
+        // $updateImage = $ProductImages->updateImage($productId, $image, $backImage, $sideImage);
+        $updateImage = true;
+        if ($updateProduct == true) {
+            if ($updateImage == true) {
+    ?>
                 <script>
                     swal("Success", "Product updated successfully!", "success")
                         .then((value) => {
@@ -140,11 +140,11 @@
                         });
                 </script>
     <?php
-                }
             }
         }
+    }
 
-        //====================== END OF PRODUCT UPDATE ========================================
+    //====================== END OF PRODUCT UPDATE ========================================
     ?>
 
     <!-- Page Wrapper -->
@@ -164,24 +164,16 @@
                     // print_r($image);
 
                     if ($image != NULL) {
-                        $mainImage  = $image[0]['image'];
-                        $backImage  = $image[0]['back_image'];
-                        $SideImage = $image[0]['side_image'];
-                        if ($mainImage == NULL) {
-                            $mainImage = "medicy-default-product-image.jpg";
+                        foreach ($image as $image) {
+                            $Images  = $image['image'];
                         }
 
-                        if ($backImage == NULL) {
-                            $backImage = "medicy-default-product-image.jpg";
-                        }
 
-                        if ($SideImage == NULL) {
-                            $SideImage = "medicy-default-product-image.jpg";
+                        if ($Images == NULL) {
+                            $Images = "medicy-default-product-image.jpg";
                         }
                     } else {
-                        $mainImage = "medicy-default-product-image.jpg";
-                        $backImage = "medicy-default-product-image.jpg";
-                        $SideImage = "medicy-default-product-image.jpg";
+                        $Images = "medicy-default-product-image.jpg";
                     }
                     //print_r($item);
                     //print_r($image);
@@ -195,98 +187,28 @@
                     <div class="card shadow mb-4 h-100">
                         <div class="card-body">
                             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
-                                <div class="row">
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-6">
-                                        <div class="col-md-12">
-                                            <!-- <label class="mb-0 mt-1" for="product-name">Product Name</Address></label> -->
-                                            <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?php echo $item[0]['name'] ?>" required>
-                                        </div><br>
-
-                                        <div class="col-md-12">
-                                            <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" value="<?php echo $item[0]['product_composition'] ?>" required>
-                                        </div>
-
-                                        <div class="row p-3">
-                                            <div class="col-md-6">
-                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" value="<?php echo $item[0]['power'] ?>">
-                                            </div>
-                                            <div class="col-md-6 mt-3 mt-md-0">
-                                                <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer">
-                                                    <option value="" disabled selected>Select Manufacturer</option>
-                                                    <?php
-                                                    foreach ($showManufacturer as $rowManufacturer) {
-                                                        $manufId   = $rowManufacturer['id'];
-                                                        $manufName = $rowManufacturer['name'];
-                                                    ?>
-                                                        <option <?php if ($manufId == $item[0]['manufacturer_id']) {
-                                                                    echo 'selected';
-                                                                } ?> value="<?php echo $manufId; ?>"><?php echo $manufName; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12 mt-3">
-                                            <label for="product-descreption">Product Description</label>
-                                            <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3"><?php echo $item[0]['dsc'] ?></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mt-2 mt-md-0 px-4 px-md-2">
-
-                                        <!-- Product Image Row  -->
+                                <div class="d-flex">
+                                    <div class="col-md-6">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="border p-1 rounded">
-                                                    <div class="image-area <?php if (count($image) != 0) {
-                                                                                echo 'activeted';
-                                                                            } ?> rounded">
-                                                        <img class="browse" src="<?php echo '../images/product-image/' . $mainImage ?>" alt="">
-                                                    </div>
-                                                    <input id="product-image" name="product-image" type="file" hidden>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6 mt-2  mt-md-0">
-                                                <div class="border p-1 rounded">
-                                                    <input class="back-file" id="back-image" type="file" name="back-image" accept="image/*" hidden>
-                                                    <div class="back-img-field <?php if (count($image) != 0) {
-                                                                                    echo 'activeted';
-                                                                                } ?> rounded" style="height: 4rem;">
-                                                        <img class="browse" src="<?php echo '../images/product-image/' . $backImage ?>" alt="" onclick="customClick1('back-image')">
-                                                    </div>
-
-                                                    <img src="" id="back-preview" class="img-thumbnail">
-                                                </div>
-
-
-                                                <div class="mt-4">
-                                                    <div class="border p-1 rounded">
-                                                        <input class="side-file" id="side-image" type="file" name="side-image" accept="image/*" hidden>
-                                                        <div class="side-img-field <?php if (count($image) != 0) {
-                                                                                        echo 'activeted';
-                                                                                    } ?> rounded" style="height: 4rem;">
-                                                            <img class="browse" src="<?php echo '../images/product-image/' . $SideImage ?>" alt="" onclick="customClick2('side-image')">
-                                                        </div>
-
-                                                        <img src="" id="side-preview" class="img-thumbnail">
-                                                    </div>
-                                                </div>
-
+                                            <div class="col-md-12">
+                                                <!-- <label class="mb-0 mt-1" for="product-name">Product Name</Address></label> -->
+                                                <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?php echo $item[0]['name'] ?>" required>
                                             </div>
                                         </div>
-                                        <!--/End Product Image Row  -->
-
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" value="<?php echo $item[0]['product_composition'] ?>" required>
+                                            </div>
+                                        </div>
+                                        <br>
                                         <!-- Price Row -->
                                         <div class="row">
-
-                                            <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                            <div class="col-md-4">
                                                 <input type="number" class="c-inp p-1 w-100" name="unit-quantity" id="unit-quantity" placeholder="Enter Unit" value="<?php echo $item[0]['unit_quantity'] ?>">
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                            <div class="col-md-4">
                                                 <!-- <label class="mb-0 mt-1" for="unit">Select Unit</label> -->
                                                 <select class="c-inp p-1 w-100" name="unit" id="unit">
                                                     <option value="" disabled selected>Select Unit</option>
@@ -301,7 +223,7 @@
                                                     ?>
                                                 </select>
                                             </div>
-                                            <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                            <div class="col-md-4">
                                                 <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
                                                 <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type">
                                                     <option value="" disabled selected>Packaging Unit</option>
@@ -318,16 +240,15 @@
                                             </div>
                                         </div>
                                         <!--/End Price Row -->
-
-                                        <!-- Price Row -->
+                                        <br>
                                         <div class="row">
-                                            <div class="col-12 col-sm-6 col-md-6 mt-3">
-                                                <label class="mb-0 mt-1" for="mrp">MRP ₹</label>
-                                                <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" onkeyup="getMarginMrp(this.value)" step="0.25" value="<?php echo $item[0]['mrp']; ?>">
+                                            <div class="col-md-6">
+                                                <!-- <label class="mb-0 mt-1" for="mrp">MRP ₹</label> -->
+                                                <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" onkeyup="getMarginMrp(this.value)" step="0.01" value="<?php echo $item[0]['mrp']; ?>">
                                             </div>
 
-                                            <div class="col-12 col-sm-6 col-md-6 mt-3">
-                                                <label class="mb-0 mt-1" for="gst">GST %</label>
+                                            <div class="col-md-6">
+                                                <!-- <label class="mb-0 mt-1" for="gst">GST %</label> -->
                                                 <select class="c-inp w-100 p-1" name="gst" id="gst" onchange="getMarginGst(this.value)">
                                                     <option <?php if ($item[0]['gst'] == "0") {
                                                                 echo 'selected';
@@ -344,246 +265,289 @@
                                                     <option <?php if ($item[0]['gst'] == "28") {
                                                                 echo 'selected';
                                                             } ?> value="28">28</option>
-
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" value="<?php echo $item[0]['power'] ?>">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer">
+                                                    <option value="" disabled selected>Select Manufacturer</option>
+                                                    <?php
+                                                    foreach ($showManufacturer as $rowManufacturer) {
+                                                        $manufId   = $rowManufacturer['id'];
+                                                        $manufName = $rowManufacturer['name'];
+                                                    ?>
+                                                        <option <?php if ($manufId == $item[0]['manufacturer_id']) {
+                                                                    echo 'selected';
+                                                                } ?> value="<?php echo $manufId; ?>"><?php echo $manufName; ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="col-md-12">
+                                            <!-- <label for="product-descreption"></label> -->
+                                            <textarea class="form-control" name="product-descreption" id="product-descreption" placeholder="Product Description" cols="30" rows="3"><?php echo $item[0]['dsc'] ?></textarea>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="border p-1 rounded">
+                                                    <div class="image-area <?php if (count($image) != 0) {
+                                                                                echo 'activeted';
+                                                                            } ?> rounded">
+                                                        <img class="browse" src="<?php echo '../images/product-image/' . $Images ?>" alt="">
+                                                    </div>
+                                                    <input id="product-image" name="product-image" type="file" hidden>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/End Product Image Row  -->
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
+                                                <button class="btn btn-primary" name="update-product" id="update-btn" type="submit">Update</button>
                                             </div>
 
                                         </div>
-                                        <!--/End Price Row -->
-
                                     </div>
                                 </div>
-
-                                <input type="hidden" id="id" name="id" value="<?php echo $item[0]['id'] ?>">
-                                <input type="hidden" id="added-by" name="added-by" value="<?php echo $item[0]['added_by'] ?>">
-                                <input type="hidden" id="imgid" name="imgid" value="<?php echo $image[0]['product_id'] ?>">
-
-
-                                <div class="d-sm-flex justify-content-end mt-3">
-                                    <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
-                                    <button class="btn btn-primary" name="update-product" id="update-btn" type="submit">Update</button>
-
-                                </div>
-                            </form>
                         </div>
+
+                        <input type="" id="id" name="id" value="<?php echo $item[0]['id'] ?>">
+                        <input type="" id="added-by" name="added-by" value="<?php echo $item[0]['added_by'] ?>">
+                        <input type="" id="imgid" name="imgid" value="<?php echo $image[0]['product_id'] ?>">
+
+
+
+                        </form>
                     </div>
-                    <!-- /end Add Product  -->
-                <?php
-                }
-                ?>
             </div>
-            <!-- End of Content Wrapper -->
-
+            <!-- /end Add Product  -->
+        <?php
+                }
+        ?>
         </div>
-        <!-- End of Page Wrapper -->
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
 
 
-        <!-- Logout Modal-->
-        <?php require_once '_config/logoutModal.php'; ?>
-        <!--End of Logout Modal-->
+    <!-- Logout Modal-->
+    <?php require_once '_config/logoutModal.php'; ?>
+    <!--End of Logout Modal-->
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="../assets/jquery/jquery.min.js"></script>
-        <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="../assets/jquery/jquery.min.js"></script>
+    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
 
-        <!-- Sweet Alert Js  -->
-        <script src="../js/sweetAlert.min.js"></script>
+    <!-- Sweet Alert Js  -->
+    <script src="../js/sweetAlert.min.js"></script>
 
-        <script src="js/custom/add-products.js"></script>
-
-
-        <script>
-            const customClick1 = (id) => {
-                document.getElementById(id).click();
-
-            }
-
-            const customClick2 = (id) => {
-                document.getElementById(id).click();
-            }
+    <script src="js/custom/add-products.js"></script>
 
 
-            //calculating profit only after entering MRP
-            function getMarginMrp(value) {
-                this.value = parseFloat(this.value).toFixed(2);
+    <script>
+        const customClick1 = (id) => {
+            document.getElementById(id).click();
 
-                const mrp = parseFloat(value);
-                const ptr = parseFloat(document.getElementById("ptr").value);
-                const gst = parseFloat(document.getElementById("gst").value);
+        }
 
-                var profit = (mrp - ptr);
-
-                profit = parseFloat(profit - ((gst / 100) * ptr));
-
-                document.getElementById("profit").value = profit.toFixed(2);
-            }
+        const customClick2 = (id) => {
+            document.getElementById(id).click();
+        }
 
 
-            //calculate after entering PTR
-            function getMarginPtr(value) {
-                const ptr = parseFloat(value);
-                const mrp = parseFloat(document.getElementById("mrp").value);
-                const gst = parseFloat(document.getElementById("gst").value);
+        //calculating profit only after entering MRP
+        function getMarginMrp(value) {
+            this.value = parseFloat(this.value).toFixed(2);
 
-                var profit = parseFloat(mrp - ptr);
+            const mrp = parseFloat(value);
+            const ptr = parseFloat(document.getElementById("ptr").value);
+            const gst = parseFloat(document.getElementById("gst").value);
 
-                profit = parseFloat(profit - ((gst / 100) * ptr));
+            var profit = (mrp - ptr);
 
-                document.getElementById("profit").value = profit.toFixed(2);
-            }
+            profit = parseFloat(profit - ((gst / 100) * ptr));
 
-            //calculate after entering GST
-            function getMarginGst(value) {
-                const gst = parseFloat(value);
-                const ptr = parseFloat(document.getElementById("ptr").value);
-                const mrp = parseFloat(document.getElementById("mrp").value);
-
-                var profit = parseFloat(mrp - ptr);
-
-                profit = parseFloat(profit - ((gst / 100) * ptr));
-
-                document.getElementById("profit").value = profit.toFixed(2);
-            }
-        </script>
-        <script>
-            // productViewAndEdit = (productId) => {
-            //     // alert("productModalBody");
-            //     let ViewAndEdit = productId;
-            //     let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
-            //     $(".productModalBody").html(
-            //         '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
-            //         url + '"></iframe>');
-            // }
-
-            // function update(e) {
-            //     btnID = e.id;
-            //     btn = this;
-            //     $.ajax({
-            //         url: "ajax/products.Edit.ajax.php",
-            //         type: "POST",
-            //         data: {
-            //             id: btnID
-            //         },
-            //         success: function(data) {
-            //             if (data == 1) {
-            //                 Swal.fire({
-            //                     position: 'top-end',
-            //                     icon: 'success',
-            //                     title: 'Your work has been saved',
-            //                     showConfirmButton: false,
-            //                     timer: 1500
-            //                 }).then(function() {
-            //                         parent.location.reload();
-            //                     })
-
-            //             } else {
-            //                 $("#error-message").html("Deletion Field !!!")
-            //                     .slideDown();
-            //                 $("success-message").slideUp();
-            //             }
-
-            //         }
-            //     });
-
-            //     return false;
-            // }
-
-            //========================= Delete Product =========================
-            // $(document).ready(function() {
-            //     $(document).on("click", "#delete-btn", function() {
-
-            //         swal({
-            //                 title: "Are you sure?",
-            //                 text: "Want to Delete This Manufacturer?",
-            //                 icon: "warning",
-            //                 buttons: true,
-            //                 dangerMode: true,
-            //             })
-            //             .then((willDelete) => {
-            //                 if (willDelete) {
-
-            //                     productId = $(this).data("id");
-            //                     btn = this;
-
-            //                     $.ajax({
-            //                         url: "ajax/product.Delete.ajax.php",
-            //                         type: "POST",
-            //                         data: {
-            //                             id: productId
-            //                         },
-            //                         success: function(data) {
-            //                             // alert(data);
-            //                             if (data == 1) {
-            //                                 $(btn).closest("tr").fadeOut()
-            //                                 swal("Deleted", "Manufacturer Has Been Deleted",
-            //                                     "success");
-            //                             } else {
-            //                                 swal("Failed", "Product Deletion Failed!",
-            //                                     "error");
-            //                                 $("#error-message").html("Deletion Field !!!")
-            //                                     .slideDown();
-            //                                 $("success-message").slideUp();
-            //                             }
-            //                         }
-            //                     });
-
-            //                 }
-            //                 return false;
-            //             });
-
-            //     })
-
-            // })
-        </script>
-        <script>
-            $(document).on("click", ".back", function() {
-                var backFile = $(this).parents().find(".back-file");
-                backFile.trigger("click");
-            });
-            $('.back-file').change(function(e) {
-                $(".back-img-field").hide();
-                $("#back-preview").show();
+            document.getElementById("profit").value = profit.toFixed(2);
+        }
 
 
-                var fileName = e.target.files[0].name;
-                $("#back-file").val(fileName);
+        //calculate after entering PTR
+        function getMarginPtr(value) {
+            const ptr = parseFloat(value);
+            const mrp = parseFloat(document.getElementById("mrp").value);
+            const gst = parseFloat(document.getElementById("gst").value);
 
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    // get loaded data and render thumbnail.
-                    document.getElementById("back-preview").src = e.target.result;
-                };
-                // read the image file as a data URL.
-                reader.readAsDataURL(this.files[0]);
-            });
-        </script>
+            var profit = parseFloat(mrp - ptr);
 
-        <script>
-            $(document).on("click", ".side", function() {
-                var SideFile = $(this).parents().find(".side-file");
-                SideFile.trigger("click");
-            });
-            $('.side-file').change(function(img) {
-                $(".side-img-field").hide();
-                $("#side-preview").show();
+            profit = parseFloat(profit - ((gst / 100) * ptr));
+
+            document.getElementById("profit").value = profit.toFixed(2);
+        }
+
+        //calculate after entering GST
+        function getMarginGst(value) {
+            const gst = parseFloat(value);
+            const ptr = parseFloat(document.getElementById("ptr").value);
+            const mrp = parseFloat(document.getElementById("mrp").value);
+
+            var profit = parseFloat(mrp - ptr);
+
+            profit = parseFloat(profit - ((gst / 100) * ptr));
+
+            document.getElementById("profit").value = profit.toFixed(2);
+        }
+    </script>
+    <script>
+        // productViewAndEdit = (productId) => {
+        //     // alert("productModalBody");
+        //     let ViewAndEdit = productId;
+        //     let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
+        //     $(".productModalBody").html(
+        //         '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
+        //         url + '"></iframe>');
+        // }
+
+        // function update(e) {
+        //     btnID = e.id;
+        //     btn = this;
+        //     $.ajax({
+        //         url: "ajax/products.Edit.ajax.php",
+        //         type: "POST",
+        //         data: {
+        //             id: btnID
+        //         },
+        //         success: function(data) {
+        //             if (data == 1) {
+        //                 Swal.fire({
+        //                     position: 'top-end',
+        //                     icon: 'success',
+        //                     title: 'Your work has been saved',
+        //                     showConfirmButton: false,
+        //                     timer: 1500
+        //                 }).then(function() {
+        //                         parent.location.reload();
+        //                     })
+
+        //             } else {
+        //                 $("#error-message").html("Deletion Field !!!")
+        //                     .slideDown();
+        //                 $("success-message").slideUp();
+        //             }
+
+        //         }
+        //     });
+
+        //     return false;
+        // }
+
+        //========================= Delete Product =========================
+        // $(document).ready(function() {
+        //     $(document).on("click", "#delete-btn", function() {
+
+        //         swal({
+        //                 title: "Are you sure?",
+        //                 text: "Want to Delete This Manufacturer?",
+        //                 icon: "warning",
+        //                 buttons: true,
+        //                 dangerMode: true,
+        //             })
+        //             .then((willDelete) => {
+        //                 if (willDelete) {
+
+        //                     productId = $(this).data("id");
+        //                     btn = this;
+
+        //                     $.ajax({
+        //                         url: "ajax/product.Delete.ajax.php",
+        //                         type: "POST",
+        //                         data: {
+        //                             id: productId
+        //                         },
+        //                         success: function(data) {
+        //                             // alert(data);
+        //                             if (data == 1) {
+        //                                 $(btn).closest("tr").fadeOut()
+        //                                 swal("Deleted", "Manufacturer Has Been Deleted",
+        //                                     "success");
+        //                             } else {
+        //                                 swal("Failed", "Product Deletion Failed!",
+        //                                     "error");
+        //                                 $("#error-message").html("Deletion Field !!!")
+        //                                     .slideDown();
+        //                                 $("success-message").slideUp();
+        //                             }
+        //                         }
+        //                     });
+
+        //                 }
+        //                 return false;
+        //             });
+
+        //     })
+
+        // })
+    </script>
+    <script>
+        $(document).on("click", ".back", function() {
+            var backFile = $(this).parents().find(".back-file");
+            backFile.trigger("click");
+        });
+        $('.back-file').change(function(e) {
+            $(".back-img-field").hide();
+            $("#back-preview").show();
 
 
-                var sideImgName = img.target.files[0].name;
-                $("#side-file").val(sideImgName);
+            var fileName = e.target.files[0].name;
+            $("#back-file").val(fileName);
 
-                var reader = new FileReader();
-                reader.onload = function(img) {
-                    // get loaded data and render thumbnail.
-                    document.getElementById("side-preview").src = img.target.result;
-                };
-                // read the image file as a data URL.
-                reader.readAsDataURL(this.files[0]);
-            });
-        </script>
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                // get loaded data and render thumbnail.
+                document.getElementById("back-preview").src = e.target.result;
+            };
+            // read the image file as a data URL.
+            reader.readAsDataURL(this.files[0]);
+        });
+    </script>
+
+    <script>
+        $(document).on("click", ".side", function() {
+            var SideFile = $(this).parents().find(".side-file");
+            SideFile.trigger("click");
+        });
+        $('.side-file').change(function(img) {
+            $(".side-img-field").hide();
+            $("#side-preview").show();
+
+
+            var sideImgName = img.target.files[0].name;
+            $("#side-file").val(sideImgName);
+
+            var reader = new FileReader();
+            reader.onload = function(img) {
+                // get loaded data and render thumbnail.
+                document.getElementById("side-preview").src = img.target.result;
+            };
+            // read the image file as a data URL.
+            reader.readAsDataURL(this.files[0]);
+        });
+    </script>
 
 </body>
 
