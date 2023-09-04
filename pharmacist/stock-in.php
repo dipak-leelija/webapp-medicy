@@ -225,9 +225,9 @@ $todayYr = date("y");
                                             <div class="col-sm-4  mt-2">
                                                 <label class="mb-0 mt-1" for="mfd-date">MFD</label>
                                                 <div class="d-flex date-field">
-                                                    <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);">
+                                                    <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);" >
                                                     <span class="date-divider">&#47;</span>
-                                                    <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);">
+                                                    <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);" onkeyup="setMfdYEAR(this)">
                                                 </div>
                                             </div>
                                             <div class="col-sm-4 mt-2">

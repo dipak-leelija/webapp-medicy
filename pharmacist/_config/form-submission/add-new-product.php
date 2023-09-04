@@ -141,7 +141,7 @@
                 
                 $addImage = $ProductImages->addImages($productId, $image, $addedBy);
             }
-            exit;
+
             if ($addImage == TRUE) {
     ?>
                 <script>

@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stockIn_Id         = $_POST['stok-in-id'];
         // echo $stockIn_Id,"<br>";
-    
+
         $distributorId      = $_POST['distributor-id'];
 
         $distributorDetial = $distributor->showDistributorById($distributorId);
@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // echo "<br>Stok in id Array =>"; print_r($stockIn_Id); echo "<br>";
 
     }
-// exit;
+    // exit;
     $addStockIn  = FALSE;
     if (isset($_POST['stock-in'])) {
         $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
@@ -129,33 +129,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ///================ updated stock delete item area ============================
         if (isset($_POST['update'])) {
 
-                $UpdatedPurchaseItemsIds = ($_POST['purchaseId']); //updated items ids array  $purchaseIds
-                // print_r($UpdatedPurchaseItemsIds); echo "  updated items ids array<br><br>";
-                
-                $stockIn_id = $_POST['stok-in-id'];
+            $UpdatedPurchaseItemsIds = ($_POST['purchaseId']); //updated items ids array  $purchaseIds
+            // print_r($UpdatedPurchaseItemsIds); echo "  updated items ids array<br><br>";
 
-                $stockInDetailsCheck = $StockInDetails->showStockInDetailsByStokId($stockIn_id);
-                // print_r($stockInDetailsCheck); echo "<br><br>";
-                
-                $stokInItemIdArray= [];
-                foreach($stockInDetailsCheck as $StokInids){
-                    array_push($stokInItemIdArray, $StokInids['id']);
-                } 
+            $stockIn_id = $_POST['stok-in-id'];
 
-                // print_r($stokInItemIdArray); echo "  Previous items ids Array <br><br>"; 
-                $ItemArrayIdsDiff = array_diff($stokInItemIdArray,$UpdatedPurchaseItemsIds);
-                // print_r($ItemArrayIdsDiff); echo " change in array items ids <br>";
-                
-                $delItemsCount = count($ItemArrayIdsDiff);
+            $stockInDetailsCheck = $StockInDetails->showStockInDetailsByStokId($stockIn_id);
+            // print_r($stockInDetailsCheck); echo "<br><br>";
 
-                if($delItemsCount>0){
-                    foreach($ItemArrayIdsDiff as $deleteItemId){
-                        // echo "<br>Deleted item Id : $deleteItemId";
-                        $deleteCurrentStokData = $CurrentStock->deleteCurrentStockbyStockIndetailsId    ($deleteItemId);
-                        $deleteStokInDetailsData = $StockInDetails->stockInDeletebyDetailsId($deleteItemId);
-                    }
-                }  
+            $stokInItemIdArray = [];
+            foreach ($stockInDetailsCheck as $StokInids) {
+                array_push($stokInItemIdArray, $StokInids['id']);
             }
+
+            // print_r($stokInItemIdArray); echo "  Previous items ids Array <br><br>"; 
+            $ItemArrayIdsDiff = array_diff($stokInItemIdArray, $UpdatedPurchaseItemsIds);
+            // print_r($ItemArrayIdsDiff); echo " change in array items ids <br>";
+
+            $delItemsCount = count($ItemArrayIdsDiff);
+
+            if ($delItemsCount > 0) {
+                foreach ($ItemArrayIdsDiff as $deleteItemId) {
+                    // echo "<br>Deleted item Id : $deleteItemId";
+                    $deleteCurrentStokData = $CurrentStock->deleteCurrentStockbyStockIndetailsId($deleteItemId);
+                    $deleteStokInDetailsData = $StockInDetails->stockInDeletebyDetailsId($deleteItemId);
+                }
+            }
+        }
         /// ======================== eof updated stock delete item area  ==============================
 
         //=========== STOCK IN DETAILS ===========
@@ -218,8 +218,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($PurchaseItemId != null) {
                     // $purchaseId
                     $selectStockInDetails = $StockInDetails->showStockInDetailsByStokinId($PurchaseItemId);
-                    
-                    foreach($selectStockInDetails as $prevStockInDetails){
+
+                    foreach ($selectStockInDetails as $prevStockInDetails) {
                         $prevStockInQty = $prevStockInDetails['qty'];
                         $prevStockInfreeQty = $prevStockInDetails['free_qty'];
                         $prevStockInLQty = $prevStockInDetails['loosely_count'];
@@ -232,7 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
                     $updateStokInDetails = $StockInDetails->updateStockInDetailsById($PurchaseItemId, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy, $addedOn);
-                    
+
                     // ========================= current stock update area =====================
 
                     $stokInDetaislId = $PurchaseItemId;
@@ -246,14 +246,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $UpdatedQuantity = intval($newQuantity) - ((intval($prevStockInQty) + intval($prevStockInfreeQty)) - intval($Quantity));
 
                     if ($unit == "tab" || $unit == "cap") {
-                        $UpdatedLQantity = intval($newLooselyCount)-(intval($prevStockInLQty)-intval($LCount));
-                    }else{
+                        $UpdatedLQantity = intval($newLooselyCount) - (intval($prevStockInLQty) - intval($LCount));
+                    } else {
                         $UpdatedLQantity = 0;
                     }
                     //update current stock
 
                     $updateCurrentStock = $CurrentStock->updateStockByStokinDetailsId($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $UpdatedQuantity, $UpdatedLQantity, $mrp, $ptr);
-                    
                 } else {
 
                     $stokInid = $_POST['stok-in-id'];
@@ -280,7 +279,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty + $freeQty, $mrp, $ptr, $gst, $addedBy);
                     }
                 }
-                
             }
         } //eof foreach
         // // $addCurrentStock = TRUE;
@@ -317,6 +315,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Medicy Health Care Medicine Purchase Bill</title>
     <link rel="stylesheet" href="../../../css/bootstrap 5/bootstrap-purchaseItem.css">
     <link rel="stylesheet" href="../../../css/custom/purchase-bill.css">
+
+    <style type="text/css">
+        @page {
+            size: landscape;
+        }
+    </style>
 
 </head>
 
@@ -421,7 +425,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $distributorId = $distributorId;
                 $itemBatchNo    = $updtBatchNoArry;
                 // $stokInId = $stokInid;
-                
+
                 $count = count($itemIds);
                 $totalGst = 0;
                 $totalMrp = 0;
@@ -434,16 +438,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // print_r($itemDetials);
                     // echo "<br>";
 
-                    
+
                     foreach ($itemDetials as $itemsData) {
 
                         $prodId = $itemsData['product_id'];
-                        
+
                         $productDetails = $Products->showProductsById($prodId);
                         foreach ($productDetails as $pData) {
                             $pname = $pData['name'];
                             $pManfId = $pData['manufacturer_id'];
-                            $pType  = $pData['packaging_type']; 
+                            $pType  = $pData['packaging_type'];
                             $pQTY = $pData['unit_quantity'];
                             $pUnit = $pData['unit'];
                         }
@@ -460,7 +464,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         }
 
 
-                        
+
                         $batchNo = $itemsData['batch_no'];
                         $MfdDate = $itemsData['mfd_date'];
                         $ExpDate = $itemsData['exp_date'];
@@ -475,13 +479,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $gstAmnt =  $itemsData['gst_amount'];
                         $totalGst = $totalGst + $gstAmnt;
 
-                        $totalMrp = $totalMrp + ($Mrp*$qty);
+                        $totalMrp = $totalMrp + ($Mrp * $qty);
                         $billAmnt = $billAmnt + $Amount;
-                        
                     }
 
-                    $cGst = $sGst = number_format($totalGst/2,2);
-                    
+                    $cGst = $sGst = number_format($totalGst / 2, 2);
+
                     // $sGst = ;
                     // $itemQty  = $qty[$i];
                     // $mrpOnQty = $mrp[$i];
@@ -504,7 +507,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <small><?php echo "$manufName" ?></small>
                     </div>
                     <div class="col-sm-1b" style="width: 8%;">
-                        <small><?php echo $pQTY.$pUnit,"/",$unitNm ?></small>
+                        <small><?php echo $pQTY . $pUnit, "/", $unitNm ?></small>
                     </div>
                     <div class="col-sm-1b" style="width: 10%;">
                         <small><?php echo "$batchNo" ?></small>
@@ -640,15 +643,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
 <script>
-const back = () => {
-    window.location.replace("../../../pharmacist/stock-in.php")
-}
+    const back = () => {
+        window.location.replace("../../../pharmacist/stock-in.php")
+    }
 
-const goBack = (id, value) =>{
-    console.log(id);
-    console.log(value);
-    location.href=`../../stock-in-edit.php?edit=${value}&editId=${id}`;
-}
+    const goBack = (id, value) => {
+        console.log(id);
+        console.log(value);
+        location.href = `../../stock-in-edit.php?edit=${value}&editId=${id}`;
+    }
 </script>
 
 </html>

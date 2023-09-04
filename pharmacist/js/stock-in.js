@@ -1,6 +1,5 @@
 function searchItem(input) {
-    // console.log(input);
-    // alert(value);
+
     let checkLength = input.length;
 
     let xmlhttp = new XMLHttpRequest();
@@ -194,7 +193,7 @@ const getbillDate = (billDate) => {
 
 
 const getBillAmount = () => {
-    // let mrp = document.getElementById("mrp").value;
+
     let ptr = document.getElementById("ptr").value;
     let Mrp = document.getElementById("mrp").value;
     let chkPtr = document.getElementById("chk-ptr").value;
@@ -204,8 +203,6 @@ const getBillAmount = () => {
     let ChkPtr = parseFloat(chkPtr);
 
     if (PTR > ChkPtr) {
-        // console.log(Mrp);
-        // console.log(ptr);
         swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
         document.getElementById("ptr").value = "";
         document.getElementById("bill-amount").value = "";
@@ -218,19 +215,14 @@ const getBillAmount = () => {
     let discount = document.getElementById("discount").value;
 
     //========= base amount calculation area ===========
-    // console.log("check ptr");
-    // console.log(PTR);
+
     let base = PTR - ((PTR * discount) / 100);
-    // console.log("base amount check : ");
-    // console.log(base);
     document.getElementById("base").value = parseFloat(base).toFixed(2);
     // ======= eof base amount calculation =============
 
     let gst = document.getElementById("gst").value;
-
     let billAmount = document.getElementById("bill-amount");
-    // alert(ptr)
-    // console.log(gst);
+
 
 
     if (ptr == "") {
@@ -484,7 +476,7 @@ const addData = () => {
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slno}">
             <td style="color: red; padding-top:1.2rem;" <i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})" style="font-size:.7rem;"></i></td>
-            <td id="cell-2-${slno}" style="font-size:.7rem; padding-top:1.2rem; " scope="row">${slno}</td>
+            <td style="font-size:.7rem; padding-top:1.2rem; " scope="row">${slno}</td>
             <td class="pt-3">
                 <input class="table-data w-8r" type="text" value="${productName.value}" style="word-wrap: break-word; font-size: .7rem;" readonly>
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
@@ -539,7 +531,7 @@ const addData = () => {
                 <input class="table-data w-4r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="padding: 0%; font-size: .7rem;">
             </td>
         </tr>`);
-    console.log("data added");
+
     document.getElementById("product-name").value = "";
     document.getElementById("manufacturer-id").value = "";
     document.getElementById("manufacturer-name").value = "";
@@ -562,7 +554,6 @@ const addData = () => {
     document.getElementById("base").value = "";
     document.getElementById("bill-amount").value = "";
 
-
     document.getElementById("distributor-name").value = distId.value;
     document.getElementById("distributor-bill-no").value = distBill;
     document.getElementById("bill-date-val").value = billDate.value;
@@ -582,12 +573,6 @@ const addData = () => {
     document.getElementById("gst-val").value = onlyGst.toFixed(2);
     document.getElementById("net-amount").value = netAmount.toFixed(2);
 
-
-    // let tableId = document.getElementById("stock-in-data-table");
-    // let tbody = tableId.getElementsByTagName("tbody")[0];
-    // let rowCount = tbody.rows.length;
-    // console.log("on add table row count : ",rowCount);
-
 }
 
 // ================================ Delet Data ================================
@@ -596,13 +581,11 @@ function deleteData(slno, itemQty, gstPerItem, total) {
 
     // == tabel row lenth and deleted row number ===
     let delRow = slno;
-    rowAdjustment(delRow);
-    console.log("hello check");
     //  ============================================
 
     jQuery(`#table-row-${slno}`).remove();
-    slno--;
-    document.getElementById("dynamic-id").value = slno;
+    let slVal = document.getElementById("dynamic-id").value;
+    document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
 
     //minus item
@@ -626,34 +609,22 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     let finalAmount = net.value - total;
     net.value = finalAmount.toFixed(2);
 
+    rowAdjustment(delRow);
+
 }
 
 function rowAdjustment(delRow) {
 
-    console.log("value of deleted row : ", delRow);
     let tableId = document.getElementById("dataBody");
-    let rowCount = tableId.rows.length;
     let j = 0;
+    let colIndex = 1;
 
-    if(delRow == 1){
-        for (let i = 2;  i <= rowCount; i++) {
-            j++;
-
-            document.getElementById(`cell-2-${i}`).innerHTML = j;
-            document.getElementById(`table-row-${i}`).id = `table-row-${j}`;
-        }
-    }else{
-        for (let i = 1;  i <= rowCount; i++) {
-            if (i == delRow) {
-                i++;
-            }
-            j++;
-    
-            document.getElementById(`cell-2-${i}`).innerHTML = j;
-            document.getElementById(`table-row-${i}`).id = `table-row-${j}`;
-        }
+    for (let i = 0; i < tableId.rows.length; i++) {
+        j++;
+        let row = tableId.rows[i];
+        let cell = row.cells[colIndex];
+        cell.innerHTML = j;
     }
-    
 }
 
 
@@ -699,6 +670,17 @@ const setExpMonth = (month) => {
 }
 
 
+function setMfdYEAR(year){
+    let yr = new Date();
+    let thisYear = yr.getFullYear();
+    let thisMonth = yr.getMonth();
+    let mfdMnth = document.getElementById("mfd-month").value;
+
+    if(year.value.length == 4){
+        document.getElementById("exp-month").focus();
+    }
+}
+
 
 function setMfdYear(year) {
     let yr = new Date();
@@ -728,9 +710,9 @@ function setMfdYear(year) {
                 document.getElementById("exp-month").focus();
             }
         }
-
         document.getElementById("exp-month").focus();
     }
+
     if (year.value.length > 4) {
         document.getElementById("mfd-year").value = '';
         document.getElementById("mfd-year").focus();

@@ -262,7 +262,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
                                         <div class="row">
-                                            <div class="col-md-12 mt-2">
+                                            <div class="col-sm-6 col-md-6 mt-2">
+                                                <label class="mb-0" for="mrp">MRP/Package</label>
+                                                <input type="number" class="upr-inp" name="mrp" id="mrp" readonly>
+                                            </div>
+
+                                            <div class="col-sm-6 col-md-6 mt-2">
+                                                <label class="mb-0" for="gst">GST%</label>
+                                                <input type="number" class="upr-inp" name="gst" id="gst" readonly>
+                                            </div>
+
+
+                                            <div class="d-none col-md-12 mt-2">
                                                 <label class="mb-0" for="manufacturer-id">Manufacturer</label>
                                                 <!-- <select class="upr-inp" id="manufacturer-id" name="manufacturer-id"
                                                 required>
@@ -280,21 +291,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <div class="col-md-12 ">
                                                 <div class="row ">
 
-                                                    <div class="col-sm-6 col-md-3 mt-2 ">
+                                                    <div class="d-none col-sm-6 col-md-3 mt-2 ">
                                                         <label class="mb-0" for="weightage">Weightage</label>
                                                         <input type="text" class="upr-inp" id="weightage" value="" readonly>
                                                     </div>
 
-                                                    <div class="col-sm-6 col-md-3 mt-2 ">
+                                                    <div class="d-none col-sm-6 col-md-3 mt-2 ">
                                                         <label class="mb-0" for="unit"> Unit</label>
                                                         <input type="text" class="upr-inp" id="unit" value="" readonly>
                                                     </div>
 
-                                                    <div class="col-sm-6 col-md-3 mt-2 ">
+                                                    <div class="d-none col-sm-6 col-md-3 mt-2 ">
                                                         <label class="mb-0" for="packaging-in">Packaging-in</label>
-                                                        <input type="text" class="upr-inp" id="packaging-in"  readonly>
+                                                        <input type="text" class="upr-inp" id="packaging-in" readonly>
                                                     </div>
-                                                    <div class="col-sm-6 col-md-3 mt-2 ">
+                                                    <div class="d-none col-sm-6 col-md-3 mt-2 ">
                                                         <label class="mb-0" for="medicine-power">Medicine Power</label>
                                                         <input class="upr-inp" type="text" name="medicine-power" id="medicine-power">
                                                     </div>
@@ -303,10 +314,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         </div>
 
                                         <div class="row">
-
                                             <div class="col-sm-6 col-md-4 mt-2">
                                                 <label class="mb-0" for="batch-no">Batch No.</label>
-                                                <input type="text" class="upr-inp" name="batch-no" id="batch-no">
+                                                <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                                             </div>
                                             <div class="col-sm-6 col-md-4 mt-2">
                                                 <label class="mb-0 mt-1" for="exp-date">MFD</label>
@@ -332,14 +342,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <!-- Price Row -->
                                         <div class="row mb-2">
 
-                                            <div class="col-sm-6 col-md-6 mt-2">
+                                            <!-- <div class="col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="mrp">MRP/Package</label>
                                                 <input type="number" class="upr-inp" name="mrp" id="mrp">
-                                            </div>
+                                            </div> -->
 
-                                            <div class="col-sm-6 col-md-6 mt-2">
+                                            <div class="col-sm-4 col-md-4 mt-2">
                                                 <label class="mb-0" for="purchase-price">PTR/Package</label>
                                                 <input type="number" class="upr-inp" name="ptr" id="ptr" onkeyup="getBillAmount()">
+                                            </div>
+
+                                            <div class="col-sm-4 col-md-4 mt-2">
+                                                <label class="mb-0" for="qty">Quantity</label>
+                                                <input type="number" class="upr-inp" name="qty" id="qty" onkeyup="getBillAmount()">
+
+                                            </div>
+
+                                            <div class="col-sm-4 col-md-4 mt-2">
+                                                <label class="mb-0" for="free-qty">Free</label>
+                                                <input type="number" class="upr-inp" name="free-qty" id="free-qty" onkeyup="editQTY()">
+
                                             </div>
 
                                             <div class="d-none col-sm-6 col-md-6 mt-2">
@@ -351,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                         <div class="row">
 
-                                            <div class="col-sm-6 col-md-3 mt-2">
+                                            <!-- <div class="col-sm-6 col-md-3 mt-2">
                                                 <label class="mb-0" for="qty">Quantity</label>
                                                 <input type="number" class="upr-inp" name="qty" id="qty" onkeyup="getBillAmount()">
 
@@ -361,20 +383,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <label class="mb-0" for="free-qty">Free</label>
                                                 <input type="number" class="upr-inp" name="free-qty" id="free-qty" onkeyup="editQTY()">
 
-                                            </div>
+                                            </div> -->
 
-                                            <div class="col-sm-6 col-md-6 mt-2">
+                                            <div class="d-none col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="packaging-type">Packaging Type</label>
                                                 <select class="upr-inp" name="packaging-type" id="packaging-type">
                                                     <option value="" disabled selected>Select Packaging Type </option>
                                                     <?php
                                                     foreach ($showPackagingUnits as $rowPackagingUnits) {
-                                                        echo '<option value="'.$rowPackagingUnits['id'].'">'.$rowPackagingUnits['unit_name'].'</option>';
+                                                        echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
                                                     }
-                                                    ?>   
+                                                    ?>
                                                 </select>
 
-                                                <input type="text" class="d-none upr-inp" id="packaging-type-edit"  readonly>
+                                                <input type="text" class="d-none upr-inp" id="packaging-type-edit" readonly>
 
                                                 <label class="mb-0" for="free-qty" hidden>Updtd qtys</label>
                                                 <input type="number" class="upr-inp" name="updtQTYS" id="updtQTYS" hidden>
@@ -386,15 +408,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <!-- Price Row -->
                                             <!-- <div class="row"> -->
 
-                                            <div class="col-sm-6 col-md-6 mt-2">
+                                            <div class="col-sm-4 col-md-4 mt-2">
                                                 <label class="mb-0" for="discount">Discount % / Unit</label>
                                                 <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount Percentage" value="0" onkeyup="getBillAmount()">
                                             </div>
 
-                                            <div class="col-sm-6 col-md-6 mt-2">
-                                                <label class="mb-0" for="gst">GST</label>
+                                            <!-- <div class="col-sm-6 col-md-6 mt-2">
+                                                <label class="mb-0" for="gst">GST%</label>
                                                 <input type="number" class="upr-inp" name="gst" id="gst" readonly>
-                                            </div>
+                                            </div> -->
 
                                             <div class="d-none col-md-4 mt-2">
                                                 <label class="mb-0" for="discount">Gst Amnt.</label>
@@ -405,17 +427,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                             <!-- Quantity Row  -->
                                             <!-- <div class="row"> -->
-                                            <div class="col-sm-6 col-md-6 mt-2">
+                                            <div class="col-sm-4 col-md-4 mt-2">
                                                 <label class="mb-0" for="base">Base</label>
-                                                <input type="number" class="upr-inp" name="base" id="base">
+                                                <input type="number" class="upr-inp" name="base" id="base" readonly>
                                                 <!-- <label class="mb-0" for="bill-amount">Updated GST Amount</label>
                                                     <input type="number" class="upr-inp" name="updtGstAmt" id="updtGstAmt"> -->
                                             </div>
 
-                                            <div class="col-md-6 mt-2">
+                                            <div class="col-md-4 mt-2">
                                                 <label class="mb-0" for="bill-amount">Bill Amount</label>
                                                 <input type="any" class="upr-inp" name="bill-amount" id="bill-amount" readonly required>
                                             </div>
+
                                             <div class="d-none col-md-4 mt-2">
                                                 <label class="mb-0" for="bill-amount">Prev. Bill Amount</label>
                                                 <input type="any" class="upr-inp" name="temp-bill-amount" id="temp-bill-amount">
@@ -423,13 +446,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         </div>
                                         <!--/End Quantity Row  -->
 
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
+                                            <button class="btn btn-primary me-md-2" onclick="addData()">Add
+                                                <i class="fas fa-plus"></i></button>
+                                        </div>
+
                                     </div>
                                 </div>
 
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
+                                <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
                                     <button class="btn btn-primary me-md-2" onclick="addData()">Add
                                         <i class="fas fa-plus"></i></button>
-                                </div>
+                                </div> -->
 
                                 <!-- </form> -->
                             </div>
@@ -464,7 +492,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <th scope="col">Free</th>
                                                 <th scope="col">MRP</th>
                                                 <th scope="col">PTR</th>
-                                                <th scope="col">Base</th>
+                                                <th scope="col">Disc%</th>
                                                 <th scope="col">Margin%</th>
                                                 <th scope="col">GST%</th>
                                                 <th scope="col">Amount</th>
@@ -503,15 +531,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         </td>
 
                                                         <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 7rem; padding: .5rem;">
-                                                            <input class="col table-data w-6r" type="text" name="batchNo[]" value="<?php echo $detail['batch_no'] ?>" readonly style="text-align: start; padding:.15rem; width: 7rem; font-size: 0.65rem">
+                                                            <input class="col table-data w-4r" type="text" name="batchNo[]" value="<?php echo $detail['batch_no'] ?>" readonly style="text-align: start; padding:.15rem; width: 7rem; font-size: 0.65rem">
+                                                        </td>
+
+                                                        <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="padding: .5rem;">
+                                                            <input class="col table-data w-4r" type="text" style="width: 4rem; padding: .5rem; font-size: 0.65rem" name="mfdDate[]" id="mfdDate" value="<?php echo $detail['mfd_date'] ?>" readonly>
                                                         </td>
 
                                                         <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 4rem; padding: .5rem;">
-                                                            <input class="col table-data w-12r" type="text" style="width: 4rem; padding: .5rem; font-size: 0.65rem" name="mfdDate[]" id="mfdDate" value="<?php echo $detail['mfd_date'] ?>" readonly>
-                                                        </td>
-
-                                                        <td class=" p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 4rem; padding: .5rem;">
-                                                            <input class="col table-data w-12r" type="text" name="expDate[]" value="<?php echo $detail['exp_date'] ?>" readonly style="width: 4rem; padding: .5rem; font-size: 0.65rem">
+                                                            <input class="col table-data w-4r" type="text" name="expDate[]" value="<?php echo $detail['exp_date'] ?>" readonly style="padding: .5rem; font-size: 0.65rem">
                                                         </td>
 
                                                         <td class="p-0 pt-3" hidden>
@@ -519,13 +547,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         </td>
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 4rem; padding: .5rem;">
-                                                            <input class="col table-data w-12r" type="text" name="setof[]" value="<?php echo $detail['weightage'] . ',' . $detail['unit'] ?>" readonly style="width: 4rem; padding: .5rem; font-size: 0.65rem">
+                                                            <input class="col table-data w-3r" type="text" name="setof[]" value="<?php echo $detail['weightage'] . ',' . $detail['unit'] ?>" readonly style="padding: .5rem; font-size: 0.65rem">
                                                             <input class="col table-data w-12r" type="text" name="weightage[]" value="<?php echo $detail['weightage'] ?>" style="display: none">
-                                                            <input class="col table-data w-12r" type="text" name="unit[]" value="<?php echo $detail['unit'] ?>" style="display: none">
+                                                            <input class="col table-data w-2r" type="text" name="unit[]" value="<?php echo $detail['unit'] ?>" style="display: none">
                                                         </td>
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 3rem; padding: .5rem;">
-                                                            <input class="col table-data w-12r" type="text" name="qty[]" value="<?php echo $detail['qty'] ?>" readonly style="width: 3rem; padding: .5rem; font-size: 0.65rem">
+                                                            <input class="col table-data w-3r" type="text" name="qty[]" value="<?php echo $detail['qty'] ?>" readonly style="padding: .5rem; font-size: 0.65rem">
                                                         </td>
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 3rem; padding: .5rem;">
@@ -540,15 +568,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                             <input class="col table-data w-12r" type="text" name="ptr[]" value="<?php echo $detail['ptr'] ?>" readonly style="width: 4rem; padding: .5rem; font-size: 0.65rem">
                                                         </td>
 
-                                                        <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 3rem; padding: 0.5rem;">
-                                                            <input type="text" name="base[]" value="<?php echo $detail['base'] ?>" style="display: none">
-                                                            <input type="text" name="discount[]" value="<?php echo $detail['discount'] ?>" style="display: none ;">
-                                                            <p style="color: #000; font-size: .65rem;"><?php echo $detail['base'] ?> <span class="bg-primary text-light p-1 disc-span" style="border-radius: 21%; font-size: .5rem; width: 0.5rem; padding: 0.5rem;"> <?php echo $detail['discount'] ?>%</span>
-                                                            </p>
+                                                        <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" >
+                                                            <!-- <input type="text" name="base[]" value="<?php echo $detail['base'] ?>" > -->
+                                                            <!-- <input type="text" name="discount[]" value="<?php echo $detail['discount'] ?>" > -->
+
+                                                            <input class="d-none col table-data w-3r" type="text" name="base[]" value="<?php echo $detail['base'] ?>" readonly style="padding: 0.5rem; font-size:0.65rem">
+
+                                                            <input class="col table-data w-3r" type="text" name="discount[]" value="<?php echo $detail['discount'] ?>" readonly style="padding: 0.5rem; font-size:0.65rem">
+
+                                                            <!-- <p style="color: #000; font-size: .65rem;"><?php echo $detail['base'] ?> <span class="bg-primary text-light p-1 disc-span" style="border-radius: 21%; font-size: .5rem; width: 0.5rem; padding: 0.5rem;"> <?php echo $detail['discount'] ?>%</span>
+                                                            </p> -->
                                                         </td>
 
-                                                        <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 3rem; padding: 0.5rem;">
-                                                            <input class="col table-data w-12r" type="text" name="margin[]" value="<?php echo $detail['margin'] ?>" readonly style="width: 3rem; padding: 0.5rem; font-size:0.65rem">
+                                                        <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)">
+                                                            <input class="col table-data w-3r" type="text" name="margin[]" value="<?php echo $detail['margin'] ?>" readonly style="padding: 0.5rem; font-size:0.65rem">
                                                         </td>
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 3rem; padding: 0.5rem;">
@@ -557,7 +590,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         </td>
 
                                                         <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno ?>" value1="<?php echo $detail['product_id'] ?>" value2="<?php echo $detail['distributor_bill'] ?>" value3="<?php echo $detail['batch_no'] ?>" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>', this.id, this.value1, this.value2, this.value3)" style="width: 4rem; padding: 0.5rem; font-size:0.65rem">
-                                                            <input class="col table-data w-12r" type="text" name="billAmount[]" value="<?php echo $detail['amount'] ?>" readonly style="width: 4rem; padding: 0.5rem; font-size:0.65rem">
+                                                            <input class="col table-data w-4r" type="text" name="billAmount[]" value="<?php echo $detail['amount'] ?>" readonly style="padding: 0.5rem; font-size:0.65rem">
                                                         </td>
                                                     </tr>
                                             <?php
