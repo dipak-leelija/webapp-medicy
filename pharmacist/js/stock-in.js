@@ -484,7 +484,7 @@ const addData = () => {
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slno}">
             <td style="color: red; padding-top:1.2rem;" <i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})" style="font-size:.7rem;"></i></td>
-            <td id="cell2" style="font-size:.7rem; padding-top:1.2rem; " scope="row">${slno}</td>
+            <td id="cell-2-${slno}" style="font-size:.7rem; padding-top:1.2rem; " scope="row">${slno}</td>
             <td class="pt-3">
                 <input class="table-data w-8r" type="text" value="${productName.value}" style="word-wrap: break-word; font-size: .7rem;" readonly>
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
@@ -539,7 +539,7 @@ const addData = () => {
                 <input class="table-data w-4r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="padding: 0%; font-size: .7rem;">
             </td>
         </tr>`);
-
+    console.log("data added");
     document.getElementById("product-name").value = "";
     document.getElementById("manufacturer-id").value = "";
     document.getElementById("manufacturer-name").value = "";
@@ -597,6 +597,7 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     // == tabel row lenth and deleted row number ===
     let delRow = slno;
     rowAdjustment(delRow);
+    console.log("hello check");
     //  ============================================
 
     jQuery(`#table-row-${slno}`).remove();
@@ -632,21 +633,27 @@ function rowAdjustment(delRow) {
     console.log("value of deleted row : ", delRow);
     let tableId = document.getElementById("dataBody");
     let rowCount = tableId.rows.length;
- 
     let j = 0;
-    for (let i = 1;  i <= rowCount; i++) {
-        if (i == delRow) {
-            i++;
-        }
-        j++;
 
-        console.log("value of i check : ", i);
-        console.log("value of J check : ", j);
-        let childOfRow = document.getElementById(`table-row-${i}`).children.id('cell2');
-        console.log(childOfRow);
-        childOfRow.id = j;
-        document.getElementById(`table-row-${i}`).id = `table-row-${j}`;
+    if(delRow == 1){
+        for (let i = 2;  i <= rowCount; i++) {
+            j++;
+
+            document.getElementById(`cell-2-${i}`).innerHTML = j;
+            document.getElementById(`table-row-${i}`).id = `table-row-${j}`;
+        }
+    }else{
+        for (let i = 1;  i <= rowCount; i++) {
+            if (i == delRow) {
+                i++;
+            }
+            j++;
+    
+            document.getElementById(`cell-2-${i}`).innerHTML = j;
+            document.getElementById(`table-row-${i}`).id = `table-row-${j}`;
+        }
     }
+    
 }
 
 
