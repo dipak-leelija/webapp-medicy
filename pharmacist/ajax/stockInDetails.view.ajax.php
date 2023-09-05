@@ -58,11 +58,9 @@ $Products       = new Products();
             $StockIn = $StockIn->showStockInById($_GET['distBill']);
             // print_r($StockIn[0]);
 
-
             $distributor = $Distributor->showDistributorById($StockIn[0][1]);
 
         ?>
-
         <div class="row">
             <div class="col-6 col-sm-4">
                 <p><b> Distribubtor: </b><?php echo $distributor[0][1]; ?></p>

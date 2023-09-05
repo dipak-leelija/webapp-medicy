@@ -75,6 +75,8 @@ const setMode = (returnMode) => {
 
 const getDtls = (stokInDetialsId, batchNo, productId, productName, billdate) => {
     // alert(stokInDetialsId);
+    document.getElementById('return-mode').focus();
+
     document.getElementById('stokInDetailsId').value = stokInDetialsId;
     document.getElementById('batch-number').value = batchNo;
     document.getElementById('product-name').value = productName;
@@ -508,49 +510,49 @@ function addData() {
                     <td  style="color: red;">
                         <i class="fas fa-trash pt-3" onclick="deleteData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
-                    <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
+                    <td style="font-size:.8rem ; padding-top:1.5rem"scope="row">${slno}</td>
                     <td class="p-0 pt-3" hidden>
                         <input class="d-none col table-data w-6r" type="text" name="stok-in-details-id[]" value="${stokInDetailsId.value}" readonly>
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-10r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start; font-size:0.7rem">
+                        <input class="col table-data w-10r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                         <input class="col table-data w-10r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;" hidden>
                     </td>
                     <td class="p-0 pt-3" >
-                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly  style="text-align: start; font-size:0.7rem">
+                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate.value}" readonly  style="text-align: start; font-size:0.7rem padding-right:0.1rem"">
+                        <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly  style="text-align: start; font-size:0.7rem;">
+                        <input class="col table-data w-4r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly  style="text-align: start; font-size:0.7rem;; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly style="text-align: start; font-size:0.7rem">
+                        <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly  style="text-align: start; font-size:0.7rem">
+                        <input class="col table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly  style="text-align: start; font-size:0.7rem">
+                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="text-align: start; font-size:0.7rem">
+                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3" >
-                        <input class="col table-data w-3r" type="text" name="disc-percent[]" value="${discount.value}%" readonly  style="text-align: start; font-size:0.7rem">
+                        <input class="col table-data w-3r" type="text" name="disc-percent[]" value="${discount.value}%" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 ps-1 pt-3">
-                        <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="border-radius: 30%; font-size: .7rem; width:2rem; text-align:center; padding-right:0rem; padding-left:0rem">
+                        <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="border-radius: 30%; font-size: .7rem; width:2rem; text-align:center; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly  style="text-align: start; font-size:0.7rem">
+                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3">
-                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly  style="text-align: start; font-size:0.7rem">
+                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class=" amnt-td p-0 pt-3">
-                        <input class="col table-data W-4r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly style="text-align: start; font-size:0.7rem"></td>
+                        <input class="col table-data W-4r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;"></td>
                 </tr>`);
 
         return true;
@@ -613,6 +615,10 @@ function addData() {
 
 
 const deleteData = (slno, itemQty, gstPerItem, refundPerItem) => {
+
+    let delRow = slno;
+
+
     jQuery(`#table-row-${slno}`).remove();
     slno--;
     document.getElementById("dynamic-id").value = slno;
@@ -646,4 +652,21 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem) => {
     }
 
 
+    rowAdjustment(delRow);
+
+}
+
+
+function rowAdjustment(delRow) {
+
+    let tableId = document.getElementById("dataBody");
+    let j = 0;
+    let colIndex = 1;
+
+    for (let i = 0; i < tableId.rows.length; i++) {
+        j++;
+        let row = tableId.rows[i];
+        let cell = row.cells[colIndex];
+        cell.innerHTML = j;
+    }
 }

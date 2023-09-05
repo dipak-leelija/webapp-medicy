@@ -235,7 +235,7 @@ $todayYr = date("y");
                                                 <div class="d-flex date-field">
                                                     <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);">
                                                     <span class="date-divider">&#47;</span>
-                                                    <input class="year " type="number" id="exp-year"  onfocusout="setExpYear(this);">
+                                                    <input class="year " type="number" id="exp-year"  onfocusout="setExpYear(this);" onkeyup="setExpYEAR(this)">
                                                 </div>
                                             </div>
                                             <div class="d-none col-md-4 mt-2">
@@ -309,7 +309,7 @@ $todayYr = date("y");
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="discount">Discount%</label>
-                                                    <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount Percentage" value="0" onkeyup="getBillAmount()">
+                                                    <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount %" onkeyup="getBillAmount()">
                                                 </div>
 
                                                 <div class="col-sm-4 col-md-4 mt-2">

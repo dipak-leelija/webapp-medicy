@@ -27,8 +27,8 @@ if (isset($_GET["ptrChk"])) {
     $gst = $showProducts[0]['gst'];
 
     $maxptr = ($mrp*100)/($gst+100);
-    $maxptr = number_format($maxptr, 2);
-    
+    $maxptr = floatval($maxptr);
+    $maxptr = round($maxptr,2);
     echo $maxptr;
 }
 ?>

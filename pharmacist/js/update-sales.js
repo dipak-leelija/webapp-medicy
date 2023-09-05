@@ -901,6 +901,8 @@ const editItem = (pharmacyId, stockOutId, itemId, slno, itemQty, gstamnt, mrpPer
 }
 
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
+
+    let delRow = slno;
     
     document.getElementById('edit-row').value = slno;
 
@@ -936,4 +938,21 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
     existAmount.value = leftAmount.toFixed(2);
 
     // document.getElementById("no-item").style.display = "none";
+
+    rowAdjustment(delRow);
+}
+
+function rowAdjustment(delRow) {
+    // console.log("hello");
+    // console.log(delRow);
+    let tableId = document.getElementById("item-body");
+    let j = 0;
+    let colIndex = 1;
+
+    for (let i = 0; i < tableId.rows.length; i++) {
+        j++;
+        let row = tableId.rows[i];
+        let cell = row.cells[colIndex];
+        cell.innerHTML = j;
+    }
 }

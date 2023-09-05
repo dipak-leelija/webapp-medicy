@@ -629,37 +629,37 @@ const addData = () => {
 
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slno}">
-            <td style="color: red; padding-top:1.2rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
+            <td style="color: red; padding-top:1.2rem; width: 1rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
             <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
             <td class="pt-3" hidden>
                 <input class="table-data w-12r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
             </td>
-            <td class="pt-3" style="width:12rem; padding:0.5rem">
+            <td class="pt-3" w-12r padding:0.5rem">
                 <input class="table-data w-12r" type="text" value="${productName.value}" readonly style="font-size:0.65rem; padding:.15rem; width:9rem;">
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
             </td>
-            <td class=" pt-3" style="width:5rem; padding:0.5rem">
-                <input class="table-data w-5r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.65rem; padding:.15rem;">
+            <td class=" pt-3" style="padding:0.5rem">
+                <input class="table-data w-6r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class=" pt-3" style="width:3rem; padding:0.5rem">
-                <input class="table-data w-3r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.65rem; padding:.15rem;">
+            <td class=" pt-3" style="padding:0.5rem">
+                <input class="table-data w-4r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class=" pt-3" style="width:3rem; padding:0.5rem">
+            <td class=" pt-3" style="padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
             <td class=" pt-3" hidden>
                 <input class="table-data w-4r" type="text" name="power[]" value="${medicinePower.value}" readonly " style="display: none">
             </td>
-            <td class=" pt-3" style="width:3rem; padding:0.5rem">
+            <td class=" pt-3" style="padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly style="font-size:0.65rem; padding:.15rem;">
                 <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none" >
                 <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none">
 
             </td>
-            <td class="pt-3" style="width:2rem; padding:0.5rem">
+            <td class="pt-3" style="padding:0.5rem">
                 <input class="table-data w-2r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="pt-3" style="width:2rem; padding:0.5rem">
+            <td class="pt-3" style="padding:0.5rem">
                 <input class="table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
             <td class="pt-3" style="width:3rem; padding:0.5rem">
@@ -668,10 +668,9 @@ const addData = () => {
             <td class="pt-3" style="width:3rem; padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="pt-3" style="width:3rem; padding:0.5rem">
-                <input type="text" name="base[]" value="${base.value}" style="display: none">
-                <input  type="text" name="discount[]" value="${discount.value}" style="display: none ;">
-                <p style="color: #000; font-size: 0.65rem; width: 3rem">${base.value} <span class="bg-primary text-light p-1 disc-span" style="border-radius: 21%; font-size: 0.5rem;">${discount.value}%</span> </p>
+            <td class="pt-3 " style="width:3rem; padding:0.5rem">
+                <input class="table-data w-3r" type="text" name="base[]" value="${base.value}" hidden>
+                <input  class="table-data w-3r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.65rem;">
             </td>
             <td class="pt-3" style="width:3rem; padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}" readonly style="font-size:0.65rem; padding:.15rem;">

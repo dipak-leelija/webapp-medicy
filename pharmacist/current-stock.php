@@ -125,21 +125,15 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
                                                     $productId           = $rowStock['product_id'];
                                                     // echo $productId;
                                                     $image               = $ProductImages->showImageById($productId);
-                                                    //print_r($image);exit;
+                                                    // print_r($image);exit;
                                                     $mainImage = 'medicy-default-product-image.jpg';
-                                                    $backImage = 'medicy-default-product-image.jpg';
+                                                    
                                                     if ($image != NULL) {
                                                         // echo $mainImage;
                                                         if ($image[0]['image'] == NULL) {
                                                             $mainImage == 'medicy-default-product-image.jpg';
                                                         } else {
                                                             $mainImage = $image[0]['image'];
-                                                        }
-
-                                                        if ($image[0]['back_image'] == NULL) {
-                                                            $backImage == 'medicy-default-product-image.jpg';
-                                                        } else {
-                                                            $backImage = $image[0]['back_image'];
                                                         }
                                                     }
                                                     
@@ -167,7 +161,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
                                                             <td class='align-middle d-dlex'>
                                             
                                                                 <img class="p-img" src="../images/product-image/<?php echo $mainImage; ?>" alt="">
-                                                                <img class="p-img ml-n4 position-absolute" src="../images/product-image/<?php echo $backImage; ?>" alt="">
+                                                                <img class="p-img ml-n4 position-absolute" src="../images/product-image/<?php echo $mainImage; ?>" alt="">
     
                                                                 </td> 
     

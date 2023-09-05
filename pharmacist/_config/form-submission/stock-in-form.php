@@ -321,7 +321,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             size: landscape;
         }
     </style>
-
 </head>
 
 
