@@ -35,11 +35,11 @@ const customClick = (id, value1, value2, value3) => {
 
             var purchaseDetailsMfdDate = dataObject.mfdDate;
             var mfdMonth = purchaseDetailsMfdDate.slice(0, 2);
-            var mfdYear = purchaseDetailsMfdDate.slice(3, 5);
+            var mfdYear = purchaseDetailsMfdDate.slice(3, 7);
 
             var purchaseDetailsExpDate = dataObject.expDate;
             var expMonth = purchaseDetailsExpDate.slice(0, 2);
-            var expYear = purchaseDetailsExpDate.slice(3, 5);
+            var expYear = purchaseDetailsExpDate.slice(3, 7);
             var manuf = dataObject.manufacturer;
 
             manuf = manuf.replace(/&#39/g, "'");
@@ -246,27 +246,16 @@ const getDtls = (value) => {
         // alert(xmlhttp.responseText);
 
     } else {
-
         document.getElementById("manufacturer-id").innerHTML = "";
-
         document.getElementById("medicine-power").value = "";
-
         document.getElementById("packaging-type").innerHTML = "";
-
         document.getElementById("packaging-in").value = "";
-
         document.getElementById("weightage").value = "";
-
         document.getElementById("unit").value = "";
-
         document.getElementById("mrp").value = "";
-
         document.getElementById("gst").value = "";
-
         document.getElementById("product-id").value = "";
-
         document.getElementById("product-name").value = "";
-
     }
     document.getElementById("product-select").style.display = "none";
 }
@@ -630,49 +619,49 @@ const addData = () => {
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slno}">
             <td style="color: red; padding-top:1.2rem; width: 1rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
-            <td style="font-size:.8rem ; padding-top:1.2rem"scope="row">${slno}</td>
+            <td class="p-0 pt-3" style="font-size:.8rem ; padding-top:1.2rem"scope="row" style="width: 1rem">${slno}</td>
             <td class="pt-3" hidden>
                 <input class="table-data w-12r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
             </td>
-            <td class="pt-3" w-12r padding:0.5rem">
-                <input class="table-data w-12r" type="text" value="${productName.value}" readonly style="font-size:0.65rem; padding:.15rem; width:9rem;">
+            <td class="p-0 pt-3" padding:0.5rem">
+                <input class="table-data w-10r" type="text" value="${productName.value}" readonly style="font-size:0.65rem; padding:.15rem; width:9rem;">
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
             </td>
-            <td class=" pt-3" style="padding:0.5rem">
-                <input class="table-data w-6r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.65rem; padding:.15rem;">
+            <td class="p-0 pt-3" style="padding:0.5rem">
+                <input class="table-data w-4r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.65rem;">
             </td>
-            <td class=" pt-3" style="padding:0.5rem">
+            <td class="p-0 pt-3" style="padding:0.5rem">
                 <input class="table-data w-4r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class=" pt-3" style="padding:0.5rem">
+            <td class="p-0 pt-3" style="padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class=" pt-3" hidden>
+            <td class="p-0 pt-3" hidden>
                 <input class="table-data w-4r" type="text" name="power[]" value="${medicinePower.value}" readonly " style="display: none">
             </td>
-            <td class=" pt-3" style="padding:0.5rem">
+            <td class="p-0 pt-3" style="padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly style="font-size:0.65rem; padding:.15rem;">
                 <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none" >
                 <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none">
 
             </td>
-            <td class="pt-3" style="padding:0.5rem">
+            <td class="p-0 pt-3" style="padding:0.5rem">
                 <input class="table-data w-2r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="pt-3" style="padding:0.5rem">
+            <td class="p-0 pt-3" style="padding:0.5rem">
                 <input class="table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="pt-3" style="width:3rem; padding:0.5rem">
+            <td class="p-0 pt-3" style="width:3rem; padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="pt-3" style="width:3rem; padding:0.5rem">
+            <td class="p-0 pt-3" style="width:3rem; padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="pt-3 " style="width:3rem; padding:0.5rem">
+            <td class="p-0 pt-3 " style="width:3rem; padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="base[]" value="${base.value}" hidden>
                 <input  class="table-data w-3r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.65rem;">
             </td>
-            <td class="pt-3" style="width:3rem; padding:0.5rem">
+            <td class="p-0 pt-3" style="width:3rem; padding:0.5rem">
                 <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
             <td class="pt-3" style="width:2rem; padding:0.5rem">
@@ -781,7 +770,6 @@ function deleteData(slno, itemQty, gstPerItem, total) {
 
 
 function rowAdjustment(delRow) {
-
     let tableId = document.getElementById("dataBody");
     let j = 0;
     let colIndex = 1;
@@ -790,112 +778,155 @@ function rowAdjustment(delRow) {
         j++;
         let row = tableId.rows[i];
         let cell = row.cells[colIndex];
-        console.log(cell);
         cell.innerHTML = j;
     }
 }
 
 // ======================= Manufacturing date setting ===================
 
-const setMfdMonth = (month) => {
-    if (month.value > 12) {
-        month.value = '';
+let mfdMonthInput = document.getElementById('MFD-month');
+mfdMonthInput.addEventListener('keydown', function (event) {
+    if (event.keyCode === 9) {
+        if (mfdMonthInput.value.trim() === '') {
+            event.preventDefault();
+        }
     }
+});
 
-    if (month.value.length == 2) {
-        document.getElementById("mfd-year").focus();
+let expMonthInput = document.getElementById('exp-month');
+expMonthInput.addEventListener('keydown', function (event) {
+    if (event.keyCode === 9) {
+        if (expMonthInput.value.trim() === '') {
+            event.preventDefault();
+        }
+    }
+});
+
+const setMfdMonth = (month) => {
+    let yr = new Date();
+    let thisMonth = yr.getMonth();
+
+    if (month.value.length > 2) {
+        month.value = '';
+        month.focus();
+    } else if (month.value.length < 2) {
+        month.focus();
+    } else if (month.value.length == 2) {
+        if (month.value > 12) {
+            month.value = '';
+            month.focus();
+        } else {
+            document.getElementById("MFD-year").focus();
+        }
+    } else {
+        month.value = '';
+        month.focus();
+    }
+}
+
+const setExpMonth = (month) => {
+
+    if (month.value <= 12) {
+        if (month.value.length > 2) {
+            month.value = '';
+            month.focus();
+        } else if (month.value.length < 2) {
+            month.focus();
+        } else if (month.value.length == 2) {
+            if (month.value == 0) {
+                month.value = '';
+                month.focus();
+            } else {
+                document.getElementById("exp-year").focus();
+            }
+        } else {
+            month.value = '';
+            month.focus();
+        }
+    } else if (month.value == '') {
+        month.focus();
+    } else {
+        month.value = '';
+        month.focus();
+    }
+}
+
+
+function setMfdYEAR(year) {
+    if (year.value.length == 4) {
+        document.getElementById("exp-month").focus();
+    } else if (year.value.length > 4) {
+        year.value = '';
+        year.focus();
     }
 }
 
 function setMfdYear(year) {
-    let thisYear = new Date().getFullYear();
-    let thisMnth = new Date().getMonth();
+    let yr = new Date();
+    let thisYear = yr.getFullYear();
+    let thisMonth = yr.getMonth();
+    let mfdMnth = document.getElementById("MFD-month").value;
 
-    let mnthChk = document.getElementById("mfd-month").value;
-
-    if (year.value.length == 2) {
-        thisYear = thisYear % 100;
-        if (year.value > thisYear) {
-            document.getElementById("mfd-year").value = "";
-            ocument.getElementById("mfd-month").focus();
-        }
+    if (year.value.length < 4) {
+        document.getElementById("MFD-year").value = '';
+        document.getElementById("MFD-year").focus();
     }
-
     if (year.value.length == 4) {
         if (year.value > thisYear) {
-            document.getElementById("mfd-year").value = "";
-            ocument.getElementById("mfd-month").focus();
+            document.getElementById("MFD-year").value = '';
+            document.getElementById("MFD-year").focus();
+        }
+
+        if (year.value < thisYear) {
+            document.getElementById("exp-month").focus();
         }
 
         if (year.value == thisYear) {
-            if (mnthChk > thisMnth) {
-                document.getElementById("mfd-month").value = "";
-                document.getElementById("mfd-year").value = "";
-                document.getElementById("mfd-month").focus();
+            if (mfdMnth > thisMonth) {
+                document.getElementById("MFD-month").value = '';
+                document.getElementById("MFD-month").focus();
+            } else if (mfdMnth <= thisMonth) {
+                document.getElementById("exp-month").focus();
             }
         }
-
         document.getElementById("exp-month").focus();
     }
 }
-// ========================= Expiry Date Setting =========================
 
-const setMonth = (month) => {
-    if (month.value.length > 2) {
-        month.value = '';
-    } else {
-        if (month.value > 12) {
-            month.value = '';
-        } else {
-            if (month.value.length == 2) {
-                document.getElementById("exp-year").focus();
-            }
-        }
+
+function setExpYEAR(year) {
+    if (year.value.length == 4) {
+        document.getElementById('ptr').focus();
+    } else if (year.value.length > 4) {
+        year.value = '';
+        year.focus();
     }
 }
 
-const setYear = (year) => {
-    var MFDYR = document.getElementById("mfd-year");
-    var mfdMnth = document.getElementById("mfd-month");
-    var expMnth = document.getElementById("exp-month");
-    // var mfdLn = MFD.value.length;
+const setExpYear = (year) => {
+    var MFDYR = document.getElementById("MFD-year").value;
+    var mfdMnth = document.getElementById("MFD-month").value;
+    var expMnth = document.getElementById("exp-month").value;
 
-    // console.log(mfdLn);
-
-    if (year.value.length == 4) {
-        if (year.value < MFDYR.value) {
-            document.getElementById("exp-year").value = "";
-            document.getElementById("exp-year").focus();
-        }
-
-        if (year.value == MFDYR.value) {
-            if (mfdMnth.value > expMnth.value) {
-                document.getElementById("exp-month").value = "";
-                document.getElementById("exp-month").focus();
-            }
-        }
+    if (year.value.length < 4) {
+        year.value = '';
+        year.focus();
     }
 
-    if (year.value.length == 2) {
-        if (MFDYR.value.length == 4) {
-            MFDYR = MFDYR.value % 100;
-            if (MFDYR < year.value) {
-                document.getElementById("exp-year").value = "";
-                document.getElementById("exp-year").focus();
-            }
-        }
-        if (MFDYR.value.length == 2) {
-            if (year.value < MFDYR.value) {
-                document.getElementById("exp-year").value = "";
-                document.getElementById("exp-year").focus();
-            }
-        }
-
-        if (MFDYR.value.length == year.value.length) {
-            if (mfdMnth.value > expMnth.value) {
-                document.getElementById("exp-month").value = "";
+    if (year.value.length == 4) {
+        if (year.value == MFDYR) {
+            if (expMnth > mfdMnth) {
+                document.getElementById("exp-month").value = '';
                 document.getElementById("exp-month").focus();
             }
+
+            if (expMnth < mfdMnth) {
+                document.getElementById("exp-month").value = '';
+                document.getElementById("exp-month").focus();
+            }
+        } else if (year.value < MFDYR) {
+            year.value = '';
+            year.focus();
         }
     }
 }

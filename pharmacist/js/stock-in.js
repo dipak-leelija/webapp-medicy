@@ -114,7 +114,7 @@ const getDtls = (productId) => {
         // alert(xmlhttp.responseText);
         document.getElementById("chk-ptr").value = xmlhttp.responseText;
         document.getElementById("ptr").value = xmlhttp.responseText;
-        console.log(xmlhttp.responseText);
+        
         //==================== GST ====================
         gstUrl = 'ajax/product.getGst.ajax.php?id=' + productId;
         // alert(unitUrl);
@@ -167,7 +167,7 @@ const getDtls = (productId) => {
 let QtyInput = document.getElementById('qty');
 QtyInput.addEventListener('keydown', function (event) {
     if (event.keyCode === 9) {
-        if (QtyInput.value.trim() === '') {
+        if (QtyInput.value.trim() === '' || QtyInput.value.trim() === 0) {
             event.preventDefault();
         }
     }
@@ -198,6 +198,16 @@ let BatchNoInput = document.getElementById('batch-no');
 BatchNoInput.addEventListener('keydown', function (event) {
     if (event.keyCode === 9) {
         if (BatchNoInput.value.trim() === '') {
+            event.preventDefault();
+        }
+    }
+});
+
+// ========= ON PTR ==========
+let ptrInput = document.getElementById('ptr');
+ptrInput.addEventListener('keydown', function (event) {
+    if (event.keyCode === 9) {
+        if (ptrInput.value.trim() === '') {
             event.preventDefault();
         }
     }
