@@ -229,7 +229,7 @@ $showDistributor       = $Distributor->showDistributor();
         //=================delete stock in delete=======================
 
         const deleteStock = (id) => {
-            // alert(id);
+            alert(id);
             swal({
                     title: "Are you sure?",
                     text: "Want to Delete This Data?",

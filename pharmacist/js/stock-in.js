@@ -1,8 +1,20 @@
-var firstInput = document.getElementById('product-name');
+const firstInput = document.getElementById('product-name');
 
 window.addEventListener('load', function () {
     firstInput.focus();
 });
+
+firstInput.addEventListener('input', function (event) {
+    // Get the input value
+    const inputValue = this.value;
+
+    // Check if the first character is a space
+    if (inputValue.length > 0 && inputValue[0] === ' ') {
+        // Remove the leading space
+        this.value = inputValue.slice(1);
+    }
+});
+
 
 function searchItem(input) {
 
@@ -688,6 +700,11 @@ mfdMonthInput.addEventListener('keydown', function (event) {
         }
     }
 });
+mfdMonthInput.addEventListener('input', function (event) {
+    // Remove dots from the input value
+    this.value = this.value.replace('.', '');
+});
+
 
 let expMonthInput = document.getElementById('exp-month');
 expMonthInput.addEventListener('keydown', function (event) {
@@ -697,6 +714,12 @@ expMonthInput.addEventListener('keydown', function (event) {
         }
     }
 });
+expMonthInput.addEventListener('input', function (event) {
+    // Remove dots from the input value
+    this.value = this.value.replace('.', '');
+});
+
+
 
 const setMfdMonth = (month) => {
     let yr = new Date();

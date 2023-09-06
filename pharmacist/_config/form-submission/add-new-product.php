@@ -25,17 +25,10 @@
         // print_r($_FILES);
         // echo "<br><br>";
         $imageName         = $_FILES['img-files']['name'];
-        $tempImgName   = $_FILES['img-files']['tmp_name'];
+        $tempImgName       = $_FILES['img-files']['tmp_name'];
         $imageArrayCaount = count($imageName);
         $tempImageNameArrayCaount = count($tempImgName);
 
-        // print_r($imageName);
-        // echo "<br>";
-        // print_r($tempImgName);
-        // echo "<br>";
-        // echo $imageArrayCaount;
-        // echo "<br>";
-        // echo $tempImageNameArrayCaount;
         
         $productName        = $_POST['product-name'];
         $productName        = addslashes($productName);

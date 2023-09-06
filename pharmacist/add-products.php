@@ -49,6 +49,10 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <!-- <link href="css/add-products.css" rel="stylesheet"> -->
     <link href="css/custom/add-products.css" rel="stylesheet">
 
+    <!-- UPPY Link -->
+    <link href="https://releases.transloadit.com/uppy/v3.14.0/uppy.min.css" rel="stylesheet">
+
+    <link href="/uppy core/dist/uppy.min.css" rel="stylesheet">
 
 </head>
 
@@ -171,13 +175,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <!-- <label for="product-descreption">Product Description</label> -->
                                                 <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3" placeholder="Product Description" required></textarea>
                                             </div>
-
-
                                         </div>
-
                                     </div>
-
-
 
                                     <div class="col-md-6">
                                         <div class="col-12">
@@ -187,7 +186,6 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
                                                     <p id="num-of-files">No files chosen</p>
                                                     <div id="images">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -399,7 +397,10 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         <!-- Page level custom scripts -->
         <!-- <script src="js/demo/datatables-demo.js"></script> -->
 
+        <script src="/uppy core/dist/uppy.min.js"></script>
         <script src="js/custom/add-products.js"></script>
+
+        <!-- js library import -->
 
 
         <script>

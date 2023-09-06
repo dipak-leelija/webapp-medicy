@@ -27,6 +27,7 @@
 
 #allProducts{
     min-height: 25rem!important;
+    min-width: 14rem;
 }
 
 

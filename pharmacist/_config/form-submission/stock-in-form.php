@@ -596,22 +596,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="col-4 text-end">
                                 <p style="margin-top: -5px; margin-bottom: 0px;">
                                     <!-- <small><b>₹<?php echo floatval($totalMrp); ?></b></small> -->
-                                    <small><b>₹<?php echo "$totalMrp" ?></b></small>
+                                    <small>₹<?php echo "$totalMrp" ?></small>
                                 </p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>Net:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <!-- <small><b>₹<?php echo floatval($billAmout); ?></b></small> -->
-                                    <small><b>₹<?php echo "$billAmnt" ?></b></small>
-                                </p>
-                            </div>
-                        </div>
-
+                        
                         <div class="row">
                             <div class="col-8 text-end">
                                 <p style="margin-top: -5px; margin-bottom: 0px;"><small>You Saved:</small></p>
@@ -623,6 +612,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </p>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-8 text-end">
+                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>Net Amount:</small></p>
+                            </div>
+                            <div class="col-4 text-end">
+                                <p style="margin-top: -5px; margin-bottom: 0px;">
+                                    <!-- <small><b>₹<?php echo floatval($billAmout); ?></b></small> -->
+                                    <small><b>₹<?php echo "$billAmnt" ?></b></small>
+                                </p>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
