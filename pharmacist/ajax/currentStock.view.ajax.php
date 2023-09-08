@@ -160,9 +160,10 @@ if (isset($_GET['currentStockId'])) {
 
             </div>
 
-            <div class="d-flex justify-content-top">
+            <!-- <div class="d-flex justify-content-top">
                 <hr class="text-center w-100" style="height: 2px; color:black">
-            </div>
+            </div> -->
+            
             <?php
             $slNo = 1;
             foreach ($showStock as $stock) {
@@ -227,6 +228,9 @@ if (isset($_GET['currentStockId'])) {
 
 
             ?>
+                <div class="d-flex justify-content-top">
+                    <hr class="text-center w-100" style="height: 2px; color:black">
+                </div>
                 <div class="row mt-2 justify-content-center" flex id="<?php echo 'table-row-' . $slNo ?>">
                     <div class="col-12 ps-2">
                         <div class="row p-4">
@@ -262,9 +266,6 @@ if (isset($_GET['currentStockId'])) {
 
                         </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-top">
-                    <hr class="text-center w-100" style="height: 2px; color:black">
                 </div>
             <?php
                 $slNo++;

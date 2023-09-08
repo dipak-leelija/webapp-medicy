@@ -1,6 +1,7 @@
-// const editQTYarray = [];
 
 const customClick = (id, value1, value2, value3) => {
+
+
 
     var prodId = value1;
     var billNo = value2;
@@ -109,7 +110,23 @@ const customClick = (id, value1, value2, value3) => {
     return false;
 }
 
+//========================================================================================================
+const firstInput = document.getElementById('product-name');
 
+window.addEventListener('load', function () {
+    firstInput.focus();
+});
+
+firstInput.addEventListener('input', function (event) {
+    // Get the input value
+    const inputValue = this.value;
+
+    // Check if the first character is a space
+    if (inputValue.length > 0 && inputValue[0] === ' ') {
+        // Remove the leading space
+        this.value = inputValue.slice(1);
+    }
+});
 
 function searchItem(input) {
     // console.log(input);
@@ -383,7 +400,7 @@ const editQTY = () => {
 const addData = () => {
     var distId = document.getElementById("distributor-id");
     var distBillid = document.getElementById("distributor-bill");
-    distBill = distBillid.value.toUpperCase();
+    var distBill = distBillid.value.toUpperCase();
     var billDate = document.getElementById("bill-date");
     var dueDate = document.getElementById("due-date");
     var paymentMode = document.getElementById("payment-mode");
@@ -391,7 +408,7 @@ const addData = () => {
     var productName = document.getElementById("product-name");
     var productId = document.getElementById("product-id");
     var batch = document.getElementById("batch-no");
-    batchNo = batch.value.toUpperCase();
+    var batchNo = batch.value.toUpperCase();
     var manufId = document.getElementById("manufacturer-id");
     var medicinePower = document.getElementById("medicine-power");
     var mfdMonth = document.getElementById("MFD-month");
@@ -510,50 +527,40 @@ const addData = () => {
         return;
     }
     if (ptr.value == "") {
-        swal("Blank Field",
-            "Please enter PTR value",
-            "error")
-            .then((value) => {
-                ptr.focus();
-            });
+        swal("Blank Field","Please enter PTR value","error")
+        .then((value) => {
+            ptr.focus();
+        });
         return;
     }
     var Ptr = parseFloat(ptr.value);
     var Mrp = parseFloat(mrp.value);
     if (Ptr > Mrp) {
-        swal("Blank Field",
-            "Please check PTR value",
-            "error")
-            .then((value) => {
-                ptr.focus();
-            });
+        swal("Blank Field","Please check PTR value","error")
+        .then((value) => {
+            ptr.focus();
+        });
         return;
     }
     if (qty.value == "") {
-        swal("Blank Field",
-            "Please Enter Quantity",
-            "error")
-            .then((value) => {
-                qty.focus();
-            });
+        swal("Blank Field","Please Enter Quantity","error")
+        .then((value) => {
+            qty.focus();
+        });
         return;
     }
     if (freeQty.value == "") {
-        swal("Blank Field",
-            "Please Enter Free Quantity",
-            "error")
-            .then((value) => {
-                freeQty.focus();
-            });
+        swal("Blank Field","Please Enter Free Quantity","error")
+        .then((value) => {
+        freeQty.focus();
+        });
         return;
     }
     if (discount.value == "") {
-        swal("Blank Field",
-            "Please Enter Discount at least 0",
-            "error")
-            .then((value) => {
-                discount.focus();
-            });
+        swal("Blank Field","Please Enter Discount at least 0","error")
+        .then((value) => {
+        discount.focus();
+        });
         return;
     }
     if (gst.value == "") {
@@ -564,15 +571,17 @@ const addData = () => {
         base.focus();
         return;
     }
-    if (billAmount.value ==
-        "") {
+    if (billAmount.value == "") {
         billAmount.focus();
         return;
     }
 
     let slno = document.getElementById("dynamic-id").value;
+    let slControl = document.getElementById("serial-control").value;
     slno++;
+    slControl++;
     document.getElementById("dynamic-id").value = slno;
+    document.getElementById("serial-control").value = slControl;
 
     var qtyVal = document.getElementById("qty-val").value;
 
@@ -603,74 +612,79 @@ const addData = () => {
     //////////////////////
     // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
     let totalMrp = parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
-    // console.log(totalMrp);
-    let margin =
-        totalMrp -
-        billAmount
-            .value;
-    // console.log(margin);
-    let marginP = (
-        margin /
-        totalMrp) *
-        100;
-    // console.log(marginP);
-    // let profit
-
+    let margin = totalMrp - billAmount.value;
+    let marginP = (margin / totalMrp) * 100;
+    
     jQuery("#dataBody")
-        .append(`<tr id="table-row-${slno}">
-            <td style="color: red; padding-top:1.2rem; width: 1rem "<i class="fas fa-trash " onclick="deleteData(${slno}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
-            <td class="p-0 pt-3" style="font-size:.8rem ; padding-top:1.2rem"scope="row" style="width: 1rem">${slno}</td>
+        .append(`<tr id="table-row-${slControl}">
+            <td style="color: red; padding-top:1.2rem; width: 1rem "<i class="fas fa-trash " onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
+            <td class="p-0 pt-3" id="${slno}" style="font-size:.8rem ; padding-top:1.2rem"scope="row" style="width: 1rem">${slno}</td>
+
             <td class="pt-3" hidden>
                 <input class="table-data w-12r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
             </td>
-            <td class="p-0 pt-3" padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${productName.value}">
                 <input class="table-data w-10r" type="text" value="${productName.value}" readonly style="font-size:0.65rem; padding:.15rem; width:9rem;">
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
             </td>
-            <td class="p-0 pt-3" style="padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${batchNo}">
                 <input class="table-data w-4r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.65rem;">
             </td>
-            <td class="p-0 pt-3" style="padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${mfdDate}">
                 <input class="table-data w-4r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="p-0 pt-3" style="padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${expDate}">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
+
             <td class="p-0 pt-3" hidden>
                 <input class="table-data w-4r" type="text" name="power[]" value="${medicinePower.value}" readonly " style="display: none">
             </td>
-            <td class="p-0 pt-3" style="padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${weightage.value}${unit.value}">
                 <input class="table-data w-3r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly style="font-size:0.65rem; padding:.15rem;">
                 <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none" >
                 <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none">
-
             </td>
-            <td class="p-0 pt-3" style="padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${qty.value}">
                 <input class="table-data w-2r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="p-0 pt-3" style="padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${freeQty.value}">
                 <input class="table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="p-0 pt-3" style="width:3rem; padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${mrp.value}">
                 <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="p-0 pt-3" style="width:3rem; padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${ptr.value}">
                 <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="p-0 pt-3 " style="width:3rem; padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${discount.value}">
                 <input class="table-data w-3r" type="text" name="base[]" value="${base.value}" hidden>
                 <input  class="table-data w-3r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.65rem;">
             </td>
-            <td class="p-0 pt-3" style="width:3rem; padding:0.5rem">
+
+            <td class="p-0 pt-3" id="${marginP.toFixed(2)}">
                 <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}" readonly style="font-size:0.65rem; padding:.15rem;">
             </td>
-            <td class="pt-3" style="width:2rem; padding:0.5rem">
+
+            <td class="pt-3" id="${gst.value}">
                 <input class="table-data w-2r" type="text" name="gst[]" value="${gst.value}" readonly style="font-size:0.65rem; padding:.15rem;">
                 <input type="text" name="gstPerItem[]" value="${gstPerItem}" hidden>
             </td>
-            <td class="pt-3"style="width:3rem; padding:0.5rem">
+
+            <td class="pt-3" id="${billAmount.value}">
                 <input class="table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="font-size:0.65rem; padding:.15rem; width:3rem;">
             </td>
+
         </tr>`);
 
     document.getElementById("distributor-name").value = distId.value;
@@ -694,39 +708,85 @@ const addData = () => {
     document.getElementById("gst-val").value = onlyGst;
     document.getElementById("net-amount").value = netAmount.toFixed(2);
 
+    ///////////////////////////////////////////////////////////////////////////////////
 
-    // clearing all fied value                                                                    
-    document.getElementById("product-name").value = "";
-    document.getElementById("manufacturer-id").value = "";
-    document.getElementById("manufacturer-name").value = "";
-    document.getElementById("weightage").value = "";
-    document.getElementById("unit").value = "";
-    document.getElementById("packaging-in").value = "";
-    document.getElementById("medicine-power").value = "";
-    document.getElementById("batch-no").value = "";
+    // const dataTuple = {
+    //     slno: slno,
+    //     productId: productId,
+    //     batchNo: batchNo,
+    //     productName: productName,
+    //     ManufId: Manuf,
+    //     manufName: manufName,
+    //     weightage: weightage,
+    //     itemWeightage: itemWeightage,
+    //     unitType: unitType,
+    //     expDate: expDate,
+    //     mrp: mrp,
+    //     ptr: ptr,
+    //     qtyTypeCheck: qtyTypeCheck,
+    //     qty: qty,
+    //     discPercent: discPercent,
+    //     discPrice: discPrice,
+    //     taxable: taxable,
+    //     gst: gst,
+    //     gstAmountPerItem: netGst,
+    //     marginAmount: marginAmount,
+    //     amount: amount,
+    //     looseStock: looseStock,
+    //     loosePrice: loosePrice,
+    //     available: available,
+    //     itemComposition: itemComposition
+    // };
 
-    document.getElementById("MFD-month").value = "";
-    document.getElementById("MFD-year").value = "";
-    document.getElementById("exp-month").value = "";
-    document.getElementById("exp-year").value = "";
+    // let tupleData = JSON.stringify(dataTuple);
 
-    document.getElementById("mrp").value = "";
-    document.getElementById("ptr").value = "";
-    document.getElementById("qty").value = "";
-    document.getElementById("free-qty").value = "";
-    document.getElementById("packaging-type").value = "";
-    document.getElementById("discount").value = "";
-    document.getElementById("gst").value = "";
-    document.getElementById("base").value = "";
-    document.getElementById("bill-amount").value = "";
-    document.getElementById("purchase-id").value = "";
-    document.getElementById("updtQTYS").value = "";
-    document.getElementById("temp-bill-amount").value = "";
+    document.getElementById(slno).onclick = function () {
+        editItem(slno);
+    };
+    // document.getElementById(productName).onclick = function () {
+    //     editItem(productName);
+    // };
+    // document.getElementById(batchNo).onclick = function () {
+    //     editItem(batchNo);
+    // };
+    // document.getElementById(weightage).onclick = function () {
+    //     editItem(weightage);
+    // };
+    // document.getElementById(expDate).onclick = function () {
+    //     editItem(expDate);
+    // };
+    // document.getElementById(mrp).onclick = function () {
+    //     editItem(mrp);
+    // };
+    // document.getElementById(ptr).onclick = function () {
+    //     editItem(ptr);
+    // };
+    // document.getElementById(qty).onclick = function () {
+    //     editItem(qty);
+    // };
+    // document.getElementById(discPercent).onclick = function () {
+    //     editItem(discPercent);
+    // };
+    // document.getElementById(taxableAmount).onclick = function () {
+    //     editItem(taxableAmount);
+    // };
+    // document.getElementById(gst).onclick = function () {
+    //     editItem(gst);
+    // };
+    // document.getElementById(amount).onclick = function () {
+    //     editItem(amount);
+    // };
 
-    document.getElementById("crntGstAmnt").value = "";
+    ///////////////////////////////////////////////////////////////////////////////////
 
-    // 
-    // document.getElementById("product-detail").reset();
+    document.getElementById("data-details").reset();
+    event.preventDefault();
+}
+
+
+//=============================== ADDED ITEM EDIT FUNCTION ==============================
+const editItem = (data) =>{
+    console.log(data);
 }
 
    
@@ -736,7 +796,6 @@ const addData = () => {
 function deleteData(slno, itemQty, gstPerItem, total) {
 
     let delRow = slno;
-
 
     jQuery(`#table-row-${slno}`).remove();
     let slVal = document.getElementById("dynamic-id").value;

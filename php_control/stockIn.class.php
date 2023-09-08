@@ -131,9 +131,7 @@ class StockIn extends DatabaseConnection{
     function deleteStock($id){
         
         $deleteQry = "DELETE FROM `stock_in` WHERE `id` = '$id' ";
-
         $deleteQry = $this->conn->query($deleteQry);
-        
         return $deleteQry;
     }
 

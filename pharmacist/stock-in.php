@@ -369,20 +369,21 @@ $todayYr = date("y");
                                                     <tr>
                                                         <th scope="col"></th>
                                                         <th scope="col">
-                                                            <input class="d-none" type="number" value="0" id="dynamic-id" >
+                                                            <input type="number" value="0" id="dynamic-id" class="d-none">
                                                         </th>
+                                                        <th scope="col" class="d-none"><input type="number" value="0" id="serial-control" style="width:2rem;"></th>
                                                         <th scope="col">Items</th>
                                                         <th scope="col">Batch</th>
                                                         <th scope="col">MFD.</th>
                                                         <th scope="col">Exp.</th>
-                                                        <th scope="col" class="d-none">Power</th>
+                                                        <th scope="col" hidden>Power</th>
                                                         <th scope="col">Unit</th>
                                                         <th scope="col">Qty.</th>
                                                         <th scope="col">Free</th>
                                                         <th scope="col">MRP</th>
                                                         <th scope="col">PTR</th>
-                                                        <th scope="col" hidden>Base</th>
-                                                        <th scope="col" hidden>Margin%</th>
+                                                        <th scope="col">Base</th>
+                                                        <th scope="col">Margin%</th>
                                                         <th scope="col">DISC%</th>
                                                         <th scope="col">GST%</th>
                                                         <th scope="col">Amount</th>

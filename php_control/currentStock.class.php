@@ -287,5 +287,12 @@ class CurrentStock extends DatabaseConnection{
         return $delSql;
     }// eof stockInDelete
 
+    
+    function deleteByTabelData($table, $data){
+        $delQry = "DELETE FROM `current_stock` WHERE `$table` = '$data'";
+        $delSql = $this->conn->query($delQry);
+        return $delSql;
+    }// eof stockInDelete
+
 }//eof Products class
 

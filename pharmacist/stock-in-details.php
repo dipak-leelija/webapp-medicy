@@ -229,7 +229,7 @@ $showDistributor       = $Distributor->showDistributor();
         //=================delete stock in delete=======================
 
         const deleteStock = (id) => {
-            alert(id);
+            // alert(id);
             swal({
                     title: "Are you sure?",
                     text: "Want to Delete This Data?",
@@ -244,9 +244,10 @@ $showDistributor       = $Distributor->showDistributor();
                             url: "ajax/stockin.delete.ajax.php",
                             type: "POST",
                             data: {
-                                Currentid: id,
+                                DeleteId: id,
                             },
                             success: function(response) {
+                                console.log(response);
                                 if (response.includes('1')) {
                                     swal(
                                         "Deleted",

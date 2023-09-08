@@ -5,23 +5,40 @@ error_reporting(E_ALL);
 
 require_once '../../php_control/stockIn.class.php';
 require_once '../../php_control/stockInDetails.class.php';
+require_once '../../php_control/currentStock.class.php';
 
 $Stockin = new StockIn();
-$stockInDetails = new StockInDetails();
+$StockInDetails = new StockInDetails();
+$CurrentStock = new CurrentStock();
 
-    $stockId  = $_POST['Currentid'];
 
-    $stockInDetailsDelete = $stockInDetails->stockInDeletebyId($stockId);
+    $stockInId  = $_POST['DeleteId'];
 
-    if($stockInDetailsDelete == true){
-        $stockDelete = $Stockin->deleteStock($stockId);
+    $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
+    
+    foreach($selectStockInDetails as $stockInDetails){
+        $stockInDetailsId = $stockInDetails['id'];
+        // echo "<br>$stockInDetailsId";
+       
+        $table = 'stock_in_details_id';
+        $deleteFromCurrentStock = $CurrentStock->deleteByTabelData($table, $stockInDetailsId);
     }
 
-    if($stockDelete == true){
+    foreach($selectStockInDetails as $stockInDetails){
+        $stockInDetailsId = $stockInDetails['id'];
+        // echo "<br>$stockInDetailsId";
+        $deleteStockInDetails = $StockInDetails->stockInDeletebyDetailsId($stockInDetailsId);             
+    }
+    
+
+    if($deleteFromCurrentStock == true && $deleteStockInDetails == true){
+        // echo "<br>$stockInId";
+        $deleteFromStockIn = $Stockin->deleteStock($stockInId); 
+    }
+
+    
+    if($deleteFromStockIn == true){
         echo 1;
     }else{
         echo 0;
     }
-
-
-?>

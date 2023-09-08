@@ -176,7 +176,7 @@ class StockInDetails extends DatabaseConnection{
     return $result;
     
     }
-    //=====================================================================================================
+    //====================================== DELETE QUARRY ==================================
 
     
     function stockInDelete($distBill, $batchNo){
@@ -192,6 +192,7 @@ class StockInDetails extends DatabaseConnection{
     }// eof stockInDelete
 
     function stockInDeletebyDetailsId($Id){
+    
         $delQry = "DELETE FROM `stock_in_details` WHERE `id` = '$Id'";
         $delSql = $this->conn->query($delQry);
         return $delSql;

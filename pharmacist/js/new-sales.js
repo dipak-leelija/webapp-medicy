@@ -691,9 +691,9 @@ const addSummary = () => {
 
         <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty}, ${netGst.toFixed(2)}, ${itemMrp.toFixed(2)}, ${amount})" style="font-size:.7rem; width: .3rem"></i></td>
 
-        <td style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
+        <td id="${slno}" style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
 
-        <td id="${slno}">
+        <td id="${productName}">
             <input class="summary-product" type="text" name="product-name[]" value="${productName}" style="word-wrap: break-word; width:9rem; font-size: .7rem;" readonly>
             <input type="text" class="d-none" name="product-id[]" value="${productId}" >
         </td>
@@ -825,6 +825,9 @@ const addSummary = () => {
     document.getElementById(slno).onclick = function () {
         editItem(tupleData);
     };
+    document.getElementById(productName).onclick = function () {
+        editItem(tupleData);
+    };
     document.getElementById(batchNo).onclick = function () {
         editItem(tupleData);
     };
@@ -855,17 +858,13 @@ const addSummary = () => {
     document.getElementById(amount).onclick = function () {
         editItem(tupleData);
     };
-    //////////////////////////////////////////
 
+    //////////////////////////////////////////
 
     document.getElementById('final-doctor-name').value = doctorName;
     document.getElementById("aqty").value = "";
     document.getElementById("add-item-details").reset();
-
-
-
     event.preventDefault();
-
 }
 
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
