@@ -75,6 +75,7 @@ if(isset($_POST['blNo'])){
         "purchaseId"    => $purchaseId,
         "productId"     => $productId,
         "productName"   => $prodName,
+        "manufId"       => $manufID,
         "manufacturer"  => $manufName,
         "billNo"        => $distBillNo,
         "batchNo"       => $prodBatchNo,

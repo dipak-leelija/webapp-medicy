@@ -330,10 +330,11 @@ $doctor = $Doctors->showDoctors();
                                             <thead>
                                                 <tr>
                                                     <th scope="col" style="width: .3rem; padding: .5rem;">
-                                                        <input type="number" value="0" id="dynamic-id" class="d-none">
+                                                        <input type="number" value="0" id="dynamic-id" class="d-none" style="width: 2rem;">
                                                     </th>
-                                                    <!-- <th scope="col"><input class="d-none" type="number" value="0" id="dynamic-id">
-                                                    </th> -->
+                                                    <th scope="col" style="width: .3rem; padding: .5rem;" class="d-none">
+                                                        <input type="number" value="0" id="serial-control" style="width: 2rem;">
+                                                    </th>
                                                     <th scope="col"></th>
                                                     <th scope="col">Item Name</th>
                                                     <th scope="col" class="d-none">Manuf Data</th>

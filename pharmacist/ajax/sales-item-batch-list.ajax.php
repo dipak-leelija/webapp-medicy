@@ -18,12 +18,18 @@ $Products     = new Products();
 
 require_once '../../employee/config/dbconnect.php';
 $searchBatch = FALSE;
-if(isset($_GET['batchDetails'])){
-    $productID = $_GET['batchDetails'];
+if(isset($_GET['prodId'])){
+    $productID = $_GET['prodId'];
+    // $batch = $_GET['batch-no'];
+    // $qty = $_GET['qty'];
+    // $flag = $_GET['checkFlag'];
+
     $ProductBatchData = $CurrentStock->showCurrentStocByProductId($productID);
+    // print_r($ProductBatchData);
+
 }
 
-if($ProductBatchData != null){
+if($ProductBatchData != ''){
     // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$serchR."</a></h5>";
     ?>
 <div class="row mx-2 p-1 text-muted border-bottom" style="max-width: 20rem;">
@@ -62,7 +68,7 @@ if($ProductBatchData != null){
 
     }
 }
-// else{
-//     echo "Result Not Found";
-// }
+else{
+    echo "Result Not Found";
+}
 ?>

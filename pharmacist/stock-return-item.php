@@ -296,7 +296,7 @@ $showDistributor       = $Distributor->showDistributor();
                                         </div>
 
                                         <div class="col-md-3 col-6 mt-auto text-right">
-                                            <button class="btn btn-primary w-100 " onclick="addData()">Add
+                                            <button type="button" class="btn btn-primary w-100 " onclick="addData()">Add
                                                 <i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
@@ -361,7 +361,7 @@ $showDistributor       = $Distributor->showDistributor();
                                         <p>Distributor :
                                             <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name" readonly style="margin-left: 0rem;">
                                             <input class="summary-inp w-60" name="dist-id" id="dist-id" type="text" hidden readonly>
-                                            <input class="summary-inp w-60" name="dist-bill-no" id="dist-bill-no" type="text" readonly>
+                                            <input class="d-none summary-inp w-60" name="dist-bill-no" id="dist-bill-no" type="text" readonly>
                                         </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">

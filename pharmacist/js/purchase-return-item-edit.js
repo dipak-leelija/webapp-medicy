@@ -1,3 +1,6 @@
+const rtnQtyInputField = document.getElementById('return-qty');
+const rtnFreeQtyInputField = document.getElementById('ret-free-qty');
+
 //===================================== ON SELECT EDIT DATA ============================RD==============
 
 const customEdit = (id, value) => {
@@ -7,7 +10,7 @@ const customEdit = (id, value) => {
 
     // console.log(value);
     // console.log(row);
-    // console.log(id);
+    console.log(id);
 
     $.ajax({
         url: "ajax/stockReturnEdit.ajax.php",
@@ -16,7 +19,7 @@ const customEdit = (id, value) => {
             EditId: value
         },
         success: function (data) {
-            // alert(data);
+            alert(data);
 
             var dataObject = JSON.parse(data);
             // alert("hello");
@@ -129,16 +132,33 @@ const customEdit = (id, value) => {
 //     }
 // }
 
-const freeReturnCheck = () =>{
+
+//////////////////////////////////////////////////////////////////////////////////
+
+rtnQtyInputField.addEventListener('input', function () {
+    const inputValue1 = rtnQtyInputField.value;
+    const sanitizedValue1 = inputValue1.replace(/[.]/g, '');
+    rtnQtyInputField.value = sanitizedValue1;
+});
+
+rtnFreeQtyInputField.addEventListener('input', function () {
+    const inputValue2 = inputField2.value;
+    const sanitizedValue2 = inputValue2.replace(/[.]/g, '');
+    inputField2.value = sanitizedValue2;
+});
+
+//////////////////////////////////////////////////////////////////////////////////
+
+const freeReturnCheck = () => {
     let editFreeRetunr = document.getElementById('ret-free-qty').value;
     console.log("edit free return qty : ", editFreeRetunr);
     let currentFreeQty = document.getElementById('current-free-qty').value;
     let purchaseFreeQty = document.getElementById('purchse-free-qty').value;
     let currenQty = document.getElementById('current-total-qty').value;
-    if(parseInt(currenQty) < parseInt(purchaseFreeQty)){
+    if (parseInt(currenQty) < parseInt(purchaseFreeQty)) {
         swal("Error", "Return Quantity Must Less Then Avilable Quantity", "error");
         document.getElementById('ret-free-qty').value = currenQty;
-    }else if(parseInt(editFreeRetunr) > parseInt(purchaseFreeQty)){
+    } else if (parseInt(editFreeRetunr) > parseInt(purchaseFreeQty)) {
         swal("Error", "Return Quantity Must Less Then Avilable Quantity", "error");
         document.getElementById('ret-free-qty').value = purchaseFreeQty;
     }
@@ -181,9 +201,6 @@ const getRefund = (returnQty) => {
     }
 }
 
-
-
-// ##################################################################################
 // ##################################################################################
 
 //geeting bills by clicking on add button
@@ -191,8 +208,8 @@ const getRefund = (returnQty) => {
 const addData = async () => {
 
     let paymentMode = document.getElementById("return-mode").value;
-    
-    let stockReturnId = document.getElementById("stock-return-id").value; 
+
+    let stockReturnId = document.getElementById("stock-return-id").value;
     let stockReturnDetailsItemId = document.getElementById("stock-returned-details-item-id").value;
     let stockInItemId = document.getElementById("stock-in-item-id").value;
 
@@ -213,36 +230,39 @@ const addData = async () => {
     let GSTAmount = document.getElementById("gst-amount").value;
     let refundAmount = document.getElementById("refund-amount").value;
 
-    let slno = document.getElementById("dynamic-id").value;
-    slno++;
-    document.getElementById("dynamic-id").value = slno;
 
-    // // return gst generating
-    // let withoutGst = (ptr.value * returnQty.value);
-    // let taxAmount = (gst.value / 100 * withoutGst);
-
-    // var returnGstAmount = document.getElementById("return-gst");
-    // returnGstAmount = parseFloat(returnGstAmount.value) + taxAmount;
-    // // console.log("tax amount : ",taxAmount);
-    // returnGstAmount = returnGstAmount.toFixed(2);
-    // // console.log("teturn gst amount : ",returnGstAmount);
-    // document.getElementById("return-gst").value = returnGstAmount;
-    if(paymentMode == ""){
-        window.alert("select payment mode");
+    if (paymentMode == "") {
+        swal("Failed!", "Payment mode not selected! Please select payment mode.", "error");
         document.getElementById("return-mode").value = focus();
         return;
     }
+
+    if (returnFreeQty == "") {
+        swal("Worning!", "Return Free qantity can't be blank. Minimum value is 0.", "worning");
+        document.getElementById("ret-free-qty").value = 0;
+    }
+
+    //////////////// sl contorl \\\\\\\\\\\\\\\\\\\\\\\
+
+    let slno = document.getElementById("dynamic-id").value;
+    let slControl = document.getElementById("serial-control").value;
+    slno++;
+    slControl++;
+    document.getElementById("dynamic-id").value = slno;
+    document.getElementById("serial-control").value = slControl;
+
+    ///////////////////////////////////////////////////////////
 
     if (refundAmount != null) {
         const appendData = () => {
 
             jQuery("#dataBody")
-                .append(`<tr id="table-row-${slno}">
+                .append(`<tr id="table-row-${slControl}" id="row-${slControl}-col-1">
                     <td  style="color: red;">
-                        <i class="fas fa-trash pt-2" onclick="delData(${slno}, ${GSTAmount}, ${parseInt(returnQty) + parseInt(returnFreeQty)}, ${refundAmount})"></i>
+                        <i class="fas fa-trash p-0 pt-2" onclick="delData(${slControl}, ${GSTAmount}, ${parseInt(returnQty) + parseInt(returnFreeQty)}, ${refundAmount})"></i>
                     </td>
 
-                    <td class="p-0 pt-3" style="padding:1.2rem; text-align: center; font-size:0.75rem;" scope="row">${slno}</td>
+                    <td class="p-0 pt-3" id="row-${slControl}-col-2" style="font-size:0.75rem;">${slno}</td>
 
                     <td class="d-none p-0 pt-3">
                         <input class="col table-data w-4r" type="text" name="stock-return-id[]" value="${stockReturnId}" readonly >
@@ -256,49 +276,49 @@ const addData = async () => {
                         <input class="col table-data w-6r" type="text" name="stock-in-details-item-id[]" value="${stockInItemId}" readonly style="font-size: 0.75rem">
                     </td>
 
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-9r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start; font-size:0.6rem;">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-6">
+                        <input class="col table-data w-10r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start; font-size:0.7rem;">
                         <input class="d-none col table-data w-9r" type="text" name="productId[]" value="${productId}" readonly style="text-align: start;" hidden>
                     </td>
 
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber}" readonly style="font-size: 0.6rem">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-7">
+                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber}" readonly style="font-size: 0.7rem">
                     </td>
 
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size: 0.6rem">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-8">
+                        <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size: 0.7rem">
                     </td>
 
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="setof[]" value="${unit}" readonly style="font-size: 0.6rem">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-9">
+                        <input class="col table-data w-4r" type="text" name="setof[]" value="${unit}" readonly style="font-size: 0.7rem">
                     </td>
 
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp}" readonly style="font-size: 0.6rem">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-10">
+                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp}" readonly style="text-align: end; font-size: 0.7rem">
                     </td>
 
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr}" readonly style="font-size: 0.6rem">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-11">
+                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr}" readonly style="text-align: end; font-size: 0.7rem">
                     </td>
 
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="gst[]" value="${gst}" readonly style="font-size: 0.6rem">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-13">
+                        <input class="col table-data w-4r" type="text" name="disc[]" value="${discount}" readonly style="text-align: end; font-size: 0.7rem">
                     </td>
 
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-4r" type="text" name="disc[]" value="${discount}" readonly style="font-size: 0.6rem">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-12">
+                        <input class="col table-data w-4r" type="text" name="gst[]" value="${gst}" readonly style="text-align: end; font-size: 0.7rem">
                     </td>
 
-                    <td class="p-0 pt-3">
-                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${returnQty}" readonly style="font-size: 0.6rem">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-14">
+                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${returnQty}" readonly style="text-align: end; font-size: 0.7rem">
                     </td>
 
-                    <td class="p-0 pt-3"> 
-                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${returnFreeQty}" readonly style="font-size: 0.6rem">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-15"> 
+                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${returnFreeQty}" readonly style="text-align: end; font-size: 0.7rem">
                     </td>
 
-                    <td class=" amnt-td p-0 pt-3">
-                        <input class="col table-data W-4r" type="text" name="refund-amount[]" value="${refundAmount}" readonly style="font-size: 0.6rem">
+                    <td class=" amnt-td p-0 pt-3" id="row-${slControl}-col-16">
+                        <input class="col table-data w-5r" type="text" name="refund-amount[]" value="${refundAmount}" readonly style="text-align: end; font-size: 0.7rem">
                     </td>
                 </tr>`);
 
@@ -338,7 +358,7 @@ const addData = async () => {
             } else {
                 document.getElementById("NetRefund").value = perItemRefund;
             }
-//check this area
+
             let perItemGstAmount = document.getElementById("gst-amount").value;
             if (slno != null) {
                 var netGst = document.getElementById("return-gst").value;
@@ -351,50 +371,52 @@ const addData = async () => {
 
             // distributor_name.value = '';
 
-            document.getElementById("stock-return-id").value = ''; 
+            document.getElementById("stock-return-id").value = '';
             document.getElementById("stock-returned-details-item-id").value = '';
             document.getElementById("stock-in-item-id").value = '';
 
             document.getElementById("product-id").value = '';
             document.getElementById('product_name').value = '';
-            document.getElementById("batch-number").value = '';
 
-            document.getElementById("exp-date").value = '';
+            // document.getElementById("batch-number").value = '';
+            // document.getElementById("exp-date").value = '';
+            // document.getElementById("unit").value = '';
+            // document.getElementById("mrp").value = '';
+            // document.getElementById("ptr").value = '';
+            // document.getElementById("gst").value = '';
+            // document.getElementById("discount").value = '';
+            // document.getElementById("return-qty").value = '';
+            // document.getElementById("ret-free-qty").value = '';
+            // document.getElementById("gst-amount").value = '';
+            // document.getElementById("refund-amount").value = '';
+            // document.getElementById("current-qty").value = '';
+            // document.getElementById("current-free-qty").value = '';
+            // document.getElementById("current-total-qty").value = '';
+            // document.getElementById("purchse-qty").value = '';
+            // document.getElementById("purchse-free-qty").value = '';
+            // // document.getElementById("prev-ret-qty").value = '';
+            // // document.getElementById("prev-ret-free-qty").value = '';
+            // document.getElementById("bill-date").value = '';
+            // document.getElementById("returnDate").value = '';
 
-            document.getElementById("unit").value = '';
-            document.getElementById("mrp").value = '';
-            document.getElementById("ptr").value = '';
-            document.getElementById("gst").value = '';
-            document.getElementById("discount").value = '';
 
-            document.getElementById("return-qty").value = '';
-            document.getElementById("ret-free-qty").value = '';
-            document.getElementById("gst-amount").value = '';
-            document.getElementById("refund-amount").value = '';
-
-            document.getElementById("current-qty").value = '';
-            document.getElementById("current-free-qty").value = '';
-            document.getElementById("current-total-qty").value = '';
-
-            document.getElementById("purchse-qty").value = '';
-            document.getElementById("purchse-free-qty").value = '';
-            // document.getElementById("prev-ret-qty").value = '';
-            // document.getElementById("prev-ret-free-qty").value = '';
-
-            document.getElementById("bill-date").value = '';
-            document.getElementById("returnDate").value = '';
-           
-        };
+            document.getElementById("stock-return-edit").reset();
+            event.preventDefault();
+        }
     }
 }
 
 
 // ================================ Delet Data ================================
 const delData = (slno, gstPerItem, ReturnQty, refund) => {
+
+    let delRow = slno;
+
     // console.log(slno, gstPerItem, ReturnQty, refund)
     jQuery(`#table-row-${slno}`).remove();
     slno--;
-    document.getElementById("dynamic-id").value = slno;
+    let slVal = document.getElementById("dynamic-id").value;
+    document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
     //minus item
     let items = document.getElementById("items-qty");
@@ -416,4 +438,32 @@ const delData = (slno, gstPerItem, ReturnQty, refund) => {
     let net = document.getElementById("NetRefund");
     let finalAmount = net.value - refund;
     net.value = finalAmount.toFixed(2);
+
+    rowAdjustment(delRow);
 }
+
+////////////////// ROW ADJUSTMENT ///////////////////
+
+function rowAdjustment(delRow) {
+    let tableId = document.getElementById("dataBody");
+    let j = 0;
+    let colIndex1 = 1;
+
+    for (let i = 0; i < tableId.rows.length; i++) {
+        j++;
+
+        let row = tableId.rows[i];
+        let cell1 = row.cells[colIndex1];
+        cell1.innerHTML = j;
+    }
+}
+
+
+
+////////////////////////////////// return qty field disable control /////////////////////////////////////
+
+rtnQtyInputField.addEventListener('input', function () {
+    if (!isClickFunctionCalled) {
+        rtnQtyInputField.setAttribute('disabled', 'true');
+    }
+});

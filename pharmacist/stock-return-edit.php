@@ -36,11 +36,15 @@ $showDistributor       = $Distributor->showDistributor();
 
 if (isset($_GET["returnId"])) {
     $returnId = $_GET["returnId"];
-    // echo $returnId;
+
+    $returnDetails = $StockReturn->showStockReturnDetails($_GET['returnId']);
+    // print_r($returnDetails);
+
     $table = 'id';
     $value = $returnId;
     $stokReturnData = $StockReturn->stockReturnFilter($table, $value);
     // print_r($stokReturnData);
+
     foreach ($stokReturnData as $returnData) {
         $stockReturnId = $returnData['id'];
         $distId = $returnData["distributor_id"];
@@ -50,7 +54,7 @@ if (isset($_GET["returnId"])) {
         $totalReturnQty = $returnData["total_qty"];
         $returnGSTAmount = $returnData["gst_amount"];
         $refundMode = $returnData["refund_mode"];
-        $NetRefundAmount = $returnData["refund_amount"];        
+        $NetRefundAmount = $returnData["refund_amount"];
     }
 
 
@@ -146,7 +150,7 @@ if (isset($_GET["returnId"])) {
                                             <b> Select Distributor First </b>
                                         </div>
                                     </div>-->
-                                    <input class="d-none" type="text" id="product-id" >
+                                    <input class="d-none" type="text" id="product-id">
                                     <input class="upr-inp mb-1" id="product_name" value="" readonly>
                                 </div>
 
@@ -186,118 +190,118 @@ if (isset($_GET["returnId"])) {
 
                             </div>
                             <hr>
+                            <form id="stock-return-edit">
+                                <div class="row">
+                                    <div class="col-md-6 col-12 ">
+                                        <div class="row">
+                                            <div class="col-md-4 col-12">
+                                                <label class="mb-1 mt-3" for="batch-number">Batch Number :</label>
+                                                <input class="upr-inp mb-1" id="batch-number" value="" readonly>
+                                            </div>
 
-                            <div class="row">
-                                <div class="col-md-6 col-12 ">
-                                    <div class="row">
-                                        <div class="col-md-4 col-12">
-                                            <label class="mb-1 mt-3" for="batch-number">Batch Number :</label>
-                                            <input class="upr-inp mb-1" id="batch-number" value="" readonly>
+                                            <div class="d-none col-md-4 col-12">
+                                                <label class="mb-1 mt-3" for="stock-in-item-id">Stock In Item Id :</label>
+                                                <input class="upr-inp mb-1" id="stock-in-item-id" value="" readonly>
+                                            </div>
+
+                                            <div class="d-none col-md-4 col-12">
+                                                <label class="mb-1 mt-3" for="stock-return-id">Stock Return Id</label>
+                                                <input class="upr-inp mb-1" id="stock-return-id" value="" readonly>
+                                            </div>
+
+                                            <div class="d-none col-md-6 col-12">
+                                                <label class="mb-1 mt-3" for="stock-returned-details-item-id">Stock Return Details Item Id</label>
+                                                <input class="upr-inp mb-1" id="stock-returned-details-item-id" value="" readonly>
+                                            </div>
+
+                                            <div class="col-md-4 col-12">
+                                                <label class="mb-1 mt-3" for="bill-date">Bill Date :</label>
+                                                <input class="upr-inp mb-1" id="bill-date" value="" readonly>
+                                            </div>
+
+                                            <div class="col-md-4 col-12">
+                                                <label class="mb-1 mt-3" for="returnDate">Return Date :</label>
+                                                <input class="upr-inp mb-1" id="returnDate" value="" readonly>
+                                            </div>
+
                                         </div>
 
-                                        <div class="d-none col-md-4 col-12">
-                                            <label class="mb-1 mt-3" for="stock-in-item-id">Stock In Item Id :</label>
-                                            <input class="upr-inp mb-1" id="stock-in-item-id" value="" readonly>
-                                        </div>
-
-                                        <div class="d-none col-md-4 col-12">
-                                            <label class="mb-1 mt-3" for="stock-return-id">Stock Return Id</label>
-                                            <input class="upr-inp mb-1" id="stock-return-id" value="" readonly>
-                                        </div>
-
-                                        <div class="d-none col-md-6 col-12">
-                                            <label class="mb-1 mt-3" for="stock-returned-details-item-id">Stock Return Details Item Id</label>
-                                            <input class="upr-inp mb-1" id="stock-returned-details-item-id" value="" readonly>
-                                        </div>
-
-                                        <div class="col-md-4 col-12">
-                                            <label class="mb-1 mt-3" for="bill-date">Bill Date :</label>
-                                            <input class="upr-inp mb-1" id="bill-date" value="" readonly>
-                                        </div>
-
-                                        <div class="col-md-4 col-12">
-                                            <label class="mb-1 mt-3" for="returnDate">Return Date :</label>
-                                            <input class="upr-inp mb-1" id="returnDate" value="" readonly>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-12 mt-3">
-                                        <label for="returnDescription">Description</label>
-                                        <textarea class="form-control" id="retrunDescription" rows="3"></textarea>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-6 col-12 mt-3">
-                                    <!-- first row  -->
-                                    <div class="row">
-
-                                        <div class="col-md-2 col-6">
-                                            <label class="mb-0 mt-1" for="unit"> Unit</label>
-                                            <input type="text" class="upr-inp" id="unit" value="" readonly>
-                                        </div>
-
-                                        <div class="col-md-2 col-6">
-                                            <label class="mb-0 mt-1" for="mrp">MRP</label>
-                                            <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
-                                        </div>
-
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="ptr">PTR</label>
-                                            <input type="text" class="upr-inp" name="ptr" id="ptr" readonly>
-                                        </div>
-
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="discount">Disc% </label>
-                                            <input type="text" class="upr-inp" name="discount" id="discount" value="" readonly>
-                                        </div>
-
-                                        <div class="col-md-2 col-6">
-                                            <label class="mb-0 mt-1" for="gst">GST%</label>
-                                            <input type="text" class="upr-inp" name="gst" id="gst" readonly>
+                                        <div class="col-12 mt-3">
+                                            <label for="returnDescription">Description</label>
+                                            <textarea class="form-control" id="retrunDescription" rows="3"></textarea>
                                         </div>
 
                                     </div>
-                                    <!-- first row end  -->
-                                    <!-- second row  -->
-                                    <div class="row mt-md-2">
 
-                                    </div>
-                                    <!-- end second row  -->
+                                    <div class="col-md-6 col-12 mt-3">
+                                        <!-- first row  -->
+                                        <div class="row">
 
-                                    <!-- third row  -->
-                                    <div class="row mt-md-2">
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="exp-date">Expiry</label>
-                                            <input class="upr-inp" type="text" id="exp-date" value="" readonly>
+                                            <div class="col-md-2 col-6">
+                                                <label class="mb-0 mt-1" for="unit"> Unit</label>
+                                                <input type="text" class="upr-inp" id="unit" value="" readonly>
+                                            </div>
+
+                                            <div class="col-md-2 col-6">
+                                                <label class="mb-0 mt-1" for="mrp">MRP</label>
+                                                <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
+                                            </div>
+
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="ptr">PTR</label>
+                                                <input type="text" class="upr-inp" name="ptr" id="ptr" readonly>
+                                            </div>
+
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="discount">Disc% </label>
+                                                <input type="text" class="upr-inp" name="discount" id="discount" value="" readonly>
+                                            </div>
+
+                                            <div class="col-md-2 col-6">
+                                                <label class="mb-0 mt-1" for="gst">GST%</label>
+                                                <input type="text" class="upr-inp" name="gst" id="gst" readonly>
+                                            </div>
+
                                         </div>
+                                        <!-- first row end  -->
+                                        <!-- second row  -->
+                                        <div class="row mt-md-2">
 
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-qty">Live Qty: </label>
-                                            <input type="text" class="upr-inp" name="current-qty" id="current-qty" readonly>
                                         </div>
+                                        <!-- end second row  -->
 
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-free-qty">Live Free Qty:</label>
-                                            <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty" readonly>
-                                        </div>
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-total-qty">Current Qty:</label>
-                                            <input type="text" class="upr-inp" name="current-total-qty" id="current-total-qty" readonly>
-                                        </div>
+                                        <!-- third row  -->
+                                        <div class="row mt-md-2">
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="exp-date">Expiry</label>
+                                                <input class="upr-inp" type="text" id="exp-date" value="" readonly>
+                                            </div>
 
-                                        <div class="d-none col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="purchse-qty">Purchase Qty:</label>
-                                            <input type="text" class="upr-inp" name="purchse-qty" id="purchse-qty" readonly>
-                                        </div>
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="current-qty">Live Qty: </label>
+                                                <input type="text" class="upr-inp" name="current-qty" id="current-qty" readonly>
+                                            </div>
 
-                                        <div class="d-none col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="purchse-free-qty">Free Qty:</label>
-                                            <input type="text" class="upr-inp" name="purchse-free-qty" id="purchse-free-qty" readonly>
-                                        </div>
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="current-free-qty">Live Free Qty:</label>
+                                                <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty" readonly>
+                                            </div>
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="current-total-qty">Current Qty:</label>
+                                                <input type="text" class="upr-inp" name="current-total-qty" id="current-total-qty" readonly>
+                                            </div>
 
-                                        <!-- <div class=" col-md-3 col-6">
+                                            <div class="d-none col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="purchse-qty">Purchase Qty:</label>
+                                                <input type="text" class="upr-inp" name="purchse-qty" id="purchse-qty" readonly>
+                                            </div>
+
+                                            <div class="d-none col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="purchse-free-qty">Free Qty:</label>
+                                                <input type="text" class="upr-inp" name="purchse-free-qty" id="purchse-free-qty" readonly>
+                                            </div>
+
+                                            <!-- <div class=" col-md-3 col-6">
                                             <label class="mb-0 mt-1" for="prev-ret-qty">Prev return Qty:</label>
                                             <input type="text" class="upr-inp" name="prev-ret-qty" id="prev-ret-qty" readonly>
                                         </div>
@@ -308,45 +312,42 @@ if (isset($_GET["returnId"])) {
                                         </div> -->
 
 
+                                        </div>
+                                        <!-- end third row  -->
+
+                                        <!-- fourth row  -->
+                                        <div class="row mt-md-2">
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="return-qty">Returned Qty:</label>
+                                                <input type="number" class="upr-inp focus-border" name="return-qty" id="return-qty" value="" onkeyup="getRefund(this.value);" disabled>
+                                            </div>
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="ret-free-qty">Return F.Qty:</label>
+                                                <input type="number" class="upr-inp focus-border" name="ret-free-qty" id="ret-free-qty" value="" onkeyup="freeReturnCheck()">
+                                            </div>
+
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="refund-amount">Refund:</label>
+                                                <input type="text" class="upr-inp focus-border" name="refund-amount" id="refund-amount" value="" readonly>
+                                            </div>
+
+                                            <div class="d-none col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="gst-amount">Gst Amount:</label>
+                                                <input type="text" class="upr-inp focus-border" name="gst-amount" id="gst-amount" value="">
+                                            </div>
+
+                                            <div class="col-md-3 col-6 mt-auto text-right">
+                                                <button type="button" class="btn btn-primary w-100 " id="add-btn" onclick="addData()">Add
+                                                    <i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <!-- fourth row  -->
+
                                     </div>
-                                    <!-- end third row  -->
-
-                                    <!-- fourth row  -->
-                                    <div class="row mt-md-2">
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="return-qty">Returned Qty:</label>
-                                            <input type="text" class="upr-inp focus-border" name="return-qty" id="return-qty" value="" onkeyup="getRefund(this.value);">
-                                        </div>
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="ret-free-qty">Return F.Qty:</label>
-                                            <input type="text" class="upr-inp focus-border" name="ret-free-qty" id="ret-free-qty" value="" onkeyup="freeReturnCheck()">
-                                        </div>
-
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="refund-amount">Refund:</label>
-                                            <input type="text" class="upr-inp focus-border" name="refund-amount" id="refund-amount" value="">
-                                        </div>
-
-                                        <div class="d-none col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="gst-amount">Gst Amount:</label>
-                                            <input type="text" class="upr-inp focus-border" name="gst-amount" id="gst-amount" value="">
-                                        </div>
-
-                                        <div class="col-md-3 col-6 mt-auto text-right">
-                                            <button class="btn btn-primary w-100 " onclick="addData()">Add
-                                                <i class="fas fa-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <!-- fourth row  -->
-
                                 </div>
-                            </div>
+                            </form>
 
 
-                        </div>
-                        <div class="row">
-
-                            <!-- </form> -->
                         </div>
                     </div>
                     <!-- /end Add Product  -->
@@ -361,31 +362,32 @@ if (isset($_GET["returnId"])) {
                                     <table class="table item-table">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th scope="col"><input type="number" value="0" id="dynamic-id" style="display:none"></th>
-                                                <th scope="col" style="width: 0.5rem; padding:0%"></th>
+                                                <th scope="col"><input type="number" value="<?php echo count($returnDetails); ?>" id="dynamic-id" style="width: 1rem;"></th>
+                                                <th scope="col" class="" style="width:1rem;"><input type="number" value="<?php echo count($returnDetails); ?>" id="serial-control" style="width: 1rem;"></th>
                                                 <th scope="col" class="d-none">StockReturnId</th>
                                                 <th scope="col" class="d-none">StockReturnDetailsId</th>
                                                 <th scope="col" class="d-none">StockInDetailsId</th>
 
-                                                <th scope="col" style="font-size: 0.7rem;">Items</th>
-                                                <th scope="col" style="font-size: 0.7rem; width: 4rem;">Batch No.</th>
-                                                <th scope="col" style="font-size: 0.7rem;">Exp</th>
-                                                <th scope="col" style="font-size: 0.7rem;">Unit</th>
-                                                <th scope="col" style="font-size: 0.7rem;" hidden>P.Qty.</th>
-                                                <th scope="col" style="font-size: 0.7rem;" hidden>Free</th>
-                                                <th scope="col" style="font-size: 0.7rem;">MRP</th>
-                                                <th scope="col" style="font-size: 0.7rem;">PTR</th>
-                                                <th scope="col" style="font-size: 0.7rem;">Disc%</th>
-                                                <th scope="col" style="font-size: 0.7rem;">GST%</th>
-                                                <th scope="col" style="font-size: 0.7rem;">Rt.Qty</th>
-                                                <th scope="col" style="font-size: 0.7rem;">Rt.F.Qty</th>
-                                                <th scope="col" style="font-size: 0.7rem;">Refund</th>
+                                                <th scope="col" >Items</th>
+                                                <th scope="col" >Batch</th>
+                                                <th scope="col" >Exp</th>
+                                                <th scope="col" >Unit</th>
+                                                <th scope="col"  hidden>P.Qty.</th>
+                                                <th scope="col" hidden>Free</th>
+                                                <th scope="col" >MRP</th>
+                                                <th scope="col" >PTR</th>
+                                                <th scope="col" >Disc%</th>
+                                                <th scope="col" >GST%</th>
+                                                <th scope="col" >Rt.Qty</th>
+                                                <th scope="col" >Rt.F.Qty</th>
+                                                <th scope="col" >Refund</th>
 
                                             </tr>
                                         </thead>
                                         <tbody id="dataBody">
                                             <?php
                                             $slno = 0;
+                                            $slcontrol = 0;
                                             // showStockReturnById();
                                             $returnBills = $StockReturn->showStockReturnDetails($_GET['returnId']);
 
@@ -394,7 +396,7 @@ if (isset($_GET["returnId"])) {
                                             foreach ($returnBills as $bill) {
 
                                                 $returnQTYperItems = $bill['return_qty'];
-                                                
+
                                                 $returnFreeQtyPerItems = $bill['return_free_qty'];
                                                 $perItemsTotalReturnQty = intval($returnQTYperItems) + intval($returnFreeQtyPerItems);
 
@@ -403,92 +405,91 @@ if (isset($_GET["returnId"])) {
                                                 ////////// gst amount calculation per item \\\\\\\\\\\\\
                                                 $itemPtr = $bill['ptr'];
                                                 $discPercent = $bill['disc'];
-                                                $gstPerItem = floatval($refundAmountPerItem) - (((floatval($itemPtr) - ((floatval($itemPtr) * floatval($discPercent)/100))) * intval($returnQTYperItems)));
+                                                $gstPerItem = floatval($refundAmountPerItem) - (((floatval($itemPtr) - ((floatval($itemPtr) * floatval($discPercent) / 100))) * intval($returnQTYperItems)));
                                                 /////////////////////////////////////////////////////
 
                                                 $productid = $bill['product_id'];
                                                 $productDetails = $products->showProductsById($productid);
-                                                
+
                                                 $productName = $productDetails[0]['name'];
                                                 $productUnit = $productDetails[0]['unit'];
 
                                                 $slno += 1;
-
+                                                $slcontrol += 1;
                                             ?>
-
                                                 <tr id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>">
 
-                                                    <td style="color: red;" style="padding-top: 0rem">
-                                                        <i class="fas fa-trash p-0 pt-2" id='<?php echo $slno; ?>' value1='<?php echo $gstPerItem; ?>' value2='<?php echo $perItemsTotalReturnQty; ?>' value3='<?php echo $refundAmountPerItem; ?>' onclick='delData("<?php echo $slno; ?>", "<?php echo $gstPerItem; ?>", "<?php echo $perItemsTotalReturnQty; ?>", "<?php echo $refundAmountPerItem; ?>", this.id, this.value1, this.value2, this.value3)'></i>
+                                                    <td style="color: red;">
+                                                        <i class="fas fa-trash p-0 pt-2" onclick='delData("<?php echo $slno; ?>", "<?php echo $gstPerItem; ?>", "<?php echo $perItemsTotalReturnQty; ?>", "<?php echo $refundAmountPerItem; ?>")'></i>
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
                                                         <input class="col table-data w-2r" type="text" name="slNo[]" value="<?php echo $slno; ?>" readonly style="text-align: start; font-size: 0.7rem; ">
                                                     </td>
 
-                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                    <td class="d-none p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
                                                         <input class="col table-data w-6r" type="text" name="stock-return-id[]" id="stock-return-id" value="<?php echo $bill['stock_return_id']; ?>" readonly>
                                                     </td>
 
-                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                    <td class="d-none p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
                                                         <input class="col table-data w-6r" type="text" name="stock-return-details-item-id[]" id="stock-return-details-item-id" value="<?php echo $bill['id']; ?>" readonly>
                                                     </td>
 
-                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                    <td class="d-none p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
                                                         <input class="col table-data w-6r" type="text" name="stockin-details-item-id[]" id="stockin-details-item-id" value="<?php echo $bill['stokIn_details_id']; ?>" readonly>
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-9r" type="text" name="productName[]" value="<?php echo $productName; ?>" readonly style="text-align: start; font-size: 0.7rem; padding-left: 2%; padding-right: 2%;">
-                                                        <input class="d-none col table-data w-10r" type="text" name="productId[]" value="<?php echo $bill['product_id']; ?>" readonly style="text-align: start;" >
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-10r" type="text" name="productName[]" value="<?php echo $productName; ?>" readonly style="text-align: start; font-size: 0.7rem;">
+                                                        <input class="d-none col table-data w-10r" type="text" name="productId[]" value="<?php echo $bill['product_id']; ?>" readonly style="text-align: start;">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="<?php echo $bill['batch_no']; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="<?php echo $bill['batch_no']; ?>" readonly style="text-align: start; font-size: 0.7rem">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-4r" type="text" name="expDate[]" value="<?php echo $bill['exp_date']; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-5r" type="text" name="expDate[]" value="<?php echo $bill['exp_date']; ?>" readonly style="text-align: start; font-size: 0.7rem">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-4r" type="text" name="setof[]" value="<?php echo $bill['unit']; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-4r" type="text" name="setof[]" value="<?php echo $bill['unit']; ?>" readonly style="text-align: start; font-size: 0.7rem">
                                                     </td>
 
-                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                    <td class="d-none p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
                                                         <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="<?php echo $bill['purchase_qty']; ?>" readonly style="text-align: end; font-size: 0.6rem">
                                                     </td>
 
-                                                    <td class="d-none p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                    <td class="d-none p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
                                                         <input class="col table-data w-2r" type="text" name="freeQty[]" value="<?php echo $bill['free_qty']; ?>" readonly style="text-align: end; font-size: 0.6rem">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-4r" type="text" name="mrp[]" value="<?php echo $bill['mrp']; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-4r" type="text" name="mrp[]" value="<?php echo $bill['mrp']; ?>" readonly style="text-align: end; font-size: 0.7rem">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-4r" type="text" name="ptr[]" value="<?php echo $bill['ptr']; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-4r" type="text" name="ptr[]" value="<?php echo $bill['ptr']; ?>" readonly style="text-align: end; font-size: 0.7rem">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-5r" type="text" name="disc-percent[]" value="<?php echo $bill['disc'].'%'; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-4r" type="text" name="disc-percent[]" value="<?php echo $bill['disc'] . '%'; ?>" readonly style="text-align: end; font-size: 0.7rem">
                                                     </td>
 
-                                                    <td class="p-0 ps-1 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-3r" type="text" name="gst[]" value="<?php echo $bill['gst']; ?>%" readonly>
+                                                    <td class="p-0 ps-1 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-4r" type="text" name="gst[]" value="<?php echo $bill['gst']; ?>%" readonly>
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="<?php echo $bill['return_qty']; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="<?php echo $bill['return_qty']; ?>" readonly style="text-align: end; font-size: 0.7rem">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="<?php echo $bill['return_free_qty']; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="<?php echo $bill['return_free_qty']; ?>" readonly style="text-align: end; font-size: 0.7rem">
                                                     </td>
 
-                                                    <td class="p-0 pt-3" id="<?php echo 'table-row-' . $slno; ?>" value="<?php echo  $bill['id'] ?>" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
-                                                        <input class="col table-data w-4r" type="text" name="refund-amount[]" value="<?php echo $bill['refund_amount']; ?>" readonly style="text-align: start; font-size: 0.6rem">
+                                                    <td class="p-0 pt-3" onclick='customEdit("<?php echo "table-row-" . $slno  ?>","<?php echo $bill["id"]  ?>")'>
+                                                        <input class="col table-data w-5r" type="text" name="refund-amount[]" value="<?php echo $bill['refund_amount']; ?>" readonly style="text-align: end; font-size: 0.7rem">
                                                     </td>
                                                 </tr>
 
@@ -507,8 +508,8 @@ if (isset($_GET["returnId"])) {
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
                                         <p>Distributor :
                                             <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name" value="<?php echo $distName ?>" readonly style="margin-left:0rem;">
-                                            <input class="summary-inp w-60" name="dist-id" id="dist-id" type="text" value="<?php echo $distId ?>" readonly>
-                                            <input class="summary-inp w-60" name="stock-returned-id" id="stock-returned-id" type="text" value="<?php echo $stockReturnId ?>" readonly>
+                                            <input class="d-none summary-inp w-60" name="dist-id" id="dist-id" type="text" value="<?php echo $distId ?>" readonly>
+                                            <input class="d-none summary-inp w-60" name="stock-returned-id" id="stock-returned-id" type="text" value="<?php echo $stockReturnId ?>" readonly>
 
                                         </p>
                                     </div>
@@ -579,7 +580,7 @@ if (isset($_GET["returnId"])) {
         <script src="../js/sweetAlert.min.js"></script>
         <script src="../js/ajax.custom-lib.js"></script>
         <script src="js/purchase-return-item-edit.js"></script>
-    
+
         <!--====================================on clik custom select action =========================================
 
         go to js/purchase-return-item-edit.js for function customEdit() -->

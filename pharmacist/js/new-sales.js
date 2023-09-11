@@ -55,11 +55,28 @@ const getPaymentMode = (mode) => {
     document.getElementById("final-payment").value = mode;
 }
 
+/////////////// making search item focused fist value not a space \\\\\\\\\\\\\\\\\\
+const firstInput = document.getElementById('product-name');
+
+window.addEventListener('load', function () {
+    firstInput.focus();
+});
+
+firstInput.addEventListener('input', function (event) {
+    // Get the input value
+    const inputValue = this.value;
+
+    // Check if the first character is a space
+    if (inputValue.length > 0 && inputValue[0] === ' ') {
+        // Remove the leading space
+        this.value = inputValue.slice(1);
+    }
+});
+//==========================================================
 const searchItem = (searchFor) => {
 
     let searchReult = document.getElementById('searched-items');
-    document.getElementById("searched-items").style.display = "block";
-    document.getElementById("exta-details").style.display = "none";
+    
 
     if (document.getElementById("product-name").value == "") {
         document.getElementById("searched-items").style.display = "none";
@@ -86,14 +103,19 @@ const searchItem = (searchFor) => {
         document.getElementById("taxable").value = '';
         document.getElementById("amount").value = '';
     } else {
-        var XML = new XMLHttpRequest();
-        XML.onreadystatechange = function () {
-            if (XML.readyState == 4 && XML.status == 200) {
-                searchReult.innerHTML = XML.responseText;
-            }
-        };
-        XML.open('GET', 'ajax/sales-item-list.ajax.php?data=' + searchFor, true);
-        XML.send();
+        if (searchFor.length > 2) {
+            document.getElementById("searched-items").style.display = "block";
+            document.getElementById("exta-details").style.display = "none";
+            var XML = new XMLHttpRequest();
+            XML.onreadystatechange = function () {
+                if (XML.readyState == 4 && XML.status == 200) {
+                    searchReult.innerHTML = XML.responseText;
+                }
+            };
+            XML.open('GET', 'ajax/sales-item-list.ajax.php?data=' + searchFor, true);
+            XML.send();
+        }
+
     }
 }
 
@@ -132,7 +154,7 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
                 searchReult.innerHTML = XML.responseText;
             }
         };
-        XML.open('GET', 'ajax/sales-item-batch-list.ajax.php?batchDetails=' + prodcutId, true);
+        XML.open('GET', `ajax/sales-item-batch-list.ajax.php?prodId=${prodcutId}`, true);
         XML.send();
     }
 
@@ -181,20 +203,97 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
 ///////////////////////////////////////////////////////
 const stockDetails = (productId, batchNo, itemId) => {
 
-    document.getElementById("product-id").value = productId;
-    document.getElementById("batch_no").value = batchNo;
-    document.getElementById("batch-no").value = batchNo;
-    document.getElementById("searched-batchNo").style.display = "none";
 
-    let currenStockItemId = itemId;
 
-    var xmlhttp = new XMLHttpRequest();
+    var selectedItem = productId;
+    var SelectedBatch = batchNo;
 
-    // ============== Check Existence ==============
-    stockCheckUrl = `ajax/stock.checkExists.ajax.php?Pid=${productId}&batchNo=${batchNo}`;
-    xmlhttp.open("GET", stockCheckUrl, false);
-    xmlhttp.send(null);
-    exist = xmlhttp.responseText;
+    let tableVal = document.getElementById("dynamic-id").value;
+
+    if (tableVal > 0) {
+
+        let tableId = document.getElementById("item-body");
+        let jsTabelLength = tableId.rows.length;
+        let cellIndex_1 = 3;
+        let cellIndex_2 = 5;
+
+        for (let i = 0; i < jsTabelLength; i++) {
+
+            let row = tableId.rows[i];
+            let prodIdCell = row.cells[cellIndex_1];
+            let prevSelectedProdId = prodIdCell.innerHTML;
+
+            if (prevSelectedProdId == selectedItem) {
+
+                var prodBatchNoCell = row.cells[cellIndex_2];
+                let prevSelectedBatch = prodBatchNoCell.innerHTML;
+
+                var flag = 0;
+                if (prevSelectedBatch == SelectedBatch) {
+                    flag = 1;
+                    exist = 0;
+                    document.getElementById("product-id").value = '';
+                    document.getElementById("batch_no").value = '';
+                    document.getElementById("searched-batchNo").style.display = "none";
+
+                    swal("Failed!", "You have added this item previously.", "error");
+
+                } else {
+                    document.getElementById("product-id").value = productId;
+                    document.getElementById("batch_no").value = batchNo;
+                    document.getElementById("batch-no").value = batchNo;
+                    document.getElementById("searched-batchNo").style.display = "none";
+
+                    let currenStockItemId = itemId;
+
+                    var xmlhttp = new XMLHttpRequest();
+                    // ============== Check Existence ==============
+                    stockCheckUrl = `ajax/stock.checkExists.ajax.php?Pid=${productId}&batchNo=${batchNo}`;
+                    xmlhttp.open("GET", stockCheckUrl, false);
+                    xmlhttp.send(null);
+                    exist = xmlhttp.responseText;
+                }
+            } else {
+                document.getElementById("product-id").value = productId;
+                document.getElementById("batch_no").value = batchNo;
+                document.getElementById("batch-no").value = batchNo;
+                document.getElementById("searched-batchNo").style.display = "none";
+
+                let currenStockItemId = itemId;
+
+                var xmlhttp = new XMLHttpRequest();
+
+                // ============== Check Existence ==============
+                stockCheckUrl = `ajax/stock.checkExists.ajax.php?Pid=${productId}&batchNo=${batchNo}`;
+                xmlhttp.open("GET", stockCheckUrl, false);
+                xmlhttp.send(null);
+                exist = xmlhttp.responseText;
+            }
+            if (flag = 1) {
+                break;
+            } else {
+                continue;
+            }
+        }
+
+    } else {
+
+        document.getElementById("product-id").value = productId;
+        document.getElementById("batch_no").value = batchNo;
+        document.getElementById("batch-no").value = batchNo;
+        document.getElementById("searched-batchNo").style.display = "none";
+
+        let currenStockItemId = itemId;
+
+        var xmlhttp = new XMLHttpRequest();
+
+        // ============== Check Existence ==============
+        stockCheckUrl = `ajax/stock.checkExists.ajax.php?Pid=${productId}&batchNo=${batchNo}`;
+        xmlhttp.open("GET", stockCheckUrl, false);
+        xmlhttp.send(null);
+        exist = xmlhttp.responseText;
+
+    }
 
     if (exist == 1) {
         document.getElementById("exta-details").style.display = "block";
@@ -317,6 +416,8 @@ const stockDetails = (productId, batchNo, itemId) => {
         xmlhttp.open("GET", contentUrl, false);
         xmlhttp.send(null);
         document.getElementById("productComposition").value = xmlhttp.responseText;
+
+        document.getElementById("qty").focus();
     } else {
         document.getElementById("product-name").value = '';
         document.getElementById("weightage").value = '';
@@ -356,9 +457,9 @@ const onQty = (qty) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if(itemUnit =='tab' || itemUnit =='cap'){
+    if (itemUnit == 'tab' || itemUnit == 'cap') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
-    }else{
+    } else {
         loosePrice = '';
     }
     document.getElementById('loose-price').value = loosePrice;
@@ -409,13 +510,13 @@ const onQty = (qty) => {
     }
     else {
         disc = 0;
-    } 
+    }
 
 
     if (qty > 0) {
         if (itemPackType == '') {
             // =========== (item except 'tab' or 'cap' calculation area) ===================
-            discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc)/100)));
+            discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
             discPrice = discPrice.toFixed(2);
@@ -426,15 +527,15 @@ const onQty = (qty) => {
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
             document.getElementById('amount').value = netPayble;
-        } else {    
+        } else {
             // =========== (item = tab or item = cap calculation area) ===================
-            discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc)/100)));
+            discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
             discPrice = discPrice.toFixed(2);
 
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
-            taxableAmount = parseFloat(taxableAmount).toFixed(2); 
+            taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -463,9 +564,9 @@ const ondDisc = (disc) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if(itemUnit =='tab' || itemUnit =='cap'){
+    if (itemUnit == 'tab' || itemUnit == 'cap') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
-    }else{
+    } else {
         loosePrice = '';
     }
     document.getElementById('loose-price').value = loosePrice;
@@ -477,7 +578,7 @@ const ondDisc = (disc) => {
     let discPrice = document.getElementById('dPrice').value;
 
     let itemTypeCheck = document.getElementById("type-check").value;
-    
+
     let qty = document.getElementById('qty').value;
     let availibility = document.getElementById('aqty').value;
     availibility = parseInt(availibility);
@@ -497,7 +598,7 @@ const ondDisc = (disc) => {
 
     if (qty > 0) {
         if (itemTypeCheck == '') {
-            discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc)/100)));
+            discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
             discPrice = discPrice.toFixed(2);
@@ -509,13 +610,13 @@ const ondDisc = (disc) => {
             document.getElementById('taxable').value = taxableAmount;
             document.getElementById('amount').value = netPayble;
         } else {
-            discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc)/100)));
+            discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
             discPrice = discPrice.toFixed(2);
 
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
-            taxableAmount = parseFloat(taxableAmount).toFixed(2); 
+            taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -579,10 +680,10 @@ const addSummary = () => {
     // ============ MRP SET ======================
     if (loosePrice != '') {
         calculatedMRP = loosePrice;
-    }else{
+    } else {
         calculatedMRP = mrp;
     }
-    console.log("mrp check : ",calculatedMRP);
+
     //===========================================
 
     if (billDAte == '') {
@@ -593,7 +694,7 @@ const addSummary = () => {
         swal("Failed!", "Please Select Customer Name!", "error");
         return;
     }
-    if (doctorName =='') {
+    if (doctorName == '') {
         swal("Failed!", "Please Select/Enter Doctor Name!", "error");
         return;
     }
@@ -652,8 +753,12 @@ const addSummary = () => {
 
     /////// SERIAL NUMBER SET /////////
     let slno = document.getElementById("dynamic-id").value;
+    let slControl = document.getElementById("serial-control").value;
     slno++;
+    slControl++;
     document.getElementById("dynamic-id").value = slno;
+    document.getElementById("serial-control").value = slControl;
+
 
     ////////// ITEMS COUNT ////////////
     document.getElementById("items").value = slno;
@@ -687,9 +792,9 @@ const addSummary = () => {
     let sum = existsPayable + itemAmount;
     document.getElementById("payable").value = sum.toFixed(2);
 
-    jQuery("#item-body").append(`<tr id="table-row-${slno}">
+    jQuery("#item-body").append(`<tr id="table-row-${slControl}">
 
-        <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty}, ${netGst.toFixed(2)}, ${itemMrp.toFixed(2)}, ${amount})" style="font-size:.7rem; width: .3rem"></i></td>
+        <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slControl}, ${qty}, ${netGst.toFixed(2)}, ${itemMrp.toFixed(2)}, ${amount})" style="font-size:.7rem; width: .3rem"></i></td>
 
         <td id="${slno}" style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
 
@@ -698,10 +803,14 @@ const addSummary = () => {
             <input type="text" class="d-none" name="product-id[]" value="${productId}" >
         </td>
 
+        <td class="d-none" id="col-${slno}-prodId">${productId}</td>
+
         <td class="d-none">
             <input type="text" name="ManufId[]" value="${Manuf}">
             <input type="text" name="ManufName[]" value="${manufName}">
         </td>
+
+        <td class="d-none" id="col-${slno}-batch">${batchNo}</td>
 
         <td id="${batchNo}">
             <input class="summary-items" type="text" name="batch-no[]" id="batch-no" value="${batchNo}" style="word-wrap: break-word; width:7rem; font-size: .7rem; " readonly>
@@ -734,6 +843,8 @@ const addSummary = () => {
         <td class="d-none" id="${slno}">
             <input class="summary-items" type="text" name="qtyTp[]" value="${qtyTypeCheck}" style="word-wrap: break-word; width:3rem; font-size: .7rem;" readonly>
         </td>
+
+        <td class="d-none" id="col-${slno}-qty">${qty}</td>
 
         <td id="${qty}">
             <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
@@ -787,6 +898,7 @@ const addSummary = () => {
 
         //////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     </tr>`);
+
 
     ////// TUPLE DECLEARATION and ON CLICK FUNCTION CALL///////
 
@@ -869,9 +981,13 @@ const addSummary = () => {
 
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
 
+    let delRow = slno;
+
+    //////////////////////////////////////////////////
     jQuery(`#table-row-${slno}`).remove();
     slno--;
-    document.getElementById("dynamic-id").value = slno;
+    let slVal = document.getElementById("dynamic-id").value;
+    document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
     // Items 
     var items = document.getElementById("items").value;
@@ -894,47 +1010,73 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
     var existAmount = document.getElementById("payable");
     leftAmount = existAmount.value - parseFloat(itemAmount);
     existAmount.value = leftAmount.toFixed(2);
+
+    rowAdjustment(delRow);
 }
 
+////////////////// ROW ADJUSTMENT ///////////////////
+function rowAdjustment(delRow) {
+    let tableId = document.getElementById("item-body");
+    let j = 0;
+    let colIndex1 = 1;
+
+    for (let i = 0; i < tableId.rows.length; i++) {
+        j++;
+
+        let row = tableId.rows[i];
+        // console.log(row);
+        let cell1 = row.cells[colIndex1];
+        cell1.innerHTML = j;
+    }
+}
+
+//////////////////////// ITEM EDIT FUNCTION /////////////////////////
 
 const editItem = (tuple) => {
 
     // window.alert(tuple);
+    let checkEditOption = document.getElementById("product-id").value;
 
-    Tupledata = JSON.parse(tuple);
+    if (checkEditOption == '') {
+        Tupledata = JSON.parse(tuple);
 
-    document.getElementById("product-id").value = Tupledata.productId;
-    document.getElementById("product-name").value = Tupledata.productName;
-    document.getElementById("batch-no").value = Tupledata.batchNo;
-    document.getElementById("batch_no").value = Tupledata.batchNo;
+        document.getElementById("product-id").value = Tupledata.productId;
+        document.getElementById("product-name").value = Tupledata.productName;
+        document.getElementById("batch-no").value = Tupledata.batchNo;
+        document.getElementById("batch_no").value = Tupledata.batchNo;
 
-    document.getElementById("weightage").value = Tupledata.weightage;
-    document.getElementById('item-weightage').value = Tupledata.itemWeightage;
-    document.getElementById('item-unit-type').value = Tupledata.unitType;
+        document.getElementById("weightage").value = Tupledata.weightage;
+        document.getElementById('item-weightage').value = Tupledata.itemWeightage;
+        document.getElementById('item-unit-type').value = Tupledata.unitType;
 
-    document.getElementById("exp-date").value = Tupledata.expDate;
-    document.getElementById("mrp").value = Tupledata.mrp;
-    document.getElementById("ptr").value = Tupledata.ptr;
+        document.getElementById("exp-date").value = Tupledata.expDate;
+        document.getElementById("mrp").value = Tupledata.mrp;
+        document.getElementById("ptr").value = Tupledata.ptr;
 
-    document.getElementById("qty").value = Tupledata.qty;
-    document.getElementById("type-check").value = Tupledata.qtyTypeCheck;
-    document.getElementById("manuf").value = Tupledata.ManufId;
-    document.getElementById("manufName").value = Tupledata.manufName;
+        document.getElementById("qty").value = Tupledata.qty;
+        document.getElementById("type-check").value = Tupledata.qtyTypeCheck;
+        document.getElementById("manuf").value = Tupledata.ManufId;
+        document.getElementById("manufName").value = Tupledata.manufName;
 
-    document.getElementById("disc").value = Tupledata.discPercent;
-    document.getElementById("dPrice").value = Tupledata.discPrice;
-    document.getElementById("gst").value = Tupledata.gst;
+        document.getElementById("disc").value = Tupledata.discPercent;
+        document.getElementById("dPrice").value = Tupledata.discPrice;
+        document.getElementById("gst").value = Tupledata.gst;
 
-    document.getElementById("taxable").value = Tupledata.taxable;
-    document.getElementById("margin").value = Tupledata.marginAmount;
-    document.getElementById("amount").value = Tupledata.amount;
+        document.getElementById("taxable").value = Tupledata.taxable;
+        document.getElementById("margin").value = Tupledata.marginAmount;
+        document.getElementById("amount").value = Tupledata.amount;
 
-    document.getElementById("loose-stock").value = Tupledata.looseStock;
-    document.getElementById("loose-price").value = Tupledata.loosePrice;
-    document.getElementById("aqty").value = Tupledata.available;
-    document.getElementById("productComposition").value = Tupledata.itemComposition;
+        document.getElementById("loose-stock").value = Tupledata.looseStock;
+        document.getElementById("loose-price").value = Tupledata.loosePrice;
+        document.getElementById("aqty").value = Tupledata.available;
+        document.getElementById("productComposition").value = Tupledata.itemComposition;
 
-    let netMRP = parseFloat(Tupledata.mrp) * parseInt(Tupledata.qty);
+        let netMRP = parseFloat(Tupledata.mrp) * parseInt(Tupledata.qty);
 
-    deleteItem(Tupledata.slno, Tupledata.qty, Tupledata.gstAmountPerItem, netMRP, Tupledata.amount);
+        deleteItem(Tupledata.slno, Tupledata.qty, Tupledata.gstAmountPerItem, netMRP, Tupledata.amount);
+
+    } else {
+        swal("Can't Edit", "Please add/edit previous item first.", "error");
+        document.getElementById("qty").focus();
+    }
 }
