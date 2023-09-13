@@ -1,5 +1,15 @@
-const firstInput = document.getElementById('product-name');
+//////// QANTITY AND FREE QANTITY VALUE CONTROL //////////
+const Qty = document.getElementById('qty');
+Qty.addEventListener('input', function (event) {
+    this.value = this.value.replace('.', '');
+});
 
+const FreeQty = document.getElementById('free-qty');
+FreeQty.addEventListener('input', function (event) {
+    this.value = this.value.replace('.', '');
+});
+///////////////////////////////////////////////////////////
+const firstInput = document.getElementById('product-name');
 window.addEventListener('load', function () {
     firstInput.focus();
 });
@@ -239,7 +249,6 @@ if (month < 10) {
     month = '0' + month;
 }
 var todayFullDate = year + "-" + month + "-" + date;
-// console.log(todayFullDate);
 document.getElementById("bill-date").setAttribute("max", todayFullDate);
 
 const getbillDate = (billDate) => {
@@ -247,7 +256,6 @@ const getbillDate = (billDate) => {
     document.getElementById("due-date").setAttribute("min", billDate);
 
     var date2 = todayDate.getDate() + 7;
-    // // console.log(date2);
     var todayFullDate2 = year + "-" + month + "-" + date2;
     document.getElementById("due-date").setAttribute("max", todayFullDate2);
 }
@@ -271,7 +279,6 @@ const getBillAmount = () => {
     }
 
     let qty = document.getElementById("qty").value;
-    // let freeQty    = document.getElementById("free-qty").value;
     let discount = document.getElementById("discount").value;
 
     //========= base amount calculation area ===========
@@ -283,8 +290,6 @@ const getBillAmount = () => {
     let gst = document.getElementById("gst").value;
     let billAmount = document.getElementById("bill-amount");
 
-
-
     if (ptr == "") {
         billAmount.value = "";
         base = "";
@@ -293,13 +298,8 @@ const getBillAmount = () => {
     if (qty != "" && ptr != "" && gst != "") {
         subAamount = base * qty;
 
-        // console.log("subamount check : ");
-        // console.log(subAamount);
-
         let totalGst = ((gst / 100) * subAamount);
         let amount = subAamount + totalGst;
-        // console.log(amount);
-        // console.log(amount - totalGst);
         let chkBillAmount = MRP * qty;
 
         if (amount > chkBillAmount) {
@@ -728,8 +728,8 @@ const editItem = (tupleData) => {
 
         deleteData(TupleData.slno, parseInt(TupleData.Qty) + parseInt(TupleData.freeQty), gstPerItem, TupleData.amount);
 
-    }else{
-        swal("Can't Edit","Please add/edit previous item first.","error");
+    } else {
+        swal("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("ptr").focus();
     }
 }
@@ -870,9 +870,9 @@ function setMfdYEAR(year) {
     let yr = new Date();
     let thisYear = yr.getFullYear();
     if (year.value.length == 4) {
-        if(year.value>thisYear){
+        if (year.value > thisYear) {
             document.getElementById("mfd-month").focus();
-        }else{
+        } else {
             document.getElementById("exp-month").focus();
         }
     } else if (year.value.length > 4) {

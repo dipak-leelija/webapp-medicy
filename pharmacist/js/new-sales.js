@@ -905,7 +905,7 @@ const addSummary = () => {
     taxable = taxableAmount.toFixed(2);
 
     const dataTuple = {
-        slno: slno,
+        slno: slControl,
         productId: productId,
         batchNo: batchNo,
         productName: productName,
@@ -985,7 +985,6 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
 
     //////////////////////////////////////////////////
     jQuery(`#table-row-${slno}`).remove();
-    slno--;
     let slVal = document.getElementById("dynamic-id").value;
     document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
@@ -1033,8 +1032,7 @@ function rowAdjustment(delRow) {
 //////////////////////// ITEM EDIT FUNCTION /////////////////////////
 
 const editItem = (tuple) => {
-
-    // window.alert(tuple);
+    console.log(tuple);
     let checkEditOption = document.getElementById("product-id").value;
 
     if (checkEditOption == '') {
@@ -1071,7 +1069,15 @@ const editItem = (tuple) => {
         document.getElementById("aqty").value = Tupledata.available;
         document.getElementById("productComposition").value = Tupledata.itemComposition;
 
-        let netMRP = parseFloat(Tupledata.mrp) * parseInt(Tupledata.qty);
+        let netMRP = '';
+        if(Tupledata.unitType == 'tab' || Tupledata.unitType == 'cap'){
+            netMRP = parseFloat(Tupledata.loosePrice) * parseInt(Tupledata.qty);
+            netMRP = parseFloat(netMRP).toFixed(2);
+        }else{
+            netMRP = parseFloat(Tupledata.mrp) * parseInt(Tupledata.qty);
+            netMRP = parseFloat(netMRP).toFixed(2);
+        }
+        
 
         deleteItem(Tupledata.slno, Tupledata.qty, Tupledata.gstAmountPerItem, netMRP, Tupledata.amount);
 

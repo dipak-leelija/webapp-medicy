@@ -39,6 +39,7 @@ class SalesReturn extends DatabaseConnection{
         return $res;
     }// eof stockOutDisplayById 
 
+    
     //--------------select sales return table by invoice id and patient id-------------- RD -------
 
     function selectSalesReturnByInvoiceIdandPatientId($invoiceId, $patientId){
@@ -70,6 +71,7 @@ class SalesReturn extends DatabaseConnection{
         }
         return $response;
     }
+
     //------------------------------updating sales return table-------------- RD ----------------
 
     function updateSalesReturn($id, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){    

@@ -198,12 +198,6 @@ if ($_GET['id']) {
 
                                 <form id='sales-edit-form'>
                                     <div class="row ">
-
-                                        <div class="d-none col-md-1 mt-3 col-6">
-                                            <label for="">Edit row</label><br>
-                                            <input class="sale-inp" type="text" id="edit-row" readonly>
-                                        </div>
-
                                         <div class="d-none col-md-1 mt-3 col-6">
                                             <label for="">Invoice Number</label><br>
                                             <input class="sale-inp" type="text" id="invoice-id" readonly>
@@ -382,6 +376,7 @@ if ($_GET['id']) {
                                                     <thead>
                                                         <tr>
                                                             <th scope="col"><input type="number" value="<?php echo $stockOut[0]['items']; ?>" id="dynamic-id" style="width: 2rem;" hidden></th>
+                                                            <th scope="col"><input type="number" value="<?php echo $stockOut[0]['items']; ?>" id="serial-control" style="width: 2rem;" hidden></th>
                                                             <th scope="col"></th>
                                                             <th scope="col">Item Name</th>
                                                             <th scope="col" hidden>Phamacy data id</th>
@@ -400,7 +395,7 @@ if ($_GET['id']) {
                                                         <?php
                                                         $slno = 0;
                                                         // foreach ($details as $detail && $stockOutDetails as $stockOutData) 
-                                                        for($i = 0; $i<count($details) &&  $i<count($stockOutDetails); $i++){
+                                                        for ($i = 0; $i < count($details) &&  $i < count($stockOutDetails); $i++) {
 
                                                             // print_r($details[$i]);
                                                             // echo "<br><br>";
@@ -416,13 +411,12 @@ if ($_GET['id']) {
                                                                 $qty = $details[$i]['loosely_count'];
                                                                 $MRP = floatval($mrp) / intval($itemWeatage);
                                                                 $billAmountPerItem = floatval($MRP) * intval($qty);
-                                                                
-                                                                if((intval($qty) % intval($itemWeatage)) == 0){
+
+                                                                if ((intval($qty) % intval($itemWeatage)) == 0) {
                                                                     $qtyType = 'Pack';
-                                                                }else{
+                                                                } else {
                                                                     $qtyType = 'Loose';
                                                                 }
-                                                                
                                                             } else {
                                                                 $qty = $details[$i]['qty'];
                                                                 $billAmountPerItem = floatval($mrp) * intval($qty);
@@ -432,7 +426,7 @@ if ($_GET['id']) {
                                                             //=======================
                                                             $table = 'product_id';
                                                             $productData = $Products->showProductsById($stockOutDetails[$i]['product_id']);
-                                                            
+
                                                             //=======================
 
                                                             $slno = $slno + 1;
@@ -445,21 +439,23 @@ if ($_GET['id']) {
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $details[$i]['id']; ?>, <?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
-                                                                    <input class="summary-items" type="text" name="sl-no[]" value="<?php echo $slno; ?>" readonly style="width: 2rem;">
+                                                                <?php echo $slno; ?>
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $details[$i]['id']; ?>, <?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
+
                                                                     <input class="summary-product" type="text" name="product-name[]" value="<?php echo $productData[0]['name']; ?>" readonly style="width: 12rem;">
 
-                                                                    <input type="text" style="width: 4rem;" name="item-id[]" value="<?php echo $details[$i]['item_id']; ?>" hidden>
-
                                                                     <input type="text" name="product-id[]" value="<?php echo $stockOutDetails[$i]['product_id']; ?>" hidden>
+
+                                                                    <input type="text" style="width: 4rem;" name="item-id[]" value="<?php echo $details[$i]['item_id']; ?>" hidden>
 
                                                                     <input type="text" name="Manuf[]" value="<?php echo $productData[0]['manufacturer_id']; ?>" hidden>
 
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $details[$i]['id']; ?>, <?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)" hidden>
+                                                                
                                                                     <input class="summary-product" type="text" name="pharmacy-data-id[]" value="<?php echo $details[$i]['id']; ?>" readonly>
 
                                                                     <input class="summary-product" type="text" name="stockOut-details-id[]" value="<?php echo $stockOutDetails[$i]['id']; ?>" readonly>
@@ -497,7 +493,7 @@ if ($_GET['id']) {
 
                                                                 <td onclick="editItem(<?php echo $details[$i]['id']; ?>, <?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
                                                                     <input class="summary-items" type="text" name="qty[]" value="<?php echo $qty; ?>" readonly>
-                                                                    
+
                                                                     <input class="summary-items" type="text" name="qty-type[]" value="<?php echo $qtyType; ?>" readonly hidden>
                                                                 </td>
 
@@ -585,7 +581,7 @@ if ($_GET['id']) {
                                                         </span>
                                                         <input class="sumary-inp" type="text" id="final-doctor-name" name="final-doctor-name" value="<?php echo $reffby; ?>" readonly>
                                                     </div>
-                                                    
+
                                                     <div class="  col-md-2 col-4  mb-3 b-right d-flex">
                                                         <span>
                                                             <i class="fas fa-wallet"></i>

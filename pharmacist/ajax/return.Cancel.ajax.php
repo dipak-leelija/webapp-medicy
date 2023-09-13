@@ -9,11 +9,11 @@ $CurrentStock = new CurrentStock();
 
 if (isset($_POST["id"])) {
 
-    $returnId = $_POST['id'];
+    $cancelId = $_POST['id'];
     $statusValue = "cancelled";
-    $updated = $StockReturn->stockReturnStatus($returnId, $statusValue);
+    $updated = $StockReturn->stockReturnStatus($cancelId, $statusValue);
 
-    $StockReturnData = $StockReturn->showStockReturnDetails($returnId);
+    $StockReturnData = $StockReturn->showStockReturnDetails($cancelId);
     foreach($StockReturnData as $stock){
         $stokInId = $stock['stokIn_details_id'];
         $returnQTY = $stock['return_qty'];
@@ -21,24 +21,24 @@ if (isset($_POST["id"])) {
         $totalReturnQTY = intval($returnQTY) + intval($returnFQTY);
     
         $stockCheck = $CurrentStock->showCurrentStockbyStokInId($stokInId);
-        foreach($stockCheck as $stock){
-            $currentStockQTY = $stock['qty'];
-            $currentStockLQTY = $stock['loosely_count'];
-            $currentStockWeightage = $stock['weightage'];
-            $currentStockUnit = $stock['unit'];
+        foreach($stockCheck as $currentStock){
+            $currentStockQTY = $currentStock['qty'];
+            $currentStockLQTY = $currentStock['loosely_count'];
+            $currentStockWeightage = $currentStock['weightage'];
+            $currentStockUnit = $currentStock['unit'];
         }
 
         if($currentStockUnit == 'tab' || $currentStockUnit == 'cap'){
-            $updatedQTY = $currentStockQTY + $totalReturnQTY;
-            $updatedFQTY = intval($currentStockLQTY) + (intval($updatedQTY) * intval($currentStockWeightage));
-        }
-        
-        if($currentStockUnit != 'tab' || $currentStockUnit != 'cap'){
-            $updatedQTY = $currentStockQTY + $totalReturnQTY;
+            $updatedLQTY = intval($currentStockLQTY) + (intval($totalReturnQTY) * intval($currentStockWeightage));
+
+            $updatedQTY = intdiv(intval($updatedLQTY), intval($currentStockWeightage));
+        }else{
+            $updatedQTY = intval($currentStockQTY) + intval($totalReturnQTY);
             $updatedFQTY = 0;
         }
 
-        $updateCurretnStock = $CurrentStock->updateStockBStockDetialsId($stokInId, $updatedQTY, $updatedFQTY);
+        $updateCurretnStock = $CurrentStock->updateStockBStockDetialsId($stokInId, $updatedQTY, $updatedLQTY); 
+        // $updateCurretnStock = true;
 
     }
 

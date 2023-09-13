@@ -1,3 +1,15 @@
+///////////////// preventing number input field to take dot or point\\\\\\\\\\\\\\\\\\\\\
+const rtnQty = document.getElementById('return-qty');
+rtnQty.addEventListener('input', function (event) {
+    this.value = this.value.replace('.', '');
+});
+
+const rtnFreeQty = document.getElementById('return-free-qty');
+rtnFreeQty.addEventListener('input', function (event) {
+    this.value = this.value.replace('.', '');
+});
+//////////////////////////////////////////////////////////////////
+
 const getBillList = (t) => {
 
     let id = t.value;
@@ -8,30 +20,28 @@ const getBillList = (t) => {
     xmlhttp.send(null);
     document.getElementById("select-bill").innerHTML = xmlhttp.responseText;
     // alert(xmlhttp.responseText);
-
     document.getElementById("dist-id").value = id;
     document.getElementById("dist-name").value = distributirName;
-
     document.getElementById("select-bill").style.display = "block";
 }
 
 
-const getItemList = (distId, billNo) =>{
+const getItemList = (distId, billNo) => {
 
     document.getElementById("select-bill-no").value = billNo;
     document.getElementById("select-bill").style.display = "none";
     let distBillNoCheck = document.getElementById("dist-bill-no").value;
 
-    if(distBillNoCheck == ""){
+    if (distBillNoCheck == "") {
         document.getElementById("dist-bill-no").value = billNo;
     }
 
-    if(distBillNoCheck != ""){
-        if(billNo != distBillNoCheck){
+    if (distBillNoCheck != "") {
+        if (billNo != distBillNoCheck) {
             swal("Oops", "Distributor bill no changed!", "error");
             window.location.reload();
         }
-        
+
     }
 
     var xmlhttp = new XMLHttpRequest();
@@ -50,7 +60,6 @@ const getItemList = (distId, billNo) =>{
 
 // item search
 function searchItem(input) {
-    console.log(input);
     if (input != '') {
         document.getElementById("product-select").style.display = "block";
         // let input = document.getElementById('searchbar').value
@@ -283,18 +292,14 @@ const getRefund = (returnQty) => {
 
     if (isNaN(returnQty)) {
         document.getElementById("refund-amount").value = '';
-        re
-        turn;
+        return;
     }
     if (returnQty != '') {
-        console.log(returnQty);
         let ptr = document.getElementById("ptr").value;
         let gst = document.getElementById("gst").value;
         let discParcent = document.getElementById("discount").value;
-        console.log("check ptr, gst parcent, and discount parcent : ", ptr, gst, discParcent);
-        let subtotal = (parseFloat(ptr) - (parseFloat(ptr) * parseFloat(discParcent)/100)) * returnQty;
-        console.log("sub total on qty : ", subtotal);
-        let refund = subtotal + (subtotal * (parseFloat(gst) / 100 ));
+        let subtotal = (parseFloat(ptr) - (parseFloat(ptr) * parseFloat(discParcent) / 100)) * returnQty;
+        let refund = subtotal + (subtotal * (parseFloat(gst) / 100));
 
         document.getElementById("refund-amount").value = refund.toFixed(2);
 
@@ -320,7 +325,7 @@ const getRefund = (returnQty) => {
 
 //geeting bills by clicking on add button
 function addData() {
-    
+
     var distId = document.getElementById("distributor-id");
     //var billNumber = document.getElementById("bill-number");
     var stokInDetailsId = document.getElementById("stokInDetailsId");
@@ -330,10 +335,6 @@ function addData() {
 
     var productId = document.getElementById("product-id");
     var productName = document.getElementById('product-name').value;
-    // productName = productName.slice(11);
-    // alert(productId.value);
-    // alert(productName);
-    // return;
 
     var expDate = document.getElementById("exp-date");
     var weatage = document.getElementById("weatage");
@@ -342,7 +343,6 @@ function addData() {
     var discount = document.getElementById("discount");
     var gst = document.getElementById("gst");
     var RtrnGstAmount = document.getElementById("return-gst-amount");
-    var gstAmount = document.getElementById("gst-amount");
     var mrp = document.getElementById("mrp");
     var amount = document.getElementById("amount");
     var purchasedQty = document.getElementById("purchased-qty");
@@ -351,25 +351,23 @@ function addData() {
     var returnQty = document.getElementById("return-qty");
     var returnFreeQty = document.getElementById("return-free-qty");
 
+    var basePrice = document.getElementById("base");
+    var taxableOnPurchase = document.getElementById("taxable");
+    var crntPrchsQty = document.getElementById("current-purchase-qty");
+    var crntFreeQty = document.getElementById("current-free-qty");
+
     var refundAmount = document.getElementById("refund-amount");
 
     var qtyVal = document.getElementById("total-return-qty");
-
-    // console.log("return free qty : ",returnFreeQty.value);
-    // console.log("return qty : ",returnQty.value);
     var totalReturnQty = parseInt(returnFreeQty.value) + parseInt(returnQty.value);
-    // console.log("total return qty : ",totalReturnQty);
+
 
     if (distId.value == "") {
         swal("Oops", "Please select Distributor!", "error");
         distId.focus();
         return;
     }
-    // if (billNumber.value == "") {
-    //     swal("Oops", "Please select Bill Number!", "error");
-    //     billNumber.focus();
-    //     return;
-    // }
+
     if (batchNumber.value == "") {
         swal("Oops", "Please select Batch Number!", "error");
         batchNumber.focus();
@@ -474,84 +472,80 @@ function addData() {
     }
 
 
-    // swal("Nice", "Working Fine", "success")
-
+    //////////////////// dynamic id and serial contolr ///////////////////
     let slno = document.getElementById("dynamic-id").value;
+    let slControl = document.getElementById("serial-control").value;
     slno++;
+    slControl++;
     document.getElementById("dynamic-id").value = slno;
-
-    //geting total qty value
-    //qtyVal.value = parseFloat(returnQty.value) + parseFloat(qtyVal.value);
-
+    document.getElementById("serial-control").value = slControl;
 
     //geeting total refund amount
     var refund = document.getElementById("refund");
-    refund.value = parseFloat(refund.value) + parseFloat(refundAmount.value);
-
+    var refundAmt = parseFloat(refund.value) + parseFloat(refundAmount.value);
+    refund.value = refundAmt.toFixed(2);
 
     // return gst generating
     let withoutGst = (parseFloat(ptr.value) - (parseFloat(ptr.value) * parseFloat(discount.value) / 100)) * returnQty.value;
     let taxAmount = parseFloat(refundAmount.value) - withoutGst;
-    
+
 
     var returnGstAmount = document.getElementById("return-gst-val").value;
-    // console.log("return gst total amount =>");
-    // console.log(returnGstAmount);
+
     returnGstAmount = parseFloat(returnGstAmount) + parseFloat(taxAmount);
     let ReturnGstAmount = returnGstAmount.toFixed(2);
-    // console.log("return gst total amount calculation =>");
-    // console.log(ReturnGstAmount);
+
     document.getElementById("return-gst-val").value = ReturnGstAmount;
 
     const appendData = () => {
 
         jQuery("#dataBody")
-            .append(`<tr id="table-row-${slno}">
+            .append(`<tr id="table-row-${slControl}">
                     <td  style="color: red;">
-                        <i class="fas fa-trash pt-3" onclick="deleteData(${slno}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
+                        <i class="fas fa-trash pt-3" onclick="deleteData(${slControl}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
                     </td>
-                    <td style="font-size:.8rem ; padding-top:1.5rem"scope="row">${slno}</td>
-                    <td class="p-0 pt-3" hidden>
+                    <td id="row-${slControl}-col-2" style="font-size:.8rem ; padding-top:1.5rem"scope="row">${slno}</td>
+                    <td class="d-none p-0 pt-3">
                         <input class="d-none col table-data w-6r" type="text" name="stok-in-details-id[]" value="${stokInDetailsId.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-4">
                         <input class="col table-data w-10r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                         <input class="col table-data w-10r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;" hidden>
                     </td>
-                    <td class="p-0 pt-3" >
+                    <td class="p-0 pt-3" id="row-${slControl}-col-5">
                         <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-6">
                         <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-7">
                         <input class="col table-data w-4r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly  style="text-align: start; font-size:0.7rem;; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-8">
                         <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-9">
                         <input class="col table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-10">
                         <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-11">
                         <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 pt-3" >
+                    <td class="p-0 pt-3"  id="row-${slControl}-col-12">
                         <input class="col table-data w-3r" type="text" name="disc-percent[]" value="${discount.value}%" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 ps-1 pt-3">
+                    <td class="p-0 ps-1 pt-3" id="row-${slControl}-col-13">
                         <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="border-radius: 30%; font-size: .7rem; width:2rem; text-align:center; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-14">
                         <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
-                    <td class="p-0 pt-3">
+                    <td class="p-0 pt-3" id="row-${slControl}-col-15">
                         <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
-                    <td class=" amnt-td p-0 pt-3">
+                    <td class=" amnt-td p-0 pt-3" id="row-${slControl}-col-16">
                         <input class="col table-data W-4r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;"></td>
                 </tr>`);
 
@@ -559,7 +553,6 @@ function addData() {
     }
 
     if (appendData() === true) {
-
 
         if (slno > 1) {
             let id = document.getElementById("items-qty");
@@ -580,48 +573,107 @@ function addData() {
             document.getElementById("total-return-qty").value = totalReturnQty;
         }
 
-        // document.getElementById("demo").innerHTML = await myPromise;
+
+        ///////////////////////////////////////////////////////////////////////////////////
+
+        const dataTuple = {
+            slno: slControl,
+            stokInDetailsId: stokInDetailsId.value,
+            productId: productId.value,
+            productName: productName,
+            batchNumber: batchNumber.value,
+
+            billDate: billDate.value,
+            expDate: expDate.value,
+            weatage: weatage.value,
+            unit: unit.value,
+            mrp: mrp.value,
+            ptr: ptr.value,
+            discount: discount.value,
+            gst: gst.value,
+
+            basePrice: basePrice.value, 
+            taxableOnPurchase: taxableOnPurchase.value,  
+            RtrnGstAmount: RtrnGstAmount.value,
+            crntPrchsQty: crntPrchsQty.value,
+            crntFreeQty: crntFreeQty.value,
+
+            amount: amount.value,
+            purchasedQty: purchasedQty.value,
+            freeQty: freeQty.value,
+            currentQty: currentQty.value,
+            returnQty: returnQty.value,
+            returnFreeQty: returnFreeQty.value,
+            refundAmount: refundAmount.value,
+        };
+
+        let tupleData = JSON.stringify(dataTuple);
+
+        document.getElementById(`row-${slControl}-col-2`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-4`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-5`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-6`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-7`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-8`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-9`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-10`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-11`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-12`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-13`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-14`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-15`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-16`).onclick = function () {
+            editItem(tupleData);
+        };
+
+        //////// document.getElementById("demo").innerHTML = await myPromise;/////////////
+        //////////////////////////////////////////////////////////////////////////////////
+
         document.getElementById("stokInDetailsId").value = '';
         document.getElementById("product-id").value = '';
         document.getElementById('product-name').value = '';
 
-        document.getElementById("batch-number").value = '';
-        document.getElementById("bill-date").value = '';
-        document.getElementById("exp-date").value = '';
-        document.getElementById("weatage").value = '';
-        document.getElementById("unit").value = '';
-
-        document.getElementById("ptr").value = '';
-        document.getElementById("discount").value = '';
-        document.getElementById("gst").value = '';
-        // document.getElementById("gst-amount").value = '';
-        document.getElementById("mrp").value = '';
-        document.getElementById("amount").value = '';
-
-        document.getElementById("purchased-qty").value = '';
-        document.getElementById("free-qty").value = '';
-        document.getElementById("net-buy-qty").value = '';
-        document.getElementById("current-qty").value = '';
-        document.getElementById("return-qty").value = '';
-        document.getElementById("return-free-qty").value = '';
-        document.getElementById("refund-amount").value = '';
-        document.getElementById('gstAmountPerQty').value = "";
-
+        document.getElementById("stock-return-item-data").reset();
+        event.preventDefault();
     }
 
 } //eof addData  
 
 // ================================ Delet Data ================================
 
-
 const deleteData = (slno, itemQty, gstPerItem, refundPerItem) => {
 
     let delRow = slno;
 
-
     jQuery(`#table-row-${slno}`).remove();
-    slno--;
-    document.getElementById("dynamic-id").value = slno;
+    let slval = document.getElementById("dynamic-id").value;
+    document.getElementById("dynamic-id").value = parseInt(slval) - 1;
 
     //minus item
     let items = document.getElementById("items-qty");
@@ -633,7 +685,6 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem) => {
     let finalQty = qty.value - itemQty
     qty.value = finalQty;
 
-
     // minus gst
     let gst = document.getElementById("return-gst-val");
     let finalGst = gst.value - gstPerItem;
@@ -641,7 +692,6 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem) => {
 
     // minus netAmount
     let net = document.getElementById("refund");
-    console.log("on delte check : ", net.value);
     if (net.value == null) {
         net.value = 0;
         let finalAmount = parseFloat(net.value) - parseFloat(refundPerItem);
@@ -651,9 +701,7 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem) => {
         net.value = finalAmount.toFixed(2);
     }
 
-
     rowAdjustment(delRow);
-
 }
 
 
@@ -668,5 +716,51 @@ function rowAdjustment(delRow) {
         let row = tableId.rows[i];
         let cell = row.cells[colIndex];
         cell.innerHTML = j;
+    }
+}
+
+
+///////////////////////// item edit funtion /////////////////////////
+
+const editItem = (tData) => {
+    console.log(tData);
+    console.log("hello check : "+document.getElementById('product-id').value);
+
+    if (document.getElementById('product-id').value == '') {
+        var tData = JSON.parse(tData);
+
+        document.getElementById("stokInDetailsId").value = tData.stokInDetailsId;
+        document.getElementById("batch-number").value = tData.batchNumber;
+        document.getElementById("product-id").value = tData.productId;
+        document.getElementById('product-name').value = tData.productName;
+        document.getElementById("bill-date").value = tData.billDate;
+        document.getElementById("exp-date").value = tData.expDate;
+
+        document.getElementById("weatage").value = tData.weatage;
+        document.getElementById("unit").value = tData.unit;
+        document.getElementById("mrp").value = tData.mrp;
+        document.getElementById("ptr").value = tData.ptr;
+        document.getElementById("discount").value = tData.discount;
+        document.getElementById("gst").value = tData.gst;
+
+        document.getElementById("return-gst-amount").value = tData.RtrnGstAmount;
+        document.getElementById("base").value = tData.basePrice;
+        document.getElementById("taxable").value = tData.taxableOnPurchase;
+        document.getElementById("current-purchase-qty").value = tData.crntPrchsQty;
+        document.getElementById("current-free-qty").value = tData.crntFreeQty;
+
+        document.getElementById("amount").value = tData.amount;
+        document.getElementById("purchased-qty").value = tData.purchasedQty;
+        document.getElementById("free-qty").value = tData.freeQty;
+        document.getElementById("current-qty").value = tData.currentQty;
+        document.getElementById("return-qty").value = tData.returnQty;
+        document.getElementById("return-free-qty").value = tData.returnFreeQty;
+        document.getElementById("refund-amount").value = tData.refundAmount;
+
+
+        let itemQty = parseInt(tData.returnQty) + parseInt(tData.returnFreeQty);
+        deleteData(tData.slno, itemQty, tData.RtrnGstAmount, tData.refundAmount);
+    } else {
+        swal("Error", "Add or remove Previous data first.", "error");
     }
 }

@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $refund          = $_POST['refund'];
 
         $addedBy         = $_SESSION['employee_username'];
-
+        $status          = 'active';
         // echo "<br>Distributor Id : "; print_r($distributorId);
         // echo "<br>Distributor Name : "; print_r($distributorName);
         // echo "<br>Distributor bill no : "; print_r($distBillNo);
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // echo "<br>Refund GST amount : "; print_r($returnGst);
         // echo "<br>Refund Amount : "; print_r($refund);
     
-        $returned = $StockReturn->addStockReturn($stockReturnId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $addedBy);
+        $returned = $StockReturn->addStockReturn($stockReturnId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy);
         // $returned = true;
 
         if($returned === true){

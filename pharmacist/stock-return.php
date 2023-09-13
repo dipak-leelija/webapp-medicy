@@ -39,7 +39,8 @@ $today = date("m-d-Y");
     <title>Medicy Items</title>
 
     <!-- Custom fonts for this template -->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- ../assets/fontawesome-free/css/all.min.css -->
+    <link href="../../medicy.in/assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -49,10 +50,10 @@ $today = date("m-d-Y");
     <link rel="stylesheet" href="css/custom/return-page.css">
 
     <!-- Datatable Style CSS -->
-    <link href="vendor/product-table/dataTables.bootstrap4.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <link href="vendor/product-table/dataTables.bootstrap4.css" rel="stylesheet">
 
 </head>
 
@@ -86,7 +87,7 @@ $today = date("m-d-Y");
                     <div class="card shadow mb-2">
                         <div class="card-body">
                             <div class="row mb-3 ">
-                                <div class="col-md-1 col-12">
+                                <div class="col-md-2 col-12">
                                     <label for="">Filter By:</label>
 
                                 </div>
@@ -132,7 +133,7 @@ $today = date("m-d-Y");
                                         <option value="Net Banking">Net Banking</option>
                                     </select>
                                 </div>
-                                <div class="col-md-2 col-6 text-right">
+                                <div class="col-md-1 col-6 text-right">
                                     <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i class="fas fa-plus"></i></a>
                                 </div>
                             </div>
@@ -190,8 +191,8 @@ $today = date("m-d-Y");
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_mode'] . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_amount'] . '</td>
                                                         <td >
-                                                            <a href="stock-return-edit.php?returnId=' . $row['id'] . '" class="text-primary ml-4" id="'.$row['id'].'"><i class="fas fa-edit" ></i></a>
-                                                            <a class="text-danger ml-2" id="'.$row['id'].'"onclick="cancelPurchaseReturn(' . $row['id'] . ', this)" ><i class="fas fa-window-close" ></i></a>
+                                                            <a class="text-primary ml-4" id="edit-btn-'.$row['id'].'" onclick="editReturnItem(' . $row['id'] . ', this)"><i class="fas fa-edit" ></i></a>
+                                                            <a class="text-danger ml-2" id="cancel-btn-'.$row['id'].'" onclick="cancelPurchaseReturn(' . $row['id'] . ', this)"><i class="fas fa-window-close" ></i></a>
                                                         </td>
                                                     </tr>';
                                             } else {
@@ -252,134 +253,7 @@ $today = date("m-d-Y");
         <!-- Logout Modal-->
         <?php require_once '_config/logoutModal.php'; ?>
         <!--End of Logout Modal-->
-
-        <script>
-            //================ CALENDER TABLE DATA CONTROL =======================
-            const returnFilter = (t) => {
-
-                let table = t.id;
-                let data = t.value;
-
-                // alert(table);
-                // alert(data);
-
-                var xmlhttp = new XMLHttpRequest();
-
-                if (table == 'added_on' && data == 'CR') {
-                    // window.alert(table);
-                    // window.alert(data);
-                    showHiddenDiv1();
-                }
-
-                if (table == 'added_on' && data != 'CR') {
-                    showHiddenDiv2();
-                    let frmDate = 'fdate';
-                    let toDate = 'tdate';
-                    filterUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}&fromDate=${frmDate}&toDate=${toDate}`;
-                    xmlhttp.open("GET", filterUrl, false);
-                    xmlhttp.send(null);
-                    document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
-                }
-
-                if (table != 'added_on') {
-                    let frmDate = 'fdate';
-                    let toDate = 'tdate';
-                    filterUrl2 = `ajax/return.filter.ajax.php?table=${table}&value=${data}&fromDate=${frmDate}&toDate=${toDate}`;
-                    xmlhttp.open("GET", filterUrl2, false);
-                    xmlhttp.send(null);
-                    document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
-                }
-            }
-
-            //========================= DATE PICKER DIV CONTROL =======================
-            const showHiddenDiv1 = () => {
-                var div = document.getElementById('hiddenDiv');
-                div.style.display = 'block';
-            }
-
-            const showHiddenDiv2 = () => {
-                var div = document.getElementById('hiddenDiv');
-                div.style.display = 'none';
-            }
-            // =============== EOF DATE PICKER DIV CONTROL =====================
-
-            const getDates = (id, val) => {
-                let frmDate = document.getElementById("from-date").value;
-                let toDate = document.getElementById("to-date").value;
-                let table = id;
-                let data = val;
-                // window.alert(table);
-                // window.alert(data);
-
-                if (frmDate < toDate) {
-                    var xmlhttp = new XMLHttpRequest();
-                    // ============== Date Range ==============
-                    dateRangeUrl = `ajax/return.filter.ajax.php?table=${table}&value=${data}&fromDate=${frmDate}&toDate=${toDate}`;
-                    // alert(dateRangeUrl);
-                    xmlhttp.open("GET", dateRangeUrl, false);
-                    xmlhttp.send(null);
-                    document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
-                } else {
-                    // Swal.fire(
-                    //     'Check From Date?',
-                    //     'From Date must be smaller than To Date!',
-                    //     'info'
-                    // )
-                    window.alert("Check From Date. From Date must be smaller than To Date!")
-                }
-            }
-        </script>
-
-        <script>
-            const viewReturnItems = (returnId) => {
-
-                var xmlhttp = new XMLHttpRequest();
-
-                // ============== View Return Item in Detail ==============
-                idUrl = `ajax/purchaseReturnItemList.ajax.php?return-id=${returnId}`;
-                // alert(url);
-                xmlhttp.open("GET", idUrl, false);
-                xmlhttp.send(null);
-                document.getElementById("viewReturnModalBody").innerHTML = xmlhttp.responseText;
-                // alert(xmlhttp.responseText);
-            }
-        </script>
-
-        <script>
-            const cancelPurchaseReturn = (returnId, t) => {
-                // alert(returnId);
-                // alert(t);
-                // var t = JSON.parse(t);
-                let btn = document.getElementById(returnId);
-
-                console.log(btn);
-            
-                if (confirm("Are You Sure?")) {
-                    $.ajax({
-                        url: "ajax/return.Cancel.ajax.php",
-                        type: "POST",
-                        data: {
-                            id: returnId
-                        },
-                        success: function(data) {
-                            // alert(data);
-                            if (data == 1) {
-                                $(t).closest("tr").css("background-color", "#ff0000");
-                                $(t).closest("tr").css("color", "#fff");
-                                $(btn).off('click');
-                            } else {
-                                // $("#error-message").html("Deletion Field !!!").slideDown();
-                                // $("success-message").slideUp();
-                                alert("Cancelation Failed !");
-                            }
-                        }
-                    });
-                }
-                return false;
-            }
-        </script>
-
-
+        
         <!-- Bootstrap core JavaScript-->
         <script src="../assets/jquery/jquery.min.js"></script>
         <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
@@ -398,6 +272,9 @@ $today = date("m-d-Y");
         <script src="js/demo/datatables-demo.js"></script>
 
         <script src="../js/sweetAlert.min.js"></script>
+        
+        <!-- custom script for stock return page -->
+        <script src="../pharmacist/js/stock-return-control.js"></script>
 </body>
 
 </html>

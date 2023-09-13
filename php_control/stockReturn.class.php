@@ -14,8 +14,8 @@ class StockReturn extends DatabaseConnection{
 #                                                                                                                                #
 ##################################################################################################################################
     
-    function addStockReturn($stockReturnId, $distributorId, $billNo, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $addedBy){
-        $sql = "INSERT INTO `stock_return` (`id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$distributorId', '$billNo', '$returnDate', '$items', '$totalQty', '$returnGst', '$refundMode', '$refundAmount', '$addedBy')";
+    function addStockReturn($stockReturnId, $distributorId, $billNo, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $status, $addedBy){
+        $sql = "INSERT INTO `stock_return` (`id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `status`, `added_by`) VALUES ('$stockReturnId', '$distributorId', '$billNo', '$returnDate', '$items', '$totalQty', '$returnGst', '$refundMode', '$refundAmount', '$status', '$addedBy')";
         $res = $this->conn->query($sql);
         return $res;
     }// eof addStockReturn
@@ -69,6 +69,17 @@ class StockReturn extends DatabaseConnection{
 
 
 
+    function stockReturnByTables($table1, $data1, $table2, $data2){
+        $response = array();
+        $selectSalesReturn = "SELECT * FROM `stock_return` WHERE `$table1` = '$data1' AND `$table2` = '$data2'";
+        $query = $this->conn->query($selectSalesReturn);
+        while($result = $query->fetch_array()){
+            $response[] = $result;
+        }
+        return $response;
+    }
+
+
     function stockReturnStatus($returnId, $statusValue){
         $sql  = "UPDATE stock_return SET `status` = '$statusValue' WHERE `stock_return`.`id` = '$returnId'";
         // echo $sql.$this->conn->error;
@@ -108,6 +119,7 @@ class StockReturn extends DatabaseConnection{
         $delFromStockReturn = $this->conn->query($delQuary);
         return $delFromStockReturn;
     }
+
 ###################################################################################################################################
 #                                                                                                                                 #
 #                                           Stock Return Details Functions(stock_return_details)                                  #

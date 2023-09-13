@@ -564,7 +564,7 @@ const addSummary = () => {
         itemEditTrigger = 'old';
     }
 
-    console.log("edit type check : ",itemEditTrigger);
+    // console.log("edit type check : ",itemEditTrigger);
 
     let Manuf = document.getElementById("manuf").value;
 
@@ -595,8 +595,8 @@ const addSummary = () => {
     let itemPtr = document.getElementById("ptr").value;
     let margin = document.getElementById("margin").value;
 
-    console.log("item ptr check : ",itemPtr);
-    console.log("item margin check : ",margin);
+    // console.log("item ptr check : ",itemPtr);
+    // console.log("item margin check : ",margin);
     
     // ============== per item gst amount calculation ============
     let netGstAmount = (parseFloat(amount) - parseFloat(taxable));
@@ -680,17 +680,13 @@ const addSummary = () => {
 
 
     /////////////////// sl no control area \\\\\\\\\\\\\\\\\\\\\
-    let editRow = document.getElementById('edit-row').value;
+    
     let slno = document.getElementById("dynamic-id").value;
+    let slControl = document.getElementById("serial-control").value;
     slno++;
+    slControl++;
     document.getElementById("dynamic-id").value = slno;
-    document.getElementById("items").value = slno;
-
-    if(editRow == ''){
-        slno = slno;
-    }else{
-        slno = editRow;
-    }
+    document.getElementById("serial-control").value = slControl;
 
     ////////////////////// total qantity count \\\\\\\\\\\\\\\\\\\\\\\\\\
     let finalQty = document.getElementById("final-qty");
@@ -722,8 +718,8 @@ const addSummary = () => {
     }else{
         itemMrp = itemQty * itemMrp;
     }
-    console.log("item type : ",itemUnit);
-    console.log("item mrp : ",itemMrp);
+    // console.log("item type : ",itemUnit);
+    // console.log("item mrp : ",itemMrp);
     let totalMrp = existsPrice + itemMrp;
     // console.log(totalMrp);
     document.getElementById("total-price").value = totalMrp.toFixed(2);
@@ -737,13 +733,13 @@ const addSummary = () => {
     // console.log(sum);
     document.getElementById("payable").value = sum.toFixed(2);
 
-    jQuery("#item-body").append(`<tr id="table-row-${slno}">
+    jQuery("#item-body").append(`<tr id="table-row-${slControl}">
 
-            <td  ><i class="fas fa-trash text-danger" onclick="deleteItem(${slno}, ${qty}, ${netGst.toFixed(2)}, ${mrp.toFixed(2)}, ${amount})" style="font-size:.9rem; width: .3rem"></i></td>
+            <td style="color: red;"><i class="fas fa-trash text-danger" onclick="deleteItem(${slControl}, ${qty}, ${netGst.toFixed(2)}, ${mrp.toFixed(2)}, ${amount})" style="font-size:.9rem; width: .3rem"></i></td>
 
-            <td style="font-size:.9rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
+            <td id="tr-${slControl}-col-2" style="font-size:.9rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
 
-            <td>
+            <td id="tr-${slControl}-col-3">
                 <input class="summary-product" type="text" name="product-name[]" value="${productName}" readonly>
                 <input type="text" name="product-id[]" value="${productId}" hidden>
                 <input type="text" name="item-id[]" value="${itemId}" hidden>
@@ -756,44 +752,44 @@ const addSummary = () => {
                 <input class="d-none" type="text" name="stockOut-details-id[]" value="${stockOutDetailsId}" readonly style="width:3rem">
             </td>
 
-            <td>
+            <td id="tr-${slControl}-col-4">
                 <input class="summary-items" type="text" name="batch-no[]" value="${batchNo}" readonly>
             </td>
 
-            <td>
+            <td id="tr-${slControl}-col-5">
                 <input class="summary-items" type="text" name="weightage[]" value="${weightage}" readonly>
                 <input class="d-none summary-items" type="text" name="ItemUnit[]" value="${itemUnit}" readonly style="width:3rem">
                 <input class="d-none summary-items" type="text" name="ItemPower[]" value="${itemPower}" readonly style="width:3rem">
             </td>
             
-            <td>
+            <td id="tr-${slControl}-col-6">
                 <input class="summary-items" type="text" name="exp-date[]" value="${expDate}" readonly style="width : 4rem;">
             </td>
 
-            <td>
+            <td id="tr-${slControl}-col-7">
                 <input class="summary-items" type="text" name="mrp[]" value="${mrp}" readonly>
             </td>
 
-            <td>
+            <td id="tr-${slControl}-col-8">
                 <input class="summary-items" type="text" name="disc[]" value="${disc}" readonly>
                 <input class="d-none summary-items" type="text" name="dPrice[]" value="${dPrice}" readonly>
             </td>
 
-            <td>
+            <td id="tr-${slControl}-col-9">
                 <input class="summary-items" type="text" name="gst[]" value="${gst}" readonly>
                 <input type="text" name="gst-amount[]" value="${netGstAmount}" style="width:3rem" hidden>
             </td>
             
-            <td>
+            <td id="tr-${slControl}-col-10">
                 <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
                 <input class="d-none summary-items" type="text" name="qty-type[]" value="${qtyType}" readonly style="width:3rem">
             </td>
 
-            <td>
+            <td id="tr-${slControl}-col-11">
                 <input class="summary-items" type="text" name="taxable[]" value="${taxable}" readonly>
             </td>
             
-            <td>
+            <td id="tr-${slControl}-col-12">
                 <input class="summary-items" type="text" name="amount[]" value="${amount}" readonly>
             </td>
 
@@ -821,8 +817,6 @@ const addSummary = () => {
         document.getElementById("exta-details").style.display = "none";
 
 }
-
-
 
 
 const editItem = (pharmacyId, stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) =>{   
@@ -904,13 +898,9 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
 
     let delRow = slno;
     
-    document.getElementById('edit-row').value = slno;
-
     jQuery(`#table-row-${slno}`).remove();
-    
-    slno = document.getElementById("dynamic-id").value;
-    slno--;
-    document.getElementById("dynamic-id").value = slno;
+    let slVal = document.getElementById("dynamic-id").value;
+    document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
     ////////////// details data control on delete \\\\\\\\\\\\\
     var items = document.getElementById("items");
@@ -943,8 +933,7 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
 }
 
 function rowAdjustment(delRow) {
-    // console.log("hello");
-    // console.log(delRow);
+    
     let tableId = document.getElementById("item-body");
     let j = 0;
     let colIndex = 1;
