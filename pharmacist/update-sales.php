@@ -577,9 +577,9 @@ if ($_GET['id']) {
                                                         </span>
                                                         <input class="sumary-inp" type="text" id="customer-name" name="customer-name" value="<?php echo $patientName; ?>" readonly>
 
-                                                        <input class=" " type="text" id="customer-id" name="customer-id" value="<?php echo $patientId; ?>">
+                                                        <input class="d-none" type="text" id="customer-id" name="customer-id" value="<?php echo $patientId; ?>">
 
-                                                        <input class=" " type="text" id="invoice-id" name="invoice-id" value="<?php echo $invoiceId; ?>">
+                                                        <input class="d-none" type="text" id="invoice-id" name="invoice-id" value="<?php echo $invoiceId; ?>">
 
                                                     </div>
 
