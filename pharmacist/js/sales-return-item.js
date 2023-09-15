@@ -6,8 +6,10 @@ let patientName = document.getElementById("patient-name");
 let billDate = document.getElementById("bill-date");
 let reffBy = document.getElementById("reff-by");
 
-let itemList = document.getElementById("items-list");
+var itemList = document.getElementById("items-list");
 
+let stockOutDetailsItemid = document.getElementById('stock-out-details-item-id');
+let pharmacyItemid = document.getElementById('pharmacy-invoice-item-details-id');
 let currentItemID = document.getElementById("item-id");
 let ProductID = document.getElementById("prod-id");
 let expDate = document.getElementById("exp-date");
@@ -18,20 +20,19 @@ let batch = document.getElementById("batch-no");
 
 let mrp = document.getElementById("mrp");
 let purchaseQuantity = document.getElementById("purchase-qty");
-let qty = document.getElementById("qty");
+let currentQty = document.getElementById("qty");
 let discount = document.getElementById("discount");
 let gst = document.getElementById("gst")
 let taxable = document.getElementById("taxable");
 let billAmount = document.getElementById("bill-amount");
 
-
 let invoiceNo = document.getElementById("invoice-no");
 let refundMode = document.getElementById("refund-mode");
+let returnDate = document.getElementById("select-return-date");
 
 let returnQtyVal = document.getElementById("return");
 let refundTaxable = document.getElementById("refund-taxable");
 let refundAmount = document.getElementById("refund");
-
 
 var todayDate = new Date();
 
@@ -48,6 +49,23 @@ if (month < 10) {
 var todayFullDate = year + "-" + month + "-" + date;
 // console.log(todayFullDate);
 document.getElementById("bill-date").setAttribute("max", todayFullDate);
+
+/////////////////////////////// data search start \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+const firstInput = document.getElementById('invoice-no');
+
+window.addEventListener('load', function () {
+    firstInput.focus();
+});
+
+firstInput.addEventListener('input', function (event) {
+
+    const inputValue = this.value;
+
+    // Check if the first character is a space
+    if (inputValue.length > 0 && inputValue[0] === ' ') {
+        this.value = inputValue.slice(1);
+    }
+});
 
 const getCustomer = (invoice) => {
 
@@ -66,6 +84,8 @@ const getCustomer = (invoice) => {
         billDate.value = "";
         reffBy.value = "";
 
+        stockOutDetailsItemid.value = "";
+        pharmacyItemid.value = "";
         currentItemID.value = "";
         ProductID.value = "";
         expDate.value = "";
@@ -75,7 +95,7 @@ const getCustomer = (invoice) => {
         batch.value = "";
         mrp.value = "";
         purchaseQuantity.value = "";
-        qty.value = "";
+        currentQty.value = "";
         discount.value = "";
         gst.value = "";
         taxable.value = "";
@@ -135,6 +155,8 @@ const getDtls = (invoiceId, customerId) => {
         patientName.value = "";
         billDate.value = "";
         reffBy.value = "";
+        stockOutDetailsItemid.value = "";
+        pharmacyItemid.value = "";
         currentItemID.value = "";
         ProductID.value = "";
         expDate.value = "";
@@ -144,7 +166,7 @@ const getDtls = (invoiceId, customerId) => {
         batchNo.value = "";
         mrp.value = "";
         purchaseQuantity.value = "";
-        qty.value = "";
+        currentQty.value = "";
         discount.value = "";
         gst.value = "";
         taxable.value = "";
@@ -154,12 +176,20 @@ const getDtls = (invoiceId, customerId) => {
 
 const getItemDetails = (t) => {
 
+    let stockOutDetailsDataId = t.selectedOptions[0].getAttribute('stokOutDetails-data-id');
+    let pharmacyItemDetailsId = t.selectedOptions[0].getAttribute('pharmacy-data-id');
     let invoice = t.selectedOptions[0].getAttribute('data-invoice');
     let itemId = t.value;
-    console.log(itemId);
+    // console.log(itemId);
     let batchNo = t.selectedOptions[0].getAttribute('data-batch');
 
     if (itemId != "") {
+
+        //==================== pharmacy invoice item id ==========
+        stockOutDetailsItemid.value = stockOutDetailsDataId;
+        
+        //=========== stock out details item id =================
+        pharmacyItemid.value = pharmacyItemDetailsId;
 
         //==================== Product id ====================
         let productId = `ajax/stockOut.all.ajax.php?prod-id=${invoice}&p-id=${itemId}`;
@@ -211,7 +241,7 @@ const getItemDetails = (t) => {
         xmlhttp.open("GET", qtyUrl, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText)
-        qty.value = xmlhttp.responseText;
+        currentQty.value = xmlhttp.responseText;
 
         //==================== DISC ====================
         let discUrl = `ajax/stockOut.all.ajax.php?disc=${invoice}&p-id=${itemId}`;
@@ -245,6 +275,8 @@ const getItemDetails = (t) => {
         document.getElementById('return').focus();
 
     } else {
+        stockOutDetailsItemid.value = "";
+        pharmacyItemid.value = "";
         currentItemID.value = "";
         ProductID.value = "";
         expDate.value = "";
@@ -254,7 +286,7 @@ const getItemDetails = (t) => {
         batchNo.value = "";
         mrp.value = "";
         purchaseQuantity.value = "";
-        qty.value = "";
+        currentQty.value = "";
         discount.value = "";
         gst.value = "";
         taxable.value = "";
@@ -265,41 +297,41 @@ const getItemDetails = (t) => {
 
 
 const getRefund = (returnQty) => {
-    console.log("return qantity test", returnQty);
-    
+    // console.log("return qantity test", returnQty);
+
     let currenQty = document.getElementById('qty').value;
     let mrp = document.getElementById('mrp').value;
     let disc = document.getElementById('discount').value;
     let gst = document.getElementById('gst').value;
     let weatage = document.getElementById('item-weatage').value;
     let itemUnit = document.getElementById('item-unit').value;
-    
+
     if (parseInt(returnQty) <= parseInt(currenQty)) {
-        if(itemUnit == 'tab' || itemUnit == 'cap'){
-            let refundAmount = ((parseFloat(mrp) / parseInt(weatage)) - ((parseFloat(mrp) / parseInt(weatage)) * parseFloat(disc)/100)) * parseInt(returnQty);
+        if (itemUnit == 'tab' || itemUnit == 'cap') {
+            let refundAmount = ((parseFloat(mrp) / parseInt(weatage)) - ((parseFloat(mrp) / parseInt(weatage)) * parseFloat(disc) / 100)) * parseInt(returnQty);
 
             refundTaxable = (parseFloat(refundAmount) * 100) / (parseFloat(gst) + 100);
 
             document.getElementById('refund').value = refundAmount.toFixed(2);
             document.getElementById('refund-taxable').value = refundTaxable.toFixed(2);
-        }else{
-            let refundAmount = (parseFloat(mrp) - (parseFloat(mrp) * parseFloat(disc)/100)) * returnQty;
+        } else {
+            let refundAmount = (parseFloat(mrp) - (parseFloat(mrp) * parseFloat(disc) / 100)) * returnQty;
 
             refundTaxable = (parseFloat(refundAmount) * 100) / (parseFloat(gst) + 100);
 
             document.getElementById('refund').value = refundAmount.toFixed(2);
             document.getElementById('refund-taxable').value = refundTaxable.toFixed(2);
         }
-    } 
+    }
 
     if (parseInt(returnQty) > parseInt(currenQty)) {
         document.getElementById("refund").value = '';
-        document.getElementById("add-btn").disabled = true;
-        swal({
+        Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'Inserted value might be grater than sold qty.',
         })
+        document.getElementById('return').value = '';
     }
 }
 
@@ -309,26 +341,46 @@ const getRefund = (returnQty) => {
 //geeting bills by clicking on add button
 const addData = () => {
 
+    let StockOutDetailsItemId = document.getElementById('stock-out-details-item-id').value;
+    let PharmacyInvoiceItemId = document.getElementById('pharmacy-invoice-item-details-id').value;
     let currentItemID = document.getElementById("item-id").value;
     let pId = document.getElementById("prod-id").value;
     let expDate = document.getElementById("exp-date").value;
     let unit = document.getElementById("unit").value;
+    let ItemUnit = document.getElementById("item-unit").value;
+    let ItemWeatage = document.getElementById("item-weatage").value;
     let batch = document.getElementById("batch-no").value;
     let mrp = document.getElementById("mrp").value;
     let purchaseQuantity = document.getElementById("purchase-qty").value;
-    let qty = document.getElementById("qty").value;
+    let currentQty = document.getElementById("qty").value;
     let discount = document.getElementById("discount").value;
     let gst = document.getElementById("gst").value;
     let taxable = document.getElementById("taxable").value;
     let billAmount = document.getElementById("bill-amount").value;
-
+    
     //============================ set and filter invoice number ==================================
     let invoiceNo = document.getElementById("invoice-no").value;
     let returnInvoiceId = document.getElementById('invoice').value;
     if (returnInvoiceId != "") {
         if (returnInvoiceId != invoiceNo) {
-            window.alert("INVOICE NUMBER CHANGED");
-            window.location.reload();
+            Swal.fire({
+                title: 'Are you sure? Do you want to chang Invoice id?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Okay'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Changed!',
+                        'Invoice id reset.',
+                        'success'
+                    )
+                }
+                window.location.reload();
+            })
         }
     } else {
         document.getElementById('invoice').value = invoiceNo;
@@ -337,7 +389,8 @@ const addData = () => {
     //=============================================================================================
 
     let refundMode = document.getElementById("refund-mode").value;
-
+    let returnDate = document.getElementById('return-date');
+    
     let returnQtyVal = document.getElementById("return").value;
     let refundTaxable = document.getElementById("refund-taxable").value;
     refundTaxable = parseFloat(refundTaxable);
@@ -347,116 +400,118 @@ const addData = () => {
 
 
     if (invoiceNo.value == "") {
-        swal("Failed!", "Please Select invoice no!", "error");
+        Swal.fire("Failed!", "Please Select invoice no!", "error");
         invoiceNo.focus();
         return;
     }
 
     if (patientName.value == "") {
-        swal("Failed!", "Patient name must be not noull", "error");
+        Swal.fire("Failed!", "Patient name must be not noull", "error");
         patientName.focus();
         return;
     }
 
-
     if (billDate.value == "") {
-        swal("Failed!", "Please enter Date!", "error");
+        Swal.fire("Failed!", "Please enter Date!", "error");
         billDate.focus();
         return;
     }
 
     if (reffBy.value == "") {
-        swal("Failed!", "Doctor name must be not null", "error");
+        Swal.fire.fire("Failed!", "Doctor name must be not null", "error");
         reffBy.focus();
         return;
     }
 
+    if (returnDate.value == "") {
+        Swal.fire("Failed!", "Please Select return date!", "error");
+        return;
+    }
 
-    if (refundMode.value == "") {
-        swal("Failed!", "Please Select refund mode!", "error");
-        refundMode.focus();
+    if (refundMode == "") {
+        Swal.fire("Failed!", "Please Select refund mode!", "error");
         return;
     }
 
     if (itemList.value == "") {
-        swal("Failed!", "Please Select returning item!", "error");
+        Swal.fire("Failed!", "Please Select returning item!", "error");
         itemList.focus();
     } else { }
 
     if (currentItemID.value == "") {
-        swal("Failed!", "Please select an item", "error");
+        Swal.fire("Failed!", "Please select an item", "error");
         expDate.focus();
         return;
     }
 
     if (expDate.value == "") {
-        swal("Failed!", "Expiary date must be not null!", "error");
+        Swal.fire("Failed!", "Expiary date must be not null!", "error");
         expDate.focus();
         return;
     }
 
     if (unit.value == "") {
-        swal("Failed!", "Unit value must be not null!", "error");
+        Swal.fire("Failed!", "Unit value must be not null!", "error");
         unit.focus();
         return;
     }
 
     if (batch.value == "") {
-        swal("Failed!", "Batch number must be not null", "error");
+        Swal.fire("Failed!", "Batch number must be not null", "error");
         batch.focus();
         return;
     }
 
     if (mrp.value == "") {
-        swal("Failed!", "MRP must be not null!", "error");
+        Swal.fire("Failed!", "MRP must be not null!", "error");
         mrp.focus();
         return;
     }
 
-    if (qty.value == "") {
-        swal("Failed!", "Qantity must be not null", "error");
-        qty.focus();
+    if (currentQty.value == "") {
+        Swal.fire("Failed!", "Qantity must be not null", "error");
+        currentQty.focus();
         return;
     }
 
     if (discount.value == "") {
-        swal("Failed!", "Discount must be not null", "error");
+        Swal.fire("Failed!", "Discount must be not null", "error");
         discount.focus();
         return;
     }
 
     if (gst.value == "") {
-        swal("Failed!", "GST must be not null!", "error");
+        Swal.fire("Failed!", "GST must be not null!", "error");
         gst.focus();
         return;
     }
 
     if (taxable.value == "") {
-        swal("Failed!", "taxable must be not null!", "error");
+        Swal.fire("Failed!", "taxable must be not null!", "error");
         taxable.focus();
         return;
     }
 
     if (billAmount.value == "") {
-        swal("Failed!", "bill amount must be not null!", "error");
+        Swal.fire("Failed!", "bill amount must be not null!", "error");
         billAmount.focus();
         return;
     }
 
     if (returnQtyVal.value == "") {
-        swal("Failed!", "return qantity must be not null!", "error");
+        Swal.fire("Failed!", "return qantity must be not null!", "error");
         returnQtyVal.focus();
         return;
     }
 
     if (refundTaxable.value == "") {
-        swal("Failed!", "refund amount must be not null!", "error");
+        Swal.fire("Failed!", "refund amount must be not null!", "error");
         refund.focus();
         return;
     }
 
     if (refundAmount.value == "") {
-        swal("Failed!", "refund amount must be not null!", "error");
+        Swal.fire("Failed!", "refund amount must be not null!", "error");
         refund.focus();
         return;
     }
@@ -467,7 +522,9 @@ const addData = () => {
 
             const item = existsItems[i];
             if (item.childNodes[5].childNodes[3].value == itemList.value) {
-                swal("You can not add same item more than one!");
+                Swal.fire("You can not add same item more than one!");
+                stockOutDetailsItemid.value = "";
+                pharmacyItemid.value = "";
                 ProductID.value = "";
                 expDate.value = "";
                 unit.value = "";
@@ -475,7 +532,7 @@ const addData = () => {
                 itemWeatage.value = "";
                 batch.value = "";
                 mrp.value = "";
-                qty.value = "";
+                currentQty.value = "";
                 discount.value = "";
                 gst.value = "";
                 taxable.value = "";
@@ -494,6 +551,10 @@ const addData = () => {
     let slno = items.length;
     document.getElementById("total-items").value = slno;
 
+    // let slControl = document.getElementById("serial-control").value;
+    // slControl++;
+    // document.getElementById("serial-control").value = slControl;
+
     //total Refund Amount
     var totalRefund = document.getElementById("refund-amount");
     let netRefund = parseFloat(totalRefund.value) + parseFloat(refundAmount);
@@ -506,10 +567,12 @@ const addData = () => {
     totalQty.value = totalQtyTemp;
 
     // generate gst amount on refund
-    var netGstAmount = document.getElementById("gst-amount");
+    var netGstAmount = document.getElementById("gst-amount").value;
     var totalGstAmount = parseFloat(refundAmount) - parseFloat(refundTaxable);
-    netGstAmount.value = totalGstAmount.toFixed(2);
+    var updatedNetGstAmount = parseFloat(netGstAmount) +  parseFloat(totalGstAmount);
+    document.getElementById("gst-amount").value = updatedNetGstAmount.toFixed(2);
     let gstPerItem = totalGstAmount.toFixed(2);
+
 
     const appendData = () => {
 
@@ -519,48 +582,59 @@ const addData = () => {
                 <i class="fas fa-trash" id="${slno}"
                     onclick="deleteData(this.id, ${parseFloat(returnQtyVal)}, ${gstPerItem}, ${refundAmount.toFixed(2)})"></i>
             </td>
-            <td class="pt-3" style="font-size: 0.7rem;">${slno}</td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slno}-col-1" style="font-size: 0.7rem;">${slno}</td>
+            <td class="pt-3" id="row-${slno}-col-2">
                 <input class="table-data w-10r" type="text" value="${itemName}" readonly style="font-size: .65rem;">
-                <input class="d-none" type="text" name="itemId[]" value="${itemList.value}">
+                <input class="" type="text" name="itemId[]" value="${itemList.value}">
 
             </td>
-            <td class="d-none pt-3">
+
+            <td class=" pt-3">
+                <input class="table-data w-6r" type="text" name="stockOutDetailsItemIds[]" value="${StockOutDetailsItemId}" readonly>
+                <input class="table-data w-6r" type="text" name="pharmacyInvoiceItemIds[]" value="${PharmacyInvoiceItemId}" readonly>
+            </td>
+
+            <td class=" pt-3">
+                <input class="table-data w-6r" type="text" name="curretnItemId[]" value="${currentItemID}" readonly style="font-size: 0.65rem;">
+            </td>
+
+            <td class=" pt-3">
                 <input class="table-data w-6r" type="text" name="productId[]" value="${pId}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slno}-col-3">
                 <input class="table-data w-6r" type="text" name="batchNo[]" value="${batch}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slno}-col-4">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size: 0.65rem;">
             </td>
 
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slno}-col-5">
                 <input class="table-data w-3r" type="text" name="setof[]" value="${unit}" readonly style="font-size: 0.65rem;">
             </td>
 
-            <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="qty[]" value="${qty}" readonly style="font-size: 0.65rem;">
+            <td class="pt-3" id="row-${slno}-col-6">
+                <input class="table-data w-3r" type="text" name="qty[]" value="${currentQty}" readonly style="font-size: 0.65rem; text-align: end;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slno}-col-7">
                 <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slno}-col-8">
                 <input class="table-data w-2r" type="text" name="disc[]" value="${discount}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slno}-col-9">
                 <input class="table-data w-2r" type="text" name="gst[]" value="${gst}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slno}-col-10">
                 <input class="table-data w-2r" type="text" name="taxable[]" value="${refundTaxable.toFixed(2)}"  style="font-size: 0.65rem;">
             </td>
-            <td class="ps-1 pt-3">
-                <input class="table-data w-3r" type="text" name="return[]" value="${returnQtyVal}" readonly style="font-size: 0.65rem;">
+            <td class="pt-3" id="row-${slno}-col-11">
+                <input class="table-data w-3r" type="text" name="return[]" value="${returnQtyVal}" readonly style="font-size: 0.65rem; text-align: end;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slno}-col-12">
             <input class="table-data w-3r" type="any" name="refundPerItem[]" value="${refundAmount.toFixed(2)}" readonly style="font-size: 0.65rem;">
             </td>
         </tr>`);
+
         return true;
     };
 
@@ -568,18 +642,113 @@ const addData = () => {
         itemList.remove(itemList.selectedIndex);
         itemList.options[0].selected = true;
 
+        const dataTuple = {
 
+            slno: slno,
+            invoiceNo: invoiceNo,
+            ProductName: itemName,
+            StockOutDetailsItemId: StockOutDetailsItemId,
+            PharmacyInvoiceItemId: PharmacyInvoiceItemId,
+            currentItemID: currentItemID,
+            pId: pId,
+            batch: batch,
+            expDate: expDate,
+            unit: unit,
+            ItemUnit: ItemUnit,        
+            ItemWeatage: ItemWeatage,    
+            mrp: mrp,
+            purchaseQuantity: purchaseQuantity,
+            currentQty: currentQty,
 
+            discount: discount,
+            gst: gst,
+            SellingTimeTaxable: taxable,
+            SellingBillAmount: billAmount,
+            returnQtyVal: returnQtyVal,
+            refundTaxable: refundTaxable,
+            refundAmount: refundAmount,
+
+        };
+
+        let tupleData = JSON.stringify(dataTuple);
+
+        document.getElementById(`row-${slno}-col-1`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-2`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-3`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-4`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-5`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-6`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-7`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-8`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-9`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-10`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-11`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slno}-col-12`).onclick = function () {
+            editItem(tupleData);
+        };
     }
+
     document.getElementById("return-item-details").reset();
+    event.preventDefault();
 } //eof addData  
 
 
+// ========================= added item edit optin ============================
+
+const editItem = (tuple) => {
+    console.log(tuple);
+
+    if(document.getElementById('item-id').value == ''){
+        tData = JSON.parse(tuple);
+
+        let editData = document.createElement("option");
+
+        editData.setAttribute("stokOutDetails-data-id",tData.StockOutDetailsItemId );
+        editData.setAttribute("pharmacy-data-id",tData.PharmacyInvoiceItemId);
+        editData.setAttribute("data-invoice",tData.invoiceNo);
+        editData.setAttribute("data-batch",tData.batch);
+        editData.setAttribute("value",tData.currentItemID);
+        editData.text = tData.ProductName;
+        itemList.appendChild(editData);
+       
+        // -----------------------------------------------------------------------------
+        let gstPerItem = parseFloat(tData.refundAmount) - parseFloat(tData.refundTaxable);
+        gstPerItem = parseFloat(gstPerItem).toFixed(2);
+        deleteData(tData.slno, tData.returnQtyVal, gstPerItem, tData.refundAmount);
+
+    }else{
+        Swal.fire("Failed!", "Add previous data first", "error");
+    }
+
+}
 
 // ================================ Delet Data ================================
 
 
 function deleteData(slno, returnQty, gstPerItem, itemRefund) {
+
     jQuery(`#table-row-${slno}`).remove();
 
     let existitems = document.querySelectorAll('tr');

@@ -63,12 +63,11 @@ window.addEventListener('load', function () {
 });
 
 firstInput.addEventListener('input', function (event) {
-    // Get the input value
+    
     const inputValue = this.value;
 
     // Check if the first character is a space
     if (inputValue.length > 0 && inputValue[0] === ' ') {
-        // Remove the leading space
         this.value = inputValue.slice(1);
     }
 });

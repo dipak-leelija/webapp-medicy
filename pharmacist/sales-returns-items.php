@@ -43,6 +43,12 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
+
+    <!-- Include SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="../css/sweetalert2/sweetalert2.min.css" rel="stylesheet">
+
+
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
@@ -82,7 +88,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                             <div class="row">
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="invoice-no">Invoice No.</label>
-                                    <input type="text" class="upr-inp" name="invoice-no" id="invoice-no" placeholder="Search Invoice No." onkeyup="getCustomer(this.value)" value="">
+                                    <input type="number" class="upr-inp" name="invoice-no" id="invoice-no" placeholder="Search Invoice No." onkeyup="getCustomer(this.value)" value="">
                                 </div>
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="patient-name">Patient Name.</label>
@@ -126,19 +132,34 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                     <select id="items-list" class="upr-inp mt-1" onchange="getItemDetails(this);">
                                         <option value="" selected disabled>Select Invoice Number First</option>
                                     </select>
+                                    <!-- <input type="text" class="upr-inp" id="item-name" readonly style="display: none;"> -->
                                 </div>
                             </div>
 
                             <form id="return-item-details">
                                 <div class="row">
-                                    <div class="d-none col-md-1 col-6 mt-3">
+                                    <div class="  col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="stock-out-details-item-id">Stock out details item Id</label>
+                                        <div class="d-flex date-field">
+                                            <input type="text" class="upr-inp" id="stock-out-details-item-id" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="  col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="pharmacy-invoice-item-details-id">Pharmacy Invoice Item Details Id</label>
+                                        <div class="d-flex date-field">
+                                            <input type="text" class="upr-inp" id="pharmacy-invoice-item-details-id" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="  col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="item-id">Item Id</label>
                                         <div class="d-flex date-field">
                                             <input type="text" class="upr-inp" id="item-id" readonly>
                                         </div>
                                     </div>
 
-                                    <div class="d-none col-md-1 col-6 mt-3">
+                                    <div class="  col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="prod-id">Product Id</label>
                                         <div class="d-flex date-field">
                                             <input type="text" class="upr-inp" id="prod-id" readonly>
@@ -157,12 +178,12 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input type="text" class="upr-inp" id="unit" value="" readonly>
                                     </div>
 
-                                    <div class="d-none col-md-1 col-6 mt-3">
+                                    <div class="  col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="unit"> Item Unit</label>
                                         <input type="text" class="upr-inp" id="item-unit" value="" readonly>
                                     </div>
 
-                                    <div class="d-none col-md-1 col-6 mt-3">
+                                    <div class="  col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="unit">Item Weatage</label>
                                         <input type="text" class="upr-inp" id="item-weatage" value="" readonly>
                                     </div>
@@ -197,7 +218,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input type="text" class="upr-inp" name="gst" id="gst" readonly>
                                     </div>
 
-                                    <div class="d-none col-md-1 col-6 mt-3">
+                                    <div class="  col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="taxable">Sales Taxable</label>
                                         <input type="any" class="upr-inp" name="taxable" id="taxable">
                                     </div>
@@ -213,12 +234,12 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                                     <div class="col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="return">Taxable</label>
-                                        <input type="number" class="upr-inp" name="refund-taxable" id="refund-taxable" onkeyup="getRefund(this.value)" required>
+                                        <input type="number" class="upr-inp" name="refund-taxable" id="refund-taxable" onkeyup="getRefund(this.value)" required readonly>
                                     </div>
 
                                     <div class="col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="refund">Refund</label>
-                                        <input type="any" class="upr-inp" name="refund" id="refund" required>
+                                        <input type="any" class="upr-inp" name="refund" id="refund" readonly>
                                     </div>
                                 </div>
                                 <div class="row justify-content-end">
@@ -240,12 +261,15 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col">
-                                                    <!-- <input type="number" value="0" id="dynamic-id" style="display:none"> -->
+                                                    <input type="number" value="0" id="dynamic-id" style="width: 2rem;" readonly>
                                                 </th>
                                                 <th scope="col">
-                                                    <!-- <input type="number" value="0" id="slno" style="display:none"> -->
+                                                    <input type="number" value="0" id="serial-control" style="width: 2rem;" readonly>
                                                 </th>
                                                 <th scope="col" style="font-size: .7rem;">Items</th>
+                                                <th scope="col" style="font-size: .7rem;">Ids of tables</th>
+                                                <th scope="col" style="font-size: .7rem;">Item id</th>
+                                                <th scope="col" style="font-size: .7rem;">Prodcut id</th>
                                                 <th scope="col" style="font-size: .7rem;">Batch</th>
                                                 <th scope="col" style="font-size: .7rem;">Exp.</th>
                                                 <th scope="col" style="font-size: .7rem;">Unit</th>
@@ -328,10 +352,15 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         <!-- Core plugin JavaScript-->
         <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
 
+        <!-- Include SweetAlert2 JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+
         <!-- Custom scripts for all pages-->
         <script src="js/sb-admin-2.min.js"></script>
         <script src="../js/ajax.custom-lib.js"></script>
         <script src="../js/sweetAlert.min.js"></script>
+        <script src="../js/sweetalert2/sweetalert2.all.min.js"></script>
         <script src="js/sales-return-item.js"></script>
 
 </body>

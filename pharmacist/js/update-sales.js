@@ -69,6 +69,23 @@ const getPaymentMode = (mode) => {
 }
 
 /////////////////////////////// ITEM SEARCH STARTS HEAR \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////// making search item focused fist value not a space \\\\\\\\\\\\\\\\\\
+const firstInput = document.getElementById('search-Item');
+
+window.addEventListener('load', function () {
+    firstInput.focus();
+});
+
+firstInput.addEventListener('input', function (event) {
+    
+    const inputValue = this.value;
+
+    // Check if the first character is a space
+    if (inputValue.length > 0 && inputValue[0] === ' ') {
+        this.value = inputValue.slice(1);
+    }
+});
+//==============================================================
 const searchItem = (searchFor) => {
 
     let searchReult = document.getElementById('searched-items');
@@ -91,6 +108,7 @@ const searchItem = (searchFor) => {
         document.getElementById("gst").value = '';
 
     } else {
+       if(searchFor.length > 2){
         var XML = new XMLHttpRequest();
         XML.onreadystatechange = function () {
             if (XML.readyState == 4 && XML.status == 200) {
@@ -99,13 +117,16 @@ const searchItem = (searchFor) => {
         };
         XML.open('GET', 'ajax/sales-item-list.ajax.php?data=' + searchFor, true);
         XML.send();
+       }
     }
 }
 
 const itemsBatchDetails = (prodcutId, name, stock) => {
+    // console.log(prodcutId);
 
     if (parseInt(stock) > 0) {
 
+        // document.getElementById("product-id").value = prodcutId;
         // ==================== SEARCH PRODUCT NAME =====================
         document.getElementById("search-Item").value = name;
         document.getElementById("searched-items").style.display = "none";
@@ -138,13 +159,13 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
                 searchReult.innerHTML = XML.responseText;
             }
         };
-        XML.open('GET', 'ajax/sales-item-batch-list.ajax.php?batchDetails=' + prodcutId, true);
+        XML.open('GET', 'ajax/sales-item-batch-list.ajax.php?prodId=' + prodcutId, true);
         XML.send();
     }
 
 
     if (parseInt(stock) <= 0) {
-        
+
         document.getElementById("search-Item").value = '';
         document.getElementById("weightage").value = '';
         document.getElementById("batch-no").value = '';
@@ -238,7 +259,7 @@ const stockDetails = (productId, batchNo, itemId) => {
         let packUnit = xmlhttp.responseText;
         let packOf = `${packWeightage}${packUnit}`;
         document.getElementById("weightage").value = packOf;
-        document.getElementById("item-unit-type").value = xmlhttp.responseText;
+        document.getElementById("item-unit").value = xmlhttp.responseText;
         // // alert(xmlhttp.responseText);
 
         //==================== Expiry Date ====================
@@ -337,7 +358,7 @@ const stockDetails = (productId, batchNo, itemId) => {
         document.getElementById("gst").value = '';
 
         document.getElementById("item-weightage").value = '';
-        document.getElementById("item-unit-type").value = '';
+        document.getElementById("item-unit").value = '';
         document.getElementById("aqty").value = '';
         document.getElementById("type-check").value = '';
         document.getElementById("qty").value = '';
@@ -355,16 +376,16 @@ const stockDetails = (productId, batchNo, itemId) => {
 
 
 const onQty = (qty) => {
-
+    
     var xmlhttp = new XMLHttpRequest();
 
     let mrp = document.getElementById("mrp").value;
     let itemWeatage = document.getElementById('item-weightage').value;
-    let itemUnit = document.getElementById('item-unit-type').value;
+    let itemUnit = document.getElementById('item-unit').value;
     let loosePrice = "";
-    if(itemUnit =='tab' || itemUnit =='cap'){
+    if (itemUnit == 'tab' || itemUnit == 'cap') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
-    }else{
+    } else {
         loosePrice = '';
     }
     document.getElementById('loose-price').value = loosePrice;
@@ -384,13 +405,17 @@ const onQty = (qty) => {
         window.alert(string_4);
     }
     // =============================== Item pack type calculation ======================
-    let unitType = document.getElementById("item-unit-type").value;
+
+    let unitType = document.getElementById("item-unit").value;
+    
     let itemWeightage = document.getElementById("item-weightage").value;
+    
     let checkSum = '';
     let itemPackType = '';
 
     if (unitType == 'tab' || unitType == 'cap') {
         checkSum = parseInt(qty) % parseInt(itemWeightage);
+        
         if (checkSum == 0) {
             itemPackType = 'Pack';
         } else {
@@ -416,13 +441,13 @@ const onQty = (qty) => {
     }
     else {
         disc = 0;
-    } 
+    }
 
 
     if (qty > 0) {
         if (itemPackType == '') {
             // =========== (item except 'tab' or 'cap' calculation area) ===================
-            discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc)/100)));
+            discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
             discPrice = discPrice.toFixed(2);
@@ -433,15 +458,15 @@ const onQty = (qty) => {
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
             document.getElementById('amount').value = netPayble;
-        } else {    
+        } else {
             // =========== (item = tab or item = cap calculation area) ===================
-            discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc)/100)));
+            discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
             discPrice = discPrice.toFixed(2);
 
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
-            taxableAmount = parseFloat(taxableAmount).toFixed(2); 
+            taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -468,15 +493,14 @@ const ondDisc = (disc) => {
 
     let mrp = document.getElementById("mrp").value;
     let itemWeatage = document.getElementById('item-weightage').value;
-    let itemUnit = document.getElementById('item-unit-type').value;
+    let itemUnit = document.getElementById('item-unit').value;
     let loosePrice = "";
-    if(itemUnit =='tab' || itemUnit =='cap'){
+    if (itemUnit == 'tab' || itemUnit == 'cap') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
-    }else{
+    } else {
         loosePrice = '';
     }
     document.getElementById('loose-price').value = loosePrice;
-
 
     var pid = document.getElementById("product-id").value;
     var bno = document.getElementById("batch-no").value;
@@ -484,7 +508,7 @@ const ondDisc = (disc) => {
     let discPrice = document.getElementById('dPrice').value;
 
     let itemTypeCheck = document.getElementById("type-check").value;
-    
+
     let qty = document.getElementById('qty').value;
     let availibility = document.getElementById('aqty').value;
     availibility = parseInt(availibility);
@@ -504,7 +528,7 @@ const ondDisc = (disc) => {
 
     if (qty > 0) {
         if (itemTypeCheck == '') {
-            discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc)/100)));
+            discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
             discPrice = discPrice.toFixed(2);
@@ -516,13 +540,13 @@ const ondDisc = (disc) => {
             document.getElementById('taxable').value = taxableAmount;
             document.getElementById('amount').value = netPayble;
         } else {
-            discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc)/100)));
+            discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
             discPrice = discPrice.toFixed(2);
 
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
-            taxableAmount = parseFloat(taxableAmount).toFixed(2); 
+            taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -552,28 +576,28 @@ const addSummary = () => {
     let doctorName = document.getElementById("doctor-select").value;
     let paymentMode = document.getElementById("payment-mode").value;
 
-    let invoiceNo = document.getElementById("invoice-id").value;
+    let invoiceId = document.getElementById('invoice-id').value;
     let pharmacyDataId = document.getElementById("pharmacy-data-id").value;
     let stockOutDetailsId = document.getElementById("stock-out-details-id").value;
     let itemId = document.getElementById("item-id").value;
 
-    let itemEditTrigger = '';
-    if(pharmacyDataId == '' && stockOutDetailsId == ''){
-        itemEditTrigger = 'new';
-    }else{
-        itemEditTrigger = 'old';
-    }
-
-    // console.log("edit type check : ",itemEditTrigger);
+    // let itemEditTrigger = '';
+    // if(pharmacyDataId == '' && stockOutDetailsId == ''){
+    //     itemEditTrigger = 'new';
+    // }else{
+    //      = 'old';
+    // }
+    // // console.log("edit type check : ",itemEditTrigger);
 
     let Manuf = document.getElementById("manuf").value;
-
+    let ManufName = document.getElementById('manufName').value;
     let productId = document.getElementById("product-id").value;
     let productName = document.getElementById("search-Item").value;
+    let prodComposition = document.getElementById('productComposition').value;
     let batchNo = document.getElementById("batch-no").value;
-    
+
     let weightage = document.getElementById("weightage").value;
-    let itemUnit = document.getElementById("item-unit-type").value;
+    let itemUnit = document.getElementById("item-unit").value;
     let itemPower = document.getElementById("item-weightage").value;
     let expDate = document.getElementById("exp-date").value;
     let mrp = document.getElementById("mrp").value;
@@ -583,13 +607,13 @@ const addSummary = () => {
     let qty = document.getElementById("qty").value;
     let qtyType = document.getElementById("type-check").value;
 
-    
+
     let disc = document.getElementById("disc").value;
     let dPrice = document.getElementById("dPrice").value;
     let gst = document.getElementById("gst").value;
     let taxable = document.getElementById('taxable').value;
+    console.log('taxable amount check : '+taxable);
     let amount = document.getElementById("amount").value;
-
     let looseStock = document.getElementById("loose-stock").value;
     let loosePrice = document.getElementById("loose-price").value;
     let itemPtr = document.getElementById("ptr").value;
@@ -597,7 +621,7 @@ const addSummary = () => {
 
     // console.log("item ptr check : ",itemPtr);
     // console.log("item margin check : ",margin);
-    
+
     // ============== per item gst amount calculation ============
     let netGstAmount = (parseFloat(amount) - parseFloat(taxable));
     netGstAmount = netGstAmount.toFixed(2);
@@ -610,11 +634,11 @@ const addSummary = () => {
     // }else{
     //     mrp = mrp;
     // }
-    
-    // mrp = parseFloat(mrp);
-   
 
-////////////////////////////////////////////////////////////////////////////////////////////
+    // mrp = parseFloat(mrp);
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
     if (billDAte == '') {
         swal("Failed!", "Please Enter Bill Date!", "error");
         return;
@@ -680,12 +704,13 @@ const addSummary = () => {
 
 
     /////////////////// sl no control area \\\\\\\\\\\\\\\\\\\\\
-    
+
     let slno = document.getElementById("dynamic-id").value;
     let slControl = document.getElementById("serial-control").value;
     slno++;
     slControl++;
     document.getElementById("dynamic-id").value = slno;
+    document.getElementById("items").value = slno;
     document.getElementById("serial-control").value = slControl;
 
     ////////////////////// total qantity count \\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -697,25 +722,22 @@ const addSummary = () => {
     ////////////////TOTAL GST CALCULATION//////////////////////
     let existsGst = parseFloat(document.getElementById("total-gst").value);
     var itemAmount = parseFloat(amount);
-    var itemGst = parseFloat(gst);
-    let withoutGst = itemAmount - (itemGst / 100 * itemAmount)
-    let netGst = itemAmount - withoutGst;
+    var itemTaxable = parseFloat(taxable);
+    let netGst = parseFloat(itemAmount) - parseFloat(itemTaxable);
     let totalGst = existsGst + netGst;
     // console.log(totalGst);
     document.getElementById("total-gst").value = totalGst.toFixed(2);
     // =========================================
     // dPrice.value * qty.value
 
-
-
     ////////////////TOTAL MRP CALCULATION//////////////////////
     let totalPrice = document.getElementById("total-price").value;
     let existsPrice = parseFloat(totalPrice);
     var itemMrp = parseFloat(mrp);
     itemQty = parseFloat(qty);
-    if(itemUnit == 'tab' || itemUnit == 'cap'){
+    if (itemUnit == 'tab' || itemUnit == 'cap') {
         itemMrp = itemQty * (itemMrp / parseFloat(itemPower));
-    }else{
+    } else {
         itemMrp = itemQty * itemMrp;
     }
     // console.log("item type : ",itemUnit);
@@ -735,169 +757,241 @@ const addSummary = () => {
 
     jQuery("#item-body").append(`<tr id="table-row-${slControl}">
 
-            <td style="color: red;"><i class="fas fa-trash text-danger" onclick="deleteItem(${slControl}, ${qty}, ${netGst.toFixed(2)}, ${mrp.toFixed(2)}, ${amount})" style="font-size:.9rem; width: .3rem"></i></td>
+            <td style="color: red;"><i class="fas fa-trash text-danger" onclick="deleteItem(${slControl}, ${qty}, ${netGst}, ${itemMrp.toFixed(2)}, ${amount})" style="font-size:.9rem; width: .3rem"></i></td>
 
-            <td id="tr-${slControl}-col-2" style="font-size:.9rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
+            <td id="tr-${slControl}-col-1" style="font-size:.9rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
 
-            <td id="tr-${slControl}-col-3">
-                <input class="summary-product" type="text" name="product-name[]" value="${productName}" readonly>
-                <input type="text" name="product-id[]" value="${productId}" hidden>
-                <input type="text" name="item-id[]" value="${itemId}" hidden>
-                <input type="text" name="Manuf[]" value="${Manuf}" hidden>
+            <td id="tr-${slControl}-col-2">
+                <input class="summary-items" type="text" name="product-name[]" value="${productName}" readonly style="width: 12rem;">
+                <input class="d-none summary-items" type="text" name="product-id[]" value="${productId}"   >
+                <input class="d-none summary-items" type="text" name="item-id[]" value="${itemId}"   >
+                <input class="d-none summary-items" type="text" name="Manuf[]" value="${Manuf}"   >
             </td>
 
-            <td hidden>
-                <input class="d-none" type="text" name="pharmacy-data-id[]" value="${pharmacyDataId}" readonly style="width:3rem">
+            <td class="d-none">
+                <input type="text" name="pharmacy-data-id[]" value="${pharmacyDataId}" readonly>
+                <input type="text" name="stockOut-details-id[]" value="${stockOutDetailsId}" readonly>
+            </td>
 
-                <input class="d-none" type="text" name="stockOut-details-id[]" value="${stockOutDetailsId}" readonly style="width:3rem">
+            <td id="tr-${slControl}-col-3">
+                <input class="summary-items" type="text" name="batch-no[]" value="${batchNo}" readonly style="width: 6rem;">
             </td>
 
             <td id="tr-${slControl}-col-4">
-                <input class="summary-items" type="text" name="batch-no[]" value="${batchNo}" readonly>
-            </td>
-
-            <td id="tr-${slControl}-col-5">
                 <input class="summary-items" type="text" name="weightage[]" value="${weightage}" readonly>
                 <input class="d-none summary-items" type="text" name="ItemUnit[]" value="${itemUnit}" readonly style="width:3rem">
                 <input class="d-none summary-items" type="text" name="ItemPower[]" value="${itemPower}" readonly style="width:3rem">
             </td>
             
-            <td id="tr-${slControl}-col-6">
+            <td id="tr-${slControl}-col-5">
                 <input class="summary-items" type="text" name="exp-date[]" value="${expDate}" readonly style="width : 4rem;">
             </td>
 
-            <td id="tr-${slControl}-col-7">
+            <td id="tr-${slControl}-col-6">
                 <input class="summary-items" type="text" name="mrp[]" value="${mrp}" readonly>
             </td>
 
-            <td id="tr-${slControl}-col-8">
+            <td id="tr-${slControl}-col-7">
                 <input class="summary-items" type="text" name="disc[]" value="${disc}" readonly>
-                <input class="d-none summary-items" type="text" name="dPrice[]" value="${dPrice}" readonly>
+                <input class="d-none summary-items" type="text" name="dPrice[]" value="${parseFloat(dPrice).toFixed(2)}" readonly>
             </td>
 
-            <td id="tr-${slControl}-col-9">
-                <input class="summary-items" type="text" name="gst[]" value="${gst}" readonly>
-                <input type="text" name="gst-amount[]" value="${netGstAmount}" style="width:3rem" hidden>
+            <td id="tr-${slControl}-col-8">
+                <input class="summary-items" type="text" name="gst[]" value="${gst}%" readonly>
+                <input class="d-none summary-items" type="text" name="gst-amount[]" value="${netGstAmount}" style="width:3rem">
             </td>
             
-            <td id="tr-${slControl}-col-10">
+            <td id="tr-${slControl}-col-9">
                 <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
                 <input class="d-none summary-items" type="text" name="qty-type[]" value="${qtyType}" readonly style="width:3rem">
             </td>
 
-            <td id="tr-${slControl}-col-11">
+            <td id="tr-${slControl}-col-10">
                 <input class="summary-items" type="text" name="taxable[]" value="${taxable}" readonly>
             </td>
             
-            <td id="tr-${slControl}-col-12">
+            <td id="tr-${slControl}-col-11">
                 <input class="summary-items" type="text" name="amount[]" value="${amount}" readonly>
             </td>
 
 
             /////////////////////////////// EXTRA DATA /////////////////////////////
 
-            <td>
+            <td class=" ">
                 
             </td>
-            <td>
+            <td class=" ">
                 
             </td>
 
-            <td>
-                <input class="d-none summary-items" type="text" name="ptr[]" value="${itemPtr}" readonly>
+            <td class="d-none">
+                <input class="summary-items" type="text" name="ptr[]" value="${itemPtr}" readonly>
             </td>
-            <td>
-                <input class="d-none summary-items" type="text" name="margin[]" value="${margin}" readonly>
+            <td class="d-none">
+                <input class="summary-items" type="text" name="margin[]" value="${margin}" readonly>
             </td>
         </tr>`);
 
-        
+    //===================================================
 
-        document.getElementById('sales-edit-form').reset();
-        document.getElementById("exta-details").style.display = "none";
+    const dataTuple = {
+        slno: slControl,
+        invoiceId: invoiceId,
+        pharmacyDataId: pharmacyDataId,
+        stockOutDetailsId: stockOutDetailsId,
+        itemId: itemId,
+        Manuf: Manuf,
+        ManufName: ManufName,
+        productId: productId,
+        productName: productName,
+        prodComposition: prodComposition,
+        batchNo: batchNo,
+        weightage: weightage,
+        itemUnit: itemUnit,
+        itemPower: itemPower,
+        expDate: expDate,
+        availabel: availabel,
+        qty: qty,
+        qtyType: qtyType,
+        mrp: mrp,
+        gst: gst,
+        disc: disc,
+        dPrice: dPrice,
+        taxable: taxable,
+        amount: amount,
+        looseStock: looseStock,
+        loosePrice: loosePrice,
+        itemPtr: itemPtr,
+        margin: margin,
+    };
+
+    let tupleData = JSON.stringify(dataTuple);
+
+    document.getElementById(`tr-${slControl}-col-1`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-2`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-3`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-4`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-5`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-6`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-7`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-8`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-9`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-10`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+    document.getElementById(`tr-${slControl}-col-11`).onclick = function () {
+        itemEditOption(tupleData);
+    };
+
+    /////////////////////////////////////////////////////
+
+    document.getElementById('sales-edit-form').reset();
+    document.getElementById("exta-details").style.display = "none";
 
 }
 
 
-const editItem = (pharmacyId, stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) =>{   
-   
-    $.ajax({
-        url: "ajax/newSalesEdit.ajax.php",
-        type: "POST",
-        data: {
-            pharmacy_details_id : pharmacyId,
-            stock_out_details_id : stockOutId,
-            Stock_out_item_id: itemId
-        },
-        success: function (data) {
-            // alert(data);
-            var dataObject = JSON.parse(data);
-            // alert(dataObject);
+const editItem = (pharmacyId, stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) => {
 
-            var sellQty = parseInt(dataObject.sellQty);
-            var mrp = parseFloat(dataObject.Mrp);
-            var itemUnit = dataObject.itemUnit;
-            var itemWeatage = parseInt(dataObject.itemWeatage);
-            var discPercent = parseFloat(dataObject.dicPercent);
-            var looseStock = '';
-            var loosePrice = '';
-            var typeCheck = '';
+    if (document.getElementById('product-id').value == '') {
 
-            if(itemUnit == 'tab' || itemUnit == 'cap'){
-                looseStock = dataObject.availableQty;;
-                loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
-                if(sellQty % itemWeatage == 0){
-                    typeCheck = 'Pack';
-                }else{
-                    typeCheck = 'Loose';
+        $.ajax({
+            url: "ajax/newSalesEdit.ajax.php",
+            type: "POST",
+            data: {
+                pharmacy_details_id: pharmacyId,
+                stock_out_details_id: stockOutId,
+                Stock_out_item_id: itemId
+            },
+            success: function (data) {
+                // alert(data);
+                var dataObject = JSON.parse(data);
+
+                var sellQty = parseInt(dataObject.sellQty);
+                var mrp = parseFloat(dataObject.Mrp);
+                var itemUnit = dataObject.itemUnit;
+                var itemWeatage = parseInt(dataObject.itemWeatage);
+                var discPercent = parseFloat(dataObject.dicPercent);
+                var looseStock = '';
+                var loosePrice = '';
+                var typeCheck = '';
+
+                if (itemUnit == 'tab' || itemUnit == 'cap') {
+                    looseStock = dataObject.availableQty;;
+                    loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
+                    if (sellQty % itemWeatage == 0) {
+                        typeCheck = 'Pack';
+                    } else {
+                        typeCheck = 'Loose';
+                    }
+                } else {
+                    looseStock = '';
+                    loosePrice = '';
+                    typeCheck = '';
                 }
-            }else{
-                looseStock = '';
-                loosePrice = '';
-                typeCheck = '';
+
+                var discPrice = parseFloat(mrp) - (parseFloat(mrp) * parseFloat(discPercent) / 100);
+                //==============================================================
+                document.getElementById('invoice-id').value = dataObject.invoiceId;
+                document.getElementById('pharmacy-data-id').value = dataObject.pharmacyId;
+                document.getElementById('stock-out-details-id').value = dataObject.stockOutDetailsId;
+                document.getElementById('item-id').value = dataObject.itemId;
+                document.getElementById('product-id').value = dataObject.productId;
+                document.getElementById('search-Item').value = dataObject.productName;
+                document.getElementById('manuf').value = dataObject.manufId;
+                document.getElementById('manufName').value = dataObject.manufName;
+                document.getElementById('productComposition').value = dataObject.productComposition;
+                document.getElementById('batch-no').value = dataObject.batchNo;
+                document.getElementById('weightage').value = dataObject.packOf;
+                document.getElementById('item-weightage').value = dataObject.itemWeatage;
+                document.getElementById('item-unit').value = dataObject.itemUnit;
+                document.getElementById('exp-date').value = dataObject.expDate;
+                document.getElementById('mrp').value = dataObject.Mrp;
+                document.getElementById('loose-price').value = loosePrice;
+                document.getElementById('ptr').value = dataObject.Ptr;
+                document.getElementById('aqty').value = dataObject.availableQty;
+                document.getElementById('loose-stock').value = looseStock;
+                document.getElementById('qty').value = dataObject.sellQty;
+                document.getElementById('type-check').value = typeCheck;
+                document.getElementById('disc').value = dataObject.dicPercent;
+                document.getElementById('dPrice').value = discPrice;
+                document.getElementById('gst').value = dataObject.gstPercent;
+                document.getElementById('margin').value = dataObject.margin;
+                document.getElementById('taxable').value = dataObject.taxable;
+                document.getElementById('amount').value = dataObject.paybleAmount;
+                //==============================================================
+                document.getElementById("exta-details").style.display = "block";
+                deleteItem(slno, itemQty, gstamnt, mrpPerItem, payblePerItem);
             }
+        })
+    } else {
+        swal("Failed!", "Please ADD previous data first!", "error");
+    }
 
-            var discPrice = parseFloat(mrp) - (parseFloat(mrp) * parseFloat(discPercent) / 100);
-            //==============================================================
-            document.getElementById('invoice-id').value = dataObject.invoiceId;
-            document.getElementById('pharmacy-data-id').value = dataObject.pharmacyId;
-            document.getElementById('stock-out-details-id').value = dataObject.stockOutDetailsId;
-            document.getElementById('item-id').value = dataObject.itemId;
-            document.getElementById('product-id').value = dataObject.productId;
-            document.getElementById('search-Item').value = dataObject.productName;
-            document.getElementById('manuf').value = dataObject.manufId;
-            document.getElementById('manufName').value = dataObject.manufName;
-            document.getElementById('productComposition').value = dataObject.productComposition;
-            document.getElementById('batch-no').value = dataObject.batchNo;
-            document.getElementById('weightage').value = dataObject.packOf;
-            document.getElementById('item-weightage').value = dataObject.itemWeatage;
-            document.getElementById('item-unit-type').value = dataObject.itemUnit;
-            document.getElementById('exp-date').value = dataObject.expDate;
-            document.getElementById('mrp').value = dataObject.Mrp;
-            document.getElementById('loose-price').value = loosePrice;
-            document.getElementById('ptr').value = dataObject.Ptr;
-            document.getElementById('aqty').value = dataObject.availableQty;
-            document.getElementById('loose-stock').value = looseStock;
-            document.getElementById('qty').value = dataObject.sellQty;
-            document.getElementById('type-check').value = typeCheck;
-            document.getElementById('disc').value = dataObject.dicPercent;
-            document.getElementById('dPrice').value = discPrice;
-            document.getElementById('gst').value = dataObject.gstPercent;
-            document.getElementById('margin').value = dataObject.margin;
-            document.getElementById('taxable').value = dataObject.taxable;
-            document.getElementById('amount').value = dataObject.paybleAmount;
-
-           
-            document.getElementById("exta-details").style.display = "block";
-            deleteItem(slno, itemQty, gstamnt, mrpPerItem, payblePerItem);
-        } 
-    })
 }
 
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
 
     let delRow = slno;
-    
+
     jQuery(`#table-row-${slno}`).remove();
     let slVal = document.getElementById("dynamic-id").value;
     document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
@@ -912,8 +1006,8 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
     existQty.value = leftQty;
 
     var existGst = document.getElementById("total-gst");
-    leftGst = parseFloat(existGst.value) - parseFloat(gstPerItem);
-    leftGst = parseFloat(leftGst);
+    leftGst = parseFloat(existGst.value) - parseFloat(gstPerItem).toFixed(2);
+    // leftGst = parseFloat(leftGst);
     leftGst = leftGst.toFixed(2);
     existGst.value = leftGst;
 
@@ -933,7 +1027,7 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
 }
 
 function rowAdjustment(delRow) {
-    
+
     let tableId = document.getElementById("item-body");
     let j = 0;
     let colIndex = 1;
@@ -944,4 +1038,65 @@ function rowAdjustment(delRow) {
         let cell = row.cells[colIndex];
         cell.innerHTML = j;
     }
+}
+
+
+const itemEditOption = (tuple) => {
+    // console.log(tuple);
+
+    if (document.getElementById('product-id').value == '') {
+        let tData = JSON.parse(tuple);
+
+        document.getElementById('invoice-id').value = tData.invoiceId;
+        document.getElementById('pharmacy-data-id').value = tData.pharmacyDataId;
+        document.getElementById('stock-out-details-id').value = tData.stockOutDetailsId;
+
+        document.getElementById('item-id').value = tData.itemId;
+        document.getElementById('product-id').value = tData.productId;
+        document.getElementById('search-Item').value = tData.productName;
+        document.getElementById('manuf').value = tData.Manuf;
+        document.getElementById('manufName').value = tData.ManufName;
+
+        document.getElementById('productComposition').value = tData.prodComposition;
+
+        document.getElementById('batch-no').value = tData.batchNo;
+        document.getElementById('weightage').value = tData.weightage;
+        document.getElementById('item-weightage').value = tData.itemPower;
+        document.getElementById('item-unit').value = tData.itemUnit;
+        document.getElementById('exp-date').value = tData.expDate;
+        document.getElementById('aqty').value = tData.availabel;
+
+        document.getElementById('qty').value = tData.qty;
+        document.getElementById('type-check').value = tData.qtyType;
+
+        document.getElementById('mrp').value = tData.mrp;
+        document.getElementById('ptr').value = tData.itemPtr;
+        document.getElementById('gst').value = tData.gst;
+        document.getElementById('disc').value = tData.disc;
+        document.getElementById('dPrice').value = tData.dPrice;
+        document.getElementById('taxable').value = tData.taxable;
+        document.getElementById('amount').value = tData.amount;
+
+        document.getElementById('loose-stock').value = tData.looseStock;
+        document.getElementById('loose-price').value = tData.loosePrice;
+        document.getElementById('margin').value = tData.margin;
+
+        //----------------------------------------------------
+        let gstPerItem = parseFloat(tData.amount) - parseFloat(tData.taxable);
+        let MRP = '';
+        if(tData.itemUnit == 'tab' || tData.itemUnit == 'cap'){
+            MRP = tData.loosePrice;
+        }else{
+            MRP = tData.mrp;
+        }
+        let totalMrp = parseFloat(MRP) * parseInt(tData.qty);
+        totalMrp = parseFloat(totalMrp).toFixed(2);
+        deleteItem(tData.slno, tData.qty, gstPerItem, totalMrp, tData.amount);
+        
+        document.getElementById("exta-details").style.display = "block";
+
+    }else{
+        swal("Failed!", "Please ADD previous data first!", "error");
+    }
+
 }

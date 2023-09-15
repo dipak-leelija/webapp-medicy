@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //echo $patientId; 
     if ($customerId != 'Cash Sales') {
         $patientName = $Patients->patientsDisplayByPId($customerId);
-        //print_r($patientName);
+        // print_r($patientName);
         foreach ($patientName as $patientName) {
             $customerName = $patientName['name'];
             $patientAge = 'Age: ' . $patientName['age'];
@@ -57,12 +57,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $customerId = 'Cash Sales';
         $customerName = 'Cash Sales';
+        $patientAge = '';
+        $patientPhno = '';
     }
 
     // print_r($_POST);
 
     // echo "<br>Added by : $addedBy<br>";
-
     // echo "<br>Invoice id : $invoiceNo";
     // echo "<br>bill date : $billDAte";
     // echo "Paticent id check : $customerId<br>";
@@ -77,7 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // echo "total gst amount : $totalGstAmount<br>";
     // echo "total mrp : $totalMRP<br>";
     // echo "total payble amount : $netPaybleAmount<br>";
-    
+
+
     // echo "<br>======= ARRAYS SECTION ==========<br>";
     // ================ ARRAYS ======================
 
@@ -89,8 +91,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stockOutDataId     = $_POST['stockOut-details-id'];
     $batchNo            = $_POST['batch-no'];
     $weightage          = $_POST['weightage'];
-    // $itemWeightage      = $_POST['ItemUnit'];
-    // $ItemUnit           = $_POST['ItemPower'];
+    $ItemUnit           = $_POST['ItemUnit'];
+    $itemWeightage      = $_POST['ItemPower'];
     $expDate            = $_POST['exp-date'];
     $mrp                = $_POST['mrp'];
     $discParcent        = $_POST['disc'];
@@ -108,56 +110,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $marginPerItem      = $_POST['margin'];
 
 
-    // echo "<br><br>================== data arrays ====================== <br>";
+    // echo "<br><br>================== data arrays check ====================== <br>";
     // echo "<br>Item courrent stock id : ";
-    // print_r($itemId);
-    // echo "<br>Product Id : ";
-    // print_r($prductId);
-    // echo "<br>Product Name : ";
-    // print_r($prodName);
-    // echo "<br>Manufacturur Id : ";
-    // print_r($manufId);
-    // echo "<br>Pharmacy invoice tabel id : ";
-    // print_r($pharmacyDataId);
-    // echo "<br>Stock out details table id : ";
-    // print_r($stockOutDataId);
-    // echo "<br>Batch No : ";
-    // print_r($batchNo);
-    // echo "<br>Item Pack of : ";
-    // print_r($weightage);
-    // // echo "<br>Item weatage : "; print_r($itemWeightage);
-    // // echo "<br>Item Unit : "; print_r($ItemUnit);
-    // echo "<br>Item exp date : ";
-    // print_r($expDate);
-    // echo "<br>MRP : ";
-    // print_r($mrp);
-    // echo "<br>Disc Parcent : ";
-    // print_r($discParcent);
-    // echo "<br>Discout Amount : ";
-    // print_r($discPrice);
-    // echo "<br>GST Parcent : ";
-    // print_r($gstparcent);
-    // echo "<br>Gst amount per item : ";
-    // print_r($gstAmountPerItem);
-    // echo "<br>QANTITTY PER ITEM : ";
-    // print_r($qty);
-    // echo "<br>Qantity type : ";
-    // print_r($qtyType);
-    // echo "<br>Taxable amount per item : ";
-    // print_r($taxable);
-    // echo "<br>Net payble per item : ";
-    // print_r($amount);
-    // // echo "<br>Loose Stock : "; print_r($looseStock);
-    // // echo "<br>Loose Price : "; print_r($looselyPrice);
-    // echo "<br>PTR per Item : ";
-    // print_r($ptrPerItem);
-    // echo "<br>Margin amount per item : ";
-    // print_r($marginPerItem);
-
-
-
-
-
+    //  echo "<br>Item unit : "; print_r($ItemUnit);
     //========================== STOCK OUT AND SALES EDIT UPDATE AREA ==========================
     if (isset($_POST['update'])) {
 
@@ -168,19 +123,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stockOutUpdate == true) {
 
-
             // =========== DELETE DATA FROM PHARMACY AND STOCK OUT DETAILS TABLE SECTION =============
             $invoiceIdList = [];
             $pharmacyInvoiceData = $StockOut->stockOutDetailsById($invoiceNo);
             foreach ($pharmacyInvoiceData as $pharmacyInvoiceData) {
                 array_push($invoiceIdList, $pharmacyInvoiceData['id']);
             }
-            // echo "<br><br><br><br>Pharmacy id list : "; print_r($invoiceIdList);
 
             $pharmacyIdArraydiff = array_diff($invoiceIdList, $pharmacyDataId);
             $pharmacyIdArraydiff = array_values($pharmacyIdArraydiff);
-            // echo "<br> Pharmacy id diff list : "; print_r($pharmacyIdArraydiff);
-
 
 
             $stockOutDetailsIdList = [];
@@ -188,17 +139,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             foreach ($stockOutDetails as $stockOutDetails) {
                 array_push($stockOutDetailsIdList, $stockOutDetails['id']);
             }
-            // echo "<br><br><br>Stock out details id list : "; print_r($stockOutDetailsIdList);
 
             $stockOutDetailsIdArrayDiff = array_diff($stockOutDetailsIdList, $stockOutDataId);
             $stockOutDetailsIdArrayDiff = array_values($stockOutDetailsIdArrayDiff);
-            // echo "<br>Stock out details id diff list : "; print_r($stockOutDetailsIdArrayDiff);
+
 
             for ($i = 0; $i < count($pharmacyIdArraydiff) && $i < count($stockOutDetailsIdArrayDiff); $i++) {
 
                 $selectFromStockOutDetails = $StockOut->stokOutDetailsDataOnTable('id', $stockOutDetailsIdArrayDiff[$i]);
-                // echo "<br><br><br>";
-                // print_r($selectFromStockOutDetails);
 
                 foreach ($selectFromStockOutDetails as $stockOutData) {
                     $currenStockItemId = $stockOutData['item_id'];
@@ -208,8 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $itemQantity = $stockOutData['qty'];
                     }
                 }
-                // echo "<br>Item qantity : $itemQantity";
-                // echo "<br>Item id : $currenStockItemId";
 
                 $currenStockData = $CurrentStock->showCurrentStocById($currenStockItemId);
                 foreach ($currenStockData as $currenStockData) {
@@ -227,10 +173,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>Item updated loose qantity : $updatedLooseQty";
                 // echo "<br>Item id : $currenStockItemId";
 
-                //======== UPDATE CURRENT STOCK AND DELTE FROM PHAMACY INVOCIE AND STOCK OUT DATA ======
+                // ****** UPDATE CURRENT STOCK AND DELTE FROM PHAMACY INVOCIE AND STOCK OUT DATA ******
                 $updateCurrenStock = $CurrentStock->updateCurrentStockById($currenStockItemId, $updatedQty, $updatedLooseQty);
 
                 $delteFromPharmacy = $StockOut->delteItemFromInvoice($pharmacyIdArraydiff[$i]);
+
                 $delteFromStockOutDetails = $StockOut->deleteFromStockOutDetailsOnId($stockOutDetailsIdArrayDiff[$i]);
             }
 
@@ -269,7 +216,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // =========== ADD NEW DATA ON PHARMACY AND STOCK OUT DETAILS TABLE =============\
 
                     //====== add new item to pharmacy invocie =======
-                    $addPharmacyInvoice = $StockOut->addPharmacyBillDetails($invoiceNo,	$item_id, $product_name,$batch_number, $setOf, $exp_date, $item_qty, $item_loose_qty, $item_mrp, $disc_parcent, $taxable_amount, $gst_parcent, $gst_amount, $payble_amount, $addedBy);
+                    $addPharmacyInvoice = $StockOut->addPharmacyBillDetails($invoiceNo,    $item_id, $product_name, $batch_number, $setOf, $exp_date, $item_qty, $item_loose_qty, $item_mrp, $disc_parcent, $taxable_amount, $gst_parcent, $gst_amount, $payble_amount, $addedBy);
 
                     // ========= add new item to stock out details ==========
                     $addStockOutDetails = $StockOut->addStockOutDetails($invoiceNo, $item_id, $product_id, $batch_number, $exp_date, $item_weatage, $item_unit, $item_qty, $item_loose_qty, $item_mrp, $item_ptr, $disc_parcent, $gst_parcent, $margin_amount, $payble_amount, $addedBy);
@@ -320,14 +267,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $margin_amount = $marginPerItem[$i];
                     // echo "<br>OLD ITEMS=====";
 
-                    // ======================== UPDATE DATA ==========================
+                    // ======================== UPDATE DATA start ==========================
                     $table = 'id';
                     $selectStockOutDetailsData = $StockOut->stokOutDetailsDataOnTable($table, $stock_out_id);
-                    foreach($selectStockOutDetailsData as $stockOutDataCheck){
-                        if($stockOutDataCheck['unit'] == 'tab' || $stockOutDataCheck['unit'] == 'cap'){
+                    foreach ($selectStockOutDetailsData as $stockOutDataCheck) {
+                        if ($stockOutDataCheck['unit'] == 'tab' || $stockOutDataCheck['unit'] == 'cap') {
                             $stockOutItemLooseCount = $stockOutDataCheck['loosely_count'];
                             $itemCountDiff = intval($stockOutItemLooseCount) - intval($item_loose_qty);
-                        }else{
+                        } else {
                             $stockOutItemQantity = $stockOutDataCheck['qty'];
                             $itemCountDiff = intval($stockOutItemQantity) - intval($item_qty);
                         }
@@ -358,31 +305,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // ====== update stock out details =======
                     $updateStockOutData = $StockOut->updateStockOutDetaislById($stock_out_id, $item_qty, $item_loose_qty, $disc_parcent, $margin_amount, $payble_amount, $addedBy);
                 }
-
-
-
-                // echo "<br>Item id : $item_id";
-                // echo "<br>product id : $product_id";
-                // echo "<br>product Name : $product_name";
-                // echo "<br>Pharmacy Id : $phamacy_id";
-                // echo "<br>Stock out details id : $stock_out_id";
-                // echo "<br>Batch number : $batch_number";
-                // echo "<br>Item set of : $setOf";
-                // echo "<br>Item unit : $item_unit";
-                // echo "<br>Item weatage : $item_weatage";
-                // echo "<br>Item exp date : $exp_date";
-                // echo "<br>Item mrp : $item_mrp";
-                // echo "<br>Item disc parcent: $disc_parcent";
-                // echo "<br>Item disc price : $disc_price";
-                // echo "<br>Item gst parcent : $gst_parcent";
-                // echo "<br>Item gst amount : $gst_amount";
-                // echo "<br>Item qty : $item_qty";
-                // echo "<br>Item loose qty : $item_loose_qty";
-                // echo "<br>Item qty types : $qty_type";
-                // echo "<br>Item taxable amount : $taxable_amount";
-                // echo "<br>Item pyable amount : $payble_amount";
-                // echo "<br>Item ptr : $item_ptr";
-                // echo "<br>Item margin : $margin_amount";
             }
         }
     }
@@ -448,7 +370,7 @@ foreach ($showhelthCare as $rowhelthCare) {
             <div class="row my-0">
                 <div class="col-sm-6 my-0">
                     <p style="margin-top: -3px; margin-bottom: 0px;">
-                        <small><b>Patient: </b> <?php echo $customerName . ' ' . $patientAge . ' ' . $patientPhno; ?>
+                        <small><b>Patient: </b> <?php echo $customerName . ' ' . $patientAge . ' ' . $patientPhno ; ?>
                         </small>
                     </p>
 
@@ -516,6 +438,12 @@ foreach ($showhelthCare as $rowhelthCare) {
                     $manufDetail = $Manufacturur->showManufacturerById($manufId[$i]);
                     $manufSName = $manufDetail[0]['short_name'];
 
+                    if($ItemUnit[$i] == 'tab' || $ItemUnit[$i] == 'cap'){
+                        $unitStamp = $ItemUnit[$i];
+                    }else{
+                        $unitStamp = '';
+                    }
+
 
                     if ($slno > 1) {
                         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
@@ -540,7 +468,7 @@ foreach ($showhelthCare as $rowhelthCare) {
                                     <small>' . $expDate[$i] . '</small>
                                 </div>
                                 <div class="col-sm-1 text-end">
-                                    <small>' . $qty[$i] . '</small>
+                                    <small>' . $qty[$i].' '.$unitStamp . '</small>
                                 </div>
                                 <div class="col-sm-1 text-end">
                                     <small>' . $mrp[$i] . '</small>

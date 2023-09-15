@@ -49,12 +49,14 @@ if (isset($_GET["reff-by"])) {
 if (isset($_GET["products"])) {
     $invoiceId = $_GET["products"];
 
-    $items = $StockOut->stockOutDetailsById($invoiceId); // bill invoice details
-    // print_r($items);
+    $pharmacyInvoiceData = $StockOut->stockOutDetailsById($invoiceId); // bill invoice details
+    // print_r($pharmacyInvoiceData);
+    $stockOutDetailsData = $StockOut->stockOutDetailsDisplayById($invoiceId);
+    // print_r($stockOutDetailsData);
 
     echo '<option value="" selected enable>Select item</option>';
-    foreach ($items as $item) {
-        echo '<option data-invoice="'.$invoiceId.'" data-batch="'.$item['batch_no'].'" value="'.$item['item_id'].'">'.$item['item_name'].'</option>';
+    for ($i = 0; $i<count($pharmacyInvoiceData) && $i<count($stockOutDetailsData) ; $i++) {
+        echo '<option stokOutDetails-data-id="'.$stockOutDetailsData[$i]['id'].'" pharmacy-data-id="'.$pharmacyInvoiceData[$i]['id'].'" data-invoice="'.$invoiceId.'" data-batch="'.$pharmacyInvoiceData[$i]['batch_no'].'" value="'.$pharmacyInvoiceData[$i]['item_id'].'">'.$pharmacyInvoiceData[$i]['item_name'].'</option>';
     }
 }
 

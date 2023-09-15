@@ -20,6 +20,7 @@ require_once '../../employee/config/dbconnect.php';
 $searchBatch = FALSE;
 if(isset($_GET['prodId'])){
     $productID = $_GET['prodId'];
+    // echo $productID;
     // $batch = $_GET['batch-no'];
     // $qty = $_GET['qty'];
     // $flag = $_GET['checkFlag'];

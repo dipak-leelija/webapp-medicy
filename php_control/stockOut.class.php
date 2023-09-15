@@ -259,9 +259,9 @@ class StockOut extends DatabaseConnection{
 
 
     
-    function stokOutDetailsDataOnTable($table1, $data1){
+    function stokOutDetailsDataOnTable($table, $data){
         $stockOutSelect = array();
-        $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table1` = '$data1'";
+        $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table` = '$data'";
         
         $stockOutDataQuery = $this->conn->query($selectBill);
 
