@@ -435,7 +435,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
             <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
-            <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button>
+            <button class="btn btn-primary shadow mx-2" onclick="goBack()">Go Back</button>
             <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
         </div>
         </div>
@@ -459,9 +459,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     ?>
     <script>
-        // if (window.history.replaceState) {
-        //     window.history.replaceState(null, null, window.location.href);
-        // }
+        const goBack = () => {
+            window.location.href = '../../sales-return.php';
+        }
     </script>
     <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
 </body>

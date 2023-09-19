@@ -235,7 +235,7 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
 
     <script>
         const viewProductDetials = (stokInDetialId) => {
-            alert(stokInDetialId);
+            // alert(stokInDetialId);
             let url = "ajax/stockExpiringDetailsView.ajax.php?stokInDetialId=" + stokInDetialId;
             $(".current-stock-view").html(
                 '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +

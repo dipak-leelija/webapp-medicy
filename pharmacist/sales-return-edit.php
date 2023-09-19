@@ -70,6 +70,10 @@ if ($patientId == 'Cash Sales') {
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- Include SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="../css/sweetalert2/sweetalert2.min.css" rel="stylesheet">
+
     <!-- Custom CSS  -->
     <link rel="stylesheet" href="css/custom/stock-in.css">
     <script src="../js/sweetAlert.min.js"></script>
@@ -117,24 +121,19 @@ if ($patientId == 'Cash Sales') {
                                     <input type="text" class="upr-inp" name="sales-return-id" id="sales-return-id" value="<?php echo $salesReturnId ?>" autocomplete="off" readonly>
                                 </div>
 
-                                <div class="d-none col-md-4 col-6 mt-3">
-                                    <label class="mb-0 mt-2" for="invoice-no">Returned Item Id.</label>
-                                    <input type="text" class="upr-inp" name="returned-item-id" id="returned-item-id" value="" autocomplete="off" readonly>
-                                </div>
-
                                 <div class="col-md-2 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="patient-name">Patient Name.</label>
-                                    <input type="text" class="upr-inp" name="patient-name" id="patient-name" value="<?php echo $patientName ?>" placeholder="Select Invoice First." autocomplete="off">
+                                    <input type="text" class="upr-inp" name="patient-name" id="patient-name" value="<?php echo $patientName ?>" placeholder="Select Invoice First." autocomplete="off" readonly>
                                 </div>
 
                                 <div class="col-md-2 col-6 mt-3 ">
                                     <label class="mb-0 mt-2" for="bill-date">Bill Date</label>
-                                    <input type="text" class="upr-inp" name="" id="bill-date" value="<?php echo $BillDate ?>" autocomplete="off">
+                                    <input type="text" class="upr-inp" name="" id="bill-date" value="<?php echo $BillDate ?>" autocomplete="off" readonly>
                                 </div>
 
                                 <div class="col-md-2 col-6 mt-3 ">
-                                    <label class="mb-0 mt-2" for="reff-by">Reff By</label>
-                                    <input type="text" class="upr-inp" id="reff-by" value="<?php echo $refferBy ?>" autocomplete="off">
+                                    <label class="mb-0 mt-2" for="reff-by">Reffer By</label>
+                                    <input type="text" class="upr-inp" id="reff-by" value="<?php echo $refferBy ?>" autocomplete="off" readonly>
                                 </div>
 
                                 <div class="col-md-2 col-12 mt-3 ">
@@ -171,87 +170,101 @@ if ($patientId == 'Cash Sales') {
                                 <div id="bills-list" class="row mt-1 m-0"></div>
                             </div>
 
-                            <div class="row">
-                                    
-                                <div class="d-none col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="sales-return-item-id">Sales Return Detaisl Id</label>
-                                    <input type="text" class="upr-inp" id="sales-return-item-id" readonly>
-                                </div>
-                                <div class="d-none col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="product-id">Product Id</label>
-                                    <input type="text" class="upr-inp" id="product-id" readonly>
-                                </div>
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="exp-date">Expiry</label>
-                                    <input type="text" class="upr-inp" id="exp-date" readonly>
-                                </div>
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="unit"> Unit</label>
-                                    <input type="text" class="upr-inp" id="unit" value="" readonly>
-                                </div>
+                            <form id='sales-return-edit-item-details'>
+                                <div class="row">
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="sales-return-details-item-id">Sales Return Detaisl Item Id</label>
+                                        <input type="text" class="upr-inp" id="sales-return-details-item-id" readonly>
+                                    </div>
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="current-stock-item-id">Curretn Stock Item Id</label>
+                                        <input type="text" class="upr-inp" id="current-stock-item-id" readonly>
+                                    </div>
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="product-id">Product Id</label>
+                                        <input type="text" class="upr-inp" id="product-id" readonly>
+                                    </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="exp-date">Expiry</label>
+                                        <input type="text" class="upr-inp" id="exp-date" readonly style="font-size: 0.85rem;">
+                                    </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="unit"> Unit</label>
+                                        <input type="text" class="upr-inp" id="unit" value="" readonly>
+                                    </div>
 
-                                <div class="d-none col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="unit-type"> Unit Type</label>
-                                    <input type="text" class="upr-inp" id="unit-type" value="" readonly>
-                                </div>
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="unit-type"> Unit Type</label>
+                                        <input type="text" class="upr-inp" id="unit-type" value="" readonly>
+                                    </div>
 
-                                <div class="d-none col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="item-weatage"> Item Weatage</label>
-                                    <input type="text" class="upr-inp" id="item-weatage" value="" readonly>
-                                </div>
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="item-weatage"> Item Weatage</label>
+                                        <input type="text" class="upr-inp" id="item-weatage" value="" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="batch-no">Batch</label>
-                                    <input type="text" class="upr-inp" name="batch-no" id="batch-no" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="batch-no">Batch</label>
+                                        <input type="text" class="upr-inp" name="batch-no" id="batch-no" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="mrp">MRP</label>
-                                    <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="mrp">MRP</label>
+                                        <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="gst">GST</label>
-                                    <input type="text" class="upr-inp" name="gst" id="gst" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="gst">GST%</label>
+                                        <input type="text" class="upr-inp" name="gst" id="gst" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="discount">Disc% </label>
-                                    <input type="text" class="upr-inp" name="discount" id="discount" value="" >
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="discount">Disc% </label>
+                                        <input type="text" class="upr-inp" name="discount" id="discount" value="" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="qty">Sell Qty</label>
-                                    <input type="text" class="upr-inp" name="P-qty" id="P-qty" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="qty">Sell Qty</label>
+                                        <input type="text" class="upr-inp" name="P-qty" id="P-qty" readonly>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="return-qty">Return</label>
-                                    <input type="number" class="upr-inp" name="return-qty" id="return-qty" value="" onkeyup="getRefund(this.value)" required>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="return-qty">Return</label>
+                                        <input type="number" class="upr-inp" name="return-qty" id="return-qty" value="" onkeyup="getRefund(this.value)" required>
+                                    </div>
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="taxable">Taxable</label>
-                                    <input type="any" class="upr-inp" name="taxable" id="taxable" readonly>
-                                </div>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="taxable">Taxable</label>
+                                        <input type="any" class="upr-inp" name="taxable" id="taxable" readonly>
+                                    </div>
 
-                                <!-- <div class="col-md-1 col-6 mt-3">
+                                    <!-- <div class="col-md-1 col-6 mt-3">
                                     <label class="mb-0 mt-1" for="bill-amount">Amount</label>
                                     <input type="any" class="upr-inp" name="bill-amount" id="bill-amount" readonly required>
                                 </div> -->
 
-                                <div class="col-md-1 col-6 mt-3">
-                                    <label class="mb-0 mt-1" for="refund">Refund</label>
-                                    <input type="any" class="upr-inp" name="refund" id="refund" required readonly>
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="refund">Refund</label>
+                                        <input type="any" class="upr-inp" name="refund" id="refund" required readonly>
+                                    </div>
+
+                                    <div class="col-md-1 col-6 mt-3">
+                                        <!-- <label class="mb-0 mt-1" for="refund">Refund</label>
+                                        <input type="any" class="upr-inp" name="refund" id="refund" required readonly> -->
+                                    </div>
+
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
+                                        <button class="btn btn-primary me-md-2" type="button" onclick="addData()" id="add-btn" style="margin-top: 1rem; height: 2.5rem;">Add <i class="fas fa-plus"></i></button>
+                                    </div>
                                 </div>
 
-                            </div>
+                                <!-- <div class="row justify-content-end">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
+                                        <button class="btn btn-primary me-md-2" type="button" onclick="addData()" id="add-btn">Add <i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div> -->
 
-                            <div class="row justify-content-end">
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                    <button class="btn btn-primary me-md-2" type="button" onclick="addData()" id="add-btn" disabled>Add <i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                     <!-- /end Add Product  -->
@@ -263,19 +276,19 @@ if ($patientId == 'Cash Sales') {
                                     <table class="table item-table">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th scope="col" style="width: 1rem;">
-                                                    <input type="number" value="0" id="dynamic-id" style="display:none">
+                                                <th scope="col" class="d-none">
+                                                    <input type="number" value="0" id="dynamic-id" style="width: 1rem;">
                                                 </th>
-                                                <th scope="col" style="width: 0.5rem;">
-                                                    <input type="number" value="0" id="slno" style="display:none">
+                                                <th scope="col" class="d-none">
+                                                    <input type="number" value="0" id="serial-control" style="width: 1rem;">
                                                 </th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
                                                 <th scope="col" style="font-size: 0.8rem;">Items</th>
-                                                <th scope="col" style="font-size: 0.8rem;" hidden>Item Id</th>
+                                                <th scope="col" hidden>Retun Details Item Id</th>
                                                 <th scope="col" style="font-size: 0.8rem;">Batch</th>
                                                 <th scope="col" style="font-size: 0.8rem;">Exp.</th>
                                                 <th scope="col" style="font-size: 0.8rem;">Unit</th>
-                                                <th scope="col" hidden>UnitType</th>
-                                                <th scope="col" hidden>Weatage</th>
                                                 <th scope="col" style="font-size: 0.8rem;">Sell Qty.</th>
                                                 <th scope="col" style="font-size: 0.8rem;">MRP</th>
                                                 <th scope="col" style="font-size: 0.8rem;">Disc</th>
@@ -298,7 +311,7 @@ if ($patientId == 'Cash Sales') {
                                         <label for="invoice">Invoice :</label>
                                         <input class="summary-inp w-60" name="invoice" id="invoice" type="text" readonly>
 
-                                        <input class="d-none summary-inp w-60" name="salesreturn-id" id="salesreturn-id" type="text" value="<?php echo $salesReturnId ?>" readonly>
+                                        <input class="  summary-inp w-60" name="salesreturn-id" id="salesreturn-id" type="text" value="<?php echo $salesReturnId ?>" readonly>
                                     </div>
 
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
@@ -323,7 +336,7 @@ if ($patientId == 'Cash Sales') {
                                         <p>Refund : <input class="summary-inp" name="refund-amount" id="refund-amount" type="any" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-2 mb-2 col-6 justify-content-end">
-                                        <button class="btn btn-sm btn-primary" style="width: 100%;" type="submit" name="sales-return-edit">Return</button>
+                                        <button class="btn btn-sm btn-primary" id="return-btn" style="width: 100%;" type="submit" name="sales-return-edit">Return</button>
                                     </div>
                                 </div>
                             </div>
@@ -363,6 +376,10 @@ if ($patientId == 'Cash Sales') {
         <script src="../js/ajax.custom-lib.js"></script>
         <script src="../js/sweetAlert.min.js"></script>
         <script src="js/sales-return-edit.js"></script>
+
+        <!-- Include SweetAlert2 JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+        <script src="../js/sweetalert2/sweetalert2.all.min.js"></script>
 
 </body>
 

@@ -1,3 +1,8 @@
+//======================= new sell generate bill button disable and enable control ===================
+var newSellGenerateBill = document.getElementById('new-sell-bill-generate');
+newSellGenerateBill.setAttribute("disabled", "true");
+//======================================================================================
+
 const getDate = (date) => {
     document.getElementById("final-bill-date").value = date;
 }
@@ -417,6 +422,9 @@ const stockDetails = (productId, batchNo, itemId) => {
         document.getElementById("productComposition").value = xmlhttp.responseText;
 
         document.getElementById("qty").focus();
+
+        newSellGenerateBill.setAttribute("disabled", "true"); 
+
     } else {
         document.getElementById("product-name").value = '';
         document.getElementById("weightage").value = '';
@@ -795,9 +803,9 @@ const addSummary = () => {
 
         <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slControl}, ${qty}, ${netGst.toFixed(2)}, ${itemMrp.toFixed(2)}, ${amount})" style="font-size:.7rem; width: .3rem"></i></td>
 
-        <td id="${slno}" style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
+        <td id="tr-${slControl}-col-2" style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
 
-        <td id="${productName}">
+        <td id="tr-${slControl}-col-3">
             <input class="summary-product" type="text" name="product-name[]" value="${productName}" style="word-wrap: break-word; width:9rem; font-size: .7rem;" readonly>
             <input type="text" class="d-none" name="product-id[]" value="${productId}" >
         </td>
@@ -811,11 +819,11 @@ const addSummary = () => {
 
         <td class="d-none" id="col-${slno}-batch">${batchNo}</td>
 
-        <td id="${batchNo}">
+        <td id="tr-${slControl}-col-7">
             <input class="summary-items" type="text" name="batch-no[]" id="batch-no" value="${batchNo}" style="word-wrap: break-word; width:7rem; font-size: .7rem; " readonly>
         </td>
 
-        <td id="${weightage}">
+        <td id="tr-${slControl}-col-8">
             <input class="summary-items" type="text" name="weightage[]" value="${weightage}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
         </td>
 
@@ -827,11 +835,11 @@ const addSummary = () => {
             <input class="summary-items" type="text" name="ItemUnit[]" value="${unitType}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
         </td>
                                                 
-        <td id="${expDate}">
+        <td id="tr-${slControl}-col-11">
             <input class="summary-items" type="text" name="exp-date[]" value="${expDate}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
         </td>
 
-        <td id="${mrp}">
+        <td id="tr-${slControl}-col-12">
             <input class="summary-items" type="text" name="mrp[]" value="${mrp}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
         </td>
 
@@ -845,11 +853,11 @@ const addSummary = () => {
 
         <td class="d-none" id="col-${slno}-qty">${qty}</td>
 
-        <td id="${qty}">
+        <td id="tr-${slControl}-col-16">
             <input class="summary-items" type="text" name="qty[]" value="${qty}" readonly>
         </td>
 
-        <td id="${discPercent}">
+        <td id="tr-${slControl}-col-17">
             <input class="summary-items" type="text" name="discPercent[]" value="${discPercent}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
         </td>
 
@@ -857,11 +865,11 @@ const addSummary = () => {
             <input class="summary-items" type="text" name="discPrice[]" value="${discPrice}" style="word-wrap: break-word; width:3rem; font-size: .7rem; " readonly>
         </td>
 
-        <td id="${taxableAmount}">
-            <input class="summary-items" type="text" name="taxable[]" value="${taxableAmount.toFixed(2)}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: center" readonly>
+        <td id="tr-${slControl}-col-19">
+            <input class="summary-items" type="text" name="taxable[]" value="${taxableAmount.toFixed(2)}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: end;" readonly>
         </td>
 
-        <td id="${gst}">
+        <td id="tr-${slControl}-col-20">
             <input class="summary-items" type="text" name="gst[]" value="${gst}" style="word-wrap: break-word; width:3rem; font-size: .7rem;" readonly>
         </td>
 
@@ -873,8 +881,8 @@ const addSummary = () => {
             <input class="summary-items" type="text" name="marginAmount[]" value="${marginAmount}" style="word-wrap: break-word; width:3rem; font-size: .7rem;" readonly>
         </td>
 
-        <td id="${amount}">
-            <input class="summary-items" type="text" name="amount[]" value="${amount}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        <td id="tr-${slControl}-col-23">
+            <input class="summary-items" type="text" name="amount[]" value="${amount}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: end;" readonly>
         </td>
 
         /////////////////////\\\\\\\\\\\\\\\\\\\ EXTRA DATA /////////////////////\\\\\\\\\\\\\\\\\\\\
@@ -933,40 +941,37 @@ const addSummary = () => {
 
     let tupleData = JSON.stringify(dataTuple);
 
-    document.getElementById(slno).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-2`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(productName).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-3`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(batchNo).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-7`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(weightage).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-8`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(expDate).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-11`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(mrp).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-12`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(ptr).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-16`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(qty).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-17`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(discPercent).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-19`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(taxableAmount).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-20`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(gst).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(amount).onclick = function () {
+    document.getElementById(`tr-${slControl}-col-23`).onclick = function () {
         editItem(tupleData);
     };
 
@@ -976,6 +981,9 @@ const addSummary = () => {
     document.getElementById("aqty").value = "";
     document.getElementById("add-item-details").reset();
     event.preventDefault();
+    /////////////////////////////////////////////
+
+    newSellGenerateBill.removeAttribute("disabled");
 }
 
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
@@ -1033,7 +1041,7 @@ function rowAdjustment(delRow) {
 const editItem = (tuple) => {
     console.log(tuple);
     let checkEditOption = document.getElementById("product-id").value;
-
+/*
     if (checkEditOption == '') {
         Tupledata = JSON.parse(tuple);
 
@@ -1078,10 +1086,10 @@ const editItem = (tuple) => {
         }
         
 
-        deleteItem(Tupledata.slno, Tupledata.qty, Tupledata.gstAmountPerItem, netMRP, Tupledata.amount);
+        // deleteItem(Tupledata.slno, Tupledata.qty, Tupledata.gstAmountPerItem, netMRP, Tupledata.amount);
 
     } else {
         swal("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("qty").focus();
-    }
+    }*/
 }

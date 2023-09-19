@@ -127,7 +127,7 @@ if (isset($_GET['return-id'])) {
                             <td>" . $item['ptr'] . "</td>
                             <td>" . $item['mrp'] . "</td>
                             <td>" . $item['gst'] . "%</td>
-                            <td>" . $item['disc'] . "</td>
+                            <td>" . $item['disc'] . "%</td>
                             <td>" . $returnQty . "</td>
                             <td>" . $item['refund_amount'] . "</td>
                           </tr>";

@@ -537,7 +537,7 @@ function addData() {
                         <input class="col table-data w-3r" type="text" name="disc-percent[]" value="${discount.value}%" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 ps-1 pt-3" id="row-${slControl}-col-13">
-                        <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="border-radius: 30%; font-size: .7rem; width:2rem; text-align:center; padding-top: 0.7rem;">
+                        <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="border-radius: 30%; font-size: .7rem; text-align:center; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3" id="row-${slControl}-col-14">
                         <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">

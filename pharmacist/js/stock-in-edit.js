@@ -615,20 +615,20 @@ const addData = () => {
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-3">
-                <input class="col table-data w-10r" type="text" value="${productName.value}" readonly style="font-size:0.65rem;">
+                <input class="col table-data w-10r" type="text" value="${productName.value}" readonly style="font-size:0.75rem;">
                 <input type="text" name="productId[]" value="${productId.value}" style="display: none">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-4">
-                <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.65rem;">
+                <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.75rem;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-5">
-                <input class="col table-data w-4r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.65rem; ">
+                <input class="col table-data w-4r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.75rem; ">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-6">
-                <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.65rem;">
+                <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.75rem;">
             </td>
 
             <td class="p-0 pt-3" hidden>
@@ -642,7 +642,7 @@ const addData = () => {
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-9">
-                <input class="col table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.75rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-10">
@@ -650,29 +650,29 @@ const addData = () => {
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-11">
-                <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size:0.75rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-12">
-                <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.75rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-15">
-                <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size:0.75rem; text-align:end;">
                 <input type="text" name="gstPerItem[]" value="${gstPerItem}" hidden>
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-13">
                 <input class="col table-data w-3r" type="text" name="base[]" value="${base.value}" hidden>
-                <input  class="col table-data w-4r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.65rem; text-align:end;">
+                <input  class="col table-data w-4r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.75rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-14">
-                <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size:0.75rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-16">
-                <input class="col table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="font-size:0.75rem; text-align:end;">
             </td>
 
         </tr>`);

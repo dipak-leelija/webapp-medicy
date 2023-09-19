@@ -2,31 +2,37 @@
 const xmlhttp = new XMLHttpRequest();
 const listArea = document.getElementById("bills-list");
 
-invoiceID = document.getElementById("invoiceID").value;
-salesReturnId = document.getElementById("sales-return-id").value;
+//========================= return submit button disable and enable control ======================
+var returnSubmitBtn = document.getElementById('return-btn');
+returnSubmitBtn.setAttribute("disabled", "true");
 
-patientName = document.getElementById("patient-name");
-billDate = document.getElementById("bill-date");
-reffBy = document.getElementById("reff-by");
 
-itemList = document.getElementById("items-list");
-returnitemid = document.getElementById('returned-item-id');
-expDate = document.getElementById("exp-date");
-unit = document.getElementById("unit");
-unitType = document.getElementById("unit-type");
-itemWeatage = document.getElementById("item-weatage");
+var invoiceID = document.getElementById("invoiceID").value;
+var salesReturnId = document.getElementById("sales-return-id").value;
 
-prodId = document.getElementById('product-id');
-batch = document.getElementById("batch-no");
-mrp = document.getElementById("mrp");
-pqty = document.getElementById("P-qty");
+var patientName = document.getElementById("patient-name");
+var billDate = document.getElementById("bill-date");
+var reffBy = document.getElementById("reff-by");
 
-rtnqty = document.getElementById("return-qty");
-discount = document.getElementById("discount");
+var itemList = document.getElementById("items-list");
+var returnDetailsitemid = document.getElementById('sales-return-details-item-id');
+var CurrentStockItemId = document.getElementById('current-stock-item-id');
+var expDate = document.getElementById("exp-date");
+var unit = document.getElementById("unit");
+var unitType = document.getElementById("unit-type");
+var itemWeatage = document.getElementById("item-weatage");
 
-gst = document.getElementById("gst")
-taxable = document.getElementById("taxable");
-billAmount = document.getElementById("refund");
+var prodId = document.getElementById('product-id');
+var batch = document.getElementById("batch-no");
+var mrp = document.getElementById("mrp");
+var pqty = document.getElementById("P-qty");
+
+var rtnqty = document.getElementById("return-qty");
+var discount = document.getElementById("discount");
+
+var gst = document.getElementById("gst")
+var taxable = document.getElementById("taxable");
+var billAmount = document.getElementById("refund");
 
 var invoiceNo = document.getElementById("invoice-no");
 var refundMode = document.getElementById("refund-mode");
@@ -78,7 +84,8 @@ const getEditItemDetails = (t) => {
     if (t != "") {
         // ====== sales return details id ======
         document.getElementById('sales-return-id').value = salesReturnId;
-        document.getElementById('returned-item-id').value = returndItemId;
+        document.getElementById('sales-return-details-item-id').value = returndItemId;
+        CurrentStockItemId.value = currentStockItemId;
         //==================== Exp Date Date ====================
         let expUrl = `ajax/salesReturnEdit.ajax.php?exp-date=${returndItemId}`;
         xmlhttp.open("GET", expUrl, false);
@@ -103,7 +110,7 @@ const getEditItemDetails = (t) => {
 
         // ================== product id ===============
         prodId.value = productId;
-        
+
         //==================== Batch ====================
         let batchUrl = `ajax/salesReturnEdit.ajax.php?batchNo=${returndItemId}`;
         xmlhttp.open("GET", batchUrl, false);
@@ -160,9 +167,12 @@ const getEditItemDetails = (t) => {
 
         document.getElementById('return-qty').focus();
 
+        returnSubmitBtn.setAttribute("disabled", "true");
+
     } else {
 
-        returnitemid.value = "";
+        CurrentStockItemId.value = '';
+        returnDetailsitemid.value = "";
         expDate.value = "";
         unit.value = "";
         unitType.value = "";
@@ -198,7 +208,7 @@ const getRefund = (returnQty) => {
 
         if (parseFloat(returnQty1) < 0) {
             // alert("Return Quantity must be lesser than current quantity!");
-            swal("Error", "Return edit Quantity must be lesser than Purchase quantity!", "error");
+            Swal.fire("Error", "Return edit Quantity must be lesser than Purchase quantity!", "error");
             document.getElementById('return-qty').value = '';
         }
         else if (parseFloat(returnQty1) > parseFloat(pqty.value)) {
@@ -215,10 +225,10 @@ const getRefund = (returnQty) => {
                 reviceRefund = parseFloat(reviceRefund).toFixed(2);
                 reviceTaxable = parseFloat(reviceTaxable).toFixed(2);
 
-                document.getElementById('taxable').value = reviceTaxable;
-                document.getElementById('refund').value = reviceRefund;
+                // document.getElementById('taxable').value = reviceTaxable;
+                // document.getElementById('refund').value = reviceRefund;
                  
-                document.getElementById("add-btn").disabled = false; 
+                // document.getElementById("add-btn").disabled = false; 
             }else{
                 reviceDiscAmt = (parseFloat(mrp) - (parseFloat(mrp)*parseFloat(disc)/100));
                 reviceRefund = parseFloat(reviceDiscAmt) * parseInt(returnQty);
@@ -227,10 +237,10 @@ const getRefund = (returnQty) => {
                 reviceRefund = parseFloat(reviceRefund).toFixed(2);
                 reviceTaxable = parseFloat(reviceTaxable).toFixed(2);
 
-                document.getElementById('taxable').value = reviceTaxable;
-                document.getElementById('refund').value = reviceRefund;
+                // document.getElementById('taxable').value = reviceTaxable;
+                // document.getElementById('refund').value = reviceRefund;
                 
-                document.getElementById("add-btn").disabled = false;
+                // document.getElementById("add-btn").disabled = false;
             }
                 
         } else if (parseFloat(returnQty1) == 0 ) {
@@ -243,10 +253,10 @@ const getRefund = (returnQty) => {
                 reviceRefund = parseFloat(reviceRefund).toFixed(2);
                 reviceTaxable = parseFloat(reviceTaxable).toFixed(2);
 
-                document.getElementById('taxable').value = reviceTaxable;
-                document.getElementById('refund').value = reviceRefund;
+                // document.getElementById('taxable').value = reviceTaxable;
+                // document.getElementById('refund').value = reviceRefund;
                 
-                document.getElementById("add-btn").disabled = false;  
+                // document.getElementById("add-btn").disabled = false;  
             }else{
                 reviceDiscAmt = (parseFloat(mrp) - (parseFloat(mrp)*parseFloat(disc)/100));
                 reviceRefund = parseFloat(reviceDiscAmt) * parseInt(returnQty);
@@ -255,23 +265,23 @@ const getRefund = (returnQty) => {
                 reviceRefund = parseFloat(reviceRefund).toFixed(2);
                 reviceTaxable = parseFloat(reviceTaxable).toFixed(2);
 
-                document.getElementById('taxable').value = reviceTaxable;
-                document.getElementById('refund').value = reviceRefund;
+                // document.getElementById('taxable').value = reviceTaxable;
+                // document.getElementById('refund').value = reviceRefund;
                 
-                document.getElementById("add-btn").disabled = false;
+                // document.getElementById("add-btn").disabled = false;
             }
             
         } else {
-            document.getElementById("refund").value = '';
-            document.getElementById("add-btn").disabled = true;
+            reviceRefund = '';
             // swal("Inserted value might be grater than sold qty.");
         }
     } else {
         // swal("Return Quantity can not be blank.");
-        document.getElementById("refund").value = '';
-        document.getElementById("add-btn").disabled = true;
+        reviceRefund = '';
+        
     }
-// console.log("taxable check : ",reviceTaxable)
+    document.getElementById('taxable').value = reviceTaxable;
+    document.getElementById('refund').value = reviceRefund;
     //================checking return quantity is not exceded than purchase quantity==================
 
 }
@@ -284,21 +294,18 @@ const getRefund = (returnQty) => {
 //geeting bills by clicking on add button
 const addData = () => {
 
-    // console.log(returnitemid);
-
-    document.getElementById("salesreturn-id").value = salesReturnId;
-    //alert(invoiceNo.value);
-    
-    // if (invoiceNo.value == "") {
-    //     invoiceNo.focus();
-    //     return;
-    // }
+    let returnDate = document.getElementById('return-date').value;
 
     if (patientName.value == "") {
         patientName.focus();
         return;
     }
 
+    if (returnDate == "") {
+        Swal.fire("Failed!", "Select Return Date", "error");
+        returnDate.focus();
+        return;
+    }
 
     if (billDate.value == "") {
         billDate.focus();
@@ -311,6 +318,7 @@ const addData = () => {
     }
 
     if (refundMode.value == "") {
+        Swal.fire("Failed!", "Select Refund Mode", "error");
         refundMode.focus();
         return;
     }
@@ -320,8 +328,8 @@ const addData = () => {
         return;
     } 
 
-    if(returnitemid.value == ""){
-        returnitemid.focus();
+    if(returnDetailsitemid.value == ""){
+        returnDetailsitemid.focus();
         return;
     }
 
@@ -388,7 +396,8 @@ const addData = () => {
             if (item.childNodes[5].childNodes[3].value == itemList.value) {
                 swal("You can not add same item more than one!");
 
-                returnitemid.value = "";
+                CurrentStockItemId.value = '';
+                returnDetailsitemid.value = "";
                 expDate.value = "";
                 unit.value = "";
                 unitType.value = "";
@@ -410,11 +419,22 @@ const addData = () => {
     }
 
 
+    ///////// SL CONTROL \\\\\\\\
     let itemName = itemList.selectedOptions[0].text;
+    // let items = document.querySelectorAll('tr');
+    // let slno = items.length;
 
-    let items = document.querySelectorAll('tr');
-    let slno = items.length;
-    document.getElementById("total-items").value = slno;
+    let slno = document.getElementById("dynamic-id").value;
+    let slControl = document.getElementById("serial-control").value;
+    slno++;
+    slControl++;
+    document.getElementById("dynamic-id").value = slno;
+    document.getElementById("serial-control").value = slControl;
+    
+    ///////// == items count ======
+    let items = document.getElementById("total-items");
+    let finalItem = parseInt(items.value) + 1;
+    items.value = finalItem;
 
     //get total Refund Amount
     var refundAmount = document.getElementById("refund-amount");
@@ -438,54 +458,53 @@ const addData = () => {
     const appendData = () => {
 
         jQuery("#dataBody")
-            .append(`<tr id="table-row-${slno}">
-            <td class='text-danger pt-3'>
-                <i class="fas fa-trash" id="${slno}"
-                    onclick="deleteData(this.id, ${parseFloat(rtnqty.value)}, ${gstPerItem}, ${parseFloat(refund.value)})"></i>
-            </td>
-            <td class="pt-3" style="width: 0.5rem">${slno}</td>
-            <td class="pt-3">
-                <input class="table-data w-10r" type="text" value="${itemName}" readonly style="font-size: 0.7rem;">
+            .append(`<tr id="table-row-${slControl}">
+            <td><i class="fas fa-trash text-danger" onclick="deleteData(${slControl}, ${parseFloat(rtnqty.value)}, ${gstPerItem}, ${parseFloat(refund.value)})"></i></td>
+
+            <td class="pt-3" id="row-${slControl}-col-1">${slno}</td>
+            
+            <td class="pt-3" id="row-${slControl}-col-2">
+                <input class="table-data w-12r" type="text" value="${itemName}" readonly style="font-size: 0.7rem;">
                 <input class="d-none" type="text" name="productId[]" value="${prodId.value}">
 
             </td>
 
             <td class="d-none pt-3">
-                <input class="table-data w-5r" type="text" name="return-Item-Id[]" value="${returnitemid.value}" readonly style="font-size: 0.7rem;">
+                <input class="table-data w-5r" type="text" name="return-Item-Id[]" value="${returnDetailsitemid.value}" readonly style="font-size: 0.7rem;">
             </td>
 
-            <td class="pt-3">
-                <input class="table-data w-5r" type="text" name="batchNo[]" value="${batch.value}" readonly style="font-size: 0.7rem;">
+            <td class="pt-3" id="row-${slControl}-col-3">
+                <input class="table-data w-6r" type="text" name="batchNo[]" value="${batch.value}" readonly style="font-size: 0.7rem;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slControl}-col-4">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate.value}" readonly style="font-size: 0.7rem;">
             </td>
 
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slControl}-col-5">
                 <input class="table-data w-3r" type="text" name="setof[]" value="${unit.value}" readonly style="font-size: 0.7rem;">
             </td>
 
-            <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="p-qty[]" value="${pqty.value}" readonly style="font-size: 0.7rem;">
+            <td class="pt-3" id="row-${slControl}-col-6">
+                <input class="table-data w-2r" type="text" name="p-qty[]" value="${pqty.value}" readonly style="font-size: 0.7rem;">
             </td>
             
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slControl}-col-7">
                 <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size: 0.7rem;">
             </td>
 
-            <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="disc[]" value="${discount.value}" readonly style="font-size: 0.7rem;">
+            <td class="pt-3" id="row-${slControl}-col-8">
+                <input class="table-data w-2r" type="text" name="disc[]" value="${discount.value}%" readonly style="font-size: 0.7rem;">
             </td>
-            <td class="pt-3">
-                <input class="table-data w-3r" type="text" name="gst[]" value="${gst.value}" readonly style="font-size: 0.7rem;">
+            <td class="pt-3" id="row-${slControl}-col-9">
+                <input class="table-data w-2r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size: 0.7rem;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slControl}-col-10">
                 <input class="table-data w-3r" type="text" name="taxable[]" value="${taxable.value}"  style="font-size: 0.7rem;">
             </td>
-            <td class="ps-1 pt-3">
+            <td class="pt-3" id="row-${slControl}-col-11">
                 <input class="table-data w-3r" type="text" name="return[]" value="${rtnqty.value}" readonly style="font-size: 0.7rem;">
             </td>
-            <td class="pt-3">
+            <td class="pt-3" id="row-${slControl}-col-12">
                 <input class="table-data w-4r" type="any" name="refund[]" value="${billAmount.value}" readonly style="font-size: 0.7rem;">
             </td>
         </tr>`);
@@ -495,37 +514,122 @@ const addData = () => {
     if (appendData() == true) {
         itemList.remove(itemList.selectedIndex)
         itemList.options[0].selected = true;
-        returnitemid.value = "";
-        expDate.value = "";
-        unit.value = "";
-        unitType.value = "";
-        itemWeatage.value = "";
-        prodId.value = "";
-        batch.value = "";
-        mrp.value = "";
-        pqty.value = "";
-        rtnqty.value = "";
-        discount.value = "";
-        gst.value = "";
-        taxable.value = "";
-        billAmount.value = "";
-        refund.value = "";
+        
+        const dataTuple = {
+            slno: slControl,
+            invoiceNo: invoiceID,
+            salesReturnId : salesReturnId,
+            // ProductName: itemName,
+            returnDetailsitemid: returnDetailsitemid.value,
+            CurrentStockItemId: CurrentStockItemId.value,
+            pId: prodId.value,
+            prodName: itemName,
+            batch: batch.value,
+            expDate: expDate.value,
+            unit: unit.value,
+            unitType: unitType.value,
+            itemWeatage: itemWeatage.value,
+
+            mrp: mrp.value,
+            purchaseQuantity: pqty.value,
+            rtnqty: rtnqty.value,
+
+            discount: discount.value,
+            gst: gst.value,
+            taxable: taxable.value,
+            billAmount: billAmount.value,
+
+        };
+
+        let tupleData = JSON.stringify(dataTuple);
+
+        document.getElementById(`row-${slControl}-col-1`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-2`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-3`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-4`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-5`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-6`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-7`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-8`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-9`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-10`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-11`).onclick = function () {
+            editItem(tupleData);
+        };
+        document.getElementById(`row-${slControl}-col-12`).onclick = function () {
+            editItem(tupleData);
+        };
     }
 
-} //eof addData  
+    document.getElementById("sales-return-edit-item-details").reset();
+    event.preventDefault();
+
+    returnSubmitBtn.removeAttribute("disabled");
+
+}//eof addData  
+
+
+// ------------ edit item function ------------
+
+const editItem = (tuple) => {
+    // returnSubmitBtn.setAttribute("disabled", "true");
+    // console.log(tuple);
+    if (document.getElementById('sales-return-details-item-id').value == '') {
+        tData = JSON.parse(tuple);
+        
+        let editData = document.createElement("option");
+
+        editData.setAttribute("data-invoice", tData.invoiceNo);
+        editData.setAttribute("sales-return-id", tData.salesReturnId);
+        editData.setAttribute("value", tData.pId);
+        editData.setAttribute("returned-item-id", tData.returnDetailsitemid);
+        editData.setAttribute("current-stock-item-id", tData.CurrentStockItemId);
+        editData.text = tData.prodName;
+
+        itemList.appendChild(editData);
+
+        // -----------------------------------------------------------------------------
+        let gstPerItem = parseFloat(tData.billAmount) - parseFloat(tData.taxable);
+        gstPerItem = parseFloat(gstPerItem).toFixed(2);
+
+        deleteData(tData.slno, tData.rtnqty, gstPerItem, tData.billAmount);
+        
+    } else {
+        Swal.fire("Failed!", "Add previous data first", "error");
+    }
+}
 
 // ================================ Delet Data ================================
 
 
 function deleteData(slno, returnQty, gstPerItem, itemRefund) {
-    jQuery(`#table-row-${slno}`).remove();
 
-    let existitems = document.querySelectorAll('tr');
-    for (let i = 1; i < existitems.length; i++) {
-        existitems[i].id = `table-row-${i}`;
-        existitems[i].childNodes[1].childNodes[1].id = i;
-        existitems[i].childNodes[3].innerText = i;
-    }
+    //====
+    let delRow = slno;
+    //====================
+    jQuery(`#table-row-${slno}`).remove();
+    let slVal = document.getElementById("dynamic-id").value;
+    document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
     //minus item
     let items = document.getElementById("total-items");
@@ -548,4 +652,25 @@ function deleteData(slno, returnQty, gstPerItem, itemRefund) {
     let finalAmount = refundAmount.value - itemRefund;
     refundAmount.value = finalAmount.toFixed(2);
 
+
+    rowAdjustment(delRow);
 }
+
+
+//========= row number adjustment ========
+function rowAdjustment(delRow) {
+    let tableId = document.getElementById("dataBody");
+    let j = 0;
+    let colIndex1 = 1;
+
+    for (let i = 0; i < tableId.rows.length; i++) {
+        j++;
+
+        let row = tableId.rows[i];
+        let cell1 = row.cells[colIndex1];
+        cell1.innerHTML = j;
+    }
+}
+
+// ==================== BACK TO MAIN PAGE (GO BACK) ====================
+ 

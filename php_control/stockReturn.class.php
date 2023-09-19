@@ -169,7 +169,6 @@ function showStockReturnDetailsById($Id){
 
 
 //stockReturnDetails Edit\update function...........
-
 function stockReturnDetailsEdit($id, $stockReturnId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $purchaseAmount, $gst, $returnQty, $refundAmount, $addedBy){
 
     $update = "UPDATE `stock_return_details` SET `product_id`='$productId',`batch_no`='$batchNo',`exp_date`='$expDate',`unit`='$unit',`purchase_qty`='$purchaseQty',`free_qty`='$freeQty',`mrp`='$mrp',`ptr`='$ptr',`purchase_amount`='$purchaseAmount',`gst`='$gst',`return_qty`='$returnQty',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `id`='$id' AND `stock_return_id`='$stockReturnId' ";
@@ -179,8 +178,19 @@ function stockReturnDetailsEdit($id, $stockReturnId, $productId, $batchNo, $expD
     return $res;
 }
 
-// ----------------- stock return details edit/update by id ----------------RD-----------
 
+// ---------------- stock return detaisl edit -----------------
+function stockReturnDetailsEditByStockInDetailsId($stockInDetaislId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $purchaseAmount, $gst, $addedBy){
+
+    $update = "UPDATE `stock_return_details` SET `product_id`='$productId',`batch_no`='$batchNo',`exp_date`='$expDate',`unit`='$unit',`purchase_qty`='$purchaseQty',`free_qty`='$freeQty',`mrp`='$mrp',`ptr`='$ptr',`purchase_amount`='$purchaseAmount',`gst`='$gst', `added_by`='$addedBy' WHERE `stokIn_details_id`='$stockInDetaislId' ";
+
+    $res = $this->conn->query($update);
+
+    return $res;
+}// edit on stock in details id ===========
+
+
+// ----------------- stock return details edit/update by id ----------------RD-----------
 function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $addedBy){
     $editUpdate = "UPDATE `stock_return_details` SET  `return_qty`='$returnQTY', `return_free_qty` = '$returnFQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `stock_return_details`.`id`='$id'";
 

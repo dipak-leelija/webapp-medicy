@@ -1,5 +1,11 @@
 const xmlhttp = new XMLHttpRequest();
 
+//========================= return submit button disable and enable control ======================
+var returnSubmitBtn = document.getElementById('sales-return-btn');
+returnSubmitBtn.setAttribute("disabled", "true");
+
+// =============================================================
+
 let listArea = document.getElementById("bills-list");
 
 let patientName = document.getElementById("patient-name");
@@ -187,7 +193,7 @@ const getItemDetails = (t) => {
 
         //==================== pharmacy invoice item id ==========
         stockOutDetailsItemid.value = stockOutDetailsDataId;
-        
+
         //=========== stock out details item id =================
         pharmacyItemid.value = pharmacyItemDetailsId;
 
@@ -274,6 +280,8 @@ const getItemDetails = (t) => {
 
         document.getElementById('return').focus();
 
+        returnSubmitBtn.setAttribute("disabled", "true"); // set return button disable
+
     } else {
         stockOutDetailsItemid.value = "";
         pharmacyItemid.value = "";
@@ -357,7 +365,7 @@ const addData = () => {
     let gst = document.getElementById("gst").value;
     let taxable = document.getElementById("taxable").value;
     let billAmount = document.getElementById("bill-amount").value;
-    
+
     //============================ set and filter invoice number ==================================
     let invoiceNo = document.getElementById("invoice-no").value;
     let returnInvoiceId = document.getElementById('invoice').value;
@@ -390,7 +398,7 @@ const addData = () => {
 
     let refundMode = document.getElementById("refund-mode").value;
     let returnDate = document.getElementById('return-date');
-    
+
     let returnQtyVal = document.getElementById("return").value;
     let refundTaxable = document.getElementById("refund-taxable").value;
     refundTaxable = parseFloat(refundTaxable);
@@ -436,11 +444,12 @@ const addData = () => {
     if (itemList.value == "") {
         Swal.fire("Failed!", "Please Select returning item!", "error");
         itemList.focus();
+        return;
     } else { }
 
     if (currentItemID.value == "") {
         Swal.fire("Failed!", "Please select an item", "error");
-        expDate.focus();
+        currentItemID.focus();
         return;
     }
 
@@ -498,23 +507,24 @@ const addData = () => {
         return;
     }
 
-    if (returnQtyVal.value == "") {
+    if (returnQtyVal == "") {
         Swal.fire("Failed!", "return qantity must be not null!", "error");
         returnQtyVal.focus();
         return;
     }
 
-    if (refundTaxable.value == "") {
+    if (refundTaxable == "") {
         Swal.fire("Failed!", "refund amount must be not null!", "error");
         refund.focus();
         return;
     }
 
-    if (refundAmount.value == "") {
+    if (refundAmount == "") {
         Swal.fire("Failed!", "refund amount must be not null!", "error");
         refund.focus();
         return;
     }
+
 
     let existsItems = document.querySelectorAll('tr');
     for (let i = 0; i < existsItems.length; i++) {
@@ -546,16 +556,22 @@ const addData = () => {
     }
 
     let itemName = itemList.selectedOptions[0].text;
+    // let items = document.querySelectorAll('tr');
+    // let slno = items.length;
 
-    let items = document.querySelectorAll('tr');
-    let slno = items.length;
-    document.getElementById("total-items").value = slno;
+    let slno = document.getElementById("dynamic-id").value;
+    let slControl = document.getElementById("serial-control").value;
+    slno++;
+    slControl++;
+    document.getElementById("dynamic-id").value = slno;
+    document.getElementById("serial-control").value = slControl;
 
-    // let slControl = document.getElementById("serial-control").value;
-    // slControl++;
-    // document.getElementById("serial-control").value = slControl;
+    ///////// == items count ======
+    let items = document.getElementById("total-items");
+    let finalItem = parseInt(items.value) + 1;
+    items.value = finalItem;
 
-    //total Refund Amount
+    // total Refund Amount
     var totalRefund = document.getElementById("refund-amount");
     let netRefund = parseFloat(totalRefund.value) + parseFloat(refundAmount);
     // console.log(netRefund);
@@ -569,68 +585,80 @@ const addData = () => {
     // generate gst amount on refund
     var netGstAmount = document.getElementById("gst-amount").value;
     var totalGstAmount = parseFloat(refundAmount) - parseFloat(refundTaxable);
-    var updatedNetGstAmount = parseFloat(netGstAmount) +  parseFloat(totalGstAmount);
+    var updatedNetGstAmount = parseFloat(netGstAmount) + parseFloat(totalGstAmount);
     document.getElementById("gst-amount").value = updatedNetGstAmount.toFixed(2);
     let gstPerItem = totalGstAmount.toFixed(2);
 
 
     const appendData = () => {
 
+        // jQuery("#item-body").append(`<tr id="table-row-${slControl}">
+
+        // <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slControl}, ${qty}, ${netGst.toFixed(2)}, ${itemMrp.toFixed(2)}, ${amount})" style="font-size:.7rem; width: .3rem"></i></td>
+
+        // <td id="${slno}" style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
+
+        // <td id="${productName}">
+        //     <input class="summary-product" type="text" name="product-name[]" value="${productName}" style="word-wrap: break-word; width:9rem; font-size: .7rem;" readonly>
+        //     <input type="text" class="d-none" name="product-id[]" value="${productId}" >
+        // </td>
+
+
         jQuery("#dataBody")
-            .append(`<tr id="table-row-${slno}">
-            <td class='text-danger pt-3'>
-                <i class="fas fa-trash" id="${slno}"
-                    onclick="deleteData(this.id, ${parseFloat(returnQtyVal)}, ${gstPerItem}, ${refundAmount.toFixed(2)})"></i>
-            </td>
-            <td class="pt-3" id="row-${slno}-col-1" style="font-size: 0.7rem;">${slno}</td>
-            <td class="pt-3" id="row-${slno}-col-2">
+            .append(`<tr id="table-row-${slControl}">
+            <td><i class="fas fa-trash text-danger" onclick="deleteData(${slControl}, ${parseFloat(returnQtyVal)}, ${gstPerItem}, ${refundAmount.toFixed(2)})"></i></td>
+
+            <td class="pt-3" id="row-${slControl}-col-1" style="font-size: 0.7rem;">${slno}</td>
+            <td class="pt-3" id="row-${slControl}-col-2">
                 <input class="table-data w-10r" type="text" value="${itemName}" readonly style="font-size: .65rem;">
-                <input class="" type="text" name="itemId[]" value="${itemList.value}">
+                <input class="d-none" type="text" name="itemId[]" value="${itemList.value}">
 
             </td>
 
-            <td class=" pt-3">
+            <td class="d-none pt-3">
                 <input class="table-data w-6r" type="text" name="stockOutDetailsItemIds[]" value="${StockOutDetailsItemId}" readonly>
                 <input class="table-data w-6r" type="text" name="pharmacyInvoiceItemIds[]" value="${PharmacyInvoiceItemId}" readonly>
             </td>
 
-            <td class=" pt-3">
+            <td class="d-none pt-3">
                 <input class="table-data w-6r" type="text" name="curretnItemId[]" value="${currentItemID}" readonly style="font-size: 0.65rem;">
             </td>
 
-            <td class=" pt-3">
+            <td class="d-none pt-3">
                 <input class="table-data w-6r" type="text" name="productId[]" value="${pId}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3" id="row-${slno}-col-3">
+            <td class="pt-3" id="row-${slControl}-col-3">
                 <input class="table-data w-6r" type="text" name="batchNo[]" value="${batch}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3" id="row-${slno}-col-4">
+            <td class="pt-3" id="row-${slControl}-col-4">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size: 0.65rem;">
             </td>
 
-            <td class="pt-3" id="row-${slno}-col-5">
+            <td class="pt-3" id="row-${slControl}-col-5">
                 <input class="table-data w-3r" type="text" name="setof[]" value="${unit}" readonly style="font-size: 0.65rem;">
             </td>
 
-            <td class="pt-3" id="row-${slno}-col-6">
+            <td class="pt-3" id="row-${slControl}-col-6">
                 <input class="table-data w-3r" type="text" name="qty[]" value="${currentQty}" readonly style="font-size: 0.65rem; text-align: end;">
+
+                <input class="d-none table-data w-3r" type="text" name="p_Qty[]" value="${purchaseQuantity}" readonly style="font-size: 0.65rem; text-align: end;">
             </td>
-            <td class="pt-3" id="row-${slno}-col-7">
+            <td class="pt-3" id="row-${slControl}-col-7">
                 <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3" id="row-${slno}-col-8">
+            <td class="pt-3" id="row-${slControl}-col-8">
                 <input class="table-data w-2r" type="text" name="disc[]" value="${discount}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3" id="row-${slno}-col-9">
+            <td class="pt-3" id="row-${slControl}-col-9">
                 <input class="table-data w-2r" type="text" name="gst[]" value="${gst}" readonly style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3" id="row-${slno}-col-10">
+            <td class="pt-3" id="row-${slControl}-col-10">
                 <input class="table-data w-2r" type="text" name="taxable[]" value="${refundTaxable.toFixed(2)}"  style="font-size: 0.65rem;">
             </td>
-            <td class="pt-3" id="row-${slno}-col-11">
+            <td class="pt-3" id="row-${slControl}-col-11">
                 <input class="table-data w-3r" type="text" name="return[]" value="${returnQtyVal}" readonly style="font-size: 0.65rem; text-align: end;">
             </td>
-            <td class="pt-3" id="row-${slno}-col-12">
+            <td class="pt-3" id="row-${slControl}-col-12">
             <input class="table-data w-3r" type="any" name="refundPerItem[]" value="${refundAmount.toFixed(2)}" readonly style="font-size: 0.65rem;">
             </td>
         </tr>`);
@@ -643,8 +671,7 @@ const addData = () => {
         itemList.options[0].selected = true;
 
         const dataTuple = {
-
-            slno: slno,
+            slno: slControl,
             invoiceNo: invoiceNo,
             ProductName: itemName,
             StockOutDetailsItemId: StockOutDetailsItemId,
@@ -654,8 +681,8 @@ const addData = () => {
             batch: batch,
             expDate: expDate,
             unit: unit,
-            ItemUnit: ItemUnit,        
-            ItemWeatage: ItemWeatage,    
+            ItemUnit: ItemUnit,
+            ItemWeatage: ItemWeatage,
             mrp: mrp,
             purchaseQuantity: purchaseQuantity,
             currentQty: currentQty,
@@ -672,43 +699,54 @@ const addData = () => {
 
         let tupleData = JSON.stringify(dataTuple);
 
-        document.getElementById(`row-${slno}-col-1`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-1`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-2`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-2`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-3`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-3`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-4`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-4`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-5`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-5`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-6`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-6`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-7`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-7`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-8`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-8`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-9`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-9`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-10`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-10`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-11`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-11`).onclick = function () {
             editItem(tupleData);
         };
-        document.getElementById(`row-${slno}-col-12`).onclick = function () {
+        document.getElementById(`row-${slControl}-col-12`).onclick = function () {
             editItem(tupleData);
         };
     }
+
+    // ======== form submit button enable action ============
+    let invoiceCheck = document.getElementById('invoice').value;
+    let stockReturnCheck = document.getElementById('stock-out-details-item-id').value;
+    console.log("invoice number check : "+invoiceCheck);
+    console.log("stock out details item id check : "+stockReturnCheck);
+
+
+    returnSubmitBtn.removeAttribute("disabled");
+   
+    //========================================================
 
     document.getElementById("return-item-details").reset();
     event.preventDefault();
@@ -718,27 +756,27 @@ const addData = () => {
 // ========================= added item edit optin ============================
 
 const editItem = (tuple) => {
-    console.log(tuple);
-
-    if(document.getElementById('item-id').value == ''){
+    returnSubmitBtn.setAttribute("disabled", "true");
+    // console.log(tuple);
+    if (document.getElementById('item-id').value == '') {
         tData = JSON.parse(tuple);
 
         let editData = document.createElement("option");
 
-        editData.setAttribute("stokOutDetails-data-id",tData.StockOutDetailsItemId );
-        editData.setAttribute("pharmacy-data-id",tData.PharmacyInvoiceItemId);
-        editData.setAttribute("data-invoice",tData.invoiceNo);
-        editData.setAttribute("data-batch",tData.batch);
-        editData.setAttribute("value",tData.currentItemID);
+        editData.setAttribute("stokOutDetails-data-id", tData.StockOutDetailsItemId);
+        editData.setAttribute("pharmacy-data-id", tData.PharmacyInvoiceItemId);
+        editData.setAttribute("data-invoice", tData.invoiceNo);
+        editData.setAttribute("data-batch", tData.batch);
+        editData.setAttribute("value", tData.currentItemID);
         editData.text = tData.ProductName;
         itemList.appendChild(editData);
-       
+
         // -----------------------------------------------------------------------------
         let gstPerItem = parseFloat(tData.refundAmount) - parseFloat(tData.refundTaxable);
         gstPerItem = parseFloat(gstPerItem).toFixed(2);
         deleteData(tData.slno, tData.returnQtyVal, gstPerItem, tData.refundAmount);
 
-    }else{
+    } else {
         Swal.fire("Failed!", "Add previous data first", "error");
     }
 
@@ -746,24 +784,28 @@ const editItem = (tuple) => {
 
 // ================================ Delet Data ================================
 
-
 function deleteData(slno, returnQty, gstPerItem, itemRefund) {
 
+    //====
+    let delRow = slno;
+    //====================
     jQuery(`#table-row-${slno}`).remove();
+    let slVal = document.getElementById("dynamic-id").value;
+    document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
-    let existitems = document.querySelectorAll('tr');
-    for (let i = 1; i < existitems.length; i++) {
-        existitems[i].id = `table-row-${i}`;
-        existitems[i].childNodes[1].childNodes[1].id = i;
-        existitems[i].childNodes[3].innerText = i;
-    }
+    // let existitems = document.querySelectorAll('tr');
+    // for (let i = 1; i < existitems.length; i++) {
+    //     existitems[i].id = `table-row-${i}`;
+    //     existitems[i].childNodes[1].childNodes[1].id = i;
+    //     existitems[i].childNodes[3].innerText = i;
+    // }
 
-    //minus item
+    //////////////minus item
     let items = document.getElementById("total-items");
     let finalItem = items.value - 1;
     items.value = finalItem;
 
-    // minus quantity
+    ///////////// minus quantity
     let qty = document.getElementById("total-qty");
     let finalQty = qty.value - returnQty
     qty.value = finalQty;
@@ -780,4 +822,28 @@ function deleteData(slno, returnQty, gstPerItem, itemRefund) {
     let finalAmount = refundAmount.value - itemRefund;
     refundAmount.value = finalAmount.toFixed(2);
 
+    rowAdjustment(delRow);
 }
+
+//========= row number adjustment ========
+function rowAdjustment(delRow) {
+    let tableId = document.getElementById("dataBody");
+    let j = 0;
+    let colIndex1 = 1;
+
+    for (let i = 0; i < tableId.rows.length; i++) {
+        j++;
+
+        let row = tableId.rows[i];
+        let cell1 = row.cells[colIndex1];
+        cell1.innerHTML = j;
+    }
+}
+
+
+
+    
+
+
+
+

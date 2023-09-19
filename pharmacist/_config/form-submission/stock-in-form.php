@@ -8,6 +8,7 @@ require_once '../../../php_control/distributor.class.php';
 require_once '../../../php_control/products.class.php';
 require_once '../../../php_control/manufacturer.class.php';
 require_once '../../../php_control/packagingUnit.class.php';
+require_once '../../../php_control/stockReturn.class.php';
 
 $StockIn = new StockIn();
 $StockInDetails = new StockInDetails();
@@ -17,6 +18,8 @@ $Session = new SessionHandler();
 $Products = new Products();
 $Manufacturer = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
+$StcokReturn = new StockReturn();
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -95,11 +98,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $crrntDt = date("d-m-Y");
 
-        // ===================================== CHECKING ===========================================    
-        // echo "<br>Stok in id Array =>"; print_r($stockIn_Id); echo "<br>";
-
     }
-    // exit;
+  
     $addStockIn  = FALSE;
     if (isset($_POST['stock-in'])) {
         $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
@@ -115,16 +115,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } // stock-in request end
 
     $updateStockIn = FALSE;
-    // echo "hello 1";
     if (isset($_POST['update'])) {
-        // echo "hello 2";
-        // echo "<br>$distributorBill<br>";
         $updateStockIn = $StockIn->updateStockIn($stockIn_Id, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
     } // stock-in request end
 
     if ($addStockIn == TRUE || $updateStockIn == TRUE) {
-
-
 
         ///================ updated stock delete item area ============================
         if (isset($_POST['update'])) {
@@ -156,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         }
-        /// ======================== eof updated stock delete item area  ==============================
+        /// =================== eof updated stock delete item area  ===========================
 
         //=========== STOCK IN DETAILS ===========
         foreach ($_POST['productId'] as $productId) {
@@ -253,6 +248,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     //update current stock
 
                     $updateCurrentStock = $CurrentStock->updateStockByStokinDetailsId($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $UpdatedQuantity, $UpdatedLQantity, $mrp, $ptr);
+
+                    // ====== stock retun, stok out and sales retun update area ========
+
+                    // update stok return data according to sotock data update;
+                    $updateStockReturnDetaisl = $StcokReturn->stockReturnDetailsEditByStockInDetailsId($stokInDetaislId, $productId, $batchNo, $expDate, $weightage.$unit, $qty, $freeQty, $mrp, $ptr, $amount, $gst, $addedBy);
+                    
+                    // update stock out data accordingly
+                    // update sales return data accordingly
                 } else {
 
                     $stokInid = $_POST['stok-in-id'];

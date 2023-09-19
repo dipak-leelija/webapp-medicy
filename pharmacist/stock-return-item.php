@@ -87,7 +87,7 @@ $showDistributor       = $Distributor->showDistributor();
                                     </select>
                                 </div>
 
-                                <div class="col-md-3 col-12 ">
+                                <div class="col-md-2 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Select Bill No.</label>
                                     <input class="upr-inp mb-1" id="select-bill-no" name="select-bill-no" placeholder="Search Bill" onkeyup="getItemList(this.value)" autocomplete="off">
                                     <!-- onchange="getDtls(this);" -->
@@ -96,7 +96,7 @@ $showDistributor       = $Distributor->showDistributor();
                                     <input type="text" id="bill-no" hidden>
                                 </div>
 
-                                <div class="col-md-5 col-12 ">
+                                <div class="col-md-6 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
                                     <input class="upr-inp mb-1" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
                                     <!-- onchange="getDtls(this);" -->

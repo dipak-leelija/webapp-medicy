@@ -239,7 +239,7 @@ $doctor = $Doctors->showDoctors();
                                         </div>
                                         
                                         <div class="col-md-1 mt-3 col-12">
-                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Net AMT</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Nt AMT</label><br>
                                             <input class="sale-inp" type="any" id="amount" readonly>
                                         </div>
 
@@ -415,7 +415,7 @@ $doctor = $Doctors->showDoctors();
                                             </div>
                                             <div class="col-md-2  mb-3">
                                                 <div class="d-md-flex justify-content-end">
-                                                    <button type="submit" name="submit" class="btn btn-sm btn-primary w-100">Generate Bill</button>
+                                                    <button type="submit" name="submit" class="btn btn-sm btn-primary w-100" id="new-sell-bill-generate">Generate Bill</button>
                                                 </div>
                                             </div>
                                         </div>

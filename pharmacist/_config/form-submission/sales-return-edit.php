@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $returnItemId   = $_POST['return-Item-Id'];
         $products   = $_POST['productId'];
         $batchNo    = $_POST['batchNo'];
-        
+
         $expdates   = $_POST['expDate'];
         $weatage    = $_POST['setof'];
 
@@ -104,58 +104,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $patientPNo = $patient[0]['phno'];
         }
 
-        // foreach ($checkStockOutReturn as $valueCheck) {
-        //     $checkitems = $valueCheck['items'];
-        //     $checkgstamount = $valueCheck['gst_amount'];
-        //     $checkrefundamount = $valueCheck['refund_amount'];
-        //     $checkrefundmode = $valueCheck['refund_mode'];
-        //     $checkReturnDate = $valueCheck['return_date'];
-        // }
-
-
         $updatedGstAmount = $gstAmount;
         $updatedTotalRefund = $totalRefundAmount;
         $updatedItemCount = $items;
 
-        if($prevItemCount != $items){
+        if ($prevItemCount != $items) {
             $table1 = 'sales_return_id';
             $seletReturnDetails = $SalesReturn->selectSalesReturnList($table1, $returnId);
 
             $returnDetailsId = [];
-            foreach($seletReturnDetails as $seletReturnDetails){
+            foreach ($seletReturnDetails as $seletReturnDetails) {
                 array_push($returnDetailsId, $seletReturnDetails['id']);
             }
             $returnEditDiff = array_diff($returnDetailsId, $returnItemId);
             $countItems = count($returnEditDiff);
 
-            foreach($returnEditDiff as $diffId){
+            foreach ($returnEditDiff as $diffId) {
                 $table2 = 'id';
                 $seletReturnDetails = $SalesReturn->selectSalesReturnList($table2, $diffId);
                 // echo "<br><br> Diff return details : "; print_r($seletReturnDetails);
-                foreach($seletReturnDetails as $seletReturnDetails){
+                foreach ($seletReturnDetails as $seletReturnDetails) {
                     $refund = $seletReturnDetails['refund_amount'];
                     $taxable = $seletReturnDetails['taxable'];
                     $returnGstAmount = floatval($refund) - floatval($taxable);
                 }
                 $updatedGstAmount = floatval($updatedGstAmount) + floatval($returnGstAmount);
                 $updatedTotalRefund = floatval($updatedTotalRefund) + floatval($refund);
-            } 
-        }else{
+            }
+        } else {
             $countItems = 0;
         }
 
         $updatedItemCount = intval($items) + intval($countItems);
-        // echo "<br><br>updated Item count : $updatedItemCount";
-        // echo "<br>updated gst amount : $updatedGstAmount";
-        // echo "<br>updated refund amount : $updatedTotalRefund";
-        
-        // echo "<br><br>$returnId";
-        // echo "<br>$returnDate";
-        // echo "<br>$updatedItemCount";
-        // echo "<br>$updatedGstAmount";
-        // echo "<br>$updatedTotalRefund";
-        // echo "<br>$refundMode";
-        // echo "<br>$added_by";
+
         $salesReturnData = $SalesReturn->updateSalesReturn($returnId, $returnDate, $updatedItemCount, $updatedGstAmount, $updatedTotalRefund, $refundMode, $added_by); //check this query
         // $salesReturnData = true;
         // -----------------------------------------------------------------------------------------
@@ -170,15 +151,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $batchN =  array_shift($_POST['batchNo']);
                 $expDate = array_shift($_POST['expDate']);
                 $unit =  array_shift($_POST['setof']);
-                $itemUnit =  preg_replace('/[0-9]/','',$unit);
-                $itemWeatage =  preg_replace('/[a-z]/','',$unit);
+                $itemUnit =  preg_replace('/[0-9]/', '', $unit);
+                $itemWeatage =  preg_replace('/[a-z]/', '', $unit);
                 $MRP = array_shift($_POST['mrp']);;
                 $discountPercent =  array_shift($_POST['disc']);
                 $gstPercent =  array_shift($_POST['gst']);
                 $Taxable =  array_shift($_POST['taxable']);
                 $returnQty =  array_shift($_POST['return']);
                 $refundAmount =  array_shift($_POST['refund']);
-                
+
                 // echo "<br><br>";
                 // echo "<br>Sales return Id : $salesReturnId";
                 // echo "<br>Product Id : $productID";
@@ -190,33 +171,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo "<br>Discount percent : $discountPercent";
                 // echo "<br>GST percent : $gstPercent";
                 // echo "<br>Taxable : $Taxable";
-                
+
                 // echo "<br>Return QTY : $returnQty";
                 // echo "<br>Refund Amount : $refundAmount";
-                
+
 
                 $table3 = 'id';
                 $checkSalesReturn = $SalesReturn->selectSalesReturnList($table3, $returnItemId);
-                foreach($checkSalesReturn as $prevReturnData){
+                foreach ($checkSalesReturn as $prevReturnData) {
                     $itemId = $prevReturnData['item_id'];
                     $prevReturnQty = $prevReturnData['return_qty'];
                 }
 
                 $returnDiff = intval($returnQty) - intval($prevReturnQty);
-                
+
                 //============= fetching current stock data for update current stock ==========
                 $stock = $CurrentStock->showCurrentStocById($itemId);
                 // echo "<br><br>Current stock details==";
                 // print_r($stock);
-                foreach($stock as $crntStock){
+                foreach ($stock as $crntStock) {
                     $crntQTY = $crntStock['qty'];
                     $crntLQTY = $crntStock['loosely_count'];
                 }
 
-                if($itemUnit =='tab' || $itemUnit =='cap'){
+                if ($itemUnit == 'tab' || $itemUnit == 'cap') {
                     $updatedLooseQty = intval($crntLQTY) + (intval($returnDiff));
                     $updatedQty = intdiv($updatedLooseQty, $itemWeatage);
-                }else{
+                } else {
                     $updatedQty = intval($crntQTY) + (intval($returnDiff));
                     $updatedLooseQty = 0;
                 }
@@ -377,19 +358,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $slno = 0;
                 $subTotal = floatval(00.00);
                 //print_r()
-                
+
                 foreach ($products as $product) {
                     $slno++;
-                    $i=0;
+                    $i = 0;
 
                     if ($slno > 1) {
                         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
-                    }                
-                                      
-                    
+                    }
+
+
                     $showProducts = $Products->showProductsById($product);
 
-                     
+
 
                     echo '
                                 <div class="row">
@@ -401,10 +382,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                     
                                     <div class="col-sm-1">
-                                        <small>' . array_shift($weatage) . '</small>
+                                        <small>' . array_shift($batchNo) . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' . array_shift($batchNo) . '</small>
+                                        <small>' . array_shift($weatage) . '</small>
                                     </div>
                                     <div class="col-sm-1">
                                         <small>' . array_shift($expdates) . '</small>
@@ -428,8 +409,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <small>' . array_shift($billAmount) . '</small>
                                     </div>
                                 </div>';
-                                $i++;
-                                
+                    $i++;
                 }
                 ?>
 
@@ -509,7 +489,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
             <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
-            <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button>
+            <button class="btn btn-primary shadow mx-2" onclick="backToMain()">Go Back</button>
             <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
         </div>
         </div>
@@ -539,6 +519,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </script>
     <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
     <script src="../../../js/sweetAlert.min.js"></script>
+    <script>
+        const backToMain = () => {
+            window.location.href = '../../sales-returns.php';
+        }
+    </script>
 </body>
 
 </html>
