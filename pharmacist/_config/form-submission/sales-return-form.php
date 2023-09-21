@@ -460,7 +460,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ?>
     <script>
         const goBack = () => {
-            window.location.href = '../../sales-return.php';
+            window.location.href = '../../../pharmacist/sales-returns.php';
+        
         }
     </script>
     <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>

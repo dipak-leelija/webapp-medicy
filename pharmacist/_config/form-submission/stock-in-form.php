@@ -22,7 +22,6 @@ $StcokReturn = new StockReturn();
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     if (isset($_POST['stock-in'])) {
 
         $distributorName      = $_POST['distributor-name'];
@@ -41,13 +40,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $Items              = $_POST['items'];
         $items              = count($_POST['productId']);
         $totalQty           = $_POST['total-qty'];
-
         $billDate           = date_create($_POST['bill-date-val']);
         $billDate           = date_format($billDate, "d-m-Y");
-
         $dueDate            = date_create($_POST['due-date-val']);
         $dueDate            = date_format($dueDate, "d-m-Y");
-
         $paymentMode        = $_POST['payment-mode-val'];
         $pMode              = $paymentMode;
         $totalGst           = $_POST['totalGst'];
@@ -58,133 +54,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $expDate            = $_POST['expDate'];
 
         $crrntDt = date("d-m-Y");
-    } elseif (isset($_POST['update'])) {
 
-        $stockIn_Id         = $_POST['stok-in-id'];
-        // echo $stockIn_Id,"<br>";
 
-        $distributorId      = $_POST['distributor-id'];
 
-        $distributorDetial = $distributor->showDistributorById($distributorId);
-        foreach ($distributorDetial as $distDeta) {
-            $distributorName      = $distDeta['name'];
-            $distAddress          = $distDeta['address'];
-            $distPIN              = $distDeta['area_pin_code'];
-            $distContact          = $distDeta['phno'];
-        }
-
-        $updtBatchNoArry    = $_POST['batchNo'];
-        $distributorBill    = $_POST['distributor-bill'];
-        $Items              = $_POST['items'];
-        $items              = count($_POST['productId']);
-        $totalQty           = $_POST['total-qty'];
-
-        $billDate           = date_create($_POST['bill-date-val']);
-        $billDate           = date_format($billDate, "d-m-Y");
-
-        $dueDate            = date_create($_POST['due-date-val']);
-        $dueDate            = date_format($dueDate, "d-m-Y");
-
-        $paymentMode        = $_POST['payment-mode-val'];
-        $pMode              = $paymentMode;
-        $totalGst           = $_POST['totalGst'];
-        $amount             = $_POST['netAmount'];
-        $addedBy            = $_SESSION['employee_username'];
-        $BatchNo            = $_POST['batchNo'];
-        $purchaseId         = $_POST['purchaseId'];
-
-        $MFDCHECK           = $_POST['mfdDate'];
-        $expDate            = $_POST['expDate'];
-
-        $crrntDt = date("d-m-Y");
-
-    }
-  
-    $addStockIn  = FALSE;
-    if (isset($_POST['stock-in'])) {
         $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
+
+
 
         $table1 = "distributor_id";
         $data1 = $distributorId;
         $table2 = "distributor_bill";
         $data2 = $distributorBill;
-
-        $selectStockInData = $StockIn->showStockInByTable($table1, $table2, $data1, $data2);
+        $table3 = 'added_on';
+        $data3 = date('Y-m-d');
+        $table4 = 'added_time';
+        $data4 = date('H:i:s');
+        $selectStockInData = $StockIn->showStockInByTables($table1, $table2, $table3, $table4, $data1, $data2, $data3, $data4);
         // print_r($selectStockInData); echo "<br><br>";
         $stokInid = $selectStockInData[0]["id"];
-    } // stock-in request end
+        // echo $stokInid;
 
-    $updateStockIn = FALSE;
-    if (isset($_POST['update'])) {
-        $updateStockIn = $StockIn->updateStockIn($stockIn_Id, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
-    } // stock-in request end
+        
+        if ($addStockIn == TRUE) {
+            foreach ($_POST['productId'] as $productId) {
 
-    if ($addStockIn == TRUE || $updateStockIn == TRUE) {
+                $batchNo            = array_shift($_POST['batchNo']);
+                $mfdDate            = array_shift($_POST['mfdDate']);
+                $expDate            = array_shift($_POST['expDate']);
 
-        ///================ updated stock delete item area ============================
-        if (isset($_POST['update'])) {
+                $weightage          = array_shift($_POST['weightage']);
+                $unit               = array_shift($_POST['unit']);
+                $qty                = array_shift($_POST['qty']);
+                $freeQty            = array_shift($_POST['freeQty']);
+                $looselyCount       = '';
+                $mrp                = array_shift($_POST['mrp']);
+                $ptr                = array_shift($_POST['ptr']);
+                $discount           = array_shift($_POST['discount']);
+                $base               = array_shift($_POST['base']);
+                $gst                = array_shift($_POST['gst']);
+                $gstPerItem         = array_shift($_POST['gstPerItem']);
+                $margin             = array_shift($_POST['margin']);
+                $amount             = array_shift($_POST['billAmount']);
+                $looselyPrice       = '';
+                $addedOn            = date("Y-m-d h:m:s");
 
-            $UpdatedPurchaseItemsIds = ($_POST['purchaseId']); //updated items ids array  $purchaseIds
-            // print_r($UpdatedPurchaseItemsIds); echo "  updated items ids array<br><br>";
 
-            $stockIn_id = $_POST['stok-in-id'];
+                $looselyPrice = '';
 
-            $stockInDetailsCheck = $StockInDetails->showStockInDetailsByStokId($stockIn_id);
-            // print_r($stockInDetailsCheck); echo "<br><br>";
-
-            $stokInItemIdArray = [];
-            foreach ($stockInDetailsCheck as $StokInids) {
-                array_push($stokInItemIdArray, $StokInids['id']);
-            }
-
-            // print_r($stokInItemIdArray); echo "  Previous items ids Array <br><br>"; 
-            $ItemArrayIdsDiff = array_diff($stokInItemIdArray, $UpdatedPurchaseItemsIds);
-            // print_r($ItemArrayIdsDiff); echo " change in array items ids <br>";
-
-            $delItemsCount = count($ItemArrayIdsDiff);
-
-            if ($delItemsCount > 0) {
-                foreach ($ItemArrayIdsDiff as $deleteItemId) {
-                    // echo "<br>Deleted item Id : $deleteItemId";
-                    $deleteCurrentStokData = $CurrentStock->deleteCurrentStockbyStockIndetailsId($deleteItemId);
-                    $deleteStokInDetailsData = $StockInDetails->stockInDeletebyDetailsId($deleteItemId);
+                if ($unit == "tab" || $unit == "cap") {
+                    $looselyCount = $weightage * ($qty + $freeQty);
+                    $looselyPrice = ($mrp * $qty) / ($weightage * $qty);
                 }
-            }
-        }
-        /// =================== eof updated stock delete item area  ===========================
 
-        //=========== STOCK IN DETAILS ===========
-        foreach ($_POST['productId'] as $productId) {
-
-            $batchNo            = array_shift($_POST['batchNo']);
-            $mfdDate            = array_shift($_POST['mfdDate']);
-            $expDate            = array_shift($_POST['expDate']);
-
-            $weightage          = array_shift($_POST['weightage']);
-            $unit               = array_shift($_POST['unit']);
-            $qty                = array_shift($_POST['qty']);
-            $freeQty            = array_shift($_POST['freeQty']);
-            $looselyCount       = '';
-            $mrp                = array_shift($_POST['mrp']);
-            $ptr                = array_shift($_POST['ptr']);
-            $discount           = array_shift($_POST['discount']);
-            $base               = array_shift($_POST['base']);
-            $gst                = array_shift($_POST['gst']);
-            $gstPerItem         = array_shift($_POST['gstPerItem']);
-            $margin             = array_shift($_POST['margin']);
-            $amount             = array_shift($_POST['billAmount']);
-            $looselyPrice       = '';
-            $addedOn            = date("Y-m-d h:m:s");
-
-
-            $looselyPrice = '';
-
-            if ($unit == "tab" || $unit == "cap") {
-                $looselyCount = $weightage * ($qty + $freeQty);
-                $looselyPrice = ($mrp * $qty) / ($weightage * $qty);
-            }
-
-            if (isset($_POST['stock-in'])) {
 
                 $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy);
 
@@ -205,105 +126,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // ============ ADD TO CURRENT STOCK ============ 
                     $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty + $freeQty, $mrp, $ptr, $gst, $addedBy);
                 }
-            } // end stock-in request
+            } //eof foreach
 
-            if (isset($_POST['update'])) {
+        } //eof if $addStockIn
 
-                $PurchaseItemId = array_shift($_POST['purchaseId']); //stock In Details item id
-                if ($PurchaseItemId != null) {
-                    // $purchaseId
-                    $selectStockInDetails = $StockInDetails->showStockInDetailsByStokinId($PurchaseItemId);
-
-                    foreach ($selectStockInDetails as $prevStockInDetails) {
-                        $prevStockInQty = $prevStockInDetails['qty'];
-                        $prevStockInfreeQty = $prevStockInDetails['free_qty'];
-                        $prevStockInLQty = $prevStockInDetails['loosely_count'];
-                    }
-
-                    $newQuantity = intval($freeQty) + intval($qty);
-
-                    if ($unit == "tab" || $unit == "cap") {
-                        $newLooselyCount = $weightage * $newQuantity;
-                    }
-
-                    $updateStokInDetails = $StockInDetails->updateStockInDetailsById($PurchaseItemId, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy, $addedOn);
-
-                    // ========================= current stock update area =====================
-
-                    $stokInDetaislId = $PurchaseItemId;
-                    $selectCurrentStockDetaisl = $CurrentStock->showCurrentStockbyStokInId($stokInDetaislId);
-
-                    foreach ($selectCurrentStockDetaisl as $currentStockData) {
-                        $Quantity   = $currentStockData["qty"];
-                        $LCount     = $currentStockData["loosely_count"];
-                    }
-
-                    $UpdatedQuantity = intval($newQuantity) - ((intval($prevStockInQty) + intval($prevStockInfreeQty)) - intval($Quantity));
-
-                    if ($unit == "tab" || $unit == "cap") {
-                        $UpdatedLQantity = intval($newLooselyCount) - (intval($prevStockInLQty) - intval($LCount));
-                    } else {
-                        $UpdatedLQantity = 0;
-                    }
-                    //update current stock
-
-                    $updateCurrentStock = $CurrentStock->updateStockByStokinDetailsId($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $UpdatedQuantity, $UpdatedLQantity, $mrp, $ptr);
-
-                    // ====== stock retun, stok out and sales retun update area ========
-
-                    // update stok return data according to sotock data update;
-                    $updateStockReturnDetaisl = $StcokReturn->stockReturnDetailsEditByStockInDetailsId($stokInDetaislId, $productId, $batchNo, $expDate, $weightage.$unit, $qty, $freeQty, $mrp, $ptr, $amount, $gst, $addedBy);
-                    
-                    // update stock out data accordingly
-                    // update sales return data accordingly
-                } else {
-
-                    $stokInid = $_POST['stok-in-id'];
-
-                    $addStockInDetails = FALSE;
-
-                    // if ($unit == "tab" || $unit == "cap") {
-                    //     $looselyCount = $qty * $weightage;
-                    //     looselyPrice = 
-                    // }
-
-                    $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, '');
-
-                    $selectStockInDetail = $StockInDetails->stokInDetials($productId, $distributorBill, $batchNo);
-
-                    // print_r($selectStockInDetail);
-
-                    foreach ($selectStockInDetail as $stockDetaislData) {
-                        $stokInDetaislId = $stockDetaislData["id"];
-                    }
-
-                    if ($addStockInDetails == true) {
-                        // ============ CURRENT STOCK ============ 
-                        $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty + $freeQty, $mrp, $ptr, $gst, $addedBy);
-                    }
-                }
-            }
-        } //eof foreach
-        // // $addCurrentStock = TRUE;
-        // if ($addCurrentStock = TRUE) {
-        //     echo '
-        //     <script>
-        //     swal("Success", "Stock Updated!", "success")
-        //     .then((value) => {
-        //             window.location="../../stock-in.php";
-        //         });
-        //     </script>';
-        // } else {
-        //     echo '<script>
-        //     swal("Error", "Inventry Updation Faield!", "error")
-        //     .then((value) => {
-        //             window.location="../../stock-in.php";
-        //         });
-        //         </script>';
-        // }
-    } //eof if $addStockIn
-
-
+    }
 } // post request method entered
 
 ?>
@@ -603,7 +430,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </p>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-8 text-end">
                                 <p style="margin-top: -5px; margin-bottom: 0px;"><small>You Saved:</small></p>
@@ -639,7 +466,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="justify-content-center print-sec d-flex my-5">
         <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
         <button class="btn btn-primary shadow mx-2" onclick="back()">Add New</button>
-        <button class="btn btn-secondary shadow mx-2" style="background-color: #e7e7e7; color: black;" id="<?php echo $distributorId ?>" value="<?php echo $itemBillNo ?>" onclick="goBack('<?php echo $distributorId ?>','<?php echo $itemBillNo ?>', this.id, this.value)">Go Back</button>
+        <button class="btn btn-secondary shadow mx-2" style="background-color: #e7e7e7; color: black;" onclick="goBack('<?php echo $stokInid ?>','<?php echo $itemBillNo ?>')">Go Back</button>
         <button class="btn btn-primary shadow mx-2" style="background-color: #4CAF50;" onclick="window.print()">Print Bill</button>
     </div>
     </div>

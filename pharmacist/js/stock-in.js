@@ -8,7 +8,17 @@ const FreeQty = document.getElementById('free-qty');
 FreeQty.addEventListener('input', function (event) {
     this.value = this.value.replace('.', '');
 });
+
+//////// batch number input contorl \\\\\\\\\\
+const batchNumber = document.getElementById('batch-no');
+batchNumber.addEventListener('input', function (event) {
+    this.value = this.value.replace('.', '');
+    this.value = this.value.replace('*', '');
+});
+//================================\\
+
 ///////////////////////////////////////////////////////////
+
 const firstInput = document.getElementById('product-name');
 window.addEventListener('load', function () {
     firstInput.focus();
@@ -527,7 +537,6 @@ const addData = () => {
     let totalMrp = parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
     let margin = totalMrp - billAmount.value;
     let marginP = (margin / totalMrp) * 100;
-
     // console.log("discount percent check : ", discount.value);
 
     jQuery("#dataBody")

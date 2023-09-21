@@ -1,3 +1,21 @@
+//////// QANTITY AND FREE QANTITY VALUE CONTROL //////////
+const Qty = document.getElementById('qty');
+Qty.addEventListener('input', function (event) {
+    this.value = this.value.replace('.', '');
+});
+
+const FreeQty = document.getElementById('free-qty');
+FreeQty.addEventListener('input', function (event) {
+    this.value = this.value.replace('.', '');
+});
+
+//////// batch number input contorl \\\\\\\\\\
+const batchNumber = document.getElementById('batch-no');
+batchNumber.addEventListener('input', function (event) {
+    console.log(this.value);
+    this.value = this.value.replace('.', '');
+    this.value = this.value.replace('*', '');
+});
 
 const customClick = (id, value1, value2, value3) => {
 
@@ -19,9 +37,8 @@ const customClick = (id, value1, value2, value3) => {
             },
             success: function (data) {
                 // alert(data);
-    
                 var dataObject = JSON.parse(data);
-                console.log(dataObject.manufId);
+                
                 var totalItmQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
                 var gstPerItem = parseFloat(dataObject.GstAmount);
                 var totalAmnt = parseFloat(dataObject.amnt);
@@ -372,10 +389,8 @@ const getBillAmount = () => {
     }
 
     updtGstAmt = parseFloat(qtys) * parseFloat(updtBasePrice) * parseFloat(gstVal);
-
     document.getElementById("crntGstAmnt").value = updtGstAmt.toFixed(2);
 
-    console.log("GST AMNT => ", updtGstAmt.toFixed(2));
     //eof gst calculetion after edit data ---------------
 
 } //eof getBillAmount function
@@ -566,6 +581,7 @@ const addData = () => {
         return;
     }
 
+    //// sl control for row 
     let slno = document.getElementById("dynamic-id").value;
     let slControl = document.getElementById("serial-control").value;
     slno++;
@@ -573,50 +589,48 @@ const addData = () => {
     document.getElementById("dynamic-id").value = slno;
     document.getElementById("serial-control").value = slControl;
 
+    // item qantity
     var qtyVal = document.getElementById("qty-val").value;
-
-
     totalQty = parseFloat(qtyVal) + parseFloat(itemQty);
 
-    // console.log(totalQty);
-
+    // net amount count
     var net = document.getElementById("net-amount").value;
-    //    console.log(net);
     var addAmount = parseFloat(billAmount.value);
     netAmount = parseFloat(net) + addAmount;
 
-    console.log("net amnt =>", netAmount);
-    // console.log("Net Value");
-
+    
+    // total gst amount calculation
     let total = qty.value * ptr.value;
     let totalWithDisc = total - (discount.value / 100 * total);
-
     let gstPerItem = parseFloat(crntGstAmount.value);
     // let gstPerItem = withGst - total;
-
     let gstVal = document.getElementById("gst-val").value;
 
     let onlyGst = parseFloat(gstVal) + gstPerItem;
     onlyGst = onlyGst.toFixed(2);
 
-    //////////////////////
+    ////////////////////// marging amount calculation
     // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
     let totalMrp = parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
     let margin = totalMrp - billAmount.value;
     let marginP = (margin / totalMrp) * 100;
 
+
+    console.log("purchase id check : "+purchaseId.value);
+
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slControl}">
             <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
-            <td class="p-0 pt-3" id="${slno}" style="font-size:.8rem ; padding-top:1.2rem"scope="row" style="width: 1rem">${slno}</td>
+           
+            <td class="p-0 pt-3" id="row-${slControl}-col-1" style="font-size:.9rem ; padding-top:1rem; width: 1rem">${slno}</td>
 
-            <td class="pt-3" hidden>
-                <input class="table-data w-12r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
+            <td class="d-none p-0 pt-3">
+                <input class="table-data w-6r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-3">
-                <input class="col table-data w-10r" type="text" value="${productName.value}" readonly style="font-size:0.75rem;">
-                <input type="text" name="productId[]" value="${productId.value}" style="display: none">
+                <input class="col table-data w-9r" type="text" name="productNm[]" value="${productName.value}" readonly style="text-align: start;">
+                <input class="d-none col table-data w-9r" type="text" name="productId[]" value="${productId.value}"  >
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-4">
@@ -624,21 +638,17 @@ const addData = () => {
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-5">
-                <input class="col table-data w-4r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.75rem; ">
+                <input class="col table-data w-6r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.75rem; ">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-6">
-                <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.75rem;">
-            </td>
-
-            <td class="p-0 pt-3" hidden>
-                <input class="table-data w-4r" type="text" name="power[]" value="${medicinePower.value}" readonly " style="display: none">
+                <input class="col table-data w-6r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.75rem;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-8">
                 <input class="col table-data w-4r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly style="font-size:0.65rem;">
-                <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none" >
-                <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none">
+                <input class="d-none col table-data w-4r" type="text" name="weightage[]" value="${weightage.value}">
+                <input class="d-none col table-data w-4r" type="text" name="unit[]" value="${unit.value}">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-9">
@@ -659,16 +669,16 @@ const addData = () => {
 
             <td class="p-0 pt-3" id="row-${slControl}-col-15">
                 <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size:0.75rem; text-align:end;">
-                <input type="text" name="gstPerItem[]" value="${gstPerItem}" hidden>
+                <input class="d-none col table-data w-3r" type="text" name="gstPerItem[]" value="${gstPerItem}">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-13">
-                <input class="col table-data w-3r" type="text" name="base[]" value="${base.value}" hidden>
-                <input  class="col table-data w-4r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.75rem; text-align:end;">
+                <input class="d-none col table-data w-4r" type="text" name="base[]" value="${base.value}" style="text-align: end;">
+                <input  class="col table-data w-3r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.75rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-14">
-                <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size:0.75rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size:0.75rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-16">
@@ -843,7 +853,7 @@ function deleteData(slno, itemQty, gstPerItem, total) {
 
     //minus item
     let items = document.getElementById("items-val");
-    let finalItem = items.value - 1;
+    let finalItem = parseInt(items.value) - 1;
     items.value = finalItem;
 
     // minus quantity

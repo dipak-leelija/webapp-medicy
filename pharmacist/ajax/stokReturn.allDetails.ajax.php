@@ -26,7 +26,7 @@ if (isset($_GET['current-stock-qty'])) {
         $ReturnFQty = $stockReturnDetails[0]['return_free_qty'];
     }
 
-    $currentData = $CurrentStock->showCurrentStockbyStokInId($stockInDetailsId);
+    $currentData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId);
 
     echo ($currentData[0]['qty'] - ($freeQty - $ReturnFQty) );
     // echo $stockInDetailsId;
@@ -43,7 +43,7 @@ if (isset($_GET['current-free-qty'])) {
 
     $stockReturnDetails = $StokReturnDetails->showStockReturnDataByStokinId($stockInDetailsId);
     // print_r($stockReturnDetails);
-    $currentData = $CurrentStock->showCurrentStockbyStokInId($stockInDetailsId);
+    $currentData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId);
 
     if($stockReturnDetails == null){
         $ReturnFQty = 0;

@@ -51,10 +51,32 @@ class StockIn extends DatabaseConnection{
 
 
 
+    function showStockInByTables($table1, $table2, $table3, $table4, $data1, $data2, $data3, $data4){
+        $data   = array();
+        $select = "SELECT * FROM stock_in WHERE `$table1`= '$data1' AND `$table2`= '$data2' AND `$table3`= '$data3' AND `$table4`= '$data4'";
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof showStockInByTable function
+
+
+
+    function stockInByAttributeByTable($table, $data){
+        $ShowData   = array();
+        $select = "SELECT * FROM stock_in WHERE `$table`= '$data'";
+        $selectQuery = $this->conn->query($select);
+        while ($result = $selectQuery->fetch_array()) {
+            $ShowData[] = $result;
+        }
+        return $ShowData;
+    }
+
 
     function showStockInById($distBill){
         $data   = array();
-        $select = "SELECT * FROM stock_in WHERE `stock_in`.`distributor_bill`= '$distBill'";
+        $select = "SELECT * FROM stock_in WHERE `distributor_bill`= '$distBill'";
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;

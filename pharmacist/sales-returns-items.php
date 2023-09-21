@@ -354,13 +354,13 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
         <!-- Include SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-
+        <script src="../js/sweetalert2/sweetalert2.all.min.js"></script>
 
         <!-- Custom scripts for all pages-->
         <script src="js/sb-admin-2.min.js"></script>
         <script src="../js/ajax.custom-lib.js"></script>
         <script src="../js/sweetAlert.min.js"></script>
-        <script src="../js/sweetalert2/sweetalert2.all.min.js"></script>
+        
         <script src="js/sales-return-item.js"></script>
 
 </body>
