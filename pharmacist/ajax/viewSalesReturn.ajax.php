@@ -19,8 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         $SalesReturnid = $_GET['id'];
         $invoiceID = $_GET['invoice'];
+        $activeStatus = '1';
         // echo "Sales return id : ",$SalesReturnid,"<br>Invoice id : ",$invoiceID;
-        $returnBill = $SalesReturn->salesReturnByID($SalesReturnid);
+        $returnBill = $SalesReturn->activesalesReturnByID($SalesReturnid, $activeStatus);
         // echo "<br>";
         // print_r($returnBill); echo "Sales return Data from sales return table <br><br>";
 

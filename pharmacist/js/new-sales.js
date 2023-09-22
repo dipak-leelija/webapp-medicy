@@ -1039,10 +1039,13 @@ function rowAdjustment(delRow) {
 //////////////////////// ITEM EDIT FUNCTION /////////////////////////
 
 const editItem = (tuple) => {
-    console.log(tuple);
+    
+    // console.log(tuple);
+
     let checkEditOption = document.getElementById("product-id").value;
-/*
+
     if (checkEditOption == '') {
+
         Tupledata = JSON.parse(tuple);
 
         document.getElementById("product-id").value = Tupledata.productId;
@@ -1086,10 +1089,10 @@ const editItem = (tuple) => {
         }
         
 
-        // deleteItem(Tupledata.slno, Tupledata.qty, Tupledata.gstAmountPerItem, netMRP, Tupledata.amount);
+        deleteItem(Tupledata.slno, Tupledata.qty, Tupledata.gstAmountPerItem, netMRP, Tupledata.amount);
 
     } else {
         swal("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("qty").focus();
-    }*/
+    }
 }

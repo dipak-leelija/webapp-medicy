@@ -65,9 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $refundAmount   = $_POST['refund-amount'];
         $added_by = $_SESSION['employee_username'];
         $invoiceId = str_replace("#", '', $invoice);
+        $status = "1";
 
         // =============================== PATIENT DETAILS ================================
         $patientData = $StockOut->stockOutDisplayById($invoice);
+        // print_r($patientData);
         if($patientData[0]['customer_id'] == 'Cash Sales'){
             $patientName = 'Cash Sales';
             $contactNumber = "";
@@ -105,14 +107,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br> Invoice Id : "; print_r($invoiceId);
         // echo "<br><br><br><br>";
 
-        $sold     = $StockOut->stockOutDisplayById($invoiceId);
+       
 
-        $status = "ACTIVE";
+        ////// check first wheter in invoice id is exist or not in sales return database ====
+        $table = 'invoice_id';
+        $soldReturnCheck = $SalesReturn->selectSalesReturn($table, $invoiceId);
+        if(!empty($soldReturnCheck)){
+            $soldReturnId = $soldReturnCheck[0]['id'];
+        }
+        
+        // print_r($soldReturnCheck);
+        if(empty($soldReturnCheck)){
+            echo "0";
+            $returned = $SalesReturn->addSalesReturn($invoiceId, $patientData[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by);
+        }else{
+            echo "1";
+            $returned = $SalesReturn->updateSalesReturn($soldReturnId, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by);
+        }
 
-        $returned = $SalesReturn->addSalesReturn($invoiceId, $sold[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by);
+        
         // $returned = true;
 
-        if ($returned === true) {
+        if ($returned == true) {
 
             // foreach ($itemId as $itemId) {
             for($i = 0; $i<count($itemID); $i++){
@@ -249,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="col-sm-6 my-0">
                         <p class="text-end" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered By:</b>
-                                <?php echo $sold[0]['reff_by']; ?></small></p>
+                                <?php echo $patientData[0]['reff_by']; ?></small></p>
                         <p class="text-end" style="margin-top: -5px; margin-bottom: 0px;">
                             <small><?php //if($doctorReg != NULL){echo 'Reg: '.$doctorReg; } 
                                     ?></small>

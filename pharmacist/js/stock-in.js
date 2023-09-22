@@ -15,6 +15,14 @@ batchNumber.addEventListener('input', function (event) {
     this.value = this.value.replace('.', '');
     this.value = this.value.replace('*', '');
 });
+
+
+//////// distributo bill input contorl \\\\\\\\\\
+const distBillNo = document.getElementById('distributor-bill');
+distBillNo.addEventListener('input', function (event) {
+    this.value = this.value.replace('.', '');
+    this.value = this.value.replace('*', '');
+});
 //================================\\
 
 ///////////////////////////////////////////////////////////
@@ -49,6 +57,8 @@ function searchItem(input) {
 
     if (input == "") {
         document.getElementById("product-select").style.display = "none";
+        document.getElementById("stock-in-data").reset();
+        event.preventDefault();
     }
 
     if (checkLength > 2) {
@@ -586,7 +596,7 @@ const addData = () => {
                 <input type="text" class="table-data w-3r" name="base[]" value="${base.value}">
             </td>
             <td class="ps-1 pt-3 w-2r">
-                <input class="table-data w-2r" type="text" name="margin[]" value="${marginP.toFixed(0)}%" readonly style="font-size: .7rem;">
+                <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size: .7rem;">
             </td>
 
             <td class="p-0 pt-3 w-2r" id="row-${slControl}-col-12">
@@ -599,7 +609,7 @@ const addData = () => {
             </td class="pt-3" >
 
             <td class="p-0 pt-3 w-4r" id="row-${slControl}-col-14">
-                <input class="table-data w-4r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="padding: 0%; font-size: .7rem;">
+                <input class="table-data w-4r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="padding: 0%; font-size: .7rem; text-align: end;">
             </td>
         </tr>`);
 

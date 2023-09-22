@@ -367,7 +367,7 @@ $todayYr = date("y");
                                             <table class="table item-table" id="stock-in-data-table" style="font-size: .7rem;">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th scope="col" style="width: 1rem;"></th>
+                                                        <th scope="col" style="width: 2rem;"></th>
                                                         <th scope="col">
                                                             <input type="number" value="0" id="dynamic-id" class="d-none">
                                                         </th>

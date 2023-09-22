@@ -72,25 +72,36 @@ class SalesReturn extends DatabaseConnection{
         return $response;
     }
 
+
+    function activesalesReturnByID($Id, $status){
+        $response = array();
+        $selectSalesReturn = "SELECT * FROM `sales_return` WHERE `id` = '$Id' AND `status` = '$status'";
+        $query = $this->conn->query($selectSalesReturn);
+        while($result = $query->fetch_array()){
+            $response[] = $result;
+        }
+        return $response;
+    }
+
+
     //------------------------------updating sales return table-------------- RD ----------------
 
-    function updateSalesReturn($id, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $added_by){    
-        $updateSalesReturn = "UPDATE `sales_return` SET `return_date`='$returnDate',`items` = '$items', `gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode',`added_by`='$added_by' WHERE `id`='$id'";
+    function updateSalesReturn($id, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by){    
+        $updateSalesReturn = "UPDATE `sales_return` SET `return_date`='$returnDate',`items` = '$items', `gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode', `status` = '$status', `added_by`='$added_by' WHERE `id`='$id'";
 
         $update = $this->conn->query($updateSalesReturn);
 
         return $update;
     }
 
-    function updateStatus($id, $status){
-
-        $updateSalesReturn = "UPDATE `sales_return` SET `status` = '$status' WHERE `id`='$id'";
-
+    function updateStatus($id, $status, $addedBy){
+        $updateSalesReturn = "UPDATE `sales_return` SET `status` = '$status', `added_by`='$addedBy' WHERE `id`='$id'";
         $update = $this->conn->query($updateSalesReturn);
-
         return $update;
     }
     //end of sales return table update-----------------------------------------------------------
+
+
 
 
 //     function updateLabBill($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy ){
@@ -227,22 +238,36 @@ class SalesReturn extends DatabaseConnection{
         return $updateDetails;
         
     }
+
+
+    function updateSalesReturnOnStockInUpdate($itemid, $batchNo, $expDate, $addedBy){
+        $updateSalseReturnDetails = "UPDATE `sales_return_details` SET `batch_no` = '$batchNo', `exp_date`='$expDate', `added_by`='$addedBy' WHERE `item_id`='$itemid'";
+        $updateDetails = $this->conn->query($updateSalseReturnDetails);
+        return $updateDetails;
+    }
+
+
+
+    function updateSalesReturnOnReturnCancel($id, $returnQty, $refundAmount){
+        $cancelReturnDetails = "UPDATE `sales_return_details` SET `return_qty` = '$returnQty', `refund_amount`='$refundAmount' WHERE `id`='$id'";
+        $cancelReturnData = $this->conn->query($cancelReturnDetails);
+        return $cancelReturnData;
+    }
+    
+
+
+
+
+    //================= DELETE FROM SALES RETURN DETAILS ================
+
+    function deleteSalesReturnDetaislById($id){
+        $deleteReturnDetails = "DELETE FROM `sales_return_details` WHERE `id`='$id'";
+        $deleteData = $this->conn->query($deleteReturnDetails);
+        return $deleteData;
+    }
+
 }
-    //end of salesReturnDetails Update -------------------------------------------------------
 
-//     function updateBillDetail($invoiceId, $itemId, $itemName, $batchNo, $weatage, $exp_date, $qty, $looselyCount, $mrp, $disc, $dPrice, $gst, $netGst, $amount, $addedBy){
-
-//         $updateBill = "UPDATE pharmacy_invoice SET `item_name` = '$itemName',	`batch_no` = '$batchNo', `weatage` = '$weatage', `exp_date` = '$exp_date', `qty` = '$qty', `loosely_count` = '$looselyCount', `mrp` = '$mrp', `disc` = '$disc', `d_price` = '$dPrice', `gst` = '$gst', `gst_amount` = '$netGst', `amount` = '$amount', `added_by` = '$addedBy' WHERE `invoice_id` = '$invoiceId' AND `item_id` = '$itemId'";
-
-//         // echo $insertEmp.$this->conn->error;
-//         // exit;
-//         $updateBillQuery = $this->conn->query($updateBill);
-//         return $updateBillQuery;
-
-//     }//end updateBillDetail function
-
-
-// eof LabBilling class
 
 
 

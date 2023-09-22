@@ -652,14 +652,17 @@ const addData = () => {
             <td class="pt-3" id="row-${slControl}-col-9">
                 <input class="table-data w-2r" type="text" name="gst[]" value="${gst}" readonly style="font-size: 0.65rem;">
             </td>
+
             <td class="pt-3" id="row-${slControl}-col-10">
-                <input class="table-data w-2r" type="text" name="taxable[]" value="${refundTaxable.toFixed(2)}"  style="font-size: 0.65rem;">
+                <input class="table-data w-2r" type="text" name="return[]" value="${returnQtyVal}" readonly style="font-size: 0.65rem; text-align: end;">
             </td>
+
             <td class="pt-3" id="row-${slControl}-col-11">
-                <input class="table-data w-3r" type="text" name="return[]" value="${returnQtyVal}" readonly style="font-size: 0.65rem; text-align: end;">
+                <input class="table-data w-4r" type="text" name="taxable[]" value="${refundTaxable.toFixed(2)}"  style="font-size: 0.65rem; text-align: end;">
             </td>
+            
             <td class="pt-3" id="row-${slControl}-col-12">
-            <input class="table-data w-3r" type="any" name="refundPerItem[]" value="${refundAmount.toFixed(2)}" readonly style="font-size: 0.65rem;">
+            <input class="table-data w-4r" type="any" name="refundPerItem[]" value="${refundAmount.toFixed(2)}" readonly style="font-size: 0.65rem; text-align: end;">
             </td>
         </tr>`);
 

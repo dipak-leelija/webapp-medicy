@@ -19,6 +19,8 @@ require_once '../../../php_control/manufacturer.class.php';
 require_once '../../../php_control/packagingUnit.class.php';
 require_once '../../../php_control/stockOut.class.php';
 require_once '../../../php_control/stockReturn.class.php';
+require_once '../../../php_control/salesReturn.class.php';
+
 
 $StockIn = new StockIn();
 $StockInDetails = new StockInDetails();
@@ -30,6 +32,7 @@ $Manufacturer = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
 $StockOut = new StockOut();
 $StcokReturn = new StockReturn();
+$SalesReturn = new SalesReturn();
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -228,6 +231,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         // =========== add of updated stock in details and current stock data ==============
+        $count = count($updatedItemIdsArray);
+        echo "<br><br>count update id array length : $count";
         for ($i = 0; $i < count($updatedItemIdsArray); $i++) {
             echo "<br><br>checking value of i : $i";
             if ($updatedItemIdsArray[$i] == '') {
@@ -340,9 +345,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updated_item_qty = intval($item_Qty) + intval($updatedQty);
                 }
                 
-
+                echo "<br>current stock item id : $itemId";
                 echo "<br>updated current item qty : $updated_item_qty";
                 echo "<br>updated current item loose qty : $updated_Loose_Qty";
+
+
                 /* update to current stock */
                 $updateCurrentStockItemData = $CurrentStock->updateCurrentStockByStockInId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $updated_Loose_Qty, $updated_item_qty, $item_ptr[$i], $addedBy);
 
@@ -355,16 +362,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $updatedStockInDetails = $StockInDetails->updateStockInDetailsById($updatedItemIdsArray[$i], $product_ids[$i], $distributorBill, $batch_no[$i], $mfd_date[$i], $exp_date[$i], $item_weightage[$i], $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $stockInLooseCount, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $baseAmount_perItem[$i], $item_gst[$i], $gstAmount_perItem[$i], $marginAmount_perItem[$i], $billAmount_perItem[$i], $addedBy);
 
 
-                /* due for tomorrow */
-                // update on stock out details table
-                // update on pharmacy invoice details table
-                // update on sales return details table
-                /* update on stock return details tabel */
 
+                /* multiple data update area as bellow table can contain multiple row of same item ids. */
+
+                /* UPDATE STOCK_OUT_DETAILS TABLE AREA */
+                $stockOutDetaislTable = 'item_id';
+                $checkStocOutDetails = $StockOut->stokOutDetailsDataOnTable($stockOutDetaislTable, $itemId);
+                // update on stock out details table
+                if(!empty($checkStocOutDetails)){
+                    for($j=0; $j<count($checkStocOutDetails); $j++){
+                        $updateStockOutDetailslData = $StockOut->updateStockOutDetaisOnStockInEdit($itemId, $batch_no[$i], $exp_date[$i], $addedBy);
+                    }
+                } // END OF STOCK OUT DETAILS UPDATE
+
+                /* UPDATE PHARMACY_INVOCIE DETAILS TABLE */
+                $pharmacyInvoiceTable = 'item_id';
+                $checkPharmacyInvoiceData = $StockOut->invoiceDetialsByTableData($pharmacyInvoiceTable, $itemId);
+                // update pharmacy invoice table
+                if(!empty($checkPharmacyInvoiceData)){
+                    for($k=0; $k<count($checkPharmacyInvoiceData); $k++){
+                        $pharmacyInvoiceUpdate = $StockOut->updatePharmacyDataByStockInEdit($itemId, $batch_no[$i], $exp_date[$i], $addedBy);
+                    }
+                } // END OF STOCK OUT DETAILS UPDATE
+
+
+                /* UPDDATE SALES_RETURN_DETAILS */ // check this qarry
+                $salesReturnDetaislTable = 'item_id';
+                $salesReturnDetailsData = $SalesReturn->selectSalesReturnList($salesReturnDetaislTable, $itemId);
+                // 1st. check sales return details table have current access data or not
+                if(!empty($salesReturnDetailsData)){
+                    for($l=0; $l<count($salesReturnDetailsData); $l++){
+                        $salesReturnDetailsUpdate = $SalesReturn->updateSalesReturnOnStockInUpdate($itemId, $batch_no[$i], $exp_date[$i], $addedBy);
+                    }
+                }
+                
+
+                 /* update on stock return details tabel */ //( check this qarry )
                 // 1st. check stock return table have current access data or not
-                $stockReturnDetaislData = $StcokReturn->showStockReturnDataByStokinId($itemId);
-                if($stockReturnDetaislData != null){
-                    $updateStockReturn = $StcokReturn->stockReturnDetailsEditByStockInDetailsId($itemId, $product_ids[$i], $batch_no[$i], $exp_date[$i], $item_weightage[$i].$item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_mrp[$i], $item_ptr[$i], $billAmount_perItem[$i], $item_gst[$i], $addedBy);
+                $stockReturnDetailsData = $StcokReturn->showStockReturnDataByStokinId($itemId);
+                if(!empty($stockReturnDetailsData)){
+                    for($m = 0; $m<count($stockReturnDetailsData); $m++){
+                        $updateStockReturn = $StcokReturn->stockReturnDetailsEditByStockInDetailsId($itemId, $product_ids[$i], $batch_no[$i], $exp_date[$i], $item_weightage[$i].$item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_mrp[$i], $item_ptr[$i], $billAmount_perItem[$i], $item_gst[$i], $addedBy);
+                    }
                 }
             }
         }

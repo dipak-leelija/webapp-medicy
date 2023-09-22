@@ -138,7 +138,7 @@ $currentStock  = new CurrentStock();
                                         <?php
 
                                         $table = "status";  # fetching those data whose STATUS are 
-                                        $data = "ACTIVE";   #  ACTIVE FROM SALES RETURN TABLE
+                                        $data = "1";   #  ACTIVE FROM SALES RETURN TABLE
 
                                         $returns = $SalesReturn->selectSalesReturn($table, $data);
 
@@ -246,27 +246,19 @@ $currentStock  = new CurrentStock();
 
     <script>
         const viewReturnItem = (invoice, id) => {
+            // alert(invoice);
+            // alert(id);
             var xmlhttp = new XMLHttpRequest();
             let url = `ajax/viewSalesReturn.ajax.php?invoice=${invoice}&id=${id}`;
             xmlhttp.open("GET", url, false);
             xmlhttp.send(null);
             document.getElementById('viewReturnModalBody').innerHTML = xmlhttp.responseText
         }
-
-        // const cancelSalesReturn =(invoiceId, salesReturnId)=>{
-        //     alert(invoiceId);
-        //     alert(salesReturnId);
-
-        //     let url = `ajax/salesReturnCancle.ajax.php?invoiceNo=${invoiceId}&salesReturnNo=${salesReturnId}`; 
-        //     xmlhttp.open("GET", url, false);
-        //     xmlhttp.send(null);
-        // }
     </script>
 
     <script>
         const cancelSalesReturn = (t) => {
-            
-            //alert(t.id);
+            // alert(t.id);
             cancelId = t.id;
             swal({
                     title: "Are you sure?",
@@ -292,7 +284,7 @@ $currentStock  = new CurrentStock();
                                     "success"
                                 ).then(function() {
                                     $(t).closest("tr").fadeOut()
-
+                                    window.location.reload();
                                 });
 
                             } else {

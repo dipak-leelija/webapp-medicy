@@ -622,27 +622,27 @@ const addData = () => {
         .append(`<tr id="table-row-${slControl}">
             <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
            
-            <td class="p-0 pt-3" id="row-${slControl}-col-1" style="font-size:.9rem ; padding-top:1rem; width: 1rem">${slno}</td>
+            <td class="p-0 pt-3" id="row-${slControl}-col-1" style="font-size:.75rem ; padding-top:1rem; width: .75rem">${slno}</td>
 
             <td class="d-none p-0 pt-3">
                 <input class="table-data w-6r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-3">
-                <input class="col table-data w-9r" type="text" name="productNm[]" value="${productName.value}" readonly style="text-align: start;">
-                <input class="d-none col table-data w-9r" type="text" name="productId[]" value="${productId.value}"  >
+                <input class="col table-data w-.65r" type="text" name="productNm[]" value="${productName.value}" readonly style="text-align: start; font-size:0.65rem;">
+                <input class="d-none col table-data w-.75r" type="text" name="productId[]" value="${productId.value}"  >
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-4">
-                <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.75rem;">
+                <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.65rem;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-5">
-                <input class="col table-data w-6r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.75rem; ">
+                <input class="col table-data w-4r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.65rem; ">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-6">
-                <input class="col table-data w-6r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.75rem;">
+                <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.65rem;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-8">
@@ -652,7 +652,7 @@ const addData = () => {
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-9">
-                <input class="col table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.75rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-10">
@@ -660,29 +660,29 @@ const addData = () => {
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-11">
-                <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size:0.75rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-12">
-                <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.75rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-15">
-                <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size:0.75rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size:0.65rem; text-align:end;">
                 <input class="d-none col table-data w-3r" type="text" name="gstPerItem[]" value="${gstPerItem}">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-13">
                 <input class="d-none col table-data w-4r" type="text" name="base[]" value="${base.value}" style="text-align: end;">
-                <input  class="col table-data w-3r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.75rem; text-align:end;">
+                <input  class="col table-data w-3r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-14">
-                <input class="col table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size:0.75rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(2)}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-16">
-                <input class="col table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="font-size:0.75rem; text-align:end;">
+                <input class="col table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
         </tr>`);

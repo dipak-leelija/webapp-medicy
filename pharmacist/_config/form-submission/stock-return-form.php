@@ -11,6 +11,7 @@ require_once '../../../php_control/stockReturn.class.php';
 require_once '../../../php_control/idsgeneration.class.php';
 require_once '../../../php_control/currentStock.class.php';
 
+
 //  INSTANTIATING CLASS
 $HelthCare       = new HelthCare();
 $StockReturn     = new StockReturn();
@@ -37,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         $addedBy         = $_SESSION['employee_username'];
         $status          = 'active';
+        
         // echo "<br>Distributor Id : "; print_r($distributorId);
         // echo "<br>Distributor Name : "; print_r($distributorName);
         // echo "<br>Distributor bill no : "; print_r($distBillNo);
@@ -47,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // echo "<br>Total Return Qantity : "; print_r($totalReturnQty);
         // echo "<br>Refund GST amount : "; print_r($returnGst);
         // echo "<br>Refund Amount : "; print_r($refund);
+
     
         $returned = $StockReturn->addStockReturn($stockReturnId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy);
         // $returned = true;
@@ -384,11 +387,16 @@ foreach ($showhelthCare as $rowhelthCare) {
         </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
-        <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button>
+        <button class="btn btn-primary shadow mx-2" onclick="goBack()">Go Back</button>
         <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
     </div>
     </div>
 </body>
 <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
 
+<script>
+    const goBack = () =>{
+        window.location.href = '../../../pharmacist/stock-return.php';
+    }
+</script>
 </html>

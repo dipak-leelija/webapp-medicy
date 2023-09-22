@@ -44,9 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $StockIn            = new StockIn();
         $StockInDetails     = new StockInDetails();
 
-        $stockIn        = $StockIn->showStockInById($distBill);
+        $stockInAttribute = 'id';
+        $stockIn        = $StockIn->stockInByAttributeByTable($stockInAttribute, $stockIn_id);
         // print_r($stockIn); echo "<br><br>";
-        $details = $StockInDetails->showStockInDetailsById($distBill);
+        $details = $StockInDetails->showStockInDetailsByStokId($stockIn_id);
         // print_r($details); echo "<br><br>";
         // echo count($details); echo "<br><br>";
         $distData = $Distributor->showDistributorById($stockIn[0]['distributor_id']);
@@ -498,7 +499,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <th scope="col">PTR</th>
                                                 <th scope="col">GST%</th>
                                                 <th scope="col">Disc%</th>
-                                                <th scope="col">Margin</th>  
+                                                <th scope="col">Margin%</th>  
                                                 <th scope="col">Amount</th>
                                             </tr>
                                         </thead>
@@ -537,11 +538,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         </td>
 
                                                         <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">
-                                                            <input class="col table-data w-5r" type="text" style="font-size: 0.65rem; text-align:start;" name="mfdDate[]" id="mfdDate" value="<?php echo $detail['mfd_date'] ?>" readonly>
+                                                            <input class="col table-data w-4r" type="text" style="font-size: 0.65rem; text-align:start;" name="mfdDate[]" id="mfdDate" value="<?php echo $detail['mfd_date'] ?>" readonly>
                                                         </td>
 
                                                         <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">
-                                                            <input class="col table-data w-5r" type="text" name="expDate[]" value="<?php echo $detail['exp_date'] ?>" readonly style="text-align:start; font-size: 0.65rem">
+                                                            <input class="col table-data w-4r" type="text" name="expDate[]" value="<?php echo $detail['exp_date'] ?>" readonly style="text-align:start; font-size: 0.65rem">
                                                         </td>
 
                                                         <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">

@@ -64,8 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $sold           = $StockOut->stockOutDisplayById($invoiceId);
         $patient        = $Patients->patientsDisplayByPId($sold[0]['customer_id']);
+        $status = '1';
         $added_by       = $_SESSION['employee_username'];
 
+        
         // echo "<br>Return Item Id : "; print_r($returnItemId);
         // echo "<br>Products : "; print_r($products);
         // echo "<br>Batch No : "; print_r($batchNo);
@@ -137,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $updatedItemCount = intval($items) + intval($countItems);
 
-        $salesReturnData = $SalesReturn->updateSalesReturn($returnId, $returnDate, $updatedItemCount, $updatedGstAmount, $updatedTotalRefund, $refundMode, $added_by); //check this query
+        $salesReturnData = $SalesReturn->updateSalesReturn($returnId, $returnDate, $updatedItemCount, $updatedGstAmount, $updatedTotalRefund, $refundMode, $status, $added_by); //check this query
         // $salesReturnData = true;
         // -----------------------------------------------------------------------------------------
         // now check and update stock return details table with edit data ---------------------- 
@@ -159,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $Taxable =  array_shift($_POST['taxable']);
                 $returnQty =  array_shift($_POST['return']);
                 $refundAmount =  array_shift($_POST['refund']);
+                
 
                 // echo "<br><br>";
                 // echo "<br>Sales return Id : $salesReturnId";

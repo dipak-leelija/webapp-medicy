@@ -277,8 +277,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <th scope="col">MRP</th>
                                                 <th scope="col">Disc</th>
                                                 <th scope="col">GST%</th>
-                                                <th scope="col">Taxable</th>
                                                 <th scope="col">Return</th>
+                                                <th scope="col">Taxable</th>
                                                 <th scope="col">Refund</th>
                                             </tr>
                                         </thead>
