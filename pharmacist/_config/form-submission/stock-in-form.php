@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $updtBatchNoArry    = $_POST['batchNo'];
-        // print_r($updtBatchNoArry);
+        
         $distributorBill    = $_POST['distributor-bill'];
 
         $Items              = $_POST['items'];
@@ -59,25 +59,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
 
+        if ($addStockIn["result"]) {
 
+            $stokInid = $addStockIn['stockIn_id'];
 
-        $table1 = "distributor_id";
-        $data1 = $distributorId;
-        $table2 = "distributor_bill";
-        $data2 = $distributorBill;
-        $table3 = 'added_on';
-        $data3 = date('Y-m-d');
-        $table4 = 'added_time';
-        $data4 = date('H:i:s');
-        $selectStockInData = $StockIn->showStockInByTables($table1, $table2, $table3, $table4, $data1, $data2, $data3, $data4);
-        // print_r($selectStockInData); echo "<br><br>";
-        $stokInid = $selectStockInData[0]["id"];
-        // echo $stokInid;
-
-        
-        if ($addStockIn == TRUE) {
             foreach ($_POST['productId'] as $productId) {
-
                 $batchNo            = array_shift($_POST['batchNo']);
                 $mfdDate            = array_shift($_POST['mfdDate']);
                 $expDate            = array_shift($_POST['expDate']);
@@ -104,32 +90,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($unit == "tab" || $unit == "cap") {
                     $looselyCount = $weightage * ($qty + $freeQty);
                     $looselyPrice = ($mrp * $qty) / ($weightage * $qty);
+                }else{
+                    $looselyCount = 0;
+                    $looselyPrice = 0;
                 }
 
-
                 $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy);
+                // stockIn_Details_id
 
-                $addStockInDetails = TRUE;
+                if ($addStockInDetails["result"]) {
 
-                if ($addStockInDetails == true) {
-
-                    // =========== FETCHING STOK IN DETAILS DATA FOR STOK IN DETAILS ID ===============
-
-                    $selectStockInDetail = $StockInDetails->stokInDetials($productId, $distributorBill, $batchNo);
-                    // print_r($selectStockInDetail); echo "<br><br>";
-
-                    foreach ($selectStockInDetail as $stockDetailsData) {
-                        $stokInDetailsId = $stockDetailsData["id"];
-                        // echo "<br>stock in detials id => $stokInDetailsId<br>";
-                    }
-
+                    $stokInDetailsId = $addStockInDetails["stockIn_Details_id"];
+ 
                     // ============ ADD TO CURRENT STOCK ============ 
                     $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty + $freeQty, $mrp, $ptr, $gst, $addedBy);
                 }
             } //eof foreach
 
-        } //eof if $addStockIn
-
+        } else {
+            $error = $addStockIn["error"];
+            echo "Insert failed. Error: " . $error;
+        }
     }
 } // post request method entered
 

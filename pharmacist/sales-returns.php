@@ -284,7 +284,7 @@ $currentStock  = new CurrentStock();
                                     "success"
                                 ).then(function() {
                                     $(t).closest("tr").fadeOut()
-                                    window.location.reload();
+                                    // window.location.reload();
                                 });
 
                             } else {

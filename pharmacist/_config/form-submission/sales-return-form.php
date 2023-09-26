@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\type;
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
@@ -66,6 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $added_by = $_SESSION['employee_username'];
         $invoiceId = str_replace("#", '', $invoice);
         $status = "1";
+        $flag = '';
+        $addedBy = '';
 
         // =============================== PATIENT DETAILS ================================
         $patientData = $StockOut->stockOutDisplayById($invoice);
@@ -95,72 +100,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br> Return QTY : "; print_r($returnQty);
         // echo "<br> Refund Amount : "; print_r($perItemRefund);
         // echo "<br><br> ============ END OF ARRAY ============ <br>";
-        // echo "<br> Invoice No : "; print_r($invoice);
-        // echo "<br> Bill Date :"; print_r($billDate);
-        // echo "<br> Return Date : "; print_r($returnDate);
-        // echo "<br> Items : "; print_r($items);
-        // echo "<br> Refund Mode : "; print_r($refundMode);
-        // echo "<br> Total Qtys : "; print_r($totalQtys);
-        // echo "<br> Total Gst Amount : "; print_r($gstAmount);
-        // echo "<br> Refund amount : "; print_r($refundAmount);
-        // echo "<br> Added By : "; print_r($added_by);
-        // echo "<br> Invoice Id : "; print_r($invoiceId);
+        // echo "<br> Invoice No / id : $invoice & Data type : "; echo gettype($invoice);
+        // echo "<br> Bill Date : $billDate & Data type : "; echo gettype($billDate); 
+        // echo "<br> Return Date : $returnDate & Data type : "; echo gettype($returnDate); 
+        // echo "<br> Items : $items & Data type : "; echo gettype($items); 
+        // echo "<br> Refund Mode : $refundMode & Data type : "; echo gettype($refundMode);
+        // echo "<br> Total Qtys : $totalQtys & Data type : "; echo gettype($totalQtys);
+        // echo "<br> Total Gst Amount : $gstAmount & Data type : "; echo gettype($gstAmount);
+        // echo "<br> Refund amount : $refundAmount & Data type : "; echo gettype($refundAmount);
+        // echo "<br> Added By : $added_by & Data type : "; echo gettype($added_by);
         // echo "<br><br><br><br>";
 
        
-
-        ////// check first wheter in invoice id is exist or not in sales return database ====
-        $table = 'invoice_id';
-        $soldReturnCheck = $SalesReturn->selectSalesReturn($table, $invoiceId);
-        if(!empty($soldReturnCheck)){
-            $soldReturnId = $soldReturnCheck[0]['id'];
-        }
-        
-        // print_r($soldReturnCheck);
-        if(empty($soldReturnCheck)){
-            echo "0";
-            $returned = $SalesReturn->addSalesReturn($invoiceId, $patientData[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by);
-        }else{
-            echo "1";
-            $returned = $SalesReturn->updateSalesReturn($soldReturnId, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by);
-        }
-
-        
-        // $returned = true;
-
+        $returned = $SalesReturn->addSalesReturn($invoiceId, $patientData[0]['customer_id'], $billDate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by);
+    
         if ($returned == true) {
-
-            // foreach ($itemId as $itemId) {
+            // echo "<br>empty add new return edit";
             for($i = 0; $i<count($itemID); $i++){
 
-                // echo "<br><br><br>";
-                // echo $itemID[$i], "<br>";
+                
                 $unit = $setOf[$i];
-                // echo $unit; echo "<br>";
+            
                 $itemWeatage = preg_replace('/[a-z]/','',$unit);
                 $unitType = preg_replace('/[0-9]/','',$unit);
-                // echo $unitType; echo "<br>";
-                // echo $itemWeatage; echo "<br><br><br>";
-                
-                $addedBy = '';
-
-                $attribute = 'invoice_id'; 
-                $SalesReturnId = $SalesReturn->selectSalesReturn($attribute, $invoiceId);
-                // print_r($SalesReturnId); echo "<br>";
-
-                // echo "$itemID[$i]<br>";
-                // echo "$batchNo[$i]<br>";
-                // echo "$setOf[$i]<br>";
-                // echo "$expdates[$i]<br>";
-                // echo "$disc[$i]<br>";
-                // echo "$gst[$i]<br>";
-                // echo "$taxableArray[$i]<br>";
-                // echo "$returnQty[$i]<br>";
-                // print_r(array_shift($_POST['refundPerItem'])); echo "<br><br><br>";
                
                 // ========================= ADD TO SALES RETURN DETAILS =============================
                 
-                $addSalesReturndDetails = $SalesReturn->addReturnDetails($SalesReturnId[0]['id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $mrp[$i], $disc[$i], $gst[$i], $taxableArray[$i], $returnQty[$i], $perItemRefund[$i]) ;
+                $addSalesReturndDetails = $SalesReturn->addReturnDetails($invoiceId, $returned, $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $mrp[$i], $disc[$i], $gst[$i], $taxableArray[$i], $returnQty[$i], $perItemRefund[$i]) ;
 
                 // ============= CURRENT STOCK UPDATE AREA ===========================
                 
@@ -186,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // ========================= CURRENT STOCK UPDATE STRING ============================
 
                 $updateCurrentStock = $CurrentStock->updateStockByItemId($itemID[$i], $UpdatedQty, $UpdatedLooseQty);
+
             }
         }
     }

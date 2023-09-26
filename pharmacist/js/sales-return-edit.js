@@ -26,6 +26,7 @@ var prodId = document.getElementById('product-id');
 var batch = document.getElementById("batch-no");
 var mrp = document.getElementById("mrp");
 var pqty = document.getElementById("P-qty");
+var currentQty = document.getElementById("current-qty");
 
 var rtnqty = document.getElementById("return-qty");
 var discount = document.getElementById("discount");
@@ -130,6 +131,13 @@ const getEditItemDetails = (t) => {
         // alert(xmlhttp.responseText)
         pqty.value = xmlhttp.responseText;
 
+        //==================== current QTY ====================
+        let crntQty = `ajax/salesReturnEdit.ajax.php?cqty=${invoice}&p-id=${currentStockItemId}`;
+        xmlhttp.open("GET", crntQty, false);
+        xmlhttp.send(null);
+        // alert(xmlhttp.responseText)
+        currentQty.value = xmlhttp.responseText;
+
         //==================== Return QTY ====================
         let rtnQtyUrl = `ajax/salesReturnEdit.ajax.php?rtnqty=${returndItemId}`;
         xmlhttp.open("GET", rtnQtyUrl, false);
@@ -181,6 +189,7 @@ const getEditItemDetails = (t) => {
         batchNo.value = "";
         mrp.value = "";
         pqty.value = "";
+        currentQty.value = "";
      
         rtnqty.value = "";
         discount.value = "";
@@ -204,16 +213,16 @@ const getRefund = (returnQty) => {
 
     if (returnQty != '') {
 
-        let returnQty1 = parseFloat(pqty.value) -  parseFloat(returnQty) 
+        let returnQty1 = parseFloat(currentQty.value) -  parseFloat(returnQty) 
 
         if (parseFloat(returnQty1) < 0) {
             // alert("Return Quantity must be lesser than current quantity!");
-            Swal.fire("Error", "Return edit Quantity must be lesser than Purchase quantity!", "error");
+            Swal.fire("Error", "Enter valid input", "error");
             document.getElementById('return-qty').value = '';
         }
-        else if (parseFloat(returnQty1) > parseFloat(pqty.value)) {
+        else if (parseFloat(returnQty1) > parseFloat(currentQty.value)) {
             // alert("Return Quantity must be lesser than current quantity!");
-            swal("Error", "Enter valid quantity", "error");
+            swal("Error", "Return edit Quantity must be lesser than Current Item quantity!", "error");
             document.getElementById('return-qty').value = '';
         }
         else if (parseFloat(returnQty1) > 0 ) {
@@ -363,6 +372,11 @@ const addData = () => {
         return;
     }
 
+    if(currentQty.value = ""){
+        currentQty.focus();
+        return;
+    }
+
     if (rtnqty.value == "") {
         rtnqty.focus();
         return;
@@ -406,6 +420,7 @@ const addData = () => {
                 batch.value = "";
                 mrp.value = "";
                 pqty.value = "";
+                currentQty.value = "";
                 rtnqty.value = "";
                 discount.value = "";
                 gst.value = "";
@@ -487,6 +502,10 @@ const addData = () => {
             <td class="pt-3" id="row-${slControl}-col-6">
                 <input class="table-data w-2r" type="text" name="p-qty[]" value="${pqty.value}" readonly style="font-size: 0.7rem;">
             </td>
+
+            <td class="pt-3" id="row-${slControl}-col-6">
+                <input class="table-data w-2r" type="text" name="current-qty[]" value="${currentQty.value}" readonly style="font-size: 0.7rem;">
+            </td>
             
             <td class="pt-3" id="row-${slControl}-col-7">
                 <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size: 0.7rem;">
@@ -532,6 +551,7 @@ const addData = () => {
 
             mrp: mrp.value,
             purchaseQuantity: pqty.value,
+            currentQty: currentQty.value,
             rtnqty: rtnqty.value,
 
             discount: discount.value,

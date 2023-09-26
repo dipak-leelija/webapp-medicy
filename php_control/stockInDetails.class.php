@@ -8,17 +8,36 @@ require_once 'dbconnect.php';
 class StockInDetails extends DatabaseConnection
 {
 
-
-
-    function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy)
-    {
-
-        $insert = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`,`mfd_date`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`,	`discount`,	`base`,	`gst`, `gst_amount`, `margin`, `amount`, `added_by`) VALUES ('$stokInid','$productId', '$distBill', '$batchNo','$mfdDate','$expDate', '$weightage', '$unit', '$qty', '$freeQty', '$looselyCount', '$mrp', '$ptr', '$discount', '$base', '$gst', '$gstPerItem', '$margin', '$amount', '$addedBy')";
-        // echo $insert.$this->conn->error;exit;
-        $addStockInQuery = $this->conn->query($insert);
-        // echo var_dump($addStockInQuery);exit;
-        return $addStockInQuery;
-    } //eof addProduct function 
+    function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy) {
+        try {
+            $insertStockInDetails = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`, `mfd_date`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `base`, `gst`, `gst_amount`, `margin`, `amount`, `added_by`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+            // Prepare the SQL statement
+            $responce = $this->conn->prepare($insertStockInDetails);
+    
+            if (!$responce) {
+                throw new Exception("Error preparing SQL statement: " . $this->conn->error);
+            }
+    
+            // Binding parameters
+            $responce->bind_param("isssssssssisssssssss", $stokInid, $productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy);
+    
+            // Execute the prepared statement
+            if ($responce->execute()) {
+                // Get the ID of the newly inserted record
+                $addStockInDetailsId = $this->conn->insert_id;
+                // Return id and result
+                return ["result" => true, "stockIn_Details_id" => $addStockInDetailsId];
+            } else {
+                // Handle the error (e.g., log or return an error message)
+                throw new Exception("Error executing SQL statement: " . $responce->error);
+            }
+        } catch (Exception $e) {
+            // Handle exceptions (e.g., log the error or return an error message)
+            return ["result" => false, "error" => $e->getMessage()];
+        }
+    }
+    
 
 
 

@@ -114,7 +114,7 @@ const editReturnItem = (editId) => {
 const cancelPurchaseReturn = (cancelId, t) => {
 
     let btn = document.getElementById('cancel-btn-'+cancelId);
-    alert(cancelId);
+    // alert(cancelId);
     if (confirm("Are You Sure?")) {
         $.ajax({
             url: "ajax/return.Cancel.ajax.php",

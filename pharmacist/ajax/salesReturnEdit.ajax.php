@@ -1,7 +1,7 @@
 <?php
 ##########################################################################################################
 #                                                                                                        #
-#                                      Sales Return Edit Page                              (RD)          #
+#                                      Sales Return Edit Page                                            #
 #                                                                                                        #
 ##########################################################################################################
 require_once "../../php_control/stockOut.class.php";
@@ -50,8 +50,8 @@ if (isset($_GET["products"])) {
 
     $invoiceId = $_GET["products"];
     $salesRetundid = $_GET["salesreturnID"];
-
     // echo "$invoiceId<br>$salesRetundid";
+
     $table = 'sales_return_id';
     $items = $salesReturn->selectSalesReturnList($table, $salesRetundid);
     echo '<option value="" selected disabled>Select item</option>';
@@ -62,6 +62,8 @@ if (isset($_GET["products"])) {
         echo '<option data-invoice="'.$invoiceId.'" sales-return-id="'.$item['sales_return_id'].'" value="'.$item['product_id'].'" returned-item-id="'.$item['id'].'" current-stock-item-id="'.$item['item_id'].'">'.$product[0]['name'].'</option>';
     }
 }
+
+
 
 // CHECK DATA
 // if (isset($_GET["products"])) {
@@ -133,12 +135,50 @@ if (isset($_GET["pqty"])) {
     echo $purchaseQty;
 }
 
+
+
+// get product current qty
+if (isset($_GET["cqty"])) {
+    $invoice = $_GET["cqty"];
+    $itemId = $_GET['p-id'];
+
+    $purchaseItem = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    foreach($purchaseItem as $item){
+        if($item['loosely_count'] > 0){
+            $purchaseQty = $item['loosely_count'];
+        }else{
+            $purchaseQty = $item['qty'];
+        }
+    }
+
+
+    $table1 = 'invoice_id';
+    $table2 = 'item_id';
+    $returnedItem = $salesReturn->seletReturnDetailsBy($table1, $invoice, $table2, $itemId);
+    // print_r($returnedItem);
+    $returnQty = 0;
+    if(empty($returnedItem) != true){
+        foreach($returnedItem as $item){
+           $returnQty = intval($returnQty) + intval($item['return_qty']);
+        }
+    }else{
+        $returnQty = 0;
+    }
+    echo intval($purchaseQty) - intval($returnQty);
+}
+
+
+
 // get product return qty
 if (isset($_GET["rtnqty"])) {
     $invoice = $_GET["rtnqty"];
     $item = $salesReturn->selectSalesReturnList($tabel, $_GET["rtnqty"]);
     //print_r($item);
-    echo $item[0]['return_qty'];
+    if(!empty($item)){
+        echo $item[0]['return_qty'];
+    }else{
+        echo 0;
+    }
     // echo $invoice;
 }
 

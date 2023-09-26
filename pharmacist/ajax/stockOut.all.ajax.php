@@ -4,6 +4,7 @@
 #                                           Sales Return Page                                            #
 #                                                                                                        #
 ##########################################################################################################
+
 require_once "../../php_control/stockOut.class.php";
 require_once '../../php_control/products.class.php';
 require_once '../../php_control/patients.class.php';
@@ -53,6 +54,7 @@ if (isset($_GET["products"])) {
     // print_r($pharmacyInvoiceData);
     $stockOutDetailsData = $StockOut->stockOutDetailsDisplayById($invoiceId);
     // print_r($stockOutDetailsData);
+    // $salesReturnData = $salesReturn->;
 
     echo '<option value="" selected enable>Select item</option>';
     for ($i = 0; $i<count($pharmacyInvoiceData) && $i<count($stockOutDetailsData) ; $i++) {
@@ -149,11 +151,13 @@ if (isset($_GET["qty"])) {
         $id = null;
     }
 
-    $tabel1 = 'sales_return_id';
+    $tabel1 = 'invoice_id';
     $tabel2 = 'item_id';
-    $itemChek = $salesReturn->seletReturnDetailsBy($tabel1, $id, $tabel2, $itemId);
-    foreach($itemChek as $itemChek){
-        $totalReturnQTY = $itemChek['return_qty'];
+    $itemChek = $salesReturn->seletReturnDetailsBy($tabel1, $invoice, $tabel2, $itemId);
+    // print_r($itemChek);
+    $totalReturnQTY = 0;
+    for($i = 0; $i<count($itemChek); $i++){
+        $totalReturnQTY = intval($totalReturnQTY) + intval($itemChek[$i]['return_qty']);
     }
 
     if($salesReturnData != null){

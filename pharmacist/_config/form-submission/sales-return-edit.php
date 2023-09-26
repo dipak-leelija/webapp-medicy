@@ -42,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $expdates   = $_POST['expDate'];
         $weatage    = $_POST['setof'];
 
-        $qtys       = $_POST['p-qty'];
+        $purchase_qtys       = $_POST['p-qty'];
+        $current_qty = $_POST['current-qty'];
         $mrp        = $_POST['mrp'];
         $discs      = $_POST['disc'];
         $gst        = $_POST['gst'];
@@ -73,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br>Batch No : "; print_r($batchNo);
         // echo "<br>Expaiary Date : "; print_r($expdates);
         // echo "<br>Weatage : "; print_r($weatage);
-        // echo "<br>Purchase Qantity : "; print_r($qtys);
+        // echo "<br>Purchase Qantity : "; print_r($purchase_qtys);
         // echo "<br>MRP : "; print_r($mrp);
         // echo "<br>Discount : "; print_r($discs);
         // echo "<br>GST : "; print_r($gst);
@@ -403,7 +404,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <small>' . array_shift($gst) . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' . array_shift($qtys) . '</small>
+                                        <small>' . array_shift($purchase_qtys) . '</small>
                                     </div>
                                     <div class="col-sm-1">
                                         <small>' . array_shift($retnQty) . '</small>

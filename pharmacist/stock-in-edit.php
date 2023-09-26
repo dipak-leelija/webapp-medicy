@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         }
                                         foreach ($showDistributor as $rowDistributor) {
                                             $rowDistributor['name'];
-                                            echo '<option value="' . $rowDistributor['id'] . '"';
+                                            echo '<option value="'.$rowDistributor['id'].'" dist-nm="'. $rowDistributor['name'] .'"'; 
                                             if ($edit == TRUE && $rowDistributor['id'] == $stockIn[0]['distributor_id']) {
                                                 echo 'selected';
                                             }
@@ -349,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="purchase-price">PTR/Package</label>
-                                                    <input type="number" class="upr-inp" name="ptr" id="ptr" onkeyup="getBillAmount()">
+                                                    <input type="text" class="upr-inp" name="ptr" id="ptr" onkeyup="getBillAmount()">
                                                 </div>
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
@@ -398,7 +398,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                     <input type="text" class="upr-inp" id="packaging-type-edit" readonly>
 
-                                                    <label class="mb-0" for="free-qty" >Updtd qtys</label>
+                                                    <label class="mb-0" for="free-qty">Updtd qtys</label>
                                                     <input type="number" class="upr-inp" name="updtQTYS" id="updtQTYS">
                                                 </div>
 
@@ -475,16 +475,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     <table class="table item-table" id="item-table" style="width: 100%;">
                                         <thead class="thead-light">
                                             <tr>
-                                                
-                                                <th scope="col"><input class="d-none" type="number" value="<?php 
-                                                if ($edit == TRUE) {
-                                                        echo count($details);
-                                                } ?>" id="dynamic-id" style="width:2rem;">
+
+                                                <th scope="col"><input class="d-none" type="number" value="<?php
+                                                                                                            if ($edit == TRUE) {
+                                                                                                                echo count($details);
+                                                                                                            } ?>" id="dynamic-id" style="width:2rem;">
                                                 </th>
-                                                <th scope="col"><input class="d-none" type="number" value="<?php 
-                                                if ($edit == TRUE) {
-                                                        echo count($details);
-                                                } ?>" id="serial-control" style="width:2rem;">
+                                                <th scope="col"><input class="d-none" type="number" value="<?php
+                                                                                                            if ($edit == TRUE) {
+                                                                                                                echo count($details);
+                                                                                                            } ?>" id="serial-control" style="width:2rem;">
                                                 </th>
                                                 <th scope="col" hidden>StockInDetaislId</th>
                                                 <!-- <th scope="col"></th> -->
@@ -499,7 +499,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <th scope="col">PTR</th>
                                                 <th scope="col">GST%</th>
                                                 <th scope="col">Disc%</th>
-                                                <th scope="col">Margin%</th>  
+                                                <th scope="col">Margin%</th>
                                                 <th scope="col">Amount</th>
                                             </tr>
                                         </thead>
@@ -530,7 +530,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                         <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">
                                                             <input class="col table-data w-9r" type="text" name="productNm[]" value="<?php echo $product[0]['name'] ?>" readonly style="text-align: start; font-size: 0.65rem;">
-                                                            <input class="d-none col table-data w-9r" type="text" name="productId[]" value="<?php echo $detail['product_id'] ?>" readonly   >
+                                                            <input class="d-none col table-data w-9r" type="text" name="productId[]" value="<?php echo $detail['product_id'] ?>" readonly>
                                                         </td>
 
                                                         <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">
@@ -580,7 +580,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         </td>
 
                                                         <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">
-                                                            <input class="col table-data w-4r" type="text" name="margin[]" value="<?php echo $detail['margin']?>" readonly style="font-size:0.65rem;text-align: end;">
+                                                            <input class="col table-data w-4r" type="text" name="margin[]" value="<?php echo $detail['margin'] ?>" readonly style="font-size:0.65rem;text-align: end;">
                                                         </td>
 
                                                         <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">
@@ -600,12 +600,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="row mb-3">
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Distributor :
-                                            <input class="summary-inp" name="distributor-id" id="distributor-name" type="text" value="<?php
-                                                                                                                                        if ($edit == TRUE) {
-                                                                                                                                            echo $stockIn[0]['distributor_id'];
-                                                                                                                                        }
-                                                                                                                                        ?>" readonly  hidden>
-                                            <input class="summary-inp" name="dist-name" id="dist-name" type="text" value="<?php echo $distName ?>" readonly>
+                                            <input class="summary-inp" name="prev-distributor-id" id="prev-dist-id" type="text" value="<?php
+                                                                                                                                    if ($edit == TRUE) {
+                                                                                                                                        echo $stockIn[0]['distributor_id'];
+                                                                                                                                    }
+                                                                                                                                    ?>" readonly >
+                                            <input class="summary-inp" name="updated-distributor-id" id="updated-dist-id" type="text" value="<?php
+                                                                                                                                    if ($edit == TRUE) {
+                                                                                                                                        echo $stockIn[0]['distributor_id'];
+                                                                                                                                    }
+                                                                                                                                    ?>" readonly >
+
+                                            <input class="summary-inp" name="distributor-name" id="distributor-name" type="text" value="<?php echo $distName ?>" readonly>
                                         </p>
                                     </div>
                                     <div class="col-md-3 d-flex justify-content-start">
@@ -613,6 +619,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <input class="summary-inp" name="distributor-bill" id="distributor-bill-no" type="text" value="<?php if ($edit == TRUE) {
                                                                                                                                                 echo $stockIn[0]['distributor_bill'];
                                                                                                                                             } ?>" readonly>
+
+                                            <input class="summary-inp" name="prev-distributor-bill" id="prev-distributor-bill-no" type="text" value="<?php if ($edit == TRUE) {
+                                                                                                                                                            echo $stockIn[0]['distributor_bill'];
+                                                                                                                                                        } ?>" readonly>
                                         </p>
                                     </div>
                                     <div class="col-md-3  d-flex justify-content-start">

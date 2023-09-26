@@ -10,11 +10,28 @@ class StockIn extends DatabaseConnection{
 
     function addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $addedBy){
 
-        $addStockIn = "INSERT INTO `stock_in` (`distributor_id`, `distributor_bill`, `items`, `total_qty`, `bill_date`, `due_date`, `payment_mode`, `gst`, `amount`, `added_by`) VALUES ('$distributorId', '$distributorBill', '$items', '$totalQty', '$billDate', '$dueDate', '$paymentMode', '$gst', '$amount', '$addedBy')";
-        // echo $addStockIn.$this->conn->error;exit;
-        $addStockInQuery = $this->conn->query($addStockIn);
-        // echo var_dump($addStockInQuery);exit;
-        return $addStockInQuery;
+        try{
+            $addStockIn = "INSERT INTO `stock_in` (`distributor_id`, `distributor_bill`, `items`, `total_qty`, `bill_date`, `due_date`, `payment_mode`, `gst`, `amount`, `added_by`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+
+            $responce =  $this->conn->prepare($addStockIn);
+
+            // binding parameters --------
+            $responce->bind_param("ssssssssss", $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $addedBy); 
+
+            // Execute the prepared statement
+            if ($responce->execute()) {
+                // Get the ID of the newly inserted record
+                $addStockInId = $this->conn->insert_id;
+                // return id and result
+                return ["result" => true, "stockIn_id" => $addStockInId];
+            } else {
+                // Handle the error (e.g., log or return an error message)
+                throw new Exception("Error executing SQL statement: " . $responce->error);
+            }
+        }catch (Exception $e) {
+            // Handle exceptions (e.g., log the error or return an error message)
+            return $e; // You can customize the error handling as needed
+        }        
     }//eof addProduct function 
 
 

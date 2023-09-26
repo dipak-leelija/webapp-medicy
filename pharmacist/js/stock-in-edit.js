@@ -408,8 +408,13 @@ const editQTY = () => {
 //geeting bills by clicking on add button
 const addData = () => {
     var distId = document.getElementById("distributor-id");
+    var selectedOption = distId.options[distId.selectedIndex];
+    var customAttributeValue = selectedOption.getAttribute("dist-nm");
+    
     var distBillid = document.getElementById("distributor-bill");
     var distBill = distBillid.value.toUpperCase();
+    var prevdisbillNo = document.getElementById("prev-distributor-bill-no");
+    var prevDistBill = prevdisbillNo.value.toUpperCase();
     var billDate = document.getElementById("bill-date");
     var dueDate = document.getElementById("due-date");
     var paymentMode = document.getElementById("payment-mode");
@@ -447,6 +452,7 @@ const addData = () => {
     var crntGstAmount = document.getElementById("crntGstAmnt");
     var itemQty = document.getElementById("updtQTYS").value;
 
+
     if (distId.value == "") {
         swal("Blank Field", "Please Selet Distributor First!", "error")
             .then((value) => {
@@ -454,6 +460,8 @@ const addData = () => {
             });
         return;
     }
+
+
     if (distBillid.value == "") {
         swal("Blank Field", "Please Enter Distributor Bill Number!", "error")
             .then((value) => {
@@ -461,6 +469,15 @@ const addData = () => {
             });
         return;
     }
+
+    if(prevdisbillNo.value == ""){
+        swal("Blank Field", "Please Enter Distributor Bill Number!", "error")
+            .then((value) => {
+                prevdisbillNo.focus();
+            });
+        return;
+    }
+
     if (billDate.value == "") {
         swal("Blank Field", "Please Select Bill Date!", "error")
             .then((value) => {
@@ -616,8 +633,6 @@ const addData = () => {
     let marginP = (margin / totalMrp) * 100;
 
 
-    console.log("purchase id check : "+purchaseId.value);
-
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slControl}">
             <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
@@ -687,7 +702,10 @@ const addData = () => {
 
         </tr>`);
 
-    document.getElementById("distributor-name").value = distId.value;
+        // prev-distributor-bill-no
+    console.log(distId.value);
+    document.getElementById("updated-dist-id").value = distId.value; 
+    document.getElementById("distributor-name").value = customAttributeValue;
     document.getElementById("distributor-bill-no").value = distBill;
     document.getElementById("bill-date-val").value = billDate.value;
     document.getElementById("due-date-val").value = dueDate.value;

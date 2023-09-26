@@ -152,6 +152,10 @@ const getDtls = (invoiceId, customerId) => {
         xmlhttp.send(null);
         itemList.innerHTML = xmlhttp.responseText;
 
+        //================ extra details =======================
+        // chkInvoiceIdUrl = ;
+        //======================================================
+
         document.getElementById('invoice-no').value = invoiceId;
 
         listArea.style.display = 'none';
@@ -351,6 +355,7 @@ const addData = () => {
 
     let StockOutDetailsItemId = document.getElementById('stock-out-details-item-id').value;
     let PharmacyInvoiceItemId = document.getElementById('pharmacy-invoice-item-details-id').value;
+    let salesReturnDetailsItemId = document.getElementById('sales-return-details-item-id').value;
     let currentItemID = document.getElementById("item-id").value;
     let pId = document.getElementById("prod-id").value;
     let expDate = document.getElementById("exp-date").value;
@@ -591,19 +596,6 @@ const addData = () => {
 
 
     const appendData = () => {
-
-        // jQuery("#item-body").append(`<tr id="table-row-${slControl}">
-
-        // <td><i class="fas fa-trash text-danger" onclick="deleteItem(${slControl}, ${qty}, ${netGst.toFixed(2)}, ${itemMrp.toFixed(2)}, ${amount})" style="font-size:.7rem; width: .3rem"></i></td>
-
-        // <td id="${slno}" style="font-size:.7rem; padding-top:1rem; width: .3rem" scope="row">${slno}</td>
-
-        // <td id="${productName}">
-        //     <input class="summary-product" type="text" name="product-name[]" value="${productName}" style="word-wrap: break-word; width:9rem; font-size: .7rem;" readonly>
-        //     <input type="text" class="d-none" name="product-id[]" value="${productId}" >
-        // </td>
-
-
         jQuery("#dataBody")
             .append(`<tr id="table-row-${slControl}">
             <td><i class="fas fa-trash text-danger" onclick="deleteData(${slControl}, ${parseFloat(returnQtyVal)}, ${gstPerItem}, ${refundAmount.toFixed(2)})"></i></td>
@@ -611,20 +603,21 @@ const addData = () => {
             <td class="pt-3" id="row-${slControl}-col-1" style="font-size: 0.7rem;">${slno}</td>
             <td class="pt-3" id="row-${slControl}-col-2">
                 <input class="table-data w-10r" type="text" value="${itemName}" readonly style="font-size: .65rem;">
-                <input class="d-none" type="text" name="itemId[]" value="${itemList.value}">
+                <input class="  " type="text" name="itemId[]" value="${itemList.value}">
 
             </td>
 
-            <td class="d-none pt-3">
+            <td class="   pt-3">
                 <input class="table-data w-6r" type="text" name="stockOutDetailsItemIds[]" value="${StockOutDetailsItemId}" readonly>
                 <input class="table-data w-6r" type="text" name="pharmacyInvoiceItemIds[]" value="${PharmacyInvoiceItemId}" readonly>
+                <input class="table-data w-6r" type="text" name="salesReturnDetailsItemIds[]" value="${salesReturnDetailsItemId}" readonly>
             </td>
 
-            <td class="d-none pt-3">
+            <td class="   pt-3">
                 <input class="table-data w-6r" type="text" name="curretnItemId[]" value="${currentItemID}" readonly style="font-size: 0.65rem;">
             </td>
 
-            <td class="d-none pt-3">
+            <td class="   pt-3">
                 <input class="table-data w-6r" type="text" name="productId[]" value="${pId}" readonly style="font-size: 0.65rem;">
             </td>
             <td class="pt-3" id="row-${slControl}-col-3">
@@ -641,7 +634,7 @@ const addData = () => {
             <td class="pt-3" id="row-${slControl}-col-6">
                 <input class="table-data w-3r" type="text" name="qty[]" value="${currentQty}" readonly style="font-size: 0.65rem; text-align: end;">
 
-                <input class="d-none table-data w-3r" type="text" name="p_Qty[]" value="${purchaseQuantity}" readonly style="font-size: 0.65rem; text-align: end;">
+                <input class="   table-data w-3r" type="text" name="p_Qty[]" value="${purchaseQuantity}" readonly style="font-size: 0.65rem; text-align: end;">
             </td>
             <td class="pt-3" id="row-${slControl}-col-7">
                 <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp}" readonly style="font-size: 0.65rem;">
@@ -679,6 +672,7 @@ const addData = () => {
             ProductName: itemName,
             StockOutDetailsItemId: StockOutDetailsItemId,
             PharmacyInvoiceItemId: PharmacyInvoiceItemId,
+            salesReturnDetailsItemId: salesReturnDetailsItemId,
             currentItemID: currentItemID,
             pId: pId,
             batch: batch,

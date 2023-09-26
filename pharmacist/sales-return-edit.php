@@ -229,6 +229,11 @@ if ($patientId == 'Cash Sales') {
                                     </div>
 
                                     <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="current-qty">Cr Qty</label>
+                                        <input type="text" class="upr-inp" name="current-qty" id="current-qty" readonly>
+                                    </div>
+
+                                    <div class="col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="return-qty">Return</label>
                                         <input type="number" class="upr-inp" name="return-qty" id="return-qty" value="" onkeyup="getRefund(this.value)" required>
                                     </div>
@@ -248,10 +253,6 @@ if ($patientId == 'Cash Sales') {
                                         <input type="any" class="upr-inp" name="refund" id="refund" required readonly>
                                     </div>
 
-                                    <div class="col-md-1 col-6 mt-3">
-                                        <!-- <label class="mb-0 mt-1" for="refund">Refund</label>
-                                        <input type="any" class="upr-inp" name="refund" id="refund" required readonly> -->
-                                    </div>
 
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
                                         <button class="btn btn-primary me-md-2" type="button" onclick="addData()" id="add-btn" style="margin-top: 1rem; height: 2.5rem;">Add <i class="fas fa-plus"></i></button>
