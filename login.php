@@ -1,14 +1,24 @@
 <?php 
 require_once 'php_control/dbconnect.php';
 require_once 'php_control/login.class.php';
+require_once 'php_control/designation.class.php';
 
-$loginForm = new LoginForm();
+$desRole = new Designation();
+$Admin = new Admin();
+
+$employeeDetails = $desRole->selectFromEmployees();
+// print_r($employeeDetails);
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
     
-    $login    = $loginForm->login($username, $password);
+    echo $username;
+    echo $password;
+    
+    $login    = $Admin->loginCheck($username, $password);
+
 }
 
 ?>
