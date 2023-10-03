@@ -18,7 +18,7 @@ batchNumber.addEventListener('input', function (event) {
 
 
 //////// distributo bill input contorl \\\\\\\\\\
-const distBillNo = document.getElementById('distributor-bill');
+const distBillNo = document.getElementById('dist-bill-no');
 distBillNo.addEventListener('input', function (event) {
     this.value = this.value.replace('.', '');
     this.value = this.value.replace('*', '');
@@ -27,6 +27,27 @@ distBillNo.addEventListener('input', function (event) {
 
 ///////////////////////////////////////////////////////////
 
+//=============== stock in save button control ==============
+var stockInSave = document.getElementById('stock-in-submit');
+stockInSave.setAttribute("disabled", "true");
+
+const chekForm = () => {
+    var tableBody = document.getElementById('dataBody');
+
+    if (document.getElementById('product-name').value == '' && tableBody.getElementsByTagName('tr').length > 0) {
+        stockInSave.removeAttribute("disabled");
+    } else {
+        stockInSave.setAttribute("disabled", "true");
+    }
+}
+
+
+//==========================================================
+
+////////////////////// set coursor as pointer on table row hover /////////////////////
+
+
+///////////////////////////////////////////////////////////
 const firstInput = document.getElementById('product-name');
 window.addEventListener('load', function () {
     firstInput.focus();
@@ -44,6 +65,65 @@ firstInput.addEventListener('input', function (event) {
 });
 
 
+//////////////////// set distributor name /////////////////////
+
+const selectDistributor = (t) =>{
+    let id = t.value;
+    let distributirName = t.selectedOptions[0].text;
+
+    document.getElementById("dist-id").value = id;
+    document.getElementById("dist-name").value = distributirName;
+}
+
+//////////////////// set distributor bill no /////////////////////
+
+const setDistBillNo = (t) =>{
+    let val = t.value.toUpperCase();
+    // console.log(val);
+    document.getElementById("distBill-no").value = val;
+}
+
+//////////////////// set bill date \\\\\\\\\\\\\\\\\\\\
+var todayDate = new Date();
+
+var date = todayDate.getDate();
+var month = todayDate.getMonth() + 1;
+var year = todayDate.getFullYear();
+
+if (date < 10) {
+    date = '0' + date;
+}
+if (month < 10) {
+    month = '0' + month;
+}
+var todayFullDate = year + "-" + month + "-" + date;
+document.getElementById("bill-date").setAttribute("max", todayFullDate);
+
+// =======  bill date set ===========
+const getbillDate = (billDate) => {
+    billDate = billDate.value;
+    
+    document.getElementById("bill-date-val").value = billDate;
+
+    document.getElementById("due-date").setAttribute("min", billDate);
+
+    var date2 = todayDate.getDate() + 7;
+    var todayFullDate2 = year + "-" + month + "-" + date2;
+    document.getElementById("due-date").setAttribute("max", todayFullDate2);
+}
+
+//////////////////// set due date /////////////////////
+const getDueDate = (t) =>{
+    // console.log(t.value);
+    document.getElementById("due-date-val").value = t.value;
+}
+
+/////////////////////// SET PAYMENT MODE \\\\\\\\\\\\\\\\\\\\\\
+const setPaymentMode = (pMode) =>{
+    document.getElementById("payment-mode-val").value = pMode.value;
+}
+
+//////////////////////////// ITEM SEART START ////////////////////////////////
 function searchItem(input) {
 
     let checkLength = input.length;
@@ -72,6 +152,7 @@ function searchItem(input) {
             searchReult.innerHTML = xmlhttp.responseText;
         }
     };
+
 }
 
 const getDtls = (productId) => {
@@ -185,6 +266,8 @@ const getDtls = (productId) => {
 
         document.getElementById('batch-no').focus();
 
+        stockInSave.setAttribute("disabled", "true");
+
     } else {
 
         document.getElementById("manufacturer-id").innerHTML = "";
@@ -255,32 +338,6 @@ ptrInput.addEventListener('keydown', function (event) {
 
 //=========================================================================================
 
-
-var todayDate = new Date();
-
-var date = todayDate.getDate();
-var month = todayDate.getMonth() + 1;
-var year = todayDate.getFullYear();
-
-if (date < 10) {
-    date = '0' + date;
-}
-if (month < 10) {
-    month = '0' + month;
-}
-var todayFullDate = year + "-" + month + "-" + date;
-document.getElementById("bill-date").setAttribute("max", todayFullDate);
-
-const getbillDate = (billDate) => {
-    billDate = billDate.value;
-    document.getElementById("due-date").setAttribute("min", billDate);
-
-    var date2 = todayDate.getDate() + 7;
-    var todayFullDate2 = year + "-" + month + "-" + date2;
-    document.getElementById("due-date").setAttribute("max", todayFullDate2);
-}
-
-
 const getBillAmount = () => {
 
     let ptr = document.getElementById("ptr").value;
@@ -337,8 +394,7 @@ const getBillAmount = () => {
 const addData = () => {
     let distId = document.getElementById("distributor-id");
     // console.log(distId.value1);
-    let distBillid = document.getElementById("distributor-bill");
-    let distBill = distBillid.value.toUpperCase();
+    let distBillid = document.getElementById("dist-bill-no");
 
     let billDate = document.getElementById("bill-date");
     let dueDate = document.getElementById("due-date");
@@ -545,12 +601,12 @@ const addData = () => {
 
     //////////////////////
     let totalMrp = parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
-    let margin = totalMrp - billAmount.value;
-    let marginP = (margin / totalMrp) * 100;
+    let margin = parseFloat(totalMrp) - parseFloat(billAmount.value);
+    let marginP = (parseFloat(margin) / parseFloat(totalMrp)) * 100;
     // console.log("discount percent check : ", discount.value);
 
     jQuery("#dataBody")
-        .append(`<tr id="table-row-${slControl}">
+        .append(`<tr id="table-row-${slControl}" style="cursor: pointer;">
             <td style="color: red; padding-top:1.2rem; width:1rem"> <i class="fas fa-trash" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value})" style="font-size:.7rem;"></i></td>
 
             <td class="p-0 pt-3 w-1r" id="row-${slControl}-col-2" style="font-size:.7rem; padding-top:1.2rem; width: 1rem" scope="row">${slno}</td>
@@ -581,30 +637,30 @@ const addData = () => {
 
             </td>
             <td class="p-0 pt-3 w-2r" id="row-${slControl}-col-8">
-                <input class="table-data w-2r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size: .7rem;">
+                <input class="table-data w-2r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size: .7rem; text-align: end">
             </td>
             <td class="p-0 pt-3 w-2r" id="row-${slControl}-col-9">
-                <input class="table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size: .7rem;">
+                <input class="table-data w-2r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size: .7rem; text-align: end">
             </td>
             <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-10">
-                <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size: .7rem;">
+                <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size: .7rem; text-align: end">
             </td>
             <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-11">
-                <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size: .7rem;">
+                <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size: .7rem; text-align: end">
             </td>
             <td class="p-0 pt-3 w-3r">
-                <input type="text" class="table-data w-3r" name="base[]" value="${base.value}">
+                <input type="text" class="table-data w-3r" name="base[]" value="${base.value}" style="text-align: end;">
             </td>
             <td class="ps-1 pt-3 w-2r">
-                <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size: .7rem;">
+                <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size: .7rem; text-align: end">
             </td>
 
             <td class="p-0 pt-3 w-2r" id="row-${slControl}-col-12">
-                <input class="table-data w-2r"  type="text" name="discount[]" value="${discount.value}%" style="font-size: .7rem;">
+                <input class="table-data w-2r"  type="text" name="discount[]" value="${discount.value}%" style="font-size: .7rem; text-align: end">
             </td>
             
             <td class="p-0 pt-3 w-2r" id="row-${slControl}-col-13">
-                <input class="table-data w-2r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size: .7rem;">
+                <input class="table-data w-2r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size: .7rem; text-align: end">
                 <input type="text" name="gstPerItem[]" value="${gstPerItem}" hidden>
             </td class="pt-3" >
 
@@ -613,11 +669,6 @@ const addData = () => {
             </td>
         </tr>`);
 
-    document.getElementById("distributor-name").value = distId.value;
-    document.getElementById("distributor-bill-no").value = distBill;
-    document.getElementById("bill-date-val").value = billDate.value;
-    document.getElementById("due-date-val").value = dueDate.value;
-    document.getElementById("payment-mode-val").value = paymentMode.value;
 
     if (slno > 1) {
         let id = document.getElementById("items-val");
@@ -704,6 +755,8 @@ const addData = () => {
 
     ///////////////////////////////////////////////////////////////////////////////////////
 
+    stockInSave.removeAttribute("disabled");
+
     document.getElementById("stock-in-data").reset();
     event.preventDefault();
 }
@@ -747,6 +800,7 @@ const editItem = (tupleData) => {
 
         deleteData(TupleData.slno, parseInt(TupleData.Qty) + parseInt(TupleData.freeQty), gstPerItem, TupleData.amount);
 
+        stockInSave.setAttribute("disabled", "true");
     } else {
         swal("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("ptr").focus();
@@ -834,6 +888,13 @@ expMonthInput.addEventListener('input', function (event) {
     this.value = this.value.replace('.', '');
 });
 
+// set mfd month control
+const setmfdMonth = (mnth) => {
+    if(mnth.value.length != 2){
+        mnth.value = '';
+        mnth.focus();
+    }
+}
 
 const setMfdMonth = (month) => {
     let yr = new Date();
@@ -854,6 +915,14 @@ const setMfdMonth = (month) => {
     } else {
         month.value = '';
         month.focus();
+    }
+}
+
+// set exp month control
+const setexpMonth = (mnth) => {
+    if(mnth.value.length != 2){
+        mnth.value = '';
+        mnth.focus();
     }
 }
 

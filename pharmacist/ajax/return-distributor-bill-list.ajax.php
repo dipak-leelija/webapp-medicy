@@ -26,14 +26,16 @@ if (isset($_GET['dist-id'])) {
     $distributorId = $_GET['dist-id'];
     $attribute = 'distributor_id';
     $details = $StockIn->stockInByAttribute($attribute, $distributorId);
+    
     foreach ($details as $details) {
+        
         $billNo = $details['distributor_bill'];
     ?>
 
-    <div class="row mx-2 p-1 border-bottom item-list" onclick="getItemList('<?php echo $distributorId; ?>','<?php echo $billNo; ?>');">
-                <div class="col-md-9"><?php echo $billNo; ?></div>
-            </div>
-    <?php
+        <div class="row mx-2 p-1 border-bottom item-list" onclick="getItemList('<?php echo $distributorId; ?>','<?php echo $billNo; ?>');">
+            <div class="col-md-9" style="min-width: 100%;"><?php echo $billNo; ?></div>
+        </div>
+<?php
     }
 }
 ?>

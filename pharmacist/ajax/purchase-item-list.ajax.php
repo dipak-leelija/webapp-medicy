@@ -22,7 +22,7 @@ require_once '../../employee/config/dbconnect.php';
 $searchResult = null;
 if (isset($_GET['data'])) {
     $data = $_GET['data'];
-    
+    // echo $data;
     $resultData = array();
     $searchSql = "Select * From `products` WHERE `products`.`name` LIKE '%$data%'";
     $searchResult = mysqli_query($conn, $searchSql) or die("Connection Error");
@@ -30,7 +30,7 @@ if (isset($_GET['data'])) {
         $resultData[] = $result;
     }
     // $searchResult = $Search->searchForSale($data);
-    
+    print_r($resultData);
 }
 
 if ($resultData) {

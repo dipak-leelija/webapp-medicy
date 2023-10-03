@@ -40,6 +40,8 @@
     require_once '../php_control/manufacturer.class.php';
     require_once '../php_control/measureOfUnit.class.php';
     require_once '../php_control/packagingUnit.class.php';
+    require_once '../pharmacist/_config/sessionCheck.php';
+   
 
 
     $page = "products";
@@ -126,7 +128,13 @@
         // $sideImage         = addslashes($sideImage);
         //_________________________________________________________________________________________
 
-        $updateProduct = $Products->updateProduct($_POST['id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $_POST['mrp'], $_POST['gst'], $_POST['added-by'], $_POST['product-composition']);
+        $addedBy        = $_SESSION['employee_username'];
+
+        $unit = $_POST['unit'];
+        $unitType = $MeasureOfUnits->showMeasureOfUnitsById($unit);
+        $unitName = $unitType[0]['short_name'];
+
+        $updateProduct = $Products->updateProduct($_POST['product-id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $unitName, $_POST['mrp'], $_POST['gst'], $addedBy, $_POST['product-composition']);
 
         // $updateImage = $ProductImages->updateImage($productId, $image, $backImage, $sideImage);
         $updateImage = true;
@@ -158,7 +166,6 @@
 
                 <?php
                 if (isset($_GET['id'])) {
-
                     $item = $Products->showProductsById($_GET['id']);
                     $image = $ProductImages->showImageById($_GET['id']);
                     // print_r($image);
@@ -193,6 +200,7 @@
                                             <div class="col-md-12">
                                                 <!-- <label class="mb-0 mt-1" for="product-name">Product Name</Address></label> -->
                                                 <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?php echo $item[0]['name'] ?>" required>
+                                                <input class="d-none c-inp w-100 p-1" id="product-id" name="product-id" value="<?php echo $_GET['id'] ?>" required>
                                             </div>
                                         </div>
                                         <br>
@@ -217,7 +225,7 @@
                                                     ?>
                                                         <option <?php if ($item[0]['unit'] == $rowUnit['short_name']) {
                                                                     echo 'selected';
-                                                                } ?> value="<?php echo $rowUnit['short_name']; ?>"><?php echo $rowUnit['short_name']; ?></option>';
+                                                                } ?> value="<?php echo $rowUnit['id']; ?>"><?php echo $rowUnit['short_name']; ?></option>';
                                                     <?php
                                                     }
                                                     ?>

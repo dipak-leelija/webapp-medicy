@@ -9,18 +9,28 @@ class Products extends DatabaseConnection{
 
 
 
-    function addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $unitQuantity, $unit, $mrp, $gst, $productComposition){
-
-        $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `power`, `dsc`, `packaging_type`, `unit_quantity`, `unit`, `mrp`, `gst`, `product_composition`) VALUES ('$productId', '$manufacturerid', '$productName', '$power', '$productDsc', '$packagingType', '$unitQuantity', '$unit', '$mrp', '$gst', '$productComposition')";
-
-        $insertProductsQuery = $this->conn->query($insertProducts);
-        // echo $insertProductsQuery.$this->conn->error;
-        // exit;
-
-        return $insertProductsQuery;
-    }//eof addProduct function
+    function addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $productComposition) {
+        try {
+            $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `power`, `dsc`, `packaging_type`, `unit_quantity`, `unit_id`, `unit`, `mrp`, `gst`, `product_composition`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
+            $stmt = $this->conn->prepare($insertProducts);
+            $stmt->bind_param("ssssssssssss", $productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $productComposition);
     
+            if ($stmt->execute()) {
+                // Insert successful
+                $stmt->close();
+                return true;
+            } else {
+                // Insert failed
+                throw new Exception("Error inserting data into the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            // Handle the exception, log the error, or return an error message as needed
+            return "Error: " . $e->getMessage();
+        }
+    }    
+    
+
     
 
     function showProducts(){
@@ -89,25 +99,34 @@ class Products extends DatabaseConnection{
 
 
 
-    function updateProduct($productid, $productname, $productPower, $productManuf, $productDsc, $productPackaging, $unitQty, $unit, $mrp, $gst, $addedBy, $productComposition){
+    function updateProduct($productid, $productname, $productPower, $productManuf, $productDsc, $productPackaging, $unitQty, $unit, $unitName, $mrp, $gst, $addedBy, $productComposition) {
+        try {
+            $updateProduct = "UPDATE `products` SET `manufacturer_id`=?, `name`=?, `power`=?, `dsc`=?, `packaging_type`=?, `unit_quantity`=?, `unit_id`=?, `unit`=?, `mrp`=?, `gst`=?, `added_by`=?, `product_composition`=? WHERE `product_id`=?";
+    
+            $stmt = $this->conn->prepare($updateProduct);
+            $stmt->bind_param("sssssssssssss", $productManuf, $productname, $productPower, $productDsc, $productPackaging, $unitQty, $unit, $unitName, $mrp, $gst, $addedBy, $productComposition, $productid);
+    
+            if ($stmt->execute()) {
+                // Update successful
+                $stmt->close();
+                return true;
+            } else {
+                // Update failed
+                throw new Exception("Error updating data in the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            // Handle the exception, log the error, or return an error message as needed
+            return "Error: " . $e->getMessage();
+        }
+    }
+    
 
-        $updateProduct = " UPDATE `products` SET `manufacturer_id`	= '$productManuf', `name` = '$productname',
-        `power` = '$productPower', `dsc` = '$productDsc', `packaging_type` = '$productPackaging', `unit_quantity` = '$unitQty',`unit` ='$unit', `mrp` ='$mrp', `gst` = '$gst', `added_by` = '$addedBy', `product_composition` = '$productComposition' WHERE `products`.`id` = '$productid'";
-        // echo $updateProduct.$this->conn->error;
-
-        $updateQuery = $this->conn->query($updateProduct);
-
-        return $updateQuery;
-
-    }// end updateProduct function
 
 
 
+    function deleteProduct($productId){
 
-
-    function deleteProduct($productTableId){
-
-        $Delete = "DELETE FROM `products` WHERE `products`.`product_id` = '$productTableId'";
+        $Delete = "DELETE FROM `products` WHERE `products`.`product_id` = '$productId'";
         $DeleteQuey = $this->conn->query($Delete);
         return $DeleteQuey;
 

@@ -113,7 +113,7 @@ $showDistributor       = $Distributor->showDistributor();
                                             $slNo = $id - $StockInId;
                                             foreach ($showStockIn as $stockIn) {
                                                 $distributor = $Distributor->showDistributorById($stockIn['distributor_id']);
-                                                echo $stockIn['id'];
+                                                // echo $stockIn['id'];
                                                 // echo "stock in id : $StockInId";
                                                 // echo "<br>id : $id";
                                                 // echo "<br>sl no : $slNo";

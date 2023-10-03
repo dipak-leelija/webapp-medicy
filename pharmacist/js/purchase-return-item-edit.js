@@ -23,7 +23,7 @@ const customEdit = (id, value) => {
 
     // console.log(value);
     // console.log(row);
-    console.log(id);
+  
 
     if (document.getElementById('product-id').value == '') {
         $.ajax({
