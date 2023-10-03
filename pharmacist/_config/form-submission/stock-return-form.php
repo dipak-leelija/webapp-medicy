@@ -52,16 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     
         $returned = $StockReturn->addStockReturn($stockReturnId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy);
-        // $returned = true;
-
-        if($returned === true){
+        // print_r( $returned);
+        $returnResult = $returned['result'];
+        if($returnResult == 'true'){
 
             //arrays
             $stokInDetailsId = $_POST['stok-in-details-id'];
             $productId      = $_POST['productId'];
+            
             $productName    = $_POST['productName'];
             $ids            = count($productId);
-            
+        
             $batchNo        = $_POST['batchNo'];
             $expDate        = $_POST['expDate'];
 
@@ -102,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // echo "<br>Return QTY : "; print_r($returnQty);
         // echo "<br>Return F QTY : "; print_r($returnFQty);
         // echo "<br>Refund Amount : "; print_r($refundAmount);
+       
         
             for ($i=0; $i < $ids; $i++) { 
                 $currentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]);

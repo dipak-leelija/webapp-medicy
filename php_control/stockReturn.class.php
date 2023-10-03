@@ -17,12 +17,33 @@ class StockReturn extends DatabaseConnection
 
     function addStockReturn($stockReturnId, $distributorId, $billNo, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $status, $addedBy)
     {
-        $sql = "INSERT INTO `stock_return` (`id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `status`, `added_by`) VALUES ('$stockReturnId', '$distributorId', '$billNo', '$returnDate', '$items', '$totalQty', '$returnGst', '$refundMode', '$refundAmount', '$status', '$addedBy')";
-        $res = $this->conn->query($sql);
-        return $res;
+        try{
+            // Construct the SQL query with placeholders
+            $sql = "INSERT INTO `stock_return` (`id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `status`, `added_by`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Error preparing insert statement: " . $this->conn->error);
+            }
+
+            // Bind the parameters
+            $stmt->bind_param("sssssssssss", $stockReturnId, $distributorId, $billNo, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $status, $addedBy);
+
+            // Execute the prepared statement
+            if ($stmt->execute()) {
+            // Return the ID of the newly inserted record
+                $insertedId = $stmt->insert_id;
+                return ["result" => true, "id" => $insertedId];
+            } else {
+                throw new Exception("Error executing insert statement: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            return ["result" => false, "error" => $e->getMessage()];
+        } 
     } // eof addStockReturn
 
-
+    
 
     function showStockReturn()
     {

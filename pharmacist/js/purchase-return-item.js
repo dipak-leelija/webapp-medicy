@@ -11,15 +11,15 @@ rtnFreeQty.addEventListener('input', function (event) {
 //////////////////////////////////////////////////////////////////
 
 const getBillList = (t) => {
-
     let id = t.value;
+    console.log(id);
     let distributirName = t.selectedOptions[0].text;
     var xmlhttp = new XMLHttpRequest();
     let distIdUrl = `ajax/return-distributor-bill-list.ajax.php?dist-id=${id}`;
     xmlhttp.open("GET", distIdUrl, false);
     xmlhttp.send(null);
     document.getElementById("select-bill").innerHTML = xmlhttp.responseText;
-    // alert(xmlhttp.responseText);
+    // console.log(xmlhttp.responseText);
     document.getElementById("dist-id").value = id;
     document.getElementById("dist-name").value = distributirName;
     document.getElementById("select-bill").style.display = "block";
@@ -27,7 +27,7 @@ const getBillList = (t) => {
 
 
 const getItemList = (distId, billNo) => {
-
+    console.log("dist id : "+distId, "bill no : "+billNo);
     document.getElementById("select-bill-no").value = billNo;
     document.getElementById("select-bill").style.display = "none";
     let distBillNoCheck = document.getElementById("dist-bill-no").value;

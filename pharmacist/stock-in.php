@@ -106,20 +106,21 @@ $todayYr = date("y");
                             <div class="row bg-distributor text-light rounded py-2">
                                 <div class="col-sm-6 col-md-3">
                                     <label class="mb-1" for="distributor-id">Distributor</label>
-                                    <select class="upr-inp mb-1" id="distributor-id">
+                                    <select class="upr-inp mb-1" id="distributor-id" onchange="selectDistributor(this)">
                                         <option value="" selected disabled>Select Distributor</option>
                                         <?php
                                         foreach ($showDistributor as $rowDistributor) {
+                                            $rowDistributor['id'];
                                             $rowDistributor['name'];
-                                            echo '<option value="' . $rowDistributor['name'] . '">' . $rowDistributor['name'] . '</option>';
+                                            echo '<option value="' . $rowDistributor['id'] . '">' . $rowDistributor['name'] . '</option>';
                                         }
                                         ?>
                                     </select>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
-                                    <label class="mb-1" for="distributor-bill">Distributor Bill No.</label>
-                                    <input type="text" class="upr-inp " name="distributor-bill" id="distributor-bill" placeholder="Enter Distributor Bill" autocomplete="off" style="text-transform: uppercase;">
+                                    <label class="mb-1" for="dist-bill-no">Distributor Bill No.</label>
+                                    <input type="text" class="upr-inp " name="dist-bill-no" id="dist-bill-no" placeholder="Enter Distributor Bill" value="" autocomplete="off" style="text-transform: uppercase;" onkeyup="setDistBillNo(this)">
                                 </div>
 
                                 <div class="col-sm-6 col-md-2">
@@ -128,11 +129,11 @@ $todayYr = date("y");
                                 </div>
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
-                                    <input type="date" class="upr-inp" name="due-date" id="due-date">
+                                    <input type="date" class="upr-inp" name="due-date" id="due-date" onchange="getDueDate(this)">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="mb-1" for="payment-mode">Payment Mode</label>
-                                    <select class="upr-inp" name="payment-mode" id="payment-mode">
+                                    <select class="upr-inp" name="payment-mode" id="payment-mode" onchange="setPaymentMode(this)">
                                         <option value="" selected disabled>Select</option>
                                         <option value="Credit">Credit</option>
                                         <option value="Cash">Cash</option>
@@ -156,7 +157,7 @@ $todayYr = date("y");
                                         <div class="row mt-4 mb-2">
                                             <div class="col-md-12 ">
                                                 <!-- <label for="product-name" class="mb-0">Product Name</label> -->
-                                                <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" autocomplete="off" value="">
+                                                <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" autocomplete="off" value="" onkeydown="chekForm()">
 
                                                 <div class="p-2 bg-light" id="product-select" style="max-height: 25rem; max-width: 100%;">
                                                 </div>
@@ -171,7 +172,7 @@ $todayYr = date("y");
                                                 <option value="" disabled selected>Select </option>
 
                                             </select> -->
-                                                <input class="upr-inp d-none" id="manufacturer-id" name="manufacturer-id" value="">
+                                                <input class="d-none upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
                                                 <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
                                             </div>
                                         </div>
@@ -225,7 +226,7 @@ $todayYr = date("y");
                                             <div class="col-sm-4  mt-2">
                                                 <label class="mb-0 mt-1" for="mfd-date">MFD</label>
                                                 <div class="d-flex date-field">
-                                                    <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);" >
+                                                    <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);" onfocusout="setmfdMonth(this);">
                                                     <span class="date-divider">&#47;</span>
                                                     <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);" onkeyup="setMfdYEAR(this)">
                                                 </div>
@@ -233,7 +234,7 @@ $todayYr = date("y");
                                             <div class="col-sm-4 mt-2">
                                                 <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                                                 <div class="d-flex date-field">
-                                                    <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);">
+                                                    <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                                                     <span class="date-divider">&#47;</span>
                                                     <input class="year " type="number" id="exp-year"  onfocusout="setExpYear(this);" onkeyup="setExpYEAR(this)">
                                                 </div>
@@ -400,7 +401,10 @@ $todayYr = date("y");
                                         <div class="row mb-3">
                                             <div class="col-md-3  d-flex justify-content-start">
                                                 <p>Distributor :
-                                                    <input class="summary-inp w-60" name="distributor-name" id="distributor-name" type="text" value="" value1="" readonly style="/*margin-left: 0rem;*/ word-wrap: break-word;">
+
+                                                    <input class="summary-inp w-60" name="distributor-name" id="dist-name" type="text" value="" readonly>
+
+                                                    <input class="summary-inp w-60" name="distributor-id" id="dist-id" type="text" value="" readonly>
 
                                                     <!-- <input  class="summary-inp w-60" name="distributor-id"
                                                     id="distributor-id" value="" type="text"
@@ -409,7 +413,7 @@ $todayYr = date("y");
                                             </div>
                                             <div class="col-md-3 d-flex justify-content-start">
                                                 <p>Dist. Bill :
-                                                    <input class="summary-inp w-65" name="distributor-bill" id="distributor-bill-no" type="text" value="" readonly>
+                                                    <input class="summary-inp w-65" name="distributor-bill" id="distBill-no" type="text" value="" readonly>
                                                 </p>
                                             </div>
                                             <div class="col-md-3  d-flex justify-content-start">
@@ -456,7 +460,7 @@ $todayYr = date("y");
                                             </div>
                                         </div>
                                         <div class="d-flex  justify-content-end">
-                                            <button class="btn btn-sm btn-primary" style="width: 8rem;" type="submit" name="stock-in">Save</button>
+                                            <button class="btn btn-sm btn-primary" style="width: 8rem;" type="submit" name="stock-in" id="stock-in-submit">Save</button>
 
                                         </div>
                                     </div>

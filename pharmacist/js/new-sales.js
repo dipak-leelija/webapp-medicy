@@ -120,11 +120,11 @@ const searchItem = (searchFor) => {
             XML.send();
         }
 
+        newSellGenerateBill.setAttribute("disabled", "true");
     }
 }
 
 const itemsBatchDetails = (prodcutId, name, stock) => {
-
     if (stock > 0) {
         // ==================== SEARCH PRODUCT NAME =====================
         document.getElementById("product-name").value = name;
@@ -203,11 +203,28 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
     }
 }
 
+
+const chekForm = () =>{
+   
+    if(document.getElementById('product-name').value == ''){
+        document.getElementById("exta-details").style.display = "none";
+        document.getElementById("searched-items").style.display = "none";
+        
+        var tableBody = document.getElementById('item-body');
+
+        if(tableBody.getElementsByTagName('tr') != null){
+            newSellGenerateBill.removeAttribute("disabled");
+        }else{
+            newSellGenerateBill.setAttribute("disabled", "true");
+        }
+    }
+}
+
+
+       
 ////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 const stockDetails = (productId, batchNo, itemId) => {
-
-
 
     var selectedItem = productId;
     var SelectedBatch = batchNo;
@@ -979,6 +996,7 @@ const addSummary = () => {
 
     document.getElementById('final-doctor-name').value = doctorName;
     document.getElementById("aqty").value = "";
+    document.getElementById("exta-details").style.display = "none";
     document.getElementById("add-item-details").reset();
     event.preventDefault();
     /////////////////////////////////////////////

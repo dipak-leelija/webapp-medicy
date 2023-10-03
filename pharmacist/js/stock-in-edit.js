@@ -1,3 +1,17 @@
+///////////////// STOCK IN EDIT UPDATE BUTTON CONTROL \\\\\\\\\\
+var stockInSave = document.getElementById('stockInEdit-update-btn');
+
+const chekForm = () => {
+    var tableBody = document.getElementById('dataBody');
+
+    if (document.getElementById('product-name').value == '' && tableBody.getElementsByTagName('tr').length > 0) {
+        stockInSave.removeAttribute("disabled");
+
+    } else {
+        stockInSave.setAttribute("disabled", "true");
+    }
+}
+
 //////// QANTITY AND FREE QANTITY VALUE CONTROL //////////
 const Qty = document.getElementById('qty');
 Qty.addEventListener('input', function (event) {
@@ -12,12 +26,13 @@ FreeQty.addEventListener('input', function (event) {
 //////// batch number input contorl \\\\\\\\\\
 const batchNumber = document.getElementById('batch-no');
 batchNumber.addEventListener('input', function (event) {
-    console.log(this.value);
     this.value = this.value.replace('.', '');
     this.value = this.value.replace('*', '');
 });
 
 const customClick = (id, value1, value2, value3) => {
+
+    stockInSave.setAttribute("disabled", "true");
 
     var prodId = value1;
     var billNo = value2;
@@ -26,7 +41,7 @@ const customClick = (id, value1, value2, value3) => {
     var checkFieldBlank = document.getElementById('product-id');
     // var row = document.getElementById(id);
 
-    if(checkFieldBlank.value == ''){
+    if (checkFieldBlank.value == '') {
         $.ajax({
             url: "ajax/stokInEditAll.ajax.php",
             type: "POST",
@@ -38,90 +53,90 @@ const customClick = (id, value1, value2, value3) => {
             success: function (data) {
                 // alert(data);
                 var dataObject = JSON.parse(data);
-                
+
                 var totalItmQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
                 var gstPerItem = parseFloat(dataObject.GstAmount);
                 var totalAmnt = parseFloat(dataObject.amnt);
-    
+
                 var slno = id;
                 slno = slno.replace(/\D/g, '');
                 var itemQty = totalItmQty;
                 gstPerItem = gstPerItem.toFixed(2);
                 var total = totalAmnt.toFixed(2);
-    
+
                 var purchaseDetailsMfdDate = dataObject.mfdDate;
                 var mfdMonth = purchaseDetailsMfdDate.slice(0, 2);
                 var mfdYear = purchaseDetailsMfdDate.slice(3, 7);
-    
+
                 var purchaseDetailsExpDate = dataObject.expDate;
                 var expMonth = purchaseDetailsExpDate.slice(0, 2);
                 var expYear = purchaseDetailsExpDate.slice(3, 7);
                 var manuf = dataObject.manufacturer;
-    
+
                 manuf = manuf.replace(/&#39/g, "'");
                 manuf = manuf.replace(/&lt/g, "<");
                 manuf = manuf.replace(/&gt/g, ">");
-    
+
                 var totalQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
-    
+
                 ///////////////////////////////// check ptr set ///////////////////////////////////
                 let mrp = dataObject.mrp;
                 let gst = dataObject.gst;
                 let chkptr = (parseFloat(mrp) * 100) / (parseFloat(gst) + 100);
                 chkptr = chkptr.toFixed(2);
                 // //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
-    
+
                 document.getElementById("purchase-id").value = dataObject.purchaseId;
                 document.getElementById("product-id").value = dataObject.productId;
                 // document.getElementById("dist-bill-no").value = dataObject.billNo;
                 document.getElementById("batch-no").value = dataObject.batchNo;
-    
+
                 document.getElementById("product-name").value = dataObject.productName;
                 document.getElementById("manufacturer-id").value = dataObject.manufId;
                 document.getElementById("manufacturer-name").value = manuf;
-    
+
                 document.getElementById("weightage").value = dataObject.weightage;
                 document.getElementById("unit").value = dataObject.unit;
-    
+
                 document.getElementById("packaging-in").value = dataObject.packageType;
                 // let check1 = document.getElementById("packaging-in").value;
                 // console.log("checking1");
                 // console.log(check1);
-    
+
                 document.getElementById("medicine-power").value = dataObject.power;
-    
+
                 document.getElementById("mfd-month").value = mfdMonth;
                 document.getElementById("mfd-year").value = mfdYear;
-    
+
                 document.getElementById("exp-month").value = expMonth;
                 document.getElementById("exp-year").value = expYear;
-    
+
                 document.getElementById("mrp").value = dataObject.mrp;
                 document.getElementById("ptr").value = dataObject.ptr;
                 document.getElementById("chk-ptr").value = chkptr;
                 document.getElementById("qty").value = dataObject.qty;
                 document.getElementById("free-qty").value = dataObject.FreeQty;
                 document.getElementById("updtQTYS").value = totalQty;
-    
+
                 document.getElementById("packaging-type").value = dataObject.packageType;
                 document.getElementById("packaging-type-edit").value = dataObject.packageType;
-    
+
                 document.getElementById("discount").value = dataObject.disc;
                 document.getElementById("gst").value = dataObject.gst;
                 document.getElementById("crntGstAmnt").value = dataObject.GstAmount;
                 document.getElementById('base').value = dataObject.baseAmount;
                 document.getElementById("bill-amount").value = dataObject.amnt;
                 document.getElementById("temp-bill-amount").value = dataObject.amnt;
-    
+
                 //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
-    
+
                 deleteData(slno, itemQty, gstPerItem, total);
             }
         })
-    }else{
+    } else {
         swal("Error", "Add previous data first!", "error");
     }
-    
+
     return false;
 }
 
@@ -143,8 +158,66 @@ firstInput.addEventListener('input', function (event) {
     }
 });
 
+//////////////// set distributor \\\\\\\\\\\\\\\
+const selectDistributor = (t) => {
+    let id = t.value;
+    let distributirName = t.selectedOptions[0].text;
+
+    document.getElementById("updated-dist-id").value = id;
+    document.getElementById("distributor-name").value = distributirName;
+}
+
+///////////// set distributo bill no \\\\\\\\\\\\
+const setDistBillNo = (t) => {
+    let val = t.value.toUpperCase();
+    // console.log(val);
+    document.getElementById("distributor-bill-no").value = val;
+}
+
+///////////// set purchse date \\\\\\\\\\\\\\\\
+var todayDate = new Date();
+var date = todayDate.getDate();
+var month = todayDate.getMonth() + 1;
+var year = todayDate.getFullYear();
+
+if (date < 10) {
+    date = '0' + date;
+}
+if (month < 10) {
+    month = '0' + month;
+}
+var todayFullDate = year + "-" + month + "-" + date;
+// console.log(todayFullDate);
+document.getElementById("bill-date").setAttribute("max", todayFullDate);
+// ========== set purchse date ===========
+const getbillDate = (billDate) => {
+    billDate = billDate.value;
+
+    document.getElementById("bill-date-val").value = billDate;
+
+    document.getElementById("due-date").setAttribute("min", billDate);
+
+    var date2 = todayDate.getDate() + 7;
+    // // console.log(date2);
+    var todayFullDate2 = year + "-" + month + "-" + date2;
+    document.getElementById("due-date").setAttribute("max", todayFullDate2);
+
+}
+
+////////////// set payment date \\\\\\\\\\\\\\\
+const getDueDate = (t) => {
+    // console.log(t.value);
+    document.getElementById("due-date-val").value = t.value;
+}
+
+//////////// set payment mode \\\\\\\\\\\\\\\\\
+const setPaymentMode = (pMode) => {
+    document.getElementById("payment-mode-val").value = pMode.value;
+}
+
+
 function searchItem(input) {
-    // console.log(input);
+    console.log(input);
     // alert(value);
     let xmlhttp = new XMLHttpRequest();
 
@@ -152,6 +225,9 @@ function searchItem(input) {
 
     if (input == "") {
         document.getElementById("product-select").style.display = "none";
+
+        document.getElementById("data-details").reset();
+        event.preventDefault();
     }
 
     if (input.length > 2) {
@@ -292,36 +368,6 @@ const getDtls = (value) => {
     document.getElementById("product-select").style.display = "none";
 }
 
-var todayDate = new Date();
-
-var date = todayDate.getDate();
-var month = todayDate.getMonth() + 1;
-var year = todayDate.getFullYear();
-
-if (date < 10) {
-    date = '0' + date;
-}
-if (month < 10) {
-    month = '0' + month;
-}
-var todayFullDate = year + "-" + month + "-" + date;
-// console.log(todayFullDate);
-document.getElementById("bill-date").setAttribute("max", todayFullDate);
-
-const getbillDate = (billDate) => {
-
-    billDate = billDate.value;
-
-    document.getElementById("due-date").setAttribute("min", billDate);
-
-    var date2 = todayDate.getDate() + 7;
-    // // console.log(date2);
-    var todayFullDate2 = year + "-" + month + "-" + date2;
-    document.getElementById("due-date").setAttribute("max", todayFullDate2);
-
-}
-
-
 const getBillAmount = () => {
     // let mrp = document.getElementById("mrp").value;
     let ptr = document.getElementById("ptr").value;
@@ -408,9 +454,9 @@ const editQTY = () => {
 //geeting bills by clicking on add button
 const addData = () => {
     var distId = document.getElementById("distributor-id");
-    var selectedOption = distId.options[distId.selectedIndex];
-    var customAttributeValue = selectedOption.getAttribute("dist-nm");
-    
+    // var selectedOption = distId.options[distId.selectedIndex];
+    // var customAttributeValue = selectedOption.getAttribute("dist-nm");
+
     var distBillid = document.getElementById("distributor-bill");
     var distBill = distBillid.value.toUpperCase();
     var prevdisbillNo = document.getElementById("prev-distributor-bill-no");
@@ -470,7 +516,7 @@ const addData = () => {
         return;
     }
 
-    if(prevdisbillNo.value == ""){
+    if (prevdisbillNo.value == "") {
         swal("Blank Field", "Please Enter Distributor Bill Number!", "error")
             .then((value) => {
                 prevdisbillNo.focus();
@@ -615,7 +661,7 @@ const addData = () => {
     var addAmount = parseFloat(billAmount.value);
     netAmount = parseFloat(net) + addAmount;
 
-    
+
     // total gst amount calculation
     let total = qty.value * ptr.value;
     let totalWithDisc = total - (discount.value / 100 * total);
@@ -634,7 +680,7 @@ const addData = () => {
 
 
     jQuery("#dataBody")
-        .append(`<tr id="table-row-${slControl}">
+        .append(`<tr id="table-row-${slControl}" style="cursor: pointer;">
             <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
            
             <td class="p-0 pt-3" id="row-${slControl}-col-1" style="font-size:.75rem ; padding-top:1rem; width: .75rem">${slno}</td>
@@ -702,14 +748,8 @@ const addData = () => {
 
         </tr>`);
 
-        // prev-distributor-bill-no
-    console.log(distId.value);
-    document.getElementById("updated-dist-id").value = distId.value; 
-    document.getElementById("distributor-name").value = customAttributeValue;
-    document.getElementById("distributor-bill-no").value = distBill;
-    document.getElementById("bill-date-val").value = billDate.value;
-    document.getElementById("due-date-val").value = dueDate.value;
-    document.getElementById("payment-mode-val").value = paymentMode.value;
+
+    stockInSave.removeAttribute("disabled");
 
     //item-table
 
@@ -851,8 +891,8 @@ const editItem = (tData) => {
         let gstPerItem = (parseFloat(tuple.billAMNT)) - (parseFloat(tuple.base) * parseInt(tuple.qty));
         gstPerItem = gstPerItem.toFixed(2);
         deleteData(tuple.slno, tuple.itemQty, gstPerItem, tuple.billAMNT);
-    }else{
-        swal("Can't Edit","Please add/edit previous item first.","error");
+    } else {
+        swal("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("ptr").focus();
     }
 }
@@ -891,6 +931,10 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     net.value = finalAmount.toFixed(2);
 
     rowAdjustment(delRow);
+
+    if (document.getElementById('items-val').value == 0) {
+        stockInSave.setAttribute("disabled", "true");
+    }
 }
 
 
@@ -937,6 +981,14 @@ expMonthInput.addEventListener('input', function (event) {
 });
 
 
+// set mfd month control
+const setmfdMonth = (mnth) => {
+    if (mnth.value.length != 2) {
+        mnth.value = '';
+        mnth.focus();
+    }
+}
+
 const setMfdMonth = (month) => {
     let yr = new Date();
     let thisMonth = yr.getMonth();
@@ -956,6 +1008,14 @@ const setMfdMonth = (month) => {
     } else {
         month.value = '';
         month.focus();
+    }
+}
+
+// set exp month control
+const setexpMonth = (mnth) => {
+    if (mnth.value.length != 2) {
+        mnth.value = '';
+        mnth.focus();
     }
 }
 

@@ -251,13 +251,14 @@ if (isset($_GET['currentStockId'])) {
 
                                 <strong>MRP: </strong><span><?php echo $MRP ?></span><br>
                                 <strong>PTR: </strong><span><?php echo $PTR ?></span><br>
-                                <strong>GST: </strong><span><?php echo $GST ?></span><br>
+                                <strong>GST Amount/</strong><strong><?php echo $pacakagingUnitName ?> : </strong><span><?php echo (floatval($GST)/intval($purchaseQTY)) ?></span><br>
                                 <strong>Discount: </strong><span><?php echo $discount ?></span><br>
                                 <strong>Base Price: </strong><span><?php echo $basePrice ?></span><br>
                                 <strong>Purchase Amount: </strong><span><?php echo $purchaseAmount ?></span><br>
+                                <strong>TOTAL GST: </strong><span><?php echo $GST ?></span><br>
                                 <strong>Current Stock: </strong><span><?php echo $currentStock ?></span><br>
                                 <strong>Loose Stock: </strong><span><?php echo $looseStock ?></span><br>
-                                <strong>Row Serial No: </strong><span><?php echo $slNo ?></span><br>
+                                <!-- <strong>Row Serial No: </strong><span><?php echo $slNo ?></span><br> -->
                             </div>
 
                             <div class="col-1">

@@ -13,10 +13,12 @@
     <?php
     require_once '../../../php_control/products.class.php';
     require_once '../../../php_control/productsImages.class.php';
+    require_once '../../../php_control/measureOfUnit.class.php';
     require_once '../../_config/sessionCheck.php';
 
     $Products      = new Products();
     $ProductImages = new ProductImages();
+    $Unit = new MeasureOfUnits();
     $Session = new SessionHandler();
 
 
@@ -42,6 +44,9 @@
 
         $weatage            = $_POST['unit-quantity'];
         $unit               = $_POST['unit'];
+        $unitType = $Unit->showMeasureOfUnitsById($unit);
+        $unitName = $unitType[0]['short_name'];
+       
         $packagingType      = $_POST['packaging-type'];
         $mrp                = $_POST['mrp'];
         $gst                = $_POST['gst'];
@@ -56,7 +61,7 @@
         $productId = 'PR' . $randNum;
 
         //Insert into products table of DB
-        $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $weatage, $unit, $mrp, $gst, $productComposition);
+        $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $weatage, $unit, $unitName, $mrp, $gst, $productComposition);
         // $addProducts = TRUE;
         // IMAGE UPLOAD SECTION ====================
         if ($addProducts == TRUE) {

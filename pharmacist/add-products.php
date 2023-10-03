@@ -49,10 +49,10 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <!-- <link href="css/add-products.css" rel="stylesheet"> -->
     <link href="css/custom/add-products.css" rel="stylesheet">
 
-    <!-- UPPY Link -->
+    <!-- UPPY Link
     <link href="https://releases.transloadit.com/uppy/v3.14.0/uppy.min.css" rel="stylesheet">
 
-    <link href="/uppy core/dist/uppy.min.css" rel="stylesheet">
+    <link href="/uppy core/dist/uppy.min.css" rel="stylesheet"> -->
 
 </head>
 
@@ -128,7 +128,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                         <?php
                                                         foreach ($showMeasureOfUnits as $rowUnit) {
 
-                                                            echo '<option value="' . $rowUnit['short_name'] . '">' . $rowUnit['short_name'] . '</option>';
+                                                            echo '<option value="' . $rowUnit['id'] . '">' . $rowUnit['short_name'] . '</option>';
                                                         }
                                                         ?>
                                                     </select>
@@ -397,7 +397,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         <!-- Page level custom scripts -->
         <!-- <script src="js/demo/datatables-demo.js"></script> -->
 
-        <script src="/uppy core/dist/uppy.min.js"></script>
+        <!-- <script src="/uppy core/dist/uppy.min.js"></script> -->
         <script src="js/custom/add-products.js"></script>
 
         <!-- js library import -->

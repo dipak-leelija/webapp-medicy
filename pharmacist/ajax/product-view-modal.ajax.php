@@ -173,7 +173,7 @@ $CurrentStock   = new CurrentStock();
 
                         <div class="row justify-content-center mt-4">
                             <div class="col-2">
-                                <button class="button2 btn-primary"><a id="anchor1" href="../edit-product.php?id=<?php echo $_GET['id']; ?>">Edit</a></button>
+                                <button class="button2 btn-primary"><a id="anchor1" href="../edit-product.php?id=<?php echo $_GET['product_id']; ?>">Edit</a></button>
                             </div>
                             <div class="col-2">
                                 <button class="button3 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>

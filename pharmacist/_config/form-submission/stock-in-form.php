@@ -24,10 +24,11 @@ $StcokReturn = new StockReturn();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['stock-in'])) {
 
+        $distributorId        = $_POST['distributor-id'];
         $distributorName      = $_POST['distributor-name'];
-        $distributorDetial = $distributor->selectDistributorByName($distributorName);
+       
+        $distributorDetial = $distributor->showDistributorById($distributorId);
         foreach ($distributorDetial as $distDeta) {
-            $distributorId      = $distDeta['id'];
             $distAddress        = $distDeta['address'];
             $distPIN            = $distDeta['area_pin_code'];
             $distContact        = $distDeta['phno'];

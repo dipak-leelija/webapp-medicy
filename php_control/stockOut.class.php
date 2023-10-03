@@ -4,15 +4,31 @@ require_once 'dbconnect.php';
 
 class StockOut extends DatabaseConnection{
 
-    function addStockOut($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy){
-        
-        $insertBill = "INSERT INTO  stock_out (`invoice_id`, `customer_id`, `reff_by`, `items`, `qty`, `mrp`, `disc`, `gst`, `amount`,	`payment_mode`, `bill_date`, `added_by`) VALUES ('$invoiceId', '$customerId', '$reffBy', '$itemsNo', '$qty', '$mrp', '$disc', '$gst', '$amount', '$paymentMode', '$billDate', '$addedBy')";
-        // echo $insertEmp.$this->conn->error;
-        // exit;
-        $insertBillQuery = $this->conn->query($insertBill);
-        return $insertBillQuery;
-
-    }//end addLabBill function
+    function addStockOut($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy) {
+        try {
+            // Prepare the SQL statement with placeholders
+            $insertBill = "INSERT INTO stock_out (`invoice_id`, `customer_id`, `reff_by`, `items`, `qty`, `mrp`, `disc`, `gst`, `amount`, `payment_mode`, `bill_date`, `added_by`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            // Prepare and bind the parameters
+            $stmt = $this->conn->prepare($insertBill);
+            $stmt->bind_param("ssssssssssss", $invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy);
+            
+            // Execute the statement
+            if ($stmt->execute()) {
+                // Insert successful, return the inserted ID
+                $insertedId = $stmt->insert_id;
+                $stmt->close();
+                return array("success" => true, "insert_id" => $insertedId);
+            } else {
+                // Insert failed
+                throw new Exception("Error inserting data into the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            // Handle the exception, log the error, or return an error message as needed
+            return array("success" => false, "error" => "Error: " . $e->getMessage());
+        }
+    }
+    
 
 
     function stockOutDisplay(){
@@ -203,9 +219,9 @@ class StockOut extends DatabaseConnection{
 #                                                                                                         #
 ###########################################################################################################
 
-    function addStockOutDetails($invoiceId, $itemId, $productId, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $margin, $amount, $addedBy){
+    function addStockOutDetails($invoiceId, $itemId, $productId, $productName, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $gstAmount, $margin, $taxable, $amount, $addedBy){
     
-        $addStockOutDetails = "INSERT INTO `stock_out_details`(`invoice_id`, `item_id`, `product_id`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `margin`, `amount`, `added_by`) VALUES ('$invoiceId','$itemId','$productId','$batchNo','$expDate','$weightage','$unit','$qty','$looselyCount','$mrp','$ptr','$discount','$gst','$margin','$amount','$addedBy')";
+        $addStockOutDetails = "INSERT INTO `stock_out_details`(`invoice_id`, `item_id`, `product_id`, `item_name`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `gst_amount`, `margin`, `taxable`, `amount`, `added_by`) VALUES ('$invoiceId','$itemId','$productId', '$productName','$batchNo','$expDate','$weightage','$unit','$qty','$looselyCount','$mrp','$ptr','$discount','$gst','$gstAmount','$margin','$taxable','$amount','$addedBy')";
 
         $addDetails = $this->conn->query($addStockOutDetails);
         return $addDetails;

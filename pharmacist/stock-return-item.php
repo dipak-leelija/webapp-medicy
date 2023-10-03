@@ -89,9 +89,9 @@ $showDistributor       = $Distributor->showDistributor();
 
                                 <div class="col-md-2 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Select Bill No.</label>
-                                    <input class="upr-inp mb-1" id="select-bill-no" name="select-bill-no" placeholder="Search Bill" onkeyup="getItemList(this.value)" autocomplete="off">
+                                    <input class="upr-inp mb-1" id="select-bill-no" name="select-bill-no" placeholder="Search Bill" onkeyup="getItemList(this.value)" autocomplete="off" readonly>
                                     <!-- onchange="getDtls(this);" -->
-                                    <div class="p-2 bg-light" id="select-bill" style="margin-left: 0rem;box-shadow: 0 5px 10px rgb(0 0 0 / 30%); transition: 3.3s ease; overflow: auto; display: none;  max-width: 100%;">
+                                    <div class="p-2 bg-light" id="select-bill" style="margin-left: 0rem;box-shadow: 0 5px 10px rgb(0 0 0 / 30%); transition: 3.3s ease; overflow: auto; display: none;  max-width: 100%; min-width: 100%; position: absolute; z-index: 100;">
                                     </div>
                                     <input type="text" id="bill-no" hidden>
                                 </div>
@@ -291,7 +291,7 @@ $showDistributor       = $Distributor->showDistributor();
 
                                             <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="refund-amount">Refund:</label>
-                                                <input type="text" class="upr-inp focus-border" name="refund-amount" id="refund-amount">
+                                                <input type="text" class="upr-inp focus-border" name="refund-amount" id="refund-amount" readonly>
                                             </div>
 
                                             <div class="col-md-3 col-6 mt-auto text-right">

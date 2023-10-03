@@ -49,7 +49,8 @@ if (isset($_POST['submit'])) {
 
 
   //insertion into DB
-  $addAppointment = $appointments->addAppointments($appointmentId, $appointmentDate, $patientName, $patientGurdianNAme, $patientEmail, $patientPhoneNumber, $patientDOB, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $patientDoctorShift);
+  $addAppointment = $appointments->addAppointments($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianNAme, $patientEmail, $patientPhoneNumber, $patientDOB, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $patientDoctorShift);
+
   if ($addAppointment) {
     echo "Perfect";
     unset($_SESSION['mobNum']);

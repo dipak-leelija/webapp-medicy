@@ -165,7 +165,7 @@ $doctor = $Doctors->showDoctors();
                                         <div class="col-md-3 mt-3 col-12">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Item Name</label><br>
                                             <input type="any" id="product-id" style="display: none;">
-                                            <input type="text" id="product-name" class="sale-inp-item" onkeyup="searchItem(this.value)" autocomplete="off">
+                                            <input type="text" id="product-name" class="sale-inp-item" onkeyup="searchItem(this.value)" onkeydown="chekForm()" autocomplete="off">
                                         </div>
 
                                         <div class="col-md-1 mt-3 col-6">
