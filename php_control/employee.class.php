@@ -108,7 +108,15 @@ class Employees extends DatabaseConnection{
        
 
 
-
+    function showDesignation(){
+        try{
+            $sql = "SELECT * FROM designation";
+            $result  = $this->conn->query( $sql );
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 
 
 
