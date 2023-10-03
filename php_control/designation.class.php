@@ -5,16 +5,25 @@ class Designation extends DatabaseConnection{
 
     function designationRole(){
 
-        $sql = "SELECT id, emp_role FROM `employees` ";
+        $sql = "SELECT * FROM `employees` ";
         $result = $this->conn->query($sql);
 
+        $data = array();
+
         if($result->num_rows > 0){
-            while($data = $result->fetch_object()){
-                $data->emp_role = strtoupper($data->emp_role);
-                $json_data = json_encode($data->emp_role);
+            while($row = $result->fetch_object()){
+                $row->emp_role = strtoupper($row->emp_role);
+                $data[]= $row;
+                // $json_data = json_encode($data);
                 // echo $json_data;
             }
+            return json_encode($data);
         }
+        return $data;
     }
+    
 }
+
+
+
 ?>
