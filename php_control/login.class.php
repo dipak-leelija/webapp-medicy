@@ -1,69 +1,65 @@
 <?php
 require_once 'dbconnect.php';
 
-class LoginForm extends DatabaseConnection
-{
+    $desRole = new Designation();
+    $roleData = $desRole->designationRole();
+    print_r($roleData);
 
-    function login($email, $password, $roleData)
-    {
+    class LoginForm extends DatabaseConnection{
 
-        $sql = "SELECT * FROM `admin` WHERE `email` = '$email'";
-        $result = $this->conn->query($sql);
+        function login($email,$password){
+            
+            $sql = "SELECT * FROM `admin` WHERE `email` = '$email'";
+            $result = $this->conn->query($sql);  
 
-        // var_dump($result);
-        if ($result->num_rows > 0) {
-            while ($data = $result->fetch_object()) {
-                echo $dbPasshash = $data->password;
-                if (password_verify($password, $dbPasshash)) {
-                    session_start();
-                    $_SESSION['loggedin'] = true;
-                    $_SESSION['admin'] = true;
-                    $_SESSION['userEmail'] = $email;
-
-                    header("Location: admin/index.php");
-                } else {
-                    echo 'Wrong Password';
-                }
-            }
-        } else {
-            $sql = "SELECT * FROM `employees` WHERE `emp_email` = '$email'";
-            $result = $this->conn->query($sql);
-            if ($result->num_rows > 0) {
-                while ($data = $result->fetch_object()) {
+            // var_dump($result);
+                if($result->num_rows > 0){
+                    while($data = $result->fetch_object()){
+                       echo $dbPasshash = $data->password;
+                        if(password_verify($password, $dbPasshash)){
+                            session_start();
+                            $_SESSION['loggedin'] = true;
+                            $_SESSION['admin'] = true;
+                            $_SESSION['userEmail'] = $email;
+                           
+                            header("Location: admin/index.php");
+                        }else {
+                            echo 'Wrong Password';
+                        }
+                    }
+                }else{
+                $sql = "SELECT * FROM `employees` WHERE `emp_email` = '$email'";
+                $result = $this->conn->query($sql);
+                if($result->num_rows > 0){
+                    while($data = $result->fetch_object()){
 
                     $dbPasshash = $data->employee_password;
 
                     $empRole = $data->emp_role;
 
-                    //catch emp_role from designation
-                    // echo "data..." . $roleData;
-                    $decodedData = json_decode($roleData, true);
-                    if ($decodedData) {
-                        foreach ($decodedData as $data) {
-                            $desigempRole = $data['emp_role'];
-                            // echo "Employee Role: " . $desigempRole . "<br>";
+                        if(password_verify($password, $dbPasshash)){
+                            session_start();
+                            $_SESSION['loggedin'] = true;
+                            $_SESSION['employees'] = true;
+                            $_SESSION['userEmail'] = $email;
+                            
+                            if($empRole == 'Pharmacist'){
+                                header("Location: pharmacist/index.php");
+                            }elseif($empRole == 'Receptionist'){
+                                header("Location: index.php");
+                            }else{
+                                 header("Location: login.php");
+                            }
+                            // header("Location: index.php");
+                        }else {
+                            echo 'Wrong Password';
                         }
                     }
-
-                    if (password_verify($password, $dbPasshash)) {
-                        session_start();
-                        $_SESSION['loggedin'] = true;
-                        $_SESSION['employees'] = true;
-                        $_SESSION['userEmail'] = $email;
-
-                        echo "Employee Role: " . $desigempRole;
-
-                        if($empRole == $desigempRole){
-                            echo "send";
-                            // header("Location: pharmacist/index.php");
-                        }
-                    } else {
-                        echo 'Wrong Password';
-                    }
+                }else {
+                    echo 'user not found';
                 }
-            } else {
-                echo 'user not found';
             }
+
+            
         }
     }
-}

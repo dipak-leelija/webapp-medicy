@@ -30,7 +30,6 @@ if (isset($_GET['data'])) {
         $resultData[] = $result;
     }
     // $searchResult = $Search->searchForSale($data);
-    print_r($resultData);
 }
 
 if ($resultData) {
