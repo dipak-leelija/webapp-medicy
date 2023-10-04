@@ -13,7 +13,7 @@ class LoginForm extends DatabaseConnection
         // var_dump($result);
         if ($result->num_rows > 0) {
             while ($data = $result->fetch_object()) {
-                echo $dbPasshash = $data->password;
+                $dbPasshash = $data->password;
                 if (password_verify($password, $dbPasshash)) {
                     session_start();
                     $_SESSION['loggedin'] = true;
@@ -26,22 +26,39 @@ class LoginForm extends DatabaseConnection
                 }
             }
         } else {
+
+            // $resultData = array();
             $sql = "SELECT * FROM `employees` WHERE `emp_email` = '$email'";
             $result = $this->conn->query($sql);
+
+            // print_r($result);
+
+            // $data = array();
+            // $select = "SELECT * FROM current_stock GROUP BY `current_stock`.`product_id`";
+            // $selectQuery = $this->conn->query($select);
+            // while ($result = $selectQuery->fetch_array()) {
+            //     $data[] = $result;
+            // }
+            // return $data;
+
+
             if ($result->num_rows > 0) {
                 while ($data = $result->fetch_object()) {
 
+                    // $resultData[] = $data;
+                    // print_r($resultData);
+
                     $dbPasshash = $data->employee_password;
-
                     $empRole = $data->emp_role;
+                    // echo "$empRole";
 
-                    //catch emp_role from designation
-                    // echo "data..." . $roleData;
                     $decodedData = json_decode($roleData, true);
+                    // echo "<br>"; print_r($decodedData);
                     if ($decodedData) {
                         foreach ($decodedData as $data) {
+                            $empUserName = $data['employee_username'];
                             $desigempRole = $data['emp_role'];
-                            // echo "Employee Role: " . $desigempRole . "<br>";
+                            // echo "<br>Employee username & Role: $empUserName && " . $desigempRole . "<br>";
                         }
                     }
 
@@ -51,9 +68,9 @@ class LoginForm extends DatabaseConnection
                         $_SESSION['employees'] = true;
                         $_SESSION['userEmail'] = $email;
 
-                        echo "Employee Role: " . $desigempRole;
+                        // echo "Employee Role: " . $desigempRole;
 
-                        if($empRole == $desigempRole){
+                        if ($empRole == $desigempRole) {
                             echo "send";
                             // header("Location: pharmacist/index.php");
                         }

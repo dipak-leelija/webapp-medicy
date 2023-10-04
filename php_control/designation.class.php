@@ -14,8 +14,6 @@ class Designation extends DatabaseConnection{
             while($row = $result->fetch_object()){
                 $row->emp_role = strtoupper($row->emp_role);
                 $data[]= $row;
-                // $json_data = json_encode($data);
-                // echo $json_data;
             }
             return json_encode($data);
         }
