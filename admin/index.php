@@ -1,5 +1,5 @@
-<?php 
-require_once 'sessionCheck.php';//check admin loggedin or not
+<?php
+require_once 'sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/appoinments.class.php';
 require_once '../php_control/currentStock.class.php';
 require_once '../php_control/stockOut.class.php';
@@ -33,15 +33,12 @@ $totalAppointments = $appoinments->appointmentsDisplay();
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link href="css/custom/custom.css" rel="stylesheet">
     <link rel="stylesheet" href="css/custom-dashboard.css">
-
 
 </head>
 
@@ -70,8 +67,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
 
                     <!-- Content Row -->
@@ -129,9 +125,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,7 +164,8 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 TODAY TOTAL APPOINTMENT</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php //echo count($totalAppointments); ?> 000</div>
+                                                <?php //echo count($totalAppointments); 
+                                                ?> 000</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar-check"></i>
@@ -265,12 +260,12 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                         <div class="col-xl-3 col-md-6 mb-4">
                             <?php require_once "partials/salesoftheday.php"; ?>
                         </div>
-                        
+
                         <!----------- Purchase today card ----------->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <?php require_once "partials/purchasedToday.php"; ?>
                         </div>
-                       
+
                     </div>
 
                     <!-- ================== SECOND ROW ================== -->
@@ -283,8 +278,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                                         <a class="text-decoration-none" href="#">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
-                                                    <div
-                                                        class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                         Sales Margin
                                                     </div>
                                                     <div class="table-responsive">
@@ -346,7 +340,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                         </div>
                         <div class="col-xl-9 col-md-6">
                             <!------------- Stock Summary -------------->
-                                <?php require_once "partials/stock-summary.php"; ?>
+                            <?php require_once "partials/stock-summary.php"; ?>
                             <!------------- end Stock Summary -------------->
 
                         </div>
@@ -374,8 +368,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

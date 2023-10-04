@@ -34,7 +34,7 @@
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <img src="../../images/arrow-down-sign-to-navigate.jpg" alt="">
-                <!-- <img src="/pharmacist/partials/" alt=""> -->
+                
                 <b>...</b>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
