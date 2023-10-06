@@ -67,7 +67,7 @@ firstInput.addEventListener('input', function (event) {
 
 //////////////////// set distributor name /////////////////////
 
-const selectDistributor = (t) =>{
+const selectDistributor = (t) => {
     let id = t.value;
     let distributirName = t.selectedOptions[0].text;
 
@@ -77,7 +77,7 @@ const selectDistributor = (t) =>{
 
 //////////////////// set distributor bill no /////////////////////
 
-const setDistBillNo = (t) =>{
+const setDistBillNo = (t) => {
     let val = t.value.toUpperCase();
     // console.log(val);
     document.getElementById("distBill-no").value = val;
@@ -102,7 +102,7 @@ document.getElementById("bill-date").setAttribute("max", todayFullDate);
 // =======  bill date set ===========
 const getbillDate = (billDate) => {
     billDate = billDate.value;
-    
+
     document.getElementById("bill-date-val").value = billDate;
 
     document.getElementById("due-date").setAttribute("min", billDate);
@@ -113,13 +113,13 @@ const getbillDate = (billDate) => {
 }
 
 //////////////////// set due date /////////////////////
-const getDueDate = (t) =>{
+const getDueDate = (t) => {
     // console.log(t.value);
     document.getElementById("due-date-val").value = t.value;
 }
 
 /////////////////////// SET PAYMENT MODE \\\\\\\\\\\\\\\\\\\\\\
-const setPaymentMode = (pMode) =>{
+const setPaymentMode = (pMode) => {
     document.getElementById("payment-mode-val").value = pMode.value;
 }
 
@@ -343,12 +343,10 @@ const getBillAmount = () => {
     let ptr = document.getElementById("ptr").value;
     let Mrp = document.getElementById("mrp").value;
     let chkPtr = document.getElementById("chk-ptr").value;
-   
+
     let PTR = parseFloat(ptr);
     let MRP = parseFloat(Mrp);
     let ChkPtr = parseFloat(chkPtr);
-    console.log("check function");
-    console.log(PTR);
     if (PTR > ChkPtr) {
         swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
         document.getElementById("ptr").value = ChkPtr;
@@ -770,7 +768,7 @@ const addData = () => {
 //==============////////////////// ADDED ITEM EDIT FUNCTION \\\\\\\\\\\\\\\\\\=====================
 
 const editItem = (tupleData) => {
-    console.log(tupleData);
+
     let checkFild = document.getElementById("product-id").value;
 
     if (checkFild == "") {
@@ -848,6 +846,12 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     net.value = finalAmount.toFixed(2);
 
     rowAdjustment(delRow);
+
+    let tBody = document.getElementById('dataBody');
+        console.log(tBody.getElementsByTagName('tr').length);
+        if(tBody.getElementsByTagName('tr').length == 0){
+            newSellGenerateBill.setAttribute("disabled", "true");
+        }
 }
 
 
@@ -897,7 +901,7 @@ expMonthInput.addEventListener('input', function (event) {
 
 // set mfd month control
 const setmfdMonth = (mnth) => {
-    if(mnth.value.length != 2){
+    if (mnth.value.length != 2) {
         mnth.value = '';
         mnth.focus();
     }
@@ -927,7 +931,7 @@ const setMfdMonth = (month) => {
 
 // set exp month control
 const setexpMonth = (mnth) => {
-    if(mnth.value.length != 2){
+    if (mnth.value.length != 2) {
         mnth.value = '';
         mnth.focus();
     }
@@ -1040,7 +1044,4 @@ const setExpYear = (year) => {
     }
 }
 
-
-
-
-
+///////////////// ===== product select arrow key effect ===== \\\\\\\\\\\\\\\\\\\\\\\

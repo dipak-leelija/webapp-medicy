@@ -12,7 +12,6 @@ require_once '../php_control/packagingUnit.class.php';
 $page = "stock-in";
 
 
-
 //objects Initilization
 $Products           = new Products();
 $Distributor        = new Distributor();

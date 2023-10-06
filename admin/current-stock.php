@@ -19,7 +19,7 @@ $Manufacturer   = new Manufacturer();
 $showCurrentStock = $CurrentStock->showCurrentStock();
 // print_r($showCurrentStock);
 $countCurrentStock = count($showCurrentStock);
-
+// echo "$countCurrentStock";
 $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
 
 
@@ -123,7 +123,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
                                                     $currentStockId      = $rowStock['id'];
                                                     // echo "$currentStockId<br>";
                                                     $productId           = $rowStock['product_id'];
-                                                    // echo $productId;
+                                                    // echo $productId."<br>";
                                                     $image               = $ProductImages->showImageById($productId);
                                                     // print_r($image);exit;
                                                     $mainImage = 'medicy-default-product-image.jpg';
@@ -204,7 +204,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
     
                                                             
                                                                     <td class='align-middle'>
-                                                                        <a class='text-primary mr-2' id='<?php echo $productId ?>' onclick='currentStockView(this.id)' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-eye'></i></a>
+                                                                        <a class='text-primary mr-2' onclick='currentStockView("<?php echo $productId ?>")' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-eye'></i></a>
 
                                                                         <!-- <a class='text-danger' id='".$productId."' onclick='customDelete(this.id)' data-toggle='modal' data-target='#DeleteCurrentStockModal'><i class='fas fa-trash'></i>
                                                                         </a> -->
@@ -308,7 +308,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
     <script>
 
         const customDelete = (productId) => {
-            // alert(productId);
+            alert(productId);
             let url = "ajax/currentStock.delete.ajax.php?currentStockProductId=" + productId;
             $(".current-stock-view").html(
                 '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
@@ -318,9 +318,9 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
 
         //======================================= CURRENT STOCK VIEW ========================================
 
-        const currentStockView = (currentStockId) => {
-            // alert(currentStockId);
-            let url = "ajax/currentStock.view.ajax.php?currentStockId=" + currentStockId;
+        const currentStockView = (productId) => {
+            // alert(productId);
+            let url = "ajax/currentStock.view.ajax.php?currentStockId=" + productId;
             $(".current-stock-view").html(
                 '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');

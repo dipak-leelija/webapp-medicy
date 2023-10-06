@@ -103,11 +103,11 @@ if (isset($_GET['invoice'])) {
                         </thead>
                         <tbody>
                             <?php 
-                            $details = $StockOut->stockOutDetailsById($_GET['invoice']);
+                            $details = $StockOut->stockOutDetailsDisplayById($_GET['invoice']);
                             // print_r($details);
                             foreach ($details as $detail) {
                                 // print_r($detail);
-                                $weatage = $detail['weatage'];
+                                $weatage = $detail['weightage'];
                                 $itemUnit = preg_replace('/[0-9]/','',$weatage);
                                 echo $itemUnit;
 
@@ -121,12 +121,12 @@ if (isset($_GET['invoice'])) {
                             
                                 echo'<tr>
                                         <td>'.$detail['item_name'].'</td>
-                                        <td>'.$detail['weatage'].'</td>
+                                        <td>'.$detail['weightage'].$detail['unit'].'</td>
                                         <td>'.$detail['batch_no'].'</td>
                                         <td>'.$detail['exp_date'].'</td>
                                         <td>'.$detail['mrp'].'</td>
                                         <td>'.$qty.$suffix.'</td>
-                                        <td>'.$detail['disc'].'</td>
+                                        <td>'.$detail['discount'].'</td>
                                         <td>'.$detail['taxable'].'</td>
                                         <td>'.$detail['gst'].'</td>
                                         <td class="text-right">'.$detail['amount'].'</td>

@@ -1,3 +1,87 @@
+var updateSalesBtn = document.getElementById("update-sales-btn");
+
+/////////////////////////////// edit item from table select \\\\\\\\\\\\\\\\\\\\\\\\
+
+const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) => {
+console.log("on edit call sl no  : "+slno);
+    if (document.getElementById('product-id').value == '') {
+
+        $.ajax({
+            url: "ajax/newSalesEdit.ajax.php",
+            type: "POST",
+            data: {
+                stock_out_details_id: stockOutId,
+                Stock_out_item_id: itemId
+            },
+            success: function (data) {
+                // alert(data);
+                var dataObject = JSON.parse(data);
+
+                var sellQty = parseInt(dataObject.sellQty);
+                var mrp = parseFloat(dataObject.Mrp);
+                var itemUnit = dataObject.itemUnit;
+                var itemWeatage = parseInt(dataObject.itemWeatage);
+                var discPercent = parseFloat(dataObject.dicPercent);
+                var looseStock = '';
+                var loosePrice = '';
+                var typeCheck = '';
+
+                if (itemUnit == 'tab' || itemUnit == 'cap') {
+                    looseStock = dataObject.availableQty;;
+                    loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
+                    if (sellQty % itemWeatage == 0) {
+                        typeCheck = 'Pack';
+                    } else {
+                        typeCheck = 'Loose';
+                    }
+                } else {
+                    looseStock = '';
+                    loosePrice = '';
+                    typeCheck = '';
+                }
+
+                var discPrice = parseFloat(mrp) - (parseFloat(mrp) * parseFloat(discPercent) / 100);
+                //==============================================================
+                document.getElementById('invoice-id').value = dataObject.invoiceId;
+                document.getElementById('stock-out-details-id').value = dataObject.stockOutDetailsId;
+                document.getElementById('item-id').value = dataObject.itemId;
+                document.getElementById('product-id').value = dataObject.productId;
+                document.getElementById('search-Item').value = dataObject.productName;
+                document.getElementById('manuf').value = dataObject.manufId;
+                document.getElementById('manufName').value = dataObject.manufName;
+                document.getElementById('productComposition').value = dataObject.productComposition;
+                document.getElementById('batch-no').value = dataObject.batchNo;
+                document.getElementById('weightage').value = dataObject.packOf;
+                document.getElementById('item-weightage').value = dataObject.itemWeatage;
+                document.getElementById('item-unit').value = dataObject.itemUnit;
+                document.getElementById('exp-date').value = dataObject.expDate;
+                document.getElementById('mrp').value = dataObject.Mrp;
+                document.getElementById('loose-price').value = loosePrice;
+                document.getElementById('ptr').value = dataObject.Ptr;
+                document.getElementById('aqty').value = dataObject.availableQty;
+                document.getElementById('loose-stock').value = looseStock;
+                document.getElementById('qty').value = dataObject.sellQty;
+                document.getElementById('type-check').value = typeCheck;
+                document.getElementById('disc').value = dataObject.dicPercent;
+                document.getElementById('dPrice').value = discPrice;
+                document.getElementById('gst').value = dataObject.gstPercent;
+                document.getElementById('margin').value = dataObject.margin;
+                document.getElementById('taxable').value = dataObject.taxable;
+                document.getElementById('amount').value = dataObject.paybleAmount;
+                //==============================================================
+                document.getElementById("exta-details").style.display = "block";
+
+                deleteItem(slno, itemQty, gstamnt, mrpPerItem, payblePerItem);
+            }
+        })
+    } else {
+        swal("Failed!", "Please ADD previous data first!", "error");
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
 const getDate = (date) => {
     // alert(date);
     document.getElementById("final-bill-date").value = date;
@@ -577,17 +661,9 @@ const addSummary = () => {
     let paymentMode = document.getElementById("payment-mode").value;
 
     let invoiceId = document.getElementById('invoice-id').value;
-    let pharmacyDataId = document.getElementById("pharmacy-data-id").value;
     let stockOutDetailsId = document.getElementById("stock-out-details-id").value;
     let itemId = document.getElementById("item-id").value;
 
-    // let itemEditTrigger = '';
-    // if(pharmacyDataId == '' && stockOutDetailsId == ''){
-    //     itemEditTrigger = 'new';
-    // }else{
-    //      = 'old';
-    // }
-    // // console.log("edit type check : ",itemEditTrigger);
 
     let Manuf = document.getElementById("manuf").value;
     let ManufName = document.getElementById('manufName').value;
@@ -769,7 +845,6 @@ const addSummary = () => {
             </td>
 
             <td class="d-none">
-                <input type="text" name="pharmacy-data-id[]" value="${pharmacyDataId}" readonly>
                 <input type="text" name="stockOut-details-id[]" value="${stockOutDetailsId}" readonly>
             </td>
 
@@ -837,7 +912,6 @@ const addSummary = () => {
     const dataTuple = {
         slno: slControl,
         invoiceId: invoiceId,
-        pharmacyDataId: pharmacyDataId,
         stockOutDetailsId: stockOutDetailsId,
         itemId: itemId,
         Manuf: Manuf,
@@ -909,86 +983,15 @@ const addSummary = () => {
 }
 
 
-const editItem = (pharmacyId, stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) => {
-
-    if (document.getElementById('product-id').value == '') {
-
-        $.ajax({
-            url: "ajax/newSalesEdit.ajax.php",
-            type: "POST",
-            data: {
-                pharmacy_details_id: pharmacyId,
-                stock_out_details_id: stockOutId,
-                Stock_out_item_id: itemId
-            },
-            success: function (data) {
-                // alert(data);
-                var dataObject = JSON.parse(data);
-
-                var sellQty = parseInt(dataObject.sellQty);
-                var mrp = parseFloat(dataObject.Mrp);
-                var itemUnit = dataObject.itemUnit;
-                var itemWeatage = parseInt(dataObject.itemWeatage);
-                var discPercent = parseFloat(dataObject.dicPercent);
-                var looseStock = '';
-                var loosePrice = '';
-                var typeCheck = '';
-
-                if (itemUnit == 'tab' || itemUnit == 'cap') {
-                    looseStock = dataObject.availableQty;;
-                    loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
-                    if (sellQty % itemWeatage == 0) {
-                        typeCheck = 'Pack';
-                    } else {
-                        typeCheck = 'Loose';
-                    }
-                } else {
-                    looseStock = '';
-                    loosePrice = '';
-                    typeCheck = '';
-                }
-
-                var discPrice = parseFloat(mrp) - (parseFloat(mrp) * parseFloat(discPercent) / 100);
-                //==============================================================
-                document.getElementById('invoice-id').value = dataObject.invoiceId;
-                document.getElementById('pharmacy-data-id').value = dataObject.pharmacyId;
-                document.getElementById('stock-out-details-id').value = dataObject.stockOutDetailsId;
-                document.getElementById('item-id').value = dataObject.itemId;
-                document.getElementById('product-id').value = dataObject.productId;
-                document.getElementById('search-Item').value = dataObject.productName;
-                document.getElementById('manuf').value = dataObject.manufId;
-                document.getElementById('manufName').value = dataObject.manufName;
-                document.getElementById('productComposition').value = dataObject.productComposition;
-                document.getElementById('batch-no').value = dataObject.batchNo;
-                document.getElementById('weightage').value = dataObject.packOf;
-                document.getElementById('item-weightage').value = dataObject.itemWeatage;
-                document.getElementById('item-unit').value = dataObject.itemUnit;
-                document.getElementById('exp-date').value = dataObject.expDate;
-                document.getElementById('mrp').value = dataObject.Mrp;
-                document.getElementById('loose-price').value = loosePrice;
-                document.getElementById('ptr').value = dataObject.Ptr;
-                document.getElementById('aqty').value = dataObject.availableQty;
-                document.getElementById('loose-stock').value = looseStock;
-                document.getElementById('qty').value = dataObject.sellQty;
-                document.getElementById('type-check').value = typeCheck;
-                document.getElementById('disc').value = dataObject.dicPercent;
-                document.getElementById('dPrice').value = discPrice;
-                document.getElementById('gst').value = dataObject.gstPercent;
-                document.getElementById('margin').value = dataObject.margin;
-                document.getElementById('taxable').value = dataObject.taxable;
-                document.getElementById('amount').value = dataObject.paybleAmount;
-                //==============================================================
-                document.getElementById("exta-details").style.display = "block";
-                deleteItem(slno, itemQty, gstamnt, mrpPerItem, payblePerItem);
-            }
-        })
-    } else {
-        swal("Failed!", "Please ADD previous data first!", "error");
-    }
-
-}
+/////////////////////////////////// delete item from table row \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
+
+    console.log("sl no on delete : "+slno);
+    console.log("item qty on delete : "+itemQty);
+    console.log("gst per item on delete : "+gstPerItem);
+    console.log("total mrp on delete : "+totalMrp);
+    console.log("item amount on delete : "+itemAmount);
 
     let delRow = slno;
 
@@ -1024,6 +1027,14 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
     // document.getElementById("no-item").style.display = "none";
 
     rowAdjustment(delRow);
+
+
+    //update button contorl ================ 
+    
+    let tBody = document.getElementById('item-body');
+        if(tBody.getElementsByTagName('tr').length == 0){
+            updateSalesBtn.setAttribute("disabled", "true");
+        }
 }
 
 function rowAdjustment(delRow) {
@@ -1048,7 +1059,6 @@ const itemEditOption = (tuple) => {
         let tData = JSON.parse(tuple);
 
         document.getElementById('invoice-id').value = tData.invoiceId;
-        document.getElementById('pharmacy-data-id').value = tData.pharmacyDataId;
         document.getElementById('stock-out-details-id').value = tData.stockOutDetailsId;
 
         document.getElementById('item-id').value = tData.itemId;

@@ -457,7 +457,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
 <script>
     const back = () => {
-        window.location.replace("../../../pharmacist/stock-in.php")
+        window.location.replace("../../stock-in.php")
     }
 
     const goBack = (id, value) => {

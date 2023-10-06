@@ -9,32 +9,12 @@ $Products = new Products();
 $CurrentStock = new CurrentStock();
 $Manufacturer = new Manufacturer();
 
-$pharmacyDetialsId = $_POST['pharmacy_details_id'];
+
 $StockOutDetaislId = $_POST['stock_out_details_id'];
 $itemId = $_POST['Stock_out_item_id'];
 $table = 'id';
 
 ////////////// STOCK OUT DATA AND SALES ITEM DATA FETCH AREA \\\\\\\\\\\\\\\\\
-
-//==================== ITEM DETAILS FROM PHARMACY INVOICE TABLE =====================
-$itemInvoiceData = $StockOut->invoiceDetialsByTableData($table, $pharmacyDetialsId);
-foreach($itemInvoiceData as $itemSellData){
-    $PharmacyId = $itemSellData['id'];
-    $pharmacyInvoiceId = $itemSellData['invoice_id'];
-    $pharmacyItemId = $itemSellData['item_id'];
-    $pharmacyItemName = $itemSellData['item_name'];
-    $pharmacyBatchNo = $itemSellData['batch_no'];
-    $pharmacyItemPackOf = $itemSellData['weatage'];
-    $pharmacyItemExpDate = $itemSellData['exp_date'];
-    $pharmacyItemQty = $itemSellData['qty'];
-    $pharmacyItemLooseQty = $itemSellData['loosely_count'];
-    $pharmacyItemMrp = $itemSellData['mrp'];
-    $pharmacyItemDiscPercent = $itemSellData['disc'];
-    $pharmacyItemTaxable = $itemSellData['taxable'];
-    $pharmacyItemGstPercent = $itemSellData['gst'];
-    $pharmacyItemGstAmount = $itemSellData['gst_amount'];
-    $pharmacyItemAmount = $itemSellData['amount'];
-}
 
 // // //==================== ITEM DETAILS FROM STOK OUT DETAILS TABLE =====================
 $stockOutItemDetails = $StockOut->stokOutDetailsDataOnTable($table, $StockOutDetaislId);
@@ -43,6 +23,7 @@ foreach($stockOutItemDetails as $selsItemData){
     $stockOutDetailsInvoiceId = $selsItemData['invoice_id'];
     $stockOutDetailsItemId = $selsItemData['item_id'];
     $stockOutDetailsProductId = $selsItemData['product_id'];
+    $stockOutDetailsItemName = $selsItemData['item_name'];
     $stockOutDetailsBatchNo = $selsItemData['batch_no'];
     $stockOutDetailsExpDate = $selsItemData['exp_date'];
     $stockOutDetailsItemWeatage = $selsItemData['weightage'];
@@ -53,7 +34,9 @@ foreach($stockOutItemDetails as $selsItemData){
     $stockOutDetailsPtr = $selsItemData['ptr'];
     $stockOutDetailsDiscount = $selsItemData['discount'];
     $stockOutDetailsGst = $selsItemData['gst'];
+    $stockOutDetailsGstAmount = $selsItemData['gst_amount'];
     $stockOutDetailsMargin = $selsItemData['margin'];
+    $stockOutDetailsItemTaxableAmount = $selsItemData['taxable'];
     $stockOutDetailsamount = $selsItemData['amount'];
 
 
@@ -91,32 +74,31 @@ foreach($manufData as $manufData){
 
 // // //////////////////////\\\\\\\\\\\\\\\\\\\\\\\\================///////////////////////\\\\\\\\\\\\\\\\\\\\\\
 $stockOutDetailsDataArry = array(
-    "pharmacyId"                =>  $PharmacyId,
     "stockOutDetailsId"         =>  $stockOutDetailsId,
-    "invoiceId"                 =>  $pharmacyInvoiceId,
-    "itemId"                    =>  $pharmacyItemId,
+    "invoiceId"                 =>  $stockOutDetailsInvoiceId,
+    "itemId"                    =>  $stockOutDetailsItemId,
     "productId"                 =>  $stockOutDetailsProductId,
-    "productName"               =>  $pharmacyItemName,
+    "productName"               =>  $stockOutDetailsItemName,
     "manufId"                   =>  $manufId,                   
     "manufName"                 =>  $manufName,
     "productComposition"        =>  $composition,
-    "batchNo"                   =>  $pharmacyBatchNo,
-    "packOf"                    =>  $pharmacyItemPackOf,
+    "batchNo"                   =>  $stockOutDetailsBatchNo,
+    "packOf"                    =>  $stockOutDetailsItemWeatage.$stockOutDetailsItemUnit,
     "itemWeatage"               =>  $stockOutDetailsItemWeatage,
     "itemUnit"                  =>  $stockOutDetailsItemUnit,
     "expDate"                   =>  $stockOutDetailsExpDate,
-    "qantity"                   =>  $pharmacyItemQty,  
-    "looseCount"                =>  $pharmacyItemLooseQty,
+    "qantity"                   =>  $stockOutDetailsItemQty,  
+    "looseCount"                =>  $stockOutDetailsLooselyCount,
     "availableQty"              =>  $currentStockAvailibility,
     "sellQty"                   =>  $sellQty,
-    "Mrp"                       =>  $pharmacyItemMrp,
+    "Mrp"                       =>  $stockOutDetailsMrp,
     "Ptr"                       =>  $currentStockPtr,
-    "dicPercent"                =>  $pharmacyItemDiscPercent,
-    "gstPercent"                =>  $pharmacyItemGstPercent,
-    "gstAmount"                 =>  $pharmacyItemGstAmount,
+    "dicPercent"                =>  $stockOutDetailsDiscount,
+    "gstPercent"                =>  $stockOutDetailsGst,
+    "gstAmount"                 =>  $stockOutDetailsGstAmount,
     "margin"                    =>  $stockOutDetailsMargin,
-    "taxable"                   =>  $pharmacyItemTaxable,
-    "paybleAmount"              =>  $pharmacyItemAmount
+    "taxable"                   =>  $stockOutDetailsItemTaxableAmount,
+    "paybleAmount"              =>  $stockOutDetailsamount
 );
 
 

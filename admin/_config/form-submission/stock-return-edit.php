@@ -42,17 +42,17 @@ if (isset($_POST['stock-return-edit'])) {
 
     // ========================== end of array data ==============================
 
-    echo "<br>Stock return Id : $stockReturnId<br>";
-    echo "<br>Distributor Id : $distributorId";
-    echo "<br>Distributor Name : $distributorName<br>";
-    echo "<br>Return Date : $returnDate";
-    echo "<br>Refund Mode : $refundMode<br>";
-    echo "<br>Item qty : $itemsCount";
-    echo "<br>Total return Item Qty (FREE + PAID) : $totalReturnQty<br>";
-    echo "<br>Return Gst : $returnGst";
-    echo "<br>NET Refund Amount: $refund";
-    echo "<br>Added By : $addedBy";
-    echo "<br><br>";
+    // echo "<br>Stock return Id : $stockReturnId<br>";
+    // echo "<br>Distributor Id : $distributorId";
+    // echo "<br>Distributor Name : $distributorName<br>";
+    // echo "<br>Return Date : $returnDate";
+    // echo "<br>Refund Mode : $refundMode<br>";
+    // echo "<br>Item qty : $itemsCount";
+    // echo "<br>Total return Item Qty (FREE + PAID) : $totalReturnQty<br>";
+    // echo "<br>Return Gst : $returnGst";
+    // echo "<br>NET Refund Amount: $refund";
+    // echo "<br>Added By : $addedBy";
+    // echo "<br><br>";
 
     // ================ STOCK RETURN DATA UPDATE  BLOCK ==================
     $stockReturnEditUpdate = $StockReturn->stockReturnEditUpdate($stockReturnId, $distributorId, $returnDate, $itemsCount, $totalReturnQty, $returnGst, $refundMode, $refund, $addedBy);
@@ -61,36 +61,36 @@ if (isset($_POST['stock-return-edit'])) {
     // ======================== ITEMS RETURN DIFFERENCE CHECK ==========================
     $PrvRtrnItemIdArray = [];
     $stockReturnDataFetch = $StockReturn->showStockReturnDetails($stockReturnId);
-    print_r($stockReturnDataFetch);
-    echo "<br><br>";
+    // print_r($stockReturnDataFetch);
+    // echo "<br><br>";
     foreach ($stockReturnDataFetch as $returnData) {
         $ItemId = $returnData['id'];
         array_push($PrvRtrnItemIdArray, $ItemId);       // PREVIOUS ITEMS RETURN DETAISL IDS
     }
-    echo "<br>previous return item id array =>";
-    print_r($PrvRtrnItemIdArray);
+    // echo "<br>previous return item id array =>";
+    // print_r($PrvRtrnItemIdArray);
 
     $editReturnItemsIds = null; // PREVIOUS ITEMS RETURN DETAISL IDS
 
     if (empty($_POST['stock-return-details-item-id'])) {
-        echo "<br>array is empty";
+        // echo "<br>array is empty";
         $updatedDetailIdDiff = $PrvRtrnItemIdArray;
     } else {
-        echo "<br>array is not empty";
+        // echo "<br>array is not empty";
         $editReturnItemsIds = $_POST['stock-return-details-item-id'];
-        echo "<br><br>Current return item id array =>";
-        print_r($editReturnItemsIds);
+        // echo "<br><br>Current return item id array =>";
+        // print_r($editReturnItemsIds);
         $updatedDetailIdDiff = array_diff($PrvRtrnItemIdArray, $editReturnItemsIds);
     }
 
 
 
-    echo "<br><br>Return diff item id array =>";
-    print_r($updatedDetailIdDiff);
-    echo "<br>";
-    echo "<br><br>Edit retun item id's =>";
-    print_r($editReturnItemsIds);
-    echo "<br>";
+    // echo "<br><br>Return diff item id array =>";
+    // print_r($updatedDetailIdDiff);
+    // echo "<br>";
+    // echo "<br><br>Edit retun item id's =>";
+    // print_r($editReturnItemsIds);
+    // echo "<br>";
 
 
     //===================== DELETE DATA ACTION AREA ======================;
@@ -134,8 +134,8 @@ if (isset($_POST['stock-return-edit'])) {
                     $updatedQty = intval($CurrentItemQTY) + intval($returnQty);
                 }
 
-                echo "<br>Updated item loose count : $updatedLooseCount";
-                echo "<br>Updated item qantity : $updatedQty";
+                // echo "<br>Updated item loose count : $updatedLooseCount";
+                // echo "<br>Updated item qantity : $updatedQty";
 
                 $updateCurrentStock = $CurrentStock->updateStockByReturnEdit($StokInDetailsId, $updatedQty, $updatedLooseCount);
 
@@ -146,7 +146,7 @@ if (isset($_POST['stock-return-edit'])) {
     }
 
     // =============================== eof diff data block ===================================
-    echo "<br><br><br>////////// ====== edit start area ====== \\\\\\\\\\\\\\";
+    // echo "<br><br><br>////////// ====== edit start area ====== \\\\\\\\\\\\\\";
     
     // ============================== update data block start ============================
 
@@ -172,30 +172,30 @@ if (isset($_POST['stock-return-edit'])) {
             $editReturnFQty = $_POST['return-free-qty'];
             $PerItemsRefundAmount = $_POST['refund-amount'];  // Per items REFUND AMOUNT
 
-            echo "<br>STOK RETURN DETAILS ID : $stockReturnDetailsItemId";
-            echo "<br>Stock in details item ID : $stockInDetailsItemId[$i] => $i";
-            echo "<br><br>Product Id : $productId[$i]";
-            echo "<br>Product Name : $productName[$i]";
-            echo "<br>Batch No : $batchNo[$i]";
-            echo "<br>Exp Date : $expDate[$i]";
-            echo "<br>Pack of : $setof[$i]";
-            echo "<br>Item Unit of : $updatedItemUnit";
-            echo "<br>Item Weightage of : $updatedItemWeightage";
-            echo "<br><br>MRP : $mrp[$i]";
-            echo "<br>PTR : $ptr[$i]";
-            echo "<br>GST Percent per Items : $gstParcent[$i]";
-            echo "<br>Discount Percent per Items : $discountParcent[$i]";
-            echo "<br>RETURN QUANTITY per Items : $editReturnQTY[$i]";
-            echo "<br>RETURN FREE QUANTITY per Items : $editReturnFQty[$i]";
-            echo "<br>Per item Refund Amount : $PerItemsRefundAmount[$i]<br>";
+            // echo "<br>STOK RETURN DETAILS ID : $stockReturnDetailsItemId";
+            // echo "<br>Stock in details item ID : $stockInDetailsItemId[$i] => $i";
+            // echo "<br><br>Product Id : $productId[$i]";
+            // echo "<br>Product Name : $productName[$i]";
+            // echo "<br>Batch No : $batchNo[$i]";
+            // echo "<br>Exp Date : $expDate[$i]";
+            // echo "<br>Pack of : $setof[$i]";
+            // echo "<br>Item Unit of : $updatedItemUnit";
+            // echo "<br>Item Weightage of : $updatedItemWeightage";
+            // echo "<br><br>MRP : $mrp[$i]";
+            // echo "<br>PTR : $ptr[$i]";
+            // echo "<br>GST Percent per Items : $gstParcent[$i]";
+            // echo "<br>Discount Percent per Items : $discountParcent[$i]";
+            // echo "<br>RETURN QUANTITY per Items : $editReturnQTY[$i]";
+            // echo "<br>RETURN FREE QUANTITY per Items : $editReturnFQty[$i]";
+            // echo "<br>Per item Refund Amount : $PerItemsRefundAmount[$i]<br>";
 
             $totalUpdatedReturnQty = intval($editReturnQTY[$i]) + intval($editReturnFQty[$i]);
 
-            echo "<br>total updated return qty : $totalUpdatedReturnQty";
+            // echo "<br>total updated return qty : $totalUpdatedReturnQty";
 
             if ($stockReturnEditUpdate === true) {
                 $prevStokReturnDetailsData = $StockReturn->showStockReturnDetailsById($stockReturnDetailsItemId);
-                echo "<br><br>previous return item details => ", print_r($prevStokReturnDetailsData);
+                // echo "<br><br>previous return item details => ", print_r($prevStokReturnDetailsData);
 
                 foreach ($prevStokReturnDetailsData as $prevReturnData) {
                     $returnQty = $prevReturnData['return_qty'];
@@ -204,14 +204,14 @@ if (isset($_POST['stock-return-edit'])) {
                 }
 
                 $itemRetundQtyDiff = $totalPrevReturn - $totalUpdatedReturnQty;
-                echo "<br><br>return difference : $itemRetundQtyDiff";
+                // echo "<br><br>return difference : $itemRetundQtyDiff";
 
 
                 //===================== update calculation area ===============================
 
                 $CurrentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsItemId[$i]); //
-                echo "<br><br>current stock data on stock in ited id => ";
-                print_r($CurrentStockData);
+                // echo "<br><br>current stock data on stock in ited id => ";
+                // print_r($CurrentStockData);
 
                 foreach ($CurrentStockData as $currentItemData) {
                     $currentQty = $currentItemData['qty'];
@@ -228,9 +228,9 @@ if (isset($_POST['stock-return-edit'])) {
                     $updatedQty = intval($currentQty) + (intval($itemRetundQtyDiff));
                 }
 
-                echo "<br><br>current qantity after update : $updatedQty";
-                echo "<br>current Loose qantity after update : $updatedLooseQty";
-                echo "<br><br>//===============================\\<br><br>";
+                // echo "<br><br>current qantity after update : $updatedQty";
+                // echo "<br>current Loose qantity after update : $updatedLooseQty";
+                // echo "<br><br>//===============================\\<br><br>";
 
 
                 $CurrentStockUpdate = $CurrentStock->updateStockByReturnEdit($stockInDetailsItemId[$i], $updatedQty, $updatedLooseQty);  //updating current stock after edit purchase return

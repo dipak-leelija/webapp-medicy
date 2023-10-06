@@ -87,7 +87,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $prductId           = $_POST['product-id'];
     $prodName           = $_POST['product-name'];
     $manufId            = $_POST['Manuf'];
-    $pharmacyDataId     = $_POST['pharmacy-data-id'];
     $stockOutDataId     = $_POST['stockOut-details-id'];
     $batchNo            = $_POST['batch-no'];
     $weightage          = $_POST['weightage'];
@@ -124,16 +123,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stockOutUpdate == true) {
 
             // =========== DELETE DATA FROM PHARMACY AND STOCK OUT DETAILS TABLE SECTION =============
-            $invoiceIdList = [];
-            $pharmacyInvoiceData = $StockOut->stockOutDetailsById($invoiceNo);
-            foreach ($pharmacyInvoiceData as $pharmacyInvoiceData) {
-                array_push($invoiceIdList, $pharmacyInvoiceData['id']);
-            }
-
-            $pharmacyIdArraydiff = array_diff($invoiceIdList, $pharmacyDataId);
-            $pharmacyIdArraydiff = array_values($pharmacyIdArraydiff);
-
-
             $stockOutDetailsIdList = [];
             $stockOutDetails = $StockOut->stockOutDetailsDisplayById($invoiceNo);
             foreach ($stockOutDetails as $stockOutDetails) {
@@ -144,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stockOutDetailsIdArrayDiff = array_values($stockOutDetailsIdArrayDiff);
 
 
-            for ($i = 0; $i < count($pharmacyIdArraydiff) && $i < count($stockOutDetailsIdArrayDiff); $i++) {
+            for ($i = 0; $i < count($stockOutDetailsIdArrayDiff); $i++) {
 
                 $selectFromStockOutDetails = $StockOut->stokOutDetailsDataOnTable('id', $stockOutDetailsIdArrayDiff[$i]);
 
@@ -176,19 +165,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // ****** UPDATE CURRENT STOCK AND DELTE FROM PHAMACY INVOCIE AND STOCK OUT DATA ******
                 $updateCurrenStock = $CurrentStock->updateCurrentStockById($currenStockItemId, $updatedQty, $updatedLooseQty);
 
-                $delteFromPharmacy = $StockOut->delteItemFromInvoice($pharmacyIdArraydiff[$i]);
 
                 $delteFromStockOutDetails = $StockOut->deleteFromStockOutDetailsOnId($stockOutDetailsIdArrayDiff[$i]);
             }
 
             // ================ UPDATE DATA ON PHARMACY AND STOCK OUT DETAILS TABLE ===========
-            for ($i = 0; $i < count($pharmacyDataId) && $i < count($stockOutDataId); $i++) {
+            for ($i = 0; $i < count($stockOutDataId); $i++) {
                 // echo "<br><br><br>";
-                if ($pharmacyDataId[$i] == '' && $stockOutDataId[$i] == '') {
+                if ($stockOutDataId[$i] == '') {
                     $item_id = $itemId[$i];
                     $product_id = $prductId[$i];
                     $product_name = $prodName[$i];
-                    $phamacy_id = '';
                     $stock_out_id = '';
                     $batch_number = $batchNo[$i];
                     $setOf = $weightage[$i];
@@ -219,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $addPharmacyInvoice = $StockOut->addPharmacyBillDetails($invoiceNo,    $item_id, $product_name, $batch_number, $setOf, $exp_date, $item_qty, $item_loose_qty, $item_mrp, $disc_parcent, $taxable_amount, $gst_parcent, $gst_amount, $payble_amount, $addedBy);
 
                     // ========= add new item to stock out details ==========
-                    $addStockOutDetails = $StockOut->addStockOutDetails($invoiceNo, $item_id, $product_id, $batch_number, $exp_date, $item_weatage, $item_unit, $item_qty, $item_loose_qty, $item_mrp, $item_ptr, $disc_parcent, $gst_parcent, $margin_amount, $payble_amount, $addedBy);
+                    $addStockOutDetails = $StockOut->addStockOutDetails($invoiceNo, $item_id, $product_id, $product_name, $batch_number, $exp_date, $item_weatage, $item_unit, $item_qty, $item_loose_qty, $item_mrp, $item_ptr, $disc_parcent, $gst_parcent, $gst_amount, $margin_amount, $taxable_amount, $payble_amount, $addedBy);
 
                     //========== update current stock ==========
                     $currentStockData = $CurrentStock->showCurrentStocById($item_id);
@@ -237,11 +224,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updateCurrentStock = $CurrentStock->updateCurrentStockById($item_id, $updatedCurrentQty,$updatedLooseQty);
                 }
 
-                if ($pharmacyDataId[$i] != '' && $stockOutDataId[$i] != '') {
+                if ($stockOutDataId[$i] != '') {
                     $item_id = $itemId[$i];
                     $product_id = $prductId[$i];
                     $product_name = $prodName[$i];
-                    $phamacy_id = $pharmacyDataId[$i];
                     $stock_out_id = $stockOutDataId[$i];
                     $batch_number = $batchNo[$i];
                     $setOf = $weightage[$i];
@@ -300,10 +286,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updateCurrentStock = $CurrentStock->updateCurrentStockById($item_id, $updatedCurrentQty,$updatedLooseQty);
 
                     // ====== update pharmacy data ===========
-                    $updatePharmacyData = $StockOut->updatePharmacyDataById($phamacy_id, $item_qty, $item_loose_qty, $disc_parcent, $taxable_amount, $gst_amount, $payble_amount, $addedBy);
+                    // $updatePharmacyData = $StockOut->updatePharmacyDataById($phamacy_id, $item_qty, $item_loose_qty, $disc_parcent, $taxable_amount, $gst_amount, $payble_amount, $addedBy);
 
                     // ====== update stock out details =======
-                    $updateStockOutData = $StockOut->updateStockOutDetaislById($stock_out_id, $item_qty, $item_loose_qty, $disc_parcent, $margin_amount, $payble_amount, $addedBy);
+                    $updateStockOutData = $StockOut->updateStockOutDetaislById($stock_out_id, $item_qty, $item_loose_qty, $disc_parcent, $margin_amount, $taxable_amount, $gst_amount, $payble_amount, $addedBy);
                 }
             }
         }

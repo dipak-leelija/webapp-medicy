@@ -398,7 +398,7 @@ foreach ($showhelthCare as $rowhelthCare) {
 
 <script>
     const goBack = () =>{
-        window.location.href = '../../../pharmacist/stock-return.php';
+        window.location.href = '../../stock-return.php';
     }
 </script>
 </html>

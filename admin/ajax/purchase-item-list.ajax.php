@@ -89,7 +89,7 @@ if ($resultData) {
         }
 
     ?>
-        <div class="row mx-0 py-2 border-bottom p-row item-list" id="<?php echo $productId ?>" onclick="getDtls(this.id);">
+        <div class="row mx-0 py-2 border-bottom p-row item-list" id="listed-items" tabindex="0" onclick="getDtls('<?php echo $productId ?>');">
             <div class="col-md-4"><?php echo $productName, $power ?><br>
                 <small><?php echo $manufacturerName ?></small>
             </div>

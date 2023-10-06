@@ -139,8 +139,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submit'])) {
         $invoiceId = $IdGeneration->pharmecyInvoiceId();
 
-        // $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $billdate, $addedBy);
-        $stockOut = true;
+        $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $billdate, $addedBy);
+        // $stockOut = true;
 
         if ($stockOut == true) {
             for ($i = 0; $i < count($prductId); $i++) {
@@ -161,6 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $looseCount = 0;
                     $wholeCount = $qty[$i];
                 }
+                $wholeCount = strval($wholeCount);
 
                 $productDetails = $CurrentStock->showCurrentStocByProductIdandBatchNo($prductId[$i], $batchNo[$i]);
 
@@ -185,52 +186,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>Item current stock qantity : $itemQty";
                 // echo "<br>Item current stock Loose qantity : $itemLooseQty";
 
-                echo "<br><br>Invoice ids : $invoiceId";
-                echo "<br>Item id: $itemId";
-                echo "<br>Product id : $prductId[$i]";
-                echo "<br>Product id : $prodName[$i]";
-                echo "<br>BATCH NUMBER : $batchNo[$i]";
-                echo "<br>items exp date array : $expDate[$i]";
-                echo "<br>Item weightage : $ItemWeightage";
-                echo "<br>Item unit  : $ItemUnit";
-                echo "<br>Whole count : $wholeCount";
-                echo "<br>Loose Count : $looseCount";
-                echo "<br>items MRP array : $mrp[$i]";
-                echo "<br>items PTR array : $ptr[$i]";
-                echo "<br>PER ITEM DISCOUNT PERCENT : $discountPercent[$i]";
-                echo "<br>PER ITEM gst PERCENT : $gstparcent[$i]";
-                echo "<br>PER ITEM MARGINE AMOUNT array : $marginPerItem[$i]";
-                echo "<br>PER ITEM AMOUNT : $amount[$i]";
-                exit;
-                $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $itemId, $productId, $productName, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $gstAmount, $margin, $taxable, $amount, $addedBy);
-
-                // $stockOutDetailsId = $StockOut->
-
-                // echo "<br><br>product ids array : $prductId[$i]";
-                // echo "<br>Product name array : $prodName[$i]";
-                // echo "<br>Manufacturur id  : $manufId[$i]";
-                // echo "<br>Manufacturur name  : $manufName[$i]";
-                // echo "<br>BATCH NUMBER array : $batchNo[$i]";
-                // echo "<br>items WEIGHTAGE arrya : $weightage[$i]";
+                // echo "<br><br>Invoice ids : $invoiceId";
+                // echo "<br>", gettype($invoiceId);
+                // echo "<br>Item id: $itemId";
+                // echo "<br>", gettype($itemId);
+                // echo "<br>Product id : $prductId[$i]";
+                // echo "<br>", gettype($prductId[$i]);
+                // echo "<br>Product Name : $prodName[$i]";
+                // echo "<br>", gettype($prodName[$i]);
+                // echo "<br>BATCH NUMBER : $batchNo[$i]";
+                // echo "<br>", gettype($batchNo[$i]);
                 // echo "<br>items exp date array : $expDate[$i]";
+                // echo "<br>", gettype($expDate[$i]);
+                // echo "<br>Item weightage : $ItemWeightage";
+                // echo "<br>", gettype($ItemWeightage);
+                // echo "<br>Item unit  : $ItemUnit";
+                // echo "<br>", gettype($ItemUnit);
+                // echo "<br>Whole count : $wholeCount";
+                // echo "<br>", gettype($wholeCount);
+                // echo "<br>Loose Count : $looseCount";
+                // echo "<br>", gettype($looseCount);
                 // echo "<br>items MRP array : $mrp[$i]";
+                // echo "<br>", gettype($mrp[$i]);
                 // echo "<br>items PTR array : $ptr[$i]";
-                // // echo "<br><br> qtyT arrya check : $qtyT[$i]";;
-                // echo "<br>QANTITY array : $qty[$i]";
-                // echo "<br>QUANTITY TYPE array : $qtyTp[$i]";
-                // echo "<br>PER ITEM DISCOUNT PERCENT array : $discountPercent[$i]";
+                // echo "<br>", gettype($ptr[$i]);
+                // echo "<br>PER ITEM DISCOUNT PERCENT : $discountPercent[$i]";
+                // echo "<br>", gettype($discountPercent[$i]);
+                // echo "<br>PER ITEM gst PERCENT : $gstparcent[$i]";
+                // echo "<br>", gettype( $gstparcent[$i]);
+                // echo "<br>PER ITEM gst AMOUNT : $gstAmountPerItem[$i]";
+                // echo "<br>", gettype($gstAmountPerItem[$i]);
                 // echo "<br>PER ITEM MARGINE AMOUNT array : $marginPerItem[$i]";
-                // echo "<br>PER ITEM TAXABLE array : $taxable[$i]";
-                // echo "<br>PER ITEM GST PERCENT array : $gstparcent[$i]";
-                // echo "<br>PER ITEM GST AMOUNT array : $gstAmountPerItem[$i]";
-                // echo "<br>PER ITEM PAYBLE AMOUNT array : $amount[$i]";
+                // echo "<br>", gettype($marginPerItem[$i]);
+                // echo "<br>PER ITEM TAXABLE : $taxable[$i]";
+                // echo "<br>", gettype($taxable[$i]);
+                // echo "<br>PER ITEM AMOUNT : $amount[$i]";
+                // echo "<br>", gettype($amount[$i]);
 
-                // echo "<br><br>";
-                // echo "<br>extra check invoice id : $invoiceId";
-                // echo "<br>extra check item id : $itemId";
-                // echo "<br>extra check loose count : $itemLooseQty";
+                $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $itemId, $prductId[$i], $prodName[$i], $batchNo[$i], $expDate[$i], $ItemWeightage, $ItemUnit, $wholeCount, $looseCount, $mrp[$i], $ptr[$i], $discountPercent[$i], $gstparcent[$i], $gstAmountPerItem[$i], $marginPerItem[$i], $taxable[$i], $amount[$i], $addedBy);
 
-                $StockOut->addPharmacyBillDetails($invoiceId, $itemId, array_shift($_POST['product-name']), array_shift($_POST['batch-no']), array_shift($_POST['weightage']), array_shift($_POST['exp-date']), $wholeCount, $looseCount, array_shift($_POST['mrp']), array_shift($_POST['discPercent']), array_shift($_POST['taxable']), array_shift($_POST['gst']), array_shift($_POST['gstVal']), array_shift($_POST['amount']), $addedBy);
 
                 // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
 

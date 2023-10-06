@@ -267,6 +267,22 @@ border-top: 1px solid #e3e6f0;
     box-shadow: 0 5px 10px rgb(0 0 0 / 20%);
 }
 
+.item-list{
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid #ccc;
+}
+.item-list:focus {
+    outline: none; /* Remove the default focus outline */
+    background-color: #f0f0f0;
+}
+.selected {
+    background-color: #007bff;
+    color: #fff;
+}
+
+
 .p-row:hover {
     background: #fff;
     color: #2653d4;

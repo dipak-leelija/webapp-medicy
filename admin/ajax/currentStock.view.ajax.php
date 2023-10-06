@@ -214,6 +214,9 @@ if (isset($_GET['currentStockId'])) {
 
                     $totalStockinQty = intval($purchaseQTY) + intval($freeQTY);
 
+                    $perItemGst = floatval($GST)/intval($purchaseQTY);
+                    $perItemGst = floatval($perItemGst);
+                    $perItemGst = number_format($perItemGst, 2);
                     // $overallQTY = 0;
                 }
 
@@ -251,7 +254,7 @@ if (isset($_GET['currentStockId'])) {
 
                                 <strong>MRP: </strong><span><?php echo $MRP ?></span><br>
                                 <strong>PTR: </strong><span><?php echo $PTR ?></span><br>
-                                <strong>GST Amount/</strong><strong><?php echo $pacakagingUnitName ?> : </strong><span><?php echo (floatval($GST)/intval($purchaseQTY)) ?></span><br>
+                                <strong>GST Amount/</strong><strong><?php echo $pacakagingUnitName ?> : </strong><span><?php echo $perItemGst ?></span><br>
                                 <strong>Discount: </strong><span><?php echo $discount ?></span><br>
                                 <strong>Base Price: </strong><span><?php echo $basePrice ?></span><br>
                                 <strong>Purchase Amount: </strong><span><?php echo $purchaseAmount ?></span><br>
@@ -262,7 +265,7 @@ if (isset($_GET['currentStockId'])) {
                             </div>
 
                             <div class="col-1">
-                                <button class="button btn-danger" id="<?php echo $stokInID ?>" value1="<?php echo $productId ?>" value2="<?php echo $batchNo ?>" value3="<?php echo $currentStock ?>" value4="<?php echo 'table-row-' . $slNo ?>" value5="<?php echo $totalStockinQty ?>" onclick="customDelete('<?php echo $stokInID ?>','<?php echo $productId ?>','<?php echo $batchNo ?>','<?php echo $currentStock ?>','<?php echo 'table-row-' . $slNo ?>','<?php echo $totalStockinQty ?>', this.id, this.value1, this.value2, this.value3, this.value4, this.value5)">Delete</button>
+                                <button class="button btn-danger" onclick="customDelete('<?php echo $stokInID ?>','<?php echo $productId ?>','<?php echo $batchNo ?>','<?php echo $currentStock ?>','<?php echo 'table-row-' . $slNo ?>','<?php echo $totalStockinQty ?>')">Delete</button>
                             </div>
 
                         </div>

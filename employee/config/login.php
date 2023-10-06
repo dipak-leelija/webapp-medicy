@@ -11,14 +11,17 @@
     $username = $_POST["username"];
     $password = $_POST["password"];
 
+
     $sql = "SELECT * from employees where employee_username = '$username'";
     $result = mysqli_query($conn, $sql);
     $rowNum = mysqli_num_rows($result);
 
+    
     if ($rowNum == 1) {
       while ($row = mysqli_fetch_assoc($result)) {
         if (password_verify($password, $row['employee_password'])) {
           //   $login = true; 
+          
           if ($row['emp_role'] == "Pharmacist") {
             session_start();
             $_SESSION['loggedin'] = true;
@@ -28,7 +31,7 @@
             // exit;
             if ($redirectLink == '') {
               // header("Location: index.php");
-              header("location: ../../pharmacist");
+              header("location: ../../admin/index.php");
             } else {
               // echo $redirectLink;
               // exit;

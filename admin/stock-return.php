@@ -274,7 +274,7 @@ $today = date("m-d-Y");
         <script src="../js/sweetAlert.min.js"></script>
         
         <!-- custom script for stock return page -->
-        <script src="../pharmacist/js/stock-return-control.js"></script>
+        <script src="js/stock-return-control.js"></script>
 </body>
 
 </html>

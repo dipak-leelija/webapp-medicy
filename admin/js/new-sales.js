@@ -1,6 +1,8 @@
 //======================= new sell generate bill button disable and enable control ===================
+var tableBody = document.getElementById('item-body');
 var newSellGenerateBill = document.getElementById('new-sell-bill-generate');
 newSellGenerateBill.setAttribute("disabled", "true");
+
 //======================================================================================
 
 const getDate = (date) => {
@@ -210,7 +212,7 @@ const chekForm = () =>{
         document.getElementById("exta-details").style.display = "none";
         document.getElementById("searched-items").style.display = "none";
         
-        var tableBody = document.getElementById('item-body');
+        tableBody = document.getElementById('item-body');
 
         if(tableBody.getElementsByTagName('tr') != null){
             newSellGenerateBill.removeAttribute("disabled");
@@ -1036,6 +1038,13 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
     existAmount.value = leftAmount.toFixed(2);
 
     rowAdjustment(delRow);
+
+    let tBody = document.getElementById('item-body');
+        console.log(tBody.getElementsByTagName('tr').length);
+        if(tBody.getElementsByTagName('tr').length == 0){
+            newSellGenerateBill.setAttribute("disabled", "true");
+        }
+
 }
 
 ////////////////// ROW ADJUSTMENT ///////////////////
@@ -1108,6 +1117,10 @@ const editItem = (tuple) => {
         
 
         deleteItem(Tupledata.slno, Tupledata.qty, Tupledata.gstAmountPerItem, netMRP, Tupledata.amount);
+
+
+        document.getElementById("exta-details").style.display = "block";
+        newSellGenerateBill.setAttribute("disabled", "true");
 
     } else {
         swal("Can't Edit", "Please add/edit previous item first.", "error");
