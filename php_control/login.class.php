@@ -16,12 +16,11 @@ class LoginForm extends DatabaseConnection
                 $dbPasshash = $data->password;
                 if (password_verify($password, $dbPasshash)) {
                     session_start();
-                    $_SESSION['loggedin'] = true;
-                    $_SESSION['admin'] = true;
-                    
+                    $_SESSION['loggedin']   = true;
+                    $_SESSION['admin']      = true;
                     $_SESSION['user_email'] = $data->email;
-                    $_SESSION['username'] = $data->username;
-                    $_SESSION['userFname'] = $data->fname;
+                    $_SESSION['username']   = $data->username;
+                    $_SESSION['userFname']  = $data->fname;
                     
 
                     // echo "admin login";
@@ -43,13 +42,12 @@ class LoginForm extends DatabaseConnection
                     
                     if (password_verify($password, $dbPasshash)) {
                         session_start();
-                        $_SESSION['loggedin'] = true;
-                        $_SESSION['employees'] = true;
-                        
+                        $_SESSION['loggedin']   = true;
+                        $_SESSION['admin']      = false;
                         $_SESSION['user_email'] = $email;
-                        $_SESSION['user_role'] = $data->emp_role;
-                        $_SESSION['emp_name'] = $data->employee_name;
-                        $_SESSION['username'] = $data->employee_username;
+                        $_SESSION['user_role']  = $data->emp_role;
+                        $_SESSION['emp_name']   = $data->employee_name;
+                        $_SESSION['username']   = $data->employee_username;
 
                         // echo "employee login";
                         // exit;
