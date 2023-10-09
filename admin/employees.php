@@ -2,11 +2,15 @@
 require_once 'sessionCheck.php'; //check admin loggedin or not
 
 require_once '../php_control/employee.class.php';
+require_once '../php_control/admin.class.php';
+
 $employees = new Employees();
 $showEmployees = $employees->employeesDisplay();
 $showDesignation = $employees->showDesignation();
 
 $page = "employees";
+
+$adminId = $_SESSION['adminId'];
 
 //Employee Class Initilzed
 // $employees = new Employees();
@@ -141,46 +145,41 @@ if (isset($_POST['add-emp']) == true) {
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Username</th>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Email</th>
-                                            <th>Start date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
+                                    
                                     <tbody>
                                         <?php
                                         //employeesDisplay function initilized to feth employees data
-                                        $showEmployees = $employees->employeesDisplay();
-                                        foreach ($showEmployees as $emp) {
-                                            $empId = $emp['id'];
-                                            $empUsername = $emp['employee_username'];
-                                            $empName = $emp['employee_name'];
-                                            $empRole = $emp['emp_role'];
-                                            $empMail = $emp['emp_email'];
-                                            // $emp['employee_password'];
-                                            // $emp[''];
+                                        $table = 'admin_id';
+                                        $showEmployees = $employees->employeesDisplayByTables($table, $adminId);
 
-                                            echo '<tr>
-                                                    <td>' . $empId . '</td>
-                                                    <td>' . $empUsername . '</td>
-                                                    <td>' . $empName . '</td>
-                                                    <td>' . $empRole . '</td>
-                                                    <td>' . $empMail . '</td>
-                                                    <td>2011/04/25</td>
-                                                    <td>
-                                                        <a class="text-primary" onclick="viewAndEdit(' . $empId . ')" title="Edit" data-toggle="modal" data-target="#empViewAndEditModal"><i class="fas fa-edit"></i></a>
-
-                                                        <a class="delete-btn" data-id="' . $empId . '"  title="Delete"><i class="far fa-trash-alt"></i></a>
-  
-  
-                                                    </td>
-                                                </tr>';
+                                        if(!empty($showEmployees)){
+                                            foreach ($showEmployees as $emp) {
+                                                $empId = $emp['id'];
+                                                $empUsername = $emp['employee_username'];
+                                                $empName = $emp['employee_name'];
+                                                $empRole = $emp['emp_role'];
+                                                $empMail = $emp['emp_email'];
+                                                // $emp['employee_password'];
+                                                // $emp[''];
+    
+                                                echo '<tr>
+                                                        <td>' . $empId . '</td>
+                                                        <td>' . $empUsername . '</td>
+                                                        <td>' . $empName . '</td>
+                                                        <td>' . $empRole . '</td>
+                                                        <td>' . $empMail . '</td>
+                                                        <td>2011/04/25</td>
+                                                        <td>
+                                                            <a class="text-primary" onclick="viewAndEdit(' . $empId . ')" title="Edit" data-toggle="modal" data-target="#empViewAndEditModal"><i class="fas fa-edit"></i></a>
+    
+                                                            <a class="delete-btn" data-id="' . $empId . '"  title="Delete"><i class="far fa-trash-alt"></i></a>
+      
+      
+                                                        </td>
+                                                    </tr>';
+                                            }
                                         }
+                                        
                                         ?>
                                     </tbody>
                                 </table>
@@ -227,9 +226,9 @@ if (isset($_POST['add-emp']) == true) {
                                                     <label class="mb-0 mt-1" for="emp-role">Employee Role:</label>
                                                     <select class="form-control" name="emp-role" id="emp-role" required>
                                                         <option value="role1">Choose role..</option>
-                                                        <?php foreach ($showDesignation as $desig) : ?>
-                                                            <option value="<?php echo $desig['id']; ?>"><?php echo $desig['name']; ?></option>
-                                                        <?php endforeach; ?>
+                                                        <?php foreach ($showDesignation as $desig){ ?>
+                                                            <option value="<?php echo $desig['id']; ?>"><?php echo $desig['desig_name']; ?></option>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
                                             </div>

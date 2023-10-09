@@ -9,40 +9,49 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // $password = password_verify();
-    // echo $email;
-    // echo $password;
-    // exit;
-    
-    $login = $admin->login($email);
-    
-    if ($login == FALSE) {
-        $wrongUser = TRUE;
-    }else{
-        foreach ($login as $loginDetails) {
-            if (password_verify($password, $loginDetails['password'])) {
-                // echo 'Your Email is: '.$loginDetails['email'];
-                session_start();
-				$_SESSION['loggedin'] = true;
-				$_SESSION['admin'] = true;
-				$_SESSION['userEmail'] = $email;
-				//echo "loggedin ".$row['user_name'];
+    $checkSymble = '@';
 
-                $redirectLink = $_SESSION['last_page'];
-                if ($redirectLink == '') {
-                    header("Location: index.php");
+    if (strpos($email, $checkSymble) !== false){
+        $flag = 0;
+    }else{
+        $flag = 1;
+    }
+    
+    if ($flag == 0) {
+        $login = $admin->login($email);
+        if ($login == FALSE) {
+            $wrongUser = TRUE;
+        } else {
+            foreach ($login as $loginDetails) {
+                if (password_verify($password, $loginDetails['password'])) {
+                    // echo 'Your Email is: '.$loginDetails['email'];
+                    session_start();
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['admin'] = true;
+                    $_SESSION['userEmail'] = $email;
+                    $_SESSION['adminId'] = $loginDetails['id'];
+                    $_SESSION['adminFname'] = $loginDetails['fname'];
+                    //echo "loggedin ".$row['user_name'];
+
+                    $redirectLink = $_SESSION['last_page'];
+                    if ($redirectLink == '') {
+                        header("Location: index.php");
+                    } else {
+                        // echo $redirectLink;
+                        // exit;
+                        header("Location: " . $redirectLink . "");
+                    }
+                    exit;
+                } else {
+                    $wrongPassword = TRUE;
+                    // echo 'Wrong Password';
                 }
-                else {
-                    // echo $redirectLink;
-                    // exit;
-                    header("Location: ".$redirectLink."");
-                }
-                exit;
-            }else{
-                $wrongPassword = TRUE;
-                // echo 'Wrong Password';
             }
-        } 
+        }
+    }
+
+    if ($flag == 1) {
+        echo "Employee login";
     }
 }
 
@@ -63,9 +72,7 @@ if (isset($_POST['login'])) {
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -93,7 +100,7 @@ if (isset($_POST['login'])) {
                                     </div>
                                     <form class="user" action="login.php" method="post">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" name="email" placeholder="Enter Email Address..." required>
+                                            <input class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" name="email" placeholder="Enter Email Address / Username" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user" id="exampleInputPassword" name="password" placeholder="Password" required>
@@ -109,23 +116,23 @@ if (isset($_POST['login'])) {
                                         </a> -->
                                         <div class="form-group">
                                             <?php
-                                                if($wrongUser){
-                                                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            if ($wrongUser) {
+                                                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                                     <strong>Sorry! </strong> You Have Entered Incorrect Username.
                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                       <span aria-hidden="true">&times;</span>
                                                     </button>
                                                   </div>';
-                                                }
+                                            }
 
-                                                if($wrongPassword){
-                                                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            if ($wrongPassword) {
+                                                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                                     <strong>Sorry! </strong> You Have Entered Incorrect Password.
                                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                       <span aria-hidden="true">&times;</span>
                                                     </button>
                                                   </div>';
-                                                }
+                                            }
                                             ?>
                                         </div>
                                         <button class="btn btn-primary btn-user btn-block" name="login" type="submit">Login</button>

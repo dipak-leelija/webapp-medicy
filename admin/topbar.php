@@ -1,3 +1,21 @@
+<?php 
+    require_once '../sessionCheck.php';
+
+    if(isset($_SESSION['admin'])){
+        $userEmail = $_SESSION['user_email'];
+        $userRole = 'ADMIN';
+        $userFname = $_SESSION['userFname'];
+        $username = $_SESSION['username'];
+    }
+
+    if(isset($_SESSION['employees'])){
+        $userEmail = $_SESSION['user_email'] ;
+        $userRole = $_SESSION['user_role'];
+        $userFname = $_SESSION['emp_name'];
+        $username = $_SESSION['username'];
+    }
+?>
+
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -164,7 +182,7 @@
     
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small"> Admin </span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <?php echo $userRole ?> <br><small><?php echo $userFname ?></small></span>
             <img class="img-profile rounded-circle" src="../images/undraw_profile.svg">
         </a>
     

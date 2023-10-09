@@ -1,5 +1,5 @@
 <?php
-require_once 'sessionCheck.php'; //check admin loggedin or not
+require_once '../sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/appoinments.class.php';
 require_once '../php_control/currentStock.class.php';
 require_once '../php_control/stockOut.class.php';
@@ -57,7 +57,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
             <!-- Main Content -->
             <div id="content">
 
-                <!-- Tobbar-->
+                <!-- Topbar-->
                 <?php include 'topbar.php'; ?>
                 <!-- End of Tobbar-->
 
@@ -402,6 +402,9 @@ $totalAppointments = $appoinments->appointmentsDisplay();
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
+
 
 </body>
 
