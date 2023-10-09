@@ -1,5 +1,7 @@
 <?php
-require_once '../config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__).'/config/constant.php';
+
+require_once ROOT_DIR.'config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/appoinments.class.php';
 require_once '../php_control/currentStock.class.php';
 require_once '../php_control/stockOut.class.php';
@@ -248,22 +250,22 @@ $totalAppointments = $appoinments->appointmentsDisplay();
 
                         <!-- Sold By Card  -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once "partials/soldby.php"; ?>
+                            <?php require_once ADM_DIR."partials/soldby.php"; ?>
                         </div>
 
                         <!-- Expiring in 3 Months Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once "partials/expiring.php"; ?>
+                            <?php require_once ADM_DIR."partials/expiring.php"; ?>
                         </div>
 
                         <!----------- Sales of the day card ----------->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once "partials/salesoftheday.php"; ?>
+                            <?php require_once ADM_DIR."partials/salesoftheday.php"; ?>
                         </div>
 
                         <!----------- Purchase today card ----------->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once "partials/purchasedToday.php"; ?>
+                            <?php require_once ADM_DIR."partials/purchasedToday.php"; ?>
                         </div>
 
                     </div>

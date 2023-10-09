@@ -15,7 +15,7 @@
 	}
 
 	if (is_localhost()):
-		define('LOCAL_DIR',				'/medicy.in');
+		define('LOCAL_DIR',				'/medicy.in/');
 
 		define('DBHOST',				'localhost');
 		define('DBUSER',				'root');
@@ -23,7 +23,7 @@
 		define('DBNAME',				'medicy_db');
 
 	else:
-		define('LOCAL_DIR',				'');
+		define('LOCAL_DIR',				'/');
 
 		define('DBHOST',				'');
 		define('DBUSER',				'');
@@ -36,17 +36,15 @@
 	$protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
 
 	
-	define('URL', 				$protocol.$_SERVER['HTTP_HOST'].LOCAL_DIR);
 	define('ROOT_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR);
 	define('ADM_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'/admin/');
-	define('CONT_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'/uploads/contents/');
-
-
+	define('ASST_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'/uploads/contents/');
+	
+	
 	define('PAGE',				$_SERVER['PHP_SELF']);
+	define('URL', 				$protocol.$_SERVER['HTTP_HOST'].LOCAL_DIR);
 	define('ADM_URL',  			URL.'/admin/');
-	define('SELLER_AREA',  		URL."/dashboard.php");
-	define('BUYER_AREA',  		URL."/app.client.php");
-	define('IMG_PATH',  		URL."/images/");
+	define('IMG_PATH',  		URL."/assets/images/");
 
 
 	
