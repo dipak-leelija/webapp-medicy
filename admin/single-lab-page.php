@@ -1,5 +1,5 @@
 <?php
-require_once 'sessionCheck.php';//check admin loggedin or not
+require_once '../sessionCheck.php';//check admin loggedin or not
 
 require_once '../php_control/labtypes.class.php';
 

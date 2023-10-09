@@ -1,5 +1,5 @@
 <?php
-require_once '_config/sessionCheck.php'; //check admin loggedin or not
+require_once '../config/sessionCheck.php'; //check admin loggedin or not
 require_once "../php_control/doctors.class.php";
 require_once '../php_control/products.class.php';
 require_once '../php_control/distributor.class.php';
