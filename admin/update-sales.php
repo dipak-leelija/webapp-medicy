@@ -1,5 +1,6 @@
 <?php
-require_once '../sessionCheck.php';
+require_once dirname(__DIR__).'/config/constant.php';
+require_once ROOT_DIR.'/config/sessionCheck.php';
 require_once "../php_control/doctors.class.php";
 require_once '../php_control/stockOut.class.php';
 require_once '../php_control/products.class.php';

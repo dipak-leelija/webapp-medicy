@@ -3,7 +3,8 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-require_once '../config/sessionCheck.php';//check admin loggedin or not
+require_once dirname(__DIR__).'/config/constant.php';
+require_once ROOT_DIR.'/config/sessionCheck.php';//check admin loggedin or not
 
 require_once '../php_control/hospital.class.php';
 require_once '../php_control/doctors.class.php';

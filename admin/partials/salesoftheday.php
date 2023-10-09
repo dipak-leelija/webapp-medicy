@@ -3,6 +3,9 @@
 </script>
 
 <?php
+
+    require_once dirname(dirname(__DIR__)).'/config/constant.php';
+
     $includePath = get_include_path();
 
     $StockOut = new StockOut();
@@ -33,7 +36,7 @@
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <img src="../../images/arrow-down-sign-to-navigate.jpg" alt="">
+                <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
                 
                 <b>...</b>
             </button>

@@ -1,4 +1,5 @@
 <?php
+
 require_once dirname(__DIR__).'/config/constant.php';
 
 require_once ROOT_DIR.'config/sessionCheck.php'; //check admin loggedin or not
@@ -382,7 +383,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                    <a class="btn btn-primary" href="../config/logout.php">Logout</a>
                 </div>
             </div>
         </div>
@@ -399,11 +400,11 @@ $totalAppointments = $appoinments->appointmentsDisplay();
     <script src="js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <!-- <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script> -->
 
     <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
 

@@ -21,6 +21,7 @@ class LoginForm extends DatabaseConnection
                     $_SESSION['USER_EMAIL'] = $data->email;
                     $_SESSION['USER_FNAME']  = $data->fname;
                     $_SESSION['USERNAME']   = $data->username;
+                    $_SESSION['USERID']   = $data->id;
                     
                     
 
@@ -49,6 +50,7 @@ class LoginForm extends DatabaseConnection
                         $_SESSION['USER_ROLE']  = $data->emp_role;
                         $_SESSION['USER_FNAME']   = $data->employee_name;
                         $_SESSION['USERNAME']   = $data->employee_username;
+                        $_SESSION['USERID']   = $data->id;
 
                         // echo "employee login";
                         // exit;
