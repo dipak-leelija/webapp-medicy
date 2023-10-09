@@ -1,6 +1,6 @@
 <?php
 $page = "sales-returns";
-require_once '_config/sessionCheck.php'; //check admin loggedin or not
+require_once '../sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/salesReturn.class.php';
 require_once '../php_control/patients.class.php';
 require_once '../php_control/stockOut.class.php';

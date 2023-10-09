@@ -1,19 +1,20 @@
 <?php 
-    require_once '../sessionCheck.php';
+    require_once '../config/sessionCheck.php';
 
-    if(isset($_SESSION['admin'])){
-        $userEmail = $_SESSION['user_email'];
+    if($_SESSION['ADMIN']){
+        echo 'true';
+        $userEmail = $_SESSION['USER_EMAIL'];
         $userRole = 'ADMIN';
-        $userFname = $_SESSION['userFname'];
-        $username = $_SESSION['username'];
+        $userFname = $_SESSION['USER_FNAME'];
+        $username = $_SESSION['USERNAME'];
+    }else{
+        echo 'false';
+        $userEmail = $_SESSION['USER_EMAIL'] ;
+        $userRole = $_SESSION['USER_ROLE'];
+        $userFname = $_SESSION['USER_FNAME'];
+        $username = $_SESSION['USERNAME'];
     }
 
-    if(isset($_SESSION['employees'])){
-        $userEmail = $_SESSION['user_email'] ;
-        $userRole = $_SESSION['user_role'];
-        $userFname = $_SESSION['emp_name'];
-        $username = $_SESSION['username'];
-    }
 ?>
 
 <!-- Topbar -->

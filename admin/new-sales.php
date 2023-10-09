@@ -1,5 +1,5 @@
 <?php
-require_once '_config/sessionCheck.php';
+require_once '../config/sessionCheck.php';
 require_once "../php_control/doctors.class.php";
 
 

@@ -1,5 +1,5 @@
 <?php
-require_once '_config/sessionCheck.php'; //check admin loggedin or not
+require_once '../config/sessionCheck.php'; //check admin loggedin or not
 require_once '../php_control/measureOfUnit.class.php';
 
 $page = "product-unit";

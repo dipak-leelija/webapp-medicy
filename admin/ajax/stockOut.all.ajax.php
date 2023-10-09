@@ -53,12 +53,12 @@ if (isset($_GET["products"])) {
     $pharmacyInvoiceData = $StockOut->stockOutDetailsById($invoiceId); // bill invoice details
     // print_r($pharmacyInvoiceData);
     $stockOutDetailsData = $StockOut->stockOutDetailsDisplayById($invoiceId);
-    // print_r($stockOutDetailsData);
+    print_r($stockOutDetailsData);
     // $salesReturnData = $salesReturn->;
 
     echo '<option value="" selected enable>Select item</option>';
-    for ($i = 0; $i<count($pharmacyInvoiceData) && $i<count($stockOutDetailsData) ; $i++) {
-        echo '<option stokOutDetails-data-id="'.$stockOutDetailsData[$i]['id'].'" pharmacy-data-id="'.$pharmacyInvoiceData[$i]['id'].'" data-invoice="'.$invoiceId.'" data-batch="'.$pharmacyInvoiceData[$i]['batch_no'].'" value="'.$pharmacyInvoiceData[$i]['item_id'].'">'.$pharmacyInvoiceData[$i]['item_name'].'</option>';
+    for ($i = 0; $i<count($stockOutDetailsData) ; $i++) {
+        echo '<option stokOutDetails-data-id="'.$stockOutDetailsData[$i]['id'].'" pharmacy-data-id="'.$stockOutDetailsData[$i]['id'].'" data-invoice="'.$invoiceId.'" data-batch="'.$stockOutDetailsData[$i]['batch_no'].'" value="'.$stockOutDetailsData[$i]['item_id'].'">'.$stockOutDetailsData[$i]['item_name'].'</option>';
     }
 }
 
