@@ -4,9 +4,9 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php';//check admin loggedin or not
-require_once '../php_control/doctors.class.php';
-require_once '../php_control/doctor.category.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once CLASS_DIR.'doctors.class.php';
+require_once CLASS_DIR.'doctor.category.class.php';
 
 $page = "doctors";
 

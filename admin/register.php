@@ -1,5 +1,5 @@
 <?php
-require_once '../php_control/admin.class.php';
+require_once CLASS_DIR.'admin.class.php';
 
 $admin = new Admin();
 

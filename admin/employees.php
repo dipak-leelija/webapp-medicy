@@ -1,9 +1,9 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
-
-require_once '../php_control/employee.class.php';
-require_once '../php_control/admin.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'employee.class.php';
+require_once CLASS_DIR.'admin.class.php';
 
 $employees = new Employees();
 $showEmployees = $employees->employeesDisplay();
@@ -151,7 +151,7 @@ if (isset($_POST['add-emp']) == true) {
                                         <?php
                                         //employeesDisplay function initilized to feth employees data
                                         $table = 'admin_id';
-                                        $showEmployees = $employees->employeesDisplayByTables($table, $adminId);
+                                        $showEmployees = $employees->selectEmpByCol($table, $adminId);
 
                                         if(!empty($showEmployees)){
                                             foreach ($showEmployees as $emp) {

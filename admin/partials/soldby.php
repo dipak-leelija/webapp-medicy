@@ -2,10 +2,7 @@
 
 require_once dirname(dirname(__DIR__)).'/config/constant.php'; 
 require_once ADM_DIR.'_config/sessionCheck.php';
-<<<<<<< HEAD
-=======
-// require_once ROOT_DIR.'config/sessionCheck.php';
->>>>>>> e27fb40961cd6fff6bd856d9888dae5c2f769651
+
 
 ?>
 
@@ -15,7 +12,7 @@ require_once ADM_DIR.'_config/sessionCheck.php';
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                     Sold By <?php 
-                    if($username = 'ADMIN'){
+                    if($username == 'ADMIN'){
                         echo 'ALL';
                     }else{
                         echo $username;

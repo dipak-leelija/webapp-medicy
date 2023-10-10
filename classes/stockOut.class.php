@@ -67,9 +67,9 @@ class StockOut extends DatabaseConnection{
     }//end updateLabBill function
 
 
-    function amountSoldBy($pharmacist){
+    function amountSoldBy($userId){
         $sold = array();
-        $sql = "SELECT items,amount FROM stock_out WHERE `stock_out`.`emp_id` = '$pharmacist'";
+        $sql = "SELECT items,amount FROM stock_out WHERE `stock_out`.`added_by` = '$userId'";
         $sqlQuery = $this->conn->query($sql);
         while($result = $sqlQuery->fetch_array()){
             $sold[]	= $result;
