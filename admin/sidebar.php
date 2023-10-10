@@ -1,3 +1,5 @@
+     
+
      <!-- Sidebar -->
 
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -60,7 +62,7 @@
 
 
         <!-- Lab section  -->
-
+        
         <li class="nav-item <?php if($page ==  "lab-tests" || $page ==  "test-appointments"){ echo "active";} ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTest"
                 aria-expanded="true" aria-controls="collapsePages">
@@ -77,6 +79,7 @@
             </div>
 
         </li>
+        
 
         <!-- Doctors in Employees -->
 

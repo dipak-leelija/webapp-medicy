@@ -1,18 +1,8 @@
 <?php
 require_once dirname(dirname(__DIR__)).'/config/constant.php'; 
-require_once ROOT_DIR.'config/sessionCheck.php';
+require_once ADM_DIR.'_config/sessionCheck.php';
+// require_once ROOT_DIR.'config/sessionCheck.php';
 
-if ($_SESSION['ADMIN']) {
-    $username = 'ADMIN';
-    $id = $_SESSION['ADMINID'];
-} else {
-    $userEmail = $_SESSION['USER_EMAIL'];
-    $userRole = $_SESSION['USER_ROLE'];
-    $userFname = $_SESSION['USER_FNAME'];
-    $username = $_SESSION['USERNAME'];
-    $id = $_SESSION['EMPID'];
-}
-echo $username;
 ?>
 
 <div class="card border-left-primary h-100 py-2 animated--grow-in">
