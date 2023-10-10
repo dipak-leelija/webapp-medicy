@@ -38,6 +38,7 @@
 	
 	define('ROOT_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR);
 	define('ADM_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'/admin/');
+	define('CLASS_DIR', 		$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'/classes/');
 	define('ASST_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'/uploads/contents/');
 	
 	

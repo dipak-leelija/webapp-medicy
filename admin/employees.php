@@ -11,7 +11,7 @@ $showDesignation = $employees->showDesignation();
 
 $page = "employees";
 
-$adminId = $_SESSION['adminId'];
+$adminId = $_SESSION['ADMINID'];
 
 //Employee Class Initilzed
 // $employees = new Employees();
