@@ -1,8 +1,8 @@
 <?php
 
+require_once '_config/sessionCheck.php'; //check admin loggedin or not
 require_once dirname(__DIR__).'/config/constant.php';
 
-require_once ROOT_DIR.'config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'currentStock.class.php';
 require_once CLASS_DIR.'stockOut.class.php';

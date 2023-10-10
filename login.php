@@ -1,8 +1,9 @@
 <?php 
-require_once 'php_control/dbconnect.php';
-require_once 'php_control/login.class.php';
+require_once 'config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'login.class.php';
 
-require_once 'php_control/designation.class.php';
+require_once CLASS_DIR.'designation.class.php';
 
     $desRole = new Designation();
     $roleData = $desRole->designationRole();

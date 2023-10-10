@@ -1,11 +1,4 @@
 <?php
-
-require_once 'dbconnect.php';
-
-
-
-
-
 class Employees extends DatabaseConnection{
 
 
@@ -48,9 +41,9 @@ class Employees extends DatabaseConnection{
 
 
 
-    function employeesDisplayByTables($table, $data) {
+    function selectEmpByCol($col, $data) {
         try {
-            $selectEmp = "SELECT * FROM employees WHERE `$table` = ?";
+            $selectEmp = "SELECT * FROM employees WHERE `$col` = ?";
             
             // Use prepared statement for security
             $stmt = $this->conn->prepare($selectEmp);

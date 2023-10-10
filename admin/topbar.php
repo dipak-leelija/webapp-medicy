@@ -1,28 +1,4 @@
-<<<<<<< HEAD
-<?php 
-    
-    require_once ROOT_DIR.'/config/sessionCheck.php';
 
-    if($_SESSION['ADMIN']){
-        // echo 'true';
-        $userEmail = $_SESSION['USER_EMAIL'];
-        $userRole = 'ADMIN';
-        $userFname = $_SESSION['USER_FNAME'];
-        $username = $_SESSION['USERNAME'];
-        $userId = $_SESSION['ADMINID'];
-    }else{
-        // echo 'false';
-        $userEmail = $_SESSION['USER_EMAIL'] ;
-        $userRole = $_SESSION['USER_ROLE'];
-        $userFname = $_SESSION['USER_FNAME'];
-        $username = $_SESSION['USERNAME'];
-        $userId = $_SESSION['EMPID'];
-    }
-
-?>
-
-=======
->>>>>>> a92756db35e2c0a61bf0d224ee63ede80b24a05b
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
