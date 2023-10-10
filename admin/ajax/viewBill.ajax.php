@@ -1,6 +1,8 @@
 <?php
-require_once "../../php_control/stockOut.class.php";
-require_once "../../php_control/patients.class.php";
+// require_once "../../stockOut.class.php";
+require_once "../../classes/stockOut.class.php";
+require_once "../../classes/patients.class.php";
+// require_once "../../php_control/patients.class.php";
 
 
 

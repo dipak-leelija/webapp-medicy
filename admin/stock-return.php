@@ -1,10 +1,10 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
-require_once '../php_control/products.class.php';
-require_once '../php_control/distributor.class.php';
-require_once '../php_control/stockReturn.class.php';
-require_once '../php_control/employee.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'stockReturn.class.php';
+require_once CLASS_DIR.'employee.class.php';
 
 
 $page = "stock-return";
