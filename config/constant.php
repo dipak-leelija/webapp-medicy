@@ -1,9 +1,14 @@
 <?php
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 session_start();
 
 	date_default_timezone_set("Asia/Calcutta");   //India time (GMT+5:30)
 
 	define("NOW", 			date("Y-m-d H:i:s"));
+
 	
 	function is_localhost() {
 
@@ -39,9 +44,9 @@ session_start();
 
 	
 	define('ROOT_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR);
-	define('ADM_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'/admin/');
-	define('CLASS_DIR', 		$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'/classes/');
-	define('ASST_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'/uploads/contents/');
+	define('ADM_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'admin/');
+	define('CLASS_DIR', 		$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'classes/');
+	define('ASST_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'uploads/contents/');
 	
 	
 	define('PAGE',				$_SERVER['PHP_SELF']);

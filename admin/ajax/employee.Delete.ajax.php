@@ -1,14 +1,10 @@
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
-require_once '../../php_control/employee.class.php';
-
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'employee.class.php';
 
 $deleteEmpId = $_POST['id'];
-// $deleteDocId = 6464;
 
 $emp = new Employees();
 $empDelete = $emp->deleteEmp($deleteEmpId);
@@ -19,4 +15,5 @@ if ($empDelete) {
 }else {
     echo 0;
 }
+
 ?>

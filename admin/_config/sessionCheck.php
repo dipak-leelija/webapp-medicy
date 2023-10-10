@@ -9,16 +9,25 @@ if (!isset($_SESSION['LOGGEDIN'])) {
 
 if($_SESSION['ADMIN']){
   // echo 'true';
-  $userEmail  = $_SESSION['USER_EMAIL'];
-  $userRole   = 'ADMIN';
-  $userFname  = $_SESSION['USER_FNAME'];
-  $username   = $_SESSION['USERNAME'];
-  $userId     = $_SESSION['ADMINID'];
+  $userEmail    = $_SESSION['USER_EMAIL'];
+  $userRole     = $_SESSION['USER_ROLE'];
+  $userFname    = $_SESSION['USER_FNAME'];
+  $username    = $_SESSION['USERNAME'];
+  $adminId      = $_SESSION['ADMINID'];
 }else{
   // echo 'false';
-  $userEmail  = $_SESSION['USER_EMAIL'] ;
-  $userRole   = $_SESSION['USER_ROLE'];
-  $userFname  = $_SESSION['USER_FNAME'];
+  $userEmail      = $_SESSION['USER_EMAIL'] ;
+  $userRole       = $_SESSION['USER_ROLE'];
+  $userFname      = $_SESSION['USER_FNAME'];
   $username   = $_SESSION['USERNAME'];
-  $userId     = $_SESSION['EMPID'];
+  $employeeId     = $_SESSION['EMPID'];
+}
+
+echo $username, "<br>";
+if($userRole == 'ADMIN'){
+  echo 'ADMIN - '.$username ;
+  echo "<br>",$adminId;
+}else{
+  echo 'Employee - '. $username;
+  echo "<br>",$employeeId;
 }

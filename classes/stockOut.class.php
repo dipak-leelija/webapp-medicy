@@ -1,7 +1,5 @@
 <?php
 
-require_once 'dbconnect.php';
-
 class StockOut extends DatabaseConnection{
 
     function addStockOut($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy) {
@@ -67,9 +65,35 @@ class StockOut extends DatabaseConnection{
     }//end updateLabBill function
 
 
-    function amountSoldBy($pharmacist){
+    // fethc sold amount on admin id
+    function amountSoldByAll($adminId){
+    try {
         $sold = array();
-        $sql = "SELECT items,amount FROM stock_out WHERE `stock_out`.`emp_id` = '$pharmacist'";
+        $sql = "SELECT items,amount FROM stock_out WHERE `admin_id` = '$adminId'";
+        $sqlQuery = $this->conn->query($sql);
+        
+        if ($sqlQuery) {
+            while ($result = $sqlQuery->fetch_array()) {
+                $sold[] = $result;
+            }
+        } else {
+            throw new Exception("Error executing SQL query");
+        }
+        
+        return $sold;
+    } catch (Exception $e) {
+        // Handle the exception here, e.g., log the error or return an empty array
+        error_log("Error: " . $e->getMessage());
+        return array(); // Return an empty array in case of an error
+    }
+}
+
+
+
+    // fethc sold amount on admin id and employee id
+    function amountSoldByEmployee($pharmacist, $adminId){
+        $sold = array();
+        $sql = "SELECT items,amount FROM stock_out WHERE `added_by` = '$pharmacist' AND `admin_id` = '$adminId'";
         $sqlQuery = $this->conn->query($sql);
         while($result = $sqlQuery->fetch_array()){
             $sold[]	= $result;

@@ -1,9 +1,9 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
-
-require_once '../php_control/employee.class.php';
-require_once '../php_control/admin.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'employee.class.php';
+require_once CLASS_DIR.'admin.class.php';
 
 $employees = new Employees();
 $showEmployees = $employees->employeesDisplay();
@@ -27,17 +27,21 @@ if (isset($_POST['add-emp']) == true) {
     $empCPass = $_POST['emp-cpass'];
     $empAddress = $_POST['emp-address'];
 
-    // echo 'Pass1'.$empPass.',and Pass2'.$empCPass;
+    // echo "<br>Admin id : $adminId adn data type : "; echo gettype($adminId);
+    // echo "<br>$empName adn data type : "; echo gettype($empName);
+    // echo "<br>$empUsername adn data type : "; echo gettype($empUsername);
+    // echo "<br>$empMail adn data type : "; echo gettype($empMail);
+    // echo "<br>$empRole adn data type : "; echo gettype($empRole);
+    // echo "<br>$empPass adn data type : "; echo gettype($empPass);
+    // echo "<br>$empCPass adn data type : "; echo gettype($empCPass);
+    // echo "<br>$empAddress adn data type : "; echo gettype($empAddress);
     // exit;
 
     if ($empPass == $empCPass) {
         $wrongPasword = false;
         $empPass = password_hash($empPass, PASSWORD_DEFAULT);
 
-        // echo 'Password is'.$empPass;
-        // exit;
-        //addEmp Function initilized to add employees
-        $addEmployee = $employees->addEmp($empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
+        $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
 
         if ($addEmployee) {
             echo "<script>alert('Employee Addeded!')</script>";
@@ -151,13 +155,13 @@ if (isset($_POST['add-emp']) == true) {
                                         <?php
                                         //employeesDisplay function initilized to feth employees data
                                         $table = 'admin_id';
-                                        $showEmployees = $employees->employeesDisplayByTables($table, $adminId);
+                                        $showEmployees = $employees->selectEmpByCol($table, $adminId);
 
                                         if(!empty($showEmployees)){
                                             foreach ($showEmployees as $emp) {
                                                 $empId = $emp['id'];
-                                                $empUsername = $emp['employee_username'];
-                                                $empName = $emp['employee_name'];
+                                                $empUsername = $emp['emp_username'];
+                                                $empName = $emp['emp_name'];
                                                 $empRole = $emp['emp_role'];
                                                 $empMail = $emp['emp_email'];
                                                 // $emp['employee_password'];
@@ -174,8 +178,6 @@ if (isset($_POST['add-emp']) == true) {
                                                             <a class="text-primary" onclick="viewAndEdit(' . $empId . ')" title="Edit" data-toggle="modal" data-target="#empViewAndEditModal"><i class="fas fa-edit"></i></a>
     
                                                             <a class="delete-btn" data-id="' . $empId . '"  title="Delete"><i class="far fa-trash-alt"></i></a>
-      
-      
                                                         </td>
                                                     </tr>';
                                             }
@@ -363,7 +365,7 @@ if (isset($_POST['add-emp']) == true) {
                     //echo $empDelete.$this->conn->error;exit;
 
                     btn = this;
-                    //alert(btn);
+                    // alert(empId);
 
                     $.ajax({
                         url: "ajax/employee.Delete.ajax.php",

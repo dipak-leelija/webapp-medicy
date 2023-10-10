@@ -1,19 +1,32 @@
 <?php
+
 class Employees extends DatabaseConnection{
 
 
+    function addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass){
+        try {
+            $sql = "INSERT INTO employees (admin_id, emp_username, emp_name, emp_role, emp_email, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Error preparing insert statement: " . $this->conn->error);
+            }
+    
+           // Bind the parameters
+           $stmt->bind_param("sssssss", $adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
 
-
-
-    function addEmp($empUsername, $empName, $empRole, $empMail, $empAddress, $empPass){
-        
-        $insertEmp = "INSERT INTO  employees (`employee_username`, `employee_name`, `emp_role`, `emp_email`, `emp_address`, `employee_password`) VALUES ('$empUsername', '$empName', '$empRole', '$empMail', '$empAddress', '$empPass')";
-        // echo $insertEmp.$this->conn->error;
-        // exit;
-        $insertEmpQuery = $this->conn->query($insertEmp);
-        return $insertEmpQuery;
-
-    }//end addEmp function
+           // Execute the prepared statement
+           if ($stmt->execute()) {
+                return ["result" => true];
+            } else {
+                throw new Exception("Error executing insert statement: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            return ["result" => false, "error" => $e->getMessage()];
+        } 
+    }
+    
 
 
 
@@ -23,7 +36,7 @@ class Employees extends DatabaseConnection{
 
     function employeesDisplay(){
 
-        $selectEmp = "SELECT id,employee_username,employee_name,emp_role,emp_email FROM employees";
+        $selectEmp = "SELECT id,emp_username,emp_name,emp_role,emp_email FROM employees";
 
         $empQuery = $this->conn->query($selectEmp);
 
@@ -62,7 +75,7 @@ class Employees extends DatabaseConnection{
             $empData = array();
             
             while ($row = $result->fetch_assoc()) {
-                $empData[] = $row;
+                $empData = $row;
             }
             
             $stmt->close();
@@ -85,7 +98,7 @@ class Employees extends DatabaseConnection{
 
         while($result = $query->fetch_array()){
 
-            $data[]	= $result;
+            $data = $result;
 
         }
 
@@ -101,7 +114,7 @@ class Employees extends DatabaseConnection{
         $select = "SELECT * FROM employees WHERE id = '$empId'";
         $query = $this->conn->query($select);
         while($result = $query->fetch_array()){
-            $data[]	= $result;
+            $data = $result;
         }
         return $data;
     }//end empDisplayById function
