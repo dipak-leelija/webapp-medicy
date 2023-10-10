@@ -14,12 +14,12 @@ if($_SESSION['ADMIN']){
   $userRole   = 'ADMIN';
   $userFname  = $_SESSION['USER_FNAME'];
   $username   = $_SESSION['USERNAME'];
-  $userId     = $_SESSION['USERID'];
+  $userId     = $_SESSION['ADMINID'];
 }else{
   // echo 'false';
   $userEmail  = $_SESSION['USER_EMAIL'] ;
   $userRole   = $_SESSION['USER_ROLE'];
   $userFname  = $_SESSION['USER_FNAME'];
   $username   = $_SESSION['USERNAME'];
-  $userId     = $_SESSION['USERID'];
+  $userId     = $_SESSION['EMPID'];
 }

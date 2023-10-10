@@ -1,6 +1,7 @@
 <?php
+
 require_once dirname(dirname(__DIR__)).'/config/constant.php'; 
-require_once ROOT_DIR.'config/sessionCheck.php';
+require_once ADM_DIR.'_config/sessionCheck.php';
 
 if ($_SESSION['ADMIN']) {
     $username = 'ADMIN';
