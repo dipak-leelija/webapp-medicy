@@ -1,10 +1,9 @@
-<?php
-date_default_timezone_set("Asia/Kolkata");
+<?php 
 session_start();
-$_SESSION['pharmacy_section'] = $_SERVER['REQUEST_URI'];
-// echo $_SESSION['pharmacy_section'];
-if($_SESSION['pharmacist'] == FALSE){
-    header("Location: ../employee/config/login.php");
-    exit();
-  }
-?>
+date_default_timezone_set("Asia/Kolkata");
+
+// Check if a specific session variable exists to determine if the user is logged in
+if (!isset($_SESSION['LOGGEDIN'])) {
+    header("Location: login.php");
+    exit;
+}
