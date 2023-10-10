@@ -12,7 +12,7 @@ if ($_SESSION['ADMIN']) {
     $username = $_SESSION['USERNAME'];
     $id = $_SESSION['USERID'];
 }
-
+echo $username;
 ?>
 
 <div class="card border-left-primary h-100 py-2 animated--grow-in">
