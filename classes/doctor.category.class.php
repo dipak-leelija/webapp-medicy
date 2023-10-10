@@ -1,6 +1,6 @@
 <?php
 class DoctorCategory extends DatabaseConnection{
-
+    
 
 
     function addDoctorCategory($docCatNme, $docDesc){
