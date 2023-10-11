@@ -2,17 +2,21 @@
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR.'dbconnect.php';
+require_once ADM_DIR.'_config/user-details.inc.php';
 require_once CLASS_DIR.'employee.class.php';
 require_once CLASS_DIR.'admin.class.php';
 
-$adminId = $_SESSION['ADMINID'];
+if($userRole == 'ADMIN'){
+    $adminId = $_SESSION['ADMINID'];
+}else{
+    $adminId = $adminId;
+}
+echo "<br>ADMIN ID : $adminId<br>";
 $employees = new Employees();
 $showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $employees->showDesignation();
 
 $page = "employees";
-
-
 
 //Employee Class Initilzed
 // $employees = new Employees();
@@ -46,6 +50,8 @@ if (isset($_POST['add-emp']) == true) {
 
         if ($addEmployee) {
             echo "<script>alert('Employee Addeded!')</script>";
+            header("Location:  employees.php");
+            exit;
         } else {
             echo "<script>alert('Employee Insertion Failed!')</script>";
         }
