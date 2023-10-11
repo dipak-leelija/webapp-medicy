@@ -1,12 +1,12 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
-require_once '../php_control/currentStock.class.php';
-require_once '../php_control/manufacturer.class.php';
-require_once '../php_control/distributor.class.php';
-require_once '../php_control/measureOfUnit.class.php';
-require_once '../php_control/products.class.php';
-require_once '../php_control/productsImages.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'measureOfUnit.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'productsImages.class.php';
 
 $page = "current-stock";
 

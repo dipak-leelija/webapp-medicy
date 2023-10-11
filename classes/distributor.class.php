@@ -5,7 +5,6 @@ require_once 'dbconnect.php';
 class Distributor extends DatabaseConnection{
 
 
-    
     function addDistributor($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc){
         $insert = "INSERT INTO distributor (`name`, `address`, `area_pin_code`, `phno`, `email`, `dsc`) VALUES ('$distributorName', '$distributorAddress', '$distributorAreaPIN', '$distributorPhno', '$distributorEmail', '$distributorDsc')";
 
@@ -66,7 +65,6 @@ class Distributor extends DatabaseConnection{
 
 
 
-
     function updateDist($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $distributorId){
 
         $update = "UPDATE  `distributor` SET `name` = '$distributorName', `address` = '$distributorAddress', `area_pin_code` = '$distributorAreaPIN', `phno` = '$distributorPhno', `email` = '$distributorEmail', `dsc` = '$distributorDsc' WHERE `distributor`.`id` = '$distributorId'";
@@ -74,8 +72,6 @@ class Distributor extends DatabaseConnection{
         return $updatedQuery;
 
     }// end updateManufacturer function
-
-
 
 
 

@@ -1,6 +1,7 @@
 <?php
-require_once '_config/sessionCheck.php';
+
 require_once dirname(__DIR__).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php';
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'doctor.category.class.php';
 

@@ -1,9 +1,5 @@
 <?php
 
-require_once 'dbconnect.php';
-
-
-
 
 class StockIn extends DatabaseConnection{
 

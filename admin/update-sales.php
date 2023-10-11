@@ -1,11 +1,11 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php';
-require_once "../php_control/doctors.class.php";
-require_once '../php_control/stockOut.class.php';
-require_once '../php_control/products.class.php';
-require_once '../php_control/manufacturer.class.php';
-require_once "../php_control/patients.class.php";
+require_once ADM_DIR.'_config/sessionCheck.php';
+require_once CLASS_DIR."doctors.class.php";
+require_once CLASS_DIR.'stockOut.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR."patients.class.php";
 
 
 $page = "Product Management";

@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php';//check admin loggedin or not
-require_once '../php_control/distributor.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once CLASS_DIR.'distributor.class.php';
 
 $page = "distributor";
 

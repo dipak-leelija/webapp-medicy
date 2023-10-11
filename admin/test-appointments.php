@@ -1,12 +1,12 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php';//check admin loggedin or not
+require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
-require_once '../php_control/patients.class.php';
-require_once '../php_control/labBilling.class.php';
-require_once '../php_control/labBillDetails.class.php';
-require_once '../php_control/sub-test.class.php';
-require_once '../php_control/doctors.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'labBilling.class.php';
+require_once CLASS_DIR.'labBillDetails.class.php';
+require_once CLASS_DIR.'sub-test.class.php';
+require_once CLASS_DIR.'doctors.class.php';
 
 
 

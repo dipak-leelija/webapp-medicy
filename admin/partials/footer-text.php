@@ -1,5 +1,5 @@
 <?php
-require_once '../php_control/hospital.class.php';
+require_once CLASS_DIR.'hospital.class.php';
 
 $HealthCare        = new HelthCare();
 $healthCareDetails = $HealthCare->showhelthCare();
