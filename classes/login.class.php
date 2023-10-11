@@ -50,6 +50,7 @@ class LoginForm extends DatabaseConnection
                         $_SESSION['USER_FNAME']   = $data->emp_name;
                         $_SESSION['USERNAME']   = $data->emp_username;
                         $_SESSION['EMPID']   = $data->emp_id;
+                        $_SESSION['ADMIN_ID'] = $data->
 
                         // echo "employee login";
                         // exit;
