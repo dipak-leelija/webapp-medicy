@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
 require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'doctors.class.php';
