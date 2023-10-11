@@ -142,12 +142,31 @@ class Employees extends DatabaseConnection
 
 
 
-    function deleteEmp($deleteEmpId)
-    {
-        $delEmp = "DELETE FROM `employees` WHERE `employees`.`id` = '$deleteEmpId'";
-        $delEmpQuery = $this->conn->query($delEmp);
-        return $delEmpQuery;
-    } // end deleteDocCat function
+    function deleteEmp($deleteEmpId) {
+        try {
+            // Prepare the SQL statement
+            $sql = "DELETE FROM employees WHERE emp_id = ?";
+            $stmt = $this->conn->prepare($sql);
+    
+            if ($stmt === false) {
+                return "Failed to prepare the SQL statement";
+            }
+    
+            // Bind the parameter and execute the statement
+            $stmt->bind_param("s", $deleteEmpId); // Assuming emp_id is an integer
+    
+            if (!$stmt->execute()) {
+                return "Failed to execute the SQL statement".$stmt->error;
+            }
+    
+            return true; // Return true on success
+        } catch (Exception $e) {
+            // Handle any exceptions (e.g., log the error or return false)
+            return  "Error in deleteEmp: " . $e->getMessage();
+        }
+    }
+    
+
 
 
 

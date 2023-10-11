@@ -268,8 +268,8 @@ if (isset($_POST['add-emp']) == true) {
                                                     <div id="toggle" onclick="showHide();"></div>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <label class="mb-0 mt-1" for="emp-pass">Confirm Password:</label>
-                                                    <input class="form-control" type="password" name="emp-cpass" id="emp-pass" maxlength="12" required>
+                                                    <label class="mb-0 mt-1" for="emp-conf-pass">Confirm Password:</label>
+                                                    <input class="form-control" type="password" name="emp-cpass" id="emp-conf-pass" maxlength="12" required>
                                                     <div id="toggle" onclick="showHide();"></div>
                                                 </div>
                                             </div>
@@ -386,23 +386,20 @@ if (isset($_POST['add-emp']) == true) {
                     //echo $empDelete.$this->conn->error;exit;
 
                     btn = this;
-                    // alert(empId);
-
                     $.ajax({
                         url: "ajax/employee.Delete.ajax.php",
                         type: "POST",
                         data: {
                             id: empId
-                            // alert(empId);
                         },
-
-                        success: function(data) {
-
-                            if (data == 1) {
+                        success: function(response) {
+                            // alert(response);
+                            if (response == 1) {
                                 $(btn).closest("tr").fadeOut()
                             } else {
-                                $("#error-message").html("Deletion Field !!!").slideDown();
-                                $("success-message").slideUp();
+                                // $("#error-message").html("Deletion Field !!!").slideDown();
+                                // $("success-message").slideUp();
+                                alert(response);
                             }
 
                         }
