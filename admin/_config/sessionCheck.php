@@ -23,11 +23,11 @@ if($_SESSION['ADMIN']){
   $employeeId     = $_SESSION['EMPID'];
 }
 
-echo $username, "<br>";
+// echo $username, "<br>";
 if($userRole == 'ADMIN'){
-  echo 'ADMIN - '.$username ;
-  echo "<br>",$adminId;
+  // echo 'ADMIN - '.$username ;
+  // echo "<br>",$adminId;
 }else{
-  echo 'Employee - '. $username;
-  echo "<br>",$employeeId;
+  // echo 'Employee - '. $username;
+  // echo "<br>",$employeeId;
 }
