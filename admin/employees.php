@@ -265,12 +265,12 @@ if (isset($_POST['add-emp']) == true) {
                                                 <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-pass">Password:</label>
                                                     <input class="form-control" type="password" name="emp-pass" id="emp-pass" maxlength="12" required>
-                                                    <div id="toggle" onclick="showHide();"></div>
+                                                    <div id="toggle" onclick="showHide('emp-pass');"></div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-conf-pass">Confirm Password:</label>
                                                     <input class="form-control" type="password" name="emp-cpass" id="emp-conf-pass" maxlength="12" required>
-                                                    <div id="toggle" onclick="showHide();"></div>
+                                                    <div id="toggle" onclick="showHide('emp-conf-pass');"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -412,16 +412,17 @@ if (isset($_POST['add-emp']) == true) {
         })
     </script>
     <script>
-        const password = document.getElementById('emp-pass');
-        const toggle = document.getElementById('toggle');
+        
+        function showHide(fieldId) {
+            const password = document.getElementById(fieldId);
+            const toggle = document.getElementById('toggle');
 
-        function showHide() {
             if (password.type === 'password') {
                 password.setAttribute('type', 'text');
-                toggle.classList.add('hide');
+                // toggle.classList.add('hide');
             } else {
                 password.setAttribute('type', 'password');
-                toggle.classList.remove('hide');
+                // toggle.classList.remove('hide');
             }
         }
     </script>
