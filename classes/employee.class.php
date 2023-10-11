@@ -145,7 +145,7 @@ class Employees extends DatabaseConnection
 
     function deleteEmp($deleteEmpId)
     {
-        $delEmp = "DELETE FROM `employees` WHERE `employees`.`id` = '$deleteEmpId'";
+        $delEmp = "DELETE FROM `employees` WHERE `employees`.`emp_id` = '$deleteEmpId'";
         $delEmpQuery = $this->conn->query($delEmp);
         return $delEmpQuery;
     } // end deleteDocCat function

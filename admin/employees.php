@@ -388,14 +388,8 @@ if (isset($_POST['add-emp']) == true) {
                         data: {
                             id: empId
                         },
-<<<<<<< HEAD
-
                         success: function(response) {
 
-=======
-                        success: function(response) {
-                            // alert(response);
->>>>>>> cd88f2788783682af6ff79560196f713d3aeeda6
                             if (response == 1) {
                                 $(btn).closest("tr").fadeOut()
                             } else {
