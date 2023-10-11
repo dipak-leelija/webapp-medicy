@@ -6,10 +6,8 @@ if($_SESSION['ADMIN'] == true){
 }else {
     require_once CLASS_DIR.'employee.class.php';
     $Employees  = new Employees;
+    
     $user = $Employees->selectEmpByCol('emp_id', $employeeId);
-    // print_r($user);
-    $adminId = $user['admin_id'];
 }
-
 ?>
 

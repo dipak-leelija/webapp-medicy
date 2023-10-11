@@ -4193,9 +4193,12 @@ function word_teaser_end($string, $count){
 		if (isset($parsedURL['query'])) {
 			// $pattern does not exist in the URL
 			header("Location: ".$url."&action=".$actionType."&msg=".$msg.$name);
+            exit;
+
 		}else {
 			// $pattern does not exist in the URL
 			header("Location: ".$url."?action=".$actionType."&msg=".$msg.$name);
+            exit;
 		}
 
 	}//eof
