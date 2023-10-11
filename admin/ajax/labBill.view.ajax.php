@@ -2,11 +2,12 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-require_once '../../php_control/labBilling.class.php';
-require_once '../../php_control/labBillDetails.class.php';
-require_once '../../php_control/sub-test.class.php';
-require_once '../../php_control/patients.class.php';
-require_once '../../php_control/doctors.class.php';
+re
+require_once CLASS_DIR.'labBilling.class.php';
+require_once CLASS_DIR.'labBillDetails.class.php';
+require_once CLASS_DIR.'sub-test.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'doctors.class.php';
 
 
 
