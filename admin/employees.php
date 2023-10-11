@@ -1,17 +1,24 @@
 <?php
+$page = "employees";
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR.'dbconnect.php';
+require_once ADM_DIR.'_config/user-details.inc.php';
 require_once CLASS_DIR.'employee.class.php';
 require_once CLASS_DIR.'admin.class.php';
+require_once CLASS_DIR.'utility.class.php';
 
-$adminId = $_SESSION['ADMINID'];
-$employees = new Employees();
+
+$Utility    = new Utility;
+$employees  = new Employees();
+
+$currentUrl = $Utility->currentUrl();
+
+
+
+
 $showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $employees->showDesignation();
-
-$page = "employees";
-
 
 
 //Employee Class Initilzed
@@ -45,7 +52,9 @@ if (isset($_POST['add-emp']) == true) {
         $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
 
         if ($addEmployee) {
-            echo "<script>alert('Employee Addeded!')</script>";
+            
+            $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
+
         } else {
             echo "<script>alert('Employee Insertion Failed!')</script>";
         }
@@ -134,7 +143,16 @@ if (isset($_POST['add-emp']) == true) {
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                            <div class="d-flex">
+                                <h6 class="m-0 font-weight-bold text-primary">Employees List</h6>
+                                <?php
+                                if (isset($_GET['action'])) {
+                                    if (isset($_GET['msg'])) {
+                                        echo "<p><strong>{$_GET['msg']}</strong></p>";
+                                    }
+                                }
+                                ?>
+                            </div>
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg">Add New Employee</button>
                         </div>
                         <div class="card-body">

@@ -12,22 +12,13 @@ if($_SESSION['ADMIN']){
   $userEmail    = $_SESSION['USER_EMAIL'];
   $userRole     = $_SESSION['USER_ROLE'];
   $userFname    = $_SESSION['USER_FNAME'];
-  $username    = $_SESSION['USERNAME'];
+  $username     = $_SESSION['USERNAME'];
   $adminId      = $_SESSION['ADMINID'];
 }else{
   // echo 'false';
   $userEmail      = $_SESSION['USER_EMAIL'] ;
   $userRole       = $_SESSION['USER_ROLE'];
   $userFname      = $_SESSION['USER_FNAME'];
-  $username   = $_SESSION['USERNAME'];
+  $username       = $_SESSION['USERNAME'];
   $employeeId     = $_SESSION['EMPID'];
-}
-
-// echo $username, "<br>";
-if($userRole == 'ADMIN'){
-  // echo 'ADMIN - '.$username ;
-  // echo "<br>",$adminId;
-}else{
-  // echo 'Employee - '. $username;
-  // echo "<br>",$employeeId;
 }
