@@ -1,10 +1,10 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php';//check admin loggedin or not
+require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
-require_once '../php_control/labtypes.class.php';
+require_once CLASS_DIR.'labtypes.class.php';
 
-require_once '../php_control/sub-test.class.php';
+require_once CLASS_DIR.'sub-test.class.php';
 
 
 
