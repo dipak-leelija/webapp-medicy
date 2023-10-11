@@ -14,9 +14,6 @@ $employees  = new Employees();
 
 $currentUrl = $Utility->currentUrl();
 
-
-
-
 $showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $employees->showDesignation();
 
@@ -52,9 +49,7 @@ if (isset($_POST['add-emp']) == true) {
         $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
 
         if ($addEmployee) {
-            
-            $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
-
+            echo "<script>alert('Employee Addeded!')</script>";
         } else {
             echo "<script>alert('Employee Insertion Failed!')</script>";
         }
