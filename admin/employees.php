@@ -5,13 +5,14 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'employee.class.php';
 require_once CLASS_DIR.'admin.class.php';
 
+$adminId = $_SESSION['ADMINID'];
 $employees = new Employees();
-$showEmployees = $employees->employeesDisplay();
+$showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $employees->showDesignation();
 
 $page = "employees";
 
-$adminId = $_SESSION['ADMINID'];
+
 
 //Employee Class Initilzed
 // $employees = new Employees();
@@ -153,17 +154,19 @@ if (isset($_POST['add-emp']) == true) {
                                     
                                     <tbody>
                                         <?php
+                                        
                                         //employeesDisplay function initilized to feth employees data
-                                        $table = 'admin_id';
-                                        $showEmployees = $employees->selectEmpByCol($table, $adminId);
+                                        // $table = 'admin_id';
+                                        // $showEmployees = $employees->selectEmpByCol($table, $adminId);
 
                                         if(!empty($showEmployees)){
-                                            foreach ($showEmployees as $emp) {
-                                                $empId = $emp['id'];
-                                                $empUsername = $emp['emp_username'];
-                                                $empName = $emp['emp_name'];
-                                                $empRole = $emp['emp_role'];
-                                                $empMail = $emp['emp_email'];
+                                            // print_r($showEmployees);
+                                            foreach ($showEmployees as $showEmployees) {
+                                                $empId = $showEmployees['emp_id'];
+                                                $empUsername = $showEmployees['emp_username'];
+                                                $empName = $showEmployees['emp_name'];
+                                                $empRole = $showEmployees['emp_role'];
+                                                $empMail = $showEmployees['emp_email'];
                                                 // $emp['employee_password'];
                                                 // $emp[''];
     
