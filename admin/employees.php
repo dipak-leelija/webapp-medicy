@@ -49,13 +49,14 @@ if (isset($_POST['add-emp']) == true) {
         $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
 
         if ($addEmployee) {
-            echo "<script>alert('Employee Addeded!')</script>";
+            $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
         } else {
             echo "<script>alert('Employee Insertion Failed!')</script>";
         }
     } else {
         echo "<script>alert('Password Did Not Matched!')</script>";
     }
+
 }
 
 
@@ -246,7 +247,7 @@ if (isset($_POST['add-emp']) == true) {
                                                     <select class="form-control" name="emp-role" id="emp-role" required>
                                                         <option value="role1">Choose role..</option>
                                                         <?php foreach ($showDesignation as $desig){ ?>
-                                                            <option value="<?php echo $desig['id']; ?>"><?php echo $desig['desig_name']; ?></option>
+                                                            <option value="<?php echo $desig['desig_name']; ?>"><?php echo $desig['desig_name']; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -391,9 +392,9 @@ if (isset($_POST['add-emp']) == true) {
                             // alert(empId);
                         },
 
-                        success: function(data) {
+                        success: function(response) {
 
-                            if (data == 1) {
+                            if (response == 1) {
                                 $(btn).closest("tr").fadeOut()
                             } else {
                                 $("#error-message").html("Deletion Field !!!").slideDown();

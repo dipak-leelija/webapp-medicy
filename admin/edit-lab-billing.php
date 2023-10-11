@@ -4,14 +4,15 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php';//check admin loggedin or not
-require_once '../php_control/hospital.class.php';
-require_once '../php_control/doctors.class.php';
-require_once '../php_control/appoinments.class.php';
-require_once '../php_control/patients.class.php';
-require_once '../php_control/sub-test.class.php';
-require_once '../php_control/labBilling.class.php';
-require_once '../php_control/labBillDetails.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'hospital.class.php';
+require_once CLASS_DIR.'doctors.class.php';
+require_once CLASS_DIR.'appoinments.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'sub-test.class.php';
+require_once CLASS_DIR.'labBilling.class.php';
+require_once CLASS_DIR.'labBillDetails.class.php';
 
 
 //Classes Initilized
@@ -37,6 +38,7 @@ $showSubTests   = $SubTests->showSubTests();
     
     
     $labBillDisplay = $LabBilling->labBillDisplayById($billId);
+    echo $labBillDisplay;
     foreach($labBillDisplay as $labBill){
         $patientId = $labBill['patient_id'];
         $testDate  = $labBill['test_date'];

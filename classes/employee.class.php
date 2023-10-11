@@ -112,11 +112,12 @@ class Employees extends DatabaseConnection
 
     function empDisplayById($empId)
     {
-        $select = "SELECT * FROM employees WHERE id = '$empId'";
+        $select = "SELECT * FROM employees WHERE emp_id = '$empId'";
         $query = $this->conn->query($select);
-        while ($result = $query->fetch_array()) {
+        while ($result = $query->fetch_object()) {
             $data = $result;
         }
+        $data = json_encode($data);
         return $data;
     } //end empDisplayById function
 
@@ -129,7 +130,7 @@ class Employees extends DatabaseConnection
     // used in emp edit from admin section
     function updateEmp($empUsername, $empName, $empRole, $empEmail,/*Last Variable for id which one you want to update */ $empId)
     {
-        $edit = "UPDATE  `employees` SET `employee_username` = '$empUsername', `employee_name`= '$empName', `emp_role` = '$empRole', `emp_email` = '$empEmail' WHERE `employees`.`id` = '$empId'";
+        $edit = "UPDATE  `employees` SET `emp_username` = '$empUsername', `emp_name`= '$empName', `emp_role` = '$empRole', `emp_email` = '$empEmail' WHERE `employees`.`emp_id` = '$empId'";
         $editQuery = $this->conn->query($edit);
         // echo $editQuery.$this->conn->error;
         // exit;
@@ -144,9 +145,13 @@ class Employees extends DatabaseConnection
 
     function deleteEmp($deleteEmpId)
     {
-        $delEmp = "DELETE FROM `employees` WHERE `employees`.`id` = '$deleteEmpId'";
-        $delEmpQuery = $this->conn->query($delEmp);
-        return $delEmpQuery;
+        try {
+            $delEmp = "DELETE FROM `employees` WHERE `employees`.`emp_id` = '$deleteEmpId'";
+            $delEmpQuery = $this->conn->query($delEmp);
+            return $delEmpQuery;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     } // end deleteDocCat function
 
 
