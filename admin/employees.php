@@ -11,7 +11,7 @@ if($userRole == 'ADMIN'){
 }else{
     $adminId = $adminId;
 }
-echo "<br>ADMIN ID : $adminId<br>";
+
 $employees = new Employees();
 $showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $employees->showDesignation();
@@ -50,8 +50,6 @@ if (isset($_POST['add-emp']) == true) {
 
         if ($addEmployee) {
             echo "<script>alert('Employee Addeded!')</script>";
-            header("Location:  employees.php");
-            exit;
         } else {
             echo "<script>alert('Employee Insertion Failed!')</script>";
         }
