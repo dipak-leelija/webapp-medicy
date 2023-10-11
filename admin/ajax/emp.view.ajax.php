@@ -2,8 +2,7 @@
 
 <?php 
 
-
-require_once '../../php_control/employee.class.php';
+require_once CLASS_DIR.'employee.class.php';
 
 $empId = $_GET['employeeId'];
 

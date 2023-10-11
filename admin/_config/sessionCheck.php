@@ -21,4 +21,5 @@ if($_SESSION['ADMIN']){
   $userFname      = $_SESSION['USER_FNAME'];
   $username       = $_SESSION['USERNAME'];
   $employeeId     = $_SESSION['EMPID'];
+  $adminId        = $_SESSION['ADMIN_ID'];
 }
