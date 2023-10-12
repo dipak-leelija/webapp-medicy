@@ -1,6 +1,6 @@
 <?php
-
-require_once '../../php_control/sub-test.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'sub-test.class.php';
 
 
 $subTestId = $_GET['subtest_id'];
