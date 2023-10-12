@@ -1,9 +1,18 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
 
-require_once '../../php_control/products.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once ADM_DIR.'_config/sessionCheck.php';
+
+require_once CLASS_DIR."products.class.php";
+require_once CLASS_DIR."packagingUnit.class.php";
+require_once CLASS_DIR."productsImages.class.php";
+require_once CLASS_DIR."manufacturer.class.php";
+require_once CLASS_DIR."currentStock.class.php";
+
+$Products       = new Products();
+$CurrentStock   = new CurrentStock();
+
 
 $Products       = new Products();
 

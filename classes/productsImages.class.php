@@ -1,6 +1,6 @@
 <?php
 
-require_once 'dbconnect.php';
+
 
 
  
@@ -9,28 +9,31 @@ class ProductImages extends DatabaseConnection{
 
 
 
-    function addImage($productId, $productImage, $backImage, $sideImage, $addedBy){
-
-        $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `back_image`, `side_image`, `added_by`) VALUES ('$productId', '$productImage', '$backImage', '$sideImage', '$addedBy')";
-
-        $insertImageQuery = $this->conn->query($insertImage);
-        // echo $insertProductsQuery.$this->conn->error;
-        // exit;
-
-        return $insertImageQuery;
-    }//eof addProduct function
+    function addImages($productId, $productImage, $setPriority, $addedBy, $addedOn, $adminId) {
+        try {
     
+            $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `set_priority`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?)";
     
-    function addImages($productId, $productImage, $addedBy){
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($insertImage);
+            // Bind parameters
+            
+            $stmt->bind_param("ssssss", $productId, $productImage, $setPriority, $addedBy, $addedOn, $adminId);
+    
+            // Execute the statement
+            if ($stmt->execute()) {
+                // Insert successful
+                $stmt->close();
+                return true;
+            } else {
+                // Insert failed
+                throw new Exception("Error inserting data into the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+    }
 
-        $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`) VALUES ('$productId', '$productImage', '$addedBy')";
-
-        $insertImageQuery = $this->conn->query($insertImage);
-        // echo $insertProductsQuery.$this->conn->error;
-        // exit;
-
-        return $insertImageQuery;
-    }//eof addProduct function
 
 
     function showImages(){

@@ -1,20 +1,15 @@
 <?php
 
-require_once 'dbconnect.php';
-
-
- 
-
 class Products extends DatabaseConnection{
 
 
 
-    function addProducts($productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $productComposition) {
+    function addProducts($productId, $manufacturerid, $productName, $productComposition, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId) {
         try {
-            $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `power`, `dsc`, `packaging_type`, `unit_quantity`, `unit_id`, `unit`, `mrp`, `gst`, `product_composition`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `product_composition`, `power`, `dsc`, `packaging_type`, `unit_quantity`, `unit_id`, `unit`, `mrp`, `gst`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
             $stmt = $this->conn->prepare($insertProducts);
-            $stmt->bind_param("ssssssssssss", $productId, $manufacturerid, $productName, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $productComposition);
+            $stmt->bind_param("sssssssssssssss", $productId, $manufacturerid, $productName, $productComposition, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId);
     
             if ($stmt->execute()) {
                 // Insert successful
@@ -45,6 +40,37 @@ class Products extends DatabaseConnection{
 
     }//eof showProducts function
 
+
+
+
+    function showProductsByCol($col, $adminId){
+        try {
+            $selectProduct = "SELECT * FROM products WHERE `$col` = ?";
+            
+            $stmt = $this->conn->prepare($selectProduct);
+            if (!$stmt) {
+                throw new Exception("Statement preparation failed: " . $this->conn->error);
+            }
+            
+            // Bind parameter
+            $stmt->bind_param("s", $adminId);
+            
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                $rows = $result->num_rows;
+                if ($rows == 0) {
+                    return 0;
+                } else {
+                    return $result;
+                }
+            } else {
+                throw new Exception("Query execution failed: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+    }
+    
 
 
 
@@ -97,14 +123,13 @@ class Products extends DatabaseConnection{
 
 
 
-
-
-    function updateProduct($productid, $productname, $productPower, $productManuf, $productDsc, $productPackaging, $unitQty, $unit, $unitName, $mrp, $gst, $addedBy, $productComposition) {
+    
+    function updateProduct($productid, $productManuf, $productname, $productComposition, $productPower, $productDsc, $productPackaging, $unitQty, $unit, $unitName, $mrp, $gst, $updatedBy, $updatedOn) {
         try {
-            $updateProduct = "UPDATE `products` SET `manufacturer_id`=?, `name`=?, `power`=?, `dsc`=?, `packaging_type`=?, `unit_quantity`=?, `unit_id`=?, `unit`=?, `mrp`=?, `gst`=?, `added_by`=?, `product_composition`=? WHERE `product_id`=?";
+            $updateProduct = "UPDATE `products` SET `manufacturer_id`=?, `name`=?, `product_composition`=?, `power`=?, `dsc`=?, `packaging_type`=?, `unit_quantity`=?, `unit_id`=?, `unit`=?, `mrp`=?, `gst`=?, `updated_by`=?, `updated_on`=? WHERE `product_id`=?";
     
             $stmt = $this->conn->prepare($updateProduct);
-            $stmt->bind_param("sssssssssssss", $productManuf, $productname, $productPower, $productDsc, $productPackaging, $unitQty, $unit, $unitName, $mrp, $gst, $addedBy, $productComposition, $productid);
+            $stmt->bind_param("ssssssssssssss", $productManuf, $productname, $productComposition, $productPower, $productDsc, $productPackaging, $unitQty, $unit, $unitName, $mrp, $gst, $updatedBy, $updatedOn, $productid);
     
             if ($stmt->execute()) {
                 // Update successful
@@ -120,6 +145,42 @@ class Products extends DatabaseConnection{
         }
     }
     
+    
+    //==================== product availibity on stock in =========================
+    function selectItemLikeOnCol($data, $col, $colData){
+        $resultData = array();
+        
+        try {
+            // Prepare the SQL statement with placeholders
+            $searchSql = "SELECT * FROM `products` WHERE `products`.`name` LIKE ? AND `$col` = ?";
+            $stmt = $this->conn->prepare($searchSql);
+
+            if ($stmt) {
+                // Bind the parameters and execute the query
+                $searchPattern = "%" . $data . "%";
+                $stmt->bind_param("ss", $searchPattern, $colData);
+                $stmt->execute();
+
+                // Get the results
+                $result = $stmt->get_result();
+
+                while ($row = $result->fetch_assoc()) {
+                    $resultData[] = $row;
+                }
+
+                // Close the statement
+                $stmt->close();
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle the exception (e.g., log the error, return an error message, etc.)
+            // You can customize this part to suit your needs.
+            echo "Error: " . $e->getMessage();
+        }
+
+        return $resultData;
+    }
 
 
 

@@ -2,7 +2,8 @@
 
 
 
-class DatabaseConnection{
+class DatabaseConnection
+{
 
 
     private $servername;
@@ -12,14 +13,15 @@ class DatabaseConnection{
     public $conn;
 
 
-    public function __construct() {
+    public function __construct()
+    {
 
         $this->db_connect();
+    }
 
-      }
 
-
-    function db_connect(){
+    function db_connect()
+    {
 
         $this->servername = 'localhost';
         $this->username = 'root';
@@ -28,13 +30,6 @@ class DatabaseConnection{
 
         $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
         return $this->conn;
-
+        
     }
-
-
-
 }// DatabaseConnection end
-
-
-
-?>

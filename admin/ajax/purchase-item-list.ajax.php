@@ -6,30 +6,33 @@
 </style>
 
 <?php
-require_once '../../php_control/search.class.php';
-require_once '../../php_control/currentStock.class.php';
-require_once '../../php_control/manufacturer.class.php';
-require_once '../../php_control/packagingUnit.class.php';
+
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'search.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR.'products.class.php';
 
 
 $CurrentStock = new CurrentStock();
 $Manufacturer = new Manufacturer();
 $Search       = new Search();
 $PackagingUnits = new PackagingUnits();
+$Products = new Products;
 
-require_once '../../employee/config/dbconnect.php';
+// require_once '../../employee/config/dbconnect.php';
 
 $searchResult = null;
 if (isset($_GET['data'])) {
     $data = $_GET['data'];
     // echo $data;
-    $resultData = array();
-    $searchSql = "Select * From `products` WHERE `products`.`name` LIKE '%$data%'";
-    $searchResult = mysqli_query($conn, $searchSql) or die("Connection Error");
-    while ($result = $searchResult->fetch_array()) {
-        $resultData[] = $result;
-    }
-    // $searchResult = $Search->searchForSale($data);
+    // echo "<br>",$adminId;
+    $col = 'admin_id';
+    $resultData = $Products->selectItemLikeOnCol($data, $col, $adminId);
+    // print_r($resultData);
 }
 
 if ($resultData) {
