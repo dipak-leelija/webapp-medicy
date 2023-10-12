@@ -1,5 +1,7 @@
 <?php
-require_once '../../php_control/doctor.category.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'doctor.category.class.php';
 
 $deleteDocCatId = $_POST['id']; 
 

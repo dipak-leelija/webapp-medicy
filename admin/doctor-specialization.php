@@ -230,6 +230,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategory();
 
             if (confirm("Are You Sure?")) {
                 CatId = $(this).data("id");
+                // alert(CatId);
                 btn = this;
 
                 $.ajax({
@@ -238,8 +239,8 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategory();
                     data: {
                         id: CatId
                     },
-                    success: function(data) {
-                        if (data == 1) {
+                    success: function (response) {
+                        if (response == 1) {
                             $(btn).closest("tr").fadeOut()
                         } else {
                         alert("Deletion Failed!");

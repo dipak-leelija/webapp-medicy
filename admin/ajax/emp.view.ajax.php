@@ -1,8 +1,8 @@
+<?php
 
-
-<?php 
-
-require_once CLASS_DIR.'employee.class.php';
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'employee.class.php';
 
 $empId = $_GET['employeeId'];
 
@@ -17,9 +17,7 @@ $showEmployee = $employees->empDisplayById($empId);
 <head>
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
@@ -27,21 +25,33 @@ $showEmployee = $employees->empDisplayById($empId);
 
 </head>
 
-<body class="mx-2" >
+<body class="mx-2">
 
     <?php
-            foreach ($showEmployee as $Employee) {
-                $empId = $Employee['id'];
-                $empUsername = $Employee['employee_username'];
-                $empName = $Employee['employee_name'];
-                $empRole = $Employee['emp_role'];
-                $empEmail = $Employee['emp_email'];
-                $empAddress = $Employee['emp_address'];
-            }
-            ?>
+    $showEmployee = json_decode($showEmployee);
+
+    if ($showEmployee !== null) {
+        $empId = $showEmployee->emp_id;
+        $empUsername = $showEmployee->emp_username;
+        $empName = $showEmployee->emp_name;
+        $empRole = $showEmployee->emp_role;
+        $empEmail = $showEmployee->emp_email;
+        $empAddress = $showEmployee->emp_address;
+    }
+    // print_r($showEmployee);
+    // foreach ($showEmployee as $Employee) {
+    //     print_r($Employee);
+    //     $empId = $Employee['emp_id'];
+    //     $empUsername = $Employee['emp_username'];
+    //     $empName = $Employee['emp_name'];
+    //     $empRole = $Employee['emp_role'];
+    //     $empEmail = $Employee['emp_email'];
+    //     $empAddress = $Employee['emp_address'];
+    // }
+    ?>
 
     <form>
-        <input type="hidden" id="empId" name="nm_option" value="<?php echo $empId;?>">
+        <input type="hidden" id="empId" name="nm_option" value="<?php echo $empId; ?>">
         <div class="form-group">
             <label for="" class="col-form-label">Employee Username:</label>
             <input type="text" class="form-control" id="empUsername" value="<?php echo $empUsername; ?>">
@@ -71,45 +81,45 @@ $showEmployee = $employees->empDisplayById($empId);
     </form>
 
     <script>
-    function editEmp() {
-        let empId = $("#empId").val();
-        let empUsername = document.getElementById("empUsername").value;
-        let empName = document.getElementById("empName").value;
-        let empRole = document.getElementById("empRole").value;
-        let empEmail = document.getElementById("empEmail").value;
-        // console.log(editTestCategoryDsc);
-        let url = "emp.edit.ajax.php?empId=" + escape(empId) + "&empUsername=" + escape(empUsername) + "&empName=" + escape(empName) + "&empRole=" + escape(empRole) + "&empEmail=" + escape(empEmail);
-        // console.log(url);
-        // alert('Working');
-        // $("#reportUpdate").html('<iframe width="99%" height="40px" frameborder="0" allowtransparency="true" src="'+url+'"></iframe>');
-        // alert("Hello");
-        request.open('GET', url, true);
-
-        request.onreadystatechange = getEditUpdates;
-
-        request.send(null);
-    }
-
-    function getEditUpdates() {
-        if (request.readyState == 4) {
+        function editEmp() {
+            let empId = $("#empId").val();
+            let empUsername = document.getElementById("empUsername").value;
+            let empName = document.getElementById("empName").value;
+            let empRole = document.getElementById("empRole").value;
+            let empEmail = document.getElementById("empEmail").value;
+            // console.log(editTestCategoryDsc);
+            let url = "emp.edit.ajax.php?empId=" + escape(empId) + "&empUsername=" + escape(empUsername) + "&empName=" + escape(empName) + "&empRole=" + escape(empRole) + "&empEmail=" + escape(empEmail);
+            // console.log(url);
+            // alert('Working');
+            // $("#reportUpdate").html('<iframe width="99%" height="40px" frameborder="0" allowtransparency="true" src="'+url+'"></iframe>');
             // alert("Hello");
+            request.open('GET', url, true);
 
-            if (request.status == 200) {
+            request.onreadystatechange = getEditUpdates;
+
+            request.send(null);
+        }
+
+        function getEditUpdates() {
+            if (request.readyState == 4) {
                 // alert("Hello");
 
-                var xmlResponse = request.responseText;
-                // alert(xmlResponse);
+                if (request.status == 200) {
+                    // alert("Hello");
 
-                document.getElementById('reportUpdate').innerHTML = xmlResponse;
-            } else if (request.status == 404) {
-                alert("Request page doesn't exist");
-            } else if (request.status == 403) {
-                alert("Request page doesn't exist");
-            } else {
-                alert("Error: Status Code is " + request.statusText);
+                    var xmlResponse = request.responseText;
+                    // alert(xmlResponse);
+
+                    document.getElementById('reportUpdate').innerHTML = xmlResponse;
+                } else if (request.status == 404) {
+                    alert("Request page doesn't exist");
+                } else if (request.status == 403) {
+                    alert("Request page doesn't exist");
+                } else {
+                    alert("Error: Status Code is " + request.statusText);
+                }
             }
-        }
-    } //eof
+        } //eof
     </script>
 
     <script src="../js/ajax.custom-lib.js"></script>
