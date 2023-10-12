@@ -49,7 +49,7 @@ if (isset($_POST['add-emp']) == true) {
         $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
 
         if ($addEmployee) {
-            echo "<script>alert('Employee Addeded!')</script>";
+            $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
         } else {
             echo "<script>alert('Employee Insertion Failed!')</script>";
         }

@@ -33,15 +33,15 @@
 <body id="page-top">
 
     <?php
-    require_once dirname(__DIR__).'config/constant.php';
-    require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
-    require_once '../php_control/products.class.php';
-    require_once '../php_control/productsImages.class.php';
-    require_once '../php_control/manufacturer.class.php';
-    require_once '../php_control/measureOfUnit.class.php';
-    require_once '../php_control/packagingUnit.class.php';
-    require_once '../pharmacist/_config/sessionCheck.php';
-   
+    require_once dirname(__DIR__).'/config/constant.php';
+    require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+    require_once CLASS_DIR.'dbconnect.php';
+    require_once CLASS_DIR.'products.class.php';
+    require_once CLASS_DIR.'productsImages.class.php';
+    require_once CLASS_DIR.'manufacturer.class.php';
+    require_once CLASS_DIR.'measureOfUnit.class.php';
+    require_once CLASS_DIR.'packagingUnit.class.php';
+    
 
 
     $page = "products";
@@ -56,10 +56,6 @@
     $showManufacturer   = $Manufacturer->showManufacturer();
     $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
     $showPackagingUnits = $PackagingUnits->showPackagingUnits();
-
-    // if (isset($_POST['update-product'])) {
-    //     echo 'Hi';
-    // }
 
     //======================== PRODUCT UPDATE BLOCK ====================================
 
@@ -128,18 +124,39 @@
         // $sideImage         = addslashes($sideImage);
         //_________________________________________________________________________________________
 
-        $addedBy        = $_SESSION['employee_username'];
+        $updatedBy        = $employeeId;
+        $updatedOn         = NOW;
+    
 
         $unit = $_POST['unit'];
         $unitType = $MeasureOfUnits->showMeasureOfUnitsById($unit);
         $unitName = $unitType[0]['short_name'];
 
-        $updateProduct = $Products->updateProduct($_POST['product-id'], $_POST['product-name'], $_POST['medicine-power'], $_POST['manufacturer'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $unitName, $_POST['mrp'], $_POST['gst'], $addedBy, $_POST['product-composition']);
 
-        // $updateImage = $ProductImages->updateImage($productId, $image, $backImage, $sideImage);
+        // echo "<br>product id : ",$_POST['product-id']; echo "<br>",gettype($_POST['product-id']);
+        // echo "<br>manuf id : ",$_POST['manufacturer']; echo "<br>",gettype($_POST['manufacturer']);
+        // echo "<br>prod name : ",$_POST['product-name']; echo "<br>",gettype($_POST['product-name']);
+        // echo "<br>product composition : ",$_POST['product-composition']; echo "<br>",gettype($_POST['product-composition']);
+        // echo "<br>med power : ",$_POST['medicine-power']; echo "<br>",gettype($_POST['medicine-power']);
+        // echo "<br>product description : ",$_POST['product-descreption']; echo "<br>",gettype($_POST['product-descreption']);
+        // echo "<br>packaging type : ",$_POST['packaging-type']; echo "<br>",gettype($_POST['packaging-type']);
+        // echo "<br>unit qty : ",$_POST['unit-quantity']; echo "<br>",gettype($_POST['unit-quantity']);
+        // echo "<br>unit : ",$_POST['unit']; echo "<br>",gettype($_POST['unit']);
+        // echo "<br>unit name : ",$unitName; echo "<br>",gettype($unitName);
+        // echo "<br>mrp : ",$_POST['mrp']; echo "<br>",gettype($_POST['mrp']);
+        // echo "<br>gst : ",$_POST['gst']; echo "<br>",gettype($_POST['gst']);
+        // echo "<br>updated by: ",$updatedBy; echo "<br>",gettype($updatedBy);
+        // echo "<br>updated on : ",$updatedOn; echo "<br>",gettype($updatedOn);
+        
+
+        $updateProduct = $Products->updateProduct($_POST['product-id'], $_POST['manufacturer'], $_POST['product-name'], $_POST['product-composition'], $_POST['medicine-power'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $unitName, $_POST['mrp'], $_POST['gst'], $updatedBy, $updatedOn);
+
+        // print_r($updateProduct);
+        // exit;
+
         $updateImage = true;
-        if ($updateProduct == true) {
-            if ($updateImage == true) {
+        if ($updateProduct === true) {
+            if ($updateImage === true) {
     ?>
                 <script>
                     swal("Success", "Product updated successfully!", "success")
@@ -167,6 +184,7 @@
                 <?php
                 if (isset($_GET['id'])) {
                     $item = $Products->showProductsById($_GET['id']);
+                    // print_r($item);
                     $image = $ProductImages->showImageById($_GET['id']);
                     // print_r($image);
 
@@ -331,7 +349,7 @@
                                 </div>
                         </div>
 
-                        <input type="" id="id" name="id" value="<?php echo $item[0]['id'] ?>">
+                        <input type="" id="id" name="id" value="<?php echo $item[0]['product_id'] ?>">
                         <input type="" id="added-by" name="added-by" value="<?php echo $item[0]['added_by'] ?>">
                         <input type="" id="imgid" name="imgid" value="<?php echo $image[0]['product_id'] ?>">
 
@@ -382,7 +400,6 @@
         //calculating profit only after entering MRP
         function getMarginMrp(value) {
             this.value = parseFloat(this.value).toFixed(2);
-
             const mrp = parseFloat(value);
             const ptr = parseFloat(document.getElementById("ptr").value);
             const gst = parseFloat(document.getElementById("gst").value);

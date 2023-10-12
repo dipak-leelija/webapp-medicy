@@ -14,6 +14,7 @@ if($_SESSION['ADMIN']){
   $userFname    = $_SESSION['USER_FNAME'];
   $username     = $_SESSION['USERNAME'];
   $adminId      = $_SESSION['ADMINID'];
+  $employeeId = ' ';
 }else{
   // echo 'false';
   $userEmail      = $_SESSION['USER_EMAIL'] ;
@@ -23,3 +24,4 @@ if($_SESSION['ADMIN']){
   $employeeId     = $_SESSION['EMPID'];
   $adminId        = $_SESSION['ADMIN_ID'];
 }
+

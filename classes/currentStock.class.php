@@ -1,11 +1,13 @@
 <?php
 
 
-class CurrentStock extends DatabaseConnection{
+class CurrentStock extends DatabaseConnection
+{
 
 
 
-    function addCurrentStock($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy){
+    function addCurrentStock($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy)
+    {
 
         // echo $looselyCount;
         // echo $looselyPrice;
@@ -15,72 +17,80 @@ class CurrentStock extends DatabaseConnection{
         $res = $this->conn->query($insert);
 
         return $res;
-    }//eof addProduct function 
+    } //eof addProduct function 
 
 
 
 
-    function incrCurrentStock($productId, $quantity){
+    function incrCurrentStock($productId, $quantity)
+    {
 
         $incrCurrentStock = " UPDATE `current_stock` SET `qty` = '$quantity' WHERE `current_stock`.`product_id` = '$productId'";
 
         $incrCurrentStockQuery = $this->conn->query($incrCurrentStock);
 
         return $incrCurrentStockQuery;
-    }//eof incrementCurrentStock function 
+    } //eof incrementCurrentStock function 
 
 
-// ========================== CURRENT STOCK UPDATE AFTER sales RETURN =============================
+    // ========================== CURRENT STOCK UPDATE AFTER sales RETURN =============================
 
-    function updateStockBStockDetialsId($stockInDetailsId, $newQuantity, $newLCount){
+    function updateStockBStockDetialsId($stockInDetailsId, $newQuantity, $newLCount)
+    {
         $sale = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count` = '$newLCount' WHERE `stock_in_details_id` = '$stockInDetailsId'";
         $res = $this->conn->query($sale);
         return $res;
-    }//eof updateStock
+    } //eof updateStock
 
 
-    function updateStockByItemId($id, $newQty, $newLqty){
+    function updateStockByItemId($id, $newQty, $newLqty)
+    {
         $sale = " UPDATE `current_stock` SET qty = '$newQty', loosely_count = '$newLqty' WHERE `id` = '$id'";
         $res = $this->conn->query($sale);
         return $res;
-    }//eof updateStock
+    } //eof updateStock
 
 
     // ==================== CURRENT STOCK UPDATE UPDATE SLESE RETURN EDIT =====================
-    
-    function updateStockByReturnEdit($stokInDetailsId, $newQuantity, $newLCount){
+
+    function updateStockByReturnEdit($stokInDetailsId, $newQuantity, $newLCount)
+    {
         $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `stock_in_details_id` = '$stokInDetailsId'";
         $res = $this->conn->query($editUpdate);
         return $res;
-    }//eof updateStock
+    } //eof updateStock
 
-    function updateCurrentStockById($id, $newQuantity, $newLCount){
+    function updateCurrentStockById($id, $newQuantity, $newLCount)
+    {
         $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `id` = '$id'";
         $res = $this->conn->query($editUpdate);
         return $res;
-    }//eof updateStock
+    } //eof updateStock
 
 
     // ==================== current stock update after stock in edit =========================
 
-    function updateStockByStokinDetailsId($stokinDetailsId, $productId, $batchNo, $expDate, $distributorId, $newQuantity, $newLCount, $mrp, $ptr){
+    function updateStockByStokinDetailsId($stokinDetailsId, $productId, $batchNo, $expDate, $distributorId, $newQuantity, $newLCount, $mrp, $ptr)
+    {
         $editUpdate = " UPDATE `current_stock` SET `product_id` = '$productId', `batch_no` = '$batchNo', `exp_date` = '$expDate', `distributor_id` = '$distributorId', `loosely_count` = '$newLCount', `qty` = '$newQuantity', `mrp` = '$mrp', `ptr` = '$ptr' WHERE `current_stock`.`stock_in_details_id` = '$stokinDetailsId'";
         $res = $this->conn->query($editUpdate);
         return $res;
-    }//eof updateStock
+    } //eof updateStock
 
 
 
-    function updateCurrentStockByStockInId($stokinDetailsId, $productId, $batchNo, $expDate, $distributorId, $looseCount, $newQuantity, $ptr, $addedby){
+    function updateCurrentStockByStockInId($stokinDetailsId, $productId, $batchNo, $expDate, $distributorId, $looseCount, $newQuantity, $ptr, $addedby)
+    {
         $editUpdate = " UPDATE `current_stock` SET `product_id` = '$productId', `batch_no` = '$batchNo', `exp_date` = '$expDate', `distributor_id` = '$distributorId', `loosely_count` = '$looseCount', `qty` = '$newQuantity', `ptr` = '$ptr', `added_by` = '$addedby' WHERE `stock_in_details_id` = '$stokinDetailsId'";
         $res = $this->conn->query($editUpdate);
         return $res;
-    }//eof updateStock
+    } //eof updateStock
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    function currentStockGroupbyPid(){
+    function currentStockGroupbyPid()
+    {
         $data = array();
         $select = "SELECT * FROM current_stock GROUP BY `current_stock`.`product_id`";
         $selectQuery = $this->conn->query($select);
@@ -88,10 +98,11 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStoc function
+    } //eof showCurrentStoc function
     //==============================================
 
-    function checkStock($productId, $batchNo){
+    function checkStock($productId, $batchNo)
+    {
         $data = array();
         $check = " SELECT * FROM `current_stock` WHERE product_id = '$productId' AND batch_no = '$batchNo'";
         $res = $this->conn->query($check);
@@ -102,7 +113,8 @@ class CurrentStock extends DatabaseConnection{
     }
 
 
-    function showCurrentStock(){
+    function showCurrentStock()
+    {
         $data = array();
         $select = "SELECT * FROM current_stock WHERE qty > 0 OR loosely_count > 0  ORDER BY added_on ASC";
         $selectQuery = $this->conn->query($select);
@@ -110,13 +122,14 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStoc function
+    } //eof showCurrentStoc function
 
 
     // use (showCurrentStocByStokInDetialsId [line number 185 in this page]) this function against (showCurrentStockbyStokInId) function for any convenience....
 
 
-    function showStockExpiry($newMnth){
+    function showStockExpiry($newMnth)
+    {
         $data = array();
         $select = "SELECT * FROM `current_stock`  WHERE `exp_date` <= '$newMnth' ORDER BY `exp_date` ASC";
         $selectQuery = $this->conn->query($select);
@@ -124,36 +137,39 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStoc function
+    } //eof showCurrentStoc function
 
-    function showCurrentStocByPId($productId){
+    function showCurrentStocByPId($productId)
+    {
         //echo $productId;
         $data = array();
-        $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`qty` > '0' ORDER BY added_on ASC " ;
+        $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`qty` > '0' ORDER BY added_on ASC ";
         // echo $select;
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStocByPId
+    } //eof showCurrentStocByPId
 
 
-    function fetchAllBatchnoByPid($productId){
+    function fetchAllBatchnoByPid($productId)
+    {
         //echo $productId;
         $data = array();
-        $select = "SELECT `current_stock`.`batch_no` FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`qty` > '0' ORDER BY added_on ASC " ;
+        $select = "SELECT `current_stock`.`batch_no` FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`qty` > '0' ORDER BY added_on ASC ";
         // echo $select;
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStocByPId
-    
+    } //eof showCurrentStocByPId
 
-    
-    function showCurrentStocByProductId($productId){
+
+
+    function showCurrentStocByProductId($productId)
+    {
         //echo $productId;
         $data = array();
         $select = "SELECT * FROM current_stock WHERE `product_id` = '$productId'";
@@ -163,10 +179,11 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStocByProductId
+    } //eof showCurrentStocByProductId
 
 
-    function showCurrentStocById($stockId){
+    function showCurrentStocById($stockId)
+    {
         //echo $productId;
         $data = array();
         $select = "SELECT * FROM current_stock WHERE `id` = '$stockId'";
@@ -176,9 +193,10 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStocByProductId
+    } //eof showCurrentStocByProductId
 
-    function showCurrentStocByStokInDetialsId($stockInDetialsId){
+    function showCurrentStocByStokInDetialsId($stockInDetialsId)
+    {
         $data = array();
         $select = "SELECT * FROM current_stock WHERE `stock_in_details_id` = '$stockInDetialsId'";
         // echo $select;
@@ -187,10 +205,11 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStocByProductId
+    } //eof showCurrentStocByProductId
 
 
-    function showCurrentStocByProductIdandBatchNo($productId, $BatchNo){
+    function showCurrentStocByProductIdandBatchNo($productId, $BatchNo)
+    {
         $data = array();
         $select = "SELECT * FROM `current_stock` WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no`='$BatchNo'";
         $selectQuery = $this->conn->query($select);
@@ -198,10 +217,11 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStocByPIdAndProductBatchNo
+    } //eof showCurrentStocByPIdAndProductBatchNo
 
     //showCurrentStocByProductIdandBatchNoDistributorId
-    function showCurrentStocByPIdBNoDId($productId, $BatchNo, $distributorId){
+    function showCurrentStocByPIdBNoDId($productId, $BatchNo, $distributorId)
+    {
         $data = array();
         $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`batch_no`='$BatchNo' AND `current_stock`.`distributor_id`='$distributorId'";
         // echo $select;
@@ -210,10 +230,11 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStocByProductIdandBatchNoDistributorId
+    } //eof showCurrentStocByProductIdandBatchNoDistributorId
 
 
-    function showCurrentStocByUnit($productId, $unitType){
+    function showCurrentStocByUnit($productId, $unitType)
+    {
         // echo $productId;
         $data = array();
         $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`$unitType` > 0  ORDER BY added_on ASC";
@@ -223,10 +244,11 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof showCurrentStocByPId
+    } //eof showCurrentStocByPId
 
 
-    function checkStockExist($productId){
+    function checkStockExist($productId)
+    {
         $data = array();
         $select = "SELECT product_id FROM current_stock WHERE `current_stock`.`product_id` = '$productId'";
         $selectQuery = $this->conn->query($select);
@@ -234,7 +256,7 @@ class CurrentStock extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }//eof checkStockExist
+    } //eof checkStockExist
 
 
 
@@ -243,43 +265,46 @@ class CurrentStock extends DatabaseConnection{
     //=============================delete section =========================
     ///////////////////////////////////////////////////////////////////////
 
-    function deleteCurrentStock($productId, $batchNo){
+    function deleteCurrentStock($productId, $batchNo)
+    {
 
         $delQry = "DELETE FROM `current_stock` WHERE `current_stock`.`product_id` = '$productId' and `batch_no` = '$batchNo' ";
         // echo $delQry.$this->conn->error;exit;
         $delSql = $this->conn->query($delQry);
         return $delSql;
-    }// eof stockInDelete
+    } // eof stockInDelete
 
-    function deleteCurrentStockbyId($productId){
+    function deleteCurrentStockbyId($productId)
+    {
         //echo $batchNo;
         // echo $productId;
-        
+
         $delQry = "DELETE FROM `current_stock` WHERE `product_id` = '$productId'";
         // echo $delQry.$this->conn->error;exit;
         $delSql = $this->conn->query($delQry);
         // var_dump($delSql);
         return $delSql;
-    }// eof stockInDelete
+    } // eof stockInDelete
 
 
-    function deleteCurrentStockbyStockIndetailsId($stockIndetailsID){
+    function deleteCurrentStockbyStockIndetailsId($stockIndetailsID)
+    {
         //echo $batchNo;
         // echo $productId;
-        
+
         $delQry = "DELETE FROM `current_stock` WHERE `stock_in_details_id` = '$stockIndetailsID'";
         // echo $delQry.$this->conn->error;exit;
         $delSql = $this->conn->query($delQry);
         // var_dump($delSql);
         return $delSql;
-    }// eof stockInDelete
+    } // eof stockInDelete
 
-    
-    function deleteByTabelData($table, $data){
+
+    function deleteByTabelData($table, $data)
+    {
         $delQry = "DELETE FROM `current_stock` WHERE `$table` = '$data'";
         $delSql = $this->conn->query($delQry);
         return $delSql;
-    }// eof stockInDelete
+    } // eof stockInDelete
 
 }//eof Products class
-

@@ -1,9 +1,13 @@
 <?php
-require_once "../../php_control/products.class.php";
-require_once "../../php_control/packagingUnit.class.php";
-require_once "../../php_control/productsImages.class.php";
-require_once "../../php_control/manufacturer.class.php";
-require_once "../../php_control/currentStock.class.php";
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once ADM_DIR.'_config/sessionCheck.php';
+
+require_once CLASS_DIR."products.class.php";
+require_once CLASS_DIR."packagingUnit.class.php";
+require_once CLASS_DIR."productsImages.class.php";
+require_once CLASS_DIR."manufacturer.class.php";
+require_once CLASS_DIR."currentStock.class.php";
 
 $Products       = new Products();
 $PackagingUnits = new PackagingUnits();
