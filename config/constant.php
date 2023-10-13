@@ -44,6 +44,7 @@ session_start();
 
 	
 	define('ROOT_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR);
+	define('ROOT_COMPONENT', 	$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'components/');
 	define('ADM_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'admin/');
 	define('CLASS_DIR', 		$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'classes/');
 	define('ASST_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'uploads/contents/');

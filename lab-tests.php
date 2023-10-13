@@ -1,5 +1,8 @@
 <?php
-require_once 'php_control/labtypes.class.php';
+require_once __DIR__.'/config/constant.php';
+
+require_once CLASS_DIR.'labtypes.class.php';
+
 $labTypes = new LabTypes();
 $showLabTypes = $labTypes->showLabtypes();
 ?>
@@ -19,7 +22,7 @@ $showLabTypes = $labTypes->showLabtypes();
 
 <body>
     <!-- Navbar -->
-    <?php include 'require/nav.php' ?>
+    <?php include ROOT_COMPONENT.'nav.php' ?>
     <!-- Navbar End -->
     <section class="category">
     <?php
@@ -43,7 +46,7 @@ $showLabTypes = $labTypes->showLabtypes();
       ?>
     </section>
     <!-- Footer With Copyright Texts -->
-    <?php include 'require/footer.php' ?>
+    <?php include ROOT_COMPONENT.'footer.php' ?>
     <!-- end copyrights -->
 
     <!-- Javascript Links -->

@@ -1,11 +1,6 @@
 <?php
-// function myfunction($errno, $errstr){
-//     echo "<b>ERROR:</b> {$errno} $errstr<br>";
-//     echo "End Script";
-//     die();
-// }
+require_once __DIR__.'/config/constant.php';
 
-// set_error_handler(myfunction);
 ?>
 <?php include 'headerlink.php';?>
 
@@ -25,7 +20,7 @@
     </div> -->
     <!-- END LOADER -->
     <!-- Navbar -->
-    <?php include 'require/nav.php' ?>
+    <?php include ROOT_COMPONENT.'nav.php' ?>
     
     <!-- Navbar End -->
 
@@ -305,7 +300,7 @@
         </div><!-- end container -->
     </div>
    <!-- Footer With Copyright Texts -->
-    <?php include 'require/footer.php' ?>
+    <?php include ROOT_COMPONENT.'footer.php' ?>
     <!-- end copyrights -->
 
     <!-- Javascript Links -->

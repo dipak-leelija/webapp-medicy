@@ -1,10 +1,9 @@
 <?php
-require_once 'php_control/doctors.class.php';
+require_once __DIR__.'/config/constant.php';
+require_once CLASS_DIR.'doctors.class.php';
 
 
 $docId = $_GET['doctorid'];
-// echo $docId;
-// exit;
 
 $doctors = new Doctors();
 $docDetails = $doctors->showDoctorById($docId);
@@ -24,7 +23,7 @@ $docDetails = $doctors->showDoctorById($docId);
 
 <body>
     <!-- Navbar -->
-    <?php include 'require/nav.php' ?>
+    <?php include ROOT_COMPONENT.'nav.php' ?>
     <!-- Navbar End -->
 
     <section class="main_section">
@@ -130,7 +129,7 @@ $docDetails = $doctors->showDoctorById($docId);
     </section>
 
     <!-- Footer With Copyright Texts -->
-    <?php include 'require/footer.php' ?>
+    <?php include ROOT_COMPONENT.'footer.php' ?>
     <!-- end copyrights -->
 
     <!-- Javascript Links -->
