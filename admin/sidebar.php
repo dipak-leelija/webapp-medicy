@@ -75,6 +75,7 @@
                     <!-- <h6 class="collapse-header">Login Screens:</h6> -->
                     <a class="collapse-item" href="lab-tests.php">Avilable Tests</a>
                     <a class="collapse-item" href="test-appointments.php">Test Bill Details</a>
+                    <a class="collapse-item" href="test-reports.php">Test Reports</a>
                 </div>
             </div>
 

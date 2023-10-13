@@ -1,6 +1,7 @@
 <?php
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
 
-require_once '../../php_control/doctors.class.php';
+require_once CLASS_DIR.'doctors.class.php';
 
 
 $docId = $_GET['doctor_id'];

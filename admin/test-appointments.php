@@ -130,6 +130,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
 
                                             $billDetails = $LabBillDetails->billDetailsById($billId);
                                             $test = count($billDetails);
+                        
                                             // echo print_r($billDetails);exit;
                                             if ($test == 1) {
                                                 foreach ($billDetails as $rowBillDetails) {
@@ -138,6 +139,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                                                     $showSubTest = $SubTests->showSubTestsId($subTestId);
                                                     foreach ($showSubTest as $rowSubTest) {
                                                         $test = $rowSubTest['sub_test_name'];
+                                                        // echo $test;
                                                     }
                                                 }
                                             }
@@ -175,7 +177,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                                                         <a class="text-primary text-center" title="Print" href="reprint-test-bill.php?bill-id='.$billId.'"><i class="fas fa-print"></i></a>
 
                                                         <a class="delete-btn text-danger mx-2" id="'.$billId.'" title="Cancel" onclick="cancelBill('.$billId.')"><i class="fa fa-times" aria-hidden="true"></i></a>
-
+                                                        <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id='.$billId.'"><i class="fa fa-flask" aria-hidden="true"></i></a>
                                                         </td>
                                                     </tr>';
                                         }
