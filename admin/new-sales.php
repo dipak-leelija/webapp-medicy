@@ -42,7 +42,7 @@ $doctor = $Doctors->showDoctors();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -52,7 +52,7 @@ $doctor = $Doctors->showDoctors();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->

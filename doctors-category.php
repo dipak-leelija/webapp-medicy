@@ -1,5 +1,8 @@
-<?php  
-require_once 'php_control/doctor.category.class.php';
+<?php 
+require_once __DIR__.'/config/constant.php';
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'doctor.category.class.php';
 
 $doctorCategory = new DoctorCategory();//Doctor Caterogy Class Initilizes
 $showDoctorCategory = $doctorCategory->showDoctorCategory();
@@ -45,7 +48,7 @@ $showDoctorCategory = $doctorCategory->showDoctorCategory();
 </head>
 
 <body>
-    <?php include 'require/nav.php' ?>
+    <?php include ROOT_COMPONENT.'nav.php' ?>
 
     <section id="doc-top" class="doccategory">
 
@@ -87,7 +90,7 @@ $showDoctorCategory = $doctorCategory->showDoctorCategory();
     
 
     <!-- Footer With Copyright Texts -->
-    <?php include 'require/footer.php' ?>
+    <?php include ROOT_COMPONENT.'footer.php' ?>
     <!-- end copyrights -->
 
     <!-- Javascript Links -->

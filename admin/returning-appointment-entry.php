@@ -151,7 +151,7 @@ if (isset($_POST['submit'])) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -161,7 +161,7 @@ if (isset($_POST['submit'])) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of top bar -->
 
 
@@ -360,7 +360,7 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <!-- Footer -->
-                <?php include 'footer-text.php'; ?>
+                <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
                 <!-- Bootstrap core JavaScript-->

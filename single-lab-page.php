@@ -1,6 +1,8 @@
 <?php
-require_once 'php_control/labtypes.class.php';
-require_once 'php_control/sub-test.class.php';
+require_once __DIR__.'/config/constant.php';
+
+require_once CLASS_DIR.'labtypes.class.php';
+require_once CLASS_DIR.'sub-test.class.php';
 
 
 if (isset($_GET['id'])) {
@@ -42,7 +44,7 @@ if (isset($_GET['id'])) {
 <body id="top" class="clinic_version">
 
     <!-- Navbar -->
-    <?php include 'require/nav.php' ?>
+    <?php include ROOT_COMPONENT.'nav.php' ?>
     <!-- Navbar End -->
 
     <!-- <section class="main_section">
@@ -154,7 +156,7 @@ if (isset($_GET['id'])) {
     </div>
 
     <!-- Footer file  -->
-    <?php include 'require/footer.php' ?>
+    <?php include ROOT_COMPONENT.'footer.php' ?>
     <!-- end copyrights -->
     <a href="#top" data-scroll class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
     <!-- all js files -->

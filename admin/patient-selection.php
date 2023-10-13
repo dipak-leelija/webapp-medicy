@@ -53,7 +53,7 @@ $showPatients = $Patients->patientsDisplay();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -63,7 +63,7 @@ $showPatients = $Patients->patientsDisplay();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of top bar -->
 
 
@@ -111,7 +111,7 @@ $showPatients = $Patients->patientsDisplay();
                 </div>
 
                 <!-- Footer -->
-                <?php include 'footer-text.php'; ?>
+                <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
                 <!-- Bootstrap core JavaScript-->

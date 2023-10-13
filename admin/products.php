@@ -51,7 +51,7 @@ $allProducts = $Products->showProductsByCol($col, $adminId);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -61,7 +61,7 @@ $allProducts = $Products->showProductsByCol($col, $adminId);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin container-fluid -->
@@ -173,7 +173,7 @@ $allProducts = $Products->showProductsByCol($col, $adminId);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once 'footer-text.php'; ?>
+            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

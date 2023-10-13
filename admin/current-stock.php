@@ -59,7 +59,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -69,7 +69,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -235,7 +235,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPid();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once 'partials/footer-text.php'; ?>
+            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
