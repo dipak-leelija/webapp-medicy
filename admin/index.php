@@ -59,7 +59,7 @@ if($_SESSION['ADMIN'] == false){
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT."sidebar.php"; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -69,7 +69,7 @@ if($_SESSION['ADMIN'] == false){
             <div id="content">
 
                 <!-- Topbar-->
-                <?php include 'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT."topbar.php"; ?>
                 <!-- End of Tobbar-->
 
                 <!-- Begin Page Content -->
@@ -259,22 +259,22 @@ if($_SESSION['ADMIN'] == false){
 
                         <!-- Sold By Card  -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once ADM_DIR."partials/soldby.php"; ?>
+                            <?php require_once PORTAL_COMPONENT."soldby.php"; ?>
                         </div>
 
                         <!-- Expiring in 3 Months Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once ADM_DIR."partials/expiring.php"; ?>
+                            <?php require_once PORTAL_COMPONENT."expiring.php"; ?>
                         </div>
 
                         <!----------- Sales of the day card ----------->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once ADM_DIR."partials/salesoftheday.php"; ?>
+                            <?php require_once PORTAL_COMPONENT."salesoftheday.php"; ?>
                         </div>
 
                         <!----------- Purchase today card ----------->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once ADM_DIR."partials/purchasedToday.php"; ?>
+                            <?php require_once PORTAL_COMPONENT."purchasedToday.php"; ?>
                         </div>
 
                     </div>
@@ -329,14 +329,14 @@ if($_SESSION['ADMIN'] == false){
                         </div>
                         <div class="col-xl-3 col-md-6">
                             <!------------- NEEDS TO COLLECT PAYMENTS -------------->
-                            <?php require_once "partials/needstocollect.php"; ?>
+                            <?php require_once PORTAL_COMPONENT."needstocollect.php"; ?>
                             <!------------- END NEEDS TO COLLECT PAYMENTS -------------->
 
                         </div>
 
                         <div class="col-xl-3 col-md-6">
                             <!------------- NEEDS TO PAY  -------------->
-                            <?php require_once "partials/needtopay.php"; ?>
+                            <?php require_once PORTAL_COMPONENT."needtopay.php"; ?>
                             <!------------- END NEEDS TO PAY  -------------->
                         </div>
 
@@ -347,11 +347,11 @@ if($_SESSION['ADMIN'] == false){
                     <div class="row">
                         <div class="col-xl-3 col-md-6">
                             <!-- Current Stock Quantity & MRP  -->
-                            <?php require_once "partials/stock-mrp-ptr.php"; ?>
+                            <?php require_once PORTAL_COMPONENT."stock-mrp-ptr.php"; ?>
                         </div>
                         <div class="col-xl-9 col-md-6">
                             <!------------- Stock Summary -------------->
-                            <?php require_once "partials/stock-summary.php"; ?>
+                            <?php require_once PORTAL_COMPONENT."stock-summary.php"; ?>
                             <!------------- end Stock Summary -------------->
 
                         </div>

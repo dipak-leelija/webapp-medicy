@@ -95,7 +95,7 @@ if(isset($_POST['bill-proceed'])){
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -105,7 +105,7 @@ if(isset($_POST['bill-proceed'])){
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of top bar -->
 
 
@@ -251,7 +251,7 @@ if(isset($_POST['bill-proceed'])){
 
                 </script>
                 <!-- Footer -->
-                <?php include 'footer-text.php'; ?>
+                <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
                 <!-- Bootstrap core JavaScript-->

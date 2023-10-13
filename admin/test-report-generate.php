@@ -58,7 +58,7 @@ $showpatient = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -68,7 +68,7 @@ $showpatient = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -152,7 +152,7 @@ $showpatient = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include 'footer-text.php'; ?>
+            <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

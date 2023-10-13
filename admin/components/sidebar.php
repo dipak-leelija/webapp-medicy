@@ -31,7 +31,7 @@
         <!-- Nav Item - Dashboard -->
 
         <li class="nav-item <?php if($page ==  "dashboard"){ echo "active";} ?>">
-            <a class="nav-link" href="index.php">
+            <a class="nav-link" href="<?= ADM_URL ?>">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -46,13 +46,6 @@
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item <?php if($page ==  "helth-care"){ echo "active";} ?>">
-            <a class="nav-link collapsed" href="helth-care.php">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Health Care Details</span>
-            </a>
-        </li>
-
         <li class="nav-item <?php if($page ==  "appointments"){ echo "active";} ?>">
             <a class="nav-link collapsed" href="appointments.php">
                 <i class="fas fa-fw fa-cog"></i>

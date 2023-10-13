@@ -42,7 +42,7 @@ $MeasureOfUnits = new MeasureOfUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -52,7 +52,7 @@ $MeasureOfUnits = new MeasureOfUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- =========================== Measure of Units Content =========================== -->
@@ -145,7 +145,7 @@ $MeasureOfUnits = new MeasureOfUnits();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once 'partials/footer-text.php'; ?>
+            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

@@ -338,7 +338,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                 <!-- /.container-fluid -->
 
                 <!-- Footer -->
-                <?php include_once 'partials/footer-text.php'; ?>
+                <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>
