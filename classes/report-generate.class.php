@@ -35,5 +35,16 @@ class LabReport extends DatabaseConnection{
         }
     }
 
+    function labReportAdd($patient_name,$age,$sex,$test_name,$test_value,$test_date,$report_generate_date){
+        
+        try{
+            $sql = " INSERT INTO `labreport_generate` (`patient_name`, `age`, `sex`, `test_name`, `test_value`,`test_date`,`report_generate_date`) VALUES ('$patient_name', '$age', '$sex', '$test_name', '$test_value','$test_date','$report_generate_date')";
+            $query = $this->conn->query($sql);
+            return $sql;
+            
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 }
 ?>
