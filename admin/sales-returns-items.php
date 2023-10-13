@@ -63,7 +63,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -73,7 +73,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
