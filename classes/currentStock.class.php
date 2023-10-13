@@ -45,12 +45,27 @@ class CurrentStock extends DatabaseConnection
 
     // ========================== CURRENT STOCK UPDATE AFTER sales RETURN =============================
 
-    // function updateStockBStockDetialsId($stockInDetailsId, $newQuantity, $newLCount)
-    // {
-    //     $sale = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count` = '$newLCount' WHERE `stock_in_details_id` = '$stockInDetailsId'";
-    //     $res = $this->conn->query($sale);
-    //     return $res;
-    // } //eof updateStock (duplicate function)
+    function updateStockByStockInDetailsId($stockInDetailsId, $newQuantity, $newLCount) {
+        try {
+            $updateQuery = "UPDATE `current_stock` SET `qty` = ?, `loosely_count` = ? WHERE `stock_in_details_id` = ?";
+            $stmt = $this->conn->prepare($updateQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("iii", $newQuantity, $newLCount, $stockInDetailsId);
+                $res = $stmt->execute();
+                $stmt->close();
+                return $res;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle the exception (e.g., log the error, return an error message, etc.)
+            // Customize this part to suit your needs.
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    
 
 
     function updateStockByItemId($id, $newQty, $newLqty)
@@ -69,10 +84,10 @@ class CurrentStock extends DatabaseConnection
             $stmt = $this->conn->prepare($editUpdate);
 
             if ($stmt) {
-                $stmt->bind_param("iiiss", $newQuantity, $newLCount, $stokInDetailsId, $updatedBy, $updatedOn,);
+                $stmt->bind_param("iissi", $newQuantity, $newLCount, $updatedBy, $updatedOn, $stokInDetailsId);
                 $res = $stmt->execute();
                 $stmt->close();
-                return $res;
+                return ['result' => true];
             } else {
                 throw new Exception("Failed to prepare the statement.");
             }

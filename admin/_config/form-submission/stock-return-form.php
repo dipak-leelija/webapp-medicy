@@ -119,10 +119,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 }else{
                     $updatedBy = $employeeId;
                 }
-                
+
+                // echo "<br>stock in details id : "; print_r($stokInDetailsId); echo "<br>",gettype($stokInDetailsId[$i]);
+                // echo "<br>Updated qty : "; print_r($updatedQty); echo "<br>",gettype($updatedQty);
+                // echo "<br>Updated L count : "; print_r($updatedLooseQty); echo "<br>",gettype($updatedLooseQty);
+                // echo "<br>updated by : "; print_r($updatedBy); echo "<br>",gettype($updatedBy);
+                // echo "<br>updated on : "; print_r($updatedOn); echo "<br>",gettype($updatedOn);
+
                 $updateCurrentStock = $CurrentStock->updateStockByReturnEdit(intval($stokInDetailsId[$i]), intval($updatedQty), intval($updatedLooseQty), $updatedBy, $updatedOn);
 
-
+                // print_r($updateCurrentStock);
                 // echo "<br><br>";
                 // echo "<br>Stock Return Id : "; print_r($stockReturnId); echo "<br>",gettype($stockReturnId);
                 // echo "<br>stokInDetailsId : "; print_r($stokInDetailsId); echo "<br>",gettype($stokInDetailsId[$i]);
