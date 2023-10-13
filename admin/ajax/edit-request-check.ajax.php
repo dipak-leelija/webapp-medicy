@@ -1,7 +1,11 @@
 <?php
-require_once "../../php_control/stockReturn.class.php";
-require_once "../../php_control/distributor.class.php";
-require_once "../../php_control/products.class.php";
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . "stockReturn.class.php";
+require_once CLASS_DIR . "distributor.class.php";
+require_once CLASS_DIR . "products.class.php";
 
 $PurchaseReturn = new StockReturn();
 $DistributorDetils = new Distributor();
@@ -14,12 +18,9 @@ $data2 = 'active';
 $checkId = $_POST['Id'];
 
 $checkReturnEdit = $PurchaseReturn->stockReturnByTables($table1, $checkId, $table2, $data2);
-// print_r($checkReturnEdit)
-
-if($checkReturnEdit != null){
-    echo 1;
-}else{
-    echo 0;
+// print_r($checkReturnEdit);
+if (empty(!$checkReturnEdit)) {
+    echo true;
+} else {
+    echo false;
 }
-
-?>

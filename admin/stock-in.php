@@ -93,7 +93,7 @@ $todayYr = date("y");
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -361,7 +361,7 @@ $todayYr = date("y");
                             <br>
                             <!--=========================== Show Bill Items ===========================-->
                             <div class="card shadow mb-4">
-                                <form action="_config\form-submission\stock-in-form.php" method="post">
+                                <form action="_config/form-submission/stock-in-form.php" method="post">
                                     <div class="card-body stock-in-summary">
                                         <div class="table-responsive">
 

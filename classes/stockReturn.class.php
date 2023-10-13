@@ -15,11 +15,11 @@ class StockReturn extends DatabaseConnection
     #                                                                                                                                #
     ##################################################################################################################################
 
-    function addStockReturn($stockReturnId, $distributorId, $billNo, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $status, $addedBy)
+    function addStockReturn($stockReturnId, $stockInId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin)
     {
         try{
             // Construct the SQL query with placeholders
-            $sql = "INSERT INTO `stock_return` (`id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `status`, `added_by`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `stock_return` (`id`, `stockin_id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `status`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($sql);
@@ -28,13 +28,13 @@ class StockReturn extends DatabaseConnection
             }
 
             // Bind the parameters
-            $stmt->bind_param("sssssssssss", $stockReturnId, $distributorId, $billNo, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $status, $addedBy);
+            $stmt->bind_param("iiissiidsdssss", $stockReturnId, $stockInId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin);
 
             // Execute the prepared statement
             if ($stmt->execute()) {
             // Return the ID of the newly inserted record
                 $insertedId = $stmt->insert_id;
-                return ["result" => true, "id" => $insertedId];
+                return ["result" => true];
             } else {
                 throw new Exception("Error executing insert statement: " . $stmt->error);
             }
@@ -194,12 +194,28 @@ class StockReturn extends DatabaseConnection
     #                                                                                                                                 #
     ###################################################################################################################################
 
-    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc,  $returnQty, $returnFQty, $refundAmount, $addedBy)
-    {
-        $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`, `return_qty`,  `return_free_qty`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$stockInDetailsId', '$productId', '$batchNo', '$expDate', '$unit', '$purchaseQty', '$freeQty', '$mrp', '$ptr', '$gst', '$disc', '$returnQty', '$returnFQty', '$refundAmount', '$addedBy')";
-        $res = $this->conn->query($sql);
-        return $res;
-    } // eof addStockReturn
+    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount)
+{
+    try {
+        $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`, `return_qty`, `return_free_qty`, `refund_amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+
+        if ($stmt) {
+            $stmt->bind_param("iissssiiddiiiid", $stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount);
+            $res = $stmt->execute();
+            $stmt->close();
+            return $res;
+        } else {
+            throw new Exception("Failed to prepare the statement.");
+        }
+    } catch (Exception $e) {
+        // Handle the exception (e.g., log the error, return an error message, etc.)
+        // You can customize this part to suit your needs.
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
 
 
     //stock return start-------------------
