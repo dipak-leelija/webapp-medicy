@@ -326,7 +326,7 @@ class StockReturn extends DatabaseConnection
             }
 
             // Bind the parameters
-            $statement->bind_param("iiidss", $id, $returnQTY, $returnFQTY, $refundAmount, $updatedBy, $updatedOn);
+            $statement->bind_param("iiidss", $returnQTY, $returnFQTY, $refundAmount, $updatedBy, $updatedOn, $id);
 
             // Execute the prepared statement
             if ($statement->execute()) {
