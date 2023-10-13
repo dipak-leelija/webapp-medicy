@@ -45,13 +45,17 @@ session_start();
 	
 	define('ROOT_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR);
 	define('ADM_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'admin/');
-	define('CLASS_DIR', 		$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'classes/');
-	define('ASST_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'uploads/contents/');
+	
+	define('ROOT_COMPONENT', 	ROOT_DIR.'components/');
+	define('PORTAL_COMPONENT', 	ADM_DIR.'components/');
+	
+	define('CLASS_DIR', 		ROOT_DIR.'classes/');
+	define('ASST_DIR', 			ROOT_DIR.'uploads/contents/');
 	
 	
 	define('PAGE',				$_SERVER['PHP_SELF']);
 	define('URL', 				$protocol.$_SERVER['HTTP_HOST'].LOCAL_DIR);
-	define('ADM_URL',  			URL.'/admin/');
+	define('ADM_URL',  			URL.'admin/');
 	define('IMG_PATH',  		URL."/assets/images/");
 
 

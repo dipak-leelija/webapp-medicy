@@ -15,11 +15,11 @@ class StockReturn extends DatabaseConnection
     #                                                                                                                                #
     ##################################################################################################################################
 
-    function addStockReturn($stockReturnId, $distributorId, $billNo, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $status, $addedBy)
+    function addStockReturn($stockReturnId, $stockInId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin)
     {
         try{
             // Construct the SQL query with placeholders
-            $sql = "INSERT INTO `stock_return` (`id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `status`, `added_by`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `stock_return` (`id`, `stockin_id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `status`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($sql);
@@ -28,13 +28,13 @@ class StockReturn extends DatabaseConnection
             }
 
             // Bind the parameters
-            $stmt->bind_param("sssssssssss", $stockReturnId, $distributorId, $billNo, $returnDate, $items, $totalQty, $returnGst, $refundMode, $refundAmount, $status, $addedBy);
+            $stmt->bind_param("iiissiidsdssss", $stockReturnId, $stockInId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin);
 
             // Execute the prepared statement
             if ($stmt->execute()) {
             // Return the ID of the newly inserted record
                 $insertedId = $stmt->insert_id;
-                return ["result" => true, "id" => $insertedId];
+                return ["result" => true];
             } else {
                 throw new Exception("Error executing insert statement: " . $stmt->error);
             }
@@ -131,15 +131,27 @@ class StockReturn extends DatabaseConnection
 
     // ---------------EDIT STOCK RETURN UPDATE FUNCTION----------------------------
 
-    function stockReturnEditUpdate($id, $distributorId, $returnDate, $items, $totalQty, $gst, $refundMode, $refundAmount, $addedBy)
-    {
+    function stockReturnEditUpdate($id, $items, $totalQty, $gst, $refundMode, $refundAmount, $updatedBy, $updatedOn){
+        try {
+            $editANDupdate = "UPDATE `stock_return` SET `items`=?, `total_qty`=?, `gst_amount`=?, `refund_mode`=?, `refund_amount`=?, `updated_by`=?, `updated_on`=? WHERE `id`=?";
+            $stmt = $this->conn->prepare($editANDupdate);
 
-        $editANDupdate = "UPDATE `stock_return` SET `distributor_id`='$distributorId',`return_date`='$returnDate',`items`='$items',`total_qty`='$totalQty',`gst_amount`='$gst',`refund_mode`='$refundMode',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `stock_return`.`id`='$id'";
-
-        $response = $this->conn->query($editANDupdate);
-
-        return $response;
+            if ($stmt) {
+                $stmt->bind_param("sssssssi", $items, $totalQty, $gst, $refundMode, $refundAmount, $updatedBy,  $updatedOn, $id);
+                $response = $stmt->execute();
+                $stmt->close();
+                return ["result" => true];
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle the exception (e.g., log the error, return an error message, etc.)
+            // Customize this part to suit your needs.
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
     }
+
 
 
     function updateStockReturnOnEditStockIn($table1, $data1, $updateData1, $updateData2, $addedBy)
@@ -194,12 +206,28 @@ class StockReturn extends DatabaseConnection
     #                                                                                                                                 #
     ###################################################################################################################################
 
-    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc,  $returnQty, $returnFQty, $refundAmount, $addedBy)
-    {
-        $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`, `return_qty`,  `return_free_qty`, `refund_amount`, `added_by`) VALUES ('$stockReturnId', '$stockInDetailsId', '$productId', '$batchNo', '$expDate', '$unit', '$purchaseQty', '$freeQty', '$mrp', '$ptr', '$gst', '$disc', '$returnQty', '$returnFQty', '$refundAmount', '$addedBy')";
-        $res = $this->conn->query($sql);
-        return $res;
-    } // eof addStockReturn
+    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount)
+{
+    try {
+        $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`, `return_qty`, `return_free_qty`, `refund_amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+
+        if ($stmt) {
+            $stmt->bind_param("iissssiiddiiiid", $stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount);
+            $res = $stmt->execute();
+            $stmt->close();
+            return $res;
+        } else {
+            throw new Exception("Failed to prepare the statement.");
+        }
+    } catch (Exception $e) {
+        // Handle the exception (e.g., log the error, return an error message, etc.)
+        // You can customize this part to suit your needs.
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
 
 
     //stock return start-------------------
@@ -286,13 +314,32 @@ class StockReturn extends DatabaseConnection
 
 
     // ----------------- stock return details edit/update by id ----------------RD-----------
-    function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $addedBy)
-    {
-        $editUpdate = "UPDATE `stock_return_details` SET  `return_qty`='$returnQTY', `return_free_qty` = '$returnFQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `stock_return_details`.`id`='$id'";
+    function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $updatedBy, $updatedOn){
 
-        $response = $this->conn->query($editUpdate);
+        try{
+            $editUpdate = "UPDATE `stock_return_details` SET  `return_qty`= ?, `return_free_qty` =  ?,`refund_amount`= ?,`updated_by`= ?, `updated_on` =  ? WHERE `id`= ?";
 
-        return $response;
+            // Prepare the SQL statement
+            $statement = $this->conn->prepare($editUpdate);
+            if (!$statement) {
+                throw new Exception("Error preparing update statement: " . $this->conn->error);
+            }
+
+            // Bind the parameters
+            $statement->bind_param("iiidss", $id, $returnQTY, $returnFQTY, $refundAmount, $updatedBy, $updatedOn);
+
+            // Execute the prepared statement
+            if ($statement->execute()) {
+                // Check if any rows were affected by the update
+                $affectedRows = $statement->affected_rows;
+                // Return the result based on the affected rows
+                return ($affectedRows > 0);
+            } else {
+                throw new Exception("Error executing update statement: " . $statement->error);
+            }
+        }catch (Exception $e) {
+            return false;
+        }
     }
 
     // ---------------------- STOCK RETURN DETAILS ITEMS DELETE -----------------------------

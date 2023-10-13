@@ -1,8 +1,9 @@
 <?php
+require_once __DIR__.'/config/constant.php';
 
-require_once 'php_control/doctors.class.php';
-
-require_once 'php_control/doctor.category.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'doctors.class.php';
+require_once CLASS_DIR.'doctor.category.class.php';
 
 
 
@@ -68,7 +69,7 @@ $docCatId = $_GET['doccatid'];
 
 <body id="top">
 
-    <?php include 'require/nav.php' ?>
+    <?php include ROOT_COMPONENT.'nav.php' ?>
 
     <section class="main_section">
 
@@ -180,7 +181,7 @@ $docCatId = $_GET['doccatid'];
 
     </section>
 
-    <?php include 'require/footer.php' ?>
+    <?php include ROOT_COMPONENT.'footer.php' ?>
 
 
 

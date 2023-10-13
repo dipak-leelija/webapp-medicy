@@ -89,14 +89,14 @@ if ($_GET['id']) {
         <!-- Page Wrapper -->
         <div id="wrapper">
             <!-- sidebar -->
-            <?php include 'sidebar.php'; ?>
+            <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
             <!-- end sidebar -->
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
                 <!-- Main Content -->
                 <div id="content">
                     <!-- Topbar -->
-                    <?php include 'partials/topbar.php'; ?>
+                    <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                     <!-- End of Topbar -->
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
@@ -609,7 +609,7 @@ if ($_GET['id']) {
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
-                <?php include_once 'partials/footer-text.php'; ?>
+                <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>

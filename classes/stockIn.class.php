@@ -4,15 +4,15 @@
 class StockIn extends DatabaseConnection{
 
 
-    function addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $addedBy){
+    function addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $Gst, $amount, $addedBy, $addedOn, $adminId){
 
         try{
-            $addStockIn = "INSERT INTO `stock_in` (`distributor_id`, `distributor_bill`, `items`, `total_qty`, `bill_date`, `due_date`, `payment_mode`, `gst`, `amount`, `added_by`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
+            $addStockIn = "INSERT INTO `stock_in` (`distributor_id`, `distributor_bill`, `items`, `total_qty`, `bill_date`, `due_date`, `payment_mode`, `gst`, `amount`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
 
             $responce =  $this->conn->prepare($addStockIn);
 
             // binding parameters --------
-            $responce->bind_param("ssssssssss", $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $addedBy); 
+            $responce->bind_param("isisssssssss", $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $Gst, $amount, $addedBy, $addedOn, $adminId); 
 
             // Execute the prepared statement
             if ($responce->execute()) {
@@ -120,9 +120,9 @@ class StockIn extends DatabaseConnection{
     }//eof stockInByDate function
     
 
-    function stockInByAttribute($attrib, $data){
+    function stockInColumns($col, $data1, $col2, $data2){
         // $data   = array();
-        $select = "SELECT * FROM stock_in WHERE `$attrib`= '$data'";
+        $select = "SELECT * FROM stock_in WHERE `$col`= '$data1' AND `$col2`= '$data2'";
         $selectQuery = $this->conn->query($select);
         // while ($result = $selectQuery->fetch_array()) {
         //     $data[] = $result;

@@ -1,10 +1,12 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
-require_once '../php_control/products.class.php';
-require_once '../php_control/distributor.class.php';
-require_once '../php_control/stockReturn.class.php';
-require_once '../php_control/packagingUnit.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR .'dbconnect.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'stockReturn.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
 
 
 
@@ -84,7 +86,7 @@ if (isset($_GET["returnId"])) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -94,7 +96,7 @@ if (isset($_GET["returnId"])) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -345,7 +347,7 @@ if (isset($_GET["returnId"])) {
 
                     <!--=========================== Show Bill Items ===========================-->
                     <div class="card shadow mb-4">
-                        <form action="_config\form-submission\stock-return-edit.php" method="post">
+                        <form action="_config\form-submission\stock-return-edit-form.php" method="post">
                             <div class="card-body stock-in-summary">
                                 <div class="table-responsive">
 
@@ -545,7 +547,7 @@ if (isset($_GET["returnId"])) {
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
-                <?php include_once 'partials/footer-text.php'; ?>
+                <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>

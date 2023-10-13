@@ -12,7 +12,7 @@ rtnFreeQty.addEventListener('input', function (event) {
 
 const getBillList = (t) => {
     let id = t.value;
-    console.log(id);
+    // console.log(id);
     let distributirName = t.selectedOptions[0].text;
     var xmlhttp = new XMLHttpRequest();
     let distIdUrl = `ajax/return-distributor-bill-list.ajax.php?dist-id=${id}`;
@@ -27,7 +27,7 @@ const getBillList = (t) => {
 
 
 const getItemList = (distId, billNo) => {
-    console.log("dist id : "+distId, "bill no : "+billNo);
+    // console.log("dist id : "+distId, "bill no : "+billNo);
     document.getElementById("select-bill-no").value = billNo;
     document.getElementById("select-bill").style.display = "none";
     let distBillNoCheck = document.getElementById("dist-bill-no").value;
@@ -82,10 +82,11 @@ const setMode = (returnMode) => {
     document.getElementById("refund-mode").value = returnMode;
 }
 
-const getDtls = (stokInDetialsId, batchNo, productId, productName, billdate) => {
-    // alert(stokInDetialsId);
+const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, billdate) => {
+    console.log(stockInId);
     document.getElementById('return-mode').focus();
 
+    document.getElementById('stockInId').value = stockInId;
     document.getElementById('stokInDetailsId').value = stokInDetialsId;
     document.getElementById('batch-number').value = batchNo;
     document.getElementById('product-name').value = productName;
@@ -506,7 +507,7 @@ function addData() {
                     </td>
                     <td id="row-${slControl}-col-2" style="font-size:.8rem ; padding-top:1.5rem"scope="row">${slno}</td>
                     <td class="d-none p-0 pt-3">
-                        <input class="d-none col table-data w-6r" type="text" name="stok-in-details-id[]" value="${stokInDetailsId.value}" readonly>
+                        <input class="  col table-data w-6r" type="text" name="stok-in-details-id[]" value="${stokInDetailsId.value}" readonly>
                     </td>
                     <td class="p-0 pt-3" id="row-${slControl}-col-4">
                         <input class="col table-data w-10r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">

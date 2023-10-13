@@ -130,7 +130,7 @@ $showSubTests   = $SubTests->showSubTests();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -140,7 +140,7 @@ $showSubTests   = $SubTests->showSubTests();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of top bar -->
 
 
@@ -390,7 +390,7 @@ $showSubTests   = $SubTests->showSubTests();
 
                 </script>
                 <!-- Footer -->
-                <?php include 'footer-text.php'; ?>
+                <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
                 <!-- Bootstrap core JavaScript-->

@@ -1,10 +1,12 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'distributor.class.php';
-require_once CLASS_DIR.'stockReturn.class.php';
-require_once CLASS_DIR.'employee.class.php';
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR . 'dbconnect.php';
+
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'stockReturn.class.php';
+require_once CLASS_DIR . 'employee.class.php';
 
 
 $page = "stock-return";
@@ -17,9 +19,10 @@ $Employees          = new Employees();
 
 //function's called
 $showDistributor       = $Distributor->showDistributor();
-$stockReturnLists      = $StockReturn->showStockReturn();
-//print_r($stockReturnLists);
-$empLists              = $Employees->employeesDisplay();
+$col = 'admin_id';
+$stockReturnLists      = $StockReturn->stockReturnFilter($col, $adminId);
+// print_r($stockReturnLists);
+$empLists              = $Employees->employeesDisplay($adminId);
 
 $today = date("m-d-Y");
 
@@ -63,7 +66,7 @@ $today = date("m-d-Y");
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -73,7 +76,7 @@ $today = date("m-d-Y");
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -137,7 +140,7 @@ $today = date("m-d-Y");
                                     <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i class="fas fa-plus"></i></a>
                                 </div>
                             </div>
-                <!-- ============================= date picker div ================================== -->
+                            <!-- ============================= date picker div ================================== -->
 
                             <div id="hiddenDiv" class="hidden" style="display: none;">
                                 <div id=" date-range-container">
@@ -149,7 +152,7 @@ $today = date("m-d-Y");
                                 </div>
                             </div>
 
-                <!-- ============================ eof date picker div ================================ -->
+                            <!-- ============================ eof date picker div ================================ -->
 
                             <div class="table-responsive" id="filter-table">
                                 <table class="table table-sm table-hover" id="<?php if (count($stockReturnLists) > 10) {
@@ -191,8 +194,8 @@ $today = date("m-d-Y");
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_mode'] . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_amount'] . '</td>
                                                         <td >
-                                                            <a class="text-primary ml-4" id="edit-btn-'.$row['id'].'" onclick="editReturnItem(' . $row['id'] . ', this)"><i class="fas fa-edit" ></i></a>
-                                                            <a class="text-danger ml-2" id="cancel-btn-'.$row['id'].'" onclick="cancelPurchaseReturn(' . $row['id'] . ', this)"><i class="fas fa-window-close" ></i></a>
+                                                            <a class="text-primary ml-4" id="edit-btn-' . $row['id'] . '" onclick="editReturnItem(' . $row['id'] . ', this)"><i class="fas fa-edit" ></i></a>
+                                                            <a class="text-danger ml-2" id="cancel-btn-' . $row['id'] . '" onclick="cancelPurchaseReturn(' . $row['id'] . ', this)"><i class="fas fa-window-close" ></i></a>
                                                         </td>
                                                     </tr>';
                                             } else {
@@ -216,7 +219,7 @@ $today = date("m-d-Y");
             <!-- End of Content Wrapper -->
 
             <!-- Footer -->
-            <?php include_once 'partials/footer-text.php'; ?>
+            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
             <!-- Return View Modal" -->
@@ -253,7 +256,7 @@ $today = date("m-d-Y");
         <!-- Logout Modal-->
         <?php require_once '_config/logoutModal.php'; ?>
         <!--End of Logout Modal-->
-        
+
         <!-- Bootstrap core JavaScript-->
         <script src="../assets/jquery/jquery.min.js"></script>
         <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
@@ -272,7 +275,7 @@ $today = date("m-d-Y");
         <script src="js/demo/datatables-demo.js"></script>
 
         <script src="../js/sweetAlert.min.js"></script>
-        
+
         <!-- custom script for stock return page -->
         <script src="js/stock-return-control.js"></script>
 </body>

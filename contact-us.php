@@ -1,11 +1,14 @@
-  <?php include 'headerlink.php';
-require_once 'php_control/contact_us.class.php';
+<?php
+require_once __DIR__.'/config/constant.php';
+
+require_once 'headerlink.php';
+require_once CLASS_DIR.'contact_us.class.php';
 ?>
 
 
 <?php
-if(isset($_POST['submit']))
-{
+if(isset($_POST['submit'])){
+
          $to = "dipakmajumdar.leelija@gmail.com";
          
          $subject = $_POST['subject'];
@@ -46,7 +49,7 @@ if(isset($_POST['submit']))
 
 <body class="clinic_version">
     <!-- Navbar -->
-    <?php include 'require/nav.php' ?>
+    <?php include ROOT_COMPONENT.'nav.php' ?>
     <!-- Navbar End -->
     <section class="ftco-section">
         <div class="container">
@@ -146,7 +149,7 @@ if(isset($_POST['submit']))
         </div>
     </section>
 
-    <?php include 'require/footer.php' ?>
+    <?php include ROOT_COMPONENT.'footer.php' ?>
     <!-- Javascript Links -->
     <?php include 'footerlink.php' ?>
 

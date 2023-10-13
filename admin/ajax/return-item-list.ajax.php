@@ -1,10 +1,14 @@
 <?php
-require_once '../../php_control/stockIn.class.php';
-require_once '../../php_control/stockInDetails.class.php';
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/currentStock.class.php';
-require_once '../../php_control/stockReturn.class.php';
-require_once "../../php_control/distributor.class.php";
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR.'dbconnect.php';
+
+require_once CLASS_DIR.'stockIn.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'stockReturn.class.php';
+require_once CLASS_DIR.'distributor.class.php';
 
 
 
@@ -39,6 +43,7 @@ if (isset($_GET['bill-no'])) {
         // print_r($details);
         foreach ($details as $item) {
             $stokInDetailsId = $item['id'];
+            $stockInId = $item['stokIn_id'];
             $batchNo = $item['batch_no'];
             $productId = $item['product_id'];
             $ptr = $item['ptr'];
@@ -58,7 +63,8 @@ if (isset($_GET['bill-no'])) {
 
     ?>
 
-         <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $stokInDetailsId; ?>','<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
+         <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $stockInId; ?>', '<?php echo $stokInDetailsId; ?>','<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
+             <div class="col-2 mb-0" hidden><?php echo $stockInId; ?></div>
              <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
              <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
              <div class="col-4 col-sm-3 mb-0"><?php echo $productName; ?></div>

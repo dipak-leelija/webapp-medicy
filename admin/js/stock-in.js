@@ -157,12 +157,13 @@ function searchItem(input) {
 
 const getDtls = (productId) => {
 
-    // console.log(productId);
-    // alert(productId);
+    console.log(productId);
+    aler
+    t(productId);
     let xmlhttp = new XMLHttpRequest();
 
     if (productId != "") {
-        // console.log(productId);
+        console.log(productId);
         //==================== Manufacturere List ====================
         manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + productId;
         // alert(url);

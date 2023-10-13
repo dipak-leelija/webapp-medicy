@@ -1,10 +1,15 @@
 <?php
-require_once '../../php_control/stockIn.class.php';
-require_once '../../php_control/stockInDetails.class.php';
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/currentStock.class.php';
-require_once '../../php_control/stockReturn.class.php';
-require_once "../../php_control/distributor.class.php";
+
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR.'dbconnect.php';
+
+require_once CLASS_DIR.'stockIn.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'stockReturn.class.php';
+require_once CLASS_DIR.'distributor.class.php';
 
 
 
@@ -24,8 +29,9 @@ if (isset($_GET['dist-id'])) {
 
     <?php
     $distributorId = $_GET['dist-id'];
-    $attribute = 'distributor_id';
-    $details = $StockIn->stockInByAttribute($attribute, $distributorId);
+    $col1 = 'distributor_id';
+    $col2 = 'admin_id';
+    $details = $StockIn->stockInColumns($col1, $distributorId, $col2, $adminId);
     
     foreach ($details as $details) {
         

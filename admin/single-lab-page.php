@@ -69,7 +69,7 @@ if (isset($_GET['labtypeid'])) {
 
         <!-- sidebar -->
 
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
 
         <!-- end sidebar -->
 
@@ -83,7 +83,7 @@ if (isset($_GET['labtypeid'])) {
 
                 <!-- Topbar -->
 
-                <?php include 'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
 
                 <!-- End of Topbar -->
 
@@ -235,7 +235,7 @@ if (isset($_GET['labtypeid'])) {
 
                 <div>
 
-                    <?php include 'footer-text.php'; ?>
+                    <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
 
                 </div>
 

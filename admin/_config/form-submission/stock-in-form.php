@@ -1,14 +1,16 @@
 <?php
+require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR.'dbconnect.php';
 
-require_once '../../_config/sessionCheck.php';
-require_once '../../../php_control/stockIn.class.php';
-require_once '../../../php_control/stockInDetails.class.php';
-require_once '../../../php_control/currentStock.class.php';
-require_once '../../../php_control/distributor.class.php';
-require_once '../../../php_control/products.class.php';
-require_once '../../../php_control/manufacturer.class.php';
-require_once '../../../php_control/packagingUnit.class.php';
-require_once '../../../php_control/stockReturn.class.php';
+require_once CLASS_DIR.'stockIn.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR.'stockReturn.class.php';
 
 $StockIn = new StockIn();
 $StockInDetails = new StockInDetails();
@@ -21,10 +23,11 @@ $PackagingUnits = new PackagingUnits();
 $StcokReturn = new StockReturn();
 
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['stock-in'])) {
 
-        $distributorId        = $_POST['distributor-id'];
+        $distributorId        = intval($_POST['distributor-id']);
         $distributorName      = $_POST['distributor-name'];
        
         $distributorDetial = $distributor->showDistributorById($distributorId);
@@ -49,20 +52,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pMode              = $paymentMode;
         $totalGst           = $_POST['totalGst'];
         $amount             = $_POST['netAmount'];
-        $addedBy            = $_SESSION['employee_username'];
         $BatchNo            = $_POST['batchNo'];
         $MFDCHECK           = $_POST['mfdDate'];
         $expDate            = $_POST['expDate'];
 
-        $crrntDt = date("d-m-Y");
-
-
-
-        $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
-
+        $addedBy            = $employeeId;
+        $addedOn            = NOW;
+        $adminId            = $adminId;
+        
+        
+        $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy, $addedOn, $adminId);
+        // print_r($addStockIn);
+        // exit;
         if ($addStockIn["result"]) {
 
-            $stokInid = $addStockIn['stockIn_id'];
+            $stokInid = intval($addStockIn['stockIn_id']);
 
             foreach ($_POST['productId'] as $productId) {
                 $batchNo            = array_shift($_POST['batchNo']);
@@ -83,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $margin             = array_shift($_POST['margin']);
                 $amount             = array_shift($_POST['billAmount']);
                 $looselyPrice       = '';
-                $addedOn            = date("Y-m-d h:m:s");
+                
 
 
                 $looselyPrice = '';
@@ -96,15 +100,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $looselyPrice = 0;
                 }
 
-                $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount, $addedBy);
+
+                $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, intval($weightage), $unit, intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
                 // stockIn_Details_id
 
                 if ($addStockInDetails["result"]) {
 
                     $stokInDetailsId = $addStockInDetails["stockIn_Details_id"];
  
+                    $totalQty = intval($qty) + intval($freeQty);   // buy qantity + free qty
+
                     // ============ ADD TO CURRENT STOCK ============ 
-                    $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty + $freeQty, $mrp, $ptr, $gst, $addedBy);
+                    $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, intval($looselyCount), floatval($looselyPrice), intval($weightage), $unit, intval($totalQty), floatval($mrp), floatval($ptr), intval($gst), $addedBy, $addedOn, $adminId);
                 }
             } //eof foreach
 
@@ -126,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Medicine Purchase Bill</title>
     <link rel="stylesheet" href="../../../css/bootstrap 5/bootstrap-purchaseItem.css">
-    <link rel="stylesheet" href="../../../css/custom/purchase-bill.css">
+    <link rel="stylesheet" href="../../css/custom/purchase-bill.css">
 
     <style type="text/css">
         @page {

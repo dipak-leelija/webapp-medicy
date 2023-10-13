@@ -55,7 +55,7 @@ $today = date("Y-m-d");
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -65,7 +65,7 @@ $today = date("Y-m-d");
             <div id="content">
 
                 <!-- Tobbar-->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Tobbar-->
 
                 <!-- Begin Page Content -->
@@ -193,7 +193,7 @@ $today = date("Y-m-d");
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once 'partials/footer-text.php'; ?>
+            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

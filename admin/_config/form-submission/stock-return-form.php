@@ -1,15 +1,14 @@
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-require_once '../sessionCheck.php';//check admin loggedin or not
+require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
+require_once CLASS_DIR.'dbconnect.php';
 
-require_once '../../../php_control/hospital.class.php';
-require_once '../../../php_control/stockReturn.class.php';
-require_once '../../../php_control/idsgeneration.class.php';
-require_once '../../../php_control/currentStock.class.php';
+require_once CLASS_DIR.'hospital.class.php';
+require_once CLASS_DIR.'stockReturn.class.php';
+require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
 
 
 //  INSTANTIATING CLASS
@@ -21,6 +20,10 @@ $CurrentStock    =  new CurrentStock();
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['stock-return'])) {
         
+        $stockReturnId   = $IdGeneration->stockReturnId();
+
+        $stockInId = $_POST['stockInId'];
+        $stockInDetailsId = $_POST['stok-in-details-id'];
         $distributorId   = $_POST['dist-id'];
         $distributorName = $_POST['dist-name'];
         $distBillNo = $_POST['dist-bill-no'];
@@ -28,31 +31,38 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $returnDate      = $_POST['return-date'];
         $returnDate      = date("Y-m-d", strtotime($returnDate));
 
-        $refundMode      = $_POST['refund-mode'];
-        // $billNo          = $_POST['bill-no'];
-        $stockReturnId   = $IdGeneration->stockReturnId();
         $itemQty         = $_POST['items-qty'];
         $totalReturnQty  = $_POST['total-return-qty'];
+        
         $returnGst       = $_POST['return-gst-val'];
+
+        $refundMode      = $_POST['refund-mode'];
+        // $billNo          = $_POST['bill-no'];
         $refund          = $_POST['refund'];
 
-        $addedBy         = $_SESSION['employee_username'];
+        $addedBy         = $employeeId;
+        $addedOn         = NOW;
+        $Admin           = $adminId;
         $status          = 'active';
-        
-        // echo "<br>Distributor Id : "; print_r($distributorId);
-        // echo "<br>Distributor Name : "; print_r($distributorName);
-        // echo "<br>Distributor bill no : "; print_r($distBillNo);
-        // echo "<br>Return Date : "; print_r($returnDate);
-        // echo "<br>Refund Mode : "; print_r($refundMode);
-        // echo "<br>Stock Return Id : "; print_r($stockReturnId);
-        // echo "<br>Item Qantity : "; print_r($itemQty);
-        // echo "<br>Total Return Qantity : "; print_r($totalReturnQty);
-        // echo "<br>Refund GST amount : "; print_r($returnGst);
-        // echo "<br>Refund Amount : "; print_r($refund);
 
+        // echo "<br>Stock Return Id : "; print_r($stockReturnId); echo gettype($stockReturnId);
+        // echo "<br>stock in Id : "; print_r($stockInId); echo gettype($stockInId);
+        // echo "<br>Distributor Id : "; print_r($distributorId); echo gettype(intval($distributorId));
+        // echo "<br>Distributor bill no : "; print_r($distBillNo); echo gettype($distBillNo);
+        // echo "<br>Return Date : "; print_r($returnDate); echo gettype($returnDate);
+        // echo "<br>Item Qantity : "; print_r($itemQty); echo gettype(intval($itemQty));
+        // echo "<br>Total Return Qantity : "; print_r($totalReturnQty); echo gettype($totalReturnQty);
+        // echo "<br>Refund GST amount : "; print_r($returnGst); echo gettype(floatval($returnGst));
+        // echo "<br>Refund Mode : "; print_r($refundMode); echo gettype($refundMode);
+        // echo "<br>Refund Amount : "; print_r($refund); echo gettype(floatval($refund));
+        // echo "<br>status : "; print_r($status); echo gettype($status);
+        // echo "<br>added by : "; print_r($addedBy); echo gettype($addedBy);
+        // echo "<br>added on : "; print_r($addedOn); echo gettype($addedOn);
+        // echo "<br>admin : "; print_r($Admin); echo gettype($Admin);
+        // echo "<br>";
     
-        $returned = $StockReturn->addStockReturn($stockReturnId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy);
-        // print_r( $returned);
+        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $distBillNo, $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $addedBy, $addedOn, $Admin);
+        
         $returnResult = $returned['result'];
         if($returnResult == 'true'){
 
@@ -85,25 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $returnFQty     = $_POST['return-free-qty'];
             $refundAmount   = $_POST['refund-amount'];
 
-        // echo "<br><br>";
-        // echo "<br>stokInDetailsId : "; print_r($stokInDetailsId);
-        // echo "<br>Product Id : "; print_r($productId);
-        // echo "<br>Product Name : "; print_r($productName);
-        // echo "<br>Batch No : "; print_r($batchNo);
-        // echo "<br>EXP Date : "; print_r($expDate);
-        // echo "<br>Set Of : "; print_r($setof);
-        // echo "<br>ITEM UNIT Of : "; print_r($unit);
-        // echo "<br> Item weaitage : "; print_r($weightage);
-        // echo "<br>Purchase QTY : "; print_r($purchasedQty);
-        // echo "<br>Free QTY : "; print_r($freeQty);
-        // echo "<br>MRP : "; print_r($mrp);
-        // echo "<br>PTR : "; print_r($ptr);
-        // echo "<br>DISCOUNT PARCENT ON PURCHASE : "; print_r($discParcent);
-        // echo "<br>GST parcent : "; print_r($gstPercent);
-        // echo "<br>Return QTY : "; print_r($returnQty);
-        // echo "<br>Return F QTY : "; print_r($returnFQty);
-        // echo "<br>Refund Amount : "; print_r($refundAmount);
-       
         
             for ($i=0; $i < $ids; $i++) { 
                 $currentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]);
@@ -122,12 +113,45 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     $updatedQty = intval($wholeQty) - (intval($returnQty[$i]) +  intval($returnFQty[$i]));
                 }
             
-                // echo "<br><br>updated loose qty check : $updatedLooseQty";
-                // echo "<br>updated qty check : $updatedQty";
+                $updatedOn = NOW;
+                if($_SESSION['ADMIN']){
+                    $updatedBy = $adminId;
+                }else{
+                    $updatedBy = $employeeId;
+                }
 
-                $updateCurrentStock = $CurrentStock->updateStockByReturnEdit($stokInDetailsId[$i], $updatedQty, $updatedLooseQty);
+                // echo "<br>stock in details id : "; print_r($stokInDetailsId); echo "<br>",gettype($stokInDetailsId[$i]);
+                // echo "<br>Updated qty : "; print_r($updatedQty); echo "<br>",gettype($updatedQty);
+                // echo "<br>Updated L count : "; print_r($updatedLooseQty); echo "<br>",gettype($updatedLooseQty);
+                // echo "<br>updated by : "; print_r($updatedBy); echo "<br>",gettype($updatedBy);
+                // echo "<br>updated on : "; print_r($updatedOn); echo "<br>",gettype($updatedOn);
 
-                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, $stokInDetailsId[$i], $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], $purchasedQty[$i], $freeQty[$i], $mrp[$i], $ptr[$i], $gstPercent[$i], $discParcent[$i], $returnQty[$i], $returnFQty[$i], $refundAmount[$i], $addedBy);
+                $updateCurrentStock = $CurrentStock->updateStockByReturnEdit(intval($stokInDetailsId[$i]), intval($updatedQty), intval($updatedLooseQty), $updatedBy, $updatedOn);
+
+                // print_r($updateCurrentStock);
+                // echo "<br><br>";
+                // echo "<br>Stock Return Id : "; print_r($stockReturnId); echo "<br>",gettype($stockReturnId);
+                // echo "<br>stokInDetailsId : "; print_r($stokInDetailsId); echo "<br>",gettype($stokInDetailsId[$i]);
+                // echo "<br>Product Id : "; print_r($productId); echo "<br>",gettype($productId[$i]);
+                // echo "<br>Product Name : "; print_r($productName);
+                // echo "<br>Batch No : "; print_r($batchNo); echo "<br>",gettype($batchNo[$i]);
+                // echo "<br>EXP Date : "; print_r($expDate); echo "<br>",gettype($expDate[$i]);
+                // echo "<br>Set Of : "; print_r($setof); echo "<br>",gettype($setof[$i]);
+                // echo "<br>ITEM UNIT Of : "; print_r($unit);
+                // echo "<br> Item weaitage : "; print_r($weightage);
+                // echo "<br>Purchase QTY : "; print_r($purchasedQty); echo "<br>",gettype($purchasedQty[$i]); 
+                // echo "<br>Free QTY : "; print_r($freeQty); echo "<br>",gettype($freeQty[$i]);
+                // echo "<br>MRP : "; print_r($mrp); echo "<br>",gettype($mrp[$i]);
+                // echo "<br>PTR : "; print_r($ptr); echo "<br>",gettype($ptr[$i]);
+                // echo "<br>GST parcent : "; print_r($gstPercent); echo "<br>",gettype($gstPercent[$i]);
+                // echo "<br>DISCOUNT PARCENT ON PURCHASE : "; print_r($discParcent); echo "<br>",gettype($discParcent[$i]);
+                // echo "<br>Return QTY : "; print_r($returnQty); echo "<br>",gettype($returnQty[$i]);
+                // echo "<br>Return F QTY : "; print_r($returnFQty); echo "<br>",gettype($returnFQty[$i]);
+                // echo "<br>Refund Amount : "; print_r($refundAmount); echo "<br>",gettype($refundAmount[$i]);
+      
+                // exit;
+
+                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, intval($stokInDetailsId[$i]), $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], intval($purchasedQty[$i]), intval($freeQty[$i]), floatval($mrp[$i]), floatval($ptr[$i]), intval($gstPercent[$i]), intval($discParcent[$i]), intval($returnQty[$i]), intval($returnFQty[$i]), floatval($refundAmount[$i]));
 
                 // echo $productId[$i].'<br>';
                 // echo $batchNo[$i].'<br>';

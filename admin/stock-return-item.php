@@ -1,13 +1,14 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR . 'dbconnect.php';
 // require_once '../php_control/products.class.php';
 // require_once '../php_control/manufacturer.class.php';
-require_once '../php_control/distributor.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
 // require_once '../php_control/measureOfUnit.class.php';
 // require_once '../php_control/stockIn.class.php';
 // require_once '../php_control/currentStock.class.php';
-require_once '../php_control/packagingUnit.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
 
 
 $page = "stock-return";
@@ -50,7 +51,7 @@ $showDistributor       = $Distributor->showDistributor();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -60,7 +61,7 @@ $showDistributor       = $Distributor->showDistributor();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -105,7 +106,7 @@ $showDistributor       = $Distributor->showDistributor();
                                             <b> Select Distributor First </b>
                                         </div>
                                     </div>
-                                    <input class="d-none" type="text" id="product-id">
+                                    <input class=" " type="text" id="product-id">
                                 </div>
 
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
@@ -129,7 +130,7 @@ $showDistributor       = $Distributor->showDistributor();
                                 <div class="row">
                                     <div class="col-md-6 col-12 ">
                                         <div class="row">
-                                            <div class="d-none col-md-6 col-12">
+                                            <div class="  col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="stokInDetailsId">Stock In Detaisl Id :</label>
                                                 <input class="upr-inp mb-1" id="stokInDetailsId" readonly>
                                             </div>
@@ -195,7 +196,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <input type="text" class="upr-inp" name="gst" id="gst" readonly>
                                             </div>
 
-                                            <div class="d-none col-md-3 col-6">
+                                            <div class="  col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="gstAmountPerQty">GST Amount Per Quantity</label>
                                                 <input type="text" class="upr-inp" name="gstAmountPerQty" id="gstAmountPerQty" readonly>
                                             </div>
@@ -225,16 +226,16 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <label class="mb-0 mt-1" for="amount">Amount</label>
                                                 <input type="any" class="upr-inp" name="amount" id="amount" readonly>
                                             </div>
-                                            <div class="d-none col-md-3 col-6">
+                                            <div class="  col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="purchased-qty">Buy Qty: </label>
                                                 <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
                                             </div>
 
-                                            <div class="d-none col-md-3 col-6">
+                                            <div class="  col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="free-qty">Free Qty:</label>
                                                 <input type="text" class="upr-inp" name="free-qty" id="free-qty">
                                             </div>
-                                            <div class="d-none col-md-3 col-6">
+                                            <div class="  col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="net-buy-qty">Net Buy Qty:</label>
                                                 <input type="text" class="upr-inp" name="net-buy-qty" id="net-buy-qty">
                                             </div>
@@ -284,7 +285,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <input type="text" class="upr-inp focus-border" name="return-free-qty" id="return-free-qty" value="" onkeyup="checkFQty(this.value);">
                                             </div>
 
-                                            <div class="d-none col-md-3 col-6">
+                                            <div class="  col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="return-gst-amount">Return GST Amount </label>
                                                 <input type="text" class="upr-inp focus-border" name="return-gst-amount" id="return-gst-amount" value="">
                                             </div>
@@ -317,14 +318,14 @@ $showDistributor       = $Distributor->showDistributor();
                                     <table class="table item-table">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th scope="col" class="d-none">
+                                                <th scope="col" class=" ">
                                                     <input type="number" value="0" id="dynamic-id" style="width: 1rem;">
                                                 </th>
-                                                <th scope="col" class="d-none">
+                                                <th scope="col" class=" ">
                                                     <input type="number" value="0" id="serial-control" style="width: 1rem;">
                                                 </th>
-                                                <th scope="col"></th>
-                                                <th scope="col"></th>
+                                                <th scope="col" hidden></th>
+                                                <th scope="col" hidden></th>
                                                 <th scope="col" hidden>StockInDetailsId</th>
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
@@ -352,11 +353,14 @@ $showDistributor       = $Distributor->showDistributor();
 
                             <div class="  p-3 m-2  font-weight-bold text-light purchase-items-summary rounded">
                                 <div class="row ">
+                                    <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
+                                        <p>StockIn Id : <input class="summary-inp w-6r" name="stockInId" id="stockInId" type="text" readonly> </p>
+                                    </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
                                         <p>Distributor :
                                             <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name" readonly style="margin-left: 0rem;">
                                             <input class="summary-inp w-60" name="dist-id" id="dist-id" type="text" hidden readonly>
-                                            <input class="d-none summary-inp w-60" name="dist-bill-no" id="dist-bill-no" type="text" readonly>
+                                            <input class="  summary-inp w-60" name="dist-bill-no" id="dist-bill-no" type="text" readonly>
                                         </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
@@ -397,7 +401,7 @@ $showDistributor       = $Distributor->showDistributor();
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
-                <?php include_once 'partials/footer-text.php'; ?>
+                <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>

@@ -4,20 +4,30 @@
 class CurrentStock extends DatabaseConnection
 {
 
+    function addCurrentStock($stockInDetailsId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy, $addedOn, $adminId){
+        try {
+            $insert = "INSERT INTO `current_stock` (`stock_in_details_id`, `product_id`, `batch_no`, `exp_date`, `distributor_id`, `loosely_count`, `loosely_price`, `weightage`, `unit`, `qty`, `mrp`, `ptr`, `gst`, `added_by`, `added_on`, `admin_id`) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+            $stmt = $this->conn->prepare($insert);
 
+            if ($stmt) {
+                $stmt->bind_param("isssiidisiddisss", $stockInDetailsId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy, $addedOn, $adminId);
+                $res = $stmt->execute();
+                $stmt->close();
+                return $res;
+            } else {
+                // Handle the case where the prepared statement couldn't be created
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle the exception (e.g., log the error, return an error message, etc.)
+            // You can customize this part to suit your needs.
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 
-    function addCurrentStock($stokInDetaislId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy)
-    {
-
-        // echo $looselyCount;
-        // echo $looselyPrice;
-
-        $insert = "INSERT INTO `current_stock` (`stock_in_details_id`,`product_id`, `batch_no`, `exp_date`, `distributor_id`, `loosely_count`, `loosely_price`, `weightage`, `unit`, `qty`, `mrp`, `ptr`, `gst`, `added_by`) VALUES ('$stokInDetaislId','$productId', '$batchNo', '$expDate', '$distributorId', '$looselyCount', '$looselyPrice', '$weightage', '$unit', '$qty', '$mrp', '$ptr', '$gst', '$addedBy')";
-
-        $res = $this->conn->query($insert);
-
-        return $res;
-    } //eof addProduct function 
 
 
 
@@ -35,12 +45,27 @@ class CurrentStock extends DatabaseConnection
 
     // ========================== CURRENT STOCK UPDATE AFTER sales RETURN =============================
 
-    function updateStockBStockDetialsId($stockInDetailsId, $newQuantity, $newLCount)
-    {
-        $sale = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count` = '$newLCount' WHERE `stock_in_details_id` = '$stockInDetailsId'";
-        $res = $this->conn->query($sale);
-        return $res;
-    } //eof updateStock
+    function updateStockByStockInDetailsId($stockInDetailsId, $newQuantity, $newLCount) {
+        try {
+            $updateQuery = "UPDATE `current_stock` SET `qty` = ?, `loosely_count` = ? WHERE `stock_in_details_id` = ?";
+            $stmt = $this->conn->prepare($updateQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("iii", $newQuantity, $newLCount, $stockInDetailsId);
+                $res = $stmt->execute();
+                $stmt->close();
+                return $res;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle the exception (e.g., log the error, return an error message, etc.)
+            // Customize this part to suit your needs.
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    
 
 
     function updateStockByItemId($id, $newQty, $newLqty)
@@ -53,19 +78,35 @@ class CurrentStock extends DatabaseConnection
 
     // ==================== CURRENT STOCK UPDATE UPDATE SLESE RETURN EDIT =====================
 
-    function updateStockByReturnEdit($stokInDetailsId, $newQuantity, $newLCount)
-    {
-        $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `stock_in_details_id` = '$stokInDetailsId'";
-        $res = $this->conn->query($editUpdate);
-        return $res;
-    } //eof updateStock
+    function updateStockByReturnEdit($stokInDetailsId, $newQuantity, $newLCount, $updatedBy, $updatedOn){
+        try {
+            $editUpdate = "UPDATE `current_stock` SET `qty` = ?, `loosely_count` = ?, `updated_by` = ?, `updated_on` = ? WHERE `stock_in_details_id` = ?";
+            $stmt = $this->conn->prepare($editUpdate);
 
-    function updateCurrentStockById($id, $newQuantity, $newLCount)
-    {
-        $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `id` = '$id'";
-        $res = $this->conn->query($editUpdate);
-        return $res;
-    } //eof updateStock
+            if ($stmt) {
+                $stmt->bind_param("iissi", $newQuantity, $newLCount, $updatedBy, $updatedOn, $stokInDetailsId);
+                $res = $stmt->execute();
+                $stmt->close();
+                return ['result' => true];
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle the exception (e.g., log the error, return an error message, etc.)
+            // You can customize this part to suit your needs.
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
+    
+    // function updateCurrentStockById($id, $newQuantity, $newLCount)
+    // {
+    //     $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `id` = '$id'";
+    //     $res = $this->conn->query($editUpdate);
+    //     return $res;
+    // } //eof updateStock (duplicate function)
 
 
     // ==================== current stock update after stock in edit =========================

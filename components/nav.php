@@ -1,6 +1,6 @@
 <?php
-
-require_once 'php_control/hospital.class.php';
+require_once dirname(__DIR__).'/config/constant.php';
+require_once CLASS_DIR.'hospital.class.php';
 
 $helthCare = new HelthCare();//Hospital Class Initilized
 $showHospital = $helthCare->showhelthCare();
@@ -68,7 +68,7 @@ echo '
          
          <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-               <li><a href="index.php">Home</a></li>
+               <li><a href="'.URL.'">Home</a></li>
                <li><a data-scroll href="doctors-category.php">Doctors</a></li>
                <li><a data-scroll href="lab-tests.php">Lab Tests</a></li>
                <li><a data-scroll href="#doctors">Pharmacy</a></li>
