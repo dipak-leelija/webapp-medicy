@@ -59,11 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // echo "<br>added by : "; print_r($addedBy); echo gettype($addedBy);
         // echo "<br>added on : "; print_r($addedOn); echo gettype($addedOn);
         // echo "<br>admin : "; print_r($Admin); echo gettype($Admin);
-        // echo "<br>";
+        // echo "<br><br><br>";
     
         $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $distBillNo, $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $addedBy, $addedOn, $Admin);
         
         $returnResult = $returned['result'];
+
+        // $returnResult = true;
         if($returnResult == 'true'){
 
             //arrays
@@ -95,6 +97,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $returnFQty     = $_POST['return-free-qty'];
             $refundAmount   = $_POST['refund-amount'];
 
+            
+
+
         
             for ($i=0; $i < $ids; $i++) { 
                 $currentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]);
@@ -104,6 +109,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     // echo "<br><br>current stock loose count : $looseQty";
                     // echo "<br>current stock whole count : $wholeQty";
                 }
+
+
+                // echo "<br> Stock in detaisl id : $stokInDetailsId[$i]";
+                // echo "<br>Return qty : $returnQty[$i]";
+                // echo "<br>Return free qty : $returnFQty[$i]";
+                // echo "<br>Item Unit name : $unit[$i]";
 
                 if($unit[$i] == 'tab' || $unit[$i] == 'cap'){
                     $updatedLooseQty = intval($looseQty) - ((intval($returnQty[$i]) +  intval($returnFQty[$i])) * $weightage[$i]);
@@ -120,13 +131,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     $updatedBy = $employeeId;
                 }
 
+
                 // echo "<br>stock in details id : "; print_r($stokInDetailsId); echo "<br>",gettype($stokInDetailsId[$i]);
                 // echo "<br>Updated qty : "; print_r($updatedQty); echo "<br>",gettype($updatedQty);
                 // echo "<br>Updated L count : "; print_r($updatedLooseQty); echo "<br>",gettype($updatedLooseQty);
                 // echo "<br>updated by : "; print_r($updatedBy); echo "<br>",gettype($updatedBy);
                 // echo "<br>updated on : "; print_r($updatedOn); echo "<br>",gettype($updatedOn);
+                
 
+                // ============== update current stock function =================
                 $updateCurrentStock = $CurrentStock->updateStockByReturnEdit(intval($stokInDetailsId[$i]), intval($updatedQty), intval($updatedLooseQty), $updatedBy, $updatedOn);
+
+
 
                 // print_r($updateCurrentStock);
                 // echo "<br><br>";
@@ -151,6 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       
                 // exit;
 
+                // ====== add stock return function =============
                 $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, intval($stokInDetailsId[$i]), $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], intval($purchasedQty[$i]), intval($freeQty[$i]), floatval($mrp[$i]), floatval($ptr[$i]), intval($gstPercent[$i]), intval($discParcent[$i]), intval($returnQty[$i]), intval($returnFQty[$i]), floatval($refundAmount[$i]));
 
                 // echo $productId[$i].'<br>';
