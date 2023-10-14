@@ -15,6 +15,26 @@ $labBillingData = $LabBilling->labBillDisplayById($billId); ///
 $labBillingDetails = $LabBillDetails->billDetailsById($billId); //labBillingDetails
 $showpatient = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
 
+// print_r($labBillingDetails);
+
+// $testId = $labBillingDetails[0]['test_id'];
+// print_r($testId);
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $testValue = $_POST['values'];
+    // print_r($testValue) ;
+    $unitValues = $_POST['unitValues'];
+    $testId = $_POST['testId'];
+    // print_r($testId);
+    foreach($testValue as $index => $value ){ 
+        $unitValue = $unitValues[$index];
+        $testId = $testId[$index];
+        print_r($unitValue);
+        $labReportAdd = $LabReport->labReportAdd($value,$unitValue,$testId);
+    }
+   
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +70,7 @@ $showpatient = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -60,7 +80,7 @@ $showpatient = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -68,86 +88,90 @@ $showpatient = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 booked_btn">
-
-                            <div class="card-body">
-                                <?php
-                                $showpatient = json_decode($showpatient);
-                                if ($showpatient !== null) {
-                                    $patientName = $showpatient->name;
-                                    $patientAge = $showpatient->age;
-                                    $patientSex = $showpatient->gender;
-                                }
-                                $testDate = $labBillingData[0]['test_date'];
-                                ?>
-                                <div style="display: flex; justify-content:space-between; align-items: center;flex-wrap: wrap;">
-                                    <h6><b>Patient Name:</b> <?php echo $patientName; ?></h6>
-                                    <h6><b>Age:</b> <?php echo $patientAge; ?></h6>
-                                    <h6><b>Sex:</b> <?php echo $patientSex; ?></h6>
-                                    <h6><b>Test Date:</b> <?php echo $testDate; ?></h6>
-                                </div>
-
-                                <hr class="sidebar-divider">
-        
-                                <div>
+                            <form method="POST" action="">
+                                <div class="card-body">
                                     <?php
-                                    $unitCounts = array();
+                                    $showpatient = json_decode($showpatient);
+                                    if ($showpatient !== null) {
+                                        $patientName = $showpatient->name;
+                                        $patientAge = $showpatient->age;
+                                        $patientSex = $showpatient->gender;
+                                    }
+                                    $testDate = $labBillingData[0]['test_date'];
+                                    ?>
+                                    <div style="display: flex; justify-content:space-between; align-items: center;flex-wrap: wrap;">
+                                        <h6><b>Patient Name:</b> <?php echo $patientName; ?></h6>
+                                        <h6><b>Age:</b> <?php echo $patientAge; ?></h6>
+                                        <h6><b>Sex:</b> <?php echo $patientSex; ?></h6>
+                                        <h6><b>Test Date:</b> <?php echo $testDate; ?></h6>
+                                    </div>
 
-                                    foreach ($labBillingDetails as $index => $test) {
-                                        $testId = $test['test_id'];
-                                        $showTestName = $LabReport->patientTest($testId);
-                                        $showTestName = json_decode($showTestName);
-                                        $testId = $showTestName->id;
-                                        $subTestName = $showTestName->sub_test_name;
-                                        $unitNames = $showTestName->unit;
+                                    <hr class="sidebar-divider">
 
-                                        echo "<div style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px;box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;'>";
-                                        echo "<div>
+                                    <div>
+
+                                        <?php
+                                        $unitCounts = array();
+
+                                        foreach ($labBillingDetails as $index => $test) {
+                                            $testId = $test['test_id'];
+                                            $showTestName = $LabReport->patientTest($testId);
+                                            $showTestName = json_decode($showTestName);
+                                            $testId = $showTestName->id;
+                                            $subTestName = $showTestName->sub_test_name;
+                                            $unitNames = $showTestName->unit;
+                                            // print_r($testId);
+                                            echo "<div style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px;box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;'>";
+                                            echo "<div>
                                                     <div style='width:40%; margin-left:20px;'>$subTestName</div>";
-                                        if (!empty($unitNames)) {
-                                            // Split the unitNames by comma and store them in an array
-                                            $unitValues = explode(',', $unitNames);
-                                            foreach ($unitValues as $unitValue) {
-                                                // Trim to remove any leading or trailing whitespace
-                                                $unitValue = trim($unitValue);
-                                                // Count the occurrences of each unit value
-                                                if (isset($unitCounts[$unitValue])) {
-                                                    $unitCounts[$unitValue]++;
-                                                } else {
-                                                    $unitCounts[$unitValue] = 1;
-                                                }
+                                            if (!empty($unitNames)) {
+                                               
+                                                $unitValues = explode(',', $unitNames);    // Split the unitNames by comma and store them in an array
+                                                 
+                                                foreach ($unitValues as $unitValue) {
+                                                    $unitValue = trim($unitValue);          // Trim to remove any leading or trailing whitespace
+                                                    // echo $unitValue;
+                                                    if (isset($unitCounts[$unitValue])) {   // Count the occurrences of each unit value
+                                                        $unitCounts[$unitValue]++;
+                                                    } else {
+                                                        $unitCounts[$unitValue] = 1;
+                                                    }
 
-                                                // Generate input boxes based on the count of unit values
-                                                for ($i = 0; $i < $unitCounts[$unitValue]; $i++) {
-                                                    echo "<div class='d-flex justify-content-end' style='margin-left: 50%;'>";
-                                                    echo "<input type='text' name='unit_$unitValue' placeholder='$unitValue' style='width:200px; margin-right:20px; border: none; border-bottom: 1px solid #000; padding: 5px; box-sizing: border-box; outline: none; background-color: transparent;' onfocus='this.style.borderBottom=\"2px solid #000\";' onblur='this.style.borderBottom=\"1px solid #000\";'>";
-                                                    echo "</div>";
+                                                    // Generate input boxes based on the count of unit values
+                                                    for ($i = 0; $i < $unitCounts[$unitValue]; $i++) {
+                                                        echo "<div class='d-flex justify-content-end' style='margin-left: 50%;'>";
+                                                        echo "<input type='text' name='values[]' placeholder='$unitValue' required style='width:200px; margin-right:20px; border: none; border-bottom: 1px solid #000; padding: 5px; box-sizing: border-box; outline: none; background-color: transparent;' onfocus='this.style.borderBottom=\"2px solid #000\";' onblur='this.style.borderBottom=\"1px solid #000\";'>";
+                                                        echo "<input type='hidden' name='unitValues[]' value='$unitValue'>";
+                                                        echo "<input type='hidden' name=' testId[]' value=' $testId'>";
+                                                        echo "</div>";
+                                                    }
                                                 }
                                             }
+                                            echo "</div>";
+                                            echo "</div>";
                                         }
-                                        echo "</div>";
-                                        echo "</div>";
-                                    }
-                                    ?>
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <button id="generateReport" class="btn btn-primary btn-sm" onclick="reportgenerate()">Generate Report</button>
-                                </div>
-                            </div>
+                                        ?>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button id="generateReport" class="btn btn-primary btn-sm">Generate Report</button>
+                                    </div>
+                            </form>
                         </div>
                     </div>
-
                 </div>
-                <!-- /.container-fluid -->
 
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
-            <!-- End of Footer -->
+            <!-- /.container-fluid -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <?php include PORTAL_COMPONENT . 'footer-text.php'; ?>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
