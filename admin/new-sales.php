@@ -1,7 +1,9 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php';
-require_once "../php_control/doctors.class.php";
+require_once ADM_DIR.'_config/sessionCheck.php';
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR."doctors.class.php";
 
 
 $page = "sales";
@@ -175,6 +177,11 @@ $doctor = $Doctors->showDoctors();
                                             <input class="sale-inp" type="text" id="batch-no" readonly>
                                         </div>
 
+                                        <div class="d-none col-md-1 mt-3 col-6">
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Current Stock Item Id</label><br>
+                                            <input class="sale-inp" type="text" id="crnt-stck-itm-id" readonly>
+                                        </div>
+
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Unit/Pack</label><br>
                                             <input class="sale-inp" type="text" id="weightage" readonly>
@@ -338,6 +345,7 @@ $doctor = $Doctors->showDoctors();
                                                     </th>
                                                     <th scope="col"></th>
                                                     <th scope="col">Item Name</th>
+                                                    <th scope="col">Item id</th>
                                                     <th scope="col" class="d-none">Manuf Data</th>
                                                     <th scope="col">Batch</th>
                                                     <th scope="col">Unit/Pack</th>
@@ -433,7 +441,7 @@ $doctor = $Doctors->showDoctors();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once 'partials/footer-text.php'; ?>
+            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

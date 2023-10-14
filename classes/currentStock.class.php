@@ -29,20 +29,7 @@ class CurrentStock extends DatabaseConnection
     }
 
 
-
-
-
-    function incrCurrentStock($productId, $quantity)
-    {
-
-        $incrCurrentStock = " UPDATE `current_stock` SET `qty` = '$quantity' WHERE `current_stock`.`product_id` = '$productId'";
-
-        $incrCurrentStockQuery = $this->conn->query($incrCurrentStock);
-
-        return $incrCurrentStockQuery;
-    } //eof incrementCurrentStock function 
-
-
+    
     // ========================== CURRENT STOCK UPDATE AFTER sales RETURN =============================
 
     function updateStockByStockInDetailsId($stockInDetailsId, $newQuantity, $newLCount) {
@@ -65,15 +52,32 @@ class CurrentStock extends DatabaseConnection
             return false;
         }
     }
+
+
+
+    // ========================== CURRENT STOCK ON SELL =============================
+
+    function updateStockOnSell($id, $updatedQty, $updatedLCount) {
+        try {
+            $updateQuery = "UPDATE `current_stock` SET `qty` = ?, `loosely_count` = ? WHERE `id` = ?";
+            $stmt = $this->conn->prepare($updateQuery);
     
+            if ($stmt) {
+                $stmt->bind_param("iii", $updatedQty, $updatedLCount, $id);
+                $res = $stmt->execute();
+                $stmt->close();
+                return $res;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle the exception (e.g., log the error, return an error message, etc.)
+            // Customize this part to suit your needs.
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 
-
-    function updateStockByItemId($id, $newQty, $newLqty)
-    {
-        $sale = " UPDATE `current_stock` SET qty = '$newQty', loosely_count = '$newLqty' WHERE `id` = '$id'";
-        $res = $this->conn->query($sale);
-        return $res;
-    } //eof updateStock
 
 
     // ==================== CURRENT STOCK UPDATE UPDATE SLESE RETURN EDIT =====================
@@ -99,6 +103,82 @@ class CurrentStock extends DatabaseConnection
         }
     }
 
+
+    /// ================ select from current stock by col and data =================
+
+    function selectByColAndData($column, $data){
+        try {
+            $resultData = array();
+    
+            // Define the SQL query using a prepared statement
+            $selectSql = "SELECT * FROM `current_stock` WHERE $column = ?";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($selectSql);
+    
+            if ($stmt) {
+                // Bind the parameter
+                $stmt->bind_param("i", $data);
+    
+                // Execute the query
+                $stmt->execute();
+    
+                // Get the result
+                $result = $stmt->get_result();
+    
+                // Check if the query was successful
+                if ($result) {
+                    while ($row = $result->fetch_array()) {
+                        $resultData[] = $row;
+                    }
+                } else {
+                    // Handle the case where the query failed
+                    echo "Query failed: " . $this->conn->error;
+                }
+    
+                // Close the statement
+                $stmt->close();
+            } else {
+                // Handle the case where the statement preparation failed
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+    
+            return $resultData;
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // You can customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return array();
+        }
+    }
+    
+
+
+
+//=====================================================================================================
+
+    function incrCurrentStock($productId, $quantity)
+    {
+
+        $incrCurrentStock = " UPDATE `current_stock` SET `qty` = '$quantity' WHERE `current_stock`.`product_id` = '$productId'";
+
+        $incrCurrentStockQuery = $this->conn->query($incrCurrentStock);
+
+        return $incrCurrentStockQuery;
+    } //eof incrementCurrentStock function 
+
+
+
+    
+    
+
+
+    function updateStockByItemId($id, $newQty, $newLqty)
+    {
+        $sale = " UPDATE `current_stock` SET qty = '$newQty', loosely_count = '$newLqty' WHERE `id` = '$id'";
+        $res = $this->conn->query($sale);
+        return $res;
+    } //eof updateStock
 
     
     // function updateCurrentStockById($id, $newQuantity, $newLCount)

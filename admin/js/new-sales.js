@@ -127,6 +127,7 @@ const searchItem = (searchFor) => {
 }
 
 const itemsBatchDetails = (prodcutId, name, stock) => {
+    
     if (stock > 0) {
         // ==================== SEARCH PRODUCT NAME =====================
         document.getElementById("product-name").value = name;
@@ -206,6 +207,7 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
 }
 
 
+/////// extra detials div control function \\\\\\\\
 const chekForm = () =>{
    
     if(document.getElementById('product-name').value == ''){
@@ -227,6 +229,10 @@ const chekForm = () =>{
 ////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 const stockDetails = (productId, batchNo, itemId) => {
+    
+    console.log("item id : "+itemId);
+    console.log("product id : "+productId);
+    console.log("batch no : "+batchNo);
 
     var selectedItem = productId;
     var SelectedBatch = batchNo;
@@ -266,8 +272,7 @@ const stockDetails = (productId, batchNo, itemId) => {
                     document.getElementById("batch_no").value = batchNo;
                     document.getElementById("batch-no").value = batchNo;
                     document.getElementById("searched-batchNo").style.display = "none";
-
-                    let currenStockItemId = itemId;
+                    document.getElementById("crnt-stck-itm-id").value = itemId;
 
                     var xmlhttp = new XMLHttpRequest();
                     // ============== Check Existence ==============
@@ -281,8 +286,7 @@ const stockDetails = (productId, batchNo, itemId) => {
                 document.getElementById("batch_no").value = batchNo;
                 document.getElementById("batch-no").value = batchNo;
                 document.getElementById("searched-batchNo").style.display = "none";
-
-                let currenStockItemId = itemId;
+                document.getElementById("crnt-stck-itm-id").value = itemId;
 
                 var xmlhttp = new XMLHttpRequest();
 
@@ -305,8 +309,7 @@ const stockDetails = (productId, batchNo, itemId) => {
         document.getElementById("batch_no").value = batchNo;
         document.getElementById("batch-no").value = batchNo;
         document.getElementById("searched-batchNo").style.display = "none";
-
-        let currenStockItemId = itemId;
+        document.getElementById("crnt-stck-itm-id").value = itemId;
 
         var xmlhttp = new XMLHttpRequest();
 
@@ -672,6 +675,7 @@ const addSummary = () => {
     let productId = document.getElementById("product-id").value;
     let productName = document.getElementById("product-name").value;
     let batchNo = document.getElementById("batch-no").value;
+    let crntStckItemId = document.getElementById("crnt-stck-itm-id").value;
     let weightage = document.getElementById("weightage").value;
     let itemWeightage = document.getElementById('item-weightage').value;
     let unitType = document.getElementById('item-unit-type').value;
@@ -838,6 +842,10 @@ const addSummary = () => {
 
         <td class="d-none" id="col-${slno}-batch">${batchNo}</td>
 
+        <td class="d-none" id="tr-${slControl}-col-7">
+            <input class="summary-items" type="text" name="current-stock-item-id[]" id="batch-no" value="${crntStckItemId}" style="word-wrap: break-word; width:7rem; font-size: .7rem; " readonly>
+        </td>
+
         <td id="tr-${slControl}-col-7">
             <input class="summary-items" type="text" name="batch-no[]" id="batch-no" value="${batchNo}" style="word-wrap: break-word; width:7rem; font-size: .7rem; " readonly>
         </td>
@@ -933,6 +941,7 @@ const addSummary = () => {
     const dataTuple = {
         slno: slControl,
         productId: productId,
+        crntStckItemId : crntStckItemId,
         batchNo: batchNo,
         productName: productName,
         ManufId: Manuf,
@@ -1077,6 +1086,7 @@ const editItem = (tuple) => {
 
         document.getElementById("product-id").value = Tupledata.productId;
         document.getElementById("product-name").value = Tupledata.productName;
+        document.getElementById("crnt-stck-itm-id").value = Tupledata.crntStckItemId;
         document.getElementById("batch-no").value = Tupledata.batchNo;
         document.getElementById("batch_no").value = Tupledata.batchNo;
 

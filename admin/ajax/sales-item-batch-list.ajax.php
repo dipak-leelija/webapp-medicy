@@ -6,18 +6,23 @@
 </style> -->
 
 <?php
-require_once '../../php_control/search.class.php';
-require_once '../../php_control/currentStock.class.php';
-require_once '../../php_control/manufacturer.class.php';
-require_once '../../php_control/products.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+
+require_once CLASS_DIR."dbconnect.php";
+require_once CLASS_DIR.'search.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'products.class.php';
 
 $CurrentStock = new CurrentStock();
 $Manufacturer = new Manufacturer();
 $Search       = new Search();
 $Products     = new Products();
 
-require_once '../../employee/config/dbconnect.php';
+
 $searchBatch = FALSE;
+
 if(isset($_GET['prodId'])){
     $productID = $_GET['prodId'];
     // echo $productID;
