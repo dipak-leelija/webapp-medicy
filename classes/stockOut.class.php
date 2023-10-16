@@ -28,6 +28,8 @@ class StockOut extends DatabaseConnection{
     }
     
 
+    
+
 
     function stockOutDisplay($adminId) {
         try {
@@ -77,6 +79,61 @@ class StockOut extends DatabaseConnection{
     
 
 
+
+
+    // fethc sold amount on admin id
+    function amountSoldByAll($adminId){
+        try {
+            $sold = array();
+            $sql = "SELECT items,amount FROM stock_out WHERE `admin_id` = '$adminId'";
+            $sqlQuery = $this->conn->query($sql);
+            
+            if ($sqlQuery) {
+                while ($result = $sqlQuery->fetch_array()) {
+                    $sold[] = $result;
+                }
+            } else {
+                throw new Exception("Error executing SQL query");
+            }
+            
+            return $sold;
+        } catch (Exception $e) {
+            // Handle the exception here, e.g., log the error or return an empty array
+            error_log("Error: " . $e->getMessage());
+            return array(); // Return an empty array in case of an error
+        }
+    }
+
+
+
+
+
+    function updateStockOut($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $updatedBy, $updatedOn) {
+        try {
+            $updateBill = "UPDATE stock_out SET `customer_id` = ?, `reff_by` = ?, `items` = ?, `qty` = ?, `mrp` = ?, `disc` = ?, `gst` = ?, `amount` = ?, `payment_mode` = ?, `bill_date` = ?, `updated_by` = ?, `updated_on` = ? WHERE `invoice_id` = ?";
+            $stmt = $this->conn->prepare($updateBill);
+    
+            if ($stmt) {
+                $stmt->bind_param("issiidsddssss", $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $updatedBy, $updatedOn, $invoiceId);
+                $updateBillQuery = $stmt->execute();
+                $stmt->close();
+                return $updateBillQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // You can customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    
+
+
+
+
+
     function stockOutDisplayById($invoiceId){
         $billData = array();
         $selectBill = "SELECT * FROM stock_out WHERE `invoice_id` = '$invoiceId'";
@@ -89,41 +146,6 @@ class StockOut extends DatabaseConnection{
     }// eof stockOutDisplayById 
 
     
-    function updateLabBill($invoiceId, $customerId, $reffBy, $itemsNo, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $billDate, $addedBy ){
-
-        $updateBill = "UPDATE stock_out SET `customer_id` = '$customerId', `reff_by` = '$reffBy', `items` = '$itemsNo', `qty` = '$qty', `mrp` = '$mrp', `disc` = '$disc', `gst` = '$gst', `amount` = '$amount', `payment_mode` = '$paymentMode', `bill_date` = '$billDate', `added_by` = '$addedBy' WHERE `invoice_id` = '$invoiceId'";
-
-        // echo $insertEmp.$this->conn->error;
-        // exit;
-        $updateBillQuery = $this->conn->query($updateBill);
-        return $updateBillQuery;
-
-    }//end updateLabBill function
-
-
-    // fethc sold amount on admin id
-    function amountSoldByAll($adminId){
-    try {
-        $sold = array();
-        $sql = "SELECT items,amount FROM stock_out WHERE `admin_id` = '$adminId'";
-        $sqlQuery = $this->conn->query($sql);
-        
-        if ($sqlQuery) {
-            while ($result = $sqlQuery->fetch_array()) {
-                $sold[] = $result;
-            }
-        } else {
-            throw new Exception("Error executing SQL query");
-        }
-        
-        return $sold;
-    } catch (Exception $e) {
-        // Handle the exception here, e.g., log the error or return an empty array
-        error_log("Error: " . $e->getMessage());
-        return array(); // Return an empty array in case of an error
-    }
-}
-
 
 
     // fethc sold amount on admin id and employee id

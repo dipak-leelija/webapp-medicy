@@ -16,7 +16,7 @@
     $amount = 0;
     $itemsCount = 0;
 
-    $data = $StockOut->stockOutDisplay();
+    $data = $StockOut->stockOutDisplay($adminId);
     foreach($data as $data){
         $SoldDate = $data['added_on'];
         if($SoldDate == $today){
