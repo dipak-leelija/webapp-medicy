@@ -279,7 +279,7 @@ if($_SESSION['ADMIN'] == false){
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include 'footer-text.php'; ?>
+            <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
