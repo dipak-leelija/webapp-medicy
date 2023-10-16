@@ -6,16 +6,20 @@
 </style> -->
 
 <?php
-require_once '../../php_control/search.class.php';
-require_once '../../php_control/currentStock.class.php';
-require_once '../../php_control/manufacturer.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+
+require_once CLASS_DIR."dbconnect.php";
+
+require_once CLASS_DIR.'search.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'products.class.php';
 
 $CurrentStock = new CurrentStock();
 $Manufacturer = new Manufacturer();
 $Search       = new Search();
-
-
-require_once '../../employee/config/dbconnect.php';
+$Products     = new Products;
 
 $searchResult = FALSE;
  
@@ -23,9 +27,9 @@ $searchResult = FALSE;
 if(isset($_GET['data'])){
     $data = $_GET['data'];
 
-    $searchSql ="Select * From `products` WHERE `products`.`name` LIKE '%$data%'";
-    $searchResult = mysqli_query($conn, $searchSql) or die ("Connection Error") ;
-    // $searchResult = $Search->searchForSale($data);
+    $col = 'admin_id';
+    $searchResult = $Products->selectItemLikeOnCol($data, $col, $adminId);
+    // print_r($searchResult);
 }
 
 if($searchResult){
@@ -37,7 +41,7 @@ if($searchResult){
     <div class="col-md-3">Stock</div>
 </div>
 <?php
-    while($resultRow = mysqli_fetch_array($searchResult)){
+    foreach($searchResult as $resultRow){
 
         $productId  = $resultRow['product_id'];
         $productName = $resultRow['name'];

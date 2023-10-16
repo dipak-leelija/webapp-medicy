@@ -1,19 +1,15 @@
 <?php
-
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php';//check admin loggedin or not
+require_once ADM_DIR.'_config/sessionCheck.php';
 
-require_once '../../../php_control/hospital.class.php';
-require_once '../../../php_control/doctors.class.php';
-require_once '../../../php_control/idsgeneration.class.php';
-require_once '../../../php_control/patients.class.php';
-require_once '../../../php_control/stockOut.class.php';
-require_once '../../../php_control/currentStock.class.php';
-require_once '../../../php_control/manufacturer.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'hospital.class.php';
+require_once CLASS_DIR.'doctors.class.php';
+require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'stockOut.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
 
 
 //  INSTANTIATING CLASS
@@ -57,22 +53,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $disc = $totalMrp - $billAmout;
 
-    $addedBy        = $_SESSION['USERNAME'];
-    // $addedOn        = date("Y/m/d");
+    $status = '1';
+    $addedBy;
+    $addedOn        = NOW;
 
-    // echo "<br>customer name check : $customerName<br>";
+    // echo "<br>Invoice id : $invoiceId<br>";
     // echo "Paticent id check : $patientId<br>";
-    // echo "Paticen age check : $patientAge<br>";
-    // echo "patient phone no check : $patientPhno<br>";
     // echo "reffered doctor : $reffby<br>";
-    // echo "bill date : $billdate<br>";
-    // echo "payment mode : $pMode<br>";
     // echo "total items count : $totalItems<br>";
     // echo "total qantity count : $totalQty<br>";
-    // echo "total gst amount : $totalGSt<br>";
     // echo "total mrp amount : $totalMrp<br>";
-    // echo "total payble amount : $billAmout<br>";
     // echo "bill discount amount : $disc<br>";
+    // echo "total gst amount : $totalGSt<br>";
+    // echo "total payble amount : $billAmout<br>";
+    // echo "payment mode : $pMode<br>";
+    // echo "status : $status<br>";
+    // echo "bill date : $billdate<br>";
+    // echo "added by : $addedBy<br>";
+    // echo "added on : $addedOn<br>";
+    // echo "admin id : $adminId<br>";
 
     // echo "<br>======= ARRAYS SECTION ==========<br>";
     // ================ ARRAYS ======================
@@ -81,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $prodName           = $_POST['product-name'];
     $manufId            = $_POST['ManufId'];
     $manufName          = $_POST['ManufName'];
+    $itemId             = $_POST['current-stock-item-id'];
     $batchNo            = $_POST['batch-no'];
     $weightage          = $_POST['weightage'];
     $itemWeightage      = $_POST['ItemWeightage'];
@@ -105,6 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // print_r($manufId);
     // echo "<br>Manufacturur name array : ";
     // print_r($manufName);
+    // echo "<br>CURRENT STOCK ITEM ID array : ";
+    // print_r($itemId);
     // echo "<br>BATCH NUMBER array : ";
     // print_r($batchNo);
     // echo "<br>items WEIGHTAGE arrya : ";
@@ -134,16 +136,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // echo "<br>PER ITEM PAYBLE AMOUNT array : ";
     // print_r($amount);
 
+    // echo "<br><br>";
+  
     // ========================== checking end ===================================
 
     // ===================== STOCK OUT AND SALES ITEM BILL GENERATION AREA =========================
     if (isset($_POST['submit'])) {
         $invoiceId = $IdGeneration->pharmecyInvoiceId();
 
-        $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $billdate, $addedBy);
-        // $stockOut = true;
+        $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $status, $billdate, $addedBy, $addedOn, $adminId);
+        // print_r($StockOut);
 
-        if ($stockOut == true) {
+        if ($stockOut) {
             for ($i = 0; $i < count($prductId); $i++) {
                 // echo "<br>qantity types : $qtyTypes[$i]";
                 $ItemUnit = preg_replace("/[^a-z]/", '', $weightage[$i]);
@@ -164,10 +168,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 $wholeCount = strval($wholeCount);
 
-                $productDetails = $CurrentStock->showCurrentStocByProductIdandBatchNo($prductId[$i], $batchNo[$i]);
+                $colName = 'id';
+                $productDetails = $CurrentStock->selectByColAndData($colName, intval($itemId[$i]));
+                // print_r($productDetails);
 
                 foreach ($productDetails as $itemData) {
-                    $itemId = $itemData['id'];
                     $productID = $itemData['product_id'];
                     $BatchNo = $itemData['batch_no'];
                     $ExpairyDate = $itemData['exp_date'];
@@ -182,15 +187,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 // echo "<br><br>CURRENT STOCK ITEM DATA<br>";
-                // echo "<br>Item id : $itemId";
+                // echo "<br>Item id : $itemId[$i]";
                 // echo "<br>Product ID : $productID";
                 // echo "<br>Item current stock qantity : $itemQty";
                 // echo "<br>Item current stock Loose qantity : $itemLooseQty";
 
                 // echo "<br><br>Invoice ids : $invoiceId";
                 // echo "<br>", gettype($invoiceId);
-                // echo "<br>Item id: $itemId";
-                // echo "<br>", gettype($itemId);
+                // echo "<br>Item id: $itemId[$i]";
+                // echo "<br>", gettype($itemId[$i]);
                 // echo "<br>Product id : $prductId[$i]";
                 // echo "<br>", gettype($prductId[$i]);
                 // echo "<br>Product Name : $prodName[$i]";
@@ -224,8 +229,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>PER ITEM AMOUNT : $amount[$i]";
                 // echo "<br>", gettype($amount[$i]);
 
-                $stockOutDetails = $StockOut->addStockOutDetails($invoiceId, $itemId, $prductId[$i], $prodName[$i], $batchNo[$i], $expDate[$i], $ItemWeightage, $ItemUnit, $wholeCount, $looseCount, $mrp[$i], $ptr[$i], $discountPercent[$i], $gstparcent[$i], $gstAmountPerItem[$i], $marginPerItem[$i], $taxable[$i], $amount[$i], $addedBy);
-
+                $stockOutDetails = $StockOut->addStockOutDetails(intval($invoiceId), intval($itemId[$i]), $prductId[$i], $prodName[$i], $batchNo[$i], $expDate[$i], $ItemWeightage, $ItemUnit, $wholeCount, $looseCount, floatval($mrp[$i]), floatval($ptr[$i]), $discountPercent[$i], $gstparcent[$i], floatval($gstAmountPerItem[$i]), floatval($marginPerItem[$i]), floatval($taxable[$i]), floatval($amount[$i]));
+                // print_r($stockOutDetails);
 
                 // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
 
@@ -242,17 +247,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br><br>UPDATED CURRENT STOCK QTY : $UpdatedNewQuantity";
                 // echo "<br>UPDATED CURRENT LOOSE QTY : $updatedLooseCount";
 
-                $CurrentStock->updateStockByItemId($itemId, $UpdatedNewQuantity, $updatedLooseCount);
+                $updateCurrentStock = $CurrentStock->updateStockOnSell($itemId[$i], $UpdatedNewQuantity, $updatedLooseCount);
+                // print_r($updateCurrentStock);
             }
         }
     }
-
-    //========================== STOCK OUT AND SALES EDIT UPDATE AREA ==========================
-    if (isset($_POST['update'])) {
-        $invoiceId = $_POST['invoice-id'];
-
-        $stockOutUpdate = $StockOut->updateLabBill($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $billdate, $addedBy);
-    }
+    
 }
 
 $showhelthCare = $HelthCare->showhelthCare();

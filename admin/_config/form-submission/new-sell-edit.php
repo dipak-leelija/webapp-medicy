@@ -1,18 +1,15 @@
 <?php
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php';
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
-require_once '../../_config/sessionCheck.php'; //check admin loggedin or not
-
-require_once '../../../php_control/hospital.class.php';
-require_once '../../../php_control/doctors.class.php';
-require_once '../../../php_control/idsgeneration.class.php';
-require_once '../../../php_control/patients.class.php';
-require_once '../../../php_control/stockOut.class.php';
-require_once '../../../php_control/currentStock.class.php';
-require_once '../../../php_control/manufacturer.class.php';
+require_once CLASS_DIR."doctors.class.php";
+require_once CLASS_DIR.'hospital.class.php';
+require_once CLASS_DIR.'doctors.class.php';
+require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'stockOut.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
 
 
 //  INSTANTIATING CLASS
@@ -28,7 +25,8 @@ $Manufacturur    = new Manufacturer();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $addedBy        = $_SESSION['employee_username'];
+    $updatedBy        = $employeeId;
+    $updatedOn        = NOW;
 
     $invoiceNo = $_POST['invoice-id'];
 
@@ -63,21 +61,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // print_r($_POST);
 
-    // echo "<br>Added by : $addedBy<br>";
-    // echo "<br>Invoice id : $invoiceNo";
-    // echo "<br>bill date : $billDAte";
-    // echo "Paticent id check : $customerId<br>";
-    // echo "<br>customer name check : $customerName<br>";
-    // echo "Paticen age check : $patientAge<br>";
-    // echo "patient phone no check : $patientPhno<br>";
-    // echo "reffered doctor : $doctorName<br>";
+    echo "<br>Invoice id : $invoiceNo";
+    echo "<br>bill date : $billDAte";
+    echo "Paticent id check : $customerId<br>";
+    echo "<br>customer name check : $customerName<br>";
+    echo "Paticen age check : $patientAge<br>";
+    echo "patient phone no check : $patientPhno<br>";
+    echo "reffered doctor : $doctorName<br>";
 
-    // echo "payment mode : $paymentMode<br>";
-    // echo "items count : $itemsCount<br>";
-    // echo "total qantity count : $totalItemsQantity<br>";
-    // echo "total gst amount : $totalGstAmount<br>";
-    // echo "total mrp : $totalMRP<br>";
-    // echo "total payble amount : $netPaybleAmount<br>";
+    echo "payment mode : $paymentMode<br>";
+    echo "items count : $itemsCount<br>";
+    echo "total qantity count : $totalItemsQantity<br>";
+    echo "total gst amount : $totalGstAmount<br>";
+    echo "total mrp : $totalMRP<br>";
+    echo "total payble amount : $netPaybleAmount<br>";
+    echo "<br>Added by : $addedBy<br>";
 
 
     // echo "<br>======= ARRAYS SECTION ==========<br>";
@@ -112,12 +110,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // echo "<br><br>================== data arrays check ====================== <br>";
     // echo "<br>Item courrent stock id : ";
     //  echo "<br>Item unit : "; print_r($ItemUnit);
+    exit;
     //========================== STOCK OUT AND SALES EDIT UPDATE AREA ==========================
     if (isset($_POST['update'])) {
 
         $discountAmount = floatval($totalMRP) - floatval($netPaybleAmount);
 
-        $stockOutUpdate = $StockOut->updateLabBill($invoiceNo, $customerId, $doctorName, $itemsCount, $totalItemsQantity, $totalMRP, $discountAmount, $totalGstAmount, $netPaybleAmount, $paymentMode, $billDAte, $addedBy);
+        $stockOutUpdate = $StockOut->updateStockOut($invoiceNo, $customerId, $doctorName, $itemsCount, $totalItemsQantity, $totalMRP, $discountAmount, $totalGstAmount, $netPaybleAmount, $paymentMode, $billDAte, $updatedBy, $updatedOn);
         // $stockOutUpdate = true;
 
         if ($stockOutUpdate == true) {
@@ -132,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stockOutDetailsIdArrayDiff = array_diff($stockOutDetailsIdList, $stockOutDataId);
             $stockOutDetailsIdArrayDiff = array_values($stockOutDetailsIdArrayDiff);
 
-
+            /// =========== SELL UPDATED DELTED PRODUCT UPDATED SECTION ==================
             for ($i = 0; $i < count($stockOutDetailsIdArrayDiff); $i++) {
 
                 $selectFromStockOutDetails = $StockOut->stokOutDetailsDataOnTable('id', $stockOutDetailsIdArrayDiff[$i]);
@@ -163,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>Item id : $currenStockItemId";
 
                 // ****** UPDATE CURRENT STOCK AND DELTE FROM PHAMACY INVOCIE AND STOCK OUT DATA ******
-                $updateCurrenStock = $CurrentStock->updateCurrentStockById($currenStockItemId, $updatedQty, $updatedLooseQty);
+                $updateCurrenStock = $CurrentStock->updateStockOnSell($currenStockItemId, $updatedQty, $updatedLooseQty);
 
 
                 $delteFromStockOutDetails = $StockOut->deleteFromStockOutDetailsOnId($stockOutDetailsIdArrayDiff[$i]);
@@ -203,7 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // =========== ADD NEW DATA ON PHARMACY AND STOCK OUT DETAILS TABLE =============\
 
                     //====== add new item to pharmacy invocie =======
-                    $addPharmacyInvoice = $StockOut->addPharmacyBillDetails($invoiceNo,    $item_id, $product_name, $batch_number, $setOf, $exp_date, $item_qty, $item_loose_qty, $item_mrp, $disc_parcent, $taxable_amount, $gst_parcent, $gst_amount, $payble_amount, $addedBy);
+                    // $addPharmacyInvoice = $StockOut->addPharmacyBillDetails($invoiceNo,    $item_id, $product_name, $batch_number, $setOf, $exp_date, $item_qty, $item_loose_qty, $item_mrp, $disc_parcent, $taxable_amount, $gst_parcent, $gst_amount, $payble_amount, $addedBy);
 
                     // ========= add new item to stock out details ==========
                     $addStockOutDetails = $StockOut->addStockOutDetails($invoiceNo, $item_id, $product_id, $product_name, $batch_number, $exp_date, $item_weatage, $item_unit, $item_qty, $item_loose_qty, $item_mrp, $item_ptr, $disc_parcent, $gst_parcent, $gst_amount, $margin_amount, $taxable_amount, $payble_amount, $addedBy);
@@ -221,7 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $updatedCurrentQty = intval($currentQty) - intval($item_qty);
                         }
                     }
-                    $updateCurrentStock = $CurrentStock->updateCurrentStockById($item_id, $updatedCurrentQty,$updatedLooseQty);
+                    $updateCurrentStock = $CurrentStock->updateStockOnSell($item_id, $updatedCurrentQty,$updatedLooseQty);
                 }
 
                 if ($stockOutDataId[$i] != '') {
@@ -283,7 +282,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
                     // ====== update current stock data ===========
-                    $updateCurrentStock = $CurrentStock->updateCurrentStockById($item_id, $updatedCurrentQty,$updatedLooseQty);
+                    $updateCurrentStock = $CurrentStock->updateStockOnSell($item_id, $updatedCurrentQty,$updatedLooseQty);
 
                     // ====== update pharmacy data ===========
                     // $updatePharmacyData = $StockOut->updatePharmacyDataById($phamacy_id, $item_qty, $item_loose_qty, $disc_parcent, $taxable_amount, $gst_amount, $payble_amount, $addedBy);
