@@ -1,8 +1,8 @@
 <?php
 require_once dirname(dirname(__DIR__)).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR.'dbconnect.php';
 
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'stockIn.class.php';
 require_once CLASS_DIR.'stockInDetails.class.php';
 require_once CLASS_DIR.'products.class.php';
@@ -234,17 +234,20 @@ if (isset($_GET['bill-no'])) {
 ####################################################################################################
 
 if (isset($_GET['invoice'])) {
-    require_once "../../php_control/search.class.php";
-    require_once "../../php_control/patients.class.php";
+    require_once CLASS_DIR."search.class.php";
+    require_once CLASS_DIR."stockOut.class.php";
+    require_once CLASS_DIR."patients.class.php";
 
     $Search     = new Search();
     $Patients   = new Patients();
+    $StockOut   = new StockOut;
 
     $table  = 'stock_out';
-    $column = 'invoice_id';
-    $data   = $_GET['invoice'];
+    $column1 = 'invoice_id';
+    $data1   = $_GET['invoice'];
+    $column2 = 'admin_id';
 
-    $invoiceDetail = $Search->searchFor($table, $column, $data);
+    $invoiceDetail = $StockOut->stokOutDataByTwoCol($column1, $data1, $column2, $adminId);
     // print_r($invoiceDetail);
 
     if (count($invoiceDetail) > 0) {

@@ -1,11 +1,13 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
-require_once "../php_control/doctors.class.php";
-require_once '../php_control/products.class.php';
-require_once '../php_control/distributor.class.php';
-require_once '../php_control/measureOfUnit.class.php';
-require_once '../php_control/packagingUnit.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR."doctors.class.php";
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'measureOfUnit.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
 $page = "sales-returns";
 
 
@@ -63,7 +65,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -73,7 +75,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include 'partials/topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -207,6 +209,11 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                     </div>
 
                                     <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="ptr">PTR</label>
+                                        <input type="text" class="upr-inp" name="ptr" id="ptr" readonly>
+                                    </div>
+
+                                    <div class="col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="purchase-qty">P.Qty</label>
                                         <input type="text" class="upr-inp" name="purchase-qty" id="purchase-qty" readonly>
                                     </div>
@@ -284,6 +291,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <th scope="col">Unit</th>
                                                 <th scope="col">Cr Qty</th>
                                                 <th scope="col">MRP</th>
+                                                <th scope="col">PTR</th>
                                                 <th scope="col">Disc</th>
                                                 <th scope="col">GST%</th>
                                                 <th scope="col">Return</th>

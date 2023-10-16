@@ -170,17 +170,6 @@ class CurrentStock extends DatabaseConnection
 
 
     
-    
-
-
-    function updateStockByItemId($id, $newQty, $newLqty)
-    {
-        $sale = " UPDATE `current_stock` SET qty = '$newQty', loosely_count = '$newLqty' WHERE `id` = '$id'";
-        $res = $this->conn->query($sale);
-        return $res;
-    } //eof updateStock
-
-    
     // function updateCurrentStockById($id, $newQuantity, $newLCount)
     // {
     //     $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `id` = '$id'";
