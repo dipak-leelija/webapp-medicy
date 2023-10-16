@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\type;
+
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR . 'dbconnect.php';
@@ -10,29 +13,41 @@ $billId = $_GET['bill-id'];
 $LabReport = new LabReport();
 $LabBilling = new LabBilling();
 $LabBillDetails = new LabBillDetails();
+$currentDateTime = NOW;
 
 $labBillingData = $LabBilling->labBillDisplayById($billId); ///
 $labBillingDetails = $LabBillDetails->billDetailsById($billId); //labBillingDetails
 $showpatient = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
+$billId = $labBillingData[0]['bill_id'];
+$patientId = $labBillingData[0]['patient_id'];
 
-// print_r($labBillingDetails);
 
-// $testId = $labBillingDetails[0]['test_id'];
-// print_r($testId);
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $testValue = $_POST['values'];
-    // print_r($testValue) ;
-    $unitValues = $_POST['unitValues'];
-    $testId = $_POST['testId'];
-    // print_r($testId);
-    foreach($testValue as $index => $value ){ 
-        $unitValue = $unitValues[$index];
-        $testId = $testId[$index];
-        print_r($unitValue);
-        $labReportAdd = $LabReport->labReportAdd($value,$unitValue,$testId);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $labreportId = $LabReport->labReportAdd($billId, $patientId,NOW,$adminId);
+    $reportId = $labreportId['insert_id'];
+    // print_r($reportId);
+    if ($labreportId) {
+        $testValue = $_POST['values'];
+        $unitValues = $_POST['unitValues'];
+        $testIds = $_POST['testId'];
+
+        foreach ($testValue as $index => $value) {
+            $unitValue = $unitValues[$index];
+            // echo gettype($unitValue);
+            $testId = $testIds[$index];
+            // print_r($unitValue);
+            // $reportId = $reportIds;
+            $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId,intval($reportId));
+            // print_r($labReportAdd);
+        }
     }
-   
+
+    // if ($labReportAdd) {
+    //     header('Location: reprint-labreport-generate.php');
+    //     exit();
+    // }
 }
 
 ?>
@@ -125,9 +140,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                             echo "<div>
                                                     <div style='width:40%; margin-left:20px;'>$subTestName</div>";
                                             if (!empty($unitNames)) {
-                                               
+
                                                 $unitValues = explode(',', $unitNames);    // Split the unitNames by comma and store them in an array
-                                                 
+
                                                 foreach ($unitValues as $unitValue) {
                                                     $unitValue = trim($unitValue);          // Trim to remove any leading or trailing whitespace
                                                     // echo $unitValue;
