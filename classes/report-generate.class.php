@@ -35,16 +35,42 @@ class LabReport extends DatabaseConnection{
         }
     }
 
-    function labReportAdd($patient_name,$age,$sex,$test_name,$test_value,$test_date,$report_generate_date){
-        
-        try{
-            $sql = " INSERT INTO `labreport_generate` (`patient_name`, `age`, `sex`, `test_name`, `test_value`,`test_date`,`report_generate_date`) VALUES ('$patient_name', '$age', '$sex', '$test_name', '$test_value','$test_date','$report_generate_date')";
-            $query = $this->conn->query($sql);
-            return $sql;
+    // function labReportAdd($testValue,$unitValue){
+    //     $testValue = $testValue.$unitValue;
+    //     try{
+    //             $sql = " INSERT INTO `lab_report_detail` (`test_value`) VALUES ('$testValue')";
+    //             $query = $this->conn->query($sql);
+    //             return $sql;
             
-        }catch(Exception $e){
-            echo $e->getMessage();
+    //     }catch(Exception $e){
+    //         echo $e->getMessage();
+    //         // return false;
+    //     }
+    // }
+
+    function labReportAdd($testValue, $unitValue,$testId) {
+    try {
+        $testValue = $testValue.'-' . $unitValue;
+
+        $stmt = $this->conn->prepare("INSERT INTO `lab_report_detail` (`test_value`,`test_id`) VALUES (?,?)");
+
+        if ($stmt) {
+            $stmt->bind_param("ss", $testValue,$testId);
+
+            if ($stmt->execute()) {
+                $stmt->close();
+                return true; // Indicates successful insertion
+            } else {
+                throw new Exception("Error executing statement: " . $stmt->error);
+            }
+        } else {
+            throw new Exception("Error preparing statement: " . $this->conn->error);
         }
+
+    } catch(Exception $e) {
+        echo $e->getMessage();
+        return false; // Indicates failed insertion
     }
+    }
+
 }
-?>

@@ -2,6 +2,8 @@
 $page = "sales";
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+
+require_once CLASS_DIR."dbconnect.php";
 require_once CLASS_DIR."stockOut.class.php";
 require_once CLASS_DIR."patients.class.php";
 
@@ -10,7 +12,7 @@ require_once CLASS_DIR."patients.class.php";
 $StockOut = new StockOut();
 $Patients = new Patients();
 
-$soldItems = $StockOut->stockOutDisplay();
+$soldItems = $StockOut->stockOutDisplay(strval($adminId));
 //print_r($soldItems);
 ?>
 

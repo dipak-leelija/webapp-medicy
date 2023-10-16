@@ -1,8 +1,12 @@
 <?php
-require_once '../../php_control/stockOut.class.php';
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/currentStock.class.php';
-require_once '../../php_control/manufacturer.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php';
+
+require_once CLASS_DIR."doctors.class.php";
+require_once CLASS_DIR.'stockOut.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
 
 $StockOut = new StockOut();
 $Products = new Products();

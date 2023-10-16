@@ -3,7 +3,6 @@ var updateSalesBtn = document.getElementById("update-sales-btn");
 /////////////////////////////// edit item from table select \\\\\\\\\\\\\\\\\\\\\\\\
 
 const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) => {
-console.log("on edit call sl no  : "+slno);
     if (document.getElementById('product-id').value == '') {
 
         $.ajax({
@@ -14,7 +13,7 @@ console.log("on edit call sl no  : "+slno);
                 Stock_out_item_id: itemId
             },
             success: function (data) {
-                // alert(data);
+                alert(data);
                 var dataObject = JSON.parse(data);
 
                 var sellQty = parseInt(dataObject.sellQty);
@@ -72,6 +71,8 @@ console.log("on edit call sl no  : "+slno);
                 document.getElementById("exta-details").style.display = "block";
 
                 deleteItem(slno, itemQty, gstamnt, mrpPerItem, payblePerItem);
+
+                updateSalesBtn.setAttribute("disabled", "true");
             }
         })
     } else {
@@ -460,7 +461,7 @@ const stockDetails = (productId, batchNo, itemId) => {
 
 
 const onQty = (qty) => {
-    
+    console.log("item qty input check : "+qty);
     var xmlhttp = new XMLHttpRequest();
 
     let mrp = document.getElementById("mrp").value;
@@ -557,8 +558,10 @@ const onQty = (qty) => {
             document.getElementById('amount').value = netPayble;
         }
     } else {
-        document.getElementById("dPrice").value = '';
-        document.getElementById("amount").value = '';
+        document.getElementById("dPrice").value ='0';
+        document.getElementById("amount").value = '0';
+        document.getElementById('disc').value = '0';
+        document.getElementById('taxable').value = '0';
         document.getElementById("type-check").value = '';
     }
     // console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
@@ -637,10 +640,12 @@ const ondDisc = (disc) => {
             document.getElementById('amount').value = netPayble;
         }
     } else {
-        document.getElementById("dPrice").value = '';
-        document.getElementById("amount").value = '';
+        document.getElementById("dPrice").value = '0';
+        document.getElementById('disc').value = '0';
+        document.getElementById("amount").value = '0';
+        document.getElementById('taxable').value = '0';
         document.getElementById("type-check").value = '';
-        document.getElementById('dPrice').value = '';
+        document.getElementById('dPrice').value = '0';
     }
 
     //==================== Margin on an Item ====================
@@ -688,7 +693,6 @@ const addSummary = () => {
     let dPrice = document.getElementById("dPrice").value;
     let gst = document.getElementById("gst").value;
     let taxable = document.getElementById('taxable').value;
-    console.log('taxable amount check : '+taxable);
     let amount = document.getElementById("amount").value;
     let looseStock = document.getElementById("loose-stock").value;
     let loosePrice = document.getElementById("loose-price").value;
@@ -979,6 +983,7 @@ const addSummary = () => {
 
     document.getElementById('sales-edit-form').reset();
     document.getElementById("exta-details").style.display = "none";
+    updateSalesBtn.removeAttribute("disabled");
 
 }
 
@@ -986,12 +991,6 @@ const addSummary = () => {
 /////////////////////////////////// delete item from table row \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
-
-    console.log("sl no on delete : "+slno);
-    console.log("item qty on delete : "+itemQty);
-    console.log("gst per item on delete : "+gstPerItem);
-    console.log("total mrp on delete : "+totalMrp);
-    console.log("item amount on delete : "+itemAmount);
 
     let delRow = slno;
 
