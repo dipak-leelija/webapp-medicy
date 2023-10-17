@@ -56,7 +56,7 @@ $showSubTests   = $SubTests->showSubTests();
         // echo $labBill['due_amount'].'<br>';
         // exit;
     }
-    $patientsDisplay = $Patients->patientsDisplayByPId($patientId);
+    $patientsDisplay = json_decode($Patients->patientsDisplayByPId($patientId));
     // print_r($patientsDisplay);
     // echo $patientsDisplay[0]['name'].'<br>';
     // echo $patientsDisplay[0]['age'].'<br>';
@@ -171,7 +171,7 @@ if (is_numeric($refDoc)) {
                                                 <p>Patient Name: </p>
                                             </div>
                                             <div class="col-md-7 mb-0 justify-content-start">
-                                                <p class="text-start"><b><?php echo $patientsDisplay[0]['name']; ?> </b></p>
+                                                <p class="text-start"><b><?php echo $patientsDisplay->name; ?> </b></p>
                                             </div>
 
                                             <div class="col-md-5 mb-0">
@@ -280,11 +280,11 @@ if (is_numeric($refDoc)) {
                                     <input type="hidden" name="patientId" value="<?php echo $patientId; ?>">
                                     <input type="hidden" name="billId" value="<?php echo $billId; ?>">
 
-                                    <input type="hidden" name="patientName" value="<?php echo $patientsDisplay[0]['name']; ?>">
+                                    <input type="hidden" name="patientName" value="<?php echo $patientsDisplay->name; ?>">
 
-                                    <input type="hidden" name="patientAge" value="<?php echo $patientsDisplay[0]['age']; ?>">
-                                    <input type="hidden" name="patientGender" value="<?php echo $patientsDisplay[0]['gender']; ?>">
-                                    <input type="hidden" name="patientPhnNo" value="<?php echo $patientsDisplay[0]['phno']; ?>">
+                                    <input type="hidden" name="patientAge" value="<?php echo $patientsDisplay->age; ?>">
+                                    <input type="hidden" name="patientGender" value="<?php echo $patientsDisplay->gender; ?>">
+                                    <input type="hidden" name="patientPhnNo" value="<?php echo $patientsDisplay->phno; ?>">
                                     <input type="hidden" name="patientTestDate" value="<?php echo $testDate;?>">
                                     <input type="hidden" name="prefferedDocId" id="prefferedDocId" value="<?php echo $existsDoctorId; ?>">
                                     <input type="hidden" name="refferedDocName" id="refferedDocName" value="<?php echo $existsDocName; ?>">

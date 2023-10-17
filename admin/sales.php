@@ -107,10 +107,10 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
                                             $paymentMode= $soldItem['payment_mode'];
 
                                             if ($patient != 'Cash Sales') {
-                                                $patientName = $Patients->patientsDisplayByPId($patient);
-                                                
+                                                $patientName = json_decode($Patients->patientsDisplayByPId($patient));
+
                                                 if($patientName!= null){
-                                                    $patientName = $patientName[0]['name'];
+                                                    $patientName = $patientName->name;
                                                 }
                                                 else{
                                                     $patientName = "";
