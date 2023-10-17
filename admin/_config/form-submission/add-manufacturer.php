@@ -1,5 +1,9 @@
 <?php
-require_once '../../../php_control/manufacturer.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'manufacturer.class.php';
 
 //Class initilization
 $Manufacturer = new Manufacturer();
@@ -42,7 +46,7 @@ if(isset($_POST['add-manufacturer'])){
     $shortName = str_replace("'", "&#39", $shortName);
 
     //Inserting Manufacturer Into Database
-    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc);
+    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $adminId);
         if ($addManufacturer) {
             ?> 
              <script>

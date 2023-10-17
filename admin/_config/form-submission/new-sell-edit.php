@@ -1,5 +1,5 @@
 <?php
-require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php';
 
 require_once CLASS_DIR."doctors.class.php";
@@ -25,25 +25,11 @@ $Manufacturur    = new Manufacturer();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $updatedBy        = $employeeId;
-    $updatedOn        = NOW;
+   
 
     $invoiceNo = $_POST['invoice-id'];
-
-    $billDAte = $_POST['bill-date'];
     $customerId = $_POST['customer-id'];
-    $customerName = $_POST['customer-name'];
-    $doctorName = $_POST['final-doctor-name'];
-    $paymentMode = $_POST['payment-mode'];
 
-    $itemsCount  = $_POST['total-items'];
-    $totalItemsQantity = $_POST['total-qty'];
-    $totalGstAmount = $_POST['total-gst'];
-    $totalMRP = $_POST['total-mrp'];
-    $netPaybleAmount = $_POST['bill-amount'];
-
-
-    //echo $patientId; 
     if ($customerId != 'Cash Sales') {
         $patientName = $Patients->patientsDisplayByPId($customerId);
         // print_r($patientName);
@@ -59,67 +45,116 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $patientPhno = '';
     }
 
+    $customerName = $_POST['customer-name'];
+    $doctorName = $_POST['final-doctor-name'];
+    $itemsCount  = $_POST['total-items'];
+    $totalItemsQantity = $_POST['total-qty'];
+    $totalMRP = $_POST['total-mrp'];
+
+    $totalGstAmount = $_POST['total-gst'];
+    $netPaybleAmount = $_POST['bill-amount'];
+
+    $paymentMode = $_POST['payment-mode'];
+    $billDAte = $_POST['bill-date'];
+    
+
+    $updatedBy        = $employeeId;
+    $updatedOn        = NOW;
+    
+    $discountAmount = floatval($totalMRP) - floatval($netPaybleAmount);
+
+    // ============== extra data ===================
+    $manufId = $_POST['Manuf'];
+    
+
+
+    //echo $patientId; 
+    
+
     // print_r($_POST);
 
-    echo "<br>Invoice id : $invoiceNo";
-    echo "<br>bill date : $billDAte";
-    echo "Paticent id check : $customerId<br>";
-    echo "<br>customer name check : $customerName<br>";
-    echo "Paticen age check : $patientAge<br>";
-    echo "patient phone no check : $patientPhno<br>";
-    echo "reffered doctor : $doctorName<br>";
-
-    echo "payment mode : $paymentMode<br>";
-    echo "items count : $itemsCount<br>";
-    echo "total qantity count : $totalItemsQantity<br>";
-    echo "total gst amount : $totalGstAmount<br>";
-    echo "total mrp : $totalMRP<br>";
-    echo "total payble amount : $netPaybleAmount<br>";
-    echo "<br>Added by : $addedBy<br>";
+    // echo "<br>Invoice id : $invoiceNo";
+    // echo "<br>Paticent id check : $customerId";
+    // echo "<br>customer name check : $customerName";
+    // echo "<br>reffered doctor : $doctorName";
+    // echo "<br>items count : $itemsCount";
+    // echo "<br>total qantity count : $totalItemsQantity";
+    // echo "<br>total mrp : $totalMRP";
+    // echo "<br>discount amount : $discountAmount";
+    // echo "total gst amount : $totalGstAmount";
+    // echo "total payble amount : $netPaybleAmount";
+    // echo "<br>payment mode : $paymentMode";
+    // echo "<br>bill date : $billDAte";
+    // echo "<br>Added by : $updatedBy";
+    // echo "<br>Added by : $updatedOn<br>";
 
 
     // echo "<br>======= ARRAYS SECTION ==========<br>";
     // ================ ARRAYS ======================
 
+    $stockOutDataId     = $_POST['stockOut-details-id'];
     $itemId             = $_POST['item-id'];
     $prductId           = $_POST['product-id'];
     $prodName           = $_POST['product-name'];
-    $manufId            = $_POST['Manuf'];
-    $stockOutDataId     = $_POST['stockOut-details-id'];
     $batchNo            = $_POST['batch-no'];
+    $expDate            = $_POST['exp-date'];
+
     $weightage          = $_POST['weightage'];
     $ItemUnit           = $_POST['ItemUnit'];
     $itemWeightage      = $_POST['ItemPower'];
-    $expDate            = $_POST['exp-date'];
+    
+    $qty                = $_POST['qty'];
+    $qtyType            = $_POST['qty-type'];
+
     $mrp                = $_POST['mrp'];
+    $ptrPerItem         = $_POST['ptr'];
     $discParcent        = $_POST['disc'];
     $discPrice          = $_POST['dPrice'];
     $gstparcent         = $_POST['gst'];
     $gstAmountPerItem   = $_POST['gst-amount'];
-    $qty                = $_POST['qty'];
-    $qtyType            = $_POST['qty-type'];
-    $taxable            = $_POST['taxable'];
-    $amount             = $_POST['amount'];
-
-    // $looseStock         = $_POST['lStock'];
-    // $looselyPrice       = $_POST['lPrice'];    
-    $ptrPerItem         = $_POST['ptr'];
+    
     $marginPerItem      = $_POST['margin'];
+    $taxable            = $_POST['taxable'];
+    $amount             = $_POST['amount']; 
+    
+    
 
 
     // echo "<br><br>================== data arrays check ====================== <br>";
-    // echo "<br>Item courrent stock id : ";
-    //  echo "<br>Item unit : "; print_r($ItemUnit);
-    exit;
+    // echo "<br>updated STOCK OUT id array : "; print_r($stockOutDataId);
+    // echo "<br>updated item id array : "; print_r($itemId);
+    // echo "<br>updated product id array : "; print_r($prductId);
+    // echo "<br>updated product name array : "; print_r($prodName);
+    // echo "<br>updated item batch number : "; print_r($batchNo);
+    // echo "<br>updated items exp date : "; print_r($expDate);
+    // echo "<br>updated items weightage : "; print_r($weightage);
+    // echo "<br>updated items unit : "; print_r($ItemUnit);
+    // echo "<br>updated items setof : "; print_r($itemWeightage);
+    // echo "<br>updated items qty : "; print_r($qty);
+    // echo "<br>updated items qty tpes : "; print_r($qtyType);
+    // echo "<br>updated items mrp : "; print_r($mrp);
+    // echo "<br>updated items ptr : "; print_r($ptrPerItem);
+    // echo "<br>updated discount percent per items : "; print_r($discParcent);
+    // echo "<br>updated discount amount per items : "; print_r($discPrice);
+    // echo "<br>updated items gst percent : "; print_r($gstparcent);
+    // echo "<br>updated items gst amount : "; print_r($gstAmountPerItem);
+    // echo "<br>updated items margin : "; print_r($marginPerItem);
+    // echo "<br>updated items taxable : "; print_r($taxable);
+    // echo "<br>updated items payble amount : "; print_r($amount);
+    // echo "<br>updated by : $updatedBy";
+    // echo "<br>updated on by : $updatedOn<br>";
+
+    
     //========================== STOCK OUT AND SALES EDIT UPDATE AREA ==========================
     if (isset($_POST['update'])) {
 
         $discountAmount = floatval($totalMRP) - floatval($netPaybleAmount);
 
-        $stockOutUpdate = $StockOut->updateStockOut($invoiceNo, $customerId, $doctorName, $itemsCount, $totalItemsQantity, $totalMRP, $discountAmount, $totalGstAmount, $netPaybleAmount, $paymentMode, $billDAte, $updatedBy, $updatedOn);
+        $stockOutUpdate = $StockOut->updateStockOut(intval($invoiceNo), $customerId, $doctorName, intval($itemsCount), intval($totalItemsQantity), floatval($totalMRP), floatval($discountAmount), floatval($totalGstAmount), floatval($netPaybleAmount), $paymentMode, $billDAte, $updatedBy, $updatedOn);
+
         // $stockOutUpdate = true;
 
-        if ($stockOutUpdate == true) {
+        if ($stockOutUpdate) {
 
             // =========== DELETE DATA FROM PHARMACY AND STOCK OUT DETAILS TABLE SECTION =============
             $stockOutDetailsIdList = [];
@@ -131,6 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stockOutDetailsIdArrayDiff = array_diff($stockOutDetailsIdList, $stockOutDataId);
             $stockOutDetailsIdArrayDiff = array_values($stockOutDetailsIdArrayDiff);
 
+            // echo "<br>STOCK OUT DETAISL ID ARRAY DIFF : "; print_r($stockOutDetailsIdArrayDiff);
             /// =========== SELL UPDATED DELTED PRODUCT UPDATED SECTION ==================
             for ($i = 0; $i < count($stockOutDetailsIdArrayDiff); $i++) {
 
@@ -162,57 +198,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>Item id : $currenStockItemId";
 
                 // ****** UPDATE CURRENT STOCK AND DELTE FROM PHAMACY INVOCIE AND STOCK OUT DATA ******
-                $updateCurrenStock = $CurrentStock->updateStockOnSell($currenStockItemId, $updatedQty, $updatedLooseQty);
-
+                $updateCurrenStock = $CurrentStock->updateStockOnSell(intval($currenStockItemId), intval($updatedQty), intval($updatedLooseQty));
 
                 $delteFromStockOutDetails = $StockOut->deleteFromStockOutDetailsOnId($stockOutDetailsIdArrayDiff[$i]);
             }
-
+           
             // ================ UPDATE DATA ON PHARMACY AND STOCK OUT DETAILS TABLE ===========
             for ($i = 0; $i < count($stockOutDataId); $i++) {
                 // echo "<br><br><br>";
                 if ($stockOutDataId[$i] == '') {
-                    $item_id = $itemId[$i];
-                    $product_id = $prductId[$i];
-                    $product_name = $prodName[$i];
-                    $stock_out_id = '';
-                    $batch_number = $batchNo[$i];
-                    $setOf = $weightage[$i];
-                    $item_unit = preg_replace('/[0-9]/', '', $setOf);
-                    $item_weatage = preg_replace('/[a-z]/', '', $setOf);
-                    $exp_date = $expDate[$i];
-                    $item_mrp = $mrp[$i];
-                    $disc_parcent = $discParcent[$i];
-                    $disc_price = $discPrice[$i];
-                    $gst_parcent = $gstparcent[$i];
-                    $gst_amount = $gstAmountPerItem[$i];
-                    if ($item_unit == 'tab' || $item_unit == 'cap') {
-                        $item_qty = intdiv(intval($qty[$i]), intval($item_weatage));
-                        $item_loose_qty = $qty[$i];
+
+                    $newItemId = $itemId[$i];
+                    $newProductId = $prductId[$i];
+                    $newProductName = $prodName[$i];
+                    $newItemBatchNo = $batchNo[$i];
+                    $newItemSetOf = $weightage[$i];
+                    $newItemUnit = preg_replace('/[0-9]/', '', $newItemSetOf);
+                    $newItemWeatage = preg_replace('/[a-z]/', '', $newItemSetOf);
+                    $newItemExpDate = $expDate[$i];
+                    $newItemMrp = $mrp[$i];
+                    $newItemDiscParcent = $discParcent[$i];
+                    $newItemGstPercent = $gstparcent[$i];
+                    $newItemGstAmount = $gstAmountPerItem[$i];
+                    if ($newItemUnit == 'tab' || $newItemUnit == 'cap') {
+                        $newItemQty = intdiv(intval($qty[$i]), intval($newItemWeatage));
+                        $newItemLooseQty = $qty[$i];
                     } else {
-                        $item_qty = $qty[$i];
-                        $item_loose_qty = 0;
+                        $newItemQty = $qty[$i];
+                        $newItemLooseQty = 0;
                     }
-                    $qty_type = $qtyType[$i];
-                    $taxable_amount = $taxable[$i];
-                    $payble_amount = $amount[$i];
-                    $item_ptr = $ptrPerItem[$i];
-                    $margin_amount = $marginPerItem[$i];
+                    $newItemQtyType = $qtyType[$i];
+                    $newItemTaxable = $taxable[$i];
+                    $newItemAmount = $amount[$i];
+                    $newItemPtr = $ptrPerItem[$i];
+                    $newItemMargin = $marginPerItem[$i];
 
-                    // =========== ADD NEW DATA ON PHARMACY AND STOCK OUT DETAILS TABLE =============\
-
-                    //====== add new item to pharmacy invocie =======
-                    // $addPharmacyInvoice = $StockOut->addPharmacyBillDetails($invoiceNo,    $item_id, $product_name, $batch_number, $setOf, $exp_date, $item_qty, $item_loose_qty, $item_mrp, $disc_parcent, $taxable_amount, $gst_parcent, $gst_amount, $payble_amount, $addedBy);
-
-                    // ========= add new item to stock out details ==========
-                    $addStockOutDetails = $StockOut->addStockOutDetails($invoiceNo, $item_id, $product_id, $product_name, $batch_number, $exp_date, $item_weatage, $item_unit, $item_qty, $item_loose_qty, $item_mrp, $item_ptr, $disc_parcent, $gst_parcent, $gst_amount, $margin_amount, $taxable_amount, $payble_amount, $addedBy);
+                    
+                    // =========== ADD NEW DATA ON STOCK OUT DETAILS TABLE =============\
+                    $addStockOutDetails = $StockOut->addStockOutDetails(intval($invoiceNo), intval($newItemId), $newProductId, $newProductName, $newItemBatchNo, $newItemExpDate, $newItemWeatage, $newItemUnit, intval($newItemQty), intval($newItemLooseQty), floatval($newItemMrp), floatval($newItemPtr), intval($newItemDiscParcent), intval($newItemGstPercent), floatval($newItemGstAmount), floatval($newItemMargin), floatval($newItemTaxable), floatval($newItemAmount));
 
                     //========== update current stock ==========
-                    $currentStockData = $CurrentStock->showCurrentStocById($item_id);
+                    $currentStockData = $CurrentStock->showCurrentStocById($newItemId);
+                    print_r($currentStockData);
                     foreach ($currentStockData as $currentData) {
                         if ($currentData['unit'] == 'tab' || $currentData['unit'] == 'cap') {
                             $currentLooseQty = $currentData['loosely_count'];
-                            $updatedLooseQty = intval($currentLooseQty) - intval($item_loose_qty);
+                            $updatedLooseQty = intval($currentLooseQty) - intval($newItemLooseQty);
                             $updatedCurrentQty = intdiv(intval($updatedLooseQty), intval($currentData['weightage']));
                         } else {
                             $currentQty = $currentData['qty'];
@@ -220,54 +251,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $updatedCurrentQty = intval($currentQty) - intval($item_qty);
                         }
                     }
-                    $updateCurrentStock = $CurrentStock->updateStockOnSell($item_id, $updatedCurrentQty,$updatedLooseQty);
+
+                    if($addStockOutDetails){
+                    // =============== update current stock on new items ============
+                    $updateCurrentStock = $CurrentStock->updateStockOnSell(intval($newItemId), intval($updatedCurrentQty),intval($updatedLooseQty));
+                    }
                 }
 
+
                 if ($stockOutDataId[$i] != '') {
-                    $item_id = $itemId[$i];
-                    $product_id = $prductId[$i];
-                    $product_name = $prodName[$i];
-                    $stock_out_id = $stockOutDataId[$i];
-                    $batch_number = $batchNo[$i];
-                    $setOf = $weightage[$i];
-                    $item_unit = preg_replace('/[0-9]/', '', $setOf);
-                    $item_weatage = preg_replace('/[a-z]/', '', $setOf);
-                    $exp_date = $expDate[$i];
-                    $item_mrp = $mrp[$i];
-                    $disc_parcent = $discParcent[$i];
-                    $disc_price = $discPrice[$i];
-                    $gst_parcent = $gstparcent[$i];
-                    $gst_amount = $gstAmountPerItem[$i];
-                    if ($item_unit == 'tab' || $item_unit == 'cap') {
-                        $item_qty = intdiv(intval($qty[$i]), intval($item_weatage));
-                        $item_loose_qty = $qty[$i];
+                    $updatedItemId = $itemId[$i];
+                    $updatedProductId = $prductId[$i];
+                    $updatedProductName = $prodName[$i];
+                    $stockOutDetialsId = $stockOutDataId[$i];
+                    $updatedBatchNo = $batchNo[$i];
+                    $updatedSetOf = $weightage[$i];
+                    $updatedItemUnit = preg_replace('/[0-9]/', '', $updatedSetOf);
+                    $updatedItemWeatage = preg_replace('/[a-z]/', '', $updatedSetOf);
+                    $updatedExpDate = $expDate[$i];
+                    $updatedMrp = $mrp[$i];
+                    $updatedDiscPercent = $discParcent[$i];
+                    $updatedDiscPrice = $discPrice[$i];
+                    $updatedGst = $gstparcent[$i];
+                    $updatedGstAmount = $gstAmountPerItem[$i];
+                    if ($updatedItemUnit == 'tab' || $updatedItemUnit == 'cap') {
+                        $updatedItemQty = intdiv(intval($qty[$i]), intval($updatedItemWeatage));
+                        $updatedItemLooseQty = $qty[$i];
                     } else {
-                        $item_qty = $qty[$i];
-                        $item_loose_qty = 0;
+                        $updatedItemQty = $qty[$i];
+                        $updatedItemLooseQty = 0;
                     }
-                    $qty_type = $qtyType[$i];
-                    $taxable_amount = $taxable[$i];
-                    $payble_amount = $amount[$i];
-                    $item_ptr = $ptrPerItem[$i];
-                    $margin_amount = $marginPerItem[$i];
+                    $updatedQtyType = $qtyType[$i];
+                    $updatedTaxableAmount = $taxable[$i];
+                    $updatedPaybleAmount = $amount[$i];
+                    $updatedItemPtr = $ptrPerItem[$i];
+                    $updatedMargin = $marginPerItem[$i];
                     // echo "<br>OLD ITEMS=====";
 
                     // ======================== UPDATE DATA start ==========================
                     $table = 'id';
-                    $selectStockOutDetailsData = $StockOut->stokOutDetailsDataOnTable($table, $stock_out_id);
+                    $selectStockOutDetailsData = $StockOut->stokOutDetailsDataOnTable($table, $stockOutDetialsId);
+
                     foreach ($selectStockOutDetailsData as $stockOutDataCheck) {
                         if ($stockOutDataCheck['unit'] == 'tab' || $stockOutDataCheck['unit'] == 'cap') {
                             $stockOutItemLooseCount = $stockOutDataCheck['loosely_count'];
-                            $itemCountDiff = intval($stockOutItemLooseCount) - intval($item_loose_qty);
+                            $itemCountDiff = intval($stockOutItemLooseCount) - intval($updatedItemLooseQty);
                         } else {
                             $stockOutItemQantity = $stockOutDataCheck['qty'];
-                            $itemCountDiff = intval($stockOutItemQantity) - intval($item_qty);
+                            $itemCountDiff = intval($stockOutItemQantity) - intval($updatedItemQty);
                         }
                     }
 
 
                     // ====== update current stock ===========
-                    $currentStockData = $CurrentStock->showCurrentStocById($item_id);
+                    $currentStockData = $CurrentStock->showCurrentStocById($updatedItemId);
                     // echo "<br>"; print_r($currentStockData);
                     foreach ($currentStockData as $currentData) {
                         if ($currentData['unit'] == 'tab' || $currentData['unit'] == 'cap') {
@@ -281,14 +318,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         }
                     }
 
-                    // ====== update current stock data ===========
-                    $updateCurrentStock = $CurrentStock->updateStockOnSell($item_id, $updatedCurrentQty,$updatedLooseQty);
-
-                    // ====== update pharmacy data ===========
-                    // $updatePharmacyData = $StockOut->updatePharmacyDataById($phamacy_id, $item_qty, $item_loose_qty, $disc_parcent, $taxable_amount, $gst_amount, $payble_amount, $addedBy);
 
                     // ====== update stock out details =======
-                    $updateStockOutData = $StockOut->updateStockOutDetaislById($stock_out_id, $item_qty, $item_loose_qty, $disc_parcent, $margin_amount, $taxable_amount, $gst_amount, $payble_amount, $addedBy);
+                    $updateStockOutData = $StockOut->updateStockOutDetaislById(intval($stockOutDetialsId), intval($updatedItemQty), intval($updatedItemLooseQty), intval($updatedDiscPercent), floatval($updatedMargin), floatval($updatedTaxableAmount), floatval($updatedGstAmount), floatval($updatedPaybleAmount), $updatedBy, $updatedOn);
+
+                    if($updateStockOutData){
+                    // ====== update current stock data ===========
+                    $updateCurrentStock = $CurrentStock->updateStockOnSell(intval($updatedItemId), intval($updatedCurrentQty),intval($updatedLooseQty));
+
+                    }
                 }
             }
         }

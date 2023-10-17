@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 
 $page = "manufacturer"; 
@@ -236,7 +238,7 @@ if (isset($_GET['return'])) {
     //delete manufacturer
     const customDel = (id)=>{
         // alert(id);
-            
+            let btn = this;
             swal({
                 title: "Are you sure?",
                 text: "Want to Delete This Manufacturer?",
@@ -254,15 +256,13 @@ if (isset($_GET['return'])) {
                         id: id
                     },
                     success: function(response) {
-                        // alert(response);
+                        alert(response);
                         // alert(id);
                         if (response.includes('1')) {
                             $(btn).closest("tr").fadeOut()
                             swal("Deleted", "Manufacturer Has Been Deleted", "success");
                         } else {
                             swal("Delete Not Possible", "Manufacturer can't be deleted as its product is in stock", "warning");
-                            $("#error-message").html("Deletion Field !!!").slideDown();
-                            $("success-message").slideUp();
                         }
                     }
                 });

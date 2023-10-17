@@ -63,20 +63,18 @@ foreach($hospitalDetails as $showShowHospital){
 if (isset($_POST['proceed'])) {
     $patientId = $_POST['patientName'];
 
-    $patientsDisplayByPId = $Patients->patientsDisplayByPId($patientId);
-    foreach($patientsDisplayByPId as $patientsRow){
-        $name            = $patientsRow['name'];
-        $gurdianName     = $patientsRow['gurdian_name'];
-        $phno            = $patientsRow['phno'];
-        $email           = $patientsRow['email'];
-        $gender          = $patientsRow['gender'];
-        $addres1         = $patientsRow['address_1'];
-        $addres2         = $patientsRow['address_2'];
-        $patientPs       = $patientsRow['patient_ps'];
-        $patientDist     = $patientsRow['patient_dist'];
-        $patientPIN      = $patientsRow['patient_pin'];
-        $patientState    = $patientsRow['patient_state'];
-    }
+    $patient = json_decode($Patients->patientsDisplayByPId($patientId));
+    $name            = $patient->name;
+    $gurdianName     = $patient->gurdian_name;
+    $phno            = $patient->phno;
+    $email           = $patient->email;
+    $gender          = $patient->gender;
+    $addres1         = $patient->address_1;
+    $addres2         = $patient->address_2;
+    $patientPs       = $patient->patient_ps;
+    $patientDist     = $patient->patient_dist;
+    $patientPIN      = $patient->patient_pin;
+    $patientState    = $patient->patient_state;
 }
 
 
@@ -119,16 +117,14 @@ if (isset($_POST['submit'])) {
     echo var_dump($addAppointment);
 
     if ($addAppointment) {
-      $patientsDisplayByPId = $Patients->patientsDisplayByPId($patientId);
-      foreach($patientsDisplayByPId as $rowPatient){
-        $visited = $rowPatient['visited'];
+      $patientsDisplayByPId = json_decode($Patients->patientsDisplayByPId($patientId));
+        $visited = $patientsDisplayByPId->visited;
         // echo $visited;
         // exit;
         $visited = (int)$visited + 1;
-        
-      }
-        echo $visited;
-        exit;
+
+        // echo $visited;
+        // exit;
     //   echo $visited;
        // Inserting Into Patients Database
       $updatePatientsVisitingTime = $Patients->updatePatientsVisitingTime($patientId, $patientEmail, $patientPhoneNumber, $patientAge, $visited);

@@ -68,11 +68,9 @@ if (isset($_POST['bill-generate'])) {
     ##################################################################
     ###################### Patient Visit Update ######################
     ##################################################################
-    $showPatient = $Patients->patientsDisplayByPId($patientId);
-    foreach ($showPatient as $rowPatient) {
-        $labVisited = $rowPatient['lab_visited'];
-        // echo $labVisited;
-    }
+    $showPatient = json_decode($Patients->patientsDisplayByPId($patientId));
+    $labVisited = $rowPatient->lab_visited;
+
 
     if($labVisited == NULL){
     $labVisited = 1;

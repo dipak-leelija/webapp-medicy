@@ -2,6 +2,8 @@
 $page = "sales-returns";
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'salesReturn.class.php';
 require_once CLASS_DIR.'patients.class.php';
 require_once CLASS_DIR.'stockOut.class.php';
@@ -138,10 +140,12 @@ $currentStock  = new CurrentStock();
                                     <tbody id="dataBody">
                                         <?php
 
-                                        $table = "status";  # fetching those data whose STATUS are 
-                                        $data = "1";   #  ACTIVE FROM SALES RETURN TABLE
+                                        $table1 = 'admin_id';
+                                        $table2 = "status";  # fetching those data whose STATUS are 
+                                        $data2 = "1";   #  ACTIVE FROM SALES RETURN TABLE
 
-                                        $returns = $SalesReturn->selectSalesReturn($table, $data);
+                                        $returns = $SalesReturn->selectSalesReturn($table1, $adminId, $table2, $data2);
+                                        // print_r($returns);
 
                                         if (count($returns) > 0) {
                                             foreach ($returns as $item) {
@@ -153,9 +157,9 @@ $currentStock  = new CurrentStock();
                                                 if ($item['patient_id'] == "Cash Sales") {
                                                     $patientName = "Cash Sales";
                                                 } else {
-                                                    $patient = $Patients->patientsDisplayByPId($item['patient_id']);
+                                                    $patient = json_decode($Patients->patientsDisplayByPId($item['patient_id']));
                                                     //print_r($patient); echo "<br><br>";
-                                                    $patientName = $patient[0]['name'];
+                                                    $patientName = $patient->name;
                                                 }
                                                 echo '<tr>
                                                     <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $invoiceId . '</td>

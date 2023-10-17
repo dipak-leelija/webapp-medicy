@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'distributor.class.php';
 
 $page = "distributor";
@@ -170,9 +172,7 @@ $Distributor = new Distributor();
                                             <button class="btn btn-primary me-md-2" name="add-distributor"
                                                 type="submit">Add Distributor</button>
                                         </div>
-                                    </
-                                    
-                                    form>
+                                    </form>
                                 </div>
                             </div>
                         </div>

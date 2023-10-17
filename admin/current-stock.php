@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'currentStock.class.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR.'distributor.class.php';
@@ -14,14 +16,15 @@ $page = "current-stock";
 $CurrentStock   = new CurrentStock();
 $Products       = new Products();
 $Distributor    = new Distributor();
+
 $ProductImages  = new ProductImages();
 $Manufacturer   = new Manufacturer();
 
-$showCurrentStock = $CurrentStock->showCurrentStock();
+$showCurrentStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
 // print_r($showCurrentStock);
 $countCurrentStock = count($showCurrentStock);
 // echo "$countCurrentStock";
-$currentStockGroup = $CurrentStock->currentStockGroupbyPid();
+$currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
 
 ?>

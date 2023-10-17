@@ -5,19 +5,67 @@ require_once 'dbconnect.php';
 class Distributor extends DatabaseConnection{
 
 
-    function addDistributor($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc){
-        $insert = "INSERT INTO distributor (`name`, `address`, `area_pin_code`, `phno`, `email`, `dsc`) VALUES ('$distributorName', '$distributorAddress', '$distributorAreaPIN', '$distributorPhno', '$distributorEmail', '$distributorDsc')";
+    function addDistributor($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $adminId) {
+        try {
+            // Define the SQL query using a prepared statement
+            $insert = "INSERT INTO distributor (`name`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($insert);
+    
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("ssiisssss", $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $adminId);
+    
+                // Execute the query
+                $insertQuery = $stmt->execute();
+                $stmt->close();
+                return $insertQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    
 
-        // echo $insert.$this->conn->error;
-        // exit;
 
-        $insertQuery    =   $this->conn->query($insert);
-        // echo $insert.$this->conn->error;
-        // echo var_dump($insertQuery);
-        // exit;
-        
-        return $insertQuery;
-    }// end addLabTypes function
+
+
+    function updateDist($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $updatedBy, $updatedOn, $distributorId) {
+        try {
+            // Define the SQL query using a prepared statement
+            $update = "UPDATE `distributor` SET `name`=?, `address`=?, `area_pin_code`=?, `phno`=?, `email`=?, `dsc`=?, `updated_by`=?, `updated_on`=? WHERE `id`=?";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($update);
+    
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("ssssssssi", $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $updatedBy, $updatedOn, $distributorId);
+    
+                // Execute the query
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    
+
+
+
 
 
     function distrubutorDetail($DistributorId){
@@ -65,13 +113,7 @@ class Distributor extends DatabaseConnection{
 
 
 
-    function updateDist($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $distributorId){
-
-        $update = "UPDATE  `distributor` SET `name` = '$distributorName', `address` = '$distributorAddress', `area_pin_code` = '$distributorAreaPIN', `phno` = '$distributorPhno', `email` = '$distributorEmail', `dsc` = '$distributorDsc' WHERE `distributor`.`id` = '$distributorId'";
-        $updatedQuery = $this->conn->query($update);
-        return $updatedQuery;
-
-    }// end updateManufacturer function
+    
 
 
 

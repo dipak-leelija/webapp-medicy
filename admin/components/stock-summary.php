@@ -8,7 +8,7 @@
                             Stock details
                         </div>
                         <?php
-                                                    $current = $CurrentStock->showCurrentStock();
+                                                    $current = $CurrentStock->showCurrentStockbyAdminId($adminId);
                                                     // print_r($current);
                                                     $currentPTR = 0;
                                                     $currentMRP = 0;

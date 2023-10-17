@@ -1,21 +1,20 @@
 <?php
 
 // echo $_GET['currentStockId'];
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
-require_once '../../php_control/patients.class.php';
-require_once '../../php_control/idsgeneration.class.php';
-require_once '../../php_control/currentStock.class.php';
-require_once '../../php_control/stockIn.class.php';
-require_once '../../php_control/stockInDetails.class.php';
-require_once '../../php_control/productsImages.class.php';
-require_once '../../php_control/distributor.class.php';
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/manufacturer.class.php';
-require_once '../../php_control/packagingUnit.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'stockIn.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR.'productsImages.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
 
 //Classes Initilizing
 // $Patients       =   new Patients();
@@ -32,24 +31,27 @@ $packagUnit     =   new PackagingUnits();
 
 if (isset($_GET['currentStockId'])) {
     $productId =  $_GET['currentStockId'];
-    $showStock = $CurrentStock->showCurrentStocByPId($productId);
+    // $showStock = $CurrentStock->showCurrentStocByPId($productId);
     // print_r($showStock);
     // echo count($showStock);
-
-    foreach ($showStock as $curntStk) {
-        $productId      =  $curntStk['product_id'];
+    // ================= PRODUCT CURRENT STOCK IN QTY ============
+    $showStock = $CurrentStock->showCurrentStocByPId($productId);
+    // print_r($currentStockQty);
+    if ($showStock != null) {
+        $overallCurrentStock = 0;
+        foreach ($showStock as $currentQty) {
+            $currentQty = $currentQty['qty'];
+            $overallCurrentStock += $currentQty;
+        }
+    }
+    if ($overallCurrentStock == null) {
+        $overallCurrentStock = 0;
     }
 
+
     $prodcutDetails = $Product->showProductsById($productId);
-    // echo "<br><br>"; print_r($prodcutDetails);
-
+    
     $manufDetails = $manufacturer->showManufacturerById($prodcutDetails[0]['manufacturer_id']);
-    // $manufDetails = $manufacturer->showManufacturer();
-    // echo "<br><br>"; print_r($manufDetails);
-
-    // $distributorDetails = $distributor->showDistributorById($showStock[0]['distributor_id']);
-    // echo "<br><br>"; print_r($distributorDetails);
-
 
     $image = $ProductImages->showImageById($productId);
     // print_r($image);
@@ -75,19 +77,7 @@ if (isset($_GET['currentStockId'])) {
         $overallStockInQTY = 0;
     }
 
-    // ================= PRODUCT CURRENT STOCK IN QTY ============
-    $currentStockQty = $CurrentStock->showCurrentStocByPId($productId);
-    // print_r($currentStockQty);
-    if ($currentStockQty != null) {
-        $overallCurrentStock = 0;
-        foreach ($currentStockQty as $currentQty) {
-            $currentQty = $currentQty['qty'];
-            $overallCurrentStock += $currentQty;
-        }
-    }
-    if ($overallCurrentStock == null) {
-        $overallCurrentStock = 0;
-    }
+    
 }
 
 ?>
@@ -188,7 +178,9 @@ if (isset($_GET['currentStockId'])) {
                 // print_r($stockInData);
                 // $overallQTY = 0;
                 foreach ($stockInData as $stockData) {
-                    $purchaseDate = $stockData['added_on'];
+                    $stockInId = $stockData['stokIn_id'];
+                    $stockInDate = $StockIn->stockInByAttributeByTable('id',$stockInId);
+                    $purchaseDate = $stockInDate[0]['added_on'];
                     $purchaseDate = date("d/m/Y", strtotime($purchaseDate));
                     $mfd = $stockData['mfd_date'];
                     $expDate = $stockData['exp_date'];
@@ -318,7 +310,7 @@ if (isset($_GET['currentStockId'])) {
                                 if (response.includes('1')) {
                                     swal(
                                         "Deleted",
-                                        "Manufacturer Has Been Deleted",
+                                        "Product Has Been Deleted",
                                         "success"
                                     ).then(function() {
                                         parent.location.reload();
@@ -327,9 +319,6 @@ if (isset($_GET['currentStockId'])) {
                                 } else {
                                     swal("Failed", "Product Deletion Failed!",
                                         "error");
-                                    $("#error-message").html("Deletion Field !!!")
-                                        .slideDown();
-                                    $("success-message").slideUp();
                                 }
 
                             }
@@ -344,13 +333,6 @@ if (isset($_GET['currentStockId'])) {
     // =================================== DELTE PERTICULER STOCK DATA =======================
 
     const customDelete = (id, value1, value2, value3, value4, value5) => {
-
-        // alert(id);     // stok in detials id
-        // alert(value1); // product Id
-        // alert(value2); // batch not
-        // alert(value3); // current stock count
-        // alert(value4); // row number
-        // alert(value5); // total stock in qty 
 
         let btnId = document.getElementById(id);
         let row = document.getElementById(value4);
@@ -395,11 +377,8 @@ if (isset($_GET['currentStockId'])) {
                                     });
 
                                 } else {
-                                    swal("Failed", "Product Deletion Failed!",
+                                    swal("Failed", response,
                                         "error");
-                                    $("#error-message").html("Deletion Field !!!")
-                                        .slideDown();
-                                    $("success-message").slideUp();
                                 }
 
                                 // row.parentNode.removeChild(row);

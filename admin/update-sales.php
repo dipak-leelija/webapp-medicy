@@ -31,12 +31,10 @@ if ($_GET['id']) {
 
     // echo $patientId; exit;
     if ($patientId != 'Cash Sales') {
-        $patientName = $Patients->patientsDisplayByPId($patientId);
-        // print_r($patientName);
-        $patientName = $patientName[0]['name'];
+        $patientName = json_decode($Patients->patientsDisplayByPId($patientId));
+        $patientName = $patientName->name;
     }
 
-    // $patientName = $Patients->patientsDisplayByPId($patientId);
 
     $reffby         = $stockOut[0]['reff_by'];
     $items          = $stockOut[0]['items'];
@@ -310,7 +308,7 @@ if ($_GET['id']) {
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="  sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly >
+                                                        <input class="d-none sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly >
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
                                                 </div>

@@ -1,9 +1,13 @@
 <?php
-require_once '../../php_control/salesReturn.class.php';
-require_once '../../php_control/patients.class.php';
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/stockOut.class.php';
-require_once '../../php_control/packagingUnit.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'salesReturn.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'stockOut.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
 
 
 // classes initiating 
@@ -119,7 +123,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         $taxable = $returnData['taxable'];
                         $refundAmount = $returnData['refund_amount'];
 
-                        $invoiceDetials = $StockOut->stockOutSelect($invoiceID, $itemId);
+                        $col1 = 'invoice_id';
+                        $col2 = 'item_id';
+                        $invoiceDetials = $StockOut->stokOutDetailsDataByTwoCol($col1, $invoiceID, $col2, $itemId);
                         foreach ($invoiceDetials as $invoiceData) {
                             $itemName = $invoiceData['item_name'];
                             $batchNo  = $invoiceData['batch_no'];

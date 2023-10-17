@@ -1,19 +1,18 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once '../../php_control/manufacturer.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'manufacturer.class.php';
 $Manufacturer       = new Manufacturer();
 
 $manufacturerId = $_POST['id'];
 // echo $manufacturerId;
 
 $deleteManufacturer = $Manufacturer->deleteManufacturer($manufacturerId);
-// $data = var_dump($deleteManufacturer);
-// return $data;
-if ($deleteManufacturer == true) {
-    echo 1;
+
+if ($deleteManufacturer) {
+   echo $deleteManufacturer;
 }else {
     echo 0;
 }

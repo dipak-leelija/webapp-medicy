@@ -1,12 +1,14 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
-require_once '../php_control/products.class.php';
-// require_once '../php_control/manufacturer.class.php';
-require_once '../php_control/distributor.class.php';
-require_once '../php_control/measureOfUnit.class.php';
-// require_once '../php_control/currentStock.class.php';
-require_once '../php_control/packagingUnit.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'measureOfUnit.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR.'stockIn.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
 
 
 $page = "stock-in-details";
@@ -15,23 +17,19 @@ $page = "stock-in-details";
 //objects Initilization
 $Products           = new Products();
 $Distributor        = new Distributor();
-// $Manufacturer       = new Manufacturer();
 $MeasureOfUnits     = new MeasureOfUnits();
-// $CurrentStock       = new CurrentStock();
 $PackagingUnits     = new PackagingUnits();
 
 
 //function's called
 $showProducts          = $Products->showProducts();
 $showDistributor       = $Distributor->showDistributor();
-// $showManufacturer      = $Manufacturer->showManufacturer();
 $showMeasureOfUnits    = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 $edit = FALSE;
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    require_once '../php_control/stockIn.class.php';
-    require_once '../php_control/stockInDetails.class.php';
+    
 
 
     if (isset($_GET['edit'])) {
@@ -59,9 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         foreach ($details as $stockInId) {
             array_push($arrayCheckId, $stockInId['id']);
         }
-        // print_r($arrayCheckId);
-        // echo "<br><br>";
-        // echo count($arrayCheckId);
     }
 }
 

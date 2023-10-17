@@ -25,6 +25,7 @@ let itemWeatage = document.getElementById("item-weatage");
 let batch = document.getElementById("batch-no");
 
 let mrp = document.getElementById("mrp");
+let ptr = document.getElementById("ptr");
 let purchaseQuantity = document.getElementById("purchase-qty");
 let currentQty = document.getElementById("qty");
 let discount = document.getElementById("discount");
@@ -190,7 +191,7 @@ const getItemDetails = (t) => {
     let pharmacyItemDetailsId = t.selectedOptions[0].getAttribute('pharmacy-data-id');
     let invoice = t.selectedOptions[0].getAttribute('data-invoice');
     let itemId = t.value;
-    // console.log(itemId);
+    // console.log("stock out details item id : "+itemId);
     let batchNo = t.selectedOptions[0].getAttribute('data-batch');
 
     if (itemId != "") {
@@ -239,6 +240,12 @@ const getItemDetails = (t) => {
         xmlhttp.open("GET", mrpUrl, false);
         xmlhttp.send(null);
         mrp.value = xmlhttp.responseText;
+
+        //==================== PTR ====================
+        let ptrUrl = `ajax/stockOut.all.ajax.php?ptr=${invoice}&p-id=${itemId}`;
+        xmlhttp.open("GET", ptrUrl, false);
+        xmlhttp.send(null);
+        ptr.value = xmlhttp.responseText;
 
         //==================== PURCHASE QTY ====================
         let purchaseqtyUrl = `ajax/stockOut.all.ajax.php?p_qty=${invoice}&p-id=${itemId}`;
@@ -364,6 +371,7 @@ const addData = () => {
     let ItemWeatage = document.getElementById("item-weatage").value;
     let batch = document.getElementById("batch-no").value;
     let mrp = document.getElementById("mrp").value;
+    let ptr = document.getElementById("ptr").value;
     let purchaseQuantity = document.getElementById("purchase-qty").value;
     let currentQty = document.getElementById("qty").value;
     let discount = document.getElementById("discount").value;
@@ -639,6 +647,9 @@ const addData = () => {
             <td class="pt-3" id="row-${slControl}-col-7">
                 <input class="table-data w-3r" type="text" name="mrp[]" value="${mrp}" readonly style="font-size: 0.65rem;">
             </td>
+            <td class="pt-3" id="row-${slControl}-col-7">
+                <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr}" readonly style="font-size: 0.65rem;">
+            </td>
             <td class="pt-3" id="row-${slControl}-col-8">
                 <input class="table-data w-2r" type="text" name="disc[]" value="${discount}" readonly style="font-size: 0.65rem;">
             </td>
@@ -681,6 +692,7 @@ const addData = () => {
             ItemUnit: ItemUnit,
             ItemWeatage: ItemWeatage,
             mrp: mrp,
+            ptr: ptr,
             purchaseQuantity: purchaseQuantity,
             currentQty: currentQty,
 

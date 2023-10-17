@@ -5,8 +5,8 @@ require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once CLASS_DIR.'patients.class.php';
 
 $Patients = new Patients();
-$showPatients = $Patients->patientsDisplay();
 
+$showPatients = json_decode($Patients->allPatients($adminId));
 ?>
 
 <!doctype html>
@@ -79,7 +79,7 @@ $showPatients = $Patients->patientsDisplay();
                                                 <?php
                                                     foreach ($showPatients as $patientsRow) {
                                                         // $data[] = $patientsRow;
-                                                        echo "<option value='".$patientsRow['patient_id']."'>".$patientsRow['patient_id']." - ".$patientsRow['name']."</option>";
+                                                        echo "<option value='$patientsRow->patient_id'>$patientsRow->patient_id - $patientsRow->name</option>";
                                                     }
                                                     ?>
                                                 

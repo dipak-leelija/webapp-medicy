@@ -1,5 +1,7 @@
-<?php 
-require_once "../../../php_control/stockOut.class.php";
+<?php
+require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'stockOut.class.php';
 
 $StockOut = new StockOut();
 

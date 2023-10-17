@@ -1,23 +1,23 @@
 <?php
 
-require_once 'dbconnect.php';
-
 class SalesReturn extends DatabaseConnection
 {
 
-    function addSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by)
+    function addSalesReturn($invoiceId, $patientId, $billdate, $returnDate, $items, $totalQty, $gstAmount, $refundAmount, $refundMode, $status, $added_by, $addedOn, $adminId)
     {
 
         try {
-            $addReturn = "INSERT INTO  sales_return (`invoice_id`, `patient_id`, `bill_date`, `return_date`, `items`, `gst_amount`, `refund_amount`, `refund_mode`, `status`, `added_by`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $addReturn = "INSERT INTO  sales_return (`invoice_id`, `patient_id`, `bill_date`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_amount`, `refund_mode`, `status`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $res = $this->conn->prepare($addReturn);
             // binding parameters --------
-            $res->bind_param("ssssssssss", $invoiceId, $patientId, $billdate, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by);
+            $res->bind_param("isssiiddsssss", $invoiceId, $patientId, $billdate, $returnDate, $items, $totalQty, $gstAmount, $refundAmount, $refundMode, $status, $added_by, $addedOn, $adminId);
             // Execute the prepared statement
             if ($res->execute()) {
                 // Return the ID of the newly inserted record
-                return $res->insert_id;
+                $salesReturnId = $this->conn->insert_id;
+                return ["result" => true, "sales_return_id" => $salesReturnId];
+                // return $res;
             } else {
                 // Handle the error (e.g., log or return an error message)
                 throw new Exception("Error executing SQL statement: " . $res->error);
@@ -27,6 +27,10 @@ class SalesReturn extends DatabaseConnection
             return $e; // You can customize the error handling as needed
         }
     } //end addLabBill function
+
+
+
+
 
 
 
@@ -41,31 +45,143 @@ class SalesReturn extends DatabaseConnection
         return $res;
     } //end employeesDisplay function
 
-    function selectSalesReturn($table, $data)
-    {
-        $res = array();
-        $sql = "SELECT * FROM sales_return WHERE `$table` = '$data'";
-        $sqlQuery = $this->conn->query($sql);
-        while ($result = $sqlQuery->fetch_array()) {
-            $res[]    = $result;
+
+
+
+
+
+    function selectSalesReturn($table, $data) {
+        try {
+            $res = array();
+    
+            // Define the SQL query using a prepared statement
+            $sql = "SELECT * FROM sales_return WHERE $table = ?";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($sql);
+    
+            if ($stmt) {
+                // Bind the parameter
+                $stmt->bind_param("s", $data);
+    
+                // Execute the query
+                $stmt->execute();
+    
+                // Get the result
+                $result = $stmt->get_result();
+    
+                // Check if the query was successful
+                if ($result) {
+                    while ($row = $result->fetch_array()) {
+                        $res[] = $row;
+                    }
+                } else {
+                    // Handle the case where the query failed
+                    echo "Query failed: " . $this->conn->error;
+                }
+    
+                // Close the statement
+                $stmt->close();
+            } else {
+                // Handle the case where the statement preparation failed
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+    
+            return $res;
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return array();
         }
-        return $res;
-    } // eof stockOutDisplayById 
+    }
+    
+
+    
+    
 
 
 
-    function selectSalesReturnByAttribs($table1, $table2, $data1, $data2)
-    {
-        $res = array();
-        $sql = "SELECT * FROM sales_return WHERE `$table1` = '$data1' AND `$table2` = '$data2'";
-        $sqlQuery = $this->conn->query($sql);
-        while ($result = $sqlQuery->fetch_array()) {
-            $res[]    = $result;
+    function selectSalesReturnByAttribs($table1, $table2, $data1, $data2) {
+        try {
+            $res = array();
+    
+            // Define the SQL query using a prepared statement
+            $sql = "SELECT * FROM `sales_return` WHERE $table1 = ? AND $table2 = ?";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($sql);
+    
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("ss", $data1, $data2);
+    
+                // Execute the query
+                $stmt->execute();
+    
+                // Get the result
+                $result = $stmt->get_result();
+    
+                // Check if the query was successful
+                if ($result) {
+                    while ($row = $result->fetch_array()) {
+                        $res[] = $row;
+                    }
+                } else {
+                    // Handle the case where the query failed
+                    echo "Query failed: " . $this->conn->error;
+                }
+    
+                // Close the statement
+                $stmt->close();
+            } else {
+                // Handle the case where the statement preparation failed
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+    
+            return $res;
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return array();
         }
-        return $result;
-    } // eof stockOutDisplayById 
+    }
+
+    
 
 
+
+
+
+    // sales retun edit update function
+    function updateSalesReturn($id, $returnDate, $items, $totalQty, $gstAmount, $refundAmount, $refundMode, $updatedBy, $updatedOn) {
+        try {
+            $updateQuery = "UPDATE `sales_return` SET `return_date`=?, `items`=?, `total_qty`=?, `gst_amount`=?, `refund_amount`=?, `refund_mode`=?, `updated_by`=?, `updated_on`=? WHERE `id`=?";
+            $stmt = $this->conn->prepare($updateQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("siiddsssi", $returnDate, $items, $totalQty, $gstAmount, $refundAmount, $refundMode, $updatedBy, $updatedOn, $id);
+                $update = $stmt->execute();
+                $stmt->close();
+                return $update;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    
+
+
+
+
+
+    
 
     //--------------select sales return table by invoice id and patient id-------------- RD -------
 
@@ -117,14 +233,7 @@ class SalesReturn extends DatabaseConnection
 
     //------------------------------updating sales return table-------------- RD ----------------
 
-    function updateSalesReturn($id, $returnDate, $items, $gstAmount, $refundAmount, $refundMode, $status, $added_by)
-    {
-        $updateSalesReturn = "UPDATE `sales_return` SET `return_date`='$returnDate',`items` = '$items', `gst_amount`='$gstAmount',`refund_amount`='$refundAmount',`refund_mode`='$refundMode', `status` = '$status', `added_by`='$added_by' WHERE `id`='$id'";
-
-        $update = $this->conn->query($updateSalesReturn);
-
-        return $update;
-    }
+    
 
     function updateStatus($id, $status, $addedBy)
     {
@@ -206,29 +315,109 @@ class SalesReturn extends DatabaseConnection
     //     ################################################################################################################################
 
 
-    function addReturnDetails($invoiceId, $SalesReturnId, $itemId, $productId, $batchNo, $weatage, $exp_date, $mrp, $disc, $gst, $taxable, $returnQty, $refund)
-    {
+    function addReturnDetails($invoiceId, $SalesReturnId, $itemId, $productId, $batchNo, $weatage, $expDate, $mrp, $ptr, $disc, $gst, $gstAmount, $taxable, $returnQty, $refund, $adminId) {
+        try {
+            $insert = "INSERT INTO sales_return_details (`invoice_id`, `sales_return_id`, `item_id`, `product_id`, `batch_no`, `weatage`, `exp`, `mrp`, `ptr`, `disc`, `gst`, `gst_amount`, `taxable`, `return_qty`, `refund_amount`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->conn->prepare($insert);
+    
+            if ($stmt) {
+                $stmt->bind_param("iiissssddiiddids", $invoiceId, $SalesReturnId, $itemId, $productId, $batchNo, $weatage, $expDate, $mrp, $ptr, $disc, $gst, $gstAmount, $taxable, $returnQty, $refund, $adminId);
+                $res = $stmt->execute();
+                $stmt->close();
+                return $res;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    
 
-        $insert = "INSERT INTO  sales_return_details (`invoice_id`, `sales_return_id`, `item_id`, `product_id`, `batch_no`, `weatage`, `exp`, `mrp`, `disc`, `gst`, `taxable`, `return_qty`, `refund_amount`) VALUES  ('$invoiceId', '$SalesReturnId', '$itemId', '$productId', '$batchNo', '$weatage', '$exp_date', '$mrp', '$disc', '$gst', '$taxable', '$returnQty', '$refund')";
-        // echo $insertEmp.$this->conn->error;
-        // exit;
-        $res = $this->conn->query($insert);
-        return $res;
-    } //end addPharmacyBillDetails function
 
 
+
+
+
+    function selectSalesReturnList($table, $data) {
+        try {
+            $res = array();
+    
+            // Define the SQL query using a prepared statement
+            $sql = "SELECT * FROM sales_return_details WHERE $table = ?";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($sql);
+    
+            if ($stmt) {
+                // Bind the parameter
+                $stmt->bind_param("s", $data);
+    
+                // Execute the query
+                $stmt->execute();
+    
+                // Get the result
+                $result = $stmt->get_result();
+    
+                // Check if the query was successful
+                if ($result) {
+                    while ($row = $result->fetch_array()) {
+                        $res[] = $row;
+                    }
+                } else {
+                    // Handle the case where the query failed
+                    echo "Query failed: " . $this->conn->error;
+                }
+    
+                // Close the statement
+                $stmt->close();
+            } else {
+                // Handle the case where the statement preparation failed
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+    
+            return $res;
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return array();
+        }
+    }
+
+
+
+
+
+
+
+    function updateSalesReturnDetails($salesReturnId, $gstAmount, $taxable, $returnQty, $refundAmount, $updatedBy, $updatedOn) {
+        try {
+            $updateQuery = "UPDATE `sales_return_details` SET `gst_amount`=?, `taxable`=?, `return_qty`=?, `refund_amount`=?, `updated_by`=?, `updated_on`=? WHERE `id`=?";
+            $stmt = $this->conn->prepare($updateQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("ddidssi", $gstAmount, $taxable, $returnQty, $refundAmount, $updatedBy, $updatedOn, $salesReturnId);
+                $updateDetails = $stmt->execute();
+                $stmt->close();
+                return $updateDetails;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
     //--------------------fetch sales return details table data----------------RD--------------
 
-    function selectSalesReturnList($table, $data)
-    {
-        $res = array();
-        $sql = "SELECT * FROM sales_return_details WHERE `$table` = '$data'";
-        $sqlQuery = $this->conn->query($sql);
-        while ($result = $sqlQuery->fetch_array()) {
-            $res[]    = $result;
-        }
-        return $res;
-    } //end stockOutDetailsById function
+    
+    
 
     function salesReturnDetialSelect($invoiceId, $productId, $batchNo)
     {
@@ -264,24 +453,14 @@ class SalesReturn extends DatabaseConnection
     }
 
 
-    //--------------------update sales return details table----------------RD--------------
 
-    function updateSalesReturnDetails($salesRetunId, $taxable, $returnQTY, $refundAmount, $addedBy)
-    {
-
-        $updateSalseReturnDetails = "UPDATE `sales_return_details` SET `taxable` = '$taxable', `return_qty`='$returnQTY',`refund_amount`='$refundAmount',`added_by`='$addedBy' WHERE `id`='$salesRetunId'";
-
-        $updateDetails = $this->conn->query($updateSalseReturnDetails);
-
-        return $updateDetails;
-    }
 
 
     function updateSalesReturnOnStockInUpdate($itemid, $batchNo, $expDate, $addedBy)
     {
         try {
             // Construct the SQL query
-            $updateSalesReturnDetails = "UPDATE `sales_return_details` SET `batch_no`=?, `exp`=?, `added_by`=? WHERE `item_id`=?";
+            $updateSalesReturnDetails = "UPDATE `sales_return_details` SET `batch_no`=?, `exp`=?, `updated_by`=?, `updated_on`=? WHERE `item_id`=?";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($updateSalesReturnDetails);

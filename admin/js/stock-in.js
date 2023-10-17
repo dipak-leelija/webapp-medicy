@@ -157,9 +157,6 @@ function searchItem(input) {
 
 const getDtls = (productId) => {
 
-    console.log(productId);
-    aler
-    t(productId);
     let xmlhttp = new XMLHttpRequest();
 
     if (productId != "") {
