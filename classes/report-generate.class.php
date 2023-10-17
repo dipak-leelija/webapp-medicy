@@ -47,8 +47,24 @@ class LabReport extends DatabaseConnection
             echo $e->getMessage();
         }
     }
+        /// LabReport data fetch///
+    function labReportShow($billId){
 
+        try{
+            $datas = null;
+            $sql = "SELECT * FROM `lab_report` where `bill_id`='$billId'";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $datas = $result;
+            }
+            $dataset = json_encode($datas);
+            return $dataset;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 
+    ///insert lab report details ///
     function labReportDetailsAdd($testValue, $unitValue, $testId,$reportId)
     {
         try {
@@ -60,7 +76,7 @@ class LabReport extends DatabaseConnection
 
                 if ($stmt->execute()) {
                     $stmt->close();
-                    return $stmt; // Indicates successful insertion
+                    return true; // Indicates successful insertion
                 } else {
                     throw new Exception("Error executing statement: " . $stmt->error);
                 }
@@ -70,6 +86,22 @@ class LabReport extends DatabaseConnection
         } catch (Exception $e) {
             echo $e->getMessage();
             return false; // Indicates failed insertion
+        }
+    }
+
+    ///lab report data fetch ///
+    function labReportDetailbyId($reportId){
+        try{
+            $datas = null;
+            $sql = "SELECT * FROM `lab_report_detail` where `report_id`= '$reportId'";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $datas = $result;
+            }
+            $dataset = json_encode($datas);
+            return $dataset;
+        }catch(Exception $e){
+            echo $e->getMessage();
         }
     }
 
