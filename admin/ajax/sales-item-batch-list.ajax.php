@@ -1,10 +1,3 @@
-<!-- <style>
-.searched-list:hover {
-    background: #3e059b26;
-    cursor: pointer;
-}
-</style> -->
-
 <?php
 require_once dirname(dirname(__DIR__)).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
