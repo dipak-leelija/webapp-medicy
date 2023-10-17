@@ -1,12 +1,12 @@
 <?php
+require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
-require_once '../../_config/sessionCheck.php';//check admin loggedin or not
-require_once '../../../php_control/hospital.class.php';
-require_once '../../../php_control/stockOut.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once ADM_DIR.'_config/user-details.inc.php';
+// require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once CLASS_DIR.'hospital.class.php';
+require_once CLASS_DIR.'stockOut.class.php';
 
 
 
