@@ -5,15 +5,22 @@
 #                                                                                                        #
 ##########################################################################################################
 
-require_once "../../php_control/stockOut.class.php";
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/patients.class.php';
-require_once '../../php_control/salesReturn.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR."stockOut.class.php";
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'salesReturn.class.php';
 
 $StockOut   = new StockOut();
 $Products   = new Products();
 $Patients   = new Patients();
 $salesReturn = new SalesReturn();
+
+$attribute1 = 'invoice_id';
+$attribute2 = 'item_id';
 
 // get patient name
 if (isset($_GET["patient"])) {
@@ -50,7 +57,7 @@ if (isset($_GET["reff-by"])) {
 if (isset($_GET["products"])) {
     $invoiceId = $_GET["products"];
 
-    $pharmacyInvoiceData = $StockOut->stockOutDetailsById($invoiceId); // bill invoice details
+    // $pharmacyInvoiceData = $StockOut->stockOutDetailsById($invoiceId); // bill invoice details
     // print_r($pharmacyInvoiceData);
     $stockOutDetailsData = $StockOut->stockOutDetailsDisplayById($invoiceId);
     print_r($stockOutDetailsData);
@@ -68,9 +75,7 @@ if (isset($_GET["products"])) {
 //product id
 if (isset($_GET["prod-id"])) {
     $invoice = $_GET["prod-id"];
-    $attribute1 = 'invoice_id';
-    $attribute2 = 'item_id';
-    $item = $StockOut->stokOutDetailsData($attribute1, $invoice, $attribute2, $_GET["p-id"]);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
     // print_r( $item);
     echo $item[0]['product_id'];
 }
@@ -79,52 +84,58 @@ if (isset($_GET["prod-id"])) {
 // get product exp date
 if (isset($_GET["exp-date"])) {
     $invoice = $_GET["exp-date"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
     echo $item[0]['exp_date'];
 }
 
 // get product full unit
 if (isset($_GET["unit"])) {
     $invoice = $_GET["unit"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
-    echo $item[0]['weatage'];
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
+    echo $item[0]['weightage'].$item[0]['unit'];
 }
 
 // get product item unit
 if (isset($_GET["itemUnit"])) {
     $invoice = $_GET["itemUnit"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
-    $unit =  $item[0]['weatage'];
-    $itemUnit = preg_replace('/[0-9]/','',$unit);
-    echo $itemUnit;
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
+    $unit =  $item[0]['unit'];
+    echo $unit;
 }
 
 // get product item weatage
 if (isset($_GET["itemWeatage"])) {
     $invoice = $_GET["itemWeatage"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
-    $unit =  $item[0]['weatage'];
-    $itemWeatage = preg_replace('/[a-z]/','',$unit);
-    echo $itemWeatage;
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
+    $weightage =  $item[0]['weightage'];
+    echo $weightage;
 }
 
 // get product mrp
 if (isset($_GET["mrp"])) {
     $invoice = $_GET["mrp"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
     echo $item[0]['mrp'];
 }
+
+
+// get product ptr
+if (isset($_GET["ptr"])) {
+    $invoice = $_GET["ptr"];
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
+    echo $item[0]['ptr'];
+}
+
 
 //get product purchase quantity
 if (isset($_GET["p_qty"])) {
     $invoice = $_GET["p_qty"];
     $itemId = $_GET["p-id"];
 
-    $item = $StockOut->stockOutSelect($invoice, $itemId);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $itemId);
     foreach($item as $item){
-        $itemWeatage = $item['weatage'];
-        $itemType = preg_replace('/[0-9]/', '', $itemWeatage);
-        if($itemType == 'tab' || $itemType == 'cap'){
+        $itemUnitType = $item['unit'];
+        if($itemUnitType == 'tab' || $itemUnitType == 'cap'){
             echo $item['loosely_count'];
         }else{
             echo $item['qty'];
@@ -139,9 +150,8 @@ if (isset($_GET["qty"])) {
     $batchNo = $_GET["batch"];
     $totalReturnQTY = 0;
 
-    $item = $StockOut->stockOutSelect($invoice, $itemId); // details from phermacy invoice
-    $itemWeatage = $item[0]['weatage'];
-    $itemType = preg_replace('/[0-9]/', '', $itemWeatage);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $itemId); // details from stock out details table
+    $itemType = $item[0]['unit'];;
 
     $table = 'invoice_id';
     $salesReturnData = $salesReturn->selectSalesReturn($table, $invoice);
@@ -184,21 +194,21 @@ if (isset($_GET["qty"])) {
 // get product discount
 if (isset($_GET["disc"])) {
     $invoice = $_GET["disc"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
-    echo $item[0]['disc'];
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
+    echo $item[0]['discount'];
 }
 
 // get product gst percentage
 if (isset($_GET["gst"])) {
     $invoice = $_GET["gst"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
     echo $item[0]['gst'];
 }
 
 // get product taxable amount
 if (isset($_GET["taxable"])) {
     $invoice = $_GET["taxable"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
     echo $item[0]['taxable'];
 }
 
@@ -207,7 +217,7 @@ if (isset($_GET["taxable"])) {
 // get product amount
 if (isset($_GET["amount"])) {
     $invoice = $_GET["amount"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $_GET["p-id"]);
     echo $item[0]['amount'];
 }
 

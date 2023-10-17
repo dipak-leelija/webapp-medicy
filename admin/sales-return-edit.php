@@ -1,14 +1,16 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php'; //check admin loggedin or not
-require_once "../php_control/doctors.class.php";
-require_once '../php_control/products.class.php';
-require_once '../php_control/distributor.class.php';
-require_once '../php_control/measureOfUnit.class.php';
-require_once '../php_control/packagingUnit.class.php';
-require_once '../php_control/salesReturn.class.php';
-require_once '../php_control/patients.class.php';
-require_once '../php_control/stockOut.class.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR."doctors.class.php";
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'measureOfUnit.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR.'salesReturn.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'stockOut.class.php';
 $page = "sales";
 
 
@@ -215,6 +217,11 @@ if ($patientId == 'Cash Sales') {
                                     </div>
 
                                     <div class="col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="ptr">PTR</label>
+                                        <input type="text" class="upr-inp" name="ptr" id="ptr" readonly>
+                                    </div>
+
+                                    <div class="col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="gst">GST%</label>
                                         <input type="text" class="upr-inp" name="gst" id="gst" readonly>
                                     </div>
@@ -255,16 +262,16 @@ if ($patientId == 'Cash Sales') {
                                     </div>
 
 
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
+                                    <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
                                         <button class="btn btn-primary me-md-2" type="button" onclick="addData()" id="add-btn" style="margin-top: 1rem; height: 2.5rem;">Add <i class="fas fa-plus"></i></button>
-                                    </div>
+                                    </div> -->
                                 </div>
 
-                                <!-- <div class="row justify-content-end">
+                                <div class="row justify-content-end">
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
                                         <button class="btn btn-primary me-md-2" type="button" onclick="addData()" id="add-btn">Add <i class="fas fa-plus"></i></button>
                                     </div>
-                                </div> -->
+                                </div>
 
                             </form>
                         </div>

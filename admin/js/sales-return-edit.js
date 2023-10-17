@@ -25,6 +25,7 @@ var itemWeatage = document.getElementById("item-weatage");
 var prodId = document.getElementById('product-id');
 var batch = document.getElementById("batch-no");
 var mrp = document.getElementById("mrp");
+var ptr = document.getElementById("ptr");
 var pqty = document.getElementById("P-qty");
 var currentQty = document.getElementById("current-qty");
 
@@ -123,6 +124,12 @@ const getEditItemDetails = (t) => {
         xmlhttp.open("GET", mrpUrl, false);
         xmlhttp.send(null);
         mrp.value = xmlhttp.responseText;
+
+        //==================== ptr ====================
+        let ptrUrl = `ajax/salesReturnEdit.ajax.php?ptr=${invoice}&p-id=${currentStockItemId}`;
+        xmlhttp.open("GET", ptrUrl, false);
+        xmlhttp.send(null);
+        ptr.value = xmlhttp.responseText;
 
         //==================== Purchase QTY ====================
         let purchaseqtyUrl = `ajax/salesReturnEdit.ajax.php?pqty=${invoice}&p-id=${currentStockItemId}`;
@@ -503,7 +510,7 @@ const addData = () => {
                 <input class="table-data w-2r" type="text" name="p-qty[]" value="${pqty.value}" readonly style="font-size: 0.7rem;">
             </td>
 
-            <td class="pt-3" id="row-${slControl}-col-6">
+            <td class="d-none pt-3" id="row-${slControl}-col-6">
                 <input class="table-data w-2r" type="text" name="current-qty[]" value="${currentQty.value}" readonly style="font-size: 0.7rem;">
             </td>
             

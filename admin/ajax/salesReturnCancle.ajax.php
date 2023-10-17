@@ -1,11 +1,13 @@
 <?php
-require_once '../_config/sessionCheck.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once '../../php_control/salesReturn.class.php';
-require_once '../../php_control/patients.class.php';
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/stockOut.class.php';
-require_once '../../php_control/currentStock.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'salesReturn.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'stockOut.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
 
 
 // classes initiating 
@@ -73,12 +75,12 @@ if (isset($_POST['id'])) {
                 }
                 
 
-                $stockUpdate = $currentStock->updateCurrentStockById($curretnStockItemId, $updatedQty, $updatedLooselyCount);
+                $stockUpdate = $currentStock->updateStockOnSell($curretnStockItemId, $updatedQty, $updatedLooselyCount);
 
                 // sales return update. set return qty  0 and refund amount 0;
-                $setReturnQty = 0;
-                $setRefundAmount = 0;
-                $updateSalesRetunDetails = $SalesReturn->updateSalesReturnOnReturnCancel($salesReturnDetailsId, $setReturnQty, $setRefundAmount);
+                // $setReturnQty = 0;
+                // $setRefundAmount = 0;
+                // $updateSalesRetunDetails = $SalesReturn->updateSalesReturnOnReturnCancel($salesReturnDetailsId, $setReturnQty, $setRefundAmount);
 
                 $deleteReturnDetails = $SalesReturn->deleteSalesReturnDetaislById($salesReturnDetailsId);
             }

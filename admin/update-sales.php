@@ -310,7 +310,7 @@ if ($_GET['id']) {
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="  sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly >
+                                                        <input class="d-none sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly >
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
                                                 </div>

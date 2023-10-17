@@ -4,10 +4,15 @@
 #                                      Sales Return Edit Page                                            #
 #                                                                                                        #
 ##########################################################################################################
-require_once "../../php_control/stockOut.class.php";
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/patients.class.php';
-require_once "../../php_control/salesReturn.class.php";
+
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR."stockOut.class.php";
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR."salesReturn.class.php";
 
 $StockOut   = new StockOut();
 $Products   = new Products();
@@ -15,6 +20,9 @@ $Patients   = new Patients();
 $salesReturn = new SalesReturn();
 
 $tabel = 'id';
+$col1 = 'invoice_id';
+$col2 = 'item_id';
+
 // get patient name
 if (isset($_GET["patient"])) {
     $invoiceId = $_GET["patient"];
@@ -115,16 +123,26 @@ if (isset($_GET["batchNo"])) {
 // get product mrp
 if (isset($_GET["mrp"])) {
     $invoice = $_GET["mrp"];
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($col1, $invoice, $col2, $_GET["p-id"]);
     echo $item[0]['mrp'];
 }
+
+
+
+// get product ptr
+if (isset($_GET["ptr"])) {
+    $invoice = $_GET["ptr"];
+    $item = $StockOut->stokOutDetailsDataByTwoCol($col1, $invoice, $col2, $_GET["p-id"]);
+    echo $item[0]['ptr'];
+}
+
 
 
 // get product purchase qty
 if (isset($_GET["pqty"])) {
     $invoice = $_GET["pqty"];
     //$item = $StockOut->stockOutSelect($invoice, $_GET["p-id"], $_GET["batch"]);
-    $item = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $item = $StockOut->stokOutDetailsDataByTwoCol($col1, $invoice, $col2, $_GET["p-id"]);
     foreach($item as $item){
         if($item['loosely_count'] > 0){
             $purchaseQty = $item['loosely_count'];
@@ -142,7 +160,7 @@ if (isset($_GET["cqty"])) {
     $invoice = $_GET["cqty"];
     $itemId = $_GET['p-id'];
 
-    $purchaseItem = $StockOut->stockOutSelect($invoice, $_GET["p-id"]);
+    $purchaseItem = $StockOut->stokOutDetailsDataByTwoCol($col1, $invoice, $col2, $_GET["p-id"]);
     foreach($purchaseItem as $item){
         if($item['loosely_count'] > 0){
             $purchaseQty = $item['loosely_count'];

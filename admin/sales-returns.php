@@ -2,6 +2,8 @@
 $page = "sales-returns";
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'salesReturn.class.php';
 require_once CLASS_DIR.'patients.class.php';
 require_once CLASS_DIR.'stockOut.class.php';
@@ -138,10 +140,12 @@ $currentStock  = new CurrentStock();
                                     <tbody id="dataBody">
                                         <?php
 
-                                        $table = "status";  # fetching those data whose STATUS are 
-                                        $data = "1";   #  ACTIVE FROM SALES RETURN TABLE
+                                        $table1 = 'admin_id';
+                                        $table2 = "status";  # fetching those data whose STATUS are 
+                                        $data2 = "1";   #  ACTIVE FROM SALES RETURN TABLE
 
-                                        $returns = $SalesReturn->selectSalesReturn($table, $data);
+                                        $returns = $SalesReturn->selectSalesReturn($table1, $adminId, $table2, $data2);
+                                        // print_r($returns);
 
                                         if (count($returns) > 0) {
                                             foreach ($returns as $item) {
