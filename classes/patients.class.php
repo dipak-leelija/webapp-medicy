@@ -62,22 +62,38 @@ class Patients extends DatabaseConnection{
     }// end updatePatientsVisitingTime function
 
 
-
-
-
-    function patientsDisplay(){
-
-        $select = "SELECT * FROM patient_details";
-        $selectQuery = $this->conn->query($select);
-        while($result = $selectQuery->fetch_array()){
-            $data[]	= $result;
+    
+    function allPatients($admin = ''){
+        $data = array();
+    
+        try {
+            if (empty($admin)) {
+                $query = "SELECT * FROM patient_details ORDER BY id DESC";
+                $res = $this->conn->prepare($query);
+            } else {
+                $query = "SELECT * FROM patient_details WHERE admin_id = ? ORDER BY id DESC";
+                $res = $this->conn->prepare($query);
+                $res->bind_param("s", $admin); // Assuming admin_id is an integer
+            }
+    
+            if ($res->execute()) {
+                $result = $res->get_result();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+            } else {
+                throw new Exception("Query execution failed.");
+            }
+        } catch (Exception $e) {
+            // Handle the error (e.g., log the error or return an error message)
+            error_log("Error in allPatients: " . $e->getMessage());
+            return array("error" => "An error occurred while fetching patient data.");
         }
-        return $data;
-
-    }//end appointmentsDisplay function
-
-
- 
+    
+        return json_encode($data);
+    }
+    
+    
 
 
 
