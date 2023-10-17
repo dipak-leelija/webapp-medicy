@@ -132,7 +132,7 @@ class Patients extends DatabaseConnection{
                         return $data; // No rows found
                     } else {
                         while ($row = $result->fetch_object()) {
-                            $data[] = $row;
+                            $data = $row;
                         }
                         return json_encode($data);
                     }

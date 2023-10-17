@@ -31,12 +31,10 @@ if ($_GET['id']) {
 
     // echo $patientId; exit;
     if ($patientId != 'Cash Sales') {
-        $patientName = $Patients->patientsDisplayByPId($patientId);
-        // print_r($patientName);
-        $patientName = $patientName[0]['name'];
+        $patientName = json_decode($Patients->patientsDisplayByPId($patientId));
+        $patientName = $patientName->name;
     }
 
-    // $patientName = $Patients->patientsDisplayByPId($patientId);
 
     $reffby         = $stockOut[0]['reff_by'];
     $items          = $stockOut[0]['items'];

@@ -49,14 +49,12 @@ foreach ($labBil as $rowlabBil) {
 
 }
 
-$patient = $Patients->patientsDisplayByPId($patientId);
-foreach ($patient as $rowPatient) {
-    $patientName = $rowPatient['name'];
-    $patientPhno = $rowPatient['phno'];
-    $patientAge  = $rowPatient['age'];
-    $patientGender = $rowPatient['gender'];
+$patient = json_decode($Patients->patientsDisplayByPId($patientId));
+$patientName    = $patient->name;
+$patientPhno    = $patient->phno;
+$patientAge     = $patient->age;
+$patientGender  = $patient->gender;
 
-}
 
 if (is_numeric($docId)) {
     $showDoctor = $Doctors->showDoctorById($docId);

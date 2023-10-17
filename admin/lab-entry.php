@@ -34,21 +34,19 @@ if(isset($_POST['bill-proceed'])){
     $patientId = $_POST['patientId'];
     $exist = TRUE;
     if ($exist == TRUE) {
-        $patientsDetails = $Patients->patientsDisplayByPId($patientId);
-        foreach ($patientsDetails as $rowPatients) {
-            $patientName    = $rowPatients['name'];
-            $patientGurdian = $rowPatients['gurdian_name'];
-            $patientEmail   = $rowPatients['email'];
-            $patientPhno    = $rowPatients['phno'];
-            $patientAge     = $rowPatients['age'];
-            $patientGender  = $rowPatients['gender'];
-            $patientAdd1    = $rowPatients['address_1'];
-            $patientAdd2    = $rowPatients['address_2'];
-            $patientPs      = $rowPatients['patient_ps'];
-            $patientDist    = $rowPatients['patient_dist'];
-            $patientPIN     = $rowPatients['patient_pin'];
-            $patientState   = $rowPatients['patient_state'];
-        }
+        $patientsDetails = json_decode($Patients->patientsDisplayByPId($patientId));
+            $patientName    = $rowPatients->name;
+            $patientGurdian = $rowPatients->gurdian_name;
+            $patientEmail   = $rowPatients->email;
+            $patientPhno    = $rowPatients->phno;
+            $patientAge     = $rowPatients->age;
+            $patientGender  = $rowPatients->gender;
+            $patientAdd1    = $rowPatients->address_1;
+            $patientAdd2    = $rowPatients->address_2;
+            $patientPs      = $rowPatients->patient_ps;
+            $patientDist    = $rowPatients->patient_dist;
+            $patientPIN     = $rowPatients->patient_pin;
+            $patientState   = $rowPatients->patient_state;
     }
 }
 

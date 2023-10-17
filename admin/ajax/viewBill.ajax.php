@@ -21,8 +21,8 @@ if (isset($_GET['invoice'])) {
 
     
     if ($item[0]['customer_id'] != 'Cash Sales') {
-        $patientName = $Patients->patientsDisplayByPId($item[0]['customer_id']);
-        $patientName = $patientName[0]['name'];
+        $patientName = json_decode($Patients->patientsDisplayByPId($item[0]['customer_id']));
+        $patientName = $patientName->name;
     }else{
         $patientName = $item[0]['customer_id'];
     }

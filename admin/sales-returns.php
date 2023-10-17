@@ -157,9 +157,9 @@ $currentStock  = new CurrentStock();
                                                 if ($item['patient_id'] == "Cash Sales") {
                                                     $patientName = "Cash Sales";
                                                 } else {
-                                                    $patient = $Patients->patientsDisplayByPId($item['patient_id']);
+                                                    $patient = json_decode($Patients->patientsDisplayByPId($item['patient_id']));
                                                     //print_r($patient); echo "<br><br>";
-                                                    $patientName = $patient[0]['name'];
+                                                    $patientName = $patient->name;
                                                 }
                                                 echo '<tr>
                                                     <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $invoiceId . '</td>

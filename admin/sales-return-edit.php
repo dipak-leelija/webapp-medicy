@@ -47,8 +47,8 @@ $patientId = $salesReturnTableDetails[0]['patient_id'];
 if ($patientId == 'Cash Sales') {
     $patientName = "Cash Sales";
 } else {
-    $patientData = $patientDetails->patientsDisplayByPId($patientId);
-    $patientName = $patientData[0]['name'];
+    $patientData = json_decode($patientDetails->patientsDisplayByPId($patientId));
+    $patientName = $patientData->name;
 }
 
 ?>
