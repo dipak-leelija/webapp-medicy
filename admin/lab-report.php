@@ -26,12 +26,10 @@ if ($labReportShow !== null) {
     // print_r($reportId);
 }
 /// find patient details
-$showPatientData = $Patients->patientsDisplayByPId($patienId);
-foreach ($showPatientData as $data) {
-    $patientName = $data['name'];
-    $patientAge  = $data['age'];
-    $patientSex  = $data['gender'];
-}
+$showPatientData = json_decode($Patients->patientsDisplayByPId($patienId));
+$patientName = $showPatientData->name;
+$patientAge  = $showPatientData->age;
+$patientSex  = $showPatientData->gender;
 
 ///fetch labreportdetails data by id //
 $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
