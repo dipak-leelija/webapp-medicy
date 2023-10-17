@@ -1,21 +1,17 @@
 <?php
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
 
-// echo $_GET['currentStockId'];
-
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
-require_once '../../php_control/patients.class.php';
-require_once '../../php_control/idsgeneration.class.php';
-require_once '../../php_control/currentStock.class.php';
-require_once '../../php_control/stockIn.class.php';
-require_once '../../php_control/stockInDetails.class.php';
-require_once '../../php_control/productsImages.class.php';
-require_once '../../php_control/distributor.class.php';
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/manufacturer.class.php';
-require_once '../../php_control/packagingUnit.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'stockIn.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR.'productsImages.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
 
 //Classes Initilizing
 // $Patients       =   new Patients();

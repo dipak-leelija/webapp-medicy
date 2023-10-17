@@ -1,8 +1,11 @@
 <?php
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/measureOfUnit.class.php';
-require_once '../../php_control/manufacturer.class.php';
-require_once '../../php_control/packagingUnit.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'measureOfUnit.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
 
 
 $productTId = $_GET['id'];

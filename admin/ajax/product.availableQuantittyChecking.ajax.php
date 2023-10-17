@@ -1,8 +1,10 @@
 
 <?php
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
 
-require_once '../../php_control/stockInDetails.class.php';
-require_once '../../php_control/currentStock.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
 
 $StockInDetails = new StockInDetails();
 $currentStock = new CurrentStock();
