@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 
 $page = "pack-unit";
@@ -92,7 +94,7 @@ $PackagingUnits = new PackagingUnits();
                                                                     <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                             </tr>';
-                                                    }
+                                                        }
                                                     ?>
 
                                                 </tbody>
