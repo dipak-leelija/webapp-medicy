@@ -46,11 +46,12 @@ class Manufacturer extends DatabaseConnection{
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("ssssss", $manufacturerName, $manufacturerDsc, $manufShortName, $updatedBy,   $updatedOn, $manufacturerId);
+                $stmt->bind_param("sssssi", $manufacturerName, $manufacturerDsc, $manufShortName, $updatedBy,   $updatedOn, $manufacturerId);
 
-                // Execute the query
+                
                 $updatedQuery = $stmt->execute();
                 $stmt->close();
+
                 return $updatedQuery;
             } else {
                 throw new Exception("Failed to prepare the statement.");
@@ -111,16 +112,27 @@ class Manufacturer extends DatabaseConnection{
 
 
 
-    function deleteManufacturer($manufacturerId){
-
-        // echo $manufacturerId;
-
-        $Delete = "DELETE FROM `manufacturer` WHERE `manufacturer`.`id` = '$manufacturerId'";
-        $DeleteQuey = $this->conn->query($Delete);
-        return $DeleteQuey;
-
-    }//end deleteManufacturer function
-
+    function deleteManufacturer($manufacturerId) {
+        try {
+            $delete = "DELETE FROM `manufacturer` WHERE `id` = ?";
+        
+            $stmt = $this->conn->prepare($delete);
+    
+            if ($stmt) {
+                $stmt->bind_param("i", $manufacturerId);
+    
+                $deleteQuery = $stmt->execute();
+                $stmt->close();
+                return $deleteQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    
 
 
 
