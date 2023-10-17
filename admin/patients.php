@@ -1,9 +1,11 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+$page = "patients";
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once ADM_DIR.'_config/user-details.inc.php';
+require_once CLASS_DIR.'encrypt.inc.php';
 require_once CLASS_DIR.'patients.class.php';
 
 $Patients   = new Patients;
@@ -76,7 +78,7 @@ $allPatients = json_decode($allPatients);
                                             <th>Contact</th>
                                             <th>Visits</th>
                                             <th>Area PIN</th>
-                                            <th>Action</th>
+                                            <th class="text-center">View</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -94,14 +96,10 @@ $allPatients = json_decode($allPatients);
                                             </td>
                                             <td><?= $eachPatient->patient_pin ?></td>
 
-                                            <td><a class="text-primary" data-toggle="modal"
-                                                    data-target=".AppointmntViewAndEdit"
-                                                    onclick="appointmentViewAndEditModal('.$appointmentTableID.')"
-                                                    title="View and Edit"><i class="far fa-edit"></i></a>
-
-                                                <a href="prescription.php?prescription='.$appointmentID.'"
-                                                    class="text-primary" title="View and Print"><i
-                                                        class="fas fa-print"></i></a>
+                                            <td class="text-center">
+                                                <a class="text-primary" href="patient-details.php?patient=<?= url_enc($eachPatient->patient_id) ?>"
+                                                    title="View and Edit"><i class="fas fa-eye"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                         <?php } ?>
