@@ -1,7 +1,4 @@
-<?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<?php
 require_once dirname(dirname(__DIR__)).'/config/constant.php';
 require_once CLASS_DIR.'labBilling.class.php';
 require_once CLASS_DIR.'labBillDetails.class.php';
