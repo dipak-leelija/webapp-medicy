@@ -53,23 +53,13 @@ if (isset($_POST['bill-generate'])) {
     $docId           = $_POST['prefferedDocId'];
     $referedDocName  = $_POST['refferedDocName'];
 
-    echo $docId ;
-    echo $referedDocName;
-
-    // echo $payable.'<br>';
-    // echo $paidAmount.'<br>';
-    // echo $dueAmount.'<br>';
-    // echo $discountOnTotal.'<br>';
-    // echo $status.'<br>';
-    // exit;
-
 
 ##################################################################
 ###################### Patient Visit Update ######################
 ##################################################################
-$showPatient = $Patients->patientsDisplayByPId($patientId);
+$showPatient = json_decode($Patients->patientsDisplayByPId($patientId));
 foreach ($showPatient as $rowPatient) {
-    $labVisited = $rowPatient['lab_visited'];
+    $labVisited = $rowPatient->lab_visited;
     // echo $labVisited;
 }
 
