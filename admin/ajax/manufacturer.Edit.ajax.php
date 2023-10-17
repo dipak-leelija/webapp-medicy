@@ -1,5 +1,9 @@
 <?php
-require_once '../../php_control/manufacturer.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'manufacturer.class.php';
 
 
 $manufacturerId     = $_GET['id'];
@@ -8,7 +12,7 @@ $manufacturerDsc    = $_GET['dsc'];
 
 
 $Manufacturer = new Manufacturer();
-$updateManufacturer = $Manufacturer->updateManufacturer($manufacturerName, $manufacturerDsc, $manufShortName, $manufacturerId);
+$updateManufacturer = $Manufacturer->updateManufacturer($manufacturerName, $manufacturerDsc, $manufShortName, $manufacturerId, $employeeId, NOW);
 
 //check if the data has been updated or not
 if($updateManufacturer){

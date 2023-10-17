@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'distributor.class.php';
 require_once CLASS_DIR.'stockIn.class.php';
 
@@ -13,7 +15,7 @@ $StockIn            = new StockIn();
 
 
 //function calling
-$showStockIn = $StockIn->showStockInDecendingOrder();
+$showStockIn = $StockIn->showStockInDecendingOrder($adminId);
 // print_r($showStockIn);
 // echo "<br><br>";
 if($showStockIn != null){

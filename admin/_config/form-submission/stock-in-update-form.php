@@ -8,19 +8,20 @@
 
 
 <?php
+require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once '../../_config/sessionCheck.php';
-require_once '../../../php_control/stockIn.class.php';
-require_once '../../../php_control/stockInDetails.class.php';
-require_once '../../../php_control/currentStock.class.php';
-require_once '../../../php_control/distributor.class.php';
-require_once '../../../php_control/products.class.php';
-require_once '../../../php_control/manufacturer.class.php';
-require_once '../../../php_control/packagingUnit.class.php';
-require_once '../../../php_control/stockOut.class.php';
-require_once '../../../php_control/stockReturn.class.php';
-require_once '../../../php_control/salesReturn.class.php';
-
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'stockIn.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR.'stockOut.class.php';
+require_once CLASS_DIR.'stockReturn.class.php';
+require_once CLASS_DIR.'salesReturn.class.php';
 
 $StockIn = new StockIn();
 $StockInDetails = new StockInDetails();
@@ -64,7 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pMode              = $paymentMode;
         $totalGst           = $_POST['totalGst'];
         $amount             = $_POST['netAmount'];
-        $addedBy            = $_SESSION['employee_username'];
+        $addedBy            = $employeeId;
+        
 
 
         $BatchNo            = $_POST['batchNo'];
@@ -132,7 +134,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
 
         // ==== check data =====
-        $checkFlag = 0;
         $stockInAttrib = 'id';
         $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttrib, $stockIn_Id);
         // print_r($seleteStockinData);
@@ -144,13 +145,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
+
         //========== updating stock in table data ===============
-        $updateStockIn = $StockIn->updateStockIn($stockIn_Id, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy);
+        $updateStockIn = $StockIn->updateStockIn($stockIn_Id, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $employeeId, NOW);
 
 
         /* updated iitem id array */
         $updatedItemIdsArray = $_POST['purchaseId'];
-        // echo "<br>Updated items id array : "; print_r($updatedItemIdsArray);
 
         /* previous added items details array */
         $PrevStockInDetailsCheck = $StockInDetails->showStockInDetailsByStokId($stockIn_Id);
@@ -160,11 +161,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         foreach ($PrevStockInDetailsCheck as $StokInids) {
             array_push($prevStokInItemIdArray, $StokInids['id']);
         }
-        // echo "<br>previous items id array : "; print_r($prevStokInItemIdArray);
 
         /* checking difference between two array to point deleted items */
         $ItemArrayIdsDiff = array_diff($prevStokInItemIdArray, $updatedItemIdsArray);
-        // echo "<br>Item id array diff : "; print_r($ItemArrayIdsDiff);
 
 
         if ($ItemArrayIdsDiff != '') {
@@ -176,7 +175,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // === **** $deleteItemId => StockInDetailsItemId **** === 
                 $currentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($deleteItemId);
-                // echo "<br>current stock data=========> "; print_r($currentStockData);
                 $currentStockItemId = $currentStockData[0]['id'];
 
                 // 1. first check stock out data, if stock out != item id, delete data else show alert massage
@@ -185,7 +183,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($stockOutDataCheck != null) {
                     $ItemNotDeleteCount = intval($ItemNotDeleteCount) + 1;
-                    // if stock out data is not null, then give a alert that data will not deleted for reson.
                     $stockInDetailsData = $StockInDetails->showStockInDetailsByStokinId($deleteItemId);
 
                     foreach ($stockInDetailsData as $itemDetails) {
@@ -208,7 +205,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 } else {
 
-                    //if stock out data is null then delete.
                     /// deleting from current stock \\\\==============
                     $CurrentStockTable = 'stock_in_details_id';
                     $deleteFromCurrentStock = $CurrentStock->deleteByTabelData($CurrentStockTable, $deleteItemId);
@@ -235,7 +231,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $updatedAmt = floatval($wholeAmount) + floatval($WholeNotDeletedPrice);
 
             /* update stock in data */
-            $updateStockIn = $StockIn->updateStockIn($stockIn_Id, $distributorId, $distributorBill, $updatedItemsCount, $updatedTotalQty, $billDate, $dueDate, $paymentMode, $updatedGstAmt, $updatedAmt, $addedBy);
+            $updateStockIn = $StockIn->updateStockIn($stockIn_Id, $distributorId, $distributorBill, $updatedItemsCount, $updatedTotalQty, $billDate, $dueDate, $paymentMode, $updatedGstAmt, $updatedAmt, $employeeId, NOW);
             ///////////////////////// check this area again \\\\\\\\\\\\\\\\\\\\\\\\\\\\
         }
 
@@ -243,9 +239,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // =========== add of updated stock in details and current stock data ==============
         $count = count($updatedItemIdsArray);
-        // echo "<br><br>count update id array length : $count";
         for ($i = 0; $i < count($updatedItemIdsArray); $i++) {
-            // echo "<br><br>checking value of i : $i";
             if ($updatedItemIdsArray[$i] == '') {
 
                 // add new data
@@ -281,16 +275,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 /* add new data to Stock in Details */
-                $addToStockInDetails = $StockInDetails->addStockInDetails($stockIn_Id, $product_ids[$i], $distributorBill, $batch_no[$i], $mfd_date[$i], $exp_date[$i], $item_weightage[$i], $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_loose_qty, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $baseAmount_perItem[$i], $item_gst[$i], $gstAmount_perItem[$i], $marginAmount_perItem[$i], $billAmount_perItem[$i], $addedBy);
+                $addToStockInDetails = $StockInDetails->addStockInDetails($stockIn_Id, $product_ids[$i], $distributorBill, $batch_no[$i], $mfd_date[$i], $exp_date[$i], $item_weightage[$i], $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_loose_qty, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $baseAmount_perItem[$i], $item_gst[$i], $gstAmount_perItem[$i], $marginAmount_perItem[$i], $billAmount_perItem[$i], $employeeId, NOW, $adminId);
 
-                $currentTimeStamp = date("Y-m-d H:i:s");
-                $newItemStockInDetails = $StockInDetails->stokInDetialsByTimeStamp($product_ids[$i], $distributorBill, $batch_no[$i], $currentTimeStamp);
-                if ($newItemStockInDetails != null) {
-                    $stockInDetailsId = $newItemStockInDetails[0]['id'];
-                }
-
+                $stockInDetailsId = $addToStockInDetails['stockIn_Details_id'];
+                
                 /* add new data to current stock */
-                $addToCurrentStock = $CurrentStock->addCurrentStock($stockInDetailsId, $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $item_loose_qty, $item_loose_price, $item_weightage[$i], $item_unit[$i], $item_total_qty, $item_mrp[$i], $item_ptr[$i], $item_gst[$i], $addedBy);
+                $addToCurrentStock = $CurrentStock->addCurrentStock($stockInDetailsId, $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $item_loose_qty, $item_loose_price, $item_weightage[$i], $item_unit[$i], $item_total_qty, $item_mrp[$i], $item_ptr[$i], $item_gst[$i], $addedBy, NOW, $adminId);
 
             } else {
 
@@ -385,20 +375,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // update on stock out details table
                 if(!empty($checkStocOutDetails)){
                     for($j=0; $j<count($checkStocOutDetails); $j++){
-                        $updateStockOutDetailslData = $StockOut->updateStockOutDetaisOnStockInEdit($itemId, $batch_no[$i], $exp_date[$i], $addedBy);
+                        $updateStockOutDetailslData = $StockOut->updateStockOutDetaisOnStockInEdit($itemId, $batch_no[$i], $exp_date[$i], $employeeId, NOW);
                     }
                 } // END OF STOCK OUT DETAILS UPDATE
-
-                /* UPDATE PHARMACY_INVOCIE DETAILS TABLE */
-                $pharmacyInvoiceTable = 'item_id';
-                $checkPharmacyInvoiceData = $StockOut->invoiceDetialsByTableData($pharmacyInvoiceTable, $itemId);
-                // update pharmacy invoice table
-                if(!empty($checkPharmacyInvoiceData)){
-                    for($k=0; $k<count($checkPharmacyInvoiceData); $k++){
-                        $pharmacyInvoiceUpdate = $StockOut->updatePharmacyDataByStockInEdit($itemId, $batch_no[$i], $exp_date[$i], $addedBy);
-                    }
-                } // END OF STOCK OUT DETAILS UPDATE
-
 
 
                 /* UPDDATE SALES_RETURN_DETAILS */ // check this qarry

@@ -460,7 +460,7 @@ class SalesReturn extends DatabaseConnection
     {
         try {
             // Construct the SQL query
-            $updateSalesReturnDetails = "UPDATE `sales_return_details` SET `batch_no`=?, `exp`=?, `added_by`=? WHERE `item_id`=?";
+            $updateSalesReturnDetails = "UPDATE `sales_return_details` SET `batch_no`=?, `exp`=?, `updated_by`=?, `updated_on`=? WHERE `item_id`=?";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($updateSalesReturnDetails);

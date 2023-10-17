@@ -8,7 +8,7 @@
                         Stock Quantity</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                         <?php
-                            $qStock = $CurrentStock->showCurrentStock();
+                            $qStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
                             // print_r($qStock);
                             $currentQty = 0;
                             foreach ($qStock as $data) {
@@ -36,7 +36,7 @@
                         Total Stock MRP</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                         <?php
-                            $qStock = $CurrentStock->showCurrentStock();
+                            $qStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
                             // print_r($qStock);
                             $currentQty = 0;
                             foreach ($qStock as $data) {

@@ -1,5 +1,9 @@
 <?php
-require_once '../../php_control/distributor.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'distributor.class.php';
 
 
 $distributorId        = $_GET['id'];
@@ -11,7 +15,8 @@ $distributorAreaPIN   = $_GET['pin'];
 $distributorDsc       = $_GET['dsc'];
 
 $Distributor = new Distributor();
-$updateDist = $Distributor->updateDist($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $distributorId);
+
+$updateDist = $Distributor->updateDist($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $employeeId, NOW, $distributorId);
 
 //check if the data has been updated or not
 if($updateDist){

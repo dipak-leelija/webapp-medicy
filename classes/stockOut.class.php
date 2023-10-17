@@ -463,6 +463,76 @@ class StockOut extends DatabaseConnection{
 
 
 
+
+    function stokOutDetailsDataOnTable($table, $data) {
+        try {
+            $stockOutSelect = array();
+    
+            $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table` = ?";
+            
+            $stmt = $this->conn->prepare($selectBill);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $data);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result) {
+                    while ($row = $result->fetch_array()) {
+                        $stockOutSelect[] = $row;
+                    }
+                } else {
+                    echo "Query failed: " . $this->conn->error;
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+    
+            return $stockOutSelect;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return array();
+        }
+    }
+    
+
+
+
+
+
+
+
+    function updateStockOutDetaisOnStockInEdit($itemId, $batchNo, $expDate, $updatedBy, $updatedOn) {
+        try {
+            // Define the SQL query using a prepared statement
+            $updateQuery = "UPDATE `stock_out_details` SET `batch_no`=?, `exp_date`=?, `updated_by`=?, `updated_on`=? WHERE `item_id`=?";
+            $stmt = $this->conn->prepare($updateQuery);
+    
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("ssssi", $batchNo, $expDate, $updatedBy, $updatedOn, $itemId);
+    
+                // Execute the query
+                $updateStockOutDetails = $stmt->execute();
+                $stmt->close();
+                return $updateStockOutDetails;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    
+
+
+
+
     function stockOutDetailsDisplayById($invoiceId){
         $billData = array();
         $selectBill = "SELECT * FROM `stock_out_details` WHERE `invoice_id` = '$invoiceId'";
@@ -495,20 +565,6 @@ class StockOut extends DatabaseConnection{
     
 
 
-    
-    function stokOutDetailsDataOnTable($table, $data){
-        $stockOutSelect = array();
-        $selectBill = "SELECT * FROM `stock_out_details` WHERE `$table` = '$data'";
-        
-        $stockOutDataQuery = $this->conn->query($selectBill);
-
-        while($result = $stockOutDataQuery->fetch_array()){
-            $stockOutSelect[]	= $result;
-        }
-        return $stockOutSelect;
-    }//eof stockOut details by tabel and data
-
-
 
     function stockOutDetailsSelect($invoice, $productId, $batchNo){
 
@@ -538,12 +594,7 @@ class StockOut extends DatabaseConnection{
 
 
     /* stock_out_details table update on stock in edit update */
-    function updateStockOutDetaisOnStockInEdit($itemId, $batchNo, $expDate, $addedBy){
-        $updateQuerry = "UPDATE `stock_out_details` SET `batch_no`='$batchNo',`exp_date`='$expDate',`added_by`='$addedBy' WHERE `item_id`='$itemId'";
-        $updateStockOutDetails = $this->conn->query($updateQuerry);
-        return $updateStockOutDetails;
-        
-    }
+    
 
 
 

@@ -1,5 +1,9 @@
 <?php 
-require_once '../../php_control/manufacturer.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'manufacturer.class.php';
 $Manufacturer = new Manufacturer();
 
 $manufacturerId = $_GET['Id'];
@@ -67,7 +71,7 @@ $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
 
     <!-- Bootstrap core JavaScript-->
     <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
 
     <!-- Bootstrap Js -->
     <script src="../../js/bootstrap-js-5/bootstrap.js"></script>

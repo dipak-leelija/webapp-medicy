@@ -42,15 +42,91 @@ class StockIn extends DatabaseConnection{
         return $data;
     }//eof showStockIn function
 
-    function showStockInDecendingOrder(){
-        $data   = array();
-        $select = "SELECT * FROM stock_in ORDER BY stock_in.id ASC";
+    
+
+
+
+    function showStockInDecendingOrder($adminId) {
+        try {
+            $data = array();
+    
+            // Define the SQL query using a prepared statement
+            $select = "SELECT * FROM stock_in WHERE `admin_id` = ? ORDER BY id DESC";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($select);
+    
+            if ($stmt) {
+                // Bind the parameter
+                $stmt->bind_param("s", $adminId);
+    
+                // Execute the query
+                $stmt->execute();
+    
+                // Get the result
+                $result = $stmt->get_result();
+    
+                // Check if the query was successful
+                if ($result) {
+                    while ($row = $result->fetch_array()) {
+                        $data[] = $row;
+                    }
+                } else {
+                    // Handle the case where the query failed
+                    echo "Query failed: " . $this->conn->error;
+                }
+    
+                // Close the statement
+                $stmt->close();
+            } else {
+                // Handle the case where the statement preparation failed
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+    
+            return $data;
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return array();
+        }
+    }
+    
+
+
+
+
+
+
+    function updateStockIn($stockInid, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $updatedBy, $updatedOn){
+
+        $updateQry = "UPDATE `stock_in` SET `distributor_bill` = '$distributorBill', `distributor_id` = '$distributorId', `items` = '$items', `total_qty` = '$totalQty', `bill_date` = '$billDate', `due_date` = '$dueDate', `payment_mode` = '$paymentMode', `gst` = '$gst', `amount` = '$amount', `updated_by` = '$updatedBy', `updated_on` = '$updatedOn' WHERE `stock_in`.`id` = '$stockInid'";
+        // echo $addStockIn.$this->conn->error;exit;
+        $updateSql = $this->conn->query($updateQry);
+        // echo var_dump($addStockInQuery);exit;
+        return $updateSql;
+    }//eof addProduct function 
+
+
+
+
+
+    
+
+    function stockInByAttributeByTable($table, $data){
+        $ShowData   = array();
+        $select = "SELECT * FROM stock_in WHERE `$table`= '$data'";
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
+            $ShowData[] = $result;
         }
-        return $data;
-    }//eof showStockIn function
+        return $ShowData;
+    }
+
+
+
+
+
 
     function showStockInByTable($table1, $table2, $data1, $data2){
         $data   = array();
@@ -76,15 +152,7 @@ class StockIn extends DatabaseConnection{
 
 
 
-    function stockInByAttributeByTable($table, $data){
-        $ShowData   = array();
-        $select = "SELECT * FROM stock_in WHERE `$table`= '$data'";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $ShowData[] = $result;
-        }
-        return $ShowData;
-    }
+    
 
 
     function showStockInById($distBill){
@@ -153,14 +221,7 @@ class StockIn extends DatabaseConnection{
 
 
 
-    function updateStockIn($stockInid, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $addedBy){
-
-        $updateQry = "UPDATE `stock_in` SET `distributor_bill` = '$distributorBill', `distributor_id` = '$distributorId', `items` = '$items', `total_qty` = '$totalQty', `bill_date` = '$billDate', `due_date` = '$dueDate', `payment_mode` = '$paymentMode', `gst` = '$gst', `amount` = '$amount', `added_by` = '$addedBy' WHERE `stock_in`.`id` = '$stockInid'";
-        // echo $addStockIn.$this->conn->error;exit;
-        $updateSql = $this->conn->query($updateQry);
-        // echo var_dump($addStockInQuery);exit;
-        return $updateSql;
-    }//eof addProduct function 
+    
 
 
     function deleteStock($id){

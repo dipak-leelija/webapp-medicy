@@ -1,18 +1,18 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once '../../php_control/currentStock.class.php';
-require_once '../../php_control/patients.class.php';
-require_once '../../php_control/idsgeneration.class.php';
-require_once '../../php_control/stockIn.class.php';
-require_once '../../php_control/stockInDetails.class.php';
-require_once '../../php_control/productsImages.class.php';
-require_once '../../php_control/distributor.class.php';
-require_once '../../php_control/products.class.php';
-require_once '../../php_control/manufacturer.class.php';
-require_once '../../php_control/packagingUnit.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR.'stockIn.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR.'productsImages.class.php';
+require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
 
 $CurrentStock   = new CurrentStock();
 $Patients       =   new Patients();

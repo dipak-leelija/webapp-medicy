@@ -118,7 +118,7 @@ class CurrentStock extends DatabaseConnection
     
             if ($stmt) {
                 // Bind the parameter
-                $stmt->bind_param("i", $data);
+                $stmt->bind_param("s", $data);
     
                 // Execute the query
                 $stmt->execute();
@@ -155,7 +155,109 @@ class CurrentStock extends DatabaseConnection
 
 
 
+
+    // ================== SHOW CURRENT STOCK BY ADMIN ID ========================
+    function showCurrentStockbyAdminId($adminId) {
+        try {
+            $data = array();
+    
+            // Define the SQL query using a prepared statement
+            $select = "SELECT * FROM `current_stock` WHERE (`qty` > 0 OR `loosely_count` > 0) AND `admin_id` = ? ORDER BY added_on ASC";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($select);
+    
+            if ($stmt) {
+                // Bind the parameter
+                $stmt->bind_param("s", $adminId);
+    
+                // Execute the query
+                $stmt->execute();
+    
+                // Get the result
+                $result = $stmt->get_result();
+    
+                // Check if the query was successful
+                if ($result) {
+                    while ($row = $result->fetch_array()) {
+                        $data[] = $row;
+                    }
+                } else {
+                    // Handle the case where the query failed
+                    echo "Query failed: " . $this->conn->error;
+                }
+    
+                // Close the statement
+                $stmt->close();
+            } else {
+                // Handle the case where the statement preparation failed
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+    
+            return $data;
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return array();
+        }
+    }
+    
+
+
+
+
+
+    function currentStockGroupbyPidOnAdmin($adminId) {
+        try {
+            $data = array();
+    
+            // Define the SQL query using a prepared statement
+            $select = "SELECT * FROM current_stock WHERE `admin_id` = ? GROUP BY `product_id`";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($select);
+    
+            if ($stmt) {
+                // Bind the parameter
+                $stmt->bind_param("s", $adminId);
+    
+                // Execute the query
+                $stmt->execute();
+    
+                // Get the result
+                $result = $stmt->get_result();
+    
+                // Check if the query was successful
+                if ($result) {
+                    while ($row = $result->fetch_array()) {
+                        $data[] = $row;
+                    }
+                } else {
+                    // Handle the case where the query failed
+                    echo "Query failed: " . $this->conn->error;
+                }
+    
+                // Close the statement
+                $stmt->close();
+            } else {
+                // Handle the case where the statement preparation failed
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+    
+            return $data;
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return array();
+        }
+    }
+    
+
 //=====================================================================================================
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     function incrCurrentStock($productId, $quantity)
     {
@@ -197,18 +299,6 @@ class CurrentStock extends DatabaseConnection
     } //eof updateStock
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    function currentStockGroupbyPid()
-    {
-        $data = array();
-        $select = "SELECT * FROM current_stock GROUP BY `current_stock`.`product_id`";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showCurrentStoc function
     //==============================================
 
     function checkStock($productId, $batchNo)
@@ -223,16 +313,7 @@ class CurrentStock extends DatabaseConnection
     }
 
 
-    function showCurrentStock()
-    {
-        $data = array();
-        $select = "SELECT * FROM current_stock WHERE qty > 0 OR loosely_count > 0  ORDER BY added_on ASC";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showCurrentStoc function
+    
 
 
     // use (showCurrentStocByStokInDetialsId [line number 185 in this page]) this function against (showCurrentStockbyStokInId) function for any convenience....

@@ -4,13 +4,65 @@ require_once 'dbconnect.php';
 
 class Manufacturer extends DatabaseConnection{
 
-    function addManufacturer( $manufacturerName, $shortName, $manufacturerDsc){
-        $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`) VALUES ('$manufacturerName', '$shortName', '$manufacturerDsc')";
 
-        $insertQuery    =   $this->conn->query($insert);
+    function addManufacturer($manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $adminId) {
+        try {
+            // Define the SQL query using a prepared statement
+            $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`, `added_by`, `added_on`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?)";
 
-        return $insertQuery;
-    }// end addManufacturer function
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($insert);
+
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("ssssss", $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn,    $adminId);
+
+                // Execute the query
+                $insertQuery = $stmt->execute();
+                $stmt->close();
+                return $insertQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
+
+
+
+    function updateManufacturer($manufacturerName, $manufacturerDsc, $manufacturerId, $manufShortName,  $updatedBy, $updatedOn) {
+        try {
+            // Define the SQL query using a prepared statement
+            $update = "UPDATE `manufacturer` SET `name`=?, `dsc`=?, `short_name`=?, `updated_by`=?,     `updated_on`=? WHERE `id`=?";
+
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($update);
+
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("ssssss", $manufacturerName, $manufacturerDsc, $manufShortName, $updatedBy,   $updatedOn, $manufacturerId);
+
+                // Execute the query
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
 
 
 
@@ -55,13 +107,7 @@ class Manufacturer extends DatabaseConnection{
 
 
 
-    function updateManufacturer($manufacturerName, $manufacturerDsc, $manufacturerId, $manufShortName){
-
-        $update = "UPDATE  `manufacturer` SET `name` = '$manufacturerName', `dsc` = '$manufacturerDsc', `short_name` = '$manufShortName' WHERE `id` = '$manufacturerId'";
-        $updatedQuery = $this->conn->query($update);
-        return $updatedQuery;
-
-    }// end updateManufacturer function
+    
 
 
 
@@ -84,6 +130,3 @@ class Manufacturer extends DatabaseConnection{
     
 
 }//end of LabTypes Class
-
-
-?>
