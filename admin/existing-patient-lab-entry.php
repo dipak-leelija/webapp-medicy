@@ -34,20 +34,20 @@ if(isset($_POST['bill-proceed'])){
     $patientId = $_POST['patientId'];
     $exist = TRUE;
     if ($exist == TRUE) {
-        $patientsDetails = $Patients->patientsDisplayByPId($patientId);
+        $patientsDetails = json_decode($Patients->patientsDisplayByPId($patientId));
         foreach ($patientsDetails as $rowPatients) {
-            $patientName    = $rowPatients['name'];
-            $patientGurdian = $rowPatients['gurdian_name'];
-            $patientEmail   = $rowPatients['email'];
-            $patientPhno    = $rowPatients['phno'];
-            $patientAge     = $rowPatients['age'];
-            $patientGender  = $rowPatients['gender'];
-            $patientAdd1    = $rowPatients['address_1'];
-            $patientAdd2    = $rowPatients['address_2'];
-            $patientPs      = $rowPatients['patient_ps'];
-            $patientDist    = $rowPatients['patient_dist'];
-            $patientPIN     = $rowPatients['patient_pin'];
-            $patientState   = $rowPatients['patient_state'];
+            $patientName    = $rowPatients->name;
+            $patientGurdian = $rowPatients->gurdian_name;
+            $patientEmail   = $rowPatients->email;
+            $patientPhno    = $rowPatients->phno;
+            $patientAge     = $rowPatients->age;
+            $patientGender  = $rowPatients->gender;
+            $patientAdd1    = $rowPatients->address_1;
+            $patientAdd2    = $rowPatients->address_2;
+            $patientPs      = $rowPatients->patient_ps;
+            $patientDist    = $rowPatients->patient_dist;
+            $patientPIN     = $rowPatients->patient_pin;
+            $patientState   = $rowPatients->patient_state;
         }
     }
 }
@@ -114,9 +114,9 @@ if(isset($_POST['bill-proceed'])){
                                 <h4 class="text-center mb-4 mt-0"><b>Select Test Date</b></h4>
                                 <form class="form-card" action="lab-billing.php" method="post">
 
-                                <input type="hidden" name="patientId" value="<?php if($exist){ echo $patientId;}?>"required>
+                                <input type="hidden" name="patientId" value="<?= $exist == TRUE ? $patientId : ''; ?>"required>
 
-                                    <input type="hidden" id="patientName" name="patientName" placeholder="Enter Patient Name" value="<?php if($exist){ echo $patientName;}?>" required>
+                                    <input type="hidden" id="patientName" name="patientName" placeholder="Enter Patient Name" value="<?= $exist == TRUE ? $patientName :''; ?>" required>
 
 
                                     <input type="hidden" id="patientGurdianName" name="patientGurdianName" placeholder="Enter Patient's Gurdian Name" value="<?php if($exist){ echo $patientGurdian;}?>" required>

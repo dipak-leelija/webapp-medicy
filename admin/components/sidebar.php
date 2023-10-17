@@ -4,31 +4,17 @@
 
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-
-
         <!-- Sidebar - Brand -->
-
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-
-            <div class="sidebar-brand-icon rotate-n-15">
-
-                <!-- <i class="fas fa-laugh-wink"></i> -->
-
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= ADM_URL ?>">
+            <div class="sidebar-brand-icon">
+                <div class="text-center"><img class="img-fluid"src="img/logo.png" alt="" ></div>
             </div>
-
-            <div class="text-center"><img class="img-fluid img-thumbnail"src="img/logo.png" alt="" ></div>
-
         </a>
 
-
-
         <!-- Divider -->
-
         <hr class="sidebar-divider my-0">
 
-
-
-        <!-- Nav Item - Dashboard -->
+        <!-- Nav Item For Healthcare -->
 
         <li class="nav-item <?php if($page ==  "dashboard"){ echo "active";} ?>">
             <a class="nav-link" href="<?= ADM_URL ?>">
@@ -40,9 +26,8 @@
         <hr class="sidebar-divider">
 
         <!-- Heading -->
-
         <div class="sidebar-heading">
-            Interface
+            Health Care
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
@@ -74,15 +59,6 @@
 
         </li>
         
-
-        <!-- Doctors in Employees -->
-
-        <li class="nav-item <?php if($page ==  "employees"){ echo "active";} ?>">
-            <a class="nav-link" href="employees.php">
-                <i class="fas fa-users"></i>
-                <span>Employees</span></a>
-        </li>
-
         <!-- Nav Item - Doctors -->
         <li class="nav-item <?php if($page ==  "doctors"){ echo "active";} ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDoctor"
@@ -100,55 +76,22 @@
 
         </li>
 
+        <!-- Nav Item - Employees -->
+        <li class="nav-item <?= $page ==  "patients" ? "active" : '' ?>">
+            <a class="nav-link" href="patients.php">
+                <i class="fas fa-users"></i>
+                <span>Patients</span></a>
+        </li>
 
-
-
-
-
-
-
-
-
-        <!-- Nav Item - Utilities Collapse Menu -->
-
-        <!-- Divider -->
-        <!-- <hr class="sidebar-divider"> -->
-
-        <!-- Heading -->
-        <!-- <div class="sidebar-heading">
-            Addons
-        </div> -->
-
-
-
-        <!-- Nav Item - Pages Collapse Menu -->
-
-        <!-- <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-folder"></i>
-                <span>Pages</span>
-            </a>
-
-            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="login.php">Login</a>
-                    <a class="collapse-item" href="register.php">Register</a>
-                    <a class="collapse-item" href="forgot-password.php">Forgot Password</a>
-                    <div class="collapse-divider"></div>
-                    <h6 class="collapse-header">Other Pages:</h6>
-                    <a class="collapse-item" href="404.php">404 Page</a>
-                    <a class="collapse-item" href="blank.php">Blank Page</a>
-                </div>
-            </div>
-
-        </li> -->
-
+        <!-- Nav Item - Employees -->
+        <li class="nav-item <?php if($page ==  "employees"){ echo "active";} ?>">
+            <a class="nav-link" href="employees.php">
+                <i class="fas fa-users"></i>
+                <span>Employees</span></a>
+        </li>
 
 
         <!-- Divider -->
-
         <hr class="sidebar-divider d-none d-md-block">
 
 

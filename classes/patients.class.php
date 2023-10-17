@@ -62,22 +62,38 @@ class Patients extends DatabaseConnection{
     }// end updatePatientsVisitingTime function
 
 
-
-
-
-    function patientsDisplay(){
-
-        $select = "SELECT * FROM patient_details";
-        $selectQuery = $this->conn->query($select);
-        while($result = $selectQuery->fetch_array()){
-            $data[]	= $result;
+    
+    function allPatients($admin = ''){
+        $data = array();
+    
+        try {
+            if (empty($admin)) {
+                $query = "SELECT * FROM patient_details ORDER BY id DESC";
+                $res = $this->conn->prepare($query);
+            } else {
+                $query = "SELECT * FROM patient_details WHERE admin_id = ? ORDER BY id DESC";
+                $res = $this->conn->prepare($query);
+                $res->bind_param("s", $admin); // Assuming admin_id is an integer
+            }
+    
+            if ($res->execute()) {
+                $result = $res->get_result();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+            } else {
+                throw new Exception("Query execution failed.");
+            }
+        } catch (Exception $e) {
+            // Handle the error (e.g., log the error or return an error message)
+            error_log("Error in allPatients: " . $e->getMessage());
+            return array("error" => "An error occurred while fetching patient data.");
         }
-        return $data;
-
-    }//end appointmentsDisplay function
-
-
- 
+    
+        return json_encode($data);
+    }
+    
+    
 
 
 
@@ -94,22 +110,45 @@ class Patients extends DatabaseConnection{
     }//end appointmentsDisplay function
 
 
-    function patientsDisplayByPId($patientId){
-
-        $selectByPId = "SELECT * FROM patient_details WHERE `patient_details`.`patient_id`= '$patientId'";
-        $selectByPIdQuery = $this->conn->query($selectByPId);
-        $rows = $selectByPIdQuery->num_rows;
-        if($rows == 0 ){
-            return 0;
-        }else{
-            while($result = $selectByPIdQuery->fetch_array()){
-                $data[]	= $result;
+    function patientsDisplayByPId($patientId) {
+        try {
+            // Initialize the data array
+            $data = array();
+    
+            // Prepare the SQL statement with a parameter
+            $sql = "SELECT * FROM patient_details WHERE patient_id = ?";
+            $stmt = $this->conn->prepare($sql);
+    
+            if ($stmt) {
+                // Bind the parameter
+                $stmt->bind_param("s", $patientId);
+    
+                // Execute the statement
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+    
+                    // Check the number of rows returned
+                    if ($result->num_rows === 0) {
+                        return $data; // No rows found
+                    } else {
+                        while ($row = $result->fetch_object()) {
+                            $data[] = $row;
+                        }
+                        return json_encode($data);
+                    }
+                } else {
+                    throw new Exception("Query execution failed.");
+                }
+            } else {
+                throw new Exception("Statement preparation failed.");
             }
-            return $data;
+        } catch (Exception $e) {
+            // Handle the error (e.g., log the error or return an error message)
+            error_log("Error in patientsDisplayByPId: " . $e->getMessage());
+            return false;
         }
-
-    }//end appointmentsDisplay function
-
+    }
+    
 
     
     
