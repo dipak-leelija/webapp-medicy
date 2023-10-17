@@ -9,47 +9,48 @@ require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 
-$billId = $_GET['bill-id'];
-$LabReport = new LabReport();
-$LabBilling = new LabBilling();
-$LabBillDetails = new LabBillDetails();
-$currentDateTime = NOW;
+$billId  = $_GET['bill-id'];
+$LabReport          = new LabReport();
+$LabBilling         = new LabBilling();
+$LabBillDetails     = new LabBillDetails();
 
-$labBillingData = $LabBilling->labBillDisplayById($billId); ///
-$labBillingDetails = $LabBillDetails->billDetailsById($billId); //labBillingDetails
-$showpatient = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
-$billId = $labBillingData[0]['bill_id'];
-$patientId = $labBillingData[0]['patient_id'];
+$labBillingData     = $LabBilling->labBillDisplayById($billId); ///
+$labBillingDetails  = $LabBillDetails->billDetailsById($billId); //labBillingDetails
+$showpatient        = $LabReport->patientDatafetch($labBillingData[0]['patient_id']);
+$billId             = $labBillingData[0]['bill_id'];
+$patientId          = $labBillingData[0]['patient_id'];
 
 
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $labreportId = $LabReport->labReportAdd($billId, $patientId,NOW,$adminId);
-    $reportId = $labreportId['insert_id'];
+    $addedeReport = $LabReport->labReportAdd($billId, $patientId, NOW, $adminId);
+    $reportId       = $addedeReport['insert_id'];
+    $reportStatus   = $addedeReport['result'];
+
     // print_r($reportId);
-    if ($labreportId) {
-        $testValue = $_POST['values'];
+    if ($reportStatus) {
+        $testIds    = $_POST['testId'];
+        $testValue  = $_POST['values'];
         $unitValues = $_POST['unitValues'];
-        $testIds = $_POST['testId'];
 
         foreach ($testValue as $index => $value) {
             $unitValue = $unitValues[$index];
-            // echo gettype($unitValue);
             $testId = $testIds[$index];
-            // print_r($unitValue);
-            // $reportId = $reportIds;
-            $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId,intval($reportId));
-            // print_r($labReportAdd);
+
+            $labReportAdd = $LabReport->labReportDetailsAdd($value, $unitValue, $testId, intval($reportId));
+            if (!$labReportAdd) {
+                $errMsg = "Something is wrong with the value : {$unitValue}";
+                break;
+            }
         }
     }
 
-    // if ($labReportAdd) {
-    //     header('Location: reprint-labreport-generate.php');
-    //     exit();
-    // }
+    if ($labReportAdd) {
+        header('Location: lab-report.php?bill_id='.base64_encode($billId));
+        exit;
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +68,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -103,6 +106,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 booked_btn">
+                            <?php if (isset($errMsg)) {?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <?= $errMsg ?>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <?php } ?>
                             <form method="POST" action="">
                                 <div class="card-body">
                                     <?php
@@ -114,7 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     }
                                     $testDate = $labBillingData[0]['test_date'];
                                     ?>
-                                    <div style="display: flex; justify-content:space-between; align-items: center;flex-wrap: wrap;">
+                                    <div
+                                        style="display: flex; justify-content:space-between; align-items: center;flex-wrap: wrap;">
                                         <h6><b>Patient Name:</b> <?php echo $patientName; ?></h6>
                                         <h6><b>Age:</b> <?php echo $patientAge; ?></h6>
                                         <h6><b>Sex:</b> <?php echo $patientSex; ?></h6>
@@ -168,7 +180,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         ?>
                                     </div>
                                     <div class="d-flex justify-content-end">
-                                        <button id="generateReport" class="btn btn-primary btn-sm">Generate Report</button>
+                                        <button type="submit" id="generateReport"
+                                            class="btn btn-primary btn-sm">Generate Report</button>
                                     </div>
                             </form>
                         </div>

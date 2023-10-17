@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php 
 require_once dirname(dirname(__DIR__)).'/config/constant.php';
 require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
@@ -5,6 +6,12 @@ require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 
+=======
+<?php
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
+>>>>>>> 307031ac70a3889184a4963a98140a78ca828e8c
 $PackagingUnits = new PackagingUnits();
 
 $unitId = $_GET['Id'];
