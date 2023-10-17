@@ -227,7 +227,7 @@ ul.li {
     height: 178px;
     background-color: #fff;
     right: -4px;
-    top: 43px;
+    top: 31.5px;
    
   }
   #wave:after {
@@ -236,9 +236,9 @@ ul.li {
     position: absolute;
     border-radius: 100% 100%;
     width: 60%;
-    height: 84px;
+    height: 85px;
     background-color: rgb(6, 29, 233);
     left: -43px;
-    top: 16px;
+    top: 7px;
     z-index: 1;
   }
