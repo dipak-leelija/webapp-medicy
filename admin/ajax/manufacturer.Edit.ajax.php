@@ -8,11 +8,12 @@ require_once CLASS_DIR.'manufacturer.class.php';
 
 $manufacturerId     = $_GET['id'];
 $manufacturerName   = $_GET['name'];
+$manufShortName     = $_GET['sname'];
 $manufacturerDsc    = $_GET['dsc'];
 
-
 $Manufacturer = new Manufacturer();
-$updateManufacturer = $Manufacturer->updateManufacturer($manufacturerName, $manufacturerDsc, $manufShortName, $manufacturerId, $employeeId, NOW);
+$updateManufacturer = $Manufacturer->updateManufacturer($manufacturerName, $manufacturerDsc, intval($manufacturerId), $manufShortName,  $employeeId, NOW);
+
 
 //check if the data has been updated or not
 if($updateManufacturer){

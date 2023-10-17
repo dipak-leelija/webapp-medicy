@@ -84,7 +84,7 @@ $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
         let manufShortName = document.getElementById("manufShortName").value;
         let description     = document.getElementById("description").value;
 
-        let url = "manufacturer.Edit.ajax.php?id=" + escape(manufacturerId) + "&name=" + escape(manufacturer) + "&name=" + escape(manufShortName) + "&dsc=" + escape(description);
+        let url = `manufacturer.Edit.ajax.php?id=${manufacturerId}&name=${manufacturer}&sname=${manufShortName}&dsc=${description}`;
         
         request.open('GET', url, true);
  
