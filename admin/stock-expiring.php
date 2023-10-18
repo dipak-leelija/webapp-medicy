@@ -11,44 +11,44 @@ $page = 'stock-expiring';
 $CurrentStock = new CurrentStock();
 $products = new Products();
 
-$currentDate = date("m/y");
-$month       = date("m");
-$year        = date("y");
+// $currentDate = date("m/y");
+// $month       = date("m");
+// $year        = date("y");
 // echo gettype($year);
-if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
-    if (isset($_POST['exp-search'])) {
+// if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
+//     if (isset($_POST['exp-search'])) {
 
-        $addMonth  = $_POST['exp'];
+//         $addMonth  = $_POST['exp'];
 
-        $addMonth = $month + $addMonth;
+//         $addMonth = $month + $addMonth;
 
 
-        if ($addMonth > 12) {
-            $totalYear = $addMonth / 12;
-            $getYear = intval($totalYear);
-            $year = $year + $getYear;
-            $getMonth = $totalYear - $getYear;
-            $getMonth = substr(round(round($getMonth, 2), 1), 2);
+//         if ($addMonth > 12) {
+//             $totalYear = $addMonth / 12;
+//             $getYear = intval($totalYear);
+//             $year = $year + $getYear;
+//             $getMonth = $totalYear - $getYear;
+//             $getMonth = substr(round(round($getMonth, 2), 1), 2);
 
-            if ($getMonth < 10) {
-                $getMonth = "0" . $getMonth;
-            }
-            $newMnth = date($getMonth . "/" . $year);
-        } else {
-            $addMonth  = $_POST['exp'];
-            $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
-        }
-    }
-} else {
-    $currentDate = date("m/y");
-    // echo "<br>$currentDate<br><br>";
-    $addMonth  = 2;
-    $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
-}
+//             if ($getMonth < 10) {
+//                 $getMonth = "0" . $getMonth;
+//             }
+//             $newMnth = date($getMonth . "/" . $year);
+//         } else {
+//             $addMonth  = $_POST['exp'];
+//             $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
+//         }
+//     }
+// } else {
+//     $currentDate = date("m/y");
+//     // echo "<br>$currentDate<br><br>";
+//     $addMonth  = 2;
+//     $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
+// }
 
 // echo "<br>$newMnth<br><br>";
-$showExpiry = $CurrentStock->showStockExpiry($newMnth);
-// print_r($showExpiry);
+$showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
+print_r($showExpiry);
 
 ?>
 
