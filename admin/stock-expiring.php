@@ -1,84 +1,34 @@
 <?php
 $page = 'stock-expiring';
 
-require_once dirname(__DIR__) . '/config/constant.php';
-require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR . 'dbconnect.php';
-require_once CLASS_DIR . 'currentStock.class.php';
-require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'products.class.php';
+
 
 $CurrentStock = new CurrentStock();
 $Products = new Products();
 
-$currentMnth = date('m');
-$currenYr = date('Y');
+$thisMonth = date('m');
+$thisYear = date('Y');
 
-$expMnth = intval($currentMnth) + intval(2);
-
-if ($expMnth > 12) {
-    $chkExpMnth = $expMnth % 12;
-    $chkExpYr = $currenYr + 1;
-} else {
-    $chkExpMnth = $expMnth;
-    $chkExpYr = $currenYr;
+$modifiedMnth = intval($thisMonth) + intval(2);
+if($modifiedMnth > 12){
+    $expMnth = $modifiedMnth % 12;
+    $expYr = intval($thisYear) + 1;
+}else{
+    $expMnth = $modifiedMnth;
+    $expYr = $thisYear;
 }
-$chkExp = $chkExpMnth . "/" . $chkExpYr;
 
+$expRange = $expMnth.'/'.$expYr;
 
-$currentStockData = $CurrentStock->stockExpiaringCheck($adminId);
-// print_r($currentStockData);
-
-
-<<<<<<< HEAD
-if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
-    if (isset($_POST['exp-search'])) {
-
-        $srchMnth  = $_POST['exp'];
-=======
-// $currentDate = date("m/y");
-// $month       = date("m");
-// $year        = date("y");
-// echo gettype($year);
-// if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
-//     if (isset($_POST['exp-search'])) {
-
-//         $addMonth  = $_POST['exp'];
-
-//         $addMonth = $month + $addMonth;
-
->>>>>>> d96b78370ea7b9b9ecd7160aea71fc71b240caa4
-
-//         if ($addMonth > 12) {
-//             $totalYear = $addMonth / 12;
-//             $getYear = intval($totalYear);
-//             $year = $year + $getYear;
-//             $getMonth = $totalYear - $getYear;
-//             $getMonth = substr(round(round($getMonth, 2), 1), 2);
-
-//             if ($getMonth < 10) {
-//                 $getMonth = "0" . $getMonth;
-//             }
-//             $newMnth = date($getMonth . "/" . $year);
-//         } else {
-//             $addMonth  = $_POST['exp'];
-//             $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
-//         }
-//     }
-// } else {
-//     $currentDate = date("m/y");
-//     // echo "<br>$currentDate<br><br>";
-//     $addMonth  = 2;
-//     $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
-// }
-
-<<<<<<< HEAD
-=======
-// echo "<br>$newMnth<br><br>";
 $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
-print_r($showExpiry);
+// print_r($showExpiry);
 
->>>>>>> d96b78370ea7b9b9ecd7160aea71fc71b240caa4
 ?>
 
 <!DOCTYPE html>
@@ -96,7 +46,9 @@ print_r($showExpiry);
 
     <!-- Custom fonts for this template-->
     <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet">
@@ -112,7 +64,7 @@ print_r($showExpiry);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT . 'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -122,7 +74,7 @@ print_r($showExpiry);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT . 'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -135,15 +87,19 @@ print_r($showExpiry);
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header pt-3 pb-1 d-flex d-flex justify-content-between">
-                            <p class="m-0 font-weight-bold text-primary">Expiring in <?php echo $chkExp; ?></p>
+                            <p class="m-0 font-weight-bold text-primary">Expiring in <?php echo $expRange; ?></p>
                             <div class="d-flex justify-content-end">
-                                <div class="input-group h-75 w-75">
+                                <!-- <div class="input-group h-75 w-75">
                                     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="input-group h-100 w-100">
-                                        <input type="text" class="form-control h-100" placeholder="Expiring In" aria-label="Expiring In" aria-describedby="exp-search" name="exp" hidden>
+                                        <input type="text" class="form-control h-100" placeholder="Expiring In"
+                                            aria-label="Expiring In" aria-describedby="exp-search" name="exp">
                                         <div class="input-group-append h-100">
+                                            <button style="padding: 0.2rem 0.5rem;"
+                                                class="btn btn-sm btn-outline-secondary" type="submit" name="exp-search"
+                                                id="exp-search"><i class="fas fa-search"></i></button>
                                         </div>
                                     </form>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="card-body">
@@ -151,7 +107,6 @@ print_r($showExpiry);
                                 <table class="table table-sm table-hover" id="dataTable" width="100%" cellspacing="0">
                                     <thead class="bg-primary text-light">
                                         <tr>
-                                            <th hidden>StokIn Detials Id </th>
                                             <th>Product</th>
                                             <th>Batch</th>
                                             <th>Exp. Date</th>
@@ -163,33 +118,31 @@ print_r($showExpiry);
                                     <tbody>
 
                                         <?php
+                                        foreach ($showExpiry as $item) {
+                                            $productId    = $item['product_id'];
+                                            $productDetails = $Products->showProductsById($productId);
+                                            $prodName = $productDetails[0]['name'];
+                                            $batch        = $item['batch_no'];
+                                            $expDate      = $item['exp_date'];
+                                            $qty          = $item['qty'];
+                                            $lCount       = $item['loosely_count'];
 
-                                        foreach ($currentStockData as $expStock) {
-                                            echo "<br>";
-                                            print_r($expStock);
-                                            echo "<br>";
-                                            echo $expStock['product_id'];
-                                            $prodDetails = $Products->showProductsById($expStock['product_id']); ?>
-                                            
+                                            echo "<tr>
+                                                    <td>".$prodName."</td>
+                                                    <td>".$batch."</td>
+                                                    <td>".$expDate."</td>
+                                                    <td>".$qty."</td>
+                                                    <td>".$lCount."</td>
+                                                    <td>
+                                                    <a class='' data-toggle='modal' data-target='#manufacturerModal' onclick='viewSoldList(".$productId.")'><i class='fas fa-edit'></i></a>
 
-                                            <tr>
-                                                <td hidden><?php echo $expStock['stock_in_details_id'] ?></td>
-                                                <td><?php echo $prodDetails[0]['name'] ?></td>
-                                                <td><?php echo $expStock['batch_no'] ?></td>
-                                                <td><?php echo $expStock['exp_date'] ?></td>
-                                                <td><?php echo $expStock['qty'] ?></td>
-                                                <td><?php echo $expStock['loosely_count'] ?></td>
-                                                <td>
-                                                    <a class='' data-toggle='modal' data-target='#productDetialsModal' id="<?php echo $stokInDetialId ?>" onclick='viewProductDetials(this.id)'><i class='fas fa-eye'></i></a>
-
-                                                    <a class='ms-2' id='delete-btn' data-id=" . $productId . " hidden><i class='far fa-trash-alt'></i></a>
+                                                    <a class='ms-2' id='delete-btn' data-id=".$productId."><i class='far fa-trash-alt'></i></a>
                                                 </td>
-                                            </tr>
+                                                </tr>";
 
-                                        <?php
                                         }
-                                        ?>
-
+                                        
+                                       ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -204,7 +157,7 @@ print_r($showExpiry);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT . 'footer-text.php'; ?>
+            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -212,34 +165,6 @@ print_r($showExpiry);
 
     </div>
     <!-- End of Page Wrapper -->
-
-    <!-- View currentStockModal Modal -->
-    <div class="modal fade" id="productDetialsModal" tabindex="-1" role="dialog" aria-labelledby="currentStockModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="productDetialsModalTitle">Expiring Product Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body current-stock-view">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End of View currentStockModal Modal -->
-
-    <script>
-        const viewProductDetials = (stokInDetialId) => {
-            // alert(stokInDetialId);
-            let url = "ajax/stockExpiringDetailsView.ajax.php?stokInDetialId=" + stokInDetialId;
-            $(".current-stock-view").html(
-                '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
-        } // end of productDetialsModal function
-    </script>
-
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">

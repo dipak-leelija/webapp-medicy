@@ -81,9 +81,18 @@ if($_SESSION['ADMIN'] == false){
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
 
+
+                    <!-- CONTENT USER DATA ROW -->
+                    <div class="row">
+                        <!-- Sold By Card  -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <?php require_once PORTAL_COMPONENT."soldby.php"; ?>
+                        </div>
+                    </div>
+
+                    
                     <!-- Content Row -->
                     <div class="row">
-
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
@@ -171,11 +180,6 @@ if($_SESSION['ADMIN'] == false){
 
                     <!-- ================ FIRST ROW ================ -->
                     <div class="row">
-
-                        <!-- Sold By Card  -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT."soldby.php"; ?>
-                        </div>
 
                         <!-- Expiring in 3 Months Card -->
                         <div class="col-xl-3 col-md-6 mb-4">

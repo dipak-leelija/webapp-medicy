@@ -264,7 +264,7 @@ class CurrentStock extends DatabaseConnection
         $currentdate = date('Y-m-d', strtotime($currentdate));
         try {
             $data = array();
-            $select = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD('$currentdate', INTERVAL 3 MONTH) AND admin_id = '$adminId'";
+            $select = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD('$currentdate', INTERVAL 2 MONTH) AND admin_id = '$adminId'";
             
             $query = $this->conn->query($select);
     

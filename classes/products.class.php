@@ -80,7 +80,7 @@ class Products extends DatabaseConnection{
             $selectProduct = "SELECT * FROM products WHERE product_id = ?";
             $stmt = $this->conn->prepare($selectProduct);
     
-            $stmt->bind_param("i", $productId);
+            $stmt->bind_param("s", $productId);
             $stmt->execute();
             $result = $stmt->get_result();
     
