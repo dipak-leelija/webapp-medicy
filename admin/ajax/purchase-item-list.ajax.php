@@ -31,7 +31,7 @@ if (isset($_GET['data'])) {
     // echo $data;
     // echo "<br>",$adminId;
     $col = 'admin_id';
-    $resultData = $Products->selectItemLikeOnCol($data, $col, $adminId);
+    $resultData = $Products->selectItemLike($data);
     // print_r($resultData);
 }
 
