@@ -1,15 +1,15 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ADM_DIR.'_config/user-details.inc.php';
-require_once CLASS_DIR.'appoinments.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'stockOut.class.php';
-require_once CLASS_DIR.'stockIn.class.php';
-require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ADM_DIR . '_config/user-details.inc.php';
+require_once CLASS_DIR . 'appoinments.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'stockOut.class.php';
+require_once CLASS_DIR . 'stockIn.class.php';
+require_once CLASS_DIR . 'stockInDetails.class.php';
 
 $page = "dashboard";
 
@@ -21,9 +21,9 @@ $StockInDetails    = new StockInDetails();
 
 $totalAppointments = $appoinments->appointmentsDisplay();
 
-if($_SESSION['ADMIN'] == false){
+if ($_SESSION['ADMIN'] == false) {
     echo "<br>ADMIN ID : $adminId<br>";
-}else{
+} else {
     echo "<br>ADMIN LOGIN - ADMIN ID : $adminId<br>";
 }
 
@@ -59,7 +59,7 @@ if($_SESSION['ADMIN'] == false){
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT."sidebar.php"; ?>
+        <?php include PORTAL_COMPONENT . "sidebar.php"; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -69,7 +69,7 @@ if($_SESSION['ADMIN'] == false){
             <div id="content">
 
                 <!-- Topbar-->
-                <?php include PORTAL_COMPONENT."topbar.php"; ?>
+                <?php include PORTAL_COMPONENT . "topbar.php"; ?>
                 <!-- End of Tobbar-->
 
                 <!-- Begin Page Content -->
@@ -86,11 +86,11 @@ if($_SESSION['ADMIN'] == false){
                     <div class="row">
                         <!-- Sold By Card  -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT."soldby.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "soldby.php"; ?>
                         </div>
                     </div>
 
-                    
+
                     <!-- Content Row -->
                     <div class="row">
                         <!-- Earnings (Monthly) Card Example -->
@@ -178,22 +178,31 @@ if($_SESSION['ADMIN'] == false){
                     </div>
 
 
-                    <!-- ================ FIRST ROW ================ -->
+                    <!-- ================ THIRD ROW ================ -->
                     <div class="row">
 
                         <!-- Expiring in 3 Months Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT."expiring.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "expiring.php"; ?>
                         </div>
 
                         <!----------- Sales of the day card ----------->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT."salesoftheday.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "salesoftheday.php"; ?>
                         </div>
 
                         <!----------- Purchase today card ----------->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT."purchasedToday.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "purchasedToday.php"; ?>
+                        </div>
+
+                    </div>
+
+                    <!-- ================ FORTH ROW ROW ================ -->
+                    <div class="row">
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <?php require_once PORTAL_COMPONENT . "mostsolditems.php"; ?>
                         </div>
 
                     </div>
@@ -248,14 +257,14 @@ if($_SESSION['ADMIN'] == false){
                         </div>
                         <div class="col-xl-3 col-md-6">
                             <!------------- NEEDS TO COLLECT PAYMENTS -------------->
-                            <?php require_once PORTAL_COMPONENT."needstocollect.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "needstocollect.php"; ?>
                             <!------------- END NEEDS TO COLLECT PAYMENTS -------------->
 
                         </div>
 
                         <div class="col-xl-3 col-md-6">
                             <!------------- NEEDS TO PAY  -------------->
-                            <?php require_once PORTAL_COMPONENT."needtopay.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "needtopay.php"; ?>
                             <!------------- END NEEDS TO PAY  -------------->
                         </div>
 
@@ -266,11 +275,11 @@ if($_SESSION['ADMIN'] == false){
                     <div class="row">
                         <div class="col-xl-3 col-md-6">
                             <!-- Current Stock Quantity & MRP  -->
-                            <?php require_once PORTAL_COMPONENT."stock-mrp-ptr.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "stock-mrp-ptr.php"; ?>
                         </div>
                         <div class="col-xl-9 col-md-6">
                             <!------------- Stock Summary -------------->
-                            <?php require_once PORTAL_COMPONENT."stock-summary.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "stock-summary.php"; ?>
                             <!------------- end Stock Summary -------------->
 
                         </div>
@@ -283,7 +292,7 @@ if($_SESSION['ADMIN'] == false){
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include PORTAL_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

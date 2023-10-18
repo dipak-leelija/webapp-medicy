@@ -1,5 +1,4 @@
 <?php
-
     require_once dirname(dirname(__DIR__)).'/config/constant.php';
 
     $includePath = get_include_path();
@@ -67,32 +66,23 @@
 
     const chkDays = (id) => {
         var xmlhttp = new XMLHttpRequest();
-        // alert(id);
-
         if (id == 'lst7') {
-            // alert(id);
             lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstWeek=' + id;
-            // alert(unitUrl);
             xmlhttp.open("GET", lastThirtyDaysUrl, false);
             xmlhttp.send(null);
-            // console.log(xmlhttp.responseText);
             document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
             document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
         }
 
         if (id == 'lst30') {
-            // alert(id);
             lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstMnth=' + id;
-            // alert(unitUrl);
             xmlhttp.open("GET", lastThirtyDaysUrl, false);
             xmlhttp.send(null);
-            // console.log(xmlhttp.responseText);
             document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
             document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
         }
 
         if (id == 'lstdt') {
-            // alert(id);
             const dateInput = document.getElementById('datePickerDiv');
             dateInput.style.display = 'block';
             dateInput.focus();
