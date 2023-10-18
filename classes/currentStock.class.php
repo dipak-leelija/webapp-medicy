@@ -288,6 +288,19 @@ class CurrentStock extends DatabaseConnection
     }
 
 
+
+    function stockExpiaringCheck ($date, $adminId){
+        $data = array();
+
+        $expCheckQarry = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD($date, INTERVAL 2 MONTH) AND admin_id = '$adminId'";
+
+        $res = $this->conn->query($expCheckQarry);
+        while ($result = $res->fetch_array()) {
+            $data[] = $result;
+        }
+
+        return $data;
+    }
 //=====================================================================================================
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 

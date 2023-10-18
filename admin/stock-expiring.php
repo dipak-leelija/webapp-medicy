@@ -1,27 +1,39 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'products.class.php';
-
 $page = 'stock-expiring';
 
-$CurrentStock = new CurrentStock();
-$products = new Products();
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-$currentDate = date("m/y");
-$month       = date("m");
-$year        = date("y");
-// echo gettype($year);
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'products.class.php';
+
+$CurrentStock = new CurrentStock();
+$Products = new Products();
+
+$currentMnth = date('m');
+$currenYr = date('Y');
+
+$expMnth = intval($currentMnth) + intval(2);
+
+if ($expMnth > 12) {
+    $chkExpMnth = $expMnth % 12;
+    $chkExpYr = $currenYr + 1;
+} else {
+    $chkExpMnth = $expMnth;
+    $chkExpYr = $currenYr;
+}
+$chkExp = $chkExpMnth . "/" . $chkExpYr;
+
+
+$currentStockData = $CurrentStock->stockExpiaringCheck($adminId);
+// print_r($currentStockData);
+
+
 if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     if (isset($_POST['exp-search'])) {
 
-        $addMonth  = $_POST['exp'];
-
-        $addMonth = $month + $addMonth;
-
+        $srchMnth  = $_POST['exp'];
 
         if ($addMonth > 12) {
             $totalYear = $addMonth / 12;
@@ -45,10 +57,6 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     $addMonth  = 2;
     $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
 }
-
-// echo "<br>$newMnth<br><br>";
-$showExpiry = $CurrentStock->showStockExpiry($newMnth);
-// print_r($showExpiry);
 
 ?>
 
@@ -83,7 +91,7 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include PORTAL_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -93,7 +101,7 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include PORTAL_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -106,7 +114,7 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header pt-3 pb-1 d-flex d-flex justify-content-between">
-                            <p class="m-0 font-weight-bold text-primary">Expiring in <?php echo $newMnth; ?></p>
+                            <p class="m-0 font-weight-bold text-primary">Expiring in <?php echo $chkExp; ?></p>
                             <div class="d-flex justify-content-end">
                                 <div class="input-group h-75 w-75">
                                     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="input-group h-100 w-100">
@@ -134,65 +142,30 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
                                     <tbody>
 
                                         <?php
-                                        foreach ($showExpiry as $item) {
-                                            $expDate        = $item['exp_date'];
-                                            
-                                            $expiaryDt = str_replace("/", "", $expDate);
-                                            $expiaryDtMnth = intval(substr($expiaryDt, 0, 2));
-                                            $expiaryDtYr = substr($expiaryDt, 2);
-                                            
-                                            $today = date("m/y");
-                                            $chkMnth = substr($today, 0, 2);
 
-                                            $chekExpMnth = substr($today, 0, 2) + 2;
+                                        foreach ($currentStockData as $expStock) {
+                                            echo "<br>";
+                                            print_r($expStock);
+                                            echo "<br>";
+                                            echo $expStock['product_id'];
+                                            $prodDetails = $Products->showProductsById($expStock['product_id']); ?>
                                             
-                                            $chekExpMnth = $chekExpMnth % 12;
-                                            
-                                            if ($chkMnth == 11 || $chkMnth == 12) {
-                                                $chkYr = date("Y") + 1;
-                                            } else {
-                                                $chkYr = date("Y");
-                                            }
-                                            // echo $chkYr;                            
-                                            if ($expiaryDtMnth >= $chkMnth) {   
-                                                if ($expiaryDtMnth <= $chekExpMnth) {
-                                                    if ($expiaryDtYr == $chkYr) {
-                                                        // echo "<br>$expDate";
-                                                        // echo "<br>$productId";
-                                                        // echo "<br>Expiary Date Month : $expiaryDtMnth";
-                                                        // echo "<br>Expiary Date Year : $expiaryDtYr";
-                                                        // echo "<br>Chk exp mnth : $chekExpMnth";
-                                                        // echo "<br>Chk exp yr : $chkYr";
-                                                        
-                                                        $stokInDetialId = $item['stock_in_details_id'];
-                                                        $productId      = $item['product_id'];
-                                                      
-                                                        $productData = $products->showProductsById($productId);
-                                                        foreach ($productData as $data) {
-                                                            $prodName = $data['name'];
-                                                        }
 
-                                                        $batch          = $item['batch_no'];
-                                                        $qty            = $item['qty'];
-                                                        $lCount         = $item['loosely_count'];
-
-                                                        echo "<tr>
-                                                    <td hidden>" . $stokInDetialId . "</td>
-                                                    <td>" . $prodName . "</td>
-                                                    <td>" . $batch . "</td>
-                                                    <td>" . $expDate . "</td>
-                                                    <td>" . $qty . "</td>
-                                                    <td>" . $lCount . "</td>
-                                                    <td>
-                                                    <a class='' data-toggle='modal' data-target='#productDetialsModal'
-                                                    id=" . $stokInDetialId . " onclick='viewProductDetials(this.id)'><i class='fas fa-eye'></i></a>
+                                            <tr>
+                                                <td hidden><?php echo $expStock['stock_in_details_id'] ?></td>
+                                                <td><?php echo $prodDetails[0]['name'] ?></td>
+                                                <td><?php echo $expStock['batch_no'] ?></td>
+                                                <td><?php echo $expStock['exp_date'] ?></td>
+                                                <td><?php echo $expStock['qty'] ?></td>
+                                                <td><?php echo $expStock['loosely_count'] ?></td>
+                                                <td>
+                                                    <a class='' data-toggle='modal' data-target='#productDetialsModal' id="<?php echo $stokInDetialId ?>" onclick='viewProductDetials(this.id)'><i class='fas fa-eye'></i></a>
 
                                                     <a class='ms-2' id='delete-btn' data-id=" . $productId . " hidden><i class='far fa-trash-alt'></i></a>
                                                 </td>
-                                                </tr>";
-                                                    }
-                                                }
-                                            }
+                                            </tr>
+
+                                        <?php
                                         }
                                         ?>
 
@@ -210,7 +183,7 @@ $showExpiry = $CurrentStock->showStockExpiry($newMnth);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include_once PORTAL_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

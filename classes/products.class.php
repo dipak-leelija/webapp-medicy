@@ -74,20 +74,38 @@ class Products extends DatabaseConnection{
 
 
 
-    function showProductsById($productId){
-        //echo $productId;
-        $slectProduct   	 = "SELECT * FROM products WHERE `products`.`product_id` = '$productId'";
-        $slectProductQuery   = $this->conn->query($slectProduct);
-        $rows                = $slectProductQuery->num_rows;
-        if ($rows == 0) {
-            return 0;
-        }else{
-            while ($result  = $slectProductQuery->fetch_array() ) {
-                $data[] = $result;
+    
+    function showProductsById($productId) {
+        try {
+            $selectProduct = "SELECT * FROM products WHERE product_id = ?";
+            $stmt = $this->conn->prepare($selectProduct);
+    
+            $stmt->bind_param("i", $productId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows == 0) {
+                return 0; 
+            } else {
+                $data = array();
+    
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+    
+                $stmt->close();
+    
+                return $data;
             }
-            return $data;
+        } catch (Exception $e) {
+            return null;
         }
-    }//eof showProductsById function
+    }
+    
+
+
+
+
 
 
     function showProductsByTable($table, $data){
