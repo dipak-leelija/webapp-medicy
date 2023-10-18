@@ -255,6 +255,39 @@ class CurrentStock extends DatabaseConnection
     }
     
 
+
+
+
+
+    // =============== stock exp check from current stock ====================
+    function showStockExpiry($expMnthLimit, $adminId){
+        try {
+            $data = array();
+            $select = "SELECT * FROM `current_stock` WHERE `exp_date` <= ? AND `admin_id` = ?";
+            $stmt = $this->conn->prepare($select);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $expMnthLimit, $adminId);
+
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                $stmt->close();
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+
+            return $data;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return array();
+        }
+    }
+
+
 //=====================================================================================================
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -319,16 +352,7 @@ class CurrentStock extends DatabaseConnection
     // use (showCurrentStocByStokInDetialsId [line number 185 in this page]) this function against (showCurrentStockbyStokInId) function for any convenience....
 
 
-    function showStockExpiry($newMnth)
-    {
-        $data = array();
-        $select = "SELECT * FROM `current_stock`  WHERE `exp_date` <= '$newMnth' ORDER BY `exp_date` ASC";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showCurrentStoc function
+    
 
     function showCurrentStocByPId($productId)
     {

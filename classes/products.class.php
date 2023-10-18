@@ -147,6 +147,47 @@ class Products extends DatabaseConnection{
     
     
     //==================== product availibity on stock in =========================
+    function selectItemLike($data){
+        $resultData = array();
+        
+        try {
+            // Prepare the SQL statement with placeholders
+            $searchSql = "SELECT * FROM `products` WHERE `products`.`name` LIKE ?";
+            $stmt = $this->conn->prepare($searchSql);
+
+            if ($stmt) {
+                // Bind the parameters and execute the query
+                $searchPattern = "%" . $data . "%";
+                $stmt->bind_param("s", $searchPattern);
+                $stmt->execute();
+
+                // Get the results
+                $result = $stmt->get_result();
+
+                while ($row = $result->fetch_assoc()) {
+                    $resultData[] = $row;
+                }
+
+                // Close the statement
+                $stmt->close();
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle the exception (e.g., log the error, return an error message, etc.)
+            // You can customize this part to suit your needs.
+            echo "Error: " . $e->getMessage();
+        }
+
+        return $resultData;
+    }
+
+
+
+
+
+
+    //==================== product availibity on stock in based on admin id ======================
     function selectItemLikeOnCol($data, $col, $colData){
         $resultData = array();
         
