@@ -30,34 +30,55 @@ $currentStockData = $CurrentStock->stockExpiaringCheck($adminId);
 // print_r($currentStockData);
 
 
+<<<<<<< HEAD
 if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
     if (isset($_POST['exp-search'])) {
 
         $srchMnth  = $_POST['exp'];
+=======
+// $currentDate = date("m/y");
+// $month       = date("m");
+// $year        = date("y");
+// echo gettype($year);
+// if (($_SERVER['REQUEST_METHOD'] === 'POST')) {
+//     if (isset($_POST['exp-search'])) {
 
-        if ($addMonth > 12) {
-            $totalYear = $addMonth / 12;
-            $getYear = intval($totalYear);
-            $year = $year + $getYear;
-            $getMonth = $totalYear - $getYear;
-            $getMonth = substr(round(round($getMonth, 2), 1), 2);
+//         $addMonth  = $_POST['exp'];
 
-            if ($getMonth < 10) {
-                $getMonth = "0" . $getMonth;
-            }
-            $newMnth = date($getMonth . "/" . $year);
-        } else {
-            $addMonth  = $_POST['exp'];
-            $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
-        }
-    }
-} else {
-    $currentDate = date("m/y");
-    // echo "<br>$currentDate<br><br>";
-    $addMonth  = 2;
-    $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
-}
+//         $addMonth = $month + $addMonth;
 
+>>>>>>> d96b78370ea7b9b9ecd7160aea71fc71b240caa4
+
+//         if ($addMonth > 12) {
+//             $totalYear = $addMonth / 12;
+//             $getYear = intval($totalYear);
+//             $year = $year + $getYear;
+//             $getMonth = $totalYear - $getYear;
+//             $getMonth = substr(round(round($getMonth, 2), 1), 2);
+
+//             if ($getMonth < 10) {
+//                 $getMonth = "0" . $getMonth;
+//             }
+//             $newMnth = date($getMonth . "/" . $year);
+//         } else {
+//             $addMonth  = $_POST['exp'];
+//             $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
+//         }
+//     }
+// } else {
+//     $currentDate = date("m/y");
+//     // echo "<br>$currentDate<br><br>";
+//     $addMonth  = 2;
+//     $newMnth = date("m/y", strtotime("+" . $addMonth . " months"));
+// }
+
+<<<<<<< HEAD
+=======
+// echo "<br>$newMnth<br><br>";
+$showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
+print_r($showExpiry);
+
+>>>>>>> d96b78370ea7b9b9ecd7160aea71fc71b240caa4
 ?>
 
 <!DOCTYPE html>

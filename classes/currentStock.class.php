@@ -255,37 +255,30 @@ class CurrentStock extends DatabaseConnection
     }
     
 
+// echo "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD($currentdate, INTERVAL 3 MONTH) AND admin_id = $adminId";
+                // exit;
 
 
 
-
-    // =============== stock exp check from current stock ====================
-    function showStockExpiry($expMnthLimit, $adminId){
+    function showStockExpiry($currentdate, $adminId) {
+        $currentdate = date('Y-m-d', strtotime($currentdate));
         try {
             $data = array();
-            $select = "SELECT * FROM `current_stock` WHERE `exp_date` <= ? AND `admin_id` = ?";
-            $stmt = $this->conn->prepare($select);
-
-            if ($stmt) {
-                $stmt->bind_param("ss", $expMnthLimit, $adminId);
-
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                while ($row = $result->fetch_assoc()) {
+            $select = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD('$currentdate', INTERVAL 3 MONTH) AND admin_id = '$adminId'";
+            
+            $query = $this->conn->query($select);
+    
+                while ($row = $query->fetch_assoc()) {
                     $data[] = $row;
                 }
-                $stmt->close();
-            } else {
-                throw new Exception("Failed to prepare the statement.");
-            }
-
+    
             return $data;
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
             return array();
         }
     }
+    
 
 
 
