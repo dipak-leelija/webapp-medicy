@@ -39,47 +39,24 @@ if (isset($_POST['update']) ==  true) {
 
 }
 
-//Body Texts
-if(isset($_POST['desc-update']) == true){
-    $WhatWeDoText        = $_POST['body-main-text'];
-    $appointmentBookText = $_POST['book-appointment-text'];
-    $subscribeText       = $_POST['subscriber-text'];
-    $footerText          = $_POST['footer-text'];
-    // echo $footerText;
-    // exit;
-
-    // Add Funtion to Update Texts
-    $UpdateHealthcareText = $helthCare->updateHealthCareDesc($WhatWeDoText, $appointmentBookText, $subscribeText, $footerText);
-    if($UpdateHealthcareText){
-        echo "<script>alert('Updated!')</script>";
-    }else{
-        echo "<script>alert('Updation Failed!')</script>";
-
-    }
-
-}
 
 
 
 //Fetching Healt Care Details
 $showHelthCare = $helthCare->showhelthCare();
 foreach($showHelthCare as $helthCare){
-    $helthCareLogo = $helthCare['logo'];
-    $helthCareId = $helthCare['hospital_id'];
-    $helthCareName = $helthCare['hospital_name'];
-    $helthCareAddress1 = $helthCare['address_1'];
-    $helthCareAddress2 = $helthCare['address_2'];
-    $helthCareCity = $helthCare['city'];
-    $helthCareDist = $helthCare['dist'];
-    $helthCarePin = $helthCare['pin'];
-    $helthCareState = $helthCare['health_care_state'];
-    $helthCareEmail = $helthCare['hospital_email'];
-    $helthCarePhno = $helthCare['hospital_phno'];
-    $helthCareApntbkNo = $helthCare['appointment_help_line'];
-    $helthCareBodyMainText = $helthCare['main_desc'];
-    $helthCareFooterText = $helthCare['footer_desc'];
-    $helthCareBkApntText = $helthCare['book_appointment_text'];
-    $helthCareSubscribeText = $helthCare['subscribe_text'];
+    $helthCareLogo      = $helthCare['logo'];
+    $helthCareId        = $helthCare['hospital_id'];
+    $helthCareName      = $helthCare['hospital_name'];
+    $helthCareAddress1  = $helthCare['address_1'];
+    $helthCareAddress2  = $helthCare['address_2'];
+    $helthCareCity      = $helthCare['city'];
+    $helthCareDist      = $helthCare['dist'];
+    $helthCarePin       = $helthCare['pin'];
+    $helthCareState     = $helthCare['health_care_state'];
+    $helthCareEmail     = $helthCare['hospital_email'];
+    $helthCarePhno      = $helthCare['hospital_phno'];
+    $helthCareApntbkNo  = $helthCare['appointment_help_line'];
 
 }
 
@@ -226,93 +203,6 @@ foreach($showHelthCare as $helthCare){
                         </div>
                     </div>
                     <!-- New Section End -->
-
-
-                    <!-- Body Texts Edit Section -->
-                    <!-- <div class="col">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Front Action Cards</h6>
-                            </div>
-                            <div class="card-body">
-                                <form action="helth-care.php" method="post">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="body-main-text">What We Do:</label>
-                                                <textarea name="body-main-text" id="body-main-text" rows="7" class="form-control" maxlength="400"></textarea>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="book-appointment-text">Book Appointment Text:</label>
-                                                <textarea name="book-appointment-text" id="book-appointment-text" rows="7" class="form-control" maxlength="255"></textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="book-appointment-text">Book Appointment Text:</label>
-                                                <textarea name="book-appointment-text" id="book-appointment-text" rows="7" class="form-control" maxlength="255"></textarea>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                    
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                                        <button class="btn btn-success me-md-2" name="desc-update" type="submit">Update</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- Body Texts Edit Section End-->
-
-
-                    <!-- Body Texts Edit Section -->
-                    <div class="col">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Edit Clinic Service</h6>
-                            </div>
-                            <div class="card-body">
-                                <form action="helth-care.php" method="post">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="body-main-text">What We Do:</label>
-                                                <textarea name="body-main-text" id="body-main-text" cols="30" rows="7" class="form-control" maxlength="400"><?php echo $helthCareBodyMainText; ?></textarea>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="footer-text">Footer Text:</label>
-                                                <textarea name="footer-text" id="footer-text" cols="30" rows="3" class="form-control" maxlength="150"><?php echo $helthCareFooterText; ?></textarea>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="book-appointment-text">Book Appointment Text:</label>
-                                                <textarea name="book-appointment-text" id="book-appointment-text" cols="30" rows="7" class="form-control" maxlength="255"><?php echo $helthCareBkApntText; ?></textarea>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="subscriber-text">Subscribe Text:</label>
-                                                <textarea name="subscriber-text" id="subscriber-text" cols="30" rows="3" class="form-control" maxlength="70"><?php echo $helthCareSubscribeText; ?></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                                        <button class="btn btn-success me-md-2" name="desc-update" type="submit">Update</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Body Texts Edit Section End-->
 
                 </div>
                 <!-- /.container-fluid -->
