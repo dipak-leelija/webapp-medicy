@@ -15,8 +15,11 @@ $billId = base64_decode($_GET['bill_id']);
 $LabReport     = new LabReport();
 $Patients      = new Patients();
 $LabBilling    = new LabBilling();
-$labBillingData      = $LabBilling->labBillDisplayById($billId); /// geting for test_date
-$labReportShow       = $LabReport->labReportShow($billId);
+$LabBillDetails     = new LabBillDetails();
+$labBillingData   = $LabBilling->labBillDisplayById($billId); /// geting for test_date
+$labReportShow    = $LabReport->labReportShow($billId);
+$labBillingDetails      = $LabBillDetails->billDetailsById($billId);
+// print_r($labReportDetailbyId);
 
 ///find patient Id //
 $labReportShow = json_decode($labReportShow);
@@ -33,10 +36,14 @@ $patientSex  = $showPatientData->gender;
 
 ///fetch labreportdetails data by id //
 $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
+
 $labReportDetailbyId = json_decode($labReportDetailbyId);
-// print_r($labReportDetailbyId);
-if ($labReportDetailbyId !== null) {
-}
+
+// // print_r($labReportDetailbyId);
+// if ($labReportDetailbyId !== null) {
+//     $testValue = $labReportDetailbyId->test_value;
+//     print_r($testValue);
+// }
 
 
 // Fetching Hospital Info
@@ -66,163 +73,120 @@ foreach ($hospitalShow as $hospitalDetails) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="../css/lab-report.css">
+    <!-- <link rel="stylesheet" href="../css/prescription.css"> -->
     <title>Prescription</title>
 </head>
 
 <body>
 
-<div id="wave"></div>
-    <div style="box-shadow:none" class="card">
-        <div class="hospitslDetails mb-0">
-            <div class="row">
-                <div class="col-1 headerHospitalLogo">
-                    <img class="mt-4" src="../images/logo-p.jpg" alt="XYZ Hospital">
-                </div>
-                <div class="col-4 headerHospitalDetails">
-                    <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?php echo $hospitalName ?></h1>
-                    <p class="text-start  me-3">
-                        <small><?php echo $address1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small>
-                    </p>
-                </div>
-                <div class="col-2 header-doc-img"> <img src="../images/medicy-doctor-logo.png" alt=""> </div>
+    <div style="height:100vh;">
+        <div id="wave"></div>
 
+        <div style="margin-right: 35px; margin-top: -26px; color:#183697;">
+            <h1 class="text-start fw-bold mb-2 mt-4 me-3 d-flex justify-content-end"><?php echo $hospitalName ?></h1>
+        </div>
+        <div class="dname" style="display:flex;justify-content: flex-end;align-items: row-reverse;">
+            <div style="margin-right: 52px; background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(24,54,151,1) 28%); padding:2px; height: 28px; width:347px;">
+                <p class="" style="margin-left: 142px;color:#fff">DIAGNOSTIC & POLYCLINIC</p>
             </div>
-
         </div>
-        <hr class="mb-0 mt-0" style="color: #00f;">
-        <div>
-
+        <div style="display:flex;justify-content:center;align-items:center;color:#183697; margin-top:8px">
+            <div>
+                <p class="m-0" style="margin:0px 5px 0px 5px;padding: 0px 5px 0px 5px;">
+                    <b>Daulatabad, Murshidabad,(W.B.),Pin -742302, Mobile:8695494415/9064390598,Website:www.medicy.in</b>
+                </p>
+            </div>
         </div>
-        <!-- <hr> -->
-        <!-- <div class="space">
-        </div> -->
-        <div class="row space mt-1">
-            <div class="col-3 border-end " style="border-color: #0000ff59 !important;">
-                <small>
+        <!-- <img src="../images/heartbit.png" alt="" class="my-image"> -->
+        <hr class="m-0" style="color: #043277; height:2px; z-index: index -1;">
+        <br>
+        <div style="display: flex; justify-content:space-around; align-items:flex-start;">
+            <div>
+                <p class="m-0"><b>Patient's Name :</b> <?php echo $patientName; ?></p>
+                <p class="m-0"><b>Patient id :</b> <?php echo $patienId ?></p>
+                <p class="m-0"><b>Place of collection :</b> LAB </p>
+                <p class="m-0"><b> Ref. by :</b> DR. SELF </p>
+            </div>
+            <div>
+                <p class="m-0"><b>Age :</b> <?php echo $patientAge; ?> <b>Sex :</b> <?php echo $patientSex; ?></p>
 
-                    P-ID: <?php echo $patienId ?>
+                <p class="m-0"><b>Collection Date :</b> <?php $testDate = $labBillingData[0]['test_date'];
+                                                        $date = date_create($testDate);
+                                                        echo date_format($date, "d-m-Y"); ?></p>
+                <p class="m-0"><b>Reporting Date :</b> <?php $testDate = $labBillingData[0]['test_date'];
+                                                        $date = date_create($testDate);
+                                                        echo date_format($date, "d-m-Y"); ?></p>
+            </div>
+            <!-- <small><?php echo $address1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small> -->
+        </div>
 
-                </small>
-                <div class="mt-5">
-                    <h6 class="text-center"><u> DIAGNOSIS </u></h6>
-                    TC,DC,Hb%,ESR
-                    <br>
-                    BT,CT
-                    <br>
-                    BI,Sugar(F. & P.P)
-                    <br>
-                    GR. & Rh.type
-                    <br>
-                    VDRL
-                    <br>
-                    Lipid Profile
-                    <br>
-                    HIV-I & II
-                    <br>
-                    HBsAg
-                    <br>
-                    Urea
-                    <br>
-                    Creatine
-                    <br>
-                    TSH,T3,T4
-                    <br>
-                    Bilirubin
-                    <br>
-                    M.P.
-                    <br>
-                    L.F.T
-                    <br>
-                    Urine (RE/ME/CS)
-                    <br>
-                    Urine Pregnency
-                    <br>
-                    X-Ray Chest = PA
-                    <br>
-                    E.C.G
-                    <br>
-                    Serum PSA Titre
-                    <br>
-                    USG-W/A-L/A,FPP
 
+        <!-- ////////////////// -->
+        <div style="box-shadow:none; padding: 0px 30px 40px;" class="card">
+            <hr class="mb-0 mt-0" style="color:black;background:black; width:90%; height:5px; margin-left:50px">
+            <div style="margin-top:20px; display: flex; justify-content:center; align-items:center">
+                <div>
+                    <h5><U><b>REPORT OF LIVER FUNCTION TEST</b></U></h5>
                 </div>
             </div>
-            <div class="col-9">
-                <div class="row mt-1">
-                    <div class="col-12 d-flex justify-content-between">
+            <div style="height: 450px;">
+                <?php
+                $unitCounts = array();
 
-                        <p class="mb-0 mt-0">
-                            Name: <?php echo $patientName; ?>
-                            <span class="ms-3"> Age: <?php echo $patientAge; ?> </span>
-                            <span class="ms-3"> Sex: <?php echo $patientSex; ?> </span>
-                        </p>
+                foreach ($labBillingDetails as $index => $test) {
+                    $testId = $test['test_id'];
+                    $showTestName = $LabReport->patientTest($testId);
+                    $showTestName = json_decode($showTestName);
+                    $testId = $showTestName->id;
+                    $subTestName = $showTestName->sub_test_name;
+                    $unitNames = $showTestName->unit;
+                    // print_r($unitNames);
+                    echo "<div style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px;'>";
+                    echo "<div style='display: flex; justify-content:space-around; align-items:center'>";
+                    
+                    if($unitNames){
+                        echo "<div style='width:40%; margin-left:20px;' >$subTestName</div>";
+                        // echo "<div>$unitName</div>";
+                        foreach($unitNames as $unitName){
+                            echo "<div>$unitName</div>";
+                        }  
+                    }      
+                    echo "</div>";
+                    echo "</div>";
+                }
+                ?>
+            </div>
 
-                        <p class="mb-0 mt-0 text-end">
-                            Date:
-                            <?php
-                            $testDate = $labBillingData[0]['test_date'];
-                            $date = date_create($testDate);
-                            echo date_format($date, "d-m-Y");
-                            ?>
-                        </p>
+            <div>
+                <p style="margin-left:85px;margin-bottom:0px;">Reference values are obtained from the literature provided with reagent kit.</p>
+                <hr class="mb-0 mt-0" style="color:black;background:black; width:90%; height:5px; margin-left:50px">
+            </div>
+            <div>
+                <div style="display: flex; margin-top:15px; margin-right: 40px; justify-content:flex-end;align-items:center">
+                    <div style="margin-right:13%;"><b>***END OF REPORT***</b></div>
+                    <div>
+                        <p class="m-0">&nbsp;&nbsp;&nbsp;&nbsp;<b>DR. S.BISWAS</b></p>
+                        <p class="m-0"><b>Consultant Pathologist(MD)</b></p>
+                        <p class="m-0"><b>Reg. No: 59304 (WBMC)</b></p>
                     </div>
                 </div>
-                <hr class="row mt-2 m-auto" style="color: #00f;">
-                <div style="margin-top: 20px; margin-left:30px;">
-                    <table class="table table-borderless">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Test Name</th>
-                                <th scope="col">Ref. Value</th>
-                                <th scope="col">Unit</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div style="display: flex;justify-content:flex-start;align-items:flex-start; color:#183697; margin-left:50px">
+                    <div>
+                        <p class="m-0"><small><i><b>A Health Care Unit for :-</b></i></small></p>
+                        <p class="m-0"><small><b>Advance Assay, USG & ECHO, Colour Doppler,</b></small></p>
+                        <p class="m-0"><small><b>Digital X-Ray, Special X-Ray, OPG, ECG & Eye.</b></small></p>
+                    </div>
+                    <div style="margin-left:5%;"><small><i><b>Verified by :</b></i></small></div>
                 </div>
             </div>
         </div>
-        <div class=" footer ">
-            <div class="row border border-primary pt-2 pb-0 d-flex justify-content-between">
+        <!-- ////// -->
+        <div class="footer"></div>
 
-                <div class="col-md-4 custom-width-name mb-0">
-                    <ul style="margin-bottom: 8px">
-                        <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2" src="../employee/partials/hospital.png" alt="Healt Care" style="width:28px; height:20px;" /><?php echo $hospitalName ?></li>
-                    </ul>
-                </div>
-
-                <div class="col-md-4 custom-width-email mb-0">
-                    <ul style="margin-bottom: 8px">
-                        <li class="list-unstyled"><img id="email-box" class="pe-2" src="../employee/partials/email-logo.png" alt="Email" style="width:28px; height:20px;" /><?php echo $hospitalEmail ?></li>
-
-                    </ul>
-                </div>
-
-                <div class="col-md-4 custom-width-number mb-0">
-                    <ul style="margin-bottom: 8px">
-                        <li class="list-unstyled"><img id="number-box" class="pe-2" src="../employee/partials/call-logo.png" alt="Contact" style="width:28px; height:20px;" /><span><?php echo $appointmentNumber . ', ' . $hospitalPhno ?></span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <p class="text-center text-info"><strong>বিঃ দ্রঃ - যেকোন জরুরি অবস্থায় অনুগ্রহ করে নিকটবর্তি হাসপাতালে
-                    যোগাযোগ করুন।</strong></p>
+        <div class="printButton mb-5">
+            <button class="btn btn-primary" onclick="history.back()">Go Back</button>
+            <button class="btn btn-primary" onclick="window.print()">Print Prescription</button>
         </div>
-        <!-- <div class="row">
-        </div> -->
-    </div>
-    <div class="printButton mb-5">
-        <button class="btn btn-primary" onclick="history.back()">Go Back</button>
-        <button class="btn btn-primary" onclick="window.print()">Print Prescription</button>
     </div>
 </body>
 

@@ -1,11 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap");
+
 body {
     color: #000;
-    height: 100%;
+    height: 100vh;
+    width: 100%;
     background-color: #fff;
     background: #fff;
+    /* overflow-y: hidden; */
+    overflow-x: hidden;
 }
 
+/*
 .w-5 {
     width: 5% !important;
 }
@@ -32,7 +37,7 @@ body {
 
 .w-80 {
     width: 80% !important;
-}
+} */
 
 .card {
     padding: 30px 40px;
@@ -85,14 +90,17 @@ ul.li {
     .headerHospitalDetails h1 {
         font-size: 1.8rem;
     }
+
     .custom-width-name {
         width: 32%;
         margin-left: -30px;
     }
+
     .custom-width-email {
         width: 42%;
         margin-left: -30px;
     }
+
     .custom-width-number {
         width: 38%;
         margin-left: -30px;
@@ -103,30 +111,36 @@ ul.li {
     @page {
         margin: -25px 0 0;
     }
+
     html,
     body {
-        height: 100%;
+        height: 100vh;
         margin: 0 !important;
         padding: 0 !important;
         overflow: hidden;
     }
+
     .headerHospitalLogo {
         width: 110px;
         height: 92px;
         margin-left: -20px;
     }
+
     .headerHospitalLogo img {
         margin-left: 15px;
         width: 95%;
         height: 95%;
     }
+
     .headerHospitalDetails {
         margin-left: 5px;
         width: 45%;
     }
+
     .headerHospitalDetails h1 {
         font-size: 1.4rem;
     }
+
     .header-doc-img {
         width: 9%;
         /* height: 20px; */
@@ -134,91 +148,54 @@ ul.li {
         margin-bottom: auto;
         margin-left: -100px;
     }
+
     .headerDoctorDetails {
         margin-top: -10px;
         width: 46%;
         /* margin-right: -30px; */
         margin-left: 5px;
     }
+
     .space {
         min-height: 77vh;
     }
-    .footer {
+
+    /* .footer {
         position: fixed;
         bottom: 0px;
         width: 93%;
         font-size: 15px;
         margin-left: -10px;
-    }
+    } */
     .custom-width-name {
         width: 30%;
         margin-left: -30px;
     }
+
     .custom-width-email {
         width: 38%;
         /* margin-left: -30px; */
     }
+
     .custom-width-number {
         width: 35%;
         /* margin-left: -10px; */
     }
+
     .printButton {
         visibility: hidden;
     }
 }
 
-
-
-/* wave sections */
-
-/* section {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 400px;
-    padding-top: 100px;
-    background: #3c31dd;
-}
-
-.curve {
-    position: absolute;
-    height: 250px;
-    width: 100%;
-    bottom: 0;
-    text-align: center;
-}
-
-.curve::before {
-    content: '';
-    display: block;
-    position: absolute;
-    border-radius: 100% 50%;
-    width: 55%;
-    height: 100%;
-    transform: translate(85%, 60%);
-    background-color: hsl(216, 21%, 16%);
-}
-
-.curve::after {
-    content: '';
-    display: block;
-    position: absolute;
-    border-radius: 100% 50%;
-    width: 55%;
-    height: 100%;
-    background-color: #3c31dd;
-    transform: translate(-4%, 40%);
-    z-index: -1;
-} */
-
 #wave {
     position: relative;
     height: 70px;
     width: 100%;
-    background: rgb(6, 29, 233);
-  }
-  #wave:before {
+    background: #183697;
+    z-index: -1;
+}
+
+#wave:before {
     content: "";
     display: block;
     position: absolute;
@@ -228,17 +205,59 @@ ul.li {
     background-color: #fff;
     right: -4px;
     top: 31.5px;
-   
-  }
-  #wave:after {
+    z-index: -1;
+}
+
+#wave:after {
     content: "";
     display: block;
     position: absolute;
     border-radius: 100% 100%;
     width: 60%;
     height: 85px;
-    background-color: rgb(6, 29, 233);
+    background-color: #183697;
     left: -43px;
     top: 7px;
     z-index: 1;
-  }
+}
+
+.footer {
+    position: relative;
+    height: 67px;
+    width: 100vw;
+    background: #183697;
+    z-index: 1;
+}
+
+.footer:before {
+    content: "";
+    display: block;
+    position: absolute;
+    border-radius: 100% 20%;
+    width: 69%;
+    height: 102px;
+    background-color: #183697;
+    right: -44px;
+    top: -34.5px;
+    z-index: 1;
+}
+
+.footer:after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-radius: 100% 100%;
+    width: 50%;
+    height: 67px;
+    background-color: #fff;
+    left: -37px;
+    top: -41px;
+    z-index: -1;
+}
+
+
+.dname {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
