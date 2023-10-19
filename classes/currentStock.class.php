@@ -255,6 +255,45 @@ class CurrentStock extends DatabaseConnection
     }
     
 
+// echo "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD($currentdate, INTERVAL 3 MONTH) AND admin_id = $adminId";
+                // exit;
+
+
+
+    function showStockExpiry($currentdate, $adminId) {
+        $currentdate = date('Y-m-d', strtotime($currentdate));
+        try {
+            $data = array();
+            $select = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD('$currentdate', INTERVAL 2 MONTH) AND admin_id = '$adminId'";
+            
+            $query = $this->conn->query($select);
+    
+                while ($row = $query->fetch_assoc()) {
+                    $data[] = $row;
+                }
+    
+            return $data;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return array();
+        }
+    }
+    
+
+
+
+    function stockExpiaringCheck ($date, $adminId){
+        $data = array();
+
+        $expCheckQarry = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD($date, INTERVAL 2 MONTH) AND admin_id = '$adminId'";
+
+        $res = $this->conn->query($expCheckQarry);
+        while ($result = $res->fetch_array()) {
+            $data[] = $result;
+        }
+
+        return $data;
+    }
 //=====================================================================================================
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -319,16 +358,7 @@ class CurrentStock extends DatabaseConnection
     // use (showCurrentStocByStokInDetialsId [line number 185 in this page]) this function against (showCurrentStockbyStokInId) function for any convenience....
 
 
-    function showStockExpiry($newMnth)
-    {
-        $data = array();
-        $select = "SELECT * FROM `current_stock`  WHERE `exp_date` <= '$newMnth' ORDER BY `exp_date` ASC";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showCurrentStoc function
+    
 
     function showCurrentStocByPId($productId)
     {

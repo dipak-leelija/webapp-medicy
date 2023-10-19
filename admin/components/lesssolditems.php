@@ -1,5 +1,4 @@
 <?php
-
     require_once dirname(dirname(__DIR__)).'/config/constant.php';
 
     $includePath = get_include_path();
@@ -24,7 +23,7 @@
     // echo "<br>Items Count : $itemsCount";
 ?>
 
-<div class="card border-left-info border-right-info h-100 py-2 pending_border animated--grow-in">
+<div class="card border-left-danger h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
         <div id="datePickerDiv" style="display: none;">
             <input type="date" id="dateInput">
@@ -37,10 +36,9 @@
                 <b>...</b>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button" id="lst7" onclick="chkDays(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="lst30" onclick="chkDays(this.id)">Last 1 Month</button>
-                <button class="dropdown-item" type="button" id="lstdt" onclick="chkDays(this.id)">By Date</button>
-                <button class="dropdown-item" type="button" id="reset" onclick="chkDays(this.id)">Reset</button>
+                <button class="dropdown-item" type="button" id="lst7" onclick="lessSoldItems(this.id)">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="lst30" onclick="lessSoldItems(this.id)">Last 30 DAYS</button>
+                <button class="dropdown-item" type="button" id="lstdt" onclick="lessSoldItems(this.id)">By Date</button>
             </div>
         </div>
     </div>
@@ -48,7 +46,7 @@
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    sales of the day</div>
+                    less sold 10 items</div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
                     <label type="symble" id="rupeeSymble" name="rupeeSymble">₹</label>
                     <label type="text" id="salesAmount" name="salesAmount"><?php echo $amount ?></label>
@@ -65,34 +63,25 @@
 
 <script>
 
-    const chkDays = (id) => {
+    const lessSoldItems = (id) => {
         var xmlhttp = new XMLHttpRequest();
-        // alert(id);
-
         if (id == 'lst7') {
-            // alert(id);
             lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstWeek=' + id;
-            // alert(unitUrl);
             xmlhttp.open("GET", lastThirtyDaysUrl, false);
             xmlhttp.send(null);
-            // console.log(xmlhttp.responseText);
             document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
             document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
         }
 
         if (id == 'lst30') {
-            // alert(id);
             lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstMnth=' + id;
-            // alert(unitUrl);
             xmlhttp.open("GET", lastThirtyDaysUrl, false);
             xmlhttp.send(null);
-            // console.log(xmlhttp.responseText);
             document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
             document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
         }
 
         if (id == 'lstdt') {
-            // alert(id);
             const dateInput = document.getElementById('datePickerDiv');
             dateInput.style.display = 'block';
             dateInput.focus();

@@ -1,6 +1,9 @@
 <?php
-require_once '../../php_control/stockReturn.class.php';
-require_once '../../php_control/currentStock.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+
+require_once CLASS_DIR.'stockReturn.class.php';
+require_once CLASS_DIR.'currentStock.class.php';
 
 $StockReturn = new StockReturn();
 $CurrentStock = new CurrentStock();

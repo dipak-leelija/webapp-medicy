@@ -1,5 +1,9 @@
 <?php
-require_once '../../../php_control/measureOfUnit.class.php';
+require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'measureOfUnit.class.php';
 
 //Class initilization
 $MeasureOfUnits = new MeasureOfUnits();
@@ -25,7 +29,7 @@ $MeasureOfUnits = new MeasureOfUnits();
         $srtName  = $_POST['unit-srt-name'];
         $fullName = $_POST['unit-full-name'];
 
-        $addMeasureOfUnits = $MeasureOfUnits->addMeasureOfUnits($srtName, $fullName);
+        $addMeasureOfUnits = $MeasureOfUnits->addMeasureOfUnits($srtName, $fullName, $employeeId, NOW, $adminId);
 
         if ($addMeasureOfUnits) {
            // echo "<script>alert('Unit Added!'); window.location='../../product-unit.php';</script>";

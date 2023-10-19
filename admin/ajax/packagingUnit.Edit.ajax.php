@@ -1,13 +1,17 @@
 <?php
-require_once '../../php_control/packagingUnit.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
 
 
-$unitId    = $_GET['id'];
+$unitId     = $_GET['id'];
 $unitName   = $_GET['unit-name'];
 
 
 $PackagingUnits = new PackagingUnits();
-$updateUnit = $PackagingUnits->updateUnit($unitId, $unitName);
+$updateUnit = $PackagingUnits->updateUnit($unitId, $unitName, $employeeId, NOW);
 
 //check if the data has been updated or not
 if($updateUnit){

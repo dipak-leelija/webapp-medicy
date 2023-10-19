@@ -1,5 +1,8 @@
 <?php
-require_once '../../php_control/manufacturer.class.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
+
+require_once CLASS_DIR.'manufacturer.class.php';
 
 $distributorId = $_GET['manufacturer_id'];
 // $distributorId = 2;

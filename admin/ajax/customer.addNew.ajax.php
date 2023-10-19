@@ -1,14 +1,9 @@
-<!-- <script src="../../js/sweetAlert.min.js"></script> -->
-
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once CLASS_DIR.'dbconnect.php';
 
-// require_once 'sessionCheck.php';//check admin loggedin or not
-
-require_once '../../php_control/patients.class.php';
-require_once '../../php_control/idsgeneration.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'idsgeneration.class.php';
 
 
 //Classes Initilizing

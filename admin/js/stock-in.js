@@ -846,10 +846,10 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     rowAdjustment(delRow);
 
     let tBody = document.getElementById('dataBody');
-        console.log(tBody.getElementsByTagName('tr').length);
-        if(tBody.getElementsByTagName('tr').length == 0){
-            newSellGenerateBill.setAttribute("disabled", "true");
-        }
+    
+    if(tBody.getElementsByTagName('tr').length == 0){
+        stockInSave.setAttribute("disabled", "true");
+    }
 }
 
 

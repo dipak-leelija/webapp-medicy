@@ -256,7 +256,7 @@ if (isset($_GET['return'])) {
                         id: id
                     },
                     success: function(response) {
-                        alert(response);
+                        // alert(response);
                         // alert(id);
                         if (response.includes('1')) {
                             $(btn).closest("tr").fadeOut()
