@@ -5,7 +5,7 @@
 
     $StockOut = new StockOut();
 
-    $today = NOW;
+    $today = date("Y-m-d");
     // echo $today;
 
     $amount = 0;
@@ -23,11 +23,11 @@
     // echo "<br>Items Count : $itemsCount";
 ?>
 
-<div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
+<div class="card border-left-info border-right-info h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
         <div id="datePickerDiv" style="display: none;">
             <input type="date" id="dateInput">
-            <button class="btn btn-sm btn-primary" id="added_on" value="CR" onclick="mostSoldItems(this.value)" style="height: 2rem;">Find</button>
+            <button class="btn btn-sm btn-primary" id="added_on" value="CR" onclick="getDates(this.value)" style="height: 2rem;">Find</button>
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -36,9 +36,9 @@
                 <b>...</b>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button" id="lst7" onclick="mostSoldItems(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="lst30" onclick="mostSoldItems(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item" type="button" id="lstdt" onclick="mostSoldItems(this.id)">By Date</button>
+                <button class="dropdown-item" type="button" id="lst7" onclick="chkCustomer(this.id)">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="lst30" onclick="chkCustomer(this.id)">Last 30 DAYS</button>
+                <button class="dropdown-item" type="button" id="lstdt" onclick="chkCustomer(this.id)">By Date</button>
             </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    most sold 10 items</div>
+                    highest purchased 10 customer</div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
                     <label type="symble" id="rupeeSymble" name="rupeeSymble">₹</label>
                     <label type="text" id="salesAmount" name="salesAmount"><?php echo $amount ?></label>
@@ -62,8 +62,7 @@
 </div>
 
 <script>
-
-    const mostSoldItems = (id) => {
+    const chkCustomer = (id) => {
         var xmlhttp = new XMLHttpRequest();
         if (id == 'lst7') {
             lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstWeek=' + id;

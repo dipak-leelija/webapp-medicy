@@ -97,6 +97,90 @@ class StockIn extends DatabaseConnection{
 
 
 
+    function selectDistOnMaxPurchase($adminId) {
+        try {
+            $selectQuery = "SELECT distributor_id, SUM(amount) AS total_purchase_amount 
+                       FROM stock_in
+                       WHERE admin_id = ?
+                       GROUP BY distributor_id
+                       ORDER BY total_purchase_amount DESC
+                       LIMIT 1";
+    
+            $stmt = $this->conn->prepare($selectQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = $result->fetch_object();
+                    $data = json_encode($data);
+                } else {
+                    echo "Query returned no results.";
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+            return $data;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null; 
+        }
+    }
+
+
+
+
+
+
+
+
+    function selectDistOnMaxItems($adminId) {
+        try {
+            $selectQuery = "SELECT distributor_id, COUNT(*) AS number_of_purchases
+                           FROM stock_in
+                           WHERE admin_id = ?
+                           GROUP BY distributor_id
+                           ORDER BY number_of_purchases DESC
+                           LIMIT 1";
+    
+            $stmt = $this->conn->prepare($selectQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = $result->fetch_object();
+                    $data = json_encode($data);
+                } else {
+                    echo "Query returned no results.";
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+            return $data;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+    
+    
+
+
+
+
+
+    
+
+
+
+
 
     function updateStockIn($stockInid, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $updatedBy, $updatedOn){
 
@@ -122,6 +206,14 @@ class StockIn extends DatabaseConnection{
         }
         return $ShowData;
     }
+
+
+
+
+
+
+
+
 
 
 

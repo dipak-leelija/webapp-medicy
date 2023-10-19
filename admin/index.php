@@ -2,7 +2,6 @@
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ADM_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'appoinments.class.php';
@@ -10,6 +9,7 @@ require_once CLASS_DIR . 'currentStock.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
 require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
 
 $page = "dashboard";
 
@@ -18,6 +18,7 @@ $CurrentStock      = new CurrentStock();
 $StockOut          = new StockOut();
 $StockIn           = new StockIn();
 $StockInDetails    = new StockInDetails();
+$Distributor       = new Distributor;
 
 $totalAppointments = $appoinments->appointmentsDisplay();
 
@@ -203,6 +204,22 @@ if ($_SESSION['ADMIN'] == false) {
 
                         <div class="col-xl-3 col-md-6 mb-4">
                             <?php require_once PORTAL_COMPONENT . "mostsolditems.php"; ?>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <?php require_once PORTAL_COMPONENT . "lesssolditems.php"; ?>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <?php require_once PORTAL_COMPONENT . "mostvisitedcustomer.php"; ?>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <?php require_once PORTAL_COMPONENT . "highestpurchasedcustomer.php"; ?>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <?php require_once PORTAL_COMPONENT . "mostpurchaseddistributor.php"; ?>
                         </div>
 
                     </div>

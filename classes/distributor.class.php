@@ -68,12 +68,38 @@ class Distributor extends DatabaseConnection{
 
 
 
-    function distrubutorDetail($DistributorId){
-        $select = "SELECT  `name` FROM `distributor` WHERE `id` = '$DistributorId' ";
-        $selectQuery = $this->conn->query($select);
 
-        return $selectQuery;
+    function distributorDetail($DistributorId) {
+        try {
+            $select = "SELECT `name` FROM `distributor` WHERE `id` = ?";
+            $stmt = $this->conn->prepare($select);
+    
+            if ($stmt) {
+                $stmt->bind_param("i", $DistributorId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_object();
+                    // $row = json_encode($row);
+                } else {
+                    echo "Query returned no results.";
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+            return $row;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
     }
+    
+
+
+
+
 
     function showDistributor(){ 
         $select         = " SELECT * FROM distributor";
