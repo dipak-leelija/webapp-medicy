@@ -345,7 +345,7 @@ $doctor = $Doctors->showDoctors();
                                                     </th>
                                                     <th scope="col"></th>
                                                     <th scope="col">Item Name</th>
-                                                    <th scope="col">Item id</th>
+                                                    <th scope="col" hidden>Item id</th>
                                                     <th scope="col" class="d-none">Manuf Data</th>
                                                     <th scope="col">Batch</th>
                                                     <th scope="col">Unit/Pack</th>
