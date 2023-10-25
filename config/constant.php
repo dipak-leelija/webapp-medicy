@@ -48,6 +48,7 @@ session_start();
 	
 	define('ROOT_COMPONENT', 	ROOT_DIR.'components/');
 	define('PORTAL_COMPONENT', 	ADM_DIR.'components/');
+	define('ADM_VNDR_CHRT', 	ADM_DIR.'vendor/chart.js/');
 	
 	define('CLASS_DIR', 		ROOT_DIR.'classes/');
 	define('ASST_DIR', 			ROOT_DIR.'uploads/contents/');

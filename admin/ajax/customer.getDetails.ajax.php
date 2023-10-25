@@ -9,13 +9,16 @@ $Patients = new Patients();
 
 if (isset($_GET["name"])) {
    $customer =  $Patients->patientsDisplayByPId($_GET["name"]);
-   echo $customer[0][2];
+   $customer = json_decode($customer);
+   
+   echo $customer->name;
 }
 
 if (isset($_GET["contact"])) {
    $customer =  $Patients->patientsDisplayByPId($_GET["contact"]);
-   echo $customer[0][5];
-}
+   $customer = json_decode($customer);
 
+   echo $customer->phno;
+}
 
 ?>

@@ -21,7 +21,8 @@ if(isset($_GET['data'])){
     $data = $_GET['data'];
 
     $col = 'admin_id';
-    $searchResult = $Products->selectItemLikeOnCol($data, $col, $adminId);
+    // $searchResult = $Products->selectItemLikeOnCol($data, $col, $adminId);
+    $searchResult = $Products->selectItemLike($data);
     // print_r($searchResult);
 }
 
@@ -92,4 +93,3 @@ else{
     echo "Result Not Found";
 }
 ?>
-

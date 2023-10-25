@@ -1,15 +1,15 @@
 <?php
-require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';
+require_once dirname(dirname(dirname(__DIR__))) . '/config/constant.php';
+require_once ADM_DIR . '_config/sessionCheck.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'hospital.class.php';
-require_once CLASS_DIR.'doctors.class.php';
-require_once CLASS_DIR.'idsgeneration.class.php';
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'stockOut.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'idsgeneration.class.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'stockOut.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
 
 
 //  INSTANTIATING CLASS
@@ -34,11 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //echo $patientId; 
     if ($patientId != 'Cash Sales') {
         $patientName = $Patients->patientsDisplayByPId($patientId);
-        //print_r($patientName);
-        foreach ($patientName as $patientName) {
-            $patientAge = 'Age: ' . $patientName['age'];
-            $patientPhno = 'M: ' . $patientName['phno'];
-        }
+        $patientName = json_decode($patientName);
+        $patientAge = 'Age: ' . $patientName->age;
+        $patientPhno = 'M: ' . $patientName->phno;
     }
 
     $reffby         = $_POST['doctor-name'];
@@ -137,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // print_r($amount);
 
     // echo "<br><br>";
-  
+
     // ========================== checking end ===================================
 
     // ===================== STOCK OUT AND SALES ITEM BILL GENERATION AREA =========================
@@ -252,7 +250,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-    
 }
 
 $showhelthCare = $HelthCare->showhelthCare();
@@ -387,13 +384,13 @@ foreach ($showhelthCare as $rowhelthCare) {
 
                     if ($qtyTp[$i] == 'Pack') {
                         $wholeQty = intval($qty[$i]) / intval($itemWeightage[$i]);
-                        $ItemSellQantity = $wholeQty. $string1.$qty[$i] . $looseString.$string2;
+                        $ItemSellQantity = $wholeQty . $string1 . $qty[$i] . $looseString . $string2;
                     } elseif ($qtyTp[$i] == 'Loose') {
                         $wholeQty = '';
-                        $ItemSellQantity = $wholeQty. $qty[$i] .$string1. $looseString.$string2;
+                        $ItemSellQantity = $wholeQty . $qty[$i] . $string1 . $looseString . $string2;
                     } elseif ($qtyTp[$i] == '') {
                         $wholeQty = '';
-                        $ItemSellQantity = $wholeQty.$qty[$i];
+                        $ItemSellQantity = $wholeQty . $qty[$i];
                     }
 
                     $perItemTotalSell =  $ItemSellQantity;

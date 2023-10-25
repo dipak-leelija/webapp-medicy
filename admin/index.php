@@ -11,6 +11,7 @@ require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 
+
 $page = "dashboard";
 
 $appoinments = new Appointments();
@@ -219,7 +220,11 @@ if ($_SESSION['ADMIN'] == false) {
 
                     <div class="row">
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "mostpurchaseddistributor.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "mopdByAmount.php"; ?>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <?php require_once PORTAL_COMPONENT . "mopdByItems.php"; ?>
                         </div>
 
                     </div>

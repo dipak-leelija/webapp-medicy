@@ -186,6 +186,45 @@ class StockOut extends DatabaseConnection{
 
 
 
+    function mostVisitCustomersByDay($adminId) {
+        try {
+            $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
+            FROM stock_out
+            WHERE admin_id = ? AND DATE(added_on) = CURDATE()
+            GROUP BY customer_id
+            ORDER BY visit_count DESC
+            LIMIT 10";
+            
+            $stmt = $this->conn->prepare($selectQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    echo "Query returned no results.";
+                }
+    
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+    
+
+
+    
     function stockOutDisplayById($invoiceId){
         $billData = array();
         $selectBill = "SELECT * FROM stock_out WHERE `invoice_id` = '$invoiceId'";
@@ -529,6 +568,264 @@ class StockOut extends DatabaseConnection{
     }
 
     
+
+
+
+
+
+    function stockOutDataGroupByDay($adminId) {
+        try {
+            $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
+                            FROM stock_out_details sod
+                            JOIN stock_out so ON sod.invoice_id = so.invoice_id
+                            WHERE so.admin_id = ?
+                              AND so.added_on >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+                            GROUP BY sod.product_id
+                            ORDER BY total_sold DESC
+                            LIMIT 10";
+            
+            $stmt = $this->conn->prepare($selectQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    echo "Query returned no results.";
+                }
+    
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+
+
+    function stockOutDataGroupByWeek($adminId) {
+        try {
+            $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
+                            FROM stock_out_details sod
+                            JOIN stock_out so ON sod.invoice_id = so.invoice_id
+                            WHERE so.admin_id = ?
+                              AND so.added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                            GROUP BY sod.product_id
+                            ORDER BY total_sold DESC
+                            LIMIT 10";
+            
+            $stmt = $this->conn->prepare($selectQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    echo "Query returned no results.";
+                }
+    
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+
+
+    function stockOutDataGroupByMonth($adminId) {
+        try {
+            $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
+                            FROM stock_out_details sod
+                            JOIN stock_out so ON sod.invoice_id = so.invoice_id
+                            WHERE so.admin_id = ?
+                              AND so.added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                            GROUP BY sod.product_id
+                            ORDER BY total_sold DESC
+                            LIMIT 10";
+            
+            $stmt = $this->conn->prepare($selectQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    echo "Query returned no results.";
+                }
+    
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+    
+
+
+
+
+    function leastSoldStockOutDataGroupByDay($adminId) {
+        try {
+            $query = "SELECT product_id, SUM(qty) AS total_sold
+                      FROM stock_out_details
+                      WHERE invoice_id IN (
+                          SELECT invoice_id
+                          FROM stock_out
+                          WHERE admin_id = ?
+                            AND added_on >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+                      )
+                      GROUP BY product_id
+                      ORDER BY total_sold
+                      LIMIT 10";
+            
+            $stmt = $this->conn->prepare($query);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    return $data;
+                } else {
+                    echo "Query returned no results.";
+                }
+    
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+    function leastSoldStockOutDataGroupByWeek($adminId) {
+        try {
+            $query = "SELECT product_id, SUM(qty) AS total_sold
+                      FROM stock_out_details
+                      WHERE invoice_id IN (
+                          SELECT invoice_id
+                          FROM stock_out
+                          WHERE admin_id = ?
+                            AND added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                      )
+                      GROUP BY product_id
+                      ORDER BY total_sold
+                      LIMIT 10";
+            
+            $stmt = $this->conn->prepare($query);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    return $data;
+                } else {
+                    echo "Query returned no results.";
+                }
+    
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+
+
+
+    function leastSoldStockOutDataGroupByMonth($adminId) {
+        try {
+            $query = "SELECT product_id, SUM(qty) AS total_sold
+                      FROM stock_out_details
+                      WHERE invoice_id IN (
+                          SELECT invoice_id
+                          FROM stock_out
+                          WHERE admin_id = ?
+                            AND added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                      )
+                      GROUP BY product_id
+                      ORDER BY total_sold
+                      LIMIT 10";
+            
+            $stmt = $this->conn->prepare($query);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    return $data;
+                } else {
+                    echo "Query returned no results.";
+                }
+    
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+    
+    
+
 
 
 
