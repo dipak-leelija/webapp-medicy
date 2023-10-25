@@ -306,7 +306,7 @@ class StockIn extends DatabaseConnection{
         $sql = "SELECT items,amount FROM stock_in WHERE `stock_in`.`payment_mode` = 'Credit'";
         $sqlQuery = $this->conn->query($sql);
         while($result = $sqlQuery->fetch_array()){
-            $data[]	= $result;
+            $data[] = $result;
         }
         return $data;
     }// eof needsToPay
@@ -324,4 +324,3 @@ class StockIn extends DatabaseConnection{
     }
 
 }//eof Products class
-
