@@ -122,7 +122,6 @@ require_once CLASS_DIR.'doctor.category.class.php';
                             <?php echo $appointmentNumber ?></strong></h6>
                 </div>
             </div>
-
         </div>
         <hr class="mb-0 mt-0" style="color: #00f;">
         <div>
