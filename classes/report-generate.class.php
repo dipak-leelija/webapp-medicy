@@ -92,11 +92,11 @@ class LabReport extends DatabaseConnection
     ///lab report data fetch ///
     function labReportDetailbyId($reportId){
         try{
-            $datas = null;
+            $datas = array();
             $sql = "SELECT * FROM `lab_report_detail` where `report_id`= '$reportId'";
             $query = $this->conn->query($sql);
             while ($result = $query->fetch_object()) {
-                $datas = $result;
+                $datas[] = $result;
             }
             $dataset = json_encode($datas);
             return $dataset;
