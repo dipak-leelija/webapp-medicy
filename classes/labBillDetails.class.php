@@ -72,7 +72,24 @@ class LabBillDetails extends DatabaseConnection{
     }//end billDetailsDisplay function
 
 
+    function billDetailsByMultiId($billIds){
 
+        $billIds = implode("','", $billIds); // Convert array to comma-separated string
+    
+        $selectBilldetail = "SELECT * FROM lab_billing_details WHERE `lab_billing_details`.`bill_id` IN ('$billIds')";
+        $billdetailsQuery = $this->conn->query($selectBilldetail);
+        $rows = $billdetailsQuery->num_rows;
+        if ($rows > 0 ) {
+            while($result = $billdetailsQuery->fetch_array()){                
+                $data[] = $result;
+            }   
+            return $data;
+        } else {
+            return 0;
+        }
+    
+    }
+    
 
 
 

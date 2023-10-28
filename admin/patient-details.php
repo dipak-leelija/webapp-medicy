@@ -8,12 +8,16 @@ require_once ADM_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
+require_once CLASS_DIR . 'labBillDetails.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
 
 
 $patientId = url_dec($_GET['patient']);
 
-$Patients   = new Patients;
-$LabBilling = new LabBilling;
+$Patients       = new Patients;
+$LabBilling     = new LabBilling;
+$LabBillDetails = new LabBillDetails();
+$SubTests       = new SubTests();
 
 $patientDetails = json_decode($Patients->patientsDisplayByPId($patientId));
 // print_r($patientDetails);
@@ -30,20 +34,55 @@ $lastVisited = $patientDetails->added_on;
 //     //$patientCount['Last_Visited']
 // }
 
-/// for amount spend ///
-$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId($patientId);
+///........ for amount spend and find bill_id for finding test_id....... ///
+$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId('PE146583635');
 
+$bill_ids = [];
 $spent = 0;
 if (is_array($labBillingDetails) && !empty($labBillingDetails)) {
     foreach ($labBillingDetails as $row) {
         $spent = $row->paid_amount + $spent;
+        $bill_ids[] = $row->bill_id . "<br>";
     }
 } elseif ($labBillingDetails === null) {
-    //  echo "No results found.";
+    echo "No results found.";
 } else {
     echo "Error: " . $labBillingDetails;
 } //--end--//
 
+///..... find test_id from bill_id for finding sub_test....//////
+$test_ids = [];
+$billDetailsByMultiId = $LabBillDetails->billDetailsByMultiId($bill_ids);
+if (is_array($billDetailsByMultiId)) {
+    foreach ($billDetailsByMultiId as $MultiId) {
+        $test_ids[] = $MultiId['test_id'] . "<br>";
+        $billId = $MultiId['bill_id'];
+        $date   = $MultiId['test_date'];
+    }
+} ///---end--///
+
+
+///......find multiple subtest name from multiple test_id.....//////
+$subTestNames = [];
+
+foreach ($test_ids as $test_id) {
+    $subTestDetails = $SubTests->showSubTestsId($test_id);
+
+    if (is_array($subTestDetails)) {
+        foreach ($subTestDetails as $subTest) {
+             $subTestNames[] = $subTest['sub_test_name'] . "<br>";
+        }
+    }
+}
+
+// $dataPoints2 = [];
+
+// foreach ($subTestNames as $subTestName) {
+//     // Generate a random y value for demonstration purposes
+//     $yValue = rand(1, 100);
+
+//     $dataPoints2[] = array("y" => $yValue, "label" => $subTestName);
+// }
 ///bar chart for Most taken Tests as graph//
 $dataPoints2 = array(
     array("y" => 7, "label" => "March"),
@@ -58,11 +97,11 @@ $dataPoints1 = array(
     array("label" => "Oxygen", "symbol" => "O", "y" => 46.6),
     array("label" => "Silicon", "symbol" => "Si", "y" => 27.7),
     array("label" => "Aluminium", "symbol" => "Al", "y" => 13.9),
-    array("label" => "Iron", "symbol" => "Fe", "y" => 5),
-    array("label" => "Calcium", "symbol" => "Ca", "y" => 3.6),
-    array("label" => "Sodium", "symbol" => "Na", "y" => 2.6),
-    array("label" => "Magnesium", "symbol" => "Mg", "y" => 2.1),
-    array("label" => "Others", "symbol" => "Others", "y" => 1.5),
+    // array("label" => "Iron", "symbol" => "Fe", "y" => 5),
+    // array("label" => "Calcium", "symbol" => "Ca", "y" => 3.6),
+    // array("label" => "Sodium", "symbol" => "Na", "y" => 2.6),
+    // array("label" => "Magnesium", "symbol" => "Mg", "y" => 2.1),
+    // array("label" => "Others", "symbol" => "Others", "y" => 1.5),
 
 )
 ?>
@@ -82,9 +121,10 @@ $dataPoints1 = array(
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/patient-details.css">
     <script>
         window.onload = function() {
 
@@ -102,7 +142,7 @@ $dataPoints1 = array(
                 data: [{
                     type: "splineArea",
                     // color: "background: rgb(255,255,255);
-                    // background: "background: rgb(255,255,255)",
+                    background: "background: rgb(255,255,255)",
                     background: "linear - gradient(0 deg, rgba(255, 255, 255, 1) 55 % , rgba(34, 195, 193, 1) 100 % )",
                     markerSize: 5,
                     yValueFormatString: "$#,##0K",
@@ -165,9 +205,9 @@ $dataPoints1 = array(
                             <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
                         </div>
                         <div class="card-body">
-                            <div style="display: flex; align-items:flex-start;justify-content:space-between; flex-wrap: wrap">
-                                <div style="width: 60%; margin:0px; padding:8px; border-radius:4px; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
-                                    <div style="display: flex; align-items:flex-start; justify-content:space-around;flex-wrap: wrap">
+                            <div class="main-infodiv">
+                                <div class="main-infoleft">
+                                    <div class="infoleft">
                                         <div>
                                             <p><samp>Name &nbsp &nbsp&nbsp: <small><?= $Name ?></small></samp></p>
                                             <p><samp>Age &nbsp &nbsp &nbsp: <small><?= $Age ?></small></spam>
@@ -186,15 +226,16 @@ $dataPoints1 = array(
                                         </div>
                                     </div>
                                 </div>
-                                <div style="width: 38%; margin:0px; padding:4px; border-radius:4px; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
-                                    <div id="chartContainer" style="height: 169px; width: 100%;"></div>
+                                <div class="main-inforight">
+                                    <div id="chartContainer1" style="height: 167px; width: 100%;"></div>
+                                    <!-- <div id="chartContainer" style="height: 167px; width: 100%;"></div> -->
                                 </div>
                             </div>
-                            <div style="width: 100%; margin-top:16px; padding:4px; border-radius:4px; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
-                                <div id="chartContainer1" style="height: 250px; width: 100%;"></div>
+                            <div class="graph-Chart">
+                                <div id="chartContainer" style="height: 250px; width: 100%;"></div>
                             </div>
-                            <div style="display: flex; align-items:flex-start;justify-content:space-between; flex-wrap: wrap;width: 100%;margin-top:15px; padding:4px; border-radius:4px;">
-                                <div style="width: 49%; padding:8px; border-radius:4px; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                            <div class="table-div">
+                                <div class="left-table">
                                     <p>List Of Invoice</p>
                                     <table class="table table-hover">
                                         <thead>
@@ -215,7 +256,7 @@ $dataPoints1 = array(
                                         </tbody>
                                     </table>
                                 </div>
-                                <div style="width: 49%; padding:8px; border-radius:4px; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                                <div class="right-table">
                                     <p>List Of Test</p>
                                     <table class="table table-hover">
                                         <thead>
@@ -224,15 +265,19 @@ $dataPoints1 = array(
                                                 <th scope="col">Test</th>
                                                 <th scope="col">Bill Number</th>
                                                 <th scope="col">Date</th>
+                                                <th scope="col">Report</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
+                                            <?php foreach ($subTestNames as $index => $subTestName) : ?>
+                                                <tr>
+                                                    <th scope="row"><?= $index + 1 ?></th>
+                                                    <td><?= $subTestName ?></td>
+                                                    <td><?= $billId ?></td>
+                                                    <td><?= $date ?></td>
+                                                    <td>-</td>
+                                                </tr>
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>

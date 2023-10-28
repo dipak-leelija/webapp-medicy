@@ -1,0 +1,55 @@
+.main-infodiv{
+    display: flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-wrap: wrap;
+}
+.main-infoleft{
+    width:60%;
+    margin:0px;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.infoleft{
+    display: flex; 
+    align-items:flex-start; 
+    justify-content:space-around;
+    flex-wrap: wrap;
+}
+.main-inforight{
+    width: 38%; 
+    margin:0px; 
+    padding:4px; 
+    border-radius: 8px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.graph-Chart{
+    width: 100%; 
+    margin-top:16px; 
+    padding:4px; 
+    border-radius:4px; 
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.table-div{
+    display: flex; 
+    align-items:flex-start;
+    justify-content:space-between; 
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top:15px; 
+    padding:4px; 
+    border-radius:4px;
+}
+.left-table{
+    width: 40%; 
+    padding:8px; 
+    border-radius:4px; 
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.right-table{
+    width: 55%; 
+    padding:8px; 
+    border-radius:4px; 
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
