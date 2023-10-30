@@ -179,9 +179,6 @@ $MeasureOfUnits = new MeasureOfUnits();
     </div>
     <!--/end Manufacturer View and Edit Modal -->
 
-    <!-- Logout Modal-->
-    <?php require_once '_config\logoutModal.php'; ?>
-    <!-- End Logout Modal-->
 
 
     <!-- Scroll to Top Button-->
