@@ -368,11 +368,6 @@
     </div>
     <!-- End of Page Wrapper -->
 
-
-    <!-- Logout Modal-->
-    <?php require_once '_config/logoutModal.php'; ?>
-    <!--End of Logout Modal-->
-
     <!-- Bootstrap core JavaScript-->
     <script src="../assets/jquery/jquery.min.js"></script>
     <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>

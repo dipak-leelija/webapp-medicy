@@ -215,10 +215,6 @@ $Distributor = new Distributor();
     </div>
     <!--/end Manufacturer View and Edit Modal -->
 
-    <!-- Logout Modal-->
-    <?php require_once '_config/logoutModal.php'; ?>
-    <!-- End Logout Modal-->
-
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">

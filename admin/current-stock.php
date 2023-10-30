@@ -294,10 +294,6 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
     </div>
     <!-- End of View DeleteCurrentStockModal Modal -->
 
-    <!-- Logout Modal-->
-    <?php require_once '_config/logoutModal.php'; ?>
-    <!-- End Logout Modal-->
-
     <!-- Bootstrap core JavaScript-->
     <script src="../assets/jquery/jquery.min.js"></script>
     <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
