@@ -37,13 +37,8 @@ $patientSex  = $showPatientData->gender;
 ///fetch labreportdetails data by id //
 $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
 
+// print_r($labReportDetailbyId);
 $labReportDetailbyId = json_decode($labReportDetailbyId);
-
-// // print_r($labReportDetailbyId);
-// if ($labReportDetailbyId !== null) {
-//     $testValue = $labReportDetailbyId->test_value;
-//     print_r($testValue);
-// }
 
 
 // Fetching Hospital Info
@@ -132,6 +127,7 @@ foreach ($hospitalShow as $hospitalDetails) {
             <div style="height: 450px;">
                 <?php
                 $unitCounts = array();
+                $unitNames = array();
 
                 foreach ($labBillingDetails as $index => $test) {
                     $testId = $test['test_id'];
@@ -143,14 +139,15 @@ foreach ($hospitalShow as $hospitalDetails) {
                     // print_r($unitNames);
                     echo "<div style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px;'>";
                     echo "<div style='display: flex; justify-content:space-around; align-items:center'>";
-                    
-                    if($unitNames){
+
+                    if ($unitNames) {
                         echo "<div style='width:40%; margin-left:20px;' >$subTestName</div>";
-                        // echo "<div>$unitName</div>";
-                        foreach($unitNames as $unitName){
-                            echo "<div>$unitName</div>";
-                        }  
-                    }      
+                        foreach ($labReportDetailbyId as $result) {
+                            if($result->test_id == $testId){         // Check if the test_id matches
+                                echo ": ".$result->test_value . "\n";
+                            }
+                        }
+                    }
                     echo "</div>";
                     echo "</div>";
                 }

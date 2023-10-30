@@ -207,9 +207,6 @@ $today = date("Y-m-d");
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <?php require_once '_config/logoutModal.php'; ?>
-    <!-- End Logout Modal-->
 
     <!-- Bootstrap core JavaScript-->
     <script src="../assets/jquery/jquery.min.js"></script>

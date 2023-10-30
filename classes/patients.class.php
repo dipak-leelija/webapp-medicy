@@ -150,13 +150,22 @@ class Patients extends DatabaseConnection{
     }
     
 
-    
-    
-
+    // ///count patient Times of visits ////
+    // function patientVisitCount($Name,$patientId){
+    //     try{
+    //         // $sql = "SELECT COUNT(id), added_on FROM `patient_details` WHERE `name` = '$Name' ";
+    //         $sql = "SELECT COUNT(id) as count, MAX(added_on) as Last_Visited FROM `patient_details` WHERE `name`= '$Name' AND `patient_id` = '$patientId'";
+    //         $result = $this->conn->query( $sql);
+    //         if ($result !== false) {
+    //             $row = $result->fetch_assoc();
+    //             return $row;
+    //         } else {
+    //             throw new Exception("Error executing the query.");
+    //         }
+    //     }catch(Exception $e){
+    //         $e->getMessage();
+    //     }
+    // }
 
 
 }//end class
-
-
-
-?>

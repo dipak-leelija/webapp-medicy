@@ -29,6 +29,7 @@ class SubTests extends DatabaseConnection{
 
 
     function showSubTestsId($subTestId){
+        // $data=0;
         $selectTestById = "SELECT * FROM sub_tests WHERE `sub_tests`.`id` = '$subTestId'";
         $subTestQuery = $this->conn->query($selectTestById);
         while ($result = $subTestQuery->fetch_array()) {
@@ -37,7 +38,7 @@ class SubTests extends DatabaseConnection{
         return $data;
     }// end showLabTypesById function
 
-
+    
 
     function showSubTestsByCatId($showLabtypeId){
         $selectTestByCatId = "SELECT * FROM `sub_tests` WHERE `sub_tests`.`parent_test_id` = '$showLabtypeId'";
