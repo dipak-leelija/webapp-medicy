@@ -49,6 +49,7 @@
 }
 .right-table{
     width: 55%; 
+    height: 20%;
     padding:8px; 
     border-radius:4px; 
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;

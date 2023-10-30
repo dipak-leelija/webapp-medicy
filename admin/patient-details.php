@@ -10,6 +10,7 @@ require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'labAppointments.class.php';
 
 
 $patientId = url_dec($_GET['patient']);
@@ -18,9 +19,11 @@ $Patients       = new Patients;
 $LabBilling     = new LabBilling;
 $LabBillDetails = new LabBillDetails();
 $SubTests       = new SubTests();
+$LabAppointments = new LabAppointments();
 
-$patientDetails = json_decode($Patients->patientsDisplayByPId($patientId));
-// print_r($patientDetails);
+$patientDetails = json_decode($Patients->patientsDisplayByPId('PE725663040'));
+
+// print_r($patientDetails) . "<br>";
 $Name = $patientDetails->name;
 $Age  = $patientDetails->age;
 $sex  = $patientDetails->gender;
@@ -31,19 +34,24 @@ $lastVisited = $patientDetails->added_on;
 // if ($patientId) {
 //     $patientCount = $Patients->patientVisitCount($Name, $patientId);
 //     // print_r($patientCount['count']);
-//     //$patientCount['Last_Visited']
+//     // echo $patientCount['Last_Visited'];
 // }
 
+
 ///........ for amount spend and find bill_id for finding test_id....... ///
-$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId('PE146583635');
+$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId('PE725663040');
 
 $bill_ids = [];
+$billDates = [];
 $spent = 0;
 if (is_array($labBillingDetails) && !empty($labBillingDetails)) {
     foreach ($labBillingDetails as $row) {
         $spent = $row->paid_amount + $spent;
+        $billDate = $row->bill_date . "<br>";
         $bill_ids[] = $row->bill_id . "<br>";
+        $billDates[] = $billDate;
     }
+    $maxBillDate = max($billDates);
 } elseif ($labBillingDetails === null) {
     echo "No results found.";
 } else {
@@ -64,46 +72,26 @@ if (is_array($billDetailsByMultiId)) {
 
 ///......find multiple subtest name from multiple test_id.....//////
 $subTestNames = [];
-
 foreach ($test_ids as $test_id) {
     $subTestDetails = $SubTests->showSubTestsId($test_id);
-
     if (is_array($subTestDetails)) {
         foreach ($subTestDetails as $subTest) {
-             $subTestNames[] = $subTest['sub_test_name'] . "<br>";
+            $subTestNames[] = $subTest['sub_test_name'];
         }
     }
 }
-
-// $dataPoints2 = [];
-
-// foreach ($subTestNames as $subTestName) {
-//     // Generate a random y value for demonstration purposes
-//     $yValue = rand(1, 100);
-
-//     $dataPoints2[] = array("y" => $yValue, "label" => $subTestName);
-// }
+// $uniqueSubTestNames = array_unique($subTestNames);
 ///bar chart for Most taken Tests as graph//
-$dataPoints2 = array(
-    array("y" => 7, "label" => "March"),
-    array("y" => 12, "label" => "April"),
-    array("y" => 28, "label" => "May"),
-    array("y" => 18, "label" => "June"),
-    array("y" => 41, "label" => "July")
-);
+$occurrences = array_count_values($subTestNames);
 
 ///for pie chart ///
 $dataPoints1 = array(
     array("label" => "Oxygen", "symbol" => "O", "y" => 46.6),
     array("label" => "Silicon", "symbol" => "Si", "y" => 27.7),
     array("label" => "Aluminium", "symbol" => "Al", "y" => 13.9),
-    // array("label" => "Iron", "symbol" => "Fe", "y" => 5),
-    // array("label" => "Calcium", "symbol" => "Ca", "y" => 3.6),
-    // array("label" => "Sodium", "symbol" => "Na", "y" => 2.6),
-    // array("label" => "Magnesium", "symbol" => "Mg", "y" => 2.1),
-    // array("label" => "Others", "symbol" => "Others", "y" => 1.5),
-
 )
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,55 +113,9 @@ $dataPoints1 = array(
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/patient-details.css">
-    <script>
-        window.onload = function() {
+    <!-- <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                title: {
-                    text: "Most taken Tests"
-                },
-                axisY: {
-                    // title: "Lab Test",
-                    includeZero: true,
-                    prefix: "$",
-                    suffix: "k"
-                },
-                data: [{
-                    type: "splineArea",
-                    // color: "background: rgb(255,255,255);
-                    background: "background: rgb(255,255,255)",
-                    background: "linear - gradient(0 deg, rgba(255, 255, 255, 1) 55 % , rgba(34, 195, 193, 1) 100 % )",
-                    markerSize: 5,
-                    yValueFormatString: "$#,##0K",
-                    indexLabel: "{y}",
-                    // indexLabelPlacement: "inside",
-                    indexLabelFontWeight: "bolder",
-                    indexLabelFontColor: "white",
-                    dataPoints: <?php echo json_encode($dataPoints2, JSON_NUMERIC_CHECK); ?>
-                }]
-            });
-            chart.render();
-
-            var chart1 = new CanvasJS.Chart("chartContainer1", {
-                theme: "light2",
-                animationEnabled: true,
-                title: {
-                    text: "Most purchased medicine"
-                },
-                data: [{
-                    type: "doughnut",
-                    indexLabel: "{symbol} - {y}",
-                    yValueFormatString: "#,##0.0\"%\"",
-                    showInLegend: true,
-                    legendText: "{label} : {y}",
-                    dataPoints: <?php echo json_encode($dataPoints1, JSON_NUMERIC_CHECK); ?>
-                }]
-            });
-            chart1.render();
-
-        }
-    </script>
 </head>
 
 <body id="page-top">
@@ -219,7 +161,7 @@ $dataPoints1 = array(
                                         </div>
                                         <div>
                                             <p><samp>Times of visits: <small></small><?= $labVisited ?></samp></p>
-                                            <p><samp>Last Visited &nbsp&nbsp: <small><?= $lastVisited ?></small></spam>
+                                            <p><samp>Last Visited &nbsp&nbsp: <small><?= $maxBillDate ?></small></spam>
                                             </p>
                                             <p><samp>Amount spend &nbsp&nbsp: ₹ <small><?= ($spent) ? $spent : '0.0' ?></small></spam>
                                             </p>
@@ -232,7 +174,8 @@ $dataPoints1 = array(
                                 </div>
                             </div>
                             <div class="graph-Chart">
-                                <div id="chartContainer" style="height: 250px; width: 100%;"></div>
+                                <!-- <div id="chartContainer" style="height: 250px; width: 100%;"></div> -->
+                                <canvas id="myChart" style="height: 250px; padding:8px; width: 100%;"></canvas>
                             </div>
                             <div class="table-div">
                                 <div class="left-table">
@@ -261,23 +204,65 @@ $dataPoints1 = array(
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Test</th>
+                                                <!-- <th scope="col">#</th> -->
                                                 <th scope="col">Bill Number</th>
                                                 <th scope="col">Date</th>
                                                 <th scope="col">Report</th>
                                             </tr>
                                         </thead>
+                                        <!-- <tbody>
+                                            <?php
+                                            $showLabAppointmentsById = $LabAppointments->showLabAppointmentsById('PE725663040');
+
+                                            if ($showLabAppointmentsById) {
+                                                foreach ($showLabAppointmentsById as $appointment) {
+                                                    $billId = $appointment['bill_id'];
+                                                    $date = $appointment['test_date'];
+                                            ?>
+                                                    <tr>
+                                                        <td><?= $billId ?></td>
+                                                        <td><?= $date ?></td>
+                                                        <td>-</td>
+                                                    </tr>
+                                            <?php
+                                                }
+                                            } else {
+                                                echo "<tr><td colspan='3'>No lab appointments found for the specified patient.</td></tr>";
+                                            }
+                                            ?>
+                                        </tbody> -->
+
                                         <tbody>
-                                            <?php foreach ($subTestNames as $index => $subTestName) : ?>
-                                                <tr>
-                                                    <th scope="row"><?= $index + 1 ?></th>
-                                                    <td><?= $subTestName ?></td>
-                                                    <td><?= $billId ?></td>
-                                                    <td><?= $date ?></td>
-                                                    <td>-</td>
-                                                </tr>
-                                            <?php endforeach; ?>
+                                            <?php
+                                            $showLabAppointmentsById = $LabAppointments->showLabAppointmentsById('PE725663040');
+
+                                            if ($showLabAppointmentsById) {
+                                                $count = 0;
+                                                foreach ($showLabAppointmentsById as $appointment) {
+                                                    $billId = $appointment['bill_id'];
+                                                    $date = $appointment['test_date'];
+                                                    $count++;
+                                            ?>
+                                                    <tr>
+                                                        <td><?= $billId ?></td>
+                                                        <td><?= $date ?></td>
+                                                        <td>-</td>
+                                                    </tr>
+                                            <?php
+                                                    if ($count >= 3) {
+                                                        break; // Stop after 3 rows
+                                                    }
+                                                }
+
+                                                if ($count > 3) {
+                                                    echo '<tr id="collapseRow" style="display: none;"><td colspan="3"></td></tr>';
+                                                    echo '<tr id="toggleButtonRow"><td colspan="3"><button class="btn btn-link" onclick="toggleRows()">Show All</button></td></tr>';
+                                                }
+                                            } else {
+                                                // Handle case when no lab appointments are found
+                                                echo "<tr><td colspan='3'>No lab appointments found for the specified patient.</td></tr>";
+                                            }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -319,9 +304,62 @@ $dataPoints1 = array(
     <script src="js/sb-admin-2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+    <script>
+        const labels = <?php echo json_encode(array_keys($occurrences)) ?>;
+        const data = <?php echo json_encode(array_values($occurrences)) ?>;
+
+        const getRandomColor = () => {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            const randomColor = `rgba(${r}, ${g}, ${b}, 0.2)`;
+            const borderColor = `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
+            return {
+                backgroundColor: randomColor,
+                borderColor: borderColor
+            };
+        }
+
+        const backgroundColors = [];
+        const borderColors = [];
+
+        for (let i = 0; i < data.length; i++) {
+            const randomColors = getRandomColor();
+            backgroundColors.push(randomColors.backgroundColor);
+            borderColors.push(randomColors.borderColor);
+        }
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Most taken Tests',
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    // borderColor: borderColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function toggleRows() {
+            var collapseRow = document.getElementById("collapseRow");
+            collapseRow.style.display = (collapseRow.style.display === "none") ? "" : "none";
+
+            var toggleButtonRow = document.getElementById("toggleButtonRow");
+            toggleButtonRow.style.display = (toggleButtonRow.style.display === "none") ? "" : "none";
+        }
+    </script>
 </body>
 
 </html>
-
-<!-- <?= $patientCount['count'] ?> -->

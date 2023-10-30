@@ -89,7 +89,7 @@ class LabBilling extends DatabaseConnection{
     /// Lab bill details by patient Id ///
     function labBiilingDetailsByPatientId($patientId){
         try{
-            $sql = "SELECT * FROM lab_billing WHERE `lab_billing`.`patient_id` = '$patientId'";
+            $sql = "SELECT *  FROM lab_billing WHERE `lab_billing`.`patient_id` = '$patientId'";
             $result = $this->conn->query($sql);
 
             if($result->num_rows >0){
@@ -105,8 +105,28 @@ class LabBilling extends DatabaseConnection{
         }
     }
 
-}// eof LabBilling class
+//     function labBiilingDetailsByPatientId($patientId){
+//     try {
+//         $sql = "SELECT *, MAX(bill_date) AS max_bill_date 
+//                 FROM lab_billing 
+//                 WHERE `lab_billing`.`patient_id` = '$patientId'";
+//         $result = $this->conn->query($sql);
 
+//         if ($result->num_rows > 0) {
+//             while ($row = $result->fetch_object()) {
+//                 $rows[] = $row;
+//             }
+//             return $rows;
+//         } else {
+//             return null;
+//         }
+//     } catch (Exception $e) {
+//         return $e->getMessage();
+//     }
+// }
+}
 
+// eof LabBilling class
 
+// }
 ?>
