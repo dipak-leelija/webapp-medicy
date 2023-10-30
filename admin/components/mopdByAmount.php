@@ -28,7 +28,7 @@ $distNameOnMaxItem = $Distributor->distributorDetail($maxItemPurchase->distribut
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    most purchaed distributor</div>
+                    most purchaed distributor by amount</div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
                     <i class="fas fa-rupee-sign"></i><label type="text" id="salesAmount" name="salesAmount"><?php echo $maxPurchase->total_purchase_amount; ?></label><br>
                     <label type="text" id="distName" name="distName"><?php echo $distNameOnMaxPurchase->name; ?></label>
