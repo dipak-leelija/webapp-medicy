@@ -44,22 +44,39 @@ if (isset($_POST['update']) ==  true) {
 
 
 //Fetching Healt Care Details
-$showHelthCare = $helthCare->showhelthCare();
-foreach($showHelthCare as $helthCare){
-    $helthCareLogo      = $helthCare['logo'];
-    $helthCareId        = $helthCare['hospital_id'];
-    $helthCareName      = $helthCare['hospital_name'];
-    $helthCareAddress1  = $helthCare['address_1'];
-    $helthCareAddress2  = $helthCare['address_2'];
-    $helthCareCity      = $helthCare['city'];
-    $helthCareDist      = $helthCare['dist'];
-    $helthCarePin       = $helthCare['pin'];
-    $helthCareState     = $helthCare['health_care_state'];
-    $helthCareEmail     = $helthCare['hospital_email'];
-    $helthCarePhno      = $helthCare['hospital_phno'];
-    $helthCareApntbkNo  = $helthCare['appointment_help_line'];
+$showHelthCare = $helthCare->showhelthCare($adminId);
 
+if(!empty($showHelthCare)){
+    foreach($showHelthCare as $helthCare){
+        $helthCareLogo      = $helthCare['logo'];
+        $helthCareId        = $helthCare['hospital_id'];
+        $helthCareName      = $helthCare['hospital_name'];
+        $helthCareAddress1  = $helthCare['address_1'];
+        $helthCareAddress2  = $helthCare['address_2'];
+        $helthCareCity      = $helthCare['city'];
+        $helthCareDist      = $helthCare['dist'];
+        $helthCarePin       = $helthCare['pin'];
+        $helthCareState     = $helthCare['health_care_state'];
+        $helthCareEmail     = $helthCare['hospital_email'];
+        $helthCarePhno      = $helthCare['hospital_phno'];
+        $helthCareApntbkNo  = $helthCare['appointment_help_line'];
+    
+    }
+}else{
+    $helthCareLogo      = '';
+    $helthCareId        = '';
+    $helthCareName      = '';
+    $helthCareAddress1  = '';
+    $helthCareAddress2  = '';
+    $helthCareCity      = '';
+    $helthCareDist      = '';
+    $helthCarePin       = '';
+    $helthCareState     = '';
+    $helthCareEmail     = '';
+    $helthCarePhno      = '';
+    $helthCareApntbkNo  = '';
 }
+
 
 
        
@@ -123,7 +140,7 @@ foreach($showHelthCare as $helthCare){
                     <div class="col">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Update Helth Care Details</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Add / Update Helth Care Details</h6>
                             </div>
                             <div class="card-body">
                                 <form action="helth-care.php" method="post" enctype="multipart/form-data">

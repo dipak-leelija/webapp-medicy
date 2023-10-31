@@ -571,15 +571,16 @@ class StockOut extends DatabaseConnection{
 
 
 
+//  ================== most sold item check query ====================
 
 
-    function stockOutDataGroupByDay($adminId) {
+    function mostSoldStockOutDataGroupByDay($adminId) {
         try {
             $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
                             FROM stock_out_details sod
                             JOIN stock_out so ON sod.invoice_id = so.invoice_id
                             WHERE so.admin_id = ?
-                              AND so.added_on >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+                              AND so.added_on >= NOW() - INTERVAL 24 HOUR
                             GROUP BY sod.product_id
                             ORDER BY total_sold DESC
                             LIMIT 10";
@@ -615,7 +616,7 @@ class StockOut extends DatabaseConnection{
 
 
 
-    function stockOutDataGroupByWeek($adminId) {
+    function mostSoldStockOutDataGroupByWeek($adminId) {
         try {
             $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
                             FROM stock_out_details sod
@@ -657,7 +658,7 @@ class StockOut extends DatabaseConnection{
 
 
 
-    function stockOutDataGroupByMonth($adminId) {
+    function mostSoldStockOutDataGroupByMonth($adminId) {
         try {
             $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
                             FROM stock_out_details sod
@@ -694,9 +695,53 @@ class StockOut extends DatabaseConnection{
             return null;
         }
     }
+
+
     
 
 
+
+
+    function mostSoldStockOutDataGroupByDtRange($dtRange, $adminId) {
+        try {
+            $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
+                            FROM stock_out_details sod
+                            JOIN stock_out so ON sod.invoice_id = so.invoice_id
+                            WHERE so.admin_id = ?
+                              AND so.added_on >= DATE_SUB(NOW(), INTERVAL $dtRange DAY)
+                            GROUP BY sod.product_id
+                            ORDER BY total_sold DESC
+                            LIMIT 10";
+            
+            $stmt = $this->conn->prepare($selectQuery);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    echo "Query returned no results.";
+                }
+    
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+//  ============= end of most sold item check query ===========
+
+/// ========= less sold item check query ================
 
 
     function leastSoldStockOutDataGroupByDay($adminId) {
@@ -826,7 +871,7 @@ class StockOut extends DatabaseConnection{
     
     
 
-
+/// ========= end of less sold item check query ================
 
 
 

@@ -2,8 +2,8 @@
 require_once CLASS_DIR.'hospital.class.php';
 
 $HealthCare        = new HelthCare();
-$healthCareDetails = $HealthCare->showhelthCare();
-// print_r();
+$healthCareDetails = $HealthCare->showhelthCarePrimary();
+// print_r($healthCareDetails);
 
 ?>
 <footer class="sticky-footer ">
