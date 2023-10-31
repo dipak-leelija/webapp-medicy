@@ -15,7 +15,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
     <div class="d-flex justify-content-end px-2">
         <div id="dtPickerDiv" style="display: none; margin-right:1rem;">
             <input type="date" id="mostSoldDateInput">
-            <button class="btn btn-sm btn-primary" id="added_on" value="CR" onclick="mostSoldItemsChkDt(this.value)" style="height: 2rem;">Find</button>
+            <button class="btn btn-sm btn-primary" id="added_on" onclick="mostSoldItemsChkDate()" style="height: 2rem;">Find</button>
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -24,9 +24,9 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
                 <b>...</b>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button" id="lst7" onclick="mostStoldItemCheck(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="lst30" onclick="mostStoldItemCheck(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item" type="button" id="lstdt" onclick="mostStoldItemCheck(this.id)">By Date</button>
+                <button class="dropdown-item" type="button" id="mostLst7" onclick="mostStoldItemCheck(this.id)">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="mostLst30" onclick="mostStoldItemCheck(this.id)">Last 30 DAYS</button>
+                <button class="dropdown-item" type="button" id="mostLstdt" onclick="mostStoldItemCheck(this.id)">By Date</button>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
 
 <script>
 
-    function mostSoldItemsChkDt(){
+    function mostSoldItemsChkDate(){
         var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
         var dataToSend = `dtRange=${mostSolddatePicker}`;
 
@@ -62,15 +62,14 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
         var mostSoldDataInDtRange = xmlhttp.responseText;
 
         console.log(mostSoldDataInDtRange);
-        updateData(JSON.parse(mostSoldDataInDtRange));
+        updateMostSoldData(JSON.parse(mostSoldDataInDtRange));
     }
 
 
-    function updateData(data) {
-        console.log(data);
-        chart.data.datasets[0].data = data.map(item => item.total_sold);
+    function updateMostSoldData(mostSold) {
+        mostSoldChart.data.datasets[0].data = mostSold.map(item => item.total_sold);
 
-        var productIds = data.map(item => item.product_id);
+        var productIds = mostSold.map(item => item.product_id);
         productIds = JSON.stringify(productIds);
         var dataToSend = `prodId=${productIds}`;
 
@@ -82,32 +81,33 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
         var prodNameArray = xmlhttp.responseText;
         prodNameArray = JSON.parse(prodNameArray);
 
-        chart.data.labels = prodNameArray;
-        chart.update();
+        mostSoldChart.data.labels = prodNameArray;
+        mostSoldChart.update();
     }
 
 
 
     function mostStoldItemCheck(id) {
-        if (id == 'lst7') {
+        console.log(id);
+        if (id == 'mostLst7') {
             document.getElementById('dtPickerDiv').style.display = 'none';
-            updateData(<?php echo json_encode($weeklyMostStoldItems); ?>);
+            updateMostSoldData(<?php echo json_encode($weeklyMostStoldItems); ?>);
         }
 
-        if (id == 'lst30') {
+        if (id == 'mostLst30') {
             document.getElementById('dtPickerDiv').style.display = 'none';
-            updateData(<?php echo json_encode($monthlyMostStoldItems); ?>);
+            updateMostSoldData(<?php echo json_encode($monthlyMostStoldItems); ?>);
         }
 
-        if (id == 'lstdt') {
+        if (id == 'mostLstdt') {
             document.getElementById('dtPickerDiv').style.display = 'block';
         }
     }
 
 
     // ========= chart control area ============= \\
-    let data = <?php echo json_encode($dailyMostStoldItems); ?>;
-    var productIds = data.map(item => item.product_id);
+    var mostSoldData = <?php echo json_encode($dailyMostStoldItems); ?>;
+    var productIds = mostSoldData.map(item => item.product_id);
     productIds = JSON.stringify(productIds);
     var dataToSend = `prodId=${productIds}`;
 
@@ -120,11 +120,11 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
     var prodNameArray = xmlhttp.responseText;
     prodNameArray = JSON.parse(prodNameArray);
 
-    var totalSold = data.map(item => item.total_sold);
+    var totalSold = mostSoldData.map(item => item.total_sold);
 
-    var ctx = document.getElementById('mostsolditemchart').getContext('2d');
+    var mostSoldCtx = document.getElementById('mostsolditemchart').getContext('2d');
 
-    var chart = new Chart(ctx, {
+    var mostSoldChart = new Chart(mostSoldCtx, {
         type: 'bar',
         data: {
             labels: prodNameArray,
