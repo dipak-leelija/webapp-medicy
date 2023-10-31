@@ -4,11 +4,27 @@ class Admin extends DatabaseConnection{
 
 
 
-    function registration($Fname, $Lname, $username, $password, $email, $mobNo, $address, $city){
-        $register = " INSERT INTO `admin` (`fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `address`, `city`) VALUES ('$Fname', '$Lname', '$username', '$password', '$email', '$mobNo', '$address', '$city')";
-        $registerQuery = $this->conn->query($register);
-        return $register;
-    }//eof registration function
+    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $address, $city) {
+        try {
+            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `address`, `city`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->conn->prepare($query);
+    
+            // Bind parameters
+            $stmt->bind_param("sssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $address, $city);
+    
+            if ($stmt->execute()) {
+                // Registration was successful
+                return "Registration successful";
+            } else {
+                // Registration failed
+                return "Registration failed";
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that may occur
+            return "Error: " . $e->getMessage();
+        }
+    }
+    
 
 
 
