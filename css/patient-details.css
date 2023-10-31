@@ -54,3 +54,22 @@
     border-radius:4px; 
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+
+.table {
+    width: 100%;
+    color: #858796;
+}
+/* Style for the toggle button */
+#toggleButton {
+    margin-top: -10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#toggleButton:hover {
+    background-color: #0056b3;
+}
