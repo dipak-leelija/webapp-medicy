@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <section style="justify-content:space-evenly;">
 
                 <a href="register.php">Register</a>
-                <a href="register.php">reset password</a>
+                <a href="reset-password.php">reset password</a>
             </section>
         </form>
     </main>
