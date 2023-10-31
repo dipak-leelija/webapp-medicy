@@ -5,8 +5,10 @@ require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'stockOut.class.php';
 
 $Products   = new Products;
+$StockOut   = new StockOut;
 
 if (isset($_POST['prodId'])) {
     $productId =  $_POST['prodId'];
@@ -18,5 +20,16 @@ if (isset($_POST['prodId'])) {
     }
     $prodName = json_encode($prodName);
     echo $prodName;
+}
+
+
+
+if (isset($_POST['dtRange'])) {
+    $dtRange =  new DateTime($_POST['dtRange']);
+    $curDate = new DateTime();
+    $interval = $curDate->diff($dtRange);
+    $daysDiff = $interval->days;
+    $dateRangeMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRange($daysDiff, $adminId);
+    echo json_encode($dateRangeMostStoldItems);
 }
 ?>
