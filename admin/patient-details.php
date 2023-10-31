@@ -174,7 +174,7 @@ $dataPoints1 = array(
                             </div>
                             <div class="graph-Chart">
                                 <!-- <div id="chartContainer" style="height: 250px; width: 100%;"></div> -->
-                                <canvas id="myChart" style="height: 250px; padding:8px; width: 100%;"></canvas>
+                                <canvas id="myChart"></canvas>
                             </div>
                             <div class="table-div">
                                 <div class="left-table">
@@ -224,7 +224,7 @@ $dataPoints1 = array(
                                                     <tr class="appointment-row">
                                                         <td><?= $billId ?></td>
                                                         <td><?= $date ?></td>
-                                                        <td>-</td>
+                                                        <td><a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id='.$billId.'"><i class="fa fa-link" aria-hidden="true"></i></a></td>
                                                     </tr>
                                             <?php
 
@@ -300,10 +300,10 @@ $dataPoints1 = array(
             borderColors.push(randomColors.borderColor);
         }
 
+        /// bar chart for most taken test///
         const ctx = document.getElementById('myChart');
-
         new Chart(ctx, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
                 labels: labels,
                 datasets: [{
@@ -311,18 +311,20 @@ $dataPoints1 = array(
                     data: data,
                     backgroundColor: backgroundColors,
                     // borderColor: borderColors,
-                    borderWidth: 1
+                    // borderWidth: 1
+                    hoverOffset: 1
                 }]
             },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+            // options: {
+            //     scales: {
+            //         y: {
+            //             beginAtZero: true
+            //         }
+            //     }
+            // }
         });
-        
+
+        //
 
         ///toggle button ///
         document.addEventListener("DOMContentLoaded", function() {

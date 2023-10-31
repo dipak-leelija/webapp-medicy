@@ -22,7 +22,7 @@ class LabReport extends DatabaseConnection
     function patientTest($testId)
     {
         try {
-
+            // $data = null;
             $sql = "SELECT * FROM `sub_tests` where `id` = '$testId'";
             $query = $this->conn->query($sql);
             while ($result = $query->fetch_object()) {
@@ -47,7 +47,7 @@ class LabReport extends DatabaseConnection
             echo $e->getMessage();
         }
     }
-        /// LabReport data fetch///
+        /// LabReport data fetch by id///
     function labReportShow($billId){
 
         try{
@@ -56,6 +56,37 @@ class LabReport extends DatabaseConnection
             $query = $this->conn->query($sql);
             while ($result = $query->fetch_object()) {
                 $datas = $result;
+            }
+            $dataset = json_encode($datas);
+            return $dataset;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+    /// labReport fetch by reportId ///
+    function labReportbyReportId($reportId){
+        try{
+            $datas = null;
+            $sql = "SELECT * FROM `lab_report` where `id`='$reportId'";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $datas = $result;
+            }
+            $dataset = json_encode($datas);
+            return $dataset;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    // LabReport fetch //
+    function labreportfetch(){
+        try{
+            $datas = array();
+            $sql = "SELECT * FROM `lab_report` ";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $datas[] = $result;
             }
             $dataset = json_encode($datas);
             return $dataset;
@@ -89,7 +120,7 @@ class LabReport extends DatabaseConnection
         }
     }
 
-    ///lab report data fetch ///
+    ///lab report data fetch by Id ///
     function labReportDetailbyId($reportId){
         try{
             $datas = array();
@@ -105,5 +136,20 @@ class LabReport extends DatabaseConnection
         }
     }
 
+    ///lab report data fetch///
+    function labReportDetail(){
+        try{
+            $datas = array();
+            $sql = "SELECT * FROM `lab_report_detail`";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $datas[] = $result;
+            }
+            $dataset = json_encode($datas);
+            return $dataset;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
     
 }
