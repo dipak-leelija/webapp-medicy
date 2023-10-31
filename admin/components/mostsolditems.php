@@ -13,9 +13,9 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div id="dtPickerDiv" style="display: none; margin-right:1rem;">
+        <div id="mostSoldDtPickerDiv" style="display: none; margin-right:1rem;">
             <input type="date" id="mostSoldDateInput">
-            <button class="btn btn-sm btn-primary" id="added_on" onclick="mostSoldItemsChkDate()" style="height: 2rem;">Find</button>
+            <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDate()" style="height: 2rem;">Find</button>
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -50,28 +50,13 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
 
 <script>
 
-    function mostSoldItemsChkDate(){
-        var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
-        var dataToSend = `dtRange=${mostSolddatePicker}`;
-
-        var xmlhttp = new XMLHttpRequest();
-        mostSoldDtPkrUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
-        xmlhttp.open("POST", mostSoldDtPkrUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(dataToSend);
-        var mostSoldDataInDtRange = xmlhttp.responseText;
-
-        console.log(mostSoldDataInDtRange);
-        updateMostSoldData(JSON.parse(mostSoldDataInDtRange));
-    }
-
-
-    function updateMostSoldData(mostSold) {
+function updateMostSoldData(mostSold) {
+    console.log(mostSold);
         mostSoldChart.data.datasets[0].data = mostSold.map(item => item.total_sold);
 
         var productIds = mostSold.map(item => item.product_id);
         productIds = JSON.stringify(productIds);
-        var dataToSend = `prodId=${productIds}`;
+        var dataToSend = `mostSoldProdId=${productIds}`;
 
         var xmlhttp = new XMLHttpRequest();
         prodNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
@@ -87,20 +72,36 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
 
 
 
+    function mostSoldItemsChkDate(){
+        var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
+        var dataToSend = `mostSoldDtRange=${mostSolddatePicker}`;
+
+        var xmlhttp = new XMLHttpRequest();
+        mostSoldDtPkrUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
+        xmlhttp.open("POST", mostSoldDtPkrUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(dataToSend);
+        var mostSoldDataInDtRange = xmlhttp.responseText;
+
+        updateMostSoldData(JSON.parse(mostSoldDataInDtRange));
+    }
+
+
+    
+
     function mostStoldItemCheck(id) {
-        console.log(id);
         if (id == 'mostLst7') {
-            document.getElementById('dtPickerDiv').style.display = 'none';
+            document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
             updateMostSoldData(<?php echo json_encode($weeklyMostStoldItems); ?>);
         }
 
         if (id == 'mostLst30') {
-            document.getElementById('dtPickerDiv').style.display = 'none';
+            document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
             updateMostSoldData(<?php echo json_encode($monthlyMostStoldItems); ?>);
         }
 
         if (id == 'mostLstdt') {
-            document.getElementById('dtPickerDiv').style.display = 'block';
+            document.getElementById('mostSoldDtPickerDiv').style.display = 'block';
         }
     }
 
@@ -109,7 +110,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
     var mostSoldData = <?php echo json_encode($dailyMostStoldItems); ?>;
     var productIds = mostSoldData.map(item => item.product_id);
     productIds = JSON.stringify(productIds);
-    var dataToSend = `prodId=${productIds}`;
+    var dataToSend = `mostSoldProdId=${productIds}`;
 
 
     var xmlhttp = new XMLHttpRequest();

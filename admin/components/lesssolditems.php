@@ -17,9 +17,9 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div id="dtPickerDiv" style="display: none;">
-            <input type="date" id="dateInput">
-            <button class="btn btn-sm btn-primary" id="added_on" onclick="lessSoldItemsChkDate()" style="height: 2rem;">Find</button>
+        <div id="lessSoldDtPickerDiv" style="display: none;">
+            <input type="date" id="lessSoldDateInput">
+            <button class="btn btn-sm btn-primary" onclick="lessSoldItemsChkDate()" style="height: 2rem;">Find</button>
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -50,41 +50,42 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>
 
 <script>
+
+        
+    function updateLessSoldData(lessSoldData) {
+            lessSoldChart.data.datasets[0].data = lessSoldData.map(item => item.total_sold);
+
+            var productIds = lessSoldData.map(item => item.product_id);
+            productIds = JSON.stringify(productIds);
+            var dataToSend = `lessSoldProdId=${productIds}`;
+
+            var xmlhttp = new XMLHttpRequest();
+            prodNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
+            xmlhttp.open("POST", prodNameUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(dataToSend);
+            var prodNameArray = xmlhttp.responseText;
+            prodNameArray = JSON.parse(prodNameArray);
+
+            lessSoldChart.data.labels = prodNameArray;
+            lessSoldChart.update();
+        }
+
+
+
+
     function lessSoldItemsChkDate(){
-        var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
-        var dataToSend = `dtRange=${mostSolddatePicker}`;
+        var lessSolddatePicker = document.getElementById('lessSoldDateInput').value;
+        var dataToSend = `lessSoldDtRange=${lessSolddatePicker}`;
 
         var xmlhttp = new XMLHttpRequest();
-        mostSoldDtPkrUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
-        xmlhttp.open("POST", mostSoldDtPkrUrl, false);
+        lessSoldDtPkrUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
+        xmlhttp.open("POST", lessSoldDtPkrUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(dataToSend);
-        var mostSoldDataInDtRange = xmlhttp.responseText;
-
-        console.log(mostSoldDataInDtRange);
-        updateData(JSON.parse(mostSoldDataInDtRange));
-    }
-
-
-
-    function updateLessSoldData(data) {
-        console.log(data);
-        chart.data.datasets[0].data = data.map(item => item.total_sold);
-
-        var productIds = data.map(item => item.product_id);
-        productIds = JSON.stringify(productIds);
-        var dataToSend = `prodId=${productIds}`;
-
-        var xmlhttp = new XMLHttpRequest();
-        prodNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
-        xmlhttp.open("POST", prodNameUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(dataToSend);
-        var prodNameArray = xmlhttp.responseText;
-        prodNameArray = JSON.parse(prodNameArray);
-
-        chart.data.labels = prodNameArray;
-        chart.update();
+        var lessSoldDataInDtRange = xmlhttp.responseText;
+        console.log(lessSoldDataInDtRange),
+        updateLessSoldData(JSON.parse(lessSoldDataInDtRange));
     }
 
 
@@ -94,17 +95,17 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
     function lessSoldItemChk(id) {
         console.log(id);
         if (id == 'lessLst7') {
-            document.getElementById('dtPickerDiv').style.display = 'none';
-            updateMostSoldData(<?php echo json_encode($weeklyLeastStoldItems); ?>);
+            document.getElementById('lessSoldDtPickerDiv').style.display = 'none';
+            updateLessSoldData(<?php echo json_encode($weeklyLeastStoldItems); ?>);
         }
 
         if (id == 'lessLst30') {
-            document.getElementById('dtPickerDiv').style.display = 'none';
-            updateMostSoldData(<?php echo json_encode($monthlyLeastStoldItems); ?>);
+            document.getElementById('lessSoldDtPickerDiv').style.display = 'none';
+            updateLessSoldData(<?php echo json_encode($monthlyLeastStoldItems); ?>);
         }
 
         if (id == 'lessLstDt') {
-            document.getElementById('dtPickerDiv').style.display = 'block';
+            document.getElementById('lessSoldDtPickerDiv').style.display = 'block';
         }
     }
 
@@ -115,7 +116,7 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
     let data = <?php echo json_encode($dailyLeastStoldItems); ?>;
     var productIds = data.map(item => item.product_id);
     productIds = JSON.stringify(productIds);
-    var dataToSend = `prodId=${productIds}`;
+    var dataToSend = `lessSoldProdId=${productIds}`;
 
 
     var xmlhttp = new XMLHttpRequest();
@@ -130,7 +131,7 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
     var ctx = document.getElementById('lesssolditemchart').getContext('2d');
 
-    var chart = new Chart(ctx, {
+    var lessSoldChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: prodNameArray,
@@ -151,42 +152,4 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
         }
     });
 
-
 </script>
-<!-- 
-<script>
-        // Your PHP data
-        var data = [
-            { product_id: 'PR928140071769', total_sold: 9 },
-            { product_id: 'PR146231800947', total_sold: 5 },
-            { product_id: 'PR618347790083', total_sold: 5 },
-            // Add the rest of your data here
-        ];
-
-        // Extract product IDs and total sold values
-        var productIds = data.map(item => item.product_id);
-        var totalSold = data.map(item => item.total_sold);
-
-        // Create a bar chart using Chart.js
-        var ctx = document.getElementById('barChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: productIds,
-                datasets: [{
-                    label: 'Total Sold',
-                    data: totalSold,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script> -->
