@@ -169,8 +169,7 @@ $dataPoints1 = array(
                                     </div>
                                 </div>
                                 <div class="main-inforight">
-                                    <div id="chartContainer1" style="height: 167px; width: 100%;"></div>
-                                    <!-- <div id="chartContainer" style="height: 167px; width: 100%;"></div> -->
+                                    <canvas style="height: 167px; width: 100%;" id="pieChart"></canvas>
                                 </div>
                             </div>
                             <div class="graph-Chart">
@@ -210,27 +209,6 @@ $dataPoints1 = array(
                                                 <th scope="col">Report</th>
                                             </tr>
                                         </thead>
-                                        <!-- <tbody>
-                                            <?php
-                                            $showLabAppointmentsById = $LabAppointments->showLabAppointmentsById('PE725663040');
-
-                                            if ($showLabAppointmentsById) {
-                                                foreach ($showLabAppointmentsById as $appointment) {
-                                                    $billId = $appointment['bill_id'];
-                                                    $date = $appointment['test_date'];
-                                            ?>
-                                                    <tr>
-                                                        <td><?= $billId ?></td>
-                                                        <td><?= $date ?></td>
-                                                        <td>-</td>
-                                                    </tr>
-                                            <?php
-                                                }
-                                            } else {
-                                                echo "<tr><td colspan='3'>No lab appointments found for the specified patient.</td></tr>";
-                                            }
-                                            ?>
-                                        </tbody> -->
 
                                         <tbody>
                                             <?php
@@ -243,28 +221,21 @@ $dataPoints1 = array(
                                                     $date = $appointment['test_date'];
                                                     $count++;
                                             ?>
-                                                    <tr>
+                                                    <tr class="appointment-row">
                                                         <td><?= $billId ?></td>
                                                         <td><?= $date ?></td>
                                                         <td>-</td>
                                                     </tr>
                                             <?php
-                                                    if ($count >= 3) {
-                                                        break; // Stop after 3 rows
-                                                    }
-                                                }
 
-                                                if ($count > 3) {
-                                                    echo '<tr id="collapseRow" style="display: none;"><td colspan="3"></td></tr>';
-                                                    echo '<tr id="toggleButtonRow"><td colspan="3"><button class="btn btn-link" onclick="toggleRows()">Show All</button></td></tr>';
                                                 }
-                                            } else {
-                                                // Handle case when no lab appointments are found
-                                                echo "<tr><td colspan='3'>No lab appointments found for the specified patient.</td></tr>";
                                             }
                                             ?>
                                         </tbody>
                                     </table>
+                                    <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary btn-sm" id="toggleButton">More...</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -351,14 +322,28 @@ $dataPoints1 = array(
                 }
             }
         });
+        
 
-        function toggleRows() {
-            var collapseRow = document.getElementById("collapseRow");
-            collapseRow.style.display = (collapseRow.style.display === "none") ? "" : "none";
+        ///toggle button ///
+        document.addEventListener("DOMContentLoaded", function() {
+            var rows = document.querySelectorAll(".appointment-row");
+            var toggleButton = document.getElementById("toggleButton");
 
-            var toggleButtonRow = document.getElementById("toggleButtonRow");
-            toggleButtonRow.style.display = (toggleButtonRow.style.display === "none") ? "" : "none";
-        }
+            // Initially hide all rows except the first three
+            for (var i = 3; i < rows.length; i++) {
+                rows[i].style.display = "none";
+            }
+
+            toggleButton.addEventListener("click", function() {
+                for (var i = 3; i < rows.length; i++) {
+                    if (rows[i].style.display === "none") {
+                        rows[i].style.display = "table-row";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            });
+        });
     </script>
 </body>
 
