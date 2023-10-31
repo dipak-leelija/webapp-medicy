@@ -10,8 +10,10 @@ require_once CLASS_DIR.'stockOut.class.php';
 $Products   = new Products;
 $StockOut   = new StockOut;
 
-if (isset($_POST['prodId'])) {
-    $productId =  $_POST['prodId'];
+
+//// ============ most sold items ==================
+if (isset($_POST['mostSoldProdId'])) {
+    $productId =  $_POST['mostSoldProdId'];
     $productId = json_decode($productId);
     $prodName = array();
     for($i = 0; $i<count($productId); $i++){
@@ -24,12 +26,39 @@ if (isset($_POST['prodId'])) {
 
 
 
-if (isset($_POST['dtRange'])) {
-    $dtRange =  new DateTime($_POST['dtRange']);
+if (isset($_POST['mostSoldDtRange'])) {
+    $dtRange =  new DateTime($_POST['mostSoldDtRange']);
     $curDate = new DateTime();
     $interval = $curDate->diff($dtRange);
     $daysDiff = $interval->days;
     $dateRangeMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRange($daysDiff, $adminId);
     echo json_encode($dateRangeMostStoldItems);
 }
+
+
+//// ============= less sold items ===================
+if (isset($_POST['lessSoldProdId'])) {
+    $productId =  $_POST['lessSoldProdId'];
+    $productId = json_decode($productId);
+    $prodName = array();
+    for($i = 0; $i<count($productId); $i++){
+        $proData = $Products->showProductsById($productId[$i]);
+        array_push($prodName, $proData[0]['name']);
+    }
+    $prodName = json_encode($prodName);
+    echo $prodName;
+}
+
+
+
+if (isset($_POST['lessSoldDtRange'])) {
+    $dtRange =  new DateTime($_POST['lessSoldDtRange']);
+    $curDate = new DateTime();
+    $interval = $curDate->diff($dtRange);
+    $daysDiff = $interval->days;
+    $dateRangeMostStoldItems = $StockOut->lessSoldStockOutDataGroupByDtRange($daysDiff, $adminId);
+    echo json_encode($dateRangeMostStoldItems);
+    // echo $daysDiff;
+}
+
 ?>
