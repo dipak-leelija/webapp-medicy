@@ -203,16 +203,16 @@ if ($_SESSION['ADMIN'] == false) {
                     <!-- ================ FORTH ROW ROW ================ -->
                     <div class="row">
 
-                        <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="col-xl-6 col-md-6 mb-4">
                             <?php require_once PORTAL_COMPONENT . "mostsolditems.php"; ?>
                         </div>
                         <div class="col-xl-6 col-md-6 mb-4">
                             <?php require_once PORTAL_COMPONENT . "lesssolditems.php"; ?>
                         </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-6 col-md-6 mb-4">
                             <?php require_once PORTAL_COMPONENT . "mostvisitedcustomer.php"; ?>
                         </div>
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-6 col-md-6 mb-4">
                             <?php require_once PORTAL_COMPONENT . "highestpurchasedcustomer.php"; ?>
                         </div>
                         
