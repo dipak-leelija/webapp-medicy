@@ -8,9 +8,10 @@ $dailyMostStoldItems = $StockOut->stockOutDataGroupByDay($adminId);
 // print_r($dailyMostStoldItems);
 
 $weeklyMostStoldItems = $StockOut->stockOutDataGroupByWeek($adminId);
-
+// print_r($weeklyMostStoldItems);
 
 $monthlyMostStoldItems = $StockOut->stockOutDataGroupByMonth($adminId);
+// print_r($monthlyMostStoldItems);
 ?>
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
@@ -26,9 +27,9 @@ $monthlyMostStoldItems = $StockOut->stockOutDataGroupByMonth($adminId);
                 <b>...</b>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button" id="lst7" onclick="mostSoldItems(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="lst30" onclick="mostSoldItems(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item" type="button" id="lstdt" onclick="mostSoldItems(this.id)">By Date</button>
+                <button class="dropdown-item" type="button" id="lst7">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="lst30">Last 30 DAYS</button>
+                <button class="dropdown-item" type="button" id="lstdt">By Date</button>
             </div>
         </div>
     </div>
@@ -37,76 +38,78 @@ $monthlyMostStoldItems = $StockOut->stockOutDataGroupByMonth($adminId);
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                     most sold 10 items</div>
-                <div style="width: 80%; margin: 0 auto;">
-                    <canvas id="barChart"></canvas>
-                </div>
+            </div>
+            <div style="width: 100%; margin: 0 auto;">
+                <canvas id="mostsolditemchart"></canvas>
             </div>
         </div>
     </div>
 </div>
 
 <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>
-
 <script>
-    const mostSoldItems = (id) => {
-        var xmlhttp = new XMLHttpRequest();
-        if (id == 'lst7') {
-            lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstWeek=' + id;
-            xmlhttp.open("GET", lastThirtyDaysUrl, false);
-            xmlhttp.send(null);
-            document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
-            document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
-        }
 
-        if (id == 'lst30') {
-            lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstMnth=' + id;
-            xmlhttp.open("GET", lastThirtyDaysUrl, false);
-            xmlhttp.send(null);
-            document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
-            document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
-        }
-
-        if (id == 'lstdt') {
-            const dateInput = document.getElementById('dtPickerDiv');
-            dateInput.style.display = 'block';
-            dateInput.focus();
-        }
-    }
 </script>
 
 <script>
-        // Your PHP data
-        var data = [
-            { product_id: 'PR928140071769', total_sold: 9 },
-            { product_id: 'PR146231800947', total_sold: 5 },
-            { product_id: 'PR618347790083', total_sold: 5 },
-            // Add the rest of your data here
-        ];
+    let isClicked1 = false;
+    const button1 = document.getElementById("lst7");
+    button1.addEventListener("click", function() {
+        isClicked1 = true;
+        updateData();
+    });
 
-        // Extract product IDs and total sold values
-        var productIds = data.map(item => item.product_id);
-        var totalSold = data.map(item => item.total_sold);
+    
+    function updateData() {
 
-        // Create a bar chart using Chart.js
-        var ctx = document.getElementById('barChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: productIds,
-                datasets: [{
-                    label: 'Total Sold',
-                    data: totalSold,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+        // var salesData24hrs = <?php echo json_encode($weeklyMostStoldItems); ?>;
+        // var salesData7 = <?php echo json_encode($weeklyMostStoldItems); ?>;
+        // var salesData30 = <?php echo json_encode($weeklyMostStoldItems); ?>;
+        // var data = salesData;
+
+        if (isClicked1) {
+            data = <?php echo json_encode($weeklyMostStoldItems); ?>;
+            console.log("Button is clicked after page load");
+            chart.update();
+        }
+    }
+
+    // ========= chart control area ============= \\
+    let data = <?php echo json_encode($weeklyMostStoldItems); ?>;
+    var productIds = data.map(item => item.product_id);
+    productIds = JSON.stringify(productIds);
+    var dataToSend = `prodId=${productIds}`;
+
+    var xmlhttp = new XMLHttpRequest();
+    prodName = `../admin/ajax/components-most-sold-items.ajax.php`;
+    xmlhttp.open("POST", prodName, false);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send(dataToSend);
+    var prodNameArray = xmlhttp.responseText;
+    prodNameArray = JSON.parse(prodNameArray);
+
+    var totalSold = data.map(item => item.total_sold);
+
+    var ctx = document.getElementById('mostsolditemchart').getContext('2d');
+
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: prodNameArray,
+            datasets: [{
+                label: 'Total Sold',
+                data: totalSold,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
-    </script>
+        }
+    });
+</script>
