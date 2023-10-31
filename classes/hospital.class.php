@@ -5,23 +5,65 @@ require_once 'dbconnect.php';
 
 class HelthCare extends DatabaseConnection{
 
+    function addClinDetails($val1, $val2){
 
-    function showhelthCare(){
-
-        $selectHospital = "SELECT * FROM hospital_info";
-        $query = $this->conn->query($selectHospital);
+        $addClinicData = "INSERT INTO `clinic_info`(`hospital_id`, `logo`, `hospital_name`, `address_1`, `address_2`, `city`, `dist`, `pin`, `health_care_state`, `hospital_email`, `hospital_phno`, `appointment_help_line`, `main_desc`, `footer_desc`, `book_appointment_text`, `subscribe_text`, `admin_id`, `added_on`) VALUES ('$val1','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2')";
+        $query = $this->conn->query($addClinicData);
         while($result = $query->fetch_array()){
             $hospitalData[] = $result;
         }
         return $hospitalData;
 
     } //showHospital function end
+
+
+
+
+
+    function showhelthCare($adminId) {
+        try {
+            $selectHospital = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
+            $stmt = $this->conn->prepare($selectHospital);
+            $stmt->bind_param("s", $adminId);
+    
+            $hospitalData = array();
+    
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                while ($row = $result->fetch_assoc()) {
+                    $hospitalData[] = $row;
+                }
+                return $hospitalData;
+            } else {
+                return null; // Return null if the query execution fails
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that may occur
+            return null; // Return null in case of an error
+        }
+    }
+    
+
+
+
+
+
+    function showhelthCarePrimary(){
+        $selectPrimaryHospital = "SELECT * FROM clinic_info WHERE `admin_id` = 'primary'";
+        $query = $this->conn->query($selectPrimaryHospital);
+        while($result = $query->fetch_array()){
+            $primaryHospitalData[] = $result;
+        }
+        return $primaryHospitalData;
+
+    } //showHospital function end
  
+
 
 
     function updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo){
 
-        $updateHealthCare = "UPDATE  hospital_info SET logo = '$imgFolder', hospital_name = '$healthCareName', address_1 = '$healthCareAddress1', address_2 = '$healthCareAddress2', city = '$healthCareCity', dist = '$healthCareDist', pin = '$healthCarePin', health_care_state = '$healthCareState', hospital_email = '$healthCareEmail', hospital_phno = '$healthCareHelpLineNo', appointment_help_line = '$healthCareApntBookingNo'";
+        $updateHealthCare = "UPDATE  clinic_info SET logo = '$imgFolder', hospital_name = '$healthCareName', address_1 = '$healthCareAddress1', address_2 = '$healthCareAddress2', city = '$healthCareCity', dist = '$healthCareDist', pin = '$healthCarePin', health_care_state = '$healthCareState', hospital_email = '$healthCareEmail', hospital_phno = '$healthCareHelpLineNo', appointment_help_line = '$healthCareApntBookingNo'";
 
         // echo $updateHealthCare.$this->conn->error;
         // exit;
@@ -36,7 +78,7 @@ class HelthCare extends DatabaseConnection{
 
         // used in text update
         function updateHealthCareDesc($WhatWeDoText, $appointmentBookText, $subscribeText, $footerText){
-            $updateDsc = "UPDATE hospital_info SET main_desc = '$WhatWeDoText', footer_desc = '$footerText', book_appointment_text = '$appointmentBookText', subscribe_text = '$subscribeText'";
+            $updateDsc = "UPDATE clinic_info SET main_desc = '$WhatWeDoText', footer_desc = '$footerText', book_appointment_text = '$appointmentBookText', subscribe_text = '$subscribeText'";
             
             $updateDscQuery = $this->conn->query($updateDsc);
             // echo $updateDscQuery.$this->conn->error;
