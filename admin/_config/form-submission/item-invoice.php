@@ -252,7 +252,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$showhelthCare = $HelthCare->showhelthCare();
+$showhelthCare = $HelthCare->showhelthCarePrimary();
 foreach ($showhelthCare as $rowhelthCare) {
     $healthCareName     = $rowhelthCare['hospital_name'];
     $healthCareAddress1 = $rowhelthCare['address_1'];
