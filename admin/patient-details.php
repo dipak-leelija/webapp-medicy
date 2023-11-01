@@ -108,7 +108,9 @@ $dataPoints1 = array(
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -144,74 +146,118 @@ $dataPoints1 = array(
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">List of Patients</h6>
-                            <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
+                            <a data-toggle="modal" data-target="#appointmentSelection"><button
+                                    class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
                         </div>
                         <div class="card-body">
-                            <div class="main-infodiv">
-                                <div class="main-infoleft">
-                                    <div class="infoleft">
-                                        <div>
-                                            <p><samp>Name &nbsp &nbsp&nbsp: <small><?= $Name ?></small></samp></p>
-                                            <p><samp>Age &nbsp &nbsp &nbsp: <small><?= $Age ?></small></spam>
-                                            </p>
-                                            <p><samp>Sex &nbsp &nbsp &nbsp: <small><?= $sex ?></small></spam>
-                                            </p>
-                                            <p><samp>Address &nbsp: <small><?= $address ?></small></spam>
-                                            </p>
+                            <div class="row">
+                                <div class="col-12 shadow-sm">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6 p-2">
+                                            <div class="d-flex justify-content-between">
+
+                                                <div>
+                                                    <table class="text-sm">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Patient Id</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $Name ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $Name ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Age</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $Age ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Sex</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $sex ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Address</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $address ?></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div>
+                                                    <table class="text-sm">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Total Visits:</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $labVisited ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Last Visited</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $maxBillDate ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Amount Spend</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= ($spent) ? $spent : '0.0' ?></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p><samp>Times of visits: <small></small><?= $labVisited ?></samp></p>
-                                            <p><samp>Last Visited &nbsp&nbsp: <small><?= $maxBillDate ?></small></spam>
-                                            </p>
-                                            <p><samp>Amount spend &nbsp&nbsp: ₹ <small><?= ($spent) ? $spent : '0.0' ?></small></spam>
-                                            </p>
+
+                                        <div class="col-5 p-2">
+                                            <canvas style="height: 167px; width: 100%;" id="pieChart"></canvas>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="main-inforight">
-                                    <canvas style="height: 167px; width: 100%;" id="pieChart"></canvas>
-                                </div>
-                            </div>
-                            <div class="graph-Chart">
-                                <!-- <div id="chartContainer" style="height: 250px; width: 100%;"></div> -->
-                                <canvas id="myChart"></canvas>
-                            </div>
-                            <div class="table-div">
-                                <div class="left-table">
-                                    <p>List Of Invoice</p>
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Invoice</th>
-                                                <th scope="col">Bill Number</th>
-                                                <th scope="col">Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="right-table">
-                                    <p>List Of Test</p>
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <!-- <th scope="col">#</th> -->
-                                                <th scope="col">Bill Number</th>
-                                                <th scope="col">Date</th>
-                                                <th scope="col">Report</th>
-                                            </tr>
-                                        </thead>
 
-                                        <tbody>
-                                            <?php
+                                <div class="graph-Chart col-3">
+                                    <!-- <div id="chartContainer" style="height: 250px; width: 100%;"></div> -->
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                                <div class="table-div">
+                                    <div class="left-table">
+                                        <p>List Of Invoice</p>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Invoice</th>
+                                                    <th scope="col">Bill Number</th>
+                                                    <th scope="col">Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">1</th>
+                                                    <td>Mark</td>
+                                                    <td>Otto</td>
+                                                    <td>@mdo</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="right-table">
+                                        <p>List Of Test</p>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <!-- <th scope="col">#</th> -->
+                                                    <th scope="col">Bill Number</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Report</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <?php
                                             $showLabAppointmentsById = $LabAppointments->showLabAppointmentsById('PE725663040');
 
                                             if ($showLabAppointmentsById) {
@@ -221,24 +267,27 @@ $dataPoints1 = array(
                                                     $date = $appointment['test_date'];
                                                     $count++;
                                             ?>
-                                                    <tr class="appointment-row">
-                                                        <td><?= $billId ?></td>
-                                                        <td><?= $date ?></td>
-                                                        <td><a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id='.$billId.'"><i class="fa fa-link" aria-hidden="true"></i></a></td>
-                                                    </tr>
-                                            <?php
+                                                <tr class="appointment-row">
+                                                    <td><?= $billId ?></td>
+                                                    <td><?= $date ?></td>
+                                                    <td><a class="text-primary text-center" title="Print"
+                                                            href="test-report-generate.php?bill-id='.$billId.'"><i
+                                                                class="fa fa-link" aria-hidden="true"></i></a></td>
+                                                </tr>
+                                                <?php
 
                                                 }
                                             }
                                             ?>
-                                        </tbody>
-                                    </table>
-                                    <div class="d-flex justify-content-end">
-                                    <button class="btn btn-primary btn-sm" id="toggleButton">More...</button>
+                                            </tbody>
+                                        </table>
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-primary btn-sm" id="toggleButton">More...</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
 
@@ -273,79 +322,81 @@ $dataPoints1 = array(
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
 
     <script>
-        const labels = <?php echo json_encode(array_keys($occurrences)) ?>;
-        const data = <?php echo json_encode(array_values($occurrences)) ?>;
+    const labels = <?php echo json_encode(array_keys($occurrences)) ?>;
+    const data = <?php echo json_encode(array_values($occurrences)) ?>;
 
-        const getRandomColor = () => {
-            const r = Math.floor(Math.random() * 256);
-            const g = Math.floor(Math.random() * 256);
-            const b = Math.floor(Math.random() * 256);
-            const randomColor = `rgba(${r}, ${g}, ${b}, 0.2)`;
-            const borderColor = `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
-            return {
-                backgroundColor: randomColor,
-                borderColor: borderColor
-            };
+    const getRandomColor = () => {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        const randomColor = `rgba(${r}, ${g}, ${b}, 0.6)`;
+        const borderColor = `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
+        return {
+            backgroundColor: randomColor,
+            borderColor: borderColor
+        };
+    }
+
+    const backgroundColors = [];
+    const borderColors = [];
+
+    for (let i = 0; i < data.length; i++) {
+        const randomColors = getRandomColor();
+        backgroundColors.push(randomColors.backgroundColor);
+        borderColors.push(randomColors.borderColor);
+    }
+
+    /// bar chart for most taken test///
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Most taken Tests',
+                data: data,
+                backgroundColor: backgroundColors,
+                // borderColor: borderColors,
+                // borderWidth: 1
+                hoverOffset: 1
+            }]
+        },
+        // options: {
+        //     scales: {
+        //         y: {
+        //             beginAtZero: true
+        //         }
+        //     }
+        // }
+    });
+
+    //
+
+    ///toggle button ///
+    document.addEventListener("DOMContentLoaded", function() {
+        var rows = document.querySelectorAll(".appointment-row");
+        var toggleButton = document.getElementById("toggleButton");
+
+        // Initially hide all rows except the first three
+        for (var i = 3; i < rows.length; i++) {
+            rows[i].style.display = "none";
         }
 
-        const backgroundColors = [];
-        const borderColors = [];
-
-        for (let i = 0; i < data.length; i++) {
-            const randomColors = getRandomColor();
-            backgroundColors.push(randomColors.backgroundColor);
-            borderColors.push(randomColors.borderColor);
-        }
-
-        /// bar chart for most taken test///
-        const ctx = document.getElementById('myChart');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Most taken Tests',
-                    data: data,
-                    backgroundColor: backgroundColors,
-                    // borderColor: borderColors,
-                    // borderWidth: 1
-                    hoverOffset: 1
-                }]
-            },
-            // options: {
-            //     scales: {
-            //         y: {
-            //             beginAtZero: true
-            //         }
-            //     }
-            // }
-        });
-
-        //
-
-        ///toggle button ///
-        document.addEventListener("DOMContentLoaded", function() {
-            var rows = document.querySelectorAll(".appointment-row");
-            var toggleButton = document.getElementById("toggleButton");
-
-            // Initially hide all rows except the first three
+        toggleButton.addEventListener("click", function() {
             for (var i = 3; i < rows.length; i++) {
-                rows[i].style.display = "none";
-            }
-
-            toggleButton.addEventListener("click", function() {
-                for (var i = 3; i < rows.length; i++) {
-                    if (rows[i].style.display === "none") {
-                        rows[i].style.display = "table-row";
-                    } else {
-                        rows[i].style.display = "none";
-                    }
+                if (rows[i].style.display === "none") {
+                    rows[i].style.display = "table-row";
+                } else {
+                    rows[i].style.display = "none";
                 }
-            });
+            }
         });
+    });
     </script>
 </body>
 
