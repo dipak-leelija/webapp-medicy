@@ -231,10 +231,6 @@ const chekForm = () =>{
 ////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 const stockDetails = (productId, batchNo, itemId) => {
-    
-    console.log("item id : "+itemId);
-    console.log("product id : "+productId);
-    console.log("batch no : "+batchNo);
 
     var selectedItem = productId;
     var SelectedBatch = batchNo;

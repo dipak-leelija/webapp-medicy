@@ -325,6 +325,39 @@ class CurrentStock extends DatabaseConnection
 }
 
 
+
+
+
+
+function showCurrentStocByTwoCol($col1, $data1, $col2, $data2){
+    try {
+        $data = array();
+        $select = "SELECT * FROM current_stock WHERE $col1 = ? AND $col2 = ? AND `qty` > 0 ORDER BY added_on ASC";
+        $stmt = $this->conn->prepare($select);
+
+        if ($stmt) {
+            $stmt->bind_param("ss", $data1, $data2);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            while ($row = $result->fetch_array()) {
+                $data[] = $row;
+            }
+
+            $stmt->close();
+        } else {
+            echo "Statement preparation failed: " . $this->conn->error;
+        }
+
+        return $data;
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return null;
+    }
+}
+
+
+
 //=====================================================================================================
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
