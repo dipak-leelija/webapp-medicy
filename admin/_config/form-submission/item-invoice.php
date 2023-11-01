@@ -528,7 +528,7 @@ foreach ($showhelthCare as $rowhelthCare) {
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
         <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
-        <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button>
+        <button class="btn btn-primary shadow mx-2" onclick="goBack()">Go Back</button>
         <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
     </div>
     </div>
@@ -540,4 +540,10 @@ foreach ($showhelthCare as $rowhelthCare) {
 </body>
 <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
 
+<script>
+const goBack = () => {
+    window.location.href = '../../new-sales.php';
+}
+
+</script>
 </html>
