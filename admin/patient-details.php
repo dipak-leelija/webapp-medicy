@@ -47,8 +47,8 @@ $spent = 0;
 if (is_array($labBillingDetails) && !empty($labBillingDetails)) {
     foreach ($labBillingDetails as $row) {
         $spent = $row->paid_amount + $spent;
-        $billDate = $row->bill_date . "<br>";
-        $bill_ids[] = $row->bill_id . "<br>";
+        $billDate = $row->bill_date;
+        $bill_ids[] = $row->bill_id;
         $billDates[] = $billDate;
     }
     $maxBillDate = max($billDates);
@@ -83,13 +83,6 @@ foreach ($test_ids as $test_id) {
 // $uniqueSubTestNames = array_unique($subTestNames);
 ///bar chart for Most taken Tests as graph//
 $occurrences = array_count_values($subTestNames);
-
-///for pie chart ///
-$dataPoints1 = array(
-    array("label" => "Oxygen", "symbol" => "O", "y" => 46.6),
-    array("label" => "Silicon", "symbol" => "Si", "y" => 27.7),
-    array("label" => "Aluminium", "symbol" => "Al", "y" => 13.9),
-)
 
 
 ?>
@@ -162,7 +155,7 @@ $dataPoints1 = array(
                                                             <tr>
                                                                 <th>Patient Id</th>
                                                                 <td class="px-2">:</td>
-                                                                <td><?= $Name ?></td>
+                                                                <td><?= $patientId ?></td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Name</th>
@@ -222,7 +215,8 @@ $dataPoints1 = array(
                                     <!-- <div id="chartContainer" style="height: 250px; width: 100%;"></div> -->
                                     <canvas id="myChart"></canvas>
                                 </div>
-                                <div class="table-div">
+
+                                <div class="col-12 table-div">
                                     <div class="left-table">
                                         <p>List Of Invoice</p>
                                         <table class="table table-hover">
@@ -249,7 +243,6 @@ $dataPoints1 = array(
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    <!-- <th scope="col">#</th> -->
                                                     <th scope="col">Bill Number</th>
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Report</th>
@@ -322,9 +315,6 @@ $dataPoints1 = array(
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
 
     <script>
     const labels = <?php echo json_encode(array_keys($occurrences)) ?>;
