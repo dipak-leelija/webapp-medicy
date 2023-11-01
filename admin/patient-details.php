@@ -11,6 +11,8 @@ require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'labAppointments.class.php';
+require_once CLASS_DIR . 'report-generate.class.php';
+require_once CLASS_DIR . 'stockOut.class.php';
 
 
 $patientId = url_dec($_GET['patient']);
@@ -20,8 +22,10 @@ $LabBilling     = new LabBilling;
 $LabBillDetails = new LabBillDetails();
 $SubTests       = new SubTests();
 $LabAppointments = new LabAppointments();
+$LabReport      = new LabReport;
+$StockOut       = new StockOut;
 
-$patientDetails = json_decode($Patients->patientsDisplayByPId('PE725663040'));
+$patientDetails = json_decode($Patients->patientsDisplayByPId($patientId));
 
 // print_r($patientDetails) . "<br>";
 $Name = $patientDetails->name;
@@ -31,16 +35,36 @@ $address = $patientDetails->address_1;
 $labVisited = $patientDetails->lab_visited;
 $lastVisited = $patientDetails->added_on;
 
-// if ($patientId) {
-//     $patientCount = $Patients->patientVisitCount($Name, $patientId);
-//     // print_r($patientCount['count']);
-//     // echo $patientCount['Last_Visited'];
-// }
 
+/// list of invoice with bill from stokOut table ///
+$stockOutdatas = $StockOut->stockOutByPatientId($patientId);
+$stockOutdatas = json_decode($stockOutdatas, true);
+$invoiceId = [];
+foreach ($stockOutdatas as $stockData) {
+    echo $invoiceId[] = $stockData['invoice_id'];
+}
+/// find itemname from stockOutDetils for pie chart ///
+$stockOutDetailsBYinvoiveID = $StockOut->stockOutDetailsBYinvoiveID($invoiceId);
+$stockDetails = json_decode($stockOutDetailsBYinvoiveID);
+$itemNames = [];
+foreach ($stockDetails as $details) {
+    echo $itemNames[] = $details->item_name;
+} 
+$occurrenceschart2 = array_count_values($itemNames);
+//end...
+
+//=====find labreport by Id=====//
+$labreportfetch = $LabReport->labreportfetch();
+$labReportData = json_decode($labreportfetch, true);
+// if ($labReportData) {
+//     foreach ($labReportData as $entry) {
+//         // $reportId  = $entry['id'] . "<br>";
+//         // $patientId = $entry['patient_id'] . "<br>";
+//     }
+// } ////end....
 
 ///........ for amount spend and find bill_id for finding test_id....... ///
-$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId('PE725663040');
-
+$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId($patientId);
 $bill_ids = [];
 $billDates = [];
 $spent = 0;
@@ -52,10 +76,6 @@ if (is_array($labBillingDetails) && !empty($labBillingDetails)) {
         $billDates[] = $billDate;
     }
     $maxBillDate = max($billDates);
-} elseif ($labBillingDetails === null) {
-    echo "No results found.";
-} else {
-    echo "Error: " . $labBillingDetails;
 } //--end--//
 
 ///..... find test_id from bill_id for finding sub_test....//////
@@ -80,16 +100,9 @@ foreach ($test_ids as $test_id) {
         }
     }
 }
-// $uniqueSubTestNames = array_unique($subTestNames);
-///bar chart for Most taken Tests as graph//
 $occurrences = array_count_values($subTestNames);
 
-///for pie chart ///
-$dataPoints1 = array(
-    array("label" => "Oxygen", "symbol" => "O", "y" => 46.6),
-    array("label" => "Silicon", "symbol" => "Si", "y" => 27.7),
-    array("label" => "Aluminium", "symbol" => "Al", "y" => 13.9),
-)
+
 
 
 ?>
@@ -169,11 +182,10 @@ $dataPoints1 = array(
                                     </div>
                                 </div>
                                 <div class="main-inforight">
-                                    <canvas style="height: 167px; width: 100%;" id="pieChart"></canvas>
+                                    <canvas id="chart2" style="height: 167px; width: 100%;" id="pieChart"></canvas>
                                 </div>
                             </div>
                             <div class="graph-Chart">
-                                <!-- <div id="chartContainer" style="height: 250px; width: 100%;"></div> -->
                                 <canvas id="myChart"></canvas>
                             </div>
                             <div class="table-div">
@@ -182,19 +194,25 @@ $dataPoints1 = array(
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th scope="col">#</th>
                                                 <th scope="col">Invoice</th>
                                                 <th scope="col">Bill Number</th>
                                                 <th scope="col">Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th scope="row">1</th>
-                                                <td>Mark</td>
+                                                <td><?= $invoiceId ?></td>
                                                 <td>Otto</td>
                                                 <td>@mdo</td>
-                                            </tr>
+                                            </tr> -->
+                                            <?php foreach ($stockOutdatas as $index => $stockOutData) : ?>
+                                                <tr>
+                                                    <td><?= $stockOutData['invoice_id'] ?></td>
+                                                    <td></td>
+                                                    <td><?= $stockOutData['bill_date'] ?></td>
+                                                </tr>
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -212,29 +230,42 @@ $dataPoints1 = array(
 
                                         <tbody>
                                             <?php
-                                            $showLabAppointmentsById = $LabAppointments->showLabAppointmentsById('PE725663040');
+                                            $labReportData = json_decode($labreportfetch, true);
+                                            $showLabAppointmentsById = $LabAppointments->showLabAppointmentsById($patientId);
 
-                                            if ($showLabAppointmentsById) {
-                                                $count = 0;
-                                                foreach ($showLabAppointmentsById as $appointment) {
-                                                    $billId = $appointment['bill_id'];
-                                                    $date = $appointment['test_date'];
-                                                    $count++;
+                                            if ($labReportData && $showLabAppointmentsById) {
+                                                // Create an associative array with patient_id as key and reportId as value
+                                                $reportIdMap = [];
+                                                foreach ($labReportData as $entry) {
+                                                    $reportIdMap[$entry['patient_id']] = $entry['id'];
+                                                }
+
+                                                if ($showLabAppointmentsById) {
+                                                    $count = 0;
+                                                    foreach ($showLabAppointmentsById as $appointment) {
+                                                        // $date = $appointment['test_date'];
+                                                        $patient_id = $appointment['patient_id'];
+                                                        $bill_id    = $appointment['bill_id'];
+                                                        $test_date  = $appointment['test_date'];
+                                                        $count++;
+                                                        if (isset($reportIdMap[$patient_id])) {
+                                                            $reportId = $reportIdMap[$patient_id];
                                             ?>
-                                                    <tr class="appointment-row">
-                                                        <td><?= $billId ?></td>
-                                                        <td><?= $date ?></td>
-                                                        <td><a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id='.$billId.'"><i class="fa fa-link" aria-hidden="true"></i></a></td>
-                                                    </tr>
+                                                            <tr class="appointment-row">
+                                                                <td><?= $bill_id ?></td>
+                                                                <td><?= $test_date ?></td>
+                                                                <td><a class="text-primary text-center" title="Print" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
+                                                            </tr>
                                             <?php
-
+                                                        }
+                                                    }
                                                 }
                                             }
                                             ?>
                                         </tbody>
                                     </table>
                                     <div class="d-flex justify-content-end">
-                                    <button class="btn btn-primary btn-sm" id="toggleButton">More...</button>
+                                        <button class="btn btn-primary btn-sm" id="toggleButton">More...</button>
                                     </div>
                                 </div>
                             </div>
@@ -283,7 +314,7 @@ $dataPoints1 = array(
             const r = Math.floor(Math.random() * 256);
             const g = Math.floor(Math.random() * 256);
             const b = Math.floor(Math.random() * 256);
-            const randomColor = `rgba(${r}, ${g}, ${b}, 0.2)`;
+            const randomColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
             const borderColor = `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
             return {
                 backgroundColor: randomColor,
@@ -322,6 +353,29 @@ $dataPoints1 = array(
             //         }
             //     }
             // }
+        });
+
+        const labels2 = <?php echo json_encode(array_keys($occurrenceschart2)) ?>;
+        const data2 = <?php echo json_encode(array_keys($occurrenceschart2)) ?>;
+        const ctx2 = document.getElementById('chart2');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    label: '# Most purches',
+                    backgroundColor: backgroundColors,
+                    data: data2,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
 
         //

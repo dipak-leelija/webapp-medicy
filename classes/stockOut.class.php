@@ -82,6 +82,22 @@ class StockOut extends DatabaseConnection
 
 
 
+    ///== Stock out display by patient ID===//
+    function stockOutByPatientId($patientId)
+    {
+        try {
+            $data = [];
+            $sql = "SELECT * FROM `stock_out` WHERE `customer_id`= '$patientId'";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $data[] = $result;
+            }
+            $dataset = json_encode($data);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
 
     // fethc sold amount on admin id
@@ -512,6 +528,24 @@ class StockOut extends DatabaseConnection
 
 
 
+    ///== fint stokOut details by invoice Id ==/// 
+    function stockOutDetailsBYinvoiveID($invoiceId)
+    {
+        try {
+            $data = [];
+            // $sql = "SELECT * FROM `stock_out_details` WHERE `invoice_id`= '$invoiceId'";
+            $invoiceIdsString = implode(',', $invoiceId);
+            $sql = "SELECT * FROM `stock_out_details` WHERE `invoice_id` IN ($invoiceIdsString)";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $data[] = $result;
+            }
+            $dataset = json_encode($data);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
 
 
@@ -719,9 +753,10 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostSoldStockOutDataGroupByDtRange($dtRange, $adminId) {
+    function mostSoldStockOutDataGroupByDtRange($dtRange, $adminId)
+    {
         $data = array();
-    
+
         try {
             $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
                             FROM stock_out_details sod
@@ -731,18 +766,18 @@ class StockOut extends DatabaseConnection
                             GROUP BY sod.product_id
                             ORDER BY total_sold DESC
                             LIMIT 10";
-    
+
             $stmt = $this->conn->prepare($selectQuery);
-    
+
             if ($stmt) {
                 $stmt->bind_param("ss", $adminId, $dtRange);
                 $stmt->execute();
                 $result = $stmt->get_result();
-    
+
                 while ($row = $result->fetch_object()) {
                     $data[] = $row;
                 }
-    
+
                 $stmt->close();
             } else {
                 echo "Statement preparation failed: " . $this->conn->error;
@@ -753,7 +788,7 @@ class StockOut extends DatabaseConnection
 
         return $data;
     }
-    
+
 
     //  ============= end of most sold item check query ===========
 
@@ -892,9 +927,10 @@ class StockOut extends DatabaseConnection
 
 
 
-    function lessSoldStockOutDataGroupByDtRange($dtRange, $adminId) {
+    function lessSoldStockOutDataGroupByDtRange($dtRange, $adminId)
+    {
         $data = array();
-    
+
         try {
             $selectQuery = "SELECT product_id, SUM(qty) AS total_sold
                             FROM stock_out_details
@@ -907,14 +943,14 @@ class StockOut extends DatabaseConnection
                             GROUP BY product_id
                             ORDER BY total_sold ASC
                             LIMIT 10";
-    
+
             $stmt = $this->conn->prepare($selectQuery);
-    
+
             if ($stmt) {
                 $stmt->bind_param("ss", $adminId, $dtRange);
                 $stmt->execute();
                 $result = $stmt->get_result();
-    
+
                 while ($row = $result->fetch_object()) {
                     $data[] = $row;
                 }
@@ -927,7 +963,7 @@ class StockOut extends DatabaseConnection
         }
         return $data;
     }
-    
+
 
 
     /// ========= end of less sold item check query ================

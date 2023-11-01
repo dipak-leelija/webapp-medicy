@@ -12,6 +12,8 @@ require_once CLASS_DIR . 'patients.class.php';
 
 $reportId = $_GET['id'];
 
+// $patientId = $_GET['patient_id'];
+
 $LabReport     = new LabReport();
 $Patients      = new Patients();
 $LabBilling    = new LabBilling();
@@ -24,8 +26,8 @@ $testIds = [];
 $labReportDetailbyId = json_decode($labReportDetailbyId);
 if (is_array($labReportDetailbyId) && !empty($labReportDetailbyId)) {
     foreach ($labReportDetailbyId as $report) {
-         $testIds[] = $report->test_id;
-         $reportId = $report->report_id;
+        $testIds[] = $report->test_id;
+        $reportId = $report->report_id;
     }
 }
 
@@ -43,14 +45,14 @@ if ($findPatienttId !== null) {
 $labBillingDetails   = $LabBilling->labBillDisplayById($billId); /// geting for test_date
 if ($labBillingDetails !== 0) {
     foreach ($labBillingDetails as $result) {
-        $testDate = $result['test_date']; 
+        $testDate = $result['test_date'];
     }
 } ///end..
 
 //===find patient details ===//
 $patientDatafetch = $LabReport->patientDatafetch($patient_id);
 $patientDatafetch = json_decode($patientDatafetch, true);
-if ($patientDatafetch !== null){
+if ($patientDatafetch !== null) {
     $name       = $patientDatafetch['name'];
     $patient_id = $patientDatafetch['patient_id'];
     $age        = $patientDatafetch['age'];
@@ -60,7 +62,7 @@ if ($patientDatafetch !== null){
 
 // Fetching Hospital Info
 $hospital = new HelthCare();
-$hospitalShow = $hospital->showhelthCare();
+$hospitalShow = $hospital->showhelthCarePrimary();
 foreach ($hospitalShow as $hospitalDetails) {
     $hospitalName = $hospitalDetails['hospital_name'];
     $address1 = $hospitalDetails['address_1'];
@@ -145,28 +147,32 @@ foreach ($hospitalShow as $hospitalDetails) {
                 <?php
                 $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
                 $labReportDetailbyId = json_decode($labReportDetailbyId);
-                echo "<div style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px;'>";
-                echo "<div style='display: flex; justify-content:space-around; align-items:center'>";
-                // echo "<div style='width:40%; margin-left:20px;' >$sub_test_name</div>";
+                echo "<div class='' style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px; '>";
+                // echo "<div style='display: flex; justify-content:space-around; align-items:center' >";
 
                 if (is_array($labReportDetailbyId) && !empty($labReportDetailbyId)) {
 
+                    // $sub_test_names = [];
                     foreach ($testIds as $testId) {
                         $patientTest = $LabReport->patientTest($testId);
                         $decodedData = json_decode($patientTest, true);
                         if ($decodedData !== null) {
                             $sub_test_name = $decodedData['sub_test_name'];
-                            echo "<div style='width:40%; margin-left:20px;' >$sub_test_name</div>";
+                            echo "<div>";
+                            echo "<div style='width:40%; margin-left:400px;' >$sub_test_name</div>";
+                            echo "</div>";
                         } else {
                             // echo "Error decoding JSON or data is null.";
                         }
                     }
 
                     foreach ($labReportDetailbyId as $report) {
-                        echo $report->test_value;
+                        echo "<div class=' d-flex justify-content-end' >";
+                        echo "<div  style=' width: 40%; '>$report->test_value</div>";
+                        echo "</div>";
                     }
                 }
-                echo "</div>";
+                // echo "</div>";
                 echo "</div>";
                 ?>
             </div>
@@ -197,10 +203,10 @@ foreach ($hospitalShow as $hospitalDetails) {
         <!-- ////// -->
         <div class="footer"></div>
 
-        <!-- <div class="printButton mb-5">
+        <div class="printButton mb-5">
             <button class="btn btn-primary" onclick="history.back()">Go Back</button>
-            <button class="btn btn-primary" onclick="window.print()">Print Prescription</button>
-        </div> -->
+            <!-- <button class="btn btn-primary" onclick="window.print()">Print Prescription</button> -->
+        </div>
     </div>
 </body>
 

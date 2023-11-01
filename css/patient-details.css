@@ -25,19 +25,20 @@
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 .graph-Chart{
-    width: 100%; 
+    width: 50%; 
+    height: 300px;
     margin-top:16px; 
     padding:4px; 
     border-radius:4px; 
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
-#myChart{
-    height: 100px;
-    padding: 8px;
-    width: 528px;
-    display: block;
-    box-sizing: border-box;
-}
+/* #myChart{
+    width: 50%;
+    height: 300px;
+    /* padding: 8px; */
+    /* display: block; */
+    /* box-sizing: border-box; */
+/* }  */
 .table-div{
     display: flex; 
     align-items:flex-start;

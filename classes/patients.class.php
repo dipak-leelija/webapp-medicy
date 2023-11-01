@@ -63,7 +63,7 @@ class Patients extends DatabaseConnection{
 
 
     
-    function allPatients($admin = ''){
+    function allPatients($admin){
         $data = array();
     
         try {
