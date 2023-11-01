@@ -294,6 +294,37 @@ class CurrentStock extends DatabaseConnection
 
         return $data;
     }
+
+
+
+
+
+    // =========== batch number fetch function for new sales pagge ============
+    function showCurrentStocByProductId($productId, $adminId){
+    $data = array();
+    try {
+        $select = "SELECT * FROM current_stock WHERE product_id = ? AND admin_id = ?";
+        $stmt = $this->conn->prepare($select);
+
+        if ($stmt) {
+            $stmt->bind_param("ss", $productId, $adminId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            while ($row = $result->fetch_object()) {
+                $data[] = $row;
+            }
+            $stmt->close();
+        } else {
+            echo "Statement preparation failed: " . $this->conn->error;
+        }
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+    }
+    return json_encode($data);
+}
+
+
 //=====================================================================================================
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -389,19 +420,7 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    function showCurrentStocByProductId($productId)
-    {
-        //echo $productId;
-        $data = array();
-        $select = "SELECT * FROM current_stock WHERE `product_id` = '$productId'";
-        // echo $select;
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showCurrentStocByProductId
-
+    
 
     function showCurrentStocById($stockId)
     {
