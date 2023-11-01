@@ -48,9 +48,14 @@ $stockOutDetailsBYinvoiveID = $StockOut->stockOutDetailsBYinvoiveID($invoiceId);
 $stockDetails = json_decode($stockOutDetailsBYinvoiveID);
 $itemNames = [];
 foreach ($stockDetails as $details) {
-    echo $itemNames[] = $details->item_name;
-} 
+    $itemNames[] = $details->item_name;
+}
 $occurrenceschart2 = array_count_values($itemNames);
+echo json_encode($occurrenceschart2);
+// // Display the occurrences
+// foreach ($occurrenceschart2 as $itemName => $occurrence) {
+//     echo "$itemName : $occurrence";
+// }
 //end...
 
 //=====find labreport by Id=====//
@@ -71,8 +76,8 @@ $spent = 0;
 if (is_array($labBillingDetails) && !empty($labBillingDetails)) {
     foreach ($labBillingDetails as $row) {
         $spent = $row->paid_amount + $spent;
-        $billDate = $row->bill_date . "<br>";
-        $bill_ids[] = $row->bill_id . "<br>";
+        $billDate = $row->bill_date;
+        $bill_ids[] = $row->bill_id;
         $billDates[] = $billDate;
     }
     $maxBillDate = max($billDates);
@@ -160,30 +165,76 @@ $occurrences = array_count_values($subTestNames);
                             <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
                         </div>
                         <div class="card-body">
-                            <div class="main-infodiv">
-                                <div class="main-infoleft">
-                                    <div class="infoleft">
-                                        <div>
-                                            <p><samp>Name &nbsp &nbsp&nbsp: <small><?= $Name ?></small></samp></p>
-                                            <p><samp>Age &nbsp &nbsp &nbsp: <small><?= $Age ?></small></spam>
-                                            </p>
-                                            <p><samp>Sex &nbsp &nbsp &nbsp: <small><?= $sex ?></small></spam>
-                                            </p>
-                                            <p><samp>Address &nbsp: <small><?= $address ?></small></spam>
-                                            </p>
+                            <div class="row">
+                                <div class="col-12 shadow-sm">
+                                    <div class="row justify-content-between">
+                                        <div class="col-6 p-2">
+                                            <div class="d-flex justify-content-between">
+
+                                                <div>
+                                                    <table class="text-sm">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Patient Id</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $patientId ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $Name ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Age</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $Age ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Sex</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $sex ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Address</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $address ?></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div>
+                                                    <table class="text-sm">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Total Visits:</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $labVisited ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Last Visited</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= $maxBillDate ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Amount Spend</th>
+                                                                <td class="px-2">:</td>
+                                                                <td><?= ($spent) ? $spent : '0.0' ?></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p><samp>Times of visits: <small></small><?= $labVisited ?></samp></p>
-                                            <p><samp>Last Visited &nbsp&nbsp: <small><?= $maxBillDate ?></small></spam>
-                                            </p>
-                                            <p><samp>Amount spend &nbsp&nbsp: ₹ <small><?= ($spent) ? $spent : '0.0' ?></small></spam>
-                                            </p>
+
+                                        <div class="col-5 p-2">
+                                            <canvas id="chart2" style="height: 167px; width: 100%;"></canvas>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="main-inforight">
-                                    <canvas id="chart2" style="height: 167px; width: 100%;" id="pieChart"></canvas>
-                                </div>
+                                <!-- <div class="main-inforight">
+                                    <canvas  style="height: 167px; width: 100%;" id="pieChart"></canvas>
+                                </div> -->
                             </div>
                             <div class="graph-Chart">
                                 <canvas id="myChart"></canvas>
@@ -268,8 +319,8 @@ $occurrences = array_count_values($subTestNames);
                                         <button class="btn btn-primary btn-sm" id="toggleButton">More...</button>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
 
@@ -304,7 +355,6 @@ $occurrences = array_count_values($subTestNames);
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <script>
         const labels = <?php echo json_encode(array_keys($occurrences)) ?>;
@@ -346,17 +396,13 @@ $occurrences = array_count_values($subTestNames);
                     hoverOffset: 1
                 }]
             },
-            // options: {
-            //     scales: {
-            //         y: {
-            //             beginAtZero: true
-            //         }
-            //     }
-            // }
         });
 
+
         const labels2 = <?php echo json_encode(array_keys($occurrenceschart2)) ?>;
+        console.log(labels2);
         const data2 = <?php echo json_encode(array_keys($occurrenceschart2)) ?>;
+        console.log(data2);
         const ctx2 = document.getElementById('chart2');
         new Chart(ctx2, {
             type: 'bar',
@@ -364,7 +410,6 @@ $occurrences = array_count_values($subTestNames);
                 labels: labels2,
                 datasets: [{
                     label: '# Most purches',
-                    backgroundColor: backgroundColors,
                     data: data2,
                     borderWidth: 1
                 }]
@@ -377,6 +422,7 @@ $occurrences = array_count_values($subTestNames);
                 }
             }
         });
+            
 
         //
 
@@ -387,19 +433,14 @@ $occurrences = array_count_values($subTestNames);
 
             // Initially hide all rows except the first three
             for (var i = 3; i < rows.length; i++) {
-                rows[i].style.display = "none";
-            }
-
-            toggleButton.addEventListener("click", function() {
-                for (var i = 3; i < rows.length; i++) {
-                    if (rows[i].style.display === "none") {
-                        rows[i].style.display = "table-row";
-                    } else {
-                        rows[i].style.display = "none";
-                    }
+                if (rows[i].style.display === "none") {
+                    rows[i].style.display = "table-row";
+                } else {
+                    rows[i].style.display = "none";
                 }
-            });
+            }
         });
+        // });
     </script>
 </body>
 

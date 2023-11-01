@@ -4,11 +4,14 @@ $includePath = get_include_path();
 
 $today = NOW;
 
+$mostStoldItemsFromStart = $StockOut->mostSoldStockOutDataFromStart($adminId);
+
 $dailyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDay($adminId);
 
 $weeklyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByWeek($adminId);
 
 $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
+// print_r($dailyMostStoldItems);
 ?>
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
@@ -23,7 +26,8 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
 
                 <b>...</b>
             </button>
-            <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0);">
+                <button class="dropdown-item" type="button" id="mostSoldLst24hrs" onclick="mostStoldItemCheck(this.id)">Last 24 hrs</button>
                 <button class="dropdown-item" type="button" id="mostLst7" onclick="mostStoldItemCheck(this.id)">Last 7 Days</button>
                 <button class="dropdown-item" type="button" id="mostLst30" onclick="mostStoldItemCheck(this.id)">Last 30 DAYS</button>
                 <button class="dropdown-item" type="button" id="mostLstdt" onclick="mostStoldItemCheck(this.id)">By Date</button>
@@ -59,8 +63,8 @@ function updateMostSoldData(mostSold) {
         var dataToSend = `mostSoldProdId=${productIds}`;
 
         var xmlhttp = new XMLHttpRequest();
-        prodNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
-        xmlhttp.open("POST", prodNameUrl, false);
+        mostSoldProdNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
+        xmlhttp.open("POST", mostSoldProdNameUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(dataToSend);
         var prodNameArray = xmlhttp.responseText;
@@ -90,6 +94,12 @@ function updateMostSoldData(mostSold) {
     
 
     function mostStoldItemCheck(id) {
+        if (id == 'mostSoldLst24hrs') {
+            document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+            updateMostSoldData(<?php echo json_encode($dailyMostStoldItems); ?>);
+        }
+
+
         if (id == 'mostLst7') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
             updateMostSoldData(<?php echo json_encode($weeklyMostStoldItems); ?>);
@@ -107,15 +117,15 @@ function updateMostSoldData(mostSold) {
 
 
     // ========= chart control area ============= \\
-    var mostSoldData = <?php echo json_encode($dailyMostStoldItems); ?>;
+    var mostSoldData = <?php echo json_encode($mostStoldItemsFromStart); ?>;
     var productIds = mostSoldData.map(item => item.product_id);
     productIds = JSON.stringify(productIds);
     var dataToSend = `mostSoldProdId=${productIds}`;
 
 
     var xmlhttp = new XMLHttpRequest();
-    prodName = `../admin/ajax/components-most-sold-items.ajax.php`;
-    xmlhttp.open("POST", prodName, false);
+    mostSoldProdNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
+    xmlhttp.open("POST", mostSoldProdNameUrl, false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send(dataToSend);
     var prodNameArray = xmlhttp.responseText;
@@ -132,7 +142,7 @@ function updateMostSoldData(mostSold) {
             datasets: [{
                 label: 'Total Sold',
                 data: totalSold,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]

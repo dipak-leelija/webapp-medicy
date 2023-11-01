@@ -139,15 +139,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                         <?php
                                         $unitCounts = array();
-
+                                        
                                         foreach ($labBillingDetails as $index => $test) {
                                             $testId = $test['test_id'];
                                             $showTestName = $LabReport->patientTest($testId);
+                                            // print_r($showTestName);
                                             $showTestName = json_decode($showTestName);
+                                            
                                             $testId = $showTestName->id;
                                             $subTestName = $showTestName->sub_test_name;
                                             $unitNames = $showTestName->unit;
-                                            // print_r($testId);
+                                            
                                             echo "<div style='margin:5px 0px 10px 0px;width:100%;heigh:auto;padding:10px;box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;'>";
                                             echo "<div>
                                                     <div style='width:40%; margin-left:20px;'>$subTestName</div>";

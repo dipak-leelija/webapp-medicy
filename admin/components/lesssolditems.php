@@ -1,18 +1,17 @@
-
 <?php
 require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 $includePath = get_include_path();
 
 $today = NOW;
 
-$dailyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByDay($adminId);
+$leastStoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
 
+$dailyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByDay($adminId);
 
 $weeklyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByWeek($adminId);
 
-
 $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId);
-// print_r($monthlyLeastStoldItems);
+// print_r($leastStoldItemsFromStart);
 ?>
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
@@ -27,7 +26,8 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
                 <b>...</b>
             </button>
-            <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0);">
+                <button class="dropdown-item" type="button" id="lessLst24hrs" onclick="lessSoldItemChk(this.id)">Last 24 hrs</button>
                 <button class="dropdown-item" type="button" id="lessLst7" onclick="lessSoldItemChk(this.id)">Last 7 Days</button>
                 <button class="dropdown-item" type="button" id="lessLst30" onclick="lessSoldItemChk(this.id)">Last 30 DAYS</button>
                 <button class="dropdown-item" type="button" id="lessLstDt" onclick="lessSoldItemChk(this.id)">By Date</button>
@@ -39,9 +39,9 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                     less sold 10 items</div>
-                    <div style="width: 100%; margin: 0 auto;">
-                <canvas id="lesssolditemchart"></canvas>
-            </div>
+                <div style="width: 100%; margin: 0 auto;">
+                    <canvas id="lesssolditemchart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -50,31 +50,29 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>
 
 <script>
-
-        
     function updateLessSoldData(lessSoldData) {
-            lessSoldChart.data.datasets[0].data = lessSoldData.map(item => item.total_sold);
+        lessSoldChart.data.datasets[0].data = lessSoldData.map(item => item.total_sold);
 
-            var productIds = lessSoldData.map(item => item.product_id);
-            productIds = JSON.stringify(productIds);
-            var dataToSend = `lessSoldProdId=${productIds}`;
+        var productIds = lessSoldData.map(item => item.product_id);
+        productIds = JSON.stringify(productIds);
+        var dataToSend = `lessSoldProdId=${productIds}`;
 
-            var xmlhttp = new XMLHttpRequest();
-            prodNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
-            xmlhttp.open("POST", prodNameUrl, false);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(dataToSend);
-            var prodNameArray = xmlhttp.responseText;
-            prodNameArray = JSON.parse(prodNameArray);
+        var xmlhttp = new XMLHttpRequest();
+        lessSoldProdNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
+        xmlhttp.open("POST", lessSoldProdNameUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(dataToSend);
+        var prodNameArray = xmlhttp.responseText;
+        prodNameArray = JSON.parse(prodNameArray);
 
-            lessSoldChart.data.labels = prodNameArray;
-            lessSoldChart.update();
-        }
-
-
+        lessSoldChart.data.labels = prodNameArray;
+        lessSoldChart.update();
+    }
 
 
-    function lessSoldItemsChkDate(){
+
+
+    function lessSoldItemsChkDate() {
         var lessSolddatePicker = document.getElementById('lessSoldDateInput').value;
         var dataToSend = `lessSoldDtRange=${lessSolddatePicker}`;
 
@@ -84,7 +82,6 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(dataToSend);
         var lessSoldDataInDtRange = xmlhttp.responseText;
-        console.log(lessSoldDataInDtRange),
         updateLessSoldData(JSON.parse(lessSoldDataInDtRange));
     }
 
@@ -93,7 +90,11 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
 
     function lessSoldItemChk(id) {
-        console.log(id);
+        if (id == 'lessLst24hrs') {
+            document.getElementById('lessSoldDtPickerDiv').style.display = 'none';
+            updateLessSoldData(<?php echo json_encode($dailyLeastStoldItems); ?>);
+        }
+
         if (id == 'lessLst7') {
             document.getElementById('lessSoldDtPickerDiv').style.display = 'none';
             updateLessSoldData(<?php echo json_encode($weeklyLeastStoldItems); ?>);
@@ -113,32 +114,32 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
 
     // ========= chart control area ============= \\
-    let data = <?php echo json_encode($dailyLeastStoldItems); ?>;
-    var productIds = data.map(item => item.product_id);
+    let lessSoldData = <?php echo json_encode($leastStoldItemsFromStart); ?>;
+    var productIds = lessSoldData.map(item => item.product_id);
     productIds = JSON.stringify(productIds);
     var dataToSend = `lessSoldProdId=${productIds}`;
 
 
     var xmlhttp = new XMLHttpRequest();
-    prodName = `../admin/ajax/components-most-sold-items.ajax.php`;
-    xmlhttp.open("POST", prodName, false);
+    lessSoldProdNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
+    xmlhttp.open("POST", lessSoldProdNameUrl, false);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send(dataToSend);
     var prodNameArray = xmlhttp.responseText;
     prodNameArray = JSON.parse(prodNameArray);
 
-    var totalSold = data.map(item => item.total_sold);
+    var totalSold = lessSoldData.map(item => item.total_sold);
 
-    var ctx = document.getElementById('lesssolditemchart').getContext('2d');
+    var lessSoldCtx = document.getElementById('lesssolditemchart').getContext('2d');
 
-    var lessSoldChart = new Chart(ctx, {
+    var lessSoldChart = new Chart(lessSoldCtx, {
         type: 'bar',
         data: {
             labels: prodNameArray,
             datasets: [{
                 label: 'Total Sold',
                 data: totalSold,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
@@ -151,5 +152,4 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
             }
         }
     });
-
 </script>

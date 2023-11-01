@@ -23,9 +23,9 @@ if(isset($_GET['prodId'])){
     // $qty = $_GET['qty'];
     // $flag = $_GET['checkFlag'];
 
-    $ProductBatchData = $CurrentStock->showCurrentStocByProductId($productID);
+    $ProductBatchData = $CurrentStock->showCurrentStocByProductId($productID, $adminId);
+    $ProductBatchData = json_decode($ProductBatchData);
     // print_r($ProductBatchData);
-
 }
 
 if($ProductBatchData != ''){
@@ -39,19 +39,19 @@ if($ProductBatchData != ''){
 <?php
     foreach($ProductBatchData as $itemData){
         // print_r($itemData);
-        $productId  = $itemData['product_id'];
-        $id = $itemData['id'];
+        $productId  = $itemData->product_id;
+        $id = $itemData->id;
 
         $prodNameFetch = $Products->showProductsById($productId);
         foreach($prodNameFetch as $productData){
             $prodName = $productData['name'];
         }
 
-        $prodBatch   = $itemData['batch_no'];
-        $qantity   = $itemData['qty'];
-        $looseQty   = $itemData['loosely_count'];
-        $weightage   = $itemData['weightage'];
-        $unit        = $itemData['unit'];
+        $prodBatch   = $itemData->batch_no;
+        $qantity   = $itemData->qty;
+        $looseQty   = $itemData->loosely_count;
+        $weightage   = $itemData->weightage;
+        $unit        = $itemData->unit;
         $packOf      = $weightage.'/'.$unit;
         ?>
             <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" value="<?php echo $prodBatch ?>" value1="<?php echo $id ?>" onclick="stockDetails('<?php echo $productId ?>','<?php echo $prodBatch ?>', '<?php echo $id ?>', this.id, this.value, this.value1);">

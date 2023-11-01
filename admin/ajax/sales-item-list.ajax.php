@@ -55,15 +55,10 @@ if($searchResult){
             $power = ' | '.$resultRow['power'];
         }
 
-        if ($unit == "tab" || $unit == "cap") {
-            $unitType = 'loosely_count';
-            $stock = $CurrentStock->showCurrentStocByUnit($productId, $unitType);
-        }else{
-            $unitType = 'qty';
-            $stock = $CurrentStock->showCurrentStocByUnit($productId, $unitType);
-        }
-
-
+        $col1= 'product_id';
+        $col2 = 'admin_id';
+        $stock = $CurrentStock->showCurrentStocByTwoCol($col1, $productId, $col2, $adminId);
+        // print_r($stock);
         $stockQty = 0;
         $looseQty = 0;
         

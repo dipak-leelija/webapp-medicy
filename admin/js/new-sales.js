@@ -126,6 +126,7 @@ const searchItem = (searchFor) => {
     }
 }
 
+// ========= PRODUCT BATCH NUMBER FETCH AREA ==================
 const itemsBatchDetails = (prodcutId, name, stock) => {
     
     if (stock > 0) {
@@ -205,6 +206,7 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
             });
     }
 }
+// ========= END OF PRODUCT BATCH NUMBER FETCH AREA ==================
 
 
 /////// extra detials div control function \\\\\\\\
@@ -229,10 +231,6 @@ const chekForm = () =>{
 ////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 const stockDetails = (productId, batchNo, itemId) => {
-    
-    console.log("item id : "+itemId);
-    console.log("product id : "+productId);
-    console.log("batch no : "+batchNo);
 
     var selectedItem = productId;
     var SelectedBatch = batchNo;
