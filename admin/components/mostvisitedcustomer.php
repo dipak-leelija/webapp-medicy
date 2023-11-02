@@ -83,6 +83,10 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
             mostVistiCustomerNameArray = JSON.parse(mostVistiCustomerNameArray);
 
             mostVistedCustomerChart.data.labels = mostVistiCustomerNameArray;
+
+            document.getElementById("mostVisitCustomerCharDiv").style.display = 'block';
+            document.getElementById('no-data-found-div').style.display = 'none';
+            
             mostVistedCustomerChart.update();
 
         } else {
