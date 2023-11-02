@@ -82,6 +82,22 @@ class StockOut extends DatabaseConnection
 
 
 
+    ///== Stock out display by patient ID===//
+    function stockOutByPatientId($patientId)
+    {
+        try {
+            $data = [];
+            $sql = "SELECT * FROM `stock_out` WHERE `customer_id`= '$patientId'";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $data[] = $result;
+            }
+            $dataset = json_encode($data);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
 
     // fethc sold amount on admin id
@@ -634,6 +650,24 @@ class StockOut extends DatabaseConnection
 
 
 
+    ///== fint stokOut details by invoice Id ==/// 
+    function stockOutDetailsBYinvoiveID($invoiceId)
+    {
+        try {
+            $data = [];
+            // $sql = "SELECT * FROM `stock_out_details` WHERE `invoice_id`= '$invoiceId'";
+            $invoiceIdsString = implode(',', $invoiceId);
+            $sql = "SELECT * FROM `stock_out_details` WHERE `invoice_id` IN ($invoiceIdsString)";
+            $query = $this->conn->query($sql);
+            while ($result = $query->fetch_object()) {
+                $data[] = $result;
+            }
+            $dataset = json_encode($data);
+            return $dataset;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
 
 

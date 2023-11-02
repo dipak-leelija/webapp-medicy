@@ -43,7 +43,7 @@ $labReportDetailbyId = json_decode($labReportDetailbyId);
 
 // Fetching Hospital Info
 $hospital = new HelthCare();
-$hospitalShow = $hospital->showhelthCare();
+$hospitalShow = $hospital->showhelthCarePrimary();
 foreach ($hospitalShow as $hospitalDetails) {
     $hospitalName = $hospitalDetails['hospital_name'];
     $address1 = $hospitalDetails['address_1'];

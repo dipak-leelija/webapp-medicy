@@ -10,6 +10,7 @@ require_once CLASS_DIR.'patients.class.php';
 require_once CLASS_DIR. 'report-generate.class.php';
 
 
+
 $Patients   = new Patients;
 $LabReport  = new LabReport ;
 
@@ -106,7 +107,7 @@ $LabReport  = new LabReport ;
                                                         <td><?= $patientId ?></td>
                                                         <td><?= $adminId ?></td>
                                                         <td><?= $date ?></td>
-                                                        <td><a class="text-primary text-center" title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
+                                                        <td><a class="text-primary text-center" title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                                     </tr>
                                             <?php
 

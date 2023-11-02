@@ -11,6 +11,8 @@ require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'labAppointments.class.php';
+require_once CLASS_DIR . 'report-generate.class.php';
+require_once CLASS_DIR . 'stockOut.class.php';
 
 
 $patientId = url_dec($_GET['patient']);
@@ -20,8 +22,10 @@ $LabBilling     = new LabBilling;
 $LabBillDetails = new LabBillDetails();
 $SubTests       = new SubTests();
 $LabAppointments = new LabAppointments();
+$LabReport      = new LabReport;
+$StockOut       = new StockOut;
 
-$patientDetails = json_decode($Patients->patientsDisplayByPId('PE725663040'));
+$patientDetails = json_decode($Patients->patientsDisplayByPId($patientId));
 
 // print_r($patientDetails) . "<br>";
 $Name = $patientDetails->name;
@@ -31,16 +35,41 @@ $address = $patientDetails->address_1;
 $labVisited = $patientDetails->lab_visited;
 $lastVisited = $patientDetails->added_on;
 
-// if ($patientId) {
-//     $patientCount = $Patients->patientVisitCount($Name, $patientId);
-//     // print_r($patientCount['count']);
-//     // echo $patientCount['Last_Visited'];
-// }
 
+/// list of invoice with bill from stokOut table ///
+$stockOutdatas = $StockOut->stockOutByPatientId($patientId);
+$stockOutdatas = json_decode($stockOutdatas, true);
+$invoiceId = [];
+foreach ($stockOutdatas as $stockData) {
+    echo $invoiceId[] = $stockData['invoice_id'];
+}
+/// find itemname from stockOutDetils for pie chart ///
+$stockOutDetailsBYinvoiveID = $StockOut->stockOutDetailsBYinvoiveID($invoiceId);
+$stockDetails = json_decode($stockOutDetailsBYinvoiveID);
+$itemNames = [];
+foreach ($stockDetails as $details) {
+    $itemNames[] = $details->item_name;
+}
+$occurrenceschart2 = array_count_values($itemNames);
+echo json_encode($occurrenceschart2);
+// // Display the occurrences
+// foreach ($occurrenceschart2 as $itemName => $occurrence) {
+//     echo "$itemName : $occurrence";
+// }
+//end...
+
+//=====find labreport by Id=====//
+$labreportfetch = $LabReport->labreportfetch();
+$labReportData = json_decode($labreportfetch, true);
+// if ($labReportData) {
+//     foreach ($labReportData as $entry) {
+//         // $reportId  = $entry['id'] . "<br>";
+//         // $patientId = $entry['patient_id'] . "<br>";
+//     }
+// } ////end....
 
 ///........ for amount spend and find bill_id for finding test_id....... ///
-$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId('PE725663040');
-
+$labBillingDetails = $LabBilling->labBiilingDetailsByPatientId($patientId);
 $bill_ids = [];
 $billDates = [];
 $spent = 0;
@@ -52,10 +81,6 @@ if (is_array($labBillingDetails) && !empty($labBillingDetails)) {
         $billDates[] = $billDate;
     }
     $maxBillDate = max($billDates);
-} elseif ($labBillingDetails === null) {
-    echo "No results found.";
-} else {
-    echo "Error: " . $labBillingDetails;
 } //--end--//
 
 ///..... find test_id from bill_id for finding sub_test....//////
@@ -80,9 +105,9 @@ foreach ($test_ids as $test_id) {
         }
     }
 }
-// $uniqueSubTestNames = array_unique($subTestNames);
-///bar chart for Most taken Tests as graph//
 $occurrences = array_count_values($subTestNames);
+
+
 
 
 ?>
@@ -101,9 +126,7 @@ $occurrences = array_count_values($subTestNames);
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -139,8 +162,7 @@ $occurrences = array_count_values($subTestNames);
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">List of Patients</h6>
-                            <a data-toggle="modal" data-target="#appointmentSelection"><button
-                                    class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
+                            <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -206,77 +228,95 @@ $occurrences = array_count_values($subTestNames);
                                         </div>
 
                                         <div class="col-5 p-2">
-                                            <canvas style="height: 167px; width: 100%;" id="pieChart"></canvas>
+                                            <canvas id="chart2" style="height: 167px; width: 100%;"></canvas>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="graph-Chart col-3">
-                                    <!-- <div id="chartContainer" style="height: 250px; width: 100%;"></div> -->
-                                    <canvas id="myChart"></canvas>
+                                <!-- <div class="main-inforight">
+                                    <canvas  style="height: 167px; width: 100%;" id="pieChart"></canvas>
+                                </div> -->
+                            </div>
+                            <div class="graph-Chart">
+                                <canvas id="myChart"></canvas>
+                            </div>
+                            <div class="table-div">
+                                <div class="left-table">
+                                    <p>List Of Invoice</p>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Invoice</th>
+                                                <th scope="col">Bill Number</th>
+                                                <th scope="col">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- <tr>
+                                                <th scope="row">1</th>
+                                                <td><?= $invoiceId ?></td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr> -->
+                                            <?php foreach ($stockOutdatas as $index => $stockOutData) : ?>
+                                                <tr>
+                                                    <td><?= $stockOutData['invoice_id'] ?></td>
+                                                    <td></td>
+                                                    <td><?= $stockOutData['bill_date'] ?></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
                                 </div>
+                                <div class="right-table">
+                                    <p>List Of Test</p>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <!-- <th scope="col">#</th> -->
+                                                <th scope="col">Bill Number</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Report</th>
+                                            </tr>
+                                        </thead>
 
-                                <div class="col-12 table-div">
-                                    <div class="left-table">
-                                        <p>List Of Invoice</p>
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Invoice</th>
-                                                    <th scope="col">Bill Number</th>
-                                                    <th scope="col">Date</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Mark</td>
-                                                    <td>Otto</td>
-                                                    <td>@mdo</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="right-table">
-                                        <p>List Of Test</p>
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Bill Number</th>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Report</th>
-                                                </tr>
-                                            </thead>
+                                        <tbody>
+                                            <?php
+                                            $labReportData = json_decode($labreportfetch, true);
+                                            $showLabAppointmentsById = $LabAppointments->showLabAppointmentsById($patientId);
 
-                                            <tbody>
-                                                <?php
-                                            $showLabAppointmentsById = $LabAppointments->showLabAppointmentsById('PE725663040');
+                                            if ($labReportData && $showLabAppointmentsById) {
+                                                // Create an associative array with patient_id as key and reportId as value
+                                                $reportIdMap = [];
+                                                foreach ($labReportData as $entry) {
+                                                    $reportIdMap[$entry['patient_id']] = $entry['id'];
+                                                }
 
-                                            if ($showLabAppointmentsById) {
-                                                $count = 0;
-                                                foreach ($showLabAppointmentsById as $appointment) {
-                                                    $billId = $appointment['bill_id'];
-                                                    $date = $appointment['test_date'];
-                                                    $count++;
+                                                if ($showLabAppointmentsById) {
+                                                    $count = 0;
+                                                    foreach ($showLabAppointmentsById as $appointment) {
+                                                        // $date = $appointment['test_date'];
+                                                        $patient_id = $appointment['patient_id'];
+                                                        $bill_id    = $appointment['bill_id'];
+                                                        $test_date  = $appointment['test_date'];
+                                                        $count++;
+                                                        if (isset($reportIdMap[$patient_id])) {
+                                                            $reportId = $reportIdMap[$patient_id];
                                             ?>
-                                                <tr class="appointment-row">
-                                                    <td><?= $billId ?></td>
-                                                    <td><?= $date ?></td>
-                                                    <td><a class="text-primary text-center" title="Print"
-                                                            href="test-report-generate.php?bill-id='.$billId.'"><i
-                                                                class="fa fa-link" aria-hidden="true"></i></a></td>
-                                                </tr>
-                                                <?php
-
+                                                            <tr class="appointment-row">
+                                                                <td><?= $bill_id ?></td>
+                                                                <td><?= $test_date ?></td>
+                                                                <td><a class="text-primary text-center" title="Print" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
+                                                            </tr>
+                                            <?php
+                                                        }
+                                                    }
                                                 }
                                             }
                                             ?>
-                                            </tbody>
-                                        </table>
-                                        <div class="d-flex justify-content-end">
-                                            <button class="btn btn-primary btn-sm" id="toggleButton">More...</button>
-                                        </div>
+                                        </tbody>
+                                    </table>
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-primary btn-sm" id="toggleButton">More...</button>
                                     </div>
                                 </div>
 
@@ -317,67 +357,81 @@ $occurrences = array_count_values($subTestNames);
     <script src="js/sb-admin-2.min.js"></script>
 
     <script>
-    const labels = <?php echo json_encode(array_keys($occurrences)) ?>;
-    const data = <?php echo json_encode(array_values($occurrences)) ?>;
+        const labels = <?php echo json_encode(array_keys($occurrences)) ?>;
+        const data = <?php echo json_encode(array_values($occurrences)) ?>;
 
-    const getRandomColor = () => {
-        const r = Math.floor(Math.random() * 256);
-        const g = Math.floor(Math.random() * 256);
-        const b = Math.floor(Math.random() * 256);
-        const randomColor = `rgba(${r}, ${g}, ${b}, 0.6)`;
-        const borderColor = `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
-        return {
-            backgroundColor: randomColor,
-            borderColor: borderColor
-        };
-    }
-
-    const backgroundColors = [];
-    const borderColors = [];
-
-    for (let i = 0; i < data.length; i++) {
-        const randomColors = getRandomColor();
-        backgroundColors.push(randomColors.backgroundColor);
-        borderColors.push(randomColors.borderColor);
-    }
-
-    /// bar chart for most taken test///
-    const ctx = document.getElementById('myChart');
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Most taken Tests',
-                data: data,
-                backgroundColor: backgroundColors,
-                // borderColor: borderColors,
-                // borderWidth: 1
-                hoverOffset: 1
-            }]
-        },
-        // options: {
-        //     scales: {
-        //         y: {
-        //             beginAtZero: true
-        //         }
-        //     }
-        // }
-    });
-
-    //
-
-    ///toggle button ///
-    document.addEventListener("DOMContentLoaded", function() {
-        var rows = document.querySelectorAll(".appointment-row");
-        var toggleButton = document.getElementById("toggleButton");
-
-        // Initially hide all rows except the first three
-        for (var i = 3; i < rows.length; i++) {
-            rows[i].style.display = "none";
+        const getRandomColor = () => {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            const randomColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+            const borderColor = `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
+            return {
+                backgroundColor: randomColor,
+                borderColor: borderColor
+            };
         }
 
-        toggleButton.addEventListener("click", function() {
+        const backgroundColors = [];
+        const borderColors = [];
+
+        for (let i = 0; i < data.length; i++) {
+            const randomColors = getRandomColor();
+            backgroundColors.push(randomColors.backgroundColor);
+            borderColors.push(randomColors.borderColor);
+        }
+
+        /// bar chart for most taken test///
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Most taken Tests',
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    // borderColor: borderColors,
+                    // borderWidth: 1
+                    hoverOffset: 1
+                }]
+            },
+        });
+
+
+        const labels2 = <?php echo json_encode(array_keys($occurrenceschart2)) ?>;
+        console.log(labels2);
+        const data2 = <?php echo json_encode(array_keys($occurrenceschart2)) ?>;
+        console.log(data2);
+        const ctx2 = document.getElementById('chart2');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    label: '# Most purches',
+                    data: data2,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+            
+
+        //
+
+        ///toggle button ///
+        document.addEventListener("DOMContentLoaded", function() {
+            var rows = document.querySelectorAll(".appointment-row");
+            var toggleButton = document.getElementById("toggleButton");
+
+            // Initially hide all rows except the first three
             for (var i = 3; i < rows.length; i++) {
                 if (rows[i].style.display === "none") {
                     rows[i].style.display = "table-row";
@@ -386,7 +440,7 @@ $occurrences = array_count_values($subTestNames);
                 }
             }
         });
-    });
+        // });
     </script>
 </body>
 

@@ -11,7 +11,6 @@ require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 
-
 $page = "dashboard";
 
 $appoinments = new Appointments();

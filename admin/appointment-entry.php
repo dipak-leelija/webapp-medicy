@@ -22,7 +22,7 @@ $hospital = new HelthCare();
 $Patients = new Patients();
 
 // Fetching Hospital Info
-$hospitalDetails = $hospital->showhelthCare();
+$hospitalDetails = $hospital->showhelthCarePrimary();
 foreach($hospitalDetails as $showShowHospital){
     $hospitalName = $showShowHospital['hospital_name'];
 }
