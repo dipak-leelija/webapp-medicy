@@ -600,12 +600,16 @@ class StockOut extends DatabaseConnection
 
 
     ///== fint stokOut details by invoice Id ==/// 
-    function stockOutDetailsBYinvoiveID($invoiceId)
+    function stockOutDetailsBYinvoiveID($invoiceIds)
     {
         try {
+
+            if (empty($invoiceIds)) {
+                return json_encode([]); // Return an empty JSON array if $invoiceIds is empty
+            }
+
             $data = [];
-            // $sql = "SELECT * FROM `stock_out_details` WHERE `invoice_id`= '$invoiceId'";
-            $invoiceIdsString = implode(',', $invoiceId);
+            $invoiceIdsString = implode(',', $invoiceIds);
             $sql = "SELECT * FROM `stock_out_details` WHERE `invoice_id` IN ($invoiceIdsString)";
             $query = $this->conn->query($sql);
             while ($result = $query->fetch_object()) {
@@ -617,6 +621,7 @@ class StockOut extends DatabaseConnection
             echo $e->getMessage();
         }
     }
+
 
 
 
@@ -908,8 +913,9 @@ class StockOut extends DatabaseConnection
 
     /// ========= less sold item check query ================
 
-    function leastSoldStockOutDataFromStart($adminId){
-    try {
+    function leastSoldStockOutDataFromStart($adminId)
+    {
+        try {
             $query = "SELECT product_id, SUM(qty) AS total_sold
             FROM stock_out_details
             WHERE invoice_id IN (
