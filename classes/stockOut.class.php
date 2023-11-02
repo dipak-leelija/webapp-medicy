@@ -661,6 +661,101 @@ class StockOut extends DatabaseConnection
     }
 
 
+
+
+
+
+    function mostPurchaseCustomerByDate($adminId, $date){
+        try {
+            $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id = 'Cash Sales' 
+                            AND DATE(added_on) = ?
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id != 'Cash Sales' 
+                            AND DATE(added_on) = ?
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("ssss", $adminId, $date, $adminId, $date);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+
+    
+
+    function mostPurchaseCustomerByDateRange($startDate, $endDate, $adminId){
+        try {
+            $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id = 'Cash Sales' 
+                            AND DATE(added_on) BETWEEN ? AND ?
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id != 'Cash Sales' 
+                            AND DATE(added_on) BETWEEN ? AND ?
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("ssssss", $adminId, $startDate, $endDate, $adminId, $startDate, $endDate);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
     
     // =================== end of most purchase customer data ==============
 

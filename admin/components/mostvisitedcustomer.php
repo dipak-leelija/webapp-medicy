@@ -190,7 +190,7 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         data: {
             labels: customerNameArray,
             datasets: [{
-                label: 'Total Sold',
+                label: 'Visit Count',
                 data: totalVisit,
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
                 borderColor: 'rgba(75, 192, 192, 1)',

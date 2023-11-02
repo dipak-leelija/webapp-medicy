@@ -66,9 +66,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 <script>
     // =========== most purchase customer chart override function body ==========
     function mostPurchaseCustomerDataFunction(mostPurchaseCustomerData) {
+        console.log(mostPurchaseCustomerData);
 
         if (mostPurchaseCustomerData != null) {
-            highestPurchaseCustomerBarChart.data.datasets[0].data = mostPurchaseCustomerData.map(item => item.visit_count);
+            highestPurchaseCustomerBarChart.data.datasets[0].data = mostPurchaseCustomerData.map(item => item.total_purchase);
 
             var customerId = mostPurchaseCustomerData.map(item => item.customer_id);
             customerId = JSON.stringify(customerId);
@@ -97,25 +98,54 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
 
 
+    // ============= most purchase customer by specific date function body ==============
+    function mostPurchaseCustomerByDt() {
+        var mostPurchaseCustomerDtPick = document.getElementById('mostPurchseCustomerDt').value;
+        console.log(mostPurchaseCustomerDtPick);
+        mostPrchsCstmrDtUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?mostPrchsCstmrByDt=${mostPurchaseCustomerDtPick}`;
+        xmlhttp.open("GET", mostPrchsCstmrDtUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+        var mostPurchaseCustomerDataByDate = xmlhttp.responseText;
+
+        mostPurchaseCustomerDataFunction(JSON.parse(mostPurchaseCustomerDataByDate));
+    }
+
+
+
+    // ============= most purchase customer by date range function body ==============
+    function mostPurchaseCustomerDateRange() {
+        var mostPurchaseCustomerStartDt = document.getElementById('mostPurchseCustomerStartDate').value;
+        var mostPurchaseCustomerEndtDt = document.getElementById('mostPurchseCustomerEndDate').value;
+
+        mostPrchsCstmrDtRngUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?mostPurchaseStartDt=${mostPurchaseCustomerStartDt}&mostPurchaseEndDt=${mostPurchaseCustomerEndtDt}`;
+        xmlhttp.open("GET", mostPrchsCstmrDtRngUrl, false);
+        xmlhttp.send(null);
+
+        var mostPurchaseCustomerDataByDateRange = xmlhttp.responseText;
+
+        mostPurchaseCustomerDataFunction(JSON.parse(mostPurchaseCustomerDataByDateRange));
+    }
+
+
     // ============ button onclick function call area ===============
     const maxPurchaseCustomer = (id) => {
         if (id == 'maxPurchaseCustomerLst24hrs') {
             document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'none';
             document.getElementById('mostPurchseCustomerDtPkrRng').style.display = 'none';
-            console.log(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
-            mostPurchaseCustomerDataFunction(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
+            mostPurchaseCustomerDataFunction(<?php echo json_encode($highestPurchaseCustomerByDay); ?>);
         }
 
         if (id == 'maxPurchaseCustomerLst7') {
             document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'none';
             document.getElementById('mostPurchseCustomerDtPkrRng').style.display = 'none';
-            mostPurchaseCustomerDataFunction(<?php echo json_encode($weeklyMostVistiCustomerData); ?>);
+            mostPurchaseCustomerDataFunction(<?php echo json_encode($highestPurchaseCustomerByWeek); ?>);
         }
 
         if (id == 'maxPurchaseCustomerLst30') {
             document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'none';
             document.getElementById('mostPurchseCustomerDtPkrRng').style.display = 'none';
-            mostPurchaseCustomerDataFunction(<?php echo json_encode($monthlyMostVistiCustomerData); ?>);
+            mostPurchaseCustomerDataFunction(<?php echo json_encode($highestPurchaseCustomerByMonth); ?>);
         }
 
         if (id == 'maxPurchaseCustomerByDt') {
@@ -162,7 +192,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         data: {
             labels: customerNameArray,
             datasets: [{
-                label: 'Total Sold',
+                label: 'Purchase Amount',
                 data: purchaseAmount,
                 backgroundColor: 'rgba(75, 192, 192, 0.5)',
                 borderColor: 'rgba(75, 192, 192, 1)',
