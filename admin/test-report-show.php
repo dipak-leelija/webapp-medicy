@@ -205,7 +205,7 @@ foreach ($hospitalShow as $hospitalDetails) {
 
         <div class="printButton mb-5">
             <button class="btn btn-primary" onclick="history.back()">Go Back</button>
-            <!-- <button class="btn btn-primary" onclick="window.print()">Print Prescription</button> -->
+            <button class="btn btn-primary" onclick="window.print()">Print Prescription</button>
         </div>
     </div>
 </body>

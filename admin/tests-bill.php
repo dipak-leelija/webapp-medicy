@@ -1,5 +1,10 @@
 <?php
-require_once '../php_control/sub-test.class.php';
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+
+// echo $billId = $_GET['bill_id'];
+
+require_once CLASS_DIR . 'sub-test.class.php';
 
 //  INSTANTIATING CLASS
 $SubTests = new SubTests();
