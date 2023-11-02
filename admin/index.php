@@ -10,6 +10,7 @@ require_once CLASS_DIR . 'stockOut.class.php';
 require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'patients.class.php';
 
 $page = "dashboard";
 
@@ -19,6 +20,7 @@ $StockOut          = new StockOut();
 $StockIn           = new StockIn();
 $StockInDetails    = new StockInDetails();
 $Distributor       = new Distributor;
+$Patients          = new Patients;
 
 $totalAppointments = $appoinments->appointmentsDisplay();
 
@@ -28,6 +30,17 @@ if ($_SESSION['ADMIN'] == false) {
     echo "<br>ADMIN LOGIN - ADMIN ID : $adminId<br>";
 }
 
+$allPatients       = $Patients->allPatients($adminId);
+$allPatients       = json_decode($allPatients);
+if ($allPatients) {
+    $patientCount = count($allPatients);
+    echo "total Patient- " . $patientCount;
+} else {
+    echo "not found";
+}
+
+$newPatientByDay = $Patients->newPatientByDay($adminId);
+// echo $newPatientByDay;
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +66,7 @@ if ($_SESSION['ADMIN'] == false) {
     <link rel="stylesheet" href="css/custom-dashboard.css">
 
     <script src="js\ajax.custom-lib.js"></script>
-    
+
 </head>
 
 <body id="page-top">
@@ -122,12 +135,24 @@ if ($_SESSION['ADMIN'] == false) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                New Patients</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                                <i class="fas fa-user-plus"></i> New Patients
+                                            </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-user-plus"></i>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
+
+                                                <b>...</b>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
+                                                <button class="dropdown-item" type="button" id="newLst24hrs" onclick="mostvisitCustomer(this.id)">Last 24 hrs</button>
+                                                <button class="dropdown-item" type="button" id="mostVisitCustomerLst7" onclick="mostvisitCustomer(this.id)">Last 7 Days</button>
+                                                <button class="dropdown-item" type="button" id="mostVisitCustomerLst30" onclick="mostvisitCustomer(this.id)">Last 30 DAYS</button>
+                                                <button class="dropdown-item" type="button" id="mostVisitCustomerOnDt" onclick="mostvisitCustomer(this.id)">By Date</button>
+                                                <button class="dropdown-item" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button>
+                                            </div>
                                         </div>
+                                        <canvas id="myChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +241,7 @@ if ($_SESSION['ADMIN'] == false) {
                         <div class="col-xl-6 col-md-6 mb-4">
                             <?php require_once PORTAL_COMPONENT . "highestpurchasedcustomer.php"; ?>
                         </div>
-                        
+
                     </div>
 
                     <div class="row">
@@ -347,7 +372,24 @@ if ($_SESSION['ADMIN'] == false) {
     <script src="js/demo/chart-pie-demo.js"></script> -->
 
     <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+        const labels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '# of Votes',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            }
+        });
 
+    </script>
 
 </body>
 

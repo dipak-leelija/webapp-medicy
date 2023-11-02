@@ -168,4 +168,43 @@ class Patients extends DatabaseConnection{
     }
 
 
+    //======================///
+
+    function newPatientByDay($adminId)
+    {
+        try {
+            $selectQuery = "SELECT patient_id, COUNT(*) AS day_count
+            FROM patient_details
+            WHERE admin_id = ? AND DATE(added_on) = CURDATE()
+            GROUP BY patient_id
+            ORDER BY day_count DESC
+            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
 }//end class

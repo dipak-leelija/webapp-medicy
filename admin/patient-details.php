@@ -224,7 +224,7 @@ $occurrences = array_count_values($subTestNames);
                                                             <tr>
                                                                 <th>Total Visits:</th>
                                                                 <td class="px-2">:</td>
-                                                                <td><?= $labVisited ?></td>
+                                                                <td><?= ($labVisited) ? $labVisited : "0" ?></td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Last Visited</th>
@@ -458,31 +458,18 @@ $occurrences = array_count_values($subTestNames);
                 rows1[i].style.display = "none";
             }
 
-            if (rows.length > 3 || rows1.length > 3) {
-                toggleButton.style.display = "block";
-                toggleButton1.style.display = "block";
-            } else {
-                toggleButton.style.display = "none";
-                toggleButton1.style.display= "none";
-            }
+            if (rows.length > 3 ? toggleButton.style.display = "block" : toggleButton.style.display = "none"); 
+            if( rows1.length > 3 ? toggleButton1.style.display = "block" : toggleButton1.style.display= "none");
 
             toggleButton.addEventListener("click", function() {
                 for (var i = 3; i < rows.length; i++) {
-                    if (rows[i].style.display === "none") {
-                        rows[i].style.display = "table-row";
-                    } else {
-                        rows[i].style.display = "none";
+                    if (rows[i].style.display === "none" ?  rows[i].style.display = "table-row" : rows[i].style.display = "none") ;
                     }
-                }
             });
 
             toggleButton1.addEventListener("click" , function(){
                 for( var i = 3; i< rows1.length; i++){
-                    if(rows1[i].style.display === "none"){
-                        rows1[i].style.display = "table-row";
-                    }else {
-                        rows1[i].style.display = "none";
-                    }
+                    if(rows1[i].style.display === "none" ? rows1[i].style.display = "table-row" : rows1[i].style.display = "none");
                 }
             });            
         });
