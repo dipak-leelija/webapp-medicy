@@ -45,7 +45,8 @@ if (isset($_GET['mostVisitStartDt']) && isset($_GET['mostVisitEndDt'])) {
     $startDate = $_GET['mostVisitStartDt'];
     $endDate = $_GET['mostVisitEndDt'];
     $mostVisitCustomerDateRange = $StockOut->mostVisitCustomersByDateRange($startDate, $endDate, $adminId);
-    $mostVisitCustomerDateRange = json_encode($mostVisitCustomerDateRange);
+   
+    echo json_encode($mostVisitCustomerDateRange); 
 }
 
 

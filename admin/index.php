@@ -52,6 +52,8 @@ if ($_SESSION['ADMIN'] == false) {
     <link href="css/custom/custom.css" rel="stylesheet">
     <link rel="stylesheet" href="css/custom-dashboard.css">
 
+    <script src="js\ajax.custom-lib.js"></script>
+    
 </head>
 
 <body id="page-top">
