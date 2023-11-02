@@ -41,21 +41,36 @@ $stockOutdatas = $StockOut->stockOutByPatientId($patientId);
 $stockOutdatas = json_decode($stockOutdatas, true);
 $invoiceId = [];
 foreach ($stockOutdatas as $stockData) {
-    echo $invoiceId[] = $stockData['invoice_id'];
+    $invoiceId[] = $stockData['invoice_id'];
 }
 /// find itemname from stockOutDetils for pie chart ///
-$stockOutDetailsBYinvoiveID = $StockOut->stockOutDetailsBYinvoiveID($invoiceId);
-$stockDetails = json_decode($stockOutDetailsBYinvoiveID);
-$itemNames = [];
-foreach ($stockDetails as $details) {
-    $itemNames[] = $details->item_name;
-}
-$occurrenceschart2 = array_count_values($itemNames);
-echo json_encode($occurrenceschart2);
-// // Display the occurrences
-// foreach ($occurrenceschart2 as $itemName => $occurrence) {
-//     echo "$itemName : $occurrence";
+// $stockOutDetailsBYinvoiveID = $StockOut->stockOutDetailsBYinvoiveID($invoiceId);
+// $stockDetails = json_decode($stockOutDetailsBYinvoiveID);
+// $itemNames = [];
+// if ($stockDetails) {
+//     foreach ($stockDetails as $details) {
+//         $itemNames[] = $details->item_name;
+//     }
 // }
+// $occurrenceschart2 = array_count_values($itemNames);
+// echo "<script>var occurrenceschart2 = " . json_encode($occurrenceschart2) . ";</script>";
+
+$stockOutDetailsBYinvoiveID = $StockOut->stockOutDetailsBYinvoiveID($invoiceId);
+
+if ($stockOutDetailsBYinvoiveID !== null) {
+    $stockDetails = json_decode($stockOutDetailsBYinvoiveID);
+
+    if ($stockDetails !== null) {
+        $itemNames = [];
+        foreach ($stockDetails as $details) {
+            if (isset($details->item_name)) {
+                $itemNames[] = $details->item_name;
+            }
+        }
+        $occurrenceschart2 = array_count_values($itemNames);
+        echo "<script>var occurrenceschart2 = " . json_encode($occurrenceschart2) . ";</script>";
+    } 
+} 
 //end...
 
 //=====find labreport by Id=====//
@@ -88,7 +103,7 @@ $test_ids = [];
 $billDetailsByMultiId = $LabBillDetails->billDetailsByMultiId($bill_ids);
 if (is_array($billDetailsByMultiId)) {
     foreach ($billDetailsByMultiId as $MultiId) {
-        $test_ids[] = $MultiId['test_id'] . "<br>";
+        $test_ids[] = $MultiId['test_id'];
         $billId = $MultiId['bill_id'];
         $date   = $MultiId['test_date'];
     }
@@ -209,12 +224,12 @@ $occurrences = array_count_values($subTestNames);
                                                             <tr>
                                                                 <th>Total Visits:</th>
                                                                 <td class="px-2">:</td>
-                                                                <td><?= $labVisited ?></td>
+                                                                <td><?= ($labVisited) ? $labVisited : "0" ?></td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Last Visited</th>
                                                                 <td class="px-2">:</td>
-                                                                <td><?= $maxBillDate ?></td>
+                                                                <td><?= isset($maxBillDate) ? $maxBillDate : ' _ / _ / _' ?></td>
                                                             </tr>
                                                             <tr>
                                                                 <th>Amount Spend</th>
@@ -237,7 +252,7 @@ $occurrences = array_count_values($subTestNames);
                                 </div> -->
                             </div>
                             <div class="graph-Chart">
-                                <canvas id="myChart"></canvas>
+                                <canvas id="myChart">Most taken Tests</canvas>
                             </div>
                             <div class="table-div">
                                 <div class="left-table">
@@ -245,9 +260,9 @@ $occurrences = array_count_values($subTestNames);
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Invoice</th>
                                                 <th scope="col">Bill Number</th>
                                                 <th scope="col">Date</th>
+                                                <th scope="col">Invoice</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -258,14 +273,17 @@ $occurrences = array_count_values($subTestNames);
                                                 <td>@mdo</td>
                                             </tr> -->
                                             <?php foreach ($stockOutdatas as $index => $stockOutData) : ?>
-                                                <tr>
+                                                <tr class="appoinment-row1">
                                                     <td><?= $stockOutData['invoice_id'] ?></td>
-                                                    <td></td>
                                                     <td><?= $stockOutData['bill_date'] ?></td>
+                                                    <td><a class="text-primary text-center" title="Print" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-primary btn-sm" id="toggleButton1">More...</button>
+                                    </div>
                                 </div>
                                 <div class="right-table">
                                     <p>List Of Test</p>
@@ -294,11 +312,12 @@ $occurrences = array_count_values($subTestNames);
                                                 if ($showLabAppointmentsById) {
                                                     $count = 0;
                                                     foreach ($showLabAppointmentsById as $appointment) {
-                                                        // $date = $appointment['test_date'];
+
                                                         $patient_id = $appointment['patient_id'];
                                                         $bill_id    = $appointment['bill_id'];
                                                         $test_date  = $appointment['test_date'];
                                                         $count++;
+
                                                         if (isset($reportIdMap[$patient_id])) {
                                                             $reportId = $reportIdMap[$patient_id];
                                             ?>
@@ -381,7 +400,7 @@ $occurrences = array_count_values($subTestNames);
             borderColors.push(randomColors.borderColor);
         }
 
-        /// bar chart for most taken test///
+        /// pie chart for most taken test///
         const ctx = document.getElementById('myChart');
         new Chart(ctx, {
             type: 'doughnut',
@@ -398,18 +417,17 @@ $occurrences = array_count_values($subTestNames);
             },
         });
 
-
-        const labels2 = <?php echo json_encode(array_keys($occurrenceschart2)) ?>;
-        console.log(labels2);
-        const data2 = <?php echo json_encode(array_keys($occurrenceschart2)) ?>;
-        console.log(data2);
+        /// bar chart for most purchased ///
         const ctx2 = document.getElementById('chart2');
+        const labels2 = Object.keys(occurrenceschart2);
+        const data2 = Object.values(occurrenceschart2);
+
         new Chart(ctx2, {
             type: 'bar',
             data: {
                 labels: labels2,
                 datasets: [{
-                    label: '# Most purches',
+                    label: '# Most purchased',
                     data: data2,
                     borderWidth: 1
                 }]
@@ -422,25 +440,39 @@ $occurrences = array_count_values($subTestNames);
                 }
             }
         });
-            
 
-        //
+
 
         ///toggle button ///
         document.addEventListener("DOMContentLoaded", function() {
             var rows = document.querySelectorAll(".appointment-row");
+            var rows1 = document.querySelectorAll(".appoinment-row1");
             var toggleButton = document.getElementById("toggleButton");
+            var toggleButton1= document.getElementById("toggleButton1");
 
             // Initially hide all rows except the first three
             for (var i = 3; i < rows.length; i++) {
-                if (rows[i].style.display === "none") {
-                    rows[i].style.display = "table-row";
-                } else {
-                    rows[i].style.display = "none";
-                }
+                rows[i].style.display = "none";
             }
+            for ( var i =3; i< rows1.length; i++){
+                rows1[i].style.display = "none";
+            }
+
+            if (rows.length > 3 ? toggleButton.style.display = "block" : toggleButton.style.display = "none"); 
+            if( rows1.length > 3 ? toggleButton1.style.display = "block" : toggleButton1.style.display= "none");
+
+            toggleButton.addEventListener("click", function() {
+                for (var i = 3; i < rows.length; i++) {
+                    if (rows[i].style.display === "none" ?  rows[i].style.display = "table-row" : rows[i].style.display = "none") ;
+                    }
+            });
+
+            toggleButton1.addEventListener("click" , function(){
+                for( var i = 3; i< rows1.length; i++){
+                    if(rows1[i].style.display === "none" ? rows1[i].style.display = "table-row" : rows1[i].style.display = "none");
+                }
+            });            
         });
-        // });
     </script>
 </body>
 
