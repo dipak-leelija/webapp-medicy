@@ -1073,7 +1073,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1115,7 +1115,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1158,7 +1158,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1201,7 +1201,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1220,7 +1220,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostSoldStockOutDataGroupByDtRange($dtRange, $adminId)
+    function mostSoldStockOutDataGroupByDt($dtRange, $adminId)
     {
         $data = array();
 
@@ -1229,7 +1229,7 @@ class StockOut extends DatabaseConnection
                             FROM stock_out_details sod
                             JOIN stock_out so ON sod.invoice_id = so.invoice_id
                             WHERE so.admin_id = ?
-                              AND so.added_on >= DATE_SUB(NOW(), INTERVAL ? DAY)
+                              AND DATE(so.added_on) = ?
                             GROUP BY sod.product_id
                             ORDER BY total_sold DESC
                             LIMIT 10";
@@ -1241,8 +1241,14 @@ class StockOut extends DatabaseConnection
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
                 }
 
                 $stmt->close();
@@ -1253,6 +1259,54 @@ class StockOut extends DatabaseConnection
             echo "Error: " . $e->getMessage();
         }
 
+        return $data;
+    }
+
+
+
+
+
+
+    function mostSoldStockOutDataGroupByDtRng($startDt, $endDt, $adminId)
+    {
+        $data = array();
+
+        try {
+            $selectQuery = "SELECT product_id, SUM(qty) AS total_sold
+                            FROM stock_out_details
+                            WHERE invoice_id IN (
+                                SELECT invoice_id
+                                FROM stock_out
+                                WHERE admin_id = ? AND DATE(added_on) BETWEEN ? AND ?
+                            )
+                            GROUP BY product_id
+                            ORDER BY total_sold DESC
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("sss", $adminId, $startDt, $endDt);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
         return $data;
     }
 
@@ -1283,10 +1337,13 @@ class StockOut extends DatabaseConnection
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1325,10 +1382,13 @@ class StockOut extends DatabaseConnection
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1369,10 +1429,13 @@ class StockOut extends DatabaseConnection
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1413,10 +1476,13 @@ class StockOut extends DatabaseConnection
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1433,7 +1499,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function lessSoldStockOutDataGroupByDtRange($dtRange, $adminId)
+    function lessSoldStockOutDataGroupByDt($searchDt, $adminId)
     {
         $data = array();
 
@@ -1443,23 +1509,29 @@ class StockOut extends DatabaseConnection
                             WHERE invoice_id IN (
                                 SELECT invoice_id
                                 FROM stock_out
-                                WHERE admin_id = ?
-                                AND added_on >= DATE_SUB(NOW(), INTERVAL ? DAY)
+                                WHERE admin_id = ? AND DATE(added_on) = ?
                             )
                             GROUP BY product_id
-                            ORDER BY total_sold ASC
+                            ORDER BY total_sold
                             LIMIT 10";
 
             $stmt = $this->conn->prepare($selectQuery);
 
             if ($stmt) {
-                $stmt->bind_param("ss", $adminId, $dtRange);
+                $stmt->bind_param("ss", $adminId, $searchDt);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
                 }
+
                 $stmt->close();
             } else {
                 echo "Statement preparation failed: " . $this->conn->error;
@@ -1471,6 +1543,51 @@ class StockOut extends DatabaseConnection
     }
 
 
+    
+
+
+    function lessSoldStockOutDataGroupByDtRng($startDt, $endDt, $adminId)
+    {
+        $data = array();
+
+        try {
+            $selectQuery = "SELECT product_id, SUM(qty) AS total_sold
+                            FROM stock_out_details
+                            WHERE invoice_id IN (
+                                SELECT invoice_id
+                                FROM stock_out
+                                WHERE admin_id = ? AND DATE(added_on) BETWEEN ? AND ?
+                            )
+                            GROUP BY product_id
+                            ORDER BY total_sold
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("sss", $adminId, $startDt, $endDt);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return $data;
+    }
 
     /// ========= end of less sold item check query ================
 
