@@ -240,11 +240,9 @@ class StockOut extends DatabaseConnection
                 }
 
                 $stmt->close();
-
             } else {
                 echo "Statement preparation failed: " . $this->conn->error;
             }
-
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
@@ -461,6 +459,305 @@ class StockOut extends DatabaseConnection
 
     // ============= end of most visited customer functions ===============
 
+
+    // ============= most purchase customer data functions ==============
+
+    function overallMostPurchaseCustomer($admin)
+    {
+        try {
+            $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id = 'Cash Sales'
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id != 'Cash Sales'
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10;";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $admin, $admin);
+
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+
+                    if ($result->num_rows > 0) {
+                        $data = array();
+                        while ($row = $result->fetch_object()) {
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+
+                    $stmt->close();
+                } else {
+                    echo "Statement execution failed: " . $stmt->error;
+                }
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return null;
+    }
+
+
+
+
+
+    function mostPurchaseCustomerByDay($admin)
+    {
+        try {
+            $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id = 'Cash Sales' 
+                                AND DATE(added_on) = CURDATE()
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id != 'Cash Sales' 
+                                AND DATE(added_on) = CURDATE()
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $admin, $admin);
+
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+
+                    if ($result->num_rows > 0) {
+                        $data = array();
+                        while ($row = $result->fetch_object()) {
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+
+                    $stmt->close();
+                } else {
+                    echo "Statement execution failed: " . $stmt->error;
+                }
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return null;
+    }
+
+
+
+
+    function mostPurchaseCustomerByWeek($admin)
+    {
+        try {
+            $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id = 'Cash Sales' 
+                            AND added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id != 'Cash Sales' 
+                            AND added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $admin, $admin);
+
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+
+                    if ($result->num_rows > 0) {
+                        $data = array();
+                        while ($row = $result->fetch_object()) {
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+
+                    $stmt->close();
+                } else {
+                    echo "Statement execution failed: " . $stmt->error;
+                }
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return null;
+    }
+
+
+
+
+
+
+    function mostPurchaseCustomerByMonth($admin)
+    {
+        try {
+            $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id = 'Cash Sales' 
+                            AND added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id != 'Cash Sales' 
+                            AND added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $admin, $admin);
+
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+
+                    if ($result->num_rows > 0) {
+                        $data = array();
+                        while ($row = $result->fetch_object()) {
+                            $data[] = $row;
+                        }
+                        return $data;
+                    } else {
+                        return null;
+                    }
+
+                    $stmt->close();
+                } else {
+                    echo "Statement execution failed: " . $stmt->error;
+                }
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return null;
+    }
+
+
+
+
+
+
+    function mostPurchaseCustomerByDate($adminId, $date){
+        try {
+            $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id = 'Cash Sales' 
+                            AND DATE(added_on) = ?
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id != 'Cash Sales' 
+                            AND DATE(added_on) = ?
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("ssss", $adminId, $date, $adminId, $date);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+
+    
+
+    function mostPurchaseCustomerByDateRange($startDate, $endDate, $adminId){
+        try {
+            $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id = 'Cash Sales' 
+                            AND DATE(added_on) BETWEEN ? AND ?
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE admin_id = ? AND customer_id != 'Cash Sales' 
+                            AND DATE(added_on) BETWEEN ? AND ?
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("ssssss", $adminId, $startDate, $endDate, $adminId, $startDate, $endDate);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+    
+    // =================== end of most purchase customer data ==============
 
 
 
@@ -776,7 +1073,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -818,7 +1115,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -861,7 +1158,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -904,7 +1201,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -923,7 +1220,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostSoldStockOutDataGroupByDtRange($dtRange, $adminId)
+    function mostSoldStockOutDataGroupByDt($dtRange, $adminId)
     {
         $data = array();
 
@@ -932,7 +1229,7 @@ class StockOut extends DatabaseConnection
                             FROM stock_out_details sod
                             JOIN stock_out so ON sod.invoice_id = so.invoice_id
                             WHERE so.admin_id = ?
-                              AND so.added_on >= DATE_SUB(NOW(), INTERVAL ? DAY)
+                              AND DATE(so.added_on) = ?
                             GROUP BY sod.product_id
                             ORDER BY total_sold DESC
                             LIMIT 10";
@@ -944,8 +1241,14 @@ class StockOut extends DatabaseConnection
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
                 }
 
                 $stmt->close();
@@ -960,13 +1263,60 @@ class StockOut extends DatabaseConnection
     }
 
 
+
+
+
+
+    function mostSoldStockOutDataGroupByDtRng($startDt, $endDt, $adminId)
+    {
+        $data = array();
+
+        try {
+            $selectQuery = "SELECT product_id, SUM(qty) AS total_sold
+                            FROM stock_out_details
+                            WHERE invoice_id IN (
+                                SELECT invoice_id
+                                FROM stock_out
+                                WHERE admin_id = ? AND DATE(added_on) BETWEEN ? AND ?
+                            )
+                            GROUP BY product_id
+                            ORDER BY total_sold DESC
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("sss", $adminId, $startDt, $endDt);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return $data;
+    }
+
+
     //  ============= end of most sold item check query ===========
 
     /// ========= less sold item check query ================
 
-    function leastSoldStockOutDataFromStart($adminId)
-    {
-        try {
+    function leastSoldStockOutDataFromStart($adminId){
+    try {
             $query = "SELECT product_id, SUM(qty) AS total_sold
             FROM stock_out_details
             WHERE invoice_id IN (
@@ -987,10 +1337,13 @@ class StockOut extends DatabaseConnection
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1007,8 +1360,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function leastSoldStockOutDataGroupByDay($adminId)
-    {
+    function leastSoldStockOutDataGroupByDay($adminId){
         try {
             $query = "SELECT product_id, SUM(qty) AS total_sold
                       FROM stock_out_details
@@ -1030,10 +1382,13 @@ class StockOut extends DatabaseConnection
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1052,8 +1407,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function leastSoldStockOutDataGroupByWeek($adminId)
-    {
+    function leastSoldStockOutDataGroupByWeek($adminId){
         try {
             $query = "SELECT product_id, SUM(qty) AS total_sold
                       FROM stock_out_details
@@ -1075,10 +1429,13 @@ class StockOut extends DatabaseConnection
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1119,10 +1476,13 @@ class StockOut extends DatabaseConnection
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
-                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -1139,7 +1499,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function lessSoldStockOutDataGroupByDtRange($dtRange, $adminId)
+    function lessSoldStockOutDataGroupByDt($searchDt, $adminId)
     {
         $data = array();
 
@@ -1149,23 +1509,29 @@ class StockOut extends DatabaseConnection
                             WHERE invoice_id IN (
                                 SELECT invoice_id
                                 FROM stock_out
-                                WHERE admin_id = ?
-                                AND added_on >= DATE_SUB(NOW(), INTERVAL ? DAY)
+                                WHERE admin_id = ? AND DATE(added_on) = ?
                             )
                             GROUP BY product_id
-                            ORDER BY total_sold ASC
+                            ORDER BY total_sold
                             LIMIT 10";
 
             $stmt = $this->conn->prepare($selectQuery);
 
             if ($stmt) {
-                $stmt->bind_param("ss", $adminId, $dtRange);
+                $stmt->bind_param("ss", $adminId, $searchDt);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
                 }
+
                 $stmt->close();
             } else {
                 echo "Statement preparation failed: " . $this->conn->error;
@@ -1177,6 +1543,51 @@ class StockOut extends DatabaseConnection
     }
 
 
+    
+
+
+    function lessSoldStockOutDataGroupByDtRng($startDt, $endDt, $adminId)
+    {
+        $data = array();
+
+        try {
+            $selectQuery = "SELECT product_id, SUM(qty) AS total_sold
+                            FROM stock_out_details
+                            WHERE invoice_id IN (
+                                SELECT invoice_id
+                                FROM stock_out
+                                WHERE admin_id = ? AND DATE(added_on) BETWEEN ? AND ?
+                            )
+                            GROUP BY product_id
+                            ORDER BY total_sold
+                            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("sss", $adminId, $startDt, $endDt);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return $data;
+    }
 
     /// ========= end of less sold item check query ================
 

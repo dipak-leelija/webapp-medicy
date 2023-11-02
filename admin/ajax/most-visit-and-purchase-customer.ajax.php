@@ -12,9 +12,9 @@ $Patients   = new Patients;
 $StockOut   = new StockOut;
 
 
-//// ============ most sold items ==================
-if (isset($_POST['mostVistiCustomerId'])) {
-    $customerId =  $_POST['mostVistiCustomerId'];
+//// ============ customer details fetch area ==================
+if (isset($_GET['customerId'])) {
+    $customerId =  $_GET['customerId'];
     $customerId = json_decode($customerId);
     $customerNameArray = array();
     for($i = 0; $i<count($customerId); $i++){
@@ -32,6 +32,7 @@ if (isset($_POST['mostVistiCustomerId'])) {
 }
 
 
+// ==== for most visit customer data fetch ======
 
 if (isset($_POST['mostVstCstmrByDt'])) {
     $dtPicker=  $_POST['mostVstCstmrByDt'];
@@ -51,7 +52,23 @@ if (isset($_GET['mostVisitStartDt']) && isset($_GET['mostVisitEndDt'])) {
 
 
 
+// === for most purchase customer data fetch ==========
 
+if (isset($_GET['mostPrchsCstmrByDt'])) {
+    $dtPicker=  $_GET['mostPrchsCstmrByDt'];
+    $mostPurchaseCustomerOnDate = $StockOut->mostPurchaseCustomerByDate($adminId, $dtPicker);
+    // print_r($mostVisitedCustomerOnDate);
+    echo json_encode($mostPurchaseCustomerOnDate);  
+}
+
+
+if (isset($_GET['mostPurchaseStartDt']) && isset($_GET['mostPurchaseEndDt'])) {
+    $startDate = $_GET['mostPurchaseStartDt'];
+    $endDate = $_GET['mostPurchaseEndDt'];
+    $mostPurchaseCustomerDateRange = $StockOut->mostPurchaseCustomerByDateRange($startDate, $endDate, $adminId);
+   
+    echo json_encode($mostPurchaseCustomerDateRange); 
+}
 
 
 ?>

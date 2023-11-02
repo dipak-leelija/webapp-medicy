@@ -235,9 +235,11 @@ $newPatientByDay = $Patients->newPatientByDay($adminId);
                         <div class="col-xl-6 col-md-6 mb-4">
                             <?php require_once PORTAL_COMPONENT . "lesssolditems.php"; ?>
                         </div>
+                        <br>
                         <div class="col-xl-6 col-md-6 mb-4">
                             <?php require_once PORTAL_COMPONENT . "mostvisitedcustomer.php"; ?>
                         </div>
+                        <br>
                         <div class="col-xl-6 col-md-6 mb-4">
                             <?php require_once PORTAL_COMPONENT . "highestpurchasedcustomer.php"; ?>
                         </div>

@@ -12,8 +12,8 @@ $StockOut   = new StockOut;
 
 
 //// ============ most sold items ==================
-if (isset($_POST['mostSoldProdId'])) {
-    $productId =  $_POST['mostSoldProdId'];
+if (isset($_GET['mostSoldProdId'])) {
+    $productId =  $_GET['mostSoldProdId'];
     $productId = json_decode($productId);
     $prodName = array();
     for($i = 0; $i<count($productId); $i++){
@@ -26,14 +26,21 @@ if (isset($_POST['mostSoldProdId'])) {
 
 
 
-if (isset($_POST['mostSoldDtRange'])) {
-    $dtRange =  new DateTime($_POST['mostSoldDtRange']);
-    $curDate = new DateTime();
-    $interval = $curDate->diff($dtRange);
-    $daysDiff = $interval->days;
-    $dateRangeMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRange($daysDiff, $adminId);
-    echo json_encode($dateRangeMostStoldItems);
+if (isset($_GET['mostSoldByDt'])) {
+    $mostSoldDate = $_GET['mostSoldByDt'];
+    $byDateMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDt($mostSoldDate, $adminId);
+    echo json_encode($byDateMostStoldItems);
+}//mostSoldStockOutDataGroupByDtRng
+
+
+
+if (isset($_GET['mostSoldStarDate']) && isset($_GET['mostSoldEndDate'])) {
+    $mostSoldStartDate = $_GET['mostSoldStarDate'];
+    $mostSoldEndDate = $_GET['mostSoldEndDate'];
+    $mostStoldItemsByDateRange = $StockOut->mostSoldStockOutDataGroupByDtRng($mostSoldStartDate, $mostSoldEndDate, $adminId);
+    echo json_encode($mostStoldItemsByDateRange);
 }
+
 
 
 //// ============= less sold items ===================
@@ -51,12 +58,18 @@ if (isset($_POST['lessSoldProdId'])) {
 
 
 
-if (isset($_POST['lessSoldDtRange'])) {
-    $dtRange =  new DateTime($_POST['lessSoldDtRange']);
-    $curDate = new DateTime();
-    $interval = $curDate->diff($dtRange);
-    $daysDiff = $interval->days;
-    $dateRangeMostStoldItems = $StockOut->lessSoldStockOutDataGroupByDtRange($daysDiff, $adminId);
+if (isset($_GET['lessSoldChkDt'])) {
+    $searchDt = $_GET['lessSoldChkDt'];
+    $mostStoldItemsByDate = $StockOut->lessSoldStockOutDataGroupByDt($searchDt, $adminId);
+    echo json_encode($mostStoldItemsByDate);
+    // echo $daysDiff;
+}
+
+
+if (isset($_GET['lessSoldStartDt']) && isset($_GET['lessSoldEndDt'])) {
+    $startDt = $_GET['lessSoldStartDt'];
+    $endDt = $_GET['lessSoldEndDt'];
+    $dateRangeMostStoldItems = $StockOut->lessSoldStockOutDataGroupByDtRng($startDt, $endDt, $adminId);
     echo json_encode($dateRangeMostStoldItems);
     // echo $daysDiff;
 }

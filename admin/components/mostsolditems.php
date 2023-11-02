@@ -20,6 +20,13 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
             <input type="date" id="mostSoldDateInput">
             <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDate()" style="height: 2rem;">Find</button>
         </div>
+        <div id="mostSoldDtRngPickerDiv" style="display: none; margin-right:1rem;">
+            <label>Start Date</label>
+            <input type="date" id="mostSoldStarDate">
+            <label>End Date</label>
+            <input type="date" id="mostSoldEndDate">
+            <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDateRng()" style="height: 2rem;">Find</button>
+        </div>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
@@ -28,9 +35,10 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
             </button>
             <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0);">
                 <button class="dropdown-item" type="button" id="mostSoldLst24hrs" onclick="mostStoldItemCheck(this.id)">Last 24 hrs</button>
-                <button class="dropdown-item" type="button" id="mostLst7" onclick="mostStoldItemCheck(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="mostLst30" onclick="mostStoldItemCheck(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item" type="button" id="mostLstdt" onclick="mostStoldItemCheck(this.id)">By Date</button>
+                <button class="dropdown-item" type="button" id="mostSoldLst7" onclick="mostStoldItemCheck(this.id)">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="mostSoldLst30" onclick="mostStoldItemCheck(this.id)">Last 30 DAYS</button>
+                <button class="dropdown-item" type="button" id="mostSoldOnDt" onclick="mostStoldItemCheck(this.id)">By Date</button>
+                <button class="dropdown-item" type="button" id="mostSoldOnDtRng" onclick="mostStoldItemCheck(this.id)">By Range</button>
             </div>
         </div>
     </div>
@@ -40,8 +48,11 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                     most sold 10 items</div>
             </div>
-            <div style="width: 100%; margin: 0 auto;">
+            <div style="width: 100%; margin: 0 auto;" id = 'mostsolditemchartDiv'>
                 <canvas id="mostsolditemchart"></canvas>
+            </div>
+            <div style="width: 100%; margin: 0 auto;" id = 'mostsolditemNDFDiv'>
+                <label>NO DATA FOUND</label>
             </div>
         </div>
     </div>
@@ -54,40 +65,68 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
 
 <script>
 
-function updateMostSoldData(mostSold) {
-    console.log(mostSold);
-        mostSoldChart.data.datasets[0].data = mostSold.map(item => item.total_sold);
+    // ====== most sold chart data override function =========
+    function updateMostSoldData(mostSold) {
 
-        var productIds = mostSold.map(item => item.product_id);
-        productIds = JSON.stringify(productIds);
-        var dataToSend = `mostSoldProdId=${productIds}`;
+        if(mostSold != null){
 
-        var xmlhttp = new XMLHttpRequest();
-        mostSoldProdNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
-        xmlhttp.open("POST", mostSoldProdNameUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(dataToSend);
-        var prodNameArray = xmlhttp.responseText;
-        prodNameArray = JSON.parse(prodNameArray);
+            mostSoldChart.data.datasets[0].data = mostSold.map(item => item.total_sold);
 
-        mostSoldChart.data.labels = prodNameArray;
-        mostSoldChart.update();
+            var productIds = mostSold.map(item => item.product_id);
+            productIds = JSON.stringify(productIds);
+
+            var xmlhttp = new XMLHttpRequest();
+            mostSoldProdNameUrl = `../admin/ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}   `;
+            xmlhttp.open("GET", mostSoldProdNameUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(dataToSend);
+            var prodNameArray = xmlhttp.responseText;
+            prodNameArray = JSON.parse(prodNameArray);
+
+            mostSoldChart.data.labels = prodNameArray;
+
+            document.getElementById('mostsolditemchartDiv').style.display = 'block'
+            document.getElementById('mostsolditemNDFDiv').style.display = 'none'
+
+            mostSoldChart.update();
+
+        } else {
+            document.getElementById('mostsolditemchartDiv').style.display = 'none'
+            document.getElementById('mostsolditemNDFDiv').style.display = 'block'
+        }
     }
 
 
 
     function mostSoldItemsChkDate(){
         var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
-        var dataToSend = `mostSoldDtRange=${mostSolddatePicker}`;
 
         var xmlhttp = new XMLHttpRequest();
-        mostSoldDtPkrUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
-        xmlhttp.open("POST", mostSoldDtPkrUrl, false);
+        mostSoldDtPkrUrl = `../admin/ajax/components-most-sold-items.ajax.php?mostSoldByDt=${mostSolddatePicker}`;
+        xmlhttp.open("GET", mostSoldDtPkrUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(dataToSend);
-        var mostSoldDataInDtRange = xmlhttp.responseText;
+        xmlhttp.send(null);
+        var mostSoldDataByDate = xmlhttp.responseText;
+        
+        updateMostSoldData(JSON.parse(mostSoldDataByDate));
+    }
 
-        updateMostSoldData(JSON.parse(mostSoldDataInDtRange));
+
+
+
+    function mostSoldItemsChkDateRng(){
+        var mostSoldStarDate = document.getElementById('mostSoldStarDate').value;
+        var mostSoldEndDate = document.getElementById('mostSoldEndDate').value;
+
+        var xmlhttp = new XMLHttpRequest();
+        mostSoldDtPkrUrl = `../admin/ajax/components-most-sold-items.ajax.php?mostSoldStarDate=${mostSoldStarDate}&mostSoldEndDate=${mostSoldEndDate}`;
+        xmlhttp.open("GET", mostSoldDtPkrUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+
+        var mostSoldDataByDate = xmlhttp.responseText;
+    
+        updateMostSoldData(JSON.parse(mostSoldDataByDate));
     }
 
 
@@ -96,46 +135,66 @@ function updateMostSoldData(mostSold) {
     function mostStoldItemCheck(id) {
         if (id == 'mostSoldLst24hrs') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
             updateMostSoldData(<?php echo json_encode($dailyMostStoldItems); ?>);
         }
 
 
-        if (id == 'mostLst7') {
+        if (id == 'mostSoldLst7') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
             updateMostSoldData(<?php echo json_encode($weeklyMostStoldItems); ?>);
         }
 
-        if (id == 'mostLst30') {
+        if (id == 'mostSoldLst30') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
             updateMostSoldData(<?php echo json_encode($monthlyMostStoldItems); ?>);
         }
-
-        if (id == 'mostLstdt') {
+        
+        if (id == 'mostSoldOnDt') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'block';
+            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+        }
+
+        if (id == 'mostSoldOnDtRng') {
+            document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'block';
         }
     }
 
 
-    // ========= chart control area ============= \\
-    var mostSoldData = <?php echo json_encode($mostStoldItemsFromStart); ?>;
-    var productIds = mostSoldData.map(item => item.product_id);
-    productIds = JSON.stringify(productIds);
-    var dataToSend = `mostSoldProdId=${productIds}`;
+    // ========= most sold item primary data area ============= \\
+    var mostSoldDataFromStart = <?php echo json_encode($mostStoldItemsFromStart); ?>;
 
+    if(mostSoldDataFromStart != null){
 
-    var xmlhttp = new XMLHttpRequest();
-    mostSoldProdNameUrl = `../admin/ajax/components-most-sold-items.ajax.php`;
-    xmlhttp.open("POST", mostSoldProdNameUrl, false);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send(dataToSend);
-    var prodNameArray = xmlhttp.responseText;
-    prodNameArray = JSON.parse(prodNameArray);
+        var productIds = mostSoldDataFromStart.map(item => item.product_id);
+        productIds = JSON.stringify(productIds);
+        var dataToSend = `mostSoldProdId=${productIds}`;
 
-    var totalSold = mostSoldData.map(item => item.total_sold);
+        var xmlhttp = new XMLHttpRequest();
+        mostSoldProdNameUrl = `../admin/ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}`;
+        xmlhttp.open("GET", mostSoldProdNameUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(dataToSend);
+        var prodNameArray = xmlhttp.responseText;
+        prodNameArray = JSON.parse(prodNameArray);
 
-    var mostSoldCtx = document.getElementById('mostsolditemchart').getContext('2d');
+        var totalSold = mostSoldDataFromStart.map(item => item.total_sold);
 
-    var mostSoldChart = new Chart(mostSoldCtx, {
+        document.getElementById('mostsolditemchartDiv').style.display = 'block'
+        document.getElementById('mostsolditemNDFDiv').style.display = 'none'
+
+    } else {
+        document.getElementById('mostsolditemchartDiv').style.display = 'none'
+        document.getElementById('mostsolditemNDFDiv').style.display = 'block'
+    }
+    
+
+    // =============  most sold item bar chart area =============
+    var mostSoldChartCtx = document.getElementById('mostsolditemchart').getContext('2d');
+    var mostSoldChart = new Chart(mostSoldChartCtx, {
         type: 'bar',
         data: {
             labels: prodNameArray,

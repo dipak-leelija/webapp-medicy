@@ -37,10 +37,10 @@
                 <b>...</b>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button" id="lst7" onclick="chkDays(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="lst30" onclick="chkDays(this.id)">Last 1 Month</button>
-                <button class="dropdown-item" type="button" id="lstdt" onclick="chkDays(this.id)">By Date</button>
-                <button class="dropdown-item" type="button" id="reset" onclick="chkDays(this.id)">Reset</button>
+                <button class="dropdown-item" type="button" id="lst7">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="lst30">Last 1 Month</button>
+                <button class="dropdown-item" type="button" id="lstdt">By Date</button>
+                <button class="dropdown-item" type="button" id="reset">Reset</button>
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
     </div>
 </div>
 
-<script>
+<!-- <script>
 
     const chkDays = (id) => {
         var xmlhttp = new XMLHttpRequest();
@@ -98,4 +98,4 @@
             dateInput.focus();
         }
     }
-</script>
+</script> -->
