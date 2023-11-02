@@ -13,8 +13,8 @@ $StockOut   = new StockOut;
 
 
 //// ============ most sold items ==================
-if (isset($_POST['mostVistiCustomerId'])) {
-    $customerId =  $_POST['mostVistiCustomerId'];
+if (isset($_GET['customerId'])) {
+    $customerId =  $_GET['customerId'];
     $customerId = json_decode($customerId);
     $customerNameArray = array();
     for($i = 0; $i<count($customerId); $i++){

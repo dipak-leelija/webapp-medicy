@@ -30,8 +30,6 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
-
                 <b>...</b>
             </button>
             <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0);">
@@ -51,7 +49,7 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
                 <div style="width: 100%; margin: 0 auto;" id="mostVisitCustomerCharDiv">
                     <canvas id="mostVisitCustomerChart"></canvas>
                 </div>
-                <div style="width: 100%; margin: 0 auto; display:none" id="no-data-found-div">
+                <div style="width: 100%; margin: 0 auto; display:none" id="most-visited-no-data-found-div">
                     <label> NO DATA FOUND </label>
                 </div>
             </div>
@@ -71,13 +69,11 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 
             var customerId = mostVisitCustomerData.map(item => item.customer_id);
             customerId = JSON.stringify(customerId);
-            var dataToSend = `mostVistiCustomerId=${customerId}`;
-
-
-            mostVisitedCustomerDataUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php`;
-            xmlhttp.open("POST", mostVisitedCustomerDataUrl, false);
+            
+            mostVisitedCustomerDataUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
+            xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(dataToSend);
+            xmlhttp.send(null);
             var mostVistiCustomerNameArray = xmlhttp.responseText;
 
             mostVistiCustomerNameArray = JSON.parse(mostVistiCustomerNameArray);
@@ -85,13 +81,13 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
             mostVistedCustomerChart.data.labels = mostVistiCustomerNameArray;
 
             document.getElementById("mostVisitCustomerCharDiv").style.display = 'block';
-            document.getElementById('no-data-found-div').style.display = 'none';
+            document.getElementById('most-visited-no-data-found-div').style.display = 'none';
 
             mostVistedCustomerChart.update();
 
         } else {
             document.getElementById("mostVisitCustomerCharDiv").style.display = 'none';
-            document.getElementById('no-data-found-div').style.display = 'block';
+            document.getElementById('most-visited-no-data-found-div').style.display = 'block';
         }
 
     }
@@ -103,7 +99,6 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         var mostVistedCustomerDt = document.getElementById('mostVisiteCustomerDt').value;
         var dataToSend = `mostVstCstmrByDt=${mostVistedCustomerDt}`;
 
-        
         mostVstCstmrDtUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php`;
         xmlhttp.open("POST", mostVstCstmrDtUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -119,7 +114,6 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         var mostVistedCustomerStartDt = document.getElementById('mostVisiteCustomerStartDate').value;
         var mostVistedCustomerEndtDt = document.getElementById('mostVisiteCustomerEndDate').value;
 
-        
         mostVstCstmrDtRngUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?mostVisitStartDt=${mostVistedCustomerStartDt}&mostVisitEndDt=${mostVistedCustomerEndtDt}`;
         xmlhttp.open("GET", mostVstCstmrDtRngUrl, false);
         xmlhttp.send(null);
@@ -130,10 +124,11 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
     }
 
 
-
+    // ============ button onclick function call area ===============
     const mostvisitCustomer = (id) => {
         if (id == 'mostVisitCustomerLst24hrs') {
             document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
             console.log(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
             mostVisitCustomerDataFunction(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
         }
@@ -171,22 +166,20 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
     if (mostVstCutmrData != null) {
         var customerId = mostVstCutmrData.map(item => item.customer_id);
         customerId = JSON.stringify(customerId);
-        var dataToSend = `mostVistiCustomerId=${customerId}`;
 
-        
-        mostVisitedCustomerDataUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php`;
-        xmlhttp.open("POST", mostVisitedCustomerDataUrl, false);
+        mostVisitedCustomerDataUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
+        xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(dataToSend);
+        xmlhttp.send(null);
         var customerNameArray = xmlhttp.responseText;
-        
+
         customerNameArray = JSON.parse(customerNameArray);
 
         var totalVisit = mostVstCutmrData.map(item => item.visit_count);
 
     } else {
         document.getElementById("mostVisitCustomerCharDiv").style.display = 'none';
-        document.getElementById('no-data-found-div').style.display = 'block';
+        document.getElementById('most-visited-no-data-found-div').style.display = 'block';
     }
 
 

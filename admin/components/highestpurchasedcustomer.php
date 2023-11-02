@@ -1,44 +1,48 @@
 <?php
-    require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+$includePath = get_include_path();
 
-    $includePath = get_include_path();
+$today = NOW;
 
-    $StockOut = new StockOut();
+$highestPurchaseCustomerAllTime = $StockOut->overallMostPurchaseCustomer($adminId);
 
-    $today = date("Y-m-d");
-    // echo $today;
+$highestPurchaseCustomerByDay = $StockOut->mostPurchaseCustomerByDay($adminId);
 
-    $amount = 0;
-    $itemsCount = 0;
+$highestPurchaseCustomerByWeek = $StockOut->mostPurchaseCustomerByWeek($adminId);
 
-    $data = $StockOut->stockOutDisplay($adminId);
-    foreach($data as $data){
-        $SoldDate = $data['added_on'];
-        if($SoldDate == $today){
-            $amount += $data['amount'];
-            $itemsCount += $data['items'];
-        }  
-    }
-    // echo "<br>Amount : $amount";
-    // echo "<br>Items Count : $itemsCount";
+$highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminId);
+
+// $highestPurchaseCustomerByDate = $StockOut->mostPurchaseCustomerByDate($adminId);
+
+// $highestPurchaseCustomerByRange = $StockOut->mostPurchaseCustomerByDateRange($adminId);
+
+print_r($highestPurchaseCustomerByMonth);
+
 ?>
 
-<div class="card border-left-info border-right-info h-100 py-2 pending_border animated--grow-in">
+<div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div id="datePickerDiv" style="display: none;">
-            <input type="date" id="dateInput">
-            <button class="btn btn-sm btn-primary" id="added_on" value="CR" onclick="getDates(this.value)" style="height: 2rem;">Find</button>
+        <div id="mostPurchaseCustomerDtPkr" style="display: none;">
+            <input type="date" id="mostPurchseCustomerDt">
+            <button class="btn btn-sm btn-primary" onclick="mostPurchaseCustomerByDt()" style="height: 2rem;">Find</button>
+        </div>
+        <div id="mostPurchseCustomerDtPkrRng" style="display: none;">
+            <label>Start Date</label>
+            <input type="date" id="mostPurchseCustomerStartDate">
+            <label>End Date</label>
+            <input type="date" id="mostPurchseCustomerEndDate">
+            <button class="btn btn-sm btn-primary" onclick="mostPurchaseCustomerDateRange()" style="height: 2rem;">Find</button>
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
-                
                 <b>...</b>
             </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button" id="lst7" onclick="chkCustomer(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="lst30" onclick="chkCustomer(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item" type="button" id="lstdt" onclick="chkCustomer(this.id)">By Date</button>
+            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0);">
+                <button class="dropdown-item" type="button" id="maxPurchaseCustomerLst24hrs" onclick="maxPurchaseCustomer(this.id)">Last 24 hrs</button>
+                <button class="dropdown-item" type="button" id="maxPurchaseCustomerLst7" onclick="maxPurchaseCustomer(this.id)">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="maxPurchaseCustomerLst30" onclick="maxPurchaseCustomer(this.id)">Last 30 DAYS</button>
+                <button class="dropdown-item" type="button" id="maxPurchaseCustomerByDt" onclick="maxPurchaseCustomer(this.id)">By Date</button>
+                <button class="dropdown-item" type="button" id="maxPurchaseCustomerByDtRng" onclick="maxPurchaseCustomer(this.id)">By Range</button>
             </div>
         </div>
     </div>
@@ -46,44 +50,131 @@
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    highest purchased 10 customer</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                    <label type="symble" id="rupeeSymble" name="rupeeSymble">₹</label>
-                    <label type="text" id="salesAmount" name="salesAmount"><?php echo $amount ?></label>
+                    highest purchse 10 customer</div>
+                <div style="width: 100%; margin: 0 auto;" id="highestPurchaseCustomerChartDiv">
+                    <canvas id="highestPurchaseCustomerChart"></canvas>
                 </div>
-                <label type="text" id="itemsCount" name="itemsCount"><small><?php echo $itemsCount ?></small></label>
-                <label type="text"><small>Items</small></label>
-            </div>
-            <div class="col-auto">
-                <i class="fas fa-rupee-sign"></i>
+                <div style="width: 100%; margin: 0 auto; display:none" id="most-purchase-no-data-found-div">
+                    <label> NO DATA FOUND </label>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <script>
-    const chkCustomer = (id) => {
-        var xmlhttp = new XMLHttpRequest();
-        if (id == 'lst7') {
-            lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstWeek=' + id;
-            xmlhttp.open("GET", lastThirtyDaysUrl, false);
+    // =========== most purchase customer chart override function body ==========
+    function mostPurchaseCustomerDataFunction(mostPurchaseCustomerData) {
+
+        if (mostPurchaseCustomerData != null) {
+            highestPurchaseCustomerBarChart.data.datasets[0].data = mostPurchaseCustomerData.map(item => item.visit_count);
+
+            var customerId = mostPurchaseCustomerData.map(item => item.customer_id);
+            customerId = JSON.stringify(customerId);
+
+            mostPurchaseCustomerDataUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
+            xmlhttp.open("GET", mostPurchaseCustomerDataUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send(null);
-            document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
-            document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
+            var mostPurchaseCustomerNameArray = xmlhttp.responseText;
+
+            mostPurchaseCustomerNameArray = JSON.parse(mostPurchaseCustomerNameArray);
+
+            highestPurchaseCustomerBarChart.data.labels = mostPurchaseCustomerNameArray;
+
+            document.getElementById("highestPurchaseCustomerChartDiv").style.display = 'block';
+            document.getElementById('most-purchase-no-data-found-div').style.display = 'none';
+
+            highestPurchaseCustomerBarChart.update();
+
+        } else {
+            document.getElementById("highestPurchaseCustomerChartDiv").style.display = 'none';
+            document.getElementById('most-purchase-no-data-found-div').style.display = 'block';
         }
 
-        if (id == 'lst30') {
-            lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstMnth=' + id;
-            xmlhttp.open("GET", lastThirtyDaysUrl, false);
-            xmlhttp.send(null);
-            document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
-            document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
+    }
+
+
+
+    // ============ button onclick function call area ===============
+    const maxPurchaseCustomer = (id) => {
+        if (id == 'maxPurchaseCustomerLst24hrs') {
+            document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'none';
+            document.getElementById('mostPurchseCustomerDtPkrRng').style.display = 'none';
+            console.log(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
+            mostPurchaseCustomerDataFunction(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
         }
 
-        if (id == 'lstdt') {
-            const dateInput = document.getElementById('datePickerDiv');
-            dateInput.style.display = 'block';
-            dateInput.focus();
+        if (id == 'maxPurchaseCustomerLst7') {
+            document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'none';
+            document.getElementById('mostPurchseCustomerDtPkrRng').style.display = 'none';
+            mostPurchaseCustomerDataFunction(<?php echo json_encode($weeklyMostVistiCustomerData); ?>);
+        }
+
+        if (id == 'maxPurchaseCustomerLst30') {
+            document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'none';
+            document.getElementById('mostPurchseCustomerDtPkrRng').style.display = 'none';
+            mostPurchaseCustomerDataFunction(<?php echo json_encode($monthlyMostVistiCustomerData); ?>);
+        }
+
+        if (id == 'maxPurchaseCustomerByDt') {
+            document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'block';
+            document.getElementById('mostPurchseCustomerDtPkrRng').style.display = 'none';
+
+        }
+
+        if (id == 'maxPurchaseCustomerByDtRng') {
+            document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'none';
+            document.getElementById('mostPurchseCustomerDtPkrRng').style.display = 'block';
         }
     }
+
+
+
+    // ============== primary chart data area ==============
+    let highestPurchaseCustomerFromStart = <?php echo json_encode($highestPurchaseCustomerAllTime); ?>;
+
+    if (highestPurchaseCustomerFromStart != null) {
+        var customerId = highestPurchaseCustomerFromStart.map(item => item.customer_id);
+        customerId = JSON.stringify(customerId);
+
+        highestPurchaseCustomerUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
+        xmlhttp.open("GET", highestPurchaseCustomerUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+        var customerNameArray = xmlhttp.responseText;
+
+        customerNameArray = JSON.parse(customerNameArray);
+
+        var purchaseAmount = highestPurchaseCustomerFromStart.map(item => item.total_purchase);
+
+    } else {
+        document.getElementById("highestPurchaseCustomerChartDiv").style.display = 'none';
+        document.getElementById('most-purchase-no-data-found-div').style.display = 'block';
+    }
+
+
+    // ========= chart control area ============= \\
+    var highestPurchaseCustomerCtx = document.getElementById('highestPurchaseCustomerChart').getContext('2d');
+    var highestPurchaseCustomerBarChart = new Chart(highestPurchaseCustomerCtx, {
+        type: 'bar',
+        data: {
+            labels: customerNameArray,
+            datasets: [{
+                label: 'Total Sold',
+                data: purchaseAmount,
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 </script>
