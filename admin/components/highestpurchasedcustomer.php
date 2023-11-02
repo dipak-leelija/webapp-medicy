@@ -16,7 +16,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
 // $highestPurchaseCustomerByRange = $StockOut->mostPurchaseCustomerByDateRange($adminId);
 
-print_r($highestPurchaseCustomerByMonth);
+// print_r($highestPurchaseCustomerByMonth);
 
 ?>
 
