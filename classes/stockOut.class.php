@@ -213,16 +213,22 @@ class StockOut extends DatabaseConnection
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
                 }
 
                 $stmt->close();
 
-                return $data;
             } else {
                 echo "Statement preparation failed: " . $this->conn->error;
             }
+
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
@@ -256,7 +262,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -297,7 +303,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -338,7 +344,7 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
 
                 $stmt->close();
@@ -353,13 +359,15 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostVisitCustomersByDateRange($adminId, $dtRange)
+
+
+    function mostVisitedCustomerOnDate($adminId, $date)
     {
         try {
             $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
             FROM stock_out
-            WHERE admin_id = ? 
-            AND added_on >= DATE_SUB(NOW(), INTERVAL ? DAY)
+            WHERE admin_id = ?
+            AND DATE(added_on) = ?
             GROUP BY customer_id
             ORDER BY visit_count DESC
             LIMIT 10";
@@ -367,7 +375,7 @@ class StockOut extends DatabaseConnection
             $stmt = $this->conn->prepare($selectQuery);
 
             if ($stmt) {
-                $stmt->bind_param("ss", $adminId, $dtRange);
+                $stmt->bind_param("ss", $adminId, $date);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -378,7 +386,50 @@ class StockOut extends DatabaseConnection
                     }
                     return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
+
+
+
+    function mostVisitCustomersByDateRange($startDt, $endDate, $adminId)
+    {
+        try {
+            $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
+            FROM stock_out
+            WHERE admin_id = ?
+            AND DATE(added_on) BETWEEN ? AND ?
+            GROUP BY customer_id
+            ORDER BY visit_count DESC
+            LIMIT 10";
+
+            $stmt = $this->conn->prepare($selectQuery);
+
+            if ($stmt) {
+                $stmt->bind_param("sss", $adminId, $startDt, $endDate);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
                 }
 
                 $stmt->close();

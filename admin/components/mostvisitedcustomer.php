@@ -1,25 +1,32 @@
-
 <?php
 require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 $includePath = get_include_path();
 
 $today = NOW;
 
+$mostVistedCustomerFromStart = $StockOut->mostVistedCustomerFrmStart($adminId);
+
 $dailyMostVistiCustomerData = $StockOut->mostVisitCustomersByDay($adminId);
-print_r($dailyMostVistiCustomerData);
 
-// $weeklyMostVistiCustomerData = $StockOut->mostVisitCustomersByWeek($adminId);
+$weeklyMostVistiCustomerData = $StockOut->mostVisitCustomersByWeek($adminId);
 
+$monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 
-// $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
-
+// print_r($mostVistedCustomerFromStart);
 ?>
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div id="dtPickerDiv" style="display: none;">
-            <input type="date" id="dateInput">
-            <button class="btn btn-sm btn-primary" id="added_on" value="CR" onclick="leastSoldItems(this.value)" style="height: 2rem;">Find</button>
+        <div id="mostVistedCustomerDtPkr" style="display: none;">
+            <input type="date" id="mostVisiteCustomerDt">
+            <button class="btn btn-sm btn-primary" onclick="mostVistedCustomerByDt()" style="height: 2rem;">Find</button>
+        </div>
+        <div id="mostVistedCustomerDtPkrRng" style="display: none;">
+            <label>Start Date</label>
+            <input type="date" id="mostVisiteCustomerStartDate">
+            <label>End Date</label>
+            <input type="date" id="mostVisiteCustomerEndDate">
+            <button class="btn btn-sm btn-primary" onclick="mostVistedCustomerDateRange()" style="height: 2rem;">Find</button>
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -27,10 +34,12 @@ print_r($dailyMostVistiCustomerData);
 
                 <b>...</b>
             </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button" id="lst7" onclick="leastSoldItems(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="lst30" onclick="leastSoldItems(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item" type="button" id="lstdt" onclick="leastSoldItems(this.id)">By Date</button>
+            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0);">
+                <button class="dropdown-item" type="button" id="mostVisitCustomerLst24hrs" onclick="mostvisitCustomer(this.id)">Last 24 hrs</button>
+                <button class="dropdown-item" type="button" id="mostVisitCustomerLst7" onclick="mostvisitCustomer(this.id)">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="mostVisitCustomerLst30" onclick="mostvisitCustomer(this.id)">Last 30 DAYS</button>
+                <button class="dropdown-item" type="button" id="mostVisitCustomerOnDt" onclick="mostvisitCustomer(this.id)">By Date</button>
+                <button class="dropdown-item" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button>
             </div>
         </div>
     </div>
@@ -38,9 +47,12 @@ print_r($dailyMostVistiCustomerData);
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    most sold 10 items</div>
-                <div style="width: 80%; margin: 0 auto;">
-                    <canvas id="barChart"></canvas>
+                    most visited 10 customer</div>
+                <div style="width: 100%; margin: 0 auto;" id="mostVisitCustomerCharDiv">
+                    <canvas id="mostVisitCustomerChart"></canvas>
+                </div>
+                <div style="width: 100%; margin: 0 auto; display:none" id="no-data-found-div">
+                    <label> NO DATA FOUND </label>
                 </div>
             </div>
         </div>
@@ -49,66 +61,155 @@ print_r($dailyMostVistiCustomerData);
 
 <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>
 
+
 <script>
-    const leastSoldItems = (id) => {
+    // =========== most visit customer chart override function body ==========
+    function mostVisitCustomerDataFunction(mostVisitCustomerData) {
+
+        if (mostVisitCustomerData != null) {
+            mostVistedCustomerChart.data.datasets[0].data = mostVisitCustomerData.map(item => item.visit_count);
+
+            var customerId = mostVisitCustomerData.map(item => item.customer_id);
+            customerId = JSON.stringify(customerId);
+            var dataToSend = `mostVistiCustomerId=${customerId}`;
+
+            var xmlhttp = new XMLHttpRequest();
+            mostVisitedCustomerDataUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php`;
+            xmlhttp.open("POST", mostVisitedCustomerDataUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(dataToSend);
+            var mostVistiCustomerNameArray = xmlhttp.responseText;
+
+            mostVistiCustomerNameArray = JSON.parse(mostVistiCustomerNameArray);
+
+            mostVistedCustomerChart.data.labels = mostVistiCustomerNameArray;
+            mostVistedCustomerChart.update();
+
+        } else {
+            document.getElementById("mostVisitCustomerCharDiv").style.display = 'none';
+            document.getElementById('no-data-found-div').style.display = 'block';
+        }
+
+    }
+
+
+
+    // ============= most visit customer by specific date function body ==============
+    function mostVistedCustomerByDt() {
+        var mostVistedCustomerDt = document.getElementById('mostVisiteCustomerDt').value;
+        var dataToSend = `mostVstCstmrByDt=${mostVistedCustomerDt}`;
+
         var xmlhttp = new XMLHttpRequest();
-        if (id == 'lst7') {
-            lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstWeek=' + id;
-            xmlhttp.open("GET", lastThirtyDaysUrl, false);
-            xmlhttp.send(null);
-            document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
-            document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
+        mostVstCstmrDtUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php`;
+        xmlhttp.open("POST", mostVstCstmrDtUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(dataToSend);
+        var mostVistiCustomerDataByDate = xmlhttp.responseText;
+
+        // console.log('by date check ' + mostVistiCustomerDataByDate);
+
+        mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDate));
+    }
+
+
+    // ============= most visit customer by date range function body ==============
+    function mostVistedCustomerDateRange() {
+        var mostVistedCustomerStartDt = document.getElementById('mostVisiteCustomerStartDate').value;
+        var mostVistedCustomerEndtDt = document.getElementById('mostVisiteCustomerEndDate').value;
+
+        var xmlhttp = new XMLHttpRequest();
+        mostVstCstmrDtRngUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?mostVisitStartDt=${mostVistedCustomerStartDt}&mostVisitEndDt=${mostVistedCustomerEndtDt}`;
+        xmlhttp.open("GET", mostVstCstmrDtRngUrl, false);
+        xmlhttp.send(null);
+
+        var mostVistiCustomerDataByDateRange = xmlhttp.responseText;
+        if(mostVistiCustomerDataByDateRange == ''){
+            mostVistiCustomerDataByDateRange = null;
+        }
+        mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDateRange));
+    }
+
+
+
+    const mostvisitCustomer = (id) => {
+        if (id == 'mostVisitCustomerLst24hrs') {
+            document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+            console.log(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
+            mostVisitCustomerDataFunction(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
         }
 
-        if (id == 'lst30') {
-            lastThirtyDaysUrl = 'components/partials_ajax/salesoftheDay.ajax.php?lstMnth=' + id;
-            xmlhttp.open("GET", lastThirtyDaysUrl, false);
-            xmlhttp.send(null);
-            document.getElementById("salesAmount").innerHTML = xmlhttp.responseText;
-            document.getElementById("itemsCount").innerHTML = xmlhttp.responseText;
+        if (id == 'mostVisitCustomerLst7') {
+            document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+            mostVisitCustomerDataFunction(<?php echo json_encode($weeklyMostVistiCustomerData); ?>);
         }
 
-        if (id == 'lstdt') {
-            const dateInput = document.getElementById('dtPickerDiv');
-            dateInput.style.display = 'block';
-            dateInput.focus();
+        if (id == 'mostVisitCustomerLst30') {
+            document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+            mostVisitCustomerDataFunction(<?php echo json_encode($monthlyMostVistiCustomerData); ?>);
+        }
+
+        if (id == 'mostVisitCustomerOnDt') {
+            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+            document.getElementById('mostVistedCustomerDtPkr').style.display = 'block';
+
+        }
+
+        if (id == 'mostVisitCustomerDtRng') {
+            document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'block';
         }
     }
-</script>
 
-<script>
-        // Your PHP data
-        var data = [
-            { product_id: 'PR928140071769', total_sold: 9 },
-            { product_id: 'PR146231800947', total_sold: 5 },
-            { product_id: 'PR618347790083', total_sold: 5 },
-            // Add the rest of your data here
-        ];
 
-        // Extract product IDs and total sold values
-        var productIds = data.map(item => item.product_id);
-        var totalSold = data.map(item => item.total_sold);
 
-        // Create a bar chart using Chart.js
-        var ctx = document.getElementById('barChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: productIds,
-                datasets: [{
-                    label: 'Total Sold',
-                    data: totalSold,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+
+    // ============== primary chart data area ==============
+    let mostVstCutmrData = <?php echo json_encode($mostVistedCustomerFromStart); ?>;
+
+    if (mostVstCutmrData != null) {
+        var customerId = mostVstCutmrData.map(item => item.customer_id);
+        customerId = JSON.stringify(customerId);
+        var dataToSend = `mostVistiCustomerId=${customerId}`;
+
+        var xmlhttp = new XMLHttpRequest();
+        mostVisitedCustomerDataUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php`;
+        xmlhttp.open("POST", mostVisitedCustomerDataUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(dataToSend);
+        var customerNameArray = xmlhttp.responseText;
+        // console.log(customerNameArray);
+        customerNameArray = JSON.parse(customerNameArray);
+
+        var totalVisit = mostVstCutmrData.map(item => item.visit_count);
+
+    } else {
+        document.getElementById("mostVisitCustomerCharDiv").style.display = 'none';
+        document.getElementById('no-data-found-div').style.display = 'block';
+    }
+
+
+    // ========= chart control area ============= \\
+    var mstVstCstmrCtx = document.getElementById('mostVisitCustomerChart').getContext('2d');
+    var mostVistedCustomerChart = new Chart(mstVstCstmrCtx, {
+        type: 'bar',
+        data: {
+            labels: customerNameArray,
+            datasets: [{
+                label: 'Total Sold',
+                data: totalVisit,
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
-    </script>
+        }
+    });
+</script>
