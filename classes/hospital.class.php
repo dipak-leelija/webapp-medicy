@@ -30,10 +30,15 @@ class HelthCare extends DatabaseConnection{
     
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
-                while ($row = $result->fetch_assoc()) {
-                    $hospitalData[] = $row;
+
+                if($result->num_rows > 0){
+                    while ($row = $result->fetch_assoc()) {
+                        $hospitalData[] = $row;
+                    }
+                    return $hospitalData;
+                }else{
+                    return null;
                 }
-                return $hospitalData;
             } else {
                 return null; // Return null if the query execution fails
             }
