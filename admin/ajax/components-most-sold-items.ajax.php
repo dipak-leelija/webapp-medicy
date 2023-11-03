@@ -44,8 +44,8 @@ if (isset($_GET['mostSoldStarDate']) && isset($_GET['mostSoldEndDate'])) {
 
 
 //// ============= less sold items ===================
-if (isset($_POST['lessSoldProdId'])) {
-    $productId =  $_POST['lessSoldProdId'];
+if (isset($_GET['lessSoldProdId'])) {
+    $productId =  $_GET['lessSoldProdId'];
     $productId = json_decode($productId);
     $prodName = array();
     for($i = 0; $i<count($productId); $i++){
