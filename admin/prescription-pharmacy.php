@@ -38,8 +38,16 @@ require_once '../php_control/doctor.category.class.php';
 
         // Fetching Hospital Info
         $hospital = new HelthCare();
-        $hospitalShow = $hospital->showhelthCare();
-        foreach($hospitalShow as $hospitalDetails){
+
+        $healthCareDetailsPrimary = $hospital->showhelthCarePrimary();
+        $healthCareDetailsByAdminId = $hospital->showhelthCare($adminId);
+        if($healthCareDetailsByAdminId != null){
+            $healthCareDetails = $healthCareDetailsByAdminId;
+        }else{
+            $healthCareDetails = $healthCareDetailsPrimary;
+        }
+
+        foreach($healthCareDetails as $hospitalDetails){
             $hospitalName = $hospitalDetails['hospital_name'];
             $address1 = $hospitalDetails['address_1'];
             $address2 = $hospitalDetails['address_2'];
