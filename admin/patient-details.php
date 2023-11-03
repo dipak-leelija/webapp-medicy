@@ -43,17 +43,6 @@ $invoiceId = [];
 foreach ($stockOutdatas as $stockData) {
     $invoiceId[] = $stockData['invoice_id'];
 }
-/// find itemname from stockOutDetils for pie chart ///
-// $stockOutDetailsBYinvoiveID = $StockOut->stockOutDetailsBYinvoiveID($invoiceId);
-// $stockDetails = json_decode($stockOutDetailsBYinvoiveID);
-// $itemNames = [];
-// if ($stockDetails) {
-//     foreach ($stockDetails as $details) {
-//         $itemNames[] = $details->item_name;
-//     }
-// }
-// $occurrenceschart2 = array_count_values($itemNames);
-// echo "<script>var occurrenceschart2 = " . json_encode($occurrenceschart2) . ";</script>";
 
 $stockOutDetailsBYinvoiveID = $StockOut->stockOutDetailsBYinvoiveID($invoiceId);
 
@@ -69,8 +58,8 @@ if ($stockOutDetailsBYinvoiveID !== null) {
         }
         $occurrenceschart2 = array_count_values($itemNames);
         echo "<script>var occurrenceschart2 = " . json_encode($occurrenceschart2) . ";</script>";
-    } 
-} 
+    }
+}
 //end...
 
 //=====find labreport by Id=====//
@@ -121,8 +110,6 @@ foreach ($test_ids as $test_id) {
     }
 }
 $occurrences = array_count_values($subTestNames);
-
-
 
 
 ?>
@@ -176,8 +163,8 @@ $occurrences = array_count_values($subTestNames);
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">List of Patients</h6>
-                            <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
+                            <h6 class="m-0 font-weight-bold text-primary">Patient Details</h6>
+                            <!-- <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a> -->
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -244,16 +231,21 @@ $occurrences = array_count_values($subTestNames);
 
                                         <div class="col-5 p-2">
                                             <canvas id="chart2" style="height: 167px; width: 100%;"></canvas>
+                                            <!-- <div id="no-data-msg" class="chart-msg" style="display:none;">No data found</div> -->
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="main-inforight">
-                                    <canvas  style="height: 167px; width: 100%;" id="pieChart"></canvas>
-                                </div> -->
                             </div>
-                            <div class="graph-Chart">
-                                <canvas id="myChart">Most taken Tests</canvas>
-                            </div>
+
+                            <?php
+                            if (empty($subTestNames)) {
+                                echo " ";
+                            } else {
+                                echo "<div class='graph-Chart'>
+                                    <canvas id='myChart'>Most taken Tests</canvas>
+                                   </div>";
+                            }
+                            ?>
                             <div class="table-div">
                                 <div class="left-table">
                                     <p>List Of Invoice</p>
@@ -266,19 +258,20 @@ $occurrences = array_count_values($subTestNames);
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <!-- <tr>
-                                                <th scope="row">1</th>
-                                                <td><?= $invoiceId ?></td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr> -->
-                                            <?php foreach ($stockOutdatas as $index => $stockOutData) : ?>
-                                                <tr class="appoinment-row1">
-                                                    <td><?= $stockOutData['invoice_id'] ?></td>
-                                                    <td><?= $stockOutData['bill_date'] ?></td>
-                                                    <td><a class="text-primary text-center" title="Print" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
+                                            <?php if (empty($stockOutdatas)) : ?>
+                                                <tr>
+                                                    <td colspan="3" style='text-align: center;'>Data Not Found</td>
                                                 </tr>
-                                            <?php endforeach; ?>
+                                            <?php else : ?>
+                                                <?php foreach ($stockOutdatas as $index => $stockOutData) : ?>
+                                                    <?php $invoice_id = $stockOutData['invoice_id']; ?>
+                                                    <tr class="appoinment-row1">
+                                                        <td><?= $invoice_id ?></td>
+                                                        <td><?= $stockOutData['bill_date'] ?></td>
+                                                        <td><a class="text-primary text-center" title="show" href="_config/form-submission/item-invoice-reprint.php?id=<?= $invoice_id ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                     <div class="d-flex justify-content-end">
@@ -293,6 +286,7 @@ $occurrences = array_count_values($subTestNames);
                                                 <!-- <th scope="col">#</th> -->
                                                 <th scope="col">Bill Number</th>
                                                 <th scope="col">Date</th>
+                                                <th scope="col">Bill</th>
                                                 <th scope="col">Report</th>
                                             </tr>
                                         </thead>
@@ -321,15 +315,19 @@ $occurrences = array_count_values($subTestNames);
                                                         if (isset($reportIdMap[$patient_id])) {
                                                             $reportId = $reportIdMap[$patient_id];
                                             ?>
-                                                            <tr class="appointment-row">
+                                                            <tr class="appointment-row"> 
                                                                 <td><?= $bill_id ?></td>
                                                                 <td><?= $test_date ?></td>
-                                                                <td><a class="text-primary text-center" title="Print" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
+                                                                <td><a class="text-primary text-center" title="show" href="tests-bill.php?bill_id=<?= $bill_id ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
+                                                                <td><a class="text-primary text-center" title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                               
                                                             </tr>
                                             <?php
                                                         }
                                                     }
                                                 }
+                                            } else {
+                                                echo "<tr><td colspan='3' style='text-align: center;'>Data Not found</td></tr>";
                                             }
                                             ?>
                                         </tbody>
@@ -407,7 +405,7 @@ $occurrences = array_count_values($subTestNames);
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Most taken Tests',
+                    label:' Most taken Tests',
                     data: data,
                     backgroundColor: backgroundColors,
                     // borderColor: borderColors,
@@ -422,24 +420,24 @@ $occurrences = array_count_values($subTestNames);
         const labels2 = Object.keys(occurrenceschart2);
         const data2 = Object.values(occurrenceschart2);
 
-        new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: labels2,
-                datasets: [{
-                    label: '# Most purchased',
-                    data: data2,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: labels2,
+                    datasets: [{
+                        label: ' Most Purchased Medicine',
+                        data: data2,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
+            });
 
 
 
@@ -448,30 +446,30 @@ $occurrences = array_count_values($subTestNames);
             var rows = document.querySelectorAll(".appointment-row");
             var rows1 = document.querySelectorAll(".appoinment-row1");
             var toggleButton = document.getElementById("toggleButton");
-            var toggleButton1= document.getElementById("toggleButton1");
+            var toggleButton1 = document.getElementById("toggleButton1");
 
-            // Initially hide all rows except the first three
+            // Initially hide all rows except the first three///
             for (var i = 3; i < rows.length; i++) {
                 rows[i].style.display = "none";
             }
-            for ( var i =3; i< rows1.length; i++){
+            for (var i = 3; i < rows1.length; i++) {
                 rows1[i].style.display = "none";
             }
 
-            if (rows.length > 3 ? toggleButton.style.display = "block" : toggleButton.style.display = "none"); 
-            if( rows1.length > 3 ? toggleButton1.style.display = "block" : toggleButton1.style.display= "none");
+            if (rows.length > 3 ? toggleButton.style.display = "block" : toggleButton.style.display = "none");
+            if (rows1.length > 3 ? toggleButton1.style.display = "block" : toggleButton1.style.display = "none");
 
             toggleButton.addEventListener("click", function() {
                 for (var i = 3; i < rows.length; i++) {
-                    if (rows[i].style.display === "none" ?  rows[i].style.display = "table-row" : rows[i].style.display = "none") ;
-                    }
+                    if (rows[i].style.display === "none" ? rows[i].style.display = "table-row" : rows[i].style.display = "none");
+                }
             });
 
-            toggleButton1.addEventListener("click" , function(){
-                for( var i = 3; i< rows1.length; i++){
-                    if(rows1[i].style.display === "none" ? rows1[i].style.display = "table-row" : rows1[i].style.display = "none");
+            toggleButton1.addEventListener("click", function() {
+                for (var i = 3; i < rows1.length; i++) {
+                    if (rows1[i].style.display === "none" ? rows1[i].style.display = "table-row" : rows1[i].style.display = "none");
                 }
-            });            
+            });
         });
     </script>
 </body>

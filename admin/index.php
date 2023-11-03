@@ -145,11 +145,11 @@ $newPatientByDay = $Patients->newPatientByDay($adminId);
                                                 <b>...</b>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
-                                                <button class="dropdown-item" type="button" id="newLst24hrs" onclick="mostvisitCustomer(this.id)">Last 24 hrs</button>
+                                                <!-- <button class="dropdown-item" type="button" id="newLst24hrs" onclick="mostvisitCustomer(this.id)">Last 24 hrs</button>
                                                 <button class="dropdown-item" type="button" id="mostVisitCustomerLst7" onclick="mostvisitCustomer(this.id)">Last 7 Days</button>
                                                 <button class="dropdown-item" type="button" id="mostVisitCustomerLst30" onclick="mostvisitCustomer(this.id)">Last 30 DAYS</button>
                                                 <button class="dropdown-item" type="button" id="mostVisitCustomerOnDt" onclick="mostvisitCustomer(this.id)">By Date</button>
-                                                <button class="dropdown-item" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button>
+                                                <button class="dropdown-item" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button> -->
                                             </div>
                                         </div>
                                         <canvas id="myChart"></canvas>

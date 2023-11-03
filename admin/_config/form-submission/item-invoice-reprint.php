@@ -8,7 +8,7 @@ require_once ADM_DIR.'_config/user-details.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockOut.class.php';
 
-
+$invoiceId = $_GET['id'];
 
 //  INSTANTIATING CLASS
 $HelthCare       = new HelthCare();
@@ -16,7 +16,7 @@ $StockOut        = new StockOut();
 
 if (isset($_GET['id'])) {
     // echo $_GET['id'];
-    $stockOut = $StockOut->stockOutDisplayById($_GET['id']);
+    $stockOut = $StockOut->stockOutDisplayById($invoiceId);
     // print_r($stockOut);
 
     $invoiceId      = $stockOut[0]['invoice_id'];
@@ -28,7 +28,7 @@ if (isset($_GET['id'])) {
     $pMode          = $stockOut[0]['payment_mode'];	
     $billdate       = $stockOut[0]['bill_date'];	
 
-    $details = $StockOut->stockOutDetailsById($_GET['id']);
+    // $details = $StockOut->stockOutDetailsById($invoiceId);
 
 }
 
@@ -36,7 +36,7 @@ if (isset($_GET['id'])) {
 
 
 
-$showhelthCare = $HelthCare->showhelthCare();
+$showhelthCare = $HelthCare->showhelthCare($adminId);
 foreach ($showhelthCare as $rowhelthCare) {
     $healthCareName     = $rowhelthCare['hospital_name'];
     $healthCareAddress1 = $rowhelthCare['address_1'];
