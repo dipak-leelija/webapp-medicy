@@ -1,11 +1,8 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 require_once dirname(__DIR__).'/config/constant.php';
-require_once    ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once ADM_DIR.'_config/sessionCheck.php';
 
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'doctors.class.php';
@@ -14,18 +11,27 @@ require_once CLASS_DIR.'idsgeneration.class.php';
 
 $page = "appointments";
 
-
 //Classes Initilizing
 $appointments = new Appointments();
-$IdGeneration = new IdGeneration();
+$IdsGeneration = new IdsGeneration();
 $hospital = new HelthCare();
 $Patients = new Patients();
 
 // Fetching Hospital Info
-$hospitalDetails = $hospital->showhelthCarePrimary();
-foreach($hospitalDetails as $showShowHospital){
+
+$healthCareDetailsPrimary = $hospital->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $hospital->showhelthCare($adminId);
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
+
+foreach($healthCareDetails as $showShowHospital){
     $hospitalName = $showShowHospital['hospital_name'];
 }
+
+
 ?>
 
 <!doctype html>
@@ -62,10 +68,9 @@ foreach($hospitalDetails as $showShowHospital){
 
 <body>
     <?php
-       //Creating Object of Appointments Class
-    $appointments = new Appointments();
-
+       
     if (isset($_POST['submit'])) {
+
     $appointmentDate    = $_POST["appointmentDate"];
     $patientName        = $_POST["patientName"];
     $patientGurdianName = $_POST["patientGurdianName"];
@@ -83,31 +88,42 @@ foreach($hospitalDetails as $showShowHospital){
     $patientDoctor      = $_POST["patientDoctor"];
     // $patientDoctorShift = $_POST["doctorTime"];
 
+    
+
     //appointment id generating
     $healthCareNameTrimed = strtoupper(substr($hospitalName, 0, 2));//first 2 leter oh healthcare center name
     $appointmentDateForId = date("dmy", strtotime($appointmentDate));
     $apntIdStart = "$healthCareNameTrimed$appointmentDateForId";
 
-    // Appointment iD Generated
-    $appointmentId = $IdGeneration->appointmentidGeneration($apntIdStart);
-
     //Patient Id Generate
-    $patientId = $IdGeneration->patientidGenerate();
-    // echo $patientId;
+    $patientId = $IdsGeneration->patientidGenerate();
+    echo "patient id generation : $patientId <br>";
 
+   
+    
+    // Appointment iD Generated
+    $appointmentId = $IdsGeneration->appointmentidGeneration($apntIdStart);
+    echo "<br>$appointmentId<br>";
+    
+
+    
+
+        exit;
     // Inserting Into Appointments Database
-    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor );
+    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, intval($patientWeight), $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $employeeId, NOW, $adminId);
+      
 
+        
     //redirect if the insertion has done
     if ($addAppointment) {
         $visited = 1;
         // Inserting Into Patients Database
-        $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited);
+        $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
         if ($addPatients) {
             echo '<script>alert(Appointment Added!)</script>';
             // setcookie("appointmentId", $appointmentId, time() + (120 * 30), "/");
             header("location: appointment-sucess.php?appointmentId=".$appointmentId);
-            exit();
+            
             }else{
                 echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
             }
@@ -335,7 +351,7 @@ foreach($hospitalDetails as $showShowHospital){
                                             <label class="form-control-label px-3" for="patientDoctor">Doctor Name<span
                                                     class="text-danger"> *</span></label>
                                             <select id="docList" class="customDropSelection" name="patientDoctor"
-                                                onChange="getShift()" required>
+                                                required>
 
                                                 <option disabled selected>Select Doctor</option>
 
@@ -421,11 +437,11 @@ foreach($hospitalDetails as $showShowHospital){
                 <script src="js/sb-admin-2.min.js"></script>
 
                 <!-- Page level plugins -->
-                <script src="vendor/chart.js/Chart.min.js"></script>
+                <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
 
                 <!-- Page level custom scripts -->
-                <script src="js/demo/chart-area-demo.js"></script>
-                <script src="js/demo/chart-pie-demo.js"></script>
+                <!-- <script src="js/demo/chart-area-demo.js"></script>
+                <script src="js/demo/chart-pie-demo.js"></script> -->
 
                 <script type="text/javascript">
                 var todayDate = new Date();
@@ -441,7 +457,6 @@ foreach($hospitalDetails as $showShowHospital){
                     month = '0' + month;
                 }
                 var todayFullDate = year + "-" + month + "-" + date;
-                console.log(todayFullDate);
                 document.getElementById("appointmentDate").setAttribute("min", todayFullDate);
                 </script>
 

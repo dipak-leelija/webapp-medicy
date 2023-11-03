@@ -1,35 +1,44 @@
 <?php
-  require_once dirname(__DIR__).'/config/constant.php';
-  require_once ROOT_DIR.'/config/sessionCheck.php';//check admin loggedin or not
-  require_once '../php_control/appoinments.class.php';
-  require_once '../php_control/hospital.class.php';
+
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ADM_DIR . '_config/sessionCheck.php';
+
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'appoinments.class.php';
+require_once CLASS_DIR . 'hospital.class.php';
 
 
-  if(isset($_GET['appointmentId'])) {
+if (isset($_GET['appointmentId'])) {
     $generatedAppointmentId = $_GET['appointmentId'];
     $set = true;
-  }else{
+  } else {
     $set = false;
   }
 
 
-  $helthCare = new HelthCare();
+$helthCare = new HelthCare();
 
-  $showhelthCare =$helthCare->showHelthCare();
 
-  foreach($showhelthCare as $showHospitalDetails){
-    $hospitalName = strtoupper(substr($showHospitalDetails['hospital_name'],0, 2));
+  $healthCareDetailsPrimary = $helthCare->showhelthCarePrimary();
+  $healthCareDetailsByAdminId = $helthCare->showhelthCare($adminId);
+  if ($healthCareDetailsByAdminId != null) {
+    $healthCareDetails = $healthCareDetailsByAdminId;
+  } else {
+    $healthCareDetails = $healthCareDetailsPrimary;
   }
-
-
+  
+  foreach ($healthCareDetails as $showHospitalDetails) {
+    $hospitalName = strtoupper(substr($showHospitalDetails['hospital_name'], 0, 2));
+  }
+  
+  
   $appointments = new Appointments();
-
+  
   $showAppointments = $appointments->appointmentsDisplay();
-
-  foreach($showAppointments as $showAppointmentsDetails){
-
+  
+  foreach ($showAppointments as $showAppointmentsDetails) {
+  
     $appointmentDate = $showAppointmentsDetails['appointment_date'];
-
   }
 
 
@@ -43,23 +52,23 @@
 
 <head>
 
-    <meta charset="UTF-8" />
+  <meta charset="UTF-8" />
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Appointment Status</title>
+  <title>Appointment Status</title>
 
-    <!-- Message Box CSS -->
+  <!-- Message Box CSS -->
 
-    <link rel="stylesheet" href="../employee/assets/css/sucessPageStyle.css">
+  <link rel="stylesheet" href="../employee/assets/css/sucessPageStyle.css">
 
-    <!--Only for demo purpose - no need to add.-->
+  <!--Only for demo purpose - no need to add.-->
 
-    <link rel="stylesheet" href="../employee/assets/css/sucessPageDemo.css">
+  <link rel="stylesheet" href="../employee/assets/css/sucessPageDemo.css">
 
-	
+
 
 </head>
 
@@ -67,63 +76,63 @@
 
 
 
-<header class="ScriptHeader">
+  <header class="ScriptHeader">
 
     <div class="rt-container">
 
-    	<div class="col-rt-12">
+      <div class="col-rt-12">
 
-        	<div class="rt-heading">
+        <div class="rt-heading">
 
-            	<h1>
-               <?php if ($set) {
-                  echo 'Apointment Booking Sucessfull';
-                  }else{
-                    echo "You Haven't Register any Appointmentfor Last 2mins." ;
-                  }
-                ?> 
-              </h1>
+          <h1>
+            <?php if ($set) {
+              echo 'Apointment Booking Sucessfull';
+            } else {
+              echo "You Haven't Register any Appointmentfor Last 2mins.";
+            }
+            ?>
+          </h1>
 
-                <p>
-                  <?php if ($set) {
-                  echo 'Click on View to Print Your Appointment Paper.';
-                  }else{
-                    echo "Register an Appointment and Check it Within 2mins." ;
-                  }
-                ?>
-                </p>
-
-            </div>
+          <p>
+            <?php if ($set) {
+              echo 'Click on View to Print Your Appointment Paper.';
+            } else {
+              echo "Register an Appointment and Check it Within 2mins.";
+            }
+            ?>
+          </p>
 
         </div>
 
+      </div>
+
     </div>
 
-</header>
+  </header>
 
 
 
-<section>
+  <section>
 
     <div class="rt-container">
 
-          <div class="col-rt-12">
+      <div class="col-rt-12">
 
-              <div class="Scriptcontent">
+        <div class="Scriptcontent">
 
-                <!-- partial:index.partial.html -->
+          <!-- partial:index.partial.html -->
 
-                <div id='card' class="animated fadeIn">
+          <div id='card' class="animated fadeIn">
 
-                  <div id='upper-side'>
+            <div id='upper-side'>
 
-                      <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+              <!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 
-                      <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+              <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
-                      <svg version="1.1" id="checkmark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" xml:space="preserve">
+              <svg version="1.1" id="checkmark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" xml:space="preserve">
 
-                        <path d="M131.583,92.152l-0.026-0.041c-0.713-1.118-2.197-1.447-3.316-0.734l-31.782,20.257l-4.74-12.65
+                <path d="M131.583,92.152l-0.026-0.041c-0.713-1.118-2.197-1.447-3.316-0.734l-31.782,20.257l-4.74-12.65
 
                   c-0.483-1.29-1.882-1.958-3.124-1.493l-0.045,0.017c-1.242,0.465-1.857,1.888-1.374,3.178l5.763,15.382
 
@@ -137,61 +146,61 @@
 
                   C131.967,94.755,132.296,93.271,131.583,92.152z" />
 
-                        <circle fill="none" stroke="#ffffff" stroke-width="5" stroke-miterlimit="10" cx="109.486" cy="104.353" r="32.53" />
+                <circle fill="none" stroke="#ffffff" stroke-width="5" stroke-miterlimit="10" cx="109.486" cy="104.353" r="32.53" />
 
-                      </svg>
+              </svg>
 
-                      <h3 id='status'>
-                        <?php
-                          if ($set) {
-                            echo 'Success';
-                          }else{
-                            echo 'No Appointments';
-                          }
-                        ?>
-                      </h3>
+              <h3 id='status'>
+                <?php
+                if ($set) {
+                  echo 'Success';
+                } else {
+                  echo 'No Appointments';
+                }
+                ?>
+              </h3>
 
-                  </div>
+            </div>
 
-                  <div id='lower-side'>
+            <div id='lower-side'>
 
-                    <p id='message'>
-
-                       
-                        <?php if ($set) {
-                          echo 'Congratulations, your Appointment ID: <b>'.$generatedAppointmentId.'</b>';
-                        }else{
-                          echo "<b>Register an Appointment.</b>";
-                        }
-                        ?>
-
-                    </p>
-
-                    <?php
-                    if ($set) {
-                      echo '<a href="prescription.php?prescription='.$generatedAppointmentId.'" id="printBtn">Print</a>';
-                    }
+              <p id='message'>
 
 
-                    ?>
-                    <a href="appointments.php" id="contBtn">Continue</a>
+                <?php if ($set) {
+                  echo 'Congratulations, your Appointment ID: <b>' . $generatedAppointmentId . '</b>';
+                } else {
+                  echo "<b>Register an Appointment.</b>";
+                }
+                ?>
 
-                </div> 
+              </p>
 
-    		    </div>
+              <?php
+              if ($set) {
+                echo '<a href="prescription.php?prescription=' . $generatedAppointmentId . '" id="printBtn">Print</a>';
+              }
 
-		    </div>
 
-    </div>
+              ?>
+              <a href="appointments.php" id="contBtn">Continue</a>
 
-</section>
+            </div>
 
-     
+          </div>
 
-    <!-- Analytics -->
+        </div>
+
+      </div>
+
+  </section>
 
 
 
-	</body>
+  <!-- Analytics -->
+
+
+
+</body>
 
 </html>
