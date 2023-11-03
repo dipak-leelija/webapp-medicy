@@ -3,23 +3,11 @@ require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 
 $includePath = get_include_path();
 
-$maxPurchase = $StockIn->selectDistOnMaxPurchase($adminId);
-$maxPurchase = json_decode($maxPurchase);
-$distNameOnMaxPurchase = $Distributor->distributorDetail($maxPurchase->distributor_id);
-
-// echo $maxPurchase->total_purchase_amount;
-// echo $distNameOnMaxPurchase->name;
-
 $maxItemPurchase = $StockIn->selectDistOnMaxItems($adminId);
-$maxItemPurchase = json_decode($maxItemPurchase);
-
-$distNameOnMaxItem = $Distributor->distributorDetail($maxItemPurchase->distributor_id);
-
-// echo $maxItemPurchase->number_of_purchases;
-// echo $distNameOnMaxItem->name;
-
-
-
+if($maxItemPurchase != null){
+    $maxItemPurchase = json_decode($maxItemPurchase);
+    $distNameOnMaxItem = $Distributor->distributorDetail($maxItemPurchase->distributor_id);
+}
 
 ?>
 
@@ -29,11 +17,26 @@ $distNameOnMaxItem = $Distributor->distributorDetail($maxItemPurchase->distribut
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                     most purchaed distributor by times</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByItems-info-div">
                     <label type="text" id="itemCount" name="itemCount"><?php echo $maxItemPurchase->number_of_purchases; ?> Times</label><br>
                     <label type="text" id="distName" name="distName"><?php echo $distNameOnMaxItem->name;; ?></label>
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByItems-no-data-div">
+                    <label for="no-data">NO DATA FOUND</label>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    var mopdByItemData = <?php echo json_encode($maxItemPurchase); ?>;
+    
+    if(mopdByItemData != null){
+        document.getElementById("mopdByItems-no-data-div").style.display = 'none';
+        document.getElementById("mopdByItems-info-div").style.display = 'block';
+    }else{
+        document.getElementById("mopdByItems-no-data-div").style.display = 'block';
+        document.getElementById("mopdByItems-info-div").style.display = 'none';
+    }
+</script>

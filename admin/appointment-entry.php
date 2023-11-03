@@ -81,7 +81,7 @@ foreach($hospitalDetails as $showShowHospital){
     $patientPIN         = $_POST["patientPIN"];
     $patientState       = $_POST["patientState"];
     $patientDoctor      = $_POST["patientDoctor"];
- // $patientDoctorShift = $_POST["doctorTime"];
+    // $patientDoctorShift = $_POST["doctorTime"];
 
     //appointment id generating
     $healthCareNameTrimed = strtoupper(substr($hospitalName, 0, 2));//first 2 leter oh healthcare center name
@@ -95,7 +95,6 @@ foreach($hospitalDetails as $showShowHospital){
     $patientId = $IdGeneration->patientidGenerate();
     // echo $patientId;
 
-    
     // Inserting Into Appointments Database
     $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor );
 

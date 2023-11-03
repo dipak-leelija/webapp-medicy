@@ -116,14 +116,14 @@ class StockIn extends DatabaseConnection{
                 if ($result->num_rows > 0) {
                     $data = $result->fetch_object();
                     $data = json_encode($data);
+                    return $data;
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
                 $stmt->close();
             } else {
                 echo "Statement preparation failed: " . $this->conn->error;
             }
-            return $data;
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
             return null; 
@@ -157,7 +157,7 @@ class StockIn extends DatabaseConnection{
                     $data = $result->fetch_object();
                     $data = json_encode($data);
                 } else {
-                    echo "Query returned no results.";
+                    return null;
                 }
                 $stmt->close();
             } else {

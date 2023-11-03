@@ -1,9 +1,19 @@
 <?php
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+
+$includePath = get_include_path();
+
 require_once CLASS_DIR.'hospital.class.php';
 
 $HealthCare        = new HelthCare();
-$healthCareDetails = $HealthCare->showhelthCarePrimary();
-// print_r($healthCareDetails);
+$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
+
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
 
 ?>
 <footer class="sticky-footer ">
