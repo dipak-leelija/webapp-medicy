@@ -1,7 +1,8 @@
 <?php
 require_once dirname(dirname(__DIR__)).'/config/constant.php';
-require_once CLASS_DIR.'dbconnect.php';
+require_once    ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'patients.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
 
@@ -42,19 +43,6 @@ $IdGeneration    = new IdGeneration();
 <body>
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // $_POST['patientName'];
-        // $_POST['patientGurdianName'];
-        // $_POST['patientEmail'];
-        // $_POST['patientPhoneNumber'];
-        // $_POST['patientAge'];
-        // $_POST['gender'];
-        // $_POST['patientAddress1'];
-        // $_POST['patientAddress2'];
-        // $_POST['patientPS'];
-        // $_POST['patientDist'];
-        // $_POST['patientPIN'];
-        // $_POST['patientState'];
-    
     
         //Patient Id Generate
         $patientId = $IdGeneration->patientidGenerate();
@@ -62,7 +50,8 @@ $IdGeneration    = new IdGeneration();
         // $patientId = "sdgb";
         $visited = 0;
     
-        $added = $Patients->addPatients($patientId, $_POST['patientName'], $_POST['patientGurdianName'], $_POST['patientEmail'], $_POST['patientPhoneNumber'], $_POST['patientAge'], $_POST['gender'], $_POST['patientAddress1'], $_POST['patientAddress2'], $_POST['patientPS'], $_POST['patientDist'], $_POST['patientPIN'], $_POST['patientState'], $visited);
+        $added = $Patients->addPatients($patientId, $_POST['patientName'], $_POST['patientGurdianName'], $_POST['patientEmail'], $_POST['patientPhoneNumber'], $_POST['patientAge'], $_POST['gender'], $_POST['patientAddress1'], $_POST['patientAddress2'], $_POST['patientPS'], $_POST['patientDist'], $_POST['patientPIN'], $_POST['patientState'], $visited, $employeeId, NOW, $adminId);
+
         if ($added == TRUE) {
             ?>
 
