@@ -174,7 +174,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                                                         <td>'.$status.'</td>
                                                         <td><a class="text-primary mx-2" data-toggle="modal" data-target="#billModal" onclick="billViewandEdit('.$billId.')" title="View and Edit"><i class="fa fa-eye" aria-hidden="true"></i></a>
 
-                                                        <a class="text-primary text-center" title="Print" href="reprint-test-bill.php?bill-id='.$billId.'"><i class="fas fa-print"></i></a>
+                                                        <a class="text-primary text-center" title="Print" href="reprint-test-bill.php?bill_id='.$billId.'"><i class="fas fa-print"></i></a>
 
                                                         <a class="delete-btn text-danger mx-2" id="'.$billId.'" title="Cancel" onclick="cancelBill('.$billId.')"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                         <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id='.$billId.'"><i class="fa fa-flask" aria-hidden="true"></i></a>

@@ -956,6 +956,10 @@ class StockOut extends DatabaseConnection
                 return json_encode([]); // Return an empty JSON array if $invoiceIds is empty
             }
 
+            // if (empty($invoiceIds) || !is_array($invoiceIds)) {
+            //     return json_encode([]); // Return an empty JSON array if $invoiceIds is empty or not an array
+            // }
+
             $data = [];
             $invoiceIdsString = implode(',', $invoiceIds);
             $sql = "SELECT * FROM `stock_out_details` WHERE `invoice_id` IN ($invoiceIdsString)";
@@ -970,6 +974,20 @@ class StockOut extends DatabaseConnection
         }
     }
 
+    function stockOutDetailsBY1invoiveID($invoiceId){
+        try{
+            $data = [];
+            $sql = "SELECT * FROM `stock_out_details` WHERE `invoice_id`= ' $invoiceId'";
+            $query = $this->conn->query($sql);
+                while ($result = $query->fetch_object()) {
+                    $data[] = $result;
+                }
+                $dataset = json_encode($data);
+                return $dataset;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 
 
 

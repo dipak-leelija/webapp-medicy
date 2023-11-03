@@ -1,7 +1,7 @@
 <?php
 require_once 'dbconnect.php';
 
-class IdGeneration extends DatabaseConnection{
+class IdsGeneration extends DatabaseConnection{
 
 
     function patientidGenerate(){
@@ -70,41 +70,75 @@ class IdGeneration extends DatabaseConnection{
         return $tempappointmentid;
     }
     
-    function appointmentidGeneration($half){
-        
+
+
+
+
+    function appointmentidGeneration($half) {
         $idList = $this->getAppointmentIds();
+        
+        $lastid = 0;
         print_r($idList);
-
-        if(in_array('ME310322A000012', $idList )) {
-            echo 'exist';
-            // $lastid +=1;
-            // $tempappointmentid = $this->concatId($half, $lastid);
-
+        // Find the last ID in the list
+        if (!empty($idList)) {
+            $lastAppointment = end($idList);
+            $lastid = intval(substr(json_encode($lastAppointment), 9)); // Extract the numeric part
         }
-        // echo $tempappointmentid;
-        exit;
-            
-            // foreach ($idList as $rowdata) {
-            //     $rowdata['appointment_id'];
-            // }
-            // $lastid = $rowdata['appointment_id'];
-            // $lastid = substr($lastid, 9);
-            // // print_r($lastid); exit;
-            // $lastid +=1;
-            // // echo $lastid;exit;
-            // $tempappointmentid = $this->concatId($half, $lastid);
+    
+        // Increment the last ID
+        $lastid += 1;
+    
+        // Generate a new appointment ID
+        $tempappointmentid = $this->concatId($half, $lastid);
+    
+        // Check if the new ID already exists
+        while (in_array($tempappointmentid, $idList)) {
+            $lastid += 1;
+            $tempappointmentid = $this->concatId($half, $lastid);
+        }
+    
+        // Output the generated ID
+        echo $tempappointmentid;
+        
+        // You can return the generated ID instead of exiting
+        return $tempappointmentid;
+    }
+
+    
+    // function appointmentidGeneration($half){
+        
+    //     $idList = $this->getAppointmentIds();
+
+    //     if(in_array('ME310322A000012', $idList )) {
+    //         echo 'exist';
+    //         $lastid +=1;
+    //         $tempappointmentid = $this->concatId($half, $lastid);
+
+    //     }
+    //     echo $tempappointmentid;
+    //         foreach ($idList as $rowdata) {
+    //             $rowdata['appointment_id'];
+    //         }
+    //         $lastid = $rowdata['appointment_id'];
+    //         $lastid = substr($lastid, 9);
+    //         // print_r($lastid); exit;
+    //         $lastid +=1;
+    //         // echo $lastid;exit;
+    //         $tempappointmentid = $this->concatId($half, $lastid);
 
            
     
-            // while(array_search($tempappointmentid, $idList)) {
-            //     $lastid +=1;
-            //     $tempappointmentid = $this->concatId($half, $lastid);
+    //             $lastid +=1;
+    //         while(array_search($tempappointmentid, $idList)) {
+    //             $tempappointmentid = $this->concatId($half, $lastid);
 
-            // }
-            // echo $tempappointmentid;
-            // exit;
-            // return $tempappointmentid;
-        }
+    //         }
+    //         echo $tempappointmentid;
+    //         exit;
+    //         return $tempappointmentid;
+    //     }
+
+
 
 
 

@@ -8,6 +8,7 @@ require_once ADM_DIR.'_config/user-details.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockOut.class.php';
 
+
 $invoiceId = $_GET['id'];
 
 //  INSTANTIATING CLASS
@@ -28,16 +29,23 @@ if (isset($_GET['id'])) {
     $pMode          = $stockOut[0]['payment_mode'];	
     $billdate       = $stockOut[0]['bill_date'];	
 
-    // $details = $StockOut->stockOutDetailsById($invoiceId);
-
+    $details = $StockOut->stockOutDetailsBY1invoiveID($invoiceId);
+    $details = json_decode($details, true);
+    
 }
 
 
 
+$healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
 
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
 
-$showhelthCare = $HelthCare->showhelthCare($adminId);
-foreach ($showhelthCare as $rowhelthCare) {
+foreach ($healthCareDetails as $rowhelthCare) {
     $healthCareName     = $rowhelthCare['hospital_name'];
     $healthCareAddress1 = $rowhelthCare['address_1'];
     $healthCareAddress2 = $rowhelthCare['address_2'];
@@ -173,7 +181,7 @@ foreach ($showhelthCare as $rowhelthCare) {
                                     <small>'.strtoupper(substr("Dr. Reddys Pvt Ltd", 0, 7)).'</small>
                                 </div>
                                 <div class="col-sm-1">
-                                    <small>'.$detail['weatage'].'</small>
+                                <small>' . (isset($detail['weatage']) ? $detail['weatage'] : '') . '</small>
                                 </div>
                                 <div class="col-sm-1">
                                     <small>'.$detail['batch_no'].'</small>
@@ -188,7 +196,7 @@ foreach ($showhelthCare as $rowhelthCare) {
                                     <small>'.$detail['mrp'].'</small>
                                 </div>
                                 <div class="col-sm-1 text-end">
-                                    <small>'.$detail['disc'].'</small>
+                                <small>' . (isset($detail['disc']) ? $detail['disc'] : '') . '</small>
                                 </div>
                                 <div class="col-sm-1 text-end">
                                     <small>'.$detail['gst'].'</small>
