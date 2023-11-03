@@ -1,10 +1,12 @@
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+// ini_set('display_errors', '1');
+// ini_set('display_startup_errors', '1');
+// error_reporting(E_ALL);
 
 require_once dirname(__DIR__).'/config/constant.php';
+require_once ADM_DIR . '_config/sessionCheck.php';
+
 require_once CLASS_DIR.'sub-test.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
@@ -24,9 +26,9 @@ $Doctors         = new Doctors();
 $Patients        = new Patients();
 // $LabAppointments = new LabAppointments();
 
-if (isset($_GET['bill-id'])) {
+if (isset($_GET['bill_id'])) {
 
-$billId = $_GET['bill-id'];
+$billId = $_GET['bill_id'];
 
 $labBil      = $LabBilling->labBillDisplayById($billId);
 foreach ($labBil as $rowlabBil) {
@@ -72,8 +74,17 @@ if (is_numeric($docId)) {
 }//eof cheaking post method
 
 
-$showhelthCare = $HelthCare->showhelthCare();
-foreach ($showhelthCare as $rowhelthCare) {
+
+$healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
+
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
+
+foreach ($healthCareDetails as $rowhelthCare) {
     $healthCareName     = $rowhelthCare['hospital_name'];
     $healthCareAddress1 = $rowhelthCare['address_1'];
     $healthCareAddress2 = $rowhelthCare['address_2'];
@@ -292,8 +303,8 @@ foreach ($showhelthCare as $rowhelthCare) {
             </div>
         </div>
         <div class="justify-content-center print-sec d-flex my-5">
-            <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
-            <a class="btn btn-primary shadow mx-2" href="lab-tests.php">Go Back</a>
+            <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> href="lab-tests.php"-->
+            <a class="btn btn-primary shadow mx-2"  onclick="history.back()">Go Back</a>
             <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
         </div>
     </div>

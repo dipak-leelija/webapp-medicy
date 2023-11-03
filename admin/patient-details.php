@@ -81,6 +81,7 @@ if (is_array($labBillingDetails) && !empty($labBillingDetails)) {
     foreach ($labBillingDetails as $row) {
         $spent = $row->paid_amount + $spent;
         $billDate = $row->bill_date;
+        $billID   = $row->bill_id;
         $bill_ids[] = $row->bill_id;
         $billDates[] = $billDate;
     }
@@ -318,7 +319,7 @@ $occurrences = array_count_values($subTestNames);
                                                             <tr class="appointment-row"> 
                                                                 <td><?= $bill_id ?></td>
                                                                 <td><?= $test_date ?></td>
-                                                                <td><a class="text-primary text-center" title="show" href="tests-bill.php?bill_id=<?= $bill_id ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
+                                                                <td><a class="text-primary text-center" title="show" href="reprint-test-bill.php?bill_id=<?= $billID  ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
                                                                 <td><a class="text-primary text-center" title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                                                
                                                             </tr>

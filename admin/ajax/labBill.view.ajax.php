@@ -1,10 +1,10 @@
 <?php
-require_once dirname(dirname(__DIR__)).'/config/constant.php';
-require_once CLASS_DIR.'labBilling.class.php';
-require_once CLASS_DIR.'labBillDetails.class.php';
-require_once CLASS_DIR.'sub-test.class.php';
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'doctors.class.php';
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once CLASS_DIR . 'labBilling.class.php';
+require_once CLASS_DIR . 'labBillDetails.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
 
 
 
@@ -29,14 +29,12 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
 <head>
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <style>
-        body{
+        body {
             overflow-x: hidden;
             overflow-y: scroll;
         }
@@ -48,46 +46,48 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
 
     <table class="table table-striped">
         <?php
-            foreach ($labBil as $rowlabBil) {
-            
-                $billId         = $rowlabBil['bill_id'];
-                $billDate       = $rowlabBil['bill_date'];
-                $patientId      = $rowlabBil['patient_id'];
-                $docId          = $rowlabBil['refered_doctor'];
-                $testDate       = $rowlabBil['test_date'];
-                $totalAmount    = $rowlabBil['total_amount'];
-                $totalDiscount  = $rowlabBil['discount'];
-                $afterDiscount  = $rowlabBil['total_after_discount'];
-                $cgst           = $rowlabBil['cgst'];
-                $sgst           = $rowlabBil['sgst'];
-                $paidAmount     = $rowlabBil['paid_amount'];
-                $dueAmount      = $rowlabBil['due_amount'];
-                $status         = $rowlabBil['status'];
-                $addedBy        = $rowlabBil['added_by'];
-                $BillOn         = $rowlabBil['added_on'];
+        foreach ($labBil as $rowlabBil) {
 
+            $billId         = $rowlabBil['bill_id'];
+            $billDate       = $rowlabBil['bill_date'];
+            $patientId      = $rowlabBil['patient_id'];
+            $docId          = $rowlabBil['refered_doctor'];
+            $testDate       = $rowlabBil['test_date'];
+            $totalAmount    = $rowlabBil['total_amount'];
+            $totalDiscount  = $rowlabBil['discount'];
+            $afterDiscount  = $rowlabBil['total_after_discount'];
+            $cgst           = $rowlabBil['cgst'];
+            $sgst           = $rowlabBil['sgst'];
+            $paidAmount     = $rowlabBil['paid_amount'];
+            $dueAmount      = $rowlabBil['due_amount'];
+            $status         = $rowlabBil['status'];
+            $addedBy        = $rowlabBil['added_by'];
+            $BillOn         = $rowlabBil['added_on'];
+        }
 
-
+        $patient = $Patients->patientsDisplayByPId($patientId);
+        if ($patient !== false) {
+            $patientData = json_decode($patient, true); 
+            if ($patientData !== null) {
+                $patientName = $patientData['name'];
+                $patientPhno = $patientData['phno'];
+                $patientAge  = $patientData['age'];
+                $patientGender = $patientData['gender'];
+            } else {
+                echo "Error decoding patient data.";
             }
+        }
 
-            $patient = $Patients->patientsDisplayByPId($patientId);
-            foreach ($patient as $rowPatient) {
-                $patientName = $rowPatient['name'];
-                $patientPhno = $rowPatient['phno'];
-                $patientAge  = $rowPatient['age'];
-                $patientGender = $rowPatient['gender'];
 
+
+        if (is_numeric($docId)) {
+            $showDoctor = $Doctors->showDoctorById($docId);
+            foreach ($showDoctor as $rowDoctor) {
+                $doctorName = $rowDoctor['doctor_name'];
             }
-
-
-            if (is_numeric($docId)) {
-                $showDoctor = $Doctors->showDoctorById($docId);
-                foreach ($showDoctor as $rowDoctor) {
-                    $doctorName = $rowDoctor['doctor_name'];
-                }
-            }else {
-                $doctorName = $docId;
-            }
+        } else {
+            $doctorName = $docId;
+        }
         ?>
         <div class="row mb-4">
             <div class="col-sm-4">
@@ -103,15 +103,15 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
                 <div class="d-flex justify-content-between"">
 
                 <h6><b>Bill ID:</b> <?php echo $billId; ?></h6>
-                <base target="_parent">
-                <?php
+                <base target=" _parent">
+                    <?php
                     if ($status != "Cancelled") {
                         echo '<h6><a class="btn btn-sm btn-primary" href="../edit-lab-billing.php?invoice=<?php echo $billId; ?>">Edit</a></h6>';
-                    }else{
+                    } else {
                         echo '<h6 class="border border-danger text-danger p-1"> Bill Cancelled</h6>';
                     }
-                ?>
-                <!-- <form action="../edit-lab-billing.php">
+                    ?>
+                    <!-- <form action="../edit-lab-billing.php">
                     <button type="submit">Edit</button>
                 </form> -->
 
@@ -154,13 +154,13 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
                 }
 
 
-            
+
                 echo '<tr>
-                        <th scope="row">'.$slno.'</th>
-                        <td>'.$testName.'</td>
-                        <td>'.$testPrice.'</td>
-                        <td>'.$discOnTest.'</td>
-                        <td>'.$amount.'</td>
+                        <th scope="row">' . $slno . '</th>
+                        <td>' . $testName . '</td>
+                        <td>' . $testPrice . '</td>
+                        <td>' . $discOnTest . '</td>
+                        <td>' . $amount . '</td>
                       </tr>';
             }
             ?>
@@ -176,17 +176,17 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
             <tr>
                 <?php
                 echo '
-                <th scope="col">Sub Total: '.$totalAmount.'</th>
-                <th scope="col">Disc(₹): '.$totalDiscount.'</th>
-                <th scope="col">After Disc(₹): '.$afterDiscount.'</th>
-                <th scope="col">Due: '.$dueAmount.'</th>
-                <th scope="col">Paid: '.$paidAmount.'</th>';
+                <th scope="col">Sub Total: ' . $totalAmount . '</th>
+                <th scope="col">Disc(₹): ' . $totalDiscount . '</th>
+                <th scope="col">After Disc(₹): ' . $afterDiscount . '</th>
+                <th scope="col">Due: ' . $dueAmount . '</th>
+                <th scope="col">Paid: ' . $paidAmount . '</th>';
                 ?>
             </tr>
         </thead>
     </table>
 
-<!-- <script src="../../js/iframe-resize/iframeResizer.contentWindow.min.js"></script> -->
+    <!-- <script src="../../js/iframe-resize/iframeResizer.contentWindow.min.js"></script> -->
 
 </body>
 
