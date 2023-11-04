@@ -38,45 +38,36 @@ class StockOut extends DatabaseConnection
         try {
             $billData = array();
 
-            // Define the SQL query using a prepared statement
-            $selectBill = "SELECT * FROM stock_out WHERE `admin_id` = ?";
+            $selectBill = "SELECT * FROM `stock_out` WHERE admin_id = ?
+            ORDER BY invoice_id ASC";
 
-            // Prepare the SQL statement
             $stmt = $this->conn->prepare($selectBill);
 
             if ($stmt) {
-                // Bind the parameter
                 $stmt->bind_param("s", $adminId);
-
-                // Execute the query
                 $stmt->execute();
-
-                // Get the result
                 $result = $stmt->get_result();
 
-                // Check if the query was successful
-                if ($result) {
+                if ($result->num_rows > 0) {
                     while ($row = $result->fetch_array()) {
                         $billData[] = $row;
                     }
+                    
+                    return $billData;
                 } else {
-                    // Handle the case where the query failed
-                    echo "Query failed: " . $this->conn->error;
+                    return null;
                 }
 
-                // Close the statement
                 $stmt->close();
             } else {
                 // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
 
-            return $billData;
         } catch (Exception $e) {
             // Handle any exceptions that occur
             // You can customize this part to suit your needs
             echo "Error: " . $e->getMessage();
-            return array();
         }
     }
 
@@ -205,13 +196,47 @@ class StockOut extends DatabaseConnection
 
 
 
+    // =================== sales of the day data ==================
+    
+    function salesOfTheDay($adminId){
+        try{
+            $select = "SELECT SUM(amount) as sales_of_the_day
+            WHERE admin_id = ?
+            AND DATE(added_on)=NOW()";
 
+            $stmt = $this->conn->prepare($select);
+
+            if($stmt){
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute;
+                $result = $stmt->get_result();
+
+                if($stmt->num_rows > 0){
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                }else{
+                    return null;
+                }
+                $stmt->close();
+            }else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        }catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+
+    // =================== end of sales of the day data ==================
 
     // =========== most visited customer data ====================
-    function mostVistedCustomerFrmStart($adminId)
-    {
-        $data = array();
 
+
+    function mostVistedCustomerFrmStart($adminId) //overall most visited customer function
+    {
         try {
             $selectQuery = "SELECT customer_id, COUNT(customer_id) AS visit_count
             FROM stock_out
@@ -252,7 +277,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostVisitCustomersByDay($adminId)
+    function mostVisitCustomersByDay($adminId) //current date most visited customer function
     {
         try {
             $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
@@ -292,7 +317,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostVisitCustomersByWeek($adminId)
+    function mostVisitCustomersByWeek($adminId) //last week most visited customer function
     {
         try {
             $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
@@ -333,7 +358,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostVisitCustomersByMonth($adminId)
+    function mostVisitCustomersByMonth($adminId) //lst 30 days most visited customer function
     {
         try {
             $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
@@ -375,7 +400,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostVisitedCustomerOnDate($adminId, $date)
+    function mostVisitedCustomerOnDate($adminId, $date) // most visited customer by date function
     {
         try {
             $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
@@ -417,8 +442,8 @@ class StockOut extends DatabaseConnection
 
 
 
-
-    function mostVisitCustomersByDateRange($startDt, $endDate, $adminId)
+    // most visited customer by date range function
+    function mostVisitCustomersByDateRange($startDt, $endDate, $adminId) 
     {
         try {
             $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
@@ -462,7 +487,7 @@ class StockOut extends DatabaseConnection
 
     // ============= most purchase customer data functions ==============
 
-    function overallMostPurchaseCustomer($admin)
+    function overallMostPurchaseCustomer($admin) // overall most purchase customer fucntion
     {
         try {
             $selectQuery = "SELECT customer_id, amount AS total_purchase
@@ -511,7 +536,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByDay($admin)
+    function mostPurchaseCustomerByDay($admin) // most purchase customer on current date fucntion
     {
         try {
             $selectQuery = "SELECT customer_id, amount AS total_purchase
@@ -561,7 +586,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByWeek($admin)
+    function mostPurchaseCustomerByWeek($admin) // most purchase customer last week fucntion
     {
         try {
             $selectQuery = "SELECT customer_id, amount AS total_purchase
@@ -613,7 +638,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByMonth($admin)
+    function mostPurchaseCustomerByMonth($admin) // most purchase customer last 30 days fucntion
     {
         try {
             $selectQuery = "SELECT customer_id, amount AS total_purchase
@@ -665,7 +690,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByDate($adminId, $date){
+    function mostPurchaseCustomerByDate($adminId, $date){ // most purchase customer by date fucntion
         try {
             $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
@@ -711,7 +736,7 @@ class StockOut extends DatabaseConnection
 
 
     
-
+    // most purchase customer by date range fucntion
     function mostPurchaseCustomerByDateRange($startDate, $endDate, $adminId){
         try {
             $selectQuery = "SELECT customer_id, amount AS total_purchase
