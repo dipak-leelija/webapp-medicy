@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__. '/config/constant.php';
-require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+// Check if a specific session variable exists to determine if the user is logged in
+if (isset($_SESSION['LOGGEDIN'])) {
+    header("Location: ".URL);
+    exit;
+}
 
 require_once CLASS_DIR .'dbconnect.php';
 require_once CLASS_DIR.'admin.class.php';
