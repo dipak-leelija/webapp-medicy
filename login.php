@@ -1,5 +1,11 @@
 <?php 
 require_once 'config/constant.php';
+
+if (isset($_SESSION['LOGGEDIN'])) {
+    header("Location: ".URL);
+    exit;
+}
+
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'login.class.php';
 
