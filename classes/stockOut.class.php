@@ -38,8 +38,7 @@ class StockOut extends DatabaseConnection
         try {
             $billData = array();
 
-            $selectBill = "SELECT * FROM `stock_out` WHERE admin_id = ?
-            ORDER BY invoice_id ASC";
+            $selectBill = "SELECT * FROM `stock_out` WHERE admin_id = ? ORDER BY invoice_id DESC";
 
             $stmt = $this->conn->prepare($selectBill);
 

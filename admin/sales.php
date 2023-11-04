@@ -13,7 +13,7 @@ $StockOut = new StockOut();
 $Patients = new Patients();
 
 $soldItems = $StockOut->stockOutDisplay(strval($adminId));
-
+//print_r($soldItems);
 ?>
 
 <!DOCTYPE html>
@@ -99,7 +99,6 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
                                     
                                         <?php
                                         foreach ($soldItems as $soldItem) {
-                                            // print_r($soldItem);
                                             $invoice    = $soldItem['invoice_id'];
                                             $patient    = $soldItem['customer_id'];
                                             $billDate   = date_create($soldItem['bill_date']);
@@ -130,7 +129,7 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
                                             }
                                             ?>
                                         <?php echo "' onclick=viewBills(".$invoice.") data-toggle='modal' data-target='#viewBillModal'>
-                                                    <td>#".$invoice."</td>
+                                                    <td>".$invoice."</td>
                                                     <td>".$patientName."</td>
                                                     <td>".$billDate."</td>
                                                     <td>".$soldItem['items']."</td>
