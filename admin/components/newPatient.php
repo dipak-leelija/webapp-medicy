@@ -10,20 +10,19 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
 
 
 <div class="card border-left-success shadow h-100 py-2">
-    <div class="d-flex justify-content-end px-2">
+    <div class="d-flex justify-content-end px-1">
         <div id="newPatientDtPkr" style="display: none;">
             <input style="height: 20px;" type="date" id="newPatientDt">
             <button class="btn btn-sm btn-primary" onclick="newPatientByDt()" style="height: 1.5rem; padding:0px;">Find</button>
         </div>
         <div id="newPatientDtPkrRng" style="display: none;">
-            <!-- <label>Start Date</label> -->
+            <label style="margin-bottom: 0px;"><small>Start Date</small></label>&nbsp; &nbsp;  <label style="margin-bottom: 0px;"><small>End Date</small></label><br>
             <input style="width: 70px; height:20px;" type="date" id="newPatientStartDate">
-            <!-- <label>End Date</label> -->
             <input style="width: 70px; height:20px;" type="date" id="newPatientEndDate">
-            <button class="btn btn-sm btn-primary" onclick="newPatientDateRange()" style="height: 2rem;">Find</button>
+            <button class="btn btn-sm btn-primary" onclick="newPatientDateRange()" style="height: 1.5rem; padding:0px;">Find</button>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown " data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <b>...</b>
             </button>
             <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
@@ -35,7 +34,7 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
             </div>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body pt-0">
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
@@ -46,6 +45,9 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
                 </div>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-end "> 
+        <button class="btn btn-outline-light card-btn ">..</button>
     </div>
 </div>
 
