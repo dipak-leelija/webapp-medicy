@@ -18,7 +18,7 @@ require_once CLASS_DIR.'packagingUnit.class.php';
 
 //Classes Initilizing
 // $Patients       =   new Patients();
-$IdGeneration   =   new IdGeneration();
+$IdGeneration   =   new IdsGeneration();
 $CurrentStock   =   new CurrentStock();
 $StockIn        =   new StockIn();
 $StockInDetail  =   new StockInDetails();

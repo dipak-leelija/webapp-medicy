@@ -34,8 +34,8 @@ if (isset($_GET['customerId'])) {
 
 // ==== for most visit customer data fetch ======
 
-if (isset($_POST['mostVstCstmrByDt'])) {
-    $dtPicker=  $_POST['mostVstCstmrByDt'];
+if (isset($_GET['mostVstCstmrByDt'])) {
+    $dtPicker=  $_GET['mostVstCstmrByDt'];
     $mostVisitedCustomerOnDate = $StockOut->mostVisitedCustomerOnDate($adminId, $dtPicker);
     // print_r($mostVisitedCustomerOnDate);
     echo json_encode($mostVisitedCustomerOnDate);  
