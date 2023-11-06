@@ -42,13 +42,6 @@ $newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $startDat
 
 
 
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> 58cb4aff9458ce172582fc593475c3b9e32f3ccb
 
 ?>
 
