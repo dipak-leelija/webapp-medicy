@@ -196,6 +196,7 @@ class StockOut extends DatabaseConnection
 
 
 
+
     // =================== sales of the day data ==================
     
     // salse of the day in a specific date function

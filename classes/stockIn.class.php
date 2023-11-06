@@ -155,7 +155,7 @@ class StockIn extends DatabaseConnection{
     
                 if ($result->num_rows > 0) {
                     $data = $result->fetch_object();
-                    $data = json_encode($data);
+                    $data = $data;
                 } else {
                     return null;
                 }
@@ -176,6 +176,30 @@ class StockIn extends DatabaseConnection{
 
 
 
+    
+
+    // =================== purchase today data by date range ==================
+    // salse of the day in a specific date function
+    function purchaseTodayByDateRange($endDate, $startDate, $adminId){
+        try{
+            $select = "SELECT SUM(amount) AS purchase_amount, SUM(items) AS purchase_item_count 
+            FROM stock_in
+            WHERE admin_id = '$adminId'
+            AND DATE(added_on) BETWEEN '$endDate' AND '$startDate'";
+            $selectQuery = $this->conn->query($select);
+            if($selectQuery->num_rows > 0){
+                while ($result = $selectQuery->fetch_object()) {
+                    $ShowData = $result;
+                }
+                return $ShowData;
+            }else{
+                return null;
+            }
+        } catch (Exception $e){
+            echo "Error: " . $e->getMessage();
+        }
+    }
+    
     
 
 

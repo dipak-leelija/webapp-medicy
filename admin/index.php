@@ -31,7 +31,6 @@ if ($_SESSION['ADMIN'] == false) {
 }
 
 
-
 ?>
 
 <!DOCTYPE html>
