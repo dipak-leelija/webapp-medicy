@@ -352,7 +352,7 @@ $allPatients       = json_decode($allPatients);
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
-
+   
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
