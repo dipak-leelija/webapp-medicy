@@ -1,29 +1,34 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'/config/sessionCheck.php';//check admin loggedin or not
+require_once ADM_DIR.'_config/sessionCheck.php';
 
-require_once '../php_control/hospital.class.php';
-require_once '../php_control/appoinments.class.php';
-require_once '../php_control/doctors.class.php';
-require_once '../php_control/patients.class.php';
-require_once '../php_control/idsgeneration.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'hospital.class.php';
+require_once CLASS_DIR.'appoinments.class.php';
+require_once CLASS_DIR.'doctors.class.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'idsgeneration.class.php';
 
 $page = "appointments";
 
 
 //Classes Initilizing
 $appointments = new Appointments();
-$IdGeneration = new IdGeneration();
+$IdsGeneration = new IdsGeneration();
 $hospital = new HelthCare();
 $Patients = new Patients();
 
 // Fetching Hospital Info
-$hospitalDetails = $hospital->showhelthCare();
-foreach($hospitalDetails as $showShowHospital){
+
+$healthCareDetailsPrimary = $hospital->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $hospital->showhelthCare($adminId);
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
+
+foreach($healthCareDetails as $showShowHospital){
     $hospitalName = $showShowHospital['hospital_name'];
 }
 ?>
@@ -89,22 +94,22 @@ foreach($hospitalDetails as $showShowHospital){
     $apntIdStart = "$healthCareNameTrimed$appointmentDateForId";
 
     // Appointment iD Generated
-    $appointmentId = $IdGeneration->appointmentidGeneration($apntIdStart);
+    $appointmentId = $IdsGeneration->appointmentidGeneration($apntIdStart);
     echo $appointmentId;
     exit;
     
     //Patient Id Generate
-    $patientId = $IdGeneration->patientidGenerate();
+    $patientId = $IdsGeneration->patientidGenerate();
     // echo $patientId;
     
     // Inserting Into Appointments Database
-    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor );
+    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $employeeId, NOW, $adminId );
 
     //redirect if the insertion has done
     if ($addAppointment) {
         $visited = 1;
         // Inserting Into Patients Database
-        $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited);
+        $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
         if ($addPatients) {
             echo '<script>alert(Appointment Added!)</script>';
             setcookie("appointmentId", $appointmentId, time() + (120 * 30), "/");
@@ -143,7 +148,7 @@ foreach($hospitalDetails as $showShowHospital){
                         <div class="col-xl-8 col-lg-9 col-md-10 text-center">
                             <div class="card mt-0">
                                 <h4 class="text-center mb-4 mt-0"><b>Fill The Patient Details</b></h4>
-                                <form class="form-card" action="appointment-entry.php" method="post">
+                                <form class="form-card" action="appointment-entry-main.php" method="post">
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
 

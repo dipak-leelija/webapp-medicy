@@ -2,16 +2,18 @@
 require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 $includePath = get_include_path();
 
-$today = NOW;
+$strtDt = date('Y-m-d');
+$lst7 = date('Y-m-d', strtotime($strtDt . ' - 7 days'));
+$lst30 = date('Y-m-d', strtotime($strtDt . ' - 30 days'));
 
 $mostStoldItemsFromStart = $StockOut->mostSoldStockOutDataFromStart($adminId);
 
 $dailyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDay($adminId);
 
-$weeklyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByWeek($adminId);
+$weeklyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst7, $strtDt, $adminId);
 
-$monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByMonth($adminId);
-// print_r($dailyMostStoldItems);
+$monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $strtDt, $adminId);
+// print_r($monthlyMostStoldItems);
 ?>
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">

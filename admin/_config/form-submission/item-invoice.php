@@ -16,7 +16,7 @@ require_once CLASS_DIR . 'manufacturer.class.php';
 $HelthCare       = new HelthCare();
 $Doctors         = new Doctors();
 $Patients        = new Patients();
-$IdGeneration    = new IdGeneration();
+$IdsGeneration    = new IdsGeneration();
 $StockOut        = new StockOut();
 $CurrentStock    = new CurrentStock();
 $Manufacturur    = new Manufacturer();
@@ -140,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // ===================== STOCK OUT AND SALES ITEM BILL GENERATION AREA =========================
     if (isset($_POST['submit'])) {
-        $invoiceId = $IdGeneration->pharmecyInvoiceId();
+        $invoiceId = $IdsGeneration->pharmecyInvoiceId();
 
         $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $status, $billdate, $addedBy, $addedOn, $adminId);
         // print_r($StockOut);

@@ -1,10 +1,8 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
 
 class Appointments extends DatabaseConnection{
 
+    // ============ apointments book by patients him/her self ==========
     function addAppointments($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianNAme, $patientEmail, $patientPhoneNumber, $patientDOB, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $patientDoctorShift){
 
         $insertApoointments = "INSERT INTO `appointments` (`appointment_id`, `patient_id`, `appointment_date`, `patient_name`, `patient_gurdian_name`, `patient_email`, `patient_phno`, `patient_dob`, `patient_weight`, `patient_gender`, `patient_addres1`, `patient_addres2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `doctor_id`, `patient_doc_shift`) VALUES ('$appointmentId', $patientId, '$appointmentDate', '$patientName', '$patientGurdianNAme', '$patientEmail', '$patientPhoneNumber', '$patientDOB', '$patientWeight', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState', '$patientDoctor', '$patientDoctorShift')";
@@ -16,20 +14,31 @@ class Appointments extends DatabaseConnection{
     }// end addAppointments function
 
 
-
-    function addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor){
-
-        $insertApoointments = "INSERT INTO `appointments` (`appointment_id`, `patient_id`, `appointment_date`, `patient_name`, `patient_gurdian_name`, `patient_email`, `patient_phno`, `patient_dob`, `patient_weight`, `patient_gender`, `patient_addres1`, `patient_addres2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `doctor_id`) VALUES ('$appointmentId', '$patientId', '$appointmentDate', '$patientName', '$patientGurdianName', '$patientEmail', '$patientPhoneNumber', '$patientAge', '$patientWeight', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState', '$patientDoctor')";
-
-        // echo $insertApoointments.$this->conn->error;exit;
-
-        $insertQuery = $this->conn->query($insertApoointments);
-        // echo var_dump($insertQuery);
-        // exit;
-
-        return $insertQuery;
-
-    }// end addAppointments function
+    // ======== booked by admin or employeee ==============
+    function addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $addedBy, $addedOn, $adminId) {
+        try {
+            $insertAppointments = "INSERT INTO `appointments` (`appointment_id`, `patient_id`, `appointment_date`, `patient_name`, `patient_gurdian_name`, `patient_email`, `patient_phno`, `patient_age`, `patient_weight`, `patient_gender`, `patient_addres1`, `patient_addres2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `doctor_id`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+            $stmt = $this->conn->prepare($insertAppointments);
+    
+            if ($stmt) {
+                $stmt->bind_param("ssssssssisssssssssss", $appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $addedBy, $addedOn, $adminId);
+    
+                if ($stmt->execute()) {
+                    return true; // Success
+                } else {
+                    return false; // Failed to execute the query
+                }
+    
+                $stmt->close();
+            } else {
+                return false; // Statement preparation failed
+            }
+        } catch (Exception $e) {
+            return false; // Error occurred
+        }
+    }
+    // end addAppointments function
 
 
 

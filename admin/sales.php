@@ -129,7 +129,7 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
                                             }
                                             ?>
                                         <?php echo "' onclick=viewBills(".$invoice.") data-toggle='modal' data-target='#viewBillModal'>
-                                                    <td>#".$invoice."</td>
+                                                    <td>".$invoice."</td>
                                                     <td>".$patientName."</td>
                                                     <td>".$billDate."</td>
                                                     <td>".$soldItem['items']."</td>

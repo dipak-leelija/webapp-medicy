@@ -42,10 +42,13 @@ $newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $startDat
 
 
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 58cb4aff9458ce172582fc593475c3b9e32f3ccb
 
 ?>
 
@@ -230,17 +233,17 @@ $newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $startDat
                     <div class="row">
 
                         <!-- Expiring in 3 Months Card -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-4 mb-4">
                             <?php require_once PORTAL_COMPONENT . "expiring.php"; ?>
                         </div>
 
                         <!----------- Sales of the day card ----------->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-4 mb-4">
                             <?php require_once PORTAL_COMPONENT . "salesoftheday.php"; ?>
                         </div>
 
                         <!----------- Purchase today card ----------->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-4 col-md-4 mb-4">
                             <?php require_once PORTAL_COMPONENT . "purchasedToday.php"; ?>
                         </div>
 
