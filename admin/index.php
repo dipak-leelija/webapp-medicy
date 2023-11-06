@@ -30,10 +30,18 @@ if ($_SESSION['ADMIN'] == false) {
     echo "<br>ADMIN LOGIN - ADMIN ID : $adminId<br>";
 }
 
-$allPatients       = $Patients->allPatients($adminId);
-$allPatients       = json_decode($allPatients);
+// $startDate = '2022-03-09';
+// $endDate   = '2022-03-30';
 
-print_r($newPatientByMonth);
+$newPatients             = $Patients->newPatientCount($adminId);
+$newPatientLast24Hours   = $Patients->newPatientCountLast24Hours($adminId);
+$newPatientsByDay        = $Patients->newPatientByDay($adminId, $startDate);
+$newPatientLast7Days     = $Patients->newPatientCountLast7Days($adminId);
+$newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
+$newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $startDate, $endDate);
+
+
+
 
 
 
@@ -135,22 +143,36 @@ print_r($newPatientByMonth);
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 <i class="fas fa-user-plus"></i> New Patients
                                             </div>
-                                        </div>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
-
-                                                <b>...</b>
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
-                                                <button class="dropdown-item" type="button" id="newLst24hrs" onclick="mostvisitCustomer(this.id)">Last 24 hrs</button>
-                                                <button class="dropdown-item" type="button" id="mostVisitCustomerLst7" onclick="mostvisitCustomer(this.id)">Last 7 Days</button>
-                                                <button class="dropdown-item" type="button" id="mostVisitCustomerLst30" onclick="mostvisitCustomer(this.id)">Last 30 DAYS</button>
-                                                <button class="dropdown-item" type="button" id="mostVisitCustomerOnDt" onclick="mostvisitCustomer(this.id)">By Date</button>
-                                                <button class="dropdown-item" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <span id="newPatients"><?= $newPatients ?></span>
                                             </div>
                                         </div>
-                                        <canvas id="myChart"></canvas>
+                                        <div class="d-flex justify-content-end px-2">
+                                            <div id="mostVistedCustomerDtPkr" style="display: none;">
+                                                <input type="date" id="newPatientDt">
+                                                <button class="btn btn-sm btn-primary" onclick="newPatientByDt()" style="height: 2rem;">Find</button>
+                                            </div>
+                                            <div id="mostVistedCustomerDtPkrRng" style="display: none;">
+                                                <label>Start Date</label>
+                                                <input type="date" id="newPatientStartDate">
+                                                <label>End Date</label>
+                                                <input type="date" id="newPatientEndDate">
+                                                <button class="btn btn-sm btn-primary" onclick="newPatientDateRange()" style="height: 2rem;">Find</button>
+                                            </div>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <b>...</b>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
+                                                    <button class="dropdown-item" type="button" id="newPatientLst24hrs" onclick="newPatientCount(this.id)">Last 24 hrs</button>
+                                                    <button class="dropdown-item" type="button" id="newPatientLst7" onclick="newPatientCount(this.id)">Last 7 Days</button>
+                                                    <button class="dropdown-item" type="button" id="newPatientLst30" onclick="newPatientCount(this.id)">Last 30 DAYS</button>
+                                                    <button class="dropdown-item" type="button" id="newPatientOnDt" onclick="newPatientCount(this.id)">By Date</button>
+                                                    <button class="dropdown-item" type="button" id="newPatientDtRng" onclick="newPatientCount(this.id)">By Range</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <canvas id="myChart"></canvas> -->
                                     </div>
                                 </div>
                             </div>
@@ -372,8 +394,53 @@ print_r($newPatientByMonth);
     <script src="js/demo/chart-pie-demo.js"></script> -->
 
     <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        function newPatientByDt() {
+            var newPatientDt = document.getElementById('newPatientDt').value;
+            var dataToSend = `mostVstCstmrByDt=${newPatientDt}`;
+
+            newPatientDtUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php`;
+            xmlhttp.open("POST", newPatientDtUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(dataToSend);
+            var newPatientDataByDate = xmlhttp.responseText;
+
+            newPatientDataFunction(JSON.parse(newPatientDataByDate));
+        }
+
+        function newPatientCount(buttonId) {
+
+            switch (buttonId) {
+                case 'newPatientLst24hrs':
+                    document.getElementById('newPatients').textContent = <?= $newPatientLast24Hours ?>;
+                    break;
+                case 'newPatientLst7':
+                    document.getElementById('newPatients').textContent = <?= $newPatientLast7Days ?>;
+                    break;
+                case 'newPatientLst30':
+                    document.getElementById('newPatients').textContent = <?= $newPatientLast30Days ?>;
+                    break;
+                case 'newPatientOnDt':
+                    document.getElementById('mostVistedCustomerDtPkr').style.display = 'block';
+                    newPatientDataFunction
+                    break;
+                case 'newPatientDtRng':
+                    document.getElementById('newPatients').textContent = <?= $newPatientsInRangeDate ?>;
+                    break;
+                default:
+                    document.getElementById('newPatients').textContent = <?= $newPatients   ?>;
+                    break;
+            }
+        }
+
+
+
+
+
+        /// for line chart ///
         const ctx = document.getElementById('myChart');
         const labels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
         new Chart(ctx, {
@@ -388,7 +455,6 @@ print_r($newPatientByMonth);
                 }]
             }
         });
-
     </script>
 
 </body>

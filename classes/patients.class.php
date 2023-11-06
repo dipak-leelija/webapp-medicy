@@ -152,20 +152,6 @@ class Patients extends DatabaseConnection
         }
     }
 
-    /// find new patient using visited and lab_visited attribute ///
-    function newPatientCount($adminId)
-    {
-        try {
-            $sql    = "SELECT COUNT(visited) as newlabcount, FROM `patient_details` WHERE `admin_id` = '$adminId' ";
-            $result = $this->conn->query($sql);
-            if ($result !== false) {
-                $row = $result->fetch_object();
-            }
-        } catch (Exception $e) {
-            $e->getMessage();
-        }
-    }
-
     // ///count patient Times of visits ////
     function patientVisitCount($Name, $patientId)
     {
@@ -189,4 +175,126 @@ class Patients extends DatabaseConnection
     //======================///
 
 
+    /// find new patient using visited and lab_visited attribute ///
+    function newPatientCount($adminId)
+    {
+        try {
+            $sql    = "SELECT COUNT(*) as patient_count FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = 1";
+            $result = $this->conn->query($sql);
+            if ($result !== false) {
+                $row = $result->fetch_object();
+                return $row->patient_count;
+            } else {
+                return 0;
+            }
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
+    }
+
+    // new patient by day //
+    function newPatientByDay($adminId, $startDate)
+    {
+        try {
+            $sql    = "SELECT COUNT(*) as patient_count FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = 1 AND `lab_visited`= 1 AND `added_on`= '$startDate'";
+            $result = $this->conn->query($sql);
+            if ($result !== false) {
+                $row = $result->fetch_object();
+                return $row->patient_count;
+            } else {
+                return 0;
+            }
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
+    }
+
+    /// new patient count last 24 hrs ///
+    function newPatientCountLast24Hours($adminId)
+    {
+        try {
+            $sql = "SELECT COUNT(*) as patient_count 
+                FROM `patient_details` 
+                WHERE `admin_id` = '$adminId' 
+                AND `visited` = 1 
+                AND `added_on` >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
+
+            $result = $this->conn->query($sql);
+            if ($result !== false) {
+                $row = $result->fetch_object();
+                return $row->patient_count;
+            } else {
+                return 0;
+            }
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
+    }
+
+    /// new patient count last 7 days /// 
+    function newPatientCountLast7Days($adminId)
+    {
+        try {
+            $sql = "SELECT COUNT(*) as patient_count 
+                FROM `patient_details` 
+                WHERE `admin_id` = '$adminId' 
+                AND `visited` = 1 
+                AND `added_on` >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+
+            $result = $this->conn->query($sql);
+            if ($result !== false) {
+                $row = $result->fetch_object();
+                return $row->patient_count;
+            } else {
+                return 0;
+            }
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
+    }
+
+
+    /// new patient count last 30 Days ///
+    function newPatientCountLast30Days($adminId)
+    {
+        try {
+            $sql = "SELECT COUNT(*) as patient_count 
+                FROM `patient_details` 
+                WHERE `admin_id` = '$adminId' 
+                AND `visited` = '1' AND `lab_visited` = '1'
+                AND `added_on` >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+
+            $result = $this->conn->query($sql);
+            if ($result !== false) {
+                $row = $result->fetch_object();
+                return $row->patient_count;
+            } else {
+                return 0;
+            }
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
+    }
+
+    /// new patient count based on range //
+    function findPatientsInRangeDate($adminId, $startDate, $endDate)
+    {
+        try {
+            $sql = "SELECT COUNT(*) as patient_count 
+            FROM `patient_details` 
+            WHERE `admin_id` = '$adminId' 
+            AND `visited` = 1 AND `lab_visited` = '1'
+            AND `added_on` BETWEEN '$startDate' AND '$endDate'";
+
+            $result = $this->conn->query($sql);
+            if ($result !== false) {
+                $row = $result->fetch_object();
+                return $row->patient_count;
+            } else {
+                return [];
+            }
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
+    }
 }//end class
