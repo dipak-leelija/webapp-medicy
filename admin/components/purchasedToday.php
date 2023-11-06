@@ -16,7 +16,7 @@ $purchaeTodayDataLst7dys = $StockIn->purchaseTodayByDateRange($podLst7, $podStrt
 
 $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podStrtDt, $adminId);
 
-// print_r($purchaeTodayDataLst30dys);
+print_r($purchaeTodayDataLst30dys);
 ?>
 
 <div class="card border-left-info h-100 py-2 pending_border animated--grow-in">
@@ -38,7 +38,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
             </div>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id = "purchsetodaybtngrp" onclick="checkbutton(this.id)">
+            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                 ...
             </button>
             <div class="dropdown-menu dropdown-menu-right">
@@ -80,21 +80,22 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 
 
 <script>
-    // function updatePod(uploadPodData) {
+    function updatePod(uploadPodData) {
+        console.log(uploadPodData);
 
-    //     if (uploadPodData.purchase_amount != null && uploadPodData.purchase_item_count != null) {
-    //         document.getElementById('salesAmount').innerHTML = uploadPodData.purchase_amount;
-    //         document.getElementById('itemsCount').innerHTML = uploadPodData.purchase_item_count;
+        if (uploadPodData.purchase_amount != null && uploadPodData.purchase_item_count != null) {
+            document.getElementById('salesAmount').innerHTML = uploadPodData.purchase_amount;
+            document.getElementById('itemsCount').innerHTML = uploadPodData.purchase_item_count;
 
-    //         document.getElementById('sod-Display').style.display = 'block';
-    //         document.getElementById('sod-no-data').style.display = 'none';
+            document.getElementById('sod-Display').style.display = 'block';
+            document.getElementById('sod-no-data').style.display = 'none';
 
-    //     } else {
-    //         console.log('null');
-    //         document.getElementById('sod-Display').style.display = 'none';
-    //         document.getElementById('sod-no-data').style.display = 'block';
-    //     }
-    // }
+        } else {
+            console.log('null');
+            document.getElementById('sod-Display').style.display = 'none';
+            document.getElementById('sod-no-data').style.display = 'block';
+        }
+    }
 
 
 
@@ -132,39 +133,32 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 
 
 
-
-    function checkbutton(id){
-        alert(id);
-    }
-
-
-
     /// ===== button on click function for sod date select 
     function chkPod(id) {
-
+        alert(id);
         if (id == 'podCurrentDt') {
             document.getElementById('podDatePikDiv').style.display = 'none';
             document.getElementById('podDtPikRngDiv').style.display = 'none';
-            // updatePod(<?php echo json_encode($purchaeTodayCurrentData) ?>);
+            updatePod(<?php echo json_encode($purchaeTodayCurrentData) ?>);
 
         }
 
         if (id == 'podLst24hrs') {
             document.getElementById('podDatePikDiv').style.display = 'none';
             document.getElementById('podDtPikRngDiv').style.display = 'none';
-            // updatePod(<?php echo json_encode($purchaeTodayDataLst24hrs) ?>);
+            updatePod(<?php echo json_encode($purchaeTodayDataLst24hrs) ?>);
         }
 
         if (id == 'podLst7') {
             document.getElementById('podDatePikDiv').style.display = 'none';
             document.getElementById('podDtPikRngDiv').style.display = 'none';
-            // updatePod(<?php echo json_encode($purchaeTodayDataLst7dys) ?>);
+            updatePod(<?php echo json_encode($purchaeTodayDataLst7dys) ?>);
         }
 
         if (id == 'podLst30') {
             document.getElementById('podDatePikDiv').style.display = 'none';
             document.getElementById('podDtPikRngDiv').style.display = 'none';
-            // updatePod(<?php echo json_encode($purchaeTodayDataLst30dys) ?>);
+            updatePod(<?php echo json_encode($purchaeTodayDataLst30dys) ?>);
         }
 
         if (id == 'podGvnDt') {
