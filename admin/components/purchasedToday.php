@@ -6,9 +6,12 @@
                 ...
             </button>
             <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button">Last 7 Days</button>
-                <button class="dropdown-item" type="button">Last 1 Month</button>
-                <button class="dropdown-item" type="button">By Date</button>
+                <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkPurchase(this.id)">Today</button>
+                <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkPurchase(this.id)">Last 24 hrs</button>
+                <button class="dropdown-item" type="button" id="sodLst7" onclick="chkPurchase(this.id)">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="sodLst30" onclick="chkPurchase(this.id)">Last 30 Days</button>
+                <button class="dropdown-item" type="button" id="sodGvnDt" onclick="chkPurchase(this.id)">By Date</button>
+                <button class="dropdown-item" type="button" id="sodDtRng" onclick="chkPurchase(this.id)">By Date Range</button>
             </div>
         </div>
     </div>
@@ -19,23 +22,9 @@
                     Purchased today
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                    <?php
-                        $purchased = $StockIn->stockInByDate("2022-05-20");
-                        // print_r($purchased);
-                        $item = 0;
-                        $qtys = 0;
-                        $amount = 0;
-                        foreach ($purchased as $data) {
-                            $item += $data['items'];
-                            $qtys += $data['total_qty'];
-                             $amount += $data['amount'];
-
-                            }
-                        echo '₹'.$amount;
-                    ?>
+                
                 </div>
-                <p class="mb-0 pb-0"><small class="mb-0 pb-0"><?php echo $item.' Items, '.$qtys.' Units';?></small>
-                </p>
+                <p class="mb-0 pb-0"><small class="mb-0 pb-0"></small></p>
             </div>
             <div class="col-auto">
                 <i class="fas fa-rupee-sign"></i>
