@@ -97,12 +97,11 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
     // ============= most visit customer by specific date function body ==============
     function mostVistedCustomerByDt() {
         var mostVistedCustomerDt = document.getElementById('mostVisiteCustomerDt').value;
-        var dataToSend = `mostVstCstmrByDt=${mostVistedCustomerDt}`;
 
-        mostVstCstmrDtUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php`;
-        xmlhttp.open("POST", mostVstCstmrDtUrl, false);
+        mostVstCstmrDtUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?mostVstCstmrByDt=${mostVistedCustomerDt}`;
+        xmlhttp.open("GET", mostVstCstmrDtUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(dataToSend);
+        xmlhttp.send(null);
         var mostVistiCustomerDataByDate = xmlhttp.responseText;
 
         mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDate));
