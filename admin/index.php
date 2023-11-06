@@ -33,8 +33,6 @@ if ($_SESSION['ADMIN'] == false) {
 // $startDate = '2022-03-09';
 // $endDate   = '2022-03-30';
 
-
-
 ?>
 
 <!DOCTYPE html>

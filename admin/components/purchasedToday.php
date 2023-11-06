@@ -38,7 +38,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
             </div>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id = "purchsetodaybtngrp" onclick="checkbutton(this.id)">
                 ...
             </button>
             <div class="dropdown-menu dropdown-menu-right">
@@ -132,6 +132,10 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 
 
 
+
+    function checkbutton(id){
+        alert(id);
+    }
 
 
 
