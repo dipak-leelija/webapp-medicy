@@ -16,7 +16,7 @@ $purchaeTodayDataLst7dys = $StockIn->purchaseTodayByDateRange($podLst7, $podStrt
 
 $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podStrtDt, $adminId);
 
-print_r($purchaeTodayDataLst30dys);
+// print_r($purchaeTodayDataLst30dys);
 ?>
 
 <div class="card border-left-info h-100 py-2 pending_border animated--grow-in">
@@ -81,19 +81,19 @@ print_r($purchaeTodayDataLst30dys);
 
 <script>
     function updatePod(uploadPodData) {
-        console.log(uploadPodData);
-
+        console.log(uploadPodData.purchase_amount);
+        
         if (uploadPodData.purchase_amount != null && uploadPodData.purchase_item_count != null) {
-            document.getElementById('salesAmount').innerHTML = uploadPodData.purchase_amount;
-            document.getElementById('itemsCount').innerHTML = uploadPodData.purchase_item_count;
+            document.getElementById('podAmount').innerHTML = uploadPodData.purchase_amount;
+            document.getElementById('podItemsCount').innerHTML = uploadPodData.purchase_item_count;
 
-            document.getElementById('sod-Display').style.display = 'block';
-            document.getElementById('sod-no-data').style.display = 'none';
+            document.getElementById('pod-data-div').style.display = 'block';
+            document.getElementById('pod-no-data-found-div').style.display = 'none';
 
         } else {
             console.log('null');
-            document.getElementById('sod-Display').style.display = 'none';
-            document.getElementById('sod-no-data').style.display = 'block';
+            document.getElementById('pod-data-div').style.display = 'none';
+            document.getElementById('pod-no-data-found-div').style.display = 'block';
         }
     }
 
@@ -135,7 +135,7 @@ print_r($purchaeTodayDataLst30dys);
 
     /// ===== button on click function for sod date select 
     function chkPod(id) {
-        alert(id);
+       
         if (id == 'podCurrentDt') {
             document.getElementById('podDatePikDiv').style.display = 'none';
             document.getElementById('podDtPikRngDiv').style.display = 'none';
