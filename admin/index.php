@@ -35,7 +35,7 @@ if ($_SESSION['ADMIN'] == false) {
 
 $newPatients             = $Patients->newPatientCount($adminId);
 $newPatientLast24Hours   = $Patients->newPatientCountLast24Hours($adminId);
-$newPatientsByDay        = $Patients->newPatientByDay($adminId, $startDate);
+$newPatientsByDay        = $Patients->newPatientByDay($adminId, '<script>document.write(startDate)</script>');
 $newPatientLast7Days     = $Patients->newPatientCountLast7Days($adminId);
 $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
 $newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $startDate, $endDate);
@@ -396,15 +396,7 @@ $newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $startDat
     <script>
         function newPatientByDt() {
             var newPatientDt = document.getElementById('newPatientDt').value;
-            var dataToSend = `mostVstCstmrByDt=${newPatientDt}`;
-
-            newPatientDtUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php`;
-            xmlhttp.open("POST", newPatientDtUrl, false);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(dataToSend);
-            var newPatientDataByDate = xmlhttp.responseText;
-
-            newPatientDataFunction(JSON.parse(newPatientDataByDate));
+            var startDate = newPatientDt;
         }
 
         function newPatientCount(buttonId) {
@@ -421,7 +413,7 @@ $newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $startDat
                     break;
                 case 'newPatientOnDt':
                     document.getElementById('mostVistedCustomerDtPkr').style.display = 'block';
-                    newPatientDataFunction
+                    document.getElementById('newPatients').textContent = <?= $newPatientsByDay  ?>;
                     break;
                 case 'newPatientDtRng':
                     document.getElementById('newPatients').textContent = <?= $newPatientsInRangeDate ?>;
