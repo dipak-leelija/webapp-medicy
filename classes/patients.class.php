@@ -1,47 +1,24 @@
 <?php
 
+require_once 'dbconnect.php';
+
+
+
 
 class Patients extends DatabaseConnection
 {
 
 
-    function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $addedBy, $addedOn, $adminId) {
-        try {
-            $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `address_2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
-            $stmt = $this->conn->prepare($insertPatients);
-    
-            if ($stmt) {
-                $stmt->bind_param("sssssssssssssssss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $addedBy, $addedOn, $adminId);
-    
-                if ($stmt->execute()) {
-                    return true; 
-                } else {
-                    return false; 
-                }
-    
-                $stmt->close();
-            } else {
-                return false; 
-            }
-        } catch (Exception $e) {
-            return false; 
-        }
-    }
+    function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited)
+    {
 
+        $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `address_2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`) VALUES
+        ('$patientId', '$patientName', '$patientGurdianName', '$patientEmail', '$patientPhoneNumber', '$patientAge', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState', $visited)";
 
-    
-    // function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited)
-    // {
+        $insertQuery = $this->conn->query($insertPatients);
 
-    //     $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `address_2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`) VALUES
-    //     ('$patientId', '$patientName', '$patientGurdianName', '$patientEmail', '$patientPhoneNumber', '$patientAge', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState', $visited)";
-
-    //     $insertQuery = $this->conn->query($insertPatients);
-
-    //     return $insertQuery;
-    // } // end addPatients function
-
+        return $insertQuery;
+    } // end addPatients function
 
 
 
