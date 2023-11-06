@@ -33,14 +33,6 @@ if ($_SESSION['ADMIN'] == false) {
 // $startDate = '2022-03-09';
 // $endDate   = '2022-03-30';
 
-$newPatients             = $Patients->newPatientCount($adminId);
-$newPatientLast24Hours   = $Patients->newPatientCountLast24Hours($adminId);
-$newPatientsByDay        = $Patients->newPatientByDay($adminId, $startDate);
-$newPatientLast7Days     = $Patients->newPatientCountLast7Days($adminId);
-$newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
-$newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $startDate, $endDate);
-
-
 
 
 ?>
