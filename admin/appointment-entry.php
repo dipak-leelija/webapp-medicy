@@ -94,16 +94,17 @@ foreach($healthCareDetails as $showShowHospital){
     $healthCareNameTrimed = strtoupper(substr($hospitalName, 0, 2));//first 2 leter oh healthcare center name
     $appointmentDateForId = date("dmy", strtotime($appointmentDate));
     $apntIdStart = "$healthCareNameTrimed$appointmentDateForId";
-
+    echo "<br>$apntIdStart<br>";
+    
     //Patient Id Generate
     $patientId = $IdsGeneration->patientidGenerate();
-    echo "patient id generation : $patientId <br>";
+    // echo "patient id generation : $patientId <br>";
 
    
     
     // Appointment iD Generated
     $appointmentId = $IdsGeneration->appointmentidGeneration($apntIdStart);
-    echo "<br>$appointmentId<br>";
+    
     
 
     
@@ -113,6 +114,7 @@ foreach($healthCareDetails as $showShowHospital){
     $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, intval($patientWeight), $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $employeeId, NOW, $adminId);
       
 
+    print_r($addAppointment);
         
     //redirect if the insertion has done
     if ($addAppointment) {
