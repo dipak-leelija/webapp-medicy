@@ -52,7 +52,7 @@ class StockOut extends DatabaseConnection
                     while ($row = $result->fetch_array()) {
                         $billData[] = $row;
                     }
-                    
+
                     return $billData;
                 } else {
                     return null;
@@ -63,7 +63,6 @@ class StockOut extends DatabaseConnection
                 // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
-
         } catch (Exception $e) {
             // Handle any exceptions that occur
             // You can customize this part to suit your needs
@@ -198,21 +197,22 @@ class StockOut extends DatabaseConnection
 
 
     // =================== sales of the day data ==================
-    
+
     // salse of the day in a specific date function
-    function salesOfTheDay($addedOn, $adminId) {
+    function salesOfTheDay($addedOn, $adminId)
+    {
         try {
             $select = "SELECT SUM(amount) AS total_amount, SUM(items) AS total_count
             FROM stock_out
             WHERE DATE(added_on) = ? AND admin_id = ?";
-    
+
             $stmt = $this->conn->prepare($select);
-    
+
             if ($stmt) {
                 $stmt->bind_param("ss", $addedOn, $adminId);
                 $stmt->execute(); // Corrected here
                 $result = $stmt->get_result();
-    
+
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_object()) {
                         $data = $row;
@@ -229,11 +229,12 @@ class StockOut extends DatabaseConnection
             echo "Error: " . $e->getMessage();
         }
     }
-    
+
 
 
     // salse of the day in a range function
-    function salesOfTheDayRange($strtDt, $endDt, $adminId) {
+    function salesOfTheDayRange($strtDt, $endDt, $adminId)
+    {
         try {
             $select = "SELECT SUM(amount) AS total_amount, SUM(items) AS total_count
             FROM stock_out
@@ -478,7 +479,7 @@ class StockOut extends DatabaseConnection
 
 
     // most visited customer by date range function
-    function mostVisitCustomersByDateRange($startDt, $endDate, $adminId) 
+    function mostVisitCustomersByDateRange($startDt, $endDate, $adminId)
     {
         try {
             $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
@@ -725,7 +726,8 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByDate($adminId, $date){ // most purchase customer by date fucntion
+    function mostPurchaseCustomerByDate($adminId, $date)
+    { // most purchase customer by date fucntion
         try {
             $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
@@ -770,9 +772,10 @@ class StockOut extends DatabaseConnection
 
 
 
-    
+
     // most purchase customer by date range fucntion
-    function mostPurchaseCustomerByDateRange($startDate, $endDate, $adminId){
+    function mostPurchaseCustomerByDateRange($startDate, $endDate, $adminId)
+    {
         try {
             $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
@@ -816,7 +819,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    
+
     // =================== end of most purchase customer data ==============
 
 
@@ -1034,17 +1037,18 @@ class StockOut extends DatabaseConnection
         }
     }
 
-    function stockOutDetailsBY1invoiveID($invoiceId){
-        try{
+    function stockOutDetailsBY1invoiveID($invoiceId)
+    {
+        try {
             $data = [];
             $sql = "SELECT * FROM `stock_out_details` WHERE `invoice_id`= ' $invoiceId'";
             $query = $this->conn->query($sql);
-                while ($result = $query->fetch_object()) {
-                    $data[] = $result;
-                }
-                $dataset = json_encode($data);
-                return $dataset;
-        }catch(Exception $e){
+            while ($result = $query->fetch_object()) {
+                $data[] = $result;
+            }
+            $dataset = json_encode($data);
+            return $dataset;
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
@@ -1208,96 +1212,6 @@ class StockOut extends DatabaseConnection
     }
 
 
-
-
-
-    // function mostSoldStockOutDataGroupByWeek($adminId)
-    // {
-    //     try {
-    //         $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
-    //                         FROM stock_out_details sod
-    //                         JOIN stock_out so ON sod.invoice_id = so.invoice_id
-    //                         WHERE so.admin_id = ?
-    //                           AND so.added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-    //                         GROUP BY sod.product_id
-    //                         ORDER BY total_sold DESC
-    //                         LIMIT 10";
-
-    //         $stmt = $this->conn->prepare($selectQuery);
-
-    //         if ($stmt) {
-    //             $stmt->bind_param("s", $adminId);
-    //             $stmt->execute();
-    //             $result = $stmt->get_result();
-
-    //             if ($result->num_rows > 0) {
-    //                 $data = array();
-    //                 while ($row = $result->fetch_object()) {
-    //                     $data[] = $row;
-    //                 }
-    //                 return $data;
-    //             } else {
-    //                 return null;
-    //             }
-
-    //             $stmt->close();
-    //         } else {
-    //             echo "Statement preparation failed: " . $this->conn->error;
-    //         }
-    //     } catch (Exception $e) {
-    //         echo "Error: " . $e->getMessage();
-    //         return null;
-    //     }
-    // }
-
-
-
-
-
-    // function mostSoldStockOutDataGroupByMonth($adminId)
-    // {
-    //     try {
-    //         $selectQuery = "SELECT sod.product_id, SUM(sod.qty) AS total_sold
-    //                         FROM stock_out_details sod
-    //                         JOIN stock_out so ON sod.invoice_id = so.invoice_id
-    //                         WHERE so.admin_id = ?
-    //                           AND so.added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-    //                         GROUP BY sod.product_id
-    //                         ORDER BY total_sold DESC
-    //                         LIMIT 10";
-
-    //         $stmt = $this->conn->prepare($selectQuery);
-
-    //         if ($stmt) {
-    //             $stmt->bind_param("s", $adminId);
-    //             $stmt->execute();
-    //             $result = $stmt->get_result();
-
-    //             if ($result->num_rows > 0) {
-    //                 $data = array();
-    //                 while ($row = $result->fetch_object()) {
-    //                     $data[] = $row;
-    //                 }
-    //                 return $data;
-    //             } else {
-    //                 return null;
-    //             }
-
-    //             $stmt->close();
-    //         } else {
-    //             echo "Statement preparation failed: " . $this->conn->error;
-    //         }
-    //     } catch (Exception $e) {
-    //         echo "Error: " . $e->getMessage();
-    //         return null;
-    //     }
-    // }
-
-
-
-
-
-
     // =========== most sold item function in a date =========
     function mostSoldStockOutDataGroupByDt($date, $adminId)
     {
@@ -1394,8 +1308,9 @@ class StockOut extends DatabaseConnection
 
     /// ========= less sold item check query ================
 
-    function leastSoldStockOutDataFromStart($adminId){
-    try {
+    function leastSoldStockOutDataFromStart($adminId)
+    {
+        try {
             $query = "SELECT product_id, SUM(qty) AS total_sold
             FROM stock_out_details
             WHERE invoice_id IN (
@@ -1439,7 +1354,8 @@ class StockOut extends DatabaseConnection
 
 
 
-    function leastSoldStockOutDataGroupByDay($adminId){
+    function leastSoldStockOutDataGroupByDay($adminId)
+    {
         try {
             $query = "SELECT product_id, SUM(qty) AS total_sold
                       FROM stock_out_details
@@ -1486,7 +1402,8 @@ class StockOut extends DatabaseConnection
 
 
 
-    function leastSoldStockOutDataGroupByWeek($adminId){
+    function leastSoldStockOutDataGroupByWeek($adminId)
+    {
         try {
             $query = "SELECT product_id, SUM(qty) AS total_sold
                       FROM stock_out_details
@@ -1622,7 +1539,7 @@ class StockOut extends DatabaseConnection
     }
 
 
-    
+
 
 
     function lessSoldStockOutDataGroupByDtRng($startDt, $endDt, $adminId)
@@ -1671,6 +1588,38 @@ class StockOut extends DatabaseConnection
     /// ========= end of less sold item check query ================
 
 
+    // ======== data fetch function fro sales margin card ==============
+
+
+
+    function salesMarginData($adminId){
+        $data = array();
+        try{
+            $selectData = "SELECT SUM(stock_out_details.qty) AS sales_pack, 
+                        SUM(stock_out_details.mrp) AS sales_mrp, 
+                        SUM(stock_out_details.margin) AS sell_margin 
+                        FROM stock_out_details 
+                        LEFT JOIN stock_out ON stock_out_details.invoice_id = stock_out.invoice_id 
+                        WHERE stock_out.admin_id = $adminId";
+
+            $dataQuery = $this->conn->query($selectData);
+
+            if($dataQuery->num_rows > 0){
+                while ($result = $dataQuery->fetch_object()) {
+                    $data[]    = $result;
+                }
+                return $data;
+            }else {
+                return null;
+            }
+        }catch (Exception $e){
+            return $e;
+        } 
+    } // eof stockOutDisplayById 
+
+
+
+    // =========== end of sales margin card data fetch =================
 
     function stockOutDetailsDisplayById($invoiceId)
     {
