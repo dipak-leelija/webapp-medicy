@@ -121,18 +121,7 @@ if ($_SESSION['ADMIN'] == false) {
 
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                        <?php require_once PORTAL_COMPONENT . "newPatient.php"; ?>
-                            <!-- <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                <i class="fas fa-user-plus"></i> New Patients
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
+                            <?php require_once PORTAL_COMPONENT . "newPatient.php"; ?>
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
@@ -236,52 +225,13 @@ if ($_SESSION['ADMIN'] == false) {
 
                     <!-- ================== SECOND ROW ================== -->
                     <div class="row">
-                        <div class="col-xl-6 col-md-12">
-                            <!------------- NEEDS TO COLLECT PAYMENTS -------------->
-                            <div class="mb-4">
-                                <div class="card border-top-primary pending_border animated--grow-in">
-                                    <div class="card-body">
-                                        <a class="text-decoration-none" href="#">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                        Sales Margin
-                                                    </div>
-                                                    <div class="table-responsive">
 
-                                                        <table class="table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Item Name</th>
-                                                                    <th scope="col">Pack</th>
-                                                                    <th scope="col">MRP</th>
-                                                                    <th scope="col">Margin</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th scope="row">Current</th>
-                                                                    <td>00.00</td>
-                                                                    <td>00.00</td>
-                                                                    <td>00.00</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">Expired</th>
-                                                                    <td>00.00</td>
-                                                                    <td>00.00</td>
-                                                                    <td>00.00</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!------------- END NEEDS TO COLLECT PAYMENTS -------------->
+                        <!------------- SALES MARGIN CARD -------------->
+                        <div class="col-xl-6 col-md-12">
+                            <?php require_once PORTAL_COMPONENT . "salesmargin.php"; ?>
                         </div>
+                        <!------------- END of SALES MARGIN CARD -------------->
+
                         <div class="col-xl-3 col-md-6">
                             <!------------- NEEDS TO COLLECT PAYMENTS -------------->
                             <?php require_once PORTAL_COMPONENT . "needstocollect.php"; ?>
@@ -302,7 +252,7 @@ if ($_SESSION['ADMIN'] == false) {
                     <div class="row">
                         <div class="col-xl-3 col-md-6">
                             <!-- Current Stock Quantity & MRP  -->
-                            <?php require_once PORTAL_COMPONENT . "stock-mrp-ptr.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "stock-qty-mrp.php"; ?>
                         </div>
                         <div class="col-xl-9 col-md-6">
                             <!------------- Stock Summary -------------->
@@ -348,7 +298,14 @@ if ($_SESSION['ADMIN'] == false) {
 
     <!-- Page level custom scripts -->
     <!-- <script src="js/demo/chart-area-demo.js"></script>
+<<<<<<< HEAD
     
+=======
+    <script src="js/demo/chart-pie-demo.js"></script> -->
+
+    <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
+
+>>>>>>> 3dedea12450f72734b58631623fc74b251908df6
 
      ======== CUSTOM JS FOR INDEX PAGE ======= -->
      <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>

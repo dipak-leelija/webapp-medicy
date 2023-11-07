@@ -35,7 +35,7 @@ class Appointments extends DatabaseConnection{
                 return false; // Statement preparation failed
             }
         } catch (Exception $e) {
-            return false; // Error occurred
+            echo $e;
         }
     }
     // end addAppointments function

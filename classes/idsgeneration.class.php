@@ -40,14 +40,32 @@ class IdsGeneration extends DatabaseConnection{
 
 
 
-    function getAppointmentIds(){
-        $select = "SELECT appointment_id FROM appointments";
-        $selectQuery = $this->conn->query($select);
-        while($result = $selectQuery->fetch_array()){
-            $data[]	= $result;
+    function getAppointmentIds() {
+        $data = array(); // Initialize the array
+    
+        try {
+            $select = "SELECT appointment_id FROM appointments ORDER BY added_on ASC";
+            $stmt = $this->conn->prepare($select);
+    
+            if ($stmt) {
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                while ($row = $result->fetch_array()) {
+                    $data[] = $row;
+                }
+    
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
+    
         return $data;
     }
+    
     
 
     function concatId($half, $lastid){
@@ -75,19 +93,23 @@ class IdsGeneration extends DatabaseConnection{
 
 
     function appointmentidGeneration($half) {
+        // echo $half;
         $idList = $this->getAppointmentIds();
         
         $lastid = 0;
-        print_r($idList);
-        // Find the last ID in the list
+        
         if (!empty($idList)) {
             $lastAppointment = end($idList);
-            $lastid = intval(substr(json_encode($lastAppointment), 9)); // Extract the numeric part
+            
+            $lastAppointment = $lastAppointment['appointment_id'];
+            $lastid = preg_replace('/\D/', '', $lastAppointment);
+            $lastid = substr($lastid, -6);
+            // $lastid = intval(substr(json_encode($lastAppointment), 9)); // Extract the numeric part 
         }
     
         // Increment the last ID
         $lastid += 1;
-    
+        
         // Generate a new appointment ID
         $tempappointmentid = $this->concatId($half, $lastid);
     
@@ -98,7 +120,7 @@ class IdsGeneration extends DatabaseConnection{
         }
     
         // Output the generated ID
-        echo $tempappointmentid;
+        return $tempappointmentid;
         
         // You can return the generated ID instead of exiting
         return $tempappointmentid;
