@@ -108,7 +108,7 @@ foreach($healthCareDetails as $showShowHospital){
 
     
 
-        exit;
+   
     // Inserting Into Appointments Database
     $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, intval($patientWeight), $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $employeeId, NOW, $adminId);
       
