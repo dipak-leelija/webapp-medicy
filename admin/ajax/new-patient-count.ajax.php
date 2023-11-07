@@ -15,9 +15,7 @@ if (isset($_POST['newPatientDt'])) {
     $newPatientsByDay = $Patients->newPatientByDay($adminId, $newPatientDt);
     echo $newPatientsByDay;
 }
-//  else {
-//     echo "Error: 'newPatientDt' not set in POST request.";
-// }
+
 
 
 /// find new patient by  date range ///
@@ -27,8 +25,6 @@ if (isset($_POST['newPatientStartDate']) && isset($_POST['newPatientEndDate'])) 
     $newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $newPatientStartDate, $newPatientEndDate );
     echo $newPatientsInRangeDate;
 } 
-// else {
-//     echo "Error: Start and end dates not set in POST request.";
-// }
+
 
 ?>
