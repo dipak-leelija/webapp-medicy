@@ -1,6 +1,12 @@
 <?php
 
 $newPatients             = $Patients->newPatientCount($adminId);
+$totalCount = 0;
+foreach ($newPatients as $row) {
+    $patientCount = $row->patient_count;
+    $addedOn = $row->added_on;
+    $totalCount += $patientCount;
+}
 $newPatientLast24Hours   = $Patients->newPatientCountLast24Hours($adminId);
 $newPatientLast7Days     = $Patients->newPatientCountLast7Days($adminId);
 $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
@@ -16,7 +22,7 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
             <button class="btn btn-sm btn-primary" onclick="newPatientByDt()" style="height: 1.5rem; padding:0px;">Find</button>
         </div>
         <div id="newPatientDtPkrRng" style="display: none;">
-            <label style="margin-bottom: 0px;"><small>Start Date</small></label>&nbsp; &nbsp;  <label style="margin-bottom: 0px;"><small>End Date</small></label><br>
+            <label style="margin-bottom: 0px;"><small>Start Date</small></label>&nbsp; &nbsp; <label style="margin-bottom: 0px;"><small>End Date</small></label><br>
             <input style="width: 70px; height:20px;" type="date" id="newPatientStartDate">
             <input style="width: 70px; height:20px;" type="date" id="newPatientEndDate">
             <button class="btn btn-sm btn-primary" onclick="newPatientDateRange()" style="height: 1.5rem; padding:0px;">Find</button>
@@ -41,29 +47,69 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
                     <i class="fas fa-user-plus"></i> New Patients
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                    <span id="newPatients"><?= ($newPatients) ? $newPatients : 'No Data Found' ?> </span>
+                    <span id="newPatients"><?= ($newPatients) ? $totalCount : 'No Data Found' ?> </span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-end "> 
-        <button class="btn btn-outline-light card-btn ">..</button>
-    </div>
+    <?php
+    if ($newPatients) {
+        echo '<div class="d-flex justify-content-end ">
+               <button type="button" class=" btn btn-sm btn-outline-light text-dark " id="chartButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" disabled> <i class="fas fa-chart-line"></i></button>
+                <div class="dropdown-menu " id="chartMenu" style="margin-top: -128;height: 123px;width: 226px;">
+                 <canvas id="myChart"></canvas>
+                </div>
+              </div>';
+    } else {
+        echo '';
+    }
+    ?>
 </div>
+
+<script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>
 
 <script>
     ///find new patient by selected date ///
+
     function newPatientByDt() {
         var newPatientDt = document.getElementById('newPatientDt').value;
-
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '../admin/ajax/new-patient-count.ajax.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    // Update the 'newPatients' element with the response from the server
-                    document.getElementById('newPatients').textContent = xhr.responseText;
+                    var newPatientsDataByDt = JSON.parse(xhr.responseText);
+                    console.log(newPatientsDataByDt.length);
+                    const ctx1 = document.getElementById('myChart');
+                    const labels = [];
+                    const data = [];
+                    var toatalcount1 = 0;
+                    newPatientsDataByDt.forEach(row => {
+                        labels.push(row.added_on);
+                        data.push(row.patient_count);
+                        toatalcount1 += row.patient_count;
+                    });
+
+                    new Chart(ctx1, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'New Patients Count',
+                                data: data,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                    document.getElementById('newPatients').textContent = toatalcount1;
                     document.getElementById('newPatientDtPkr').style.display = 'none';
                 }
             }
@@ -72,72 +118,133 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
     }
 
     /// find new patient by selected range ///
+    // function newPatientDateRange() {
+    //     var newPatientStartDate = document.getElementById('newPatientStartDate').value;
+    //     var newPatientEndDate = document.getElementById('newPatientEndDate').value;
+    //     console.log(newPatientStartDate);
+    //     console.log(newPatientEndDate);
+
+    //     newPatientRange = `../admin/ajax/new-patient-count.ajax.php?newStartDate=${newPatientStartDate}&newEndDate=${newPatientEndDate}`;
+    //     xmlhttp.open("GET", newPatientRange, false);
+    //     xmlhttp.send(null);
+
+    //     var newPatientDateRange = JSON.parse(xmlhttp.responseText);
+    //     console.log(newPatientDateRange);
+    //     // const labels = [];
+    //     // const data = [];
+    //     var totalCount = 0;
+    //     newPatientDateRange.forEach(row => {
+    //         labels.push(row.added_on);
+    //         data.push(row.count);
+    //         totalCount += row.count;
+    //     });
+
+    //     document.getElementById('newPatients').textContent = totalCount;
+    //     document.getElementById('newPatientDtPkrRng').style.display = 'none';
+
+    // }
     function newPatientDateRange() {
         var newPatientStartDate = document.getElementById('newPatientStartDate').value;
         var newPatientEndDate = document.getElementById('newPatientEndDate').value;
 
-        // Create a FormData object to send the data in a POST request
-        var formData = new FormData();
-        formData.append('newPatientStartDate', newPatientStartDate);
-        formData.append('newPatientEndDate', newPatientEndDate);
+        newPatientRange = `../admin/ajax/new-patient-count.ajax.php?newStartDate=${newPatientStartDate}&newEndDate=${newPatientEndDate}`;
+        xmlhttp.open("GET", newPatientRange, true); // Use asynchronous request
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+                if (xmlhttp.status == 200) {
+                    var newPatientDateRange = JSON.parse(xmlhttp.responseText);
+                    console.log(newPatientDateRange);
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '../admin/ajax/new-patient-count.ajax.php', true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    document.getElementById('newPatients').textContent = xhr.responseText;
-                    document.getElementById('newPatientDtPkrRng').style.display = 'none';
+                    // Now you have an array of objects with 'count' and 'added_on' properties.
+                    for (var i = 0; i < newPatientDateRange.length; i++) {
+                        var item = newPatientDateRange[i];
+                        console.log(`added_on: ${item.added_on}, count: ${item.count}`);
+                    }
+
+                    // document.getElementById('newPatients').textContent = totalCount;
+                    // document.getElementById('newPatientDtPkrRng').style.display = 'none';
+                    // Handle the data as needed (e.g., update the UI)
+                } else {
+                    console.error('Error fetching data:', xmlhttp.status, xmlhttp.statusText);
                 }
             }
         };
-        xhr.send(formData);
+        xmlhttp.send(null);
     }
+
 
 
 
     function newPatientCount(buttonId) {
         document.getElementById('newPatientDtPkr').style.display = 'none';
         document.getElementById('newPatientDtPkrRng').style.display = 'none';
-        switch (buttonId) {
-            case 'newPatientLst24hrs':
-                document.getElementById('newPatients').textContent = <?= $newPatientLast24Hours ?>;
-                break;
-            case 'newPatientLst7':
-                document.getElementById('newPatients').textContent = <?= $newPatientLast7Days ?>;
-                break;
-            case 'newPatientLst30':
-                document.getElementById('newPatients').textContent = <?= $newPatientLast30Days ?>;
-                break;
-            case 'newPatientOnDt':
-                document.getElementById('newPatientDtPkr').style.display = 'block';
-                break;
-            case 'newPatientDtRng':
-                document.getElementById('newPatientDtPkrRng').style.display = 'block';
-                break;
-            default:
-                document.getElementById('newPatients').textContent = <?= $newPatients   ?>;
-                break;
+
+        if (buttonId === 'newPatientLst24hrs') {
+            document.getElementById('newPatients').textContent = <?= $newPatientLast24Hours ?>;
+        }
+        if (buttonId === 'newPatientLst7') {
+            document.getElementById('newPatients').textContent = <?= $newPatientLast7Days ?>;
+        }
+        if (buttonId === 'newPatientLst30') {
+            document.getElementById('newPatients').textContent = <?= $newPatientLast30Days ?>;
+        }
+        if (buttonId === 'newPatientOnDt') {
+            document.getElementById('newPatientDtPkr').style.display = 'block';
+        }
+        if (buttonId === 'newPatientDtRng') {
+            document.getElementById('newPatientDtPkrRng').style.display = 'block';
         }
     }
 
+    /// for line chart hover ////
+    let myChart = document.getElementById('myChart');
+    document.getElementById('chartButton').addEventListener('mouseenter', function() {
+        document.getElementById('chartMenu').style.display = 'block';
+    });
 
+    document.getElementById('chartButton').addEventListener('mouseleave', function() {
+        // document.getElementById('chartMenu').style.display = 'none';
+        if (!myChart.matches(':hover')) {
+            chartMenu.style.display = 'none';
+        }
+    });
 
+    myChart.addEventListener('mouseleave', function() {
+        chartMenu.style.display = 'none';
+    });
+    //end....///
 
 
     // /// for line chart ///
-    // const ctx = document.getElementById('myChart');
-    // const labels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
-    // new Chart(ctx, {
-    //     type: 'line',
-    //     data: {
-    //         labels: labels,
-    //         datasets: [{
-    //             label: '# of Votes',
-    //             data: [65, 59, 80, 81, 56, 55, 40],
-    //             borderColor: 'rgb(75, 192, 192)',
-    //             tension: 0.1
-    //         }]
-    //     }
-    // });
+    const ctx = document.getElementById('myChart');
+    const newPatients = <?php echo json_encode($newPatients); ?>;
+    // console.log(newPatients.length);
+    const labels = [];
+    const data = [];
+
+    if (newPatients) {
+        newPatients.forEach(row => {
+            labels.push(row.added_on);
+            data.push(row.patient_count);
+        });
+    }
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'New Patients Count',
+                data: data,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 </script>

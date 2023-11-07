@@ -2,6 +2,7 @@
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
+
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ADM_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'appoinments.class.php';
@@ -347,10 +348,10 @@ if ($_SESSION['ADMIN'] == false) {
 
     <!-- Page level custom scripts -->
     <!-- <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script> -->
-
-    <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
     
+
+     ======== CUSTOM JS FOR INDEX PAGE ======= -->
+     <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>
 
 </body>
 
