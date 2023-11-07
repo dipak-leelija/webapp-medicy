@@ -251,7 +251,7 @@ if ($_SESSION['ADMIN'] == false) {
                     <div class="row">
                         <div class="col-xl-3 col-md-6">
                             <!-- Current Stock Quantity & MRP  -->
-                            <?php require_once PORTAL_COMPONENT . "stock-mrp-ptr.php"; ?>
+                            <?php require_once PORTAL_COMPONENT . "stock-qty-mrp.php"; ?>
                         </div>
                         <div class="col-xl-9 col-md-6">
                             <!------------- Stock Summary -------------->

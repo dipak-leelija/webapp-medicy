@@ -185,6 +185,7 @@ class CurrentStock extends DatabaseConnection
                 } else {
                     // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
+                    
                 }
     
                 // Close the statement
@@ -193,8 +194,12 @@ class CurrentStock extends DatabaseConnection
                 // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
-    
-            return $data;
+            
+            if($result->num_rows > 0){
+                return $data;
+            }else{
+                return null;
+            }
         } catch (Exception $e) {
             // Handle any exceptions that occur
             // Customize this part to suit your needs
@@ -355,6 +360,40 @@ function showCurrentStocByTwoCol($col1, $data1, $col2, $data2){
         return null;
     }
 }
+
+
+
+
+
+function showExpStockForStocksummaryCard($chkDt, $adminId) {
+    try {
+        $data = array();
+        $select = "SELECT DISTINCT * FROM `current_stock`
+                    WHERE CONCAT(SUBSTRING(current_stock.exp_date, 4, 4), '-', SUBSTRING(current_stock.exp_date, 1, 2)) < ?
+                    AND (`qty` > 0 OR `loosely_count` > 0)
+                    AND `admin_id` = ?
+                    ORDER BY added_on ASC";
+
+        // Use prepared statements to prevent SQL injection
+        $stmt = $this->conn->prepare($select);
+        $stmt->bind_param("ss", $chkDt, $adminId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_array()) {
+                $data[] = $row;
+            }
+            return $data;
+        } else {
+            return null;
+        }
+        $stmt->close(); 
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
 
 
 

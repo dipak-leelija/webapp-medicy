@@ -1,3 +1,68 @@
+<?php
+$checkDt = date('Y-m');
+
+$currentStockData = $CurrentStock->showCurrentStockbyAdminId($adminId);
+
+$currentStockDataForJS = json_encode($currentStockData);
+// print_r($currentStockData);
+
+$netCurrentMrp = 0;
+$netCurrentPtr = 0;
+$netCurrentMargin = 0;
+if ($currentStockData != null) {
+    foreach ($currentStockData as $currentItemData) {
+        $currentItemMrp = $currentItemData['mrp'];
+        $currentItemMrp = floatval($currentItemMrp) * $currentItemData['qty']; // calculating total mrp in curnt stock
+        // echo "MRP : ".$currentItemMrp."<br>";
+        $currentItemPtr = $currentItemData['ptr'];
+        $currentItemPtr = floatval($currentItemPtr) * $currentItemData['qty']; // calculating total ptr in curnt stock
+        // echo "PTR : ".$currentItemPtr."<br>";
+
+        $netAmountPerItem = floatval($currentItemPtr) + ((floatval($currentItemPtr)) * intval($currentItemData['gst']) / 100);
+        // echo "Item price : ".$netAmountPerItem."<br>";
+
+        $perItemMargin = floatval($currentItemMrp) - floatval($netAmountPerItem);
+        // echo "Item margin : ".$perItemMargin."<br><br>";
+
+        $netCurrentMrp = floatval($netCurrentMrp) + floatval($currentItemMrp); // calculating total mrp all over
+        $netCurrentPtr = floatval($netCurrentPtr) + floatval($currentItemPtr); // calculating total ptr all over
+        $netCurrentMargin = floatval($netCurrentMargin) + floatval($perItemMargin); // calculating total margin all over
+    }
+}
+
+
+$currentStockExpItemData = $CurrentStock->showExpStockForStocksummaryCard($checkDt, $adminId);
+// print_r($currentStockExpItemData);
+
+$netCurrentMrpOfExpItems = 0;
+$netCurrentPtrOfExpItems = 0;
+$netCurrentMarginOfExpItems = 0;
+if ($currentStockExpItemData != null) {
+    foreach ($currentStockExpItemData as $currentExpItemData) {
+        $currentExpItemMrp = $currentExpItemData['mrp'];
+        $currentExpItemMrp = floatval($currentExpItemMrp) * $currentExpItemData['qty']; // calculating total mrp in curnt stock
+        // echo "MRP : ".$currentExpItemMrp."<br>";
+        $currentExpItemPtr = $currentExpItemData['ptr'];
+        $currentExpItemPtr = floatval($currentExpItemPtr) * $currentExpItemData['qty']; // calculating total ptr in curnt stock
+        // echo "PTR : ".$currentExpItemPtr."<br>";
+
+        $netExpItemAmountPerItem = floatval($currentExpItemPtr) + ((floatval($currentExpItemPtr)) * intval($currentExpItemData['gst']) / 100);
+        // echo "Item price : ".$netExpItemAmountPerItem."<br>";
+
+        $perExpItemMargin = floatval($currentExpItemMrp) - floatval($netExpItemAmountPerItem);
+        // echo "Item margin : ".$perExpItemMargin."<br><br>";
+
+        $netCurrentMrpOfExpItems = floatval($netCurrentMrpOfExpItems) + floatval($currentExpItemMrp); // calculating total mrp all over
+        $netCurrentPtrOfExpItems = floatval($netCurrentPtrOfExpItems) + floatval($currentExpItemPtr); // calculating total ptr all over
+        $netCurrentMarginOfExpItems = floatval($netCurrentMarginOfExpItems) + floatval($perExpItemMargin); // calculating total margin all over
+    }
+}
+
+
+
+
+
+?>
 <div class="mb-4">
     <div class="card border-top-primary pending_border animated--grow-in">
         <div class="card-body">
@@ -7,25 +72,7 @@
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Stock details
                         </div>
-                        <?php
-                                                    $current = $CurrentStock->showCurrentStockbyAdminId($adminId);
-                                                    // print_r($current);
-                                                    $currentPTR = 0;
-                                                    $currentMRP = 0;
-                                                    foreach ($current as $data) {
-                                                        $batchNo =  $data['batch_no'];
-                                                        $currentQty =  $data['qty'];
-                                                        $items = $StockInDetails->showStockInByBatch($batchNo);
-                                                        // print_r($items);
-
-                                                        foreach ($items as $item) {
-                                                            $currentPTR += $item['amount'];
-                                                            $currentMRP = $currentQty * $item['amount'];
-                                                        }
-
-                                                    } 
-                                                ?>
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="stocksummary-data-table">
 
                             <table class="table">
                                 <thead>
@@ -39,20 +86,23 @@
                                 <tbody>
                                     <tr>
                                         <th scope="row">Current</th>
-                                        <td><?php echo $currentPTR; ?></td>
-                                        <td><?php echo $currentMRP; ?></td>
-                                        <td>00.00</td>
+                                        <td><?php echo number_format($netCurrentMrp, 2); ?></td>
+                                        <td><?php echo number_format($netCurrentMrp, 2); ?></td>
+                                        <td><?php echo number_format($netCurrentMargin, 2); ?></td>
 
                                     </tr>
                                     <tr>
                                         <th scope="row">Expired</th>
-                                        <td>00.00</td>
-                                        <td>00.00</td>
-                                        <td>00.00</td>
+                                        <td><?php echo number_format($netCurrentMrpOfExpItems, 2); ?></td>
+                                        <td><?php echo number_format($netCurrentPtrOfExpItems, 2); ?></td>
+                                        <td><?php echo number_format($netCurrentMarginOfExpItems, 2); ?></td>
 
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" id="stocksummary-no-data-found-div">
+                            <label style="color: red;">no data found</label>
                         </div>
                     </div>
                 </div>
@@ -60,3 +110,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    var chkCurrentStockData = JSON.stringify(<?php echo $currentStockDataForJS; ?>);
+
+    var chkCurrentStockExpData = JSON.stringify(<?php echo json_encode($currentStockExpItemData) ?>);
+
+    // console.log(chkCurrentStockData);
+    // console.log(chkCurrentStockExpData);
+
+    if (chkCurrentStockData != null && chkCurrentStockExpData != null) {
+        document.getElementById('stocksummary-data-table').style.display = 'block';
+        document.getElementById('stocksummary-no-data-found-div').style.display = 'none';
+    } else {
+        document.getElementById('stocksummary-data-table').style.display = 'none';
+        document.getElementById('stocksummary-no-data-found-div').style.display = 'block';
+    }
+
+</script>
