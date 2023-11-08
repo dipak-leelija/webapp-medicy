@@ -98,54 +98,56 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
                                     <tbody>
                                     
                                         <?php
-                                        foreach ($soldItems as $soldItem) {
-                                            $invoice    = $soldItem['invoice_id'];
-                                            $patient    = $soldItem['customer_id'];
-                                            $billDate   = date_create($soldItem['bill_date']);
-                                            $billDate   = date_format($billDate, "d-m-Y");
-                                            $billAmount = $soldItem['amount'];
-                                            $paymentMode= $soldItem['payment_mode'];
+                                        if (count($soldItems) > 0):
+                                            foreach ($soldItems as $soldItem) {
+                                                $invoice    = $soldItem['invoice_id'];
+                                                $patient    = $soldItem['customer_id'];
+                                                $billDate   = date_create($soldItem['bill_date']);
+                                                $billDate   = date_format($billDate, "d-m-Y");
+                                                $billAmount = $soldItem['amount'];
+                                                $paymentMode= $soldItem['payment_mode'];
 
-                                            if ($patient != 'Cash Sales') {
-                                                $patientName = json_decode($Patients->patientsDisplayByPId($patient));
+                                                if ($patient != 'Cash Sales') {
+                                                    $patientName = json_decode($Patients->patientsDisplayByPId($patient));
 
-                                                if($patientName!= null){
-                                                    $patientName = $patientName->name;
+                                                    if($patientName!= null){
+                                                        $patientName = $patientName->name;
+                                                    }
+                                                    else{
+                                                        $patientName = "";
+                                                    }
+                                                }else{
+                                                    $patientName = $patient;
                                                 }
-                                                else{
-                                                    $patientName = "";
+
+                                                echo "<tr class='text-center sales-table";
+                                                ?>
+                                            <?php
+                                                $creditIcon = "";
+                                                if ($paymentMode == "Credit") {
+                                                    echo "text-danger";
+                                                    $creditIcon = "<i class='ml-1 fas fa-exclamation-circle' data-toggle='tooltip' data-placement='top' title='This payment is due, Collect all the due payments.'></i>";
                                                 }
-                                            }else{
-                                                $patientName = $patient;
+                                                ?>
+                                            <?php echo "' onclick=viewBills(".$invoice.") data-toggle='modal' data-target='#viewBillModal'>
+                                                        <td>".$invoice."</td>
+                                                        <td>".$patientName."</td>
+                                                        <td>".$billDate."</td>
+                                                        <td>".$soldItem['items']."</td>
+                                                        <td>".$billAmount."</td>
+                                                        <td>".$paymentMode, $creditIcon."</td>
+                                                        <td>
+                                                        <a class='ml-2' href='update-sales.php?id=".$invoice."'><i class='fas fa-edit'></i></a>
+                                                        
+                                                        <a class='ml-2' href='_config/form-submission/item-invoice-reprint.php?id=".$invoice."'><i class='fas fa-print'></i></a>
+
+                                                        <a class='ml-2' data-id=".$invoice."><i class='fab fa-whatsapp'></i></i></a>
+
+                                                    </td>
+                                                    </tr>";
+
                                             }
-
-                                            echo "<tr class='text-center sales-table";
-                                            ?>
-                                        <?php
-                                            $creditIcon = "";
-                                            if ($paymentMode == "Credit") {
-                                                echo "text-danger";
-                                                $creditIcon = "<i class='ml-1 fas fa-exclamation-circle' data-toggle='tooltip' data-placement='top' title='This payment is due, Collect all the due payments.'></i>";
-                                            }
-                                            ?>
-                                        <?php echo "' onclick=viewBills(".$invoice.") data-toggle='modal' data-target='#viewBillModal'>
-                                                    <td>".$invoice."</td>
-                                                    <td>".$patientName."</td>
-                                                    <td>".$billDate."</td>
-                                                    <td>".$soldItem['items']."</td>
-                                                    <td>".$billAmount."</td>
-                                                    <td>".$paymentMode, $creditIcon."</td>
-                                                    <td>
-                                                    <a class='ml-2' href='update-sales.php?id=".$invoice."'><i class='fas fa-edit'></i></a>
-                                                    
-                                                    <a class='ml-2' href='_config/form-submission/item-invoice-reprint.php?id=".$invoice."'><i class='fas fa-print'></i></a>
-
-                                                    <a class='ml-2' data-id=".$invoice."><i class='fab fa-whatsapp'></i></i></a>
-
-                                                </td>
-                                                </tr>";
-
-                                        }
+                                        endif;
                                        ?>
                                     </tbody>
                                 </table>
