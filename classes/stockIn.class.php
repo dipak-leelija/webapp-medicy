@@ -180,12 +180,14 @@ class StockIn extends DatabaseConnection{
 
     // =================== purchase today data by date range ==================
     // salse of the day in a specific date function
-    function purchaseTodayByDateRange($endDate, $startDate, $adminId){
+    function purchaseTodayByDateRange($startDate, $endDate, $adminId){
+        
         try{
             $select = "SELECT SUM(amount) AS purchase_amount, SUM(items) AS purchase_item_count 
             FROM stock_in
             WHERE admin_id = '$adminId'
-            AND DATE(added_on) BETWEEN '$endDate' AND '$startDate'";
+            AND DATE(added_on) BETWEEN '$startDate' AND '$endDate'";
+            
             $selectQuery = $this->conn->query($select);
             if($selectQuery->num_rows > 0){
                 while ($result = $selectQuery->fetch_object()) {
