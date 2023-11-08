@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once dirname(__DIR__).'/config/constant.php';
 require_once CLASS_DIR.'dbconnect.php';
-require_once ADM_DIR.'_config/sessionCheck.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';
 
 require_once CLASS_DIR."products.class.php";
 require_once CLASS_DIR."packagingUnit.class.php";
