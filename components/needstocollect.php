@@ -8,7 +8,7 @@
                             Needs to collect</div>
                         <div class="row">
                             <div class="col">
-                                <img class="w-75" src="img/needs-to-collect.svg" alt="...">
+                                <img class="w-75" src="<?php echo ASSETS_PATH ?>img/needs-to-collect.svg" alt="...">
                             </div>
                             <div class="col d-flex align-items-center">
                                 <div>
