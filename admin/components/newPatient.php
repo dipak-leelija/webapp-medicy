@@ -1,13 +1,14 @@
 <?php
 
+///initial total count ///
 $newPatients = $Patients->newPatientCount($adminId);
 $totalCount = 0;
 foreach ($newPatients as $row) {
     $patientCount = $row->patient_count;
-    $addedOn = $row->added_on;
     $totalCount += $patientCount;
 }
 
+///24 hourse total count //
 $newPatientLast24Hours   = $Patients->newPatientCountLast24Hours($adminId);
 if (isset($newPatientLast24Hours) && is_array($newPatientLast24Hours)) {
     $totalCount24hrs = 0;
@@ -16,8 +17,8 @@ if (isset($newPatientLast24Hours) && is_array($newPatientLast24Hours)) {
         $addedOn = $row->added_on;
         $totalCount24hrs += $patientCount;
     }
-    echo  $totalCount24hrs;
 }
+/// 7 days total count //
 $newPatientLast7Days     = $Patients->newPatientCountLast7Days($adminId);
 if (isset($newPatientLast7Days) && is_array($newPatientLast7Days)) {
     $totalCount7days = 0;
@@ -26,8 +27,8 @@ if (isset($newPatientLast7Days) && is_array($newPatientLast7Days)) {
         $addedOn = $row->added_on;
         $totalCount7days += $patientCount;
     }
-    // echo $totalCount7days;
 }
+/// 30 days total count //
 $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
 
 
@@ -89,51 +90,27 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
 
 <script>
     ///find new patient by selected date ///
+    function newPatientDataOverride(patientOverrideData) {
+        console.log(patientOverrideData);
+        if (patientOverrideData) {
+            newPatientchart.data.datasets[0].data = patientOverrideData.map(item => item.patient_count);
+            newPatientchart.data.labels = patientOverrideData.map(item => item.added_on);
+        }
+    }
 
     function newPatientByDt() {
         var newPatientDt = document.getElementById('newPatientDt').value;
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '../admin/ajax/new-patient-count.ajax.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    var newPatientsDataByDt = JSON.parse(xhr.responseText);
-                    console.log(newPatientsDataByDt.length);
-                    const ctx1 = document.getElementById('myChart');
-                    const labels = [];
-                    const data = [];
-                    var toatalcount1 = 0;
-                    newPatientsDataByDt.forEach(row => {
-                        labels.push(row.added_on);
-                        data.push(row.patient_count);
-                        toatalcount1 += parseInt(row.patient_count);
-                    });
+        newPatientDtUrl = `../admin/ajax/new-patient-count.ajax.php?newPatientDt=${newPatientDt}`;
+        xhr.open("GET", newPatientDtUrl, false);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(null);
+        var newPatientDataByDate = JSON.parse(xhr.responseText);
 
-                    new Chart(ctx1, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'New Patients Count',
-                                data: data,
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                    document.getElementById('newPatients').textContent = toatalcount1;
-                    document.getElementById('newPatientDtPkr').style.display = 'none';
-                }
-            }
-        };
-        xhr.send('newPatientDt=' + encodeURIComponent(newPatientDt));
+        newPatientDataOverride(newPatientDataByDate);
+
+        // document.getElementById('newPatients').textContent = ;
+        // document.getElementById('newPatientDtPkr').style.display = 'none';
     }
 
     /// find new patient by selected range ///
@@ -141,63 +118,29 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
         var newPatientStartDate = document.getElementById('newPatientStartDate').value;
         var newPatientEndDate = document.getElementById('newPatientEndDate').value;
 
-        newPatientRange = `../admin/ajax/new-patient-count.ajax.php?newStartDate=${newPatientStartDate}&newEndDate=${newPatientEndDate}`;
-        xmlhttp.open("GET", newPatientRange, true); // Use asynchronous request
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-                if (xmlhttp.status == 200) {
-                    var newPatientDateRange = JSON.parse(xmlhttp.responseText);
-                    var totalCount = 0;
-                    var ctx2 = document.getElementById('myChart');
-                    var labels = [];
-                    var data = [];
-                    newPatientDateRange.forEach(function(item) {
-                        // console.log(`added_on: ${item.added_on}, count: ${item.count}`);
-                        labels.push(item.added_on);
-                        labels.push(item.count);
-                        totalCount += parseInt(item.count);
-                    });
-
-                    new Chart(ctx2, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'New Patients Count',
-                                data: data,
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                    document.getElementById('newPatients').textContent = totalCount;
-                    document.getElementById('newPatientDtPkrRng').style.display = 'none';
-                } else {
-                    console.error('Error fetching data:', xmlhttp.status, xmlhttp.statusText);
-                }
-            }
-        };
+        newPatientDtRngUrl = `../admin/ajax/new-patient-count.ajax.php?newPatientStartDate=${newPatientStartDate}&newPatientEndDate=${newPatientEndDate}`;
+        xmlhttp.open("GET", newPatientDtRngUrl, false);
         xmlhttp.send(null);
+
+        var newPatientDataByDateRange = JSON.parse(xmlhttp.responseText);
+        // console.log(newPatientDataByDateRange);
+
+        newPatientDataOverride(newPatientDataByDateRange);
     }
 
 
 
-
+    /// selection button ////
     function newPatientCount(buttonId) {
         document.getElementById('newPatientDtPkr').style.display = 'none';
         document.getElementById('newPatientDtPkrRng').style.display = 'none';
 
         if (buttonId === 'newPatientLst24hrs') {
-            document.getElementById('newPatients').textContent = <?php $newPatientLast24Hours; ?>;
+            document.getElementById('newPatients').textContent = <?= $totalCount24hrs ?>;
+            newPatientDataOverride(<?= json_encode($newPatientLast24Hours) ?>);
         }
         if (buttonId === 'newPatientLst7') {
-            document.getElementById('newPatients').textContent = <?=  $totalCount7days ?>;
+            document.getElementById('newPatients').textContent = <?= $totalCount7days ?>;
         }
         if (buttonId === 'newPatientLst30') {
             document.getElementById('newPatients').textContent = <?= $newPatientLast30Days ?>;
@@ -229,26 +172,30 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
     //end....///
 
 
-    // /// for line chart ///
-    const ctx = document.getElementById('myChart');
+    // primary chart data =====
+
     const newPatients = <?php echo json_encode($newPatients); ?>;
-    const labels = [];
-    const data = [];
-
+    console.log(newPatients);
     if (newPatients) {
-        newPatients.forEach(row => {
-            labels.push(row.added_on);
-            data.push(row.patient_count);
-        });
+        var newPatientprimaryLabel = newPatients.map(item => item.added_on);
+        var newPatientparimaryData = newPatients.map(item => item.patient_count);
     }
+    // if (newPatients) {
+    //     newPatients.forEach(row => {
+    //         labels.push(row.added_on);
+    //         data.push(row.patient_count);
+    //     });
+    // }
 
-    new Chart(ctx, {
+    // /// for line chart ///
+    const newPatientCtx = document.getElementById('myChart');
+    var newPatientchart = new Chart(newPatientCtx, {
         type: 'line',
         data: {
-            labels: labels,
+            labels: newPatientprimaryLabel,
             datasets: [{
                 label: 'New Patients Count',
-                data: data,
+                data: newPatientparimaryData,
                 borderWidth: 1
             }]
         },

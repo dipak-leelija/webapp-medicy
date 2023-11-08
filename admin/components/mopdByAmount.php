@@ -4,6 +4,7 @@ require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 $includePath = get_include_path();
 
 $maxPurchaseByAmount = $StockIn->selectDistOnMaxPurchase($adminId);
+
 if($maxPurchaseByAmount != null){
     $maxPurchaseByAmount = json_decode($maxPurchaseByAmount);
     $distNameOnMaxPurchase = $Distributor->distributorDetail($maxPurchaseByAmount->distributor_id);

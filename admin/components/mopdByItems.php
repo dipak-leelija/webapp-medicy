@@ -4,10 +4,11 @@ require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 $includePath = get_include_path();
 
 $maxItemPurchase = $StockIn->selectDistOnMaxItems($adminId);
-$maxItemPurchase = json_encode($maxItemPurchase);
+
 if($maxItemPurchase != null){
-    $maxItemPurchase = json_decode($maxItemPurchase);
     $distNameOnMaxItem = $Distributor->distributorDetail($maxItemPurchase->distributor_id);
+}else{
+
 }
 
 ?>
