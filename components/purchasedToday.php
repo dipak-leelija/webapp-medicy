@@ -1,5 +1,5 @@
 <?php
-require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once dirname(__DIR__) . '/config/constant.php';
 
 $includePath = get_include_path();
 
@@ -105,7 +105,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
         let podDateSelect = document.getElementById('purchaseOfTheDayDate').value;
         
         var xmlhttp = new XMLHttpRequest();
-        var podOnDateUrl = `../admin/ajax/sod-pod-data-search.ajax.php?podONDate=${podDateSelect}`;
+        var podOnDateUrl = `<?php echo ROOT_DIR ?>ajax/sod-pod-data-search.ajax.php?podONDate=${podDateSelect}`;
         xmlhttp.open('GET', podOnDateUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
@@ -123,7 +123,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
         let podEndDate = document.getElementById('podEndDt').value;
         
         var xmlhttp = new XMLHttpRequest();
-        var podOnDateRangeUrl = `ajax/sod-pod-data-search.ajax.php?podStartDate=${podStartDate}&podEndDate=${podEndDate}`;
+        var podOnDateRangeUrl = `<?php echo ROOT_DIR ?>ajax/sod-pod-data-search.ajax.php?podStartDate=${podStartDate}&podEndDate=${podEndDate}`;
         xmlhttp.open('GET', podOnDateRangeUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);

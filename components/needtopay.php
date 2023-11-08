@@ -8,7 +8,7 @@
                             Needs to PAY</div>
                         <div class="row">
                             <div class="col">
-                                <img src="img/need-to-pay.svg" alt="..." style="width: 70% !important;">
+                                <img src="<?php echo ASSETS_PATH ?>img/need-to-pay.svg" alt="..." style="width: 70% !important;">
                             </div>
                             <div class="col d-flex align-items-center">
                                 <div>

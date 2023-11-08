@@ -3,9 +3,11 @@
 ///initial total count ///
 $newPatients = $Patients->newPatientCount($adminId);
 $totalCount = 0;
-foreach ($newPatients as $row) {
-    $patientCount = $row->patient_count;
-    $totalCount += $patientCount;
+if($newPatients){
+    foreach ($newPatients as $row) {
+        $patientCount = $row->patient_count;
+        $totalCount += $patientCount;
+    }
 }
 
 ///24 hourse total count //
@@ -61,7 +63,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
             <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
                 <button class="dropdown-item" type="button" id="newPatientLst24hrs" onclick="newPatientCount(this.id)">Last 24 hrs</button>
                 <button class="dropdown-item" type="button" id="newPatientLst7" onclick="newPatientCount(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="newPatientLst30"onclick="newPatientCount(this.id)">Last 30 DAYS</button>
+                <button class="dropdown-item" type="button" id="newPatientLst30" onclick="newPatientCount(this.id)">Last 30 DAYS</button>
                 <button class="dropdown-item" type="button" id="newPatientOnDt" onclick="newPatientCount(this.id)">By Date</button>
                 <button class="dropdown-item" type="button" id="newPatientDtRng" onclick="newPatientCount(this.id)">By Range</button>
             </div>
@@ -93,12 +95,12 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     ?>
 </div>
 
-<script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>
+<script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
 <script>
     ///find new patient by selected date ///
     function newPatientDataOverride(patientOverrideData) {
-        console.log(patientOverrideData);
+        // console.log(patientOverrideData);
         if (patientOverrideData) {
             newPatientchart.data.datasets[0].data = patientOverrideData.map(item => item.patient_count);
             newPatientchart.data.labels = patientOverrideData.map(item => item.added_on);
@@ -108,12 +110,12 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     function newPatientByDt() {
         var newPatientDt = document.getElementById('newPatientDt').value;
         var xhr = new XMLHttpRequest();
-        newPatientDtUrl = `../admin/ajax/new-patient-count.ajax.php?newPatientDt=${newPatientDt}`;
+        newPatientDtUrl = `<?php echo LOCAL_DIR ?>ajax/new-patient-count.ajax.php?newPatientDt=${newPatientDt}`;
         xhr.open("GET", newPatientDtUrl, false);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(null);
         var newPatientDataByDate = xhr.responseText;
-        console.log(typeof(newPatientDataByDate));
+        // console.log(typeof(newPatientDataByDate));
         newPatientDataOverride(JSON.parse(newPatientDataByDate));
         // document.getElementById('newPatients').textContent = newPatientDataByDate.patient_count;
         document.getElementById('newPatient').textContent = newPatientDataByDate.patient_count;
@@ -126,7 +128,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
         var newPatientStartDate = document.getElementById('newPatientStartDate').value;
         var newPatientEndDate = document.getElementById('newPatientEndDate').value;
 
-        newPatientDtRngUrl = `../admin/ajax/new-patient-count.ajax.php?newPatientStartDate=${newPatientStartDate}&newPatientEndDate=${newPatientEndDate}`;
+        newPatientDtRngUrl = `<?php echo LOCAL_DIR ?>ajax/new-patient-count.ajax.php?newPatientStartDate=${newPatientStartDate}&newPatientEndDate=${newPatientEndDate}`;
         xmlhttp.open("GET", newPatientDtRngUrl, false);
         xmlhttp.send(null);
 
@@ -163,30 +165,35 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
         }
     }
 
-    /// for line chart hover ////
-    let myChart = document.getElementById('myChart');
-    document.getElementById('chartButton').addEventListener('mouseenter', function() {
-        document.getElementById('chartMenu').style.display = 'block';
-    });
-    document.getElementById('chartButton').addEventListener('mouseleave', function() {
-        if (!myChart.matches(':hover')) {
-            chartMenu.style.display = 'none';
-        }
-    });
-    myChart.addEventListener('mouseleave', function() {
-        chartMenu.style.display = 'none';
-    });
-    //end....///
 
 
     // primary chart data =====
 
     const newPatients = <?php echo json_encode($newPatients); ?>;
     console.log(newPatients);
+    if (newPatients != null) {
+        /// for line chart hover ////
+        let myChart = document.getElementById('myChart');
+        document.getElementById('chartButton').addEventListener('mouseenter', function() {
+            document.getElementById('chartMenu').style.display = 'block';
+        });
+        document.getElementById('chartButton').addEventListener('mouseleave', function() {
+            if (!myChart.matches(':hover')) {
+                chartMenu.style.display = 'none';
+            }
+        });
+        myChart.addEventListener('mouseleave', function() {
+            chartMenu.style.display = 'none';
+        });
+        //end....///
+    }
+
+
     if (newPatients) {
         var newPatientprimaryLabel = newPatients.map(item => item.added_on);
         var newPatientparimaryData = newPatients.map(item => item.patient_count);
     }
+    
     // /// for line chart ///
     const newPatientCtx = document.getElementById('myChart');
     var newPatientchart = new Chart(newPatientCtx, {
