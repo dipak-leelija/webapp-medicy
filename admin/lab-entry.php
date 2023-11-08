@@ -15,13 +15,20 @@ require_once CLASS_DIR.'labAppointments.class.php';
 
 //Classes Initilizing
 $appointments    = new Appointments();
-$hospital        = new HelthCare();
+$HealthCare      = new HelthCare();
 $Patients        = new Patients();
 $LabAppointments = new LabAppointments();
 
 // Fetching Hospital Info
-$hospitalDetails = $hospital->showhelthCare();
-foreach($hospitalDetails as $showShowHospital){
+
+$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
+foreach($healthCareDetails as $showShowHospital){
     $hospitalName = $showShowHospital['hospital_name'];
 }
 
