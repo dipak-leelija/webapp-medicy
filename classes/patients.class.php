@@ -235,18 +235,21 @@ class Patients extends DatabaseConnection
     function newPatientCountLast24Hours($adminId)
     {
         try {
-            $sql = "SELECT COUNT(*) as patient_count 
+            $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
                 WHERE `admin_id` = '$adminId' 
-                AND `visited` = 1 AND `lab_visited` = '1'
+                AND `visited` = '1' AND `lab_visited` = '1'
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 1 DAY)";
 
             $result = $this->conn->query($sql);
             if ($result !== false) {
-                $row = $result->fetch_object();
-                return $row->patient_count;
+                $row = [];
+                while($row = $result->fetch_object()){
+                    $rows[] = $row;
+                }
+                return $rows;
             } else {
-                return 0;
+                return [];
             }
         } catch (Exception $e) {
             $e->getMessage();
@@ -257,7 +260,7 @@ class Patients extends DatabaseConnection
     function newPatientCountLast7Days($adminId)
     {
         try {
-            $sql = "SELECT COUNT(*) as patient_count 
+            $sql = "SELECT COUNT(*) as patient_count , added_on
                 FROM `patient_details` 
                 WHERE `admin_id` = '$adminId' 
                 AND `visited` = '1' AND `lab_visited` = '1'
@@ -265,10 +268,13 @@ class Patients extends DatabaseConnection
 
             $result = $this->conn->query($sql);
             if ($result !== false) {
-                $row = $result->fetch_object();
-                return $row->patient_count;
+                $row = [];
+                while($row = $result->fetch_object()){
+                    $rows[] = $row;
+                }
+                return $rows;
             } else {
-                return 0;
+                return [];
             }
         } catch (Exception $e) {
             $e->getMessage();

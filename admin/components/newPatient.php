@@ -1,14 +1,33 @@
 <?php
 
-$newPatients             = $Patients->newPatientCount($adminId);
+$newPatients = $Patients->newPatientCount($adminId);
 $totalCount = 0;
 foreach ($newPatients as $row) {
     $patientCount = $row->patient_count;
     $addedOn = $row->added_on;
     $totalCount += $patientCount;
 }
+
 $newPatientLast24Hours   = $Patients->newPatientCountLast24Hours($adminId);
+if (isset($newPatientLast24Hours) && is_array($newPatientLast24Hours)) {
+    $totalCount24hrs = 0;
+    foreach ($newPatientLast24Hours as $row) {
+        $patientCount = $row->patient_count;
+        $addedOn = $row->added_on;
+        $totalCount24hrs += $patientCount;
+    }
+    echo  $totalCount24hrs;
+}
 $newPatientLast7Days     = $Patients->newPatientCountLast7Days($adminId);
+if (isset($newPatientLast7Days) && is_array($newPatientLast7Days)) {
+    $totalCount7days = 0;
+    foreach ($newPatientLast7Days as $row) {
+        $patientCount = $row->patient_count;
+        $addedOn = $row->added_on;
+        $totalCount7days += $patientCount;
+    }
+    // echo $totalCount7days;
+}
 $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
 
 
@@ -88,7 +107,7 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
                     newPatientsDataByDt.forEach(row => {
                         labels.push(row.added_on);
                         data.push(row.patient_count);
-                        toatalcount1 += row.patient_count;
+                        toatalcount1 += parseInt(row.patient_count);
                     });
 
                     new Chart(ctx1, {
@@ -118,31 +137,6 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
     }
 
     /// find new patient by selected range ///
-    // function newPatientDateRange() {
-    //     var newPatientStartDate = document.getElementById('newPatientStartDate').value;
-    //     var newPatientEndDate = document.getElementById('newPatientEndDate').value;
-    //     console.log(newPatientStartDate);
-    //     console.log(newPatientEndDate);
-
-    //     newPatientRange = `../admin/ajax/new-patient-count.ajax.php?newStartDate=${newPatientStartDate}&newEndDate=${newPatientEndDate}`;
-    //     xmlhttp.open("GET", newPatientRange, false);
-    //     xmlhttp.send(null);
-
-    //     var newPatientDateRange = JSON.parse(xmlhttp.responseText);
-    //     console.log(newPatientDateRange);
-    //     // const labels = [];
-    //     // const data = [];
-    //     var totalCount = 0;
-    //     newPatientDateRange.forEach(row => {
-    //         labels.push(row.added_on);
-    //         data.push(row.count);
-    //         totalCount += row.count;
-    //     });
-
-    //     document.getElementById('newPatients').textContent = totalCount;
-    //     document.getElementById('newPatientDtPkrRng').style.display = 'none';
-
-    // }
     function newPatientDateRange() {
         var newPatientStartDate = document.getElementById('newPatientStartDate').value;
         var newPatientEndDate = document.getElementById('newPatientEndDate').value;
@@ -153,17 +147,37 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
             if (xmlhttp.readyState == XMLHttpRequest.DONE) {
                 if (xmlhttp.status == 200) {
                     var newPatientDateRange = JSON.parse(xmlhttp.responseText);
-                    console.log(newPatientDateRange);
+                    var totalCount = 0;
+                    var ctx2 = document.getElementById('myChart');
+                    var labels = [];
+                    var data = [];
+                    newPatientDateRange.forEach(function(item) {
+                        // console.log(`added_on: ${item.added_on}, count: ${item.count}`);
+                        labels.push(item.added_on);
+                        labels.push(item.count);
+                        totalCount += parseInt(item.count);
+                    });
 
-                    // Now you have an array of objects with 'count' and 'added_on' properties.
-                    for (var i = 0; i < newPatientDateRange.length; i++) {
-                        var item = newPatientDateRange[i];
-                        console.log(`added_on: ${item.added_on}, count: ${item.count}`);
-                    }
-
-                    // document.getElementById('newPatients').textContent = totalCount;
-                    // document.getElementById('newPatientDtPkrRng').style.display = 'none';
-                    // Handle the data as needed (e.g., update the UI)
+                    new Chart(ctx2, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'New Patients Count',
+                                data: data,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                    document.getElementById('newPatients').textContent = totalCount;
+                    document.getElementById('newPatientDtPkrRng').style.display = 'none';
                 } else {
                     console.error('Error fetching data:', xmlhttp.status, xmlhttp.statusText);
                 }
@@ -183,7 +197,7 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
             document.getElementById('newPatients').textContent = <?= $newPatientLast24Hours ?>;
         }
         if (buttonId === 'newPatientLst7') {
-            document.getElementById('newPatients').textContent = <?= $newPatientLast7Days ?>;
+            document.getElementById('newPatients').textContent = <?=  $totalCount7days ?>;
         }
         if (buttonId === 'newPatientLst30') {
             document.getElementById('newPatients').textContent = <?= $newPatientLast30Days ?>;
@@ -218,7 +232,6 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
     // /// for line chart ///
     const ctx = document.getElementById('myChart');
     const newPatients = <?php echo json_encode($newPatients); ?>;
-    // console.log(newPatients.length);
     const labels = [];
     const data = [];
 
