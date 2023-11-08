@@ -13,18 +13,18 @@ $Patients   = new Patients;
 if (isset($_POST['newPatientDt'])) {
     $newPatientDt = $_POST['newPatientDt'];
     $newPatientsByDay = $Patients->newPatientByDay($adminId, $newPatientDt);
-    echo $newPatientsByDay;
+    echo json_encode($newPatientsByDay);
 }
 
 
 
 /// find new patient by  date range ///
-if (isset($_POST['newPatientStartDate']) && isset($_POST['newPatientEndDate'])) {
-    $newPatientStartDate = $_POST['newPatientStartDate'];
-    $newPatientEndDate   = $_POST['newPatientEndDate'];
-    $newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $newPatientStartDate, $newPatientEndDate );
-    echo $newPatientsInRangeDate;
-} 
+if (isset($_GET['newStartDate']) && isset($_GET['newEndDate'])) {
+    $newStartDate = $_GET['newStartDate'];
+    $newEndDate = $_GET['newEndDate'];
+    $newPatientsInRangeDate = $Patients->findPatientsInRangeDate($adminId, $newStartDate, $newEndDate);
 
+    echo json_encode($newPatientsInRangeDate);
+}
 
 ?>
