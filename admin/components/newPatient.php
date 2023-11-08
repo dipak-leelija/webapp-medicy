@@ -30,7 +30,14 @@ if (isset($newPatientLast7Days) && is_array($newPatientLast7Days)) {
 }
 /// 30 days total count //
 $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
-
+if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
+    $totalCount30days = 0;
+    foreach ($newPatientLast30Days as $row) {
+        $patientCount = $row->patient_count;
+        $addedOn = $row->added_on;
+        $totalCount30days += $patientCount;
+    }
+}
 
 ?>
 
@@ -54,7 +61,7 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
             <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
                 <button class="dropdown-item" type="button" id="newPatientLst24hrs" onclick="newPatientCount(this.id)">Last 24 hrs</button>
                 <button class="dropdown-item" type="button" id="newPatientLst7" onclick="newPatientCount(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="newPatientLst30" onclick="newPatientCount(this.id)">Last 30 DAYS</button>
+                <button class="dropdown-item" type="button" id="newPatientLst30"onclick="newPatientCount(this.id)">Last 30 DAYS</button>
                 <button class="dropdown-item" type="button" id="newPatientOnDt" onclick="newPatientCount(this.id)">By Date</button>
                 <button class="dropdown-item" type="button" id="newPatientDtRng" onclick="newPatientCount(this.id)">By Range</button>
             </div>
@@ -105,9 +112,10 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
         xhr.open("GET", newPatientDtUrl, false);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(null);
-        var newPatientDataByDate = JSON.parse(xhr.responseText);
-
-        newPatientDataOverride(newPatientDataByDate);
+        var newPatientDataByDate = xhr.responseText;
+        console.log(newPatientDataByDate);
+        document.getElementById('newPatients').innerHTML = newPatientDataByDate.patient_count;
+        newPatientDataOverride(JSON.parse(newPatientDataByDate));
 
         // document.getElementById('newPatients').textContent = ;
         // document.getElementById('newPatientDtPkr').style.display = 'none';
@@ -141,9 +149,11 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
         }
         if (buttonId === 'newPatientLst7') {
             document.getElementById('newPatients').textContent = <?= $totalCount7days ?>;
+            newPatientDataOverride(<?= json_encode($newPatientLast7Days) ?>);
         }
         if (buttonId === 'newPatientLst30') {
             document.getElementById('newPatients').textContent = <?= $newPatientLast30Days ?>;
+            newPatientDataOverride(<?= json_encode($newPatientLast30Days) ?>);
         }
         if (buttonId === 'newPatientOnDt') {
             document.getElementById('newPatientDtPkr').style.display = 'block';
@@ -158,14 +168,11 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
     document.getElementById('chartButton').addEventListener('mouseenter', function() {
         document.getElementById('chartMenu').style.display = 'block';
     });
-
     document.getElementById('chartButton').addEventListener('mouseleave', function() {
-        // document.getElementById('chartMenu').style.display = 'none';
         if (!myChart.matches(':hover')) {
             chartMenu.style.display = 'none';
         }
     });
-
     myChart.addEventListener('mouseleave', function() {
         chartMenu.style.display = 'none';
     });
@@ -180,13 +187,6 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
         var newPatientprimaryLabel = newPatients.map(item => item.added_on);
         var newPatientparimaryData = newPatients.map(item => item.patient_count);
     }
-    // if (newPatients) {
-    //     newPatients.forEach(row => {
-    //         labels.push(row.added_on);
-    //         data.push(row.patient_count);
-    //     });
-    // }
-
     // /// for line chart ///
     const newPatientCtx = document.getElementById('myChart');
     var newPatientchart = new Chart(newPatientCtx, {

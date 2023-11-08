@@ -286,12 +286,12 @@ class Patients extends DatabaseConnection
     function newPatientCountLast30Days($adminId)
     {
         try {
-            $sql = "SELECT COUNT(*) as patient_count 
+            $sql = "SELECT COUNT(*) as patient_count , added_on 
                 FROM `patient_details` 
                 WHERE `admin_id` = '$adminId' 
                 AND `visited` = '1' AND `lab_visited` = '1'
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
-
+                
             $result = $this->conn->query($sql);
             if ($result !== false) {
                 $row = $result->fetch_object();
