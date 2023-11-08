@@ -9,10 +9,7 @@ class HelthCare extends DatabaseConnection{
 
         $addClinicData = "INSERT INTO `clinic_info`(`hospital_id`, `admin_id`, `added_on`) VALUES ('$clinicId','$adminId','$addedTime')";
         $query = $this->conn->query($addClinicData);
-        while($result = $query->fetch_array()){
-            $hospitalData[] = $result;
-        }
-        return $hospitalData;
+        return $query;
 
     } //showHospital function end
 
