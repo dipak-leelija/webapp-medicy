@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(dirname(__DIR__)) . '/config/constant.php';
-require_once ADM_DIR . '_config/sessionCheck.php';
-require_once ADM_DIR.'_config/user-details.inc.php';
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
+require_once ROOT_DIR.'_config/user-details.inc.php';
 
 ?>
 

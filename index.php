@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__DIR__) . '/config/constant.php';
-require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__. '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 
 require_once CLASS_DIR . 'dbconnect.php';
-require_once ADM_DIR . '_config/user-details.inc.php';
+require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'currentStock.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
@@ -66,7 +66,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT . "sidebar.php"; ?>
+        <?php include ROOT_COMPONENT . "sidebar.php"; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -76,7 +76,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
             <div id="content">
 
                 <!-- Topbar-->
-                <?php include PORTAL_COMPONENT . "topbar.php"; ?>
+                <?php include ROOT_COMPONENT . "topbar.php"; ?>
                 <!-- End of Tobbar-->
 
                 <!-- Begin Page Content -->
@@ -93,7 +93,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                     <div class="row">
                         <!-- Sold By Card  -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "soldby.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "soldby.php"; ?>
                         </div>
                     </div>
 
@@ -121,7 +121,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
 
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "newPatient.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "newPatient.php"; ?>
                         </div>
 
                         <!-- Earnings (Monthly) Card Example -->
@@ -177,17 +177,17 @@ $totalAppointments = $appoinments->appointmentsDisplay();
 
                         <!-- Expiring in 3 Months Card -->
                         <div class="col-xl-4 col-md-4 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "expiring.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "expiring.php"; ?>
                         </div>
 
                         <!----------- Sales of the day card ----------->
                         <div class="col-xl-4 col-md-4 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "salesoftheday.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "salesoftheday.php"; ?>
                         </div>
 
                         <!----------- Purchase today card ----------->
                         <div class="col-xl-4 col-md-4 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "purchasedToday.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "purchasedToday.php"; ?>
                         </div>
 
                     </div>
@@ -196,29 +196,29 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                     <div class="row">
 
                         <div class="col-xl-6 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "mostsolditems.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "mostsolditems.php"; ?>
                         </div>
                         <div class="col-xl-6 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "lesssolditems.php"; ?>
-                        </div>
-                        <br>
-                        <div class="col-xl-6 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "mostvisitedcustomer.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "lesssolditems.php"; ?>
                         </div>
                         <br>
                         <div class="col-xl-6 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "highestpurchasedcustomer.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "mostvisitedcustomer.php"; ?>
+                        </div>
+                        <br>
+                        <div class="col-xl-6 col-md-6 mb-4">
+                            <?php require_once ROOT_COMPONENT . "highestpurchasedcustomer.php"; ?>
                         </div>
 
                     </div>
 
                     <div class="row">
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "mopdByAmount.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "mopdByAmount.php"; ?>
                         </div>
 
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once PORTAL_COMPONENT . "mopdByItems.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "mopdByItems.php"; ?>
                         </div>
 
                     </div>
@@ -228,20 +228,20 @@ $totalAppointments = $appoinments->appointmentsDisplay();
 
                         <!------------- SALES MARGIN CARD -------------->
                         <div class="col-xl-6 col-md-12">
-                            <?php require_once PORTAL_COMPONENT . "salesmargin.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "salesmargin.php"; ?>
                         </div>
                         <!------------- END of SALES MARGIN CARD -------------->
 
                         <div class="col-xl-3 col-md-6">
                             <!------------- NEEDS TO COLLECT PAYMENTS -------------->
-                            <?php require_once PORTAL_COMPONENT . "needstocollect.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "needstocollect.php"; ?>
                             <!------------- END NEEDS TO COLLECT PAYMENTS -------------->
 
                         </div>
 
                         <div class="col-xl-3 col-md-6">
                             <!------------- NEEDS TO PAY  -------------->
-                            <?php require_once PORTAL_COMPONENT . "needtopay.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "needtopay.php"; ?>
                             <!------------- END NEEDS TO PAY  -------------->
                         </div>
 
@@ -252,11 +252,11 @@ $totalAppointments = $appoinments->appointmentsDisplay();
                     <div class="row">
                         <div class="col-xl-3 col-md-6">
                             <!-- Current Stock Quantity & MRP  -->
-                            <?php require_once PORTAL_COMPONENT . "stock-qty-mrp.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "stock-qty-mrp.php"; ?>
                         </div>
                         <div class="col-xl-9 col-md-6">
                             <!------------- Stock Summary -------------->
-                            <?php require_once PORTAL_COMPONENT . "stock-summary.php"; ?>
+                            <?php require_once ROOT_COMPONENT . "stock-summary.php"; ?>
                             <!------------- end Stock Summary -------------->
 
                         </div>
@@ -269,7 +269,7 @@ $totalAppointments = $appoinments->appointmentsDisplay();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include PORTAL_COMPONENT . 'footer-text.php'; ?>
+            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
