@@ -10,11 +10,15 @@
                         <?php
                             $qStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
                             // print_r($qStock);
-                            $currentQty = 0;
-                            foreach ($qStock as $data) {
-                                $currentQty += $data['qty'];
-                            }
-                            echo $currentQty; 
+                            if($qStock != null){
+                                $currentQty = 0;
+                                foreach ($qStock as $data) {
+                                    $currentQty += $data['qty'];
+                                }
+                                    echo $currentQty; 
+                                }else {
+                                    echo '0';
+                                }
                         ?> Units
                     </div>
                 </div>
@@ -38,11 +42,15 @@
                         <?php
                             $qStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
                             // print_r($qStock);
-                            $currentQty = 0;
-                            foreach ($qStock as $data) {
-                                $currentQty += $data['mrp'];
+                            if($qStock != null){
+                                $currentQty = 0;
+                                foreach ($qStock as $data) {
+                                    $currentQty += $data['mrp'];
+                                }
+                                echo '₹'.$currentQty; 
+                            }else {
+                                echo '₹ 0';
                             }
-                            echo '₹'.$currentQty; 
                         ?>
                     </div>
                 </div>

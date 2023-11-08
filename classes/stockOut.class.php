@@ -55,7 +55,7 @@ class StockOut extends DatabaseConnection
 
                     return $billData;
                 } else {
-                    return null;
+                    return array();
                 }
 
                 $stmt->close();

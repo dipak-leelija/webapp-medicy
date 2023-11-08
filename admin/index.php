@@ -298,9 +298,9 @@ $totalAppointments = $appoinments->appointmentsDisplay();
 
     <!-- Page level custom scripts -->
     <!-- <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script> -->
+    
 
-    <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
+     ======== CUSTOM JS FOR INDEX PAGE ======= -->
      <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>
 
 </body>
