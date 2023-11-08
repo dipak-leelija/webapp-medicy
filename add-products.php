@@ -1,19 +1,13 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
+$page = "add-products";
+require_once 'config/constant.php';
 require_once CLASS_DIR.'dbconnect.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR.'measureOfUnit.class.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 
-// if($_SESSION['ADMIN'] == false){
-//     echo "<br>ADMIN ID : $adminId<br>";
-// }else{
-//     echo "<br>ADMIN LOGIN - ADMIN ID : $adminId<br>";
-// }
-
-$page = "add-products";
 
 //objects Initilization
 $Products           = new Products();
@@ -42,18 +36,17 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <title>Add Items</title>
 
     <!-- Custom fonts for this template -->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Fontawsome Link -->
-    <link rel="stylesheet" href="../css/font-awesome.css">
+    <link href="<?= CSS_PATH ?>font-awesome.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!--Custom CSS -->
-    <!-- <link href="css/add-products.css" rel="stylesheet"> -->
-    <link href="css/custom/add-products.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>custom/add-products.css" rel="stylesheet">
 
     <!-- UPPY Link
     <link href="https://releases.transloadit.com/uppy/v3.14.0/uppy.min.css" rel="stylesheet">
@@ -68,7 +61,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -78,7 +71,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -346,7 +339,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <!-- End of Content Wrapper -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -377,30 +370,21 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <i class="fas fa-angle-up"></i>
         </a>
 
+        
         <!-- Bootstrap core JavaScript-->
-        <script src="../assets/jquery/jquery.min.js"></script>
-        <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+        <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
 
         <!-- Core plugin JavaScript-->
-        <!-- <script src="../assets/jquery-easing/jquery.easing.min.js"></script> -->
+        <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
+        <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
         <!-- Sweet Alert Js  -->
-        <script src="../js/sweetAlert.min.js"></script>
-
-        <!-- Page level plugins -->
-        <!-- <script src="../assets/datatables/jquery.dataTables.min.js"></script> -->
-        <!-- <script src="../assets/datatables/dataTables.bootstrap4.min.js"></script> -->
-
-        <!-- Page level custom scripts -->
-        <!-- <script src="js/demo/datatables-demo.js"></script> -->
+        <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
         <!-- <script src="/uppy core/dist/uppy.min.js"></script> -->
-        <script src="js/custom/add-products.js"></script>
-
-        <!-- js library import -->
+        <script src="<?= JS_PATH ?>custom/add-products.js"></script>
 
 
         <script>

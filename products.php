@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once 'config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'products.class.php';
@@ -35,14 +35,15 @@ $allProducts = $Products->showProducts();
     <title>Medicy Items</title>
 
     <!-- Custom fonts for this template -->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= ASSETS_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/custom/products.css">
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>custom/products.css" rel="stylesheet">
+    
     <!-- Custom styles for this page -->
-    <link href="../assets/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -52,7 +53,7 @@ $allProducts = $Products->showProducts();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -62,7 +63,7 @@ $allProducts = $Products->showProducts();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin container-fluid -->
@@ -115,7 +116,7 @@ $allProducts = $Products->showProducts();
 
                                                         <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
                                                             <div class="card  m-2" id="allProducts">
-                                                                <img src="../images/product-image/<?php echo $productImage ?>" class="card-img-top" alt="...">
+                                                                <img src="<?= IMG_PATH ?>product-image/<?php echo $productImage ?>" class="card-img-top" alt="...">
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item['name']; ?></b></label>
                                                                     <p class="mb-0"><b><?php $item['name'] ?></b></p>
@@ -174,7 +175,7 @@ $allProducts = $Products->showProducts();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -208,15 +209,15 @@ $allProducts = $Products->showProducts();
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="../assets/jquery/jquery.min.js"></script>
-    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
-
     <!-- Core plugin JavaScript-->
-    <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+    
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
 
     <script>
