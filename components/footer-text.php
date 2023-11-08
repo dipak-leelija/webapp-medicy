@@ -1,6 +1,4 @@
 <?php
-require_once dirname(dirname(__DIR__)) . '/config/constant.php';
-
 $includePath = get_include_path();
 
 require_once CLASS_DIR.'hospital.class.php';
