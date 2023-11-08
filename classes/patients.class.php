@@ -193,18 +193,17 @@ class Patients extends DatabaseConnection
         try {
             $sql = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = '1' AND `lab_visited` = '1' GROUP BY added_on";
             $result = $this->conn->query($sql);
-            if ($result !== false) {
+            if ($result->num_rows > 0) {
                 $rows = [];
                 while ($row = $result->fetch_object()) {
                     $rows[] = $row;
                 }
                 return $rows;
             } else {
-                return [];
+                return null;
             }
         } catch (Exception $e) {
             $e->getMessage();
-            return [];
         }
     }
 

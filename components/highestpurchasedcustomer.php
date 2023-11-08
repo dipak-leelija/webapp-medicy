@@ -1,5 +1,5 @@
 <?php
-require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+// require_once dirname(__DIR__) . '/config/constant.php';
 $includePath = get_include_path();
 
 $today = NOW;
@@ -11,10 +11,6 @@ $highestPurchaseCustomerByDay = $StockOut->mostPurchaseCustomerByDay($adminId);
 $highestPurchaseCustomerByWeek = $StockOut->mostPurchaseCustomerByWeek($adminId);
 
 $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminId);
-
-// $highestPurchaseCustomerByDate = $StockOut->mostPurchaseCustomerByDate($adminId);
-
-// $highestPurchaseCustomerByRange = $StockOut->mostPurchaseCustomerByDateRange($adminId);
 
 // print_r($highestPurchaseCustomerByMonth);
 
@@ -74,7 +70,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             var customerId = mostPurchaseCustomerData.map(item => item.customer_id);
             customerId = JSON.stringify(customerId);
 
-            mostPurchaseCustomerDataUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
+            mostPurchaseCustomerDataUrl = `<?php echo LOCAL_DIR ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
             xmlhttp.open("GET", mostPurchaseCustomerDataUrl, false);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send(null);
@@ -102,7 +98,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
     function mostPurchaseCustomerByDt() {
         var mostPurchaseCustomerDtPick = document.getElementById('mostPurchseCustomerDt').value;
         console.log(mostPurchaseCustomerDtPick);
-        mostPrchsCstmrDtUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?mostPrchsCstmrByDt=${mostPurchaseCustomerDtPick}`;
+        mostPrchsCstmrDtUrl = `<?php echo LOCAL_DIR ?>ajax/most-visit-and-purchase-customer.ajax.php?mostPrchsCstmrByDt=${mostPurchaseCustomerDtPick}`;
         xmlhttp.open("GET", mostPrchsCstmrDtUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
@@ -118,7 +114,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         var mostPurchaseCustomerStartDt = document.getElementById('mostPurchseCustomerStartDate').value;
         var mostPurchaseCustomerEndtDt = document.getElementById('mostPurchseCustomerEndDate').value;
 
-        mostPrchsCstmrDtRngUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?mostPurchaseStartDt=${mostPurchaseCustomerStartDt}&mostPurchaseEndDt=${mostPurchaseCustomerEndtDt}`;
+        mostPrchsCstmrDtRngUrl = `<?php echo LOCAL_DIR ?>ajax/most-visit-and-purchase-customer.ajax.php?mostPurchaseStartDt=${mostPurchaseCustomerStartDt}&mostPurchaseEndDt=${mostPurchaseCustomerEndtDt}`;
         xmlhttp.open("GET", mostPrchsCstmrDtRngUrl, false);
         xmlhttp.send(null);
 
@@ -169,7 +165,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         var customerId = highestPurchaseCustomerFromStart.map(item => item.customer_id);
         customerId = JSON.stringify(customerId);
 
-        highestPurchaseCustomerUrl = `../admin/ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
+        highestPurchaseCustomerUrl = `<?php echo LOCAL_DIR ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
         xmlhttp.open("GET", highestPurchaseCustomerUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);

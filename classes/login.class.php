@@ -26,7 +26,7 @@ class LoginForm extends DatabaseConnection
 
                     // echo "admin login";
                     // exit;
-                    header("Location: admin/index.php");
+                    header("Location: index.php");
                 } else {
                     echo 'Wrong Password';
                 }
@@ -54,7 +54,7 @@ class LoginForm extends DatabaseConnection
 
                         // echo "employee login";
                         // exit;
-                        header("Location: admin/index.php");
+                        header("Location: index.php");
                     } else {
                         echo 'Wrong Password';
                     }

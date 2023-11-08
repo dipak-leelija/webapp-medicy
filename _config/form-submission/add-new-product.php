@@ -1,3 +1,18 @@
+<?php
+
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'productsImages.class.php';
+require_once CLASS_DIR.'measureOfUnit.class.php';
+
+$Products       = new Products();
+$ProductImages  = new ProductImages();
+$Unit           = new MeasureOfUnits();
+$Session        = new SessionHandler();
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,22 +22,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Product</title>
-    <script src="../../../js/sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>/sweetAlert.min.js"></script>
 </head>
 
 <body>
     <?php
-    require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-    require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-    require_once CLASS_DIR.'dbconnect.php';
-    require_once CLASS_DIR.'products.class.php';
-    require_once CLASS_DIR.'productsImages.class.php';
-    require_once CLASS_DIR.'measureOfUnit.class.php';
-    
-    $Products      = new Products();
-    $ProductImages = new ProductImages();
-    $Unit = new MeasureOfUnits();
-    $Session = new SessionHandler();
 
     // print_r($_SESSION);
     // echo "employee id : $employeeId";
@@ -94,7 +98,7 @@
 
                 if($image != ''){
                     if ($image != null) {
-                        if (file_exists("../../../images/product-image/".$randomString.'_'.$image)) {
+                        if (file_exists("../../images/product-image/".$randomString.'_'.$image)) {
                             $image = 'medicy-'.$randomString.$image;
                             echo "<br>if file exists : $image";
                         }
@@ -110,7 +114,7 @@
                     }
                 
                     $image         = $ImgNm.'-'.$randomString.$extention;
-                    $imgFolder     = "../../../images/product-image/".$image;
+                    $imgFolder     = "../../images/product-image/".$image;
                   
                     move_uploaded_file($tempImgname, $imgFolder);
                     $image         = addslashes($image);
