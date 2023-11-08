@@ -25,8 +25,6 @@ if (isset($_POST['register'])) {
     $username = $_POST['user-name'];
     $email = $_POST['email'];
     $mobNo = $_POST['mobile-number'];
-    $address = $_POST['address'];
-    $city = $_POST['city'];
     $password =  $_POST['password'];
     $cpassword = $_POST['cpassword'];
 
@@ -43,7 +41,6 @@ if (isset($_POST['register'])) {
 
 
     $checkUser = $admin->echeckUsername($username);
-    print_r($checkUser);
     if($checkUser > 0){
         $userExists = true;
     }else{
@@ -56,7 +53,8 @@ if (isset($_POST['register'])) {
             if($password == $cpassword){
                 $diffrentPassword = false;
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $address, $city);
+                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo);
+                // print_r($register);
                 if ($register) {
                     $addToClinicInfo = $HelthCare->addClinicInfo($randomID, $adminId, NOW);
                     if ($addToClinicInfo) {
@@ -125,19 +123,13 @@ if (isset($_POST['register'])) {
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="12" placeholder="Username">
+                                    <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username">
                                 </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" placeholder="Email Address">
                                 </div>
                                 <div class="form-group">
                                     <input type="number" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="address" name="address" maxlength="255" placeholder="Your Address">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="city" name="city" maxlength="80" placeholder="Your City">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">

@@ -4,13 +4,13 @@ class Admin extends DatabaseConnection{
 
 
 
-    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $address, $city) {
+    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo) {
         try {
-            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `address`, `city`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($query);
     
             // Bind parameters
-            $stmt->bind_param("sssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $address, $city);
+            $stmt->bind_param("sssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo);
     
             if ($stmt->execute()) {
                 // Registration was successful
@@ -31,17 +31,19 @@ class Admin extends DatabaseConnection{
 
     function echeckUsername($username){
         $chkUser = " SELECT * FROM `admin` WHERE `username`= '$username' ";
-        return $chkUser;
         $chkUserQuery = $this->conn->query($chkUser);
         // echo $chkUserQuery.$this->conn->error;
         // echo count($chkUserQuery);
-        while($result = $chkUserQuery->fetch_array()){
-            $data[] = $result;
-        }
-        if ($data > 0) {
-            return 1;
-        }else{
-            return 0;
+        if ($chkUserQuery->num_rows > 0) {
+
+            while($result = $chkUserQuery->fetch_array()){
+                $data[] = $result;
+            }
+            if ($data > 0) {
+                return 1;
+            }else{
+                return 0;
+            }
         }
 
     }//eof CheckEmail
@@ -54,13 +56,15 @@ class Admin extends DatabaseConnection{
         $chkEmail = " SELECT * FROM `admin` WHERE `email`= '$email' ";
         $chkEmailQuery = $this->conn->query($chkEmail);
 
-        while($result = $chkEmailQuery->fetch_array()){
-            $data[] = $result;
-        }
-        if ($data > 0) {
-            return 1;
-        }else{
-            return 0;
+        if ($chkEmailQuery->num_rows > 0) {
+            while($result = $chkEmailQuery->fetch_array()){
+                $data[] = $result;
+            }
+            if ($data > 0) {
+                return 1;
+            }else{
+                return 0;
+            }
         }
     }//eof CheckEmail function
 
