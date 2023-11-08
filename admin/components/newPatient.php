@@ -94,7 +94,7 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
         console.log(patientOverrideData);
         if (patientOverrideData) {
             newPatientchart.data.datasets[0].data = patientOverrideData.map(item => item.patient_count);
-            newPatientchart.data.labels =  patientOverrideData.map(item => item.added_on);
+            newPatientchart.data.labels = patientOverrideData.map(item => item.added_on);
         }
     }
 
@@ -105,7 +105,7 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
         xhr.open("GET", newPatientDtUrl, false);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(null);
-        var newPatientDataByDate = JSON.parse( xhr.responseText);
+        var newPatientDataByDate = JSON.parse(xhr.responseText);
 
         newPatientDataOverride(newPatientDataByDate);
 
@@ -117,7 +117,7 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
     function newPatientDateRange() {
         var newPatientStartDate = document.getElementById('newPatientStartDate').value;
         var newPatientEndDate = document.getElementById('newPatientEndDate').value;
-        
+
         newPatientDtRngUrl = `../admin/ajax/new-patient-count.ajax.php?newPatientStartDate=${newPatientStartDate}&newPatientEndDate=${newPatientEndDate}`;
         xmlhttp.open("GET", newPatientDtRngUrl, false);
         xmlhttp.send(null);
