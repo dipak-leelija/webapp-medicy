@@ -57,7 +57,6 @@ session_start();
 	define('PAGE',				$_SERVER['PHP_SELF']);
 	define('URL', 				$protocol.$_SERVER['HTTP_HOST'].LOCAL_DIR);
 	define('ADM_URL',  			URL.'admin/');
-	define('IMG_PATH',  		URL."/assets/images/");
 
 
 	
@@ -104,7 +103,14 @@ session_start();
 
 	define("ADMIN_IMG_PATH",					URL.'/images/admin/user/');					//location of the admin users avatar
 	define("USER_IMG_PATH",						URL.'/images/user/');						//location of users avatar
-	define("DFAULT_AVATAR_PATH",				URL.'/images/user/default-user-icon.png');	//location of default users avatar
+	define("DFAULT_AVATAR_PATH",				URL.'/images/user/default-user-icon.png');	//location of default users avatarassets
+
+	const ASSETS_PATH						=	URL.'/assets/';
+	const CSS_PATH							=	URL.'/assets/css/';
+	const JS_PATH							=	URL.'/assets/js/';
+	const IMG_PATH							=	URL.'/assets/images/';
+	const PLUGIN_PATH						=	URL.'/assets/plugins/';
+
 
 	
 

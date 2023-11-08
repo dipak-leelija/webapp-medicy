@@ -1,7 +1,7 @@
 <?php
 $page = "sales";
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once 'config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR."dbconnect.php";
 require_once CLASS_DIR."stockOut.class.php";
@@ -30,19 +30,19 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
     <title>Sales</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Default styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom styles for this Page-->
-    <link rel="stylesheet" href="css/sales.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sales.css">
 
     <!-- Data Table CSS  -->
-    <link href="vendor/product-table/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet">
 
 
 </head>
@@ -53,7 +53,7 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -63,7 +63,7 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -163,7 +163,7 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -200,21 +200,21 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
 
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../assets/jquery/jquery.min.js"></script>
-    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>/bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
     <!--Data Table plugins -->
-    <script src="vendor/product-table/jquery.dataTables.js"></script>
-    <script src="vendor/product-table/dataTables.bootstrap4.js"></script>
+    <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script>
+    <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
     <script>
     $(function() {
