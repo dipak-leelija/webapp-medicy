@@ -80,8 +80,6 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
 <script>
     function updateSod(uploadSodData) {
 
-        console.log(uploadSodData);
-
         if (uploadSodData.total_amount != null && uploadSodData.total_count != null) {
             document.getElementById('salesAmount').innerHTML = uploadSodData.total_amount;
             document.getElementById('itemsCount').innerHTML = uploadSodData.total_count;
@@ -104,7 +102,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
         let sodDateSelect = document.getElementById('salesOfTheDayDate').value;
 
         var xmlhttp = new XMLHttpRequest();
-        var sodOnDateUrl = `../ajax/sod-pod-data-search.ajax.php?sodONDate=${sodDateSelect}`;
+        var sodOnDateUrl = `../admin/ajax/sod-pod-data-search.ajax.php?sodONDate=${sodDateSelect}`;
         xmlhttp.open('GET', sodOnDateUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
@@ -122,8 +120,8 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
         let sodEndDate = document.getElementById('sodEndDt').value;
 
         var xmlhttp = new XMLHttpRequest();
-        var sodOnDateUrl = `../ajax/sod-pod-data-search.ajax.php?sodStartDate=${sodStartDate}&sodEndDate=${sodEndDate}`;
-        xmlhttp.open('GET', sodOnDateUrl, false);
+        var sodOnDateRangeUrl = `../admin/ajax/sod-pod-data-search.ajax.php?sodStartDate=${sodStartDate}&sodEndDate=${sodEndDate}`;
+        xmlhttp.open('GET', sodOnDateRangeUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
 
@@ -137,7 +135,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
 
     /// ===== button on click function for sod date select 
     function chkSod(id) {
-        console.log(id);
+        
         if (id == 'sodCurrentDt') {
             document.getElementById('sodDatePikDiv').style.display = 'none';
             document.getElementById('sodDtPikRngDiv').style.display = 'none';

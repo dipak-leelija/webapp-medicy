@@ -22,18 +22,18 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 <div class="card border-left-info h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
         <div id="podDatePikDiv" style="display: none; margin-right:1rem;">
-            <input type="date" id="salesOfTheDayDate">
-            <button class="btn btn-sm btn-primary" onclick="sodOnDate()" style="height: 2rem;">Find</button>
+            <input type="date" id="purchaseOfTheDayDate">
+            <button class="btn btn-sm btn-primary" onclick="podOnDateFun()" style="height: 2rem;">Find</button>
         </div>
         <div id="podDtPikRngDiv" style="display: none; margin-right:1rem;">
             <div class="d-flex d-flex justify-content-start">
                 <div>
-                    <label>Start Date</label>&nbsp<input type="date" id="sodStartDt"><br>
-                    <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="sodEndDt">
+                    <label>Start Date</label>&nbsp<input type="date" id="podStartDt"><br>
+                    <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="podEndDt">
                 </div>&nbsp
                 <div>
                     <br>
-                    <button class="btn btn-sm btn-primary" onclick="sodDtRange()" style="height: 2rem;">Find</button>
+                    <button class="btn btn-sm btn-primary" onclick="podOnDtRange()" style="height: 2rem;">Find</button>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 
 <script>
     function updatePod(uploadPodData) {
-        console.log(uploadPodData.purchase_amount);
+        console.log(uploadPodData);
         
         if (uploadPodData.purchase_amount != null && uploadPodData.purchase_item_count != null) {
             document.getElementById('podAmount').innerHTML = uploadPodData.purchase_amount;
@@ -91,7 +91,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
             document.getElementById('pod-no-data-found-div').style.display = 'none';
 
         } else {
-            console.log('null');
+
             document.getElementById('pod-data-div').style.display = 'none';
             document.getElementById('pod-no-data-found-div').style.display = 'block';
         }
@@ -100,36 +100,36 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 
 
 
-    // // === fixed sod date select from calander ...
-    // function sodOnDate() {
-    //     let sodDateSelect = document.getElementById('salesOfTheDayDate').value;
-
-    //     var xmlhttp = new XMLHttpRequest();
-    //     var sodOnDateUrl = `ajax/sod-pod-data-search.ajax.php?sodONDate=${sodDateSelect}`;
-    //     xmlhttp.open('GET', sodOnDateUrl, false);
-    //     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    //     xmlhttp.send(null);
-
-    //     updateSod(JSON.parse(xmlhttp.responseText));
-    // }
-
-
+    // === fixed sod date select from calander ...
+    function podOnDateFun() {
+        let podDateSelect = document.getElementById('purchaseOfTheDayDate').value;
+        
+        var xmlhttp = new XMLHttpRequest();
+        var podOnDateUrl = `../admin/ajax/sod-pod-data-search.ajax.php?podONDate=${podDateSelect}`;
+        xmlhttp.open('GET', podOnDateUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+        
+        updatePod(JSON.parse(xmlhttp.responseText));
+    }
 
 
 
-    // // === sod date range select from calander ...
-    // function sodDtRange() {
-    //     let sodStartDate = document.getElementById('sodStartDt').value;
-    //     let sodEndDate = document.getElementById('sodEndDt').value;
 
-    //     var xmlhttp = new XMLHttpRequest();
-    //     var sodOnDateUrl = `ajax/sod-pod-data-search.ajax.php?sodStartDate=${sodStartDate}&sodEndDate=${sodEndDate}`;
-    //     xmlhttp.open('GET', sodOnDateUrl, false);
-    //     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    //     xmlhttp.send(null);
 
-    //     updateSod(JSON.parse(xmlhttp.responseText));
-    // }
+    // === sod date range select from calander ...
+    function podOnDtRange() {
+        let podStartDate = document.getElementById('podStartDt').value;
+        let podEndDate = document.getElementById('podEndDt').value;
+        
+        var xmlhttp = new XMLHttpRequest();
+        var podOnDateRangeUrl = `ajax/sod-pod-data-search.ajax.php?podStartDate=${podStartDate}&podEndDate=${podEndDate}`;
+        xmlhttp.open('GET', podOnDateRangeUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+        
+        updatePod(JSON.parse(xmlhttp.responseText));
+    }
 
 
 

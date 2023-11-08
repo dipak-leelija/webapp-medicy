@@ -8,8 +8,10 @@ if (isset($_SESSION['LOGGEDIN'])) {
 
 require_once CLASS_DIR .'dbconnect.php';
 require_once CLASS_DIR.'admin.class.php';
+require_once CLASS_DIR.'hospital.class.php';
 
 $admin = new Admin();
+$HelthCare = new HelthCare;
 
 
 $userExists = false;
@@ -34,7 +36,14 @@ if (isset($_POST['register'])) {
     $adminSubStr3 = substr($mobNo, -2);
     $adminId = $adminStr1.$adminSubStr1.$adminSubStr2.$adminSubStr3;
 
+    // ===== random id generation for clinic id =======
+    $generateRandomAlphanumericID = fn($length) => substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, $length);
+
+    $randomID = $generateRandomAlphanumericID(12); // random alpha numeric id generation
+
+
     $checkUser = $admin->echeckUsername($username);
+    print_r($checkUser);
     if($checkUser > 0){
         $userExists = true;
     }else{
@@ -49,8 +58,13 @@ if (isset($_POST['register'])) {
                 $password = password_hash($password, PASSWORD_DEFAULT);
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $address, $city);
                 if ($register) {
-                    header("Location: login.php");
-                    exit;
+                    $addToClinicInfo = $HelthCare->addClinicInfo($randomID, $adminId, NOW);
+                    if ($addToClinicInfo) {
+                        header("Location: login.php");
+                        exit;
+                    }else{
+                        echo "CLINIC INFO CAN'T ADDED!";
+                    }
                 }
             }else {
                 $diffrentPassword = true;
