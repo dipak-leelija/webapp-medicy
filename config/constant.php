@@ -105,11 +105,11 @@ session_start();
 	define("USER_IMG_PATH",						URL.'/images/user/');						//location of users avatar
 	define("DFAULT_AVATAR_PATH",				URL.'/images/user/default-user-icon.png');	//location of default users avatarassets
 
-	const ASSETS_PATH						=	URL.'/assets/';
-	const CSS_PATH							=	URL.'/assets/css/';
-	const JS_PATH							=	URL.'/assets/js/';
-	const IMG_PATH							=	URL.'/assets/images/';
-	const PLUGIN_PATH						=	URL.'/assets/plugins/';
+	const ASSETS_PATH						=	URL.'assets/';
+	const CSS_PATH							=	URL.'assets/css/';
+	const JS_PATH							=	URL.'assets/js/';
+	const IMG_PATH							=	URL.'assets/images/';
+	const PLUGIN_PATH						=	URL.'assets/plugins/';
 
 
 	

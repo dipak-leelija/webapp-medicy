@@ -199,13 +199,13 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
     </a>
 
 
+    
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <script src="<?= JS_PATH ?>/bootstrap-js-4/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-
+    
+    <!-- Core plugin JavaScript-->
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 

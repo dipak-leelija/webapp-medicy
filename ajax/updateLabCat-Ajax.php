@@ -1,6 +1,6 @@
 <?php
-require_once dirname(dirname(__DIR__)).'/config/constant.php';
-require_once CLASS_DIR.'labtypes.class.php';
+require_once dirname(__DIR__).'/config/constant.php';
+require_once ROOT_DIR.'labtypes.class.php';
 
 $updateLabType = $_GET['editCatDtlsId'];
 

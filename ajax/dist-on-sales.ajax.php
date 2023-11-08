@@ -1,5 +1,5 @@
 <?php
-require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once dirname(__DIR__). '/config/constant.php';
 
 $includePath = get_include_path();
 

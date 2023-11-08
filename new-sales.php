@@ -1,10 +1,9 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';
+require_once 'config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR."doctors.class.php";
-
 
 $page = "sales";
 $Doctors = new Doctors();
@@ -26,15 +25,13 @@ $doctor = $Doctors->showDoctors();
     <title>SB Admin 2 - Blank</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css"> -->
-
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <!-- Custom CSS  -->
-    <link rel="stylesheet" href="css/new-sales.css">
+    <link href="<?= CSS_PATH ?>new-sales.css" rel="stylesheet">
 
 </head>
 
@@ -44,7 +41,7 @@ $doctor = $Doctors->showDoctors();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -54,7 +51,7 @@ $doctor = $Doctors->showDoctors();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -441,7 +438,7 @@ $doctor = $Doctors->showDoctors();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -478,18 +475,18 @@ $doctor = $Doctors->showDoctors();
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="../assets/jquery/jquery.min.js"></script>
-    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
-
     <!-- Core plugin JavaScript-->
-    <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-    <script src="../js/ajax.custom-lib.js"></script>
-    <script src="../js/sweetAlert.min.js"></script>
-    <script src="js/new-sales.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>new-sales.js"></script>
 
 
 
