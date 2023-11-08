@@ -298,14 +298,7 @@ if ($_SESSION['ADMIN'] == false) {
 
     <!-- Page level custom scripts -->
     <!-- <script src="js/demo/chart-area-demo.js"></script>
-<<<<<<< HEAD
     
-=======
-    <script src="js/demo/chart-pie-demo.js"></script> -->
-
-    <!-- ======== CUSTOM JS FOR INDEX PAGE ======= -->
-
->>>>>>> 3dedea12450f72734b58631623fc74b251908df6
 
      ======== CUSTOM JS FOR INDEX PAGE ======= -->
      <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script>
