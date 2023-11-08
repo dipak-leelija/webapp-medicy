@@ -5,9 +5,9 @@ require_once 'dbconnect.php';
 
 class HelthCare extends DatabaseConnection{
 
-    function addClinDetails($val1, $val2){
+    function addClinicInfo($clinicId, $adminId, $addedTime){
 
-        $addClinicData = "INSERT INTO `clinic_info`(`hospital_id`, `logo`, `hospital_name`, `address_1`, `address_2`, `city`, `dist`, `pin`, `health_care_state`, `hospital_email`, `hospital_phno`, `appointment_help_line`, `main_desc`, `footer_desc`, `book_appointment_text`, `subscribe_text`, `admin_id`, `added_on`) VALUES ('$val1','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2','$val2')";
+        $addClinicData = "INSERT INTO `clinic_info`(`hospital_id`, `admin_id`, `added_on`) VALUES ('$clinicId','$adminId','$addedTime')";
         $query = $this->conn->query($addClinicData);
         while($result = $query->fetch_array()){
             $hospitalData[] = $result;

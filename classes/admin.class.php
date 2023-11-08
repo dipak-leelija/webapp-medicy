@@ -31,7 +31,7 @@ class Admin extends DatabaseConnection{
 
     function echeckUsername($username){
         $chkUser = " SELECT * FROM `admin` WHERE `username`= '$username' ";
-        // echo $chkUser;
+        return $chkUser;
         $chkUserQuery = $this->conn->query($chkUser);
         // echo $chkUserQuery.$this->conn->error;
         // echo count($chkUserQuery);
