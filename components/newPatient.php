@@ -74,7 +74,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
                     <i class="fas fa-user-plus"></i> New Patients
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                    <span id="newPatients"><?= ($newPatients) ? $totalCount : 'No Data Found' ?> </span>
+                    <span id="newPatient"><?= ($newPatients) ? $totalCount : 'No Data Found' ?> </span>
                 </div>
             </div>
         </div>
@@ -113,11 +113,11 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(null);
         var newPatientDataByDate = xhr.responseText;
-        console.log(newPatientDataByDate);
-        document.getElementById('newPatients').innerHTML = newPatientDataByDate.patient_count;
+        console.log(typeof(newPatientDataByDate));
         newPatientDataOverride(JSON.parse(newPatientDataByDate));
+        // document.getElementById('newPatients').textContent = newPatientDataByDate.patient_count;
+        document.getElementById('newPatient').textContent = newPatientDataByDate.patient_count;
 
-        // document.getElementById('newPatients').textContent = ;
         // document.getElementById('newPatientDtPkr').style.display = 'none';
     }
 
@@ -144,15 +144,15 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
         document.getElementById('newPatientDtPkrRng').style.display = 'none';
 
         if (buttonId === 'newPatientLst24hrs') {
-            document.getElementById('newPatients').textContent = <?= $totalCount24hrs ?>;
+            document.getElementById('newPatient').textContent = <?= $totalCount24hrs ?>;
             newPatientDataOverride(<?= json_encode($newPatientLast24Hours) ?>);
         }
         if (buttonId === 'newPatientLst7') {
-            document.getElementById('newPatients').textContent = <?= $totalCount7days ?>;
+            document.getElementById('newPatient').textContent = <?= $totalCount7days ?>;
             newPatientDataOverride(<?= json_encode($newPatientLast7Days) ?>);
         }
         if (buttonId === 'newPatientLst30') {
-            document.getElementById('newPatients').textContent = <?= $newPatientLast30Days ?>;
+            document.getElementById('newPatient').textContent = <?= $newPatientLast30Days ?>;
             newPatientDataOverride(<?= json_encode($newPatientLast30Days) ?>);
         }
         if (buttonId === 'newPatientOnDt') {
