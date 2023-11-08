@@ -39,6 +39,7 @@ if (isset($_GET['mostVstCstmrByDt'])) {
     $mostVisitedCustomerOnDate = $StockOut->mostVisitedCustomerOnDate($adminId, $dtPicker);
     // print_r($mostVisitedCustomerOnDate);
     echo json_encode($mostVisitedCustomerOnDate);  
+    // echo $dtPicker;
 }
 
 

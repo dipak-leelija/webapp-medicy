@@ -103,8 +103,8 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
         var mostVistiCustomerDataByDate = xmlhttp.responseText;
-
-        mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDate));
+        console.log(mostVistiCustomerDataByDate);
+        // mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDate));
     }
 
 
