@@ -35,7 +35,8 @@ if (isset($_POST['register'])) {
     $adminId = $adminStr1.$adminSubStr1.$adminSubStr2.$adminSubStr3;
 
     // ===== random id generation for clinic id =======
-    $generateRandomAlphanumericID = fn($length) => substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, $length);
+    $generateRandomAlphanumericID = fn($length) => substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, $length);
 
     $randomID = $generateRandomAlphanumericID(12); // random alpha numeric id generation
 

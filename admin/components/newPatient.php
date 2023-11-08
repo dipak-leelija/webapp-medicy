@@ -194,7 +194,7 @@ $newPatientLast30Days    = $Patients->newPatientCountLast30Days($adminId);
         document.getElementById('newPatientDtPkrRng').style.display = 'none';
 
         if (buttonId === 'newPatientLst24hrs') {
-            document.getElementById('newPatients').textContent = <?= $newPatientLast24Hours ?>;
+            document.getElementById('newPatients').textContent = <?php $newPatientLast24Hours; ?>;
         }
         if (buttonId === 'newPatientLst7') {
             document.getElementById('newPatients').textContent = <?=  $totalCount7days ?>;
