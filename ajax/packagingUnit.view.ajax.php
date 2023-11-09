@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
+
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 $PackagingUnits = new PackagingUnits();
@@ -15,14 +16,13 @@ $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
 
 <head>
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <!-- <link href="../css/sb-admin-2.min.css" rel="stylesheet"> -->
-    <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
 
 </head>
 
@@ -82,23 +82,15 @@ $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
     } //eof getEditUpdates
     </script>
 
-    <script src="../js/ajax.custom-lib.js"></script>
+    <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Bootstrap Js -->
-    <script src="../../js/bootstrap-js-5/bootstrap.js"></script>
-    <script src="../../js/bootstrap-js-5/bootstrap.min.js"></script>
-
-
-    <!-- Core plugin JavaScript-->
-    <!-- <script src="../vendor/jquery-easing/jquery.easing.min.js"></script> -->
-
-    <!-- Custom scripts for all pages-->
-    <!-- <script src="../js/sb-admin-2.min.js"></script> -->
-
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
 </body>
 
 </html>
