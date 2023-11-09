@@ -28,11 +28,11 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
 
 <head>
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/sb-admin-2.min.css" rel="stylesheet">
     <style>
         body {
             overflow-x: hidden;
@@ -100,13 +100,15 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
 
             </div>
             <div class="col-sm-4">
-                <div class="d-flex justify-content-between"">
+                <div class="d-flex justify-content-between">
 
                 <h6><b>Bill ID:</b> <?php echo $billId; ?></h6>
                 <base target=" _parent">
                     <?php
                     if ($status != "Cancelled") {
-                        echo '<h6><a class="btn btn-sm btn-primary" href="../edit-lab-billing.php?invoice=<?php echo $billId; ?>">Edit</a></h6>';
+                       
+                        echo '<h6><a class="btn btn-sm btn-primary" href="' . LOCAL_DIR . 'edit-lab-billing.php?invoice=' . $billId . '">Edit</a></h6>';
+
                     } else {
                         echo '<h6 class="border border-danger text-danger p-1"> Bill Cancelled</h6>';
                     }

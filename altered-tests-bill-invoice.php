@@ -1,15 +1,17 @@
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+// ini_set('display_errors', '1');
+// ini_set('display_startup_errors', '1');
+// error_reporting(E_ALL);
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once '../php_control/sub-test.class.php';
-require_once '../php_control/doctors.class.php';
-require_once '../php_control/labBilling.class.php';
-require_once '../php_control/labBillDetails.class.php';
-require_once '../php_control/hospital.class.php';
-require_once '../php_control/patients.class.php';
+require_once CLASS_DIR.'sub-test.class.php';
+require_once CLASS_DIR.'doctors.class.php';
+require_once CLASS_DIR.'labBilling.class.php';
+require_once CLASS_DIR.'labBillDetails.class.php';
+require_once CLASS_DIR.'hospital.class.php';
+require_once CLASS_DIR.'patients.class.php';
 
 
 
@@ -17,7 +19,7 @@ require_once '../php_control/patients.class.php';
 $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 $Patients        = new Patients();
-$HelthCare       = new HelthCare();
+$HealthCare      = new HelthCare();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
 
@@ -69,7 +71,7 @@ if (isset($_POST['bill-generate'])) {
     ###################### Patient Visit Update ######################
     ##################################################################
     $showPatient = json_decode($Patients->patientsDisplayByPId($patientId));
-    $labVisited = $rowPatient->lab_visited;
+    $labVisited  = $showPatient->lab_visited;
 
 
     if($labVisited == NULL){
@@ -230,8 +232,15 @@ if (isset($_POST['bill-generate'])) {
 }
 
 
-$showhelthCare = $HelthCare->showhelthCare();
-foreach ($showhelthCare as $rowhelthCare) {
+// $showhelthCare = $HelthCare->showhelthCare();
+$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
+foreach ($healthCareDetails as $rowhelthCare) {
     $healthCareName     = $rowhelthCare['hospital_name'];
     $healthCareAddress1 = $rowhelthCare['address_1'];
     $healthCareAddress2 = $rowhelthCare['address_2'];
@@ -251,8 +260,8 @@ foreach ($showhelthCare as $rowhelthCare) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Lab Test Bill</title>
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/custom/test-bill.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/test-bill.css">
 
 </head>
 
@@ -263,7 +272,7 @@ foreach ($showhelthCare as $rowhelthCare) {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="../images/logo-p.jpg"
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?php echo IMG_PATH ?>logo-p.jpg"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">
@@ -445,6 +454,6 @@ foreach ($showhelthCare as $rowhelthCare) {
 
     ?>
 </body>
-<script src="../js/bootstrap-js-5/bootstrap.js"></script>
+<script src="<?php echo JS_PATH ?> bootstrap-js-5/bootstrap.js"></script>
 
 </html>

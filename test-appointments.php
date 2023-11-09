@@ -325,17 +325,17 @@ $labBillDisplay = $LabBilling->labBillDisplay();
     </script>
 
     <!-- Core plugin JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?php echo JS_PATH ?>/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="<?php echo PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
+    <script src="<?php echo JS_PATH ?>/demo/datatables-demo.js"></script>
 
 </body>
 

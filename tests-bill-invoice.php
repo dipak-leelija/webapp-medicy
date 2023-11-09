@@ -1,9 +1,11 @@
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-require_once dirname(__DIR__).'/config/constant.php';
+// ini_set('display_errors', '1');
+// ini_set('display_startup_errors', '1');
+// error_reporting(E_ALL);
+require_once __DIR__.'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+
 require_once CLASS_DIR.'sub-test.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
@@ -17,7 +19,7 @@ require_once CLASS_DIR.'patients.class.php';
 $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 $Patients        = new Patients();
-$HelthCare       = new HelthCare();
+$HealthCare      = new HelthCare();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
 
@@ -57,17 +59,26 @@ if (isset($_POST['bill-generate'])) {
 ##################################################################
 ###################### Patient Visit Update ######################
 ##################################################################
-$showPatient = json_decode($Patients->patientsDisplayByPId($patientId));
+// $showPatient = json_decode($Patients->patientsDisplayByPId($patientId));
+$showPatient = $Patients->patientsDisplayByPId($patientId);
+
 foreach ($showPatient as $rowPatient) {
-    $labVisited = $rowPatient->lab_visited;
     // echo $labVisited;
+    if (isset($rowPatient->lab_visited)) {
+        $labVisited = $rowPatient->lab_visited;
+
+        // Increment $labVisited
+        $labVisited = $labVisited + 1;
+    } else {
+        $labVisited = 1;
+    }
 }
 
-if($labVisited == NULL){
-    $labVisited = 1;
-}else{
-    $labVisited = $labVisited +1;
-}
+// if($labVisited == NULL){
+//     $labVisited = 1;
+// }else{
+//     $labVisited = $labVisited +1;
+// }
 
 $updateVisit = $Patients->updateLabVisiting($patientId, $labVisited);
 if ($updateVisit) {
@@ -194,8 +205,15 @@ if ($updateVisit) {
 }
 
 
-$showhelthCare = $HelthCare->showhelthCare();
-foreach ($showhelthCare as $rowhelthCare) {
+
+$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
+foreach ($healthCareDetails as $rowhelthCare) {
     $healthCareName     = $rowhelthCare['hospital_name'];
     $healthCareAddress1 = $rowhelthCare['address_1'];
     $healthCareAddress2 = $rowhelthCare['address_2'];
@@ -215,8 +233,8 @@ foreach ($showhelthCare as $rowhelthCare) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Lab Test Bill</title>
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/custom/test-bill.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>css/bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/test-bill.css">
 
 </head>
 
@@ -409,6 +427,6 @@ foreach ($showhelthCare as $rowhelthCare) {
 
     ?>
 </body>
-<script src="../js/bootstrap-js-5/bootstrap.js"></script>
+<script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
 </html>
