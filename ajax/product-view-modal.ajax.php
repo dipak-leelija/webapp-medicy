@@ -25,9 +25,9 @@ $CurrentStock   = new CurrentStock();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <!-- new features added -->
-    <link rel="stylesheet" href="../css/custom/product-view-modal.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/product-view-modal.css">
     <style>
         #main-img {
             animation: show .5s ease;
@@ -99,17 +99,17 @@ $CurrentStock   = new CurrentStock();
                 <div class="col-12 col-sm-4">
                     <div class="">
                         <div class="text-center border d-flex justify-content-center">
-                            <img src="../../images/product-image/<?php echo $Images; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
+                            <img src="<?= IMG_PATH ?>product-image/<?php echo $Images; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
                         </div>
                         <div class="row height-3 mt-2 justify-content-center">
                             <div class="col-2 border p-0">
-                                <img src="../../images/product-image/<?php echo $Images; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="<?= IMG_PATH ?>product-image/<?php echo $Images; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                             <div class="col-2 border p-0" id="back-div">
-                                <img src="../../images/product-image/<?php echo $Images; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="<?= IMG_PATH ?>product-image/<?php echo $Images; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                             <div class="col-2 border p-0" id="side-div">
-                                <img src="../../images/product-image/<?php echo $Images; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="<?= IMG_PATH ?>product-image/<?php echo $Images; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                         </div>
                     </div>
@@ -193,7 +193,7 @@ $CurrentStock   = new CurrentStock();
     <?php
     }
     ?>
-    <script src="../../js/bootstrap-js-5/bootstrap.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <script>
         const setImg = (id) => {
             img = document.getElementById(id).src;

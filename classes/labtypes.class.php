@@ -1,7 +1,6 @@
 <?php
 require_once 'dbconnect.php';
 
-
 class LabTypes extends DatabaseConnection{
 
     function addLabTypes($imgFolder, $testName, $testPvdBy, $testDsc){

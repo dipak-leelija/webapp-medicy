@@ -1,40 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Add Items</title>
-
-    <!-- Custom fonts for this template -->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Fontawsome Link -->
-    <link rel="stylesheet" href="../css/font-awesome.css">
-
-    <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-    <!--Custom CSS -->
-    <!-- <link href="css/add-products.css" rel="stylesheet"> -->
-    <link href="css/custom/add-products.css" rel="stylesheet">
-
-    <!-- sweetAlert link -->
-    <script src="../js/sweetAlert.min.js"></script>
-
-</head>
-
-<body id="page-top">
-
-    <?php
-    require_once dirname(__DIR__).'/config/constant.php';
-    require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+<?php
+    require_once 'config/constant.php';
+    require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
     
     require_once CLASS_DIR.'dbconnect.php';
     require_once CLASS_DIR.'products.class.php';
@@ -58,7 +24,42 @@
     $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
     $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
-    //======================== PRODUCT UPDATE BLOCK ====================================
+    ?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Add Items</title>
+
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    
+    <!-- Fontawsome Link -->
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= CSS_PATH ?>font-awesome.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+
+    <!--Custom CSS -->
+    <link href="<?= CSS_PATH ?>custom/add-products.css" rel="stylesheet">
+
+    <!-- sweetAlert link -->
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+
+</head>
+
+<body id="page-top">
+    <?php
 
     if (isset($_POST['update-product'])) {
 
@@ -127,7 +128,7 @@
 
         $updatedBy        = $employeeId;
         $updatedOn         = NOW;
-    
+
 
         $unit = $_POST['unit'];
         $unitType = $MeasureOfUnits->showMeasureOfUnitsById($unit);
@@ -169,10 +170,8 @@
             }
         }
     }
-
-    //====================== END OF PRODUCT UPDATE ========================================
     ?>
-
+    
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -370,16 +369,16 @@
     <!-- End of Page Wrapper -->
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../assets/jquery/jquery.min.js"></script>
-    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
     <!-- Sweet Alert Js  -->
-    <script src="../js/sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
-    <script src="js/custom/add-products.js"></script>
+    <script src="<?= JS_PATH ?>custom/add-products.js"></script>
 
 
     <script>

@@ -1,10 +1,11 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR . 'dbconnect.php';
 
-require_once CLASS_DIR.'labtypes.class.php';
+require_once CLASS_DIR . 'labtypes.class.php';
 
-require_once CLASS_DIR.'sub-test.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
 
 
 
@@ -39,32 +40,31 @@ if (isset($_GET['labtypeid'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/custom/single-lab-page.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/single-lab-page.css">
 
     <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
-    <link href="../css/bootstrap 5/bootstrap.css" rel="stylesheet">
-    <link href="../css/bootstrap 5/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
+
 <body>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -74,7 +74,7 @@ if (isset($_GET['labtypeid'])) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
 
                 <!-- End of Topbar -->
                 <section class="main_section">
@@ -88,7 +88,7 @@ if (isset($_GET['labtypeid'])) {
 
                             <div class="provide_lab">
                                 <div class="medicy_lab"><b>Medicy Health Care</b></div>
-                                <div class="logo"><img src="img/Logo.png" alt=""></div>
+                                <div class="logo"><img src="<?php echo ASSETS_PATH ?>img/Logo.png" alt=""></div>
                             </div>
 
                             <div class="provide_lab_para">
@@ -107,7 +107,11 @@ if (isset($_GET['labtypeid'])) {
                                 <h1><?php echo $labTypeName; ?></h1>
                                 <p>Ideal for individuals aged <b>11-80 years</b> <br> Includes
 
-                                    <b><?php  if ($subTestShow != 0) { echo count($subTestShow).'tests'; }else{ echo '0 Tests';} ?>
+                                    <b><?php if ($subTestShow != 0) {
+                                            echo count($subTestShow) . 'tests';
+                                        } else {
+                                            echo '0 Tests';
+                                        } ?>
                                     </b>
                                 </p>
                             </div>
@@ -120,7 +124,11 @@ if (isset($_GET['labtypeid'])) {
                             <div class="included_test">
 
                                 <h2>Includes
-                                    <?php  if ($subTestShow != 0) { echo count($subTestShow).'tests'; }else{ echo '0 Tests';} ?>
+                                    <?php if ($subTestShow != 0) {
+                                        echo count($subTestShow) . 'tests';
+                                    } else {
+                                        echo '0 Tests';
+                                    } ?>
                                     Tests</h2>
 
 
@@ -128,7 +136,7 @@ if (isset($_GET['labtypeid'])) {
                                     <?php
                                     if ($subTestShow != 0) {
                                         $i = 0;
-                                        foreach($subTestShow as $subTest){
+                                        foreach ($subTestShow as $subTest) {
 
                                             $subTestName = $subTest['sub_test_name'];
                                             // $ = $subTest['parent_test_id'];
@@ -140,33 +148,33 @@ if (isset($_GET['labtypeid'])) {
                                             $accordionId = $i++;
                                             // echo $accordionId;
 
-                            echo '<div class="accordion-item">
+                                            echo '<div class="accordion-item">
 
-                                        <h2 class="accordion-header" id="flush-heading'.$accordionId.'">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse'.$accordionId.'" aria-expanded="false" aria-controls="flush-collapse'.$accordionId.'">
+                                        <h2 class="accordion-header" id="flush-heading' . $accordionId . '">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse' . $accordionId . '" aria-expanded="false" aria-controls="flush-collapse' . $accordionId . '">
                                                 <div class="test_photo">
                                                     <img src="img/lab-tests/test_photo.png" alt="">
-                                                </div>'.$subTestName.'
+                                                </div>' . $subTestName . '
                                             </button>
                                         </h2>
 
-                                        <div id="flush-collapse'.$accordionId.'" class="accordion-collapse collapse" aria-labelledby="flush-heading'.$accordionId.'" data-bs-parent="#accordionFlushExample">
+                                        <div id="flush-collapse' . $accordionId . '" class="accordion-collapse collapse" aria-labelledby="flush-heading' . $accordionId . '" data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <h4>Description</h4>
-                                                <p>'.$subTestDsc.'</p>
+                                                <p>' . $subTestDsc . '</p>
                                                 <h4>Percussion For This Test</h4>
-                                                <p>'.$subTestPrep.'</p>
-                                                <p>Age Group: <b>'.$subTestAge.'</b></p>
+                                                <p>' . $subTestPrep . '</p>
+                                                <p>Age Group: <b>' . $subTestAge . '</b></p>
                                                 <div>
-                                                    <p>Rs-'.$subTestPrice.'</p>
+                                                    <p>Rs-' . $subTestPrice . '</p>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>';    
+                                    </div>';
                                         }
-                                    }else{
-                                         echo 'No Tests avilable in this type of Test';
-                                        }
+                                    } else {
+                                        echo 'No Tests avilable in this type of Test';
+                                    }
                                     ?>
                                 </div>
                             </div>
@@ -175,32 +183,30 @@ if (isset($_GET['labtypeid'])) {
                 </section>
 
                 <div>
-                    <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
+                    <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
                 </div>
 
 
                 <!-- Bootstrap JS -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous">
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
                 </script>
 
                 <!-- Bootstrap core JavaScript-->
-                <script src="vendor/jquery/jquery.min.js"></script>
-                <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+                <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
                 <!-- Core plugin JavaScript-->
-                <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+                <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
                 <!-- Custom scripts for all pages-->
-                <script src="js/sb-admin-2.min.js"></script>
+                <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
                 <!-- Page level plugins -->
-                <script src="vendor/chart.js/Chart.min.js"></script>
+                <script src="<?php echo PLUGIN_PATH ?>chart.js/Chart.min.js"></script>
 
                 <!-- Page level custom scripts -->
-                <script src="js/demo/chart-area-demo.js"></script>
-                <script src="js/demo/chart-pie-demo.js"></script>
+                <script src="<?php echo JS_PATH ?>demo/chart-area-demo.js"></script>
+                <script src="<?php echo JS_PATH ?>demo/chart-pie-demo.js"></script>
 
 </body>
 
