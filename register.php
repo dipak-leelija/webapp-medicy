@@ -9,10 +9,11 @@ if (isset($_SESSION['LOGGEDIN'])) {
 require_once CLASS_DIR .'dbconnect.php';
 require_once CLASS_DIR.'admin.class.php';
 require_once CLASS_DIR.'hospital.class.php';
+require_once CLASS_DIR.'idsgeneration.class.php';
 
-$admin = new Admin();
-$HelthCare = new HelthCare;
-
+$admin      = new Admin();
+$HelthCare  = new HelthCare;
+$IdGenerate = new IdsGeneration;
 
 $userExists = false;
 $emailExists = false;
@@ -27,18 +28,9 @@ if (isset($_POST['register'])) {
     $mobNo      = $_POST['mobile-number'];
     $password   =  $_POST['password'];
     $cpassword  = $_POST['cpassword'];
-
-    $adminStr1 = 'ADM'.mt_rand(0, 9999999);
-    $adminSubStr1 = substr($email, 0, 4);
-    $adminSubStr2 = substr($mobNo, 0, 2);
-    $adminSubStr3 = substr($mobNo, -2);
-    $adminId = $adminStr1.$adminSubStr1.$adminSubStr2.$adminSubStr3;
-
-    // ===== random id generation for clinic id =======
-    $generateRandomAlphanumericID = fn($length) => substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789
-    ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, $length);
-
-    $randomID = $generateRandomAlphanumericID(12); // random alpha numeric id generation
+    
+    $adminId  = $IdGenerate->generateAdminId();
+    $clinicId = $IdGenerate->generateClinicId($adminId);    
 
 
     $checkUser = $admin->echeckUsername($username);
@@ -54,10 +46,10 @@ if (isset($_POST['register'])) {
             if($password == $cpassword){
                 $diffrentPassword = false;
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo);
+                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, NOW);
                 // print_r($register);
                 if ($register) {
-                    $addToClinicInfo = $HelthCare->addClinicInfo($randomID, $adminId, NOW);
+                    $addToClinicInfo = $HelthCare->addClinicInfo($clinicId, $adminId, NOW);
                     if ($addToClinicInfo) {
                         header("Location: login.php");
                         exit;
