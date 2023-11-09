@@ -2,8 +2,8 @@
 
 use function PHPSTORM_META\type;
 
-require_once dirname(__DIR__) . '/config/constant.php';
-require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
@@ -67,18 +67,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Lab Report Generate</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/sb-admin-2.min.css" rel="stylesheet">
 
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?php echo PLUGIN_PATH ?>/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <!-- Sweet Alert Link  -->
-    <script src="../js/sweetAlert.min.js"></script>
+    <script src="<?php echo JS_PATH ?>/sweetAlert.min.js"></script>
 
 </head>
 
@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT . 'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT . 'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <?php include PORTAL_COMPONENT . 'footer-text.php'; ?>
+        <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
         <!-- End of Footer -->
 
     </div>
@@ -212,24 +212,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>/jquery/jquery.min.js"></script>
+    <script src="<?php echo JS_PATH ?>/bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
 
 
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="<?php echo JS_PATH ?>/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="<?php echo JS_PATH ?>/demo/datatables-demo.js"></script>
 
 </body>
 

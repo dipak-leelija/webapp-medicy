@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__) . '/config/constant.php';
+require_once __DIR__ . '/config/constant.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
@@ -66,8 +66,8 @@ foreach ($hospitalShow as $hospitalDetails) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/lab-report.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>/lab-report.css">
     <!-- <link rel="stylesheet" href="../css/prescription.css"> -->
     <title>Prescription</title>
 </head>

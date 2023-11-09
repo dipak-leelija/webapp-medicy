@@ -19,9 +19,9 @@ $showPatients = json_decode($Patients->allPatients($adminId));
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/patient-style.css">
-    <script src="../js/bootstrap-js-5/bootstrap.js"></script>
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css">
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <title>Enter Patient Details</title>
 
 
