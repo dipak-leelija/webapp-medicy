@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__.'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'currentStock.class.php';
@@ -22,7 +22,9 @@ $Manufacturer   = new Manufacturer();
 
 $showCurrentStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
 // print_r($showCurrentStock);
-$countCurrentStock = count($showCurrentStock);
+if($showCurrentStock != null){
+    $countCurrentStock = count($showCurrentStock);
+}
 // echo "$countCurrentStock";
 $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
@@ -42,17 +44,17 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
     <title>Current Stock - Medicy Health Care</title>
 
     <!-- Custom fonts for this template -->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="css/custom/current-stock.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>custom/current-stock.css" rel="stylesheet">
 
     <!-- Datatable Style CSS -->
-    <link href="vendor/product-table/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet">
 
 </head>
 
@@ -62,7 +64,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -72,7 +74,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -129,7 +131,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                     $productId           = $rowStock['product_id'];
                                                     // echo $productId."<br>";
                                                     $image               = $ProductImages->showImageById($productId);
-                                                    // print_r($image);exit;
+                                                    // print_r($image);
                                                     $mainImage = 'medicy-default-product-image.jpg';
                                                     
                                                     if ($image != NULL) {
@@ -164,8 +166,8 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                             
                                                             <td class='align-middle d-dlex'>
                                             
-                                                                <img class="p-img" src="../images/product-image/<?php echo $mainImage; ?>" alt="">
-                                                                <img class="p-img ml-n4 position-absolute" src="../images/product-image/<?php echo $mainImage; ?>" alt="">
+                                                                <img class="p-img" src="<?= PROD_IMG_PATH ?><?php echo $mainImage; ?>" alt="">
+                                                                <img class="p-img ml-n4 position-absolute" src="<?= PROD_IMG_PATH ?><?php echo $mainImage; ?>" alt="">
     
                                                                 </td> 
     
@@ -238,7 +240,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -295,15 +297,15 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
     <!-- End of View DeleteCurrentStockModal Modal -->
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../assets/jquery/jquery.min.js"></script>
-    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
     <!-- <script src="js/custom-js.js"></script> -->
-    <script src="js/ajax.custom-lib.js"></script>
+    <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
 
     <!-- Sweet Alert Js  -->
-    <script src="../js/sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
     <script>
 
@@ -328,16 +330,16 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
     </script>
 
     <!-- Core plugin JavaScript-->
-    <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
-    <script src="vendor/product-table/jquery.dataTables.js"></script>
-    <script src="vendor/product-table/dataTables.bootstrap4.js"></script>
+    <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script>
+    <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
 </body>
 

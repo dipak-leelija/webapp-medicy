@@ -82,11 +82,7 @@ $showDoctor = $doctors->showDoctorById($docId);
 
                     ?>
             </select>
-<<<<<<< HEAD
             <!-- <input type="text" class="form-control" value="<?php // echo $docSpecialization; ?>"> -->
-=======
-            <!-- <input type="text" class="form-control" value="<?php echo $docSpecialization; ?>"> -->
->>>>>>> cdf4fe221f226b0f3209c8c8fe6f37aa93378637
         </div>
         <div class="form-group">
             <label for="doc-degree" class="col-form-label">Doctor Degree:</label>
