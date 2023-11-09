@@ -1,3 +1,16 @@
+<?php
+
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR.'distributor.class.php';
+
+
+//Class initilization
+$Distributor = new Distributor();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,22 +19,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Prosuct</title>
-    <script src="../../../js/sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 </head>
 
 <body>
 
     <?php
-    require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-    require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-    
-    require_once CLASS_DIR.'dbconnect.php';
-    require_once CLASS_DIR.'distributor.class.php';
-
-
-    //Class initilization
-    $Distributor = new Distributor();
-
 
     if (isset($_POST['add-distributor'])) {
         $distributorName        = $_POST['distributor-name'];
@@ -55,7 +58,7 @@
             <script>
                 swal("Error", "Data Not Added!", "error")
                     .then((value) => {
-                        window.location = '../../distributor.php';
+                        window.location = '<?= URL ?>distributor.php';
                     });
             </script>
     <?php

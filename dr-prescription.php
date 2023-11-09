@@ -1,5 +1,6 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
+require_once __DIR__.'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'hospital.class.php';
@@ -72,8 +73,8 @@ foreach($selectDoctorByid as $DoctorByidDetails){
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/prescription.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>prescription.css">
     <title>Prescription</title>
 </head>
 
@@ -82,7 +83,7 @@ foreach($selectDoctorByid as $DoctorByidDetails){
         <div class="hospitslDetails mb-0">
             <div class="row">
                 <div class="col-1 headerHospitalLogo">
-                    <img class="mt-4" src="../images/logo-p.jpg" alt="XYZ Hospital">
+                    <img class="mt-4" src="<?php echo IMG_PATH ?>logo-p.jpg" alt="XYZ Hospital">
                 </div>
                 <div class="col-4 headerHospitalDetails">
                     <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?php echo $hospitalName ?></h1>
@@ -90,7 +91,7 @@ foreach($selectDoctorByid as $DoctorByidDetails){
                         <small><?php echo $address1.', '.$address2.', '.$city.',<br>'.$state.', '.$pin; ?></small>
                     </p>
                 </div>
-                <div class="col-2 header-doc-img"> <img src="../images/medicy-doctor-logo.png" alt=""> </div>
+                <div class="col-2 header-doc-img"> <img src="<?php echo IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
                 <div class=" text-danger col-5 headerDoctorDetails">
                     <h2 class="text-end mt-3  mb-0"><?php echo $DoctorName ?></h2>
                     <p class="text-end  mb-0 ">
@@ -184,7 +185,7 @@ foreach($selectDoctorByid as $DoctorByidDetails){
                 <div class="col-md-4 custom-width-name mb-0">
                     <ul style="margin-bottom: 8px">
                         <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2"
-                                src="../employee/partials/hospital.png" alt="Healt Care"
+                                src="<?php echo LOCAL_DIR ?>employee/partials/hospital.png" alt="Healt Care"
                                 style="width:28px; height:20px;" /><?php echo $hospitalName ?></li>
                     </ul>
                 </div>
@@ -192,7 +193,7 @@ foreach($selectDoctorByid as $DoctorByidDetails){
                 <div class="col-md-4 custom-width-email mb-0">
                     <ul style="margin-bottom: 8px">
                         <li class="list-unstyled"><img id="email-box" class="pe-2"
-                                src="../employee/partials/email-logo.png" alt="Email"
+                                src="<?php echo LOCAL_DIR ?>employee/partials/email-logo.png" alt="Email"
                                 style="width:28px; height:20px;" /><?php echo $hospitalEmail ?></li>
 
                     </ul>
@@ -201,7 +202,7 @@ foreach($selectDoctorByid as $DoctorByidDetails){
                 <div class="col-md-4 custom-width-number mb-0">
                     <ul style="margin-bottom: 8px">
                         <li class="list-unstyled"><img id="number-box" class="pe-2"
-                                src="../employee/partials/call-logo.png" alt="Contact"
+                                src="<?php echo LOCAL_DIR ?>employee/partials/call-logo.png" alt="Contact"
                                 style="width:28px; height:20px;" /><span>
                                     <?php
                                     $separetor = ',';

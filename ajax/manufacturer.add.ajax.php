@@ -1,6 +1,6 @@
 <?php
-require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__).'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'manufacturer.class.php';
@@ -17,7 +17,7 @@ $Manufacturer = new Manufacturer();
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Manufacturer</title>
-        <script src="../../../js/sweetAlert.min.js"></script>
+        <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 </head>
 <body>
 
@@ -52,7 +52,7 @@ if(isset($_POST['add-manufacturer'])){
              <script>
             swal("Success", "Manufacturer Added!", "success")
                 .then((value) => {
-                    window.location='../../manufacturers.php';
+                    window.location = '<?= URL ?>manufacturers.php';
                 });
             </script>
              <?php
@@ -61,7 +61,7 @@ if(isset($_POST['add-manufacturer'])){
             <script>
             swal("Error", "Manufacturer Addition Failed!", "error")
                 .then((value) => {
-                    window.location='../../manufacturers.php';
+                    window.location = '<?= URL ?>manufacturers.php';
                 });
             </script>
             <?php

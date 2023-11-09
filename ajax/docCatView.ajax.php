@@ -24,11 +24,11 @@ foreach ($showDoctorCategory as $rowDoctorCategory) {
 
 <head>
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
 
 </head>
 
@@ -53,11 +53,11 @@ foreach ($showDoctorCategory as $rowDoctorCategory) {
         </div>
     </form>
 
-    <script src="../js/ajax.custom-lib.js"></script>
+    <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
 
     <!-- Bootstrap Js -->
-    <script src="../../js/bootstrap-js-5/bootstrap.js"></script>
-    <script src="../../js/bootstrap-js-5/bootstrap.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
 
     <script>
     function editDocCat() {
