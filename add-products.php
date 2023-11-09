@@ -36,7 +36,6 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <title>Add Items</title>
 
     <!-- Custom fonts for this template -->
-<<<<<<< HEAD
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -49,24 +48,6 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <!--Custom CSS -->
     <!-- <link href="css/add-products.css" rel="stylesheet"> -->
     <link href="<?php echo CSS_PATH?>custom/add-products.css" rel="stylesheet">
-=======
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Fontawsome Link -->
-    <link href="<?= CSS_PATH ?>font-awesome.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-
-    <!--Custom CSS -->
-    <link href="<?= CSS_PATH ?>custom/add-products.css" rel="stylesheet">
-
-    <!-- UPPY Link
-    <link href="https://releases.transloadit.com/uppy/v3.14.0/uppy.min.css" rel="stylesheet">
-
-    <link href="/uppy core/dist/uppy.min.css" rel="stylesheet"> -->
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 
 </head>
 
@@ -378,18 +359,13 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
         
         <!-- Bootstrap core JavaScript-->
-<<<<<<< HEAD
         <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
         <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-=======
-        <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 
         <!-- Core plugin JavaScript-->
         <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-<<<<<<< HEAD
         <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
         <!-- Sweet Alert Js  -->
@@ -406,15 +382,6 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         <script src="<?php echo JS_PATH ?>custom/add-products.js"></script>
 
         <!-- js library import -->
-=======
-        <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-
-        <!-- Sweet Alert Js  -->
-        <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
-
-        <!-- <script src="/uppy core/dist/uppy.min.js"></script> -->
-        <script src="<?= JS_PATH ?>custom/add-products.js"></script>
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 
 
         <script>
