@@ -21,16 +21,18 @@ $Patients = new Patients();
 
 $healthCareDetailsPrimary = $hospital->showhelthCarePrimary();
 $healthCareDetailsByAdminId = $hospital->showhelthCare($adminId);
+
 if($healthCareDetailsByAdminId != null){
     $healthCareDetails = $healthCareDetailsByAdminId;
+
+    if ($healthCareDetails['hospital_name'] == null) {
+        $clinicName = $healthCareDetailsPrimary['hospital_name'];
+    }else {
+        $clinicName = $healthCareDetails[2];
+    }
 }else{
-    $healthCareDetails = $healthCareDetailsPrimary;
+    $clinicName = $healthCareDetailsPrimary['hospital_name'];
 }
-
-foreach($healthCareDetails as $showShowHospital){
-    $hospitalName = $showShowHospital['hospital_name'];
-}
-
 
 ?>
 
@@ -92,7 +94,7 @@ foreach($healthCareDetails as $showShowHospital){
        
    
        //appointment id generating
-       $healthCareNameTrimed = strtoupper(substr($hospitalName, 0, 2));//first 2 leter oh healthcare center name
+       $healthCareNameTrimed = strtoupper(substr($clinicName, 0, 2));//first 2 leter oh healthcare center name
        $appointmentDateForId = date("dmy", strtotime($appointmentDate));
        $apntIdStart = "$healthCareNameTrimed$appointmentDateForId";
        echo "<br>$apntIdStart<br>";

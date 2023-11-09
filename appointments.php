@@ -10,8 +10,7 @@ $page = "appointments";
 $appoinments = new Appointments();
 $Doctors = new Doctors();
 
-
-$showAppointments = $appoinments->appointmentsDisplay();
+$showAppointments = $appoinments->appointmentsDisplay($adminId);
 
 ?>
 
@@ -85,16 +84,6 @@ $showAppointments = $appoinments->appointmentsDisplay();
                                             <th>Delete</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Patient Name</th>
-                                            <th>Assigned Doctor</th>
-                                            <th>Date</th>
-                                            <th>Action</th>
-                                            <th>Delete</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                         <?php 
                                         if ($showAppointments > 0) {

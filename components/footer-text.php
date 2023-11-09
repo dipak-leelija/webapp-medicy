@@ -17,7 +17,7 @@ if($healthCareDetailsByAdminId != null){
         $clinicName = $healthCareDetails[2];
     }
 }else{
-    $healthCareDetails = $healthCareDetailsPrimary;
+    $clinicName = $healthCareDetailsPrimary['hospital_name'];
 }
 
 ?>
