@@ -1,7 +1,4 @@
 <?php
-require_once 'dbconnect.php';
-
-
 
 class HelthCare extends DatabaseConnection{
 
@@ -30,7 +27,7 @@ class HelthCare extends DatabaseConnection{
 
                 if($result->num_rows > 0){
                     while ($row = $result->fetch_assoc()) {
-                        $hospitalData[] = $row;
+                        $hospitalData = $row;
                     }
                     return $hospitalData;
                 }else{
@@ -53,8 +50,8 @@ class HelthCare extends DatabaseConnection{
     function showhelthCarePrimary(){
         $selectPrimaryHospital = "SELECT * FROM clinic_info WHERE `admin_id` = 'primary'";
         $query = $this->conn->query($selectPrimaryHospital);
-        while($result = $query->fetch_array()){
-            $primaryHospitalData[] = $result;
+        while($result = $query->fetch_assoc()){
+            $primaryHospitalData = $result;
         }
         return $primaryHospitalData;
 

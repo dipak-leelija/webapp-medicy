@@ -1,6 +1,5 @@
 <?php
 require_once 'dbconnect.php';
-
 class IdsGeneration extends DatabaseConnection{
 
 
@@ -126,7 +125,63 @@ class IdsGeneration extends DatabaseConnection{
         return $tempappointmentid;
     }
 
+
+
+    function generateAdminId() {
+
+        // geeting the current last admin id
+        $currentID = $this->lastAdminId();
+
+        // first 9 laters (e.g. ADMDATE, ADM091123) are removed
+        $currentID = substr($currentID, 9);
+
+        // Extract the numeric part and increment it (similar to the previous code)
+        if ($currentID !== null) {
+            preg_match('/\d+$/', $currentID, $matches);
+            if (!empty($matches)) {
+                $nextNumber = intval($matches[0]) + 1;
+            } else {
+                $nextNumber = 1;
+            }
+        } else {
+            $nextNumber = 1;
+        }
     
+        // Pad the numeric part with zeros to ensure a minimum length of 5 characters
+        $formattedNumber = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+    
+        // Get the current date in the format 'Ymd' (e.g., 091123 for November 9, 2023)
+        $currentDate = date('dmy');
+    
+        // Construct the final ADM ID with the current date
+        $newID = "ADM{$currentDate}{$formattedNumber}";
+    
+        return $newID;
+    }
+        
+    
+
+    function generateClinicId($adminId) {
+
+        $newId = filter_var($adminId, FILTER_SANITIZE_NUMBER_INT);
+        return $newId;
+    }
+
+
+    
+
+    function lastAdminId(){
+        $sql = "SELECT admin_id FROM `admin` ORDER BY added_on DESC LIMIT 1";
+        $query = $this->conn->query($sql);
+        if ($query->num_rows > 0) {
+    
+            while($result = $query->fetch_array()){
+                $data = $result['admin_id'];
+            }
+            return $data;
+        }
+        return;
+    }
     // function appointmentidGeneration($half){
         
     //     $idList = $this->getAppointmentIds();
@@ -231,22 +286,11 @@ class IdsGeneration extends DatabaseConnection{
 }
 
 
-// $id = new IdGeneration();
+// $id = new IdsGeneration();
 
-// echo $id->pharmecyInvoiceId();
+// echo $id->lastAdminId();
+// echo '<br>';
+// echo $id->generateAdminId();
 
-
-// $apnt = 'ME20220127';
-// echo ($id->appointmentidGeneration($apnt));
-// 1
-// 10
-// 100
-// 1000
-// 10000
-// 100000
-// 1000000
-// 10000000
-// 100000000
-// 1000000000
 
 ?>
