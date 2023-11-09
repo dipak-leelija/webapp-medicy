@@ -1,8 +1,8 @@
 <?php
-$page = "add-products";
-require_once 'config/constant.php';
-require_once CLASS_DIR.'dbconnect.php';
+require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR.'measureOfUnit.class.php';
@@ -36,6 +36,20 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <title>Add Items</title>
 
     <!-- Custom fonts for this template -->
+<<<<<<< HEAD
+    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Fontawsome Link -->
+    <link rel="stylesheet" href="<?php echo CSS_PATH?>font-awesome.css">
+
+    <!-- Custom styles for this template -->
+    <link href="<?php echo CSS_PATH?>sb-admin-2.min.css" rel="stylesheet">
+
+    <!--Custom CSS -->
+    <!-- <link href="css/add-products.css" rel="stylesheet"> -->
+    <link href="<?php echo CSS_PATH?>custom/add-products.css" rel="stylesheet">
+=======
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -52,6 +66,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <link href="https://releases.transloadit.com/uppy/v3.14.0/uppy.min.css" rel="stylesheet">
 
     <link href="/uppy core/dist/uppy.min.css" rel="stylesheet"> -->
+>>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 
 </head>
 
@@ -317,24 +332,15 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 Product</button>
 
                                         </div>
-
                                     </div>
-
-
-
                                 </div>
-
-
                             </form>
                         </div>
                     </div>
                     <!-- /end Add Product  -->
-
-
                 </div>
                 <!-- /.container-fluid -->
                 <!-- End of Main Content -->
-
             </div>
             <!-- End of Content Wrapper -->
 
@@ -372,12 +378,35 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
         
         <!-- Bootstrap core JavaScript-->
+<<<<<<< HEAD
+        <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+        <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+=======
         <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+>>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 
         <!-- Core plugin JavaScript-->
         <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
         <!-- Custom scripts for all pages-->
+<<<<<<< HEAD
+        <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+
+        <!-- Sweet Alert Js  -->
+        <script src="<?php echo JS_PATH ?>sweetAlert.min.js"></script>
+
+        <!-- Page level plugins -->
+        <!-- <script src="../assets/datatables/jquery.dataTables.min.js"></script> -->
+        <!-- <script src="../assets/datatables/dataTables.bootstrap4.min.js"></script> -->
+
+        <!-- Page level custom scripts -->
+        <!-- <script src="js/demo/datatables-demo.js"></script> -->
+
+        <!-- <script src="/uppy core/dist/uppy.min.js"></script> -->
+        <script src="<?php echo JS_PATH ?>custom/add-products.js"></script>
+
+        <!-- js library import -->
+=======
         <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
         <!-- Sweet Alert Js  -->
@@ -385,6 +414,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
         <!-- <script src="/uppy core/dist/uppy.min.js"></script> -->
         <script src="<?= JS_PATH ?>custom/add-products.js"></script>
+>>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 
 
         <script>
@@ -434,7 +464,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             productViewAndEdit = (productId) => {
                 // alert("productModalBody");
                 let ViewAndEdit = productId;
-                let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
+                let url = "<?php echo ROOT_DIR ?>ajax/products.View.ajax.php?id=" + ViewAndEdit;
                 $(".productModalBody").html(
                     '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
                     url + '"></iframe>');
@@ -486,9 +516,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                 reader.readAsDataURL(this.files[0]);
             });
 
-            ///////////////////////////////////////////////////////////////////////////////////////////////////
         </script>
-
 
 </body>
 

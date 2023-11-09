@@ -52,6 +52,7 @@ session_start();
 	
 	define('CLASS_DIR', 		ROOT_DIR.'classes/');
 	define('ASST_DIR', 			ROOT_DIR.'uploads/contents/');
+	define('PROD_IMG_DIR', 		ROOT_DIR.'images/product-image/');
 	
 	
 	define('PAGE',				$_SERVER['PHP_SELF']);
@@ -110,6 +111,7 @@ session_start();
 	const JS_PATH							=	URL.'assets/js/';
 	const IMG_PATH							=	URL.'assets/images/';
 	const PLUGIN_PATH						=	URL.'assets/plugins/';
+	const PROD_IMG_PATH						=	URL.'images/product-image/';
 
 
 	

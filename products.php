@@ -1,6 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+require_once __DIR__.'/config/constant.php';
+=======
 require_once 'config/constant.php';
+>>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
@@ -35,15 +39,14 @@ $allProducts = $Products->showProducts();
     <title>Medicy Items</title>
 
     <!-- Custom fonts for this template -->
-    <link href="<?= ASSETS_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo ASST_DIR ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-    <link href="<?= CSS_PATH ?>custom/products.css" rel="stylesheet">
-    
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/products.css">
     <!-- Custom styles for this page -->
-    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -100,8 +103,8 @@ $allProducts = $Products->showProducts();
                                                         
                                                         $image = $ProductImages->showImageById($item['product_id']);
                                                         // print_r($image);
-                                                        if ($image[0][2] != NULL) {
-                                                            $productImage = $image[0][2];
+                                                        if ($image != NULL) {
+                                                            $productImage = $image[0]['image'];
                                                             // $productImage = 'medicy-default-product-image.jpg';
                                                         } else {
                                                             $productImage = 'medicy-default-product-image.jpg';
@@ -116,7 +119,11 @@ $allProducts = $Products->showProducts();
 
                                                         <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
                                                             <div class="card  m-2" id="allProducts">
+<<<<<<< HEAD
+                                                                <img src="<?php echo PROD_IMG_PATH?><?php echo $productImage ?>" class="card-img-top" alt="...">
+=======
                                                                 <img src="<?= IMG_PATH ?>product-image/<?php echo $productImage ?>" class="card-img-top" alt="...">
+>>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item['name']; ?></b></label>
                                                                     <p class="mb-0"><b><?php $item['name'] ?></b></p>
@@ -209,6 +216,17 @@ $allProducts = $Products->showProducts();
         <i class="fas fa-angle-up"></i>
     </a>
 
+<<<<<<< HEAD
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+=======
     <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
@@ -218,6 +236,7 @@ $allProducts = $Products->showProducts();
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+>>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 
 
     <script>
