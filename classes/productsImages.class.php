@@ -1,10 +1,5 @@
 <?php
 
-
-
-
- 
-
 class ProductImages extends DatabaseConnection{
 
 
@@ -52,19 +47,33 @@ class ProductImages extends DatabaseConnection{
 
 
 
-    function showImageById($productId){
-        $slectImage   	 = "SELECT * FROM product_images WHERE `product_images`.`product_id` = '$productId'";
-        $slectImageQuery   = $this->conn->query($slectImage);
-        $rows                = $slectImageQuery->num_rows;
-        if ($rows == 0) {
-            return 0;
-        }else{
-            while ($result  = $slectImageQuery->fetch_array() ) {
-                $data[] = $result;
+    function showImageById($productId) {
+        try {
+            $selectImage = "SELECT * FROM product_images WHERE product_id = ?";
+            $stmt = $this->conn->prepare($selectImage);
+    
+            $stmt->bind_param("s", $productId); 
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                $stmt->close();
+                return $data;
+            } else {
+                $stmt->close();
+                return null;
             }
-            return $data;
+        } catch (Exception $e) {
+            return null;
         }
     }
+    
+    
     //eof showProductsById function
 
 

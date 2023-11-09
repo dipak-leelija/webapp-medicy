@@ -5,7 +5,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= ADM_URL ?>">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= URL ?>">
             <div class="sidebar-brand-icon">
                 <div class="text-center"><img class="img-fluid"src="<?php echo ASSETS_PATH ?>img/logo.png" alt="" ></div>
             </div>
@@ -17,7 +17,7 @@
         <!-- Nav Item For Healthcare -->
 
         <li class="nav-item <?php if($page ==  "dashboard"){ echo "active";} ?>">
-            <a class="nav-link" href="<?= ADM_URL ?>">
+            <a class="nav-link" href="<?= URL ?>">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
