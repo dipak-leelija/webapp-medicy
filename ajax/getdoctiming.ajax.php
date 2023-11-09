@@ -2,7 +2,7 @@
 // require_once '../../php_control/doctors.class.php';
 echo '
 <option>Show Here</option>';
-exit;
+
 
 $doctorId = $_GET['doctor_shift'];
 

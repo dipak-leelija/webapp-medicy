@@ -80,34 +80,32 @@ class Manufacturer extends DatabaseConnection{
 
 
 
-    function showManufacturerById($manufacturerId){
-        $select         = " SELECT * FROM `manufacturer` WHERE `manufacturer`.`id` = '$manufacturerId'";
-        $selectQuery    = $this->conn->query($select);
-        $row = $selectQuery->num_rows;
-        if ($row == 0) {
-            return 0;
-        }else {
-            while ($result  = $selectQuery->fetch_array() ) {
-                $data[] = $result;
+    function showManufacturerById($manufacturerId) {
+        try {
+            $select = "SELECT * FROM `manufacturer` WHERE `manufacturer`.`id` = ?";
+            $stmt = $this->conn->prepare($select);
+    
+            $stmt->bind_param("s", $manufacturerId); 
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                $stmt->close();
+                return $data;
+            } else {
+                $stmt->close();
+                return 0;
             }
-            return $data;
+        } catch (Exception $e) {
+            
+            return null;
         }
-    }//eof showManufacturerById functiion
-
-
-
-    // function showManufacturerByDistributorId($distributorId){
-    //     $select         = " SELECT * FROM manufacturer WHERE `manufacturer`.`distributor_id` ='$distributorId'";
-    //     $selectQuery    = $this->conn->query($select);
-    //     while ($result  = $selectQuery->fetch_array() ) {
-    //         $data[] = $result;
-    //     }
-    //     return $data;
-    // }//eof showManufacturer functiion
-
-
-
-
+    }
     
 
 
