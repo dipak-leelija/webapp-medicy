@@ -1,5 +1,6 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
+require_once 'config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'hospital.class.php';
@@ -25,7 +26,7 @@ require_once CLASS_DIR.'doctor.category.class.php';
        $patientGurdianName  = $currentAppointmentDetails['patient_gurdian_name'];
        $patientEmail        = $currentAppointmentDetails['patient_email'];
        $patientPhno         = $currentAppointmentDetails['patient_phno'];
-       $patientDob          = $currentAppointmentDetails['patient_dob'];
+       $patientDob          = $currentAppointmentDetails['patient_age'];
        $patientGender       = $currentAppointmentDetails['patient_gender'];
        $patientAddress1     = $currentAppointmentDetails['patient_addres1'];
        $patientAddress2     = $currentAppointmentDetails['patient_addres2'];
@@ -40,34 +41,32 @@ require_once CLASS_DIR.'doctor.category.class.php';
 
         // Fetching Hospital Info
         $hospital = new HelthCare();
-        $hospitalShow = $hospital->showhelthCare();
-        foreach($hospitalShow as $hospitalDetails){
-            $hospitalName = $hospitalDetails['hospital_name'];
-            $address1 = $hospitalDetails['address_1'];
-            $address2 = $hospitalDetails['address_2'];
-            $city = $hospitalDetails['city'];
-            $pin = $hospitalDetails['pin'];
-            $state = $hospitalDetails['health_care_state'];
+        $hospitalShow = $hospital->showhelthCare($adminId);
 
-            $hospitalEmail = $hospitalDetails['hospital_email'];
-            $hospitalPhno = $hospitalDetails['hospital_phno'];
-            $appointmentNumber = $hospitalDetails['appointment_help_line'];
+        $hospitalName       = $hospitalShow['hospital_name'];
+        $address1           = $hospitalShow['address_1'];
+        $address2           = $hospitalShow['address_2'];
+        $city               = $hospitalShow['city'];
+        $pin                = $hospitalShow['pin'];
+        $state              = $hospitalShow['health_care_state'];
+        $hospitalEmail      = $hospitalShow['hospital_email'];
+        $hospitalPhno       = $hospitalShow['hospital_phno'];
+        $appointmentNumber  = $hospitalShow['appointment_help_line'];
 
-        }
 
-        // Fetching Doctor Info
-        $doctors = new Doctors(); //Doctor Class 
+    // Fetching Doctor Info
+    $doctors = new Doctors(); //Doctor Class 
     $selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
     // print_r($selectDoctorByid); exit;
     foreach($selectDoctorByid as $DoctorByidDetails){
-        $DoctorReg = $DoctorByidDetails['doctor_reg_no'];
-        $DoctorName = $DoctorByidDetails['doctor_name'];
-        $docSpecialization = $DoctorByidDetails['doctor_specialization'];
-        $DoctorDegree = $DoctorByidDetails['doctor_degree'];
-        $DoctorAlsoWith = $DoctorByidDetails['also_with'];
-        $DoctorAddress = $DoctorByidDetails['doctor_address'];
-        $DoctorEmail = $DoctorByidDetails['doctor_email'];
-        $DoctorPhno = $DoctorByidDetails['doctor_phno'];
+        $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
+        $DoctorName         = $DoctorByidDetails['doctor_name'];
+        $docSpecialization  = $DoctorByidDetails['doctor_specialization'];
+        $DoctorDegree       = $DoctorByidDetails['doctor_degree'];
+        $DoctorAlsoWith     = $DoctorByidDetails['also_with'];
+        $DoctorAddress      = $DoctorByidDetails['doctor_address'];
+        $DoctorEmail        = $DoctorByidDetails['doctor_email'];
+        $DoctorPhno         = $DoctorByidDetails['doctor_phno'];
     }
 
    // Fetching Appointments Info
@@ -87,8 +86,8 @@ require_once CLASS_DIR.'doctor.category.class.php';
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/prescription.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>prescription.css">
     <title>Prescription</title>
 </head>
 
@@ -97,7 +96,7 @@ require_once CLASS_DIR.'doctor.category.class.php';
         <div class="hospitslDetails mb-0">
             <div class="row">
                 <div class="col-1 headerHospitalLogo">
-                    <img class="mt-4" src="../images/logo-p.jpg" alt="XYZ Hospital">
+                    <img class="mt-4" src="<?= IMG_PATH ?>logo-p.jpg" alt="XYZ Hospital">
                 </div>
                 <div class="col-4 headerHospitalDetails">
                     <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?php echo $hospitalName ?></h1>
@@ -105,7 +104,7 @@ require_once CLASS_DIR.'doctor.category.class.php';
                         <small><?php echo $address1.', '.$address2.', '.$city.',<br>'.$state.', '.$pin; ?></small>
                     </p>
                 </div>
-                <div class="col-2 header-doc-img"> <img src="../images/medicy-doctor-logo.png" alt=""> </div>
+                <div class="col-2 header-doc-img"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
                 <div class=" text-danger col-5 headerDoctorDetails">
                     <h2 class="text-end mt-3  mb-0"><?php echo $DoctorName ?></h2>
                     <p class="text-end  mb-0 ">
@@ -235,7 +234,7 @@ require_once CLASS_DIR.'doctor.category.class.php';
                 <div class="col-md-4 custom-width-name mb-0">
                     <ul style="margin-bottom: 8px">
                         <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2"
-                                src="../employee/partials/hospital.png" alt="Healt Care"
+                                src="<?= IMG_PATH ?>icons/hospital.png" alt="Healt Care"
                                 style="width:28px; height:20px;" /><?php echo $hospitalName ?></li>
                     </ul>
                 </div>
@@ -243,7 +242,7 @@ require_once CLASS_DIR.'doctor.category.class.php';
                 <div class="col-md-4 custom-width-email mb-0">
                     <ul style="margin-bottom: 8px">
                         <li class="list-unstyled"><img id="email-box" class="pe-2"
-                                src="../employee/partials/email-logo.png" alt="Email"
+                                src="<?= IMG_PATH ?>icons/email-logo.png" alt="Email"
                                 style="width:28px; height:20px;" /><?php echo $hospitalEmail ?></li>
 
                     </ul>
@@ -252,7 +251,7 @@ require_once CLASS_DIR.'doctor.category.class.php';
                 <div class="col-md-4 custom-width-number mb-0">
                     <ul style="margin-bottom: 8px">
                         <li class="list-unstyled"><img id="number-box" class="pe-2"
-                                src="../employee/partials/call-logo.png" alt="Contact"
+                                src="<?= IMG_PATH ?>icons/call-logo.png" alt="Contact"
                                 style="width:28px; height:20px;" /><span><?php echo $appointmentNumber.', '.$hospitalPhno ?></span>
                         </li>
                     </ul>
