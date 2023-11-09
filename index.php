@@ -23,7 +23,7 @@ $StockInDetails    = new StockInDetails();
 $Distributor       = new Distributor;
 $Patients          = new Patients;
 
-$totalAppointments = $appoinments->appointmentsDisplay();
+$totalAppointments = $appoinments->appointmentsDisplay($adminId);
 
 // if ($_SESSION['ADMIN'] == false) {
 //     echo "<br>ADMIN ID : $adminId<br>";
