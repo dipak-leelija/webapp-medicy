@@ -1,10 +1,6 @@
 <?php
 
-<<<<<<< HEAD
 require_once __DIR__.'/config/constant.php';
-=======
-require_once 'config/constant.php';
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
@@ -119,11 +115,7 @@ $allProducts = $Products->showProducts();
 
                                                         <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
                                                             <div class="card  m-2" id="allProducts">
-<<<<<<< HEAD
                                                                 <img src="<?php echo PROD_IMG_PATH?><?php echo $productImage ?>" class="card-img-top" alt="...">
-=======
-                                                                <img src="<?= IMG_PATH ?>product-image/<?php echo $productImage ?>" class="card-img-top" alt="...">
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item['name']; ?></b></label>
                                                                     <p class="mb-0"><b><?php $item['name'] ?></b></p>
@@ -216,7 +208,6 @@ $allProducts = $Products->showProducts();
         <i class="fas fa-angle-up"></i>
     </a>
 
-<<<<<<< HEAD
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
@@ -226,17 +217,6 @@ $allProducts = $Products->showProducts();
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-=======
-    <!-- Core plugin JavaScript-->
-    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-    
-    <!-- Bootstrap core JavaScript-->
-    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 
 
     <script>
