@@ -16,21 +16,21 @@ $updated = false;
 if(isset($_POST['update'])){
     // echo $appointmentTableId;
     // exit;
-    $patientName = $_POST['patientName'];
-    $patientGurdianName = $_POST['patientGurdianName'];
-    $patientEmail = $_POST['patientEmail'];
-    $patientPhoneNumber = $_POST['patientPhoneNumber'];
-    $appointmentDate = $_POST['appointmentDate'];
-    $patientWeight = $_POST['patientWeight'];
-    $patientDOB = $_POST['patientDOB'];
-    $gender = $_POST['gender'];
-    $patientAddress1 = $_POST['patientAddress1'];
-    $patientAddress2 = $_POST['patientAddress2'];
-    $patientPS = $_POST['patientPS'];
-    $patientDist = $_POST['patientDist'];
-    $patientPIN = $_POST['patientPIN'];
-    $patientState = $_POST['patientState'];
-    $patientDoctor = $_POST['patientDoctor'];
+    $patientName         = $_POST['patientName'];
+    $patientGurdianName  = $_POST['patientGurdianName'];
+    $patientEmail        = $_POST['patientEmail'];
+    $patientPhoneNumber  = $_POST['patientPhoneNumber'];
+    $appointmentDate     = $_POST['appointmentDate'];
+    $patientWeight       = $_POST['patientWeight'];
+    $patientDOB          = $_POST['patientDOB'];
+    $gender              = $_POST['gender'];
+    $patientAddress1     = $_POST['patientAddress1'];
+    $patientAddress2     = $_POST['patientAddress2'];
+    $patientPS           = $_POST['patientPS'];
+    $patientDist         = $_POST['patientDist'];
+    $patientPIN          = $_POST['patientPIN'];
+    $patientState        = $_POST['patientState'];
+    $patientDoctor       = $_POST['patientDoctor'];
     $patientDoctorTiming = $_POST['doctorTiming'];
     
     $updateAppointment = $appointments->updateAppointmentsbyTableId($appointmentDate,$patientName,$patientGurdianName,$patientEmail,      $patientPhoneNumber,$patientDOB,$patientWeight,$gender,$patientAddress1,$patientAddress2,$patientPS,$patientDist,$patientPIN,$patientState,$patientDoctor,$patientDoctorTiming, /*Last Parameter For Appointment Id Which Details You Want to Update*/$appointmentTableId);
@@ -47,24 +47,24 @@ if(isset($_POST['update'])){
 $showAppointments = $appointments->appointmentsDisplaybyTableId($appointmentTableId);
 
 foreach ($showAppointments as $appointment) {
-    $appointmentTableId = $appointment['id'];
-    $appointmentId = $appointment['appointment_id'];
-    $appointmentDate = $appointment['appointment_date'];
-    $PatientName = $appointment['patient_name'];
-    $PatientGurdianName = $appointment['patient_gurdian_name'];
-    $PatientEmail = $appointment['patient_email'];
-    $PatientPhno = $appointment['patient_phno'];
-    $PatientAge = $appointment['patient_dob'];
-    $PatientWeight = $appointment['patient_weight'];
-    $PatientGender = $appointment['patient_gender'];
-    $PatientAddress1 = $appointment['patient_addres1'];
-    $PatientAddress2 = $appointment['patient_addres2'];
-    $PatientPs = $appointment['patient_ps'];
-    $PatientDist = $appointment['patient_dist'];
-    $PatientPin = $appointment['patient_pin'];
-    $PatientState = $appointment['patient_state'];
-    $getDoctorForPatient = $appointment['doctor_id'];
-    $PatientDocShift = $appointment['patient_doc_shift'];
+    $appointmentTableId         = $appointment['id'];
+    $appointmentId              = $appointment['appointment_id'];
+    $appointmentDate            = $appointment['appointment_date'];
+    $PatientName                = $appointment['patient_name'];
+    $PatientGurdianName         = $appointment['patient_gurdian_name'];
+    $PatientEmail               = $appointment['patient_email'];
+    $PatientPhno                = $appointment['patient_phno'];
+    $PatientAge                 = $appointment['patient_age'];
+    $PatientWeight              = $appointment['patient_weight'];
+    $PatientGender              = $appointment['patient_gender'];
+    $PatientAddress1            = $appointment['patient_addres1'];
+    $PatientAddress2            = $appointment['patient_addres2'];
+    $PatientPs                  = $appointment['patient_ps'];
+    $PatientDist                = $appointment['patient_dist'];
+    $PatientPin                 = $appointment['patient_pin'];
+    $PatientState               = $appointment['patient_state'];
+    $getDoctorForPatient        = $appointment['doctor_id'];
+    $PatientDocShift            = $appointment['patient_doc_shift'];
 }
 
 
@@ -128,19 +128,17 @@ foreach ($showAppointments as $appointment) {
                 <div class="col-sm-6 mt-4">
                     <label class="form-label mb-3 mr-1" for="gender">Gender: </label>
 
-                    <input type="radio" class="btn-check" name="gender" id="male" value="Male" autocomplete="off" required <?php if ($PatientGender == "Male") {
-                                                                                                                                echo "checked";
-                                                                                                                            } ?>>
+                    <input type="radio" class="btn-check" name="gender" id="male" value="Male" autocomplete="off"
+                    <?= $PatientGender == "Male" ? "checked" : ''; ?> required>
                     <label class="btn btn-sm btn-outline-secondary" for="male" value="Male">Male</label>
 
-                    <input type="radio" class="btn-check" name="gender" id="female" value="Female" autocomplete="off" required <?php if ($PatientGender == "Female") {
-                                                                                                                                    echo "checked";
-                                                                                                                                } ?>>
+                    <input type="radio" class="btn-check" name="gender" id="female" value="Female" autocomplete="off" 
+                    <?= $PatientGender == "Female" ? "checked" : ''; ?> required>
                     <label class="btn btn-sm btn-outline-secondary" for="female" value="Female">Female</label>
 
-                    <input type="radio" class="btn-check" name="gender" id="secret" value="Secret" autocomplete="off" required <?php if ($PatientGender == "Secret") {
-                                                                                                                                    echo "checked";
-                                                                                                                                } ?>>
+                    <input type="radio" class="btn-check" name="gender" id="secret" value="Secret" autocomplete="off"
+                    <?= $PatientGender == "Secret" ? "checked" : '' ; ?> required>
+                    
                     <label class="btn btn-sm btn-outline-secondary" for="secret" value="Secret">Secret</label>
                     <div class="valid-feedback mv-up">You selected a gender!</div>
                     <div class="invalid-feedback mv-up">Please select a gender!</div>

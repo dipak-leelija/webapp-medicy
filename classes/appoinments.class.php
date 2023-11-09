@@ -3,9 +3,9 @@
 class Appointments extends DatabaseConnection{
 
     // ============ apointments book by patients him/her self ==========
-    function addAppointments($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianNAme, $patientEmail, $patientPhoneNumber, $patientDOB, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $patientDoctorShift){
+    function addAppointments($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianNAme, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $patientDoctorShift){
 
-        $insertApoointments = "INSERT INTO `appointments` (`appointment_id`, `patient_id`, `appointment_date`, `patient_name`, `patient_gurdian_name`, `patient_email`, `patient_phno`, `patient_dob`, `patient_weight`, `patient_gender`, `patient_addres1`, `patient_addres2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `doctor_id`, `patient_doc_shift`) VALUES ('$appointmentId', $patientId, '$appointmentDate', '$patientName', '$patientGurdianNAme', '$patientEmail', '$patientPhoneNumber', '$patientDOB', '$patientWeight', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState', '$patientDoctor', '$patientDoctorShift')";
+        $insertApoointments = "INSERT INTO `appointments` (`appointment_id`, `patient_id`, `appointment_date`, `patient_name`, `patient_gurdian_name`, `patient_email`, `patient_phno`, `patient_age`, `patient_weight`, `patient_gender`, `patient_addres1`, `patient_addres2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `doctor_id`, `patient_doc_shift`) VALUES ('$appointmentId', $patientId, '$appointmentDate', '$patientName', '$patientGurdianNAme', '$patientEmail', '$patientPhoneNumber', '$patientAge', '$patientWeight', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState', '$patientDoctor', '$patientDoctorShift')";
 
         $insertQuery = $this->conn->query($insertApoointments);
 
@@ -127,9 +127,9 @@ class Appointments extends DatabaseConnection{
 
 
 
-    function updateAppointmentsbyTableId($appointmentDate,$patientName,$patientGurdianName,$patientEmail,$patientPhoneNumber,$patientDOB,$patientWeight,$gender,$patientAddress1,$patientAddress2,$patientPS,$patientDist,$patientPIN,$patientState,$patientDoctor,$patientDoctorTiming, /*Last Parameter For Appointment Id Which Details You Want to Update*/$appointmentTableId){
+    function updateAppointmentsbyTableId($appointmentDate,$patientName,$patientGurdianName,$patientEmail,$patientPhoneNumber,$patientAge,$patientWeight,$gender,$patientAddress1,$patientAddress2,$patientPS,$patientDist,$patientPIN,$patientState,$patientDoctor,$patientDoctorTiming, /*Last Parameter For Appointment Id Which Details You Want to Update*/$appointmentTableId){
 
-        $updateById = "UPDATE  `appointments` SET `appointment_date` = '$appointmentDate', `patient_name` = '$patientName', `patient_gurdian_name` = '$patientGurdianName', `patient_email`= '$patientEmail', `patient_phno` = '$patientPhoneNumber', `patient_dob` = '$patientDOB', `patient_weight` = '$patientWeight', `patient_gender` = '$gender', `patient_addres1` = '$patientAddress1', `patient_addres2` = '$patientAddress2', `patient_ps` = '$patientPS', `patient_dist` = '$patientDist',`patient_pin` = '$patientPIN', `patient_state` = '$patientState', `doctor_id` = '$patientDoctor', `patient_doc_shift` = '$patientDoctorTiming' WHERE `appointments`.`id` = '$appointmentTableId'";
+        $updateById = "UPDATE  `appointments` SET `appointment_date` = '$appointmentDate', `patient_name` = '$patientName', `patient_gurdian_name` = '$patientGurdianName', `patient_email`= '$patientEmail', `patient_phno` = '$patientPhoneNumber', `patient_age` = '$patientAge', `patient_weight` = '$patientWeight', `patient_gender` = '$gender', `patient_addres1` = '$patientAddress1', `patient_addres2` = '$patientAddress2', `patient_ps` = '$patientPS', `patient_dist` = '$patientDist',`patient_pin` = '$patientPIN', `patient_state` = '$patientState', `doctor_id` = '$patientDoctor', `patient_doc_shift` = '$patientDoctorTiming' WHERE `appointments`.`id` = '$appointmentTableId'";
 
         // echo $updateById.$this->conn->error;
         // exit;
@@ -144,9 +144,9 @@ class Appointments extends DatabaseConnection{
 
 
 
-    function updateAppointmentsbyId($appointmentDate,$patientName,$patientGurdianNAme,$patientEmail,$patientPhoneNumber,$patientDOB,$patientWeight,$gender,$patientAddress1,$patientAddress2,$patientPS,$patientDist,$patientPIN,$patientState,$patientDoctor,$patientDoctorTiming, /*Last Parameter For Appointment Id Which Details You Want to Update*/$appointmentID){
+    function updateAppointmentsbyId($appointmentDate,$patientName,$patientGurdianNAme,$patientEmail,$patientPhoneNumber,$patientAge,$patientWeight,$gender,$patientAddress1,$patientAddress2,$patientPS,$patientDist,$patientPIN,$patientState,$patientDoctor,$patientDoctorTiming, /*Last Parameter For Appointment Id Which Details You Want to Update*/$appointmentID){
 
-        $updateById = "UPDATE  `appointments` SET `appointment_date` = '$appointmentDate', `patient_name` = '$patientName', `patient_gurdian_name` = '$patientGurdianNAme', `patient_email`= '$patientEmail', `patient_phno` = '$patientPhoneNumber', `patient_dob` = '$patientDOB', `patient_weight` = '$patientWeight', `patient_gender` = '$gender', `patient_addres1` = '$patientAddress1', `patient_addres2` = '$patientAddress2', `patient_ps` = '$patientPS', `patient_dist` = '$patientDist',`patient_pin` = '$patientPIN', `patient_state` = '$patientState', `doctor_id` = '$patientDoctor', `patient_doc_shift` = '$patientDoctorTiming' WHERE `appointments`.`appointment_id` = '$appointmentID'";
+        $updateById = "UPDATE  `appointments` SET `appointment_date` = '$appointmentDate', `patient_name` = '$patientName', `patient_gurdian_name` = '$patientGurdianNAme', `patient_email`= '$patientEmail', `patient_phno` = '$patientPhoneNumber', `patient_age` = '$patientAge', `patient_weight` = '$patientWeight', `patient_gender` = '$gender', `patient_addres1` = '$patientAddress1', `patient_addres2` = '$patientAddress2', `patient_ps` = '$patientPS', `patient_dist` = '$patientDist',`patient_pin` = '$patientPIN', `patient_state` = '$patientState', `doctor_id` = '$patientDoctor', `patient_doc_shift` = '$patientDoctorTiming' WHERE `appointments`.`appointment_id` = '$appointmentID'";
 
         $updatedByIdQuery = $this->conn->query($updateById);
 
@@ -156,9 +156,9 @@ class Appointments extends DatabaseConnection{
 
     
     // //  start appointment entry function
-    // function appointmententry($appointmentId, $appointmentDate, $patientName, $patientGurdianNAme, $patientEmail, $patientPhoneNumber, $patientDOB, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor){
+    // function appointmententry($appointmentId, $appointmentDate, $patientName, $patientGurdianNAme, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor){
 
-    //     $insertApoointments = "INSERT INTO `appointments` (`appointment_id`, `appointment_date`, `patient_name`, `patient_gurdian_name`, `patient_email`, `patient_phno`, `patient_dob`, `patient_weight`, `patient_gender`, `patient_addres1`, `patient_addres2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `doctor_id`) VALUES ('$appointmentId', '$appointmentDate', '$patientName', '$patientGurdianNAme', '$patientEmail', '$patientPhoneNumber', '$patientDOB', '$patientWeight', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState', '$patientDoctor' )";
+    //     $insertApoointments = "INSERT INTO `appointments` (`appointment_id`, `appointment_date`, `patient_name`, `patient_gurdian_name`, `patient_email`, `patient_phno`, `patient_age`, `patient_weight`, `patient_gender`, `patient_addres1`, `patient_addres2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `doctor_id`) VALUES ('$appointmentId', '$appointmentDate', '$patientName', '$patientGurdianNAme', '$patientEmail', '$patientPhoneNumber', '$patientAge', '$patientWeight', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState', '$patientDoctor' )";
     //     $insertQuery = $this->conn->query($insertApoointments);
 
     //     return $insertQuery;
