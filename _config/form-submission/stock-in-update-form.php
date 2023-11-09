@@ -1,27 +1,18 @@
-<!-- Include SweetAlert2 CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<link href="../../../css/sweetalert2/sweetalert2.min.css" rel="stylesheet">
-
-<!-- Include SweetAlert2 JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-<script src="../../../js/sweetalert2/sweetalert2.all.min.js"></script>
-
-
 <?php
-require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'stockIn.class.php';
-require_once CLASS_DIR.'stockInDetails.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'distributor.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
-require_once CLASS_DIR.'stockOut.class.php';
-require_once CLASS_DIR.'stockReturn.class.php';
-require_once CLASS_DIR.'salesReturn.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'stockIn.class.php';
+require_once CLASS_DIR . 'stockInDetails.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
+require_once CLASS_DIR . 'stockOut.class.php';
+require_once CLASS_DIR . 'stockReturn.class.php';
+require_once CLASS_DIR . 'salesReturn.class.php';
 
 $StockIn = new StockIn();
 $StockInDetails = new StockInDetails();
@@ -53,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $distPrevBillNo     = $_POST['prev-distributor-bill'];
         $distributorBill    = $_POST['distributor-bill'];
-        
+
         $Items              = $_POST['items'];
         $items              = count($_POST['productId']);
         $totalQty           = $_POST['total-qty'];
@@ -66,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $totalGst           = $_POST['totalGst'];
         $amount             = $_POST['netAmount'];
         $addedBy            = $employeeId;
-        
+
 
 
         $BatchNo            = $_POST['batchNo'];
@@ -131,14 +122,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // echo "<br><br>";
 
 
-        
+
 
         // ==== check data =====
         $stockInAttrib = 'id';
         $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttrib, $stockIn_Id);
         // print_r($seleteStockinData);
         if ($seleteStockinData[0]['distributor_bill'] != $distributorBill) {
-            foreach($seleteStockinData as $seleteStockinData){
+            foreach ($seleteStockinData as $seleteStockinData) {
                 $table1 = 'distributor_bill';
                 $table2 = 'id';
                 $updateBillNumber = $StockInDetails->updateStockInDetailsByTableData($table1, $table2, $distributorBill, $seleteStockinData['id']);
@@ -202,7 +193,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     icon: "warning",
                                     });';
                     echo '</script>';
-
                 } else {
 
                     /// deleting from current stock \\\\==============
@@ -266,10 +256,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $item_total_qty = intval($item_qty[$i]) + intval($item_free_qty[$i]);
                 // echo "<br>item total qty check : $item_total_qty";
-                if($item_unit[$i] == 'tab' || $item_unit[$i] == 'cap'){
+                if ($item_unit[$i] == 'tab' || $item_unit[$i] == 'cap') {
                     $item_loose_qty = intval($item_total_qty) * intval($item_weightage);
                     $item_loose_price = floatval($item_mrp[$i]) / intval($item_weightage[$i]);
-                }else{
+                } else {
                     $item_loose_qty = 0;
                     $item_loose_price = 0;
                 }
@@ -278,10 +268,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $addToStockInDetails = $StockInDetails->addStockInDetails($stockIn_Id, $product_ids[$i], $distributorBill, $batch_no[$i], $mfd_date[$i], $exp_date[$i], $item_weightage[$i], $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_loose_qty, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $baseAmount_perItem[$i], $item_gst[$i], $gstAmount_perItem[$i], $marginAmount_perItem[$i], $billAmount_perItem[$i], $employeeId, NOW, $adminId);
 
                 $stockInDetailsId = $addToStockInDetails['stockIn_Details_id'];
-                
+
                 /* add new data to current stock */
                 $addToCurrentStock = $CurrentStock->addCurrentStock($stockInDetailsId, $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $item_loose_qty, $item_loose_price, $item_weightage[$i], $item_unit[$i], $item_total_qty, $item_mrp[$i], $item_ptr[$i], $item_gst[$i], $addedBy, NOW, $adminId);
-
             } else {
 
                 // update old data
@@ -312,16 +301,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stockInDetailsById = $StockInDetails->showStockInDetailsByStokinId($updatedItemIdsArray[$i]);
                 foreach ($stockInDetailsById as $stockInDetaislData) {
                     $prevStockInItemQty = intval($stockInDetaislData['qty']) + intval($stockInDetaislData['free_qty']);
-                    
                 }
-                
+
                 $itemQty = $item_qty[$i];
                 $itemFreeQty = $item_free_qty[$i];
                 $updatedQty = (intval($itemQty) + intval($itemFreeQty)) - intval($prevStockInItemQty);
 
-                if($item_unit[$i] == 'tab' || $item_unit[$i] == 'cap'){
+                if ($item_unit[$i] == 'tab' || $item_unit[$i] == 'cap') {
                     $updatedStockInLooseQty = intval($updatedQty) * intval($item_weightage[$i]);
-                }else{
+                } else {
                     $updatedStockInLooseQty = 0;
                 }
 
@@ -329,26 +317,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>prem item qty : $prevStockInItemQty";
                 // echo "<br>updated item qty : $updatedQty";
                 // echo "<br>updated item loose qty : $updatedStockInLooseQty";
-                
+
                 // update to current stock data
                 $currentStockItmeDetails = $CurrentStock->showCurrentStocByStokInDetialsId($updatedItemIdsArray[$i]);
-                if(!empty($currentStockItmeDetails)){
+                if (!empty($currentStockItmeDetails)) {
                     foreach ($currentStockItmeDetails as $currentStockItemsData) {
                         $itemId = $currentStockItemsData['id'];
                         $Loose_Qty = intval($currentStockItemsData['loosely_count']);
-                        $item_Qty = intval($currentStockItemsData['qty']); 
+                        $item_Qty = intval($currentStockItemsData['qty']);
                     }
                 }
-                
 
-                if($item_unit[$i] == 'tab' || $item_unit[$i] == 'cap'){
+
+                if ($item_unit[$i] == 'tab' || $item_unit[$i] == 'cap') {
                     $updated_Loose_Qty = intval($Loose_Qty) + intval($updatedStockInLooseQty);
                     $updated_item_qty = intdiv($updated_Loose_Qty, $item_weightage[$i]);
-                }else{
+                } else {
                     $updated_Loose_Qty = 0;
                     $updated_item_qty = intval($item_Qty) + intval($updatedQty);
                 }
-                
+
                 // echo "<br>current stock item id : $itemId";
                 // echo "<br>updated current item qty : $updated_item_qty";
                 // echo "<br>updated current item loose qty : $updated_Loose_Qty";
@@ -357,14 +345,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 /* update to current stock */
                 $updateCurrentStockItemData = $CurrentStock->updateCurrentStockByStockInId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $updated_Loose_Qty, $updated_item_qty, $item_ptr[$i], $addedBy);
 
-                if($item_unit[$i] == 'tab' || $item_unit[$i] == 'cap'){
+                if ($item_unit[$i] == 'tab' || $item_unit[$i] == 'cap') {
                     $stockInLooseCount = (intval($item_qty[$i]) + intval($item_free_qty[$i])) * intval($item_weightage[$i]);
-                }else{
+                } else {
                     $stockInLooseCount = 0;
                 }
 
-                $updatedStockInDetails = $StockInDetails->updateStockInDetailsById($updatedItemIdsArray[$i], $product_ids[$i], $distributorBill, $batch_no[$i], $mfd_date[$i], $exp_date[$i], $item_weightage[$i], $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $stockInLooseCount, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $baseAmount_perItem[$i], $item_gst[$i], $gstAmount_perItem[$i], $marginAmount_perItem[$i], $billAmount_perItem[$i], $addedBy);
+                // ======= need to check this data ============
+                
+                //===========
 
+                $updatedStockInDetails = $StockInDetails->updateStockInDetailsById(intval($updatedItemIdsArray[$i]), $product_ids[$i], $distributorBill, $batch_no[$i], $mfd_date[$i], $exp_date[$i], intval($item_weightage[$i]), $item_unit[$i], intval($item_qty[$i]), intval($item_free_qty[$i]), intval($stockInLooseCount), floatval($item_mrp[$i]), floatval($item_ptr[$i]), intval($discountPercent[$i]), floatval($baseAmount_perItem[$i]), intval($item_gst[$i]), floatval($gstAmount_perItem[$i]), floatval($marginAmount_perItem[$i]), floatval($billAmount_perItem[$i]), $addedBy, NOW);
 
 
                 /* multiple table update area as bellow data are contain multiple row of same item ids. */
@@ -373,8 +364,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stockOutDetaislTable = 'item_id';
                 $checkStocOutDetails = $StockOut->stokOutDetailsDataOnTable($stockOutDetaislTable, $itemId);
                 // update on stock out details table
-                if(!empty($checkStocOutDetails)){
-                    for($j=0; $j<count($checkStocOutDetails); $j++){
+                if (!empty($checkStocOutDetails)) {
+                    for ($j = 0; $j < count($checkStocOutDetails); $j++) {
                         $updateStockOutDetailslData = $StockOut->updateStockOutDetaisOnStockInEdit($itemId, $batch_no[$i], $exp_date[$i], $employeeId, NOW);
                     }
                 } // END OF STOCK OUT DETAILS UPDATE
@@ -385,12 +376,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $salesReturnDetailsData = $SalesReturn->selectSalesReturnList($salesReturnDetaislTable, $itemId);
 
                 // 1st. check sales return details table have current access data or not
-                if(!empty($salesReturnDetailsData)){
-                    for($l=0; $l<count($salesReturnDetailsData); $l++){
+                if (!empty($salesReturnDetailsData)) {
+                    for ($l = 0; $l < count($salesReturnDetailsData); $l++) {
                         $salesReturnDetailsUpdate = $SalesReturn->updateSalesReturnOnStockInUpdate($itemId, $batch_no[$i], $exp_date[$i], $addedBy);
                     }
                 }
-                
+
 
                 /* update on stock return details tabel */ //( check this qarry )
                 // 1st. check stock return table have current access data or not
@@ -398,21 +389,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $data1 = $stockIn_Id;
                 // updated table where dist id = $prevDistId, and dist bill number =  $distPrevBillNo;
                 $updateStockReturn = $StcokReturn->updateStockReturnOnEditStockIn($table1, $data1, $distributorId, $distributorBill, $addedBy);
-                
+
                 $selectStockReturnData = $StcokReturn->stockReturnFilter($table1, $data1);
-                if(!empty($selectStockReturnData)){
+                if (!empty($selectStockReturnData)) {
                     $stockReturnId = $selectStockReturnData[0]['id'];
                 }
 
                 // update stock return details table
                 $stockReturnDetailsData = $StcokReturn->showStockReturnDataByStokinId($updatedItemIdsArray[$i]);
 
-                if(!empty($stockReturnDetailsData)){
-                    for($m = 0; $m<count($stockReturnDetailsData); $m++){  
+                if (!empty($stockReturnDetailsData)) {
+                    for ($m = 0; $m < count($stockReturnDetailsData); $m++) {
                         // update stock return details by $stockReturnTabelData[0]['id'] and $itemId,
-                        $updateStockReturn = $StcokReturn->stockReturnDetailsEditByStockInDetailsId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $item_weightage[$i].$item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $item_gst[$i], $addedBy);
+                        $updateStockReturn = $StcokReturn->stockReturnDetailsEditByStockInDetailsId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $item_weightage[$i] . $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $item_gst[$i], $addedBy);
                     }
-                } 
+                }
             }
         }
     }
@@ -428,14 +419,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Medicine Purchase Bill</title>
-    <link rel="stylesheet" href="../../../css/bootstrap 5/bootstrap-purchaseItem.css">
-    <link rel="stylesheet" href="../../../css/custom/purchase-bill.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap-purchaseItem.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/purchase-bill.css">
 
     <style type="text/css">
         @page {
             size: landscape;
         }
     </style>
+
+    <!-- Include SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Include SweetAlert2 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 </head>
 
 
@@ -449,7 +448,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="../../../images/logo-p.jpg" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= IMG_PATH ?>logo-p.jpg" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
@@ -542,7 +541,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // $stokInId = $stokInid;
 
                 $count = count($itemIds);
-                
+
                 $itemDetials = $StockInDetails->showStockInDetailsByStokId($_POST['stok-in-id']);
                 // print_r($itemDetials);
 
@@ -752,16 +751,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
 </body>
-<script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
+<script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 <script>
     const back = () => {
-        window.location.replace("../../stock-in.php")
+        window.location.replace("<?= URL ?>stock-in.php")
     }
 
     const goBack = (id, value) => {
         console.log(id);
         console.log(value);
-        location.href = `../../stock-in-edit.php?edit=${value}&editId=${id}`;
+        location.href = `<?= URL ?>stock-in-edit.php?edit=${value}&editId=${id}`;
     }
 </script>
 

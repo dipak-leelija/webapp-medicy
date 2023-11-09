@@ -1,8 +1,8 @@
 <?php
-require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR.'dbconnect.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'stockIn.class.php';
 require_once CLASS_DIR.'stockInDetails.class.php';
 require_once CLASS_DIR.'currentStock.class.php';
@@ -21,8 +21,6 @@ $Products = new Products();
 $Manufacturer = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
 $StcokReturn = new StockReturn();
-
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['stock-in'])) {
@@ -132,8 +130,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Medicine Purchase Bill</title>
-    <link rel="stylesheet" href="../../../css/bootstrap 5/bootstrap-purchaseItem.css">
-    <link rel="stylesheet" href="../../css/custom/purchase-bill.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap-purchaseItem.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/purchase-bill.css">
 
     <style type="text/css">
         @page {
@@ -153,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="../../../images/logo-p.jpg" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= IMG_PATH ?>logo-p.jpg" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
@@ -461,16 +459,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
 </body>
-<script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
+<script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 <script>
     const back = () => {
-        window.location.replace("../../stock-in.php")
+        window.location.replace("<?= URL ?>.stock-in.php")
     }
 
     const goBack = (id, value) => {
-        console.log(id);
-        console.log(value);
-        location.href = `../../stock-in-edit.php?edit=${value}&editId=${id}`;
+        // console.log(id);
+        // console.log(value);
+        location.href = `<?= URL ?>stock-in-edit.php?edit=${value}&editId=${id}`;
     }
 </script>
 

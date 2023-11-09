@@ -8,14 +8,12 @@ require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'doctor.category.class.php';
 
 
-
-
-   // Fetching Appointments Info
-   $appointmentId = $_GET['prescription'];
+// Fetching Appointments Info
+$appointmentId = $_GET['prescription'];
 //    echo $appointmentId;
 
-   $appointments = new Appointments();
-   $currentAppointments =$appointments->appointmentsDisplaybyId($appointmentId);
+$appointments = new Appointments();
+$currentAppointments = $appointments->appointmentsDisplaybyId($appointmentId);
 //    print_r($currentAppointments); exit;
 
    foreach($currentAppointments as $currentAppointmentDetails){
@@ -37,7 +35,7 @@ require_once CLASS_DIR.'doctor.category.class.php';
        $getDoctorForPatient = $currentAppointmentDetails['doctor_id'];
     //    echo var_dump($getDoctorForPatient); exit;
 
-    }
+}
 
         // Fetching Hospital Info
         $hospital = new HelthCare();
@@ -69,13 +67,10 @@ require_once CLASS_DIR.'doctor.category.class.php';
         $DoctorPhno         = $DoctorByidDetails['doctor_phno'];
     }
 
-   // Fetching Appointments Info
-   $DoctorCategory = new DoctorCategory();
-
-    $showDoctorCategoryById = $DoctorCategory->showDoctorCategoryById($docSpecialization);
-    foreach ($showDoctorCategoryById as $rowDocCatName) {
-        $doctorName = $rowDocCatName['category_name'];
-    }
+$showDoctorCategoryById = $DoctorCategory->showDoctorCategoryById($docSpecialization);
+foreach ($showDoctorCategoryById as $rowDocCatName) {
+    $doctorName = $rowDocCatName['category_name'];
+}
 
 ?>
 
@@ -101,22 +96,25 @@ require_once CLASS_DIR.'doctor.category.class.php';
                 <div class="col-4 headerHospitalDetails">
                     <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?php echo $hospitalName ?></h1>
                     <p class="text-start  me-3">
-                        <small><?php echo $address1.', '.$address2.', '.$city.',<br>'.$state.', '.$pin; ?></small>
+                        <small><?php echo $address1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small>
                     </p>
                 </div>
                 <div class="col-2 header-doc-img"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
                 <div class=" text-danger col-5 headerDoctorDetails">
                     <h2 class="text-end mt-3  mb-0"><?php echo $DoctorName ?></h2>
                     <p class="text-end  mb-0 ">
-                        <small><?php if($DoctorReg != NULL){ echo 'REG NO : '.$DoctorReg; } ?></small>
+                        <small><?php if ($DoctorReg != NULL) {
+                                    echo 'REG NO : ' . $DoctorReg;
+                                } ?></small>
                     </p>
 
                     <p class="text-end  mb-0 ">
-                        <small><?php echo $DoctorDegree.', '.$doctorName ?></small>
+                        <small><?php echo $DoctorDegree . ', ' . $doctorName ?></small>
                     </p>
                     <p class="text-end  mb-0"> <?php echo $DoctorAlsoWith ?></p>
                     <!-- Member of: -->
-                    <p class="text-end  mb-0"><?php // echo $DoctorAddress ?></p>
+                    <p class="text-end  mb-0"><?php // echo $DoctorAddress 
+                                                ?></p>
                     <h6 class="text-end text-primary"><strong>Call for Appointment:
                             <?php echo $appointmentNumber ?></strong></h6>
                 </div>
@@ -143,7 +141,7 @@ require_once CLASS_DIR.'doctor.category.class.php';
                 <div class="form-group col-sm-6 flex-column d-flex">
                     <h5 class="text-start">Address</h5>
                     <p class="text-start ms-2 mb-0"><?php echo $patientAddress1 ?></p>
-                    <p class="text-start ms-2 mb-0"><?php echo $patientPs.', '. $patientDist.', '. $patientPin ?></p>
+                    <p class="text-start ms-2 mb-0"><?php echo $patientPs . ', ' . $patientDist . ', ' . $patientPin ?></p>
                     <p class="text-start ms-2 mb-0"><?php echo $patientState ?></p>
                 </div> -->
             </div>
@@ -219,8 +217,8 @@ require_once CLASS_DIR.'doctor.category.class.php';
                         <p class="mb-0 mt-0 text-end">
                             Date:
                             <?php
-                            $date=date_create($appointmentDate);
-                            echo date_format($date,"d-m-Y"); 
+                            $date = date_create($appointmentDate);
+                            echo date_format($date, "d-m-Y");
                             ?>
                         </p>
                     </div>

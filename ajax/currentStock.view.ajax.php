@@ -54,9 +54,9 @@ if (isset($_GET['currentStockId'])) {
     $manufDetails = $manufacturer->showManufacturerById($prodcutDetails[0]['manufacturer_id']);
 
     $image = $ProductImages->showImageById($productId);
-    // print_r($image);
-    if ($image[0][2] != NULL) {
-        $productImage = $image[0][2];
+    print_r($image);
+    if ($image[0]['name'] != NULL) {
+        $productImage = $image[0]['name'];
     } else {
         $productImage = 'medicy-default-product-image.jpg';
     }
@@ -88,15 +88,15 @@ if (isset($_GET['currentStockId'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH?>bootstrap 5/bootstrap.css">
     <title>Product Details</title>
 
-    <link href="../../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Sweet Alert Js  -->
-    <script src="../../js/sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH?>sweetAlert.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <!-- <script src="../../assets/jquery-easing/jquery.easing.min.js"></script> -->
@@ -104,8 +104,8 @@ if (isset($_GET['currentStockId'])) {
     <!-- <script src="../../js/jquery.prettyPhoto.js"></script>
     <script src="../../js/jquery.vide.js"></script> -->
 
-    <script src="../../js/contact-us-js/jquery.min.js"></script>
-    <script src="../../js/contact-us-js/jquery.validate.min.js"></script>
+    <script src="<?= JS_PATH?>contact-us-js/jquery.min.js"></script>
+    <script src="<?= JS_PATH?>contact-us-js/jquery.validate.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <!-- <script src="../js/sb-admin-2.js"></script> -->
@@ -114,12 +114,12 @@ if (isset($_GET['currentStockId'])) {
     <script src="../vendor/product-table/dataTables.bootstrap4.js"></script> -->
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../../assets/jquery/jquery.min.js"></script>
+    <script src="<?= PLUGIN_PATH?>jquery/jquery.min.js"></script>
     <!-- <script src="../../js/bootstrap-js-4/bootstrap.bundle.min.js"></script> -->
 
     <!-- Custom JS -->
-    <script src="../js/custom-js.js"></script>
-    <script src="../js/ajax.custom-lib.js"></script>
+    <script src="<?= JS_PATH?>custom-js.js"></script>
+    <script src="<?= JS_PATH?>ajax.custom-lib.js"></script>
 </head>
 
 <body>
@@ -128,7 +128,7 @@ if (isset($_GET['currentStockId'])) {
             <div class="row p-4 justify-content-left">
                 <div class="col-sm-3 justify-content-center">
                     <div class="text-center border d-flex justify-content-center">
-                        <img src="../../images/product-image/<?php echo $productImage ?>" class="img-fluid rounded" alt="...">
+                        <img src="<?= PROD_IMG_PATH?><?php echo $productImage ?>" class="img-fluid rounded" alt="...">
                         <!-- <hr class="hl justify-content-center" style="color: black;"> -->
                     </div>
                 </div>

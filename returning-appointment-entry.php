@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once __DIR__.'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'appoinments.class.php';
@@ -14,9 +14,15 @@ $Patients = new Patients();
 
 
 // Fetching Hospital Info
-$HealthCare = new HelthCare();
-$hospitalDetails = $HealthCare->showhelthCare();
-foreach($hospitalDetails as $showShowHospital){
+$HealthCare        = new HelthCare();
+$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
+foreach($healthCareDetails as $showShowHospital){
     $hospitalName = $showShowHospital['hospital_name'];
 }
 
@@ -32,13 +38,13 @@ foreach($hospitalDetails as $showShowHospital){
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../css/patient-style.css">
-    <script src="../js/bootstrap-js-5/bootstrap.js"></script>
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css">
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <title>Enter Patient Details</title>
 
 
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -46,13 +52,13 @@ foreach($hospitalDetails as $showShowHospital){
 
     <!-- Custom styles for this template -->
 
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
 
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/custom/appointment.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
 
 </head>
 
@@ -61,20 +67,36 @@ foreach($hospitalDetails as $showShowHospital){
 
 
 if (isset($_POST['proceed'])) {
-    $patientId = $_POST['patientName'];
+    if(isset($_POST['patientName'])){
+        $patientId = $_POST['patientName'];
 
-    $patient = json_decode($Patients->patientsDisplayByPId($patientId));
-    $name            = $patient->name;
-    $gurdianName     = $patient->gurdian_name;
-    $phno            = $patient->phno;
-    $email           = $patient->email;
-    $gender          = $patient->gender;
-    $addres1         = $patient->address_1;
-    $addres2         = $patient->address_2;
-    $patientPs       = $patient->patient_ps;
-    $patientDist     = $patient->patient_dist;
-    $patientPIN      = $patient->patient_pin;
-    $patientState    = $patient->patient_state;
+        $patient = json_decode($Patients->patientsDisplayByPId($patientId));
+        echo $name            = $patient->name;
+        $gurdianName     = $patient->gurdian_name;
+        $phno            = $patient->phno;
+        $email           = $patient->email;
+        $gender          = $patient->gender;
+        $addres1         = $patient->address_1;
+        $addres2         = $patient->address_2;
+        $patientPs       = $patient->patient_ps;
+        $patientDist     = $patient->patient_dist;
+        $patientPIN      = $patient->patient_pin;
+        $patientState    = $patient->patient_state;
+    } 
+    // $patientId = $_POST['patientName'];
+
+    // $patient = json_decode($Patients->patientsDisplayByPId($patientId));
+    // $name            = $patient->name;
+    // $gurdianName     = $patient->gurdian_name;
+    // $phno            = $patient->phno;
+    // $email           = $patient->email;
+    // $gender          = $patient->gender;
+    // $addres1         = $patient->address_1;
+    // $addres2         = $patient->address_2;
+    // $patientPs       = $patient->patient_ps;
+    // $patientDist     = $patient->patient_dist;
+    // $patientPIN      = $patient->patient_pin;
+    // $patientState    = $patient->patient_state;
 }
 
 
@@ -113,7 +135,7 @@ if (isset($_POST['submit'])) {
     
 
     // Inserting Into Appointments Database
-    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor);
+    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor,$addedBy, $addedOn, $adminId);
     echo var_dump($addAppointment);
 
     if ($addAppointment) {
@@ -147,7 +169,7 @@ if (isset($_POST['submit'])) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -157,7 +179,7 @@ if (isset($_POST['submit'])) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of top bar -->
 
 
@@ -356,23 +378,23 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <!-- Footer -->
-                <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
+                <?php include ROOT_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
                 <!-- Bootstrap core JavaScript-->
-                <script src="vendor/jquery/jquery.min.js"></script>
-                <script src="vendor/jquery/jquery.slim.js"></script>
-                <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
-                <script src="../js/bootstrap-js-4/bootstrap.min.js"></script>
-                <script src="../js/bootstrap-js-4/bootstrap.js"></script>
+                <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+                <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.slim.js"></script>
+                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
+                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
 
 
 
                 <!-- Core plugin JavaScript-->
-                <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+                <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
                 <!-- Custom scripts for all pages-->
-                <script src="js/sb-admin-2.min.js"></script>
+                <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
                 <!-- Page level plugins -->
                 <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->

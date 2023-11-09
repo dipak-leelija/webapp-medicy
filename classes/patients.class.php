@@ -9,26 +9,27 @@ class Patients extends DatabaseConnection
 {
 
 
-    function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $addedOn, $adminId){
-    try {
-        $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `address_2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $addedOn, $adminId)
+    {
+        try {
+            $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `address_2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $stmt = $this->conn->prepare($insertPatients);
+            $stmt = $this->conn->prepare($insertPatients);
 
-        $stmt->bind_param("sssssssssssssssss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $addedOn, $adminId);
+            $stmt->bind_param("sssssssssssssssss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $addedOn, $adminId);
 
-        if ($stmt->execute()) {
-            $stmt->close();
-            return true;
-        } else {
-            $stmt->close();
+            if ($stmt->execute()) {
+                $stmt->close();
+                return true;
+            } else {
+                $stmt->close();
+                return false;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
             return false;
         }
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        return false;
     }
-}
 
 
 
@@ -191,6 +192,7 @@ class Patients extends DatabaseConnection
     {
         try {
             $sql = "SELECT COUNT(*) as patient_count, added_on FROM `patient_details` WHERE `admin_id` = '$adminId' AND `visited` = '1' AND `lab_visited` = '1' GROUP BY added_on";
+            // print_r($sql);
             $result = $this->conn->query($sql);
             if ($result->num_rows > 0) {
                 $rows = [];
@@ -214,7 +216,7 @@ class Patients extends DatabaseConnection
             $result = $this->conn->query($sql);
             if ($result !== false) {
                 $row = [];
-                while($row = $result->fetch_object()){
+                while ($row = $result->fetch_object()) {
                     $rows[] = $row;
                 }
                 return $rows;
@@ -242,7 +244,7 @@ class Patients extends DatabaseConnection
             $result = $this->conn->query($sql);
             if ($result !== false) {
                 $row = [];
-                while($row = $result->fetch_object()){
+                while ($row = $result->fetch_object()) {
                     $rows[] = $row;
                 }
                 return $rows;
@@ -267,7 +269,7 @@ class Patients extends DatabaseConnection
             $result = $this->conn->query($sql);
             if ($result !== false) {
                 $row = [];
-                while($row = $result->fetch_object()){
+                while ($row = $result->fetch_object()) {
                     $rows[] = $row;
                 }
                 return $rows;
@@ -289,13 +291,16 @@ class Patients extends DatabaseConnection
                 WHERE `admin_id` = '$adminId' 
                 AND `visited` = '1' AND `lab_visited` = '1'
                 AND `added_on` >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
-                
+
             $result = $this->conn->query($sql);
             if ($result !== false) {
-                $row = $result->fetch_object();
-                return $row->patient_count;
+                $row = [];
+                while ($row = $result->fetch_object()) {
+                    $rows[] = $row;
+                }
+                return $rows;
             } else {
-                return 0;
+                return [];
             }
         } catch (Exception $e) {
             $e->getMessage();
@@ -306,7 +311,7 @@ class Patients extends DatabaseConnection
     function findPatientsInRangeDate($adminId, $startDate, $endDate)
     {
         try {
-            $sql = "SELECT COUNT(*) AS count,added_on
+            $sql = "SELECT COUNT(*) AS patient_count,added_on
             FROM `patient_details` 
             WHERE `admin_id` = '$adminId' 
             AND `visited` = '1' AND `lab_visited` = '1'
@@ -315,8 +320,8 @@ class Patients extends DatabaseConnection
             $result = $this->conn->query($sql);
             if ($result !== false) {
                 $row = [];
-                while($row = $result->fetch_object()){
-                    $rows[] =$row;
+                while ($row = $result->fetch_object()) {
+                    $rows[] = $row;
                 }
                 return $rows;
             } else {

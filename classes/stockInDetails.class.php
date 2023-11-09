@@ -34,6 +34,48 @@ class StockInDetails extends DatabaseConnection
     }
     
 
+    
+    //======================================== UPDATE TABEL ==============================================
+   
+    function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn) {
+        
+        try {
+            $update = "UPDATE `stock_in_details` SET `product_id`=?, `distributor_bill`=?, `batch_no`=?, `mfd_date`=?, `exp_date`=?, `weightage`=?, `unit`=?, `qty`=?, `free_qty`=?, `loosely_count`=?, `mrp`=?, `ptr`=?, `discount`=?, `base`=?, `gst`=?, `gst_amount`=?, `margin`=?, `amount`=?, `update_emp_id`=?, `updated_on`=? WHERE `id`=?";
+            
+            
+            $stmt = $this->conn->prepare($update);
+    
+            $stmt->bind_param("sssssisiiiddididddssi", $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn, $id);
+
+            // return var_dump($stmt);
+
+            $stmt->execute();
+
+            $result = $stmt->affected_rows;
+            
+            $stmt->close();
+    
+            return $result;
+
+        } catch (Exception $e) {
+            if($e){
+                return $e;
+            }else{
+                return null;
+            } 
+        }
+    }
+    
+
+
+    function updateStockInDetailsByTableData($table1, $table2, $data1, $data2){
+        $update = "UPDATE `stock_in_details` SET `$table1`='$data1' WHERE `$table2`='$data2'";
+        $result = $this->conn->query($update);
+        return $result;
+    }
+
+    // ============================== eof update table ==============================================
+
 
 
     function showStockInDetails()
@@ -207,24 +249,6 @@ class StockInDetails extends DatabaseConnection
     //     return $data;
     // }
 
-    //======================================================================================== UPDATE TABEL
-
-    function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $addedBy)
-    {
-
-        $update = "UPDATE `stock_in_details` SET `product_id`='$productId',`distributor_bill`='$distBillNo',`batch_no`='$BatchNo',`mfd_date`='$mfd',`exp_date`='$exp',`weightage`='$weightage',`unit`='$unit',`qty`='$qty',`free_qty`='$freeQTY',`loosely_count`='$looselyCount',`mrp`='$mrp',`ptr`='$ptr',`discount`='$discount',`base`='$base',`gst`='$gst',`gst_amount`='$gstAmount',`margin`='$margin',`amount`='$amount',`added_by`='$addedBy' WHERE `id`='$id'";
-
-        $result = $this->conn->query($update);
-
-        return $result;
-    }
-
-
-    function updateStockInDetailsByTableData($table1, $table2, $data1, $data2){
-        $update = "UPDATE `stock_in_details` SET `$table1`='$data1' WHERE `$table2`='$data2'";
-        $result = $this->conn->query($update);
-        return $result;
-    }
     //====================================== DELETE QUARRY ==================================
 
 
