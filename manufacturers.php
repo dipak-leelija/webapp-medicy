@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once 'config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'manufacturer.class.php';
@@ -37,15 +37,15 @@ if (isset($_GET['return'])) {
     <title>Manufacturers of Medicy Health Care</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
-    <link href="../assets/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 
 </head>
@@ -56,7 +56,7 @@ if (isset($_GET['return'])) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -66,7 +66,7 @@ if (isset($_GET['return'])) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -122,7 +122,7 @@ if (isset($_GET['return'])) {
                         <div class="col-md-5">
                             <div class="card shadow mb-4">
                                 <div class="card-body">
-                                    <form method="post" action="_config/form-submission/add-manufacturer.php">
+                                    <form method="post" action="ajax/manufacturer.add.ajax.php">
 
                                         <div class="col-md-12">
                                             <label class="mb-0" for="manufacturer-name">Manufacturer Name</Address>
@@ -161,7 +161,7 @@ if (isset($_GET['return'])) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -196,26 +196,26 @@ if (isset($_GET['return'])) {
     </a>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../assets/jquery/jquery.min.js"></script>
-    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Sweet Alert Js  -->
-    <script src="../js/sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
     
 
     <!-- Core plugin JavaScript-->
-    <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
 
     <!-- Page level plugins -->
-    <script src="../assets/datatables/jquery.dataTables.min.js"></script>
-    <script src="../assets/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
     <script>
     //View and Edit Manufacturer function
@@ -258,7 +258,7 @@ if (isset($_GET['return'])) {
                             $(btn).closest("tr").fadeOut()
                             swal("Deleted", "Manufacturer Has Been Deleted", "success");
                         } else {
-                            swal("Delete Not Possible", "Manufacturer can't be deleted as its product is in stock", "warning");
+                            swal("Delete Not Possible", response, "warning");
                         }
                     }
                 });
