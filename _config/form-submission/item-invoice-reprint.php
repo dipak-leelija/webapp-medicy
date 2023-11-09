@@ -1,9 +1,9 @@
 <?php
-require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
-require_once ADM_DIR.'_config/user-details.inc.php';
+require_once ROOT_DIR.'_config/user-details.inc.php';
 // require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockOut.class.php';
@@ -65,8 +65,8 @@ foreach ($healthCareDetails as $rowhelthCare) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Lab Test Bill</title>
-    <link rel="stylesheet" href="../../../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../../../css/custom/test-bill.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/test-bill.css">
 
 </head>
 
@@ -77,7 +77,7 @@ foreach ($healthCareDetails as $rowhelthCare) {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="../../../images/logo-p.jpg"
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?php echo IMG_PATH ?>logo-p.jpg"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">
@@ -298,6 +298,6 @@ foreach ($healthCareDetails as $rowhelthCare) {
     </div>
     </div>
 </body>
-<script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
+<script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
 </html>

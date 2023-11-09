@@ -1,10 +1,10 @@
 <?php
-require_once dirname(__DIR__) . '/config/constant.php';
-require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 $page = "patients";
 
 require_once CLASS_DIR . 'dbconnect.php';
-require_once ADM_DIR . '_config/user-details.inc.php';
+require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
@@ -128,14 +128,13 @@ $occurrences = array_count_values($subTestNames);
     <title>Patients - <?= COMPANY_S ?></title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/patient-details.css">
-    <!-- <script src="../../../medicy.in/admin/vendor/chartjs-4.4.0/updatedChart.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-details.css">
+    <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
 </head>
 
@@ -145,7 +144,7 @@ $occurrences = array_count_values($subTestNames);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT . 'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -155,7 +154,7 @@ $occurrences = array_count_values($subTestNames);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT . 'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -350,7 +349,7 @@ $occurrences = array_count_values($subTestNames);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include PORTAL_COMPONENT . 'footer-text.php'; ?>
+            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -365,14 +364,14 @@ $occurrences = array_count_values($subTestNames);
     </a>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
     <script>
         const labels = <?php echo json_encode(array_keys($occurrences)) ?>;

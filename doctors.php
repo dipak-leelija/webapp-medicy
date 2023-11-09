@@ -1,10 +1,10 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+// ini_set('display_errors', '1');
+// ini_set('display_startup_errors', '1');
+// error_reporting(E_ALL);
 
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once __DIR__.'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'doctor.category.class.php';
 
@@ -48,17 +48,17 @@ $showDoctors = $doctors->showDoctors();
     <title>Medicy Doctors</title>
 
     <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/custom/doctors.css">
+    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/doctors.css">
 
 </head>
 
@@ -68,7 +68,7 @@ $showDoctors = $doctors->showDoctors();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -78,7 +78,7 @@ $showDoctors = $doctors->showDoctors();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -247,7 +247,7 @@ $showDoctors = $doctors->showDoctors();
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
-                <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
+                <?php include ROOT_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>
@@ -285,11 +285,11 @@ $showDoctors = $doctors->showDoctors();
         <!-- End of Doctor View and Edit Modal -->
 
         <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+        <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+        <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
         <!-- Custom Javascript  -->
-        <script src="js/custom-js.js"></script>
+        <script src="<?php echo JS_PATH ?>custom-js.js"></script>
         <script>
         $(document).ready(function() {
             $(document).on("click", ".delete-btn", function() {
@@ -338,17 +338,17 @@ $showDoctors = $doctors->showDoctors();
 
 
         <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
+        <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
         <!-- Page level plugins -->
-        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="<?php echo PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
+        <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
 
         <!-- Page level custom scripts -->
-        <script src="js/demo/datatables-demo.js"></script>
+        <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
 
         <script>
         $('#docView-Edit').on('click', function() {
