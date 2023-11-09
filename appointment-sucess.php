@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__DIR__) . '/config/constant.php';
-require_once ADM_DIR . '_config/sessionCheck.php';
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'appoinments.class.php';
@@ -62,11 +62,11 @@ $helthCare = new HelthCare();
 
   <!-- Message Box CSS -->
 
-  <link rel="stylesheet" href="../employee/assets/css/sucessPageStyle.css">
+  <link rel="stylesheet" href="<?php echo EMP_CSS ?>sucessPageStyle.css">
 
   <!--Only for demo purpose - no need to add.-->
 
-  <link rel="stylesheet" href="../employee/assets/css/sucessPageDemo.css">
+  <link rel="stylesheet" href="<?php echo EMP_CSS ?>sucessPageDemo.css">
 
 
 

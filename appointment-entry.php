@@ -44,11 +44,12 @@ foreach($healthCareDetails as $showShowHospital){
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Enter Patient Details</title>
+
+
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css">
     <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
-    <title>Enter Patient Details</title>
-
 
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
@@ -57,7 +58,7 @@ foreach($healthCareDetails as $showShowHospital){
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<?php echo JS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
 
     <!-- Custom styles for this page -->
@@ -67,74 +68,70 @@ foreach($healthCareDetails as $showShowHospital){
 </head>
 
 <body>
-    <?php
+<?php
        
-    if (isset($_POST['submit'])) {
-
-    $appointmentDate    = $_POST["appointmentDate"];
-    $patientName        = $_POST["patientName"];
-    $patientGurdianName = $_POST["patientGurdianName"];
-    $patientEmail       = $_POST["patientEmail"];
-    $patientPhoneNumber = $_POST["patientPhoneNumber"];
-    $patientAge         = $_POST["patientAge"];
-    $patientWeight      = $_POST["patientWeight"];
-    $gender             = $_POST["gender"];
-    $patientAddress1    = $_POST["patientAddress1"];
-    $patientAddress2    = $_POST["patientAddress2"];
-    $patientPS          = $_POST["patientPS"];
-    $patientDist        = $_POST["patientDist"];
-    $patientPIN         = $_POST["patientPIN"];
-    $patientState       = $_POST["patientState"];
-    $patientDoctor      = $_POST["patientDoctor"];
-    // $patientDoctorShift = $_POST["doctorTime"];
-
-    
-
-    //appointment id generating
-    $healthCareNameTrimed = strtoupper(substr($hospitalName, 0, 2));//first 2 leter oh healthcare center name
-    $appointmentDateForId = date("dmy", strtotime($appointmentDate));
-    $apntIdStart = "$healthCareNameTrimed$appointmentDateForId";
-    echo "<br>$apntIdStart<br>";
-    
-    //Patient Id Generate
-    $patientId = $IdsGeneration->patientidGenerate();
-    // echo "patient id generation : $patientId <br>";
-
+       if (isset($_POST['submit'])) {
    
-    
-    // Appointment iD Generated
-    $appointmentId = $IdsGeneration->appointmentidGeneration($apntIdStart);
-    
-    
-
-    
-
+       $appointmentDate    = $_POST["appointmentDate"];
+       $patientName        = $_POST["patientName"];
+       $patientGurdianName = $_POST["patientGurdianName"];
+       $patientEmail       = $_POST["patientEmail"];
+       $patientPhoneNumber = $_POST["patientPhoneNumber"];
+       $patientAge         = $_POST["patientAge"];
+       $patientWeight      = $_POST["patientWeight"];
+       $gender             = $_POST["gender"];
+       $patientAddress1    = $_POST["patientAddress1"];
+       $patientAddress2    = $_POST["patientAddress2"];
+       $patientPS          = $_POST["patientPS"];
+       $patientDist        = $_POST["patientDist"];
+       $patientPIN         = $_POST["patientPIN"];
+       $patientState       = $_POST["patientState"];
+       $patientDoctor      = $_POST["patientDoctor"];
+       // $patientDoctorShift = $_POST["doctorTime"];
    
-    // Inserting Into Appointments Database
-    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, intval($patientWeight), $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $employeeId, NOW, $adminId);
+       
+   
+       //appointment id generating
+       $healthCareNameTrimed = strtoupper(substr($hospitalName, 0, 2));//first 2 leter oh healthcare center name
+       $appointmentDateForId = date("dmy", strtotime($appointmentDate));
+       $apntIdStart = "$healthCareNameTrimed$appointmentDateForId";
+       echo "<br>$apntIdStart<br>";
+       
+       //Patient Id Generate
+       $patientId = $IdsGeneration->patientidGenerate();
+       // echo "patient id generation : $patientId <br>";
+   
       
-
-    print_r($addAppointment);
-        
-    //redirect if the insertion has done
-    if ($addAppointment) {
-        $visited = 1;
-        // Inserting Into Patients Database
-        $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
-        if ($addPatients) {
-            echo '<script>alert(Appointment Added!)</script>';
-            // setcookie("appointmentId", $appointmentId, time() + (120 * 30), "/");
-            header("location: appointment-sucess.php?appointmentId=".$appointmentId);
-            
-            }else{
-                echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
-            }
-    }else{
-      echo "New Record Insertion Failed ==>: Query Not Executed.";
-    }
-}
-      ?>
-
+       
+       // Appointment iD Generated
+       $appointmentId = $IdsGeneration->appointmentidGeneration($apntIdStart);
+   
+      
+       // Inserting Into Appointments Database
+       $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, intval($patientWeight), $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $employeeId, NOW, $adminId);
+         
+   
+    //    print_r($addAppointment);
+           
+       //redirect if the insertion has done
+       if ($addAppointment) {
+           $visited = 1;
+           // Inserting Into Patients Database
+           $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
+           if ($addPatients) {
+               echo '<script>alert(Appointment Added!)</script>';
+               // setcookie("appointmentId", $appointmentId, time() + (120 * 30), "/");
+               header("location: appointment-sucess.php?appointmentId=".$appointmentId);
+               
+               }else{
+                   echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
+               }
+       }else{
+         echo "New Record Insertion Failed ==>: Query Not Executed.";
+       }
+   }
+         ?>
+   
     <!-- Page Wrapper -->
 
     <div id="wrapper">
@@ -382,7 +379,7 @@ foreach($healthCareDetails as $showShowHospital){
                                             <select id="shiftList" class="customDropSelection" name="doctorTime" onChange="getShiftValues()" required>
                                                 <option disabled selected>Select Doctor First</option>
 
-                                                <!-- Option goes here by ajax 
+                                             Option goes here by ajax 
 
                                             </select>
                                         </div> -->
