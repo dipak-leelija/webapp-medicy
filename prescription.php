@@ -13,6 +13,9 @@ $appointmentId = $_GET['prescription'];
 //    echo $appointmentId;
 
 $appointments = new Appointments();
+$DoctorCategory = new DoctorCategory();
+
+
 $currentAppointments = $appointments->appointmentsDisplaybyId($appointmentId);
 //    print_r($currentAppointments); exit;
 
