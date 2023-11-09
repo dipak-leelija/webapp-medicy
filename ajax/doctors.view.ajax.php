@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once CLASS_DIR.'dbconnect.php';
 
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'doctor.category.class.php';
 
@@ -82,7 +82,7 @@ $showDoctor = $doctors->showDoctorById($docId);
 
                     ?>
             </select>
-            <!-- <input type="text" class="form-control" value="<?php// echo $docSpecialization; ?>"> -->
+            <!-- <input type="text" class="form-control" value="<?php // echo $docSpecialization; ?>"> -->
         </div>
         <div class="form-group">
             <label for="doc-degree" class="col-form-label">Doctor Degree:</label>

@@ -9,7 +9,7 @@ require_once CLASS_DIR.'idsgeneration.class.php';
 
 //Classes Initilizing
 $Patients        = new Patients();
-$IdGeneration    = new IdGeneration();
+$IdsGeneration    = new IdsGeneration();
 
 
 ?>
@@ -24,19 +24,19 @@ $IdGeneration    = new IdGeneration();
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../../css/patient-style.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>patient-style.css">
     <title>Enter Patient Details</title>
 
-    <link href="../../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= ASSETS_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-<script src="../../js/sweetAlert.min.js"></script>
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+<script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
 </head>
 
@@ -45,9 +45,8 @@ $IdGeneration    = new IdGeneration();
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
         //Patient Id Generate
-        $patientId = $IdGeneration->patientidGenerate();
-        // echo $patientId;
-        // $patientId = "sdgb";
+        $patientId = $IdsGeneration->patientidGenerate();
+        
         $visited = 0;
     
         $added = $Patients->addPatients($patientId, $_POST['patientName'], $_POST['patientGurdianName'], $_POST['patientEmail'], $_POST['patientPhoneNumber'], $_POST['patientAge'], $_POST['gender'], $_POST['patientAddress1'], $_POST['patientAddress2'], $_POST['patientPS'], $_POST['patientDist'], $_POST['patientPIN'], $_POST['patientState'], $visited, $employeeId, NOW, $adminId);

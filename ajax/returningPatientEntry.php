@@ -1,21 +1,29 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
-require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'patients.class.php';
 
 
 //Intilizing Classes
-$hospital = new HelthCare();
+$HealthCare = new HelthCare();
 $Patients = new Patients();
 
 
 // Fetching Hospital Info
-$hospitalDetails = $hospital->showhelthCare();
-foreach($hospitalDetails as $showShowHospital){
+$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
+
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
+}
+
+foreach($healthCareDetails as $showShowHospital){
     $hospitalName = $showShowHospital['hospital_name'];
 }
 
@@ -49,11 +57,12 @@ $appointments = new Appointments();
     $appointmentId = $healthCareNameTrimed.''.$appointmentDateForId.''.$randCode ;
     
     // Inserting Appointments into DB
-    $addAppointment = $appointments->addFromInternal($appointmentId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor);
+    $addAppointment = $appointments->addFromInternal($appointmentId, '<need to add patient id variable>', $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $employeeId, NOW, $adminId);
 
-
+    
     // Inserting Patients Details into DB
-    $addPatients = $Patients->addPatients( $patientName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState);
+    $addPatients = $Patients->addPatients('<need to add patient id variable>', $patientName, '<need to add patient gardian name variable>', $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, '<need to add patient visited variable>', $employeeId, NOW, $adminId);
+
     if (!$addPatients) {
         echo "<script>alert('Patient Not Inserted, Something is Wrong!');</script>";
     }

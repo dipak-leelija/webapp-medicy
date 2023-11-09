@@ -1,5 +1,7 @@
 <?php
 require_once dirname(__DIR__) . '/config/constant.php';
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
