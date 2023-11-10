@@ -2,6 +2,8 @@
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/hralthcare.inc.php';
 require_once CLASS_DIR.'patients.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
 require_once CLASS_DIR.'labBillDetails.class.php';
@@ -261,16 +263,16 @@ $labBillDisplay = $LabBilling->labBillDisplay();
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
 
 
     <script>
     billViewandEdit = (obj) => {
-        if (obj < 10) {
-            obj = '0' + obj
-        }
+        // if (obj < 10) {
+        //     obj = '0' + obj
+        // }
         let billId = obj;
         // alert(billId);
         let url = "ajax/labBill.view.ajax.php?billId=" + billId;
