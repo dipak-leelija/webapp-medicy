@@ -57,7 +57,27 @@ class HelthCare extends DatabaseConnection{
 
     } //showHospital function end
  
-
+    // function showhelthCarePrimary(){
+    //     try {
+    //         $selectPrimaryHospital = "SELECT * FROM clinic_info WHERE `admin_id` = 'primary'";
+    //         $query = $this->conn->query($selectPrimaryHospital);
+    
+    //         // Check if the query was successful
+    //         if ($query) {
+    //             $primaryHospitalData = $query->fetch_object();
+    //             return $primaryHospitalData;
+    //         } else {
+    //             // Handle query failure
+    //             echo "Error executing query: " . $this->conn->error;
+    //             return null;
+    //         }
+    //     } catch(Exception $e) {
+    //         // Handle any other exceptions
+    //         echo $e->getMessage();
+    //         return null;
+    //     }
+    // }
+    
 
 
     function updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo){

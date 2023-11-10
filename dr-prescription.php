@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'appoinments.class.php';
-require_once CLASS_DIR.'hospital.class.php';
-require_once CLASS_DIR.'doctors.class.php';
-require_once CLASS_DIR.'doctor.category.class.php';
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'appoinments.class.php';
+require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'doctor.category.class.php';
 
 
 $appointments = new Appointments();
@@ -23,29 +23,36 @@ $getDoctorForPatient = $_GET['prescription'];
 // Fetching Hospital Info
 $healthCareDetailsPrimary = $hospital->showhelthCarePrimary();
 $healthCareDetailsByAdminId = $hospital->showhelthCare($adminId);
-if($healthCareDetailsByAdminId != null){
+if ($healthCareDetailsByAdminId != null) {
     $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
+} else {
     $healthCareDetails = $healthCareDetailsPrimary;
 }
-
-
-foreach($healthCareDetails as $hospitalDetails){
-    $hospitalName       = $hospitalDetails['hospital_name'];
-    $address1           = $hospitalDetails['address_1'];
-    $address2           = $hospitalDetails['address_2'];
-    $city               = $hospitalDetails['city'];
-    $pin                = $hospitalDetails['pin'];
-    $state              = $hospitalDetails['health_care_state'];
-    $hospitalEmail      = $hospitalDetails['hospital_email'];
-    $hospitalPhno       = $hospitalDetails['hospital_phno'];
-    $appointmentNumber  = $hospitalDetails['appointment_help_line'];
-}
+$hospitalName       = $healthCareDetails['hospital_name'];
+$address1           = $healthCareDetails['address_1'];
+$address2           = $healthCareDetails['address_2'];
+$city               = $healthCareDetails['city'];
+$pin                = $healthCareDetails['pin'];
+$state              = $healthCareDetails['health_care_state'];
+$hospitalEmail      = $healthCareDetails['hospital_email'];
+$hospitalPhno       = $healthCareDetails['hospital_phno'];
+$appointmentNumber  = $healthCareDetails['appointment_help_line'];
+// foreach($healthCareDetails as $hospitalDetails){
+//     $hospitalName       = $hospitalDetails['hospital_name'];
+//     $address1           = $hospitalDetails['address_1'];
+//     $address2           = $hospitalDetails['address_2'];
+//     $city               = $hospitalDetails['city'];
+//     $pin                = $hospitalDetails['pin'];
+//     $state              = $hospitalDetails['health_care_state'];
+//     $hospitalEmail      = $hospitalDetails['hospital_email'];
+//     $hospitalPhno       = $hospitalDetails['hospital_phno'];
+//     $appointmentNumber  = $hospitalDetails['appointment_help_line'];
+// }
 
 // Fetching Doctor Info
 $selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
 // print_r($selectDoctorByid); exit;
-foreach($selectDoctorByid as $DoctorByidDetails){
+foreach ($selectDoctorByid as $DoctorByidDetails) {
     $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
     $DoctorName         = $DoctorByidDetails['doctor_name'];
     $docSpecialization  = $DoctorByidDetails['doctor_specialization'];
@@ -56,13 +63,14 @@ foreach($selectDoctorByid as $DoctorByidDetails){
     $DoctorPhno         = $DoctorByidDetails['doctor_phno'];
 }
 
-   // Fetching Appointments Info
-   $DoctorCategory = new DoctorCategory();
+// Fetching Appointments Info
+$DoctorCategory = new DoctorCategory();
 
-    $showDoctorCategoryById = $DoctorCategory->showDoctorCategoryById($docSpecialization);
-    foreach ($showDoctorCategoryById as $rowDocCatName) {
-        $doctorName = $rowDocCatName['category_name'];
-    }
+$showDoctorCategoryById = $DoctorCategory->showDoctorCategoryById($docSpecialization);
+foreach ($showDoctorCategoryById as $rowDocCatName) {
+    // print_r($rowDocCatName);
+    $doctorName = $rowDocCatName['category_name'];
+}
 
 ?>
 
@@ -88,22 +96,25 @@ foreach($selectDoctorByid as $DoctorByidDetails){
                 <div class="col-4 headerHospitalDetails">
                     <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?php echo $hospitalName ?></h1>
                     <p class="text-start  me-3">
-                        <small><?php echo $address1.', '.$address2.', '.$city.',<br>'.$state.', '.$pin; ?></small>
+                        <small><?php echo $address1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small>
                     </p>
                 </div>
                 <div class="col-2 header-doc-img"> <img src="<?php echo IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
                 <div class=" text-danger col-5 headerDoctorDetails">
                     <h2 class="text-end mt-3  mb-0"><?php echo $DoctorName ?></h2>
                     <p class="text-end  mb-0 ">
-                        <small><?php if($DoctorReg != NULL){ echo 'REG NO : '.$DoctorReg; } ?></small>
+                        <small><?php if ($DoctorReg != NULL) {
+                                    echo 'REG NO : ' . $DoctorReg;
+                                } ?></small>
                     </p>
 
                     <p class="text-end  mb-0 ">
-                        <small><?php echo $DoctorDegree.', '.$doctorName ?></small>
+                        <small><?php echo $DoctorDegree . ', ' . $doctorName ?></small>
                     </p>
                     <p class="text-end  mb-0"> <?php echo $DoctorAlsoWith ?></p>
                     <!-- Member of: -->
-                    <p class="text-end  mb-0"><?php // echo $DoctorAddress ?></p>
+                    <p class="text-end  mb-0"><?php // echo $DoctorAddress 
+                                                ?></p>
                     <h6 class="text-end text-primary"><strong>Call for Appointment:
                             <?php echo $appointmentNumber ?></strong></h6>
                 </div>
@@ -184,32 +195,26 @@ foreach($selectDoctorByid as $DoctorByidDetails){
 
                 <div class="col-md-4 custom-width-name mb-0">
                     <ul style="margin-bottom: 8px">
-                        <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2"
-                                src="<?php echo LOCAL_DIR ?>employee/partials/hospital.png" alt="Healt Care"
-                                style="width:28px; height:20px;" /><?php echo $hospitalName ?></li>
+                        <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/hospital.png" alt="Healt Care" style="width:28px; height:20px;" /><?php echo $hospitalName ?></li>
                     </ul>
                 </div>
 
                 <div class="col-md-4 custom-width-email mb-0">
                     <ul style="margin-bottom: 8px">
-                        <li class="list-unstyled"><img id="email-box" class="pe-2"
-                                src="<?php echo LOCAL_DIR ?>employee/partials/email-logo.png" alt="Email"
-                                style="width:28px; height:20px;" /><?php echo $hospitalEmail ?></li>
+                        <li class="list-unstyled"><img id="email-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/email-logo.png" alt="Email" style="width:28px; height:20px;" /><?php echo $hospitalEmail ?></li>
 
                     </ul>
                 </div>
 
                 <div class="col-md-4 custom-width-number mb-0">
                     <ul style="margin-bottom: 8px">
-                        <li class="list-unstyled"><img id="number-box" class="pe-2"
-                                src="<?php echo LOCAL_DIR ?>employee/partials/call-logo.png" alt="Contact"
-                                style="width:28px; height:20px;" /><span>
-                                    <?php
-                                    $separetor = ',';
-                                    if ($hospitalPhno == null) {
-                                        $separetor = '';
-                                    } 
-                                    echo $appointmentNumber.$separetor.' '.$hospitalPhno ?></span>
+                        <li class="list-unstyled"><img id="number-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/call-logo.png" alt="Contact" style="width:28px; height:20px;" /><span>
+                                <?php
+                                $separetor = ',';
+                                if ($hospitalPhno == null) {
+                                    $separetor = '';
+                                }
+                                echo $appointmentNumber . $separetor . ' ' . $hospitalPhno ?></span>
                         </li>
                     </ul>
                 </div>

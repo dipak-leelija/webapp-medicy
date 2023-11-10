@@ -7,6 +7,7 @@
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'sub-test.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
@@ -77,23 +78,21 @@ if (is_numeric($docId)) {
 
 $healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
 $healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
-
 if($healthCareDetailsByAdminId != null){
     $healthCareDetails = $healthCareDetailsByAdminId;
 }else{
     $healthCareDetails = $healthCareDetailsPrimary;
 }
+// foreach ($healthCareDetails as $rowhelthCare) {
+    $healthCareName     = $healthCareDetails['hospital_name'];
+    $healthCareAddress1 = $healthCareDetails['address_1'];
+    $healthCareAddress2 = $healthCareDetails['address_2'];
+    $healthCareCity     = $healthCareDetails['city'];
+    $healthCarePIN      = $healthCareDetails['pin'];
+    $healthCarePhno     = $healthCareDetails['hospital_phno'];
+    $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
 
-foreach ($healthCareDetails as $rowhelthCare) {
-    $healthCareName     = $rowhelthCare['hospital_name'];
-    $healthCareAddress1 = $rowhelthCare['address_1'];
-    $healthCareAddress2 = $rowhelthCare['address_2'];
-    $healthCareCity     = $rowhelthCare['city'];
-    $healthCarePIN      = $rowhelthCare['pin'];
-    $healthCarePhno     = $rowhelthCare['hospital_phno'];
-    $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
-
-}
+// }
 ?>
 
 <!DOCTYPE html>

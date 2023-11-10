@@ -22,9 +22,10 @@ if($healthCareDetailsByAdminId != null){
 }else{
     $healthCareDetails = $healthCareDetailsPrimary;
 }
-foreach($healthCareDetails as $showShowHospital){
-    $hospitalName = $showShowHospital['hospital_name'];
-}
+$hospitalName = $healthCareDetails['hospital_name'];
+// foreach($healthCareDetails as $showShowHospital){
+//     $hospitalName = $showShowHospital['hospital_name'];
+// }
 
 ?>
 
@@ -71,7 +72,7 @@ if (isset($_POST['proceed'])) {
         $patientId = $_POST['patientName'];
 
         $patient = json_decode($Patients->patientsDisplayByPId($patientId));
-        echo $name            = $patient->name;
+        $name            = $patient->name;
         $gurdianName     = $patient->gurdian_name;
         $phno            = $patient->phno;
         $email           = $patient->email;

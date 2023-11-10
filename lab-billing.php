@@ -5,6 +5,8 @@
 
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'appoinments.class.php';
@@ -149,7 +151,7 @@ $showSubTests   = $SubTests->showSubTests();
                                                 <p>Patient Name: </p>
                                             </div>
                                             <div class="col-md-7 mb-0 justify-content-start">
-                                                <p class="text-start"><b><?php echo $patientName; ?> </b></p>
+                                                <p class="text-start"><b><?=  $patientName; ?> </b></p>
                                             </div>
 
                                             <div class="col-md-5 mb-0">
