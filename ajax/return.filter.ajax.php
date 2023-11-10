@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Filter</title>
-    <link href="../../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../vendor/product-table/dataTables.bootstrap4.css">
-
-</head>
-
-<body>
-
-    <?php
     require_once dirname(__DIR__).'/config/constant.php';
     
     require_once CLASS_DIR.'dbconnect.php';
@@ -125,8 +110,24 @@
         }
         // print_r($data);
     }
+?>
 
-    ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Filter</title>
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css">
+
+</head>
+
+<body>
+
     <table class="table table-sm table-hover" id="dataTable" width="100%" cellspacing="0">
         <thead class="bg-primary text-light">
             <tr>
@@ -186,20 +187,20 @@
 
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../../assets/jquery/jquery.min.js"></script>
-    <script src="../../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="../js/sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
-    <script src="../vendor/product-table/jquery.dataTables.js"></script>
-    <script src="../vendor/product-table/dataTables.bootstrap4.js"></script>
+    <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script>
+    <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="../../assets/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../js/demo/datatables-demo.js"></script>
+    <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
 </body>
 

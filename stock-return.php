@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__DIR__) . '/config/constant.php';
-require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR . 'dbconnect.php';
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
+require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'stockReturn.class.php';
@@ -42,21 +42,20 @@ $today = date("m-d-Y");
     <title>Medicy Items</title>
 
     <!-- Custom fonts for this template -->
-    <!-- ../assets/fontawesome-free/css/all.min.css -->
-    <link href="../../medicy.in/assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
 
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/custom/return-page.css">
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/return-page.css">
 
     <!-- Datatable Style CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <link href="vendor/product-table/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet">
 
 </head>
 
@@ -66,7 +65,7 @@ $today = date("m-d-Y");
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -76,7 +75,7 @@ $today = date("m-d-Y");
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -96,7 +95,7 @@ $today = date("m-d-Y");
                                 </div>
 
                                 <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
+                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this.id, this.value)">
                                         <option value="" disabled selected>Select Duration</option>
                                         <option value="T">Today</option>
                                         <option value="Y">yesterday</option>
@@ -219,7 +218,7 @@ $today = date("m-d-Y");
             <!-- End of Content Wrapper -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
             <!-- Return View Modal" -->
@@ -255,26 +254,26 @@ $today = date("m-d-Y");
 
 
         <!-- Bootstrap core JavaScript-->
-        <script src="../assets/jquery/jquery.min.js"></script>
-        <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+        <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+        <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
+        <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
-        <script src="vendor/product-table/jquery.dataTables.js"></script>
-        <script src="vendor/product-table/dataTables.bootstrap4.js"></script>
+        <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script>
+        <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script>
 
         <!-- Core plugin JavaScript-->
-        <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
+        <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
 
         <!-- Page level custom scripts -->
-        <script src="js/demo/datatables-demo.js"></script>
+        <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
-        <script src="../js/sweetAlert.min.js"></script>
+        <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
         <!-- custom script for stock return page -->
-        <script src="js/stock-return-control.js"></script>
+        <script src="<?= JS_PATH ?>stock-return-control.js"></script>
 </body>
 
 </html>

@@ -51,7 +51,7 @@ class StockIn extends DatabaseConnection{
             $data = array();
     
             // Define the SQL query using a prepared statement
-            $select = "SELECT * FROM stock_in WHERE `admin_id` = ? ORDER BY id DESC";
+            $select = "SELECT * FROM stock_in WHERE `admin_id` = ? ORDER BY id ASC";
             
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($select);

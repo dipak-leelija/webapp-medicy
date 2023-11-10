@@ -76,19 +76,66 @@ class StockInDetails extends DatabaseConnection
 
     // ============================== eof update table ==============================================
 
+    // ========================= show table data start ==================================
 
 
-    function showStockInDetails()
-    {
-        $select = " SELECT * FROM stock_in_details ";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
+    function showStockInDetails() {
+        try {
+            $select = "SELECT * FROM stock_in_details";
+            $selectQuery = $this->conn->query($select);
+    
+            if ($selectQuery === false) {
+                throw new Exception("Error executing the query: " . $this->conn->error);
+            }
+    
+            $data = array();
+            while ($result = $selectQuery->fetch_array()) {
+                $data[] = $result;
+            }
+    
+            return $data;
+        } catch (Exception $e) {
+            if($e){
+                echo "Error: " . $e->getMessage();
+            }else{
+                return null;
+            }
         }
-        return $data;
-    } //eof showStockInDetails function
+    }
 
 
+
+    function showStockInDetailsByStokinId($id) {
+        try {
+            $select = "SELECT * FROM `stock_in_details` WHERE `id` = ?";
+            $stmt = $this->conn->prepare($select);
+            
+            $stmt->bind_param("i", $id); 
+            
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+    
+            $data = array();
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+    
+            $stmt->close();
+    
+            return $data;
+        } catch (Exception $e) {
+            if($e){
+                echo "Error: " . $e->getMessage();
+            }else{
+                return null;
+            }
+        }
+    }
+    
+
+
+    // ==================================================================================
 
     function showStockInDetailsByTable($table1, $table2, $data1, $data2)
     {
@@ -102,15 +149,8 @@ class StockInDetails extends DatabaseConnection
     } //eof showStockInByTable function
 
 
-    function showStockInDetailsByStokinId($id)
-    {
-        $select = " SELECT * FROM `stock_in_details` WHERE `id`= '$id'";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showStockInDetails function
+        
+
 
     function showStockInDetailsByStokId($StockId)
     {
@@ -251,6 +291,32 @@ class StockInDetails extends DatabaseConnection
 
     //====================================== DELETE QUARRY ==================================
 
+    function stockInDeletebyDetailsId($Id) {
+        try {
+            $delQry = "DELETE FROM `stock_in_details` WHERE `id` = ?";
+            
+            $stmt = $this->conn->prepare($delQry);
+    
+            $stmt->bind_param("i", $Id); 
+    
+            $stmt->execute();
+
+            $result = $stmt->affected_rows;
+    
+            $stmt->close();
+    
+            return $result;
+        } catch (Exception $e) {
+            if($e){
+                return $e;
+            }else{
+                return 0; 
+            }
+        }
+    }
+
+
+
 
     function stockInDelete($distBill, $batchNo)
     {
@@ -259,6 +325,8 @@ class StockInDetails extends DatabaseConnection
         return $delSql;
     } // eof stockInDelete
 
+
+
     function stockInDeletebyId($stockInId)
     {
         $delQry = "DELETE FROM `stock_in_details` WHERE `stokIn_id` = '$stockInId'";
@@ -266,12 +334,5 @@ class StockInDetails extends DatabaseConnection
         return $delSql;
     } // eof stockInDelete
 
-    function stockInDeletebyDetailsId($Id)
-    {
-
-        $delQry = "DELETE FROM `stock_in_details` WHERE `id` = '$Id'";
-        $delSql = $this->conn->query($delQry);
-        return $delSql;
-    } // eof stockInDelete
 
 }//eof Products class

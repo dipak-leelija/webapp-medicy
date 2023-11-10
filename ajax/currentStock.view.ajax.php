@@ -174,9 +174,7 @@ if (isset($_GET['currentStockId'])) {
                 $stokInDetailsCol2 = 'batch_no';
                 // ================ stok in detials ==================
                 $stockInData = $StockInDetail->showStockInDetailsByTable($stokInDetailsCol1, $stokInDetailsCol2, $productId,  $batchNo);
-                // echo "<br><br>";
-                // print_r($stockInData);
-                // $overallQTY = 0;
+                
                 foreach ($stockInData as $stockData) {
                     $stockInId = $stockData['stokIn_id'];
                     $stockInDate = $StockIn->stockInByAttributeByTable('id',$stockInId);
@@ -274,9 +272,9 @@ if (isset($_GET['currentStockId'])) {
 <script>
     // ============================ DELETE ALL STOCK DATA ================================
     const delAll = (id, value1, value2) => {
-        // alert(id);
-        // alert(value1);
-        // alert(value2);
+        alert(id);
+        alert(value1);
+        alert(value2);
         let stokInQty = value1;
         let currentQty = value2;
 
@@ -333,7 +331,7 @@ if (isset($_GET['currentStockId'])) {
     // =================================== DELTE PERTICULER STOCK DATA =======================
 
     const customDelete = (id, value1, value2, value3, value4, value5) => {
-
+        alert(id);
         let btnId = document.getElementById(id);
         let row = document.getElementById(value4);
 
