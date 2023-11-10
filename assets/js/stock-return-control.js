@@ -92,7 +92,7 @@ const viewReturnItems = (returnId) => {
 
 // ============================== edit return item contol ==================
 const editReturnItem = (editId) => {
-    alert("edit id : " + editId);
+    // alert("edit id : " + editId);
     $.ajax({
         url: "ajax/edit-request-check.ajax.php",
         type: "POST",
@@ -100,7 +100,7 @@ const editReturnItem = (editId) => {
             Id: editId
         },
         success: function(data){
-            alert(data);
+            // alert(data);
             if (data == 1) {
                 window.location.href = `stock-return-edit.php?returnId=${editId}`;
             } else {
