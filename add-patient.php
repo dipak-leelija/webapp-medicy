@@ -52,87 +52,66 @@ $Patients       = new Patients;
 
 <body>
 <?php
-       
+if (isset($_SESSION['appointment-data'])) {
+    unset($_SESSION['appointment-data']);
+}
+
 if (isset($_POST['submit'])) {
    
-       $appointmentDate    = $_POST["appointmentDate"];
-       $patientName        = $_POST["patientName"];
-       $patientGurdianName = $_POST["patientGurdianName"];
-       $patientEmail       = $_POST["patientEmail"];
-       $patientPhoneNumber = $_POST["patientPhoneNumber"];
-       $patientAge         = $_POST["patientAge"];
-       $patientWeight      = $_POST["patientWeight"];
-       $gender             = $_POST["gender"];
-       $patientAddress1    = $_POST["patientAddress1"];
-       $patientAddress2    = $_POST["patientAddress2"];
-       $patientPS          = $_POST["patientPS"];
-       $patientDist        = $_POST["patientDist"];
-       $patientPIN         = $_POST["patientPIN"];
-       $patientState       = $_POST["patientState"];
-       $patientDoctor      = $_POST["patientDoctor"];
-       // $patientDoctorShift = $_POST["doctorTime"];
+    $appointmentDate    = $_POST["appointmentDate"];
+    $patientName        = $_POST["patientName"];
+    $patientGurdianName = $_POST["patientGurdianName"];
+    $patientEmail       = $_POST["patientEmail"];
+    $patientPhoneNumber = $_POST["patientPhoneNumber"];
+    $patientAge         = $_POST["patientAge"];
+    $patientWeight      = $_POST["patientWeight"];
+    $gender             = $_POST["gender"];
+    $patientAddress1    = $_POST["patientAddress1"];
+    $patientAddress2    = $_POST["patientAddress2"];
+    $patientPS          = $_POST["patientPS"];
+    $patientDist        = $_POST["patientDist"];
+    $patientPIN         = $_POST["patientPIN"];
+    $patientState       = $_POST["patientState"];
+    $patientDoctor      = $_POST["patientDoctor"];
+    // $patientDoctorShift = $_POST["doctorTime"];
    
-       
-   
-       //appointment id generating
-       $healthCareNameTrimed = strtoupper(substr($healthCareName, 0, 2));//first 2 leter oh healthcare center name
-       $appointmentDateForId = date("dmy", strtotime($appointmentDate));
-       $apntIdStart = "$healthCareNameTrimed$appointmentDateForId";
-       
-       //Patient Id Generate
-       $patientId = $IdsGeneration->patientidGenerate();
-       // echo "patient id generation : $patientId <br>";
-   
-      
-       
-       // Appointment iD Generated
-    //    $appointmentId = $IdsGeneration->appointmentidGeneration($apntIdStart);
-   
-      
-    //    // Inserting Into Appointments Database
-    //    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, intval($patientWeight), $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor, $employeeId, NOW, $adminId);
-         
-   
-    //    print_r($addAppointment);
-           
-       //redirect if the insertion has done
-    //    if ($addAppointment) {
-           $visited = 1;
-           // Inserting Into Patients Database
-           $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
-           if ($addPatients) {
+    //Patient Id Generate
+    $patientId = $IdsGeneration->patientidGenerate();
+    
+    //redirect if the insertion has done
+    $visited = 1;
 
-            $_SESSION['appointment-data'] = array(
-                                            'patientId' => $patientId,
-                                            'appointmentDate' => $appointmentDate,
-                                            'patientName' => $patientName,
-                                            'patientGurdianName' => $patientGurdianName,
-                                            'patientEmail' => $patientEmail,
-                                            'patientPhoneNumber' => $patientPhoneNumber,
-                                            'patientAge' => $patientAge,
-                                            'patientWeight' => intval($patientWeight),
-                                            'gender' => $gender,
-                                            'patientAddress1' => $patientAddress1,
-                                            'patientAddress2' => $patientAddress2,
-                                            'patientPS' => $patientPS,
-                                            'patientDist' => $patientDist,
-                                            'patientPIN' => $patientPIN,
-                                            'patientState' => $patientState,
-                                            'patientDoctor' => $patientDoctor
-                                        );
-               echo '<script>alert(Appointment Added!)</script>';
-               // setcookie("appointmentId", $appointmentId, time() + (120 * 30), "/");
-               header("location: appointment-entry.php?appointmentId=".$appointmentId);
+    // Inserting Into Patients Database
+    $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
+    if ($addPatients) {
+
+        $_SESSION['appointment-data'] = array(
+                                        'patientId' => $patientId,
+                                        'appointmentDate' => $appointmentDate,
+                                        'patientName' => $patientName,
+                                        'patientGurdianName' => $patientGurdianName,
+                                        'patientEmail' => $patientEmail,
+                                        'patientPhoneNumber' => $patientPhoneNumber,
+                                        'patientAge' => $patientAge,
+                                        'patientWeight' => intval($patientWeight),
+                                        'gender' => $gender,
+                                        'patientAddress1' => $patientAddress1,
+                                        'patientAddress2' => $patientAddress2,
+                                        'patientPS' => $patientPS,
+                                        'patientDist' => $patientDist,
+                                        'patientPIN' => $patientPIN,
+                                        'patientState' => $patientState,
+                                        'patientDoctor' => $patientDoctor
+                                    );
+        echo '<script>alert(Appointment Added!)</script>';
+        
+        header("location: appointment-entry.php?appointmentId=".$appointmentId);
                
-               }else{
-                   echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
-               }
-       }
-    //    else{
-    //      echo "New Record Insertion Failed ==>: Query Not Executed.";
-    //    }
-//    }
-         ?>
+    }else{
+        echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
+    }
+}
+?>
    
     <!-- Page Wrapper -->
 
