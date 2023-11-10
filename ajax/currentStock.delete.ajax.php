@@ -25,21 +25,23 @@ $packagUnit     =   new PackagingUnits();
 
 
 if (isset($_POST['delID'])) {
-    $productId =  $_POST['delID'];
+    $productID =  $_POST['delID'];
 
     // echo $productId;
 
-    $deleteProductStock = $CurrentStock->deleteCurrentStockbyId($productId);
+    $deleteProductFromCrntStock = $CurrentStock->deleteCurrentStockbyId($productID);
 
-    // var_dump($deleteProductStock);
-    if($deleteProductStock == true){
-        echo $productId;
+    // $itemDetailsFrmStockInDetails = $StockInDetail->showStockInDetailsByStokinId($itemStockInDetailsId);
+    
+    // print_r($itemDetailsFrmStockInDetails);
+
+    // $deleteFromStockInDetails = $StockInDetail->stockInDeletebyDetailsId($itemStockInDetailsId);
+
+    if($deleteProductFromCrntStock == true){
+        return $itemDetailsFrmStockInDetails;
     }else{
         echo 0;
     }
-    // $showStock = $CurrentStock->showCurrentStocByPId($productId);
-    // print_r($showStock);
-    // echo count($showStock);
 
 }
 

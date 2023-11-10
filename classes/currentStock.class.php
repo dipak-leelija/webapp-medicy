@@ -4,11 +4,12 @@
 class CurrentStock extends DatabaseConnection
 {
 
-    function addCurrentStock($stockInDetailsId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy, $addedOn, $adminId){
+    function addCurrentStock($stockInDetailsId, $productId, $batchNo, $expDate, $distributorId, $looselyCount, $looselyPrice, $weightage, $unit, $qty, $mrp, $ptr, $gst, $addedBy, $addedOn, $adminId)
+    {
         try {
             $insert = "INSERT INTO `current_stock` (`stock_in_details_id`, `product_id`, `batch_no`, `exp_date`, `distributor_id`, `loosely_count`, `loosely_price`, `weightage`, `unit`, `qty`, `mrp`, `ptr`, `gst`, `added_by`, `added_on`, `admin_id`) 
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
+
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
@@ -29,14 +30,15 @@ class CurrentStock extends DatabaseConnection
     }
 
 
-    
+
     // ========================== CURRENT STOCK UPDATE AFTER sales RETURN =============================
 
-    function updateStockByStockInDetailsId($stockInDetailsId, $newQuantity, $newLCount) {
+    function updateStockByStockInDetailsId($stockInDetailsId, $newQuantity, $newLCount)
+    {
         try {
             $updateQuery = "UPDATE `current_stock` SET `qty` = ?, `loosely_count` = ? WHERE `stock_in_details_id` = ?";
             $stmt = $this->conn->prepare($updateQuery);
-    
+
             if ($stmt) {
                 $stmt->bind_param("iii", $newQuantity, $newLCount, $stockInDetailsId);
                 $res = $stmt->execute();
@@ -57,11 +59,12 @@ class CurrentStock extends DatabaseConnection
 
     // ========================== CURRENT STOCK ON SELL =============================
 
-    function updateStockOnSell($id, $updatedQty, $updatedLCount) {
+    function updateStockOnSell($id, $updatedQty, $updatedLCount)
+    {
         try {
             $updateQuery = "UPDATE `current_stock` SET `qty` = ?, `loosely_count` = ? WHERE `id` = ?";
             $stmt = $this->conn->prepare($updateQuery);
-    
+
             if ($stmt) {
                 $stmt->bind_param("iii", $updatedQty, $updatedLCount, $id);
                 $res = $stmt->execute();
@@ -82,7 +85,8 @@ class CurrentStock extends DatabaseConnection
 
     // ==================== CURRENT STOCK UPDATE UPDATE SLESE RETURN EDIT =====================
 
-    function updateStockByReturnEdit($stokInDetailsId, $newQuantity, $newLCount, $updatedBy, $updatedOn){
+    function updateStockByReturnEdit($stokInDetailsId, $newQuantity, $newLCount, $updatedBy, $updatedOn)
+    {
         try {
             $editUpdate = "UPDATE `current_stock` SET `qty` = ?, `loosely_count` = ?, `updated_by` = ?, `updated_on` = ? WHERE `stock_in_details_id` = ?";
             $stmt = $this->conn->prepare($editUpdate);
@@ -106,26 +110,27 @@ class CurrentStock extends DatabaseConnection
 
     /// ================ select from current stock by col and data =================
 
-    function selectByColAndData($column, $data){
+    function selectByColAndData($column, $data)
+    {
         try {
             $resultData = array();
-    
+
             // Define the SQL query using a prepared statement
             $selectSql = "SELECT * FROM `current_stock` WHERE $column = ?";
-            
+
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($selectSql);
-    
+
             if ($stmt) {
                 // Bind the parameter
                 $stmt->bind_param("s", $data);
-    
+
                 // Execute the query
                 $stmt->execute();
-    
+
                 // Get the result
                 $result = $stmt->get_result();
-    
+
                 // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
@@ -135,14 +140,14 @@ class CurrentStock extends DatabaseConnection
                     // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
                 }
-    
+
                 // Close the statement
                 $stmt->close();
             } else {
                 // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
-    
+
             return $resultData;
         } catch (Exception $e) {
             // Handle any exceptions that occur
@@ -151,32 +156,33 @@ class CurrentStock extends DatabaseConnection
             return array();
         }
     }
-    
+
 
 
 
 
     // ================== SHOW CURRENT STOCK BY ADMIN ID ========================
-    function showCurrentStockbyAdminId($adminId) {
+    function showCurrentStockbyAdminId($adminId)
+    {
         try {
             $data = array();
-    
+
             // Define the SQL query using a prepared statement
             $select = "SELECT * FROM `current_stock` WHERE (`qty` > 0 OR `loosely_count` > 0) AND `admin_id` = ? ORDER BY added_on ASC";
-            
+
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($select);
-    
+
             if ($stmt) {
                 // Bind the parameter
                 $stmt->bind_param("s", $adminId);
-    
+
                 // Execute the query
                 $stmt->execute();
-    
+
                 // Get the result
                 $result = $stmt->get_result();
-    
+
                 // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
@@ -185,19 +191,18 @@ class CurrentStock extends DatabaseConnection
                 } else {
                     // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
-                    
                 }
-    
+
                 // Close the statement
                 $stmt->close();
             } else {
                 // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
-            
-            if($result->num_rows > 0){
+
+            if ($result->num_rows > 0) {
                 return $data;
-            }else{
+            } else {
                 return null;
             }
         } catch (Exception $e) {
@@ -207,32 +212,33 @@ class CurrentStock extends DatabaseConnection
             return array();
         }
     }
-    
 
 
 
 
 
-    function currentStockGroupbyPidOnAdmin($adminId) {
+
+    function currentStockGroupbyPidOnAdmin($adminId)
+    {
         try {
             $data = array();
-    
+
             // Define the SQL query using a prepared statement
             $select = "SELECT * FROM current_stock WHERE `admin_id` = ? GROUP BY `product_id`";
-            
+
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($select);
-    
+
             if ($stmt) {
                 // Bind the parameter
                 $stmt->bind_param("s", $adminId);
-    
+
                 // Execute the query
                 $stmt->execute();
-    
+
                 // Get the result
                 $result = $stmt->get_result();
-    
+
                 // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
@@ -242,14 +248,14 @@ class CurrentStock extends DatabaseConnection
                     // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
                 }
-    
+
                 // Close the statement
                 $stmt->close();
             } else {
                 // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
-    
+
             return $data;
         } catch (Exception $e) {
             // Handle any exceptions that occur
@@ -258,36 +264,38 @@ class CurrentStock extends DatabaseConnection
             return array();
         }
     }
-    
-
-// echo "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD($currentdate, INTERVAL 3 MONTH) AND admin_id = $adminId";
-                // exit;
 
 
+    // echo "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD($currentdate, INTERVAL 3 MONTH) AND admin_id = $adminId";
+    // exit;
 
-    function showStockExpiry($currentdate, $adminId) {
+
+
+    function showStockExpiry($currentdate, $adminId)
+    {
         $currentdate = date('Y-m-d', strtotime($currentdate));
         try {
             $data = array();
             $select = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD('$currentdate', INTERVAL 2 MONTH) AND admin_id = '$adminId'";
-            
+
             $query = $this->conn->query($select);
-    
-                while ($row = $query->fetch_assoc()) {
-                    $data[] = $row;
-                }
-    
+
+            while ($row = $query->fetch_assoc()) {
+                $data[] = $row;
+            }
+
             return $data;
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
             return array();
         }
     }
-    
 
 
 
-    function stockExpiaringCheck ($date, $adminId){
+
+    function stockExpiaringCheck($date, $adminId)
+    {
         $data = array();
 
         $expCheckQarry = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD($date, INTERVAL 2 MONTH) AND admin_id = '$adminId'";
@@ -305,100 +313,103 @@ class CurrentStock extends DatabaseConnection
 
 
     // =========== batch number fetch function for new sales pagge ============
-    function showCurrentStocByProductId($productId, $adminId){
-    $data = array();
-    try {
-        $select = "SELECT * FROM current_stock WHERE product_id = ? AND admin_id = ?";
-        $stmt = $this->conn->prepare($select);
-
-        if ($stmt) {
-            $stmt->bind_param("ss", $productId, $adminId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            while ($row = $result->fetch_object()) {
-                $data[] = $row;
-            }
-            $stmt->close();
-        } else {
-            echo "Statement preparation failed: " . $this->conn->error;
-        }
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    }
-    return json_encode($data);
-}
-
-
-
-
-
-
-function showCurrentStocByTwoCol($col1, $data1, $col2, $data2){
-    try {
+    function showCurrentStocByProductId($productId, $adminId)
+    {
         $data = array();
-        $select = "SELECT * FROM current_stock WHERE $col1 = ? AND $col2 = ? AND `qty` > 0 ORDER BY added_on ASC";
-        $stmt = $this->conn->prepare($select);
+        try {
+            $select = "SELECT * FROM current_stock WHERE product_id = ? AND admin_id = ?";
+            $stmt = $this->conn->prepare($select);
 
-        if ($stmt) {
-            $stmt->bind_param("ss", $data1, $data2);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            if ($stmt) {
+                $stmt->bind_param("ss", $productId, $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-            while ($row = $result->fetch_array()) {
-                $data[] = $row;
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return json_encode($data);
+    }
+
+
+
+
+
+
+    function showCurrentStocByTwoCol($col1, $data1, $col2, $data2)
+    {
+        try {
+            $data = array();
+            $select = "SELECT * FROM current_stock WHERE $col1 = ? AND $col2 = ? AND `qty` > 0 ORDER BY added_on ASC";
+            $stmt = $this->conn->prepare($select);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $data1, $data2);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                while ($row = $result->fetch_array()) {
+                    $data[] = $row;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
             }
 
-            $stmt->close();
-        } else {
-            echo "Statement preparation failed: " . $this->conn->error;
+            return $data;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
         }
-
-        return $data;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        return null;
     }
-}
 
 
 
 
 
-function showExpStockForStocksummaryCard($chkDt, $adminId) {
-    try {
-        $data = array();
-        $select = "SELECT DISTINCT * FROM `current_stock`
+    function showExpStockForStocksummaryCard($chkDt, $adminId)
+    {
+        try {
+            $data = array();
+            $select = "SELECT DISTINCT * FROM `current_stock`
                     WHERE CONCAT(SUBSTRING(current_stock.exp_date, 4, 4), '-', SUBSTRING(current_stock.exp_date, 1, 2)) < ?
                     AND (`qty` > 0 OR `loosely_count` > 0)
                     AND `admin_id` = ?
                     ORDER BY added_on ASC";
 
-        // Use prepared statements to prevent SQL injection
-        $stmt = $this->conn->prepare($select);
-        $stmt->bind_param("ss", $chkDt, $adminId);
-        $stmt->execute();
-        $result = $stmt->get_result();
+            // Use prepared statements to prevent SQL injection
+            $stmt = $this->conn->prepare($select);
+            $stmt->bind_param("ss", $chkDt, $adminId);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_array()) {
-                $data[] = $row;
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_array()) {
+                    $data[] = $row;
+                }
+                return $data;
+            } else {
+                return null;
             }
-            return $data;
-        } else {
-            return null;
+            $stmt->close();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
-        $stmt->close(); 
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
-}
 
 
 
 
-//=====================================================================================================
-///////////////////////////////////////////////////////////////////////////////////////////////////////
+    //=====================================================================================================
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     function incrCurrentStock($productId, $quantity)
@@ -413,7 +424,7 @@ function showExpStockForStocksummaryCard($chkDt, $adminId) {
 
 
 
-    
+
     // function updateCurrentStockById($id, $newQuantity, $newLCount)
     // {
     //     $editUpdate = " UPDATE `current_stock` SET `qty` = '$newQuantity', `loosely_count`='$newLCount' WHERE `id` = '$id'";
@@ -455,13 +466,13 @@ function showExpStockForStocksummaryCard($chkDt, $adminId) {
     }
 
 
-    
+
 
 
     // use (showCurrentStocByStokInDetialsId [line number 185 in this page]) this function against (showCurrentStockbyStokInId) function for any convenience....
 
 
-    
+
 
     function showCurrentStocByPId($productId)
     {
@@ -492,7 +503,7 @@ function showExpStockForStocksummaryCard($chkDt, $adminId) {
 
 
 
-    
+
 
     function showCurrentStocById($stockId)
     {
@@ -577,6 +588,33 @@ function showExpStockForStocksummaryCard($chkDt, $adminId) {
     //=============================delete section =========================
     ///////////////////////////////////////////////////////////////////////
 
+
+
+    function deleteCurrentStockbyId($productId)
+    {
+        try {
+            $delQry = "DELETE FROM `current_stock` WHERE `product_id` = ?";
+
+            $stmt = $this->conn->prepare($delQry);
+
+            $stmt->bind_param("s", $productId);
+
+            $stmt->execute();
+
+            $result = $stmt->affected_rows;
+
+            $stmt->close();
+
+            return $result;
+        } catch (Exception $e) {
+            if ($e) {
+                return $e;
+            } else {
+                return 0;
+            }
+        }
+    }
+
     function deleteCurrentStock($productId, $batchNo)
     {
 
@@ -586,23 +624,11 @@ function showExpStockForStocksummaryCard($chkDt, $adminId) {
         return $delSql;
     } // eof stockInDelete
 
-    function deleteCurrentStockbyId($productId)
-    {
-        //echo $batchNo;
-        // echo $productId;
 
-        $delQry = "DELETE FROM `current_stock` WHERE `product_id` = '$productId'";
-        // echo $delQry.$this->conn->error;exit;
-        $delSql = $this->conn->query($delQry);
-        // var_dump($delSql);
-        return $delSql;
-    } // eof stockInDelete
 
 
     function deleteCurrentStockbyStockIndetailsId($stockIndetailsID)
     {
-        //echo $batchNo;
-        // echo $productId;
 
         $delQry = "DELETE FROM `current_stock` WHERE `stock_in_details_id` = '$stockIndetailsID'";
         // echo $delQry.$this->conn->error;exit;
