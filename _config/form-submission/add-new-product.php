@@ -117,7 +117,11 @@ $Session = new SessionHandler();
 
                 if($image != ''){
                     if ($image != null) {
+<<<<<<< HEAD
                         if (file_exists("../../images/product-image/".$randomString.'_'.$image)) {
+=======
+                        if (file_exists(PROD_IMG_PATH.$randomString.'_'.$image)) {
+>>>>>>> b46c5cac4ba37a5cbcf5306f34702a83fda556a2
                             $image = 'medicy-'.$randomString.$image;
                         }
                     }
@@ -132,11 +136,7 @@ $Session = new SessionHandler();
                     }
                 
                     $image         = $ImgNm.'-'.$randomString.$extention;
-<<<<<<< HEAD
                     $imgFolder     = PROD_IMG_DIR.$image;
-=======
-                    $imgFolder     = "../../images/product-image/".$image;
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
                   
                     move_uploaded_file($tempImgname, $imgFolder);
                     $image         = addslashes($image);

@@ -44,6 +44,13 @@ $currentAppointments = $appointments->appointmentsDisplaybyId($appointmentId);
         $hospital = new HelthCare();
         $hospitalShow = $hospital->showhelthCare($adminId);
 
+        $healthCarelogo     = $hospitalShow['logo'];
+        if (empty($healthCareLogo)) {
+            $healthCareLogo = SITE_IMG_PATH.'logo-p.jpg';
+        }else {
+            $healthCareLogo = IMG_PATH.'orgs/'.$healthCarelogo;
+        }
+
         $hospitalName       = $hospitalShow['hospital_name'];
         $address1           = $hospitalShow['address_1'];
         $address2           = $hospitalShow['address_2'];
@@ -86,7 +93,7 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>prescription.css">
-    <title>Prescription</title>
+    <title>Prescription - <?= $patientId ?></title>
 </head>
 
 <body>
@@ -94,10 +101,10 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
         <div class="hospitslDetails mb-0">
             <div class="row">
                 <div class="col-1 headerHospitalLogo">
-                    <img class="mt-4" src="<?= IMG_PATH ?>logo-p.jpg" alt="XYZ Hospital">
+                    <img class="mt-4" src="<?= $healthCarelogo ?>" alt="<?= $hospitalName ?>">
                 </div>
                 <div class="col-4 headerHospitalDetails">
-                    <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?php echo $hospitalName ?></h1>
+                    <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?= $hospitalName ?></h1>
                     <p class="text-start  me-3">
                         <small><?php echo $address1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small>
                     </p>
