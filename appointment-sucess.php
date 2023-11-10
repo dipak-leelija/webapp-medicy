@@ -27,10 +27,10 @@ if (isset($_GET['appointmentId'])) {
   <title>Appointment Status</title>
 
   <!-- Message Box CSS -->
-  <link rel="stylesheet" href="<?php echo EMP_CSS ?>sucessPageStyle.css">
+  <link rel="stylesheet" href="<?= CSS_PATH ?>sucessPageStyle.css">
 
   <!--Only for demo purpose - no need to add.-->
-  <link rel="stylesheet" href="<?php echo EMP_CSS ?>sucessPageDemo.css">
+  <link rel="stylesheet" href="<?= CSS_PATH ?>sucessPageDemo.css">
 
 </head>
 <body>

@@ -139,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                         <?php
                                         $unitCounts = array();
-                                        
+                                        if(is_array($labBillingDetails))
                                         foreach ($labBillingDetails as $index => $test) {
                                             $testId = $test['test_id'];
                                             $showTestName = $LabReport->patientTest($testId);

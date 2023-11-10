@@ -8,21 +8,17 @@ require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 
-
-
-
 $billId = $_GET['billId'];
 
-$LabBilling     = new LabBilling();
-$LabBillDetails = new LabBillDetails();
-$SubTests       = new SubTests();
-$Patients       = new Patients();
-$Doctors         = new Doctors();
+$LabBilling         = new LabBilling;
+$LabBillDetails     = new LabBillDetails;
+$SubTests           = new SubTests;
+$Patients           = new Patients;
+$Doctors            = new Doctors;
 
 
 
 $labBil      = $LabBilling->labBillDisplayById($billId);
-
 ?>
 
 <!DOCTYPE html>
@@ -67,6 +63,8 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
                 $addedBy        = $rowlabBil['added_by'];
                 $BillOn         = $rowlabBil['added_on'];
             }
+        }else {
+            echo "Bill Not found";
         }
         
         $patient = $Patients->patientsDisplayByPId($patientId);
@@ -141,6 +139,7 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
             <?php
             $slno = 0;
             $billDetails = $LabBillDetails->billDetailsById($billId);
+            if(is_array($billDetails))
             foreach ($billDetails as $rowbillDetails) {
                 $slno += 1;
                 // $rowbillDetails['id'];
