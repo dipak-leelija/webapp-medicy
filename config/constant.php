@@ -111,6 +111,8 @@ session_start();
 	const JS_PATH							=	URL.'assets/js/';
 	const IMG_PATH							=	URL.'assets/images/';
 	const PLUGIN_PATH						=	URL.'assets/plugins/';
+	const SITE_IMG_PATH						=	IMG_PATH.'site-imgs/';
+
 	const PROD_IMG_PATH						=	URL.'images/product-image/';
 	const EMP_PATH							=	URL.'employee/';
 	const EMP_ASSETS						=	URL.'employee/assets/';
