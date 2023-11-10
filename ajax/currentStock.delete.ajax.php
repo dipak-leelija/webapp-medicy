@@ -27,37 +27,73 @@ $packagUnit     =   new PackagingUnits();
 if (isset($_POST['delID'])) {
     $productID =  $_POST['delID'];
 
-    // echo $productId;
-
     $deleteProductFromCrntStock = $CurrentStock->deleteCurrentStockbyId($productID);
+   
 
-    // $itemDetailsFrmStockInDetails = $StockInDetail->showStockInDetailsByStokinId($itemStockInDetailsId);
+    // ===== fetching  stock in details data for adjusting stock in data =======
+    $itemDetailsFromStockInDetails = $StockInDetail->showStockInDetailsByPId($productID);
+
+    foreach($itemDetailsFromStockInDetails as $perItemStockInDetaisl){
+        $itemDetaislId = $perItemStockInDetaisl['id'];
+        $itemQty = $perItemStockInDetaisl['qty'];
+        $itemGstAmount = $perItemStockInDetaisl['gst_amount'];
+        $itemAmount = $perItemStockInDetaisl['amount'];
+        $StockInId = $perItemStockInDetaisl['stokIn_id'];
+        
+        // echo "<br>$itemDetaislId<br>$itemQty<br>$itemGstAmount<br>$itemAmount<br>$StockInId<br><br>";
+        // ======== delete item from stock in detaisl =========
+        $deleteFromStocInDetails = $StockInDetail->stockInDeletebyDetailsId($itemDetaislId);
     
-    // print_r($itemDetailsFrmStockInDetails);
+        // ====== fetching stock in data for adjustment ========
+        $selectStockInData = $StockIn->selectStockInById($StockInId);
+        foreach($selectStockInData as $stockIn){
+            $itemCount = $stockIn['items'];
+            $totalQty = $stockIn['total_qty'];
+            $gstAmount = $stockIn['gst'];
+            $amount = $stockIn['amount'];
 
-    // $deleteFromStockInDetails = $StockInDetail->stockInDeletebyDetailsId($itemStockInDetailsId);
+            // echo "<br>$itemCount<br>$totalQty<br>$gstAmount<br>$amount<br>$StockInId<br><br>";
+            // =========== adjust stock in data ============
+            $updatedItemsCount = intval($itemCount) - 1;
+            $updatedTotalQty = intval($totalQty) - intval($itemQty);
+            $updatedGstAmount = intval($gstAmount) - intval($itemGstAmount);
+            $updatedAmount = intval($amount) - intval($itemAmount);
 
-    if($deleteProductFromCrntStock == true){
-        return $itemDetailsFrmStockInDetails;
+            // echo "<br>$updatedItemsCount<br>$updatedTotalQty<br>$updatedGstAmount<br>$updatedAmount<br>$StockInId<br><br>";
+
+            $updateStockInData = $StockIn->updateStockInOnModifyCurrentStock($StockInId, $updatedItemsCount, $updatedTotalQty, $updatedGstAmount, $updatedAmount, $employeeId, NOW);
+
+        }
+        
+    }
+    
+    if($deleteProductFromCrntStock == true && $deleteFromStocInDetails == true && $updateStockInData == true){
+        echo true;
     }else{
         echo 0;
     }
-
 }
 
 
-if (isset($_POST['pBatchNO'])) {
-    $productId =  $_POST['pId'];
-    $productBatchNo = $_POST['pBatchNO'];
+
+
+if (isset($_POST['delItemId'])) {
+
+    $itemId =  $_POST['delItemId'];
+
     // echo $productId;
 
-    $deleteProductStockByBatch = $CurrentStock->deleteCurrentStock($productId, $productBatchNo);
+    // =============== delete form current stock ===============
+    // $deleteProductStockByBatch = $CurrentStock->deleteCurrentStockbyStockIndetailsId($itemId);
 
-    if($productId != null){
-        echo 1;
-    }else{
-        echo 0;
-    }
+    // ============== select stock in detaisl data =============
+    $sockInDetaislData = $StockInDetail->showStockInDetailsByStokinId($itemId);
+    print_r($sockInDetaislData);
+    // if($productId != null){
+    //     echo 1;
+    // }else{
+    //     echo 0;
+    // }
     // $showStock = $CurrentStock->showCurrentStocByPId($productId);
     // print_r($showStock);
     // echo count($showStock);

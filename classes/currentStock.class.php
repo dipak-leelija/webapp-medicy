@@ -602,10 +602,14 @@ class CurrentStock extends DatabaseConnection
             $stmt->execute();
 
             $result = $stmt->affected_rows;
-
             $stmt->close();
 
-            return $result;
+            if($result > 0){
+                return true;
+            }else{
+                return false;
+            }
+
         } catch (Exception $e) {
             if ($e) {
                 return $e;

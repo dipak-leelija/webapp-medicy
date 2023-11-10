@@ -255,7 +255,7 @@ if (isset($_GET['currentStockId'])) {
                             </div>
 
                             <div class="col-1">
-                                <button class="button btn-danger" onclick="customDelete('<?php echo $stokInID ?>','<?php echo $productId ?>','<?php echo $batchNo ?>','<?php echo $currentStock ?>','<?php echo 'table-row-' . $slNo ?>','<?php echo $totalStockinQty ?>')">Delete</button>
+                                <button class="button btn-danger" onclick="customDelete('<?php echo $stokInID ?>', '<?php echo $currentStock ?>','<?php echo 'table-row-' . $slNo ?>','<?php echo $totalStockinQty ?>')">Delete</button>
                             </div>
 
                         </div>
@@ -305,7 +305,8 @@ if (isset($_GET['currentStockId'])) {
                             },
                             success: function(response) {
                                 alert(response);
-                                if (response.includes('1')) {
+                                
+                                if (response == true) {
                                     swal(
                                         "Deleted",
                                         "Product Has Been Deleted",
@@ -330,12 +331,17 @@ if (isset($_GET['currentStockId'])) {
 
     // =================================== DELTE PERTICULER STOCK DATA =======================
 
-    const customDelete = (id, value1, value2, value3, value4, value5) => {
+    const customDelete = (id, currentStockQty, tableRowNo, stockinQty) => {
+        
         alert(id);
-        let btnId = document.getElementById(id);
-        let row = document.getElementById(value4);
+        alert(currentStockQty);
+        alert(stockinQty);
+        alert(tableRowNo);
 
-        if (value3 != value5) {
+        // let btnId = document.getElementById(itemId);
+        let row = document.getElementById(tableRowNo);
+        alert(row);
+        if (currentStockQty != stockinQty) {
             swal({
                 icon: 'error',
                 title: 'Oops...',
@@ -343,7 +349,7 @@ if (isset($_GET['currentStockId'])) {
             })
         }
 
-        if (value3 == value5) {
+        if (currentStockQty == stockinQty) {
             swal({
                     title: "Are you sure?",
                     text: "Want to Delete This Data?",
@@ -359,11 +365,10 @@ if (isset($_GET['currentStockId'])) {
                             url: "currentStock.delete.ajax.php",
                             type: "POST",
                             data: {
-                                pId: value1,
-                                pBatchNO: value2
+                                delItemId: id,
                             },
                             success: function(response) {
-                                // alert(response);
+                                console.log(response);
                                 if (response.includes('1')) {
                                     swal(
                                         "Deleted",
