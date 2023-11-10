@@ -63,18 +63,27 @@ if ($patientDatafetch !== null) {
 // Fetching Hospital Info
 $hospital = new HelthCare();
 $hospitalShow = $hospital->showhelthCarePrimary();
-foreach ($hospitalShow as $hospitalDetails) {
-    $hospitalName = $hospitalDetails['hospital_name'];
-    $address1 = $hospitalDetails['address_1'];
-    $address2 = $hospitalDetails['address_2'];
-    $city = $hospitalDetails['city'];
-    $pin = $hospitalDetails['pin'];
-    $state = $hospitalDetails['health_care_state'];
-
-    $hospitalEmail = $hospitalDetails['hospital_email'];
-    $hospitalPhno = $hospitalDetails['hospital_phno'];
-    $appointmentNumber = $hospitalDetails['appointment_help_line'];
-}
+// print_r($hospitalShow['hospital_name']);
+$hospitalName          = $hospitalShow['hospital_name'];
+    $address1          = $hospitalShow['address_1'];
+    $address2          = $hospitalShow['address_2'];
+    $city              = $hospitalShow['city'];
+    $pin               = $hospitalShow['pin'];
+    $state             = $hospitalShow['health_care_state'];
+    $hospitalEmail     = $hospitalShow['hospital_email'];
+    $hospitalPhno      = $hospitalShow['hospital_phno'];
+    $appointmentNumber = $hospitalShow['appointment_help_line'];
+// foreach ($hospitalShow as $hospitalDetails) {
+//     $hospitalName      = $hospitalDetails['hospital_name'];
+//     $address1          = $hospitalDetails['address_1'];
+//     $address2          = $hospitalDetails['address_2'];
+//     $city              = $hospitalDetails['city'];
+//     $pin               = $hospitalDetails['pin'];
+//     $state             = $hospitalDetails['health_care_state'];
+//     $hospitalEmail     = $hospitalDetails['hospital_email'];
+//     $hospitalPhno      = $hospitalDetails['hospital_phno'];
+//     $appointmentNumber = $hospitalDetails['appointment_help_line'];
+// }
 
 ?>
 

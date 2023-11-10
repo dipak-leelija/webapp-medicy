@@ -36,32 +36,13 @@ $Session = new SessionHandler();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Product</title>
-<<<<<<< HEAD
-    <script src="<?php echo JS_PATH ?>sweetAlert.min.js"></script>
-=======
     <script src="<?= JS_PATH ?>/sweetAlert.min.js"></script>
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 </head>
 
 <body>
     <div>
     </div>
     <?php
-<<<<<<< HEAD
-    
-    // require_once dirname(dirname(__DIR__)).'/config/constant.php';
-    // require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-    // require_once CLASS_DIR.'dbconnect.php';
-    // require_once CLASS_DIR.'products.class.php';
-    // require_once CLASS_DIR.'productsImages.class.php';
-    // require_once CLASS_DIR.'measureOfUnit.class.php';
-    
-    // $Products      = new Products();
-    // $ProductImages = new ProductImages();
-    // $Unit = new MeasureOfUnits();
-    // $Session = new SessionHandler();
-=======
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
 
     // print_r($_SESSION);
     // echo "employee id : $employeeId";
@@ -136,11 +117,7 @@ $Session = new SessionHandler();
 
                 if($image != ''){
                     if ($image != null) {
-<<<<<<< HEAD
-                        if (file_exists(PROD_IMG_PATH.$randomString.'_'.$image)) {
-=======
                         if (file_exists("../../images/product-image/".$randomString.'_'.$image)) {
->>>>>>> 10018cd52c303a0a12e97a67ab1399c5300d6a57
                             $image = 'medicy-'.$randomString.$image;
                         }
                     }

@@ -59,9 +59,9 @@ if (isset($_POST['bill-generate'])) {
 ##################################################################
 ###################### Patient Visit Update ######################
 ##################################################################
-// $showPatient = json_decode($Patients->patientsDisplayByPId($patientId));
-$showPatient = $Patients->patientsDisplayByPId($patientId);
-
+$showPatient = json_decode($Patients->patientsDisplayByPId($patientId));
+// $showPatient = $Patients->patientsDisplayByPId($patientId);
+print_r($showPatient);
 foreach ($showPatient as $rowPatient) {
     // echo $labVisited;
     if (isset($rowPatient->lab_visited)) {
@@ -221,6 +221,13 @@ foreach ($healthCareDetails as $rowhelthCare) {
     $healthCarePIN      = $rowhelthCare['pin'];
     $healthCarePhno     = $rowhelthCare['hospital_phno'];
     $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
+    // $healthCareName     = $healthCareDetails['hospital_name'];
+    // $healthCareAddress1 = $healthCareDetails['address_1'];
+    // $healthCareAddress2 = $healthCareDetails['address_2'];
+    // $healthCareCity     = $healthCareDetails['city'];
+    // $healthCarePIN      = $healthCareDetails['pin'];
+    // $healthCarePhno     = $healthCareDetails['hospital_phno'];
+    // $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
 
 }
 ?>

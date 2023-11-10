@@ -127,8 +127,8 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                                             $status        = $rowlabBill['status'];
 
 
-
                                             $billDetails = $LabBillDetails->billDetailsById($billId);
+                                            if (is_array($billDetails)) {
                                             $test = count($billDetails);
                         
                                             // echo print_r($billDetails);exit;
@@ -180,6 +180,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                                                         <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id='.$billId.'"><i class="fa fa-flask" aria-hidden="true"></i></a>
                                                         </td>
                                                     </tr>';
+                                            }
                                         }
                                             // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
                                         ?>

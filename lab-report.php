@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
@@ -42,20 +43,28 @@ $labReportDetailbyId = json_decode($labReportDetailbyId);
 
 
 // Fetching Hospital Info
-$hospital = new HelthCare();
-$hospitalShow = $hospital->showhelthCarePrimary();
-foreach ($hospitalShow as $hospitalDetails) {
-    $hospitalName = $hospitalDetails['hospital_name'];
-    $address1 = $hospitalDetails['address_1'];
-    $address2 = $hospitalDetails['address_2'];
-    $city = $hospitalDetails['city'];
-    $pin = $hospitalDetails['pin'];
-    $state = $hospitalDetails['health_care_state'];
+$HelthCare       = new HelthCare();
+// $hospitalShow = $hospital->showhelthCarePrimary();
+$healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
+$healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
 
-    $hospitalEmail = $hospitalDetails['hospital_email'];
-    $hospitalPhno = $hospitalDetails['hospital_phno'];
-    $appointmentNumber = $hospitalDetails['appointment_help_line'];
+if($healthCareDetailsByAdminId != null){
+    $healthCareDetails = $healthCareDetailsByAdminId;
+}else{
+    $healthCareDetails = $healthCareDetailsPrimary;
 }
+
+// foreach ($healthCareDetails as $hospitalDetails) {
+    $hospitalName = $healthCareDetails['hospital_name'];
+    $address1 = $healthCareDetails['address_1'];
+    $address2 = $healthCareDetails['address_2'];
+    $city = $healthCareDetails['city'];
+    $pin = $healthCareDetails['pin'];
+    $state = $healthCareDetails['health_care_state'];
+    $hospitalEmail = $healthCareDetails['hospital_email'];
+    $hospitalPhno = $healthCareDetails['hospital_phno'];
+    $appointmentNumber = $healthCareDetails['appointment_help_line'];
+// }
 
 ?>
 

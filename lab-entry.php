@@ -6,6 +6,7 @@
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
+require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'doctors.class.php';
@@ -28,9 +29,10 @@ if($healthCareDetailsByAdminId != null){
 }else{
     $healthCareDetails = $healthCareDetailsPrimary;
 }
-foreach($healthCareDetails as $showShowHospital){
-    $hospitalName = $showShowHospital['hospital_name'];
-}
+// foreach($healthCareDetails as $showShowHospital){
+//     $hospitalName = $showShowHospital['hospital_name'];
+$hospitalName = $healthCareDetails['hospital_name'];
+// }
 
 
 $exist = FALSE;

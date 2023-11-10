@@ -48,23 +48,25 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
 
     <table class="table table-striped">
         <?php
-        foreach ($labBil as $rowlabBil) {
+        if (is_array($labBil) || is_object($labBil)) {
+            foreach ($labBil as $rowlabBil) {
 
-            $billId         = $rowlabBil['bill_id'];
-            $billDate       = $rowlabBil['bill_date'];
-            $patientId      = $rowlabBil['patient_id'];
-            $docId          = $rowlabBil['refered_doctor'];
-            $testDate       = $rowlabBil['test_date'];
-            $totalAmount    = $rowlabBil['total_amount'];
-            $totalDiscount  = $rowlabBil['discount'];
-            $afterDiscount  = $rowlabBil['total_after_discount'];
-            $cgst           = $rowlabBil['cgst'];
-            $sgst           = $rowlabBil['sgst'];
-            $paidAmount     = $rowlabBil['paid_amount'];
-            $dueAmount      = $rowlabBil['due_amount'];
-            $status         = $rowlabBil['status'];
-            $addedBy        = $rowlabBil['added_by'];
-            $BillOn         = $rowlabBil['added_on'];
+                $billId         = $rowlabBil['bill_id'];
+                $billDate       = $rowlabBil['bill_date'];
+                $patientId      = $rowlabBil['patient_id'];
+                $docId          = $rowlabBil['refered_doctor'];
+                $testDate       = $rowlabBil['test_date'];
+                $totalAmount    = $rowlabBil['total_amount'];
+                $totalDiscount  = $rowlabBil['discount'];
+                $afterDiscount  = $rowlabBil['total_after_discount'];
+                $cgst           = $rowlabBil['cgst'];
+                $sgst           = $rowlabBil['sgst'];
+                $paidAmount     = $rowlabBil['paid_amount'];
+                $dueAmount      = $rowlabBil['due_amount'];
+                $status         = $rowlabBil['status'];
+                $addedBy        = $rowlabBil['added_by'];
+                $BillOn         = $rowlabBil['added_on'];
+            }
         }
 
         $patient = $Patients->patientsDisplayByPId($patientId);
