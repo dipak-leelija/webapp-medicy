@@ -1,6 +1,6 @@
 <?php
 require_once dirname(dirname(__DIR__)). '/config/constant.php';
-require_once CLASS_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR .'dbconnect.php';
 require_once CLASS_DIR.'hospital.class.php';
@@ -13,7 +13,7 @@ require_once CLASS_DIR.'stockInDetails.class.php';
 //  INSTANTIATING CLASS
 $HelthCare       = new HelthCare();
 $StockReturn     = new StockReturn();
-$IdGeneration    = new IdGeneration();
+$IdsGeneration    = new IdsGeneration();
 $CurrentStock    = new CurrentStock();
 $StokInDetails   = new StockInDetails();
 
@@ -257,15 +257,15 @@ if($healthCareDetailsByAdminId != null){
     $healthCareDetails = $healthCareDetailsPrimary;
 }
 
-foreach ($healthCareDetails as $rowhelthCare) {
-    $healthCareName     = $rowhelthCare['hospital_name'];
-    $healthCareAddress1 = $rowhelthCare['address_1'];
-    $healthCareAddress2 = $rowhelthCare['address_2'];
-    $healthCareCity     = $rowhelthCare['city'];
-    $healthCarePIN      = $rowhelthCare['pin'];
-    $healthCarePhno     = $rowhelthCare['hospital_phno'];
-    $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
-}
+
+    $healthCareName     = $healthCareDetails['hospital_name'];
+    $healthCareAddress1 = $healthCareDetails['address_1'];
+    $healthCareAddress2 = $healthCareDetails['address_2'];
+    $healthCareCity     = $healthCareDetails['city'];
+    $healthCarePIN      = $healthCareDetails['pin'];
+    $healthCarePhno     = $healthCareDetails['hospital_phno'];
+    $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
+
 ?>
 
 <!DOCTYPE html>

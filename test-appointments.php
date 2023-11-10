@@ -2,11 +2,13 @@
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR . 'patients.class.php';
-require_once CLASS_DIR . 'labBilling.class.php';
-require_once CLASS_DIR . 'labBillDetails.class.php';
-require_once CLASS_DIR . 'sub-test.class.php';
-require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/hralthcare.inc.php';
+require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'labBilling.class.php';
+require_once CLASS_DIR.'labBillDetails.class.php';
+require_once CLASS_DIR.'sub-test.class.php';
+require_once CLASS_DIR.'doctors.class.php';
 
 
 
@@ -256,40 +258,19 @@ $labBillDisplay = $LabBilling->labBillDisplay();
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
 
 
     <script>
-        billViewandEdit = (obj) => {
-            if (obj < 10) {
-                obj = '0' + obj
-            }
-            let billId = obj;
-            // alert(billId);
-            let url = "ajax/labBill.view.ajax.php?billId=" + billId;
-
-
-            $(".billview").html(
-                '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
-                url + '"></iframe>');
-        } // end of viewAndEdit function
-        // 
-        function resizeIframe(obj) {
-            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-        }
-
-        cancelBill = (billId) => {
-            swal({
-                    title: "Are you sure?",
-                    text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
+    billViewandEdit = (obj) => {
+        // if (obj < 10) {
+        //     obj = '0' + obj
+        // }
+        let billId = obj;
+        // alert(billId);
+        let url = "ajax/labBill.view.ajax.php?billId=" + billId;
 
 
                         $.ajax({

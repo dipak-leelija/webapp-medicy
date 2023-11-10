@@ -93,6 +93,7 @@
 
                 $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
                 $data = $data2;
+               
                 break;
             case 3:
                 // echo "<br>this is case 3";
@@ -144,7 +145,7 @@
         <tbody>
             <?php
 
-            if (count($data) > 0) {
+            if ($data) {
                 // print_r($data);
                 foreach ($data as $row) { 
                     $distId = $row['distributor_id'];

@@ -27,10 +27,10 @@ if (isset($_GET['return-id'])) {
 
         <head>
             <!-- Custom fonts for this template-->
-            <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+            <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
             <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-            <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
+            <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
             <style>
                 .container-fluid {
                     display: flex;
@@ -153,7 +153,7 @@ if (isset($_GET['return-id'])) {
 
 
             <!-- Bootstrap Js -->
-            <script src="../../js/bootstrap-js-5/bootstrap.js"></script>
+            <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
         </body>
 
         </html>
@@ -167,7 +167,7 @@ if (isset($_GET['return-id'])) {
 
         <head>
             <!-- Custom fonts for this template-->
-            <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+            <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
             <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
             <link rel="stylesheet" href="../../css/bootstrap 5/bootstrap.css">
@@ -212,7 +212,7 @@ if (isset($_GET['return-id'])) {
                 </div>
             </div>
 
-            <script src="../../js/bootstrap-js-5/bootstrap.js"></script>
+            <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
         </body>
 
         </html>
