@@ -54,9 +54,9 @@ if (isset($_GET['currentStockId'])) {
     $manufDetails = $manufacturer->showManufacturerById($prodcutDetails[0]['manufacturer_id']);
 
     $image = $ProductImages->showImageById($productId);
-    print_r($image);
-    if ($image[0]['name'] != NULL) {
-        $productImage = $image[0]['name'];
+    // print_r($image);
+    if ($image != null) {
+        $productImage = $image[0]['image'];
     } else {
         $productImage = 'medicy-default-product-image.jpg';
     }

@@ -62,11 +62,12 @@ class ProductImages extends DatabaseConnection{
                 while ($row = $result->fetch_assoc()) {
                     $data[] = $row;
                 }
-                $stmt->close();
                 return $data;
-            } else {
                 $stmt->close();
+            } else {
+                
                 return null;
+                $stmt->close();
             }
         } catch (Exception $e) {
             return null;
