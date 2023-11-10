@@ -227,7 +227,7 @@ for($i; $i<count($healthCareDetails) ; $i++) {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= IMG_PATH ?>logo-p.jpg"
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= SITE_IMG_PATH ?>logo-p.jpg"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">
