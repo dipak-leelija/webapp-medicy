@@ -167,7 +167,7 @@ $showAppointments = $appoinments->appointmentsDisplay($adminId);
                     </button>
                 </div>
                 <div class="modal-body d-flex justify-content-around">
-                    <a href="appointment-entry.php" class="btn btn-info" href="">New Patient</a>
+                    <a href="add-patient.php" class="btn btn-info" href="">New Patient</a>
                     or
                     <a href="patient-selection.php" class="btn btn-info" href="">Returning Patient</a>
                 </div>
