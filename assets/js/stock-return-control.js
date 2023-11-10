@@ -123,7 +123,7 @@ const cancelPurchaseReturn = (cancelId, t) => {
                 id: cancelId
             },
             success: function (data) {
-                alert(data);
+                // alert(data);
                 if (data == 1) {
                     $(t).closest("tr").css("background-color", "#ff0000");
                     $(t).closest("tr").css("color", "#fff");

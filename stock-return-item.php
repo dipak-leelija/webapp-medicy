@@ -100,7 +100,7 @@ $showDistributor       = $Distributor->showDistributor();
                                             <b> Select Distributor First </b>
                                         </div>
                                     </div>
-                                    <input class=" " type="text" id="product-id">
+                                    <input class="d-none" type="text" id="product-id">
                                 </div>
 
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
@@ -124,7 +124,7 @@ $showDistributor       = $Distributor->showDistributor();
                                 <div class="row">
                                     <div class="col-md-6 col-12 ">
                                         <div class="row">
-                                            <div class="  col-md-6 col-12">
+                                            <div class="d-none col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="stokInDetailsId">Stock In Detaisl Id :</label>
                                                 <input class="upr-inp mb-1" id="stokInDetailsId" readonly>
                                             </div>
@@ -190,7 +190,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <input type="text" class="upr-inp" name="gst" id="gst" readonly>
                                             </div>
 
-                                            <div class="  col-md-3 col-6">
+                                            <div class="d-none col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="gstAmountPerQty">GST Amount Per Quantity</label>
                                                 <input type="text" class="upr-inp" name="gstAmountPerQty" id="gstAmountPerQty" readonly>
                                             </div>
@@ -220,16 +220,16 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <label class="mb-0 mt-1" for="amount">Amount</label>
                                                 <input type="any" class="upr-inp" name="amount" id="amount" readonly>
                                             </div>
-                                            <div class="  col-md-3 col-6">
+                                            <div class="d-none col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="purchased-qty">Buy Qty: </label>
                                                 <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
                                             </div>
 
-                                            <div class="  col-md-3 col-6">
+                                            <div class="d-none col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="free-qty">Free Qty:</label>
                                                 <input type="text" class="upr-inp" name="free-qty" id="free-qty">
                                             </div>
-                                            <div class="  col-md-3 col-6">
+                                            <div class="d-none col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="net-buy-qty">Net Buy Qty:</label>
                                                 <input type="text" class="upr-inp" name="net-buy-qty" id="net-buy-qty">
                                             </div>
@@ -279,7 +279,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                 <input type="text" class="upr-inp focus-border" name="return-free-qty" id="return-free-qty" value="" onkeyup="checkFQty(this.value);">
                                             </div>
 
-                                            <div class="  col-md-3 col-6">
+                                            <div class="d-none col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="return-gst-amount">Return GST Amount </label>
                                                 <input type="text" class="upr-inp focus-border" name="return-gst-amount" id="return-gst-amount" value="">
                                             </div>

@@ -95,7 +95,7 @@ $today = date("m-d-Y");
                                 </div>
 
                                 <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this.id, this.value)">
+                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
                                         <option value="" disabled selected>Select Duration</option>
                                         <option value="T">Today</option>
                                         <option value="Y">yesterday</option>
