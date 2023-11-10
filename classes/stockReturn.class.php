@@ -83,16 +83,31 @@ class StockReturn extends DatabaseConnection
 
 
 
-    function stockReturnFilterbyDate($table, $value1, $value2)
-    {
-        $data = array();
-        $sql  = $sql = "SELECT * FROM `stock_return` WHERE `$table`  between '$value1' and '$value2'";
-        $res  = $this->conn->query($sql);
-        while ($result = $res->fetch_array()) {
-            $data[] = $result;
+
+
+    function stockReturnFilterbyDate($table, $value1, $value2){
+        try{
+            $data = array();
+            $sql  = $sql = "SELECT * FROM `stock_return`
+            WHERE DATE(`$table`) BETWEEN '$value1' AND '$value2'";
+            $res  = $this->conn->query($sql);
+            
+            if($res->num_rows > 0){
+                while ($result = $res->fetch_array()) {
+                    $data[] = $result;
+                }
+                return $data;
+            }else{
+                return null;
+            }
+        }catch(Exception $e){
+            if($e){
+                echo "Exception occur : ".$e;
+            }
         }
-        return $data;
     } //eof stockReturnFilter
+
+
 
 
 

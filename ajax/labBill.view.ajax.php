@@ -66,7 +66,7 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
         }else {
             echo "Bill Not found";
         }
-
+        
         $patient = $Patients->patientsDisplayByPId($patientId);
         if ($patient !== false) {
             $patientData = json_decode($patient, true); 
