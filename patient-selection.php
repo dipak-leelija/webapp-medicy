@@ -80,7 +80,7 @@ $showPatients = json_decode($showPatients,true);
                                     <div class="row justify-content-between text-left">
                                         <div class="col-md-12 mb-2">
                                         <label class="form-control-label" for="patientName">Patient Name<span class="text-danger"> *</span></label>
-                                            <select class="form-control customDropSelection patient-select" data-live-search="true" name="patientName" id="patientList" onChange="getPhno()">
+                                            <select class="form-control customDropSelection patient-select" data-live-search="true" name="patientName" id="patientList" onChange="getPhno()" required>
                                                 <option value="" selected disabled> Search Patient Name </option>
                                                 <?php
                                                     foreach ($showPatients as $patientsRow) {

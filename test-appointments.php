@@ -1,12 +1,12 @@
 <?php
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'labBilling.class.php';
-require_once CLASS_DIR.'labBillDetails.class.php';
-require_once CLASS_DIR.'sub-test.class.php';
-require_once CLASS_DIR.'doctors.class.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'labBilling.class.php';
+require_once CLASS_DIR . 'labBillDetails.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
 
 
 
@@ -43,9 +43,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -65,7 +63,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -75,7 +73,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -88,8 +86,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                     <!-- Test Appointments -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 booked_btn">
-                            <a data-toggle="modal" data-target="#labPatientSelection"><button class="btn btn-primary"><i
-                                        class="fas fa-edit"></i> Add Test Bill</button></a>
+                            <a data-toggle="modal" data-target="#labPatientSelection"><button class="btn btn-primary"><i class="fas fa-edit"></i> Add Test Bill</button></a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -117,7 +114,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <?php 
+                                        <?php
                                         foreach ($labBillDisplay as $rowlabBill) {
                                             $billId        = $rowlabBill['bill_id'];
                                             $patientId     = $rowlabBill['patient_id'];
@@ -128,21 +125,22 @@ $labBillDisplay = $LabBilling->labBillDisplay();
 
 
                                             $billDetails = $LabBillDetails->billDetailsById($billId);
-                                            if (is_array($billDetails)) {
-                                            $test = count($billDetails);
-                        
-                                            // echo print_r($billDetails);exit;
-                                            if ($test == 1) {
-                                                foreach ($billDetails as $rowBillDetails) {
-                                                    $subTestId = $rowBillDetails['test_id'];
+                                            if (is_array($billDetails)) 
+                                                $test = count($billDetails);
+                                            
+                                                // echo print_r($billDetails);exit;
+                                                if ($test == 1) {
+                                                    foreach ($billDetails as $rowBillDetails) {
+                                                        $subTestId = $rowBillDetails['test_id'];
 
-                                                    $showSubTest = $SubTests->showSubTestsId($subTestId);
-                                                    foreach ($showSubTest as $rowSubTest) {
-                                                        $test = $rowSubTest['sub_test_name'];
-                                                        // echo $test;
+                                                        $showSubTest = $SubTests->showSubTestsId($subTestId);
+                                                        foreach ($showSubTest as $rowSubTest) {
+                                                            $test = $rowSubTest['sub_test_name'];
+                                                            // echo $test;
+                                                        }
                                                     }
                                                 }
-                                            }
+                                            
 
                                             $docId = $referdDoc;
                                             if (is_numeric($docId)) {
@@ -150,39 +148,38 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                                                 foreach ($showDoctor as $rowDoctor) {
                                                     $docName = $rowDoctor['doctor_name'];
                                                 }
-                                            }else {
+                                            } else {
                                                 $docName = $referdDoc;
                                             }
-                                              echo '<tr ';
-                                               
-                                              if($status == "Credit"){
+                                            echo '<tr ';
+
+                                            if ($status == "Credit") {
                                                 echo 'style="background-color:#FFCCCB";';
-                                              }elseif ($status == "Partial Due") {
+                                            } elseif ($status == "Partial Due") {
                                                 echo 'style="background-color: #FFFF99";';
-                                              }elseif ( $status == "Cancelled") {
+                                            } elseif ($status == "Cancelled") {
                                                 echo 'style="background-color: #b51212; color: #FFF;"';
-                                              }
-                                              else{
+                                            } else {
                                                 echo 'style="background-color:white";';
-                                              }
-                                              echo '>
-                                                        <td>'.$billId.'</td>
-                                                        <td>'.$testDate.'</td>
-                                                        <td>'.$test.' Tests</td>
-                                                        <td>'.$docName.'</td>
-                                                        <td>Rs. '.$paidAmount.'</td>
-                                                        <td>'.$status.'</td>
-                                                        <td><a class="text-primary mx-2" data-toggle="modal" data-target="#billModal" onclick="billViewandEdit('.$billId.')" title="View and Edit"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            }
+                                            echo '>
+                                                        <td>' . $billId . '</td>
+                                                        <td>' . $testDate . '</td>
+                                                        <td>' . $test . ' Tests</td>
+                                                        <td>' . $docName . '</td>
+                                                        <td>Rs. ' . $paidAmount . '</td>
+                                                        <td>' . $status . '</td>
+                                                        <td><a class="text-primary mx-2" data-toggle="modal" data-target="#billModal" onclick="billViewandEdit(' . $billId . ')" title="View and Edit"><i class="fa fa-eye" aria-hidden="true"></i></a>
 
-                                                        <a class="text-primary text-center" title="Print" href="reprint-test-bill.php?bill_id='.$billId.'"><i class="fas fa-print"></i></a>
+                                                        <a class="text-primary text-center" title="Print" href="reprint-test-bill.php?bill_id=' . $billId . '"><i class="fas fa-print"></i></a>
 
-                                                        <a class="delete-btn text-danger mx-2" id="'.$billId.'" title="Cancel" onclick="cancelBill('.$billId.')"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                        <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id='.$billId.'"><i class="fa fa-flask" aria-hidden="true"></i></a>
+                                                        <a class="delete-btn text-danger mx-2" id="' . $billId . '" title="Cancel" onclick="cancelBill(' . $billId . ')"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                        <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id=' . $billId . '"><i class="fa fa-flask" aria-hidden="true"></i></a>
                                                         </td>
                                                     </tr>';
-                                            }
+                                            // }
                                         }
-                                            // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
+                                        // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
                                         ?>
 
                                     </tbody>
@@ -200,7 +197,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -215,8 +212,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
     </a>
 
     <!-- Lab ptient selection Modal -->
-    <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -241,8 +237,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
 
 
     <!-- Bill View Modal -->
-    <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -267,62 +262,62 @@ $labBillDisplay = $LabBilling->labBillDisplay();
 
 
     <script>
-    billViewandEdit = (obj) => {
-        if (obj < 10) {
-            obj = '0' + obj
+        billViewandEdit = (obj) => {
+            if (obj < 10) {
+                obj = '0' + obj
+            }
+            let billId = obj;
+            // alert(billId);
+            let url = "ajax/labBill.view.ajax.php?billId=" + billId;
+
+
+            $(".billview").html(
+                '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
+                url + '"></iframe>');
+        } // end of viewAndEdit function
+        // 
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
         }
-        let billId = obj;
-        // alert(billId);
-        let url = "ajax/labBill.view.ajax.php?billId=" + billId;
+
+        cancelBill = (billId) => {
+            swal({
+                    title: "Are you sure?",
+                    text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
 
 
-        $(".billview").html(
-            '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
-            url + '"></iframe>');
-    } // end of viewAndEdit function
-    // 
-    function resizeIframe(obj) {
-        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-    }
+                        $.ajax({
+                            url: "ajax/labBill.delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                billId: billId,
+                                status: "Cancelled",
+                            },
+                            success: function(data) {
+                                // alert (data);
+                                if (data == 1) {
+                                    swal("Done! Your Bill Has Been Cancelled.", {
+                                        icon: "success",
+                                    });
+                                    row = document.getElementById(billId);
+                                    row.closest('tr').style.background = '#b51212';
+                                    row.closest('tr').style.color = '#FFFFFF';
+                                } else {
+                                    $("#error-message").html("Cancellation Field !!!").slideDown();
+                                }
 
-    cancelBill = (billId) => {
-        swal({
-                title: "Are you sure?",
-                text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-
-
-                    $.ajax({
-                        url: "ajax/labBill.delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            billId: billId,
-                            status: "Cancelled",
-                        },
-                        success: function(data) {
-                            // alert (data);
-                            if (data == 1) {
-                                swal("Done! Your Bill Has Been Cancelled.", {
-                                icon: "success",
-                                });
-                                row = document.getElementById(billId);
-                                row.closest('tr').style.background = '#b51212';
-                                row.closest('tr').style.color = '#FFFFFF';
-                            } else {
-                                $("#error-message").html("Cancellation Field !!!").slideDown();
                             }
+                        });
 
-                        }
-                    });
-
-                }
-            });
-    }
+                    }
+                });
+        }
     </script>
 
     <!-- Core plugin JavaScript-->
