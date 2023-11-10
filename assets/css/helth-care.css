@@ -1,9 +1,7 @@
 .hospital_logo{
     width: 100%;
 }
-.hospital_logo_input{
-    float: left;
-}
+
 .card_padding{
     padding: 1.25rem 0;
 }
@@ -26,6 +24,12 @@
 .address_col{
     max-width: 100%;
     padding-left: 0;
+}
+
+.img-uv-view{
+    width: 50% !important;
+    object-fit: contain !important;
+    max-height: 200px !important;
 }
 
 /* @media only screen and (max-width:986){

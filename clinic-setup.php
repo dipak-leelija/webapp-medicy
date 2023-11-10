@@ -14,10 +14,15 @@ $HealthCare = new HelthCare();
 // Healthcare Addesss and details
 if (isset($_POST['update']) ==  true) {
 
-    $logo = $_FILES['site-logo']['name'];
-    $tempImgname    = $_FILES['site-logo']['tmp_name'];
-    $imgFolder      = "images/orgs/".$logo;
-    move_uploaded_file($tempImgname, $imgFolder);
+    // print_r($_FILES);exit;
+    if (!empty($_FILES['site-logo']['name'])) {
+        $logo = $_FILES['site-logo']['name'];
+        $tempImgname    = $_FILES['site-logo']['tmp_name'];
+        $imgFolder      = "assets/images/orgs/".$logo;
+        move_uploaded_file($tempImgname, $imgFolder);
+    }else {
+        $imgFolder  = '';
+    }
 
     $healthCareName          = $_POST['helthcare-name'];
     $healthCareAddress1      = $_POST['address-1'];
@@ -47,6 +52,10 @@ if (isset($_POST['update']) ==  true) {
 $showHealthCare = $HealthCare->showhelthCare($adminId);
 
 $healthCareLogo      = $showHealthCare['logo'];
+if (empty($healthCareLogo)) {
+    $healthCareLogo = SITE_IMG_PATH.'logo-p.jpg';
+}
+
 $healthCareId        = $showHealthCare['hospital_id'];
 $healthCareName      = $showHealthCare['hospital_name'];
 $healthCareAddress1  = $showHealthCare['address_1'];
@@ -83,6 +92,7 @@ $healthCareApntbkNo  = $showHealthCare['appointment_help_line'];
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>upload-design.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>helth-care.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>img-uv/img-uv.css" rel="stylesheet">
 
 
 </head>
@@ -127,29 +137,27 @@ $healthCareApntbkNo  = $showHealthCare['appointment_help_line'];
                                 <form action="<?= PAGE ?>" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div>
-                                                <img class="mb-0 mt-3 rounded" src="<?php echo $healthCareLogo; ?>"
+                                            <div class="d-flex justify-content-around align-items-center">
+                                                <img class="mb-0 mt-3 rounded img-uv-view" src="<?= $healthCareLogo; ?>"
                                                     width="100%" height="180" alt="">
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div>
-                                                    <label class="mb-0 mt-1" for="name">Hospital Logo</label>
+                                                <div class="">
+                                                    <input type="file" style="display:none;" id="img-uv-input"
+                                                        accept="image/*" name="site-logo">
+                                                    <label for="img-uv-input" class="btn btn-primary">Change
+                                                        Logo</label>
                                                 </div>
-                                                <div class="btn btn-primary btn-sm hospital_logo">
+                                            </div>
 
-                                                    <input class="hospital_logo_input" name="site-logo" id="site-logo"
-                                                        type="file">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="helthcare-name">Helth Care Name</label>
+                                            <div class="col-md-12 mt-md-5">
+                                                <label class="mb-0 mt-1" for="helthcare-name">Organization/Helth Care
+                                                    Name</label>
                                                 <input class="form-control" type="text" name="helthcare-name"
                                                     id="helthcare-name" value="<?php echo $healthCareName; ?>" required>
                                             </div>
 
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="helpline-no">Help Line Number</Address>
-                                                    </label>
+                                                </label>
                                                 <input class="form-control" type="text" name="helpline-no"
                                                     id="helpline-no" value="<?php echo $healthCarePhno; ?>" required>
                                             </div>
@@ -161,33 +169,29 @@ $healthCareApntbkNo  = $showHealthCare['appointment_help_line'];
                                                     required>
                                             </div>
 
-                                        </div>
-
-                                        <div class="col-md-6">
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="email">Helth Care Email</label>
                                                 <input class="form-control" type="text" name="email" id="email"
                                                     value="<?php echo $healthCareEmail; ?>">
                                             </div>
 
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="state">Select State</label>
-                                                <select class="form-control" name="state" id="state" required>
-                                                    <?php echo '<option value="'.$healthCareState.'">'.$healthCareState.'</option>';?>
-                                                    <option value="West Bengal">West Bengal</option>
-                                                    <option value="Others">Others</option>
-                                                </select>
-                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+
+
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="address-1">Address 1</label>
-                                                <input class="form-control" type="text" maxlength="50" name="address-1"
-                                                    id="address-1" value="<?php echo $healthCareAddress1; ?>" required>
+                                                <textarea class="form-control" maxlength="50" name="address-1"
+                                                    id="address-1" rows="2"
+                                                    required><?= $healthCareAddress1; ?></textarea>
                                             </div>
 
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="address-2">Address 2</label>
-                                                <input class="form-control" type="text" maxlength="50" name="address-2"
-                                                    id="address-2" value="<?php echo $healthCareAddress2; ?>" required>
+                                                <textarea class="form-control" type="text" maxlength="50"
+                                                    name="address-2" id="address-2" rows="2"
+                                                    required><?= $healthCareAddress2; ?></textarea>
                                             </div>
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="city">City</label>
@@ -199,20 +203,33 @@ $healthCareApntbkNo  = $showHealthCare['appointment_help_line'];
                                                 <input class="form-control" type="text" maxlength="50" name="dist"
                                                     id="dist" value="<?php echo $healthCareDist; ?>" required>
                                             </div>
-
+                                            <div class="col-md-12">
+                                                <label class="mb-0 mt-1" for="state">Select State</label>
+                                                <select class="form-control" name="state" id="state" required>
+                                                    <?php echo '<option value="'.$healthCareState.'">'.$healthCareState.'</option>';?>
+                                                    <option value="West Bengal">West Bengal</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                            </div>
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1 ps-1" for="pin">PIN</label>
                                                 <input class="form-control" type="number" maxlength="7" minlength="7"
                                                     name="pin" id="pin" value="<?php echo $healthCarePin; ?>" required>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <label class="mb-0 mt-1 ps-1" for="country">Country</label>
+                                                <select class="form-control" name="country" id="country" required>
+                                                    <option value="India">India</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
                                         <button class="btn btn-success me-md-2" name="update"
-                                            type="submit">Update</button>&nbsp
-
-                                        <button class="btn btn-primary me-md-2" name="update" type="submit">ADD</button>
+                                            type="submit">Update</button>
                                     </div>
 
                                 </form>
@@ -248,6 +265,8 @@ $healthCareApntbkNo  = $showHealthCare['appointment_help_line'];
 
     <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>
+
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
