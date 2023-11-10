@@ -68,7 +68,7 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
                 $BillOn         = $rowlabBil['added_on'];
             }
         }
-
+        
         $patient = $Patients->patientsDisplayByPId($patientId);
         if ($patient !== false) {
             $patientData = json_decode($patient, true); 
