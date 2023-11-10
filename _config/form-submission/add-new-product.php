@@ -129,7 +129,11 @@ $Session = new SessionHandler();
 
                 if($image != ''){
                     if ($image != null) {
+<<<<<<< HEAD
                         if (file_exists("../../images/product-image/".$randomString.'_'.$image)) {
+=======
+                        if (file_exists(PROD_IMG_PATH.$randomString.'_'.$image)) {
+>>>>>>> 31d9abb521c1733000af0c84f2a5bb005ecd7f31
                             $image = 'medicy-'.$randomString.$image;
                         }
                     }
