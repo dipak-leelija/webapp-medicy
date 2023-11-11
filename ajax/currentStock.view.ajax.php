@@ -331,7 +331,7 @@ if (isset($_GET['currentStockId'])) {
     // =================================== DELTE PERTICULER STOCK DATA =======================
 
     const customDelete = (id, value1, value2, value3, value4, value5) => {
-        alert(id);
+        alert(value4);
         let btnId = document.getElementById(id);
         let row = document.getElementById(value4);
 
