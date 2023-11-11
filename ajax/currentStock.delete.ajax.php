@@ -121,13 +121,10 @@ if (isset($_POST['delItemId'])) {
 
             if($updatedStockInItemsCount == 0 && $updatedStockInTotalQty == 0){
                 $updateStockInData = $StockIn->deleteStock($StockInId);
-                $updateStockInData = $updateStockInData."alldelete";
+                
             } else {
                 $updateStockInData = $StockIn->updateStockInOnModifyCurrentStock($StockInId, $updatedStockInItemsCount, $updatedStockInTotalQty, $updatedStockInGstAmount, $updatedStockInAmount, $employeeId, NOW);
-
-                $updateStockInData = $updateStockInData."modify-stockin";
             }
-            echo $updateStockInData;
         }
     }
 
