@@ -12,32 +12,35 @@ $CurrentStock = new CurrentStock();
 
 
     $stockInId  = $_POST['DeleteId'];
-
-    $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
     
+    $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
     foreach($selectStockInDetails as $stockInDetails){
         $stockInDetailsId = $stockInDetails['id'];
         // echo "<br>$stockInDetailsId";
-       
         $table = 'stock_in_details_id';
-        $deleteFromCurrentStock = $CurrentStock->deleteByTabelData($table, $stockInDetailsId);
+        $deleteFromCurrentStock = $CurrentStock->deleteCurrentStockbyStockIndetailsId($stockInDetailsId);
     }
 
+
     foreach($selectStockInDetails as $stockInDetails){
         $stockInDetailsId = $stockInDetails['id'];
         // echo "<br>$stockInDetailsId";
-        $deleteStockInDetails = $StockInDetails->stockInDeletebyDetailsId($stockInDetailsId);             
+        if($deleteFromCurrentStock == true){
+            $deleteStockInDetails = $StockInDetails->stockInDeletebyDetailsId($stockInDetailsId);
+        }             
     }
     
 
     if($deleteFromCurrentStock == true && $deleteStockInDetails == true){
-        // echo "<br>$stockInId";
+        // echo "<br>$stockInId"; 
         $deleteFromStockIn = $Stockin->deleteStock($stockInId); 
-    }
+        
+    }   
+    
 
     
     if($deleteFromStockIn == true){
-        echo 1;
+        echo $deleteFromStockIn;
     }else{
         echo 0;
     }

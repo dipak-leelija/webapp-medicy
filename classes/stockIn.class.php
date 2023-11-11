@@ -466,7 +466,12 @@ class StockIn extends DatabaseConnection
 
             $stmt->close();
 
-            return $result;
+            if($result > 0){
+                return null;
+            }else{
+                return $result;
+            }
+            
         } catch (Exception $e) {
             if ($e) {
                 echo "Error: " . $e->getMessage();

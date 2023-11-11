@@ -272,9 +272,9 @@ if (isset($_GET['currentStockId'])) {
 <script>
     // ============================ DELETE ALL STOCK DATA ================================
     const delAll = (id, value1, value2) => {
-        alert(id);
-        alert(value1);
-        alert(value2);
+        // alert(id);
+        // alert(value1);
+        // alert(value2);
         let stokInQty = value1;
         let currentQty = value2;
 
@@ -329,18 +329,18 @@ if (isset($_GET['currentStockId'])) {
 
     }
 
-    // =================================== DELTE PERTICULER STOCK DATA =======================
+    // ====================== DELTE PERTICULER STOCK DATA =======================
 
     const customDelete = (id, currentStockQty, tableRowNo, stockinQty) => {
         
-        alert(id);
-        alert(currentStockQty);
-        alert(stockinQty);
-        alert(tableRowNo);
+        // alert(id);
+        // alert(currentStockQty);
+        // alert(stockinQty);
+        // alert(tableRowNo);
 
         // let btnId = document.getElementById(itemId);
         let row = document.getElementById(tableRowNo);
-        alert(row);
+        
         if (currentStockQty != stockinQty) {
             swal({
                 icon: 'error',
@@ -369,7 +369,7 @@ if (isset($_GET['currentStockId'])) {
                             },
                             success: function(response) {
                                 console.log(response);
-                                if (response.includes('1')) {
+                                if (response == true) {
                                     swal(
                                         "Deleted",
                                         "Manufacturer Has Been Deleted",
