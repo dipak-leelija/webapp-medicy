@@ -1,8 +1,4 @@
 <?php
-// ini_set('display_errors', '1');
-// ini_set('display_startup_errors', '1');
-// error_reporting(E_ALL);
-
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
@@ -22,15 +18,37 @@ $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 
 //Function Initilized
-$showDoctors = $Doctors->showDoctors();
+$showDoctors    = $Doctors->showDoctors();
 $showSubTests   = $SubTests->showSubTests();
 
 
-  //Creating Object of Appointments Class
-  $appointments = new Appointments();
+if (isset($_SESSION['appointment-data'])) {
+    $data = $_SESSION['appointment-data'];
+
+    $patientId          = $data['patientId'];
+    $testDate    = $data['appointmentDate'];
+    $patientName        = $data['patientName'];
+    $patientGurdianName = $data['patientGurdianName'];
+    $patientEmail       = $data['patientEmail'];
+    $patientPhoneNumber = $data['patientPhoneNumber'];
+    $patientAge         = $data['patientAge'];
+    $patientWeight      = $data['patientWeight'];
+    $gender             = $data['gender'];
+    $patientAddress1    = $data['patientAddress1'];
+    $patientAddress2    = $data['patientAddress2'];
+    $patientPS          = $data['patientPS'];
+    $patientDist        = $data['patientDist'];
+    $patientPIN         = $data['patientPIN'];
+    $patientState       = $data['patientState'];
+    $patientDoctor      = $data['patientDoctor'];
+
+    session_unset($_SESSION['appointment-data']);
+}
 
 
-  if (isset($_POST['update-lab-visit'])) {
+// exit;
+
+if (isset($_POST['update-lab-visit'])) {
     $patientId          = $_POST["patientId"];
     $testDate           = $_POST["testDate"];
     $patientName        = $_POST["patientName"];
@@ -46,40 +64,6 @@ $showSubTests   = $SubTests->showSubTests();
     $patientDist        = $_POST["patientDist"];
     $patientPIN         = $_POST["patientPIN"];
     $patientState       = $_POST["patientState"];
-
-  }elseif (isset($_POST['submit'])) {
-      $testDate           = $_POST["testDate"];
-      $patientName        = $_POST["patientName"];
-      $patientGurdianName = $_POST["patientGurdianName"];
-      $patientEmail       = $_POST["patientEmail"];
-      $patientPhoneNumber = $_POST["patientPhoneNumber"];
-      $patientAge         = $_POST["patientAge"];
-      $patientWeight      = $_POST["patientWeight"];
-      $gender             = $_POST["gender"];
-      $patientAddress1    = $_POST["patientAddress1"];
-      $patientAddress2    = $_POST["patientAddress2"];
-      $patientPS          = $_POST["patientPS"];
-      $patientDist        = $_POST["patientDist"];
-      $patientPIN         = $_POST["patientPIN"];
-      $patientState       = $_POST["patientState"];
-  
-  
-          //Patient Id Generate
-          $prand      = rand(100000000, 999999999);
-          $patientId  = 'PE'.$prand;
-        //   echo $patientId;
-  
-          $labVisited = '';
-          // Inserting Into Patients Database
-          $addPatients = $Patients->addLabPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $labVisited);
-            if ($addPatients) {
-                echo '<script>alert("Patient Details Added!");</script>';
-            }else{
-                echo "<script>alert('Patient Not Inserted, Something is Wrong!');</script>";
-            }
-  }else {
-    header("Location: lab-entry.php");
-    exit;
 }
 
 
