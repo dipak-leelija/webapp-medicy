@@ -1,4 +1,5 @@
 <?php
+$page = "test-appointments";
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
@@ -13,7 +14,6 @@ require_once CLASS_DIR.'doctors.class.php';
 
 
 
-$page = "test-appointments";
 
 // $LabAppointments = new LabAppointments();
 $Patients        = new Patients();
@@ -224,7 +224,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                     </button>
                 </div>
                 <div class="modal-body d-flex justify-content-around">
-                    <a class="btn btn-primary mx-4" href="lab-entry.php">New Patient</a>
+                    <a class="btn btn-primary mx-4" href="add-patient.php?test=true">New Patient</a>
                     or
                     <a class="btn btn-primary mx-4" href="lab-patient-selection.php">Returning Patient</a>
                 </div>
@@ -273,32 +273,32 @@ $labBillDisplay = $LabBilling->labBillDisplay();
         let url = "ajax/labBill.view.ajax.php?billId=" + billId;
 
 
-                        $.ajax({
-                            url: "ajax/labBill.delete.ajax.php",
-                            type: "POST",
-                            data: {
-                                billId: billId,
-                                status: "Cancelled",
-                            },
-                            success: function(data) {
-                                // alert (data);
-                                if (data == 1) {
-                                    swal("Done! Your Bill Has Been Cancelled.", {
-                                        icon: "success",
-                                    });
-                                    row = document.getElementById(billId);
-                                    row.closest('tr').style.background = '#b51212';
-                                    row.closest('tr').style.color = '#FFFFFF';
-                                } else {
-                                    $("#error-message").html("Cancellation Field !!!").slideDown();
-                                }
+        $.ajax({
+            url: "ajax/labBill.delete.ajax.php",
+            type: "POST",
+            data: {
+                billId: billId,
+                status: "Cancelled",
+            },
+            success: function(data) {
+                // alert (data);
+                if (data == 1) {
+                    swal("Done! Your Bill Has Been Cancelled.", {
+                        icon: "success",
+                    });
+                    row = document.getElementById(billId);
+                    row.closest('tr').style.background = '#b51212';
+                    row.closest('tr').style.color = '#FFFFFF';
+                } else {
+                    $("#error-message").html("Cancellation Field !!!").slideDown();
+                }
 
-                            }
-                        });
+            }
+        });
 
-                    }
-                });
-        }
+    }
+        //         });
+        // }
     </script>
 
     <!-- Core plugin JavaScript-->
