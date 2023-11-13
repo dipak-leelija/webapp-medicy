@@ -139,6 +139,7 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
             <?php
             $slno = 0;
             $billDetails = $LabBillDetails->billDetailsById($billId);
+            if(is_array($billDetails))
             foreach ($billDetails as $rowbillDetails) {
                 $slno += 1;
                 // $rowbillDetails['id'];

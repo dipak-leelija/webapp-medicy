@@ -186,6 +186,7 @@ if($healthCareDetailsByAdminId != null){
                 $subTotal = floatval(00.00);
                 
                 $billDetails = $LabBillDetails->billDetailsById($billId);
+                if(is_array($billDetails))
                     foreach ($billDetails as $rowDetails) {
                         $subTestId = $rowDetails['test_id'];
                         $testAmount = $rowDetails['price_after_discount'];

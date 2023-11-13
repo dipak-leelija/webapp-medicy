@@ -261,8 +261,8 @@ $showDistributor       = $Distributor->showDistributor();
                                 DeleteId: id,
                             },
                             success: function(response) {
-                                console.log(response);
-                                if (response.includes('1')) {
+                                // console.log(response);
+                                if (response) {
                                     swal(
                                         "Deleted",
                                         "Manufacturer Has Been Deleted",

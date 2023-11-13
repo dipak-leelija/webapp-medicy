@@ -3,20 +3,21 @@
 class StockInDetails extends DatabaseConnection
 {
 
-    function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount) {
+    function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount)
+    {
         try {
             $insertStockInDetails = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`, `mfd_date`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `base`, `gst`, `gst_amount`, `margin`, `amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    
+
             // Prepare the SQL statement
             $responce = $this->conn->prepare($insertStockInDetails);
-    
+
             if (!$responce) {
                 throw new Exception("Error preparing SQL statement: " . $this->conn->error);
             }
-    
+
             // Binding parameters
             $responce->bind_param("isssssisiiiddididdd", $stokInid, $productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount);
-    
+
             // Execute the prepared statement
             if ($responce->execute()) {
                 // Get the ID of the newly inserted record
@@ -32,19 +33,20 @@ class StockInDetails extends DatabaseConnection
             return ["result" => false, "error" => $e->getMessage()];
         }
     }
-    
 
-    
+
+
     //======================================== UPDATE TABEL ==============================================
-   
-    function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn) {
-        
+
+    function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn)
+    {
+
         try {
             $update = "UPDATE `stock_in_details` SET `product_id`=?, `distributor_bill`=?, `batch_no`=?, `mfd_date`=?, `exp_date`=?, `weightage`=?, `unit`=?, `qty`=?, `free_qty`=?, `loosely_count`=?, `mrp`=?, `ptr`=?, `discount`=?, `base`=?, `gst`=?, `gst_amount`=?, `margin`=?, `amount`=?, `update_emp_id`=?, `updated_on`=? WHERE `id`=?";
-            
-            
+
+
             $stmt = $this->conn->prepare($update);
-    
+
             $stmt->bind_param("sssssisiiiddididddssi", $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn, $id);
 
             // return var_dump($stmt);
@@ -52,23 +54,23 @@ class StockInDetails extends DatabaseConnection
             $stmt->execute();
 
             $result = $stmt->affected_rows;
-            
-            $stmt->close();
-    
-            return $result;
 
+            $stmt->close();
+
+            return $result;
         } catch (Exception $e) {
-            if($e){
+            if ($e) {
                 return $e;
-            }else{
+            } else {
                 return null;
-            } 
+            }
         }
     }
-    
 
 
-    function updateStockInDetailsByTableData($table1, $table2, $data1, $data2){
+
+    function updateStockInDetailsByTableData($table1, $table2, $data1, $data2)
+    {
         $update = "UPDATE `stock_in_details` SET `$table1`='$data1' WHERE `$table2`='$data2'";
         $result = $this->conn->query($update);
         return $result;
@@ -79,25 +81,26 @@ class StockInDetails extends DatabaseConnection
     // ========================= show table data start ==================================
 
 
-    function showStockInDetails() {
+    function showStockInDetails()
+    {
         try {
             $select = "SELECT * FROM stock_in_details";
             $selectQuery = $this->conn->query($select);
-    
+
             if ($selectQuery === false) {
                 throw new Exception("Error executing the query: " . $this->conn->error);
             }
-    
+
             $data = array();
             while ($result = $selectQuery->fetch_array()) {
                 $data[] = $result;
             }
-    
+
             return $data;
         } catch (Exception $e) {
-            if($e){
+            if ($e) {
                 echo "Error: " . $e->getMessage();
-            }else{
+            } else {
                 return null;
             }
         }
@@ -105,25 +108,62 @@ class StockInDetails extends DatabaseConnection
 
 
 
-    function showStockInDetailsByStokinId($id) {
+    function showStockInDetailsByStokinId($id)
+    {
         try {
             $select = "SELECT * FROM `stock_in_details` WHERE `id` = ?";
             $stmt = $this->conn->prepare($select);
-            
-            $stmt->bind_param("i", $id); 
-            
+
+            $stmt->bind_param("i", $id);
+
             $stmt->execute();
-    
+
             $result = $stmt->get_result();
-    
+
             $data = array();
             while ($row = $result->fetch_assoc()) {
                 $data[] = $row;
             }
-    
+
             $stmt->close();
-    
+
             return $data;
+        } catch (Exception $e) {
+            if ($e) {
+                echo "Error: " . $e->getMessage();
+            } else {
+                return null;
+            }
+        }
+    }
+
+
+
+    function showStockInDetailsByPId($productId)
+    {
+        try {
+            $select = "SELECT * FROM `stock_in_details` WHERE `product_id` = ?";
+            $stmt = $this->conn->prepare($select);
+
+            $stmt->bind_param("s", $productId);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                return $data;
+
+                $stmt->close();
+            }else{
+                return null;
+                $stmt->close();
+            }
+   
         } catch (Exception $e) {
             if($e){
                 echo "Error: " . $e->getMessage();
@@ -132,7 +172,7 @@ class StockInDetails extends DatabaseConnection
             }
         }
     }
-    
+
 
 
     // ==================================================================================
@@ -149,7 +189,7 @@ class StockInDetails extends DatabaseConnection
     } //eof showStockInByTable function
 
 
-        
+
 
 
     function showStockInDetailsByStokId($StockId)
@@ -175,15 +215,7 @@ class StockInDetails extends DatabaseConnection
 
 
 
-    function showStockInDetailsByPId($productId)
-    {
-        $select = "SELECT * FROM `stock_in_details` WHERE `product_id` = '$productId'";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } // eof showStockInDetailsByPId
+
 
 
 
@@ -291,26 +323,32 @@ class StockInDetails extends DatabaseConnection
 
     //====================================== DELETE QUARRY ==================================
 
-    function stockInDeletebyDetailsId($Id) {
+    function stockInDeletebyDetailsId($Id)
+    {
         try {
             $delQry = "DELETE FROM `stock_in_details` WHERE `id` = ?";
-            
+
             $stmt = $this->conn->prepare($delQry);
-    
-            $stmt->bind_param("i", $Id); 
-    
+
+            $stmt->bind_param("i", $Id);
+
             $stmt->execute();
 
             $result = $stmt->affected_rows;
-    
+
             $stmt->close();
-    
-            return $result;
-        } catch (Exception $e) {
-            if($e){
-                return $e;
+
+            if($result > 0){
+                return true;
             }else{
-                return 0; 
+                return false;
+            }
+            
+        } catch (Exception $e) {
+            if ($e) {
+                return $e;
+            } else {
+                return 0;
             }
         }
     }
