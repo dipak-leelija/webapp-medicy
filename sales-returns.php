@@ -1,7 +1,7 @@
 <?php
 $page = "sales-returns";
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__.'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'salesReturn.class.php';
@@ -29,14 +29,14 @@ $currentStock  = new CurrentStock();
     <title>Sales Return || Medicy Healthcare</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css//custom/return-page.css">
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/return-page.css">
 
     <!-- Data Table CSS  -->
-    <link href="../assets/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 
 </head>
@@ -47,7 +47,7 @@ $currentStock  = new CurrentStock();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -57,7 +57,7 @@ $currentStock  = new CurrentStock();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -193,7 +193,7 @@ $currentStock  = new CurrentStock();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -230,21 +230,21 @@ $currentStock  = new CurrentStock();
 
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../assets/jquery/jquery.min.js"></script>
-    <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="../assets/datatables/jquery.dataTables.min.js"></script>
-    <script src="../assets/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
     <script>
         const viewReturnItem = (invoice, id) => {
@@ -303,7 +303,7 @@ $currentStock  = new CurrentStock();
             });
         }
     </script>
-    <script src="../js/sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
 </body>
 

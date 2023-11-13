@@ -611,21 +611,21 @@ const addData = () => {
             <td class="pt-3" id="row-${slControl}-col-1" style="font-size: 0.7rem;">${slno}</td>
             <td class="pt-3" id="row-${slControl}-col-2">
                 <input class="table-data w-10r" type="text" value="${itemName}" readonly style="font-size: .65rem;">
-                <input class="  " type="text" name="itemId[]" value="${itemList.value}">
+                <input class="d-none" type="text" name="itemId[]" value="${itemList.value}">
 
             </td>
 
-            <td class="   pt-3">
+            <td class="d-none pt-3">
                 <input class="table-data w-6r" type="text" name="stockOutDetailsItemIds[]" value="${StockOutDetailsItemId}" readonly>
                 <input class="table-data w-6r" type="text" name="pharmacyInvoiceItemIds[]" value="${PharmacyInvoiceItemId}" readonly>
                 <input class="table-data w-6r" type="text" name="salesReturnDetailsItemIds[]" value="${salesReturnDetailsItemId}" readonly>
             </td>
 
-            <td class="   pt-3">
+            <td class="d-none pt-3">
                 <input class="table-data w-6r" type="text" name="curretnItemId[]" value="${currentItemID}" readonly style="font-size: 0.65rem;">
             </td>
 
-            <td class="   pt-3">
+            <td class="d-none pt-3">
                 <input class="table-data w-6r" type="text" name="productId[]" value="${pId}" readonly style="font-size: 0.65rem;">
             </td>
             <td class="pt-3" id="row-${slControl}-col-3">
@@ -639,7 +639,7 @@ const addData = () => {
                 <input class="table-data w-3r" type="text" name="setof[]" value="${unit}" readonly style="font-size: 0.65rem;">
             </td>
 
-            <td class="pt-3" id="row-${slControl}-col-6">
+            <td class="d-none pt-3" id="row-${slControl}-col-6">
                 <input class="table-data w-3r" type="text" name="qty[]" value="${currentQty}" readonly style="font-size: 0.65rem; text-align: end;">
 
                 <input class="   table-data w-3r" type="text" name="p_Qty[]" value="${purchaseQuantity}" readonly style="font-size: 0.65rem; text-align: end;">

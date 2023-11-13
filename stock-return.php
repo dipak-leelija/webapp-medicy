@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 

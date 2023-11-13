@@ -33,7 +33,8 @@ if (isset($_GET["patient"])) {
     }
     else{
     $patient = $Patients->patientsDisplayByPId($bill[0]['customer_id']);
-    echo $patient[0]['name'];
+    $patient = json_decode($patient);
+    echo $patient->name;
     }
 }
 

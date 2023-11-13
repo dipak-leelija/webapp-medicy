@@ -264,12 +264,14 @@ if (isset($_GET['invoice'])) {
 
             } else {
                 $patient = $Patients->patientsDisplayByPId($invoice['customer_id']);
+                $patient = json_decode($patient);
                 // print_r($patient);
-                $patientId = $invoice['customer_id'];
+
+                $patientId = $patient->patient_id;
             ?>
                 <div class='invoice-item' onclick="getDtls('<?php echo $invoice['invoice_id'] ?>', '<?php echo $patientId ?>')" ;>
-                    <p><?php echo $patient[0]['name'] ?></p>
-                    <small><span class='text-dark'>#<?php echo $invoice['invoice_id'] ?></span> M: <?php echo $patient[0]['phno'] ?></small>
+                    <p><?php echo $patient->name ?></p>
+                    <small><span class='text-dark'>#<?php echo $invoice['invoice_id'] ?></span> M: <?php echo $patient->phno ?></small>
                 </div>
 <?php
 
