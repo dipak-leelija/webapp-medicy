@@ -1,16 +1,16 @@
 <?php
-require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once  CLASS_DIR.'hospital.class.php';
-require_once  CLASS_DIR.'stockOut.class.php';
-require_once  CLASS_DIR.'patients.class.php';
-require_once  CLASS_DIR.'products.class.php';
-require_once  CLASS_DIR.'doctors.class.php';
-require_once  CLASS_DIR.'salesReturn.class.php';
-require_once  CLASS_DIR.'currentStock.class.php';
-require_once  CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once  CLASS_DIR . 'hospital.class.php';
+require_once  CLASS_DIR . 'stockOut.class.php';
+require_once  CLASS_DIR . 'patients.class.php';
+require_once  CLASS_DIR . 'products.class.php';
+require_once  CLASS_DIR . 'doctors.class.php';
+require_once  CLASS_DIR . 'salesReturn.class.php';
+require_once  CLASS_DIR . 'currentStock.class.php';
+require_once  CLASS_DIR . 'stockInDetails.class.php';
 
 
 //  INSTANTIATING CLASS
@@ -58,14 +58,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $invoiceId      = str_replace("#", '', $invoice);
         $sold           = $StockOut->stockOutDisplayById($invoiceId);
         $patient        = $Patients->patientsDisplayByPId($sold[0]['customer_id']);
+        $patient        = json_decode($patient);
 
         // ============== PATIENT DETAILS DATA ==============================
-        if($sold[0]['customer_id'] == 'Cash Sell'){
+        if ($sold[0]['customer_id'] == 'Cash Sell') {
             $patientNm = 'Cash Sell';
             $patientPNo = '';
-        }else{
-            $patientNm = $patient[0]['name'];
-            $patientPNo = $patient[0]['phno'];
+        } else {
+            $patientNm = $patient->name;
+            $patientPNo = $patient->phno;
         }
         //=====================================================================
 
@@ -109,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // ========= update total qty count ================
         $totalPrevReturnQty = 0;
-        for($i = 0; $i<count($returnItemId); $i++){
+        for ($i = 0; $i < count($returnItemId); $i++) {
             $col = 'id';
             $checkSalesReturnDetails = $SalesReturn->selectSalesReturnList($col, $returnItemId[$i]);
 
@@ -128,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br>Refund Mode : "; print_r($refundMode);
 
 
-        $salesReturnData = $SalesReturn->updateSalesReturn(intval($returnId), $returnDate, intval($updatedItemCount), intval($updatedTotalQty), floatval($updatedGstAmount), floatval($updatedTotalRefund), $refundMode, $employeeId, NOW); 
+        $salesReturnData = $SalesReturn->updateSalesReturn(intval($returnId), $returnDate, intval($updatedItemCount), intval($updatedTotalQty), floatval($updatedGstAmount), floatval($updatedTotalRefund), $refundMode, $employeeId, NOW);
         // ----------------------------------------------------------------------------------------
         // now check and update stock return details table with edit data ----------------------
 
@@ -150,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $returnQty =  array_shift($_POST['return']);
                 $refundAmount =  array_shift($_POST['refund']);
                 $updatedGstAmount = floatval($refundAmount) - floatval($Taxable);
-                
+
 
                 // echo "<br><br>";
                 // echo "<br>Sales return Id : $salesReturnId";
@@ -194,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $updatedLooseQty = 0;
                 }
 
-                
+
                 $successUpdateReturn = $SalesReturn->updateSalesReturnDetails(intval($salesReturnId), floatval($updatedGstAmount), floatval($Taxable), intval($returnQty), floatval($refundAmount), $employeeId, NOW);
 
                 // ============ UPDATING CURRENT STOCK ================
@@ -203,22 +204,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo "<br>$updatedQty";
                 // echo "<br>$updatedLooseQty";
 
-                if($successUpdateReturn){
+                if ($successUpdateReturn) {
                     $CurrentStock->updateStockOnSell($itemId, $updatedQty, $updatedLooseQty);
                 }
             }
             $totalRefundAmount = $totalRefundAmount;
         }
 
-        $showhelthCare = $HelthCare->showhelthCare();
-        foreach ($showhelthCare as $rowhelthCare) {
-            $healthCareName     = $rowhelthCare['hospital_name'];
-            $healthCareAddress1 = $rowhelthCare['address_1'];
-            $healthCareAddress2 = $rowhelthCare['address_2'];
-            $healthCareCity     = $rowhelthCare['city'];
-            $healthCarePIN      = $rowhelthCare['pin'];
-            $healthCarePhno     = $rowhelthCare['hospital_phno'];
-            $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
+
+        $healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
+        $healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
+        if ($healthCareDetailsByAdminId != null) {
+            $healthCareDetails = $healthCareDetailsByAdminId;
+        } else {
+            $healthCareDetails = $healthCareDetailsPrimary;
+        }
+        
+        for($i; $i<count($healthCareDetails); $i++) {
+           
+            $healthCareName     = $healthCareDetails['hospital_name'];
+            $healthCareAddress1 = $healthCareDetails['address_1'];
+            $healthCareAddress2 = $healthCareDetails['address_2'];
+            $healthCareCity     = $healthCareDetails['city'];
+            $healthCarePIN      = $healthCareDetails['pin'];
+            $healthCarePhno     = $healthCareDetails['hospital_phno'];
+            $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
         }
     }
 }
@@ -233,8 +243,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Lab Test Bill</title>
-    <link rel="stylesheet" href="../../../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../../../css/custom/test-bill.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/test-bill.css">
 
     <style>
         body {
@@ -251,7 +261,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card-body border-bottom border-dark">
                     <div class="row">
                         <div class="col-sm-1">
-                            <img class="float-end" style="height: 55px; width: 58px;" src="../../../images/logo-p.jpg" alt="Medicy">
+                            <img class="float-end" style="height: 55px; width: 58px;" src="<?= SITE_IMG_PATH ?>logo-p.jpg" alt="Medicy">
                         </div>
                         <div class="col-sm-8">
                             <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
@@ -502,11 +512,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //     window.history.replaceState(null, null, window.location.href);
         // }
     </script>
-    <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
-    <script src="../../../js/sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
     <script>
         const backToMain = () => {
-            window.location.href = '../../../sales-returns.php';
+            window.location.href = '../../sales-returns.php';
         }
     </script>
 </body>

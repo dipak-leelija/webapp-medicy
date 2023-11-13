@@ -76,7 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 } else {
                     $patientId = $returnBill[0]['patient_id'];
                     $patient = $Patients->patientsDisplayByPId($patientId);
-                    $patientName = $patient[0]['name'];
+                    $patient = json_decode($patient);
+                    $patientName = $patient->name;
                 }
 
                 ?>
