@@ -602,10 +602,14 @@ class CurrentStock extends DatabaseConnection
             $stmt->execute();
 
             $result = $stmt->affected_rows;
-
             $stmt->close();
 
-            return $result;
+            if($result > 0){
+                return true;
+            }else{
+                return false;
+            }
+
         } catch (Exception $e) {
             if ($e) {
                 return $e;
@@ -614,6 +618,43 @@ class CurrentStock extends DatabaseConnection
             }
         }
     }
+
+
+
+
+
+    function deleteCurrentStockbyStockIndetailsId($stockIndetailsID) {
+        try {
+            $delQry = "DELETE FROM `current_stock` WHERE `stock_in_details_id` = ?";
+            $stmt = $this->conn->prepare($delQry);
+    
+            $stmt->bind_param("i", $stockIndetailsID); 
+
+            $stmt->execute();
+    
+            $result = $stmt->affected_rows;
+            
+            $stmt->close();
+            
+            if($result > 0){
+                return true;
+            }else{
+                return $result;
+            }
+            
+        } catch (Exception $e) {
+            if($e){
+                echo "Error: " . $e->getMessage();
+            }else{
+                return 0; // indicate execution fail
+            }
+        }
+    }
+
+    
+
+
+
 
     function deleteCurrentStock($productId, $batchNo)
     {
@@ -627,15 +668,7 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    function deleteCurrentStockbyStockIndetailsId($stockIndetailsID)
-    {
-
-        $delQry = "DELETE FROM `current_stock` WHERE `stock_in_details_id` = '$stockIndetailsID'";
-        // echo $delQry.$this->conn->error;exit;
-        $delSql = $this->conn->query($delQry);
-        // var_dump($delSql);
-        return $delSql;
-    } // eof stockInDelete
+    
 
 
     function deleteByTabelData($table, $data)
