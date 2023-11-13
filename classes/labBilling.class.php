@@ -6,30 +6,55 @@ require_once 'dbconnect.php';
 
 
 
-class LabBilling extends DatabaseConnection
-{
+class LabBilling extends DatabaseConnection{
+
+
+    function addLabBill($billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $adminId) {
+        // Use prepared statements to prevent SQL injection
+        $insertBill = "INSERT INTO lab_billing 
+                       (`bill_id`, `bill_date`, `patient_id`, `refered_doctor`, `test_date`, `total_amount`, `discount`, `total_after_discount`, `cgst`, `sgst`, `paid_amount`, `due_amount`, `status`, `admin_id`) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+        $stmt = $this->conn->prepare($insertBill);
+    
+        if ($stmt) {
+            // Bind parameters
+            $stmt->bind_param(
+                'ssssssssssssss', // Adjust these types according to your actual data types
+                $billId,
+                $billingDate,
+                $patientId,
+                $referedDoc,
+                $testDate,
+                $totalAmount,
+                $discountOnTotal,
+                $totalAfterDiscount,
+                $cgst,
+                $sgst,
+                $paidAmount,
+                $dueAmount,
+                $status,
+                $adminId
+            );
+    
+            // Execute the prepared statement
+            $insertBillQuery = $stmt->execute();
+    
+            // Close the statement
+            $stmt->close();
+    
+            return $insertBillQuery;
+        } else {
+            // Handle the error if the statement preparation fails
+            return false;
+        }
+    }
+
+    
 
 
 
-
-
-    function addLabBill($billId, $billingDate, $patientId, $referedDoc, $testDate,  $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status)
-    {
-
-        $insertBill = "INSERT INTO  lab_billing (`bill_id`, `bill_date`, `patient_id`, `refered_doctor`, `test_date`, `total_amount`, `discount`, `total_after_discount`, `cgst`, `sgst`, `paid_amount`, `due_amount`, `status`) VALUES ('$billId', '$billingDate', '$patientId', '$referedDoc', '$testDate', '$totalAmount', '$discountOnTotal', '$totalAfterDiscount', '$cgst', '$sgst', '$paidAmount', '$dueAmount', '$status')";
-        // echo $insertEmp.$this->conn->error;
-        // exit;
-        $insertBillQuery = $this->conn->query($insertBill);
-        return $insertBillQuery;
-    } //end addLabBill function
-
-
-
-
-
-
-    function labBillDisplay()
-    {
+    function labBillDisplay(){
 
         $selectBill = "SELECT * FROM lab_billing";
         $billQuery = $this->conn->query($selectBill);
@@ -104,6 +129,26 @@ class LabBilling extends DatabaseConnection
             }
         } catch (Exception $e) {
             $e->getMessage();
+        }
+    }
+
+
+    // Function to get the last lab bill ID from the database
+    function getLastLabBillId(){
+
+        // Replace 'lab_bills' with your actual table name
+        $query = "SELECT MAX(CAST(bill_id AS SIGNED)) AS largest_bill_id FROM lab_billing";
+
+        $result = $this->conn->query($query);
+
+        if ($result->num_rows > 0) {
+            // Fetch the last lab bill ID
+            $row = $result->fetch_assoc();
+
+            return $row['largest_bill_id'];
+        } else {
+            // No lab bill ID found
+            return null;
         }
     }
 
