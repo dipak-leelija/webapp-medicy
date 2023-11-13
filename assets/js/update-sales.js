@@ -13,7 +13,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 Stock_out_item_id: itemId
             },
             success: function (data) {
-                alert(data);
+                // alert(data);
                 var dataObject = JSON.parse(data);
 
                 var sellQty = parseInt(dataObject.sellQty);
