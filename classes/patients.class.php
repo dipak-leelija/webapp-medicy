@@ -49,8 +49,7 @@ class Patients extends DatabaseConnection
 
 
 
-    function addLabPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState)
-    {
+    function addLabPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState){
 
         $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `address_2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`) VALUES
         ('$patientId', '$patientName', '$patientGurdianName', '$patientEmail', '$patientPhoneNumber', '$patientAge', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState')";
@@ -64,8 +63,7 @@ class Patients extends DatabaseConnection
 
 
 
-    function updateLabVisiting($patientId, $Labvisited)
-    {
+    function updateLabVisiting($patientId, $Labvisited){
 
         $insertPatients = " UPDATE `patient_details` SET `lab_visited` = '$Labvisited' WHERE `patient_details`.`patient_id` = '$patientId'";
 
@@ -76,8 +74,36 @@ class Patients extends DatabaseConnection
 
 
 
-    function allPatients($admin)
-    {
+    function labVisists($patientId){
+
+        try {
+            $query = "SELECT lab_visited FROM patient_details WHERE patient_id = ?";
+            $res = $this->conn->prepare($query);
+            $res->bind_param("s", $patientId); // Assuming admin_id is a string
+
+            if ($res->execute()) {
+                $result = $res->get_result();
+                if ($result->num_rows === 0) {
+                    $data = null;
+                } else {
+                    $data = $result->fetch_object();
+                    $data = $data->lab_visited;
+                }
+            } else {
+                throw new Exception("Query execution failed.");
+            }
+        } catch (Exception $e) {
+            // Handle the error (e.g., log the error or return an error message)
+            error_log("Error in labVisists: " . $e->getMessage());
+            return "An error occurred while fetching labVisists.";
+        }
+
+        return $data;
+    }
+
+
+    function allPatients($admin){
+
         $data = array();
 
         try {
