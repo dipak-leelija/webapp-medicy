@@ -63,6 +63,7 @@ $CurrentStock   = new CurrentStock();
             align-items: center;
             justify-content: center;
         }
+
     </style>
 </head>
 
@@ -99,17 +100,17 @@ $CurrentStock   = new CurrentStock();
                 <div class="col-12 col-sm-4">
                     <div class="">
                         <div class="text-center border d-flex justify-content-center">
-                            <img src="<?= IMG_PATH ?>product-image/<?php echo $Images; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
+                            <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
                         </div>
                         <div class="row height-3 mt-2 justify-content-center">
                             <div class="col-2 border p-0">
-                                <img src="<?= IMG_PATH ?>product-image/<?php echo $Images; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                             <div class="col-2 border p-0" id="back-div">
-                                <img src="<?= IMG_PATH ?>product-image/<?php echo $Images; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                             <div class="col-2 border p-0" id="side-div">
-                                <img src="<?= IMG_PATH ?>product-image/<?php echo $Images; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                         </div>
                     </div>
@@ -260,14 +261,11 @@ $CurrentStock   = new CurrentStock();
         }
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 </body>
 
 </html>
