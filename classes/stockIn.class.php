@@ -467,7 +467,7 @@ class StockIn extends DatabaseConnection
             $stmt->close();
 
             if($result > 0){
-                return null;
+                return true;
             }else{
                 return $result;
             }

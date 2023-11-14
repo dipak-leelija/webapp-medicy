@@ -36,6 +36,52 @@ class StockInDetails extends DatabaseConnection
 
 
 
+
+
+    // ==================== select query section ===============================
+
+    // ====== select by stockInid =========
+    function showStockInDetailsByStokId($stockId) {
+        try {
+            $select = "SELECT * FROM `stock_in_details` WHERE `stokIn_id` = ?";
+            $stmt = $this->conn->prepare($select);
+    
+            if (!$stmt) {
+                throw new Exception("Error preparing statement: " . $this->conn->error);
+            }
+    
+            $stmt->bind_param("i", $stockId);
+    
+            if (!$stmt->execute()) {
+                throw new Exception("Error executing statement: " . $stmt->error);
+            }
+    
+            $result = $stmt->get_result();
+    
+            if ($result === false) {
+                throw new Exception("Error getting result: " . $stmt->error);
+            }
+    
+            $data = array();
+    
+            if($result->num_rows > 0){
+                while ($row = $result->fetch_array()) {
+                    $data[] = $row;
+                }
+                return $data;
+                $stmt->close();
+            } else {
+                return null;
+            }
+        } catch (Exception $e) {
+            if($e){
+                echo $e;
+            }
+        }
+        return 0;
+    }
+
+    
     //======================================== UPDATE TABEL ==============================================
 
     function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn)
@@ -190,17 +236,6 @@ class StockInDetails extends DatabaseConnection
 
 
 
-
-
-    function showStockInDetailsByStokId($StockId)
-    {
-        $select = " SELECT * FROM `stock_in_details` WHERE `stokIn_id`= '$StockId'";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showStockInDetails function
 
 
     function showStockInDetailsById($DistBill)

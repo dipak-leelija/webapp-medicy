@@ -261,7 +261,7 @@ $showDistributor       = $Distributor->showDistributor();
                                 DeleteId: id,
                             },
                             success: function(response) {
-                                // console.log(response);
+                                console.log("final response",response);
                                 if (response) {
                                     swal(
                                         "Deleted",
