@@ -1,4 +1,5 @@
 <?php
+$page = "appointments";
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';
 
@@ -8,13 +9,24 @@ require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'patients.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR.'utility.class.php';
 
-$page = "appointments";
 
 //Classes Initilizing
 $appointments   = new Appointments;
 $IdsGeneration  = new IdsGeneration;
 $Patients       = new Patients;
+$Utility        = new Utility;
+
+$currentURL = $Utility->currentUrl();
+
+$test = false;
+if (isset($_GET['test'])) {
+    if ($_GET['test'] == 'true') {
+        $test = true;
+    }
+}
+
 ?>
 
 <!doctype html>
@@ -30,23 +42,21 @@ $Patients       = new Patients;
     <title>Enter Patient Details</title>
 
 
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css">
-    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+    <link href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css"/>
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
+    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
+    <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" type="text/css"/>
 
 </head>
 
@@ -104,8 +114,11 @@ if (isset($_POST['submit'])) {
                                         'patientDoctor' => $patientDoctor
                                     );
         echo '<script>alert(Appointment Added!)</script>';
-        
-        header("location: appointment-entry.php?appointmentId=".$appointmentId);
+        if ($test) {
+            header("location: lab-billing.php");
+        }else {
+            header("location: appointment-entry.php?appointmentId=".$appointmentId);
+        }
                
     }else{
         echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
@@ -137,7 +150,7 @@ if (isset($_POST['submit'])) {
                         <div class="col-xl-8 col-lg-9 col-md-10 text-center">
                             <div class="card mt-0">
                                 <h4 class="text-center mb-4 mt-0"><b>Fill The Patient Details</b></h4>
-                                <form class="form-card" action="<?= PAGE ?>" method="post">
+                                <form class="form-card" action="<?= $currentURL ?>" method="post">
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
 
@@ -321,39 +334,27 @@ if (isset($_POST['submit'])) {
                                     </div>
 
 
-
+                                    <?php if (!$test) : ?>
                                     <div class="row justify-content-between text-left">
-
                                         <h5 class="text-center mb-4 mt-5">Select Doctor</h5>
-
                                         <div class="form-group col-sm-12 flex-column d-flex">
-
                                             <label class="form-control-label px-3" for="patientDoctor">Doctor Name<span
                                                     class="text-danger"> *</span></label>
                                             <select id="docList" class="customDropSelection" name="patientDoctor"
                                                 required>
-
                                                 <option disabled selected>Select Doctor</option>
-
                                                 <?php
+                                                $doctors = new Doctors();
 
-                                            $doctors = new Doctors();
-
-                                            $showDoctors = $doctors->showDoctors();
-
-                                            foreach ($showDoctors as $showDoctorDetails) {
-
-                                                $doctorId = $showDoctorDetails['doctor_id'];
-
-                                                $doctorName = $showDoctorDetails['doctor_name'];
-
-                                                echo'<option value='.$doctorId.'>'. $doctorName.'</option>';
-
-                                            }
-                                        ?>
+                                                $showDoctors = $doctors->showDoctors();
+                                                foreach ($showDoctors as $showDoctorDetails) {
+                                                    $doctorId = $showDoctorDetails['doctor_id'];
+                                                    $doctorName = $showDoctorDetails['doctor_name'];
+                                                    echo'<option value='.$doctorId.'>'. $doctorName.'</option>';
+                                                }
+                                                ?>
 
                                             </select>
-
                                         </div>
                                         <!-- <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="doctorTiming">Time Slot<span class="text-danger"> *</span></label>
@@ -367,6 +368,7 @@ if (isset($_POST['submit'])) {
                                         <!-- <label id="shiftValue"></label> -->
 
                                     </div>
+                                    <?php endif; ?>
 
                                     <div class="row justify-content-end">
 

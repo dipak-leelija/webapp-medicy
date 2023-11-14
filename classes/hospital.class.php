@@ -43,43 +43,6 @@ class HelthCare extends DatabaseConnection{
     }
     
 
-
-
-
-
-    function showhelthCarePrimary(){
-        $selectPrimaryHospital = "SELECT * FROM clinic_info WHERE `admin_id` = 'primary'";
-        $query = $this->conn->query($selectPrimaryHospital);
-        while($result = $query->fetch_assoc()){
-            $primaryHospitalData = $result;
-        }
-        return $primaryHospitalData;
-
-    } //showHospital function end
- 
-    // function showhelthCarePrimary(){
-    //     try {
-    //         $selectPrimaryHospital = "SELECT * FROM clinic_info WHERE `admin_id` = 'primary'";
-    //         $query = $this->conn->query($selectPrimaryHospital);
-    
-    //         // Check if the query was successful
-    //         if ($query) {
-    //             $primaryHospitalData = $query->fetch_object();
-    //             return $primaryHospitalData;
-    //         } else {
-    //             // Handle query failure
-    //             echo "Error executing query: " . $this->conn->error;
-    //             return null;
-    //         }
-    //     } catch(Exception $e) {
-    //         // Handle any other exceptions
-    //         echo $e->getMessage();
-    //         return null;
-    //     }
-    // }
-    
-
-
     function updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo){
 
         $updateHealthCare = "UPDATE  clinic_info SET logo = '$imgFolder', hospital_name = '$healthCareName', address_1 = '$healthCareAddress1', address_2 = '$healthCareAddress2', city = '$healthCareCity', dist = '$healthCareDist', pin = '$healthCarePin', health_care_state = '$healthCareState', hospital_email = '$healthCareEmail', hospital_phno = '$healthCareHelpLineNo', appointment_help_line = '$healthCareApntBookingNo'";
