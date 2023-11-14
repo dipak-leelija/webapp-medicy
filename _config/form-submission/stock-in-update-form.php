@@ -321,12 +321,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // update to current stock data
                 $currentStockItmeDetails = $CurrentStock->showCurrentStocByStokInDetialsId($updatedItemIdsArray[$i]);
-                if (!empty($currentStockItmeDetails)) {
-                    foreach ($currentStockItmeDetails as $currentStockItemsData) {
-                        $itemId = $currentStockItemsData['id'];
-                        $Loose_Qty = intval($currentStockItemsData['loosely_count']);
-                        $item_Qty = intval($currentStockItemsData['qty']);
-                    }
+
+                if ($currentStockItmeDetails != null) {
+                    $itemId = $currentStockItmeDetails->id;
+                    $Loose_Qty = intval($currentStockItmeDetails->loosely_count);
+                    $item_Qty = intval($currentStockItmeDetails->qty);
                 }
 
 
@@ -353,7 +352,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 // ======= need to check this data ============
-                
+
                 //===========
 
                 $updatedStockInDetails = $StockInDetails->updateStockInDetailsById(intval($updatedItemIdsArray[$i]), $product_ids[$i], $distributorBill, $batch_no[$i], $mfd_date[$i], $exp_date[$i], intval($item_weightage[$i]), $item_unit[$i], intval($item_qty[$i]), intval($item_free_qty[$i]), intval($stockInLooseCount), floatval($item_mrp[$i]), floatval($item_ptr[$i]), intval($discountPercent[$i]), floatval($baseAmount_perItem[$i]), intval($item_gst[$i]), floatval($gstAmount_perItem[$i]), floatval($marginAmount_perItem[$i]), floatval($billAmount_perItem[$i]), $addedBy, NOW);
