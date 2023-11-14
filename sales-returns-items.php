@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__.'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR."doctors.class.php";
@@ -43,20 +43,20 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <title>SB Admin 2 - Blank</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
 
     <!-- Include SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link href="../css/sweetalert2/sweetalert2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom CSS  -->
-    <link rel="stylesheet" href="css/custom/stock-in.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-in.css">
 </head>
 
 <body id="page-top">
@@ -65,7 +65,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -75,7 +75,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -141,35 +141,35 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                             <form id="return-item-details">
                                 <div class="row">
-                                    <div class="  col-md-1 col-6 mt-3">
+                                    <div class="d-none col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="stock-out-details-item-id">Stock out details item Id</label>
                                         <div class="d-flex date-field">
                                             <input type="text" class="upr-inp" id="stock-out-details-item-id" readonly>
                                         </div>
                                     </div>
 
-                                    <div class="  col-md-1 col-6 mt-3">
+                                    <div class="d-none col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="pharmacy-invoice-item-details-id">Pharmacy Invoice Item Details Id</label>
                                         <div class="d-flex date-field">
                                             <input type="text" class="upr-inp" id="pharmacy-invoice-item-details-id" readonly>
                                         </div>
                                     </div>
 
-                                    <div class="  col-md-1 col-6 mt-3">
+                                    <div class="d-none col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="sales-return-details-item-id">Sales Return details Item id</label>
                                         <div class="d-flex date-field">
                                             <input type="text" class="upr-inp" id="sales-return-details-item-id" readonly>
                                         </div>
                                     </div>
 
-                                    <div class="  col-md-1 col-6 mt-3">
+                                    <div class="d-none col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="item-id">Item Id</label>
                                         <div class="d-flex date-field">
                                             <input type="text" class="upr-inp" id="item-id" readonly>
                                         </div>
                                     </div>
 
-                                    <div class="  col-md-1 col-6 mt-3">
+                                    <div class="d-none col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="prod-id">Product Id</label>
                                         <div class="d-flex date-field">
                                             <input type="text" class="upr-inp" id="prod-id" readonly>
@@ -188,12 +188,12 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input type="text" class="upr-inp" id="unit" value="" readonly>
                                     </div>
 
-                                    <div class="  col-md-1 col-6 mt-3">
+                                    <div class="d-none col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="unit"> Item Unit</label>
                                         <input type="text" class="upr-inp" id="item-unit" value="" readonly>
                                     </div>
 
-                                    <div class="  col-md-1 col-6 mt-3">
+                                    <div class="d-none col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="unit">Item Weatage</label>
                                         <input type="text" class="upr-inp" id="item-weatage" value="" readonly>
                                     </div>
@@ -233,7 +233,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input type="text" class="upr-inp" name="gst" id="gst" readonly>
                                     </div>
 
-                                    <div class="  col-md-1 col-6 mt-3">
+                                    <div class="d-none col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="taxable">Sales Taxable</label>
                                         <input type="any" class="upr-inp" name="taxable" id="taxable">
                                     </div>
@@ -247,7 +247,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <input type="number" class="upr-inp" name="return" id="return" onkeyup="getRefund(this.value)" required>
                                     </div>
 
-                                    <div class="col-md-1 col-6 mt-3">
+                                    <div class="d-none col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="return">Taxable</label>
                                         <input type="number" class="upr-inp" name="refund-taxable" id="refund-taxable" onkeyup="getRefund(this.value)" required readonly>
                                     </div>
@@ -276,20 +276,20 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col">
-                                                    <input type="number" value="0" id="dynamic-id" style="width: 2rem;" readonly class=" ">
+                                                    <input type="number" value="0" id="dynamic-id" style="width: 2rem;" readonly hidden>
                                                 </th>
                                                 <th scope="col">
-                                                    <input type="number" value="0" id="serial-control" style="width: 2rem;" readonly class=" ">
+                                                    <input type="number" value="0" id="serial-control" style="width: 2rem;" readonly hidden>
                                                 </th>
                                                 <th scope="col">Items</th>
-                                                <th scope="col"   >Ids of tables</th> 
+                                                <th scope="col" hidden>Ids of tables</th> 
                                                 <!-- ids of tables holds stock_out_detaisl table item id and pharmacy_invocie table item id and sales return details table item id-->
-                                                <th scope="col"   >Item id</th>
-                                                <th scope="col"   >Prodcut id</th>
+                                                <th scope="col" hidden>Item id</th>
+                                                <th scope="col" hidden>Prodcut id</th>
                                                 <th scope="col">Batch</th>
                                                 <th scope="col">Exp.</th>
                                                 <th scope="col">Unit</th>
-                                                <th scope="col">Cr Qty</th>
+                                                <th scope="col" hidden>Cr Qty</th>
                                                 <th scope="col">MRP</th>
                                                 <th scope="col">PTR</th>
                                                 <th scope="col">Disc</th>
@@ -346,7 +346,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                 <!-- /.container-fluid -->
 
                 <!-- Footer -->
-                <?php include_once PORTAL_COMPONENT.'footer-text.php'; ?>
+                <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>
@@ -361,21 +361,21 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         </a>
 
         <!-- Bootstrap core JavaScript-->
-        <script src="../assets/jquery/jquery.min.js"></script>
-        <script src="../js/bootstrap-js-4/bootstrap.bundle.min.js"></script>
+        <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+        <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
         <!-- Core plugin JavaScript-->
-        <script src="../assets/jquery-easing/jquery.easing.min.js"></script>
+        <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Include SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-        <script src="../js/sweetalert2/sweetalert2.all.min.js"></script>
+        <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
-        <script src="../js/ajax.custom-lib.js"></script>
-        <script src="../js/sweetAlert.min.js"></script>
+        <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+        <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
+        <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
         
-        <script src="js/sales-return-item.js"></script>
+        <script src="<?= JS_PATH ?>sales-return-item.js"></script>
 
 </body>
 

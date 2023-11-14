@@ -1,16 +1,16 @@
 <?php
-require_once dirname(dirname(dirname(__DIR__))).'/config/constant.php';
-require_once ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'hospital.class.php';
-require_once CLASS_DIR.'stockOut.class.php';
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'doctors.class.php';
-require_once CLASS_DIR.'salesReturn.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'stockInDetails.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'stockOut.class.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'salesReturn.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'stockInDetails.class.php';
 
 // require_once '../../../php_control/idsgeneration.class.php';
 
@@ -33,18 +33,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // ---------- NON ARRAY ELEMENTS -----------
         $invoice        = $_POST['invoice'];
         $invoiceId = str_replace("#", '', $invoice);
+        
         $patientData = $StockOut->stockOutDisplayById($invoice);
         // print_r($patientData);
-        if($patientData[0]['customer_id'] == 'Cash Sales'){
+        if ($patientData[0]['customer_id'] == 'Cash Sales') {
             $patientId = 'Cash Sales';
             $patientName = 'Cash Sales';
             $contactNumber = "";
-        }else{
+        } else {
             $patient = $Patients->patientsDisplayByPId($patientData[0]['customer_id']);
+            $patient = json_decode($patient);
             $patientId = $patientData[0]['customer_id'];
-            $patientName = $patient[0]['name'];
-            $contactNumber = $patient[0]['phno'];
+            $patientName = $patient->name;
+            $contactNumber = $patient->phno;
         }
+
         $billDate       = $_POST['purchased-date'];
         $billDate       = date('Y-m-d', strtotime($billDate));
         $returnDate     = $_POST['return-date'];
@@ -52,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $totalQtys      = $_POST['total-qty'];
         $gstAmount      = $_POST['gst-amount'];
         $refundAmount   = $_POST['refund-amount'];
-        $refundMode     = $_POST['refund-mode'];    
+        $refundMode     = $_POST['refund-mode'];
         $status = "1";
         $addedBy = $employeeId;
         $addedOn = NOW;
@@ -71,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br> Addeb by : $addedBy & Data type : "; echo gettype($addedBy);
         // echo "<br> added on : $addedOn & Data type : "; echo gettype($addedOn);
         // echo "<br> admin id : $adminId & Data type : "; echo gettype($adminId);
-       
+
 
         //-------Array elements------------------
         $itemID   = $_POST['itemId'];
@@ -82,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $expdates   = $_POST['expDate'];
         $mrp        = $_POST['mrp'];
         $ptr        = $_POST['ptr'];
-        
+
         $qtys       = $_POST['qty'];
 
         $disc      = $_POST['disc'];
@@ -93,10 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $perItemRefund    = $_POST['refundPerItem'];
 
         // --------------------------------------
-        $itemWeatage = preg_replace('/[a-z]/','',$setOf);
-        $unitType = preg_replace('/[0-9]/','',$setOf);
-        
-             
+        $itemWeatage = preg_replace('/[a-z]/', '', $setOf);
+        $unitType = preg_replace('/[0-9]/', '', $setOf);
+
+
         // --------------------------------------
         // echo "<br><br>";
         // echo "<br> Item id : "; print_r($itemID);
@@ -114,35 +117,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br> Taxable array : "; print_r($taxableArray);
         // echo "<br> Return QTY : "; print_r($returnQty);
         // echo "<br> Refund Amount : "; print_r($perItemRefund);
-        
-       
+
+
         $returned = $SalesReturn->addSalesReturn(intval($invoiceId), $patientData[0]['customer_id'], $billDate, $returnDate, intval($items), intval($totalQtys), intval($gstAmount), intval($refundAmount), $refundMode, $status, $addedBy, $addedOn, $adminId);
-        
+
         if ($returned['result']) {
             // echo "<br>empty add new return edit";
-            for($i = 0; $i<count($itemID); $i++){
+            for ($i = 0; $i < count($itemID); $i++) {
 
-                
+
                 $unit = $setOf[$i];
-            
-                $itemWeatage = preg_replace('/[a-z]/','',$unit);
-                $unitType = preg_replace('/[0-9]/','',$unit);
-               
+
+                $itemWeatage = preg_replace('/[a-z]/', '', $unit);
+                $unitType = preg_replace('/[0-9]/', '', $unit);
+
 
                 $gstAmount   = floatval($perItemRefund[$i]) - floatval($taxableArray[$i]);
                 // ========================= ADD TO SALES RETURN DETAILS =============================
-                $addSalesReturndDetails = $SalesReturn->addReturnDetails($invoiceId, $returned['sales_return_id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $mrp[$i], $ptr[$i], $disc[$i], $gst[$i], $gstAmount, $taxableArray[$i], $returnQty[$i], $perItemRefund[$i], $adminId) ;
+                $addSalesReturndDetails = $SalesReturn->addReturnDetails($invoiceId, $returned['sales_return_id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $mrp[$i], $ptr[$i], $disc[$i], $gst[$i], $gstAmount, $taxableArray[$i], $returnQty[$i], $perItemRefund[$i], $adminId);
 
                 // ============= CURRENT STOCK UPDATE AREA ===========================
                 $currentStockDetaisl = $CurrentStock->showCurrentStocById($itemID[$i]);
 
-                foreach($currentStockDetaisl as $currentStockDetaisl){
+                foreach ($currentStockDetaisl as $currentStockDetaisl) {
                     $currentStockItemUnit = $currentStockDetaisl['unit'];
-                    if($currentStockItemUnit == 'tab' || $currentStockItemUnit == 'cap'){
+                    if ($currentStockItemUnit == 'tab' || $currentStockItemUnit == 'cap') {
                         $curretnStockQty = $currentStockDetaisl['loosely_count'];
                         $UpdatedLooseQty = intval($curretnStockQty) + intval(array_shift($_POST['return']));
                         $UpdatedQty = intdiv(intval($UpdatedLooseQty), intval($itemWeatage));
-                    }else{
+                    } else {
                         $curretnStockQty = $currentStockDetaisl['qty'];
                         $UpdatedQty = intval($curretnStockQty) + intval(array_shift($_POST['return']));
                         $UpdatedLooseQty = 0;
@@ -156,21 +159,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // ========================= CURRENT STOCK UPDATE STRING ============================
                 // echo $itemID[$i];
                 $updateCurrentStock = $CurrentStock->updateStockOnSell($itemID[$i], $UpdatedQty, $UpdatedLooseQty);
-
             }
         }
     }
 
-    $showhelthCare = $HelthCare->showhelthCare();
-    foreach ($showhelthCare as $rowhelthCare) {
-        $healthCareName     = $rowhelthCare['hospital_name'];
-        $healthCareAddress1 = $rowhelthCare['address_1'];
-        $healthCareAddress2 = $rowhelthCare['address_2'];
-        $healthCareCity     = $rowhelthCare['city'];
-        $healthCarePIN      = $rowhelthCare['pin'];
-        $healthCarePhno     = $rowhelthCare['hospital_phno'];
-        $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
+    $healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
+    $healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
+
+    if ($healthCareDetailsByAdminId != null) {
+        $healthCareDetails = $healthCareDetailsByAdminId;
+    } else {
+        $healthCareDetails = $healthCareDetailsPrimary;
     }
+
+    $healthCareName     = $healthCareDetails['hospital_name'];
+    $healthCareAddress1 = $healthCareDetails['address_1'];
+    $healthCareAddress2 = $healthCareDetails['address_2'];
+    $healthCareCity     = $healthCareDetails['city'];
+    $healthCarePIN      = $healthCareDetails['pin'];
+    $healthCarePhno     = $healthCareDetails['hospital_phno'];
+    $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
+
 }
 ?>
 
@@ -182,8 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Lab Test Bill</title>
-    <link rel="stylesheet" href="../../../css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="../../../css/custom/test-bill.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/test-bill.css">
 
     <style>
         body {
@@ -199,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card-body border-bottom border-dark">
                     <div class="row">
                         <div class="col-sm-1">
-                            <img class="float-end" style="height: 55px; width: 58px;" src="../../../images/logo-p.jpg" alt="Medicy">
+                            <img class="float-end" style="height: 55px; width: 58px;" src="<?= IMG_PATH ?>logo-p.jpg" alt="Medicy">
                         </div>
                         <div class="col-sm-8">
                             <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
@@ -298,14 +307,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // print_r($invoiceId);
 
                 // foreach ($itemID as $itemID) {
-                for ($i = 0; $i<count($itemID); $i++){
+                for ($i = 0; $i < count($itemID); $i++) {
 
                     $slno++;
 
                     $itemDetails = $CurrentStock->showCurrentStocById($itemID[$i]);
                     $productDetails = $Products->showProductsById($itemDetails[0]['product_id']);
                     $productName = $productDetails[0]['name'];
-                    
+
                     echo '
                                 <div class="row">
                                     <div class="col-sm-1 text-center">
@@ -340,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <small>' . $taxableArray[$i] . '</small>
                                     </div>
                                     <div class="col-sm-1" style="text-align: right;">
-                                        <small>' . $perItemRefund[$i]. '</small>
+                                        <small>' . $perItemRefund[$i] . '</small>
                                     </div>
                                 </div>';
                 }
@@ -450,7 +459,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             window.location.href = '../../sales-returns.php';
         }
     </script>
-    <script src="../../../js/bootstrap-js-5/bootstrap.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 </body>
 
 </html>
