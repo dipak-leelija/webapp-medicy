@@ -65,7 +65,6 @@ class ProductImages extends DatabaseConnection{
                 return $data;
                 $stmt->close();
             } else {
-                
                 return null;
                 $stmt->close();
             }
