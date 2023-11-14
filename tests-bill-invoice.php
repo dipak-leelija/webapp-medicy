@@ -1,11 +1,9 @@
 <?php
-
-// ini_set('display_errors', '1');
-// ini_set('display_startup_errors', '1');
-// error_reporting(E_ALL);
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
+require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR.'_config/hralthcare.inc.php';
 require_once CLASS_DIR.'sub-test.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
@@ -24,15 +22,8 @@ $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
 
 
-
-
-//variable declreation
-// $totalAmount = 0;
-
-
 if (isset($_POST['bill-generate'])) {
-    // echo '<pre>';
-    // print_r($_POST);
+
     $testIds         = $_POST['testId'];        // each test id
     $priceOfTest     = $_POST['priceOfTest'];   // each test
     $testDisc        = $_POST['disc'];          //of % of each test
@@ -45,7 +36,6 @@ if (isset($_POST['bill-generate'])) {
     $status          = $_POST['status'];
 
 
-
     $patientId       = $_POST['patientId'];
     $patientName     = $_POST['patientName'];
     $patientAge      = $_POST['patientAge'];
@@ -56,180 +46,126 @@ if (isset($_POST['bill-generate'])) {
     $referedDocName  = $_POST['refferedDocName'];
 
 
-##################################################################
-###################### Patient Visit Update ######################
-##################################################################
-$showPatient = json_decode($Patients->patientsDisplayByPId($patientId));
-// $showPatient = $Patients->patientsDisplayByPId($patientId);
-print_r($showPatient);
-foreach ($showPatient as $rowPatient) {
-    // echo $labVisited;
-    if (isset($rowPatient->lab_visited)) {
-        $labVisited = $rowPatient->lab_visited;
+    ###################### Patient Visit Update ######################
+    $labVisited = $Patients->labVisists($patientId);
 
-        // Increment $labVisited
-        $labVisited = $labVisited + 1;
-    } else {
+    if($labVisited == NULL){
         $labVisited = 1;
-    }
-}
-
-// if($labVisited == NULL){
-//     $labVisited = 1;
-// }else{
-//     $labVisited = $labVisited +1;
-// }
-
-$updateVisit = $Patients->updateLabVisiting($patientId, $labVisited);
-if ($updateVisit) {
-
-
-    ##################################################################
-    ######################### Bill Insertion #########################
-    ##################################################################
-    $testDiscBck   = $testDisc;
-    $testAmountBck = $testAmount;
-
-
-    ################ Bill id/ invoice id generation #############
-    $LabBillDisplay = $LabBilling->LabBillDisplay();
-    if ($LabBillDisplay == NULL) {
-        $billId = 1;
     }else{
-        foreach ($LabBillDisplay as $rowLabBill) {
-            $billId = $rowLabBill['bill_id'];
-            $billId = $billId+1;
-        }
+        $labVisited = $labVisited +1;
     }
-    if ($billId < 10) {
-        $billId = '0'.$billId;
-    }
-    ############ End Of Bill ID / Invoice Id Generagtion #########
+
+    $updateVisit = $Patients->updateLabVisiting($patientId, $labVisited);
+    if ($updateVisit) {
 
 
-    ################ Doctor Selection ###############
+        ##################################################################
+        ######################### Bill Insertion #########################
+        ##################################################################
+        $testDiscBck   = $testDisc;
+        $testAmountBck = $testAmount;
 
-    if ($docId == 'Self') {
-        $referedDoc = $docId;
-        $doctorName = 'Self';
-        $doctorReg  = NULL;
-    }else{
-        if ($docId != NULL) {
-            //function calling
-            $showDoctorById = $Doctors->showDoctorById($docId);
-            foreach($showDoctorById as $rowDoctor){
-                $referedDoc = $docId;
-                $doctorName = $rowDoctor['doctor_name'];
-                $doctorReg  = $rowDoctor['doctor_reg_no'];
+
+        ################ Bill id/ invoice id generation #############
+        $LabBillDisplay = $LabBilling->LabBillDisplay();
+        if ($LabBillDisplay == NULL) {
+            $billId = 1;
+        }else{
+            foreach ($LabBillDisplay as $rowLabBill) {
+                $billId = $rowLabBill['bill_id'];
+                $billId = $billId+1;
             }
         }
-    
-    }
-    
-    if ($referedDocName != NULL) {
-        $referedDoc = $referedDocName;
-        $doctorName = $referedDocName;
-        $doctorReg  = NULL;
-    }
-    ############# End of Doctor Selection ############
+        if ($billId < 10) {
+            $billId = '0'.$billId;
+        }
+        ############ End Of Bill ID / Invoice Id Generagtion #########
 
 
-    ############# CGST & SGST Generation #############
-    // $cgstPercentage = 5;
-    // $cgst = $cgstPercentage/100*$totalBill;
-    
-    // $sgstPercentage = 5;
-    // $sgst = $sgstPercentage/100*$totalBill;
+        ################ Doctor Selection ###############
 
-    // CGST & SGST Generation
-    // $cgstPercentage = 5;
-    $cgst = 0;
-    
-    // $sgstPercentage = 5;
-    $sgst = 0;
-    ########## End of CGST & SGST Generation ##########
-
-    $totalAfterDiscount = $payable;
-
-
-    ######## Billing Date #######
-    date_default_timezone_set('Asia/Kolkata');
-    $billingDate = date("d-m-Y :: G:i:s");
-    #### End of Billing Date ####
-
-    $addLabBill = $LabBilling->addLabBill($billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status );
-
-    if ($addLabBill) {
-        echo "<script>alert('Bill Generated.');</script>";
-    }else {
-        echo "<script>alert('Bill Addition Failed!');</script>";
-    }
-
-    /* ========================= Bill Insertion End ========================= */
+        if ($docId == 'Self') {
+            $referedDoc = $docId;
+            $doctorName = 'Self';
+            $doctorReg  = NULL;
+        }else{
+            if ($docId != NULL) {
+                //function calling
+                $showDoctorById = $Doctors->showDoctorById($docId);
+                foreach($showDoctorById as $rowDoctor){
+                    $referedDoc = $docId;
+                    $doctorName = $rowDoctor['doctor_name'];
+                    $doctorReg  = $rowDoctor['doctor_reg_no'];
+                }
+            }
+        
+        }
+        
+        if ($referedDocName != NULL) {
+            $referedDoc = $referedDocName;
+            $doctorName = $referedDocName;
+            $doctorReg  = NULL;
+        }
+        ############# End of Doctor Selection ############
 
 
-    ##################################################################
-    ###################### Bill Details Insertion ####################
-    ##################################################################
+        ############# CGST & SGST Generation #############
+        // $cgstPercentage = 5;
+        // $cgst = $cgstPercentage/100*$totalBill;
+        
+        // $sgstPercentage = 5;
+        // $sgst = $sgstPercentage/100*$totalBill;
 
-    $testDiscsBck   = $testDisc;
-    $testAmountsBck = $testAmount;
-    $priceOfTestBck = $priceOfTest;
+        // CGST & SGST Generation
+        // $cgstPercentage = 5;
+        $cgst = 0;
+        
+        // $sgstPercentage = 5;
+        $sgst = 0;
+        ########## End of CGST & SGST Generation ##########
 
-    foreach ($testIds as $testId) {
-        $percentageOfDiscount   = array_shift($testDiscsBck);
-        $priceAfterDiscount     = array_shift($testAmountsBck);
-        $testPrice              = array_shift($priceOfTestBck);
-
-
-        $addBillDetails = $LabBillDetails->addLabBillDetails($billId, $billingDate, $testDate, $testId, $testPrice, $percentageOfDiscount, $priceAfterDiscount);
-    }
-    /* ========================= Bill Details Insertion End ========================= */
-
+        $totalAfterDiscount = $payable;
 
 
+        $addLabBill = $LabBilling->addLabBill($billId, NOW, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $adminId);
+
+        if ($addLabBill) {
+            echo "<script>alert('Bill Generated.');</script>";
+        }else {
+            echo "<script>alert('Bill Addition Failed!');</script>";
+        }
+
+        /* ========================= Bill Insertion End ========================= */
 
 
-}else{
+        ##################################################################
+        ###################### Bill Details Insertion ####################
+        ##################################################################
+
+        $testDiscsBck   = $testDisc;
+        $testAmountsBck = $testAmount;
+        $priceOfTestBck = $priceOfTest;
+
+        foreach ($testIds as $testId) {
+            $percentageOfDiscount   = array_shift($testDiscsBck);
+            $priceAfterDiscount     = array_shift($testAmountsBck);
+            $testPrice              = array_shift($priceOfTestBck);
+
+
+            $addBillDetails = $LabBillDetails->addLabBillDetails($billId, NOW, $testDate, $testId, $testPrice, $percentageOfDiscount, $priceAfterDiscount);
+        }
+        /* ========================= Bill Details Insertion End ========================= */
+
+    }else{
         echo "<script>alert('Patient Visiting Not Updated!!, Something is Wrong!');</script>";
-}
-/* ============================ End ============================ */
+    }
     
-
-
-
-
 }else {
     header("Location: lab-billing.php");
     exit;
 }
+/* ============================ End ============================ */
 
-
-
-$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
-$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
-if($healthCareDetailsByAdminId != null){
-    $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
-foreach ($healthCareDetails as $rowhelthCare) {
-    $healthCareName     = $rowhelthCare['hospital_name'];
-    $healthCareAddress1 = $rowhelthCare['address_1'];
-    $healthCareAddress2 = $rowhelthCare['address_2'];
-    $healthCareCity     = $rowhelthCare['city'];
-    $healthCarePIN      = $rowhelthCare['pin'];
-    $healthCarePhno     = $rowhelthCare['hospital_phno'];
-    $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
-    // $healthCareName     = $healthCareDetails['hospital_name'];
-    // $healthCareAddress1 = $healthCareDetails['address_1'];
-    // $healthCareAddress2 = $healthCareDetails['address_2'];
-    // $healthCareCity     = $healthCareDetails['city'];
-    // $healthCarePIN      = $healthCareDetails['pin'];
-    // $healthCarePhno     = $healthCareDetails['hospital_phno'];
-    // $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
-
-}
 ?>
 
 <!DOCTYPE html>
@@ -240,8 +176,8 @@ foreach ($healthCareDetails as $rowhelthCare) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicy Health Care Lab Test Bill</title>
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>css/bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/test-bill.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/test-bill.css">
 
 </head>
 
@@ -252,13 +188,13 @@ foreach ($healthCareDetails as $rowhelthCare) {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="../images/logo-p.jpg"
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo?>"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePIN; ?></small>
+                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePin; ?></small>
                         </p>
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
                             <small><?php echo 'M: '.$healthCarePhno.', '.$healthCareApntbkNo; ?></small>
@@ -270,7 +206,7 @@ foreach ($healthCareDetails as $rowhelthCare) {
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id: <?php echo $billId; ?></small>
                         </p>
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Date:
-                                <?php echo $billingDate;?></small></p>
+                                <?= NOW ?></small></p>
                     </div>
                 </div>
             </div>

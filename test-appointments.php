@@ -1,4 +1,5 @@
 <?php
+$page = "test-appointments";
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
@@ -13,7 +14,6 @@ require_once CLASS_DIR.'doctors.class.php';
 
 
 
-$page = "test-appointments";
 
 // $LabAppointments = new LabAppointments();
 $Patients        = new Patients();
@@ -24,7 +24,7 @@ $Doctors         = new Doctors();
 
 
 
-$labBillDisplay = $LabBilling->labBillDisplay();
+$labBillDisplay = $LabBilling->labBillDisplay($adminId);
 
 // $showLabAppointments = $LabAppointments->showLabAppointments();
 
@@ -44,16 +44,15 @@ $labBillDisplay = $LabBilling->labBillDisplay();
     <title>SB Admin 2 - Blank</title>
 
     <!-- Custom fonts for this template-->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-
-    <link href="<?php echo CSS_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <!-- Sweet Alert Link  -->
-    <script src="<?php echo JS_PATH ?>sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
 
 
@@ -104,17 +103,6 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Invoice ID</th>
-                                            <th>Test Date</th>
-                                            <th>Test</th>
-                                            <th>Refered By</th>
-                                            <th>Paid Amount</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                         <?php
                                         foreach ($labBillDisplay as $rowlabBill) {
@@ -171,7 +159,8 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                                                         <td>' . $docName . '</td>
                                                         <td>Rs. ' . $paidAmount . '</td>
                                                         <td>' . $status . '</td>
-                                                        <td><a class="text-primary mx-2" data-toggle="modal" data-target="#billModal" onclick="billViewandEdit(' . $billId . ')" title="View and Edit"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                        <td>
+                                                        <a class="text-primary mx-2" data-toggle="modal" data-target="#billModal" onclick="billViewandEdit(' . $billId . ')" title="View and Edit"><i class="fa fa-eye" aria-hidden="true"></i></a>
 
                                                         <a class="text-primary text-center" title="Print" href="reprint-test-bill.php?bill_id=' . $billId . '"><i class="fas fa-print"></i></a>
 
@@ -224,7 +213,7 @@ $labBillDisplay = $LabBilling->labBillDisplay();
                     </button>
                 </div>
                 <div class="modal-body d-flex justify-content-around">
-                    <a class="btn btn-primary mx-4" href="lab-entry.php">New Patient</a>
+                    <a class="btn btn-primary mx-4" href="add-patient.php?test=true">New Patient</a>
                     or
                     <a class="btn btn-primary mx-4" href="lab-patient-selection.php">Returning Patient</a>
                 </div>
@@ -265,39 +254,57 @@ $labBillDisplay = $LabBilling->labBillDisplay();
 
     <script>
     billViewandEdit = (obj) => {
-        // if (obj < 10) {
-        //     obj = '0' + obj
-        // }
+        
         let billId = obj;
         // alert(billId);
         let url = "ajax/labBill.view.ajax.php?billId=" + billId;
+        $(".billview").html(
+            '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
+            url + '"></iframe>');
+
+    } // end of viewAndEdit function
+
+    function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+    }
 
 
-                        $.ajax({
-                            url: "ajax/labBill.delete.ajax.php",
-                            type: "POST",
-                            data: {
-                                billId: billId,
-                                status: "Cancelled",
-                            },
-                            success: function(data) {
-                                // alert (data);
-                                if (data == 1) {
-                                    swal("Done! Your Bill Has Been Cancelled.", {
-                                        icon: "success",
-                                    });
-                                    row = document.getElementById(billId);
-                                    row.closest('tr').style.background = '#b51212';
-                                    row.closest('tr').style.color = '#FFFFFF';
-                                } else {
-                                    $("#error-message").html("Cancellation Field !!!").slideDown();
-                                }
+    cancelBill = (billId) => {
+        swal({
+                title: "Are you sure?",
+                text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
 
+                    $.ajax({
+                        url: "ajax/labBill.delete.ajax.php",
+                        type: "POST",
+                        data: {
+                            billId: billId,
+                            status: "Cancelled",
+                        },
+                        success: function(data) {
+                            // alert (data);
+                            if (data == 1) {
+                                swal("Done! Your Bill Has Been Cancelled.", {
+                                    icon: "success",
+                                });
+                                row = document.getElementById(billId);
+                                row.closest('tr').style.background = '#b51212';
+                                row.closest('tr').style.color = '#FFFFFF';
+                            } else {
+                                $("#error-message").html("Cancellation Field !!!").slideDown();
                             }
-                        });
 
-                    }
-                });
+                        }
+                    });
+
+                }
+            });
         }
     </script>
 

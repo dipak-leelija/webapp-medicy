@@ -54,9 +54,9 @@ class LabBilling extends DatabaseConnection{
 
 
 
-    function labBillDisplay(){
+    function labBillDisplay($adminId){
 
-        $selectBill = "SELECT * FROM lab_billing";
+        $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId'";
         $billQuery = $this->conn->query($selectBill);
         $rows = $billQuery->num_rows;
         if ($rows > 0) {
