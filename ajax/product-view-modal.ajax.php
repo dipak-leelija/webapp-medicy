@@ -207,8 +207,8 @@ $CurrentStock   = new CurrentStock();
             btnID = e.id;
             btnVal = e.value;
             btn = this;
-            alert(btnVal);
-            alert(btnID);
+            // alert(btnVal);
+            // alert(btnID);
 
             if (btnVal > 0) {
                 Swal.fire({
