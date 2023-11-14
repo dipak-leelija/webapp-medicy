@@ -207,10 +207,11 @@ $CurrentStock   = new CurrentStock();
             btnID = e.id;
             btnVal = e.value;
             btn = this;
-            // alert(btnVal);
+            alert(btnVal);
+            alert(btnID);
 
             if (btnVal > 0) {
-                swal({
+                Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Current Stock have this product.'
@@ -218,7 +219,7 @@ $CurrentStock   = new CurrentStock();
             }
             
             if (btnVal == 0) {
-                swal({
+                swal.fire({
                         title: "Are you sure?",
                         text: "Want to Delete This Manufacturer?",
                         icon: "warning",
@@ -237,7 +238,7 @@ $CurrentStock   = new CurrentStock();
                                 success: function(data) {
                                     if (data == 1) {
 
-                                        swal(
+                                        Swal.fire(
                                             "Deleted",
                                             "Manufacturer Has Been Deleted",
                                             "success"
@@ -246,7 +247,7 @@ $CurrentStock   = new CurrentStock();
                                         });
 
                                     } else {
-                                        swal("Failed", "Product Deletion Failed!",
+                                        Swal.fire("Failed", "Product Deletion Failed!",
                                             "error");
                                         $("#error-message").html("Deletion Field !!!")
                                             .slideDown();
