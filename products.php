@@ -76,7 +76,7 @@ $allProducts = $Products->showProducts();
                                 <div class="d-flex justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Total Items:
                                         <?php
-                                        if ($allProducts != NULL) {
+                                        if ($allProducts != null) {
                                             echo $allProducts->num_rows;
                                         } else {
                                             echo 0;
@@ -95,18 +95,18 @@ $allProducts = $Products->showProducts();
                                             <div class="row gallery-items">
 
                                                 <?php
-                                                if ($allProducts != NULL) {
+                                                if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
                                                         
                                                         $image = $ProductImages->showImageById($item['product_id']);
                                                         // print_r($image);
-                                                        if ($image != NULL) {
+                                                        if ($image != null) {
                                                             $productImage = $image[0]['image'];
                                                             // $productImage = 'medicy-default-product-image.jpg';
                                                         } else {
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }
-                                                        if ($item['dsc'] == NULL) {
+                                                        if ($item['dsc'] == null) {
                                                             $dsc = '';
                                                         } else {
                                                             $dsc = $item['dsc'].'...';
