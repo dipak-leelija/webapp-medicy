@@ -167,21 +167,16 @@ $hospitalName          = $hospitalShow['hospital_name'];
                         $decodedData = json_decode($patientTest, true);
                         if ($decodedData !== null) {
                             $sub_test_name = $decodedData['sub_test_name'];
-                            echo "<div>";
-                            echo "<div style='width:40%; margin-left:400px;' >$sub_test_name</div>";
+                            echo "<div style='display: flex; justify-content:space-around; align-items:flex-start'>";
+                            echo "<div ><p>$sub_test_name</p></div>";
+                            echo "<div ><p>: $report->test_value</p></div>";
                             echo "</div>";
-                        } else {
-                            // echo "Error decoding JSON or data is null.";
                         }
                     }
-
                     foreach ($labReportDetailbyId as $report) {
-                        echo "<div class=' d-flex justify-content-end' >";
-                        echo "<div  style=' width: 40%; '>$report->test_value</div>";
-                        echo "</div>";
+                        // echo "<div  style=' width: 40%; '>$report->test_value</div>";
                     }
                 }
-                // echo "</div>";
                 echo "</div>";
                 ?>
             </div>

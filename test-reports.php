@@ -107,7 +107,7 @@ $LabReport  = new LabReport ;
                                                         <td><?= $patientId ?></td>
                                                         <td><?= $adminId ?></td>
                                                         <td><?= $date ?></td>
-                                                        <td><a class="text-primary text-center" title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                        <td class="text-center"><a title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                                     </tr>
                                             <?php
 
