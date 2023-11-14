@@ -456,7 +456,7 @@ class SalesReturn extends DatabaseConnection
 
 
 
-    function updateSalesReturnOnStockInUpdate($itemid, $batchNo, $expDate, $addedBy)
+    function updateSalesReturnOnStockInUpdate($itemid, $batchNo, $expDate, $addedBy, $addedOn)
     {
         try {
             // Construct the SQL query
@@ -470,7 +470,7 @@ class SalesReturn extends DatabaseConnection
             }
 
             // Bind the parameters
-            $stmt->bind_param("ssss", $batchNo, $expDate, $addedBy, $itemid);
+            $stmt->bind_param("ssssi", $batchNo, $expDate, $addedBy, $addedOn, $itemid);
 
             // Execute the prepared statement
             if ($stmt->execute()) {
