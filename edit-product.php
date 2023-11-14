@@ -330,7 +330,7 @@
                                                     <div class="image-area <?php if (count($image) != 0) {
                                                                                 echo 'activeted';
                                                                             } ?> rounded">
-                                                        <img class="browse" src="<?php echo '../images/product-image/' . $Images ?>" alt="">
+                                                        <img class="browse" src="<?php echo PROD_IMG_PATH. $Images ?>" alt="">
                                                     </div>
                                                     <input id="product-image" name="product-image" type="file" hidden>
                                                 </div>
