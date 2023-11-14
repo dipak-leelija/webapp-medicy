@@ -119,7 +119,7 @@ if ($patientId == 'Cash Sales') {
                                     <input type="text" class="upr-inp" name="invoice-no" id="invoiceID" value="<?php echo $InvoiceId ?>" autocomplete="off" readonly>
                                 </div>
 
-                                <div class="d-none col-md-4 col-6 mt-3">
+                                <div class="  col-md-4 col-6 mt-3">
                                     <label class="mb-0 mt-2" for="invoice-no">Sales Return Id.</label>
                                     <input type="text" class="upr-inp" name="sales-return-id" id="sales-return-id" value="<?php echo $salesReturnId ?>" autocomplete="off" readonly>
                                 </div>
@@ -239,6 +239,11 @@ if ($patientId == 'Cash Sales') {
                                     <div class="col-md-1 col-6 mt-3">
                                         <label class="mb-0 mt-1" for="current-qty">Cr Qty</label>
                                         <input type="text" class="upr-inp" name="current-qty" id="current-qty" readonly>
+                                    </div>
+
+                                    <div class="d-none col-md-1 col-6 mt-3">
+                                        <label class="mb-0 mt-1" for="prev-rtrn-qty">Prev Rtrn Qty</label>
+                                        <input type="text" class="upr-inp" name="prev-rtrn-qty" id="prev-rtrn-qty" readonly>
                                     </div>
 
                                     <div class="col-md-1 col-6 mt-3">

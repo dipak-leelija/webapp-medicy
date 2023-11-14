@@ -220,6 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $updatedGstAmt = floatval($gstAmount) + floatval($WholeNotDeletedGstAmount);
             $updatedAmt = floatval($wholeAmount) + floatval($WholeNotDeletedPrice);
 
+
             /* update stock in data */
             $updateStockIn = $StockIn->updateStockIn($stockIn_Id, $distributorId, $distributorBill, $updatedItemsCount, $updatedTotalQty, $billDate, $dueDate, $paymentMode, $updatedGstAmt, $updatedAmt, $employeeId, NOW);
             ///////////////////////// check this area again \\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -320,12 +321,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // update to current stock data
                 $currentStockItmeDetails = $CurrentStock->showCurrentStocByStokInDetialsId($updatedItemIdsArray[$i]);
-                if (!empty($currentStockItmeDetails)) {
-                    foreach ($currentStockItmeDetails as $currentStockItemsData) {
-                        $itemId = $currentStockItemsData['id'];
-                        $Loose_Qty = intval($currentStockItemsData['loosely_count']);
-                        $item_Qty = intval($currentStockItemsData['qty']);
-                    }
+
+                if ($currentStockItmeDetails != null) {
+                    $itemId = $currentStockItmeDetails->id;
+                    $Loose_Qty = intval($currentStockItmeDetails->loosely_count);
+                    $item_Qty = intval($currentStockItmeDetails->qty);
                 }
 
 
@@ -352,7 +352,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 // ======= need to check this data ============
-                
+
                 //===========
 
                 $updatedStockInDetails = $StockInDetails->updateStockInDetailsById(intval($updatedItemIdsArray[$i]), $product_ids[$i], $distributorBill, $batch_no[$i], $mfd_date[$i], $exp_date[$i], intval($item_weightage[$i]), $item_unit[$i], intval($item_qty[$i]), intval($item_free_qty[$i]), intval($stockInLooseCount), floatval($item_mrp[$i]), floatval($item_ptr[$i]), intval($discountPercent[$i]), floatval($baseAmount_perItem[$i]), intval($item_gst[$i]), floatval($gstAmount_perItem[$i]), floatval($marginAmount_perItem[$i]), floatval($billAmount_perItem[$i]), $addedBy, NOW);
@@ -378,7 +378,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // 1st. check sales return details table have current access data or not
                 if (!empty($salesReturnDetailsData)) {
                     for ($l = 0; $l < count($salesReturnDetailsData); $l++) {
-                        $salesReturnDetailsUpdate = $SalesReturn->updateSalesReturnOnStockInUpdate($itemId, $batch_no[$i], $exp_date[$i], $addedBy);
+                        $salesReturnDetailsUpdate = $SalesReturn->updateSalesReturnOnStockInUpdate(intval($itemId), $batch_no[$i], $exp_date[$i], $addedBy, NOW);
                     }
                 }
 
@@ -448,7 +448,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= IMG_PATH ?>logo-p.jpg" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= SITE_IMG_PATH ?>logo-p.jpg" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>

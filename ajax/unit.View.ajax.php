@@ -93,7 +93,7 @@ $showMeasureOfUnit = $MeasureOfUnits->showMeasureOfUnitsById($unitId);
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <script src="<?= PLUGIN_PATH ?>bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Bootstrap Js -->
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>

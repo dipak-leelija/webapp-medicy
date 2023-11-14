@@ -253,8 +253,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-$healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
+
 $healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
+
 if($healthCareDetailsByAdminId != null){
     $healthCareDetails = $healthCareDetailsByAdminId;
 }else{

@@ -223,45 +223,33 @@ class CurrentStock extends DatabaseConnection
         try {
             $data = array();
 
-            // Define the SQL query using a prepared statement
             $select = "SELECT * FROM current_stock WHERE `admin_id` = ? GROUP BY `product_id`";
 
-            // Prepare the SQL statement
             $stmt = $this->conn->prepare($select);
 
             if ($stmt) {
-                // Bind the parameter
                 $stmt->bind_param("s", $adminId);
-
-                // Execute the query
                 $stmt->execute();
-
-                // Get the result
                 $result = $stmt->get_result();
 
-                // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
                         $data[] = $row;
                     }
                 } else {
-                    // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
                 }
 
-                // Close the statement
                 $stmt->close();
             } else {
-                // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
 
             return $data;
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // Customize this part to suit your needs
-            echo "Error: " . $e->getMessage();
-            return array();
+            if ($e) {
+                echo "Error: " . $e->getMessage();
+            }
         }
     }
 
@@ -408,6 +396,30 @@ class CurrentStock extends DatabaseConnection
 
 
 
+
+
+
+    function showCurrentStocByStokInDetialsId($stockInDetialsId)
+    {
+        try {
+            $select = "SELECT * FROM current_stock WHERE `stock_in_details_id` = '$stockInDetialsId'";
+            // echo $select;
+            $selectQuery = $this->conn->query($select);
+            if ($selectQuery->num_rows > 0) {
+                while ($result = $selectQuery->fetch_object()) {
+                    $data = $result;
+                }
+                return $data;
+            }else{
+                return null;
+            }
+        } catch (Exception $e) {
+            if ($e) {
+                return $e;
+            }
+        }
+    } //eof showCurrentStocByProductId
+
     //=====================================================================================================
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -469,10 +481,6 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    // use (showCurrentStocByStokInDetialsId [line number 185 in this page]) this function against (showCurrentStockbyStokInId) function for any convenience....
-
-
-
 
     function showCurrentStocByPId($productId)
     {
@@ -518,17 +526,7 @@ class CurrentStock extends DatabaseConnection
         return $data;
     } //eof showCurrentStocByProductId
 
-    function showCurrentStocByStokInDetialsId($stockInDetialsId)
-    {
-        $data = array();
-        $select = "SELECT * FROM current_stock WHERE `stock_in_details_id` = '$stockInDetialsId'";
-        // echo $select;
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showCurrentStocByProductId
+
 
 
     function showCurrentStocByProductIdandBatchNo($productId, $BatchNo)
@@ -604,12 +602,11 @@ class CurrentStock extends DatabaseConnection
             $result = $stmt->affected_rows;
             $stmt->close();
 
-            if($result > 0){
+            if ($result > 0) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-
         } catch (Exception $e) {
             if ($e) {
                 return $e;
@@ -623,35 +620,35 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    function deleteCurrentStockbyStockIndetailsId($stockIndetailsID) {
+    function deleteCurrentStockbyStockIndetailsId($stockIndetailsID)
+    {
         try {
             $delQry = "DELETE FROM `current_stock` WHERE `stock_in_details_id` = ?";
             $stmt = $this->conn->prepare($delQry);
-    
-            $stmt->bind_param("i", $stockIndetailsID); 
+
+            $stmt->bind_param("i", $stockIndetailsID);
 
             $stmt->execute();
-    
+
             $result = $stmt->affected_rows;
-            
+
             $stmt->close();
-            
-            if($result > 0){
+
+            if ($result > 0) {
                 return true;
-            }else{
+            } else {
                 return $result;
             }
-            
         } catch (Exception $e) {
-            if($e){
+            if ($e) {
                 echo "Error: " . $e->getMessage();
-            }else{
+            } else {
                 return 0; // indicate execution fail
             }
         }
     }
 
-    
+
 
 
 
@@ -668,7 +665,7 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    
+
 
 
     function deleteByTabelData($table, $data)

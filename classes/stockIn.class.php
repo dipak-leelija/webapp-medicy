@@ -313,13 +313,13 @@ class StockIn extends DatabaseConnection
 
     // ============================== update stock in data funcion ===================================
 
-    function updateStockIn($stockInid, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate,   $paymentMode, $gst, $amount, $updatedBy, $updatedOn)
+    function updateStockIn($stockInid, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $gst, $amount, $updatedBy, $updatedOn)
     {
         try {
             $updateQry = "UPDATE `stock_in` SET `distributor_bill` = ?, `distributor_id` = ?, `items` = ?,  `total_qty` = ?, `bill_date` = ?, `due_date` = ?, `payment_mode` = ?, `gst` = ?, `amount` = ?,   `updated_by` = ?, `updated_on` = ? WHERE `stock_in`.`id` = ?";
             $stmt = $this->conn->prepare($updateQry);
 
-            $stmt->bind_param("sssiisssdsi", $distributorBill, $distributorId, $items, $totalQty, $billDate,    $dueDate, $paymentMode, $gst, $amount, $updatedBy, $updatedOn, $stockInid);
+            $stmt->bind_param("siiisssddssi", $distributorBill, $distributorId, $items, $totalQty, $billDate,    $dueDate, $paymentMode, $gst, $amount, $updatedBy, $updatedOn, $stockInid);
 
             $stmt->execute();
 
@@ -499,7 +499,7 @@ class StockIn extends DatabaseConnection
             $stmt->close();
 
             if($result > 0){
-                return null;
+                return true;
             }else{
                 return $result;
             }

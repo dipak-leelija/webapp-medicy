@@ -186,7 +186,7 @@
                     $item = $Products->showProductsById($_GET['id']);
                     // print_r($item);
                     $image = $ProductImages->showImageById($_GET['id']);
-                    // print_r($image);
+                    print_r($image);
 
                     if ($image != NULL) {
                         foreach ($image as $image) {
@@ -330,7 +330,7 @@
                                                     <div class="image-area <?php if (count($image) != 0) {
                                                                                 echo 'activeted';
                                                                             } ?> rounded">
-                                                        <img class="browse" src="<?php echo '../images/product-image/' . $Images ?>" alt="">
+                                                        <img class="browse" src="<?php echo PROD_IMG_PATH. $Images ?>" alt="">
                                                     </div>
                                                     <input id="product-image" name="product-image" type="file" hidden>
                                                 </div>
