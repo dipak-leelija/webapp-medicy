@@ -99,13 +99,23 @@ $allProducts = $Products->showProducts();
                                                     foreach ($allProducts as $item) {
                                                         
                                                         $image = $ProductImages->showImageById($item['product_id']);
-                                                        // print_r($image);
+                                                
                                                         if ($image != null) {
-                                                            $productImage = $image[0]['image'];
-                                                            // $productImage = 'medicy-default-product-image.jpg';
+                                                            $imgData = $image[0]['image'];
+                                                            if($imgData == ''){
+                                                                $productImage = 'medicy-default-product-image.jpg';
+                                                            }else{
+                                                                $productImage = $imgData;
+                                                            }
                                                         } else {
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }
+
+                                                        // if($image[0]['image'] == ' '){
+                                                        //     echo "image null hello";
+                                                        //     $productImage = 'medicy-default-product-image.jpg';
+                                                        // }
+
                                                         if ($item['dsc'] == null) {
                                                             $dsc = '';
                                                         } else {

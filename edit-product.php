@@ -186,7 +186,7 @@
                     $item = $Products->showProductsById($_GET['id']);
                     // print_r($item);
                     $image = $ProductImages->showImageById($_GET['id']);
-                    // print_r($image);
+                    print_r($image);
 
                     if ($image != NULL) {
                         foreach ($image as $image) {
