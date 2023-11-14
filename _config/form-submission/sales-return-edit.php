@@ -57,17 +57,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $totalRefundAmount   = $_POST['refund-amount'];
         $invoiceId      = str_replace("#", '', $invoice);
         $sold           = $StockOut->stockOutDisplayById($invoiceId);
-        $patient        = $Patients->patientsDisplayByPId($sold[0]['customer_id']);
-        $patient        = json_decode($patient);
-
+        $customerId     = $sold[0]['customer_id'];
         // ============== PATIENT DETAILS DATA ==============================
-        if ($sold[0]['customer_id'] == 'Cash Sell') {
+        if ($customerId == 'Cash Sales') {
             $patientNm = 'Cash Sell';
             $patientPNo = '';
+            
         } else {
-            $patientNm = $patient->name;
-            $patientPNo = $patient->phno;
+            
+            $patient        = $Patients->patientsDisplayByPId($customerId);
+            if ($patient != null) {
+                $patient        = json_decode($patient);
+                $patientNm = $patient->name;
+                $patientPNo = $patient->phno;
+            }
         }
+
+
         //=====================================================================
 
         // fetching sales return data from sales return tabel------------------
@@ -219,9 +225,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $healthCareDetails = $healthCareDetailsPrimary;
         }
-        
-        for($i; $i<count($healthCareDetails); $i++) {
-           
+
+        for ($i; $i < count($healthCareDetails); $i++) {
+
             $healthCareName     = $healthCareDetails['hospital_name'];
             $healthCareAddress1 = $healthCareDetails['address_1'];
             $healthCareAddress2 = $healthCareDetails['address_2'];

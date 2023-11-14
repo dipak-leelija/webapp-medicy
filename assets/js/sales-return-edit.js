@@ -28,6 +28,7 @@ var mrp = document.getElementById("mrp");
 var ptr = document.getElementById("ptr");
 var pqty = document.getElementById("P-qty");
 var currentQty = document.getElementById("current-qty");
+var prevReturnQty = document.getElementById("prev-rtrn-qty");
 
 var rtnqty = document.getElementById("return-qty");
 var discount = document.getElementById("discount");
@@ -153,6 +154,7 @@ const getEditItemDetails = (t) => {
         returnQantity = returnQantity.replace(/\D/g, '');
      
         document.getElementById('return-qty').value = returnQantity;
+        prevReturnQty.value = returnQantity;
 
         //==================== DISC ====================
         let discUrl = `ajax/salesReturnEdit.ajax.php?disc=${returndItemId}`;
@@ -214,25 +216,29 @@ const getRefund = (returnQty) => {
     let gst = document.getElementById('gst').value;
     let unitType = document.getElementById('unit-type').value;
     let itemWeatage = document.getElementById('item-weatage').value;
+    let pruchsQty = document.getElementById('P-qty').value;
+    // console.log("chk current qty : "+maxRtrnQty);
+    // console.log("chk prevReturn qty : "+prevReturnQty);
+    let maxRtrnQty = parseInt(currentQty.value) + parseInt(prevReturnQty.value);
+    console.log("chk max return qty : "+maxRtrnQty);
     let reviceTaxable = '';
     let reviceRefund = '';
     let reviceDiscAmt = '';
 
     if (returnQty != '') {
 
-        let returnQty1 = parseFloat(currentQty.value) -  parseFloat(returnQty) 
-
-        if (parseFloat(returnQty1) < 0) {
+       
+        if (parseFloat(returnQty) < 0) {
             // alert("Return Quantity must be lesser than current quantity!");
             Swal.fire("Error", "Enter valid input", "error");
             document.getElementById('return-qty').value = '';
         }
-        else if (parseFloat(returnQty1) > parseFloat(currentQty.value)) {
+        else if (parseFloat(returnQty) > parseFloat(maxRtrnQty)) {
             // alert("Return Quantity must be lesser than current quantity!");
-            swal("Error", "Return edit Quantity must be lesser than Current Item quantity!", "error");
+            Swal.fire("Error", "Return edit Quantity must be lesser than Editabel Qty! This item current max return qty is "+maxRtrnQty, "error");
             document.getElementById('return-qty').value = '';
         }
-        else if (parseFloat(returnQty1) > 0 ) {
+        else if (parseFloat(returnQty) >= 0 ) {
             if(unitType == 'tab' || unitType == 'cap'){
                 reviceDiscAmt = (parseFloat(mrp) - (parseFloat(mrp)*parseFloat(disc)/100)) / parseInt(itemWeatage);
                 reviceRefund = parseFloat(reviceDiscAmt) * parseInt(returnQty);
@@ -319,7 +325,6 @@ const addData = () => {
 
     if (returnDate == "") {
         Swal.fire("Failed!", "Select Return Date", "error");
-        returnDate.focus();
         return;
     }
 
