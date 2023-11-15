@@ -6,7 +6,7 @@ $includePath = get_include_path();
 $maxItemPurchase = $StockIn->selectDistOnMaxItems($adminId);
 
 if($maxItemPurchase != null){
-    $distNameOnMaxItem = $Distributor->distributorDetail($maxItemPurchase->distributor_id);
+    $distNameOnMaxItem = $Distributor->distributorName($maxItemPurchase->distributor_id);
 }else{
 
 }
@@ -21,7 +21,7 @@ if($maxItemPurchase != null){
                     most purchaed distributor by times</div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByItems-info-div">
                     <label type="text" id="itemCount" name="itemCount"><?php echo $maxItemPurchase->number_of_purchases; ?> Times</label><br>
-                    <label type="text" id="distName" name="distName"><?php echo $distNameOnMaxItem->name;; ?></label>
+                    <label type="text" id="distName" name="distName"><?php echo $distNameOnMaxItem;; ?></label>
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByItems-no-data-div">
                     <label for="no-data">NO DATA FOUND</label>

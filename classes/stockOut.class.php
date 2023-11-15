@@ -865,20 +865,50 @@ class StockOut extends DatabaseConnection
     } // eof amountSoldBy
 
 
-
-    function needsToCollect()
-    {
+    function needsToCollect($adminId=''){
         $data = array();
-        $sql = "SELECT items,amount FROM stock_out WHERE `stock_out`.`payment_mode` = 'Credit'";
-        $sqlQuery = $this->conn->query($sql);
-        while ($result = $sqlQuery->fetch_array()) {
-            $data[]    = $result;
+    
+        try {
+            if (!empty($adminId)) {
+                // Use prepared statements to prevent SQL injection
+                $sql = "SELECT * FROM stock_out WHERE `payment_mode` = 'Credit' AND admin_id = ?";
+            }else{
+                $sql = "SELECT * FROM stock_out WHERE `payment_mode` = 'Credit'";
+            }
+            
+            $stmt = $this->conn->prepare($sql);
+        
+            if ($stmt) {
+                if (!empty($adminId)) {
+                    // Bind parameters
+                    $stmt->bind_param('s', $adminId); // Assuming admin_id is a string
+                }
+                
+                // Execute the prepared statement
+                $stmt->execute();
+        
+                // Get the result set
+                $result = $stmt->get_result();
+        
+                // Fetch results into an array
+                while ($row = $result->fetch_assoc()) {
+                        $data[] = $row;
+                }
+                    
+                // Close the statement
+                $stmt->close();
+            } else {
+                throw new Exception("Error in preparing SQL statement");
+            }
+        } catch (Exception $e) {
+            return array("error" => $e->getMessage());
         }
+    
         return $data;
-    } // eof amountSoldBy
+    }
 
 
-
+    
 
     function cancelLabBill($billId, $status)
     {

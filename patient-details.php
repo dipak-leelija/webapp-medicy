@@ -6,6 +6,7 @@ $page = "patients";
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
+require_once ROOT_DIR  . '_config/hralthcare.inc.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';

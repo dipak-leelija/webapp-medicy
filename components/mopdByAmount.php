@@ -7,7 +7,7 @@ $maxPurchaseByAmount = $StockIn->selectDistOnMaxPurchase($adminId);
 
 if($maxPurchaseByAmount != null){
     $maxPurchaseByAmount = json_decode($maxPurchaseByAmount);
-    $distNameOnMaxPurchase = $Distributor->distributorDetail($maxPurchaseByAmount->distributor_id);
+    $distNameOnMaxPurchase = $Distributor->distributorName($maxPurchaseByAmount->distributor_id);
 }
 
 ?>
@@ -20,7 +20,7 @@ if($maxPurchaseByAmount != null){
                     most purchaed distributor by amount</div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByAmount-info-div">
                     <i class="fas fa-rupee-sign"></i><label type="text" id="salesAmount" name="salesAmount"><?php echo $maxPurchaseByAmount->total_purchase_amount; ?></label><br>
-                    <label type="text" id="distName" name="distName"><?php echo $distNameOnMaxPurchase->name; ?></label>
+                    <label type="text" id="distName" name="distName"><?php echo $distNameOnMaxPurchase; ?></label>
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByAmount-no-data-div" style="display: none;">
                     <label for="no-data">NO DATA FOUND</label>

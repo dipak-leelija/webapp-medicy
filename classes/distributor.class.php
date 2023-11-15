@@ -69,7 +69,7 @@ class Distributor extends DatabaseConnection{
 
 
 
-    function distributorDetail($DistributorId) {
+    function distributorName($DistributorId) {
         try {
             $select = "SELECT `name` FROM `distributor` WHERE `id` = ?";
             $stmt = $this->conn->prepare($select);
@@ -81,6 +81,7 @@ class Distributor extends DatabaseConnection{
     
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_object();
+                    $data = $row->name;
                     // $row = json_encode($row);
                 } else {
                     echo "Query returned no results.";
@@ -89,7 +90,7 @@ class Distributor extends DatabaseConnection{
             } else {
                 echo "Statement preparation failed: " . $this->conn->error;
             }
-            return $row;
+            return $data;
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
             return null;

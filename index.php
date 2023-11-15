@@ -227,19 +227,19 @@ $totalAppointments = $appoinments->appointmentsDisplay($adminId);
                     <div class="row">
 
                         <!------------- SALES MARGIN CARD -------------->
-                        <div class="col-xl-6 col-md-12">
-                            <?php require_once ROOT_COMPONENT . "salesmargin.php"; ?>
-                        </div>
+                        <!-- <div class="col-xl-6 col-md-12"> -->
+                            <?php //require_once ROOT_COMPONENT . "salesmargin.php"; ?>
+                        <!-- </div> -->
                         <!------------- END of SALES MARGIN CARD -------------->
 
-                        <div class="col-xl-3 col-md-6">
+                        <div class="col-xl-6 col-md-6">
                             <!------------- NEEDS TO COLLECT PAYMENTS -------------->
                             <?php require_once ROOT_COMPONENT . "needstocollect.php"; ?>
                             <!------------- END NEEDS TO COLLECT PAYMENTS -------------->
 
                         </div>
 
-                        <div class="col-xl-3 col-md-6">
+                        <div class="col-xl-6 col-md-6">
                             <!------------- NEEDS TO PAY  -------------->
                             <?php require_once ROOT_COMPONENT . "needtopay.php"; ?>
                             <!------------- END NEEDS TO PAY  -------------->
