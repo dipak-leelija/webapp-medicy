@@ -4,6 +4,8 @@ require_once 'config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR."dbconnect.php";
+require_once ROOT_DIR.'_config/healthcare.inc.php';
+require_once CLASS_DIR."encrypt.inc.php";
 require_once CLASS_DIR."stockOut.class.php";
 require_once CLASS_DIR."patients.class.php";
 
@@ -137,9 +139,9 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
                                                         <td>".$billAmount."</td>
                                                         <td>".$paymentMode, $creditIcon."</td>
                                                         <td>
-                                                        <a class='ml-2' href='update-sales.php?id=".$invoice."'><i class='fas fa-edit'></i></a>
+                                                        <a class='ml-2' href='update-sales.php?id=".url_enc($invoice)."'><i class='fas fa-edit'></i></a>
                                                         
-                                                        <a class='ml-2' href='_config/form-submission/item-invoice-reprint.php?id=".$invoice."'><i class='fas fa-print'></i></a>
+                                                        <a class='ml-2' href='_config/form-submission/item-invoice-reprint.php?id=".url_enc($invoice)."'><i class='fas fa-print'></i></a>
 
                                                         <a class='ml-2' data-id=".$invoice."><i class='fab fa-whatsapp'></i></i></a>
 

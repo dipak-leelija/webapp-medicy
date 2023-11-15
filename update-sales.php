@@ -2,6 +2,9 @@
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';
 
+require_once CLASS_DIR."dbconnect.php";
+require_once ROOT_DIR.'_config/healthcare.inc.php';
+require_once CLASS_DIR."encrypt.inc.php";
 require_once CLASS_DIR."doctors.class.php";
 require_once CLASS_DIR.'stockOut.class.php';
 require_once CLASS_DIR.'products.class.php';
@@ -19,13 +22,11 @@ $Manufacturer = new Manufacturer();
 
 
 if ($_GET['id']) {
-    // echo $_GET['id'];
-    $stockOut = $StockOut->stockOutDisplayById($_GET['id']);
-    // print_r($stockOut);
-    // echo "<br><br>";
+    $billId     = url_dec($_GET['id']);
+    $stockOut   = $StockOut->stockOutDisplayById($billId);
 
     $invoiceId      = $stockOut[0]['invoice_id'];
-    $patientId   = $stockOut[0]['customer_id'];
+    $patientId      = $stockOut[0]['customer_id'];
 
     $patientName = $patientId;
 
@@ -46,14 +47,11 @@ if ($_GET['id']) {
     $billdate       = $stockOut[0]['bill_date'];
     
 
-    $details = $StockOut->stockOutDetailsDisplayById($_GET['id']);
-    // print_r($details);
+    $details = $StockOut->stockOutDetailsDisplayById($billId);
     $countStockOut = count($details);
-    // echo $countStockOut;
-    // echo "<br><br>";
-    $stockOutDetails = $StockOut->stockOutDetailsDisplayById($_GET['id']);
-    // print_r($stockOutDetails);
-
+    
+    $stockOutDetails = $StockOut->stockOutDetailsDisplayById($billId);
+    
     //=============== doctor data =================
     $doctor = $Doctors->showDoctors();
     // print_r($doctor);
