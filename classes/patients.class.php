@@ -150,6 +150,19 @@ class Patients extends DatabaseConnection
     } //end appointmentsDisplay function
 
 
+
+    function patientName($patientId)
+    {
+        $data = array();
+        $selectById = "SELECT name FROM patient_details WHERE `patient_id`= '$patientId'";
+        $selectByIdQuery = $this->conn->query($selectById);
+        // echo var_dump($selectByIdQuery);
+        $result = $selectByIdQuery->fetch_assoc();
+        $data    = $result['name'];
+        return $data;
+    } //end appointmentsDisplay function
+
+
     function patientsDisplayByPId($patientId)
     {
         try {
