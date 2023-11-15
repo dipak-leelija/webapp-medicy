@@ -1,17 +1,16 @@
 <?php
+$page = "stock-return";
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR .'dbconnect.php';
+require_once ROOT_DIR.'_config/healthcare.inc.php';
+
 require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'distributor.class.php';
 require_once CLASS_DIR.'stockReturn.class.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 
-
-
-
-$page = "purchase-management";
 
 //objects Initilization
 $products           = new Products();

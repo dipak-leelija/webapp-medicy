@@ -14,7 +14,7 @@ if (isset($_GET['currentQTY'])) {
     if($currentQty == null){
         $qty = 0;
     }else{
-        $qty = $currentQty[0]['qty'];
+        $qty = $currentQty->qty;
     }
     echo $qty;
 }
