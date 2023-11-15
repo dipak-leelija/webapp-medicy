@@ -2,10 +2,11 @@
 
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-
 require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'productsImages.class.php';
+require_once CLASS_DIR.'hospital.class.php';
 
 
 $page = "products";
@@ -13,11 +14,12 @@ $page = "products";
 //Intitilizing Doctor class for fetching doctors
 $Products      = new Products();
 $ProductImages = new ProductImages();
+$HealthCare     = new HelthCare();
+
 
 // Function INitilized 
 $col = 'admin_id';
 $allProducts = $Products->showProducts();
-// print_r($allProducts);
 
 ?>
 

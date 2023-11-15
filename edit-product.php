@@ -1,30 +1,30 @@
 <?php
-    require_once 'config/constant.php';
-    require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-    
-    require_once CLASS_DIR.'dbconnect.php';
-    require_once CLASS_DIR.'products.class.php';
-    require_once CLASS_DIR.'productsImages.class.php';
-    require_once CLASS_DIR.'manufacturer.class.php';
-    require_once CLASS_DIR.'measureOfUnit.class.php';
-    require_once CLASS_DIR.'packagingUnit.class.php';
-    
+require_once 'config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'productsImages.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
+require_once CLASS_DIR . 'measureOfUnit.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
 
 
-    $page = "products";
 
-    //objects Initilization
-    $Products           = new Products();
-    $Manufacturer       = new Manufacturer();
-    $MeasureOfUnits     = new MeasureOfUnits();
-    $PackagingUnits     = new PackagingUnits();
-    $ProductImages      = new ProductImages();
+$page = "products";
 
-    $showManufacturer   = $Manufacturer->showManufacturer();
-    $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
-    $showPackagingUnits = $PackagingUnits->showPackagingUnits();
+//objects Initilization
+$Products           = new Products();
+$Manufacturer       = new Manufacturer();
+$MeasureOfUnits     = new MeasureOfUnits();
+$PackagingUnits     = new PackagingUnits();
+$ProductImages      = new ProductImages();
 
-    ?>
+$showManufacturer   = $Manufacturer->showManufacturer();
+$showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
+$showPackagingUnits = $PackagingUnits->showPackagingUnits();
+
+?>
 
 
 <!DOCTYPE html>
@@ -42,7 +42,7 @@
 
     <!-- Custom fonts for this template -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    
+
     <!-- Fontawsome Link -->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="<?= CSS_PATH ?>font-awesome.css" rel="stylesheet">
@@ -149,7 +149,7 @@
         // echo "<br>gst : ",$_POST['gst']; echo "<br>",gettype($_POST['gst']);
         // echo "<br>updated by: ",$updatedBy; echo "<br>",gettype($updatedBy);
         // echo "<br>updated on : ",$updatedOn; echo "<br>",gettype($updatedOn);
-        
+
 
         $updateProduct = $Products->updateProduct($_POST['product-id'], $_POST['manufacturer'], $_POST['product-name'], $_POST['product-composition'], $_POST['medicine-power'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $unitName, $_POST['mrp'], $_POST['gst'], $updatedBy, $updatedOn);
 
@@ -171,7 +171,7 @@
         }
     }
     ?>
-    
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -186,7 +186,7 @@
                     $item = $Products->showProductsById($_GET['id']);
                     // print_r($item);
                     $image = $ProductImages->showImageById($_GET['id']);
-                    print_r($image);
+                    // print_r($image);
 
                     if ($image != NULL) {
                         foreach ($image as $image) {
@@ -329,10 +329,10 @@
                                                 <div class="border p-1 rounded">
                                                     <div class="image-area <?php if (count($image) != 0) {
                                                                                 echo 'activeted';
-                                                                            } ?> rounded">
-                                                        <img class="browse" src="<?php echo PROD_IMG_PATH. $Images ?>" alt="">
+                                                                            } ?> rounded" id="imageArea">
+                                                        <img class="browse" src="<?php echo PROD_IMG_PATH . $Images ?>" alt="">
                                                     </div>
-                                                    <input id="product-image" name="product-image" type="file" hidden>
+                                                    <input id="product-image" name="product-image" type="file" hidden onchange="updateImage(this)">
                                                 </div>
                                             </div>
                                         </div>
@@ -432,6 +432,23 @@
 
             document.getElementById("profit").value = profit.toFixed(2);
         }
+        //image change 
+        function updateImage(input) {
+            var imageArea = document.getElementById('imageArea');
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                imageArea.innerHTML = '<img class="browse" src="' + e.target.result + '" alt="">';
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+        // Click event to trigger file input when clicking on the image area
+        $(document).ready(function() {
+            $('.image-area').click(function() {
+                $('#product-image').click();
+            });
+        });
     </script>
     <script>
         // productViewAndEdit = (productId) => {
