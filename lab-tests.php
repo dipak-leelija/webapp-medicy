@@ -1,10 +1,17 @@
 <?php 
+$page = "lab-tests";
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR.'_config/hralthcare.inc.php';
+
 require_once CLASS_DIR.'labtypes.class.php';
 require_once CLASS_DIR.'sub-test.class.php';
  
-$page = "lab-tests";
+
+$labTypes = new LabTypes;
+$subTests = new SubTests;
 
 
 //######################################################
@@ -29,14 +36,12 @@ $page = "lab-tests";
         $testDsc = str_replace("'", "\\", $testDsc);
         
         //Object initilizing for Adding Main/Parent Tests/Labs
-        $labTypes = new LabTypes();
         $addLabType = $labTypes->addLabTypes($imgFolder, $testName, $testPvdBy, $testDsc);
     }
 // End of Adding Lab Category
 
 //######################################################
 //Object initilizing for Fetching Tests/Labs
-$labTypes = new LabTypes();
 $showLabTypes = $labTypes->showLabTypes();
 
 //######################################################
@@ -68,7 +73,6 @@ if (isset($_POST['subtest-submit'])== true) {
     $price = str_replace("<", "&lt", $price);
     $price = str_replace("'", "\\", $price);
 
-    $subTests = new SubTests();
     $addsubTests = $subTests->addSubTests($subTestName, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price);
     if (!$addsubTests) {
         echo "Something is wrong!";
