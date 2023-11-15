@@ -14,6 +14,8 @@ if(!empty($healthCare)){
     }
 
     $healthCareLogo      = $healthCare['logo'];
+    $healthCareLogo      = empty($healthCareLogo) ? SITE_IMG_PATH.'logo-p.jpg' : URL.$healthCareLogo;
+
     $healthCareId        = $healthCare['hospital_id'];
     $healthCareName      = $healthCare['hospital_name'];
     $healthCareAddress1  = $healthCare['address_1'];

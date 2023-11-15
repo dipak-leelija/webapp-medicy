@@ -4,7 +4,7 @@ require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR.'_config/user-details.inc.php';
-// require_once ADM_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockOut.class.php';
 
@@ -35,33 +35,6 @@ if (isset($_GET['id'])) {
 }
 
 
-
-$healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
-$healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
-
-if($healthCareDetailsByAdminId != null){
-    $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
-    $healthCareName     = $healthCareDetails['hospital_name'];
-    $healthCareAddress1 = $healthCareDetails['address_1'];
-    $healthCareAddress2 = $healthCareDetails['address_2'];
-    $healthCareCity     = $healthCareDetails['city'];
-    $healthCarePIN      = $healthCareDetails['pin'];
-    $healthCarePhno     = $healthCareDetails['hospital_phno'];
-    $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
-    // $healthCa
-// foreach ($healthCareDetails as $rowhelthCare) {
-//     $healthCareName     = $rowhelthCare['hospital_name'];
-//     $healthCareAddress1 = $rowhelthCare['address_1'];
-//     $healthCareAddress2 = $rowhelthCare['address_2'];
-//     $healthCareCity     = $rowhelthCare['city'];
-//     $healthCarePIN      = $rowhelthCare['pin'];
-//     $healthCarePhno     = $rowhelthCare['hospital_phno'];
-//     $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
-
-// }
 ?>
 
 <!DOCTYPE html>
@@ -84,13 +57,13 @@ if($healthCareDetailsByAdminId != null){
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?php echo IMG_PATH ?>logo-p.jpg"
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo?>"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePIN; ?></small>
+                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePin; ?></small>
                         </p>
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
                             <small><?php echo 'M: '.$healthCarePhno.', '.$healthCareApntbkNo; ?></small>

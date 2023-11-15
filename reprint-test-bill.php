@@ -4,7 +4,7 @@ require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR . '_config/hralthcare.inc.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 
 require_once CLASS_DIR.'sub-test.class.php';
 require_once CLASS_DIR.'doctors.class.php';
@@ -81,7 +81,7 @@ if (isset($_GET['bill_id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicy Health Care Lab Test Bill</title>
+    <title><?= $patientId.'-'.$billId ?></title>
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>/custom/test-bill.css">
 
