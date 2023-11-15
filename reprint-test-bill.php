@@ -1,13 +1,11 @@
 <?php
 
-// ini_set('display_errors', '1');
-// ini_set('display_startup_errors', '1');
-// error_reporting(E_ALL);
-
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR . '_config/hralthcare.inc.php';
+
 require_once CLASS_DIR.'sub-test.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
@@ -29,70 +27,51 @@ $Patients        = new Patients();
 
 if (isset($_GET['bill_id'])) {
 
-$billId = $_GET['bill_id'];
+    $billId = $_GET['bill_id'];
 
-$labBil      = $LabBilling->labBillDisplayById($billId);
-foreach ($labBil as $rowlabBil) {
-            
-    $billId         = $rowlabBil['bill_id'];
-    $billingDate    = $rowlabBil['bill_date'];
-    $patientId      = $rowlabBil['patient_id'];
-    $docId          = $rowlabBil['refered_doctor'];
-    $testDate       = $rowlabBil['test_date'];
-    $totalAmount    = $rowlabBil['total_amount'];
-    $totalDiscount  = $rowlabBil['discount'];
-    $afterDiscount  = $rowlabBil['total_after_discount'];
-    $cgst           = $rowlabBil['cgst'];
-    $sgst           = $rowlabBil['sgst'];
-    $paidAmount     = $rowlabBil['paid_amount'];
-    $dueAmount      = $rowlabBil['due_amount'];
-    $status         = $rowlabBil['status'];
-    $addedBy        = $rowlabBil['added_by'];
-    $BillOn         = $rowlabBil['added_on'];
-
-}
-
-$patient = json_decode($Patients->patientsDisplayByPId($patientId));
-    $patientName    = $patient->name;
-    $patientPhno    = $patient->phno;
-    $patientAge     = $patient->age;
-    $patientGender  = $patient->gender;
-
-
-if (is_numeric($docId)) {
-    $showDoctor = $Doctors->showDoctorById($docId);
-    foreach ($showDoctor as $rowDoctor) {
-        $doctorName = $rowDoctor['doctor_name'];
-        $doctorReg = $rowDoctor['doctor_reg_no'];
+    $labBil      = $LabBilling->labBillDisplayById($billId);
+    foreach ($labBil as $rowlabBil) {
+                
+        $billId         = $rowlabBil['bill_id'];
+        $billingDate    = $rowlabBil['bill_date'];
+        $patientId      = $rowlabBil['patient_id'];
+        $docId          = $rowlabBil['refered_doctor'];
+        $testDate       = $rowlabBil['test_date'];
+        $totalAmount    = $rowlabBil['total_amount'];
+        $totalDiscount  = $rowlabBil['discount'];
+        $afterDiscount  = $rowlabBil['total_after_discount'];
+        $cgst           = $rowlabBil['cgst'];
+        $sgst           = $rowlabBil['sgst'];
+        $paidAmount     = $rowlabBil['paid_amount'];
+        $dueAmount      = $rowlabBil['due_amount'];
+        $status         = $rowlabBil['status'];
+        $addedBy        = $rowlabBil['added_by'];
+        $BillOn         = $rowlabBil['added_on'];
 
     }
-}else {
-    $doctorName = $docId;
-    $doctorReg  = NULL;
-}
+
+    $patient = json_decode($Patients->patientsDisplayByPId($patientId));
+        $patientName    = $patient->name;
+        $patientPhno    = $patient->phno;
+        $patientAge     = $patient->age;
+        $patientGender  = $patient->gender;
+
+
+    if (is_numeric($docId)) {
+        $showDoctor = $Doctors->showDoctorById($docId);
+        foreach ($showDoctor as $rowDoctor) {
+            $doctorName = $rowDoctor['doctor_name'];
+            $doctorReg = $rowDoctor['doctor_reg_no'];
+
+        }
+    }else {
+        $doctorName = $docId;
+        $doctorReg  = NULL;
+    }
 
     
 }//eof cheaking post method
 
-
-
-$healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
-$healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
-if($healthCareDetailsByAdminId != null){
-    $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
-// foreach ($healthCareDetails as $rowhelthCare) {
-    $healthCareName     = $healthCareDetails['hospital_name'];
-    $healthCareAddress1 = $healthCareDetails['address_1'];
-    $healthCareAddress2 = $healthCareDetails['address_2'];
-    $healthCareCity     = $healthCareDetails['city'];
-    $healthCarePIN      = $healthCareDetails['pin'];
-    $healthCarePhno     = $healthCareDetails['hospital_phno'];
-    $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
-
-// }
 ?>
 
 <!DOCTYPE html>
@@ -115,13 +94,13 @@ if($healthCareDetailsByAdminId != null){
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?php echo IMG_PATH ?>/logo-p.jpg"
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo?>"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePIN; ?></small>
+                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePin; ?></small>
                         </p>
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
                             <small><?php echo 'M: '.$healthCarePhno.', '.$healthCareApntbkNo; ?></small>
