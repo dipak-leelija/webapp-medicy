@@ -4,6 +4,7 @@ require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 $page = "patients";
 
 require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once ROOT_DIR.'_config/user-details.inc.php';
 require_once CLASS_DIR.'encrypt.inc.php';
 require_once CLASS_DIR.'patients.class.php';
