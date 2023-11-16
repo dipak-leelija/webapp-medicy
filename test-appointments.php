@@ -4,11 +4,11 @@ require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'labBilling.class.php';
-require_once CLASS_DIR.'labBillDetails.class.php';
-require_once CLASS_DIR.'sub-test.class.php';
-require_once CLASS_DIR.'doctors.class.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'labBilling.class.php';
+require_once CLASS_DIR . 'labBillDetails.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
 
 
 
@@ -104,19 +104,20 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($labBillDisplay as $rowlabBill) {
-                                            $billId        = $rowlabBill['bill_id'];
-                                            $patientId     = $rowlabBill['patient_id'];
-                                            $referdDoc     = $rowlabBill['refered_doctor'];
-                                            $testDate      = $rowlabBill['test_date'];
-                                            $paidAmount    = $rowlabBill['paid_amount'];
-                                            $status        = $rowlabBill['status'];
+                                        if (is_array($labBillDisplay) && count($labBillDisplay) > 0) {
+                                            foreach ($labBillDisplay as $rowlabBill) {
+                                                $billId        = $rowlabBill['bill_id'];
+                                                $patientId     = $rowlabBill['patient_id'];
+                                                $referdDoc     = $rowlabBill['refered_doctor'];
+                                                $testDate      = $rowlabBill['test_date'];
+                                                $paidAmount    = $rowlabBill['paid_amount'];
+                                                $status        = $rowlabBill['status'];
 
 
-                                            $billDetails = $LabBillDetails->billDetailsById($billId);
-                                            if (is_array($billDetails)) 
-                                                $test = count($billDetails);
-                                            
+                                                $billDetails = $LabBillDetails->billDetailsById($billId);
+                                                if (is_array($billDetails))
+                                                    $test = count($billDetails);
+
                                                 // echo print_r($billDetails);exit;
                                                 if ($test == 1) {
                                                     foreach ($billDetails as $rowBillDetails) {
@@ -129,29 +130,29 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
                                                         }
                                                     }
                                                 }
-                                            
 
-                                            $docId = $referdDoc;
-                                            if (is_numeric($docId)) {
-                                                $showDoctor = $Doctors->showDoctorById($docId);
-                                                foreach ($showDoctor as $rowDoctor) {
-                                                    $docName = $rowDoctor['doctor_name'];
+
+                                                $docId = $referdDoc;
+                                                if (is_numeric($docId)) {
+                                                    $showDoctor = $Doctors->showDoctorById($docId);
+                                                    foreach ($showDoctor as $rowDoctor) {
+                                                        $docName = $rowDoctor['doctor_name'];
+                                                    }
+                                                } else {
+                                                    $docName = $referdDoc;
                                                 }
-                                            } else {
-                                                $docName = $referdDoc;
-                                            }
-                                            echo '<tr ';
+                                                echo '<tr ';
 
-                                            if ($status == "Credit") {
-                                                echo 'style="background-color:#FFCCCB";';
-                                            } elseif ($status == "Partial Due") {
-                                                echo 'style="background-color: #FFFF99";';
-                                            } elseif ($status == "Cancelled") {
-                                                echo 'style="background-color: #b51212; color: #FFF;"';
-                                            } else {
-                                                echo 'style="background-color:white";';
-                                            }
-                                            echo '>
+                                                if ($status == "Credit") {
+                                                    echo 'style="background-color:#FFCCCB";';
+                                                } elseif ($status == "Partial Due") {
+                                                    echo 'style="background-color: #FFFF99";';
+                                                } elseif ($status == "Cancelled") {
+                                                    echo 'style="background-color: #b51212; color: #FFF;"';
+                                                } else {
+                                                    echo 'style="background-color:white";';
+                                                }
+                                                echo '>
                                                         <td>' . $billId . '</td>
                                                         <td>' . $testDate . '</td>
                                                         <td>' . $test . ' Tests</td>
@@ -167,7 +168,8 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
                                                         <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id=' . $billId . '"><i class="fa fa-flask" aria-hidden="true"></i></a>
                                                         </td>
                                                     </tr>';
-                                            // }
+                                                // }
+                                            }
                                         }
                                         // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
                                         ?>
@@ -252,58 +254,58 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
 
 
     <script>
-    billViewandEdit = (obj) => {
-        
-        let billId = obj;
-        // alert(billId);
-        let url = "ajax/labBill.view.ajax.php?billId=" + billId;
-        $(".billview").html(
-            '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
-            url + '"></iframe>');
+        billViewandEdit = (obj) => {
 
-    } // end of viewAndEdit function
+            let billId = obj;
+            // alert(billId);
+            let url = "ajax/labBill.view.ajax.php?billId=" + billId;
+            $(".billview").html(
+                '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
+                url + '"></iframe>');
 
-    function resizeIframe(obj) {
-        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-    }
+        } // end of viewAndEdit function
+
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+        }
 
 
-    cancelBill = (billId) => {
-        swal({
-                title: "Are you sure?",
-                text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
+        cancelBill = (billId) => {
+            swal({
+                    title: "Are you sure?",
+                    text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
 
-                    $.ajax({
-                        url: "ajax/labBill.delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            billId: billId,
-                            status: "Cancelled",
-                        },
-                        success: function(data) {
-                            // alert (data);
-                            if (data == 1) {
-                                swal("Done! Your Bill Has Been Cancelled.", {
-                                    icon: "success",
-                                });
-                                row = document.getElementById(billId);
-                                row.closest('tr').style.background = '#b51212';
-                                row.closest('tr').style.color = '#FFFFFF';
-                            } else {
-                                $("#error-message").html("Cancellation Field !!!").slideDown();
+                        $.ajax({
+                            url: "ajax/labBill.delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                billId: billId,
+                                status: "Cancelled",
+                            },
+                            success: function(data) {
+                                // alert (data);
+                                if (data == 1) {
+                                    swal("Done! Your Bill Has Been Cancelled.", {
+                                        icon: "success",
+                                    });
+                                    row = document.getElementById(billId);
+                                    row.closest('tr').style.background = '#b51212';
+                                    row.closest('tr').style.color = '#FFFFFF';
+                                } else {
+                                    $("#error-message").html("Cancellation Field !!!").slideDown();
+                                }
+
                             }
+                        });
 
-                        }
-                    });
-
-                }
-            });
+                    }
+                });
         }
     </script>
 
