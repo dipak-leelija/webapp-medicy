@@ -1,16 +1,17 @@
 <?php
+$page = "stock-return";
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; 
 
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR.'_config/healthcare.inc.php';
+
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
 
 
-$page = "stock-return";
-
 $Distributor        = new Distributor();
-$showDistributor       = $Distributor->showDistributor();
+$showDistributor    = $Distributor->showDistributor();
 
 ?>
 
@@ -358,8 +359,7 @@ $showDistributor       = $Distributor->showDistributor();
                                         </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
-                                        <p>Return Date : <input class="summary-inp w-6r" name="return-date" id="return-date" type="text" value="<?php $today = date("d-m-Y");
-                                                                                                                                                echo $today; ?>" readonly>
+                                        <p>Return Date : <input class="summary-inp w-6r" name="return-date" id="return-date" type="text" value="<?=  date("d-m-Y") ?>" readonly>
                                         </p>
                                     </div>
 

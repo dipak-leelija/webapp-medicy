@@ -4,8 +4,8 @@ const returnFilter = (t) => {
     let table = t.id;
     let data = t.value;
 
-    alert(table);
-    alert(data);
+    // alert(table);
+    // alert(data);
 
     var xmlhttp = new XMLHttpRequest();
 

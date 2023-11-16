@@ -4,6 +4,7 @@ require_once dirname(dirname(__DIR__)).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockReturn.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
@@ -102,12 +103,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         
             for ($i=0; $i < $ids; $i++) { 
                 $currentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]);
-                foreach($currentStockData as $currentData){
-                    $wholeQty = $currentData['qty'];
-                    $looseQty = $currentData['loosely_count'];
+                    $wholeQty = $currentStockData->qty;
+                    $looseQty = $currentStockData->loosely_count;
                     // echo "<br><br>current stock loose count : $looseQty";
                     // echo "<br>current stock whole count : $wholeQty";
-                }
 
 
                 // echo "<br> Stock in detaisl id : $stokInDetailsId[$i]";
@@ -186,25 +185,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 
-$healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
-$healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
-
-if($healthCareDetailsByAdminId != null){
-    $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
-
-for($i; $i<count($healthCareDetails) ; $i++) { 
-    $healthCareName     = $healthCareDetails['hospital_name'];
-    $healthCareAddress1 = $healthCareDetails['address_1'];
-    $healthCareAddress2 = $healthCareDetails['address_2'];
-    $healthCareCity     = $healthCareDetails['city'];
-    $healthCarePIN      = $healthCareDetails['pin'];
-    $healthCarePhno     = $healthCareDetails['hospital_phno'];
-    $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -227,13 +207,13 @@ for($i; $i<count($healthCareDetails) ; $i++) {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= SITE_IMG_PATH ?>logo-p.jpg"
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo; ?>"
                             alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePIN; ?></small>
+                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePin; ?></small>
                         </p>
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
                             <small><?php echo 'M: '.$healthCarePhno.', '.$healthCareApntbkNo; ?></small>
@@ -255,10 +235,8 @@ for($i; $i<count($healthCareDetails) ; $i++) {
             <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
             <div class="row my-0">
                 <div class="col-sm-6 my-0">
-                    <p ><small><b>Patient: </b>
-                            <?php echo $distributorName; ?></small></p>
-                    <!-- <p style="margin-top: -5px; margin-bottom: 0px;"><small>M:
-                            <?php //echo 7699753019; echo ', Test date: 241544';?></small></p> -->
+                    <p ><small><b>Distributor: </b>
+                            <?= $distributorName; ?></small></p>
                 </div>
                 <div class="col-sm-6 my-0 text-end">
                     <p style="margin-top: -3px; margin-bottom: 0px;"><small><b>Bill Date: </b>

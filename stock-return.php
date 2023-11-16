@@ -115,7 +115,6 @@ $today = date("m-d-Y");
                                         </option>
                                         <?php
                                         foreach ($empLists as $emp) {
-                                            // echo '<option value="' . $emp['employee_username'] . '">' . $emp['employee_username'] . '</option>';
                                             echo '<option value="' . $emp['emp_username'] . '">' . $emp['emp_username'] . '</option>';
                                         }
                                         ?>
