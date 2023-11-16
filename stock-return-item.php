@@ -313,11 +313,11 @@ $showDistributor    = $Distributor->showDistributor();
                                     <table class="table item-table">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th scope="col" class=" ">
-                                                    <input type="number" value="0" id="dynamic-id" style="width: 1rem;">
+                                                <th scope="col" class="">
+                                                    <input type="number" value="0" id="dynamic-id" style="width: 1rem;" hidden>
                                                 </th>
-                                                <th scope="col" class=" ">
-                                                    <input type="number" value="0" id="serial-control" style="width: 1rem;">
+                                                <th scope="col" class="">
+                                                    <input type="number" value="0" id="serial-control" style="width: 1rem;" hidden>
                                                 </th>
                                                 <th scope="col" hidden></th>
                                                 <th scope="col" hidden></th>
@@ -348,9 +348,6 @@ $showDistributor    = $Distributor->showDistributor();
 
                             <div class="  p-3 m-2  font-weight-bold text-light purchase-items-summary rounded">
                                 <div class="row ">
-                                    <div class="col-md-3 col-6 mb-2 d-flex justify-content-start">
-                                        <p>StockIn Id : <input class="summary-inp w-6r" name="stockInId" id="stockInId" type="text" readonly> </p>
-                                    </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
                                         <p>Distributor :
                                             <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name" readonly style="margin-left: 0rem;">
@@ -382,6 +379,10 @@ $showDistributor    = $Distributor->showDistributor();
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 text-right">
                                         <button class="btn btn-sm btn-primary" style="width: 50%;" type="submit" name="stock-return">Save</button>
+                                    </div>
+
+                                    <div class="col-md-3 col-6 mb-2 d-flex justify-content-start" hidden>
+                                        <p hidden>StockIn Id : <input class="summary-inp w-6r" name="stockInId" id="stockInId" type="text" readonly> </p>
                                     </div>
                                 </div>
                             </div>

@@ -1,5 +1,5 @@
 <?php
-
+require_once dirname(__DIR__).'/config/constant.php';
 
 
 class DatabaseConnection
@@ -23,10 +23,10 @@ class DatabaseConnection
     function db_connect()
     {
 
-        $this->servername = 'localhost';
-        $this->username = 'root';
-        $this->password = '';
-        $this->dbname = 'medicy_db';
+        $this->servername   = DBHOST;
+        $this->username     = DBUSER;
+        $this->password     = DBPASS;
+        $this->dbname       = DBNAME;
 
         $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
         return $this->conn;
