@@ -160,8 +160,6 @@ class StockReturn extends DatabaseConnection
                 throw new Exception("Failed to prepare the statement.");
             }
         } catch (Exception $e) {
-            // Handle the exception (e.g., log the error, return an error message, etc.)
-            // Customize this part to suit your needs.
             echo "Error: " . $e->getMessage();
             return false;
         }
@@ -173,27 +171,20 @@ class StockReturn extends DatabaseConnection
     {
 
         try {
-            // Construct the SQL query with placeholders
             $updateOnEditStockIn = "UPDATE `stock_return` SET `distributor_id`=?, `bill_no`=?, `added_by`=? WHERE `$table1`=? ";
 
-            // Prepare the SQL statement
             $statement = $this->conn->prepare($updateOnEditStockIn);
             if (!$statement) {
                 throw new Exception("Error preparing update statement: " . $this->conn->error);
             }
 
-            // Bind the parameters
             $statement->bind_param("ssss", $updateData1, $updateData2, $addedBy, $data1);
 
-            // Execute the prepared statement
             if ($statement->execute()) {
-                // Check if any rows were affected by the update
                 $affectedRows = $statement->affected_rows;
-
-                // If rows were affected, return the ID of the updated data
                 if ($affectedRows > 0) {
                     $updatedId = $this->conn->insert_id;
-                    return ["result" => true, "id" => $updatedId]; // Modify this to return the actual ID
+                    return ["result" => true, "id" => $updatedId]; 
                 } else {
                     return ["result" => false, "message" => "No rows were updated."];
                 }
@@ -221,42 +212,60 @@ class StockReturn extends DatabaseConnection
     #                                                                                                                                 #
     ###################################################################################################################################
 
-    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount)
-{
-    try {
-        $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`, `return_qty`, `return_free_qty`, `refund_amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
+    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount){
+        try {
+            $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`,     `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`,    `return_qty`, `return_free_qty`, `refund_amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            $stmt = $this->conn->prepare($sql);
 
-        if ($stmt) {
-            $stmt->bind_param("iissssiiddiiiid", $stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount);
-            $res = $stmt->execute();
-            $stmt->close();
-            return $res;
-        } else {
-            throw new Exception("Failed to prepare the statement.");
+            if ($stmt) {
+                $stmt->bind_param("iissssiiddiiiid", $stockReturnId, $stockInDetailsId, $productId, $batchNo,   $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty,    $refundAmount);
+                $res = $stmt->execute();
+                $stmt->close();
+                return $res;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
         }
-    } catch (Exception $e) {
-        // Handle the exception (e.g., log the error, return an error message, etc.)
-        // You can customize this part to suit your needs.
-        echo "Error: " . $e->getMessage();
-        return false;
     }
-}
 
 
 
+    
     //stock return start-------------------
 
-    function showStockReturnDetails($returnId)
-    {
-        $data = array();
-        $sql  = "SELECT * FROM stock_return_details WHERE `stock_return_id` = '$returnId'";
-        $res  = $this->conn->query($sql);
-        while ($result = $res->fetch_array()) {
-            $data[] = $result;
+    function showStockReturnDetails($returnId){
+        try {
+            $data = array();
+            $sql = "SELECT * FROM stock_return_details WHERE `stock_return_id` = ?";
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->bind_param("i", $returnId); 
+
+            $stmt->execute();
+
+            $res = $stmt->get_result();
+
+            if ($res->num_rows > 0) {
+                while ($result = $res->fetch_array()) {
+                    $data[] = $result;
+                }
+                return $data;
+            }else{
+                return null;
+            }
+
+            $stmt->close();
+
+            return $data;
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
-        return $data;
+        return 0; // SQL failed
     }
+
 
     function showStockReturnDataByStokinId($stockInDetailsId)
     {
