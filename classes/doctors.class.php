@@ -58,8 +58,6 @@ class Doctors extends DatabaseConnection{
                     while ($row = $result->fetch_assoc()) {
                         $data[] = $row;
                     }
-                }else {
-                    return $data;
                 }
     
                 // Close the statement
