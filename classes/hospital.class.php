@@ -16,33 +16,40 @@ class HelthCare extends DatabaseConnection{
 
     function showhelthCare($adminId) {
         $response = array();
+    
         try {
             $sql = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("s", $adminId);
+    
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+    
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+                    print_r($result);
 
-            if ($stmt->execute()) {
-                $result = $stmt->get_result();
-                echo 'Result: ';print_r($result);
-
-                if($result->num_rows > 0){
-                    while ($row = $result->fetch_assoc()) {
+                    if ($result->num_rows > 0) {
+                        // Fetch all rows into an array
+                        $row = $result->fetch_assoc();
                         $response = $row;
+                        
+                        return $response;
+                    } else {
+                        return $response;
                     }
-                    echo 'Result: ';print_r($response);
-                    return $response;
-                }else{
-                    return $response;
+                } else {
+                    return $response; // Return null if the query execution fails
                 }
             } else {
-                return $response; // Return null if the query execution fails
+                throw new Exception("Error in preparing SQL statement");
             }
-
+    
         } catch (Exception $e) {
             // Handle any exceptions that may occur
-            throw new Exception( $e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
+    
     
 
     function updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo){
