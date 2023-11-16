@@ -16,26 +16,41 @@ class HelthCare extends DatabaseConnection{
 
     function showhelthCare($adminId) {
         try {
-            $selectHospital = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
-            $stmt = $this->conn->prepare($selectHospital);
-            $stmt->bind_param("s", $adminId);
+            // $selectHospital = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
+            // $stmt = $this->conn->prepare($selectHospital);
+            // $stmt->bind_param("s", $adminId);
     
-            $hospitalData = array();
+            // $hospitalData = array();
     
-            if ($stmt->execute()) {
-                $result = $stmt->get_result();
+            // if ($stmt->execute()) {
+            //     $result = $stmt->get_result();
 
-                if($result->num_rows > 0){
-                    while ($row = $result->fetch_assoc()) {
+            //     if($result->num_rows > 0){
+            //         while ($row = $result->fetch_assoc()) {
+            //             $hospitalData = $row;
+            //         }
+            //         return $hospitalData;
+            //     }else{
+            //         return null;
+            //     }
+            // } else {
+            //     return null; // Return null if the query execution fails
+            // }
+
+
+            $hospitalData = array();
+            $sql = "SELECT * FROM clinic_info WHERE `admin_id` = '$adminId'";
+            $stmt = $this->conn->prepare($sql);
+    
+                if($stmt->num_rows > 0){
+                    while ($row = $stmt->fetch_assoc()) {
                         $hospitalData = $row;
                     }
                     return $hospitalData;
                 }else{
                     return null;
                 }
-            } else {
-                return null; // Return null if the query execution fails
-            }
+
         } catch (Exception $e) {
             // Handle any exceptions that may occur
             return null; // Return null in case of an error
