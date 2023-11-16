@@ -31,15 +31,18 @@ if (isset($_POST['update']) ==  true) {
     $healthCareHelpLineNo    = $_POST['helpline-no'];
     $healthCareApntBookingNo = $_POST['apnt-booking-no'];
 
-    $UpdateHealthcare = $HealthCare->updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo);
+    $UpdateHealthcare = $HealthCare->updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo, $adminId);
+    // print_r($UpdateHealthcare);
+
     if($UpdateHealthcare){
-        echo "<script>alert('Updated!')</script>";
+        echo "<script>alert('Clinick Data Updated.')</script>";
     }else{
         echo "<script>alert('Updation Failed!')</script>";
 
     }
-
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,6 +62,9 @@ if (isset($_POST['update']) ==  true) {
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+
+    <!-- Sweet alert plugins -->
+    <script src="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css"></script>
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -239,6 +245,8 @@ if (isset($_POST['update']) ==  true) {
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
     <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>
 
+    <!-- Sweet alert plugins -->
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>

@@ -25,11 +25,6 @@ $Patients          = new Patients;
 
 $totalAppointments = $appoinments->appointmentsDisplay($adminId);
 
-// if ($_SESSION['ADMIN'] == false) {
-//     echo "<br>ADMIN ID : $adminId<br>";
-// } else {
-//     echo "<br>ADMIN LOGIN - ADMIN ID : $adminId<br>";
-// }
 
 
 ?>
