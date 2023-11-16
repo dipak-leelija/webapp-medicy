@@ -599,19 +599,15 @@ const addData = () => {
 
 
     //////////////////////
-    let totalMrp = parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
+    let totalMrp = parseFloat(mrp.value) * ((parseFloat(qty.value) + parseFloat(freeQty.value)));
     let baseWithGst = parseFloat(base.value) + ((parseFloat(base.value) / 100 ) * parseInt(gst.value));
     let totalBasWithGst = parseFloat(baseWithGst) * parseInt(qty.value);
     
     let marginP = 0;
     if(parseFloat(totalMrp) > parseFloat(totalBasWithGst)){
-        console.log("hello");
         let margin = parseFloat(totalMrp) - parseFloat(billAmount.value);
-        console.log("hello margin check : "+margin);
         marginP = (parseFloat(margin) / parseFloat(totalMrp)) * 100;
-        console.log("hello margin parcent check : "+marginP);
     }else {
-        console.log("not hello");
         marginP = 0;
     }
     
