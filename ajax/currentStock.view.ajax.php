@@ -31,12 +31,10 @@ $packagUnit     =   new PackagingUnits();
 
 if (isset($_GET['currentStockId'])) {
     $productId =  $_GET['currentStockId'];
-    // $showStock = $CurrentStock->showCurrentStocByPId($productId);
-    // print_r($showStock);
-    // echo count($showStock);
+    
     // ================= PRODUCT CURRENT STOCK IN QTY ============
-    $showStock = $CurrentStock->showCurrentStocByPId($productId);
-    // print_r($currentStockQty);
+    $showStock = $CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId);
+    // print_r($showStock);
     if ($showStock != null) {
         $overallCurrentStock = 0;
         foreach ($showStock as $currentQty) {
@@ -54,7 +52,7 @@ if (isset($_GET['currentStockId'])) {
     $manufDetails = $manufacturer->showManufacturerById($prodcutDetails[0]['manufacturer_id']);
 
     $image = $ProductImages->showImageById($productId);
-    // print_r($image);
+    print_r($image);
     if ($image != null) {
         $productImage = $image[0]['image'];
     } else {
