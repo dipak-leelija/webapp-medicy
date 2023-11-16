@@ -24,12 +24,13 @@ class HelthCare extends DatabaseConnection{
     
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
+                echo 'Result: ';print_r($result);
 
                 if($result->num_rows > 0){
                     while ($row = $result->fetch_assoc()) {
                         $hospitalData = $row;
                     }
-                    print_r($hospitalData);
+                    echo 'Result: ';print_r($hospitalData);
                     return $hospitalData;
                 }else{
                     return null;
