@@ -15,34 +15,32 @@ class HelthCare extends DatabaseConnection{
 
 
     function showhelthCare($adminId) {
-        
+        $response = array();
         try {
-            $selectHospital = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
-            $stmt = $this->conn->prepare($selectHospital);
+            $sql = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
+            $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("s", $adminId);
-    
-            echo "SELECT * FROM clinic_info WHERE `admin_id` = '$adminId'";
-            
+
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
                 echo 'Result: ';print_r($result);
 
                 if($result->num_rows > 0){
                     while ($row = $result->fetch_assoc()) {
-                        $hospitalData = $row;
+                        $response = $row;
                     }
-                    echo 'Result: ';print_r($hospitalData);
-                    return $hospitalData;
+                    echo 'Result: ';print_r($response);
+                    return $response;
                 }else{
-                    return null;
+                    return $response;
                 }
             } else {
-                return null; // Return null if the query execution fails
+                return $response; // Return null if the query execution fails
             }
 
         } catch (Exception $e) {
             // Handle any exceptions that may occur
-            return null; // Return null in case of an error
+            throw new Exception( $e->getMessage());
         }
     }
     
