@@ -195,10 +195,9 @@ if (isset($_POST['stock-return-edit'])) {
                 // echo "<br><br>current stock data on stock in ited id => ";
                 // print_r($CurrentStockData);
 
-                foreach ($CurrentStockData as $currentItemData) {
-                    $currentQty = $currentItemData['qty'];
-                    $currentLooseQty = $currentItemData['loosely_count'];
-                }
+                $currentQty = $CurrentStockData->qty;
+                $currentLooseQty = $CurrentStockData->loosely_count;
+                
 
                 if ($updatedItemUnit == 'tab' || $updatedItemUnit == 'cap') {
                     $updatedLooseQty = intval($currentLooseQty) + (intval($itemRetundQtyDiff) * intval($updatedItemWeightage));
@@ -248,7 +247,7 @@ if (isset($_POST['stock-return-edit'])) {
 }
 
 
-$healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
+
 $healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
 
 if($healthCareDetailsByAdminId != null){
@@ -289,7 +288,7 @@ if($healthCareDetailsByAdminId != null){
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= IMG_PATH ?>logo-p.jpg" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= SITE_IMG_PATH ?>logo-p.jpg" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
