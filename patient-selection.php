@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or no
-
 require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR.'patients.class.php';
 
 $Patients = new Patients();
