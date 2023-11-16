@@ -15,7 +15,7 @@ class HelthCare extends DatabaseConnection{
 
 
     function showhelthCare($adminId) {
-        $hospitalData = array();
+        
         try {
             $selectHospital = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
             $stmt = $this->conn->prepare($selectHospital);
@@ -29,6 +29,7 @@ class HelthCare extends DatabaseConnection{
                     while ($row = $result->fetch_assoc()) {
                         $hospitalData = $row;
                     }
+                    print_r($hospitalData);
                     return $hospitalData;
                 }else{
                     return null;
