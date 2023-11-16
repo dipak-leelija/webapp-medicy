@@ -8,7 +8,6 @@ require_once CLASS_DIR.'sub-test.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
 require_once CLASS_DIR.'labBillDetails.class.php';
-require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'patients.class.php';
 
 
@@ -17,7 +16,6 @@ require_once CLASS_DIR.'patients.class.php';
 $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 $Patients        = new Patients();
-$HealthCare      = new HelthCare();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
 
@@ -67,7 +65,7 @@ if (isset($_POST['bill-generate'])) {
 
 
         ################ Bill id/ invoice id generation #############
-        $LabBillDisplay = $LabBilling->LabBillDisplay();
+        $LabBillDisplay = $LabBilling->LabBillDisplay($adminId);
         if ($LabBillDisplay == NULL) {
             $billId = 1;
         }else{

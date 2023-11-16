@@ -60,17 +60,17 @@
         </li>
         
         <!-- Nav Item - Doctors -->
-        <li class="nav-item <?php if($page ==  "doctors"){ echo "active";} ?>">
+        <li class="nav-item <?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "active" : ''; ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDoctor"
-                aria-expanded="true" aria-controls="collapsePages">
+                aria-expanded="<?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "true" : ''; ?>" aria-controls="collapsePages">
                 <i class="fas fa fa-users"></i>
                 <span>Doctors</span>
             </a>
 
-            <div id="collapseDoctor" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="collapseDoctor" class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "show" : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="doctors.php">Doctors</a>
-                    <a class="collapse-item" href="doctor-specialization.php">Specializations</a>
+                    <a class="collapse-item <?= $page ==  "doctors" ? "active": ''; ?>" href="doctors.php">Doctors</a>
+                    <a class="collapse-item <?= $page ==  "doc-specialization" ? "active": ''; ?>"" href="doctor-specialization.php">Specializations</a>
                 </div>
             </div>
 

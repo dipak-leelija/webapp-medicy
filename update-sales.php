@@ -320,7 +320,7 @@ if ($_GET['id']) {
                                             </div>
 
                                             <div class="col-md-6">
-                                                <div class="  row mt-3">
+                                                <div class="d-none row mt-3">
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
                                                         <label for="" >Loose Stock:</label>
                                                         <input class="sale-inp" type="any" id="loose-stock" style="border-width: 0px;" readonly>

@@ -17,7 +17,6 @@ require_once CLASS_DIR.'patients.class.php';
 
 
 //  INSTANTIATING CLASS
-$HelthCare       = new HelthCare();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
 $SubTests        = new SubTests();

@@ -130,13 +130,13 @@ $soldItems = $StockOut->stockOutDisplay(strval($adminId));
                                                     $creditIcon = "<i class='ml-1 fas fa-exclamation-circle' data-toggle='tooltip' data-placement='top' title='This payment is due, Collect all the due payments.'></i>";
                                                 }
                                                 ?>
-                                            <?php echo "' onclick=viewBills(".$invoice.") data-toggle='modal' data-target='#viewBillModal'>
-                                                        <td>".$invoice."</td>
-                                                        <td>".$patientName."</td>
-                                                        <td>".$billDate."</td>
-                                                        <td>".$soldItem['items']."</td>
-                                                        <td>".$billAmount."</td>
-                                                        <td>".$paymentMode, $creditIcon."</td>
+                                            <?php echo "'data-toggle='modal' data-target='#viewBillModal'>
+                                                        <td onclick='viewBills(".$invoice.")'>".$invoice."</td>
+                                                        <td onclick='viewBills(".$invoice.")'>".$patientName."</td>
+                                                        <td onclick='viewBills(".$invoice.")'>".$billDate."</td>
+                                                        <td onclick='viewBills(".$invoice.")'>".$soldItem['items']."</td>
+                                                        <td onclick='viewBills(".$invoice.")'>".$billAmount."</td>
+                                                        <td onclick='viewBills(".$invoice.")'>".$paymentMode, $creditIcon."</td>
                                                         <td>
                                                         <a class='ml-2' href='update-sales.php?id=".url_enc($invoice)."'><i class='fas fa-edit'></i></a>
                                                         

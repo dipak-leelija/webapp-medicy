@@ -4,11 +4,7 @@ require_once 'config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'hospital.class.php';
-
-
-//Health Care Class Initilized
-$HealthCare = new HelthCare();
+require_once ROOT_DIR.'_config/healthcare.inc.php';
 
 
 // Healthcare Addesss and details
@@ -35,38 +31,17 @@ if (isset($_POST['update']) ==  true) {
     $healthCareHelpLineNo    = $_POST['helpline-no'];
     $healthCareApntBookingNo = $_POST['apnt-booking-no'];
 
-    $UpdateHealthcare = $HealthCare->updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo);
+    $UpdateHealthcare = $HealthCare->updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo, $adminId);
+    // print_r($UpdateHealthcare);
+
     if($UpdateHealthcare){
-        echo "<script>alert('Updated!')</script>";
+        echo "<script>alert('Clinick Data Updated.')</script>";
     }else{
         echo "<script>alert('Updation Failed!')</script>";
 
     }
-
 }
 
-
-
-
-//Fetching Healt Care Details
-$showHealthCare = $HealthCare->showhelthCare($adminId);
-
-$healthCareLogo      = $showHealthCare['logo'];
-if (empty($healthCareLogo)) {
-    $healthCareLogo = SITE_IMG_PATH.'logo-p.jpg';
-}
-
-$healthCareId        = $showHealthCare['hospital_id'];
-$healthCareName      = $showHealthCare['hospital_name'];
-$healthCareAddress1  = $showHealthCare['address_1'];
-$healthCareAddress2  = $showHealthCare['address_2'];
-$healthCareCity      = $showHealthCare['city'];
-$healthCareDist      = $showHealthCare['dist'];
-$healthCarePin       = $showHealthCare['pin'];
-$healthCareState     = $showHealthCare['health_care_state'];
-$healthCareEmail     = $showHealthCare['hospital_email'];
-$healthCarePhno      = $showHealthCare['hospital_phno'];
-$healthCareApntbkNo  = $showHealthCare['appointment_help_line'];
 
 ?>
 <!DOCTYPE html>
@@ -87,6 +62,9 @@ $healthCareApntbkNo  = $showHealthCare['appointment_help_line'];
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
+
+    <!-- Sweet alert plugins -->
+    <script src="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css"></script>
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -267,6 +245,8 @@ $healthCareApntbkNo  = $showHealthCare['appointment_help_line'];
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
     <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>
 
+    <!-- Sweet alert plugins -->
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>

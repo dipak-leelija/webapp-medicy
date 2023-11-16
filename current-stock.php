@@ -27,7 +27,7 @@ if($showCurrentStock != null){
 }
 // echo "$countCurrentStock";
 $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
-
+// print_r($currentStockGroup);
 
 ?>
 
@@ -144,7 +144,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                     }
                                                     
     
-                                                        $productData = $CurrentStock->showCurrentStocByPId($productId);
+                                                        $productData = $CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId);
                                                        
                                                         $showProducts = $Products->showProductsById($productId);
                                                         // print_r($showProducts);

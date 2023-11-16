@@ -1,8 +1,5 @@
 <?php
-// ini_set('display_errors', '1');
-// ini_set('display_startup_errors', '1');
-// error_reporting(E_ALL);
-
+$page = "doctors";
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once CLASS_DIR.'dbconnect.php';
@@ -10,10 +7,11 @@ require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'doctor.category.class.php';
 
-$page = "doctors";
 
 //Intitilizing Doctor class for fetching doctors
-$doctors = new Doctors();
+$doctors        = new Doctors();
+$DoctorCategory = new DoctorCategory;
+
 
 if(isset($_POST['add-doc']) == true){
 
@@ -27,11 +25,11 @@ if(isset($_POST['add-doc']) == true){
     $docPhno            = $_POST['docMob'];
     $docAddress         = $_POST['docAddress'];
     
-    $addDoctors = $doctors->addDoctor($docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno);
+    $addDoctors = $doctors->addDoctor($docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $adminId);
 
 }
 
-$showDoctors = $doctors->showDoctors();
+$showDoctors = $doctors->showDoctors($adminId);
 
 
 ?>
@@ -107,32 +105,21 @@ $showDoctors = $doctors->showDoctors();
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Specialization</th>
-                                            <th>PH. No</th>
-                                            <th>Email</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                         <?php
                                         foreach ($showDoctors as $doctors) {
-                                            $docId = $doctors['doctor_id'];
-                                            $docRegNo = $doctors['doctor_reg_no'];
-                                            $docName = $doctors['doctor_name'];
-                                            $docSpecialization = $doctors['doctor_specialization'];
-                                            $docDeg = $doctors['doctor_degree'];
-                                            $docAlsoWith = $doctors['also_with'];
-                                            $docAddrs = $doctors['doctor_address'];
-                                            $docEmail = $doctors['doctor_email'];
-                                            $docPhno = $doctors['doctor_phno'];
+                                            $docId              = $doctors['doctor_id'];
+                                            $docRegNo           = $doctors['doctor_reg_no'];
+                                            $docName            = $doctors['doctor_name'];
+                                            $docSpecialization  = $doctors['doctor_specialization'];
+                                            $docDeg             = $doctors['doctor_degree'];
+                                            $docAlsoWith        = $doctors['also_with'];
+                                            $docAddrs           = $doctors['doctor_address'];
+                                            $docEmail           = $doctors['doctor_email'];
+                                            $docPhno            = $doctors['doctor_phno'];
 
                                             //initilizing Doctors Category
-                                            $doctorCategory = new DoctorCategory();
-                                            $docSplz = $doctorCategory->showDoctorCategoryById($docSpecialization);
+                                            $docSplz = $DoctorCategory->showDoctorCategoryById($docSpecialization);
                                             foreach($docSplz as $docSplzShow){
                                                 $docSpecializn = $docSplzShow['category_name'];
 
@@ -186,10 +173,10 @@ $showDoctors = $doctors->showDoctors();
                                             <select class="form-control" name="docSpecialization" id="docSpecialization" required>
                                                 <option value="" disabled selected>Select Doctor Specialization</option>
                                                 <?php
-                                                $showDocSplz = $doctorCategory->showDoctorCategory();
+                                                $showDocSplz = $DoctorCategory->showDoctorCategory();
                                                 foreach($showDocSplz as $docSplzShow){
-                                                    $docSpecializnID = $docSplzShow['doctor_category_id'];
-                                                    $docSpecializn = $docSplzShow['category_name'];
+                                                    $docSpecializnID    = $docSplzShow['doctor_category_id'];
+                                                    $docSpecializn      = $docSplzShow['category_name'];
 
                                                     echo '<option value="'.$docSpecializnID.'">'.$docSpecializn.'</option>';
 

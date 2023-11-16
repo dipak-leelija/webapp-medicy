@@ -1,8 +1,11 @@
 <?php
 require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
+
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+
 require_once CLASS_DIR . 'appoinments.class.php';
-require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'doctor.category.class.php';
 require_once CLASS_DIR . 'report-generate.class.php';
@@ -60,31 +63,6 @@ if ($patientDatafetch !== null) {
 }
 
 
-// Fetching Hospital Info
-$hospital = new HelthCare();
-$hospitalShow = $hospital->showhelthCarePrimary();
-// print_r($hospitalShow['hospital_name']);
-$hospitalName          = $hospitalShow['hospital_name'];
-    $address1          = $hospitalShow['address_1'];
-    $address2          = $hospitalShow['address_2'];
-    $city              = $hospitalShow['city'];
-    $pin               = $hospitalShow['pin'];
-    $state             = $hospitalShow['health_care_state'];
-    $hospitalEmail     = $hospitalShow['hospital_email'];
-    $hospitalPhno      = $hospitalShow['hospital_phno'];
-    $appointmentNumber = $hospitalShow['appointment_help_line'];
-// foreach ($hospitalShow as $hospitalDetails) {
-//     $hospitalName      = $hospitalDetails['hospital_name'];
-//     $address1          = $hospitalDetails['address_1'];
-//     $address2          = $hospitalDetails['address_2'];
-//     $city              = $hospitalDetails['city'];
-//     $pin               = $hospitalDetails['pin'];
-//     $state             = $hospitalDetails['health_care_state'];
-//     $hospitalEmail     = $hospitalDetails['hospital_email'];
-//     $hospitalPhno      = $hospitalDetails['hospital_phno'];
-//     $appointmentNumber = $hospitalDetails['appointment_help_line'];
-// }
-
 ?>
 
 <!doctype html>
@@ -106,7 +84,7 @@ $hospitalName          = $hospitalShow['hospital_name'];
         <div id="wave"></div>
 
         <div style="margin-right: 35px; margin-top: -26px; color:#183697;">
-            <h1 class="text-start fw-bold mb-2 mt-4 me-3 d-flex justify-content-end"><?php echo $hospitalName ?></h1>
+            <h1 class="text-start fw-bold mb-2 mt-4 me-3 d-flex justify-content-end"><?= $healthCareName ?></h1>
         </div>
         <div class="dname" style="display:flex;justify-content: flex-end;align-items: row-reverse;">
             <div style="margin-right: 52px; background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(24,54,151,1) 28%); padding:2px; height: 28px; width:347px;">
@@ -140,7 +118,7 @@ $hospitalName          = $hospitalShow['hospital_name'];
                                                         $date = date_create($testDate);
                                                         echo date_format($date, "d-m-Y"); ?></p>
             </div>
-            <!-- <small><?php echo $address1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small> -->
+            <!-- <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ',<br>' . $healthCareState . ', ' . $healthCarePin; ?></small> -->
         </div>
 
 
