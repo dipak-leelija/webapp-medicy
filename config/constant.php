@@ -32,10 +32,10 @@ session_start();
 	else:
 		define('LOCAL_DIR',				'/');
 
-		define('DBHOST',				'');
-		define('DBUSER',				'');
-		define('DBPASS',				'');
-		define('DBNAME',				'');
+		define('DBHOST',				'localhost');
+		define('DBUSER',				'medicy');
+		define('DBPASS',				'VnmbQ1;89@%?');
+		define('DBNAME',				'medicy_app');
 
 	endif;
 
