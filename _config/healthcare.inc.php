@@ -1,9 +1,9 @@
 <?php
 require_once CLASS_DIR.'hospital.class.php';
 
-$HealthCare     = new HelthCare();
+$HealthCare     = new HealthCare();
 
-$healthCare     = $HealthCare->showhelthCare($adminId);
+$healthCare     = $HealthCare->showHealthCare($adminId);
 
 if(!empty($healthCare)){
 
