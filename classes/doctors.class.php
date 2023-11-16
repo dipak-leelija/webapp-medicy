@@ -5,25 +5,76 @@ class Doctors extends DatabaseConnection{
 
 
 
-    //used to add doctors
-    function addDoctor($docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno){
-        $insertDoc = "INSERT INTO doctors (`doctor_reg_no`, `doctor_name`, `doctor_specialization`, `doctor_degree`, `also_with`, `doctor_address`, `doctor_email`, `doctor_phno`) VALUES ('$docRegNo', '$docName', '$docSpecialization', '$docDegree', '$alsoWith', '$docAddress', '$docEmail', '$docPhno')";
-        $insertDocQuery = $this->conn->query($insertDoc);
-        // echo $insertDocQuery.$this->conn->error;
-        // exit;
-        return $insertDocQuery;
-    }//end addDoctor function
-
-
-
-    function showDoctors(){
-        $selectDoctors = "SELECT * FROM `doctors`";
-        $doctorsQuery = $this->conn->query($selectDoctors);
-        while($result = $doctorsQuery->fetch_array()){
-            $data[] = $result;
+    function addDoctor($docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $adminId) {
+        try {
+            // Use prepared statements to prevent SQL injection
+            $insertDoc = "INSERT INTO doctors (`doctor_reg_no`, `doctor_name`, `doctor_specialization`, `doctor_degree`, `also_with`, `doctor_address`, `doctor_email`, `doctor_phno`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->conn->prepare($insertDoc);
+    
+            if ($stmt) {
+                // Bind parameters
+                $stmt->bind_param("sssssssss", $docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $adminId);
+    
+                // Execute the prepared statement
+                $insertDocQuery = $stmt->execute();
+    
+                // Close the statement
+                $stmt->close();
+    
+                return $insertDocQuery;
+            } else {
+                throw new Exception("Error in preparing SQL statement");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that may occur
+            throw new Exception($e->getMessage());
         }
+    }
+    
+
+
+
+    function showDoctors($adminId) {
+        $data = array();
+    
+        try {
+            // Use prepared statements to prevent SQL injection
+            $selectDoctors = "SELECT * FROM `doctors` WHERE admin_id = ?";
+            $stmt = $this->conn->prepare($selectDoctors);
+    
+            if ($stmt) {
+                // Bind parameter
+                $stmt->bind_param("s", $adminId);
+    
+                // Execute the prepared statement
+                $stmt->execute();
+    
+                // Get the result set
+                $result = $stmt->get_result();
+    
+                // Check if data exists before fetching
+                if ($result->num_rows > 0) {
+                    // Fetch results into an array
+                    while ($row = $result->fetch_assoc()) {
+                        $data[] = $row;
+                    }
+                }else {
+                    return $data;
+                }
+    
+                // Close the statement
+                $stmt->close();
+            } else {
+                throw new Exception("Error in preparing SQL statement");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that may occur
+            throw new Exception($e->getMessage());
+        }
+    
         return $data;
-    }// end showDoctors function
+    }
+    
 
 
  
