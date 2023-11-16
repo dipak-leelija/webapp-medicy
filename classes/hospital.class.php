@@ -21,7 +21,8 @@ class HelthCare extends DatabaseConnection{
             $stmt = $this->conn->prepare($selectHospital);
             $stmt->bind_param("s", $adminId);
     
-    
+            echo "SELECT * FROM clinic_info WHERE `admin_id` = '$adminId'";
+            
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
                 echo 'Result: ';print_r($result);
