@@ -40,8 +40,9 @@ if (isset($_POST['update']) ==  true) {
         echo "<script>alert('Updation Failed!')</script>";
 
     }
-
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
