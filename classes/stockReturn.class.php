@@ -251,8 +251,7 @@ class StockReturn extends DatabaseConnection
     {
         $data = array();
         $sql  = "SELECT * FROM stock_return_details WHERE `stock_return_id` = '$returnId'";
-        $res  = $this->conn->query($sql);
-        while ($result = $res->fetch_array()) {
+          while ($result = $res->fetch_array()) {
             $data[] = $result;
         }
         return $data;
