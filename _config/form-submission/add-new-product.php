@@ -1,11 +1,11 @@
 <?php
 
-require_once dirname(dirname(__DIR__)).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'productsImages.class.php';
-require_once CLASS_DIR.'measureOfUnit.class.php';
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'productsImages.class.php';
+require_once CLASS_DIR . 'measureOfUnit.class.php';
 
 $Products       = new Products();
 $ProductImages  = new ProductImages();
@@ -14,13 +14,13 @@ $Session        = new SessionHandler();
 
 ?>
 
-<?php 
-require_once dirname(dirname(__DIR__)).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'productsImages.class.php';
-require_once CLASS_DIR.'measureOfUnit.class.php';
+<?php
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'productsImages.class.php';
+require_once CLASS_DIR . 'measureOfUnit.class.php';
 
 $Products      = new Products();
 $ProductImages = new ProductImages();
@@ -43,24 +43,10 @@ $Session = new SessionHandler();
     <div>
     </div>
     <?php
-    
-    // require_once dirname(dirname(__DIR__)).'/config/constant.php';
-    // require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-    // require_once CLASS_DIR.'dbconnect.php';
-    // require_once CLASS_DIR.'products.class.php';
-    // require_once CLASS_DIR.'productsImages.class.php';
-    // require_once CLASS_DIR.'measureOfUnit.class.php';
-    
-    // $Products      = new Products();
-    // $ProductImages = new ProductImages();
-    // $Unit = new MeasureOfUnits();
-    // $Session = new SessionHandler();
 
-    // print_r($_SESSION);
-    // echo "employee id : $employeeId";
     if (isset($_POST['add-product'])) {
-       
-        
+
+
         // print_r($_FILES);
         // echo "<br><br>";
         $imageName         = $_FILES['img-files']['name'];
@@ -68,7 +54,7 @@ $Session = new SessionHandler();
         $imageArrayCaount = count($imageName);
         $tempImageNameArrayCaount = count($tempImgName);
 
-        
+
         $productName        = $_POST['product-name'];
         $productName        = addslashes($productName);
 
@@ -78,12 +64,12 @@ $Session = new SessionHandler();
         $power              = $_POST['medicine-power'];
         $manufacturerid     = $_POST['manufacturer'];
 
-      
+
         $weatage            = $_POST['unit-quantity'];
         $unit               = $_POST['unit'];
         $unitType = $Unit->showMeasureOfUnitsById($unit);
         $unitName = $unitType[0]['short_name'];
-       
+
         $packagingType      = $_POST['packaging-type'];
         $mrp                = $_POST['mrp'];
         $gst                = $_POST['gst'];
@@ -97,14 +83,13 @@ $Session = new SessionHandler();
         $randNum = rand(1, 999999999999);
         $productId = 'PR' . $randNum;
 
-        
+
         //Insert into products table of DB
         $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $productComposition, $power, $productDsc, $packagingType, $weatage, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId);
-        
-        
+
         if ($addProducts === true) {
-            
-            for ($j = 0; $j<$imageArrayCaount && $j<$tempImageNameArrayCaount; $j++) {
+
+            for ($j = 0; $j < $imageArrayCaount && $j < $tempImageNameArrayCaount; $j++) {
                 ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
 
                 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -120,44 +105,48 @@ $Session = new SessionHandler();
                 $image         = $imageName[$j];
                 $tempImgname   = $tempImgName[$j];
 
-                $ImgNm = '';
-                $extention ='';
-                $countImageLen = 0;
-                
 
-                // echo "<br>Checking image name on entry : $image";
+                if ($image) {
 
-                if($image != ''){
-                    if ($image != null) {
-                        if (file_exists(PROD_IMG_PATH.$randomString.'_'.$image)) {
-                            $image = 'medicy-'.$randomString.$image;
+                    $ImgNm = '';
+                    $extention = '';
+                    $countImageLen = 0;
+
+
+                    // echo "<br>Checking image name on entry : $image";
+
+                    if ($image != '') {
+                        if ($image != null) {
+                            if (file_exists(PROD_IMG_PATH . $randomString . '_' . $image)) {
+                                $image = 'medicy-' . $randomString . $image;
+                            }
                         }
+
+                        $countImageLen = strlen($image);
+                        for ($l = 0; $l < intval($countImageLen) - 4; $l++) {
+                            $ImgNm .= $image[$l];
+                        }
+                        for ($k = intval($countImageLen) - 4; $k < $countImageLen; $k++) {
+                            $extention .= $image[$k];
+                        }
+
+                        $image         = $ImgNm . '-' . $randomString . $extention;
+                        $imgFolder     = PROD_IMG_DIR . $image;
+
+                        move_uploaded_file($tempImgname, $imgFolder);
+                        $image         = addslashes($image);
                     }
 
-                    
-                    $countImageLen = strlen($image);
-                    for($l=0; $l<intval($countImageLen)-4; $l++){
-                        $ImgNm .= $image[$l];
+                    if ($image == '') {
+                        $image = '';
                     }
-                    for($k=intval($countImageLen)-4; $k<$countImageLen; $k++){
-                        $extention .= $image[$k];
-                    }
-                
-                    $image         = $ImgNm.'-'.$randomString.$extention;
-                    $imgFolder     = PROD_IMG_DIR.$image;
-                  
-                    move_uploaded_file($tempImgname, $imgFolder);
-                    $image         = addslashes($image);
+
+                    $setPriority = '';
+
+                    $addImage = $ProductImages->addImages($productId, $image, $setPriority, $addedBy, $addedOn, $adminId);
+                } else {
+                    $addImage = true;
                 }
-
-                if($image == ''){
-                    $image = '';
-                }
-                
-                $setPriority = '';
-
-                $addImage = $ProductImages->addImages($productId, $image, $setPriority, $addedBy, $addedOn, $adminId);
-                
             }
 
             if ($addImage === true) {
@@ -165,7 +154,7 @@ $Session = new SessionHandler();
                 <script>
                     swal("Success", "Product Added!", "success")
                         .then((value) => {
-                            window.location ='<?php echo LOCAL_DIR ?>add-products.php';
+                            window.location = '<?php echo LOCAL_DIR ?>add-products.php';
                         });
                 </script>
             <?php
