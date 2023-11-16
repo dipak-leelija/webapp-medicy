@@ -91,6 +91,7 @@ $Products       = new Products();
                         <th>Weatage</th>
                         <th>Unit</th>
                         <th>Qty.</th>
+                        <th>F.Qty</th>
                         <th>Disc.</th>
                         <th>Base</th>
                         <th>GST</th>
@@ -107,6 +108,7 @@ $Products       = new Products();
                 $amount = 0;
 
                 $items = $StockInDetails->showStockInDetailsById($_GET['distBill']);
+                // print_r($items);
                 foreach ($items as $item) {
                     $sl     += 1;
                     $qty    += $item['qty'];
@@ -127,6 +129,7 @@ $Products       = new Products();
                             <td>".$item['weightage']."</td>
                             <td>".$item['unit']."</td>
                             <td>".$item['qty']."</td>
+                            <td>".$item['free_qty']."</td>
                             <td>".$item['discount']."%</td>
                             <td>".$item['base']."</td>
                             <td>".$item['gst']."</td>

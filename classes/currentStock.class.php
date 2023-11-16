@@ -115,43 +115,30 @@ class CurrentStock extends DatabaseConnection
         try {
             $resultData = array();
 
-            // Define the SQL query using a prepared statement
             $selectSql = "SELECT * FROM `current_stock` WHERE $column = ?";
 
-            // Prepare the SQL statement
             $stmt = $this->conn->prepare($selectSql);
 
             if ($stmt) {
-                // Bind the parameter
                 $stmt->bind_param("s", $data);
-
-                // Execute the query
                 $stmt->execute();
-
-                // Get the result
                 $result = $stmt->get_result();
 
-                // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
                         $resultData[] = $row;
                     }
                 } else {
-                    // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
                 }
 
-                // Close the statement
                 $stmt->close();
             } else {
-                // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
 
             return $resultData;
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // You can customize this part to suit your needs
             echo "Error: " . $e->getMessage();
             return array();
         }
@@ -167,36 +154,27 @@ class CurrentStock extends DatabaseConnection
         try {
             $data = array();
 
-            // Define the SQL query using a prepared statement
             $select = "SELECT * FROM `current_stock` WHERE (`qty` > 0 OR `loosely_count` > 0) AND `admin_id` = ? ORDER BY added_on ASC";
 
-            // Prepare the SQL statement
             $stmt = $this->conn->prepare($select);
 
             if ($stmt) {
-                // Bind the parameter
                 $stmt->bind_param("s", $adminId);
-
-                // Execute the query
                 $stmt->execute();
 
-                // Get the result
                 $result = $stmt->get_result();
 
-                // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
                         $data[] = $row;
                     }
                 } else {
-                    // Handle the case where the query failed
+                    
                     echo "Query failed: " . $this->conn->error;
                 }
 
-                // Close the statement
                 $stmt->close();
             } else {
-                // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
 
@@ -206,8 +184,6 @@ class CurrentStock extends DatabaseConnection
                 return null;
             }
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // Customize this part to suit your needs
             echo "Error: " . $e->getMessage();
             return array();
         }
@@ -254,8 +230,6 @@ class CurrentStock extends DatabaseConnection
     }
 
 
-    // echo "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD($currentdate, INTERVAL 3 MONTH) AND admin_id = $adminId";
-    // exit;
 
 
 
@@ -284,16 +258,20 @@ class CurrentStock extends DatabaseConnection
 
     function stockExpiaringCheck($date, $adminId)
     {
-        $data = array();
+        try{
+            $data = array();
 
-        $expCheckQarry = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD($date, INTERVAL 2 MONTH) AND admin_id = '$adminId'";
+            $expCheckQarry = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y')    < DATE_ADD($date, INTERVAL 2 MONTH) AND admin_id = '$adminId'";
 
-        $res = $this->conn->query($expCheckQarry);
-        while ($result = $res->fetch_array()) {
-            $data[] = $result;
+            $res = $this->conn->query($expCheckQarry);
+            while ($result = $res->fetch_array()) {
+                $data[] = $result;
+            }
+
+            return $data;
+        }catch (Exception $e){
+            return $e->getMessage();
         }
-
-        return $data;
     }
 
 
@@ -420,6 +398,43 @@ class CurrentStock extends DatabaseConnection
         }
     } //eof showCurrentStocByProductId
 
+
+
+
+
+
+    function showCurrentStockByPIdAndAdmin($productId, $admin){
+        try {
+            $data = array();
+            $select = "SELECT * FROM current_stock WHERE `product_id` = ? AND `admin_id` = ? AND `qty` > '0' ORDER BY added_on ASC";
+
+            $stmt = $this->conn->prepare($select);
+
+            $stmt->bind_param("si", $productId, $admin); 
+
+            $stmt->execute();
+
+            $res = $stmt->get_result();
+
+            if($res->num_rows > 0){
+                while ($result = $res->fetch_array()) {
+                    $data[] = $result;
+                }
+    
+                $stmt->close();
+                return $data;
+            }else{
+                $stmt->close();
+                return null;
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return 0; 
+    }
+
+
+
     //=====================================================================================================
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -486,7 +501,7 @@ class CurrentStock extends DatabaseConnection
     {
         //echo $productId;
         $data = array();
-        $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`qty` > '0' ORDER BY added_on ASC ";
+        $select = "SELECT * FROM current_stock WHERE `product_id` = '$productId' AND `current_stock`.`qty` > '0' ORDER BY added_on ASC ";
         // echo $select;
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {
