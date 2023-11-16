@@ -15,47 +15,41 @@ class HelthCare extends DatabaseConnection{
 
 
     function showhelthCare($adminId) {
+        $response = array();
+    
         try {
-            // $selectHospital = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
-            // $stmt = $this->conn->prepare($selectHospital);
-            // $stmt->bind_param("s", $adminId);
-    
-            // $hospitalData = array();
-    
-            // if ($stmt->execute()) {
-            //     $result = $stmt->get_result();
-
-            //     if($result->num_rows > 0){
-            //         while ($row = $result->fetch_assoc()) {
-            //             $hospitalData = $row;
-            //         }
-            //         return $hospitalData;
-            //     }else{
-            //         return null;
-            //     }
-            // } else {
-            //     return null; // Return null if the query execution fails
-            // }
-
-
-            $hospitalData = array();
-            $sql = "SELECT * FROM clinic_info WHERE `admin_id` = '$adminId'";
+            $sql = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
             $stmt = $this->conn->prepare($sql);
     
-                if($stmt->num_rows > 0){
-                    while ($row = $stmt->fetch_assoc()) {
-                        $hospitalData = $row;
-                    }
-                    return $hospitalData;
-                }else{
-                    return null;
-                }
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+    
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+                    print_r($result);
 
+                    if ($result->num_rows > 0) {
+                        // Fetch all rows into an array
+                        $row = $result->fetch_assoc();
+                        $response = $row;
+                        
+                        return $response;
+                    } else {
+                        return $response;
+                    }
+                } else {
+                    return $response; // Return null if the query execution fails
+                }
+            } else {
+                throw new Exception("Error in preparing SQL statement");
+            }
+    
         } catch (Exception $e) {
             // Handle any exceptions that may occur
-            return null; // Return null in case of an error
+            throw new Exception($e->getMessage());
         }
     }
+    
     
 
     function updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo){
