@@ -233,7 +233,7 @@ class StockReturn extends DatabaseConnection
 
 
 
-    
+
     //stock return start-------------------
 
     function showStockReturnDetails($returnId){
@@ -267,6 +267,9 @@ class StockReturn extends DatabaseConnection
     }
 
 
+
+
+
     function showStockReturnDataByStokinId($stockInDetailsId)
     {
         $data = array();
@@ -278,6 +281,8 @@ class StockReturn extends DatabaseConnection
         return $data;
     }
 
+
+    
     function showStockReturnDetailsById($Id)
     {
 

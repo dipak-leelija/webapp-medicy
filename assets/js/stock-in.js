@@ -16,7 +16,6 @@ batchNumber.addEventListener('input', function (event) {
     this.value = this.value.replace('*', '');
 });
 
-
 //////// distributo bill input contorl \\\\\\\\\\
 const distBillNo = document.getElementById('dist-bill-no');
 distBillNo.addEventListener('input', function (event) {
@@ -340,29 +339,30 @@ const getBillAmount = () => {
 
     let ptr = document.getElementById("ptr").value;
     let Mrp = document.getElementById("mrp").value;
+    let qty = document.getElementById("qty").value;
+    let discount = document.getElementById("discount").value;
+    let gst = document.getElementById("gst").value;
+    let billAmount = document.getElementById("bill-amount");
     let chkPtr = document.getElementById("chk-ptr").value;
 
     let PTR = parseFloat(ptr);
     let MRP = parseFloat(Mrp);
     let ChkPtr = parseFloat(chkPtr);
-    if (PTR > ChkPtr) {
-        swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
-        document.getElementById("ptr").value = ChkPtr;
-        document.getElementById("bill-amount").value = "";
-        document.getElementById("ptr").focus();
-    }
-
-    let qty = document.getElementById("qty").value;
-    let discount = document.getElementById("discount").value;
 
     //========= base amount calculation area ===========
-
     let base = PTR - ((PTR * discount) / 100);
     document.getElementById("base").value = parseFloat(base).toFixed(2);
     // ======= eof base amount calculation =============
+        
+    if (PTR > ChkPtr) {
+        swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
+        document.getElementById("ptr").value = ChkPtr;
+        document.getElementById("base").value = ChkPtr;
 
-    let gst = document.getElementById("gst").value;
-    let billAmount = document.getElementById("bill-amount");
+        document.getElementById("bill-amount").value = " ";
+        document.getElementById("ptr").focus();
+    }
+
 
     if (ptr == "") {
         billAmount.value = "";
@@ -600,8 +600,21 @@ const addData = () => {
 
     //////////////////////
     let totalMrp = parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
-    let margin = parseFloat(totalMrp) - parseFloat(billAmount.value);
-    let marginP = (parseFloat(margin) / parseFloat(totalMrp)) * 100;
+    let baseWithGst = parseFloat(base.value) + ((parseFloat(base.value) / 100 ) * parseInt(gst.value));
+    let totalBasWithGst = parseFloat(baseWithGst) * parseInt(qty.value);
+    
+    let marginP = 0;
+    if(parseFloat(totalMrp) > parseFloat(totalBasWithGst)){
+        console.log("hello");
+        let margin = parseFloat(totalMrp) - parseFloat(billAmount.value);
+        console.log("hello margin check : "+margin);
+        marginP = (parseFloat(margin) / parseFloat(totalMrp)) * 100;
+        console.log("hello margin parcent check : "+marginP);
+    }else {
+        console.log("not hello");
+        marginP = 0;
+    }
+    
     // console.log("discount percent check : ", discount.value);
 
     jQuery("#dataBody")
@@ -649,10 +662,10 @@ const addData = () => {
 
                 <input class="d-none table-data w-3r" type="text" name="chkPtr[]" value="${chkPtr.value}" readonly style="font-size: .7rem; text-align: end">
             </td>
-            <td class="p-0 pt-3 w-3r">
+            <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-12a">
                 <input type="text" class="table-data w-3r" name="base[]" value="${base.value}" style="text-align: end;">
             </td>
-            <td class="ps-1 pt-3 w-2r">
+            <td class="ps-0 pt-3 w-2r" id="row-${slControl}-col-12b">
                 <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size: .7rem; text-align: end">
             </td>
 
@@ -743,6 +756,12 @@ const addData = () => {
         editItem(tupleData);
     };
     document.getElementById(`row-${slControl}-col-11`).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(`row-${slControl}-col-12a`).onclick = function () {
+        editItem(tupleData);
+    };
+    document.getElementById(`row-${slControl}-col-12b`).onclick = function () {
         editItem(tupleData);
     };
     document.getElementById(`row-${slControl}-col-12`).onclick = function () {
