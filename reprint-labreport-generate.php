@@ -1,22 +1,20 @@
 <?php
+require_once __DIR__.'/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 
-require_once dirname(__DIR__).'/config/constant.php';
 require_once CLASS_DIR.'sub-test.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'labBilling.class.php';
 require_once CLASS_DIR.'labBillDetails.class.php';
-require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'patients.class.php';
 
 
 
 
 //  INSTANTIATING CLASS
-$HelthCare       = new HelthCare();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
 $SubTests        = new SubTests();
@@ -72,17 +70,6 @@ if (is_numeric($docId)) {
 }//eof cheaking post method
 
 
-$showhelthCare = $HelthCare->showhelthCare();
-foreach ($showhelthCare as $rowhelthCare) {
-    $healthCareName     = $rowhelthCare['hospital_name'];
-    $healthCareAddress1 = $rowhelthCare['address_1'];
-    $healthCareAddress2 = $rowhelthCare['address_2'];
-    $healthCareCity     = $rowhelthCare['city'];
-    $healthCarePIN      = $rowhelthCare['pin'];
-    $healthCarePhno     = $rowhelthCare['hospital_phno'];
-    $healthCareApntbkNo = $rowhelthCare['appointment_help_line'];
-
-}
 ?>
 
 <!DOCTYPE html>

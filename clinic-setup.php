@@ -4,11 +4,7 @@ require_once 'config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'hospital.class.php';
-
-
-//Health Care Class Initilized
-$HealthCare = new HelthCare();
+require_once ROOT_DIR.'_config/healthcare.inc.php';
 
 
 // Healthcare Addesss and details
@@ -44,30 +40,6 @@ if (isset($_POST['update']) ==  true) {
     }
 
 }
-
-
-
-
-//Fetching Healt Care Details
-$showHealthCare = $HealthCare->showhelthCare($adminId);
-
-$healthCareLogo      = $showHealthCare['logo'];
-if (empty($healthCareLogo)) {
-    $healthCareLogo = SITE_IMG_PATH.'logo-p.jpg';
-}
-
-$healthCareId        = $showHealthCare['hospital_id'];
-$healthCareName      = $showHealthCare['hospital_name'];
-$healthCareAddress1  = $showHealthCare['address_1'];
-$healthCareAddress2  = $showHealthCare['address_2'];
-$healthCareCity      = $showHealthCare['city'];
-$healthCareDist      = $showHealthCare['dist'];
-$healthCarePin       = $showHealthCare['pin'];
-$healthCareState     = $showHealthCare['health_care_state'];
-$healthCareEmail     = $showHealthCare['hospital_email'];
-$healthCarePhno      = $showHealthCare['hospital_phno'];
-$healthCareApntbkNo  = $showHealthCare['appointment_help_line'];
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

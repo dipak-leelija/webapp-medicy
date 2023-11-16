@@ -2,80 +2,58 @@
 require_once 'config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';
 require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'appoinments.class.php';
-require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'doctor.category.class.php';
 
 
 // Fetching Appointments Info
 $appointmentId = $_GET['prescription'];
-//    echo $appointmentId;
 
-$appointments = new Appointments();
+$appointments   = new Appointments();
 $DoctorCategory = new DoctorCategory();
 
 
 $currentAppointments = $appointments->appointmentsDisplaybyId($appointmentId);
 //    print_r($currentAppointments); exit;
 
-   foreach($currentAppointments as $currentAppointmentDetails){
-       $appointmentDate     = $currentAppointmentDetails['appointment_date'];
-       $apntId              = $currentAppointmentDetails['appointment_id'];
-       $patientId           = $currentAppointmentDetails['patient_id'];
-       $patientName         = $currentAppointmentDetails['patient_name'];
-       $patientGurdianName  = $currentAppointmentDetails['patient_gurdian_name'];
-       $patientEmail        = $currentAppointmentDetails['patient_email'];
-       $patientPhno         = $currentAppointmentDetails['patient_phno'];
-       $patientDob          = $currentAppointmentDetails['patient_age'];
-       $patientGender       = $currentAppointmentDetails['patient_gender'];
-       $patientAddress1     = $currentAppointmentDetails['patient_addres1'];
-       $patientAddress2     = $currentAppointmentDetails['patient_addres2'];
-       $patientPs           = $currentAppointmentDetails['patient_ps'];
-       $patientDist         = $currentAppointmentDetails['patient_dist'];
-       $patientPin          = $currentAppointmentDetails['patient_pin'];
-       $patientState        = $currentAppointmentDetails['patient_state'];
-       $getDoctorForPatient = $currentAppointmentDetails['doctor_id'];
-    //    echo var_dump($getDoctorForPatient); exit;
+foreach($currentAppointments as $currentAppointmentDetails){
+    $appointmentDate     = $currentAppointmentDetails['appointment_date'];
+    $apntId              = $currentAppointmentDetails['appointment_id'];
+    $patientId           = $currentAppointmentDetails['patient_id'];
+    $patientName         = $currentAppointmentDetails['patient_name'];
+    $patientGurdianName  = $currentAppointmentDetails['patient_gurdian_name'];
+    $patientEmail        = $currentAppointmentDetails['patient_email'];
+    $patientPhno         = $currentAppointmentDetails['patient_phno'];
+    $patientDob          = $currentAppointmentDetails['patient_age'];
+    $patientGender       = $currentAppointmentDetails['patient_gender'];
+    $patientAddress1     = $currentAppointmentDetails['patient_addres1'];
+    $patientAddress2     = $currentAppointmentDetails['patient_addres2'];
+    $patientPs           = $currentAppointmentDetails['patient_ps'];
+    $patientDist         = $currentAppointmentDetails['patient_dist'];
+    $patientPin          = $currentAppointmentDetails['patient_pin'];
+    $patientState        = $currentAppointmentDetails['patient_state'];
+    $getDoctorForPatient = $currentAppointmentDetails['doctor_id'];
+ //    echo var_dump($getDoctorForPatient); exit;
 
 }
 
-        // Fetching Hospital Info
-        $hospital = new HelthCare();
-        $hospitalShow = $hospital->showhelthCare($adminId);
 
-        $healthCarelogo     = $hospitalShow['logo'];
-        if (empty($healthCareLogo)) {
-            $healthCareLogo = SITE_IMG_PATH.'logo-p.jpg';
-        }else {
-            $healthCareLogo = IMG_PATH.'orgs/'.$healthCarelogo;
-        }
-
-        $hospitalName       = $hospitalShow['hospital_name'];
-        $address1           = $hospitalShow['address_1'];
-        $address2           = $hospitalShow['address_2'];
-        $city               = $hospitalShow['city'];
-        $pin                = $hospitalShow['pin'];
-        $state              = $hospitalShow['health_care_state'];
-        $hospitalEmail      = $hospitalShow['hospital_email'];
-        $hospitalPhno       = $hospitalShow['hospital_phno'];
-        $appointmentNumber  = $hospitalShow['appointment_help_line'];
-
-
-    // Fetching Doctor Info
-    $doctors = new Doctors(); //Doctor Class 
-    $selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
-    // print_r($selectDoctorByid); exit;
-    foreach($selectDoctorByid as $DoctorByidDetails){
-        $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
-        $DoctorName         = $DoctorByidDetails['doctor_name'];
-        $docSpecialization  = $DoctorByidDetails['doctor_specialization'];
-        $DoctorDegree       = $DoctorByidDetails['doctor_degree'];
-        $DoctorAlsoWith     = $DoctorByidDetails['also_with'];
-        $DoctorAddress      = $DoctorByidDetails['doctor_address'];
-        $DoctorEmail        = $DoctorByidDetails['doctor_email'];
-        $DoctorPhno         = $DoctorByidDetails['doctor_phno'];
-    }
+// Fetching Doctor Info
+$doctors = new Doctors(); //Doctor Class 
+$selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
+// print_r($selectDoctorByid); exit;
+foreach($selectDoctorByid as $DoctorByidDetails){
+    $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
+    $DoctorName         = $DoctorByidDetails['doctor_name'];
+    $docSpecialization  = $DoctorByidDetails['doctor_specialization'];
+    $DoctorDegree       = $DoctorByidDetails['doctor_degree'];
+    $DoctorAlsoWith     = $DoctorByidDetails['also_with'];
+    $DoctorAddress      = $DoctorByidDetails['doctor_address'];
+    $DoctorEmail        = $DoctorByidDetails['doctor_email'];
+    $DoctorPhno         = $DoctorByidDetails['doctor_phno'];
+}
 
 $showDoctorCategoryById = $DoctorCategory->showDoctorCategoryById($docSpecialization);
 foreach ($showDoctorCategoryById as $rowDocCatName) {
@@ -101,12 +79,12 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
         <div class="hospitslDetails mb-0">
             <div class="row">
                 <div class="col-1 headerHospitalLogo">
-                    <img class="mt-4" src="<?= $healthCarelogo ?>" alt="<?= $hospitalName ?>">
+                    <img class="mt-4" src="<?= $healthCareLogo ?>" alt="<?= $healthCareName ?>">
                 </div>
                 <div class="col-4 headerHospitalDetails">
-                    <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?= $hospitalName ?></h1>
+                    <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?= $healthCareName ?></h1>
                     <p class="text-start  me-3">
-                        <small><?php echo $address1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small>
+                        <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ',<br>' . $healthCareState . ', ' . $healthCarePin; ?></small>
                     </p>
                 </div>
                 <div class="col-2 header-doc-img"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
@@ -126,7 +104,7 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
                     <p class="text-end  mb-0"><?php // echo $DoctorAddress 
                                                 ?></p>
                     <h6 class="text-end text-primary"><strong>Call for Appointment:
-                            <?php echo $appointmentNumber ?></strong></h6>
+                            <?= $healthCareApntbkNo ?></strong></h6>
                 </div>
             </div>
         </div>
@@ -243,7 +221,7 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
                     <ul style="margin-bottom: 8px">
                         <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2"
                                 src="<?= IMG_PATH ?>icons/hospital.png" alt="Healt Care"
-                                style="width:28px; height:20px;" /><?php echo $hospitalName ?></li>
+                                style="width:28px; height:20px;" /><?php echo $healthCareName ?></li>
                     </ul>
                 </div>
 
@@ -251,7 +229,7 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
                     <ul style="margin-bottom: 8px">
                         <li class="list-unstyled"><img id="email-box" class="pe-2"
                                 src="<?= IMG_PATH ?>icons/email-logo.png" alt="Email"
-                                style="width:28px; height:20px;" /><?php echo $hospitalEmail ?></li>
+                                style="width:28px; height:20px;" /><?= $healthCareEmail ?></li>
 
                     </ul>
                 </div>
@@ -260,7 +238,7 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
                     <ul style="margin-bottom: 8px">
                         <li class="list-unstyled"><img id="number-box" class="pe-2"
                                 src="<?= IMG_PATH ?>icons/call-logo.png" alt="Contact"
-                                style="width:28px; height:20px;" /><span><?php echo $appointmentNumber.', '.$hospitalPhno ?></span>
+                                style="width:28px; height:20px;" /><span><?= $healthCareApntbkNo.', '.$healthCarePhno ?></span>
                         </li>
                     </ul>
                 </div>

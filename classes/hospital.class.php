@@ -1,6 +1,6 @@
 <?php
 
-class HelthCare extends DatabaseConnection{
+class HealthCare extends DatabaseConnection{
 
     function addClinicInfo($clinicId, $adminId, $addedTime){
 
@@ -14,7 +14,7 @@ class HelthCare extends DatabaseConnection{
 
 
 
-    function showhelthCare($adminId) {
+    function showHealthCare($adminId) {
         $response = array();
     
         try {
@@ -26,7 +26,6 @@ class HelthCare extends DatabaseConnection{
     
                 if ($stmt->execute()) {
                     $result = $stmt->get_result();
-                    print_r($result);
 
                     if ($result->num_rows > 0) {
                         // Fetch all rows into an array
