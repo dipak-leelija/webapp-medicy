@@ -4,36 +4,82 @@ class DoctorCategory extends DatabaseConnection
 
 
 
-    function addDoctorCategory($docCatNme, $docDesc)
-    {
+    function addDoctorCategory($docCatName, $docDesc, $employee, $addedOn, $adminId){
+        
+        try {
+            $insertDocCat = "INSERT INTO doctor_category (`category_name`, `category_descreption`, `added_by`,  `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
 
-        $selectDocCat = "INSERT INTO doctor_category (`category_name`, `category_descreption`) VALUES ('$docCatNme', '$docDesc')";
-        $selectDocCatQuery = $this->conn->query($selectDocCat);
-        // echo var_dump($selectDocCatQuery);
-        return $selectDocCatQuery;
-    } // end addDoctor function
+            $stmt = $this->conn->prepare($insertDocCat);
+            $stmt->bind_param("sssss", $docCatName, $docDesc, $employee, $addedOn, $adminId);
+
+            if (!$stmt->execute()) {
+                throw new Exception("Error in query execution: " . $stmt->error);
+            }
+
+            $stmt->close();
+            return true;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
 
 
 
 
-    function showDoctorCategory()
-    {
+    function showDoctorCategory(){
         try {
             $selectDoctorCategory = "SELECT * FROM `doctor_category`";
             $selectDoctorCategoryQuery = $this->conn->query($selectDoctorCategory);
+            
+            if (!$selectDoctorCategoryQuery) {
+                throw new Exception("Error in query: " . $this->conn->error);
+            }
+    
             $row = $selectDoctorCategoryQuery->num_rows;
-            if ($row == 0) {
-                return 0;
-            } else {
+    
+            if ($row > 0) {
                 while ($result = $selectDoctorCategoryQuery->fetch_array()) {
-                    $ctegoryData[] = $result;
+                    $categoryData[] = $result;
                 }
-                return $ctegoryData;
+                return $categoryData;
+            } else {
+                return null;
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            return $e->getMessage();
         }
-    } //end showDoctorCategoryById function
+    }
+    
+
+
+
+
+
+    function showDoctorCategoryByAdmin($adminId){
+        try {
+            $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `admin_id` = ?";
+            $stmt = $this->conn->prepare($selectDoctorCategory);
+            $stmt->bind_param("i", $adminId);
+
+            if (!$stmt->execute()) {
+                throw new Exception("Error in query execution: " . $stmt->error);
+            }
+
+            $result = $stmt->get_result();
+            $categoryData = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $categoryData[] = $row;
+            }
+
+            $stmt->close();
+
+            return $categoryData;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }   
+
 
 
 
