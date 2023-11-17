@@ -126,11 +126,11 @@ if (isset($_POST['register'])) {
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="password" class="form-control form-control-user"
-                                            id="password" name="password" maxlength="12" placeholder="Password">
+                                            id="password" name="password" maxlength="12" placeholder="Password" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user"
-                                            id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password">
+                                            id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
                                     </div>
                                 </div>
                                 <?php
