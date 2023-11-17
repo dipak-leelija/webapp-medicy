@@ -7,19 +7,18 @@ require_once ROOT_DIR.'_config/user-details.inc.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockOut.class.php';
+require_once CLASS_DIR.'encrypt.inc.php';
 
 
 $invoiceId = $_GET['id'];
 
 //  INSTANTIATING CLASS
-$HelthCare       = new HelthCare();
 $StockOut        = new StockOut();
 
 if (isset($_GET['id'])) {
-    // echo $_GET['id'];
-    $stockOut = $StockOut->stockOutDisplayById($invoiceId);
+    $invoiceId = url_dec($_GET['id']);
+    $stockOut  = $StockOut->stockOutDisplayById($invoiceId);
     // print_r($stockOut);
-
     $invoiceId      = $stockOut[0]['invoice_id'];
     $customerName   = $stockOut[0]['customer_id'];
     $reffby         = $stockOut[0]['reff_by'];	

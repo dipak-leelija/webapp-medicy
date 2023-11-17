@@ -1,4 +1,5 @@
 <?php
+$page = "Product Management";
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';
 
@@ -12,12 +13,11 @@ require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR."patients.class.php";
 
 
-$page = "Product Management";
-$Doctors    = new Doctors();
-$StockOut   = new StockOut();
-$Products   = new Products();
-$Patients = new Patients();
-$Manufacturer = new Manufacturer();
+$Doctors        = new Doctors();
+$StockOut       = new StockOut();
+$Products       = new Products();
+$Patients       = new Patients();
+$Manufacturer   = new Manufacturer();
 
 
 
@@ -53,7 +53,7 @@ if ($_GET['id']) {
     $stockOutDetails = $StockOut->stockOutDetailsDisplayById($billId);
     
     //=============== doctor data =================
-    $doctor = $Doctors->showDoctors();
+    $doctor = $Doctors->showDoctors($adminId);
     // print_r($doctor);
 ?>
     <!DOCTYPE html>

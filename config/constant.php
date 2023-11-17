@@ -62,9 +62,7 @@ session_start();
 
 	
 	//company
-	define('COMPANY_FULL_NAME', 				'Fast Linky');						//company full name
-	define('COMPANY_S', 						'Fast Linky');						//company short name
-	define('COMPANY_L', 						'LL');								//company short name
+	define('SITE_NAME', 						'Medicy');						//company full name
 	
 	
 	define('SITE_ADMIN_NAME',  					"");
@@ -92,7 +90,7 @@ session_start();
 	define("LOGO_HEIGHT",						'50');										//height of the logo
 
 	define("FAVCON_PATH",						URL."/images/logo/favicon.png");			//location of the favcon
-	define("LOGO_ALT",							COMPANY_FULL_NAME);							//alternate text for the logo
+	define("LOGO_ALT",							SITE_NAME);							//alternate text for the logo
 	
 	define("FOOTER_LOGO",						URL.'/images/logo/footer-logo.png');		//location of the logo
 	define("FL_WIDTH",							'180');										//width of the logo
@@ -127,7 +125,7 @@ session_start();
 	
 	define('CURRENCY',							'$');
 	define('CURRENCY_CODE',						'USD');
-	define('START_YEAR',						'2022');
+	define('START_YEAR',						'2023');
 	define('HOME',								'Home');
 	define('END_YEAR',  						date('Y')); 
 

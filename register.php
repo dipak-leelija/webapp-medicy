@@ -12,7 +12,7 @@ require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
 
 $admin      = new Admin();
-$HelthCare  = new HelthCare;
+$HealthCare  = new HealthCare;
 $IdGenerate = new IdsGeneration;
 
 $userExists = false;
@@ -49,7 +49,7 @@ if (isset($_POST['register'])) {
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, NOW);
                 // print_r($register);
                 if ($register) {
-                    $addToClinicInfo = $HelthCare->addClinicInfo($clinicId, $adminId, NOW);
+                    $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
                     if ($addToClinicInfo) {
                         header("Location: login.php");
                         exit;
@@ -98,7 +98,7 @@ if (isset($_POST['register'])) {
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block "><img style="width:100%;" src="admin/img/welcome-admin.jpg"
+                    <div class="col-lg-5 d-none d-lg-block "><img style="width:100%;" src="<?= ASSETS_PATH ?>img/welcome-admin.jpg"
                             alt=""></div>
                     <div class="col-lg-7">
                         <div class="p-5">
@@ -174,7 +174,7 @@ if (isset($_POST['register'])) {
                             </form>
                             <!-- <hr> -->
                             <div class="text-center" style="margin-top:15px;">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                <a class="small" href="forgot-password.html">Reset Password</a>
                             </div>
                             <div class="text-center">
                                 <a class="small" href="login.php">Already have an account? Login!</a>

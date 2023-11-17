@@ -14,8 +14,8 @@ if($_SESSION['ADMIN']){
   $userFname    = $_SESSION['USER_FNAME'];
   $username     = $_SESSION['USERNAME'];
   $adminId      = $_SESSION['ADMINID'];
-  $employeeId = ' ';
-  $addedBy = $adminId;
+  $employeeId   = '';
+  $addedBy      = $adminId;
 }else{
   // echo 'false';
   $userEmail      = $_SESSION['USER_EMAIL'] ;
@@ -24,6 +24,6 @@ if($_SESSION['ADMIN']){
   $username       = $_SESSION['USERNAME'];
   $employeeId     = $_SESSION['EMPID'];
   $adminId        = $_SESSION['ADMIN_ID'];
-  $addedBy = $employeeId;
+  $addedBy        = $employeeId;
 }
 

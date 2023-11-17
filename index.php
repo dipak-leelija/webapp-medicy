@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/config/constant.php';
+$page = "dashboard";
+
+require_once __DIR__. '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -13,8 +15,6 @@ require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 
-$page = "dashboard";
-
 $appoinments = new Appointments();
 $CurrentStock      = new CurrentStock();
 $StockOut          = new StockOut();
@@ -24,8 +24,6 @@ $Distributor       = new Distributor;
 $Patients          = new Patients;
 
 $totalAppointments = $appoinments->appointmentsDisplay($adminId);
-
-
 
 ?>
 
