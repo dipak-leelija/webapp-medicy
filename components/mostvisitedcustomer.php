@@ -17,11 +17,11 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div id="mostVistedCustomerDtPkr" style="display: none;">
+        <div class="dropdown-menu dropdown-menu-right p-3" id="mostVistedCustomerDtPkr" style="display: none; margin-top:-16rem;">
             <input type="date" id="mostVisiteCustomerDt">
             <button class="btn btn-sm btn-primary" onclick="mostVistedCustomerByDt()" style="height: 2rem;">Find</button>
         </div>
-        <div id="mostVistedCustomerDtPkrRng" style="display: none;">
+        <div class="dropdown-menu dropdown-menu-right p-3" id="mostVistedCustomerDtPkrRng" style="display: none; margin-top:-16rem;">
             <label>Start Date</label>
             <input type="date" id="mostVisiteCustomerStartDate">
             <label>End Date</label>
@@ -32,12 +32,12 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
             <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <b>...</b>
             </button>
-            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0);">
+            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
                 <button class="dropdown-item" type="button" id="mostVisitCustomerLst24hrs" onclick="mostvisitCustomer(this.id)">Last 24 hrs</button>
                 <button class="dropdown-item" type="button" id="mostVisitCustomerLst7" onclick="mostvisitCustomer(this.id)">Last 7 Days</button>
                 <button class="dropdown-item" type="button" id="mostVisitCustomerLst30" onclick="mostvisitCustomer(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item" type="button" id="mostVisitCustomerOnDt" onclick="mostvisitCustomer(this.id)">By Date</button>
-                <button class="dropdown-item" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button>
+                <button class="dropdown-item dropdown" type="button" id="mostVisitCustomerOnDt" onclick="mostvisitCustomer(this.id)">By Date</button>
+                <button class="dropdown-item dropdown" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button>
             </div>
         </div>
     </div>

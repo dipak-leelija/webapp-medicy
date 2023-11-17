@@ -20,12 +20,18 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 ?>
 
 <div class="card border-left-info h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-end px-2">
-        <div id="podDatePikDiv" style="display: none; margin-right:1rem;">
+    <div class="d-flex justify-content-between align-items-start px-4 ">
+    <div class="row no-gutters align-items-center mt-4">
+        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+            Purchased today
+        </div>
+    </div>
+    <div class="d-flex justify-content-end px-2 mt-2 mr-n4">
+        <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDatePikDiv" style="display: none; margin-right:1rem;">
             <input type="date" id="purchaseOfTheDayDate">
             <button class="btn btn-sm btn-primary" onclick="podOnDateFun()" style="height: 2rem;">Find</button>
         </div>
-        <div id="podDtPikRngDiv" style="display: none; margin-right:1rem;">
+        <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDtPikRngDiv" style="display: none; margin-right:1rem;">
             <div class="d-flex d-flex justify-content-start">
                 <div>
                     <label>Start Date</label>&nbsp<input type="date" id="podStartDt"><br>
@@ -38,7 +44,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
             </div>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 ...
             </button>
             <div class="dropdown-menu dropdown-menu-right">
@@ -46,17 +52,18 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
                 <button class="dropdown-item" type="button" id="podLst24hrs" onclick="chkPod(this.id)">Last 24 hrs</button>
                 <button class="dropdown-item" type="button" id="podLst7" onclick="chkPod(this.id)">Last 7 Days</button>
                 <button class="dropdown-item" type="button" id="podLst30" onclick="chkPod(this.id)">Last 30 Days</button>
-                <button class="dropdown-item" type="button" id="podGvnDt" onclick="chkPod(this.id)">By Date</button>
-                <button class="dropdown-item" type="button" id="podDtRng" onclick="chkPod(this.id)">By Date Range</button>
+                <button class="dropdown-item dropdown" type="button" id="podGvnDt" onclick="chkPod(this.id)">By Date</button>
+                <button class="dropdown-item dropdown" type="button" id="podDtRng" onclick="chkPod(this.id)">By Date Range</button>
             </div>
         </div>
     </div>
+    </div>
     <div class="card-body pb-0">
-        <div class="row no-gutters align-items-center">
+        <!-- <div class="row no-gutters align-items-center">
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                 Purchased today
             </div>
-        </div>
+        </div> -->
         <div class="row no-gutters align-items-center">
             <div class="col mr-2" id="pod-data-div" style="display: none;">
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -70,7 +77,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
                     </div>
                 </div>
             </div>
-            <div class="col-auto" id="pod-no-data-found-div" style="display: none;">
+            <div class="col-auto  mt-n3" id="pod-no-data-found-div" style="display: none;">
                 <label>NO DATA FOUND</label>
             </div>
         </div>
@@ -82,7 +89,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 <script>
     function updatePod(uploadPodData) {
         console.log(uploadPodData);
-        
+
         if (uploadPodData.purchase_amount != null && uploadPodData.purchase_item_count != null) {
             document.getElementById('podAmount').innerHTML = uploadPodData.purchase_amount;
             document.getElementById('podItemsCount').innerHTML = uploadPodData.purchase_item_count;
@@ -103,13 +110,13 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
     // === fixed sod date select from calander ...
     function podOnDateFun() {
         let podDateSelect = document.getElementById('purchaseOfTheDayDate').value;
-        
+
         var xmlhttp = new XMLHttpRequest();
         var podOnDateUrl = `<?php echo ROOT_DIR ?>ajax/sod-pod-data-search.ajax.php?podONDate=${podDateSelect}`;
         xmlhttp.open('GET', podOnDateUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
-        
+
         updatePod(JSON.parse(xmlhttp.responseText));
     }
 
@@ -121,13 +128,13 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
     function podOnDtRange() {
         let podStartDate = document.getElementById('podStartDt').value;
         let podEndDate = document.getElementById('podEndDt').value;
-        
+
         var xmlhttp = new XMLHttpRequest();
         var podOnDateRangeUrl = `<?php echo ROOT_DIR ?>ajax/sod-pod-data-search.ajax.php?podStartDate=${podStartDate}&podEndDate=${podEndDate}`;
         xmlhttp.open('GET', podOnDateRangeUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
-        
+
         updatePod(JSON.parse(xmlhttp.responseText));
     }
 
@@ -135,7 +142,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 
     /// ===== button on click function for sod date select 
     function chkPod(id) {
-       
+
         if (id == 'podCurrentDt') {
             document.getElementById('podDatePikDiv').style.display = 'none';
             document.getElementById('podDtPikRngDiv').style.display = 'none';
@@ -176,7 +183,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 
     // =====initail sod data set set in sod card =====
     function podDefalultdData(podInitialData) {
-        
+
         if (podInitialData.purchase_amount != null && podInitialData.purchase_item_count != null) {
             document.getElementById('podAmount').innerHTML = podInitialData.purchase_amount;
             document.getElementById('podItemsCount').innerHTML = podInitialData.purchase_item_count;

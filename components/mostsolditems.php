@@ -18,11 +18,11 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div id="mostSoldDtPickerDiv" style="display: none; margin-right:1rem;">
+        <div class="dropdown-menu dropdown-menu-right p-3" id="mostSoldDtPickerDiv" style="display: none; margin-right:1rem; margin-top:-16rem;">
             <input type="date" id="mostSoldDateInput">
             <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDate()" style="height: 2rem;">Find</button>
         </div>
-        <div id="mostSoldDtRngPickerDiv" style="display: none; margin-right:1rem;">
+        <div class="dropdown-menu dropdown-menu-right p-3" id="mostSoldDtRngPickerDiv" style="display: none; margin-right:1rem;margin-top:-16rem;">
             <label>Start Date</label>
             <input type="date" id="mostSoldStarDate">
             <label>End Date</label>
@@ -35,12 +35,12 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
                 <b>...</b>
             </button>
-            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0);">
+            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
                 <button class="dropdown-item" type="button" id="mostSoldLst24hrs" onclick="mostStoldItemCheck(this.id)">Last 24 hrs</button>
                 <button class="dropdown-item" type="button" id="mostSoldLst7" onclick="mostStoldItemCheck(this.id)">Last 7 Days</button>
                 <button class="dropdown-item" type="button" id="mostSoldLst30" onclick="mostStoldItemCheck(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item" type="button" id="mostSoldOnDt" onclick="mostStoldItemCheck(this.id)">By Date</button>
-                <button class="dropdown-item" type="button" id="mostSoldOnDtRng" onclick="mostStoldItemCheck(this.id)">By Range</button>
+                <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDt" onclick="mostStoldItemCheck(this.id)">By Date</button>
+                <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDtRng" onclick="mostStoldItemCheck(this.id)">By Range</button>
             </div>
         </div>
     </div>
