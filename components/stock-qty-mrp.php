@@ -8,11 +8,11 @@
                         Stock Quantity</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                         <?php
-                            $qStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
-                            // print_r($qStock);
-                            if($qStock != null){
+                            $cStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
+                            // print_r($cStock);
+                            if($cStock != null){
                                 $currentQty = 0;
-                                foreach ($qStock as $data) {
+                                foreach ($cStock as $data) {
                                     $currentQty += $data['qty'];
                                 }
                                     echo $currentQty; 
@@ -40,14 +40,14 @@
                         Total Stock MRP</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                         <?php
-                            $qStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
-                            // print_r($qStock);
-                            if($qStock != null){
-                                $currentQty = 0;
-                                foreach ($qStock as $data) {
-                                    $currentQty += $data['mrp'];
+                            $cStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
+                            // print_r($cStock);
+                            if($cStock != null){
+                                $currentMRP = 0;
+                                foreach ($cStock as $data) {
+                                    $currentMRP +=  $data['mrp'];
                                 }
-                                echo '₹'.$currentQty; 
+                                echo '₹'.$currentMRP; 
                             }else {
                                 echo '₹ 0';
                             }

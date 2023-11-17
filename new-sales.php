@@ -9,7 +9,7 @@ require_once CLASS_DIR."doctors.class.php";
 $Doctors = new Doctors();
 
 $doctor = $Doctors->showDoctors($adminId);
-// print_r($doctor);
+print_r($doctor);
 ?>
 <!DOCTYPE html>
 <html lang="en">
