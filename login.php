@@ -15,14 +15,26 @@ $desRole = new Designation();
 $roleData = $desRole->designationRole();
 // print_r($roleData);
 
+
 $loginForm = new LoginForm();
 
+$errorMessage = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    $login    = $loginForm->login($username, $password, $roleData);
+    if (empty($username) || empty($password)) {
+        $errorMessage = 'Please fill in both username and password !';
+    } else {
+        $login    = $loginForm->login($username, $password, $roleData);
+        if ($login === 'Wrong Password') {
+            $errorMessage = 'Please fill up with correct Password !';
+        } elseif ($login === 'not found') {
+            $errorMessage = 'Please fill up with correct Username !';
+        } 
+    }
 }
+
 
 ?>
 
@@ -43,19 +55,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <div class="d-flex align-items-center justify-content-center">
-        <form class="p-5 border border-muted rounded " style="margin-top: 100px;" action="login.php" method="post">
-            
-            <div class="d-flex align-items-center justify-content-center"><h1>Login</h1></div>
+        <form class="p-4 border border-muted rounded" style="margin-top: 100px; width: 30%;" action="login.php" method="post" autocomplete="off">
+
+            <div class="d-flex align-items-center justify-content-center">
+                <h1 class="fw-bold">Login</h1>
+            </div>
+            <?php if (!empty($errorMessage)) : ?>
+                <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?php echo $errorMessage ?></div>
+            <?php endif; ?>
             <div class="form-group ">
                 <label for="username">Username:</label>
-                <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+                <input type="text" class="form-control" name="username" id="username" placeholder="Username" require autocomplete="off">
             </div>
             <div class="form-group ">
                 <label for="password">Password:</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password" require autocomplete="off">
             </div>
             <div class="form-group ">
-                <button class="btn btn-primary btn-s" type="submit" style=" width:316px; border:none;" name="login">Login</button>
+                <button class="btn btn-primary btn-s w-100" type="submit" name="login">Login</button>
             </div>
             <div class=" d-flex justify-content-around mt-1">
                 <a href="register.php">Register</a>
@@ -63,14 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </div>
+
 </body>
 
 </html>
-
-<!-- <div>
-                <label for="password">Roll:</label>
-                <select class="form-control" name="emp-role" id="emp-role" required>
-                    <option value="role1">admin</option>
-                    <option value="role1">user</option>
-                </select>
-</div> -->

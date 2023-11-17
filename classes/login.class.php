@@ -28,7 +28,7 @@ class LoginForm extends DatabaseConnection
                     // exit;
                     header("Location: index.php");
                 } else {
-                    echo 'Wrong Password';
+                    return 'Wrong Password';
                 }
             }
         } else {
@@ -56,11 +56,11 @@ class LoginForm extends DatabaseConnection
                         // exit;
                         header("Location: index.php");
                     } else {
-                        echo 'Wrong Password';
+                        return 'Wrong Password';
                     }
                 }
             } else {
-                echo 'user not found';
+                return 'not found';
             }
         }
     }
