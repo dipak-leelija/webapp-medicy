@@ -50,7 +50,7 @@ class HealthCare extends DatabaseConnection
 
                         return $response;
                     } else {
-                        return $response;
+                        return null;
                     }
                 } else {
                     return $response; // Return null if the query execution fails

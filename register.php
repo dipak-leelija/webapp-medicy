@@ -121,7 +121,7 @@ if (isset($_POST['register'])) {
                                     <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" placeholder="Email Address">
                                 </div>
                                 <div class="form-group">
-                                    <input type="number" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number">
+                                    <input type="number" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
