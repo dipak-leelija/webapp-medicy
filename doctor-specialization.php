@@ -6,16 +6,15 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'doctor.category.class.php';
 
-
+$nodataFound = 'NO DATA FOUND';
 // INITILIZATION CLASSES
 $DoctorCategory = new DoctorCategory();
-
 
 if (isset($_POST['add'])) {
     $docCatNme = $_POST['splz-name'];
     $docDesc   = $_POST['splz-dsc'];
 
-    $addDoctorCategory = $DoctorCategory->addDoctorCategory($docCatNme, $docDesc);
+    $addDoctorCategory = $DoctorCategory->addDoctorCategory($docCatNme, $docDesc, $employeeId, NOW, $adminId);
     if ($addDoctorCategory) {
         echo '<script> alert("Doctor Specialization Added!");</script>';
     }else {
@@ -25,7 +24,8 @@ if (isset($_POST['add'])) {
 
 
 // FUNCTION INITILIZATION 
-$showDoctorCategory = $DoctorCategory->showDoctorCategory();
+$showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
+// print_r($showDoctorCategory);
 
 
 
@@ -120,6 +120,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategory();
                                             </thead>
                                             <tbody>
                                             <?php
+                                            if($showDoctorCategory != null){
                                                 foreach ($showDoctorCategory as $rowDoctorCategory) {
                                                     $specializationid = $rowDoctorCategory['doctor_category_id'];
                                                     $specializationName = $rowDoctorCategory['category_name'];
@@ -139,6 +140,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategory();
                                                 </tr>';
 
                                                 }
+                                            }
                                             ?>
                                                 
                                             </tbody>

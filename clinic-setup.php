@@ -64,7 +64,7 @@ if (isset($_POST['update']) ==  true) {
         rel="stylesheet">
 
     <!-- Sweet alert plugins -->
-    <script src="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css"></script>
+    <!-- <script src="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css"></script> -->
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -246,7 +246,7 @@ if (isset($_POST['update']) ==  true) {
     <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>
 
     <!-- Sweet alert plugins -->
-    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script> -->
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>

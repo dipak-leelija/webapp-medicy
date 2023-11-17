@@ -3,13 +3,27 @@
 class HealthCare extends DatabaseConnection
 {
 
-    function addClinicInfo($clinicId, $adminId, $addedTime)
-    {
+    
+    function addClinicInfo($clinicId, $adminId, $addedTime){
+        try {
+            $addClinicData = "INSERT INTO `clinic_info`(`hospital_id`, `admin_id`, `added_on`) VALUES (?, ?, ?)";
+            $stmt = $this->conn->prepare($addClinicData);
 
-        $addClinicData = "INSERT INTO `clinic_info`(`hospital_id`, `admin_id`, `added_on`) VALUES ('$clinicId','$adminId','$addedTime')";
-        $query = $this->conn->query($addClinicData);
-        return $query;
-    } //showHospital function end
+            if (!$stmt) {
+                throw new Exception("Error in preparing statement: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("iis", $clinicId, $adminId, $addedTime);
+
+            if (!$stmt->execute()) {
+                throw new Exception("Error executing statement: " . $stmt->error);
+            }
+            return true; 
+        } catch (Exception $e) {
+            return $e->getMessage(); 
+        }
+    }
+
 
 
 
