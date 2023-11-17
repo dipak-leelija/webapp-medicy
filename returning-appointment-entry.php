@@ -1,7 +1,9 @@
 <?php
+$page = "appointments";
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'doctors.class.php';
@@ -9,62 +11,12 @@ require_once CLASS_DIR.'patients.class.php';
 
 
 //Creating Object of Appointments Class
-$appointments = new Appointments();
-$Patients = new Patients();
+$appointments   = new Appointments();
+$Patients       = new Patients();
+$doctors        = new Doctors();
 
+$showDoctors = $doctors->showDoctors($adminId);
 
-// Fetching Hospital Info
-$HealthCare        = new HelthCare();
-$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
-$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
-if($healthCareDetailsByAdminId != null){
-    $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
-$hospitalName = $healthCareDetails['hospital_name'];
-// foreach($healthCareDetails as $showShowHospital){
-//     $hospitalName = $showShowHospital['hospital_name'];
-// }
-
-?>
-
-<!doctype html>
-
-<html lang="en">
-
-<head>
-
-    <!-- Required meta tags -->
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css">
-    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
-    <title>Enter Patient Details</title>
-
-
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-
-    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
-
-</head>
-
-<body>
-    <?php
 
 
 if (isset($_POST['proceed'])) {
@@ -83,21 +35,7 @@ if (isset($_POST['proceed'])) {
         $patientDist     = $patient->patient_dist;
         $patientPIN      = $patient->patient_pin;
         $patientState    = $patient->patient_state;
-    } 
-    // $patientId = $_POST['patientName'];
-
-    // $patient = json_decode($Patients->patientsDisplayByPId($patientId));
-    // $name            = $patient->name;
-    // $gurdianName     = $patient->gurdian_name;
-    // $phno            = $patient->phno;
-    // $email           = $patient->email;
-    // $gender          = $patient->gender;
-    // $addres1         = $patient->address_1;
-    // $addres2         = $patient->address_2;
-    // $patientPs       = $patient->patient_ps;
-    // $patientDist     = $patient->patient_dist;
-    // $patientPIN      = $patient->patient_pin;
-    // $patientState    = $patient->patient_state;
+    }
 }
 
 
@@ -120,50 +58,60 @@ if (isset($_POST['submit'])) {
     $patientPIN         = $_POST["patientPIN"];
     $patientState       = $_POST["patientState"];
     $patientDoctor      = $_POST["patientDoctor"];
-    // echo 'Working';
-    // exit;
     
-    $healthCareNameTrimed = strtoupper(substr($hospitalName, 0, 2));//first 2 leter oh healthcare center name
+    $healthCareNameTrimed = strtoupper(substr($healthCareName, 0, 2));//first 2 leter oh healthcare center name
     $appointmentDateForId = str_replace("-", "", $appointmentDate);//removing hyphen from appointment date
     $randCode = rand(1000, 9999);//generating random number
-
-    //Patient Id Generate
-    $prand      = rand(100000000, 999999999);
-    $patientId  = 'PE'.$prand;
 
     // Appointment iD Generated
     $appointmentId = $healthCareNameTrimed.''.$appointmentDateForId.''.$randCode ;
     
 
     // Inserting Into Appointments Database
-    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor,$addedBy, $addedOn, $adminId);
-    echo var_dump($addAppointment);
+    $addAppointment = $appointments->addFromInternal($appointmentId, $patientId, $appointmentDate, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $patientWeight, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $patientDoctor,$addedBy, NOW, $adminId);
 
     if ($addAppointment) {
-      $patientsDisplayByPId = json_decode($Patients->patientsDisplayByPId($patientId));
+        $patientsDisplayByPId = json_decode($Patients->patientsDisplayByPId($patientId));
+
         $visited = $patientsDisplayByPId->visited;
-        // echo $visited;
-        // exit;
         $visited = (int)$visited + 1;
 
-        // echo $visited;
-        // exit;
-    //   echo $visited;
-       // Inserting Into Patients Database
-      $updatePatientsVisitingTime = $Patients->updatePatientsVisitingTime($patientId, $patientEmail, $patientPhoneNumber, $patientAge, $visited);
-      if ($updatePatientsVisitingTime) {
-        echo '<script>alert(Appointment Added!)</script>';
-        // setcookie("appointmentId", $appointmentId, time() + (120 * 30), "/");
-        header("location: appointment-sucess.php");
-        exit();
-      }else{
-        echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
-      }
+        // Inserting Into Patients Database
+        $updatePatientsVisitingTime = $Patients->updatePatientsVisitingTime($patientId, $patientEmail, $patientPhoneNumber, $patientAge, $visited);
+        if ($updatePatientsVisitingTime) {
+            header("location: appointment-sucess.php?appointmentId={$appointmentId}");
+            exit();
+        }else{
+            echo "<script>alert('Patient Not Visiting Not Counting, Something is Wrong!')</script>";
+        }
     }else{
       echo "Something is wrong! ";
     }
 }
-      ?>
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css" rel="stylesheet"/>
+    <link href="<?php echo CSS_PATH ?>patient-style.css" rel="stylesheet"/>
+    <title>Update/Verify Details</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this page -->
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
+
+</head>
+
+<body>
 
     <!-- Page Wrapper -->
 
@@ -185,32 +133,38 @@ if (isset($_POST['submit'])) {
 
 
                 <div class="container-fluid">
-                    <h4 class=" mb-4 mt-0"><b>Fill Returning Patient Details</b></h4>
                     <div class="row d-flex justify-content-center">
-                        <!-- <div class="col-xl-7 col-lg-8 col-md-10 col-11 text-center"> -->
                         <div class=" col-md-10 text-center">
                             <div class="card mt-0">
+                                <div class="card-body">
+                                    <h4 class="text-center py-2"><b>Update/Verify Details</b></h4>
 
-
+                                </div>
                                 <form class="form-card" method="post">
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label" for="patientName">Patient Name<span
                                                     class="text-danger"> *</span></label>
-                                            <input type="text" class="form-control" id="patientName" name="patientName" value="<?php echo $name; ?>">
-                                            <input type="text" value="<?php echo $patientId; ?>" hidden name="patientId">
+                                            <input type="text" class="form-control" id="patientName" name="patientName"
+                                                value="<?php echo $name; ?>">
+                                            <input type="text" value="<?php echo $patientId; ?>" hidden
+                                                name="patientId">
 
                                         </div>
                                         <div class="form-group col-sm-6 flex-column d-flex">
-                                            <label class="form-control-label px-3" for="patientGurdianName">Patient's Gurdian Name<span class="text-danger"> *</span></label>
+                                            <label class="form-control-label px-3" for="patientGurdianName">Patient's
+                                                Gurdian Name<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientGurdianName" name="patientGurdianName" placeholder="Enter Patient's Gurdian Name" value="<?php echo $gurdianName; ?>" required>
+                                            <input type="text" id="patientGurdianName" name="patientGurdianName"
+                                                placeholder="Enter Patient's Gurdian Name"
+                                                value="<?php echo $gurdianName; ?>" required>
                                         </div>
                                     </div>
 
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
-                                            <label class="form-control-label px-3" for="patientEmail">Patient Email</label>
+                                            <label class="form-control-label px-3" for="patientEmail">Patient
+                                                Email</label>
 
                                             <input type="text" id="patientEmail" name="patientEmail"
                                                 placeholder="Patient Email" value="<?php echo $email; ?>" required>
@@ -337,8 +291,12 @@ if (isset($_POST['submit'])) {
                                                     class="text-danger"> *</span></label>
                                             <select id="dropSelection" name="patientState" required>
                                                 <option disabled>Select State</option>
-                                                <option value="West bengal" <?php if($patientState == "West Bengal"){ echo "selected";} ?>>West Bengal</option>
-                                                <option value="Other" <?php if($patientState == "Other"){ echo "selected";} ?>>Other</option>
+                                                <option value="West bengal"
+                                                    <?php if($patientState == "West Bengal"){ echo "selected";} ?>>West
+                                                    Bengal</option>
+                                                <option value="Other"
+                                                    <?php if($patientState == "Other"){ echo "selected";} ?>>Other
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -350,23 +308,21 @@ if (isset($_POST['submit'])) {
                                             <label class="form-control-label px-3" for="patientDoctor">Doctor Name<span
                                                     class="text-danger"> *</span></label>
 
-                                            <select id="docList" class="customDropSelection" name="patientDoctor" required>
+                                            <select id="docList" class="customDropSelection" name="patientDoctor"
+                                                required>
                                                 <option disabled selected>Select Doctor</option>
                                                 <?php
-
-                                            $doctors = new Doctors();
-                                            $showDoctors = $doctors->showDoctors();
                                             foreach ($showDoctors as $showDoctorDetails) {
                                                 $doctorId = $showDoctorDetails['doctor_id'];
                                                 $doctorName = $showDoctorDetails['doctor_name'];
                                                 echo'<option value='.$doctorId.'>'. $doctorName.'</option>';
                                             }
-                                        ?>
+                                            ?>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div class="row justify-content-end">
+                                    <div class="row justify-content-center">
                                         <div class="form-group col-sm-4">
                                             <button type="submit" name="submit"
                                                 class="btn-block btn-primary">Submit</button>
@@ -384,25 +340,18 @@ if (isset($_POST['submit'])) {
 
                 <!-- Bootstrap core JavaScript-->
                 <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-                <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.slim.js"></script>
                 <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
+                <!-- <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script> -->
                 <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
+                <!-- <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script> -->
 
 
 
                 <!-- Core plugin JavaScript-->
-                <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+                <!-- <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script> -->
 
                 <!-- Custom scripts for all pages-->
                 <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-
-                <!-- Page level plugins -->
-                <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
-
-                <!-- Page level custom scripts -->
-                <!-- <script src="js/demo/chart-area-demo.js"></script> -->
-                <!-- <script src="js/demo/chart-pie-demo.js"></script> -->
 
                 <script>
                 var todayDate = new Date();
