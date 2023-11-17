@@ -18,7 +18,7 @@ $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 
 //Function Initilized
-$showDoctors    = $Doctors->showDoctors();
+$showDoctors    = $Doctors->showDoctors($adminId);
 $showSubTests   = $SubTests->showSubTests();
 
 
@@ -48,22 +48,48 @@ if (isset($_SESSION['appointment-data'])) {
 
 // exit;
 
-if (isset($_POST['update-lab-visit'])) {
-    $patientId          = $_POST["patientId"];
-    $testDate           = $_POST["testDate"];
-    $patientName        = $_POST["patientName"];
-    $patientGurdianName = $_POST["patientGurdianName"];
-    $patientEmail       = $_POST["patientEmail"];
-    $patientPhoneNumber = $_POST["patientPhoneNumber"];
-    $patientAge         = $_POST["patientAge"];
-    $patientWeight      = $_POST["patientWeight"];
-    $gender             = $_POST["gender"];
-    $patientAddress1    = $_POST["patientAddress1"];
-    $patientAddress2    = $_POST["patientAddress2"];
-    $patientPS          = $_POST["patientPS"];
-    $patientDist        = $_POST["patientDist"];
-    $patientPIN         = $_POST["patientPIN"];
-    $patientState       = $_POST["patientState"];
+// if (isset($_POST['update-lab-visit'])) {
+//     $patientId          = $_POST["patientId"];
+//     $testDate           = $_POST["testDate"];
+//     $patientName        = $_POST["patientName"];
+//     $patientGurdianName = $_POST["patientGurdianName"];
+//     $patientEmail       = $_POST["patientEmail"];
+//     $patientPhoneNumber = $_POST["patientPhoneNumber"];
+//     $patientAge         = $_POST["patientAge"];
+//     $patientWeight      = $_POST["patientWeight"];
+//     $gender             = $_POST["gender"];
+//     $patientAddress1    = $_POST["patientAddress1"];
+//     $patientAddress2    = $_POST["patientAddress2"];
+//     $patientPS          = $_POST["patientPS"];
+//     $patientDist        = $_POST["patientDist"];
+//     $patientPIN         = $_POST["patientPIN"];
+//     $patientState       = $_POST["patientState"];
+// }
+
+if(isset($_POST['bill-proceed'])){
+    if(isset($_POST['patientId'])){
+        $exist          = TRUE;
+        $patientId      = $_POST['patientId'];
+        $testDate       = $_POST["testDate"];
+
+        if ($exist == TRUE) {
+            $rowPatients = json_decode($Patients->patientsDisplayByPId($patientId));
+            // print_r($rowPatients);
+            $patientName            = $rowPatients->name;
+            $patientGurdianName     = $rowPatients->gurdian_name;
+            $patientEmail           = $rowPatients->email;
+            $patientPhoneNumber     = $rowPatients->phno;
+            $patientAge             = $rowPatients->age;
+            $gender                 = $rowPatients->gender;
+            $patientAddress1        = $rowPatients->address_1;
+            $patientAddress2        = $rowPatients->address_2;
+            $patientPS              = $rowPatients->patient_ps;
+            $patientDist            = $rowPatients->patient_dist;
+            $patientPIN             = $rowPatients->patient_pin;
+            $patientState           = $rowPatients->patient_state;
+        }
+    }
+    
 }
 
 

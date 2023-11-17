@@ -26,20 +26,24 @@ $showPatients = json_decode($Patients->allPatients($adminId));
     <title>Enter Patient Details</title>
 
 
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-
-    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
     <!-- Custom styles for this page -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
+    <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" />
+    <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" />
 
+    <!-- <link href="<?= PLUGIN_PATH ?>select2/select2.min.css" rel="stylesheet" /> -->
+    <!-- Choices includes -->
+    <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"> -->
 </head>
 
 <body>
@@ -64,38 +68,41 @@ $showPatients = json_decode($Patients->allPatients($adminId));
 
 
                 <div class="container-fluid">
-                    <h4 class=" mb-4 mt-0"><b>Fill Returning Patient Details</b></h4>
-                    <div class="row d-flex justify-content-center">
-                        <!-- <div class="col-xl-7 col-lg-8 col-md-10 col-11 text-center"> -->
-                            <div class=" col-md-10 text-center">
-                            <div class="card mt-0">
- 
+                    <div class="card p-0">
+                        <div class="card-header">
 
-                                <form class="form-card" action="existing-patient-lab-entry.php" method="post">
-                                    <div class="row justify-content-between text-left">
-                                        <div class="col-md-12 mb-2">
-                                        <label class="form-control-label" for="patientId">Patient Name<span class="text-danger"> *</span></label>
-                                            <select class="form-control customDropSelection patient-select" data-live-search="true" name="patientId" id="patientList">
-                                                <option value="" selected disabled> Search Patient Name </option>
-                                                <?php
-                                                    foreach ($showPatients as $patientsRow) {
-                                                        // $data[] = $patientsRow;
-                                                        echo "<option value='$patientsRow->patient_id'>$patientsRow->patient_id - $patientsRow->name</option>";
-                                                    }
-                                                    ?>
-                                                
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row justify-content-end">
-                                        <div class="form-group col-sm-4">
-                                            <button type="submit" name="bill-proceed" class="btn-block btn-primary" >Proceed</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
                         </div>
+                        <div class="card-body my-5 my-md-1 p-md-5">
+
+                            <form class="row flex-column align-items-center" action="lab-billing.php" method="post">
+
+                                <div class="section col-12 col-md-6">
+                                    <div data-test-hook="remove-button">
+                                        <select class="form-control" name="patientId" id="choices-remove-button"
+                                            required>
+                                            <option value="" selected disabled> Search Patient Name </option>
+                                            <?php
+                                                foreach ($showPatients as $patientsRow) {
+                                                    echo "<option value='$patientsRow->patient_id'>$patientsRow->patient_id - $patientsRow->name</option>";
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-12 col-md-6 mt-2">
+                                    <input type="date" class="form-control w-100" id="testDate" name="testDate"
+                                        placeholder="" required>
+                                </div>
+
+
+                                <div class="form-group col-12 col-md-2">
+                                    <button type="submit" name="bill-proceed"
+                                        class="btn-block btn-primary">Proceed</button>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
 
@@ -104,38 +111,44 @@ $showPatients = json_decode($Patients->allPatients($adminId));
                 <!-- End of Footer -->
 
                 <!-- Bootstrap core JavaScript-->
-                <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-                <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.slim.js"></script>
-                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
-                <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
-
-
+                <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+                <script src="<?= PLUGIN_PATH ?>jquery/jquery.slim.js"></script>
+                <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+                <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
+                <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
 
                 <!-- Core plugin JavaScript-->
-                <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+                <!-- <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script> -->
 
                 <!-- Custom scripts for all pages-->
-                <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+                <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+                <!-- <script src="<?= PLUGIN_PATH ?>select2/select2.min.js"></script> -->
+                <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script>
 
 
 
-                
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script> -->
-
-<script>
-
-    //patient selection js
-    $(document).ready(function(){
-        $('.patient-select').selectpicker();
-        
-    })
 
 
-</script>
+                <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> -->
+                <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script> -->
 
+                <script>
+                // $('#patientList').select2();
 
+                // //patient selection js
+                // $(document).ready(function(){
+                //     $('.patient-select').selectpicker();
+
+                // })
+                document.addEventListener('DOMContentLoaded', function() {
+
+                    new Choices('#choices-remove-button', {
+                        allowHTML: true,
+                        removeItemButton: true,
+                    });
+
+                });
+                </script>
 </body>
 
 </html>

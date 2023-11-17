@@ -1,8 +1,4 @@
 <?php
-// ini_set('display_errors', '1');
-// ini_set('display_startup_errors', '1');
-// error_reporting(E_ALL);
-
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
@@ -16,37 +12,21 @@ require_once CLASS_DIR.'labAppointments.class.php';
 
 //Classes Initilizing
 $appointments    = new Appointments();
-$HealthCare        = new HelthCare();
+$HealthCare      = new HealthCare();
 $Patients        = new Patients();
 $LabAppointments = new LabAppointments();
-
-// Fetching Hospital Info
-// $hospitalDetails = $hospital->showhelthCare();
-
-$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
-$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
-if($healthCareDetailsByAdminId != null){
-    $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
-$hospitalName = $healthCareDetails['hospital_name'];
-// foreach($healthCareDetails as $showShowHospital){
-//     $hospitalName = $showShowHospital['hospital_name'];
-// }
 
 
 $exist = FALSE;
 
 
-
 if(isset($_POST['bill-proceed'])){
-    if(isset($_POST['$patientId'])){
-        $patientId = $_POST['patient_id'];
-    $exist = TRUE;
-    if ($exist == TRUE) {
-        $patientsDetails = json_decode($Patients->patientsDisplayByPId($patientId));
-        foreach ($patientsDetails as $rowPatients) {
+    if(isset($_POST['patientId'])){
+        $patientId = $_POST['patientId'];
+        $exist = TRUE;
+        if ($exist == TRUE) {
+            $rowPatients = json_decode($Patients->patientsDisplayByPId($patientId));
+            // print_r($rowPatients);
             $patientName    = $rowPatients->name;
             $patientGurdian = $rowPatients->gurdian_name;
             $patientEmail   = $rowPatients->email;
@@ -61,7 +41,6 @@ if(isset($_POST['bill-proceed'])){
             $patientState   = $rowPatients->patient_state;
         }
     }
-    }
     
 }
 
@@ -70,13 +49,10 @@ if(isset($_POST['bill-proceed'])){
 ?>
 
 <!doctype html>
-
 <html lang="en">
-
 <head>
 
     <!-- Required meta tags -->
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
