@@ -88,8 +88,8 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
                     <button class="dropdown-item" type="button" id="newPatientLst7" onclick="newPatientCount(this.id)">Last 7 Days</button>
                     <button class="dropdown-item" type="button" id="newPatientLst30" onclick="newPatientCount(this.id)">Last 30 DAYS</button>
 
-                    <button class="dropdown-item dropdown" type="button" id="newPatientOnDt" onclick="newPatientCount(this.id)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">By Date</button>
-                    <button class="dropdown-item dropdown" type="button" id="newPatientDtRng" onclick="newPatientCount(this.id)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">By Range</button>
+                    <button class="dropdown-item dropdown" type="button" id="newPatientOnDt" onclick="newPatientCount(this.id)" >By Date</button>
+                    <button class="dropdown-item dropdown" type="button" id="newPatientDtRng" onclick="newPatientCount(this.id)" >By Range</button>
                 </div>
             </div>
         </div>
