@@ -1,7 +1,7 @@
 <?php
 $page = "dashboard";
 
-require_once __DIR__. '/config/constant.php';
+require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -14,17 +14,19 @@ require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'labAppointments.class.php';
 
-$appoinments = new Appointments();
+$appoinments       = new Appointments();
 $CurrentStock      = new CurrentStock();
 $StockOut          = new StockOut();
 $StockIn           = new StockIn();
 $StockInDetails    = new StockInDetails();
 $Distributor       = new Distributor;
 $Patients          = new Patients;
+$LabAppointments   = new LabAppointments();
 
 $totalAppointments = $appoinments->appointmentsDisplay($adminId);
-
+$labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 ?>
 
 <!DOCTYPE html>
@@ -108,6 +110,8 @@ $totalAppointments = $appoinments->appointmentsDisplay($adminId);
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                         <?php echo count($totalAppointments); ?> </div>
+                                    <p class="mb-0 pb-0"><small class="mb-0 pb-0">
+                                           Lab Appointments: <?php  echo ($labAppointment > 0) ? $labAppointment : '0';?></small></p>
                                 </div>
                             </div>
                         </div>
@@ -154,13 +158,13 @@ $totalAppointments = $appoinments->appointmentsDisplay($adminId);
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="col-auto  mr-n3">
-                                                <i class="fas fa-pencil-ruler"></i>
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                    Pending Requests</div>
+                                                <div class="col-auto  mr-n3">
+                                                    <i class="fas fa-pencil-ruler"></i>
+                                                </div>
                                             </div>
-                                        </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                                         </div>
                                     </div>
