@@ -16,11 +16,11 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div id="lessSoldDtPickerDiv" style="display: none;">
+        <div class="dropdown-menu dropdown-menu-right p-3" id="lessSoldDtPickerDiv" style="display: none;margin-top:-16rem;">
             <input type="date" id="lessSoldDateInput">
             <button class="btn btn-sm btn-primary" onclick="lessSoldItemsChkDate()" style="height: 2rem;">Find</button>
         </div>
-        <div id="lessSoldDtRangePickerDiv" style="display: none;">
+        <div class="dropdown-menu dropdown-menu-right p-3" id="lessSoldDtRangePickerDiv" style="display: none;margin-top:-16rem;">
             <label>Start Date</label>
             <input type="date" id="lessSoldStartDate">
             <label>End Date</label>
@@ -33,12 +33,12 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
                 <b>...</b>
             </button>
-            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0);">
+            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
                 <button class="dropdown-item" type="button" id="lessSoldLst24hrs" onclick="lessSoldItemChk(this.id)">Last 24 hrs</button>
                 <button class="dropdown-item" type="button" id="lessSoldLst7" onclick="lessSoldItemChk(this.id)">Last 7 Days</button>
                 <button class="dropdown-item" type="button" id="lessSoldLst30" onclick="lessSoldItemChk(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item" type="button" id="lessSoldLstDt" onclick="lessSoldItemChk(this.id)">By Date</button>
-                <button class="dropdown-item" type="button" id="lessSoldLstDtRng" onclick="lessSoldItemChk(this.id)">By Range</button>
+                <button class="dropdown-item dropdown" type="button" id="lessSoldLstDt" onclick="lessSoldItemChk(this.id)">By Date</button>
+                <button class="dropdown-item dropdown" type="button" id="lessSoldLstDtRng" onclick="lessSoldItemChk(this.id)">By Range</button>
             </div>
         </div>
     </div>

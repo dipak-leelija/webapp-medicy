@@ -23,44 +23,49 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
 ?>
 
 <div class="card border-left-info border-right-info h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-end px-2">
-        <div id="sodDatePikDiv" style="display: none; margin-right:1rem;">
-            <input type="date" id="salesOfTheDayDate">
-            <button class="btn btn-sm btn-primary" onclick="sodOnDate()" style="height: 2rem;">Find</button>
+    <div class="d-flex justify-content-between align-items-start px-4 ">
+        <div class="row no-gutters align-items-center mt-4">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                sales of the day</div>
         </div>
-        <div id="sodDtPikRngDiv" style="display: none; margin-right:1rem;">
-            <div class="d-flex d-flex justify-content-start">
-                <div>
-                    <label>Start Date</label>&nbsp<input type="date" id="sodStartDt"><br>
-                    <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="sodEndDt">
-                </div>&nbsp
-                <div>
-                    <br>
-                    <button class="btn btn-sm btn-primary" onclick="sodDtRange()" style="height: 2rem;">Find</button>
+        <div class="d-flex justify-content-end px-2 mr-n4 mt-2">
+            <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDatePikDiv" style="display: none; margin-right:1rem;">
+                <input type="date" id="salesOfTheDayDate">
+                <button class="btn btn-sm btn-primary" onclick="sodOnDate()" style="height: 2rem;">Find</button>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDtPikRngDiv" style="display: none; margin-right:1rem;">
+                <div class="d-flex d-flex justify-content-start">
+                    <div>
+                        <label>Start Date</label>&nbsp<input type="date" id="sodStartDt"><br>
+                        <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="sodEndDt">
+                    </div>&nbsp
+                    <div>
+                        <br>
+                        <button class="btn btn-sm btn-primary" onclick="sodDtRange()" style="height: 2rem;">Find</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <b>...</b>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkSod(this.id)">Today</button>
-                <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkSod(this.id)">Last 24 hrs</button>
-                <button class="dropdown-item" type="button" id="sodLst7" onclick="chkSod(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="sodLst30" onclick="chkSod(this.id)">Last 30 Days</button>
-                <button class="dropdown-item" type="button" id="sodGvnDt" onclick="chkSod(this.id)">By Date</button>
-                <button class="dropdown-item" type="button" id="sodDtRng" onclick="chkSod(this.id)">By Date Range</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <b>...</b>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkSod(this.id)">Today</button>
+                    <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkSod(this.id)">Last 24 hrs</button>
+                    <button class="dropdown-item" type="button" id="sodLst7" onclick="chkSod(this.id)">Last 7 Days</button>
+                    <button class="dropdown-item" type="button" id="sodLst30" onclick="chkSod(this.id)">Last 30 Days</button>
+                    <button class="dropdown-item dropdown" type="button" id="sodGvnDt" onclick="chkSod(this.id)">By Date</button>
+                    <button class="dropdown-item dropdown" type="button" id="sodDtRng" onclick="chkSod(this.id)">By Date Range</button>
+                </div>
             </div>
         </div>
     </div>
     <div class="card-body pb-0">
-        <div class="row no-gutters align-items-center">
-            <div class="col-mr-2">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    sales of the day</div>
-            </div>
-        </div>
+        <!-- <div class="row no-gutters align-items-center"> -->
+        <!-- <div class="col-mr-2"> -->
+
+        <!-- </div> -->
+        <!-- </div> -->
         <div class="row no-gutters align-items-center">
             <div class="col mr-2" id='sod-Display'>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -72,7 +77,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
                     <label type="text"><small>Items</small></label>
                 </div>
             </div>
-            <div class="col-auto" style="display: none;" id='sod-no-data'>
+            <div class="col-auto mt-n3 " style="display: none;" id='sod-no-data'>
                 <label>NO DATA FOUND</label>
             </div>
         </div>
@@ -137,7 +142,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
 
     /// ===== button on click function for sod date select 
     function chkSod(id) {
-        
+
         if (id == 'sodCurrentDt') {
             document.getElementById('sodDatePikDiv').style.display = 'none';
             document.getElementById('sodDtPikRngDiv').style.display = 'none';
