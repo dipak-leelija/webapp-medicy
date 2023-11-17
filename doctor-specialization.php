@@ -10,7 +10,6 @@ $nodataFound = 'NO DATA FOUND';
 // INITILIZATION CLASSES
 $DoctorCategory = new DoctorCategory();
 
-
 if (isset($_POST['add'])) {
     $docCatNme = $_POST['splz-name'];
     $docDesc   = $_POST['splz-dsc'];

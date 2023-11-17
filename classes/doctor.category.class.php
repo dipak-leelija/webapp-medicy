@@ -59,7 +59,7 @@ class DoctorCategory extends DatabaseConnection
         try {
             $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `admin_id` = ?";
             $stmt = $this->conn->prepare($selectDoctorCategory);
-            $stmt->bind_param("i", $adminId);
+            $stmt->bind_param("s", $adminId);
 
             if (!$stmt->execute()) {
                 throw new Exception("Error in query execution: " . $stmt->error);
