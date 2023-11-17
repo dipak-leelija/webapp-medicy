@@ -10,7 +10,9 @@ if(!empty($healthCare)){
     if (!empty($healthCare['hospital_name'])){
         $healthCareName = $healthCare['hospital_name'];
     }else {
-        header('Location: '.URL.'clinic-setup.php?setup=Please complete your Organization/Healthcare setup!');
+        if (!str_contains(PAGE, 'clinic-setup')) {
+            header('Location: '.URL.'clinic-setup.php?setup=Please complete your Organization/Healthcare setup!');
+        }
     }
 
     $healthCareLogo      = $healthCare['logo'];
