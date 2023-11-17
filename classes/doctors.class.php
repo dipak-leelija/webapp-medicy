@@ -136,14 +136,32 @@ class Doctors extends DatabaseConnection{
     }// end doctorsTimingByDoctor function
 
 
-    function updateDoc($docRegNo, $docName, $docSplz, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno,/*Last Variable for id which data we wants to update*/$updateDocId){
-        $updateDoc = "UPDATE `doctors` SET `doctor_reg_no`= '$docRegNo', `doctor_name` = '$docName', `doctor_specialization` = '$docSplz', `doctor_degree` = '$docDegree', `also_with` = '$alsoWith', `doctor_address` = '$docAddress', `doctor_email` = '$docEmail', `doctor_phno` = '$docPhno' WHERE `doctors`.`doctor_id` = '$updateDocId'";
- 
-        $updateDocQuery = $this->conn->query($updateDoc);
-        // echo $updateDocQuery.$this->conn->error;
-        // exit;
-        return $updateDocQuery;
-    }//end updateDoc function
+    function updateDoc($docRegNo, $docName, $docSplz, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $updateDocId) {
+        try {
+            // Use prepared statements to prevent SQL injection
+            $updateDoc = "UPDATE `doctors` SET `doctor_reg_no`= ?, `doctor_name` = ?, `doctor_specialization` = ?, `doctor_degree` = ?, `also_with` = ?, `doctor_address` = ?, `doctor_email` = ?, `doctor_phno` = ? WHERE `doctors`.`doctor_id` = ?";
+            $stmt = $this->conn->prepare($updateDoc);
+    
+            if ($stmt) {
+                // Bind parameters
+                $stmt->bind_param("ssssssssi", $docRegNo, $docName, $docSplz, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $updateDocId);
+    
+                // Execute the prepared statement
+                $updateDocQuery = $stmt->execute();
+    
+                // Close the statement
+                $stmt->close();
+    
+                return $updateDocQuery;
+            } else {
+                throw new Exception("Error in preparing SQL statement");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that may occur
+            throw new Exception($e->getMessage());
+        }
+    }
+    
 
 
     function deleteDoc($deleteDocId){
