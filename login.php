@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class=" d-flex justify-content-around mt-1">
                 <a href="register.php">Register</a>
-                <a href="reset-password.php">reset password</a>
+                <a href="reset-password.php">Forget password</a>
             </div>
         </form>
     </div>
