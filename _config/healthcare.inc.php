@@ -7,7 +7,7 @@ $healthCare     = $HealthCare->showHealthCare($adminId);
 
 if($healthCare){
 
-    if ($healthCare['hospital_name']){
+    if (!empty($healthCare['hospital_name'])){
         $healthCareName = $healthCare['hospital_name'];
     }else {
         if (!str_contains(PAGE, 'clinic-setup')) {

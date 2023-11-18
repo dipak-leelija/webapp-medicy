@@ -12,7 +12,7 @@ require_once CLASS_DIR.'currentStock.class.php';
 
 
 //  INSTANTIATING CLASS
-$HelthCare       = new HelthCare();
+$HelthCare       = new HealthCare();
 $StockReturn     = new StockReturn();
 $IdsGeneration    = new IdsGeneration();
 $CurrentStock    =  new CurrentStock();

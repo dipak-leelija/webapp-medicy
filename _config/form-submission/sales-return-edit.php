@@ -14,7 +14,7 @@ require_once  CLASS_DIR . 'stockInDetails.class.php';
 
 
 //  INSTANTIATING CLASS
-$HelthCare       = new HelthCare();
+$HelthCare       = new HealthCare();
 $StockOut        = new StockOut();
 $Patients        = new Patients();
 $Products        = new Products();
@@ -218,14 +218,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
 
-        $healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
-        $healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
-        if ($healthCareDetailsByAdminId != null) {
-            $healthCareDetails = $healthCareDetailsByAdminId;
-        } else {
-            $healthCareDetails = $healthCareDetailsPrimary;
-        }
-
+        $healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
+        
+        $healthCareDetails = $healthCareDetailsByAdminId;
+        
         for ($i; $i < count($healthCareDetails); $i++) {
 
             $healthCareName     = $healthCareDetails['hospital_name'];

@@ -13,7 +13,7 @@ require_once CLASS_DIR . 'manufacturer.class.php';
 
 
 //  INSTANTIATING CLASS
-$HelthCare       = new HelthCare();
+$HelthCare       = new HealthCare();
 $Doctors         = new Doctors();
 $Patients        = new Patients();
 $IdsGeneration    = new IdsGeneration();
@@ -254,14 +254,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-$healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
+$healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
 
-if($healthCareDetailsByAdminId != null){
-    $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
-
+$healthCareDetails = $healthCareDetailsByAdminId;
 
     $healthCareName     = $healthCareDetails['hospital_name'];
     $healthCareAddress1 = $healthCareDetails['address_1'];

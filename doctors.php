@@ -312,11 +312,14 @@ $showDoctors = $doctors->showDoctors($adminId);
         })
 
 
-        docViewAndEdit = (docId) =>{
+        
+        const docViewAndEdit = (docId) =>{
             let ViewAndEditdocId = docId;
+            // alert(ViewAndEditdocId);
             let url = "ajax/doctors.view.ajax.php?docId=" + ViewAndEditdocId;
             $(".docViewAndEdit").html('<iframe width="99%" scrolling="no" frameborder="0"   allowtransparency="true" onload="resizeIframe(this)" src="' + url + '"></iframe>');
             }// end of viewAndEdit function
+
 
         function resizeIframe(obj) {
             obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
@@ -338,13 +341,6 @@ $showDoctors = $doctors->showDoctors($adminId);
 
         <!-- Page level custom scripts -->
         <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
-
-        <script>
-        $('#docView-Edit').on('click', function() {
-            $('#docViewAndEdit').modal('show');
-
-        })
-        </script>
 
 </body>
 

@@ -15,7 +15,7 @@ require_once CLASS_DIR . 'stockInDetails.class.php';
 // require_once '../../../php_control/idsgeneration.class.php';
 
 //  INSTANTIATING CLASS
-$HelthCare       = new HelthCare();
+$HelthCare       = new HealthCare();
 $StockOut        = new StockOut();
 $Patients        = new Patients();
 $Products        = new Products();
@@ -163,15 +163,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    $healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
-    $healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
-
-    if ($healthCareDetailsByAdminId != null) {
-        $healthCareDetails = $healthCareDetailsByAdminId;
-    } else {
-        $healthCareDetails = $healthCareDetailsPrimary;
-    }
-
+    $healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
+    
+    $healthCareDetails = $healthCareDetailsByAdminId;
+    
     $healthCareName     = $healthCareDetails['hospital_name'];
     $healthCareAddress1 = $healthCareDetails['address_1'];
     $healthCareAddress2 = $healthCareDetails['address_2'];
