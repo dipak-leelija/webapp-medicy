@@ -1,34 +1,43 @@
 <?php
 require_once 'dbconnect.php';
 
-class SubTests extends DatabaseConnection{
+class SubTests extends DatabaseConnection
+{
 
 
 
-    function showSubTests(){
-        $selectTest = "SELECT * FROM `sub_tests`";
-        $testQuery = $this->conn->query($selectTest);
-        while ($result = $testQuery->fetch_array()) {
-            $data[] = $result;
+    function showSubTests()
+    {
+        try {
+            $data = [];
+            $selectTest = "SELECT * FROM `sub_tests`";
+            $testQuery = $this->conn->query($selectTest);
+            while ($result = $testQuery->fetch_array()) {
+                $data[] = $result;
+            }
+            return $data;
+        } catch (Exception $e) {
+            $e->getMessage();
         }
-        return $data;
-    }// end showSubTests function
+    } // end showSubTests function
 
 
 
 
-    function addSubTests($subTestName, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price){
+    function addSubTests($subTestName, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price)
+    {
         $insertTest = "INSERT INTO sub_tests (sub_test_name, parent_test_id, age_group, test_preparation, test_dsc, price) VALUES ('$subTestName', '$parentTestId', '$ageGroup', '$subTestPrep', '$subTestDsc', '$price')";
-        $insertTestQuery =$this->conn->query($insertTest);
+        $insertTestQuery = $this->conn->query($insertTest);
         // echo $insertTest.$this->conn->error;
         // exit;
-        
+
         return $insertTestQuery;
-    }// end addLabTypes function
+    } // end addLabTypes function
 
 
 
-    function showSubTestsId($subTestId){
+    function showSubTestsId($subTestId)
+    {
         // $data=0;
         $selectTestById = "SELECT * FROM sub_tests WHERE `sub_tests`.`id` = '$subTestId'";
         $subTestQuery = $this->conn->query($selectTestById);
@@ -36,24 +45,24 @@ class SubTests extends DatabaseConnection{
             $data[] = $result;
         }
         return $data;
-    }// end showLabTypesById function
+    } // end showLabTypesById function
 
-    
 
-    function showSubTestsByCatId($showLabtypeId){
+
+    function showSubTestsByCatId($showLabtypeId)
+    {
         $selectTestByCatId = "SELECT * FROM `sub_tests` WHERE `sub_tests`.`parent_test_id` = '$showLabtypeId'";
         $subTestCatQuery = $this->conn->query($selectTestByCatId);
         $row = $subTestCatQuery->num_rows;
         if ($row == 0) {
             return 0;
-        }else{
-            while($result = $subTestCatQuery->fetch_array()){
-                $data[]	= $result;
+        } else {
+            while ($result = $subTestCatQuery->fetch_array()) {
+                $data[]    = $result;
             }
             return $data;
         }
-        
-    }// end showSubTestsByCatId function
+    } // end showSubTestsByCatId function
 
 
 
@@ -77,6 +86,3 @@ class SubTests extends DatabaseConnection{
 
 
 } //eof SubTests class
-
-
-?>
