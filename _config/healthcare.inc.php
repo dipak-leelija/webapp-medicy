@@ -5,9 +5,9 @@ $HealthCare     = new HealthCare();
 
 $healthCare     = $HealthCare->showHealthCare($adminId);
 
-if(!empty($healthCare)){
+if($healthCare){
 
-    if (!empty($healthCare['hospital_name'])){
+    if ($healthCare['hospital_name']){
         $healthCareName = $healthCare['hospital_name'];
     }else {
         if (!str_contains(PAGE, 'clinic-setup')) {

@@ -13,7 +13,7 @@ class HealthCare extends DatabaseConnection
                 throw new Exception("Error in preparing statement: " . $this->conn->error);
             }
 
-            $stmt->bind_param("iis", $clinicId, $adminId, $addedTime);
+            $stmt->bind_param("sss", $clinicId, $adminId, $addedTime);
 
             if (!$stmt->execute()) {
                 throw new Exception("Error executing statement: " . $stmt->error);
@@ -80,8 +80,6 @@ class HealthCare extends DatabaseConnection
             $stmt->execute();
 
             $updateHealthCareQuery = $stmt->affected_rows;
-
-        
 
             $stmt->close();
 

@@ -1,11 +1,7 @@
 <?php
-<<<<<<< HEAD
-require_once __DIR__. '/config/constant.php';
-=======
 $page = "dashboard";
 
 require_once __DIR__ . '/config/constant.php';
->>>>>>> 47dc31092db9fe680d7d13af6475584b312e599f
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -20,13 +16,7 @@ require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labAppointments.class.php';
 
-<<<<<<< HEAD
-$page = "dashboard";
-
-$appoinments = new Appointments();
-=======
 $appoinments       = new Appointments();
->>>>>>> 47dc31092db9fe680d7d13af6475584b312e599f
 $CurrentStock      = new CurrentStock();
 $StockOut          = new StockOut();
 $StockIn           = new StockIn();
@@ -36,13 +26,8 @@ $Patients          = new Patients;
 $LabAppointments   = new LabAppointments();
 
 $totalAppointments = $appoinments->appointmentsDisplay($adminId);
-<<<<<<< HEAD
-
-
-
-=======
 $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
->>>>>>> 47dc31092db9fe680d7d13af6475584b312e599f
+
 ?>
 
 <!DOCTYPE html>
@@ -126,13 +111,10 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                             <i class="fas fa-calendar-check"></i>
                                         </div>
                                     </div>
-<<<<<<< HEAD
-=======
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                         <?php echo count($totalAppointments); ?> </div>
                                     <p class="mb-0 pb-0"><small class="mb-0 pb-0">
                                            Lab Appointments: <?php  echo ($labAppointment > 0) ? $labAppointment : '0';?></small></p>
->>>>>>> 47dc31092db9fe680d7d13af6475584b312e599f
                                 </div>
                             </div>
                         </div>
@@ -176,10 +158,6 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-<<<<<<< HEAD
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-=======
                                             <div class="d-flex justify-content-between align-items-start">
                                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                     Pending Requests</div>
@@ -187,7 +165,6 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                                     <i class="fas fa-pencil-ruler"></i>
                                                 </div>
                                             </div>
->>>>>>> 47dc31092db9fe680d7d13af6475584b312e599f
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                                         </div>
                                         <div class="col-auto">

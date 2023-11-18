@@ -20,28 +20,26 @@ if (isset($_POST['update']) ==  true) {
         $imgFolder  = '';
     }
 
-    $healthCareName          = $_POST['helthcare-name'];
-    $healthCareAddress1      = $_POST['address-1'];
-    $healthCareAddress2      = $_POST['address-2'];
-    $healthCareCity          = $_POST['city'];
-    $healthCareDist          = $_POST['dist'];
-    $healthCarePin           = $_POST['pin'];
-    $healthCareState         = $_POST['state'];
-    $healthCareEmail         = $_POST['email'];
-    $healthCareHelpLineNo    = $_POST['helpline-no'];
-    $healthCareApntBookingNo = $_POST['apnt-booking-no'];
+    $updatedHealthCareName          = $_POST['helthcare-name'];
+    $updatedHealthCareAddress1      = $_POST['address-1'];
+    $updatedHealthCareAddress2      = $_POST['address-2'];
+    $updatedHealthCareCity          = $_POST['city'];
+    $updatedHealthCareDist          = $_POST['dist'];
+    $updatedHealthCarePin           = $_POST['pin'];
+    $updatedHealthCareState         = $_POST['state'];
+    $updatedHealthCareEmail         = $_POST['email'];
+    $updatedHealthCareHelpLineNo    = $_POST['helpline-no'];
+    $updatedHealthCareApntBookingNo = $_POST['apnt-booking-no'];
 
-    $UpdateHealthcare = $HealthCare->updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo, $adminId);
+    $UpdateHealthcare = $HealthCare->updateHealthCare($imgFolder, $updatedHealthCareName, $updatedHealthCareAddress1, $updatedHealthCareAddress2, $updatedHealthCareCity, $updatedHealthCareDist, $updatedHealthCarePin, $updatedHealthCareState, $updatedHealthCareEmail, $updatedHealthCareHelpLineNo, $updatedHealthCareApntBookingNo, $adminId);
     // print_r($UpdateHealthcare);
 
     if($UpdateHealthcare){
         echo "<script>alert('Clinick Data Updated.')</script>";
     }else{
         echo "<script>alert('Updation Failed!')</script>";
-
     }
 }
-
 
 ?>
 <!DOCTYPE html>
