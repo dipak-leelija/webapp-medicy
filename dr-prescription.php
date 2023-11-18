@@ -9,7 +9,7 @@ require_once CLASS_DIR . 'doctor.category.class.php';
 
 
 $appointments = new Appointments();
-$hospital = new HelthCare();
+$hospital = new HealthCare();
 $doctors = new Doctors(); //Doctor Class 
 
 
@@ -21,13 +21,11 @@ $getDoctorForPatient = $_GET['prescription'];
 
 
 // Fetching Hospital Info
-$healthCareDetailsPrimary = $hospital->showhelthCarePrimary();
-$healthCareDetailsByAdminId = $hospital->showhelthCare($adminId);
-if ($healthCareDetailsByAdminId != null) {
-    $healthCareDetails = $healthCareDetailsByAdminId;
-} else {
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
+
+$healthCareDetailsByAdminId = $hospital->showHealthCare($adminId);
+
+$healthCareDetails = $healthCareDetailsByAdminId;
+
 $hospitalName       = $healthCareDetails['hospital_name'];
 $address1           = $healthCareDetails['address_1'];
 $address2           = $healthCareDetails['address_2'];
