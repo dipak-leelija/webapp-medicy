@@ -1,11 +1,6 @@
 <?php
-<<<<<<< HEAD
-require_once __DIR__. '/config/constant.php';
-=======
 $page = "dashboard";
-
-require_once __DIR__ . '/config/constant.php';
->>>>>>> 47dc31092db9fe680d7d13af6475584b312e599f
+require_once __DIR__. '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -20,13 +15,7 @@ require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labAppointments.class.php';
 
-<<<<<<< HEAD
-$page = "dashboard";
-
-$appoinments = new Appointments();
-=======
 $appoinments       = new Appointments();
->>>>>>> 47dc31092db9fe680d7d13af6475584b312e599f
 $CurrentStock      = new CurrentStock();
 $StockOut          = new StockOut();
 $StockIn           = new StockIn();
@@ -36,13 +25,7 @@ $Patients          = new Patients;
 $LabAppointments   = new LabAppointments();
 
 $totalAppointments = $appoinments->appointmentsDisplay($adminId);
-<<<<<<< HEAD
-
-
-
-=======
 $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
->>>>>>> 47dc31092db9fe680d7d13af6475584b312e599f
 ?>
 
 <!DOCTYPE html>
