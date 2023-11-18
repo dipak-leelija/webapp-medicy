@@ -120,7 +120,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                                             </thead>
                                             <tbody>
                                             <?php
-                                            if($showDoctorCategory != null){
+                                            if(is_array($showDoctorCategory) && $showDoctorCategory != null){
                                                 foreach ($showDoctorCategory as $rowDoctorCategory) {
                                                     $specializationid = $rowDoctorCategory['doctor_category_id'];
                                                     $specializationName = $rowDoctorCategory['category_name'];
