@@ -252,10 +252,8 @@ class StockReturn extends DatabaseConnection
                 while ($result = $res->fetch_array()) {
                     $data[] = $result;
                 }
-                return $data;
-            }else{
-                return null;
             }
+            return $data;
 
             $stmt->close();
 
