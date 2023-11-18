@@ -66,8 +66,10 @@ $allPatients = json_decode($allPatients);
                         <div class="card-header py-3 d-flex justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">List of Patients</h6>
                             <a data-toggle="modal" data-target="#appointmentSelection"><button
-                                    class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
+                                    class="btn btn-sm btn-primary" onclick="addNewPatientData()"><i class="fas fa-edit"></i>Add New</button></a>
                         </div>
+
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -126,6 +128,33 @@ $allPatients = json_decode($allPatients);
 
     </div>
     <!-- End of Page Wrapper -->
+
+
+
+    <!-- ADD NEW PATIENT MODAL -->
+    <div class="modal fade appointmentSelection" tabindex="-1" role="dialog"
+        aria-labelledby="appointmentSelectionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add Patient Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body add-new-patient">
+                    <!-- Appointments Details Goes Here By Ajax -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="window.location.reload()">ADD</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END OF ADD NEW PATIENT MODAL -->
+
+
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
