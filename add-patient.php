@@ -93,6 +93,7 @@ if (isset($_POST['submit'])) {
 
     // Inserting Into Patients Database
     $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
+    
     if ($addPatients) {
 
         $_SESSION['appointment-data'] = array(
