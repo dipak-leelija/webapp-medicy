@@ -34,7 +34,7 @@ $LabReport  = new LabReport ;
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Patients - <?= COMPANY_S?></title>
+    <title>Patients - <?= SITE_NAME?></title>
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

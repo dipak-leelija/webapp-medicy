@@ -11,7 +11,7 @@ require_once CLASS_DIR.'stockInDetails.class.php';
 
 
 //  INSTANTIATING CLASS
-$HelthCare       = new HelthCare();
+$HelthCare       = new HealthCare();
 $StockReturn     = new StockReturn();
 $IdsGeneration    = new IdsGeneration();
 $CurrentStock    = new CurrentStock();
@@ -248,14 +248,10 @@ if (isset($_POST['stock-return-edit'])) {
 
 
 
-$healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
+$healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
 
-if($healthCareDetailsByAdminId != null){
+
     $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
-
 
     $healthCareName     = $healthCareDetails['hospital_name'];
     $healthCareAddress1 = $healthCareDetails['address_1'];
