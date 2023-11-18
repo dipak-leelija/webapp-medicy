@@ -346,7 +346,7 @@ if (isset($_POST['submit'])) {
                                                 <?php
                                                 $doctors = new Doctors();
 
-                                                $showDoctors = $doctors->showDoctors();
+                                                $showDoctors = $doctors->showDoctors($adminId);
                                                 foreach ($showDoctors as $showDoctorDetails) {
                                                     $doctorId = $showDoctorDetails['doctor_id'];
                                                     $doctorName = $showDoctorDetails['doctor_name'];
