@@ -30,8 +30,7 @@ if(isset($_POST['add-doc']) == true){
 }
 
 $showDoctors = $doctors->showDoctors($adminId);
-
-
+print_r($showDoctors);
 ?>
 
 <!DOCTYPE html>
@@ -107,40 +106,43 @@ $showDoctors = $doctors->showDoctors($adminId);
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($showDoctors as $doctors) {
-                                            $docId              = $doctors['doctor_id'];
-                                            $docRegNo           = $doctors['doctor_reg_no'];
-                                            $docName            = $doctors['doctor_name'];
-                                            $docSpecialization  = $doctors['doctor_specialization'];
-                                            $docDeg             = $doctors['doctor_degree'];
-                                            $docAlsoWith        = $doctors['also_with'];
-                                            $docAddrs           = $doctors['doctor_address'];
-                                            $docEmail           = $doctors['doctor_email'];
-                                            $docPhno            = $doctors['doctor_phno'];
-
-                                            //initilizing Doctors Category
-                                            $docSplz = $DoctorCategory->showDoctorCategoryById($docSpecialization);
-                                            foreach($docSplz as $docSplzShow){
-                                                $docSpecializn = $docSplzShow['category_name'];
-
-                                                echo'<tr>
-                                                    <td>'.$docId.'</td>
-                                                    <td>'.$docName.'</td>
-                                                    <td>'.$docSpecializn.'</td>
-                                                    <td>'.$docPhno.'</td>
-                                                    <td>'.$docEmail.'</td>
-                                                    <td>
-                                                    <a href="dr-prescription.php?prescription='.$docId.'" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
-                                                    
-                                                    <a class="" data-toggle="modal" data-target="#docModal" onclick="docViewAndEdit('.$docId.')"><i class="fas fa-edit"></i></a>
-                                                    
-                                                    <a class="delete-btn" data-id="'.$docId.'"  title="Delete"><i class="far fa-trash-alt"></i></a>
-
-                                                    
-                                                        </td>
-                                                </tr>';
+                                        if(is_array($showDoctors)){
+                                            foreach ($showDoctors as $doctors) {
+                                                $docId              = $doctors['doctor_id'];
+                                                $docRegNo           = $doctors['doctor_reg_no'];
+                                                $docName            = $doctors['doctor_name'];
+                                                $docSpecialization  = $doctors['doctor_specialization'];
+                                                $docDeg             = $doctors['doctor_degree'];
+                                                $docAlsoWith        = $doctors['also_with'];
+                                                $docAddrs           = $doctors['doctor_address'];
+                                                $docEmail           = $doctors['doctor_email'];
+                                                $docPhno            = $doctors['doctor_phno'];
+    
+                                                //initilizing Doctors Category
+                                                $docSplz = $DoctorCategory->showDoctorCategoryById($docSpecialization);
+                                                foreach($docSplz as $docSplzShow){
+                                                    $docSpecializn = $docSplzShow['category_name'];
+    
+                                                    echo'<tr>
+                                                        <td>'.$docId.'</td>
+                                                        <td>'.$docName.'</td>
+                                                        <td>'.$docSpecializn.'</td>
+                                                        <td>'.$docPhno.'</td>
+                                                        <td>'.$docEmail.'</td>
+                                                        <td>
+                                                        <a href="dr-prescription.php?prescription='.$docId.'" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
+                                                        
+                                                        <a class="" data-toggle="modal" data-target="#docModal" onclick="docViewAndEdit('.$docId.')"><i class="fas fa-edit"></i></a>
+                                                        
+                                                        <a class="delete-btn" data-id="'.$docId.'"  title="Delete"><i class="far fa-trash-alt"></i></a>
+    
+                                                        
+                                                            </td>
+                                                    </tr>';
+                                                }
                                             }
                                         }
+                                        
                                         ?>
                                     </tbody>
                                 </table>

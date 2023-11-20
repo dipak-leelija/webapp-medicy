@@ -17,8 +17,13 @@ $appointments   = new Appointments;
 $IdsGeneration  = new IdsGeneration;
 $Patients       = new Patients;
 $Utility        = new Utility;
+$doctors        = new Doctors;
+
+                                                
 
 $currentURL = $Utility->currentUrl();
+
+$showDoctors = $doctors->showDoctors($adminId);
 
 $test = false;
 if (isset($_GET['test'])) {
@@ -345,14 +350,15 @@ if (isset($_POST['submit'])) {
                                                 required>
                                                 <option disabled selected>Select Doctor</option>
                                                 <?php
-                                                $doctors = new Doctors();
-
-                                                $showDoctors = $doctors->showDoctors($adminId);
-                                                foreach ($showDoctors as $showDoctorDetails) {
-                                                    $doctorId = $showDoctorDetails['doctor_id'];
-                                                    $doctorName = $showDoctorDetails['doctor_name'];
-                                                    echo'<option value='.$doctorId.'>'. $doctorName.'</option>';
+                                                
+                                                if(is_array($showDoctors)){
+                                                    foreach ($showDoctors as $showDoctorDetails) {
+                                                        $doctorId = $showDoctorDetails['doctor_id'];
+                                                        $doctorName = $showDoctorDetails['doctor_name'];
+                                                        echo'<option value='.$doctorId.'>'. $doctorName.'</option>';
+                                                    }
                                                 }
+                                                
                                                 ?>
 
                                             </select>
@@ -373,10 +379,17 @@ if (isset($_POST['submit'])) {
 
                                     <div class="row justify-content-end">
 
-                                        <div class="form-group col-sm-4">
+                                        <?php 
+                                        if($showDoctors == null){
+                                            echo '
+                                            <label style="color: red;">ADD DOCTOR DETAILS FIRST</label>';
+                                        }else{
+                                            echo '<div class="form-group col-sm-4">
                                             <button type="submit" name="submit"
                                                 class="btn-block btn-primary">Submit</button>
-                                        </div>
+                                        </div>';
+                                        }
+                                        ?>
 
                                     </div>
 

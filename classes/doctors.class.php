@@ -31,7 +31,6 @@ class Doctors extends DatabaseConnection{
 
 
     function showDoctors($adminId) {
-        $data = array();
         try {
             $selectDoctors = "SELECT * FROM `doctors` WHERE admin_id = ?";
             $stmt = $this->conn->prepare($selectDoctors);
@@ -44,9 +43,11 @@ class Doctors extends DatabaseConnection{
                 $result = $stmt->get_result();
     
                 if ($result->num_rows > 0) {
+                    $data = array();
                     while ($row = $result->fetch_assoc()) {
                         $data[] = $row;
                     }
+                    return $data;
                 }else{
                     return null;
                 }
@@ -57,7 +58,7 @@ class Doctors extends DatabaseConnection{
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
-        return $data;
+        return 0;
     }
     
 
