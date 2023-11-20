@@ -101,7 +101,6 @@ $showAppointments = $appoinments->appointmentsDisplay($adminId);
                                                     $prescriptionViewLink = "prescription.php?prescription=$appointmentID";
 
                                                     $showDoctorsForPatient = $Doctors->showDoctorsForPatient($getDoctorForPatient);
-                                                    print_r($showDoctorsForPatient);
 
                                                     // echo $appointmentTableID.'<br>';
                                                     if($showDoctorsForPatient != NULL){
