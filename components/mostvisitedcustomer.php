@@ -70,7 +70,7 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
             var customerId = mostVisitCustomerData.map(item => item.customer_id);
             customerId = JSON.stringify(customerId);
             
-            mostVisitedCustomerDataUrl = `<?php echo LOCAL_DIR ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
+            mostVisitedCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
             xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send(null);
@@ -98,7 +98,7 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
     function mostVistedCustomerByDt() {
         var mostVistedCustomerDt = document.getElementById('mostVisiteCustomerDt').value;
 
-        mostVstCstmrDtUrl = `<?php echo LOCAL_DIR ?>ajax/most-visit-and-purchase-customer.ajax.php?mostVstCstmrByDt=${mostVistedCustomerDt}`;
+        mostVstCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostVstCstmrByDt=${mostVistedCustomerDt}`;
         xmlhttp.open("GET", mostVstCstmrDtUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
@@ -113,7 +113,7 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         var mostVistedCustomerStartDt = document.getElementById('mostVisiteCustomerStartDate').value;
         var mostVistedCustomerEndtDt = document.getElementById('mostVisiteCustomerEndDate').value;
 
-        mostVstCstmrDtRngUrl = `<?php echo LOCAL_DIR ?>ajax/most-visit-and-purchase-customer.ajax.php?mostVisitStartDt=${mostVistedCustomerStartDt}&mostVisitEndDt=${mostVistedCustomerEndtDt}`;
+        mostVstCstmrDtRngUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostVisitStartDt=${mostVistedCustomerStartDt}&mostVisitEndDt=${mostVistedCustomerEndtDt}`;
         xmlhttp.open("GET", mostVstCstmrDtRngUrl, false);
         xmlhttp.send(null);
 
@@ -166,7 +166,7 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         var customerId = mostVstCutmrData.map(item => item.customer_id);
         customerId = JSON.stringify(customerId);
 
-        mostVisitedCustomerDataUrl = `<?php echo LOCAL_DIR ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
+        mostVisitedCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
         xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
