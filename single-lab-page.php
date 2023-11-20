@@ -15,7 +15,7 @@ if (isset($_GET['labtypeid'])) {
     //Fetching Test Categories
     $labTypes = new LabTypes();
     $showLabType = $labTypes->showLabTypesById($showLabtypeId);
-
+    
     foreach ($showLabType as $labtype) {
         $labTypeImge = $labtype['image'];
         $labTypeName = $labtype['test_type_name'];
@@ -79,7 +79,7 @@ if (isset($_GET['labtypeid'])) {
                 <section class="main_section">
                     <div class="single_page">
                         <div class="image">
-                            <img src="<?php echo $labTypeImge; ?>" alt="Lab Type Image">
+                            <img src="<?php echo LABTEST_IMG_PATH.$labTypeImge; ?>" alt="Lab Type Image">
 
                             <div class="provide">
                                 <h2>Provided by</h2>
@@ -201,11 +201,11 @@ if (isset($_GET['labtypeid'])) {
                 <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
                 <!-- Page level plugins -->
-                <script src="<?php echo PLUGIN_PATH ?>chart.js/Chart.min.js"></script>
+                <!-- <script src="<?php echo PLUGIN_PATH ?>chart.js/Chart.min.js"></script> -->
 
                 <!-- Page level custom scripts -->
-                <script src="<?php echo JS_PATH ?>demo/chart-area-demo.js"></script>
-                <script src="<?php echo JS_PATH ?>demo/chart-pie-demo.js"></script>
+                <!-- <script src="<?php echo JS_PATH ?>demo/chart-area-demo.js"></script>
+                <script src="<?php echo JS_PATH ?>demo/chart-pie-demo.js"></script> -->
 
 </body>
 

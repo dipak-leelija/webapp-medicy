@@ -19,7 +19,11 @@ $subTests = new SubTests;
 if (isset($_POST['submit-lab-type']) == true) {
 
     $img = $_FILES['lab-image']['name'];
+    // echo "img name : $img<br>";
+
     $tempImgname = $_FILES['lab-image']['tmp_name'];
+    // echo "tempImg name : $tempImgname<br>";
+
     $imgFolder = "img/lab-tests/" . $img;
     move_uploaded_file($tempImgname, $imgFolder);
 
@@ -36,14 +40,14 @@ if (isset($_POST['submit-lab-type']) == true) {
     $testDsc = str_replace("'", "\\", $testDsc);
 
     //Object initilizing for Adding Main/Parent Tests/Labs
-    $addLabType = $labTypes->addLabTypes($imgFolder, $testName, $testPvdBy, $testDsc);
+    $addLabType = $labTypes->addLabTypes($img, $testName, $testPvdBy, $testDsc);
 }
 // End of Adding Lab Category
 
 //######################################################
 //Object initilizing for Fetching Tests/Labs
 $showLabTypes = $labTypes->showLabTypes();
-
+// print_r($showLabTypes);
 //######################################################
 // Adding Sub tests Category
 if (isset($_POST['subtest-submit']) == true) {
@@ -172,7 +176,7 @@ if (isset($_POST['subtest-submit']) == true) {
 
                                                                                     echo '<div class="col-sm-3">
                                                                                 <div class="card">
-                                                                                    <img src="img/lab-tests/test_photo.png"
+                                                                                    <img src='.LABTEST_IMG_PATH.$showLabTypesShow['image'].'
                                                                                         class="card-img-top" alt="...">
                                                                                         <a href="' . $delTestTypeId . '" onclick="return deleteConfirmation()" ><i class="far fa-trash-alt delete" ></i></a>
                                                                                     
