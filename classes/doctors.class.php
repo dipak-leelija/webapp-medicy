@@ -64,16 +64,40 @@ class Doctors extends DatabaseConnection{
 
 
 
+
  
-    function showDoctorsForPatient($getDoctorForPatient){
-        $data = array();
-        $selectDoctorsForPatient = "SELECT * FROM `doctors` WHERE `doctors`.`doctor_id`  = '$getDoctorForPatient'";
-        $selectDoctorsForPatientQuery = $this->conn->query($selectDoctorsForPatient);
-        while($result = $selectDoctorsForPatientQuery->fetch_array()){
-            $data[] = $result;
+    function showDoctorsForPatient($getDoctorForPatient) {
+        try {
+            
+            $selectDoctorsForPatient = "SELECT * FROM `doctors` WHERE `doctors`.`doctor_id` = ?";
+            $selectDoctorsForPatientQuery = $this->conn->prepare($selectDoctorsForPatient);
+    
+            if (!$selectDoctorsForPatientQuery) {
+                throw new Exception("Query preparation failed.");
+            }
+
+            // Bind parameter
+            $selectDoctorsForPatientQuery->bind_param("s", $getDoctorForPatient);
+    
+            $selectDoctorsForPatientQuery->execute();
+    
+            $result = $selectDoctorsForPatientQuery->get_result();
+            
+            if($result->num_rows > 0){
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+                }
+                return $data;
+            }else{
+                return null;
+            }
+        } catch (Exception $e) {
+            error_log("Error in showDoctorsForPatient: " . $e->getMessage());
         }
-        return $data;
-    }// end showDoctorsbyId function
+        return 0;
+    }
+    
 
 
 
