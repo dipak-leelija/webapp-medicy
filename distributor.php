@@ -1,9 +1,9 @@
 <?php
 require_once 'config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'distributor.class.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'distributor.class.php';
 
 $page = "distributor";
 
@@ -27,9 +27,7 @@ $Distributor = new Distributor();
 
     <!-- Custom fonts for this template-->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -45,7 +43,7 @@ $Distributor = new Distributor();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -55,7 +53,7 @@ $Distributor = new Distributor();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -82,26 +80,28 @@ $Distributor = new Distributor();
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    $showDistributor = $Distributor->showDistributor();
-                                                    foreach($showDistributor as $rowDistributor){
+                                                $showDistributor = $Distributor->showDistributor();
+                                                if (is_array($showDistributor)) {
+                                                    foreach ($showDistributor as $rowDistributor) {
                                                         $distributorId      = $rowDistributor['id'];
                                                         $distributorName    = $rowDistributor['name'];
                                                         $distributorPhno    = $rowDistributor['phno'];
                                                         $distributorPin     = $rowDistributor['area_pin_code'];
 
                                                         echo '<tr>
-                                                                <td>'.$distributorId.'</td>
-                                                                <td>'.$distributorName.'</td>
-                                                                <td>'.$distributorPhno.'</td>
-                                                                <td>'.$distributorPin.'</td>
+                                                                <td>' . $distributorId . '</td>
+                                                                <td>' . $distributorName . '</td>
+                                                                <td>' . $distributorPhno . '</td>
+                                                                <td>' . $distributorPin . '</td>
                                                                 <td>
-                                                                    <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit('.$distributorId.')"><i class="fas fa-edit"></i></a>
+                                                                    <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a>
 
-                                                                    <a class="mx-1" id="delete-btn" data-id="'.$distributorId.'"><i class="far fa-trash-alt"></i></a>
+                                                                    <a class="mx-1" id="delete-btn" data-id="' . $distributorId . '"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                                </tr>';
                                                     }
-                                                    ?>
+                                                }
+                                                ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -119,58 +119,41 @@ $Distributor = new Distributor();
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="distributor-name">Distributor Name</Address>
                                             </label>
-                                            <input class="form-control" id="distributor-name" name="distributor-name"
-                                                placeholder="Distributor Name" maxlength="155" required>
+                                            <input class="form-control" id="distributor-name" name="distributor-name" placeholder="Distributor Name" maxlength="155" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="distributor-phno">Mobile Number</Address>
                                             </label>
-                                            <input type="number" class="form-control" id="distributor-phno"
-                                                name="distributor-phno" placeholder="Distributor Mobile Number"
-                                                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                maxlength="10"
-                                                oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);"
-                                                minlength="10" required>
+                                            <input type="number" class="form-control" id="distributor-phno" name="distributor-phno" placeholder="Distributor Mobile Number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);" minlength="10" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="distributor-email">Email Address</Address>
                                             </label>
-                                            <input type="email" class="form-control" id="distributor-email"
-                                                name="distributor-email" placeholder="Distributor Email Address"
-                                                maxlength="50">
+                                            <input type="email" class="form-control" id="distributor-email" name="distributor-email" placeholder="Distributor Email Address" maxlength="50">
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="distributor-area-pin">Area PIN Code</Address>
                                             </label>
-                                            <input type="number" class="form-control" id="distributor-area-pin"
-                                                name="distributor-area-pin" placeholder="Distributor Area PIN Code"
-                                                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                maxlength="7"
-                                                oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);"
-                                                minlength="7" required>
+                                            <input type="number" class="form-control" id="distributor-area-pin" name="distributor-area-pin" placeholder="Distributor Area PIN Code" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="7" oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);" minlength="7" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="distributor-address">Address</Address></label>
-                                            <textarea name="distributor-address" id="distributor-address"
-                                                class="form-control" cols="30" rows="3" maxlength="255"
-                                                required></textarea>
+                                            <textarea name="distributor-address" id="distributor-address" class="form-control" cols="30" rows="3" maxlength="255" required></textarea>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="distributor-dsc">Description</Address></label>
-                                            <textarea name="distributor-dsc" id="distributor-dsc" class="form-control"
-                                                cols="30" rows="3" maxlength="355"></textarea>
+                                            <textarea name="distributor-dsc" id="distributor-dsc" class="form-control" cols="30" rows="3" maxlength="355"></textarea>
                                         </div>
 
 
 
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                            <button class="btn btn-primary me-md-2" name="add-distributor"
-                                                type="submit">Add Distributor</button>
+                                            <button class="btn btn-primary me-md-2" name="add-distributor" type="submit">Add Distributor</button>
                                         </div>
                                     </form>
                                 </div>
@@ -187,7 +170,7 @@ $Distributor = new Distributor();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -197,8 +180,7 @@ $Distributor = new Distributor();
     <!-- End of Page Wrapper -->
 
     <!-- Manufacturer View and Edit Modal -->
-    <div class="modal fade" id="distributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="distributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -225,7 +207,7 @@ $Distributor = new Distributor();
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
-    
+
     <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
@@ -243,59 +225,59 @@ $Distributor = new Distributor();
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
     <script>
-    //View and Edit Manufacturer function
-    distViewAndEdit = (distributorId) => {
-        let ViewAndEdit = distributorId;
-        let url = "ajax/distributor.View.ajax.php?Id=" + ViewAndEdit;
-        $(".distributorModal").html(
-            '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
-            url + '"></iframe>');
-    } // end of viewAndEdit function
+        //View and Edit Manufacturer function
+        distViewAndEdit = (distributorId) => {
+            let ViewAndEdit = distributorId;
+            let url = "ajax/distributor.View.ajax.php?Id=" + ViewAndEdit;
+            $(".distributorModal").html(
+                '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+        } // end of viewAndEdit function
 
 
 
-    //delete distributor
-    $(document).ready(function() {
-        $(document).on("click", "#delete-btn", function() {
+        //delete distributor
+        $(document).ready(function() {
+            $(document).on("click", "#delete-btn", function() {
 
-            swal({
-                title: "Are you sure?",
-                text: "Want to Delete This Distributor?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
+                swal({
+                        title: "Are you sure?",
+                        text: "Want to Delete This Distributor?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
 
-                distributorId = $(this).data("id");
-                btn = this;
+                            distributorId = $(this).data("id");
+                            btn = this;
 
-                $.ajax({
-                    url: "ajax/distributor.Delete.ajax.php",
-                    type: "POST",
-                    data: {
-                        id: distributorId
-                    },
-                    success: function(data) {
-                        if (data == 1) {
-                            $(btn).closest("tr").fadeOut()
-                            swal("Deleted", "Distributor Has Been Deleted", "success");
-                        } else {
-                            // $("#error-message").html("Deletion Field !!!").slideDown();
-                            // $("success-message").slideUp();
-                            swal("Failed", data, "error");
+                            $.ajax({
+                                url: "ajax/distributor.Delete.ajax.php",
+                                type: "POST",
+                                data: {
+                                    id: distributorId
+                                },
+                                success: function(data) {
+                                    if (data == 1) {
+                                        $(btn).closest("tr").fadeOut()
+                                        swal("Deleted", "Distributor Has Been Deleted", "success");
+                                    } else {
+                                        // $("#error-message").html("Deletion Field !!!").slideDown();
+                                        // $("success-message").slideUp();
+                                        swal("Failed", data, "error");
+                                    }
+                                }
+                            });
+
                         }
-                    }
-                });
+                        return false;
+                    });
 
-                }
-            return false;
-            });
+            })
 
         })
-
-    })
     </script>
 
 

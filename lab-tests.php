@@ -1,14 +1,14 @@
-<?php 
+<?php
 $page = "lab-tests";
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 
-require_once CLASS_DIR.'labtypes.class.php';
-require_once CLASS_DIR.'sub-test.class.php';
- 
+require_once CLASS_DIR . 'labtypes.class.php';
+require_once CLASS_DIR . 'sub-test.class.php';
+
 
 $labTypes = new LabTypes;
 $subTests = new SubTests;
@@ -16,28 +16,28 @@ $subTests = new SubTests;
 
 //######################################################
 // Adding Lab Category
-    if (isset($_POST['submit-lab-type'])== true) {
+if (isset($_POST['submit-lab-type']) == true) {
 
-        $img = $_FILES['lab-image']['name'];
-        $tempImgname = $_FILES['lab-image']['tmp_name'];
-        $imgFolder = "img/lab-tests/".$img;
-        move_uploaded_file($tempImgname, $imgFolder);
-        
-        $testName = $_POST['test-name'];
-        $testName = str_replace("<", "&lt", $testName);
-        $testName = str_replace("'", "\\", $testName);
-    
-        $testPvdBy = $_POST['provided-by'];
-        $testPvdBy = str_replace("<", "&lt", $testPvdBy);
-        $testPvdBy = str_replace("'", "\\", $testPvdBy);
-                        
-        $testDsc = $_POST['test-dsc'];
-        $testDsc = str_replace("<", "&lt", $testDsc);
-        $testDsc = str_replace("'", "\\", $testDsc);
-        
-        //Object initilizing for Adding Main/Parent Tests/Labs
-        $addLabType = $labTypes->addLabTypes($imgFolder, $testName, $testPvdBy, $testDsc);
-    }
+    $img = $_FILES['lab-image']['name'];
+    $tempImgname = $_FILES['lab-image']['tmp_name'];
+    $imgFolder = "img/lab-tests/" . $img;
+    move_uploaded_file($tempImgname, $imgFolder);
+
+    $testName = $_POST['test-name'];
+    $testName = str_replace("<", "&lt", $testName);
+    $testName = str_replace("'", "\\", $testName);
+
+    $testPvdBy = $_POST['provided-by'];
+    $testPvdBy = str_replace("<", "&lt", $testPvdBy);
+    $testPvdBy = str_replace("'", "\\", $testPvdBy);
+
+    $testDsc = $_POST['test-dsc'];
+    $testDsc = str_replace("<", "&lt", $testDsc);
+    $testDsc = str_replace("'", "\\", $testDsc);
+
+    //Object initilizing for Adding Main/Parent Tests/Labs
+    $addLabType = $labTypes->addLabTypes($imgFolder, $testName, $testPvdBy, $testDsc);
+}
 // End of Adding Lab Category
 
 //######################################################
@@ -46,7 +46,7 @@ $showLabTypes = $labTypes->showLabTypes();
 
 //######################################################
 // Adding Sub tests Category
-if (isset($_POST['subtest-submit'])== true) {
+if (isset($_POST['subtest-submit']) == true) {
 
 
     $subTestName = $_POST['subtest-name'];
@@ -56,7 +56,7 @@ if (isset($_POST['subtest-submit'])== true) {
     $parentTestId = $_POST['parent-test'];
     $parentTestId = str_replace("<", "&lt", $parentTestId);
     $parentTestId = str_replace("'", "\\", $parentTestId);
-                    
+
     $ageGroup = $_POST['age-group'];
     $ageGroup = str_replace("<", "&lt", $ageGroup);
     $ageGroup = str_replace("'", "\\", $ageGroup);
@@ -103,9 +103,7 @@ if (isset($_POST['subtest-submit'])== true) {
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -119,7 +117,7 @@ if (isset($_POST['subtest-submit'])== true) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -129,7 +127,7 @@ if (isset($_POST['subtest-submit'])== true) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -143,10 +141,6 @@ if (isset($_POST['subtest-submit'])== true) {
                                 <div class="row">
                                     <div class="col-md-6">
                                         <h6 class="m-0 font-weight-bold text-primary">Lab Tests</h6>
-                                    </div>
-                                    <div class="col-md-6 text-right">
-                                        <a data-toggle="modal" data-target="#labPatientSelection"><button
-                                                class="btn btn-primary"><i class="fas fa-edit"></i>Book Test Appointment</button></a>
                                     </div>
                                 </div>
 
@@ -166,39 +160,39 @@ if (isset($_POST['subtest-submit'])== true) {
                                                                             <?php
                                                                             if ($showLabTypes == 0) {
                                                                                 echo "No Test Type Avilable.";
-                                                                            }else{
-                                                                            foreach ($showLabTypes as $showLabTypesShow) {
-                                                                                $testTypeId = $showLabTypesShow['id'];
-                                                                                $testName = $showLabTypesShow['test_type_name'];
-                                                                                $testDsc = $showLabTypesShow['dsc'];
-                                                                                $testPvdBy = $showLabTypesShow['provided_by'];
+                                                                            } else {
+                                                                                foreach ($showLabTypes as $showLabTypesShow) {
+                                                                                    $testTypeId = $showLabTypesShow['id'];
+                                                                                    $testName = $showLabTypesShow['test_type_name'];
+                                                                                    $testDsc = $showLabTypesShow['dsc'];
+                                                                                    $testPvdBy = $showLabTypesShow['provided_by'];
 
-                                                                                $delTestTypeId = "test-type-delete.php?deletetestype=".$testTypeId;
-                                                                            
+                                                                                    $delTestTypeId = "test-type-delete.php?deletetestype=" . $testTypeId;
 
-                                                                                echo '<div class="col-sm-3">
+
+                                                                                    echo '<div class="col-sm-3">
                                                                                 <div class="card">
                                                                                     <img src="img/lab-tests/test_photo.png"
                                                                                         class="card-img-top" alt="...">
-                                                                                        <a href="'.$delTestTypeId.'" onclick="return deleteConfirmation()" ><i class="far fa-trash-alt delete" ></i></a>
+                                                                                        <a href="' . $delTestTypeId . '" onclick="return deleteConfirmation()" ><i class="far fa-trash-alt delete" ></i></a>
                                                                                     
                                                                                     <div class="card-body">
-                                                                                        <h5 class="card-title">'.$testName.'</h5>
+                                                                                        <h5 class="card-title">' . $testName . '</h5>
                                                                                     </div>
                                                                                     <div class="card-body">
-                                                                                        <p class="card-text">'.substr($testDsc, 0, 90).'</p>
+                                                                                        <p class="card-text">' . substr($testDsc, 0, 90) . '</p>
                                                                                     </div>
                                                                                     <div
                                                                                         class="text-center mb-4 view_edit">
-                                                                                        <a href="single-lab-page.php?labtypeid='.$testTypeId.'"
+                                                                                        <a href="single-lab-page.php?labtypeid=' . $testTypeId . '"
                                                                                             class="btn btn-sm btn-primary mx-4 view">View</a>
 
-                                                                                        <a class="btn btn-sm btn-primary mx-4 editCategory" data-bs-toggle="modal" data-bs-target="#LabCategoryEditModal" onclick="LabCategoryEditModal('.$testTypeId.')">Edit</a>
+                                                                                        <a class="btn btn-sm btn-primary mx-4 editCategory" data-bs-toggle="modal" data-bs-target="#LabCategoryEditModal" onclick="LabCategoryEditModal(' . $testTypeId . ')">Edit</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>';
+                                                                                }
                                                                             }
-                                                                        }
 
                                                                             ?>
                                                                         </div>
@@ -234,8 +228,7 @@ if (isset($_POST['subtest-submit'])== true) {
 
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="name">Provided By</Address></label>
-                                                <textarea class="form-control" name="provided-by" id="" cols="30"
-                                                    rows="5"></textarea>
+                                                <textarea class="form-control" name="provided-by" id="" cols="30" rows="5"></textarea>
                                             </div>
                                         </div>
 
@@ -246,15 +239,13 @@ if (isset($_POST['subtest-submit'])== true) {
                                             </div>
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="name">Description</label>
-                                                <textarea class="form-control" name="test-dsc" id="" cols="30"
-                                                    rows="5"></textarea>
+                                                <textarea class="form-control" name="test-dsc" id="" cols="30" rows="5"></textarea>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                                        <button class="btn btn-success me-md-2" type="submit"
-                                            name="submit-lab-type">Submit</button>
+                                        <button class="btn btn-success me-md-2" type="submit" name="submit-lab-type">Submit</button>
                                     </div>
                                 </form>
                             </div>
@@ -275,8 +266,8 @@ if (isset($_POST['subtest-submit'])== true) {
                                             <select name="parent-test" class="form-control" id="parent-test" required>
                                                 <option value="" disabled selected>Select Main Test</option>
                                                 <?php
-                                                foreach($showLabTypes as $labTypeName){
-                                                    echo '<option value="'.$labTypeName['id'].'">'.$labTypeName['test_type_name'].'</option>';
+                                                foreach ($showLabTypes as $labTypeName) {
+                                                    echo '<option value="' . $labTypeName['id'] . '">' . $labTypeName['test_type_name'] . '</option>';
                                                 }
                                                 ?>
 
@@ -286,8 +277,7 @@ if (isset($_POST['subtest-submit'])== true) {
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="test-prep">What preparation is needed for this
                                                 Checkup?</Address></label>
-                                            <textarea class="form-control" id="test-prep" name="test-prep" cols="30"
-                                                rows="4" required></textarea>
+                                            <textarea class="form-control" id="test-prep" name="test-prep" cols="30" rows="4" required></textarea>
                                         </div>
 
                                         <div class="col-md-12">
@@ -304,13 +294,11 @@ if (isset($_POST['subtest-submit'])== true) {
                                     <div class="col-md-6">
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="subtest-name"> Sub Test Name</label>
-                                            <input class="form-control" id="subtest-name" name="subtest-name"
-                                                type="text" required>
+                                            <input class="form-control" id="subtest-name" name="subtest-name" type="text" required>
                                         </div>
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="subtest-dsc">Description</label>
-                                            <textarea class="form-control" id="subtest-dsc" name="subtest-dsc" cols="30"
-                                                rows="4" required></textarea>
+                                            <textarea class="form-control" id="subtest-dsc" name="subtest-dsc" cols="30" rows="4" required></textarea>
                                         </div>
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="price">Price</label>
@@ -320,8 +308,7 @@ if (isset($_POST['subtest-submit'])== true) {
                                 </div>
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                                    <button class="btn btn-success me-md-2" name="subtest-submit"
-                                        type="submit">Submit</button>
+                                    <button class="btn btn-success me-md-2" name="subtest-submit" type="submit">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -337,7 +324,7 @@ if (isset($_POST['subtest-submit'])== true) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -356,40 +343,13 @@ if (isset($_POST['subtest-submit'])== true) {
 
 
 
-    <!-- Lab ptient selection Modal -->
-    <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Choose Patient type</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body d-flex justify-content-around">
-                    <a class="btn btn-primary mx-4" href="lab-entry.php">New Patient</a>
-                    or
-                    <a class="btn btn-primary mx-4" href="lab-patient-selection.php">Returning Patient</a>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end Lab ptient selection Modal -->
-
     <!-- Category Edit Modal -->
-    <div class="modal fade" id="LabCategoryEditModal" tabindex="-1" aria-labelledby="LabCategoryEditModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="LabCategoryEditModal" tabindex="-1" aria-labelledby="LabCategoryEditModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editNicheDetails">Edit Lab Test Category</h5>
-                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i
-                            class="far fa-times-circle"></i></button>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="far fa-times-circle"></i></button>
                 </div>
                 <div class="modal-body">
 

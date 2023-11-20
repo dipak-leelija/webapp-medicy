@@ -92,6 +92,7 @@ if (isset($_GET['return'])) {
                                             <tbody>
                                                 <?php
                                                     $showManufacturer = $Manufacturer->showManufacturer();
+                                                    if(is_array($showManufacturer)){
                                                     foreach ($showManufacturer as $rowManufacturer) {
                                                         $manufacturerId          = $rowManufacturer['id'];
                                                         $manufacturerName        = $rowManufacturer['name'];
@@ -110,7 +111,7 @@ if (isset($_GET['return'])) {
                                                                 </td>
                                                             </tr>';
 
-                                                    }
+                                                    }}
                                                 ?>
                                             </tbody>
                                         </table>

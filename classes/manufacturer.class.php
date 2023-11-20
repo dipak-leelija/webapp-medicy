@@ -67,6 +67,7 @@ class Manufacturer extends DatabaseConnection{
 
 
 
+<<<<<<< HEAD
     function showManufacturer() {
         try {
             $data = array();
@@ -95,6 +96,22 @@ class Manufacturer extends DatabaseConnection{
         return 0;
     }
     
+=======
+    function showManufacturer(){
+        try{
+            $data = [];
+            $select         = " SELECT * FROM `manufacturer`";
+            $selectQuery    = $this->conn->query($select);
+            while ($result  = $selectQuery->fetch_array() ) {
+                $data[] = $result;
+            }
+            return $data;
+        }catch(Exception $e){
+            $e->getMessage();
+        }
+       
+    }//eof showManufacturer functiion
+>>>>>>> 23546e6362dc21b1f4421a3d9b33bcb6c154061a
 
 
 
