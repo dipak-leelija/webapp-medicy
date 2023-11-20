@@ -67,7 +67,7 @@ class HealthCare extends DatabaseConnection
 
 
 
-    // update helthcare details function ------------------
+    // update healthcare details function ------------------
 
     function updateHealthCare($imgFolder, $healthCareName, $healthCareAddress1, $healthCareAddress2, $healthCareCity, $healthCareDist, $healthCarePin, $healthCareState, $healthCareEmail, $healthCareHelpLineNo, $healthCareApntBookingNo, $adminId){
         try {
