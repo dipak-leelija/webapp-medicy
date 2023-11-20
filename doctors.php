@@ -30,7 +30,6 @@ if(isset($_POST['add-doc']) == true){
 }
 
 $showDoctors = $doctors->showDoctors($adminId);
-print_r($showDoctors);
 ?>
 
 <!DOCTYPE html>
