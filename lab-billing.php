@@ -42,7 +42,7 @@ if (isset($_SESSION['appointment-data'])) {
     $patientState       = $data['patientState'];
     $patientDoctor      = $data['patientDoctor'];
 
-    session_unset($_SESSION['appointment-data']);
+    unset($_SESSION['appointment-data']);
 }
 
 
