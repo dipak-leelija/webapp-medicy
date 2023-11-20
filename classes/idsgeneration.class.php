@@ -7,6 +7,7 @@ class IdsGeneration extends DatabaseConnection{
 
         $select = "SELECT * FROM patient_details";
         $selectQuery = $this->conn->query($select);
+        $data = [];
         while($result = $selectQuery->fetch_array()){
             $data[]	= $result;
         }

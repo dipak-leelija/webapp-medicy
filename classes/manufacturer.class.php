@@ -68,12 +68,18 @@ class Manufacturer extends DatabaseConnection{
 
 
     function showManufacturer(){
-        $select         = " SELECT * FROM `manufacturer`";
-        $selectQuery    = $this->conn->query($select);
-        while ($result  = $selectQuery->fetch_array() ) {
-            $data[] = $result;
+        try{
+            $data = [];
+            $select         = " SELECT * FROM `manufacturer`";
+            $selectQuery    = $this->conn->query($select);
+            while ($result  = $selectQuery->fetch_array() ) {
+                $data[] = $result;
+            }
+            return $data;
+        }catch(Exception $e){
+            $e->getMessage();
         }
-        return $data;
+       
     }//eof showManufacturer functiion
 
 
