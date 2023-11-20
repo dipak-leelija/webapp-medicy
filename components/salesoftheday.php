@@ -109,7 +109,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
         let sodDateSelect = document.getElementById('salesOfTheDayDate').value;
 
         var xmlhttp = new XMLHttpRequest();
-        var sodOnDateUrl = `<?php echo ROOT_DIR ?>ajax/sod-pod-data-search.ajax.php?sodONDate=${sodDateSelect}`;
+        var sodOnDateUrl = `<?php echo URL ?>ajax/sod-pod-data-search.ajax.php?sodONDate=${sodDateSelect}`;
         xmlhttp.open('GET', sodOnDateUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
@@ -127,7 +127,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
         let sodEndDate = document.getElementById('sodEndDt').value;
 
         var xmlhttp = new XMLHttpRequest();
-        var sodOnDateRangeUrl = `<?php echo ROOT_DIR ?>ajax/sod-pod-data-search.ajax.php?sodStartDate=${sodStartDate}&sodEndDate=${sodEndDate}`;
+        var sodOnDateRangeUrl = `<?php echo URL ?>ajax/sod-pod-data-search.ajax.php?sodStartDate=${sodStartDate}&sodEndDate=${sodEndDate}`;
         xmlhttp.open('GET', sodOnDateRangeUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);

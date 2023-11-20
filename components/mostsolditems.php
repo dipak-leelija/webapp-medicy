@@ -75,7 +75,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
             productIds = JSON.stringify(productIds);
 
             var xmlhttp = new XMLHttpRequest();
-            mostSoldProdNameUrl = `<?php echo LOCAL_DIR ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}   `;
+            mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}   `;
             xmlhttp.open("GET", mostSoldProdNameUrl, false);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send(dataToSend);
@@ -101,7 +101,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
 
         var xmlhttp = new XMLHttpRequest();
-        mostSoldDtPkrUrl = `<?php echo LOCAL_DIR ?>ajax/components-most-sold-items.ajax.php?mostSoldByDt=${mostSolddatePicker}`;
+        mostSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldByDt=${mostSolddatePicker}`;
         xmlhttp.open("GET", mostSoldDtPkrUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
@@ -118,7 +118,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         var mostSoldEndDate = document.getElementById('mostSoldEndDate').value;
 
         var xmlhttp = new XMLHttpRequest();
-        mostSoldDtPkrUrl = `<?php echo LOCAL_DIR ?>ajax/components-most-sold-items.ajax.php?mostSoldStarDate=${mostSoldStarDate}&mostSoldEndDate=${mostSoldEndDate}`;
+        mostSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldStarDate=${mostSoldStarDate}&mostSoldEndDate=${mostSoldEndDate}`;
         xmlhttp.open("GET", mostSoldDtPkrUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
@@ -173,7 +173,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         var dataToSend = `mostSoldProdId=${productIds}`;
 
         var xmlhttp = new XMLHttpRequest();
-        mostSoldProdNameUrl = `<?php echo LOCAL_DIR ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}`;
+        mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}`;
         xmlhttp.open("GET", mostSoldProdNameUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);

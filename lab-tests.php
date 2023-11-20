@@ -175,9 +175,9 @@ if (isset($_POST['subtest-submit']) == true) {
 
 
                                                                                     echo '<div class="col-sm-3">
-                                                                                <div class="card">
+                                                                                <div class="card mt-3" style="min-width: 14rem; min-height: 20rem; max-height: 20rem;">
                                                                                     <img src='.LABTEST_IMG_PATH.$showLabTypesShow['image'].'
-                                                                                        class="card-img-top" alt="...">
+                                                                                        class="card-img-top mt-2 mh-25 mw-25 min-vw-25 min-vh-25" alt="...">
                                                                                         <a href="' . $delTestTypeId . '" onclick="return deleteConfirmation()" ><i class="far fa-trash-alt delete" ></i></a>
                                                                                     
                                                                                     <div class="card-body">
