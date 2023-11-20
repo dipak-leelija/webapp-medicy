@@ -1,6 +1,6 @@
 <?php
 $page = "dashboard";
-require_once __DIR__. '/config/constant.php';
+require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -101,18 +101,21 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Total Appointments</div>
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    Total Appointments</div>
+                                                <div class="col-auto mr-n3">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </div>
+                                            </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <?php echo count($totalAppointments); ?> </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar-check"></i>
-                                        </div>
+
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800"> </div>
                                     <p class="mb-0 pb-0"><small class="mb-0 pb-0">
-                                           Lab Appointments: <?php  echo ($labAppointment > 0) ? $labAppointment : '0';?></small></p>
+                                            Lab Appointments: <?php echo ($labAppointment > 0) ? $labAppointment : '0'; ?></small></p>
                                 </div>
                             </div>
                         </div>
@@ -128,8 +131,13 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Patient
-                                                Treated
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Patient
+                                                    Treated
+                                                </div>
+                                                <div class="col-auto mr-n3">
+                                                    <i class="fas fa-theater-masks"></i>
+                                                </div>
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
@@ -141,9 +149,6 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-theater-masks"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -164,9 +169,6 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                                 </div>
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-pencil-ruler"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -231,7 +233,8 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
                         <!------------- SALES MARGIN CARD -------------->
                         <!-- <div class="col-xl-6 col-md-12"> -->
-                            <?php //require_once ROOT_COMPONENT . "salesmargin.php"; ?>
+                        <?php //require_once ROOT_COMPONENT . "salesmargin.php"; 
+                        ?>
                         <!-- </div> -->
                         <!------------- END of SALES MARGIN CARD -------------->
 
