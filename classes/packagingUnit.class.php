@@ -5,7 +5,7 @@ class PackagingUnits extends DatabaseConnection{
     function addPackagingUnit($unitName, $addedby, $addedOn, $adminId) {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO packaging_unit (`unit_name`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?)";
+            $insert = "INSERT INTO packaging_type (`unit_name`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?)";
             
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
@@ -35,7 +35,7 @@ class PackagingUnits extends DatabaseConnection{
 
     function updateUnit($unitId, $unitName, $updatedBy, $updatedOn) {
         try {
-            $update = "UPDATE `packaging_unit` SET `unit_name` = ?, `updated_by` = ?, `updated_on` = ? WHERE `id` = ?";
+            $update = "UPDATE `packaging_type` SET `unit_name` = ?, `updated_by` = ?, `updated_on` = ? WHERE `id` = ?";
             
             $stmt = $this->conn->prepare($update);
     
@@ -57,7 +57,7 @@ class PackagingUnits extends DatabaseConnection{
 
 
     function showPackagingUnits(){
-        $select         = " SELECT * FROM packaging_unit";
+        $select         = " SELECT * FROM packaging_type";
         $selectQuery    = $this->conn->query($select);
         while ($result  = $selectQuery->fetch_array() ) {
             $data[] = $result;
@@ -69,7 +69,7 @@ class PackagingUnits extends DatabaseConnection{
 
 
     function showPackagingUnitById($unitId){
-        $select        = " SELECT * FROM packaging_unit WHERE `id` = '$unitId'";
+        $select        = " SELECT * FROM packaging_type WHERE `id` = '$unitId'";
         $selectQuery   = $this->conn->query($select);
         if ( $selectQuery->num_rows > 0) {
             while ($result = $selectQuery->fetch_array() ) {
@@ -84,7 +84,7 @@ class PackagingUnits extends DatabaseConnection{
 
     function deleteUnit($unitId){
 
-        $Delete = "DELETE FROM `packaging_unit` WHERE `packaging_unit`.`id` = '$unitId'";
+        $Delete = "DELETE FROM `packaging_type` WHERE `packaging_type`.`id` = '$unitId'";
         $DeleteQuey = $this->conn->query($Delete);
         return $DeleteQuey;
 
