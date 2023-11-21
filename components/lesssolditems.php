@@ -16,11 +16,11 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div class="dropdown-menu dropdown-menu-right p-3" id="lessSoldDtPickerDiv" style="display: none;margin-top:-16rem;">
+        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="lessSoldDtPickerDiv" style="display: none;">
             <input type="date" id="lessSoldDateInput">
             <button class="btn btn-sm btn-primary" onclick="lessSoldItemsChkDate()" style="height: 2rem;">Find</button>
         </div>
-        <div class="dropdown-menu dropdown-menu-right p-3" id="lessSoldDtRangePickerDiv" style="display: none;margin-top:-16rem;">
+        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="lessSoldDtRangePickerDiv" style="display: none;">
             <label>Start Date</label>
             <input type="date" id="lessSoldStartDate">
             <label>End Date</label>

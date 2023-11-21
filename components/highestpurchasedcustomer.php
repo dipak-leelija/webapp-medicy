@@ -18,11 +18,11 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div class="dropdown-menu dropdown-menu-right p-3" id="mostPurchaseCustomerDtPkr" style="display: none;margin-top:-16rem;">
+        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostPurchaseCustomerDtPkr" style="display: none;">
             <input type="date" id="mostPurchseCustomerDt">
             <button class="btn btn-sm btn-primary" onclick="mostPurchaseCustomerByDt()" style="height: 2rem;">Find</button>
         </div>
-        <div class="dropdown-menu dropdown-menu-right p-3" id="mostPurchseCustomerDtPkrRng" style="display: none;margin-top:-16rem;">
+        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostPurchseCustomerDtPkrRng" style="display: none;">
             <label>Start Date</label>
             <input type="date" id="mostPurchseCustomerStartDate">
             <label>End Date</label>
@@ -60,9 +60,11 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
 
 <script>
+    
+
+
     // =========== most purchase customer chart override function body ==========
     function mostPurchaseCustomerDataFunction(mostPurchaseCustomerData) {
-        console.log(mostPurchaseCustomerData);
 
         if (mostPurchaseCustomerData != null) {
             highestPurchaseCustomerBarChart.data.datasets[0].data = mostPurchaseCustomerData.map(item => item.total_purchase);
@@ -70,7 +72,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             var customerId = mostPurchaseCustomerData.map(item => item.customer_id);
             customerId = JSON.stringify(customerId);
 
-            mostPurchaseCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
+            var mostPurchaseCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
             xmlhttp.open("GET", mostPurchaseCustomerDataUrl, false);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xmlhttp.send(null);
@@ -96,15 +98,18 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
     // ============= most purchase customer by specific date function body ==============
     function mostPurchaseCustomerByDt() {
+
         var mostPurchaseCustomerDtPick = document.getElementById('mostPurchseCustomerDt').value;
-        console.log(mostPurchaseCustomerDtPick);
-        mostPrchsCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostPrchsCstmrByDt=${mostPurchaseCustomerDtPick}`;
+        
+        var mostPrchsCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostPrchsCstmrByDt=${mostPurchaseCustomerDtPick}`;
         xmlhttp.open("GET", mostPrchsCstmrDtUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
         var mostPurchaseCustomerDataByDate = xmlhttp.responseText;
-
+        
         mostPurchaseCustomerDataFunction(JSON.parse(mostPurchaseCustomerDataByDate));
+
+        document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'none';
     }
 
 
@@ -114,13 +119,15 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         var mostPurchaseCustomerStartDt = document.getElementById('mostPurchseCustomerStartDate').value;
         var mostPurchaseCustomerEndtDt = document.getElementById('mostPurchseCustomerEndDate').value;
 
-        mostPrchsCstmrDtRngUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostPurchaseStartDt=${mostPurchaseCustomerStartDt}&mostPurchaseEndDt=${mostPurchaseCustomerEndtDt}`;
+        var mostPrchsCstmrDtRngUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostPurchaseStartDt=${mostPurchaseCustomerStartDt}&mostPurchaseEndDt=${mostPurchaseCustomerEndtDt}`;
         xmlhttp.open("GET", mostPrchsCstmrDtRngUrl, false);
         xmlhttp.send(null);
 
         var mostPurchaseCustomerDataByDateRange = xmlhttp.responseText;
 
         mostPurchaseCustomerDataFunction(JSON.parse(mostPurchaseCustomerDataByDateRange));
+
+        document.getElementById('mostPurchseCustomerDtPkrRng').style.display = 'none';
     }
 
 
