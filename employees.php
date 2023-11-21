@@ -1,23 +1,26 @@
 <?php
 $page = "employees";
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once ROOT_DIR.'_config/user-details.inc.php';
-require_once CLASS_DIR.'employee.class.php';
-require_once CLASS_DIR.'admin.class.php';
-require_once CLASS_DIR.'utility.class.php';
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once ROOT_DIR . '_config/user-details.inc.php';
+require_once CLASS_DIR . 'employee.class.php';
+require_once CLASS_DIR . 'admin.class.php';
+require_once CLASS_DIR . 'utility.class.php';
+require_once CLASS_DIR . 'designation.class.php';
 
 
 $Utility    = new Utility;
 $employees  = new Employees();
+$desigRole = new Designation();
 
 $currentUrl = $Utility->currentUrl();
 
 $showEmployees = $employees->employeesDisplay($adminId);
-$showDesignation = $employees->showDesignation();
-
+$showDesignation = $desigRole->designationRole($adminId);
+$showDesignation = json_decode($showDesignation, true);
+// print_r($showDesignation);
 
 //Employee Class Initilzed
 // $employees = new Employees();
@@ -43,12 +46,12 @@ if (isset($_POST['add-emp']) == true) {
     // echo "<br>$empAddress adn data type : "; echo gettype($empAddress);
     // exit;
 
+
     if ($empPass == $empCPass) {
         $wrongPasword = false;
         $empPass = password_hash($empPass, PASSWORD_DEFAULT);
 
         $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
-
         if ($addEmployee) {
             $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
         } else {
@@ -57,7 +60,6 @@ if (isset($_POST['add-emp']) == true) {
     } else {
         echo "<script>alert('Password Did Not Matched!')</script>";
     }
-
 }
 
 
@@ -117,7 +119,7 @@ if (isset($_POST['add-emp']) == true) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -127,7 +129,7 @@ if (isset($_POST['add-emp']) == true) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -166,25 +168,29 @@ if (isset($_POST['add-emp']) == true) {
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    
+
                                     <tbody>
                                         <?php
-                                        
+
                                         //employeesDisplay function initilized to feth employees data
                                         // $table = 'admin_id';
                                         // $showEmployees = $employees->selectEmpByCol($table, $adminId);
 
-                                        if(!empty($showEmployees)){
-                                            // print_r($showEmployees);
+                                        if (!empty($showEmployees)) {
+
                                             foreach ($showEmployees as $showEmployees) {
                                                 $empId = $showEmployees['emp_id'];
                                                 $empUsername = $showEmployees['emp_username'];
                                                 $empName = $showEmployees['emp_name'];
-                                                $empRole = $showEmployees['emp_role'];
+                                                $empRoleId = $showEmployees['emp_role'];
+                                                $empRolData = $desigRole->designationRoleID($adminId, $empRoleId);
+                                                $empRolDatas = json_decode($empRolData, true);
+                                                $empRole    = $empRolDatas['desig_name'];
+                                                
                                                 $empMail = $showEmployees['emp_email'];
                                                 // $emp['employee_password'];
                                                 // $emp[''];
-    
+
                                                 echo '<tr>
                                                         <td>' . $empId . '</td>
                                                         <td>' . $empUsername . '</td>
@@ -200,7 +206,7 @@ if (isset($_POST['add-emp']) == true) {
                                                     </tr>';
                                             }
                                         }
-                                        
+
                                         ?>
                                     </tbody>
                                 </table>
@@ -247,8 +253,8 @@ if (isset($_POST['add-emp']) == true) {
                                                     <label class="mb-0 mt-1" for="emp-role">Employee Role:</label>
                                                     <select class="form-control" name="emp-role" id="emp-role" required>
                                                         <option value="role1">Choose role..</option>
-                                                        <?php foreach ($showDesignation as $desig){ ?>
-                                                            <option value="<?php echo $desig['desig_name']; ?>"><?php echo $desig['desig_name']; ?></option>
+                                                        <?php foreach ($showDesignation as $desig) { ?>
+                                                            <option value="<?php echo $desig['id']; ?>"><?php echo $desig['desig_name']; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -290,7 +296,7 @@ if (isset($_POST['add-emp']) == true) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -390,7 +396,6 @@ if (isset($_POST['add-emp']) == true) {
         })
     </script>
     <script>
-        
         function showHide(fieldId) {
             const password = document.getElementById(fieldId);
             const toggle = document.getElementById('toggle');

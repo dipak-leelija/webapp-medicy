@@ -7,7 +7,7 @@ class Employees extends DatabaseConnection
     function addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass)
     {
         try {
-            $sql = "INSERT INTO employees (admin_id, emp_username, emp_name, emp_role, emp_email, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `employees` (admin_id, emp_username, emp_name, emp_role, emp_email, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($sql);
@@ -155,30 +155,5 @@ class Employees extends DatabaseConnection
 
     
 
-    function showDesignation()
-    {
-        try {
-            $sql = "SELECT * FROM designation";
-            $stmt = $this->conn->prepare($sql);
-
-            if (!$stmt) {
-                throw new Exception("Prepare statement failed.");
-            }
-
-            if (!$stmt->execute()) {
-                throw new Exception("Database query execution failed: " . $stmt->error);
-            }
-
-            $result = $stmt->get_result();
-
-            if (!$result) {
-                throw new Exception("Result retrieval failed: " . $stmt->error);
-            }
-
-            return $result;
-        } catch (Exception $e) {
-            // Handle exceptions, log errors, or return an error message as needed
-            return false;
-        }
-    }
+    
 }//end class
