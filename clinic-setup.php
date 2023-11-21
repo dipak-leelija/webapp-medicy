@@ -5,8 +5,11 @@ require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
+require_once CLASS_DIR.'utility.class.php';
 
+$Utility = new Utility;
 
+$currentUrl = $Utility->currentUrl();
 // Healthcare Addesss and details
 if (isset($_POST['update']) ==  true) {
 
@@ -35,9 +38,11 @@ if (isset($_POST['update']) ==  true) {
     // print_r($UpdateHealthcare);
 
     if($UpdateHealthcare){
-        echo "<script>alert('Clinick Data Updated.')</script>";
+        header("Location: $currentUrl?setup=Clinic Data Updated");
+        exit;
     }else{
-        echo "<script>alert('Updation Failed!')</script>";
+        header("Location: $currentUrl?setup=Updation Failed!");
+        exit;
     }
 }
 
@@ -95,9 +100,6 @@ if (isset($_POST['update']) ==  true) {
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Health Care</h1>
-
                     <!-- New Section -->
                     <div class="col">
                         <div class="card shadow mb-4">
@@ -128,7 +130,7 @@ if (isset($_POST['update']) ==  true) {
                                                 <label class="mb-0 mt-1" for="helthcare-name">Organization/Helth Care
                                                     Name</label>
                                                 <input class="form-control" type="text" name="helthcare-name"
-                                                    id="helthcare-name" value="<?php echo $healthCareName; ?>" required>
+                                                    id="helthcare-name" value="<?= $healthCareName; ?>" required>
                                             </div>
 
                                             <div class="col-md-12">
