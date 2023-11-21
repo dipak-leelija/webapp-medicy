@@ -337,7 +337,11 @@ ptrInput.addEventListener('keydown', function (event) {
 
 const getBillAmount = () => {
 
-    let ptr = document.getElementById("ptr").value;
+    var ptr = document.getElementById("ptr").value;
+    if(isNaN(ptr)){
+        ptr = 0;
+    }
+
     let Mrp = document.getElementById("mrp").value;
     let qty = document.getElementById("qty").value;
     let discount = document.getElementById("discount").value;
@@ -350,8 +354,10 @@ const getBillAmount = () => {
     let ChkPtr = parseFloat(chkPtr);
 
     //========= base amount calculation area ===========
-    let base = PTR - ((PTR * discount) / 100);
-    document.getElementById("base").value = parseFloat(base).toFixed(2);
+    var base = PTR - ((PTR * discount) / 100);
+    base = parseFloat(base).toFixed(2)
+    // console.log(base);
+    document.getElementById("base").value = base;
     // ======= eof base amount calculation =============
         
     if (PTR > ChkPtr) {
@@ -389,6 +395,7 @@ const getBillAmount = () => {
 
 //geeting bills by clicking on add button
 const addData = () => {
+    // alert('Clicked');
     let distId = document.getElementById("distributor-id");
     // console.log(distId.value1);
     let distBillid = document.getElementById("dist-bill-no");
@@ -480,10 +487,7 @@ const addData = () => {
             });
         return;
     }
-    if (medicinePower.value == "") {
-        medicinePower.focus();
-        return;
-    }
+    
     if (mfdMonth.value == "") {
         swal("Blank field", "Please Enter Manufacturing Date as MM/YY", "error")
             .then((value) => {
@@ -559,15 +563,30 @@ const addData = () => {
         return;
     }
     if (gst.value == "") {
-        gst.focus();
+        swal("Blank Field",
+        "GST should be a number",
+        "error")
+        .then((value) => {
+            gst.focus();
+        });
         return;
     }
     if (base.value == "") {
-        base.focus();
+        swal("Blank Field",
+        "Base Amount can not be blank",
+        "error")
+        .then((value) => {
+            base.focus();
+        });
         return;
     }
     if (billAmount.value == "") {
-        billAmount.focus();
+        swal("Blank Field",
+        "Bil Amount can nit be blank",
+        "error")
+        .then((value) => {
+            billAmount.focus();
+        });
         return;
     }
 

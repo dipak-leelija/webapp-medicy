@@ -149,18 +149,35 @@ class Patients extends DatabaseConnection
         return $data;
     } //end appointmentsDisplay function
 
-
-
-    function patientName($patientId)
-    {
-        $data = array();
-        $selectById = "SELECT name FROM patient_details WHERE `patient_id`= '$patientId'";
-        $selectByIdQuery = $this->conn->query($selectById);
-        // echo var_dump($selectByIdQuery);
-        $result = $selectByIdQuery->fetch_assoc();
-        $data    = $result['name'];
-        return $data;
-    } //end appointmentsDisplay function
+    function patientName($patientId){
+        try {
+            $selectById = "SELECT name FROM patient_details WHERE `patient_id`= ?";
+            $stmt = $this->conn->prepare($selectById);
+    
+            if (!$stmt) {
+                throw new Exception("Failed to prepare the statement.");
+            }
+    
+            $stmt->bind_param("s", $patientId);
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                $data = $result->fetch_assoc()['name'];
+            } else {
+                $data = $patientId; // return as it is
+            }
+    
+            $stmt->close();
+    
+            return $data;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+    
 
 
     function patientsDisplayByPId($patientId)
