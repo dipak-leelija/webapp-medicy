@@ -6,21 +6,25 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'productsImages.class.php';
+require_once CLASS_DIR.'pagination.class.php';
 
 
 
 $page = "products";
 
 //Intitilizing Doctor class for fetching doctors
-$Products      = new Products();
-$ProductImages = new ProductImages();
+$Products       = new Products();
+$Pagination     = new Pagination();
+$ProductImages  = new ProductImages();
 
 
 
 // Function INitilized 
 $col = 'admin_id';
-$allProducts = $Products->showProducts();
 
+$result = $Pagination->productsWithPagination();
+$allProducts    = $result['products'];
+$totalPtoducts  = $result['totalPtoducts']
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +43,9 @@ $allProducts = $Products->showProducts();
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -77,24 +83,19 @@ $allProducts = $Products->showProducts();
                             <div class="card-header py-3">
                                 <div class="d-flex justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Total Items:
-                                        <?php
-                                        if ($allProducts != null) {
-                                            echo $allProducts->num_rows;
-                                        } else {
-                                            echo 0;
-                                        }
-                                        ?>
+                                        <?= $totalPtoducts ?>
                                     </h6>
-                                    <a class="btn btn-sm btn-primary" href="add-products.php"><i class="fas fa-plus"></i> Add</a>
+                                    <a class="btn btn-sm btn-primary" href="add-products.php"><i
+                                            class="fas fa-plus"></i> Add</a>
                                 </div>
                             </div>
                             <div class="card-body">
-                                        
+
                                 <div class="d-flex justify-content-center">
                                     <div class="row card-div">
 
-                                        <section class="gallery">
-                                            <div class="row gallery-items">
+                                        <section>
+                                            <div class="row ">
 
                                                 <?php
                                                 if ($allProducts != null) {
@@ -113,11 +114,6 @@ $allProducts = $Products->showProducts();
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }
 
-                                                        // if($image[0]['image'] == ' '){
-                                                        //     echo "image null hello";
-                                                        //     $productImage = 'medicy-default-product-image.jpg';
-                                                        // }
-
                                                         if ($item['dsc'] == null) {
                                                             $dsc = '';
                                                         } else {
@@ -126,25 +122,30 @@ $allProducts = $Products->showProducts();
                                                         
                                                 ?>
 
-                                                        <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
-                                                            <div class="card  m-2" id="allProducts">
-                                                                <img src="<?php echo PROD_IMG_PATH?><?php echo $productImage ?>" class="card-img-top" alt="...">
-                                                                <div class="card-body">
-                                                                    <label><b><?php echo $item['name']; ?></b></label>
-                                                                    <p class="mb-0"><b><?php $item['name'] ?></b></p>
-                                                                    <small class="card-text mt-0" style="text-align: justify;"><?php echo substr($dsc, 0, 65) ?>...</small>
+                                                <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
+                                                    <div class="card  m-2">
+                                                        <img src="<?php echo PROD_IMG_PATH?><?php echo $productImage ?>"
+                                                            class="card-img-top" alt="...">
+                                                        <div class="card-body">
+                                                            <label><b><?php echo $item['name']; ?></b></label>
+                                                            <p class="mb-0"><b><?php $item['name'] ?></b></p>
+                                                            <small class="card-text mt-0"
+                                                                style="text-align: justify;"><?php echo substr($dsc, 0, 65) ?>...</small>
 
-                                                                </div>
+                                                        </div>
 
 
-                                                                <div class="row px-3 pb-2">
-                                                                    <div class="col-6">₹ <?php echo $item['mrp'] ?></div>
-                                                                    <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item['product_id'] ?>" onclick="viewItem(this.id)">View</button>
-                                                                    </div>
-                                                                </div>
+                                                        <div class="row px-3 pb-2">
+                                                            <div class="col-6">₹ <?php echo $item['mrp'] ?></div>
+                                                            <div class="col-6 d-flex justify-content-end">
+                                                                <button class="btn btn-sm border border-info"
+                                                                    data-toggle="modal" data-target="#productModal"
+                                                                    id="<?php echo $item['product_id'] ?>"
+                                                                    onclick="viewItem(this.id)">View</button>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                </div>
                                                 <?php
                                                     }
                                                 } else {
@@ -154,18 +155,9 @@ $allProducts = $Products->showProducts();
                                                 ?>
 
                                             </div>
-                                            <div class="d-flex justify-content-end mt-3">
+                                            <div class="d-flex justify-content-center mt-3">
                                                 <nav aria-label="Page navigation">
-                                                    <ul class="pagination">
-                                                        <li class="prev page-item"><a class="page-link" href="#">Previous</a>
-                                                        </li>
-                                                        <!-- <div id="pageNums"> -->
-                                                        <li class="page page-item">
-                                                            <a class="page-link">Page <span class="page-num"></a>
-                                                        </li>
-                                                        <!-- </div> -->
-                                                        <li class="next page-item"><a class="page-link" href="#">Next</a></li>
-                                                    </ul>
+                                                    <?= $result['paginationHTML'] ?>
                                                 </nav>
                                             </div>
                                         </section>
@@ -231,74 +223,15 @@ $allProducts = $Products->showProducts();
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
-
     <script>
-        const galleryItems = document.querySelector(".gallery-items").children;
-        const prev = document.querySelector(".prev");
-        const next = document.querySelector(".next");
-        const page = document.querySelector(".page-num");
-        const maxItem = 8;
-        let index = 1;
+    const viewItem = (value) => {
+        // console.info(value);
+        let url = 'ajax/product-view-modal.ajax.php?id=' + value;
 
-        const pagination = Math.ceil(galleryItems.length / maxItem);
-
-        prev.addEventListener("click", function() {
-            index--;
-            check();
-            showItems();
-        })
-        next.addEventListener("click", function() {
-            index++;
-            check();
-            showItems();
-        })
-
-        function check() {
-            if (index == pagination) {
-                next.classList.add("disabled");
-            } else {
-                next.classList.remove("disabled");
-            }
-
-            if (index == 1) {
-                prev.classList.add("disabled");
-            } else {
-                prev.classList.remove("disabled");
-            }
-        }
-
-        function showItems() {
-            for (let i = 0; i < galleryItems.length; i++) {
-                galleryItems[i].classList.remove("show");
-                galleryItems[i].classList.add("hide");
-
-
-                if (i >= (index * maxItem) - maxItem && i < index * maxItem) {
-                    // if i greater than and equal to (index*maxItem)-maxItem;
-                    // means  (1*8)-8=0 if index=2 then (2*8)-8=8
-                    galleryItems[i].classList.remove("hide");
-                    galleryItems[i].classList.add("show");
-                }
-                page.innerHTML = index;
-            }
-
-
-        }
-
-        window.onload = function() {
-            showItems();
-            check();
-        }
-    </script>
-    <script>
-        const viewItem = (value) => {
-            // console.info(value);
-            let url = 'ajax/product-view-modal.ajax.php?id=' + value;
-
-            $(".productModal").html(
-                '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
-        }
+        $(".productModal").html(
+            '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
+            url + '"></iframe>');
+    }
     </script>
 
 

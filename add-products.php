@@ -54,6 +54,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>choices.min.css">
 
+    <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
+
 </head>
 
 <body id="page-top">
@@ -86,7 +88,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                         <div class="card-body">
                             <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-7">
                                         <div class="col-12">
                                             <div class="col-md-12">
                                                 <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
@@ -96,11 +98,9 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             </div>
 
                                             <div class="row p-3">
-                                                <div class="col-md-6">
-                                                    <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" required>
-                                                </div>
-                                                <div class="col-md-6 mt-3 mt-md-0">
-                                                    <select class="choices-select" name="manufacturer" id="manufacturer" required>
+
+                                                <div class="col-md-12 mt-3 mt-md-0">
+                                                    <select class="form-control" name="manufacturer" id="manufacturer" required onkeyup="getManuf()">
                                                         <option value="" disabled selected>Select Manufacturer</option>
                                                         <?php
                                                         foreach ($showManufacturer as $rowManufacturer) {
@@ -116,12 +116,16 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             <!-- Price Row -->
                                             <div class="row p-3">
 
-                                                <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                                <div class="col-12 col-sm-6 col-md-3 mt-3">
+                                                    <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter med Power" required>
+                                                </div>
+
+                                                <div class="col-12 col-sm-6 col-md-3 mt-3">
                                                     <!-- <label class="mb-0 mt-1" for="unit-quantity">Unit Quantity</label> -->
                                                     <input type="number" class="c-inp p-1 w-100" name="unit-quantity" id="unit-quantity" placeholder="Enter Unit" step="0.01" required>
                                                 </div>
 
-                                                <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                                <div class="col-12 col-sm-6 col-md-3 mt-3">
                                                     <!-- <label class="mb-0 mt-1" for="unit">Select Unit</label> -->
                                                     <select class="c-inp p-1 w-100" name="unit" id="unit" required>
                                                         <option value="" disabled selected>Select Unit</option>
@@ -133,7 +137,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                         ?>
                                                     </select>
                                                 </div>
-                                                <div class="col-12 col-sm-6 col-md-4 mt-3">
+                                                <div class="col-12 col-sm-6 col-md-3 mt-3">
                                                     <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
                                                     <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type" required>
                                                         <option value="" disabled selected>Packaging Unit</option>
@@ -177,7 +181,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <div class="col-12">
                                             <div id="img-div">
                                                 <div class="container-fluid" id="img-container">
@@ -367,14 +371,15 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         <!-- Bootstrap core JavaScript-->
         <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
         <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-        <script src="<?php echo JS_PATH ?>>bootstrap-js-5/bootstrap.bundle.min.js"></script>
-        <script src="<?php echo JS_PATH ?>>choices.min.js"></script>
+        <!-- <script src="<?php echo JS_PATH ?>>bootstrap-js-5/bootstrap.bundle.min.js"></script> -->
+        <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script>
 
         <!-- Core plugin JavaScript-->
         <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
         <!-- Custom scripts for all pages-->
         <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+        <script src="<?php echo JS_PATH ?>custom/add-products.js"></script>
 
         <!-- Sweet Alert Js  -->
         <script src="<?php echo JS_PATH ?>sweetAlert.min.js"></script>
@@ -387,7 +392,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         <!-- <script src="js/demo/datatables-demo.js"></script> -->
 
         <!-- <script src="/uppy core/dist/uppy.min.js"></script> -->
-        <script src="<?php echo JS_PATH ?>custom/add-products.js"></script>
+
 
         <!-- js library import -->
 
@@ -494,11 +499,34 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                var choices = new Choices('.choices-select', {
-                    searchEnabled: true,
-                    // Add more configuration options as needed
+                var choices = new Choices('#manufacturer', {
+                    allowHTML: true,
+                    removeItemButton: true,
                 });
             });
+        </script>
+
+        <script>
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     // Initialize Choices.js
+            //     var Choices = new Choices('#manufacturer', {
+            //         searchPlaceholderValue: 'Type to search',
+            //         searchChoices: function(callback) {
+            //             // Get the search input value
+            //             var searchValue = event.detail.value;
+
+            //             console.log(searchValue);
+            //             // // Perform AJAX request to get data
+            //             // fetch('your_ajax_endpoint.php?search=' + encodeURIComponent(searchValue))
+            //             //     .then(response => response.json())
+            //             //     .then(data => {
+            //             //         // Pass the retrieved data to Choices.js
+            //             //         callback(data, 'id', 'name');
+            //             //     })
+            //             //     .catch(error => console.error('Error:', error));
+            //         }
+            //     });
+            // });
         </script>
 
 </body>

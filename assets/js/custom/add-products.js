@@ -94,10 +94,10 @@ function preview() {
         let radioButton = document.createElement('priority-check');
         radioButton.type = 'radio';
         radioButton.name = 'priority-group';
-        radioButton.id = 'radio'+radioCount;
+        radioButton.id = 'radio' + radioCount;
 
         figCap.innerText = i.name;
-        figCap.style.display='none';
+        figCap.style.display = 'none';
         figure.appendChild(figCap);
         figure.appendChild(radioButton);
 
@@ -112,7 +112,6 @@ function preview() {
     }
 }
 
-////////////////////////////// UPPY ONLINE PLUGINS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+////////////////////////////// manufacturur search control \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
-  

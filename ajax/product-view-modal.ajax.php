@@ -5,12 +5,14 @@ require_once ROOT_DIR.'_config/sessionCheck.php';
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR."products.class.php";
 require_once CLASS_DIR."packagingUnit.class.php";
+require_once CLASS_DIR."itemUnit.class.php";
 require_once CLASS_DIR."productsImages.class.php";
 require_once CLASS_DIR."manufacturer.class.php";
 require_once CLASS_DIR."currentStock.class.php";
 
 $Products       = new Products();
 $PackagingUnits = new PackagingUnits();
+$ItemUnit       = new ItemUnit;
 $ProductImages  = new ProductImages();
 $Manufacturer   = new Manufacturer();
 $CurrentStock   = new CurrentStock();
@@ -93,6 +95,7 @@ $CurrentStock   = new CurrentStock();
         }
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]['packaging_type']);
+        $itemUnitName = $ItemUnit->itemUnitName($product[0]['unit']);
     ?>
 
         <div class="container-fluid d-flex justify-content-center mt-2">
@@ -123,7 +126,7 @@ $CurrentStock   = new CurrentStock();
                                 <h7><?php echo $manuf[0]['name']; ?></h7>
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
                                 <p class="fst-normal"><?php echo $product[0]['unit_quantity']; ?>
-                                    <?php echo $product[0]['unit']; ?>/<?php echo $pack[0]['unit_name']; ?></p>
+                                    <?= $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
                                 <p>
                                     <small>
                                         <mark>
@@ -158,7 +161,7 @@ $CurrentStock   = new CurrentStock();
                             </div>
                             <div class="row justify-content-center mt-6 col-6">
                                 <div class="col-4">
-                                    <a id="anchor1" href="../edit-product.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
+                                    <a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
                                 </div>
                                 <div class="col-4">
                                     <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
@@ -171,14 +174,18 @@ $CurrentStock   = new CurrentStock();
                             <!-- <hr class="divider d-md-block" style="height: 2px;> -->
                         </div>
                         <div class="text-start">
-                            <p><b>Composition: </b> <br><?php echo $product[0]['product_composition']; ?></p>
+                            <p>
+                                <b>Composition: </b>
+                                <br><?= $product[0]['comp_1']; ?>
+                                <br><?= $product[0]['comp_2']; ?>
+                            </p>
 
                             <p><b>Description: </b> <br><?php echo $product[0]['dsc']; ?></p>
                         </div>
 
                         <div class="row justify-content-center mt-4">
                             <div class="col-2">
-                                <button class="button2 btn-primary"><a id="anchor1" href="../edit-product.php?id=<?php echo $_GET['product_id']; ?>">Edit</a></button>
+                                <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $_GET['product_id']; ?>">Edit</a></button>
                             </div>
                             <div class="col-2">
                                 <button class="button3 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>

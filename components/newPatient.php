@@ -100,6 +100,9 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
 <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
 <script>
+    var xmlhttp = new XMLHttpRequest();
+
+    
     ///find new patient by selected date ///
     function newPatientDataOverride(patientOverrideData) {
         console.log(patientOverrideData);
@@ -113,12 +116,12 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     function newPatientByDt() {
         var newPatientDt = document.getElementById('newPatientDt').value;
         var newPatientElement = document.getElementById('newPatient');
-        var xhr = new XMLHttpRequest();
+        
         newPatientDtUrl = `<?php echo LOCAL_DIR ?>ajax/new-patient-count.ajax.php?newPatientDt=${newPatientDt}`;
-        xhr.open("GET", newPatientDtUrl, false);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.send(null);
-        var newPatientDataByDate = xhr.responseText;
+        xmlhttp.open("GET", newPatientDtUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+        var newPatientDataByDate = xmlhttp.responseText;
         // console.log(typeof(newPatientDataByDate));
         if (newPatientDataByDate) {
             var newPatientData = JSON.parse(newPatientDataByDate);

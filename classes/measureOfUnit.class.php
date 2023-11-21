@@ -7,7 +7,7 @@ class MeasureOfUnits extends DatabaseConnection{
     function addMeasureOfUnits($shortName, $fullName, $addedBy, $addedOn, $adminId) {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO measure_of_unit (`short_name`, `full_name`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO quantity_unit (`short_name`, `full_name`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
             
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
@@ -37,7 +37,7 @@ class MeasureOfUnits extends DatabaseConnection{
 
     function updateUnit($shortName, $fullName, $unitId, $updatedBy, $updatedOn) {
         try {
-            $update = "UPDATE `measure_of_unit` SET `short_name` = ?, `full_name` = ?, `updated_by` = ?, `updated_on` = ? WHERE `id` = ?";
+            $update = "UPDATE `quantity_unit` SET `short_name` = ?, `full_name` = ?, `updated_by` = ?, `updated_on` = ? WHERE `id` = ?";
             
             $stmt = $this->conn->prepare($update);
     
@@ -62,7 +62,7 @@ class MeasureOfUnits extends DatabaseConnection{
 
     function showMeasureOfUnits(){
         $data           = array();
-        $select         = " SELECT * FROM measure_of_unit";
+        $select         = " SELECT * FROM quantity_unit";
         $selectQuery    = $this->conn->query($select);
         while ($result  = $selectQuery->fetch_array() ) {
             $data[] = $result;
@@ -76,7 +76,7 @@ class MeasureOfUnits extends DatabaseConnection{
 
     function showMeasureOfUnitsById($unitId){
         $data          = array();
-        $select        = " SELECT * FROM measure_of_unit WHERE `measure_of_unit`.`id` = '$unitId'";
+        $select        = " SELECT * FROM quantity_unit WHERE `quantity_unit`.`id` = '$unitId'";
         $selectQuery   = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array() ) {
             $data[] = $result;
@@ -95,7 +95,7 @@ class MeasureOfUnits extends DatabaseConnection{
 
     function deleteUnit($unitId){
 
-        $Delete = "DELETE FROM `measure_of_unit` WHERE `measure_of_unit`.`id` = '$unitId'";
+        $Delete = "DELETE FROM `quantity_unit` WHERE `quantity_unit`.`id` = '$unitId'";
         $DeleteQuey = $this->conn->query($Delete);
         return $DeleteQuey;
 
