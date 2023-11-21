@@ -1,13 +1,13 @@
 <?php
 $page =  "add-products";
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR.'measureOfUnit.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
+require_once CLASS_DIR . 'measureOfUnit.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
 
 
 //objects Initilization
@@ -41,14 +41,18 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Fontawsome Link -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH?>font-awesome.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>font-awesome.css">
 
     <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!--Custom CSS -->
     <!-- <link href="css/add-products.css" rel="stylesheet"> -->
-    <link href="<?php echo CSS_PATH?>custom/add-products.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet">
+
+    <!-- css path for bootstrap 5-->
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>choices.min.css">
 
 </head>
 
@@ -58,7 +62,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -68,7 +72,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -96,7 +100,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" required>
                                                 </div>
                                                 <div class="col-md-6 mt-3 mt-md-0">
-                                                    <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer" required>
+                                                    <select class="choices-select" name="manufacturer" id="manufacturer" required>
                                                         <option value="" disabled selected>Select Manufacturer</option>
                                                         <?php
                                                         foreach ($showManufacturer as $rowManufacturer) {
@@ -327,7 +331,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <!-- End of Content Wrapper -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -358,10 +362,13 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <i class="fas fa-angle-up"></i>
         </a>
 
-        
+
+
         <!-- Bootstrap core JavaScript-->
         <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
         <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+        <script src="<?php echo JS_PATH ?>>bootstrap-js-5/bootstrap.bundle.min.js"></script>
+        <script src="<?php echo JS_PATH ?>>choices.min.js"></script>
 
         <!-- Core plugin JavaScript-->
         <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
@@ -483,7 +490,15 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                 // read the image file as a data URL.
                 reader.readAsDataURL(this.files[0]);
             });
+        </script>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var choices = new Choices('.choices-select', {
+                    searchEnabled: true,
+                    // Add more configuration options as needed
+                });
+            });
         </script>
 
 </body>
