@@ -22,7 +22,6 @@ $showPatients = json_decode($showPatients,true);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>patient-style.css">
-    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <title>Enter Patient Details</title>
 
 
@@ -116,6 +115,7 @@ $showPatients = json_decode($showPatients,true);
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
 
 
@@ -136,6 +136,7 @@ $showPatients = json_decode($showPatients,true);
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> -->
     <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script>
+
 
     <script>
     //patient selection js
