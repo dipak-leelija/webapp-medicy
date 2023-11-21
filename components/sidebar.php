@@ -1,4 +1,8 @@
-     
+     <?php
+        require_once dirname(__DIR__ ). '/config/constant.php';
+        require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+        echo $userRole;
+      ?>
      <!-- Sidebar -->
 
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -94,7 +98,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!-- <h6 class="collapse-header">Login Screens:</h6> -->
                     <a class="collapse-item" href="employees.php">Employees</a>
-                    <a class="collapse-item" href="designation.php">Designations</a>
+                    <a class="collapse-item" href="empRole.php">Designations</a>
                 </div>
             </div>
 

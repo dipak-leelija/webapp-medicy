@@ -2,11 +2,11 @@
 
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once CLASS_DIR . 'dbconnect.php';
-require_once CLASS_DIR . 'designation.class.php';
+require_once CLASS_DIR . 'empRole.class.php';
 
 $deleteEmpId = $_POST['id'];
 
-$desigRol = new Designation();
+$desigRol = new Emproles();
 $desinDelete = $desigRol->deleteDesign($deleteEmpId);
 
 if ($desinDelete) {

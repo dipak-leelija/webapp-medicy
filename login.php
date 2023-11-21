@@ -9,10 +9,10 @@ if (isset($_SESSION['LOGGEDIN'])) {
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'login.class.php';
 
-require_once CLASS_DIR . 'designation.class.php';
+require_once CLASS_DIR . 'empRole.class.php';
 
-$desRole = new Designation();
-$roleData = $desRole->designationRole();
+$desRole = new Emproles();
+$roleData = $desRole->designationRoleCheckForLogin();
 // print_r($roleData);
 
 

@@ -3,10 +3,10 @@
 require_once dirname(__DIR__) . '/config/constant.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
-require_once CLASS_DIR . 'designation.class.php';
+require_once CLASS_DIR . 'empRole.class.php';
 
 $designId = $_GET['designationId'];
-$designation= new Designation();
+$designation= new Emproles();
 $showDesignation = $designation->desigShowID($designId);
 
 ?>
@@ -54,7 +54,7 @@ $showDesignation = $designation->desigShowID($designId);
             let designId = $("#designId").val();
             let desigName = document.getElementById("desigName").value;
             
-            let url = "design.edit.ajax.php?designId=" + escape(designId) + "&desigName=" + escape(desigName);
+            let url = "emprole.edit.ajax.php?designId=" + escape(designId) + "&desigName=" + escape(desigName);
 
             request.open('GET', url, true);
 

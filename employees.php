@@ -8,12 +8,12 @@ require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'utility.class.php';
-require_once CLASS_DIR . 'designation.class.php';
+require_once CLASS_DIR . 'empRole.class.php';
 
 
 $Utility    = new Utility;
 $employees  = new Employees();
-$desigRole = new Designation();
+$desigRole = new Emproles();
 
 $currentUrl = $Utility->currentUrl();
 

@@ -2,9 +2,9 @@
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR. 'dbconnect.php';
-require_once CLASS_DIR . 'designation.class.php';
+require_once CLASS_DIR . 'empRole.class.php';
 
-$desigRole = new Designation();
+$desigRole = new Emproles();
 
 if (isset($_POST['add-designation']) == true) {
 
@@ -171,7 +171,7 @@ $showDesigRole = json_decode($data);
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="designation.php" method="post">
+                                    <form action="empRole.php" method="post">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="col-md-12">
@@ -240,7 +240,7 @@ $showDesigRole = json_decode($data);
     <script>
         viewAndEdit = (designId) => {
             let designationId = designId;
-            let url = "ajax/design.view.ajax.php?designationId=" + designationId;
+            let url = "ajax/emprole.view.ajax.php?designationId=" + designationId;
             $(".viewnedit").html('<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of viewAndEdit function
@@ -275,7 +275,7 @@ $showDesigRole = json_decode($data);
 
                     btn = this;
                     $.ajax({
-                        url: "ajax/design.Delete.ajax.php",
+                        url: "ajax/emprole.Delete.ajax.php",
                         type: "POST",
                         data: {
                             id: designId

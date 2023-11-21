@@ -1,12 +1,12 @@
 <?php
 
-class Designation extends DatabaseConnection
+class Emproles extends DatabaseConnection
 {
 
     function addDesigRole($desigName, $adminId)
     {
         try {
-            $sql = "INSERT INTO `designation` (desig_name, admin_id) VALUES (?, ?)";
+            $sql = "INSERT INTO `emp_role` (desig_name, admin_id) VALUES (?, ?)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("ss", $desigName, $adminId);
 
@@ -22,20 +22,40 @@ class Designation extends DatabaseConnection
 
     function designationRole($adminId)
     {
-        $data = [];
-        $sql = "SELECT * FROM `designation` WHERE `admin_id` = '$adminId' ";
-        $result = $this->conn->query($sql);
-        while ($results =  $result->fetch_object()) {
-            $data[] = $results;
+        try {
+            $data = [];
+            $sql = "SELECT * FROM `emp_role` WHERE `admin_id` = '$adminId' ";
+            $result = $this->conn->query($sql);
+            while ($results =  $result->fetch_object()) {
+                $data[] = $results;
+            }
+            $data = json_encode($data);
+            return $data;
+        } catch (Exception $e) {
+            $e->getMessage();
         }
-        $data = json_encode($data);
-        return $data;
     }
 
-    function designationRoleID($adminId,$desinId)
+    function designationRoleCheckForLogin()
+    {
+        try {
+            $data = [];
+            $sql = "SELECT * FROM `emp_role` ";
+            $result = $this->conn->query($sql);
+            while ($results =  $result->fetch_object()) {
+                $data[] = $results;
+            }
+            $data = json_encode($data);
+            return $data;
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
+    }
+
+    function designationRoleID($adminId, $desinId)
     {
         $data = '';
-        $sql = "SELECT * FROM `designation` WHERE `admin_id` = '$adminId' AND `id` = '$desinId' ";
+        $sql = "SELECT * FROM `emp_role` WHERE `admin_id` = '$adminId' AND `id` = '$desinId' ";
         $result = $this->conn->query($sql);
         while ($results =  $result->fetch_object()) {
             $data = $results;
@@ -46,7 +66,7 @@ class Designation extends DatabaseConnection
 
     function deleteDesign($deleteRole)
     {
-        $delEmp = "DELETE FROM `designation` WHERE `designation`.`id` = '$deleteRole'";
+        $delEmp = "DELETE FROM `emp_role` WHERE `emp_role`.`id` = '$deleteRole'";
         $delEmpQuery = $this->conn->query($delEmp);
         return $delEmpQuery;
     } // end deleteDocCat function
@@ -60,7 +80,7 @@ class Designation extends DatabaseConnection
     function editDesign($desigName, $designId)
     {
         try {
-            $edit = "UPDATE `designation` SET `desig_name` = ? WHERE `id` = ?";
+            $edit = "UPDATE `emp_role` SET `desig_name` = ? WHERE `id` = ?";
             $stmt = $this->conn->prepare($edit);
 
             if (!$stmt) {
@@ -91,7 +111,7 @@ class Designation extends DatabaseConnection
 
     function desigShowID($designId)
     {
-        $select = "SELECT * FROM `designation` WHERE `id` = '$designId'";
+        $select = "SELECT * FROM `emp_role` WHERE `id` = '$designId'";
         $query = $this->conn->query($select);
         while ($result = $query->fetch_object()) {
             $data = $result;

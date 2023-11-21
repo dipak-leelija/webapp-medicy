@@ -2,12 +2,12 @@
 require_once dirname(__DIR__) . '/config/constant.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
-require_once CLASS_DIR . 'designation.class.php';
+require_once CLASS_DIR . 'empRole.class.php';
 
 $desigName = $_GET['desigName'];
 $designId   = $_GET['designId'];
 
-$designation = new Designation();
+$designation = new Emproles();
 $editDesignation = $designation->editDesign($desigName, $designId);
 
 if ($editDesignation) {
