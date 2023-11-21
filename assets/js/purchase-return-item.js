@@ -83,7 +83,7 @@ const setMode = (returnMode) => {
 }
 
 const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, billdate) => {
-    console.log(stockInId);
+    
     document.getElementById('return-mode').focus();
 
     document.getElementById('stockInId').value = stockInId;
@@ -282,6 +282,7 @@ const checkFQty = (returnFqty) => {
 }
 
 const getRefund = (returnQty) => {
+    console.log("check return qty : "+returnQty);
     returnQty = parseInt(returnQty);
     let currentQTY = document.getElementById("current-purchase-qty").value;
 
@@ -295,7 +296,7 @@ const getRefund = (returnQty) => {
         document.getElementById("refund-amount").value = '';
         return;
     }
-    if (returnQty != '') {
+    if (returnQty != ' ') {
         let ptr = document.getElementById("ptr").value;
         let gst = document.getElementById("gst").value;
         let discParcent = document.getElementById("discount").value;
@@ -305,7 +306,9 @@ const getRefund = (returnQty) => {
         document.getElementById("refund-amount").value = refund.toFixed(2);
 
 
-    } else {
+    } else if(parseInt(returnQty) == 0){
+        document.getElementById("refund-amount").value = '0';
+    }else{
         document.getElementById("refund-amount").value = '';
     }
 
@@ -724,9 +727,7 @@ function rowAdjustment(delRow) {
 ///////////////////////// item edit funtion /////////////////////////
 
 const editItem = (tData) => {
-    console.log(tData);
-    console.log("hello check : "+document.getElementById('product-id').value);
-
+    
     if (document.getElementById('product-id').value == '') {
         var tData = JSON.parse(tData);
 

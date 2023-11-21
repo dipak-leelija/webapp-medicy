@@ -53,8 +53,9 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <!--Custom CSS -->
     <link href="<?= CSS_PATH ?>custom/add-products.css" rel="stylesheet">
 
-    <!-- sweetAlert link -->
-    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+    <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
+
+    
 
 </head>
 
@@ -230,11 +231,29 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <br>
                                         <!-- Price Row -->
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-12">
+                                                <select class="form-control" name="manufacturer" id="manufacturer" required onkeyup="getManuf(this)">
+                                                    <option value="" disabled selected>Select Manufacturer</option>
+                                                    <?php
+                                                    foreach ($showManufacturer as $rowManufacturer) {
+                                                        $manufId   = $rowManufacturer['id'];
+                                                        $manufName = $rowManufacturer['name'];
+                                                    ?>
+                                                        <option <?php if ($manufId == $item[0]['manufacturer_id']) {
+                                                                    echo 'selected';
+                                                                } ?> value="<?php echo $manufId; ?>"><?php echo $manufName; ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 mt-3">
                                                 <input type="number" class="c-inp p-1 w-100" name="unit-quantity" id="unit-quantity" placeholder="Enter Unit" value="<?php echo $item[0]['unit_quantity'] ?>">
                                             </div>
 
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 mt-3">
                                                 <!-- <label class="mb-0 mt-1" for="unit">Select Unit</label> -->
                                                 <select class="c-inp p-1 w-100" name="unit" id="unit">
                                                     <option value="" disabled selected>Select Unit</option>
@@ -249,7 +268,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     ?>
                                                 </select>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-4 mt-3">
                                                 <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
                                                 <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type">
                                                     <option value="" disabled selected>Packaging Unit</option>
@@ -268,12 +287,16 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <!--/End Price Row -->
                                         <br>
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" value="<?php echo $item[0]['power'] ?>">
+                                            </div>
+
+                                            <div class="col-md-4">
                                                 <!-- <label class="mb-0 mt-1" for="mrp">MRP ₹</label> -->
                                                 <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" onkeyup="getMarginMrp(this.value)" step="0.01" value="<?php echo $item[0]['mrp']; ?>">
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <!-- <label class="mb-0 mt-1" for="gst">GST %</label> -->
                                                 <select class="c-inp w-100 p-1" name="gst" id="gst" onchange="getMarginGst(this.value)">
                                                     <option <?php if ($item[0]['gst'] == "0") {
@@ -294,30 +317,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 </select>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter Medicine Power" value="<?php echo $item[0]['power'] ?>">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <select class="c-inp w-100 p-1" name="manufacturer" id="manufacturer">
-                                                    <option value="" disabled selected>Select Manufacturer</option>
-                                                    <?php
-                                                    foreach ($showManufacturer as $rowManufacturer) {
-                                                        $manufId   = $rowManufacturer['id'];
-                                                        $manufName = $rowManufacturer['name'];
-                                                    ?>
-                                                        <option <?php if ($manufId == $item[0]['manufacturer_id']) {
-                                                                    echo 'selected';
-                                                                } ?> value="<?php echo $manufId; ?>"><?php echo $manufName; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="col-md-12">
+
+                                        <div class="col-md-12 mt-4">
                                             <!-- <label for="product-descreption"></label> -->
                                             <textarea class="form-control" name="product-descreption" id="product-descreption" placeholder="Product Description" cols="30" rows="3"><?php echo $item[0]['dsc'] ?></textarea>
                                         </div>
@@ -371,6 +372,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
@@ -379,6 +381,9 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
     <script src="<?= JS_PATH ?>custom/add-products.js"></script>
+
+    <!-- sweetAlert link -->
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
 
     <script>
@@ -585,6 +590,17 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             reader.readAsDataURL(this.files[0]);
         });
     </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new Choices('#manufacturer', {
+                allowHTML: true,
+                removeItemButton: true,
+            });
+        });
+    </script>
+
 
 </body>
 
