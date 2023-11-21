@@ -9,16 +9,13 @@ class Employees extends DatabaseConnection
         try {
             $sql = "INSERT INTO `employees` (admin_id, emp_username, emp_name, emp_role, emp_email, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            // Prepare the SQL statement
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {
                 throw new Exception("Error preparing insert statement: " . $this->conn->error);
             }
 
-            // Bind the parameters
             $stmt->bind_param("sssssss", $adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
 
-            // Execute the prepared statement
             if ($stmt->execute()) {
                 return ["result" => true];
             } else {
@@ -35,9 +32,7 @@ class Employees extends DatabaseConnection
 
 
 
-
-    function employeesDisplay($adminId)
-    {
+    function employeesDisplay($adminId){
         $empData = array();
         $selectEmp = "SELECT emp_id,emp_username,emp_name,emp_role,emp_email FROM employees WHERE `admin_id` = '$adminId'";
 
@@ -54,23 +49,19 @@ class Employees extends DatabaseConnection
 
 
 
-    function selectEmpByCol($col, $data)
-    {
+    function selectEmpByCol($col, $data){
         try {
             $selectEmp = "SELECT * FROM employees WHERE `$col` = ?";
 
-            // Use prepared statement for security
             $stmt = $this->conn->prepare($selectEmp);
 
             if (!$stmt) {
                 throw new Exception("Prepare statement failed.");
             }
 
-            // Bind the parameter and execute the query
             $stmt->bind_param("s", $data);
             $stmt->execute();
 
-            // Get the result set
             $result = $stmt->get_result();
 
             $empData = array();
@@ -83,7 +74,6 @@ class Employees extends DatabaseConnection
 
             return $empData;
         } catch (Exception $e) {
-            // Handle exceptions, log errors, or return an empty array as needed
             return array();
         }
     }
@@ -91,8 +81,8 @@ class Employees extends DatabaseConnection
 
 
 
-    function employeesDisplayByUsername($empUsername)
-    {
+
+    function employeesDisplayByUsername($empUsername){
 
         $select = "SELECT id,employee_username,employee_name,emp_role FROM employees WHERE employee_username = '$empUsername'";
 
@@ -110,8 +100,7 @@ class Employees extends DatabaseConnection
 
 
 
-    function empDisplayById($empId)
-    {
+    function empDisplayById($empId){
         $select = "SELECT * FROM employees WHERE emp_id = '$empId'";
         $query = $this->conn->query($select);
         while ($result = $query->fetch_object()) {
@@ -125,15 +114,49 @@ class Employees extends DatabaseConnection
 
 
 
+    function empDisplayByAdminAndEmpId($empId, $admin) {
+        try {
+            $select = "SELECT * FROM employees WHERE emp_id = ? AND `admin_id` = ?";
+
+            $stmt = $this->conn->prepare($select);
+
+            if (!$stmt) {
+                throw new Exception("Error in preparing statement: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("ss", $empId, $admin);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data[] = array();
+                while($resultData = $result->fetch_object()){
+                    $data = $resultData;
+                }
+                return json_encode($data);
+            }else{
+                return null;
+            }
+
+            
+        } catch (Exception $e) {
+            return $e->getMessage();
+        } finally {
+            $stmt->close();
+        }
+    }
 
 
-    // used in emp edit from admin section
-    function updateEmp($empUsername, $empName, $empRole, $empEmail,/*Last Variable for id which one you want to update */ $empId)
-    {
+
+
+
+    
+    function updateEmp($empUsername, $empName, $empRole, $empEmail,/*Last Variable for id which one you want to update */ $empId){
         $edit = "UPDATE  `employees` SET `emp_username` = '$empUsername', `emp_name`= '$empName', `emp_role` = '$empRole', `emp_email` = '$empEmail' WHERE `employees`.`emp_id` = '$empId'";
         $editQuery = $this->conn->query($edit);
-        // echo $editQuery.$this->conn->error;
-        // exit;
+        
         return $editQuery;
     } //end updateEmp function
 
@@ -142,13 +165,11 @@ class Employees extends DatabaseConnection
 
 
 
-
-    function deleteEmp($deleteEmpId)
-    {
+    function deleteEmp($deleteEmpId){
         $delEmp = "DELETE FROM `employees` WHERE `employees`.`emp_id` = '$deleteEmpId'";
         $delEmpQuery = $this->conn->query($delEmp);
         return $delEmpQuery;
-    } // end deleteDocCat function
+    } 
 
 
 
