@@ -18,11 +18,11 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-end px-2">
-        <div class="dropdown-menu dropdown-menu-right p-3" id="mostSoldDtPickerDiv" style="display: none; margin-right:1rem; margin-top:-16rem;">
+        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostSoldDtPickerDiv" style="display: none; margin-right:1rem;">
             <input type="date" id="mostSoldDateInput">
             <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDate()" style="height: 2rem;">Find</button>
         </div>
-        <div class="dropdown-menu dropdown-menu-right p-3" id="mostSoldDtRngPickerDiv" style="display: none; margin-right:1rem;margin-top:-16rem;">
+        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostSoldDtRngPickerDiv" style="display: none; margin-right:1rem; ">
             <label>Start Date</label>
             <input type="date" id="mostSoldStarDate">
             <label>End Date</label>
