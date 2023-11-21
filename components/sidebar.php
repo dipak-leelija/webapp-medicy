@@ -1,5 +1,4 @@
      
-
      <!-- Sidebar -->
 
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -83,12 +82,24 @@
                 <span>Patients</span></a>
         </li>
 
-        <!-- Nav Item - Employees -->
-        <li class="nav-item <?php if($page ==  "employees"){ echo "active";} ?>">
-            <a class="nav-link" href="employees.php">
-                <i class="fas fa-users"></i>
-                <span>Employees</span></a>
+
+        <li class="nav-item <?php if($page ==  "employees" || $page ==  "employees"){ echo "active";} ?>">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTests"
+                aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-user"></i>
+                <span>Employees</span>
+            </a>
+
+            <div id="collapseTests" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <!-- <h6 class="collapse-header">Login Screens:</h6> -->
+                    <a class="collapse-item" href="employees.php">Employees</a>
+                    <a class="collapse-item" href="designation.php">Designations</a>
+                </div>
+            </div>
+
         </li>
+        
 
 
         <!-- Divider -->
