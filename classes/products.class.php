@@ -170,13 +170,13 @@ class Products extends DatabaseConnection{
         
         try {
             // Prepare the SQL statement with placeholders
-            $searchSql = "SELECT * FROM `products` WHERE `products`.`name` LIKE ?";
+            $searchSql = "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ? LIMIT 10";
             $stmt = $this->conn->prepare($searchSql);
 
             if ($stmt) {
                 // Bind the parameters and execute the query
-                $searchPattern = "%" . $data . "%";
-                $stmt->bind_param("s", $searchPattern);
+                $searchPattern = "%".$data ."%";
+                $stmt->bind_param("sss", $searchPattern, $searchPattern, $searchPattern);
                 $stmt->execute();
 
                 // Get the results

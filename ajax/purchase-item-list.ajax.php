@@ -49,13 +49,14 @@ if ($resultData) {
     <?php
     foreach ($resultData as $resultRow) {
 
-        $productId  = $resultRow['product_id'];
-        $productName = $resultRow['name'];
-        $pComposition = $resultRow['product_composition'];
-        $weightage   = $resultRow['unit_quantity'];
-        $unit        = $resultRow['unit'];
-        $packagingType = $resultRow['packaging_type'];
-        $packDetails = $PackagingUnits->showPackagingUnitById($packagingType);
+        $productId      = $resultRow['product_id'];
+        $productName    = $resultRow['name'];
+        $pComposition   = $resultRow['comp_1'];
+        $pComposition2  = $resultRow['comp_2'];
+        $weightage      = $resultRow['unit_quantity'];
+        $unit           = $resultRow['unit'];
+        $packagingType  = $resultRow['packaging_type'];
+        $packDetails    = $PackagingUnits->showPackagingUnitById($packagingType);
         foreach ($packDetails as $packData) {
             $packageType = $packData['unit_name'];
         }
@@ -97,8 +98,12 @@ if ($resultData) {
             <div class="col-md-4"><?php echo $productName, $power ?><br>
                 <small><?php echo $manufacturerName ?></small>
             </div>
-            <div class="col-md-4"><small><?php echo $pComposition ?></small></div>
-            <div class="col-md-2"><small><?php echo $packOf ?></small></div>
+            <div class="col-md-4">
+                <small><?= $pComposition ?></small>
+                <br>
+                <small><?= $pComposition2 ?></small>
+            </div>
+            <div class="col-md-2"><small><?= $packOf ?></small></div>
             <div class="col-md-2"><small><?php echo $stockQty;
                                             if ($looseQty > 0) {
                                                 echo "($looseQty)";

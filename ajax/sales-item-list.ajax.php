@@ -4,6 +4,7 @@ require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR."dbconnect.php";
 require_once CLASS_DIR.'search.class.php';
+require_once CLASS_DIR.'itemUnit.class.php';
 require_once CLASS_DIR.'currentStock.class.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR.'products.class.php';
@@ -12,6 +13,7 @@ $CurrentStock = new CurrentStock();
 $Manufacturer = new Manufacturer();
 $Search       = new Search();
 $Products     = new Products;
+$ItemUnit     = new ItemUnit;
 
 $searchResult = FALSE;
  
@@ -40,9 +42,13 @@ if($searchResult){
         $productName = $resultRow['name'];
         $weightage   = $resultRow['unit_quantity'];
         $unit        = $resultRow['unit'];
-        $packOf      = $weightage.'/'.$unit;
+
+        $itemUnitName   = $ItemUnit->itemUnitName($unit);
+        $packOf         = $weightage.'/'.$itemUnitName;
+
+
         $manufacturerId = $resultRow['manufacturer_id'];
-        $manufacturer = $Manufacturer->showManufacturerById($manufacturerId);
+        $manufacturer   = $Manufacturer->showManufacturerById($manufacturerId);
 
         foreach ($manufacturer as $row) {
             $manufacturerName = $row['name'];

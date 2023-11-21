@@ -340,13 +340,13 @@ const stockDetails = (productId, batchNo, itemId) => {
         // alert(xmlhttp.responseText);
 
         //==================== Unit ====================
-        unitUrl = 'ajax/getProductDetails.ajax.php?unit=' + productId;
+        unitUrl = 'ajax/getProductDetails.ajax.php?itemUnit=' + productId;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
         xmlhttp.send(null);
         let packUnit = xmlhttp.responseText;
-        let packOf = `${packWeightage}${packUnit}`;
+        let packOf = `${packWeightage} ${packUnit}`;
         document.getElementById("weightage").value = packOf;
         document.getElementById("item-unit-type").value = xmlhttp.responseText;
         // // alert(xmlhttp.responseText);

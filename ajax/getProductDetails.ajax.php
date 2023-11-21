@@ -4,11 +4,13 @@ require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR."dbconnect.php";
 require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'itemUnit.class.php';
 require_once CLASS_DIR.'currentStock.class.php';
 
 
 $Products       = new Products();
-$CurrentStock = new CurrentStock();
+$ItemUnit       = new itemUnit();
+$CurrentStock   = new CurrentStock();
 
 
 // ================ get product name =========================
@@ -36,10 +38,11 @@ if (isset($_GET["weightage"])) {
 
 // ============== UNIT ====================
 
-if (isset($_GET["unit"])) {
-    $prodId = $_GET["unit"];
+if (isset($_GET["itemUnit"])) {
+    $prodId = $_GET["itemUnit"];
     $showProducts = $Products->showProductsById($prodId);
-    echo $showProducts[0]['unit'];
+    echo $ItemUnit->itemUnitName($showProducts[0]['unit']);
+    // echo $showProducts[0]['unit'];
 }
 
 // ======== get curretn stock expiary date =========

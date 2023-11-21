@@ -15,7 +15,7 @@ if (isset($_GET["pid"])) {
     
     $showProducts = $Products->showProductsById($_GET["pid"]);
     
-    echo $showProducts[0]['product_composition'];
+    echo $showProducts[0]['comp_1'].', '.$showProducts[0]['comp_1'];
 }
 
 ?>

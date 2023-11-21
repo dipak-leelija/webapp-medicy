@@ -203,12 +203,12 @@ $todayYr = date("y");
 
                                             <div class="col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="mrp">MRP/Package</label>
-                                                <input type="number" class="upr-inp" name="mrp" id="mrp" readonly>
+                                                <input type="number" class="upr-inp" name="mrp" id="mrp">
                                             </div>
 
                                             <div class="col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="gst">GST%</label>
-                                                <input type="number" class="upr-inp" name="gst" id="gst" readonly>
+                                                <input type="number" class="upr-inp" name="gst" id="gst">
                                             </div>
 
                                         </div>
