@@ -12,8 +12,8 @@ function get_rnd_iv($iv_len)
    return $iv;
 }
 
-function md5_encrypt($plain_text, $password, $iv_len = 16)
-{
+function pass_enc($plain_text, $password, $iv_len = 16){
+
    $plain_text .= "\x13";
    $n = strlen($plain_text);
    if ($n % 16) $plain_text .= str_repeat("\0", 16 - ($n % 16));
@@ -33,9 +33,9 @@ function md5_encrypt($plain_text, $password, $iv_len = 16)
 
 // $p = "JGFYGwJnzK2y7mpcwUIVVNxfC9Cn5/9hqLxHb8TR+yg=";
 // $pass  = USER_PASS;
-// echo md5_encrypt($p, $pass);
+// echo pass_enc($p, $pass);
 
-function md5_decrypt($enc_text, $password, $iv_len = 16)
+function pass_dec($enc_text, $password, $iv_len = 16)
 {
    $enc_text = base64_decode($enc_text);
    $n = strlen($enc_text);
