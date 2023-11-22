@@ -2,6 +2,8 @@
 $page = "doc-specialization";
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';
+require_once ROOT_DIR . '_config/accessPermission.php';
+
 require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'doctor.category.class.php';
