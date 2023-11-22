@@ -84,14 +84,13 @@
 
         <li class="nav-item <?php if($page ==  "employees" || $page ==  "empRole"){ echo "active";} ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTests"
-                aria-expanded="<?= $page ==  "employees" || $page ==  "empRole" ? "active" : ''; ?>" aria-controls="collapsePages">
+                aria-expanded="<?= $page ==  "employees" || $page ==  "empRole" ? "true" : ''; ?>" aria-controls="collapsePages">
                 <i class="fas fa-user"></i>
                 <span>Employees</span>
             </a>
 
-            <div id="collapseTests" class="collapse <?= $page ==  "employees" || $page ==  "empRole" ? "active" : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="collapseTests" class="collapse <?= $page ==  "employees" || $page ==  "empRole" ? "show" : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <!-- <h6 class="collapse-header">Login Screens:</h6> -->
                     <a class="collapse-item <?= $page ==  "employees" ? "active" : ''; ?>"  href="employees.php">Employees</a>
                     <a class="collapse-item <?= $page ==  "empRole" ? "active" : ''; ?>" href="empRole.php">Designations</a>
                 </div>
