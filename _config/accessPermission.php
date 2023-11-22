@@ -1,59 +1,26 @@
 <?php
-require_once dirname(__DIR__) . '/config/constant.php';
-require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-
-require_once CLASS_DIR . 'dbconnect.php'; 
+require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'accessPermission.class.php';
+require_once CLASS_DIR . 'utility.class.php';
 
 $AccessPermission  = new AccessPermission;
 $Employees         = new Employees;
+$Utility           = new Utility;
 
-$employeesData = $Employees->empDisplayByAdminAndEmpId($employeeId, $adminId);
-if($employeesData != null){
-    $employeesData = json_decode($employeesData);
-    $empRole = $employeesData->emp_role;
+$currentURL        = $Utility->currentUrl();
+$currentFile = basename($currentURL);
 
-    $permissionDetails = $AccessPermission->showPermission($empRole, $adminId);
-    $permissionDetails = json_decode($permissionDetails);
 
-    $permissonPages = [];
-    // array_push($permissonPages, LOCAL_DIR);
-    foreach($permissionDetails as $permissionDetails){
-        array_push($permissonPages, $permissionDetails->allow_page);
+$allowedPages = $AccessPermission->showPermission($userRole, $adminId);
+  $allowedPages = json_decode($allowedPages);
+
+  if ($allowedPages->status == 1) {
+    $allowedPages = $allowedPages->data;
+
+    if(!in_array($currentFile, $allowedPages)) {
+      echo "You are not allowed";
     }
-    // print_r($permissonPages);
-}
-
-if($userRole != 'ADMIN'){
-
-    $flag = 0; 
-
-    $currentURL = $_SERVER['REQUEST_URI'];
-
-    for($i = 0; $i<count($permissonPages); $i++){
-        if($currentURL == LOCAL_DIR.$permissonPages[$i] || $currentURL == LOCAL_DIR){
-            $flag = 1;
-            break;
-        }
-    }
-
-    if($flag == 0){
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        echo "<script>alert('Your message goes here.');</script>";
-    }
-    
-   
-    
-   
-
-
-
-}
-
-
-
-
-
+  }
 
 ?>

@@ -57,6 +57,7 @@ session_start();
 	
 	define('PAGE',				$_SERVER['PHP_SELF']);
 	define('URL', 				$protocol.$_SERVER['HTTP_HOST'].LOCAL_DIR);
+	define('CURRENT_PAGE',		$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 	define('ADM_URL',  			URL.'admin/');
 
 
