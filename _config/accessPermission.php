@@ -15,6 +15,22 @@ if($employeesData != null){
     $empRole = $employeesData->emp_role;
 
     $permissionDetails = $AccessPermission->showPermission($empRole, $adminId);
-    print_r($permissionDetails);
 }
+
+if($userRole != 'ADMIN'){
+    print_r($permissionDetails);
+
+    $currentURL = $_SERVER['REQUEST_URI'];
+
+    echo "Current URL: $currentURL";
+    echo "<br>";
+    echo URL;
+    
+}
+
+
+
+
+
+
 ?>
