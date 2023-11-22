@@ -1,9 +1,5 @@
-     <?php
-        require_once dirname(__DIR__ ). '/config/constant.php';
-        require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-        // echo $userRole;
-      ?>
-     <!-- Sidebar -->
+    
+    <!-- Sidebar -->
 
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -44,19 +40,18 @@
 
         <!-- Lab section  -->
         
-        <li class="nav-item <?php if($page ==  "lab-tests" || $page ==  "test-appointments"){ echo "active";} ?>">
+        <li class="nav-item <?= $page ==  "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports"  ? "active" : ''; ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTest"
-                aria-expanded="true" aria-controls="collapsePages">
+                aria-expanded="<?= $page ==  "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports" ? "true" : ''; ?>" aria-controls="collapsePages">
                 <i class="fas fa-vial"></i>
                 <span>Lab Tests</span>
             </a>
 
-            <div id="collapseTest" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="collapseTest" class="collapse <?= $page ==  "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports" ? "show" : ''; ?>"  aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <!-- <h6 class="collapse-header">Login Screens:</h6> -->
-                    <a class="collapse-item" href="lab-tests.php">Avilable Tests</a>
-                    <a class="collapse-item" href="test-appointments.php">Test Bill Details</a>
-                    <a class="collapse-item" href="test-reports.php">Test Reports</a>
+                    <a class="collapse-item <?= $page ==  "lab-tests" ? "active" : ''; ?>"  href="lab-tests.php">Avilable Tests</a>
+                    <a class="collapse-item <?= $page ==  "test-appointments" ? "active" : ''; ?>"  href="test-appointments.php">Test Bill Details</a>
+                    <a class="collapse-item <?= $page ==  "test-reports" ? "active" : ''; ?>"  href="test-reports.php">Test Reports</a>
                 </div>
             </div>
 
@@ -73,7 +68,7 @@
             <div id="collapseDoctor" class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "show" : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?= $page ==  "doctors" ? "active": ''; ?>" href="doctors.php">Doctors</a>
-                    <a class="collapse-item <?= $page ==  "doc-specialization" ? "active": ''; ?>"" href="doctor-specialization.php">Specializations</a>
+                    <a class="collapse-item <?= $page ==  "doc-specialization" ? "active": ''; ?>" href="doctor-specialization.php">Specializations</a>
                 </div>
             </div>
 
@@ -87,18 +82,18 @@
         </li>
 
 
-        <li class="nav-item <?php if($page ==  "employees" || $page ==  "employees"){ echo "active";} ?>">
+        <li class="nav-item <?php if($page ==  "employees" || $page ==  "empRole"){ echo "active";} ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTests"
-                aria-expanded="true" aria-controls="collapsePages">
+                aria-expanded="<?= $page ==  "employees" || $page ==  "empRole" ? "active" : ''; ?>" aria-controls="collapsePages">
                 <i class="fas fa-user"></i>
                 <span>Employees</span>
             </a>
 
-            <div id="collapseTests" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="collapseTests" class="collapse <?= $page ==  "employees" || $page ==  "empRole" ? "active" : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!-- <h6 class="collapse-header">Login Screens:</h6> -->
-                    <a class="collapse-item" href="employees.php">Employees</a>
-                    <a class="collapse-item" href="empRole.php">Designations</a>
+                    <a class="collapse-item <?= $page ==  "employees" ? "active" : ''; ?>"  href="employees.php">Employees</a>
+                    <a class="collapse-item <?= $page ==  "empRole" ? "active" : ''; ?>" href="empRole.php">Designations</a>
                 </div>
             </div>
 
