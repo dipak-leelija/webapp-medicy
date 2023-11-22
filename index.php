@@ -35,12 +35,16 @@ $totalAppointments = $appoinments->appointmentsDisplay($adminId);
 $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
 $employeesData = $Employees->empDisplayByAdminAndEmpId($employeeId, $adminId);
-// print_r($employeesData);emp_role
-$employeesData = json_decode($employeesData);
-$empRole = $employeesData->emp_role;
+if($employeesData != null){
+    $employeesData = json_decode($employeesData);
+    $empRole = $employeesData->emp_role;
 
-$permissionDetails = $AccessPermission->showPermission($empRole, $adminId);
-print_r($permissionDetails);
+    $permissionDetails = $AccessPermission->showPermission($empRole, $adminId);
+    print_r($permissionDetails);
+}
+
+
+
 
 
 

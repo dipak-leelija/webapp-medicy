@@ -4,7 +4,7 @@ class AccessPermission extends DatabaseConnection{
 
     function showPermission($roleId, $adminId) {
         try {
-            $select = "SELECT * FROM `access_permission` WHERE `role_id` = ? AND `admin_id` = ?";
+            $select = "SELECT allow_page FROM `access_permission` WHERE `role_id` = ? AND `admin_id` = ?";
             
             $stmt = $this->conn->prepare($select);
             
