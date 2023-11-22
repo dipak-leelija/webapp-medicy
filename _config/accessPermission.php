@@ -38,22 +38,22 @@ if($userRole != 'ADMIN'){
         }
     }
 
-    if($flag == 0){
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        echo "<script>alert('Your message goes here.');</script>";
+
+
+    if ($flag == 0) {
+        echo '<link rel="stylesheet" href="' . CSS_PATH . 'sweetalert2/sweetalert2.min.css">';
+        echo '<script src="' . JS_PATH . 'sweetalert2/sweetalert2.all.min.js"></script>';
+        
+        echo '<script>window.location.href = "' . $_SERVER['HTTP_REFERER'] . '";</script>';
+        
+        $redirectFlag = 1;
+    
+        
+
     }
-    
-   
-    
-   
 
 
 
 }
-
-
-
-
-
 
 ?>
