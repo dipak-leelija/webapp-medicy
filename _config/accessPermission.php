@@ -6,21 +6,52 @@ require_once CLASS_DIR . 'utility.class.php';
 
 $AccessPermission  = new AccessPermission;
 $Employees         = new Employees;
-$Utility           = new Utility;
 
-$currentURL        = $Utility->currentUrl();
-$currentFile = basename($currentURL);
+$employeesData = $Employees->empDisplayByAdminAndEmpId($employeeId, $adminId);
+if($employeesData != null){
+    $employeesData = json_decode($employeesData);
+    $empRole = $employeesData->emp_role;
 
+    $permissionDetails = $AccessPermission->showPermission($empRole, $adminId);
+    $permissionDetails = json_decode($permissionDetails);
 
-$allowedPages = $AccessPermission->showPermission($userRole, $adminId);
-  $allowedPages = json_decode($allowedPages);
-
-  if ($allowedPages->status == 1) {
-    $allowedPages = $allowedPages->data;
-
-    if(!in_array($currentFile, $allowedPages)) {
-      echo "You are not allowed";
+    $permissonPages = [];
+    // array_push($permissonPages, LOCAL_DIR);
+    foreach($permissionDetails as $permissionDetails){
+        array_push($permissonPages, $permissionDetails->allow_page);
     }
-  }
+    // print_r($permissonPages);
+}
+
+if($userRole != 'ADMIN'){
+
+    $flag = 0; 
+
+    $currentURL = $_SERVER['REQUEST_URI'];
+
+    for($i = 0; $i<count($permissonPages); $i++){
+        if($currentURL == LOCAL_DIR.$permissonPages[$i] || $currentURL == LOCAL_DIR){
+            $flag = 1;
+            break;
+        }
+    }
+
+    if($flag == 0){
+        header("Location: {$_SERVER['HTTP_REFERER']}");
+        echo "<script>alert('Your message goes here.');</script>";
+    }
+    
+   
+    
+   
+
+
+
+}
+
+
+
+
+
 
 ?>
