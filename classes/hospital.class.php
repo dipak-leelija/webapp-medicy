@@ -48,9 +48,9 @@ class HealthCare extends DatabaseConnection
                         $row = $result->fetch_assoc();
                         $response = $row;
 
-                        return $response;
+                        return json_encode(['status'=> 1, 'msg' => 'success', 'data' => $response]);
                     } else {
-                        return null;
+                        return json_encode(['status'=> 0, 'msg' => 'empty', 'data' => '']);
                     }
                 } else {
                     return $response; // Return null if the query execution fails
@@ -60,7 +60,7 @@ class HealthCare extends DatabaseConnection
             }
         } catch (Exception $e) {
             // Handle any exceptions that may occur
-            throw new Exception($e->getMessage());
+            return json_encode(['status'=> 0, 'msg' => $e->getMessage(), 'data' => '']);
         }
     }
 

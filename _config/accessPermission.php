@@ -16,30 +16,32 @@ if($employeesData != null){
 
     $permissionDetails = $AccessPermission->showPermission($empRole, $adminId);
     $permissionDetails = json_decode($permissionDetails);
+
+    $permissonPages = [];
+    // array_push($permissonPages, LOCAL_DIR);
+    foreach($permissionDetails as $permissionDetails){
+        array_push($permissonPages, $permissionDetails->allow_page);
+    }
+    // print_r($permissonPages);
 }
 
 if($userRole != 'ADMIN'){
 
-    // print_r($permissionDetails);
+    $flag = 0; 
 
     $currentURL = $_SERVER['REQUEST_URI'];
 
-    foreach($permissionDetails as $permissionDetails){
-
-        // echo "<br><br>Current URL : $currentURL";
-
-        // echo "<br>permission page : ".LOCAL_DIR.$permissionDetails->allow_page."<br>";
-
-        if($currentURL == LOCAL_DIR.$permissionDetails->allow_page){
-            // echo "<br>". LOCAL_DIR.$permissionDetails->allow_page;
-            echo "permission granted";
+    for($i = 0; $i<count($permissonPages); $i++){
+        if($currentURL == LOCAL_DIR.$permissonPages[$i] || $currentURL == LOCAL_DIR){
+            $flag = 1;
             break;
-        }else{
-            echo "<script>alert('Your message goes here.');</script>";
-            header("Location: " .LOCAL_DIR.'index.php');
         }
     }
 
+    if($flag == 0){
+        header("Location: {$_SERVER['HTTP_REFERER']}");
+        echo "<script>alert('Your message goes here.');</script>";
+    }
     
    
     
