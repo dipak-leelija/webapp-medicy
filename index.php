@@ -2,6 +2,7 @@
 $page = "dashboard";
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once ROOT_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
@@ -14,7 +15,8 @@ require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labAppointments.class.php';
-
+// require_once CLASS_DIR . 'accessPermission.class.php';
+// require_once CLASS_DIR . 'employee.class.php';
 
 
 $appoinments       = new Appointments();
@@ -25,9 +27,29 @@ $StockInDetails    = new StockInDetails();
 $Distributor       = new Distributor;
 $Patients          = new Patients;
 $LabAppointments   = new LabAppointments();
+// $AccessPermission  = new AccessPermission();
+// $Employees         = new Employees;
 
+
+
+$totalAppointments = $appoinments->appointmentsDisplay($adminId);
+$labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
+
+
+
+// $employeesData = $Employees->empDisplayByAdminAndEmpId($employeeId, $adminId);
+// if($employeesData != null){
+//     $employeesData = json_decode($employeesData);
+//     $empRole = $employeesData->emp_role;
+
+//     $permissionDetails = $AccessPermission->showPermission($empRole, $adminId);
+//     
+// }
 
 print_r($permissionDetails);
+
+
+
 
 
 
