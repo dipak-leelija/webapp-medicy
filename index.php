@@ -14,8 +14,7 @@ require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labAppointments.class.php';
-require_once CLASS_DIR . 'accessPermission.class.php';
-require_once CLASS_DIR . 'employee.class.php';
+
 
 
 $appoinments       = new Appointments();
@@ -26,27 +25,9 @@ $StockInDetails    = new StockInDetails();
 $Distributor       = new Distributor;
 $Patients          = new Patients;
 $LabAppointments   = new LabAppointments();
-$AccessPermission  = new AccessPermission();
-$Employees         = new Employees;
 
 
-
-$totalAppointments = $appoinments->appointmentsDisplay($adminId);
-$labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
-
-$employeesData = $Employees->empDisplayByAdminAndEmpId($employeeId, $adminId);
-if($employeesData != null){
-    $employeesData = json_decode($employeesData);
-    $empRole = $employeesData->emp_role;
-
-    $permissionDetails = $AccessPermission->showPermission($empRole, $adminId);
-    print_r($permissionDetails);
-}
-
-
-
-
-
+print_r($permissionDetails);
 
 
 
