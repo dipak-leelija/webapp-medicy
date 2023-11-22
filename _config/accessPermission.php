@@ -20,18 +20,30 @@ if($employeesData != null){
 
 if($userRole != 'ADMIN'){
 
-    print_r($permissionDetails);
-
-    // for($i=0; $i<count($permissionDetails); $i++){
-    foreach($permissionDetails as $permissionDetails){
-        echo $permissionDetails->allow_page."<br>";
-    }
+    // print_r($permissionDetails);
 
     $currentURL = $_SERVER['REQUEST_URI'];
 
-    echo "Current URL: $currentURL";
-    echo "<br>";
-    echo LOCAL_DIR;
+    foreach($permissionDetails as $permissionDetails){
+
+        // echo "<br><br>Current URL : $currentURL";
+
+        // echo "<br>permission page : ".LOCAL_DIR.$permissionDetails->allow_page."<br>";
+
+        if($currentURL == LOCAL_DIR.$permissionDetails->allow_page){
+            // echo "<br>". LOCAL_DIR.$permissionDetails->allow_page;
+            echo "permission granted";
+            break;
+        }else{
+            echo "<script>alert('Your message goes here.');</script>";
+            header("Location: " .LOCAL_DIR.'index.php');
+        }
+    }
+
+    
+   
+    
+   
 
 
 
