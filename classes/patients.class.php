@@ -375,7 +375,7 @@ class Patients extends DatabaseConnection
 
             $result = $this->conn->query($sql);
             if ($result !== false) {
-                $row = [];
+                $rows = [];
                 while ($row = $result->fetch_object()) {
                     $rows[] = $row;
                 }
