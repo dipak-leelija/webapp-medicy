@@ -16,6 +16,7 @@ require_once CLASS_DIR.'currentStock.class.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'itemUnit.class.php';
 
 
 $CurrentStock = new CurrentStock();
@@ -23,6 +24,7 @@ $Manufacturer = new Manufacturer();
 $Search       = new Search();
 $PackagingUnits = new PackagingUnits();
 $Products = new Products;
+$ItemUnit = new ItemUnit;
 
 // require_once '../../employee/config/dbconnect.php';
 
@@ -55,12 +57,14 @@ if ($resultData) {
         $pComposition2  = $resultRow['comp_2'];
         $weightage      = $resultRow['unit_quantity'];
         $unit           = $resultRow['unit'];
+        $unitDetials    = $ItemUnit->itemUnitName($unit);
+        // echo $unitDetials;
         $packagingType  = $resultRow['packaging_type'];
         $packDetails    = $PackagingUnits->showPackagingUnitById($packagingType);
         foreach ($packDetails as $packData) {
             $packageType = $packData['unit_name'];
         }
-        $packOf      = $weightage . $unit . '/' . $packageType;
+        $packOf      = $weightage . $unitDetials . '/' . $packageType;
         $manufacturerId = $resultRow['manufacturer_id'];
         $manufacturer = $Manufacturer->showManufacturerById($manufacturerId);
 
