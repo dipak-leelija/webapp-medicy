@@ -13,7 +13,8 @@ class LoginForm extends DatabaseConnection{
                 
                 $dbPasshash = $data->password;
                 $x_password = pass_dec($dbPasshash, ADMIN_PASS);
-                
+                // exit;
+
                 if ($x_password === $password) {
                     session_start();
                     $_SESSION['LOGGEDIN']   = true;

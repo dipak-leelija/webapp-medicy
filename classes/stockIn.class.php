@@ -101,14 +101,14 @@ class StockIn extends DatabaseConnection
 
 
 
-    function selectDistOnMaxPurchase($adminId)
+    function maxPurchasedDistAmount($adminId)
     {
         try {
-            $selectQuery = "SELECT distributor_id, SUM(amount) AS total_purchase_amount 
+            $selectQuery = "SELECT distributor_id, SUM(amount) AS total 
                        FROM stock_in
                        WHERE admin_id = ?
                        GROUP BY distributor_id
-                       ORDER BY total_purchase_amount DESC
+                       ORDER BY total DESC
                        LIMIT 1";
 
             $stmt = $this->conn->prepare($selectQuery);
@@ -120,18 +120,16 @@ class StockIn extends DatabaseConnection
 
                 if ($result->num_rows > 0) {
                     $data = $result->fetch_object();
-                    $data = json_encode($data);
-                    return $data;
+                    return json_encode(['status'=> 1, 'message'=> 'success', 'data'=> $data]);
                 } else {
-                    return null;
+                    return json_encode(['status'=> 0, 'message'=> 'empty', 'data'=> '']);
                 }
                 $stmt->close();
             } else {
-                echo "Statement preparation failed: " . $this->conn->error;
+                return json_encode(['status'=> 0, 'message'=> 'Statement preparation failed:'.$this->conn->error, 'data'=> '']);
             }
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-            return null;
+            return json_encode(['status'=> 0, 'message'=> "Error: " . $e->getMessage(), 'data'=> '']);
         }
     }
 
@@ -161,18 +159,16 @@ class StockIn extends DatabaseConnection
 
                 if ($result->num_rows > 0) {
                     $data = $result->fetch_object();
-                    $data = $data;
+                    return json_encode(['status'=> 1, 'message'=> "success", 'data'=> $data]);
                 } else {
-                    return null;
+                    return json_encode(['status'=> 0, 'message'=> "empty", 'data'=> '']);
                 }
                 $stmt->close();
             } else {
-                echo "Statement preparation failed: " . $this->conn->error;
+                return json_encode(['status'=> 0, 'message'=> "Statement preparation failed: " . $this->conn->error, 'data'=> '']);
             }
-            return $data;
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-            return null;
+            return json_encode(['status'=> 0, 'message'=> "Error: " . $e->getMessage(), 'data'=> '']);
         }
     }
 
