@@ -11,8 +11,9 @@ class LoginForm extends DatabaseConnection{
         if ($result->num_rows > 0) {
             while ($data = $result->fetch_object()) {
                 
-                $dbPasshash = $data->password;
-                $x_password = pass_dec($dbPasshash, ADMIN_PASS);
+                echo $dbPasshash = $data->password;
+                echo '=>'.$x_password = pass_dec($dbPasshash, ADMIN_PASS);
+                exit;
                 
                 if ($x_password === $password) {
                     session_start();
