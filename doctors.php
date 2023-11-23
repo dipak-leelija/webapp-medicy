@@ -32,6 +32,8 @@ if(isset($_POST['add-doc']) == true){
 }
 
 $showDoctors = $doctors->showDoctors($adminId);
+$showDoctors = json_decode($showDoctors, true);
+// print_r($showDoctors);
 ?>
 
 <!DOCTYPE html>
@@ -107,7 +109,8 @@ $showDoctors = $doctors->showDoctors($adminId);
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if(is_array($showDoctors)){
+                                        if($showDoctors && isset($showDoctors['status']) && $showDoctors['status'] == 1){
+                                            $showDoctors = $showDoctors['data'];
                                             foreach ($showDoctors as $doctors) {
                                                 $docId              = $doctors['doctor_id'];
                                                 $docRegNo           = $doctors['doctor_reg_no'];
