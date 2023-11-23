@@ -1,14 +1,14 @@
 <?php
-// require_once dirname(__DIR__). '/config/constant.php';
 
-$includePath = get_include_path();
+$maxItemPurchase = json_decode($StockIn->selectDistOnMaxItems($adminId));
 
-$maxItemPurchase = $StockIn->selectDistOnMaxItems($adminId);
+$NosOfPurchased     = '';
+$distNameOnMaxItem  = '';
 
-if($maxItemPurchase != null){
+if($maxItemPurchase->status != 0){
+    $maxItemPurchase = $maxItemPurchase->data;
+    $NosOfPurchased    = $maxItemPurchase->number_of_purchases ;
     $distNameOnMaxItem = $Distributor->distributorName($maxItemPurchase->distributor_id);
-}else{
-
 }
 
 ?>
@@ -20,8 +20,8 @@ if($maxItemPurchase != null){
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                     most purchaed distributor by times</div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByItems-info-div">
-                    <label type="text" id="itemCount" name="itemCount"><?php echo $maxItemPurchase->number_of_purchases; ?> Times</label><br>
-                    <label type="text" id="distName" name="distName"><?php echo $distNameOnMaxItem;; ?></label>
+                    <label type="text" id="itemCount" name="itemCount"><?= $NosOfPurchased; ?> Times</label><br>
+                    <label type="text" id="distName" name="distName"><?= $distNameOnMaxItem; ?></label>
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByItems-no-data-div">
                     <label for="no-data">NO DATA FOUND</label>
