@@ -326,12 +326,12 @@ print_r($showDoctors);
                                                 <select id="docList" class="customDropSelection" name="patientDoctor" required>
                                                     <option disabled selected>Select Doctor</option>
                                                     <?php
-                                                    
+                                                    if (is_array($showDoctors) || is_object($showDoctors)) {
                                                     foreach ($showDoctors as $showDoctorDetails) {
                                                         $doctorId = $showDoctorDetails['doctor_id'];
                                                         $doctorName = $showDoctorDetails['doctor_name'];
                                                         echo '<option value=' . $doctorId . '>' . $doctorName . '</option>';
-                                                    }
+                                                    }}
                                                     ?>
 
                                                 </select>
