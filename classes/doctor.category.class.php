@@ -43,7 +43,7 @@ class DoctorCategory extends DatabaseConnection
                 }
                 return $categoryData;
             } else {
-                return null;
+                return [];
             }
         } catch (Exception $e) {
             return $e->getMessage();
