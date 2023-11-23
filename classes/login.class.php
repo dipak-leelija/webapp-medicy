@@ -11,10 +11,10 @@ class LoginForm extends DatabaseConnection{
         if ($result->num_rows > 0) {
             while ($data = $result->fetch_object()) {
                 
-                echo $dbPasshash = $data->password;
-                echo '=>'.$x_password = pass_dec($dbPasshash, ADMIN_PASS);
-                exit;
-                
+                $dbPasshash = $data->password;
+                $x_password = pass_dec($dbPasshash, ADMIN_PASS);
+                // exit;
+
                 if ($x_password === $password) {
                     session_start();
                     $_SESSION['LOGGEDIN']   = true;
