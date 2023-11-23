@@ -47,9 +47,9 @@ class Doctors extends DatabaseConnection{
                     while ($row = $result->fetch_assoc()) {
                         $data[] = $row;
                     }
-                    return $data;
+                    return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
                 }else{
-                    return null;
+                    return json_encode(['status' => 0, 'message' => '', 'data' => '']);;
                 }
                 $stmt->close();
             } else {
