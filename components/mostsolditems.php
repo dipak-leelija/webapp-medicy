@@ -108,6 +108,9 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         var mostSoldDataByDate = xmlhttp.responseText;
         
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
+
+        document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+        document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
     }
 
 
@@ -126,6 +129,9 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         var mostSoldDataByDate = xmlhttp.responseText;
     
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
+
+        document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+        document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
     }
 
 
@@ -153,11 +159,11 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         
         if (id == 'mostSoldOnDt') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'block';
-            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+            // document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
         }
 
         if (id == 'mostSoldOnDtRng') {
-            document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+            // document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
             document.getElementById('mostSoldDtRngPickerDiv').style.display = 'block';
         }
     }

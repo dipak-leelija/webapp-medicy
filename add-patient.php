@@ -1,15 +1,15 @@
 <?php
 $page = "appointments";
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
 
-require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
-require_once CLASS_DIR.'appoinments.class.php';
-require_once CLASS_DIR.'doctors.class.php';
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'idsgeneration.class.php';
-require_once CLASS_DIR.'utility.class.php';
+require_once CLASS_DIR . 'appoinments.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'idsgeneration.class.php';
+require_once CLASS_DIR . 'utility.class.php';
 
 
 //Classes Initilizing
@@ -17,6 +17,8 @@ $appointments   = new Appointments;
 $IdsGeneration  = new IdsGeneration;
 $Patients       = new Patients;
 $Utility        = new Utility;
+$doctors = new Doctors();
+
 
 $currentURL = $Utility->currentUrl();
 
@@ -27,6 +29,13 @@ if (isset($_GET['test'])) {
     }
 }
 
+
+
+$showDoctors = $doctors->showDoctors($adminId);
+$showDoctors = json_decode($showDoctors);
+
+$showDoctors = $showDoctors->data;
+print_r($showDoctors);
 ?>
 
 <!doctype html>
@@ -42,97 +51,95 @@ if (isset($_GET['test'])) {
     <title>Enter Patient Details</title>
 
 
-    <link href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css" rel="stylesheet" type="text/css"/>
-    <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css"/>
+    <link href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
-    <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" type="text/css"/>
+    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" type="text/css" />
 
 </head>
 
 <body>
-<?php
-if (isset($_SESSION['appointment-data'])) {
-    unset($_SESSION['appointment-data']);
-}
-
-if (isset($_POST['submit'])) {
-   
-    $appointmentDate    = $_POST["appointmentDate"];
-    $patientName        = $_POST["patientName"];
-    $patientGurdianName = $_POST["patientGurdianName"];
-    $patientEmail       = $_POST["patientEmail"];
-    $patientPhoneNumber = $_POST["patientPhoneNumber"];
-    $patientAge         = $_POST["patientAge"];
-    $patientWeight      = $_POST["patientWeight"];
-    $gender             = $_POST["gender"];
-    $patientAddress1    = $_POST["patientAddress1"];
-    $patientAddress2    = $_POST["patientAddress2"];
-    $patientPS          = $_POST["patientPS"];
-    $patientDist        = $_POST["patientDist"];
-    $patientPIN         = $_POST["patientPIN"];
-    $patientState       = $_POST["patientState"];
-    $patientDoctor      = $_POST["patientDoctor"];
-    // $patientDoctorShift = $_POST["doctorTime"];
-   
-    //Patient Id Generate
-    $patientId = $IdsGeneration->patientidGenerate();
-    
-    //redirect if the insertion has done
-    $visited = 1;
-
-    // Inserting Into Patients Database
-    $addPatients = $Patients->addPatients( $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
-    
-    if ($addPatients) {
-
-        $_SESSION['appointment-data'] = array(
-                                        'patientId' => $patientId,
-                                        'appointmentDate' => $appointmentDate,
-                                        'patientName' => $patientName,
-                                        'patientGurdianName' => $patientGurdianName,
-                                        'patientEmail' => $patientEmail,
-                                        'patientPhoneNumber' => $patientPhoneNumber,
-                                        'patientAge' => $patientAge,
-                                        'patientWeight' => intval($patientWeight),
-                                        'gender' => $gender,
-                                        'patientAddress1' => $patientAddress1,
-                                        'patientAddress2' => $patientAddress2,
-                                        'patientPS' => $patientPS,
-                                        'patientDist' => $patientDist,
-                                        'patientPIN' => $patientPIN,
-                                        'patientState' => $patientState,
-                                        'patientDoctor' => $patientDoctor
-                                    );
-        echo '<script>alert(Appointment Added!)</script>';
-        if ($test) {
-            header("location: lab-billing.php");
-        }else {
-            header("location: appointment-entry.php?appointmentId=".$appointmentId);
-        }
-               
-    }else{
-        echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
+    <?php
+    if (isset($_SESSION['appointment-data'])) {
+        unset($_SESSION['appointment-data']);
     }
-}
-?>
-   
+
+    if (isset($_POST['submit'])) {
+
+        $appointmentDate    = $_POST["appointmentDate"];
+        $patientName        = $_POST["patientName"];
+        $patientGurdianName = $_POST["patientGurdianName"];
+        $patientEmail       = $_POST["patientEmail"];
+        $patientPhoneNumber = $_POST["patientPhoneNumber"];
+        $patientAge         = $_POST["patientAge"];
+        $patientWeight      = $_POST["patientWeight"];
+        $gender             = $_POST["gender"];
+        $patientAddress1    = $_POST["patientAddress1"];
+        $patientAddress2    = $_POST["patientAddress2"];
+        $patientPS          = $_POST["patientPS"];
+        $patientDist        = $_POST["patientDist"];
+        $patientPIN         = $_POST["patientPIN"];
+        $patientState       = $_POST["patientState"];
+        $patientDoctor      = $_POST["patientDoctor"];
+        // $patientDoctorShift = $_POST["doctorTime"];
+
+        //Patient Id Generate
+        $patientId = $IdsGeneration->patientidGenerate();
+
+        //redirect if the insertion has done
+        $visited = 1;
+
+        // Inserting Into Patients Database
+        $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
+
+        if ($addPatients) {
+
+            $_SESSION['appointment-data'] = array(
+                'patientId' => $patientId,
+                'appointmentDate' => $appointmentDate,
+                'patientName' => $patientName,
+                'patientGurdianName' => $patientGurdianName,
+                'patientEmail' => $patientEmail,
+                'patientPhoneNumber' => $patientPhoneNumber,
+                'patientAge' => $patientAge,
+                'patientWeight' => intval($patientWeight),
+                'gender' => $gender,
+                'patientAddress1' => $patientAddress1,
+                'patientAddress2' => $patientAddress2,
+                'patientPS' => $patientPS,
+                'patientDist' => $patientDist,
+                'patientPIN' => $patientPIN,
+                'patientState' => $patientState,
+                'patientDoctor' => $patientDoctor
+            );
+            echo '<script>alert(Appointment Added!)</script>';
+            if ($test) {
+                header("location: lab-billing.php");
+            } else {
+                header("location: appointment-entry.php?appointmentId=" . $appointmentId);
+            }
+        } else {
+            echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
+        }
+    }
+    ?>
+
     <!-- Page Wrapper -->
 
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -142,7 +149,7 @@ if (isset($_POST['submit'])) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of top bar -->
 
 
@@ -155,19 +162,16 @@ if (isset($_POST['submit'])) {
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
 
-                                            <label class="form-control-label px-3" for="patientName">Patient Name<span
-                                                    class="text-danger"> *</span></label>
+                                            <label class="form-control-label px-3" for="patientName">Patient Name<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientName" name="patientName"
-                                                placeholder="Enter Patient Name" required>
+                                            <input type="text" id="patientName" name="patientName" placeholder="Enter Patient Name" required>
 
                                         </div>
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientGurdianName">Patient's
                                                 Gurdian Name<span class="text-danger"> *</span></label>
-                                            <input type="text" id="patientGurdianName" name="patientGurdianName"
-                                                placeholder="Enter Patient's Gurdian Name" required>
+                                            <input type="text" id="patientGurdianName" name="patientGurdianName" placeholder="Enter Patient's Gurdian Name" required>
                                         </div>
                                     </div>
 
@@ -176,15 +180,13 @@ if (isset($_POST['submit'])) {
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientEmail">Patient
                                                 Email</label>
-                                            <input type="text" id="patientEmail" name="patientEmail"
-                                                placeholder="Patient Email">
+                                            <input type="text" id="patientEmail" name="patientEmail" placeholder="Patient Email">
                                         </div>
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientPhoneNumber">Phone
                                                 number<span class="text-danger"> *</span></label>
-                                            <input type="text" id="patientPhoneNumber" name="patientPhoneNumber"
-                                                placeholder="Phone Number" maxlength="10" minlength="10" required>
+                                            <input type="text" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" maxlength="10" minlength="10" required>
                                         </div>
 
                                     </div>
@@ -194,15 +196,13 @@ if (isset($_POST['submit'])) {
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="appointmentDate">Appointment
                                                 Date<span class="text-danger"> *</span></label>
-                                            <input type="date" id="appointmentDate" name="appointmentDate"
-                                                placeholder="" required>
+                                            <input type="date" id="appointmentDate" name="appointmentDate" placeholder="" required>
                                         </div>
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientWeight">Weight <small>(in
                                                     kg)</small><span class="text-danger"> *</span></label>
-                                            <input type="text" id="patientWeight" name="patientWeight"
-                                                placeholder="Weight in kg" maxlength="3" required>
+                                            <input type="text" id="patientWeight" name="patientWeight" placeholder="Weight in kg" maxlength="3" required>
                                         </div>
 
                                     </div>
@@ -211,29 +211,21 @@ if (isset($_POST['submit'])) {
 
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
-                                            <label class="form-control-label px-3" for="patientAge">Age<span
-                                                    class="text-danger"> *</span></label>
-                                            <input type="text" id="patientAge" name="patientAge" placeholder="Age"
-                                                maxlength="3" minlength="1" required>
+                                            <label class="form-control-label px-3" for="patientAge">Age<span class="text-danger"> *</span></label>
+                                            <input type="text" id="patientAge" name="patientAge" placeholder="Age" maxlength="3" minlength="1" required>
                                         </div>
 
                                         <div class="col-sm-6 mt-4">
                                             <label class="mb-3 mr-1" for="gender">Gender: </label>
-                                            <input type="radio" class="btn-check" name="gender" id="male" value="Male"
-                                                autocomplete="off" required>
+                                            <input type="radio" class="btn-check" name="gender" id="male" value="Male" autocomplete="off" required>
 
-                                            <label class="btn btn-sm btn-outline-secondary" for="male"
-                                                value="Male">Male</label>
-                                            <input type="radio" class="btn-check" name="gender" id="female"
-                                                value="Female" autocomplete="off" required>
+                                            <label class="btn btn-sm btn-outline-secondary" for="male" value="Male">Male</label>
+                                            <input type="radio" class="btn-check" name="gender" id="female" value="Female" autocomplete="off" required>
 
-                                            <label class="btn btn-sm btn-outline-secondary" for="female"
-                                                value="Female">Female</label>
-                                            <input type="radio" class="btn-check" name="gender" id="secret"
-                                                value="Others" autocomplete="off" required>
+                                            <label class="btn btn-sm btn-outline-secondary" for="female" value="Female">Female</label>
+                                            <input type="radio" class="btn-check" name="gender" id="secret" value="Others" autocomplete="off" required>
 
-                                            <label class="btn btn-sm btn-outline-secondary" for="secret"
-                                                value="Secret">Others</label>
+                                            <label class="btn btn-sm btn-outline-secondary" for="secret" value="Secret">Others</label>
 
                                             <div class="valid-feedback mv-up">You selected a gender!</div>
 
@@ -254,8 +246,7 @@ if (isset($_POST['submit'])) {
                                             <label class="form-control-label px-3" for="patientAddress1">Address Line
                                                 1<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientAddress1" name="patientAddress1"
-                                                placeholder="Address Line 1" required>
+                                            <input type="text" id="patientAddress1" name="patientAddress1" placeholder="Address Line 1" required>
 
                                         </div>
 
@@ -266,8 +257,7 @@ if (isset($_POST['submit'])) {
                                             <label class="form-control-label px-3" for="patientAddress2">Address Line
                                                 2<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientAddress2" name="patientAddress2"
-                                                placeholder="Address Line 2">
+                                            <input type="text" id="patientAddress2" name="patientAddress2" placeholder="Address Line 2">
 
                                         </div>
 
@@ -277,11 +267,9 @@ if (isset($_POST['submit'])) {
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
 
-                                            <label class="form-control-label px-3" for="patientPS">Police Station<span
-                                                    class="text-danger"> *</span></label>
+                                            <label class="form-control-label px-3" for="patientPS">Police Station<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientPS" name="patientPS"
-                                                placeholder="Police Station" required>
+                                            <input type="text" id="patientPS" name="patientPS" placeholder="Police Station" required>
 
                                         </div>
 
@@ -289,11 +277,9 @@ if (isset($_POST['submit'])) {
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
 
-                                            <label class="form-control-label px-3" for="patientDist">District<span
-                                                    class="text-danger"> *</span></label>
+                                            <label class="form-control-label px-3" for="patientDist">District<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientDist" name="patientDist"
-                                                placeholder="District" required>
+                                            <input type="text" id="patientDist" name="patientDist" placeholder="District" required>
 
                                         </div>
 
@@ -305,11 +291,9 @@ if (isset($_POST['submit'])) {
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
 
-                                            <label class="form-control-label px-3" for="patientPIN">PIN Code<span
-                                                    class="text-danger"> *</span></label>
+                                            <label class="form-control-label px-3" for="patientPIN">PIN Code<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientPIN" name="patientPIN" placeholder="Pin Code"
-                                                maxlength="7" required>
+                                            <input type="text" id="patientPIN" name="patientPIN" placeholder="Pin Code" maxlength="7" required>
 
                                         </div>
 
@@ -317,8 +301,7 @@ if (isset($_POST['submit'])) {
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
 
-                                            <label class="form-control-label px-3" for="patientState">State<span
-                                                    class="text-danger"> *</span></label>
+                                            <label class="form-control-label px-3" for="patientState">State<span class="text-danger"> *</span></label>
 
                                             <select id="dropSelection" name="patientState" required>
 
@@ -336,28 +319,24 @@ if (isset($_POST['submit'])) {
 
 
                                     <?php if (!$test) : ?>
-                                    <div class="row justify-content-between text-left">
-                                        <h5 class="text-center mb-4 mt-5">Select Doctor</h5>
-                                        <div class="form-group col-sm-12 flex-column d-flex">
-                                            <label class="form-control-label px-3" for="patientDoctor">Doctor Name<span
-                                                    class="text-danger"> *</span></label>
-                                            <select id="docList" class="customDropSelection" name="patientDoctor"
-                                                required>
-                                                <option disabled selected>Select Doctor</option>
-                                                <?php
-                                                $doctors = new Doctors();
+                                        <div class="row justify-content-between text-left">
+                                            <h5 class="text-center mb-4 mt-5">Select Doctor</h5>
+                                            <div class="form-group col-sm-12 flex-column d-flex">
+                                                <label class="form-control-label px-3" for="patientDoctor">Doctor Name<span class="text-danger"> *</span></label>
+                                                <select id="docList" class="customDropSelection" name="patientDoctor" required>
+                                                    <option disabled selected>Select Doctor</option>
+                                                    <?php
+                                                    
+                                                    foreach ($showDoctors as $showDoctorDetails) {
+                                                        $doctorId = $showDoctorDetails['doctor_id'];
+                                                        $doctorName = $showDoctorDetails['doctor_name'];
+                                                        echo '<option value=' . $doctorId . '>' . $doctorName . '</option>';
+                                                    }
+                                                    ?>
 
-                                                $showDoctors = $doctors->showDoctors($adminId);
-                                                foreach ($showDoctors as $showDoctorDetails) {
-                                                    $doctorId = $showDoctorDetails['doctor_id'];
-                                                    $doctorName = $showDoctorDetails['doctor_name'];
-                                                    echo'<option value='.$doctorId.'>'. $doctorName.'</option>';
-                                                }
-                                                ?>
-
-                                            </select>
-                                        </div>
-                                        <!-- <div class="form-group col-sm-6 flex-column d-flex">
+                                                </select>
+                                            </div>
+                                            <!-- <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="doctorTiming">Time Slot<span class="text-danger"> *</span></label>
                                             <select id="shiftList" class="customDropSelection" name="doctorTime" onChange="getShiftValues()" required>
                                                 <option disabled selected>Select Doctor First</option>
@@ -366,16 +345,15 @@ if (isset($_POST['submit'])) {
 
                                             </select>
                                         </div> -->
-                                        <!-- <label id="shiftValue"></label> -->
+                                            <!-- <label id="shiftValue"></label> -->
 
-                                    </div>
+                                        </div>
                                     <?php endif; ?>
 
                                     <div class="row justify-content-end">
 
                                         <div class="form-group col-sm-4">
-                                            <button type="submit" name="submit"
-                                                class="btn-block btn-primary">Submit</button>
+                                            <button type="submit" name="submit" class="btn-block btn-primary">Submit</button>
                                         </div>
 
                                     </div>
@@ -406,7 +384,7 @@ if (isset($_POST['submit'])) {
 
                 </script>
                 <!-- Footer -->
-                <?php include ROOT_COMPONENT.'footer-text.php'; ?>
+                <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
                 <!-- End of Footer -->
 
                 <!-- Bootstrap core JavaScript-->
@@ -427,20 +405,20 @@ if (isset($_POST['submit'])) {
                 <script src="js/demo/chart-pie-demo.js"></script> -->
 
                 <script type="text/javascript">
-                var todayDate = new Date();
+                    var todayDate = new Date();
 
-                var date = todayDate.getDate();
-                var month = todayDate.getMonth() + 1;
-                var year = todayDate.getFullYear();
+                    var date = todayDate.getDate();
+                    var month = todayDate.getMonth() + 1;
+                    var year = todayDate.getFullYear();
 
-                if (date < 10) {
-                    date = '0' + date;
-                }
-                if (month < 10) {
-                    month = '0' + month;
-                }
-                var todayFullDate = year + "-" + month + "-" + date;
-                document.getElementById("appointmentDate").setAttribute("min", todayFullDate);
+                    if (date < 10) {
+                        date = '0' + date;
+                    }
+                    if (month < 10) {
+                        month = '0' + month;
+                    }
+                    var todayFullDate = year + "-" + month + "-" + date;
+                    document.getElementById("appointmentDate").setAttribute("min", todayFullDate);
                 </script>
 
 

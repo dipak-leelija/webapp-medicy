@@ -104,6 +104,9 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
         xmlhttp.send(null);
         var lessSoldDataByDate = xmlhttp.responseText;
         updateLessSoldData(JSON.parse(lessSoldDataByDate));
+
+        document.getElementById('lessSoldDtPickerDiv').style.display = 'none';
+        document.getElementById('lessSoldDtRangePickerDiv').style.display = 'none';
     }
 
 
@@ -120,6 +123,9 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
         var lessSoldDataInDtRange = xmlhttp.responseText;
 
         updateLessSoldData(JSON.parse(lessSoldDataInDtRange));
+
+        document.getElementById('lessSoldDtPickerDiv').style.display = 'none';
+        document.getElementById('lessSoldDtRangePickerDiv').style.display = 'none';
     }
 
 
@@ -147,11 +153,11 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
         if (id == 'lessSoldLstDt') {
             document.getElementById('lessSoldDtPickerDiv').style.display = 'block';
-            document.getElementById('lessSoldDtRangePickerDiv').style.display = 'none';
+            // document.getElementById('lessSoldDtRangePickerDiv').style.display = 'none';
         }
 
         if (id == 'lessSoldLstDtRng') {
-            document.getElementById('lessSoldDtPickerDiv').style.display = 'none';
+            // document.getElementById('lessSoldDtPickerDiv').style.display = 'none';
             document.getElementById('lessSoldDtRangePickerDiv').style.display = 'block';
         }
     }

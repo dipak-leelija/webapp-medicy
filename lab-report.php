@@ -2,6 +2,8 @@
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR.'_config/healthcare.inc.php';
+
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
@@ -42,30 +44,6 @@ $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
 $labReportDetailbyId = json_decode($labReportDetailbyId);
 
 
-// Fetching Hospital Info
-$HelthCare       = new HelthCare();
-// $hospitalShow = $hospital->showhelthCarePrimary();
-$healthCareDetailsPrimary = $HelthCare->showhelthCarePrimary();
-$healthCareDetailsByAdminId = $HelthCare->showhelthCare($adminId);
-
-if($healthCareDetailsByAdminId != null){
-    $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
-
-// foreach ($healthCareDetails as $hospitalDetails) {
-    $hospitalName = $healthCareDetails['hospital_name'];
-    $address1 = $healthCareDetails['address_1'];
-    $address2 = $healthCareDetails['address_2'];
-    $city = $healthCareDetails['city'];
-    $pin = $healthCareDetails['pin'];
-    $state = $healthCareDetails['health_care_state'];
-    $hospitalEmail = $healthCareDetails['hospital_email'];
-    $hospitalPhno = $healthCareDetails['hospital_phno'];
-    $appointmentNumber = $healthCareDetails['appointment_help_line'];
-// }
-
 ?>
 
 <!doctype html>
@@ -87,7 +65,7 @@ if($healthCareDetailsByAdminId != null){
         <div id="wave"></div>
 
         <div style="margin-right: 35px; margin-top: -26px; color:#183697;">
-            <h1 class="text-start fw-bold mb-2 mt-4 me-3 d-flex justify-content-end"><?php echo $hospitalName ?></h1>
+            <h1 class="text-start fw-bold mb-2 mt-4 me-3 d-flex justify-content-end"><?php echo $healthCareName ?></h1>
         </div>
         <div class="dname" style="display:flex;justify-content: flex-end;align-items: row-reverse;">
             <div style="margin-right: 52px; background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(24,54,151,1) 28%); padding:2px; height: 28px; width:347px;">
@@ -121,7 +99,7 @@ if($healthCareDetailsByAdminId != null){
                                                         $date = date_create($testDate);
                                                         echo date_format($date, "d-m-Y"); ?></p>
             </div>
-            <!-- <small><?php echo $address1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small> -->
+            <!-- <small><?php echo $healthCareAddress1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small> -->
         </div>
 
 
