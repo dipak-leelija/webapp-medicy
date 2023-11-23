@@ -118,6 +118,9 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
         xmlhttp.send(null);
 
         updatePod(JSON.parse(xmlhttp.responseText));
+
+        document.getElementById('podDtPikRngDiv').style.display = 'none';
+        document.getElementById('podDatePikDiv').style.display = 'none';
     }
 
 
@@ -136,6 +139,10 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
         xmlhttp.send(null);
 
         updatePod(JSON.parse(xmlhttp.responseText));
+
+        document.getElementById('podDtPikRngDiv').style.display = 'none';
+        document.getElementById('podDatePikDiv').style.display = 'none';
+
     }
 
 
@@ -170,11 +177,11 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 
         if (id == 'podGvnDt') {
             document.getElementById('podDatePikDiv').style.display = 'block';
-            document.getElementById('podDtPikRngDiv').style.display = 'none';
+            // document.getElementById('podDtPikRngDiv').style.display = 'none';
         }
 
         if (id == 'podDtRng') {
-            document.getElementById('podDatePikDiv').style.display = 'none';
+            // document.getElementById('podDatePikDiv').style.display = 'none';
             document.getElementById('podDtPikRngDiv').style.display = 'block';
         }
     }
