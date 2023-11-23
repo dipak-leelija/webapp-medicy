@@ -225,7 +225,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <br>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" value="<?php echo $item[0]['product_composition'] ?>" required>
+                                                <!-- <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" value="<?php echo $item[0]['product_composition'] ?>" required> -->
+                                                <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" value="<?php echo isset($item[0]['product_composition']) ? $item[0]['product_composition'] : ''; ?>" required>
                                             </div>
                                         </div>
                                         <br>
