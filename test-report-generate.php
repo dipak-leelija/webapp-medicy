@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $testIds    = $_POST['testId'];
         $testValue  = $_POST['values'];
         $unitValues = $_POST['unitValues'];
-
+        if(is_array($testValue))
         foreach ($testValue as $index => $value) {
             $unitValue = $unitValues[$index];
             $testId = $testIds[$index];

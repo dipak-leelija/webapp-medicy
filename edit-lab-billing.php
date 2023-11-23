@@ -25,7 +25,7 @@ $LabBillDetails  = new LabBillDetails();
 
 
 //Function Initilized
-$showDoctors    = $Doctors->showDoctors();
+$showDoctors    = $Doctors->showDoctors($adminId);
 $showSubTests   = $SubTests->showSubTests();
 
 

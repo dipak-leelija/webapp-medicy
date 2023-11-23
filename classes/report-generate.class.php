@@ -22,7 +22,7 @@ class LabReport extends DatabaseConnection
     function patientTest($testId)
     {
         try {
-            // $data = null;
+            $data = null;
             $sql = "SELECT * FROM `sub_tests` where `id` = '$testId'";
             $query = $this->conn->query($sql);
             while ($result = $query->fetch_object()) {
