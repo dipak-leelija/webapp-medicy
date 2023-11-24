@@ -295,7 +295,7 @@ $allDoctors  = $showDoctors->data;
 
                                             <select id="dropSelection" name="patientState" required>
 
-                                                <option disabled selected>Select State</option>
+                                                <option value="" disabled selected>Select State</option>
 
                                                 <option value="West bengal">West Bengal</option>
 
