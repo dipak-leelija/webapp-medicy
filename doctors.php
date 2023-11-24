@@ -124,7 +124,9 @@ $showDoctors = json_decode($showDoctors, true);
     
                                                 //initilizing Doctors Category
                                                 $docSplz = $DoctorCategory->showDoctorCategoryById($docSpecialization);
-                                                foreach($docSplz as $docSplzShow){
+                                                $docSplz = json_decode($docSplz, true);
+                                                if($docSplz && $docSplz['status'] == 1 && !empty($docSplz))
+                                                foreach($docSplz['data'] as $docSplzShow){
                                                     $docSpecializn = $docSplzShow['category_name'];
     
                                                     echo'<tr>

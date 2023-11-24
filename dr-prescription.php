@@ -39,7 +39,9 @@ foreach ($selectDoctorByid as $DoctorByidDetails) {
 $DoctorCategory = new DoctorCategory();
 
 $showDoctorCategoryById = $DoctorCategory->showDoctorCategoryById($docSpecialization);
-foreach ($showDoctorCategoryById as $rowDocCatName) {
+$showDoctorCategoryById =json_decode($showDoctorCategoryById , true);
+if($showDoctorCategoryById && $showDoctorCategoryById['status'] == 1 && !empty($showDoctorCategoryById))
+foreach ($showDoctorCategoryById['data'] as $rowDocCatName) {
     // print_r($rowDocCatName);
     $doctorName = $rowDocCatName['category_name'];
 }
@@ -63,7 +65,7 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
         <div class="hospitslDetails mb-0">
             <div class="row">
                 <div class="col-1 headerHospitalLogo">
-                    <img class="mt-4" src="<?php echo IMG_PATH ?>logo-p.jpg" alt="XYZ Hospital">
+                    <img class="mt-4" src="<?= $healthCareLogo?>" alt="XYZ Hospital">
                 </div>
                 <div class="col-4 headerHospitalDetails">
                     <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?php echo $healthCareName ?></h1>
