@@ -105,6 +105,9 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         var mostVistiCustomerDataByDate = xmlhttp.responseText;
         console.log(mostVistiCustomerDataByDate);
         // mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDate));
+
+        document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+        document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
     }
 
 
@@ -120,6 +123,10 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         var mostVistiCustomerDataByDateRange = xmlhttp.responseText;
 
         mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDateRange));
+
+
+        document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+        document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
     }
 
 
@@ -145,13 +152,13 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         }
 
         if (id == 'mostVisitCustomerOnDt') {
-            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+            // document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
             document.getElementById('mostVistedCustomerDtPkr').style.display = 'block';
 
         }
 
         if (id == 'mostVisitCustomerDtRng') {
-            document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+            // document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
             document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'block';
         }
     }

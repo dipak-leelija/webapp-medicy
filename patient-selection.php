@@ -75,7 +75,7 @@ $showPatients = json_decode($showPatients,true);
                                 method="post">
 
                                 <div class="section col-12 col-md-6">
-                                    <div class="data-test-hook=" remove-button"">
+                                    <div class="data-test-hook=" remove-button>
                                         <select class="form-control " id="choices-remove-button" name="patientName"
                                             required>
                                             <option value="" selected disabled> Search Patient Name

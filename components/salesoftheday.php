@@ -115,6 +115,10 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
         xmlhttp.send(null);
 
         updateSod(JSON.parse(xmlhttp.responseText));
+
+        // Hide the date picker divs after clicking "Find"
+        document.getElementById('sodDatePikDiv').style.display = 'none';
+        document.getElementById('sodDtPikRngDiv').style.display = 'none';
     }
 
 
@@ -133,6 +137,10 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
         xmlhttp.send(null);
 
         updateSod(JSON.parse(xmlhttp.responseText));
+
+        // Hide the date picker divs after clicking "Find"
+        document.getElementById('sodDatePikDiv').style.display = 'none';
+        document.getElementById('sodDtPikRngDiv').style.display = 'none';
     }
 
 
@@ -170,11 +178,11 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
 
         if (id == 'sodGvnDt') {
             document.getElementById('sodDatePikDiv').style.display = 'block';
-            document.getElementById('sodDtPikRngDiv').style.display = 'none';
+            // document.getElementById('sodDtPikRngDiv').style.display = 'none';
         }
 
         if (id == 'sodDtRng') {
-            document.getElementById('sodDatePikDiv').style.display = 'none';
+            // document.getElementById('sodDatePikDiv').style.display = 'none';
             document.getElementById('sodDtPikRngDiv').style.display = 'block';
         }
     }

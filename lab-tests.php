@@ -78,8 +78,12 @@ if (isset($_POST['subtest-submit']) == true) {
     $price = $_POST['price'];
     $price = str_replace("<", "&lt", $price);
     $price = str_replace("'", "\\", $price);
+    
+    $SubTestUnit = $_POST['subtest-unit'];
+    $SubTestUnit = str_replace("<", "&lt", $SubTestUnit);
+    $SubTestUnit = str_replace("'", "\\", $SubTestUnit);
 
-    $addsubTests = $subTests->addSubTests($subTestName, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price);
+    $addsubTests = $subTests->addSubTests($subTestName,$SubTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price);
     if (!$addsubTests) {
         echo "Something is wrong!";
     }
@@ -301,6 +305,10 @@ if (isset($_POST['subtest-submit']) == true) {
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="subtest-name"> Sub Test Name</label>
                                             <input class="form-control" id="subtest-name" name="subtest-name" type="text" required>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="mb-0 mt-1" for="subtest-unit"> Sub Test Unit</label>
+                                            <input class="form-control" id="subtest-unit" name="subtest-unit" type="text" required>
                                         </div>
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="subtest-dsc">Description</label>

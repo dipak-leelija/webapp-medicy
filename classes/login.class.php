@@ -1,11 +1,9 @@
 <?php
-require_once 'dbconnect.php';
+require_once CLASS_DIR.'encrypt.inc.php';
 
-class LoginForm extends DatabaseConnection
-{
+class LoginForm extends DatabaseConnection{
 
-    function login($email, $password, $roleData)
-    {
+    function login($email, $password, $roleData){
 
         $sql = "SELECT * FROM `admin` WHERE `email` = '$email' OR `username` = '$email'";
         $result = $this->conn->query($sql);
@@ -14,7 +12,10 @@ class LoginForm extends DatabaseConnection
             while ($data = $result->fetch_object()) {
                 
                 $dbPasshash = $data->password;
-                if (password_verify($password, $dbPasshash)) {
+                $x_password = pass_dec($dbPasshash, ADMIN_PASS);
+                // exit;
+
+                if ($x_password === $password) {
                     session_start();
                     $_SESSION['LOGGEDIN']   = true;
                     $_SESSION['ADMIN']      = true;
@@ -24,9 +25,7 @@ class LoginForm extends DatabaseConnection
                     $_SESSION['USERNAME']   = $data->username;
                     $_SESSION['ADMINID']   = $data->admin_id;
 
-                    // echo "admin login";
-                    // exit;
-                    header("Location: index.php");
+                    header("Location: ".URL);
                 } else {
                     return 'Wrong Password';
                 }

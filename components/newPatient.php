@@ -88,8 +88,8 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
                     <button class="dropdown-item" type="button" id="newPatientLst7" onclick="newPatientCount(this.id)">Last 7 Days</button>
                     <button class="dropdown-item" type="button" id="newPatientLst30" onclick="newPatientCount(this.id)">Last 30 DAYS</button>
 
-                    <button class="dropdown-item dropdown" type="button" id="newPatientOnDt" onclick="newPatientCount(this.id)" >By Date</button>
-                    <button class="dropdown-item dropdown" type="button" id="newPatientDtRng" onclick="newPatientCount(this.id)" >By Range</button>
+                    <button class="dropdown-item dropdown" type="button" id="newPatientOnDt" onclick="newPatientCount(this.id)">By Date</button>
+                    <button class="dropdown-item dropdown" type="button" id="newPatientDtRng" onclick="newPatientCount(this.id)">By Range</button>
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
 <script>
     var xmlhttp = new XMLHttpRequest();
 
-    
+
     ///find new patient by selected date ///
     function newPatientDataOverride(patientOverrideData) {
         console.log(patientOverrideData);
@@ -116,7 +116,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     function newPatientByDt() {
         var newPatientDt = document.getElementById('newPatientDt').value;
         var newPatientElement = document.getElementById('newPatient');
-        
+
         newPatientDtUrl = `<?php echo LOCAL_DIR ?>ajax/new-patient-count.ajax.php?newPatientDt=${newPatientDt}`;
         xmlhttp.open("GET", newPatientDtUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -165,7 +165,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     }
 
 
-
+    
     /// selection button ////
     function newPatientCount(buttonId) {
         document.getElementById('newPatientDtPkr').style.display = 'none';

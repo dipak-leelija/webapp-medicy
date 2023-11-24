@@ -24,9 +24,9 @@ class SubTests extends DatabaseConnection
 
 
 
-    function addSubTests($subTestName, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price)
+    function addSubTests($subTestName,$SubTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price)
     {
-        $insertTest = "INSERT INTO sub_tests (sub_test_name, parent_test_id, age_group, test_preparation, test_dsc, price) VALUES ('$subTestName', '$parentTestId', '$ageGroup', '$subTestPrep', '$subTestDsc', '$price')";
+        $insertTest = "INSERT INTO sub_tests (sub_test_name, unit, parent_test_id, age_group, test_preparation, test_dsc, price) VALUES ('$subTestName','$SubTestUnit', '$parentTestId', '$ageGroup', '$subTestPrep', '$subTestDsc', '$price')";
         $insertTestQuery = $this->conn->query($insertTest);
         // echo $insertTest.$this->conn->error;
         // exit;
@@ -38,7 +38,7 @@ class SubTests extends DatabaseConnection
 
     function showSubTestsId($subTestId)
     {
-        // $data=0;
+        $data=[];
         $selectTestById = "SELECT * FROM sub_tests WHERE `sub_tests`.`id` = '$subTestId'";
         $subTestQuery = $this->conn->query($selectTestById);
         while ($result = $subTestQuery->fetch_array()) {

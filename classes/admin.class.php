@@ -1,10 +1,13 @@
 <?php
-require_once 'dbconnect.php';
+require_once CLASS_DIR.'encrypt.inc.php';
 class Admin extends DatabaseConnection{
 
 
 
     function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $added_on) {
+        
+        $password = pass_enc($password, ADMIN_PASS);
+
         try {
             $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($query);

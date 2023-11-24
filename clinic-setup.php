@@ -168,8 +168,8 @@ if (isset($_POST['update']) ==  true) {
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="address-2">Address 2</label>
                                                 <textarea class="form-control" type="text" maxlength="50"
-                                                    name="address-2" id="address-2" rows="2"
-                                                    required><?= $healthCareAddress2; ?></textarea>
+                                                    name="address-2" id="address-2"
+                                                    rows="2"><?= $healthCareAddress2; ?></textarea>
                                             </div>
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="city">City</label>

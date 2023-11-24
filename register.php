@@ -11,9 +11,9 @@ require_once CLASS_DIR.'admin.class.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
 
-$admin      = new Admin();
-$HealthCare  = new HealthCare;
-$IdGenerate = new IdsGeneration;
+$admin          = new Admin();
+$HealthCare     = new HealthCare;
+$IdGenerate     = new IdsGeneration;
 
 $userExists = false;
 $emailExists = false;
@@ -45,7 +45,6 @@ if (isset($_POST['register'])) {
             $emailExists = false;
             if($password == $cpassword){
                 $diffrentPassword = false;
-                $password = password_hash($password, PASSWORD_DEFAULT);
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, NOW);
                 // print_r($register);
                 if ($register) {
