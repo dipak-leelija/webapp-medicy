@@ -329,7 +329,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="border p-1 rounded">
-                                                    <div class="image-area <?php if (count($image) != 0) {
+                                                    <div class="image-area <?php if (!empty($image)) {
                                                                                 echo 'activeted';
                                                                             } ?> rounded" id="imageArea">
                                                         <img class="browse" src="<?php echo PROD_IMG_PATH . $Images ?>" alt="">
