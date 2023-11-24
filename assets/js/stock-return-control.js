@@ -92,6 +92,7 @@ const viewReturnItems = (returnId) => {
 
 // ============================== edit return item contol ==================
 const editReturnItem = (editId) => {
+    // console.log("hello");
     // alert("edit id : " + editId);
     $.ajax({
         url: "ajax/edit-request-check.ajax.php",
@@ -112,7 +113,7 @@ const editReturnItem = (editId) => {
 
 //=============================== CANCEL STOCK RETURN FUNCTION CALL =============================
 const cancelPurchaseReturn = (cancelId, t) => {
-
+    
     let btn = document.getElementById('cancel-btn-'+cancelId);
     // alert(cancelId);
     if (confirm("Are You Sure?")) {
@@ -123,8 +124,7 @@ const cancelPurchaseReturn = (cancelId, t) => {
                 id: cancelId
             },
             success: function (data) {
-                // alert(data);
-                if (data == 1) {
+                if (data) {
                     $(t).closest("tr").css("background-color", "#ff0000");
                     $(t).closest("tr").css("color", "#fff");
                     $(btn).off('click');

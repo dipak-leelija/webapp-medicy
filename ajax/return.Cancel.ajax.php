@@ -32,11 +32,13 @@ if (isset($_POST["id"])) {
             $totalReturnQTY = intval($returnQTY) + intval($returnFQTY);
     
             $stockCheck = $CurrentStock->showCurrentStocByStokInDetialsId($stokInId);
+            // print_r($stockCheck);
+          
             foreach($stockCheck as $currentStock){
-                $currentStockQTY = $currentStock['qty'];
-                $currentStockLQTY = $currentStock['loosely_count'];
-                $currentStockWeightage = $currentStock['weightage'];
-                $currentStockUnit = $currentStock['unit'];
+                $currentStockQTY = $stockCheck->qty;
+                $currentStockLQTY = $stockCheck->loosely_count;
+                $currentStockWeightage = $stockCheck->weightage;
+                $currentStockUnit = $stockCheck->unit;
             }
 
             if($currentStockUnit == 'tab' || $currentStockUnit == 'cap'){
@@ -45,7 +47,7 @@ if (isset($_POST["id"])) {
                 $updatedQTY = intdiv(intval($updatedLQTY), intval($currentStockWeightage));
             }else{
                 $updatedQTY = intval($currentStockQTY) + intval($totalReturnQTY);
-                $updatedFQTY = 0;
+                $updatedLQTY = 0;
             }
 
             $updateCurretnStock = $CurrentStock->updateStockByStockInDetailsId($stokInId, $updatedQTY, $updatedLQTY); 
