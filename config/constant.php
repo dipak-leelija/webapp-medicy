@@ -8,6 +8,7 @@ session_start();
 	date_default_timezone_set("Asia/Calcutta");   //India time (GMT+5:30)
 
 	define("NOW", 			date("Y-m-d H:i:s"));
+	define("TODAY", 		date("d-m-Y"));
 
 	
 	function is_localhost() {

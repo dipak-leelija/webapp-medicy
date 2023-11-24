@@ -163,19 +163,19 @@ $todayYr = date("y");
                                         </div>
 
                                         <div class="row">
-                                            <div class="d-none col-md-12 mt-2">
+                                            <div class="  col-md-12 mt-2">
                                                 <label class="mb-0" for="manufacturer-id">Manufacturer</label>
                                                 <!-- <select class="upr-inp" id="manufacturer-id" name="manufacturer-id"
                                                 required>
                                                 <option value="" disabled selected>Select </option>
 
                                             </select> -->
-                                                <input class="d-none upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
+                                                <input class="  upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
                                                 <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
                                             </div>
                                         </div>
 
-                                        <div class="d-none row">
+                                        <div class="  row">
                                             <div class="col-md-12 ">
                                                 <div class="row ">
 
@@ -210,7 +210,7 @@ $todayYr = date("y");
 
                                             <div class="col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="gst">GST%</label>
-                                                <input type="number" class="upr-inp" name="gst" id="gst">
+                                                <input type="number" class="upr-inp" name="gst" id="gst" onkeyup="getBillAmount()">
                                             </div>
 
                                         </div>
@@ -237,7 +237,7 @@ $todayYr = date("y");
                                                     <input class="year " type="number" id="exp-year"  onfocusout="setExpYear(this);" onkeyup="setExpYEAR(this)">
                                                 </div>
                                             </div>
-                                            <div class="d-none col-md-4 mt-2">
+                                            <div class="  col-md-4 mt-2">
                                                 <label class="mb-0" for="product-id">Product Id</label>
                                                 <input class="upr-inp" id="product-id" name="product-id" readonly>
                                             </div>
@@ -268,10 +268,10 @@ $todayYr = date("y");
                                                 <input type="number" class="upr-inp" name="free-qty" id="free-qty">
                                             </div>
 
-                                            <div class="d-none col-sm-6 col-md-6 mt-2">
+                                            <!-- <div class="  col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="purchase-price">Check PTR</label>
                                                 <input type="number" class="upr-inp" name="ptr" id="chk-ptr">
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <!--/End Price Row -->
 
@@ -288,7 +288,7 @@ $todayYr = date("y");
                                         </div> -->
 
 
-                                            <div class="d-none col-sm-6 col-md-6 mt-2">
+                                            <div class="  col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="packaging-type">Packaging Type</label>
                                                 <select class="upr-inp" name="packaging-type" id="packaging-type">
                                                     <option value="" disabled selected>Select Packaging Type </option>
@@ -402,7 +402,7 @@ $todayYr = date("y");
 
                                                     <input class="summary-inp w-60" name="distributor-name" id="dist-name" type="text" value="" readonly>
 
-                                                    <input class="d-none summary-inp w-60" name="distributor-id" id="dist-id" type="text" value="" readonly>
+                                                    <input class="  summary-inp w-60" name="distributor-id" id="dist-id" type="text" value="" readonly>
 
                                                     <!-- <input  class="summary-inp w-60" name="distributor-id"
                                                     id="distributor-id" value="" type="text"

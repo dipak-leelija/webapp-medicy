@@ -221,17 +221,17 @@ const getDtls = (productId) => {
         xmlhttp.open("GET", mrpUrl, false);
         xmlhttp.send(null);
         document.getElementById("mrp").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
+        
 
-        //==================== ptr check url ===================
-        chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + productId;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
-        xmlhttp.open("GET", chkPtr, false);
-        xmlhttp.send(null);
-        // alert(xmlhttp.responseText);
-        document.getElementById("chk-ptr").value = xmlhttp.responseText;
-        document.getElementById("ptr").value = xmlhttp.responseText;
+        // //==================== ptr check url ===================
+        // chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + productId;
+        // // alert(unitUrl);
+        // // window.location.href = unitUrl;
+        // xmlhttp.open("GET", chkPtr, false);
+        // xmlhttp.send(null);
+        // // alert(xmlhttp.responseText);
+        // document.getElementById("chk-ptr").value = xmlhttp.responseText;
+        // document.getElementById("ptr").value = xmlhttp.responseText;
 
         //==================== GST ====================
         gstUrl = 'ajax/product.getGst.ajax.php?id=' + productId;
@@ -239,9 +239,13 @@ const getDtls = (productId) => {
         // window.location.href = unitUrl;
         xmlhttp.open("GET", gstUrl, false);
         xmlhttp.send(null);
-        document.getElementById("gst").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
-
+        if(xmlhttp.responseText != ' ' || xmlhttp.responseText != null){
+            document.getElementById("gst").value = xmlhttp.responseText;
+        }
+            
+        
+        
+        
         //==================== Product Id ====================
         document.getElementById("product-id").value = productId;
 
@@ -262,7 +266,7 @@ const getDtls = (productId) => {
 
 
         document.getElementById('batch-no').focus();
-
+        // document.getElementById("gst").focus;
         stockInSave.setAttribute("disabled", "true");
 
     } else {
@@ -342,6 +346,7 @@ const getBillAmount = () => {
         ptr = 0;
     }
 
+
     let Mrp = document.getElementById("mrp").value;
     let qty = document.getElementById("qty").value;
     let discount = document.getElementById("discount").value;
@@ -353,6 +358,11 @@ const getBillAmount = () => {
     let MRP = parseFloat(Mrp);
     let ChkPtr = parseFloat(chkPtr);
 
+
+    if(gst == ''){
+        gst = 0;
+    }
+    
     //========= base amount calculation area ===========
     var base = PTR - ((PTR * discount) / 100);
     base = parseFloat(base).toFixed(2)

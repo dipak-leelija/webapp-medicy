@@ -87,16 +87,51 @@ class DoctorCategory extends DatabaseConnection
 
 
 
-    function showDoctorCategoryById($docSpecialization)
-    {
-        $selectDoctorCategoryById = "SELECT * FROM `doctor_category` WHERE `doctor_category`.`doctor_category_id`='$docSpecialization'";
-        $selectDoctorCategoryByIdQuery = $this->conn->query($selectDoctorCategoryById);
-        while ($result = $selectDoctorCategoryByIdQuery->fetch_array()) {
-            $categoryDataById[] = $result;
-        }
-        return $categoryDataById;
-    } //end showDoctorCategoryById function
+    // function showDoctorCategoryById($docSpecialization)
+    // {
+    //     $selectDoctorCategoryById = "SELECT * FROM `doctor_category` WHERE `doctor_category`.`doctor_category_id`='$docSpecialization'";
+    //     $selectDoctorCategoryByIdQuery = $this->conn->query($selectDoctorCategoryById);
+    //     while ($result = $selectDoctorCategoryByIdQuery->fetch_array()) {
+    //         $categoryDataById[] = $result;
+    //     }
+    //     return $categoryDataById;
+    // } //end showDoctorCategoryById function
 
+
+    function showDoctorCategoryById($docSpecialization){
+        try {
+            // Use prepared statements to prevent SQL injection
+            $selectDoctorCategoryById = "SELECT * FROM `doctor_category` WHERE `doctor_category`.`doctor_category_id`=?";
+            $stmt = $this->conn->prepare($selectDoctorCategoryById);
+
+            if (!$stmt) {
+                throw new Exception("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
+            }
+
+            $stmt->bind_param("s", $docSpecialization);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if (!$result) {
+                throw new Exception("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            }
+
+            if($result->num_rows === 1) {
+                $response = $result->fetch_all(MYSQLI_ASSOC);
+                $stmt->close();
+                return json_encode(['status'=> 1, 'message'=> 'success', 'data' => $response]);
+            }else {
+                $stmt->close();
+                return json_encode(['status'=> 0, 'message'=> 'empty', 'data' => '']);
+            }
+
+
+
+        } catch (Exception $e) {
+            return json_encode(['status'=> 0, 'message'=> "Error: " . $e->getMessage(), 'data' => '']);
+        }
+    }
 
 
 
