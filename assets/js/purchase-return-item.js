@@ -282,7 +282,7 @@ const checkFQty = (returnFqty) => {
 }
 
 const getRefund = (returnQty) => {
-    console.log("check return qty : "+returnQty);
+    // console.log("check return qty : "+returnQty);
     returnQty = parseInt(returnQty);
     let currentQTY = document.getElementById("current-purchase-qty").value;
 
