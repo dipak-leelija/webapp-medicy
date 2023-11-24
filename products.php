@@ -230,7 +230,6 @@ $totalPtoducts  = $result['totalPtoducts']
     const viewItem = (value) => {
         // console.info(value);
         let url = 'ajax/product-view-modal.ajax.php?id=' + value;
-
         $(".productModal").html(
             '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
             url + '"></iframe>');
