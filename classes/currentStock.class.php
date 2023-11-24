@@ -420,8 +420,8 @@ class CurrentStock extends DatabaseConnection
                 while ($result = $res->fetch_array()) {
                     $data[] = $result;
                 }
-    
                 $stmt->close();
+                
                 return $data;
             }else{
                 $stmt->close();
