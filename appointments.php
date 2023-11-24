@@ -6,15 +6,25 @@ require_once ROOT_DIR . '_config/accessPermission.php';
 require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'appoinments.class.php';
+require_once CLASS_DIR.'pagination.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 
 $page = "appointments";
 
-$appoinments = new Appointments();
-$Doctors = new Doctors();
+$Appoinments = new Appointments();
+$Pagination  = new Pagination;
+$Doctors     = new Doctors();
 
-$showAppointments = $appoinments->appointmentsDisplay($adminId);
+$allAppointments = $Appoinments->appointmentsDisplay($adminId);
+$response = json_decode($Pagination->arrayPagination($allAppointments));
 
+$slicedAppointments = '';
+$paginationHTML     = '';
+
+if ($response->status == 1) {
+    $slicedAppointments = $response->items;
+    $paginationHTML = $response->paginationHTML;
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +38,7 @@ $showAppointments = $appoinments->appointmentsDisplay($adminId);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Employees</title>
+    <title>Appointments - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -38,7 +48,6 @@ $showAppointments = $appoinments->appointmentsDisplay($adminId);
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
 
 </head> 
@@ -65,9 +74,6 @@ $showAppointments = $appoinments->appointmentsDisplay($adminId);
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Appointments</h1>
-
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 booked_btn">
@@ -76,7 +82,7 @@ $showAppointments = $appoinments->appointmentsDisplay($adminId);
                         </div> 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered sortable-table" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -89,14 +95,14 @@ $showAppointments = $appoinments->appointmentsDisplay($adminId);
                                     </thead>
                                     <tbody>
                                         <?php 
-                                        if ($showAppointments > 0) {
+                                        if (!empty($slicedAppointments)) {
                                         
-                                            foreach($showAppointments as $showAppointDetails){
-                                            $appointmentTableID = $showAppointDetails['id'];
-                                            $appointmentID = $showAppointDetails['appointment_id'];
-                                            $appointmentDate = date("d-m-Y", strtotime($showAppointDetails['appointment_date']));
-                                            $appointmentName = $showAppointDetails['patient_name'];
-                                            $getDoctorForPatient = $showAppointDetails['doctor_id'];
+                                            foreach($slicedAppointments as $showAppointDetails){
+                                            $appointmentTableID = $showAppointDetails->id;
+                                            $appointmentID = $showAppointDetails->appointment_id;
+                                            $appointmentDate = date("d-m-Y", strtotime($showAppointDetails->appointment_date));
+                                            $appointmentName = $showAppointDetails->patient_name;
+                                            $getDoctorForPatient = $showAppointDetails->doctor_id;
 
                                                     $deleteAppointmentLink = "delete-appointment.php?delete-appointment=$appointmentID";
                                                     $updateAppointmentLink = "update-appointment.php?update-prescription=$appointmentID";
@@ -136,6 +142,9 @@ $showAppointments = $appoinments->appointmentsDisplay($adminId);
 
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <?= $paginationHTML ?>
                             </div>
                         </div>
                     </div>
@@ -263,13 +272,6 @@ $showAppointments = $appoinments->appointmentsDisplay($adminId);
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="<?php echo PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
 
 </body>
 

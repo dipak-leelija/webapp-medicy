@@ -48,7 +48,7 @@ class Appointments extends DatabaseConnection{
     
         try {
             // Create a prepared statement
-            $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE admin_id = ?");
+            $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE admin_id = ? ORDER BY id DESC");
         
             if ($stmt) {
                 // Bind the parameter (adminId) to the statement
