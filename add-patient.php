@@ -34,8 +34,8 @@ if (isset($_GET['test'])) {
 $showDoctors = $doctors->showDoctors($adminId);
 $showDoctors = json_decode($showDoctors);
 
-$showDoctors = $showDoctors->data;
-print_r($showDoctors);
+// $showDoctors = $showDoctors->data;
+// print_r($showDoctors);
 ?>
 
 <!doctype html>
@@ -326,12 +326,14 @@ print_r($showDoctors);
                                                 <select id="docList" class="customDropSelection" name="patientDoctor" required>
                                                     <option disabled selected>Select Doctor</option>
                                                     <?php
-                                                    if (is_array($showDoctors) || is_object($showDoctors)) {
-                                                    foreach ($showDoctors as $showDoctorDetails) {
-                                                        $doctorId = $showDoctorDetails['doctor_id'];
+                                                    $showDoctors = json_decode($showDoctors,true);
+                                                    if ($showDoctors['status'] == 1 && !empty($showDoctors['data'])) {
+                                                    foreach ($showDoctors['data'] as $showDoctorDetails) {
+                                                        echo   $doctorId = $showDoctorDetails['doctor_id'];
                                                         $doctorName = $showDoctorDetails['doctor_name'];
                                                         echo '<option value=' . $doctorId . '>' . $doctorName . '</option>';
-                                                    }}
+                                                    }
+                                                }
                                                     ?>
 
                                                 </select>

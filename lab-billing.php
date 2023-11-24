@@ -200,11 +200,16 @@ if(isset($_POST['bill-proceed'])){
                                             <option value="Self">By Self</option>
 
                                             <?php
-                                                foreach ($showDoctors as $showDoctorDetails) {
+                                            if($showDoctors){
+                                                $showDoctors = json_decode($showDoctors, true);
+                                            if($showDoctors && $showDoctors['status'] == 1 && !empty($showDoctors['data'])){
+                                                foreach ($showDoctors['data'] as $showDoctorDetails) {
                                                     $doctorId = $showDoctorDetails['doctor_id'];
                                                     $doctorName = $showDoctorDetails['doctor_name'];
                                                     echo'<option value="'.$doctorId.'">'. $doctorName.'</option>';
                                                 }
+                                            }
+                                        }
                                                 ?>
                                         </select>
                                     </div>

@@ -2,6 +2,7 @@
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR .'_config/healthcare.inc.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
@@ -19,33 +20,6 @@ $getDoctorForPatient = $_GET['prescription'];
 // echo $appointmentId;exit;
 
 
-
-// Fetching Hospital Info
-
-$healthCareDetailsByAdminId = $hospital->showHealthCare($adminId);
-
-$healthCareDetails = $healthCareDetailsByAdminId;
-
-$hospitalName       = $healthCareDetails['hospital_name'];
-$address1           = $healthCareDetails['address_1'];
-$address2           = $healthCareDetails['address_2'];
-$city               = $healthCareDetails['city'];
-$pin                = $healthCareDetails['pin'];
-$state              = $healthCareDetails['health_care_state'];
-$hospitalEmail      = $healthCareDetails['hospital_email'];
-$hospitalPhno       = $healthCareDetails['hospital_phno'];
-$appointmentNumber  = $healthCareDetails['appointment_help_line'];
-// foreach($healthCareDetails as $hospitalDetails){
-//     $hospitalName       = $hospitalDetails['hospital_name'];
-//     $address1           = $hospitalDetails['address_1'];
-//     $address2           = $hospitalDetails['address_2'];
-//     $city               = $hospitalDetails['city'];
-//     $pin                = $hospitalDetails['pin'];
-//     $state              = $hospitalDetails['health_care_state'];
-//     $hospitalEmail      = $hospitalDetails['hospital_email'];
-//     $hospitalPhno       = $hospitalDetails['hospital_phno'];
-//     $appointmentNumber  = $hospitalDetails['appointment_help_line'];
-// }
 
 // Fetching Doctor Info
 $selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
@@ -92,9 +66,9 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
                     <img class="mt-4" src="<?php echo IMG_PATH ?>logo-p.jpg" alt="XYZ Hospital">
                 </div>
                 <div class="col-4 headerHospitalDetails">
-                    <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?php echo $hospitalName ?></h1>
+                    <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?php echo $healthCareName ?></h1>
                     <p class="text-start  me-3">
-                        <small><?php echo $address1 . ', ' . $address2 . ', ' . $city . ',<br>' . $state . ', ' . $pin; ?></small>
+                        <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ',<br>' . $healthCareState . ', ' . $healthCarePin; ?></small>
                     </p>
                 </div>
                 <div class="col-2 header-doc-img"> <img src="<?php echo IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
@@ -114,7 +88,7 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
                     <p class="text-end  mb-0"><?php // echo $DoctorAddress 
                                                 ?></p>
                     <h6 class="text-end text-primary"><strong>Call for Appointment:
-                            <?php echo $appointmentNumber ?></strong></h6>
+                            <?php echo $healthCareApntbkNo ?></strong></h6>
                 </div>
             </div>
 
@@ -193,13 +167,13 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
 
                 <div class="col-md-4 custom-width-name mb-0">
                     <ul style="margin-bottom: 8px">
-                        <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/hospital.png" alt="Healt Care" style="width:28px; height:20px;" /><?php echo $hospitalName ?></li>
+                        <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/hospital.png" alt="Healt Care" style="width:28px; height:20px;" /><?php echo $healthCareName ?></li>
                     </ul>
                 </div>
 
                 <div class="col-md-4 custom-width-email mb-0">
                     <ul style="margin-bottom: 8px">
-                        <li class="list-unstyled"><img id="email-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/email-logo.png" alt="Email" style="width:28px; height:20px;" /><?php echo $hospitalEmail ?></li>
+                        <li class="list-unstyled"><img id="email-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/email-logo.png" alt="Email" style="width:28px; height:20px;" /><?php echo $healthCareEmail ?></li>
 
                     </ul>
                 </div>
@@ -209,10 +183,10 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
                         <li class="list-unstyled"><img id="number-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/call-logo.png" alt="Contact" style="width:28px; height:20px;" /><span>
                                 <?php
                                 $separetor = ',';
-                                if ($hospitalPhno == null) {
+                                if ($healthCarePhno == null) {
                                     $separetor = '';
                                 }
-                                echo $appointmentNumber . $separetor . ' ' . $hospitalPhno ?></span>
+                                echo $healthCareApntbkNo . $separetor . ' ' . $healthCarePhno ?></span>
                         </li>
                     </ul>
                 </div>
