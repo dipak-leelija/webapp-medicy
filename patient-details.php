@@ -269,7 +269,7 @@ $occurrences = array_count_values($subTestNames);
                                                     <tr class="appoinment-row1">
                                                         <td><?= $invoice_id ?></td>
                                                         <td><?= $stockOutData['bill_date'] ?></td>
-                                                        <td><a class="text-primary text-center" title="show" href="_config/form-submission/item-invoice-reprint.php?id=<?= $invoice_id ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                                        <td><a class="text-primary text-center" title="show" href="_config/form-submission/item-invoice-reprint.php?id=<?= url_enc($invoice_id) ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
