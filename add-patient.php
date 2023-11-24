@@ -36,6 +36,7 @@ $showDoctors = json_decode($showDoctors);
 
 $showDoctors = $showDoctors->data;
 print_r($showDoctors);
+
 ?>
 
 <!doctype html>
