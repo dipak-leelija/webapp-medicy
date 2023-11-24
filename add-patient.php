@@ -32,10 +32,8 @@ if (isset($_GET['test'])) {
 
 
 $showDoctors = $doctors->showDoctors($adminId);
-$showDoctors = json_decode($showDoctors);
-
-$showDoctors = $showDoctors->data;
-print_r($showDoctors);
+$showDoctors = json_decode($showDoctors);    
+$allDoctors  = $showDoctors->data;
 
 ?>
 
@@ -44,28 +42,19 @@ print_r($showDoctors);
 <html lang="en">
 
 <head>
-
-    <!-- Required meta tags -->
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Enter Patient Details</title>
-
-
-    <link href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
-    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
-
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <title>Add New Patient - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    
     <!-- Custom styles for this template -->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" type="text/css" />
+    <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -123,11 +112,11 @@ print_r($showDoctors);
                 'patientState' => $patientState,
                 'patientDoctor' => $patientDoctor
             );
-            echo '<script>alert(Appointment Added!)</script>';
+            
             if ($test) {
                 header("location: lab-billing.php");
             } else {
-                header("location: appointment-entry.php?appointmentId=" . $appointmentId);
+                header("location: appointment-entry.php");
             }
         } else {
             echo "<script>alert('Patient Not Inserted, Something is Wrong!')</script>";
@@ -156,8 +145,8 @@ print_r($showDoctors);
 
                 <div class="container-fluid px-1  mx-auto">
                     <div class="row d-flex justify-content-center">
-                        <div class="col-xl-8 col-lg-9 col-md-10 text-center">
-                            <div class="card mt-0">
+                        <div class="col-xl-9 col-lg-10 col-md-10 text-center">
+                            <div class="card shadow-sm p-4">
                                 <h4 class="text-center mb-4 mt-0"><b>Fill The Patient Details</b></h4>
                                 <form class="form-card" action="<?= $currentURL ?>" method="post">
                                     <div class="row justify-content-between text-left">
@@ -197,7 +186,7 @@ print_r($showDoctors);
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="appointmentDate">Appointment
                                                 Date<span class="text-danger"> *</span></label>
-                                            <input type="date" id="appointmentDate" name="appointmentDate" placeholder="" required>
+                                            <input type="date" id="appointmentDate" name="appointmentDate" required>
                                         </div>
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
@@ -325,14 +314,15 @@ print_r($showDoctors);
                                             <div class="form-group col-sm-12 flex-column d-flex">
                                                 <label class="form-control-label px-3" for="patientDoctor">Doctor Name<span class="text-danger"> *</span></label>
                                                 <select id="docList" class="customDropSelection" name="patientDoctor" required>
-                                                    <option disabled selected>Select Doctor</option>
+                                                    <option value="" disabled selected>Select Doctor</option>
                                                     <?php
-                                                    if (is_array($showDoctors) || is_object($showDoctors)) {
-                                                    foreach ($showDoctors as $showDoctorDetails) {
-                                                        $doctorId = $showDoctorDetails['doctor_id'];
-                                                        $doctorName = $showDoctorDetails['doctor_name'];
-                                                        echo '<option value=' . $doctorId . '>' . $doctorName . '</option>';
-                                                    }}
+                                                    if ($allDoctors != null) {
+                                                        foreach ($allDoctors as $showDoctorDetails) {
+                                                            $doctorId = $showDoctorDetails->doctor_id;
+                                                            $doctorName = $showDoctorDetails->doctor_name;
+                                                            echo '<option value=' . $doctorId . '>' . $doctorName . '</option>';
+                                                        }
+                                                    }
                                                     ?>
 
                                                 </select>
@@ -397,13 +387,6 @@ print_r($showDoctors);
 
                 <!-- Custom scripts for all pages-->
                 <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-
-                <!-- Page level plugins -->
-                <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
-
-                <!-- Page level custom scripts -->
-                <!-- <script src="js/demo/chart-area-demo.js"></script>
-                <script src="js/demo/chart-pie-demo.js"></script> -->
 
                 <script type="text/javascript">
                     var todayDate = new Date();

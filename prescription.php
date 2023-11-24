@@ -43,21 +43,31 @@ foreach($currentAppointments as $currentAppointmentDetails){
 // Fetching Doctor Info
 $doctors = new Doctors(); //Doctor Class 
 $selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
-// print_r($selectDoctorByid); exit;
-foreach($selectDoctorByid as $DoctorByidDetails){
-    $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
-    $DoctorName         = $DoctorByidDetails['doctor_name'];
-    $docSpecialization  = $DoctorByidDetails['doctor_specialization'];
-    $DoctorDegree       = $DoctorByidDetails['doctor_degree'];
-    $DoctorAlsoWith     = $DoctorByidDetails['also_with'];
-    $DoctorAddress      = $DoctorByidDetails['doctor_address'];
-    $DoctorEmail        = $DoctorByidDetails['doctor_email'];
-    $DoctorPhno         = $DoctorByidDetails['doctor_phno'];
+
+if ($selectDoctorByid != '') {
+    foreach($selectDoctorByid as $DoctorByidDetails){
+        $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
+        $DoctorName         = $DoctorByidDetails['doctor_name'];
+        $docSpecialization  = $DoctorByidDetails['doctor_specialization'];
+        $DoctorDegree       = $DoctorByidDetails['doctor_degree'];
+        $DoctorAlsoWith     = $DoctorByidDetails['also_with'];
+    }
+}else {
+    $DoctorReg  = '';
+    $DoctorName = '';
+    $docSpecialization  = '';
+    $DoctorDegree   = '';
+    $DoctorAlsoWith = '';
 }
 
-$showDoctorCategoryById = $DoctorCategory->showDoctorCategoryById($docSpecialization);
-foreach ($showDoctorCategoryById as $rowDocCatName) {
-    $doctorName = $rowDocCatName['category_name'];
+$doctorCategory = json_decode($DoctorCategory->showDoctorCategoryById($docSpecialization));
+if ($doctorCategory->status == 1) {
+    $doctorCategories = $doctorCategory->data;
+    foreach ($doctorCategories as $rowDocCatName) {
+            $doccategoryName = $rowDocCatName->category_name;
+        }
+}else {
+    $doccategoryName = '';
 }
 
 ?>
@@ -89,22 +99,19 @@ foreach ($showDoctorCategoryById as $rowDocCatName) {
                 </div>
                 <div class="col-2 header-doc-img"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
                 <div class=" text-danger col-5 headerDoctorDetails">
-                    <h2 class="text-end mt-3  mb-0"><?php echo $DoctorName ?></h2>
+                    <h2 class="text-end mt-3  mb-0"><?= $DoctorName ?></h2>
                     <p class="text-end  mb-0 ">
-                        <small><?php if ($DoctorReg != NULL) {
-                                    echo 'REG NO : ' . $DoctorReg;
-                                } ?></small>
+                        <small><?= $DoctorReg != NULL ? 'REG NO : ' . $DoctorReg : ''; ?></small>
                     </p>
 
                     <p class="text-end  mb-0 ">
-                        <small><?php echo $DoctorDegree . ', ' . $doctorName ?></small>
+                        <small><?= $DoctorDegree.', '.$doccategoryName ?></small>
                     </p>
                     <p class="text-end  mb-0"> <?php echo $DoctorAlsoWith ?></p>
-                    <!-- Member of: -->
-                    <p class="text-end  mb-0"><?php // echo $DoctorAddress 
-                                                ?></p>
-                    <h6 class="text-end text-primary"><strong>Call for Appointment:
-                            <?= $healthCareApntbkNo ?></strong></h6>
+                    <h6 class="text-end text-primary">
+                        <strong>Call for Appointment: <?= $healthCareApntbkNo ?></strong>
+                    </h6>
+
                 </div>
             </div>
         </div>
