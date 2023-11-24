@@ -234,7 +234,7 @@ const getDtls = (productId) => {
         // // alert(xmlhttp.responseText);
         // document.getElementById("chk-ptr").value = xmlhttp.responseText;
         // document.getElementById("ptr").value = xmlhttp.responseText;
-
+        
         //==================== GST ====================
         gstUrl = 'ajax/product.getGst.ajax.php?id=' + productId;
         // alert(unitUrl);
@@ -529,9 +529,10 @@ const addData = () => {
             });
         return;
     }
+
     var Ptr = parseFloat(ptr.value);
     var Mrp = parseFloat(mrp.value);
-    var ChkPtr = parseFloat(chkPtr.value);
+    
     if (Ptr > Mrp) {
         swal("Blank Field", "Please check PTR value", "error")
             .then((value) => {
@@ -678,7 +679,7 @@ const addData = () => {
             <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-11">
                 <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size: .7rem; text-align: end">
 
-                <input class="d-none table-data w-3r" type="text" name="chkPtr[]" value="${chkPtr.value}" readonly style="font-size: .7rem; text-align: end">
+                <input class="d-none table-data w-3r" type="text" name="chkPtr[]" value="${ptr.value}" readonly style="font-size: .7rem; text-align: end">
             </td>
             <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-12a">
                 <input type="text" class="table-data w-3r" name="base[]" value="${base.value}" style="text-align: end;">
@@ -735,7 +736,7 @@ const addData = () => {
         packegeinIn: packagingIn.value,
         mrp: mrp.value,
         ptr: ptr.value,
-        chkPtr: chkPtr.value,
+        
         Qty: qty.value,
         freeQty: freeQty.value,
         discPercent: discount.value,
