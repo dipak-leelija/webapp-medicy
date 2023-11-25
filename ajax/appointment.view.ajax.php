@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'doctors.class.php';
@@ -216,8 +217,10 @@ foreach ($showAppointments as $appointment) {
                         ?>
 
                         <?php
-                        $showDoctors = $doctors->showDoctors();
-                        foreach ($showDoctors as $doctordetails) {
+                        $showDoctors = $doctors->showDoctors($adminId);
+                        $showDoctors = json_decode($showDoctors, true);
+                        if($showDoctors && $showDoctors['status'] == 1 && !empty($showDoctors))
+                        foreach ($showDoctors['data'] as $doctordetails) {
                             $doctorId = $doctordetails['doctor_id'];
                             $doctorName = $doctordetails['doctor_name'];
                             echo '<option value="' . $doctorId . '">' . $doctorName . '</option>';
