@@ -666,6 +666,7 @@ const addData = () => {
                 <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none" hidden>
                 <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none" hidden>
 
+                <input class="table-data line-inp50" type="text" name="packagingin[]" value="${packagingIn.value}" style="display: none" hidden>
             </td>
             <td class="p-0 pt-3 w-2r" id="row-${slControl}-col-8">
                 <input class="table-data w-2r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size: .7rem; text-align: end">
