@@ -217,7 +217,7 @@ const setPaymentMode = (pMode) => {
 
 
 function searchItem(input) {
-    console.log(input);
+    // console.log(input);
     // alert(value);
     let xmlhttp = new XMLHttpRequest();
 
