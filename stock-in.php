@@ -170,14 +170,14 @@ $todayYr = date("y");
                                                 <option value="" disabled selected>Select </option>
 
                                             </select> -->
-                                                <input class="  upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
+                                                <input class="d-none upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
                                                 <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
                                             </div>
                                         </div>
 
                                         <div class="d-none row">
                                             <div class="col-md-12 ">
-                                                <div class="row ">
+                                                <div class="">
 
                                                     <div class="col-sm-4 col-md-3 mt-2 ">
                                                         <label class="mb-0" for="weightage">Weightage</label>

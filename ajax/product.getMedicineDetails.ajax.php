@@ -7,9 +7,11 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR."itemUnit.class.php";
 
 $Products       = new Products();
 $PackagingUnits = new PackagingUnits();
+$ItemUnit       = new ItemUnit;
 
 // ============= get product name =================
 if (isset($_GET["pName"])) {
@@ -62,7 +64,8 @@ if (isset($_GET["weightage"])) {
 if (isset($_GET["unit"])) {
     $showProducts = $Products->showProductsById($_GET["unit"]);
     foreach ($showProducts as $row) {
-       echo $row["unit"];
+        $unitId =  $row["unit"];
+        echo $ItemUnit->itemUnitName($unitId);
     }
 }
 ?>
