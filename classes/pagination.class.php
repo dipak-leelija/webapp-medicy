@@ -178,6 +178,14 @@ Class Pagination extends DatabaseConnection{
 
     function arrayPagination($myArr, $recordsPerPage = 16) {
 
+        $goTo = CURRENT_URL;
+        if($this->hasQueryString(CURRENT_URL)){
+            $goTo = "$goTo&page";
+        }else {
+            $goTo = "$goTo?page";
+        }
+        // exit;
+        
         if ($myArr != null || count($myArr) > 0) {
             
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -193,13 +201,13 @@ Class Pagination extends DatabaseConnection{
             $paginationHTML = "<ul class='pagination'>";
         
             if ($page > 1) {
-                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='?page=1'>First</a></li>";
-                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='?page=" . ($page - 1) . "'>Previous</a></li>";
+                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=1'>First</a></li>";
+                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=" .($page - 1). "'><i class='fas fa-chevron-left'></i></a></li>";
             }
         
             if ($totalPages <= 7) {
                 for ($i = 1; $i <= $totalPages; $i++) {
-                    $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='?page=$i'";
+                    $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=$i'";
                     if ($i == $page) {
                         $paginationHTML .= " class='current' disabled";
                     }
@@ -210,23 +218,23 @@ Class Pagination extends DatabaseConnection{
                 $endPage = min($totalPages, $page + 3);
         
                 if ($page - 3 > 1) {
-                    $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='?page=1'>1</a></li>";
+                    $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=1'>1</a></li>";
                 }
         
                 for ($i = $startPage; $i <= $endPage; $i++) {
-                    $paginationHTML .= "<li class='page-item'><a href='?page=$i'";
+                    $paginationHTML .= "<li class='page-item'><a href='$goTo=$i'";
                     $paginationHTML .= $i == $page ? " class='page-link shadow-none disabled'" : " class='page-link shadow-none'";
                     $paginationHTML .= ">$i</a></li>";
                 }
         
                 if ($page + 3 < $totalPages) {
-                    $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='?page=$totalPages'>$totalPages</a></li>";
+                    $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=$totalPages'>$totalPages</a></li>";
                 }
             }
         
             if ($page < $totalPages) {
-                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='?page=" . ($page + 1) . "'>Next</a></li>";
-                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='?page=$totalPages'>Last</a></li>";
+                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=" . ($page + 1) . "'><i class='fas fa-chevron-right'></i></a></li>";
+                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=$totalPages'>Last</a></li>";
             }
         
             $paginationHTML .= "</ul>";
@@ -238,6 +246,23 @@ Class Pagination extends DatabaseConnection{
         }
     }
     
+
+
+
+    function hasQueryString($url){
+        $parsedUrl = parse_url($url);
+        return isset($parsedUrl['query']);
+    }
+
+    // Example usage:
+    // $currentUrl = "http://example.com/some/page?existingParam=oldValue";
+    // $keyToUpdate = "page";
+    // $newValue = "newPageValue";
+
+    // $updatedUrl = updateQueryStringParameter($currentUrl, $keyToUpdate, $newValue);
+
+    // echo $updatedUrl;
+
 }
 
 ?>
