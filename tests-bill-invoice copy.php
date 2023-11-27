@@ -15,7 +15,7 @@ require_once '../php_control/hospital.class.php';
 $SubTests        = new SubTests();
 $Doctors         = new Doctors();
 $LabAppointments = new LabAppointments();
-$HelthCare       = new HelthCare();
+$HelthCare       = new HealthCare();
 
 
 //variable declreation
@@ -138,7 +138,7 @@ if (isset($_POST['bill-generate'])) {
 
 
 
-$showhelthCare = $HelthCare->showhelthCare();
+$showhelthCare = $HelthCare->showhealthCare($adminId);
 foreach ($showhelthCare as $rowhelthCare) {
     $healthCareName     = $rowhelthCare['hospital_name'];
     $healthCareAddress1 = $rowhelthCare['address_1'];

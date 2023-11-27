@@ -167,7 +167,7 @@ if ($_GET['id']) {
                                         <div class="col-md-2 payment">
                                             <div class="row mt-3">
                                                 <div class=" col-md-2 col-2 payment-icon circle-bg">
-                                                    <i class="fas fa-stethoscope"></i>
+                                                    <i class="fas fa-money-check-alt"></i>
                                                 </div>
                                                 <div class="col-md-10 col-10 payment-option">
                                                     <label for="">Payment Mode</label><br>
