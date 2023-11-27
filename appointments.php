@@ -23,9 +23,6 @@ if ($allAppointments->status) {
     if ($allAppointments->data != '') {
         $allAppointmentsData = $allAppointments->data;
 
-        print_r($allAppointmentsData);
-
-        
         if (is_array($allAppointmentsData)) {
             $response = json_decode($Pagination->arrayPagination($allAppointmentsData));
 
