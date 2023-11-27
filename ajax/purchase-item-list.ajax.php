@@ -78,7 +78,7 @@ if ($resultData) {
             $power = ' | ' . $resultRow['power'];
         }
 
-        if ($unit == "tab" || $unit == "cap") {
+        if ($unit == "tablets" || $unit == "capsules") {
             $unitType = 'loosely_count';
             $stock = $CurrentStock->showCurrentStocByUnit($productId, $unitType);
         } else {

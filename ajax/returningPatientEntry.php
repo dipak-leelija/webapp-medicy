@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
-
+require_once ROOT_DIR.'_config/healthcare.inc.php';//check admin loggedin or not
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'appoinments.class.php';
@@ -9,19 +9,11 @@ require_once CLASS_DIR.'patients.class.php';
 
 
 //Intilizing Classes
-$HealthCare = new HelthCare();
+$HealthCare = new HealthCare();
 $Patients = new Patients();
 
 
-// Fetching Hospital Info
-$healthCareDetailsPrimary = $HealthCare->showhelthCarePrimary();
-$healthCareDetailsByAdminId = $HealthCare->showhelthCare($adminId);
 
-if($healthCareDetailsByAdminId != null){
-    $healthCareDetails = $healthCareDetailsByAdminId;
-}else{
-    $healthCareDetails = $healthCareDetailsPrimary;
-}
 
 foreach($healthCareDetails as $showShowHospital){
     $hospitalName = $showShowHospital['hospital_name'];
@@ -48,7 +40,7 @@ $appointments = new Appointments();
     $patientDoctor          = $_POST["patientDoctor"];
 
     
-    $healthCareNameTrimed = strtoupper(substr($hospitalName, 0, 2));//first 2 leter oh healthcare center name
+    $healthCareNameTrimed = strtoupper(substr($healthCareName, 0, 2));//first 2 leter oh healthcare center name
     $appointmentDateForId = str_replace("-", "", $appointmentDate);//removing hyphen from appointment date
     $randCode = rand(1000, 9999);//generating random number
 

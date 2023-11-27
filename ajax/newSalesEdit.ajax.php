@@ -56,7 +56,7 @@ $currentStockData = $CurrentStock->showCurrentStocById($stockOutDetailsItemId);
 foreach($currentStockData as $currenStock){
     $currentStockUnit = $currenStock['unit'];
 
-    if($currentStockUnit == 'tab' || $currentStockUnit == 'cap'){
+    if($currentStockUnit == 'tablets' || $currentStockUnit == 'capsules'){
         $currentStockAvailibility = $currenStock['loosely_count'];
     }else{
         $currentStockAvailibility = $currenStock['qty'];

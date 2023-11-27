@@ -73,7 +73,7 @@ if (isset($_GET["stockptr"])) {
 if (isset($_GET["looseStock"])) {
     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["looseStock"], $_GET["batchNo"]);
     foreach ($stock as $stock) {
-        if ($stock['unit'] == 'tab' || $stock['unit'] == 'cap') {
+        if ($stock['unit'] == 'tablets' || $stock['unit'] == 'capsules') {
             $looseCount = $stock['loosely_count'];
         } else {
             $looseCount = null;
@@ -103,7 +103,7 @@ if (isset($_GET["availibility"])) {
 
     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["availibility"], $_GET["batchNo"]);
     foreach($stock as $stock){
-        if ($stock['unit'] == 'tab' || $stock['unit'] == 'cap') {
+        if ($stock['unit'] == 'tablets' || $stock['unit'] == 'capsules') {
             $availibility = $stock['loosely_count'];
         } else {
             $availibility = $stock['qty'];
