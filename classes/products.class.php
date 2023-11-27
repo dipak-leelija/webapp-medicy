@@ -169,12 +169,11 @@ class Products extends DatabaseConnection{
         $resultData = array();
         
         try {
-            // Prepare the SQL statement with placeholders
             $searchSql = "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ? LIMIT 10";
             $stmt = $this->conn->prepare($searchSql);
 
             if ($stmt) {
-                // Bind the parameters and execute the query
+        
                 $searchPattern = "%".$data ."%";
                 $stmt->bind_param("sss", $searchPattern, $searchPattern, $searchPattern);
                 $stmt->execute();
@@ -186,14 +185,12 @@ class Products extends DatabaseConnection{
                     $resultData[] = $row;
                 }
 
-                // Close the statement
                 $stmt->close();
             } else {
                 throw new Exception("Failed to prepare the statement.");
             }
         } catch (Exception $e) {
-            // Handle the exception (e.g., log the error, return an error message, etc.)
-            // You can customize this part to suit your needs.
+            
             echo "Error: " . $e->getMessage();
         }
 

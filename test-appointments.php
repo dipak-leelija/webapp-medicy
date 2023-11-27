@@ -1,5 +1,4 @@
 <?php
-$page = "test-appointments";
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
@@ -11,6 +10,7 @@ require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'pagination.class.php';
 
 
 
@@ -22,13 +22,38 @@ $SubTests        = new SubTests();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
 $Doctors         = new Doctors();
+$Pagination      = new Pagination;
 
+$DoctorsList = json_decode($Doctors->showDoctors($adminId));
+if (!empty($DoctorsList->data)) {
+    $DoctorList = $DoctorsList->data;
+}
 
+// exit;
 
-$labBillDisplay = $LabBilling->labBillDisplay($adminId);
+if (isset($_GET['doctor'])) {
+    $doctorID = $_GET['doctor'];
+    $labBillDisplay = $LabBilling->labBillFilter($adminId, 'refered_doctor', $doctorID);
+}elseif (isset($_GET['search'])) {
+    $match = $_GET['search'];
+    $labBillDisplay = $LabBilling->labBillFilter($adminId, 'search', $match);
+}
 
+else {
+    $labBillDisplay = $LabBilling->labBillDisplay($adminId);
+}
+
+$billsResponse  = json_decode($Pagination->arrayPagination($labBillDisplay));
+if ($billsResponse->status == 1) {
+    $slicedLabBills = $billsResponse->items;
+    $billsPagination = $billsResponse->paginationHTML;
+}else {
+    $slicedLabBills = '';
+    $billsPagination = '';
+}
+// print_r($slicedLabBills);
 // $showLabAppointments = $LabAppointments->showLabAppointments();
-
+// exit;
 ?>
 
 <!DOCTYPE html>
@@ -42,18 +67,21 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Lab Appointments - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
 
     <!-- Custom fonts for this template-->
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-    <link href="<?= PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <!-- Sweet Alert Link  -->
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/return-page.css">
 
 
 
@@ -81,18 +109,82 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Test Appointments</h1>
-
-
                     <!-- Test Appointments -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 booked_btn">
-                            <a data-toggle="modal" data-target="#labPatientSelection"><button class="btn btn-primary"><i class="fas fa-edit"></i> Add Test Bill</button></a>
+
+                            <div class="row mt-2">
+                                <div class="col-md-2 col-6">
+                                    <div class="input-group">
+                                        <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID"
+                                            name="appointment-search" id="appointment-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button"
+                                                id="button-addon2" onclick="filterAppointment('appointment-search')"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-12">
+                                    <select class="cvx-inp1" name="added_on" id="added_on"
+                                        onchange="returnFilter(this)">
+                                        <option value="" disabled="" selected="">Select Duration</option>
+                                        <option value="T">Today</option>
+                                        <option value="Y">yesterday</option>
+                                        <option value="LW">Last 7 Days</option>
+                                        <option value="LM">Last 30 Days</option>
+                                        <option value="LQ">Last 90 Days</option>
+                                        <option value="CFY">Current Fiscal Year</option>
+                                        <option value="PFY">Previous Fiscal Year</option>
+                                        <option value="CR">Custom Range </option>
+                                    </select>
+
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
+                                        onchange="dictorFilter(this)">
+                                        <option value="" selected="" disabled="">Find By Doctor</option>
+                                        <?php
+                                        foreach ($DoctorList as $doctor) {
+                                            $selected = $doctorID ==  $doctor->doctor_id ? 'selected' : '';
+                                            echo "<option $selected value='$doctor->doctor_id'>$doctor->doctor_name</option>";
+                                        } ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <select class="cvx-inp1" id="added_by" onchange="returnFilter(this)">
+                                        <option value="" disabled="" selected="">Select Staff
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2 col-6">
+                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
+                                        onchange="filterAppointment(this)">
+                                        <option value="" selected="" disabled="">payment Mode</option>
+                                        <option value="Credit">Credit</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Paypal">Paypal</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Debit Card">Debit Card</option>
+                                        <option value="Net Banking">Net Banking</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-1 col-6 text-right">
+                                    <a class="btn btn-sm btn-primary " data-toggle="modal"
+                                        data-target="#labPatientSelection">
+                                        <i class="fas fa-edit"></i>Entry
+                                    </a>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Invoice ID</th>
@@ -107,13 +199,13 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
                                     <tbody>
                                         <?php
                                         if (is_array($labBillDisplay) && count($labBillDisplay) > 0) {
-                                            foreach ($labBillDisplay as $rowlabBill) {
-                                                $billId        = $rowlabBill['bill_id'];
-                                                $patientId     = $rowlabBill['patient_id'];
-                                                $referdDoc     = $rowlabBill['refered_doctor'];
-                                                $testDate      = $rowlabBill['test_date'];
-                                                $paidAmount    = $rowlabBill['paid_amount'];
-                                                $status        = $rowlabBill['status'];
+                                            foreach ($slicedLabBills as $rowlabBill) {
+                                                $billId        = $rowlabBill->bill_id;
+                                                $patientId     = $rowlabBill->patient_id;
+                                                $referdDoc     = $rowlabBill->refered_doctor;
+                                                $testDate      = $rowlabBill->test_date;
+                                                $paidAmount    = $rowlabBill->paid_amount;
+                                                $status        = $rowlabBill->status;
 
 
                                                 $billDetails = $LabBillDetails->billDetailsById($billId);
@@ -179,6 +271,11 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
                                     </tbody>
                                 </table>
                             </div>
+
+                            <div class="d-flex justify-content-center">
+                                <?= $billsPagination ?>
+                            </div>
+
                         </div>
                     </div>
                     <!--/end Test Appointments -->
@@ -206,23 +303,17 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
     </a>
 
     <!-- Lab ptient selection Modal -->
-    <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Choose Patient type</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body d-flex justify-content-around">
+                <div class="modal-body d-flex justify-content-around align-items-center py-5">
                     <a class="btn btn-primary mx-4" href="add-patient.php?test=true">New Patient</a>
-                    or
+                    OR
                     <a class="btn btn-primary mx-4" href="lab-patient-selection.php">Returning Patient</a>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -231,7 +322,8 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
 
 
     <!-- Bill View Modal -->
-    <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -256,59 +348,87 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
 
 
     <script>
-        billViewandEdit = (obj) => {
+    billViewandEdit = (obj) => {
 
-            let billId = obj;
-            // alert(billId);
-            let url = "ajax/labBill.view.ajax.php?billId=" + billId;
-            $(".billview").html(
-                '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
-                url + '"></iframe>');
+        let billId = obj;
+        // alert(billId);
+        let url = "ajax/labBill.view.ajax.php?billId=" + billId;
+        $(".billview").html(
+            '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
+            url + '"></iframe>');
 
-        } // end of viewAndEdit function
+    } // end of viewAndEdit function
 
-        function resizeIframe(obj) {
-            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-        }
+    function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+    }
 
 
-        cancelBill = (billId) => {
-            swal({
-                    title: "Are you sure?",
-                    text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
+    cancelBill = (billId) => {
+        swal({
+                title: "Are you sure?",
+                text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
 
-                        $.ajax({
-                            url: "ajax/labBill.delete.ajax.php",
-                            type: "POST",
-                            data: {
-                                billId: billId,
-                                status: "Cancelled",
-                            },
-                            success: function(data) {
-                                // alert (data);
-                                if (data == 1) {
-                                    swal("Done! Your Bill Has Been Cancelled.", {
-                                        icon: "success",
-                                    });
-                                    row = document.getElementById(billId);
-                                    row.closest('tr').style.background = '#b51212';
-                                    row.closest('tr').style.color = '#FFFFFF';
-                                } else {
-                                    $("#error-message").html("Cancellation Field !!!").slideDown();
-                                }
-
+                    $.ajax({
+                        url: "ajax/labBill.delete.ajax.php",
+                        type: "POST",
+                        data: {
+                            billId: billId,
+                            status: "Cancelled",
+                        },
+                        success: function(data) {
+                            // alert (data);
+                            if (data == 1) {
+                                swal("Done! Your Bill Has Been Cancelled.", {
+                                    icon: "success",
+                                });
+                                row = document.getElementById(billId);
+                                row.closest('tr').style.background = '#b51212';
+                                row.closest('tr').style.color = '#FFFFFF';
+                            } else {
+                                $("#error-message").html("Cancellation Field !!!").slideDown();
                             }
-                        });
 
-                    }
-                });
+                        }
+                    });
+
+                }
+            });
+    }
+
+    const dictorFilter = (t) => {
+        doctorId = t.value;
+        // Get the current URL
+        var currentURL = window.location.href;
+
+        // Get the current URL without the query string
+        var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+
+        var newURL = `${currentURLWithoutQuery}?doctor=${doctorId}`;
+     
+        // alert(newURL);
+        window.location.replace(newURL);
+    }
+
+    const filterAppointment = (searchId) =>{
+        var search = document.getElementById(searchId);
+        var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+        if (search.value.length > 2) {
+            var newURL = `${currentURLWithoutQuery}?search=${search.value}`;
+            window.location.replace(newURL);
+        }else{
+            alert('Please Enter Minimum 3 Character!');
         }
+
+    }
+
+
     </script>
 
     <!-- Core plugin JavaScript-->
@@ -317,12 +437,6 @@ $labBillDisplay = $LabBilling->labBillDisplay($adminId);
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="<?php echo PLUGIN_PATH ?>/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="<?php echo JS_PATH ?>/demo/datatables-demo.js"></script>
 
 </body>
 

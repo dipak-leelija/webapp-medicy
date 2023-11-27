@@ -1,11 +1,13 @@
+var xmlhttp = new XMLHttpRequest();
 const filterAppointment = (t) =>{
 
     let fieldID = t.id;
     let data = t.value;
 
+    console.log(fieldID);
+    console.log(data);
     // alert(fieldID);
     // alert(data);
-
 
     $.ajax({
         url: "ajax/filter.ajax.php",
@@ -15,12 +17,22 @@ const filterAppointment = (t) =>{
             search: data
         },
         success: function(response) {
-            // alert(data);
+            // alert(response);
             console.log(response);
+            // $('#appointments-dataTable').html(response)
+
+            $('#appointments-dataTable').empty();
+
+            
+            $.each(response, function (index, item) {
+                $('#appointments-dataTable tbody').append('<tr><td>' + item.appointment_id + '</td><td>' + item.patient_name + '</td><td>' + item.patient_age + '</td></tr>');
+            });
+            
+            
         }
     });
 
-    // var xmlhttp = new XMLHttpRequest();
+    
 
     // if (table == 'added_on' && data == 'CR') {
     //     // window.alert(table);

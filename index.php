@@ -30,10 +30,16 @@ $LabAppointments   = new LabAppointments();
 // $Employees         = new Employees;
 
 
-
 $totalAppointments = $appoinments->appointmentsDisplay($adminId);
-$labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
+$totalAppointments= json_decode($totalAppointments);
 
+if($totalAppointments->status){
+    $totalAppointmentsCount = count($totalAppointments->data);
+}else{
+    $totalAppointmentsCount = 0;
+}
+
+$labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
 ?>
 
@@ -117,7 +123,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                                 </div>
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?php echo count($totalAppointments); ?> </div>
+                                                <?php echo $totalAppointmentsCount; ?> </div>
                                         </div>
 
                                     </div>

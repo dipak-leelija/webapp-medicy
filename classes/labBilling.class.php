@@ -88,6 +88,24 @@ class LabBilling extends DatabaseConnection{
         }
     }
 
+    function labBillFilter($adminId, $filterCol, $filterVal){
+
+        if ($filterCol == 'search') {
+            $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId' AND (bill_id LIKE '%$filterVal%' OR patient_id LIKE '%$filterVal%') ORDER BY bill_id ASC";
+        }else {
+            $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId' AND $filterCol = '$filterVal' ORDER BY bill_id ASC";
+        }
+        $billQuery = $this->conn->query($selectBill);
+        $rows = $billQuery->num_rows;
+        if ($rows > 0) {
+            while ($result = $billQuery->fetch_array()) {
+                $billData[]    = $result;
+            }
+            return $billData;
+        } else {
+            return array();
+        }
+    } //end employeesDisplay function
 
 
     function updateLabBill($billId, $referedDoc, $testDate,  $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status)

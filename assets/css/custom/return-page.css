@@ -33,6 +33,17 @@
     text-transform: capitalize;
 }
 
+.input-group>.cvx-inp{
+
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+    margin-bottom: 0;
+}
+.input-group .input-group-append>button{
+    height: 30px;
+}
 @media screen and (max-width: 767px) {
     .cvx-inp {
         position: relative;

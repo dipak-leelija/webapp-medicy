@@ -1,11 +1,23 @@
 <?php
 
 require_once dirname(__DIR__) . '/config/constant.php';
-require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR . 'dbconnect.php';
-require_once CLASS_DIR . 'patients.class.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
 
-$Patients   = new Patients;
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . "stockReturn.class.php";
+require_once CLASS_DIR . "distributor.class.php";
+require_once CLASS_DIR . "appoinments.class.php";
+require_once CLASS_DIR . 'pagination.class.php';
+
+$Pagination  = new Pagination;
+$Appointments = new Appointments();
+
+
+
+function functionPagination($slicedAppointments){
+    print_r($slicedAppointments);
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -14,93 +26,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $searchFor  = $_POST['searchFor'];
 
 
-        switch ($searchFor) {
-            case 'appointment-search':
 
+        switch ($searchFor) {
+            
+            case 'appointment-search':
+                
                 if (strlen($match) > 2) {
-                    echo 'Search For => appointment-search and Data=> ' . $match;
-                } else {
+                    echo 'Search For => appointment-search and Data=> '.$match;
+                }else {
                     echo 'Please Enter Minimum 3 character';
                 }
                 break;
-            case 'patients-search':
-
-                if (strlen($match) >= 2) {
-                    // echo 'Search For => patients-search and Data=> '.$match;
-                        if (preg_match('/\d/', $match)) {
-                            $col = 'patient_id';
-                        } else {
-                            $col = 'patient_name';
-                        }
-                        if ($match) {
-
-                            $filterPatient = $Patients->filterPatient($col, $match, $adminId);
-                            $filterPatient = json_decode($filterPatient);
-                            // print_r($filterPatient);
-                            if ($filterPatient->status == 1) {
-                                $patientData = $filterPatient->data[0];
-                                $patientID   = $patientData->patient_id;
-                                $patientName = $patientData->name;
-                                $patientAge  = $patientData->age;
-                                $patientContact  = $patientData->phno;
-                                $patientVisit    = $patientData->visited;
-                                $patientLabVisit = $patientData->lab_visited;
-                                $patientPin      = $patientData->patient_pin;
-                                echo "
-                                <div class='table-responsive'>
-                                <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
-                                    <thead>
-                                        <tr>
-                                            <th>Patient ID</th>
-                                            <th>Patient Name</th>
-                                            <th>Age</th>
-                                            <th>Contact</th>
-                                            <th>Visits</th>
-                                            <th>Area PIN</th>
-                                            <th class='text-center'>View</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                    <tr>
-                                    <td>$patientID</td>
-                                    <td>$patientName</td>
-                                    <td>$patientAge</td>
-                                    <td>$patientContact</td>
-                                    <td class='align-middle pb-0 pt-0'>
-                                             <small class='small'>
-                                                 <span>Doctor: $patientVisit</span>
-                                                 <br>
-                                                 <span>Lab: $patientLabVisit</span></small>
-                                         </td>
-                                    <td>$patientPin</td>     
-                                         <td class='text-center'>
-                                         <a class='text-primary' href='patient-details.php?patient=. url_enc($patientID).'
-                                             title='View and Edit'><i class='fas fa-eye'></i>
-                                         </a>
-                                     </td>
-                                    </tr>
-                                    </table>
-                                    </div?
-                                ";
-
-                            } 
-                           
-                            
-                        }
-                    }
-                // } else {
-                //     echo 'Please Enter Minimum 3 character';
-                // }
-                break;
+            
             default:
                 echo 'Nothing';
                 break;
         }
     }
 }
-
-
 exit;
 
 $StockReturn    = new StockReturn();
