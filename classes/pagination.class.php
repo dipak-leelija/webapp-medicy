@@ -202,7 +202,7 @@ Class Pagination extends DatabaseConnection{
         
             if ($page > 1) {
                 $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=1'>First</a></li>";
-                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=" .($page - 1). "'>Previous</a></li>";
+                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=" .($page - 1). "'><i class='fas fa-chevron-left'></i></a></li>";
             }
         
             if ($totalPages <= 7) {
@@ -233,7 +233,7 @@ Class Pagination extends DatabaseConnection{
             }
         
             if ($page < $totalPages) {
-                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=" . ($page + 1) . "'>Next</a></li>";
+                $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=" . ($page + 1) . "'><i class='fas fa-chevron-right'></i></a></li>";
                 $paginationHTML .= "<li class='page-item'><a class='page-link shadow-none' href='$goTo=$totalPages'>Last</a></li>";
             }
         
