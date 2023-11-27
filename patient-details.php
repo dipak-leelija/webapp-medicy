@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-$page = "patients";
+
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
@@ -16,7 +16,7 @@ require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
 
 
-$patientId = url_dec($_GET['patient']);
+$patientId = ($_GET['patient']);
 
 $Patients       = new Patients;
 $LabBilling     = new LabBilling;

@@ -1,5 +1,4 @@
 <?php
-$page = "patients";
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
@@ -9,10 +8,34 @@ require_once ROOT_DIR.'_config/user-details.inc.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'encrypt.inc.php';
 require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR.'pagination.class.php';
 
 $Patients   = new Patients;
+$Pagination = new Pagination;
 $allPatients = $Patients->allPatients($adminId);
 $allPatients = json_decode($allPatients);
+
+if ($allPatients->status) {
+    if ($allPatients->data != '') {
+        $allPatientsData = $allPatients->data;
+        if (is_array($allPatientsData)) {
+            $response = json_decode($Pagination->arrayPagination($allPatientsData));
+            $slicedPatients = '';
+            $paginationHTML = '';
+            $totalItem = $slicedPatients = $response->totalitem;
+           
+            if ($response->status == 1) {
+                $slicedPatients = $response->items;
+                $paginationHTML = $response->paginationHTML;
+            }
+        } else {
+            $totalItem = 0;
+        }
+    } 
+} else {
+    $totalItem = 0;
+    $paginationHTML = '';
+}
 
 ?>
 <!DOCTYPE html>
@@ -37,7 +60,11 @@ $allPatients = json_decode($allPatients);
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Custom styles for this page -->
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/return-page.css">
 
+    
 </head>
 
 <body id="page-top">
@@ -65,9 +92,77 @@ $allPatients = json_decode($allPatients);
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">List of Patients</h6>
-                            <a data-toggle="modal" data-target="#appointmentSelection"><button
-                                    class="btn btn-sm btn-primary" onclick="addNewPatientData()"><i class="fas fa-edit"></i>Add New</button></a>
+                            <h6 class="m-0 font-weight-bold text-primary">List of Patients : <?= $totalItem ?></h6>
+
+                            <div class="row mt-2">
+                                <div class="col-md-2 col-6">
+                                    <input class="cvx-inp" type="text" placeholder="Patients ID / Patient Name"
+                                        name="patients-search" id="patients-search" style="outline: none;"
+                                        onkeyup="filterPatients(this)">
+                                </div>
+
+                                <div class="col-md-3 col-12">
+                                    <select class="cvx-inp1" name="added_on" id="added_on"
+                                        onchange="returnFilter(this)">
+                                        <option value="" disabled="" selected="">Select Duration</option>
+                                        <option value="T">Today</option>
+                                        <option value="Y">yesterday</option>
+                                        <option value="LW">Last 7 Days</option>
+                                        <option value="LM">Last 30 Days</option>
+                                        <option value="LQ">Last 90 Days</option>
+                                        <option value="CFY">Current Fiscal Year</option>
+                                        <option value="PFY">Previous Fiscal Year</option>
+                                        <option value="CR">Custom Range </option>
+                                    </select>
+
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
+                                        onchange="returnFilter(this)">
+                                        <option value="" selected="" disabled="">Find By Doctor</option>
+                                        <option value="Credit">Credit</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Paypal">Paypal</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Debit Card">Debit Card</option>
+                                        <option value="Net Banking">Net Banking</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <select class="cvx-inp1" id="added_by" onchange="returnFilter(this)">
+                                        <option value="" disabled="" selected="">Select Staff
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2 col-6">
+                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
+                                        onchange="filterAppointment(this)">
+                                        <option value="" selected="" disabled="">payment Mode</option>
+                                        <option value="Credit">Credit</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Paypal">Paypal</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Debit Card">Debit Card</option>
+                                        <option value="Net Banking">Net Banking</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-1 col-6 text-right">
+                                    <!-- <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i
+                                            class="fas fa-plus"></i></a> -->
+                                    <!-- <a class="btn btn-sm btn-primary " data-toggle="modal"
+                                        data-target="#appointmentSelection">
+                                        <i class="fas fa-edit"></i>Entry
+                                    </a> -->
+                                </div>
+                            </div>
+                            <!-- <a data-toggle="modal" data-target="#appointmentSelection"><button
+                                    class="btn btn-sm btn-primary" onclick="addNewPatientData()"><i class="fas fa-edit"></i>Add New</button></a> -->
                         </div>
 
 
@@ -86,29 +181,44 @@ $allPatients = json_decode($allPatients);
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($allPatients as $eachPatient) {?>
-                                        <tr>
-                                            <td><?= $eachPatient->patient_id ?></td>
-                                            <td><?= $eachPatient->name ?></td>
-                                            <td><?= $eachPatient->age ?></td>
-                                            <td><a class="text-decoration-none" href="tel:<?= $eachPatient->phno ?>"><?= $eachPatient->phno ?></a></td>
-                                            <td class="align-middle pb-0 pt-0">
-                                                <small class="small">
-                                                    <span>Doctor: <?= $eachPatient->visited ?></span>
-                                                    <br>
-                                                    <span>Lab: <?= $eachPatient->lab_visited ?></span></small>
-                                            </td>
-                                            <td><?= $eachPatient->patient_pin ?></td>
+                                        <?php
+                                            if (!empty($slicedPatients)) {
+                                                foreach($slicedPatients as $slicedPatientsdetails){
+                                                    // print_r($slicedPatientsdetails);
+                                                  $slicedPatientsID   = $slicedPatientsdetails-> patient_id;
+                                                  $slicedPatientsName = $slicedPatientsdetails->name;
+                                                  $slicedPatientsAge = $slicedPatientsdetails->age;
+                                                  $slicedPatientsPhone = $slicedPatientsdetails->phno;
+                                                  $slicedPatientsAge = $slicedPatientsdetails->age;
+                                                  $slicedPatientsVisited = $slicedPatientsdetails->visited;
+                                                  $slicedPatientsLabVisited = $slicedPatientsdetails->lab_visited;
+                                                  $slicedPatientsPin = $slicedPatientsdetails->patient_pin;
+                                         echo"<tr>
+                                         <td>$slicedPatientsID</td>
+                                         <td>$slicedPatientsName</td>
+                                         <td>$slicedPatientsAge</td>
+                                         <td><a class='text-decoration-none' href='tel:$slicedPatientsPhone'>$slicedPatientsPhone</a></td>
+                                         <td class='align-middle pb-0 pt-0'>
+                                             <small class='small'>
+                                                 <span>Doctor: $slicedPatientsVisited</span>
+                                                 <br>
+                                                 <span>Lab: $slicedPatientsLabVisited</span></small>
+                                         </td>
+                                         <td> $slicedPatientsPin</td>
 
-                                            <td class="text-center">
-                                                <a class="text-primary" href="patient-details.php?patient=<?= url_enc($eachPatient->patient_id) ?>"
-                                                    title="View and Edit"><i class="fas fa-eye"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <?php } ?>
+                                         <td class='text-center'>
+                                             <a class='text-primary' href='patient-details.php?patient=<?= $slicedPatientsID ?>.'
+                                                 title='View and Edit'><i class='fas fa-eye'></i>
+                                             </a>
+                                         </td>
+                                     </tr>";
+                                        
+                                        } } ?>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <?= $paginationHTML ?>
                             </div>
                         </div>
                     </div>
@@ -172,10 +282,11 @@ $allPatients = json_decode($allPatients);
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
     <!-- Page level plugins -->
-    <script src="<?php echo PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- <script src="<?php echo PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
+    <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script> -->
     <!-- Page level custom scripts -->
-    <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
+    <!-- <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script> -->
+    <script src="<?= JS_PATH ?>filter.js"></script>
 
 </body>
 

@@ -121,18 +121,60 @@ class Patients extends DatabaseConnection
                 while ($row = $result->fetch_object()) {
                     $data[] = $row;
                 }
+                return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
             } else {
-                throw new Exception("Query execution failed.");
+                // throw new Exception("Query execution failed.");
+                return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
             }
         } catch (Exception $e) {
             // Handle the error (e.g., log the error or return an error message)
-            error_log("Error in allPatients: " . $e->getMessage());
-            return array("error" => "An error occurred while fetching patient data.");
+            // error_log("Error in allPatients: " . $e->getMessage());
+            // return array("error" => "An error occurred while fetching patient data.");
+            echo  $e->getMessage();
+            return json_encode(['status' => 0, 'message' => $e->getMessage(), 'data' => '']);
         }
 
-        return json_encode($data);
+        return 0;
+        // return json_encode(['status' => 0, 'message' => $e->getMessage(), 'data' => $data]);
     }
 
+    function filterPatient($col, $data, $adminId){
+        // function filterAppointmentsByIdOrName($col, $data, $adminId){
+            try {
+                if ($col == 'patient_id' || $col == 'patient_name') {
+    
+                    $stmt = $this->conn->prepare("SELECT * FROM `patient_details` WHERE `patient_id` LIKE ? OR  `name` LIKE ? AND admin_id = ? ORDER BY id DESC");
+
+                    if ($stmt) {
+    
+                        $searchPattern = "%".$data ."%";
+                        $stmt->bind_param("sss", $searchPattern, $searchPattern, $adminId);
+                        
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+    
+                        if ($result->num_rows > 0) {
+                            $resultData = array();
+                            while ($row = $result->fetch_object()) {
+                                $resultData[] = $row;
+                            }
+                            $stmt->close(); 
+                            return json_encode(['status' => '1', 'message' => 'success', 'data'=> $resultData]);
+                        } else {
+                            return json_encode(['status' => '0', 'message' => '', 'data'=> '']);
+                            $stmt->close();
+                        }
+                    } else {
+                        throw new Exception("Error statement preparation: $stmt->error");
+                    }
+                }
+    
+                
+            } catch (Exception $e) {
+                error_log("Error in appointmentsDisplay: " . $e->getMessage());
+            }
+            return 0;
+    }
 
 
 
