@@ -1,4 +1,5 @@
 <?php
+$page = "appointments";
 require_once __DIR__.'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
@@ -9,7 +10,6 @@ require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'pagination.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 
-$page = "appointments";
 
 $Appoinments = new Appointments();
 $Pagination  = new Pagination;
@@ -20,6 +20,7 @@ $response = json_decode($Pagination->arrayPagination($allAppointments));
 
 $slicedAppointments = '';
 $paginationHTML     = '';
+$totalItem          = $slicedAppointments = $response->totalitem;
 
 if ($response->status == 1) {
     $slicedAppointments = $response->items;
@@ -42,15 +43,18 @@ if ($response->status == 1) {
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/return-page.css">
 
-</head> 
+</head>
 
 <body id="page-top">
 
@@ -76,13 +80,83 @@ if ($response->status == 1) {
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 booked_btn">
-                            <h6 class="m-0 font-weight-bold text-primary">Booked Appointments</h6>
-                            <a data-toggle="modal" data-target="#appointmentSelection"><button class="btn btn-primary" ><i class="fas fa-edit"></i>Entry</button></a>
-                        </div> 
+                        <div class="card-header py-3 align-items-center booked_btn">
+                            <h6 class="m-0 font-weight-bold text-primary">Total Appointments: <?= $totalItem ?></h6>
+                            
+                            <div class="row mt-2">
+                                <div class="col-md-2 col-6">
+                                    <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Name"
+                                        name="appointment-search" id="appointment-search" style="outline: none;"
+                                        onkeyup="filterAppointment(this)">
+                                </div>
+
+                                <div class="col-md-3 col-12">
+                                    <select class="cvx-inp1" name="added_on" id="added_on"
+                                        onchange="returnFilter(this)">
+                                        <option value="" disabled="" selected="">Select Duration</option>
+                                        <option value="T">Today</option>
+                                        <option value="Y">yesterday</option>
+                                        <option value="LW">Last 7 Days</option>
+                                        <option value="LM">Last 30 Days</option>
+                                        <option value="LQ">Last 90 Days</option>
+                                        <option value="CFY">Current Fiscal Year</option>
+                                        <option value="PFY">Previous Fiscal Year</option>
+                                        <option value="CR">Custom Range </option>
+                                    </select>
+
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
+                                        onchange="returnFilter(this)">
+                                        <option value="" selected="" disabled="">Find By Doctor</option>
+                                        <option value="Credit">Credit</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Paypal">Paypal</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Debit Card">Debit Card</option>
+                                        <option value="Net Banking">Net Banking</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <select class="cvx-inp1" id="added_by" onchange="returnFilter(this)">
+                                        <option value="" disabled="" selected="">Select Staff
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2 col-6">
+                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
+                                        onchange="filterAppointment(this)">
+                                        <option value="" selected="" disabled="">payment Mode</option>
+                                        <option value="Credit">Credit</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Paypal">Paypal</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Debit Card">Debit Card</option>
+                                        <option value="Net Banking">Net Banking</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-1 col-6 text-right">
+                                    <!-- <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i
+                                            class="fas fa-plus"></i></a> -->
+                                    <a class="btn btn-sm btn-primary " data-toggle="modal"
+                                        data-target="#appointmentSelection">
+                                        <i class="fas fa-edit"></i>Entry
+                                    </a>
+                                </div>
+                            </div>
+
+
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered sortable-table" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered sortable-table" id="dataTable" width="100%"
+                                    cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -172,21 +246,15 @@ if ($response->status == 1) {
     <!-- Select Appointment Type Modal  -->
     <div class="modal fade" id="appointmentSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Select Patient Type</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body d-flex justify-content-around">
+                <div class="modal-body d-flex justify-content-around align-items-center py-4">
                     <a href="add-patient.php" class="btn btn-info" href="">New Patient</a>
-                    or
+                    OR
                     <a href="patient-selection.php" class="btn btn-info" href="">Returning Patient</a>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -271,7 +339,9 @@ if ($response->status == 1) {
     <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>filter.js"></script>
+
 
 </body>
 

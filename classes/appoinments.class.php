@@ -78,6 +78,46 @@ class Appointments extends DatabaseConnection{
     
         return $data;
     }
+
+
+    function filterAppointments($filterBy, $column, $adminId) {
+        $data = array();
+
+        if ($column == 'search') {
+            # code...
+        }
+        try {
+            // Create a prepared statement
+            $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE admin_id = ? ORDER BY id DESC");
+        
+            if ($stmt) {
+                // Bind the parameter (adminId) to the statement
+                $stmt->bind_param("s", $adminId);
+                
+                // Execute the statement
+                if ($stmt->execute()) {
+                    $result = $stmt->get_result();
+                    
+                    while ($row = $result->fetch_assoc()) {
+                        $data[] = $row;
+                    }
+                    
+                    $stmt->close(); // Close the statement
+                } else {
+                    // Handle query execution error here, if needed
+                    throw new Exception("Error execution query: $stmt->error");
+                    
+                }
+            } else {
+                // Handle statement preparation error here, if needed
+                throw new Exception("Error statement preparation: $stmt->error");
+            }
+        } catch (Exception $e) {
+            error_log("Error in appointmentsDisplay: " . $e->getMessage());
+        }
+    
+        return $data;
+    }
         
 
 
