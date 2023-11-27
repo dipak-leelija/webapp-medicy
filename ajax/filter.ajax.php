@@ -1,141 +1,207 @@
 <?php
 
-    require_once dirname(__DIR__).'/config/constant.php';
-    
-    require_once CLASS_DIR.'dbconnect.php';
-    require_once CLASS_DIR."stockReturn.class.php";
-    require_once CLASS_DIR."distributor.class.php";
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
+
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . "stockReturn.class.php";
+require_once CLASS_DIR . "distributor.class.php";
+require_once CLASS_DIR . "appoinments.class.php";
+require_once CLASS_DIR . 'pagination.class.php';
+
+$Pagination  = new Pagination;
+$Appointments = new Appointments();
 
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+function functionPagination($slicedAppointments){
+    print_r($slicedAppointments);
+}
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['search'])) {
         $match = $_POST['search'];
         $searchFor  = $_POST['searchFor'];
 
 
+
         switch ($searchFor) {
+            
             case 'appointment-search':
-                
-                if (strlen($match) > 2) {
-                    echo 'Search For => appointment-search and Data=> '.$match;
-                }else {
+
+                if (strlen($match) > 3) {
+                    if (preg_match('/\d/', $match)) {
+                        $col = 'appointment_id';
+                    } else {
+                        $col = 'patient_name';
+                    }
+
+                    $resultData = $Appointments->filterAppointmentsByIdOrName($col, $match, $adminId);
+                    $resultData = json_decode($resultData);
+                    if ($resultData->status) {
+                        $resultData = $resultData->data;
+                    } else {
+                        $resultData = array();
+                    }
+
+                    if (is_array($resultData)) {
+                        // print_r($resultData);
+
+                        $response = json_decode($Pagination->arrayPagination($resultData));
+
+                        $slicedAppointments = '';
+                        $paginationHTML = '';
+                        $totalItem = $slicedAppointments = $response->totalitem;
+
+                        if ($response->status == 1) {
+                            $slicedAppointments = $response->items;
+                            $paginationHTML = $response->paginationHTML;
+
+                            $paginationFunction = functionPagination($slicedAppointments);
+                        }
+                    } else {
+                        $totalItem = 0;
+                    }
+                } else {
                     echo 'Please Enter Minimum 3 character';
                 }
                 break;
-            
+
+            case 'added-on':
+                echo $searchFor;
+                echo $match;
+                break;
+
+            case 'doctor-filter':
+                echo $searchFor;
+                echo $match;
+                break;
+
+            case 'added-by':
+                echo $searchFor;
+                echo $match;
+                break;
+
+            case 'payment-mode':
+                echo $searchFor;
+                echo $match;
+                break;
+
             default:
                 echo 'Nothing';
                 break;
         }
     }
 }
+
 exit;
 
-    $StockReturn    = new StockReturn();
-    $Distributor = new Distributor();
+$StockReturn    = new StockReturn();
+$Distributor = new Distributor();
 
 
-    $today = date("Y-m-d");
-    $value1 = date("Y-m-d");
-    $value2 = date("Y-m-d");
+$today = date("Y-m-d");
+$value1 = date("Y-m-d");
+$value2 = date("Y-m-d");
 
-    if ($_GET['table'] !== null && $_GET['value'] !== null && $_GET['fromDate'] !== null && $_GET['toDate'] !== null) {
+if ($_GET['table'] !== null && $_GET['value'] !== null && $_GET['fromDate'] !== null && $_GET['toDate'] !== null) {
 
-        $table = ($_GET['table']);
-        $value = ($_GET['value']);
-        $from_date = ($_GET['fromDate']);
-        $to_date = ($_GET['toDate']);
+    $table = ($_GET['table']);
+    $value = ($_GET['value']);
+    $from_date = ($_GET['fromDate']);
+    $to_date = ($_GET['toDate']);
 
-        // echo "<br>Table Name : $table";
-        // echo "<br>Table Value : $value";
-        // echo "<br>From Date : $from_date";
-        // echo "<br>To Date : $to_date";
+    // echo "<br>Table Name : $table";
+    // echo "<br>Table Value : $value";
+    // echo "<br>From Date : $from_date";
+    // echo "<br>To Date : $to_date";
 
-        if ($table == 'added_by' || $table == 'distributor_id' || $table == 'refund_mode') {
-            $n = 1;
-        } elseif ($table == 'added_on' && $value != 'CR') {
-            $n = 2;
-        } elseif ($table == 'added_on' && $value == 'CR') {
-            $n = 3;
-        }
-
-        // echo "<br>check switch : $n";
-
-        switch ($n) {
-            case 1:
-                // echo "<br>this is case 1";
-                $data1 = $StockReturn->stockReturnFilter($table, $value);
-                $data = $data1;
-                break;
-            case 2:
-                // echo "<br>this is case 2";
-                if ($value == 'T') {
-                    $fromDate = date("Y-m-d");
-                    $toDate = date("Y-m-d");
-                } elseif ($value == 'Y') {
-                    $fromDate = date("Y-m-d", strtotime("yesterday"));
-                    $toDate = date("Y-m-d", strtotime("yesterday"));
-                } elseif ($value == 'LW') {
-                    $fromDate = date("Y-m-d", strtotime("-7 days"));
-                    $toDate = date("Y-m-d");
-                } elseif ($value == 'LM') {
-                    $fromDate = date("Y-m-d", strtotime("-30 days"));
-                    $toDate = date("Y-m-d");
-                } elseif ($value == 'LQ') {
-                    $fromDate = date("Y-m-d", strtotime("-90 days"));
-                    $toDate = date("Y-m-d");
-                } elseif ($value == 'CFY') {
-                    $crntYear = date("Y");
-                    $crntMnth = date("m");
-                    if ($crntMnth < 4) {
-                        $yr = $crntYear - 1;
-                        $fromDate = date("$yr-04-01");
-                        $toDate = date("Y-m-d");
-                    } else {
-                        $fromDate = date("Y-04-01");
-                        $toDate = date("Y-m-d");
-                    }
-                } elseif ($value == 'PFY') {
-                    $crntYear = date("Y");
-                    $crntMnth = date("m");
-                    $yr = $crntYear - 1;
-                    if ($crntMnth < 4) {
-                        $frmYr = $crntYear - 2;
-                        $toYr = $crntYear - 1;
-                        $fromDate = date("$frmYrr-04-01");
-                        $toDate = date("$toYr-03-31");
-                    } else {
-                        $frmYr = $crntYear - 1;
-                        $toYr = $crntYear;
-                        $fromDate = date("$frmYr-04-01");
-                        $toDate = date("$toYr-03-31");
-                    }
-                }
-
-                // echo "<br>from date : $fromDate";
-                // echo "<br>to date : $toDate";
-
-                $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
-                $data = $data2;
-               
-                break;
-            case 3:
-                // echo "<br>this is case 3";
-                $fromDate = $from_date;
-                $toDate = $to_date;
-                if ($fromDate <= $toDate) {
-                    $data3 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
-                    $data = $data3;
-                } else {
-                    echo "DATE RANGE IS NOT ACCURATE"; 
-                }
-                break;
-            default:
-                echo "<br>default case";
-        }
-        // print_r($data);
+    if ($table == 'added_by' || $table == 'distributor_id' || $table == 'refund_mode') {
+        $n = 1;
+    } elseif ($table == 'added_on' && $value != 'CR') {
+        $n = 2;
+    } elseif ($table == 'added_on' && $value == 'CR') {
+        $n = 3;
     }
+
+    // echo "<br>check switch : $n";
+
+    switch ($n) {
+        case 1:
+            // echo "<br>this is case 1";
+            $data1 = $StockReturn->stockReturnFilter($table, $value);
+            $data = $data1;
+            break;
+        case 2:
+            // echo "<br>this is case 2";
+            if ($value == 'T') {
+                $fromDate = date("Y-m-d");
+                $toDate = date("Y-m-d");
+            } elseif ($value == 'Y') {
+                $fromDate = date("Y-m-d", strtotime("yesterday"));
+                $toDate = date("Y-m-d", strtotime("yesterday"));
+            } elseif ($value == 'LW') {
+                $fromDate = date("Y-m-d", strtotime("-7 days"));
+                $toDate = date("Y-m-d");
+            } elseif ($value == 'LM') {
+                $fromDate = date("Y-m-d", strtotime("-30 days"));
+                $toDate = date("Y-m-d");
+            } elseif ($value == 'LQ') {
+                $fromDate = date("Y-m-d", strtotime("-90 days"));
+                $toDate = date("Y-m-d");
+            } elseif ($value == 'CFY') {
+                $crntYear = date("Y");
+                $crntMnth = date("m");
+                if ($crntMnth < 4) {
+                    $yr = $crntYear - 1;
+                    $fromDate = date("$yr-04-01");
+                    $toDate = date("Y-m-d");
+                } else {
+                    $fromDate = date("Y-04-01");
+                    $toDate = date("Y-m-d");
+                }
+            } elseif ($value == 'PFY') {
+                $crntYear = date("Y");
+                $crntMnth = date("m");
+                $yr = $crntYear - 1;
+                if ($crntMnth < 4) {
+                    $frmYr = $crntYear - 2;
+                    $toYr = $crntYear - 1;
+                    $fromDate = date("$frmYrr-04-01");
+                    $toDate = date("$toYr-03-31");
+                } else {
+                    $frmYr = $crntYear - 1;
+                    $toYr = $crntYear;
+                    $fromDate = date("$frmYr-04-01");
+                    $toDate = date("$toYr-03-31");
+                }
+            }
+
+            // echo "<br>from date : $fromDate";
+            // echo "<br>to date : $toDate";
+
+            $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
+            $data = $data2;
+
+            break;
+        case 3:
+            // echo "<br>this is case 3";
+            $fromDate = $from_date;
+            $toDate = $to_date;
+            if ($fromDate <= $toDate) {
+                $data3 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
+                $data = $data3;
+            } else {
+                echo "DATE RANGE IS NOT ACCURATE";
+            }
+            break;
+        default:
+            echo "<br>default case";
+    }
+    // print_r($data);
+}
 ?>
 
 <!DOCTYPE html>
@@ -172,35 +238,35 @@ exit;
 
             if ($data) {
                 // print_r($data);
-                foreach ($data as $row) { 
+                foreach ($data as $row) {
                     $distId = $row['distributor_id'];
                     $distributorData = $Distributor->showDistributorById($distId);
                     // print_r($distData);
-                    foreach($distributorData as $distData){
+                    foreach ($distributorData as $distData) {
                         $distName = $distData['name'];
                     }
 
-                    ?>
-    <tr>
-        <td><?php echo $row['id'] ?></td>
-        <td><?php echo $distName ?></td>
-        <td><?php echo $row['return_date'] ?></td>
-        <td><?php echo $row['added_on'] ?></td>
-        <td><?php echo $row['added_by'] ?></td>
-        <td><?php echo $row['refund_mode'] ?></td>
-        <td><?php echo $row['refund_amount'] ?></td>
-        <td >
-            <a href="stock-return-edit.php?returnId='<?php echo $row['id'] ?>'" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
-            <a class="text-danger ml-2" onclick="cancelPurchaseReturn('<?php echo $row['id'] ?>', this)" ><i class="fas fa-window-close"></i></a>
-        </td>
-    </tr>
-    <?php
+            ?>
+                    <tr>
+                        <td><?php echo $row['id'] ?></td>
+                        <td><?php echo $distName ?></td>
+                        <td><?php echo $row['return_date'] ?></td>
+                        <td><?php echo $row['added_on'] ?></td>
+                        <td><?php echo $row['added_by'] ?></td>
+                        <td><?php echo $row['refund_mode'] ?></td>
+                        <td><?php echo $row['refund_amount'] ?></td>
+                        <td>
+                            <a href="stock-return-edit.php?returnId='<?php echo $row['id'] ?>'" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
+                            <a class="text-danger ml-2" onclick="cancelPurchaseReturn('<?php echo $row['id'] ?>', this)"><i class="fas fa-window-close"></i></a>
+                        </td>
+                    </tr>
+                <?php
                 }
             } else { ?>
-        <tr>
-            <td> <?php echo "No Data" ?></td>
-         </tr>
-         <?php
+                <tr>
+                    <td> <?php echo "No Data" ?></td>
+                </tr>
+            <?php
             }
             ?>
         </tbody>

@@ -9,11 +9,13 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'employee.class.php';
 
 
 $Appoinments = new Appointments();
 $Pagination  = new Pagination;
 $Doctors     = new Doctors();
+$Employees   = new Employees;
 
 $allAppointments = $Appoinments->appointmentsDisplay($adminId);
 $allAppointments = json_decode($allAppointments);
@@ -24,8 +26,9 @@ if ($allAppointments->status) {
         $allAppointmentsData = $allAppointments->data;
 
         if (is_array($allAppointmentsData)) {
+            // print_r($allAppointmentsData);
             $response = json_decode($Pagination->arrayPagination($allAppointmentsData));
-
+            
             $slicedAppointments = '';
             $paginationHTML = '';
             $totalItem = $slicedAppointments = $response->totalitem;
@@ -41,6 +44,27 @@ if ($allAppointments->status) {
 } else {
     $totalItem = 0;
     $paginationHTML = '';
+}
+
+
+$col = 'admin_id';
+$employeeDetails = $Employees->selectEmpByCol($col, $adminId);
+$employeeDetails = json_decode($employeeDetails);
+
+if($employeeDetails->status){
+    $employeeDetails = $employeeDetails->data;
+}else{
+    $employeeDetails = array();
+}
+
+$doctorDetails = $Doctors->showDoctors($adminId);
+$doctorDetails = json_decode($doctorDetails);
+// print_r($doctorDetails);
+
+if($doctorDetails->status){
+    $doctorList = $doctorDetails->data;
+}else{
+    $doctorList = array();
 }
 
 ?>
@@ -104,7 +128,7 @@ if ($allAppointments->status) {
                                 </div>
 
                                 <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
+                                    <select class="cvx-inp1" name="added-on" id="added-on" onchange="filterAppointment(this)">
                                         <option value="" disabled="" selected="">Select Duration</option>
                                         <option value="T">Today</option>
                                         <option value="Y">yesterday</option>
@@ -118,27 +142,36 @@ if ($allAppointments->status) {
 
                                 </div>
                                 <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode" onchange="returnFilter(this)">
+                                    <select class="cvx-inp1" name="doctor-filter" id="doctor-filter" onchange="filterAppointment(this)">
                                         <option value="" selected="" disabled="">Find By Doctor</option>
-                                        <option value="Credit">Credit</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="UPI">UPI</option>
-                                        <option value="Paypal">Paypal</option>
-                                        <option value="Bank Transfer">Bank Transfer</option>
-                                        <option value="Credit Card">Credit Card</option>
-                                        <option value="Debit Card">Debit Card</option>
-                                        <option value="Net Banking">Net Banking</option>
+
+                                        <?php
+                                            
+                                            foreach($doctorList as $doctorList){
+                                                echo '<option value="'.$doctorList->doctor_id.'">'.$doctorList->doctor_name.'</option>';
+                                            }
+
+                                        ?>
+
                                     </select>
                                 </div>
                                 <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" id="added_by" onchange="returnFilter(this)">
-                                        <option value="" disabled="" selected="">Select Staff
-                                        </option>
+                                    <select class="cvx-inp1" id="added-by" onchange="filterAppointment(this)">
+                                        <option value="" disabled="" selected="">Select Staff</option>
+
+                                        <?php
+                                            
+                                            foreach($employeeDetails as $employeeData){
+                                                echo '<option value="'.$employeeData->emp_id.'">'.$employeeData->emp_name.'</option>';
+                                            }
+
+                                        ?>
+                                        
                                     </select>
                                 </div>
 
                                 <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode" onchange="filterAppointment(this)">
+                                    <select class="cvx-inp1" name="payment-mode" id="payment-mode" onchange="filterAppointment(this)">
                                         <option value="" selected="" disabled="">payment Mode</option>
                                         <option value="Credit">Credit</option>
                                         <option value="Cash">Cash</option>
@@ -152,8 +185,6 @@ if ($allAppointments->status) {
                                 </div>
 
                                 <div class="col-md-1 col-6 text-right">
-                                    <!-- <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i
-                                            class="fas fa-plus"></i></a> -->
                                     <a class="btn btn-sm btn-primary " data-toggle="modal" data-target="#appointmentSelection">
                                         <i class="fas fa-edit"></i>Entry
                                     </a>
@@ -164,7 +195,7 @@ if ($allAppointments->status) {
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered sortable-table" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -178,7 +209,7 @@ if ($allAppointments->status) {
                                     <tbody>
                                         <?php
                                         if (!empty($slicedAppointments)) {
-
+                                            // print_r($slicedAppointments);
                                             foreach ($slicedAppointments as $showAppointDetails) {
                                                 $appointmentTableID = $showAppointDetails->id;
                                                 $appointmentID = $showAppointDetails->appointment_id;
@@ -331,14 +362,14 @@ if ($allAppointments->status) {
     </script>
     <script>
         appointmentViewAndEditModal = (appointmentTableID) => {
-            // let appointmentId = appointmentId;
-            // alert(appointmentTableID);
+            
             let url = "ajax/appointment.view.ajax.php?appointmentTableID=" + appointmentTableID;
             $(".view-and-edit-appointments").html(
                 '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
 
         } // end of LabCategoryEditModal function
+
     </script>
 
     <!-- Core plugin JavaScript-->

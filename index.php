@@ -30,7 +30,6 @@ $LabAppointments   = new LabAppointments();
 // $Employees         = new Employees;
 
 
-
 $totalAppointments = $appoinments->appointmentsDisplay($adminId);
 $totalAppointments= json_decode($totalAppointments);
 
@@ -41,7 +40,6 @@ if($totalAppointments->status){
 }
 
 $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
-
 
 ?>
 
