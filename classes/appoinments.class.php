@@ -47,36 +47,32 @@ class Appointments extends DatabaseConnection{
         $data = array();
     
         try {
-            // Create a prepared statement
             $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE admin_id = ? ORDER BY id DESC");
         
             if ($stmt) {
-                // Bind the parameter (adminId) to the statement
                 $stmt->bind_param("s", $adminId);
-                
-                // Execute the statement
-                if ($stmt->execute()) {
-                    $result = $stmt->get_result();
-                    
-                    while ($row = $result->fetch_assoc()) {
+
+                $stmt->execute();
+                $result = $stmt->get_result();
+                 
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_object()) {
                         $data[] = $row;
                     }
-                    
-                    $stmt->close(); // Close the statement
+                    $stmt->close();
+                    return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
                 } else {
-                    // Handle query execution error here, if needed
-                    throw new Exception("Error execution query: $stmt->error");
-                    
+                    return json_encode(['status' => 0, 'message' => '', 'data' => '']);
                 }
             } else {
-                // Handle statement preparation error here, if needed
                 throw new Exception("Error statement preparation: $stmt->error");
             }
+
         } catch (Exception $e) {
             error_log("Error in appointmentsDisplay: " . $e->getMessage());
         }
     
-        return $data;
+        return 0;
     }
 
 
