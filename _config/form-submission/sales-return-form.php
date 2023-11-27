@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 foreach ($currentStockDetaisl as $currentStockDetaisl) {
                     $currentStockItemUnit = $currentStockDetaisl['unit'];
-                    if ($currentStockItemUnit == 'tab' || $currentStockItemUnit == 'cap') {
+                    if ($currentStockItemUnit == 'tablets' || $currentStockItemUnit == 'capsules') {
                         $curretnStockQty = $currentStockDetaisl['loosely_count'];
                         $UpdatedLooseQty = intval($curretnStockQty) + intval(array_shift($_POST['return']));
                         $UpdatedQty = intdiv(intval($UpdatedLooseQty), intval($itemWeatage));

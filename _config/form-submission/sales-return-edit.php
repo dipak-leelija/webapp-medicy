@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $crntLQTY = $crntStock['loosely_count'];
                 }
 
-                if ($itemUnit == 'tab' || $itemUnit == 'cap') {
+                if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
                     $updatedLooseQty = intval($crntLQTY) + (intval($returnDiff));
                     $updatedQty = intdiv($updatedLooseQty, $itemWeatage);
                 } else {

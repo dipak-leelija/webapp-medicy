@@ -174,7 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 foreach ($selectFromStockOutDetails as $stockOutData) {
                     $currenStockItemId = $stockOutData['item_id'];
-                    if ($stockOutData['unit'] == 'tab' || $stockOutData['unit'] == 'cap') {
+                    if ($stockOutData['unit'] == 'tablets' || $stockOutData['unit'] == 'capsules') {
                         $itemQantity = $stockOutData['loosely_count'];
                     } else {
                         $itemQantity = $stockOutData['qty'];
@@ -183,7 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $currenStockData = $CurrentStock->showCurrentStocById($currenStockItemId);
                 foreach ($currenStockData as $currenStockData) {
-                    if ($currenStockData['unit'] == 'tab' || $currenStockData['unit'] == 'cap') {
+                    if ($currenStockData['unit'] == 'tablets' || $currenStockData['unit'] == 'capsules') {
                         $currentQty = $currenStockData['loosely_count'];
                         $updatedLooseQty = intval($currentQty) + intval($itemQantity);
                         $updatedQty = intdiv($updatedLooseQty, intval($currenStockData['weightage']));
@@ -220,7 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $newItemDiscParcent = $discParcent[$i];
                     $newItemGstPercent = $gstparcent[$i];
                     $newItemGstAmount = $gstAmountPerItem[$i];
-                    if ($newItemUnit == 'tab' || $newItemUnit == 'cap') {
+                    if ($newItemUnit == 'tablets' || $newItemUnit == 'capsules') {
                         $newItemQty = intdiv(intval($qty[$i]), intval($newItemWeatage));
                         $newItemLooseQty = $qty[$i];
                     } else {
@@ -241,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $currentStockData = $CurrentStock->showCurrentStocById($newItemId);
                     print_r($currentStockData);
                     foreach ($currentStockData as $currentData) {
-                        if ($currentData['unit'] == 'tab' || $currentData['unit'] == 'cap') {
+                        if ($currentData['unit'] == 'tablets' || $currentData['unit'] == 'capsules') {
                             $currentLooseQty = $currentData['loosely_count'];
                             $updatedLooseQty = intval($currentLooseQty) - intval($newItemLooseQty);
                             $updatedCurrentQty = intdiv(intval($updatedLooseQty), intval($currentData['weightage']));
@@ -274,7 +274,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updatedDiscPrice = $discPrice[$i];
                     $updatedGst = $gstparcent[$i];
                     $updatedGstAmount = $gstAmountPerItem[$i];
-                    if ($updatedItemUnit == 'tab' || $updatedItemUnit == 'cap') {
+                    if ($updatedItemUnit == 'tablets' || $updatedItemUnit == 'capsules') {
                         $updatedItemQty = intdiv(intval($qty[$i]), intval($updatedItemWeatage));
                         $updatedItemLooseQty = $qty[$i];
                     } else {
@@ -293,7 +293,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $selectStockOutDetailsData = $StockOut->stokOutDetailsDataOnTable($table, $stockOutDetialsId);
 
                     foreach ($selectStockOutDetailsData as $stockOutDataCheck) {
-                        if ($stockOutDataCheck['unit'] == 'tab' || $stockOutDataCheck['unit'] == 'cap') {
+                        if ($stockOutDataCheck['unit'] == 'tablets' || $stockOutDataCheck['unit'] == 'capsules') {
                             $stockOutItemLooseCount = $stockOutDataCheck['loosely_count'];
                             $itemCountDiff = intval($stockOutItemLooseCount) - intval($updatedItemLooseQty);
                         } else {
@@ -307,7 +307,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $currentStockData = $CurrentStock->showCurrentStocById($updatedItemId);
                     // echo "<br>"; print_r($currentStockData);
                     foreach ($currentStockData as $currentData) {
-                        if ($currentData['unit'] == 'tab' || $currentData['unit'] == 'cap') {
+                        if ($currentData['unit'] == 'tablets' || $currentData['unit'] == 'capsules') {
                             $currentLooseQty = $currentData['loosely_count'];
                             $updatedLooseQty = intval($currentLooseQty) + (intval($itemCountDiff));
                             $updatedCurrentQty = intdiv(intval($updatedLooseQty), intval($currentData['weightage']));
@@ -451,7 +451,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $manufDetail = $Manufacturur->showManufacturerById($manufId[$i]);
                     $manufSName = $manufDetail[0]['short_name'];
 
-                    if($ItemUnit[$i] == 'tab' || $ItemUnit[$i] == 'cap'){
+                    if($ItemUnit[$i] == 'tablets' || $ItemUnit[$i] == 'capsules'){
                         $unitStamp = $ItemUnit[$i];
                     }else{
                         $unitStamp = '';
