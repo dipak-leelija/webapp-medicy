@@ -484,7 +484,7 @@ const onQty = (qty) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if (itemUnit == 'tab' || itemUnit == 'cap') {
+    if (itemUnit == 'tablets' || itemUnit == 'capsules') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
@@ -510,7 +510,7 @@ const onQty = (qty) => {
     let checkSum = '';
     let itemPackType = '';
 
-    if (unitType == 'tab' || unitType == 'cap') {
+    if (unitType == 'tablets' || unitType == 'capsules') {
         checkSum = parseInt(qty) % parseInt(itemWeightage);
         if (checkSum == 0) {
             itemPackType = 'Pack';
@@ -591,7 +591,7 @@ const ondDisc = (disc) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if (itemUnit == 'tab' || itemUnit == 'cap') {
+    if (itemUnit == 'tablets' || itemUnit == 'capsules') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';

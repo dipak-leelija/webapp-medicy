@@ -60,13 +60,13 @@ if (isset($_POST['id'])) {
                 $itemWeatage = preg_replace("/[a-z]/", "", $itemSetOf);
                 $returnsQty = $salesReturnDetailsData['return_qty'];
 
-                if ($itemUnit == 'tab' || $itemUnit == 'cap') {
+                if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
                     $looselyCount = $returnsQty;
                 } else {
                     $wholeCount = $returnsQty;
                 }
 
-                if ($itemUnit == 'tab' || $itemUnit == 'cap') {
+                if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
                     $updatedLooselyCount = intval($currentStockLooselyCount) - intval($looselyCount);
                     $updatedQty = intdiv($updatedLooselyCount, $itemWeatage);
                 }else{
