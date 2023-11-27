@@ -105,7 +105,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
 
     ///find new patient by selected date ///
     function newPatientDataOverride(patientOverrideData) {
-        console.log(patientOverrideData);
+        // console.log(patientOverrideData);
         if (patientOverrideData) {
             newPatientchart.data.datasets[0].data = patientOverrideData.map(item => item.patient_count);
             newPatientchart.data.labels = patientOverrideData.map(item => item.added_on);
@@ -196,7 +196,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     // primary chart data =====
 
     const newPatients = <?php echo json_encode($newPatients); ?>;
-    console.log(newPatients);
+    // console.log(newPatients);
     if (newPatients != null) {
         /// for line chart hover ////
         let myChart = document.getElementById('myChart');

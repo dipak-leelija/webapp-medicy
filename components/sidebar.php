@@ -1,4 +1,10 @@
-    
+    <?php
+        $currentURL = $_SERVER['REQUEST_URI'];
+        $url = substr($currentURL, strrpos($currentURL, '/') + 1);
+        $parts = explode('.', $url);
+        $updatedUrl = $parts[0];
+        $page = $updatedUrl;
+    ?>
     <!-- Sidebar -->
 
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">

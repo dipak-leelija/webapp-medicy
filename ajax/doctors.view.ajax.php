@@ -161,11 +161,12 @@ $showDoctor = $doctors->showDoctorById($docId);
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="<?php echo PLUGIN_PATH ?>bootstrap/js/bootstrap.bundle.min.js"></script> -->
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Bootstrap Js -->
-    <script src="<?php echo PLUGIN_PATH ?>bootstrap-5.0.2/js/bootstrap.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>bootstrap-5.0.2/js/bootstrap.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
 
 
     <!-- Core plugin JavaScript-->

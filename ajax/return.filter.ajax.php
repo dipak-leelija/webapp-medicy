@@ -148,6 +148,12 @@
             if ($data) {
                 // print_r($data);
                 foreach ($data as $row) { 
+                    
+                    $check = '';
+                    if ($row['status'] == "cancelled") {
+                        $check  = 'style="background-color:#ff0000; color:#fff"';
+                    }
+
                     $distId = $row['distributor_id'];
                     $distributorData = $Distributor->showDistributorById($distId);
                     // print_r($distData);
@@ -156,7 +162,7 @@
                     }
 
                     ?>
-    <tr>
+    <tr <?php echo $check ?>>
         <td><?php echo $row['id'] ?></td>
         <td><?php echo $distName ?></td>
         <td><?php echo $row['return_date'] ?></td>
@@ -165,7 +171,9 @@
         <td><?php echo $row['refund_mode'] ?></td>
         <td><?php echo $row['refund_amount'] ?></td>
         <td >
-            <a href="stock-return-edit.php?returnId='<?php echo $row['id'] ?>'" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
+            <?php echo '
+                <a class="text-primary ml-4" id="edit-btn-' . $row['id'] . '" onclick="editReturnItem(' . $row['id'] . ', this)"><i class="fas fa-edit" ></i></a>'; 
+            ?>
             <a class="text-danger ml-2" onclick="cancelPurchaseReturn('<?php echo $row['id'] ?>', this)" ><i class="fas fa-window-close"></i></a>
         </td>
     </tr>
@@ -202,6 +210,9 @@
 
     <!-- Page level custom scripts -->
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
+
+    <!-- custom script for stock return page -->
+    <script src="<?= JS_PATH ?>stock-return-control.js"></script>
 
 </body>
 

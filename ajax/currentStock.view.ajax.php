@@ -135,8 +135,9 @@ if (isset($_GET['currentStockId'])) {
                 </div> -->
                 <div class="col-sm-6 justify-content-center" flex>
                     <h3><?php echo $prodcutDetails[0]['name']; ?></h3>
-                    <h7>[<?php echo $prodcutDetails[0]['product_composition']; ?>]</h6>
-                        <h5><?php echo $manufDetails[0]['name']; ?></h6>
+                    <h7><?php echo $prodcutDetails[0]['comp_1']; ?></h7>
+                    <h7><?php echo $prodcutDetails[0]['comp_2']; ?></h7>
+                    <h5><?php echo $manufDetails[0]['name']; ?></h5>
                 </div>
                 <div class="col-sm-1 justify-content-center">
 

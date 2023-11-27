@@ -9,6 +9,7 @@ require_once CLASS_DIR."doctors.class.php";
 $Doctors = new Doctors();
 
 $doctor = $Doctors->showDoctors($adminId);
+$doctor = json_decode($doctor , true);
 // print_r($doctor);
 ?>
 <!DOCTYPE html>
@@ -117,7 +118,8 @@ $doctor = $Doctors->showDoctors($adminId);
                                                 <select class="doctor-select" id="doctor-select">
                                                     <option value="" selected disabled>Select Doctor</option>
                                                     <?php
-                                                    foreach ($doctor as $doc) {
+                                                    if($doctor && $doctor['status'] == 1 && !empty($doctor))
+                                                    foreach ($doctor['data'] as $doc) {
                                                         // print_r($row);
                                                         echo $doctorName = $doc['doctor_name'];
                                                         echo '<option value="' . $doctorName . '" style="color: black;">' . $doctorName . '</option>';
@@ -128,7 +130,8 @@ $doctor = $Doctors->showDoctors($adminId);
                                                 <!-- <div class="p-2 bg-light" id="select-doctor" style="max-height: 20rem; max-width: 98%; background: #8584e9;" >
                                                 <datalist id="datalistOptions">
                                                     <?php
-                                                    foreach ($doctor as $row) {
+                                                    if($doctor && $doctor['status'] == 1 && !empty($doctor))
+                                                    foreach ($doctor['data'] as $row) {
                                                         echo '<option value="' . $row['doctor_name'] . '">';
                                                     }
                                                     ?>
@@ -142,7 +145,7 @@ $doctor = $Doctors->showDoctors($adminId);
                                     <div class="col-md-2 payment">
                                         <div class="row mt-3">
                                             <div class=" col-md-2 col-2 payment-icon circle-bg">
-                                                <i class="fas fa-stethoscope"></i>
+                                                <i class="fas fa-money-check-alt"></i>
                                             </div>
                                             <div class="col-md-10 col-10 payment-option">
                                                 <label for="">Payment Mode</label><br>

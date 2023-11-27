@@ -19,17 +19,19 @@ if (isset($_GET['id'])) {
     $invoiceId = url_dec($_GET['id']);
     $stockOut  = $StockOut->stockOutDisplayById($invoiceId);
     // print_r($stockOut);
-    $invoiceId      = $stockOut[0]['invoice_id'];
-    $customerName   = $stockOut[0]['customer_id'];
-    $reffby         = $stockOut[0]['reff_by'];	
-    $totalMrp       = $stockOut[0]['mrp'];	
-    $totalGSt       = $stockOut[0]['gst'];	
-    $billAmout      = $stockOut[0]['amount'];	
-    $pMode          = $stockOut[0]['payment_mode'];	
-    $billdate       = $stockOut[0]['bill_date'];	
+    foreach($stockOut as $stockOut){
+    $invoiceId      = $stockOut['invoice_id'];
+    $customerName   = $stockOut['customer_id'];
+    $reffby         = $stockOut['reff_by'];	
+    $totalMrp       = $stockOut['mrp'];	
+    $totalGSt       = $stockOut['gst'];	
+    $billAmout      = $stockOut['amount'];	
+    $pMode          = $stockOut['payment_mode'];	
+    $billdate       = $stockOut['bill_date'];	
 
     $details = $StockOut->stockOutDetailsBY1invoiveID($invoiceId);
     $details = json_decode($details, true);
+    }
     
 }
 

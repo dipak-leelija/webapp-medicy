@@ -4,6 +4,7 @@ require_once ROOT_DIR.'_config/sessionCheck.php';
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR."products.class.php";
+require_once CLASS_DIR."quantityUnit.class.php";
 require_once CLASS_DIR."packagingUnit.class.php";
 require_once CLASS_DIR."itemUnit.class.php";
 require_once CLASS_DIR."productsImages.class.php";
@@ -16,6 +17,7 @@ $ItemUnit       = new ItemUnit;
 $ProductImages  = new ProductImages();
 $Manufacturer   = new Manufacturer();
 $CurrentStock   = new CurrentStock();
+$QuantityUnit   = new QuantityUnit;
 
 ?>
 
@@ -95,7 +97,19 @@ $CurrentStock   = new CurrentStock();
         }
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]['packaging_type']);
+
+        $itemQuantityUnit = $QuantityUnit->quantityUnitName($product[0]['unit_id']);
+        $itemQuantityUnit = json_decode($itemQuantityUnit, true);
+        if($itemQuantityUnit){
+            if (isset($itemQuantityUnit['data']['short_name'])) {
+                $qantityName = $itemQuantityUnit['data']['short_name'];
+            } else {
+                $qantityName = '';
+            }
+        }
+
         $itemUnitName = $ItemUnit->itemUnitName($product[0]['unit']);
+        
     ?>
 
         <div class="container-fluid d-flex justify-content-center mt-2">
@@ -126,7 +140,7 @@ $CurrentStock   = new CurrentStock();
                                 <h7><?php echo $manuf[0]['name']; ?></h7>
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
                                 <p class="fst-normal"><?php echo $product[0]['unit_quantity']; ?>
-                                    <?= $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
+                                    <?= $qantityName.' '.$itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
                                 <p>
                                     <small>
                                         <mark>

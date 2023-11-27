@@ -11,6 +11,7 @@ require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 require_once CLASS_DIR.'stockReturn.class.php';
+require_once CLASS_DIR."itemUnit.class.php";
 
 $StockIn = new StockIn();
 $StockInDetails = new StockInDetails();
@@ -21,6 +22,7 @@ $Products = new Products();
 $Manufacturer = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
 $StcokReturn = new StockReturn();
+$ItemUnit       = new ItemUnit;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['stock-in'])) {
@@ -73,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $weightage          = array_shift($_POST['weightage']);
                 $unit               = array_shift($_POST['unit']);
+                $pack               = array_shift($_POST['packagingin']);
                 $qty                = array_shift($_POST['qty']);
                 $freeQty            = array_shift($_POST['freeQty']);
                 $looselyCount       = '';
@@ -90,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $looselyPrice = '';
 
-                if ($unit == "tab" || $unit == "cap") {
+                if ($unit == "tablets" || $unit == "capsules") {
                     $looselyCount = $weightage * ($qty + $freeQty);
                     $looselyPrice = ($mrp * $qty) / ($weightage * $qty);
                 }else{
@@ -266,6 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $pType  = $pData['packaging_type'];
                             $pQTY = $pData['unit_quantity'];
                             $pUnit = $pData['unit'];
+                            $pUnitName = $ItemUnit->itemUnitName($pUnit);
                         }
 
                         $packagingData = $PackagingUnits->showPackagingUnitById($pType);
@@ -323,7 +327,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <small><?php echo "$manufName" ?></small>
                     </div>
                     <div class="col-sm-1b" style="width: 8%;">
-                        <small><?php echo $pQTY . $pUnit, "/", $unitNm ?></small>
+                        <small><?php echo $pQTY . $pUnitName, "/ ", $unitNm ?></small>
                     </div>
                     <div class="col-sm-1b" style="width: 10%;">
                         <small><?php echo "$batchNo" ?></small>

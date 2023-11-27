@@ -159,7 +159,7 @@ const getDtls = (productId) => {
     let xmlhttp = new XMLHttpRequest();
 
     if (productId != "") {
-        console.log(productId);
+        // console.log(productId);
         //==================== Manufacturere List ====================
         manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + productId;
         // alert(url);
@@ -221,7 +221,9 @@ const getDtls = (productId) => {
         xmlhttp.open("GET", mrpUrl, false);
         xmlhttp.send(null);
         document.getElementById("mrp").value = xmlhttp.responseText;
-        
+        let pTr = parseFloat(xmlhttp.responseText);
+        pTr = pTr.toFixed(2);
+        document.getElementById("ptr").value = pTr;
 
         // //==================== ptr check url ===================
         // chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + productId;
@@ -232,7 +234,7 @@ const getDtls = (productId) => {
         // // alert(xmlhttp.responseText);
         // document.getElementById("chk-ptr").value = xmlhttp.responseText;
         // document.getElementById("ptr").value = xmlhttp.responseText;
-
+        
         //==================== GST ====================
         gstUrl = 'ajax/product.getGst.ajax.php?id=' + productId;
         // alert(unitUrl);
@@ -341,63 +343,56 @@ ptrInput.addEventListener('keydown', function (event) {
 
 const getBillAmount = () => {
 
-    var ptr = document.getElementById("ptr").value;
-    if(isNaN(ptr)){
-        ptr = 0;
-    }
+    let mrp = document.getElementById('mrp').value;
 
-
-    let Mrp = document.getElementById("mrp").value;
-    let qty = document.getElementById("qty").value;
-    let discount = document.getElementById("discount").value;
-    let gst = document.getElementById("gst").value;
-    let billAmount = document.getElementById("bill-amount");
-    let chkPtr = document.getElementById("chk-ptr").value;
-
-    let PTR = parseFloat(ptr);
-    let MRP = parseFloat(Mrp);
-    let ChkPtr = parseFloat(chkPtr);
-
-
+    let ptr = document.getElementById('ptr').value;
+    
+    
+    let gst = document.getElementById('gst').value;
     if(gst == ''){
         gst = 0;
     }
-    
-    //========= base amount calculation area ===========
-    var base = PTR - ((PTR * discount) / 100);
-    base = parseFloat(base).toFixed(2)
-    // console.log(base);
-    document.getElementById("base").value = base;
-    // ======= eof base amount calculation =============
-        
-    if (PTR > ChkPtr) {
-        swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
-        document.getElementById("ptr").value = ChkPtr;
-        document.getElementById("base").value = ChkPtr;
 
+    let qty = document.getElementById('qty').value;
+    if(qty == ''){
+        qty = 0;
+    }
+
+    let disc = document.getElementById('discount').value;
+    if(disc == ''){
+        disc = 0;
+    }
+
+
+    let maxPtr = (parseFloat(mrp) * 100)/ (parseFloat(gst)+100);
+    maxPtr = maxPtr.toFixed(2);
+
+    if(ptr < maxPtr){
+        maxPtr = ptr;
+    }
+
+    if (ptr > maxPtr) {
+        swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
+        document.getElementById("ptr").value = maxPtr;
+        maxPtr = maxPtr;
+        // document.getElementById("base").value = ChkPtr;
         document.getElementById("bill-amount").value = " ";
         document.getElementById("ptr").focus();
     }
 
+    
+    let base = parseFloat(maxPtr) - (parseFloat(maxPtr)*(parseFloat(disc)/100));
+    base = parseFloat(base) + (parseFloat(base)*(parseFloat(gst)/100));
+    base = base.toFixed(2);
 
-    if (ptr == "") {
-        billAmount.value = "";
-        base = "";
-    }
+    let totalAmount = parseFloat(base) * parseInt(qty);
+    totalAmount = totalAmount.toFixed(2);
 
-    if (qty != "" && ptr != "" && gst != "") {
-        subAamount = base * qty;
 
-        let totalGst = ((gst / 100) * subAamount);
-        let amount = subAamount + totalGst;
-        let chkBillAmount = MRP * qty;
+    document.getElementById("base").value = base;
+    document.getElementById("bill-amount").value = totalAmount;
+    
 
-        if (amount > chkBillAmount) {
-            amount = chkBillAmount;
-        }
-
-        billAmount.value = parseFloat(amount).toFixed(2);
-    }
 } //eof getBillAmount function
 
 // ##################################################################################
@@ -435,7 +430,6 @@ const addData = () => {
     let packagingIn = document.getElementById("packaging-in");
     let mrp = document.getElementById("mrp");
     let ptr = document.getElementById("ptr");
-    let chkPtr = document.getElementById('chk-ptr');
     let qty = document.getElementById("qty");
     let freeQty = document.getElementById("free-qty");
     let discount = document.getElementById("discount");
@@ -535,9 +529,10 @@ const addData = () => {
             });
         return;
     }
+
     var Ptr = parseFloat(ptr.value);
     var Mrp = parseFloat(mrp.value);
-    var ChkPtr = parseFloat(chkPtr.value);
+    
     if (Ptr > Mrp) {
         swal("Blank Field", "Please check PTR value", "error")
             .then((value) => {
@@ -629,11 +624,10 @@ const addData = () => {
 
     //////////////////////
     let totalMrp = parseFloat(mrp.value) * ((parseFloat(qty.value) + parseFloat(freeQty.value)));
-    let baseWithGst = parseFloat(base.value) + ((parseFloat(base.value) / 100 ) * parseInt(gst.value));
-    let totalBasWithGst = parseFloat(baseWithGst) * parseInt(qty.value);
+    let payble = parseFloat(base.value) * parseInt(qty.value);
     
     let marginP = 0;
-    if(parseFloat(totalMrp) > parseFloat(totalBasWithGst)){
+    if(parseFloat(totalMrp) > parseFloat(payble)){
         let margin = parseFloat(totalMrp) - parseFloat(billAmount.value);
         marginP = (parseFloat(margin) / parseFloat(totalMrp)) * 100;
     }else {
@@ -672,6 +666,7 @@ const addData = () => {
                 <input class="table-data line-inp50" type="text" name="weightage[]" value="${weightage.value}" style="display: none" hidden>
                 <input class="table-data line-inp50" type="text" name="unit[]" value="${unit.value}" style="display: none" hidden>
 
+                <input class="table-data line-inp50" type="text" name="packagingin[]" value="${packagingIn.value}" style="display: none" hidden>
             </td>
             <td class="p-0 pt-3 w-2r" id="row-${slControl}-col-8">
                 <input class="table-data w-2r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size: .7rem; text-align: end">
@@ -685,7 +680,7 @@ const addData = () => {
             <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-11">
                 <input class="table-data w-3r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size: .7rem; text-align: end">
 
-                <input class="d-none table-data w-3r" type="text" name="chkPtr[]" value="${chkPtr.value}" readonly style="font-size: .7rem; text-align: end">
+                <input class="d-none table-data w-3r" type="text" name="chkPtr[]" value="${ptr.value}" readonly style="font-size: .7rem; text-align: end">
             </td>
             <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-12a">
                 <input type="text" class="table-data w-3r" name="base[]" value="${base.value}" style="text-align: end;">
@@ -742,7 +737,7 @@ const addData = () => {
         packegeinIn: packagingIn.value,
         mrp: mrp.value,
         ptr: ptr.value,
-        chkPtr: chkPtr.value,
+        
         Qty: qty.value,
         freeQty: freeQty.value,
         discPercent: discount.value,
@@ -834,7 +829,7 @@ const editItem = (tupleData) => {
         document.getElementById("packaging-in").value = TupleData.packegeinIn;
         document.getElementById("mrp").value = TupleData.mrp;
         document.getElementById("ptr").value = TupleData.ptr;
-        document.getElementById("chk-ptr").value = TupleData.chkPtr;
+       
         document.getElementById("qty").value = TupleData.Qty;
         document.getElementById("free-qty").value = TupleData.freeQty;
         document.getElementById("discount").value = TupleData.discPercent;

@@ -49,6 +49,8 @@ if (isset($_POST['submit-lab-type']) == true) {
 //######################################################
 //Object initilizing for Fetching Tests/Labs
 $showLabTypes = $labTypes->showLabTypes();
+
+// $showLabTypes = json_decode($showLabTypes);
 // print_r($showLabTypes);
 //######################################################
 // Adding Sub tests Category
@@ -78,12 +80,12 @@ if (isset($_POST['subtest-submit']) == true) {
     $price = $_POST['price'];
     $price = str_replace("<", "&lt", $price);
     $price = str_replace("'", "\\", $price);
-    
+
     $SubTestUnit = $_POST['subtest-unit'];
     $SubTestUnit = str_replace("<", "&lt", $SubTestUnit);
     $SubTestUnit = str_replace("'", "\\", $SubTestUnit);
 
-    $addsubTests = $subTests->addSubTests($subTestName,$SubTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price);
+    $addsubTests = $subTests->addSubTests($subTestName, $SubTestUnit, $parentTestId, $ageGroup, $subTestPrep, $subTestDsc, $price);
     if (!$addsubTests) {
         echo "Something is wrong!";
     }
@@ -171,6 +173,7 @@ if (isset($_POST['subtest-submit']) == true) {
                                                                             if ($showLabTypes == 0) {
                                                                                 echo "No Test Type Avilable.";
                                                                             } else {
+                                                                                // if($showLabTypes && isset($showLabTypes['status']) && $showLabTypes['status'] == 1){
                                                                                 foreach ($showLabTypes as $showLabTypesShow) {
                                                                                     $testTypeId = $showLabTypesShow['id'];
                                                                                     $testName = $showLabTypesShow['test_type_name'];
@@ -182,7 +185,7 @@ if (isset($_POST['subtest-submit']) == true) {
 
                                                                                     echo '<div class="col-sm-3">
                                                                                 <div class="card mt-3" style="min-width: 14rem; min-height: 20rem; max-height: 20rem;">
-                                                                                    <img src='.LABTEST_IMG_PATH.$showLabTypesShow['image'].'
+                                                                                    <img src=' . LABTEST_IMG_PATH . $showLabTypesShow['image'] . '
                                                                                         class="card-img-top mt-2 mh-25 mw-25 min-vw-25 min-vh-25" alt="...">
                                                                                         <a href="' . $delTestTypeId . '" onclick="return deleteConfirmation()" ><i class="far fa-trash-alt delete" ></i></a>
                                                                                     
@@ -276,9 +279,11 @@ if (isset($_POST['subtest-submit']) == true) {
                                             <select name="parent-test" class="form-control" id="parent-test" required>
                                                 <option value="" disabled selected>Select Main Test</option>
                                                 <?php
-                                                foreach ($showLabTypes as $labTypeName) {
-                                                    echo '<option value="' . $labTypeName['id'] . '">' . $labTypeName['test_type_name'] . '</option>';
-                                                }
+                                                // if ($showLabTypes && isset($showLabTypes['status']) && $showLabTypes['status'] == 1) {
+                                                    foreach ($showLabTypes as $labTypeName) {
+                                                        echo '<option value="' . $labTypeName['id'] . '">' . $labTypeName['test_type_name'] . '</option>';
+                                                    }
+                                                // }
                                                 ?>
 
                                             </select>
@@ -385,7 +390,7 @@ if (isset($_POST['subtest-submit']) == true) {
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Bootstrap Js -->
-    <script src="<?php echo JS_PATH ?>bootstrap-js-5/js/bootstrap.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
 
 

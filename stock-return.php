@@ -224,6 +224,7 @@ $today = date("m-d-Y");
             <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
+            <!-- go to stock-return-control.js for function contorl -->
             <!-- Return View Modal" -->
             <div class="modal fade" id="viewReturnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-centered">

@@ -135,24 +135,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         $unitType = $MeasureOfUnits->showMeasureOfUnitsById($unit);
         $unitName = $unitType[0]['short_name'];
 
-
-        // echo "<br>product id : ",$_POST['product-id']; echo "<br>",gettype($_POST['product-id']);
-        // echo "<br>manuf id : ",$_POST['manufacturer']; echo "<br>",gettype($_POST['manufacturer']);
-        // echo "<br>prod name : ",$_POST['product-name']; echo "<br>",gettype($_POST['product-name']);
-        // echo "<br>product composition : ",$_POST['product-composition']; echo "<br>",gettype($_POST['product-composition']);
-        // echo "<br>med power : ",$_POST['medicine-power']; echo "<br>",gettype($_POST['medicine-power']);
-        // echo "<br>product description : ",$_POST['product-descreption']; echo "<br>",gettype($_POST['product-descreption']);
-        // echo "<br>packaging type : ",$_POST['packaging-type']; echo "<br>",gettype($_POST['packaging-type']);
-        // echo "<br>unit qty : ",$_POST['unit-quantity']; echo "<br>",gettype($_POST['unit-quantity']);
-        // echo "<br>unit : ",$_POST['unit']; echo "<br>",gettype($_POST['unit']);
-        // echo "<br>unit name : ",$unitName; echo "<br>",gettype($unitName);
-        // echo "<br>mrp : ",$_POST['mrp']; echo "<br>",gettype($_POST['mrp']);
-        // echo "<br>gst : ",$_POST['gst']; echo "<br>",gettype($_POST['gst']);
-        // echo "<br>updated by: ",$updatedBy; echo "<br>",gettype($updatedBy);
-        // echo "<br>updated on : ",$updatedOn; echo "<br>",gettype($updatedOn);
-
-
-        $updateProduct = $Products->updateProduct($_POST['product-id'], $_POST['manufacturer'], $_POST['product-name'], $_POST['product-composition'], $_POST['medicine-power'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $unitName, $_POST['mrp'], $_POST['gst'], $updatedBy, $updatedOn);
+        $updateProduct = $Products->updateProduct($_POST['product-id'], $_POST['manufacturer'], $_POST['product-name'], $_POST['product-composition1'], $_POST['product-composition2'], $_POST['medicine-power'], $_POST['product-descreption'], $_POST['packaging-type'], $_POST['unit-quantity'], $_POST['unit'], $unitName, $_POST['mrp'], $_POST['gst'], $updatedBy, $updatedOn);
 
         // print_r($updateProduct);
         // exit;
@@ -225,8 +208,10 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <br>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <!-- <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" value="<?php echo $item[0]['product_composition'] ?>" required> -->
-                                                <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" value="<?php echo isset($item[0]['product_composition']) ? $item[0]['product_composition'] : ''; ?>" required>
+                                                <input class="c-inp w-100 p-1" id="product-composition1" name="product-composition" placeholder="Product Composition" value="<?php echo isset($item[0]['comp_1']) ? $item[0]['comp_1'] : ''; ?>" required>
+                                            </div>
+                                            <div class="col-md-12 mt-2">
+                                                <input class="c-inp w-100 p-1" id="product-composition2" name="product-composition" placeholder="Product Composition" value="<?php echo isset($item[0]['comp_2']) ? $item[0]['comp_2'] : ''; ?>" required>
                                             </div>
                                         </div>
                                         <br>
@@ -329,7 +314,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="border p-1 rounded">
-                                                    <div class="image-area <?php if (count($image) != 0) {
+                                                    <div class="image-area <?php if (!empty($image)) {
                                                                                 echo 'activeted';
                                                                             } ?> rounded" id="imageArea">
                                                         <img class="browse" src="<?php echo PROD_IMG_PATH . $Images ?>" alt="">
@@ -351,9 +336,9 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                 </div>
                         </div>
 
-                        <input type="" id="id" name="id" value="<?php echo $item[0]['product_id'] ?>">
-                        <input type="" id="added-by" name="added-by" value="<?php echo $item[0]['added_by'] ?>">
-                        <input type="" id="imgid" name="imgid" value="<?php echo $image[0]['product_id'] ?>">
+                        <input type="" id="id" name="id" value="<?php echo $item[0]['product_id'] ?>" class="d-none">
+                        <input type="" id="added-by" name="added-by" value="<?php echo $item[0]['added_by'] ?>" class="d-none">
+                        <input type="" id="imgid" name="imgid" value="<?php echo isset($image[0]['product_id'])? $image[0]['product_id'] : ''; ?>" class="d-none">
 
 
 

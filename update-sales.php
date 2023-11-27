@@ -54,6 +54,7 @@ if ($_GET['id']) {
     
     //=============== doctor data =================
     $doctor = $Doctors->showDoctors($adminId);
+    $doctor = json_decode($doctor, true);
     // print_r($doctor);
 ?>
     <!DOCTYPE html>
@@ -148,7 +149,8 @@ if ($_GET['id']) {
                                                     <select class="doctor-select" id="doctor-select">
                                                         <option value="<?php echo $reffby; ?>" selected disabled><?php echo $reffby; ?></option>
                                                         <?php
-                                                        foreach ($doctor as $doc) {
+                                                        if($doctor && $doctor['status'] == 1 && !empty($doctor))
+                                                        foreach ($doctor['data'] as $doc) {
                                                             // print_r($row);
                                                             echo $doctorName = $doc['doctor_name'];
                                                             echo '<option value="' . $doctorName . '" style="color: black;">' . $doctorName . '</option>';
@@ -165,7 +167,7 @@ if ($_GET['id']) {
                                         <div class="col-md-2 payment">
                                             <div class="row mt-3">
                                                 <div class=" col-md-2 col-2 payment-icon circle-bg">
-                                                    <i class="fas fa-stethoscope"></i>
+                                                    <i class="fas fa-money-check-alt"></i>
                                                 </div>
                                                 <div class="col-md-10 col-10 payment-option">
                                                     <label for="">Payment Mode</label><br>

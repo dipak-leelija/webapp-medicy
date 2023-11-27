@@ -1,8 +1,8 @@
 <?php
 require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once  CLASS_DIR . 'hospital.class.php';
 require_once  CLASS_DIR . 'stockOut.class.php';
 require_once  CLASS_DIR . 'patients.class.php';
@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $crntLQTY = $crntStock['loosely_count'];
                 }
 
-                if ($itemUnit == 'tab' || $itemUnit == 'cap') {
+                if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
                     $updatedLooseQty = intval($crntLQTY) + (intval($returnDiff));
                     $updatedQty = intdiv($updatedLooseQty, $itemWeatage);
                 } else {
@@ -218,20 +218,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
 
-        $healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
+        // $healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
         
-        $healthCareDetails = $healthCareDetailsByAdminId;
+        // $healthCareDetails = $healthCareDetailsByAdminId;
         
-        for ($i; $i < count($healthCareDetails); $i++) {
+        // for ($i; $i < count($healthCareDetails); $i++) {
 
-            $healthCareName     = $healthCareDetails['hospital_name'];
-            $healthCareAddress1 = $healthCareDetails['address_1'];
-            $healthCareAddress2 = $healthCareDetails['address_2'];
-            $healthCareCity     = $healthCareDetails['city'];
-            $healthCarePIN      = $healthCareDetails['pin'];
-            $healthCarePhno     = $healthCareDetails['hospital_phno'];
-            $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
-        }
+        //     $healthCareName     = $healthCareDetails['hospital_name'];
+        //     $healthCareAddress1 = $healthCareDetails['address_1'];
+        //     $healthCareAddress2 = $healthCareDetails['address_2'];
+        //     $healthCareCity     = $healthCareDetails['city'];
+        //     $healthCarePIN      = $healthCareDetails['pin'];
+        //     $healthCarePhno     = $healthCareDetails['hospital_phno'];
+        //     $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
+        // }
     }
 }
 
@@ -268,7 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="col-sm-8">
                             <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
                             <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                                <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ', ' . $healthCarePIN; ?></small>
+                                <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ', ' . $healthCarePin; ?></small>
                             </p>
                             <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
                                 <small><?php echo 'M: ' . $healthCarePhno . ', ' . $healthCareApntbkNo; ?></small>

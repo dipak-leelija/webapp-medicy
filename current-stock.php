@@ -176,7 +176,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                                     <td class='align-middle'><?php echo "$productName "?> <br>
                                                                     <small><?php echo " $manufName " ?></small>
                                                                     </td>
-                                                                    <td class='align-middle' id='<?php echo " . $bachElemId . "?>' hidden><?php echo" . $batchNo . "?></td>
+                                                                    <!-- <td class='align-middle' id='<?php echo " . $bachElemId . "?>' hidden><?php echo" . $batchNo . "?></td> -->
                                                                     <!-- <td class='align-middle'><?php echo ". $expDate ." ?></td> -->
                                                                     <td class='align-middle'>
                                                                         <?php 

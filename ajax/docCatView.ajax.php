@@ -10,7 +10,9 @@ $docSpecialization = $_GET['specializationid'];
 $DoctorCategory = new DoctorCategory();
 
 $showDoctorCategory = $DoctorCategory->showDoctorCategoryById($docSpecialization);
-foreach ($showDoctorCategory as $rowDoctorCategory) {
+$showDoctorCategory = json_decode($showDoctorCategory,true);
+if($showDoctorCategory && $showDoctorCategory['status'] == 1 && !empty($showDoctorCategory))
+foreach ($showDoctorCategory['data'] as $rowDoctorCategory) {
     $id      = $rowDoctorCategory['doctor_category_id'];
     $catName =$rowDoctorCategory['category_name'];
     $catDsc  = $rowDoctorCategory['category_descreption'];

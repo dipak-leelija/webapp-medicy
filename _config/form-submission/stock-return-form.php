@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 // echo "<br>Return free qty : $returnFQty[$i]";
                 // echo "<br>Item Unit name : $unit[$i]";
 
-                if($unit[$i] == 'tab' || $unit[$i] == 'cap'){
+                if($unit[$i] == 'tablets' || $unit[$i] == 'capsules'){
                     $updatedLooseQty = intval($looseQty) - ((intval($returnQty[$i]) +  intval($returnFQty[$i])) * $weightage[$i]);
                     $updatedQty = intdiv($updatedLooseQty, $weightage[$i]);
                 }else{
@@ -123,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 }
             
                 $updatedOn = NOW;
+                
                 if($_SESSION['ADMIN']){
                     $updatedBy = $adminId;
                 }else{
