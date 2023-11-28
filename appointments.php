@@ -200,7 +200,6 @@ if($doctorDetails->status){
                                     <tbody>
                                         <?php 
                                         if (!empty($slicedAppointments)) {
-<<<<<<< HEAD
                                             // print_r($slicedAppointments);
                                             foreach ($slicedAppointments as $showAppointDetails) {
                                                 $appointmentTableID = $showAppointDetails->id;
@@ -209,15 +208,6 @@ if($doctorDetails->status){
                                                 $appointmentDate = date("d-m-Y", strtotime($showAppointDetails->appointment_date));
                                                 $appointmentName = $showAppointDetails->patient_name;
                                                 $getDoctorForPatient = $showAppointDetails->doctor_id;
-=======
-                                        
-                                            foreach($slicedAppointments as $showAppointDetails){
-                                            $appointmentTableID = $showAppointDetails->id;
-                                            $appointmentID = $showAppointDetails->appointment_id;
-                                            $appointmentDate = date("d-m-Y", strtotime($showAppointDetails->appointment_date));
-                                            $appointmentName = $showAppointDetails->patient_name;
-                                            $getDoctorForPatient = $showAppointDetails->doctor_id;
->>>>>>> 0ae463cccfae38d6dc3f0c5306751dc208417c9f
 
                                                     $deleteAppointmentLink = "delete-appointment.php?delete-appointment=$appointmentID";
                                                     $updateAppointmentLink = "update-appointment.php?update-prescription=$appointmentID";
