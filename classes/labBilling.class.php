@@ -9,18 +9,18 @@ require_once 'dbconnect.php';
 class LabBilling extends DatabaseConnection{
 
 
-    function addLabBill($billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $adminId) {
+    function addLabBill($billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $addedBy, $addedOn, $adminId) {
         // Use prepared statements to prevent SQL injection
         $insertBill = "INSERT INTO lab_billing 
-                       (`bill_id`, `bill_date`, `patient_id`, `refered_doctor`, `test_date`, `total_amount`, `discount`, `total_after_discount`, `cgst`, `sgst`, `paid_amount`, `due_amount`, `status`, `admin_id`) 
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                       (`bill_id`, `bill_date`, `patient_id`, `refered_doctor`, `test_date`, `total_amount`, `discount`, `total_after_discount`, `cgst`, `sgst`, `paid_amount`, `due_amount`, `status`, `added_by`, `added_on`, `admin_id`) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
         $stmt = $this->conn->prepare($insertBill);
     
         if ($stmt) {
             // Bind parameters
             $stmt->bind_param(
-                'ssssssssssssss', // Adjust these types according to your actual data types
+                'ssssssssssssssss', // Adjust these types according to your actual data types
                 $billId,
                 $billingDate,
                 $patientId,
@@ -34,6 +34,8 @@ class LabBilling extends DatabaseConnection{
                 $paidAmount,
                 $dueAmount,
                 $status,
+                $addedBy,
+                $addedOn,
                 $adminId
             );
     

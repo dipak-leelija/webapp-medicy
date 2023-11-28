@@ -124,3 +124,26 @@ function renderPaginationControls(paginationData) {
     //     document.getElementById("filter-table").innerHTML = xmlhttp.responseText;
     // }
 }
+
+const filterPatients = (t) =>{
+    let fieldID = t.id;
+    let data = t.value;
+    // console.log(fieldID);
+    console.log(data);
+
+
+    $.ajax({
+        url: "ajax/filter.ajax.php",
+        type: "POST",
+        data: {
+            searchFor: fieldID,
+            search: data
+        },
+        success: function(response) {
+            // alert(data);
+            // console.log(response);
+            $('#dataTable').html(response);
+            
+        }
+    });
+}

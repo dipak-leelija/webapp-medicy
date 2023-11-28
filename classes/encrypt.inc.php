@@ -1,6 +1,6 @@
 <?php
 define('USER_PASS', 'klfiojret435904359043590kfdjis89esr8*#&^#^#*(#KJSHS^&#@()@KSJS^&#@*()()_#KDSJ#&89jgdfkgidfgdfg84w3889kf6');
-define('ADV_PASS', 'eiwetr43905435k43504359959465032ij43289di(##$*&^&#JHDNHS^T%@*(@((@)KLRKMdasfu73878478934834dsfjfdsdsfjkfff');
+define('EMP_PASS', 'eiwetr43905435k43504359959465032ij43289di(##$*&^&#JHDNHS^T%@*(@((@)KLRKMdasfu73878478934834dsfjfdsdsfjkfff');
 define('ADMIN_PASS','8324583245i3b5858h89*(*$($@*$ BHVG@$*6767478843758bnb8r5438943854353845jjfuwerwerklERERUIRRUHUIRUUIRUIRU^a'); 
 
 function get_rnd_iv($iv_len)
