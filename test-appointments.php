@@ -30,7 +30,6 @@ if (!empty($DoctorsList->data)) {
 }
 
 // exit;
-
 if (isset($_GET['doctor'])) {
     $doctorID = $_GET['doctor'];
     $labBillDisplay = $LabBilling->labBillFilter($adminId, 'refered_doctor', $doctorID);
@@ -42,6 +41,10 @@ if (isset($_GET['doctor'])) {
 else {
     $labBillDisplay = $LabBilling->labBillDisplay($adminId);
 }
+
+// print_r($labBillDisplay);
+
+
 
 $billsResponse  = json_decode($Pagination->arrayPagination($labBillDisplay));
 if ($billsResponse->status == 1) {
@@ -118,6 +121,7 @@ if ($billsResponse->status == 1) {
                                     <div class="input-group">
                                         <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID"
                                             name="appointment-search" id="appointment-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>">
+                                            
                                         <div class="input-group-append">
                                             <button class="btn btn-sm btn-outline-primary shadow-none" type="button"
                                                 id="button-addon2" onclick="filterAppointment('appointment-search')"><i class="fas fa-search"></i></button>
@@ -228,10 +232,11 @@ if ($billsResponse->status == 1) {
 
                                                 $docId = $referdDoc;
                                                 if (is_numeric($docId)) {
-                                                    $showDoctor = $Doctors->showDoctorById($docId);
-                                                    foreach ($showDoctor as $rowDoctor) {
-                                                        $docName = $rowDoctor['doctor_name'];
-                                                    }
+                                                    $showDoctor = $Doctors->showDoctorNameById($docId);
+                                                    $showDoctor = json_decode($showDoctor);
+                                                    
+                                                    $docName = $showDoctor->data;
+                                                    
                                                 } else {
                                                     $docName = $referdDoc;
                                                 }
@@ -417,6 +422,7 @@ if ($billsResponse->status == 1) {
     }
 
     const filterAppointment = (searchId) =>{
+        // window.alert(searchId);
         var search = document.getElementById(searchId);
         var currentURLWithoutQuery = window.location.origin + window.location.pathname;
         if (search.value.length > 2) {
@@ -425,7 +431,6 @@ if ($billsResponse->status == 1) {
         }else{
             alert('Please Enter Minimum 3 Character!');
         }
-
     }
 
 
