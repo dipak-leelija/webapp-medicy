@@ -67,6 +67,13 @@ if($doctorDetails->status){
     $doctorList = array();
 }
 
+
+// ======== console data capture area ================
+// $consoleData = json_decode($_POST['consoleData'], true);
+
+// echo json_encode(['status' => '1', 'data'=>$consoleData]);
+
+// print_r($consoleData); 
 ?>
 
 <!DOCTYPE html>
@@ -198,12 +205,13 @@ if($doctorDetails->status){
                                 <table class="table table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>Appointment ID</th>
+                                            <th>Patient ID</th>
                                             <th>Patient Name</th>
                                             <th>Assigned Doctor</th>
                                             <th>Date</th>
                                             <th>Action</th>
-                                            <th>Delete</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -212,6 +220,7 @@ if($doctorDetails->status){
                                             // print_r($slicedAppointments);
                                             foreach ($slicedAppointments as $showAppointDetails) {
                                                 $appointmentTableID = $showAppointDetails->id;
+                                                $patientId = $showAppointDetails->patient_id;
                                                 $appointmentID = $showAppointDetails->appointment_id;
                                                 $appointmentDate = date("d-m-Y", strtotime($showAppointDetails->appointment_date));
                                                 $appointmentName = $showAppointDetails->patient_name;
@@ -237,16 +246,19 @@ if($doctorDetails->status){
                                                 echo '<tr>
                                                         
                                                         <td>' . $appointmentID . '</td>
+                                                        <td>' . $patientId . '</td>
                                                         <td>' . $appointmentName . '</td>
                                                         <td>' . $docName . '</td>
                                                         <td>' . $appointmentDate . '</td>
 
                                                         <td><a class="text-primary" data-toggle="modal" data-target=".AppointmntViewAndEdit" onclick="appointmentViewAndEditModal(' . $appointmentTableID . ')" title="View and Edit"><i class="far fa-edit"></i></a>
 
-                                                        <a href="prescription.php?prescription=' . $appointmentID . '" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
-                                                        </td>
 
-                                                        <td><a class="delete-btn" data-id="' . $appointmentID . '"  title="Delete"><i class="far fa-trash-alt"></i></a></td>
+                                                        <a href="prescription.php?prescription=' . $appointmentID . '" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
+
+
+                                                        <a class="delete-btn" data-id="' . $appointmentID . '"  title="Delete"><i class="far fa-trash-alt"></i></a>
+                                                        </td>
                                                     </tr>';
                                             }
                                         }
@@ -256,7 +268,7 @@ if($doctorDetails->status){
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-center" id="pagination-control">
                                 <?= $paginationHTML ?>
                             </div>
                         </div>

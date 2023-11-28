@@ -1,22 +1,24 @@
 <?php
 require_once 'dbconnect.php';
 
-class Doctors extends DatabaseConnection{
+class Doctors extends DatabaseConnection
+{
 
 
 
-    function addDoctor($docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $adminId) {
+    function addDoctor($docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $adminId)
+    {
         try {
             $insertDoc = "INSERT INTO doctors (`doctor_reg_no`, `doctor_name`, `doctor_specialization`, `doctor_degree`, `also_with`, `doctor_address`, `doctor_email`, `doctor_phno`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($insertDoc);
-    
+
             if ($stmt) {
                 $stmt->bind_param("sssssssss", $docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $adminId);
-    
+
                 $insertDocQuery = $stmt->execute();
-    
+
                 $stmt->close();
-    
+
                 return $insertDocQuery;
             } else {
                 throw new Exception("Error in preparing SQL statement");
@@ -25,30 +27,31 @@ class Doctors extends DatabaseConnection{
             throw new Exception($e->getMessage());
         }
     }
-    
 
 
 
 
-    function showDoctors($adminId) {
+
+    function showDoctors($adminId)
+    {
         try {
             $selectDoctors = "SELECT * FROM `doctors` WHERE admin_id = ?";
             $stmt = $this->conn->prepare($selectDoctors);
-    
+
             if ($stmt) {
                 $stmt->bind_param("s", $adminId);
-    
+
                 $stmt->execute();
-    
+
                 $result = $stmt->get_result();
-    
+
                 if ($result->num_rows > 0) {
                     $data = array();
                     while ($row = $result->fetch_assoc()) {
                         $data[] = $row;
                     }
                     return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
-                }else{
+                } else {
                     return json_encode(['status' => 0, 'message' => '', 'data' => '']);;
                 }
                 $stmt->close();
@@ -60,36 +63,37 @@ class Doctors extends DatabaseConnection{
         }
         return 0;
     }
-    
 
 
 
 
- 
-    function showDoctorsForPatient($getDoctorForPatient) {
+
+
+    function showDoctorsForPatient($getDoctorForPatient)
+    {
         try {
-            
+
             $selectDoctorsForPatient = "SELECT * FROM `doctors` WHERE `doctors`.`doctor_id` = ?";
             $selectDoctorsForPatientQuery = $this->conn->prepare($selectDoctorsForPatient);
-    
+
             if (!$selectDoctorsForPatientQuery) {
                 throw new Exception("Query preparation failed.");
             }
 
             // Bind parameter
             $selectDoctorsForPatientQuery->bind_param("s", $getDoctorForPatient);
-    
+
             $selectDoctorsForPatientQuery->execute();
-    
+
             $result = $selectDoctorsForPatientQuery->get_result();
-            
-            if($result->num_rows > 0){
+
+            if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
-                $data[] = $row;
+                    $data[] = $row;
                 }
                 return $data;
-            }else{
+            } else {
                 return null;
             }
         } catch (Exception $e) {
@@ -97,75 +101,80 @@ class Doctors extends DatabaseConnection{
         }
         return 0;
     }
-    
 
 
 
 
 
-    function showDoctorByCatId($docCatId){
+
+    function showDoctorByCatId($docCatId)
+    {
         $selectDocById = "SELECT * FROM `doctors` WHERE `doctors`.`doctor_specialization`='$docCatId'";
         $selectDocByIdQuery = $this->conn->query($selectDocById);
         $rows = $selectDocByIdQuery->num_rows;
-        if($rows > 0 ){
+        if ($rows > 0) {
             while ($result = $selectDocByIdQuery->fetch_array()) {
                 $docCatData[] = $result;
             }
             return $docCatData;
-        }else{
+        } else {
             return 0;
         }
-        
-        
-    }//end showDoctorByCatId function
+    } //end showDoctorByCatId function
 
 
 
 
-    
-    function showDoctorById($docId){
-        $selectDocById = "SELECT * FROM `doctors` WHERE `doctors`.`doctor_id`='$docId'";
-        $selectDocByIdQuery = $this->conn->query($selectDocById);
-        $rows = $selectDocByIdQuery->num_rows;
-        if($rows > 0){
-            while ($result = $selectDocByIdQuery->fetch_array()) {
-                $docData[] = $result;
+
+    function showDoctorNameById($docId)
+    {
+        try {
+            $selectDocById = "SELECT doctor_name FROM `doctors` WHERE `doctors`.`doctor_id`='$docId'";
+            $selectDocByIdQuery = $this->conn->query($selectDocById);
+            $rows = $selectDocByIdQuery->num_rows;
+            if ($rows->num_rows > 0) {
+                while ($result = $selectDocByIdQuery->fetch_object()) {
+                    $docData = $result;
+                }
+                return $docData;
+            } else {
+                return 0;
             }
-            return $docData;
-        }else{
-            return 0;
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
-        
-    }//end showDoctorByCatId function
+    } //end showDoctorByCatId function
 
 
 
-    function doctorsTimingByDoctor($doctorId){
+    function doctorsTimingByDoctor($doctorId)
+    {
         $selectTiming = "SELECT * FROM `doctor_timing` WHERE `doctor_timing`.`doctor_id` = '$doctorId'";
         $timingQuery = $this->conn->query($selectTiming);
-        while($result = $timingQuery->fetch_array()){
+        while ($result = $timingQuery->fetch_array()) {
             $data[] = $result;
         }
         return $data;
-    }// end doctorsTimingByDoctor function
+    } // end doctorsTimingByDoctor function
 
 
-    function updateDoc($docRegNo, $docName, $docSplz, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $updateDocId) {
+    function updateDoc($docRegNo, $docName, $docSplz, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $updateDocId)
+    {
         try {
             // Use prepared statements to prevent SQL injection
             $updateDoc = "UPDATE `doctors` SET `doctor_reg_no`= ?, `doctor_name` = ?, `doctor_specialization` = ?, `doctor_degree` = ?, `also_with` = ?, `doctor_address` = ?, `doctor_email` = ?, `doctor_phno` = ? WHERE `doctors`.`doctor_id` = ?";
             $stmt = $this->conn->prepare($updateDoc);
-    
+
             if ($stmt) {
                 // Bind parameters
                 $stmt->bind_param("ssssssssi", $docRegNo, $docName, $docSplz, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $updateDocId);
-    
+
                 // Execute the prepared statement
                 $updateDocQuery = $stmt->execute();
-    
+
                 // Close the statement
                 $stmt->close();
-    
+
                 return $updateDocQuery;
             } else {
                 throw new Exception("Error in preparing SQL statement");
@@ -175,15 +184,14 @@ class Doctors extends DatabaseConnection{
             throw new Exception($e->getMessage());
         }
     }
-    
 
 
-    function deleteDoc($deleteDocId){
+
+    function deleteDoc($deleteDocId)
+    {
         $deleteDoc = "DELETE FROM `doctors` WHERE `doctors`.`doctor_id` = '$deleteDocId'";
         $deleteDocQuery = $this->conn->query($deleteDoc);
         return $deleteDocQuery;
-    }// end deleteDocCat function
+    } // end deleteDocCat function
 
 }
-
-?>

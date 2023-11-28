@@ -8,30 +8,27 @@ require_once CLASS_DIR . "stockReturn.class.php";
 require_once CLASS_DIR . "distributor.class.php";
 require_once CLASS_DIR . "appoinments.class.php";
 require_once CLASS_DIR . 'pagination.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
 
 $Pagination  = new Pagination;
 $Appointments = new Appointments();
+$Doctors = new Doctors;
 
-
-
-function functionPagination($slicedAppointments){
-    print_r($slicedAppointments);
-}
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['search'])) {
+
         $match = $_POST['search'];
         $searchFor  = $_POST['searchFor'];
 
 
-
         switch ($searchFor) {
-            
+
             case 'appointment-search':
 
-                if (strlen($match) > 3) {
+                if (strlen($match) > 0) {
                     if (preg_match('/\d/', $match)) {
                         $col = 'appointment_id';
                     } else {
@@ -40,33 +37,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     $resultData = $Appointments->filterAppointmentsByIdOrName($col, $match, $adminId);
                     $resultData = json_decode($resultData);
-                    if ($resultData->status) {
+                    if($resultData->status){
                         $resultData = $resultData->data;
                     } else {
                         $resultData = array();
                     }
 
-                    if (is_array($resultData)) {
-                        // print_r($resultData);
+                    // print_r($resultData);
+                    $dataArray = array();
+                    foreach($resultData as $resultData){
+                        $doctorData = $Doctors->showDoctorNameById($resultData->doctor_id);
+                        print_r($doctorData);
+                        // foreach($doctorData as $doctorData){
+                        //     print_r($doctorData);
+                        //     $doctorData = $doctorData;
+                        //     // $docname = $doctorData['doctor_name'];
+                        //     // echo $docname;
+                        // }
+                        array_push($dataArray, array('appointment_id' => $resultData->appointment_id,
+                         'patient_id' => $resultData->patient_id,
+                         'patient_name' => $resultData->patient_name, 
+                        //  'doc_name' => $docname, 
+                         'appointment_date' => $resultData->appointment_date));
+                    }
+                    // print_r($dataArray);
 
-                        $response = json_decode($Pagination->arrayPagination($resultData));
 
-                        $slicedAppointments = '';
-                        $paginationHTML = '';
-                        $totalItem = $slicedAppointments = $response->totalitem;
+                    if (!empty($dataArray)) {
+                        $allAppointmentsData = $dataArray;
+                        
+                        if (is_array($allAppointmentsData)) {
+                            // print_r($allAppointmentsData);
+                            $response = json_decode($Pagination->arrayPagination($allAppointmentsData));
+                            
+                            $slicedAppointments = '';
+                            $paginationHTML = '';
+                            $totalItem = $slicedAppointments = $response->totalitem;
+                
+                            if ($response->status == 1) {
+                                $slicedAppointments = $response->items;
+                                $paginationHTML = $response->paginationHTML;
+                                // print_r($paginationHTML);
+                                $response = ['data'=>$slicedAppointments, 'pagination'=>$paginationHTML];
 
-                        if ($response->status == 1) {
-                            $slicedAppointments = $response->items;
-                            $paginationHTML = $response->paginationHTML;
-
-                            $paginationFunction = functionPagination($slicedAppointments);
+                                echo json_encode($response);
+                            }
+                        } else {
+                            $totalItem = 0;
                         }
                     } else {
                         $totalItem = 0;
+                        $paginationHTML = '';
                     }
-                } else {
-                    echo 'Please Enter Minimum 3 character';
-                }
+                } 
+                
                 break;
 
             case 'added-on':
