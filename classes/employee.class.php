@@ -67,17 +67,18 @@ class Employees extends DatabaseConnection
 
             $result = $stmt->get_result();
 
-            $empData = array();
-
-            while ($row = $result->fetch_assoc()) {
-                $empData = $row;
+            if($result->num_rows > 0){
+                $empData = array();
+                while ($row = $result->fetch_object()) {
+                    $empData[] = $row;
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $empData]);
+            }else{
+                return json_encode(['status' => '0', 'message' => '', 'data' => '']);
             }
-
-            $stmt->close();
-
-            return $empData;
         } catch (Exception $e) {
-            return array();
+            return $e->getMessage();
         }
     }
 

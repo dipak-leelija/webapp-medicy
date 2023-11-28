@@ -1,14 +1,14 @@
 <?php
 $page = "appointments";
-require_once __DIR__ . '/config/constant.php';
-require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__.'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
 
-require_once CLASS_DIR . 'dbconnect.php';
-require_once ROOT_DIR . '_config/healthcare.inc.php';
-require_once CLASS_DIR . 'appoinments.class.php';
-require_once CLASS_DIR . 'pagination.class.php';
-require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR.'dbconnect.php';
+require_once ROOT_DIR.'_config/healthcare.inc.php';
+require_once CLASS_DIR.'appoinments.class.php';
+require_once CLASS_DIR.'pagination.class.php';
+require_once CLASS_DIR.'doctors.class.php';
 
 
 $Appoinments = new Appointments();
@@ -16,33 +16,16 @@ $Pagination  = new Pagination;
 $Doctors     = new Doctors();
 
 $allAppointments = $Appoinments->appointmentsDisplay($adminId);
-$allAppointments = json_decode($allAppointments);
-// print_r($allAppointments);
+$response = json_decode($Pagination->arrayPagination($allAppointments));
 
-if ($allAppointments->status) {
-    if ($allAppointments->data != '') {
-        $allAppointmentsData = $allAppointments->data;
+$slicedAppointments = '';
+$paginationHTML     = '';
+$totalItem          = $slicedAppointments = $response->totalitem;
 
-        if (is_array($allAppointmentsData)) {
-            $response = json_decode($Pagination->arrayPagination($allAppointmentsData));
-
-            $slicedAppointments = '';
-            $paginationHTML = '';
-            $totalItem = $slicedAppointments = $response->totalitem;
-
-            if ($response->status == 1) {
-                $slicedAppointments = $response->items;
-                $paginationHTML = $response->paginationHTML;
-            }
-        } else {
-            $totalItem = 0;
-        }
-    } 
-} else {
-    $totalItem = 0;
-    $paginationHTML = '';
+if ($response->status == 1) {
+    $slicedAppointments = $response->items;
+    $paginationHTML = $response->paginationHTML;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +43,9 @@ if ($allAppointments->status) {
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -77,7 +62,7 @@ if ($allAppointments->status) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -87,7 +72,7 @@ if ($allAppointments->status) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -97,14 +82,17 @@ if ($allAppointments->status) {
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 align-items-center booked_btn">
                             <h6 class="m-0 font-weight-bold text-primary">Total Appointments: <?= $totalItem ?></h6>
-
+                            
                             <div class="row mt-2">
                                 <div class="col-md-2 col-6">
-                                    <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Name" name="appointment-search" id="appointment-search" style="outline: none;" onkeyup="filterAppointment(this)">
+                                    <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Name"
+                                        name="appointment-search" id="appointment-search" style="outline: none;"
+                                        onkeyup="filterAppointment(this)">
                                 </div>
 
                                 <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
+                                    <select class="cvx-inp1" name="added_on" id="added_on"
+                                        onchange="returnFilter(this)">
                                         <option value="" disabled="" selected="">Select Duration</option>
                                         <option value="T">Today</option>
                                         <option value="Y">yesterday</option>
@@ -118,7 +106,8 @@ if ($allAppointments->status) {
 
                                 </div>
                                 <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode" onchange="returnFilter(this)">
+                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
+                                        onchange="returnFilter(this)">
                                         <option value="" selected="" disabled="">Find By Doctor</option>
                                         <option value="Credit">Credit</option>
                                         <option value="Cash">Cash</option>
@@ -138,7 +127,8 @@ if ($allAppointments->status) {
                                 </div>
 
                                 <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode" onchange="filterAppointment(this)">
+                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
+                                        onchange="filterAppointment(this)">
                                         <option value="" selected="" disabled="">payment Mode</option>
                                         <option value="Credit">Credit</option>
                                         <option value="Cash">Cash</option>
@@ -150,11 +140,12 @@ if ($allAppointments->status) {
                                         <option value="Net Banking">Net Banking</option>
                                     </select>
                                 </div>
-
+                                
                                 <div class="col-md-1 col-6 text-right">
                                     <!-- <a class="btn btn-sm btn-primary " href="stock-return-item.php"> New <i
                                             class="fas fa-plus"></i></a> -->
-                                    <a class="btn btn-sm btn-primary " data-toggle="modal" data-target="#appointmentSelection">
+                                    <a class="btn btn-sm btn-primary " data-toggle="modal"
+                                        data-target="#appointmentSelection">
                                         <i class="fas fa-edit"></i>Entry
                                     </a>
                                 </div>
@@ -164,7 +155,8 @@ if ($allAppointments->status) {
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered sortable-table" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered sortable-table" id="dataTable" width="100%"
+                                    cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -176,50 +168,50 @@ if ($allAppointments->status) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
+                                        <?php 
                                         if (!empty($slicedAppointments)) {
+                                        
+                                            foreach($slicedAppointments as $showAppointDetails){
+                                            $appointmentTableID = $showAppointDetails->id;
+                                            $appointmentID = $showAppointDetails->appointment_id;
+                                            $appointmentDate = date("d-m-Y", strtotime($showAppointDetails->appointment_date));
+                                            $appointmentName = $showAppointDetails->patient_name;
+                                            $getDoctorForPatient = $showAppointDetails->doctor_id;
 
-                                            foreach ($slicedAppointments as $showAppointDetails) {
-                                                $appointmentTableID = $showAppointDetails->id;
-                                                $appointmentID = $showAppointDetails->appointment_id;
-                                                $appointmentDate = date("d-m-Y", strtotime($showAppointDetails->appointment_date));
-                                                $appointmentName = $showAppointDetails->patient_name;
-                                                $getDoctorForPatient = $showAppointDetails->doctor_id;
+                                                    $deleteAppointmentLink = "delete-appointment.php?delete-appointment=$appointmentID";
+                                                    $updateAppointmentLink = "update-appointment.php?update-prescription=$appointmentID";
+                                                    $prescriptionViewLink = "prescription.php?prescription=$appointmentID";
 
-                                                $deleteAppointmentLink = "delete-appointment.php?delete-appointment=$appointmentID";
-                                                $updateAppointmentLink = "update-appointment.php?update-prescription=$appointmentID";
-                                                $prescriptionViewLink = "prescription.php?prescription=$appointmentID";
+                                                    $showDoctorsForPatient = $Doctors->showDoctorsForPatient($getDoctorForPatient);
 
-                                                $showDoctorsForPatient = $Doctors->showDoctorsForPatient($getDoctorForPatient);
+                                                    // echo $appointmentTableID.'<br>';
+                                                    if($showDoctorsForPatient != NULL){
 
-                                                // echo $appointmentTableID.'<br>';
-                                                if ($showDoctorsForPatient != NULL) {
-
-                                                    foreach ($showDoctorsForPatient as $rowDoc) {
-                                                        $docName = $rowDoc['doctor_name'];
-                                                        // echo $docName.'<br><br>';
+                                                        foreach ($showDoctorsForPatient as $rowDoc) {
+                                                            $docName = $rowDoc['doctor_name'];
+                                                            // echo $docName.'<br><br>';
+                                                        }
+                                                    } else {
+                                                        $docName = '';
                                                     }
-                                                } else {
-                                                    $docName = '';
-                                                }
-
+                                            
                                                 echo '<tr>
                                                         
-                                                        <td>' . $appointmentID . '</td>
-                                                        <td>' . $appointmentName . '</td>
-                                                        <td>' . $docName . '</td>
-                                                        <td>' . $appointmentDate . '</td>
+                                                        <td>'.$appointmentID.'</td>
+                                                        <td>'.$appointmentName.'</td>
+                                                        <td>'.$docName.'</td>
+                                                        <td>'.$appointmentDate.'</td>
 
-                                                        <td><a class="text-primary" data-toggle="modal" data-target=".AppointmntViewAndEdit" onclick="appointmentViewAndEditModal(' . $appointmentTableID . ')" title="View and Edit"><i class="far fa-edit"></i></a>
+                                                        <td><a class="text-primary" data-toggle="modal" data-target=".AppointmntViewAndEdit" onclick="appointmentViewAndEditModal('.$appointmentTableID.')" title="View and Edit"><i class="far fa-edit"></i></a>
 
-                                                        <a href="prescription.php?prescription=' . $appointmentID . '" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
+                                                        <a href="prescription.php?prescription='.$appointmentID.'" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
                                                         </td>
 
-                                                        <td><a class="delete-btn" data-id="' . $appointmentID . '"  title="Delete"><i class="far fa-trash-alt"></i></a></td>
+                                                        <td><a class="delete-btn" data-id="'.$appointmentID.'"  title="Delete"><i class="far fa-trash-alt"></i></a></td>
                                                     </tr>';
+                                                }
                                             }
-                                        }
-                                        // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
+                                            // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
                                         ?>
 
                                     </tbody>
@@ -238,7 +230,7 @@ if ($allAppointments->status) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            <?php include ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -252,7 +244,8 @@ if ($allAppointments->status) {
         <i class="fas fa-angle-up"></i>
     </a>
     <!-- Select Appointment Type Modal  -->
-    <div class="modal fade" id="appointmentSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="appointmentSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog centered" role="document">
             <div class="modal-content">
                 <div class="modal-body d-flex justify-content-around align-items-center py-4">
@@ -269,7 +262,8 @@ if ($allAppointments->status) {
     <!--/end Select Appointment Type Modal  -->
 
     <!-- View & Edit Appointment Modal -->
-    <div class="modal fade AppointmntViewAndEdit" tabindex="-1" role="dialog" aria-labelledby="AppointmntViewAndEditLabel" aria-hidden="true">
+    <div class="modal fade AppointmntViewAndEdit" tabindex="-1" role="dialog"
+        aria-labelledby="AppointmntViewAndEditLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -300,45 +294,45 @@ if ($allAppointments->status) {
     <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $(document).on("click", ".delete-btn", function() {
+    $(document).ready(function() {
+        $(document).on("click", ".delete-btn", function() {
 
-                if (confirm("Are You Sure?")) {
-                    apntID = $(this).data("id");
-                    btn = this;
+            if (confirm("Are You Sure?")) {
+                apntID = $(this).data("id");
+                btn = this;
 
-                    $.ajax({
-                        url: "ajax/appointment.delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            id: apntID
-                        },
-                        success: function(data) {
-                            if (data == 1) {
-                                $(btn).closest("tr").fadeOut()
-                            } else {
-                                $("#error-message").html("Deletion Field !!!").slideDown();
-                                $("success-message").slideUp();
-                            }
-
+                $.ajax({
+                    url: "ajax/appointment.delete.ajax.php",
+                    type: "POST",
+                    data: {
+                        id: apntID
+                    },
+                    success: function(data) {
+                        if (data == 1) {
+                            $(btn).closest("tr").fadeOut()
+                        } else {
+                            $("#error-message").html("Deletion Field !!!").slideDown();
+                            $("success-message").slideUp();
                         }
-                    });
-                }
-                return false;
-            })
 
+                    }
+                });
+            }
+            return false;
         })
+
+    })
     </script>
     <script>
-        appointmentViewAndEditModal = (appointmentTableID) => {
-            // let appointmentId = appointmentId;
-            // alert(appointmentTableID);
-            let url = "ajax/appointment.view.ajax.php?appointmentTableID=" + appointmentTableID;
-            $(".view-and-edit-appointments").html(
-                '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
+    appointmentViewAndEditModal = (appointmentTableID) => {
+        // let appointmentId = appointmentId;
+        // alert(appointmentTableID);
+        let url = "ajax/appointment.view.ajax.php?appointmentTableID=" + appointmentTableID;
+        $(".view-and-edit-appointments").html(
+            '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
+            url + '"></iframe>');
 
-        } // end of LabCategoryEditModal function
+    } // end of LabCategoryEditModal function
     </script>
 
     <!-- Core plugin JavaScript-->
