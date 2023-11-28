@@ -7,11 +7,12 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'distributor.class.php';
 
-$page = "distributor";
 
 //Class Initilizing
 $Distributor = new Distributor();
 
+$showDistributor = json_decode($Distributor->showDistributor());
+$showDistributor = $showDistributor->data;
 ?>
 
 <!DOCTYPE html>
@@ -25,11 +26,13 @@ $Distributor = new Distributor();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Distributor of Medicy Health Care</title>
+    <title>Distributor of <?= $healthCareName ?> | <?= SITE_NAME ?> </title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -61,13 +64,17 @@ $Distributor = new Distributor();
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Distributor Management</h1>
                     <div class="row">
 
                         <!-- Show Distributor -->
-                        <div class="col-sm-7">
+                        <div class="col-12">
                             <div class="card shadow">
+                                <div class="card-header d-flex justify-content-end">
+                                    <button class="btn btn-sm btn-primary shadow-none" data-toggle="modal"
+                                        data-target="#add-distributor" onclick="addDistributor()">
+                                        Add new
+                                    </button>
+                                </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -82,13 +89,12 @@ $Distributor = new Distributor();
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $showDistributor = $Distributor->showDistributor();
                                                 if (is_array($showDistributor)) {
                                                     foreach ($showDistributor as $rowDistributor) {
-                                                        $distributorId      = $rowDistributor['id'];
-                                                        $distributorName    = $rowDistributor['name'];
-                                                        $distributorPhno    = $rowDistributor['phno'];
-                                                        $distributorPin     = $rowDistributor['area_pin_code'];
+                                                        $distributorId      = $rowDistributor->id;
+                                                        $distributorName    = $rowDistributor->name;
+                                                        $distributorPhno    = $rowDistributor->phno;
+                                                        $distributorPin     = $rowDistributor->area_pin_code;
 
                                                         echo '<tr>
                                                                 <td>' . $distributorId . '</td>
@@ -113,7 +119,7 @@ $Distributor = new Distributor();
                         <!-- /end Show Distributor -->
 
                         <!-- Add Distributor -->
-                        <div class="col-sm-5">
+                        <!-- <div class="col-sm-5">
                             <div class="card shadow">
                                 <div class="card-body">
                                     <form method="post" action="_config/form-submission/add-distributor.php">
@@ -160,7 +166,7 @@ $Distributor = new Distributor();
                                     </form>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- /end Add Distributor  -->
 
                     </div>
@@ -182,7 +188,8 @@ $Distributor = new Distributor();
     <!-- End of Page Wrapper -->
 
     <!-- Manufacturer View and Edit Modal -->
-    <div class="modal fade" id="distributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="distributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -199,6 +206,25 @@ $Distributor = new Distributor();
     </div>
     <!--/end Manufacturer View and Edit Modal -->
 
+
+    <!-- Manufacturer View and Edit Modal -->
+    <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Distributor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body add-distributor">
+                    <!-- Details Appeare Here by Ajax  -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/end Manufacturer View and Edit Modal -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -227,59 +253,75 @@ $Distributor = new Distributor();
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
     <script>
-        //View and Edit Manufacturer function
-        distViewAndEdit = (distributorId) => {
-            let ViewAndEdit = distributorId;
-            let url = "ajax/distributor.View.ajax.php?Id=" + ViewAndEdit;
-            $(".distributorModal").html(
-                '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
-        } // end of viewAndEdit function
+    const addDistributor = () => {
+        $.ajax({
+            url: "components/distributor-add.php",
+            type: "POST",
+            success: function(response) {
+                let body = document.querySelector('.add-distributor');
+                body.innerHTML = response;
+            },
+            error: function(error) {
+                console.error("Error: ", error);
+            }
+        });
+    }
+
+
+    //View and Edit Manufacturer function
+    distViewAndEdit = (distributorId) => {
+        let ViewAndEdit = distributorId;
+        let url = "ajax/distributor.View.ajax.php?Id=" + ViewAndEdit;
+        $(".distributorModal").html(
+            '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
+            url + '"></iframe>');
+    } // end of viewAndEdit function
 
 
 
-        //delete distributor
-        $(document).ready(function() {
-            $(document).on("click", "#delete-btn", function() {
+    //delete distributor
+    $(document).ready(function() {
+        $(document).on("click", "#delete-btn", function() {
 
-                swal({
-                        title: "Are you sure?",
-                        text: "Want to Delete This Distributor?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
+            swal({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Distributor?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
 
-                            distributorId = $(this).data("id");
-                            btn = this;
+                        distributorId = $(this).data("id");
+                        btn = this;
 
-                            $.ajax({
-                                url: "ajax/distributor.Delete.ajax.php",
-                                type: "POST",
-                                data: {
-                                    id: distributorId
-                                },
-                                success: function(data) {
-                                    if (data == 1) {
-                                        $(btn).closest("tr").fadeOut()
-                                        swal("Deleted", "Distributor Has Been Deleted", "success");
-                                    } else {
-                                        // $("#error-message").html("Deletion Field !!!").slideDown();
-                                        // $("success-message").slideUp();
-                                        swal("Failed", data, "error");
-                                    }
+                        $.ajax({
+                            url: "ajax/distributor.Delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                id: distributorId
+                            },
+                            success: function(data) {
+                                if (data == 1) {
+                                    $(btn).closest("tr").fadeOut()
+                                    swal("Deleted", "Distributor Has Been Deleted",
+                                        "success");
+                                } else {
+                                    // $("#error-message").html("Deletion Field !!!").slideDown();
+                                    // $("success-message").slideUp();
+                                    swal("Failed", data, "error");
                                 }
-                            });
+                            }
+                        });
 
-                        }
-                        return false;
-                    });
-
-            })
+                    }
+                    return false;
+                });
 
         })
+
+    })
     </script>
 
 
