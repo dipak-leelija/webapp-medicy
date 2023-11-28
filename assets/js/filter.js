@@ -19,14 +19,13 @@ const filterAppointment = (t) => {
             },
             success: function (response) {
 
-
                 var responseObject = JSON.parse(response);
-                // console.log(responseObject);
+                console.log(responseObject);
 
                 var tableData = responseObject.data;
                 var paginationData = responseObject.pagination;
 
-                console.log(tableData);
+                console.log(paginationData);
 
                 $('#appointments-dataTable').empty();
 
@@ -37,20 +36,20 @@ const filterAppointment = (t) => {
                 headerRow.insertCell(0).innerHTML = 'Appointment ID';
                 headerRow.insertCell(1).innerHTML = 'Patient ID';
                 headerRow.insertCell(2).innerHTML = 'Patient Name';
-                // headerRow.insertCell(3).innerHTML = 'Assigned Doctor';
-                headerRow.insertCell(3).innerHTML = 'Appointment Date';
-                headerRow.insertCell(4).innerHTML = 'Action';
+                headerRow.insertCell(3).innerHTML = 'Assigned Doctor';
+                headerRow.insertCell(4).innerHTML = 'Appointment Date';
+                headerRow.insertCell(5).innerHTML = 'Action';
 
                 for (let i = 0; i < tableData.length; i++) {
                     var row = table.insertRow(i + 1);
                     row.insertCell(0).innerHTML = tableData[i].appointment_id;
                     row.insertCell(1).innerHTML = tableData[i].patient_id;
                     row.insertCell(2).innerHTML = tableData[i].patient_name;
-                    // row.insertCell(3).innerHTML = tableData[i].doc_name;
-                    row.insertCell(3).innerHTML = tableData[i].appointment_date;
+                    row.insertCell(3).innerHTML = tableData[i].doc_name;
+                    row.insertCell(4).innerHTML = tableData[i].appointment_date;
 
                     // Action cell
-                    var actionCell = row.insertCell(4);
+                    var actionCell = row.insertCell(5);
 
                     // Edit link
                     var editLink = document.createElement("a");
@@ -80,7 +79,7 @@ const filterAppointment = (t) => {
                 }
 
                 renderPaginationControls(paginationData);
-                
+
             }
         });
 } else {

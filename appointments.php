@@ -17,9 +17,60 @@ $Pagination  = new Pagination;
 $Doctors     = new Doctors();
 $Employees   = new Employees;
 
-$allAppointments = $Appoinments->appointmentsDisplay($adminId);
-$allAppointments = json_decode($allAppointments);
-// print_r($allAppointments);
+
+// ================ EMPLOYEES DATA ==================
+$col = 'admin_id';
+$employeeDetails = $Employees->selectEmpByCol($col, $adminId);
+$employeeDetails = json_decode($employeeDetails);
+
+if ($employeeDetails->status) {
+    $employeeDetails = $employeeDetails->data;
+} else {
+    $employeeDetails = array();
+}
+
+
+// ============ DOCTOR LIST ====================
+$doctorDetails = $Doctors->showDoctors($adminId);
+$doctorDetails = json_decode($doctorDetails);
+
+if ($doctorDetails->status) {
+    $doctorList = $doctorDetails->data;
+} else {
+    $doctorList = array();
+}
+
+
+// ============= APPOINTMENT DATA ================
+
+if (isset($_GET['search'])) {
+    $search = $_GET['search'];
+
+    if ($search == 'doctor_id') {
+        $doctorID = $_GET['searchId'];
+        $col = $_GET['search'];
+        $allAppointments = $Appoinments->appointmentsFilter($col, $doctorID, $adminId);
+        $allAppointments = json_decode($allAppointments);
+    }
+
+    if ($search == 'appointment_search') {
+        $searchPattern = $_GET['searchId'];
+        $allAppointments = $Appoinments->filterAppointmentsByIdOrName($searchPattern, $adminId);
+        $allAppointments = json_decode($allAppointments);
+        // print_r($allAppointments);
+    }
+
+    if ($search == 'added_by') {
+        $doctorID = $_GET['searchId'];
+        $col = $_GET['search'];
+        $allAppointments = $Appoinments->appointmentsFilter($col, $doctorID, $adminId);
+        $allAppointments = json_decode($allAppointments);
+    }
+} else {
+    $allAppointments = $Appoinments->appointmentsDisplay($adminId);
+    $allAppointments = json_decode($allAppointments);
+}
+
 
 if ($allAppointments->status) {
     if ($allAppointments->data != '') {
@@ -28,7 +79,7 @@ if ($allAppointments->status) {
         if (is_array($allAppointmentsData)) {
             // print_r($allAppointmentsData);
             $response = json_decode($Pagination->arrayPagination($allAppointmentsData));
-            
+
             $slicedAppointments = '';
             $paginationHTML = '';
             $totalItem = $slicedAppointments = $response->totalitem;
@@ -40,32 +91,12 @@ if ($allAppointments->status) {
         } else {
             $totalItem = 0;
         }
-    } 
+    }
 } else {
     $totalItem = 0;
     $paginationHTML = '';
 }
 
-
-$col = 'admin_id';
-$employeeDetails = $Employees->selectEmpByCol($col, $adminId);
-$employeeDetails = json_decode($employeeDetails);
-
-if($employeeDetails->status){
-    $employeeDetails = $employeeDetails->data;
-}else{
-    $employeeDetails = array();
-}
-
-$doctorDetails = $Doctors->showDoctors($adminId);
-$doctorDetails = json_decode($doctorDetails);
-// print_r($doctorDetails);
-
-if($doctorDetails->status){
-    $doctorList = $doctorDetails->data;
-}else{
-    $doctorList = array();
-}
 
 ?>
 
@@ -124,11 +155,18 @@ if($doctorDetails->status){
 
                             <div class="row mt-2">
                                 <div class="col-md-2 col-6">
-                                    <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Name" name="appointment-search" id="appointment-search" style="outline: none;" onkeyup="filterAppointment(this)">
+                                    <div class="input-group">
+                                        <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Name" name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
+
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointment()"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
 
+
                                 <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="added-on" id="added-on" onchange="filterAppointment(this)">
+                                    <select class="cvx-inp1" name="added-on" id="added-on" onchange="filterAppointmentByDate(this)">
                                         <option value="" disabled="" selected="">Select Duration</option>
                                         <option value="T">Today</option>
                                         <option value="Y">yesterday</option>
@@ -142,35 +180,35 @@ if($doctorDetails->status){
 
                                 </div>
                                 <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="doctor-filter" id="doctor-filter" onchange="filterAppointment(this)">
+                                    <select class="cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByDocAndStaff(this)">
                                         <option value="" selected="" disabled="">Find By Doctor</option>
 
                                         <?php
-                                            
-                                            foreach($doctorList as $doctorList){
-                                                echo '<option value="'.$doctorList->doctor_id.'">'.$doctorList->doctor_name.'</option>';
-                                            }
+
+                                        foreach ($doctorList as $doctorList) {
+                                            echo '<option value="' . $doctorList->doctor_id . '">' . $doctorList->doctor_name . '</option>';
+                                        }
 
                                         ?>
 
                                     </select>
                                 </div>
                                 <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" id="added-by" onchange="filterAppointment(this)">
+                                    <select class="cvx-inp1" id="added_by" onchange="filterAppointmentByDocAndStaff(this)">
                                         <option value="" disabled="" selected="">Select Staff</option>
 
                                         <?php
-                                            
-                                            foreach($employeeDetails as $employeeData){
-                                                echo '<option value="'.$employeeData->emp_id.'">'.$employeeData->emp_name.'</option>';
-                                            }
+
+                                        foreach ($employeeDetails as $employeeData) {
+                                            echo '<option value="' . $employeeData->emp_id . '">' . $employeeData->emp_name . '</option>';
+                                        }
 
                                         ?>
-                                        
+
                                     </select>
                                 </div>
 
-                                <div class="col-md-2 col-6">
+                                <!-- <div class="col-md-2 col-6">
                                     <select class="cvx-inp1" name="payment-mode" id="payment-mode" onchange="filterAppointment(this)">
                                         <option value="" selected="" disabled="">payment Mode</option>
                                         <option value="Credit">Credit</option>
@@ -182,7 +220,7 @@ if($doctorDetails->status){
                                         <option value="Debit Card">Debit Card</option>
                                         <option value="Net Banking">Net Banking</option>
                                     </select>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-1 col-6 text-right">
                                     <a class="btn btn-sm btn-primary " data-toggle="modal" data-target="#appointmentSelection">
@@ -203,7 +241,7 @@ if($doctorDetails->status){
                                             <th>Assigned Doctor</th>
                                             <th>Date</th>
                                             <th>Action</th>
-                                            
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -258,7 +296,7 @@ if($doctorDetails->status){
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-center" id="pagination-control">
                                 <?= $paginationHTML ?>
                             </div>
                         </div>
@@ -364,14 +402,13 @@ if($doctorDetails->status){
     </script>
     <script>
         appointmentViewAndEditModal = (appointmentTableID) => {
-            
+
             let url = "ajax/appointment.view.ajax.php?appointmentTableID=" + appointmentTableID;
             $(".view-and-edit-appointments").html(
                 '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
 
         } // end of LabCategoryEditModal function
-
     </script>
 
     <!-- Core plugin JavaScript-->
@@ -379,8 +416,41 @@ if($doctorDetails->status){
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-    <script src="<?= JS_PATH ?>filter.js"></script>
+    <!-- <script src="<?= JS_PATH ?>filter.js"></script> -->
 
+
+    <script>
+        const filterAppointmentByDocAndStaff = (t) => {
+
+            val = t.value;
+            key = t.id;
+
+            var currentURL = window.location.href;
+
+            // Get the current URL without the query string
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+
+            var newURL = `${currentURLWithoutQuery}?searchId=${val}&search=${key}`;
+
+            window.location.replace(newURL);
+        }
+
+
+
+        const filterAppointment = () => {
+
+            var search = document.getElementById("appointment_search").id;
+            var searchId = document.getElementById("appointment_search").value;
+
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            if (searchId.length > 2) {
+                var newURL = `${currentURLWithoutQuery}?search=${search}&searchId=${searchId}`;
+                window.location.replace(newURL);
+            } else {
+                console.log("min 3 char");;
+            }
+        }
+    </script>
 
 </body>
 

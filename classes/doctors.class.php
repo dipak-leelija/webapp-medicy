@@ -126,24 +126,25 @@ class Doctors extends DatabaseConnection
 
 
 
-    function showDoctorNameById($docId)
-    {
+    function showDoctorNameById($docId){
         try {
             $selectDocById = "SELECT doctor_name FROM `doctors` WHERE `doctors`.`doctor_id`='$docId'";
             $selectDocByIdQuery = $this->conn->query($selectDocById);
-            $rows = $selectDocByIdQuery->num_rows;
-            if ($rows->num_rows > 0) {
+
+            if ($selectDocByIdQuery->num_rows > 0) {
+                $docData = array(); // Initialize an array to store data
                 while ($result = $selectDocByIdQuery->fetch_object()) {
-                    $docData = $result;
+                    $docData = $result->doctor_name; // Append each doctor name to the array
                 }
-                return $docData;
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $docData]);
             } else {
-                return 0;
+                return json_encode(['status' => '0', 'message' => 'No data found', 'data' => '']);
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
         }
-    } //end showDoctorByCatId function
+    }
+
 
 
 
