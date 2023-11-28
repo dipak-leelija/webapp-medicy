@@ -17,7 +17,7 @@ class Employees extends DatabaseConnection
                 throw new Exception("Error preparing insert statement: " . $this->conn->error);
             }
 
-            $stmt->bind_param("sssssss", $adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
+            $stmt->bind_param("sssssss", $adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $password);
 
             if ($stmt->execute()) {
                 return ["result" => true];
