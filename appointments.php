@@ -47,24 +47,87 @@ if (isset($_GET['search'])) {
     $search = $_GET['search'];
 
     if ($search == 'doctor_id') {
-        $doctorID = $_GET['searchId'];
+        $doctorID = $_GET['searchKey'];
         $col = $_GET['search'];
         $allAppointments = $Appoinments->appointmentsFilter($col, $doctorID, $adminId);
         $allAppointments = json_decode($allAppointments);
     }
 
     if ($search == 'appointment_search') {
-        $searchPattern = $_GET['searchId'];
+        $searchPattern = $_GET['searchKey'];
         $allAppointments = $Appoinments->filterAppointmentsByIdOrName($searchPattern, $adminId);
         $allAppointments = json_decode($allAppointments);
         // print_r($allAppointments);
     }
 
     if ($search == 'added_by') {
-        $doctorID = $_GET['searchId'];
+        $doctorID = $_GET['searchKey'];
         $col = $_GET['search'];
         $allAppointments = $Appoinments->appointmentsFilter($col, $doctorID, $adminId);
         $allAppointments = json_decode($allAppointments);
+    }
+
+    if ($search == 'added_on') {
+
+        $value = $_GET['searchKey'];
+
+        if ($value == 'T') {
+            $fromDt = date('Y-m-d');
+            $toDt = date('Y-m-d');
+        }
+
+        if ($value == 'Y') {
+            $fromDt = new DateTime('yesterday');
+            $fromDt = $fromDt->format('Y-m-d');
+            $toDt = $fromDt;
+        }
+
+        if ($value == 'LW') {
+            $fromDt = new DateTime('-7 days');
+            $fromDt = $fromDt->format('Y-m-d');
+            $toDt = date('Y-m-d');
+        }
+
+        if ($value == 'LM') {
+            $fromDt = new DateTime('-30 days');
+            $fromDt = $fromDt->format('Y-m-d');
+            $toDt = date('Y-m-d');
+        }
+
+        if ($value == 'LQ') {
+            $fromDt = new DateTime('-90 days');
+            $fromDt = $fromDt->format('Y-m-d');
+            $toDt = date('Y-m-d');
+        }
+
+        if ($value == 'CFY') {
+            $currentYear = new DateTime();
+            $fiscalYear = $currentYear->format('Y');
+            $fiscalYear = intval($fiscalYear) + 1;
+            $currentYear = $currentYear->format('Y');
+
+            $fromDt = $currentYear . '-04-01';
+            $toDt = $fiscalYear . '-03-31';
+        }
+
+        if ($value == 'PFY') {
+            $currentYear = new DateTime();
+            $prevFiscalYr = $currentYear->format('Y');
+            $prevFiscalYr = intval($prevFiscalYr) - 1;
+            $currentYear = $currentYear->format('Y');
+
+            $fromDt = $prevFiscalYr . '-04-01';
+            $toDt = $currentYear . '-03-31';
+        }
+
+        if ($value == 'CR') {
+            $fromDt = $_GET['fromDt'];
+            $toDt = $_GET['toDt'];
+        }
+
+        $allAppointments = $Appoinments->appointmentsFilterByDate($fromDt, $toDt, $adminId);
+        $allAppointments = json_decode($allAppointments);
+
     }
 } else {
     $allAppointments = $Appoinments->appointmentsDisplay($adminId);
@@ -150,13 +213,20 @@ if ($allAppointments->status) {
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 align-items-center booked_btn">
-                            <h6 class="m-0 font-weight-bold text-primary">Total Appointments: <?= $totalItem ?></h6>
+
+                        <div class="card-header py-3 justify-content-between">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="m-0 font-weight-bold text-primary">Total Appointments: <?= $totalItem ?></h6>
+                                </div>
+                            </div>
+
 
                             <div class="row mt-2">
-                                <div class="col-md-2 col-6">
+                                <div class="col-md-4 col-3 mt-2">
                                     <div class="input-group">
-                                        <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Name" name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
+                                        <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
 
                                         <div class="input-group-append">
                                             <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointment()"><i class="fas fa-search"></i></button>
@@ -165,8 +235,8 @@ if ($allAppointments->status) {
                                 </div>
 
 
-                                <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="added-on" id="added-on" onchange="filterAppointmentByDate(this)">
+                                <div class="col-md-2 col-3  mt-2">
+                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="filterAppointmentByValue(this)">
                                         <option value="" disabled="" selected="">Select Duration</option>
                                         <option value="T">Today</option>
                                         <option value="Y">yesterday</option>
@@ -179,8 +249,8 @@ if ($allAppointments->status) {
                                     </select>
 
                                 </div>
-                                <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByDocAndStaff(this)">
+                                <div class="col-md-3 col-3 mt-2">
+                                    <select class="cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByValue(this)">
                                         <option value="" selected="" disabled="">Find By Doctor</option>
 
                                         <?php
@@ -193,8 +263,8 @@ if ($allAppointments->status) {
 
                                     </select>
                                 </div>
-                                <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" id="added_by" onchange="filterAppointmentByDocAndStaff(this)">
+                                <div class="col-md-2 col-3 mt-2">
+                                    <select class="cvx-inp1" id="added_by" onchange="filterAppointmentByValue(this)">
                                         <option value="" disabled="" selected="">Select Staff</option>
 
                                         <?php
@@ -208,29 +278,34 @@ if ($allAppointments->status) {
                                     </select>
                                 </div>
 
-                                <!-- <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="payment-mode" id="payment-mode" onchange="filterAppointment(this)">
-                                        <option value="" selected="" disabled="">payment Mode</option>
-                                        <option value="Credit">Credit</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="UPI">UPI</option>
-                                        <option value="Paypal">Paypal</option>
-                                        <option value="Bank Transfer">Bank Transfer</option>
-                                        <option value="Credit Card">Credit Card</option>
-                                        <option value="Debit Card">Debit Card</option>
-                                        <option value="Net Banking">Net Banking</option>
-                                    </select>
-                                </div> -->
-
-                                <div class="col-md-1 col-6 text-right">
+                                <div class="col-md-1 col-3 mt-2">
                                     <a class="btn btn-sm btn-primary " data-toggle="modal" data-target="#appointmentSelection">
                                         <i class="fas fa-edit"></i>Entry
                                     </a>
                                 </div>
                             </div>
 
+                            <div class="row mt-2" id="dtPickerDiv" style="display: none;">
+                                <div class="col-md-12">
+                                    <div class="d-flex">
+                                        <div class="dtPicker" style="margin-right: 1rem;">
+                                            <label>Strat Date</label>
+                                            <input type="date" id="from-date" name="from-date">
+                                        </div>
+                                        <div class="dtPicker" style="margin-right: 1rem;">
+                                            <label>End Date</label>
+                                            <input type="date" id="to-date" name="to-date">
+                                        </div>
+                                        <div class="dtPicker">
+                                            <button class="btn btn-sm btn-primary" onclick="customDate()">Find</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
+
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
@@ -420,31 +495,53 @@ if ($allAppointments->status) {
 
 
     <script>
-        const filterAppointmentByDocAndStaff = (t) => {
+        const filterAppointmentByValue = (t) => {
 
-            val = t.value;
+            document.getElementById('dtPickerDiv').style.display = 'none';
+
             key = t.id;
+            val = t.value;
 
-            var currentURL = window.location.href;
+            if (val != 'CR') {
+                var currentURL = window.location.href;
 
-            // Get the current URL without the query string
-            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+                // Get the current URL without the query string
+                var currentURLWithoutQuery = window.location.origin + window.location.pathname;
 
-            var newURL = `${currentURLWithoutQuery}?searchId=${val}&search=${key}`;
+                var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
 
-            window.location.replace(newURL);
+                window.location.replace(newURL);
+            }
+
+            if (val == 'CR') {
+                document.getElementById('dtPickerDiv').style.display = 'block';
+            }
         }
 
+
+        const customDate = () =>{
+            let fromDate = document.getElementById('from-date').value;
+            let toDate = document.getElementById('to-date').value;
+
+            //fetch current url and pathname
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            // create new url with added value to previous url
+            var newUrl = `${currentURLWithoutQuery}?search=${'added_on'}&searchKey=${'CR'}&fromDt=${fromDate}&toDt=${toDate}`;
+            // replace previous url with new url
+            window.location.replace(newUrl);
+        }
 
 
         const filterAppointment = () => {
 
-            var search = document.getElementById("appointment_search").id;
-            var searchId = document.getElementById("appointment_search").value;
+            document.getElementById('dtPickerDiv').style.display = 'none';
+
+            var key = document.getElementById("appointment_search").id;
+            var val = document.getElementById("appointment_search").value;
 
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            if (searchId.length > 2) {
-                var newURL = `${currentURLWithoutQuery}?search=${search}&searchId=${searchId}`;
+            if (val.length > 2) {
+                var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
                 window.location.replace(newURL);
             } else {
                 console.log("min 3 char");;
