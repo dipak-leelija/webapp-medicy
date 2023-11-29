@@ -99,23 +99,39 @@ class Distributor extends DatabaseConnection{
     
 
 
-
-
-
-    function showDistributor(){ 
-        $select         = " SELECT * FROM distributor";
-        $selectQuery    = $this->conn->query($select);
-        $rows           = $selectQuery->num_rows;
-        if($rows == 0){
-            return 0;
-        }else{
-            while ($result  = $selectQuery->fetch_array() ) {
-                $data[] = $result;
+    function showDistributor() {
+        try {
+            $select = "SELECT * FROM distributor";
+            $selectQuery = $this->conn->prepare($select);
+    
+            if (!$selectQuery) {
+                throw new Exception("Error preparing the query: " . $this->conn->error);
             }
-            return $data;
+    
+            $selectQuery->execute();
+    
+            if ($selectQuery->error) {
+                throw new Exception("Error executing the query: " . $selectQuery->error);
+            }
+    
+            $result = $selectQuery->get_result();
+    
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+    
+            if (empty($data)) {
+                return json_encode(['status' => 0, 'message' => 'empty', 'data'=> '']);
+            }
+            
+            return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => 'Error: '.$e->getMessage(), 'data'=> '']);
         }
-        
-    }//eof showDistributor functiion
+    }
+
+    
+
 
     function showDistributorById($distributorId){
         $data = array();
@@ -140,6 +156,52 @@ class Distributor extends DatabaseConnection{
 
 
 
+    function distributorSearch($match) {
+        try {
+            if ($match == 'all') {
+                
+                $select = "SELECT * FROM `distributor` LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+
+            }else {
+                
+                $select = "SELECT * FROM `distributor` WHERE 
+                       `name` LIKE CONCAT('%', ?, '%') OR 
+                       `id` LIKE CONCAT('%', ?, '%') OR 
+                       `address` LIKE CONCAT('%', ?, '%')";
+                $stmt = $this->conn->prepare($select);
+                
+            }
+                       
+
+            if ($stmt) {
+                if ($match != 'all') {
+                    $stmt->bind_param("sss", $match, $match, $match);
+                }
+                
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+    
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+    
+                    return json_encode(['status' => 1, 'message' => 'success', 'data'=> $data]);
+                } else {
+                    return json_encode(['status' => 0, 'message' => 'empty', 'data'=> '']);
+                }
+                $stmt->close();
+            } else {
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: ".$this->conn->error, 'data'=> '']);
+            }
+
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data'=> '']);
+
+        }
+    }
     
 
 

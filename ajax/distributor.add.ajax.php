@@ -1,6 +1,5 @@
 <?php
-
-require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once dirname(__DIR__).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
@@ -9,7 +8,6 @@ require_once CLASS_DIR.'distributor.class.php';
 
 //Class initilization
 $Distributor = new Distributor();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +16,6 @@ $Distributor = new Distributor();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Prosuct</title>
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 </head>
 
@@ -41,19 +38,15 @@ $Distributor = new Distributor();
         );
         
         if ($addDistributor == true) {
-            //   echo "<script>alert(' Added!')</script>";
-            // echo "<script>alert('Distributor Added!'); window.location='../../distributor.php';</script>";
     ?>
             <script>
                 swal("Success", "Distributor added successfully!", "success")
                     .then((value) => {
-                        window.location = '../../distributor.php';
+                        window.location = '<?= URL ?>distributor.php';
                     });
             </script>
         <?php
         } else {
-            //  echo "<script>alert('Distributor Insertion Failed!')</script>";
-            //echo "<script>alert('Distributor Insertion Failed!'); window.location='../../distributor.php';</script>";
         ?>
             <script>
                 swal("Error", "Data Not Added!", "error")
