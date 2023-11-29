@@ -237,7 +237,7 @@ if ($allPatients->status) {
                                         </div>
                                         <div class="dtPicker" style="margin-right: 1rem;">
                                             <label>End Date</label>
-                                            <input type="date" id="to-date" name="from-date">
+                                            <input type="date" id="to-date" name="to-date">
                                         </div>
                                         <div class="dtPicker">
                                             <button class="btn btn-sm btn-primary" onclick="customDate()">Find</button>
@@ -369,7 +369,9 @@ if ($allPatients->status) {
     <!-- <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script> -->
     <!-- <script src="<?= JS_PATH ?>filter.js"></script> -->
 
+    
     <script>
+
         const returnFilter = (t) => {
 
             document.getElementById('dtPickerDiv').style.display = 'none';
@@ -420,6 +422,7 @@ if ($allPatients->status) {
 
             window.location.replace(newUrl);
         }
+
     </script>
 </body>
 

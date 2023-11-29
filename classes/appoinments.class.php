@@ -197,6 +197,39 @@ class Appointments extends DatabaseConnection
 
 
 
+    function appointmentsFilterByDate($fromDate, $toDate, $adminId){
+        try {
+            $selectLastMonth = "SELECT * FROM `appointments` 
+                                WHERE added_on BETWEEN '$fromDate' AND '$toDate'
+                                AND admin_id = '$adminId'";
+
+            $stmt = $this->conn->prepare($selectLastMonth);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if($result->num_rows > 0){
+                $appointmentsRestult = array();
+                while ($row = $result->fetch_object()) {
+                    $appointmentsRestult[] = $row;
+                } 
+                $stmt->close();
+                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$appointmentsRestult]);
+            } else {
+                $stmt->close();
+                return json_encode(['status'=>'0', 'message'=>'', 'data'=>'']);
+            }
+        } catch (Exception $e) {
+            error_log("Error in appointmentsFilter: " . $e->getMessage());
+        }
+        return 0;
+    }
+
+
+
+
+
     function appointmentsDisplayOfLastMonth()
     {
 
