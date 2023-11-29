@@ -1,29 +1,6 @@
 
 //////////////////// set distributor name /////////////////////
 
-// const distributorInput = document.getElementById("distributor-id");
-// const dropdown = document.getElementsByClassName("c-dropdown")[0];
-
-// distributorInput.addEventListener("focus", () => {
-//     dropdown.style.display = "block";
-// });
-
-// distributorInput.addEventListener("blur", () => {
-//     // Delay the hiding to allow the click event to be processed
-//     setTimeout(() => {
-//         dropdown.style.display = "none";
-//     }, 100);
-// });
-
-// document.addEventListener("click", (event) => {
-//     // Check if the clicked element is not the input field
-//     if (event.target !== distributorInput) {
-//         dropdown.style.display = "none";
-//     }
-// });
-
-
-
 const distributorInput = document.getElementById("distributor-id");
 const dropdown = document.getElementsByClassName("c-dropdown")[0];
 
