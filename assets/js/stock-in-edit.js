@@ -1,3 +1,90 @@
+//////////////// set distributor \\\\\\\\\\\\\\\
+const distributorInput = document.getElementById("distributor-id");
+const dropdown = document.getElementsByClassName("c-dropdown")[0];
+
+distributorInput.addEventListener("focus", () => {
+    dropdown.style.display = "block";
+});
+
+document.addEventListener("click", (event) => {
+    // Check if the clicked element is not the input field or the dropdown
+    if (!distributorInput.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.style.display = "none";
+    }
+});
+
+document.addEventListener("blur", (event) => {
+    // Check if the element losing focus is not the dropdown or its descendants
+    if (!dropdown.contains(event.relatedTarget)) {
+        // Delay the hiding to allow the click event to be processed
+        setTimeout(() => {
+            dropdown.style.display = "none";
+        }, 100);
+    }
+});
+
+
+
+distributorInput.addEventListener("keyup", () => {
+    // Delay the hiding to allow the click event to be processed
+    let list = document.getElementsByClassName('lists')[0];
+    
+    if(distributorInput.value.length > 2){
+
+        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
+        request.open("GET", distributorURL, false);
+        request.send(null);
+        // console.log();
+        list.innerHTML = request.responseText
+    }else if(distributorInput.value == ''){
+        
+        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
+        request.open("GET", distributorURL, false);
+        request.send(null);
+        // console.log();
+        list.innerHTML = request.responseText
+    }else{
+        
+        list.innerHTML = '';
+    }
+});
+
+const setDistributor=(t)=>{
+    let distributirId = t.id.trim();
+    let distributirName = t.innerHTML.trim();
+
+    document.getElementById("updated-dist-id").value = distributirId;
+    document.getElementById("distributor-name").value = distributirName;
+    document.getElementById("distributor-id").value = distributirName;
+
+    document.getElementsByClassName("c-dropdown")[0].style.display = "none";
+}
+
+const addDistributor=()=>{
+    $.ajax({
+        url: "components/distributor-add.php",
+        type: "POST",
+        success: function(response) {
+            let body = document.querySelector('.add-distributor');
+            body.innerHTML = response;
+        },
+        error: function(error) {
+            console.error("Error: ", error);
+        }
+    });
+}
+
+
+
+// const selectDistributor = (t) => {
+//     let id = t.value;
+//     let distributirName = t.selectedOptions[0].text;
+
+//     document.getElementById("updated-dist-id").value = id;
+//     document.getElementById("distributor-name").value = distributirName;
+// }
+
+
 ///////////////// STOCK IN EDIT UPDATE BUTTON CONTROL \\\\\\\\\\
 var stockInSave = document.getElementById('stockInEdit-update-btn');
 
@@ -158,14 +245,6 @@ firstInput.addEventListener('input', function (event) {
     }
 });
 
-//////////////// set distributor \\\\\\\\\\\\\\\
-const selectDistributor = (t) => {
-    let id = t.value;
-    let distributirName = t.selectedOptions[0].text;
-
-    document.getElementById("updated-dist-id").value = id;
-    document.getElementById("distributor-name").value = distributirName;
-}
 
 ///////////// set distributo bill no \\\\\\\\\\\\
 const setDistBillNo = (t) => {
