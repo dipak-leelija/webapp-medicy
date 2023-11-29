@@ -28,14 +28,12 @@ if (isset($_GET['search'])) {
         $data = $_GET['searchKey'];
 
         $allPatients = $Patients->patientFilterByColData($col, $data, $adminId);
-        $allPatients = json_decode($allPatients);
     }
 
     if ($_GET['search'] == 'search-by-id-name') {
         $data = $_GET['searchKey'];
 
         $allPatients = $Patients->filterPatientByNameOrPid($data, $adminId);
-        $allPatients = json_decode($allPatients);
     }
 
     if ($_GET['search'] == 'added_on') {
@@ -99,12 +97,12 @@ if (isset($_GET['search'])) {
         // echo $toDt;
 
         $allPatients = $Patients->patientFilterByDate($fromDt, $toDt, $adminId);
-        $allPatients = json_decode($allPatients);
     }
 } else {
     $allPatients = $Patients->allPatients($adminId);
-    $allPatients = json_decode($allPatients);
 }
+
+$allPatients = json_decode($allPatients);
 
 if ($allPatients->status) {
     if ($allPatients->data != '') {
