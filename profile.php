@@ -36,6 +36,7 @@ if ($_SESSION['ADMIN']) {
             $firstName = $adminData->fname;
             $lastName = $adminData->lname;
             $image = $adminData->adm_img;
+            $imagePath = ADM_IMG_PATH.$image;
             $userName = $adminData->username;
             $email = $adminData->email;
             $phone = $adminData->mobile_no;
@@ -66,6 +67,7 @@ if ($_SESSION['ADMIN']) {
             $firstName = $firstName;
             $lastName = $lastName;
             $image = $employeeData->emp_img;
+            $imagePath = EMPLOYEE_IMG_PATH.$image;
             $userName = $employeeData->emp_username;
             $email = $employeeData->emp_email;
             $phone = $employeeData->emp_contact_no;
@@ -74,7 +76,6 @@ if ($_SESSION['ADMIN']) {
         }
     }
 }
-
 
 
 ?>
@@ -167,7 +168,7 @@ if ($_SESSION['ADMIN']) {
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
-                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? $image : ASSETS_PATH ?>images/undraw_profile.svg" alt="">
+                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? $imagePath : ASSETS_PATH.'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
                                                 <label for="img-uv-input" class="btn btn-sm btn-outline-secondary ml-5" style="margin-top: 115%;"><i class="fas fa-edit"></i></label>
