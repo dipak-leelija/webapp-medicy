@@ -29,6 +29,7 @@ $StockOut       = new StockOut;
 $patientDetails = json_decode($Patients->patientsDisplayByPId($patientId));
 
 // print_r($patientDetails) . "<br>";
+
 $Name = $patientDetails->name;
 $Age  = $patientDetails->age;
 $sex  = $patientDetails->gender;

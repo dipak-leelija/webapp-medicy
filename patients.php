@@ -276,25 +276,25 @@ if ($allPatients->status) {
                                                 $slicedPatientsVisited = $slicedPatientsdetails->visited;
                                                 $slicedPatientsLabVisited = $slicedPatientsdetails->lab_visited;
                                                 $slicedPatientsPin = $slicedPatientsdetails->patient_pin;
-                                                echo "<tr>
-                                         <td>$slicedPatientsID</td>
-                                         <td>$slicedPatientsName</td>
-                                         <td>$slicedPatientsAge</td>
-                                         <td><a class='text-decoration-none' href='tel:$slicedPatientsPhone'>$slicedPatientsPhone</a></td>
-                                         <td class='align-middle pb-0 pt-0'>
-                                             <small class='small'>
-                                                 <span>Doctor: $slicedPatientsVisited</span>
+                                                echo '<tr>
+                                         <td>'. $slicedPatientsID .'</td>
+                                         <td>'. $slicedPatientsName .'</td>
+                                         <td>'. $slicedPatientsAge .'</td>
+                                         <td><a class="text-decoration-none" href="tel:$slicedPatientsPhone">'. $slicedPatientsPhone .'</a></td>
+                                         <td class="align-middle pb-0 pt-0">
+                                             <small class="small">
+                                                 <span>Doctor: '. $slicedPatientsVisited .'</span>
                                                  <br>
-                                                 <span>Lab: $slicedPatientsLabVisited</span></small>
+                                                 <span>Lab: '. $slicedPatientsLabVisited .'</span></small>
                                          </td>
                                          <td> $slicedPatientsPin</td>
 
-                                         <td class='text-center'>
-                                             <a class='text-primary' href='patient-details.php?patient=<?= $slicedPatientsID ?>.'
-                                                 title='View and Edit'><i class='fas fa-eye'></i>
+                                         <td class="text-center">
+                                             <a class="text-primary" href="patient-details.php?patient='. $slicedPatientsID.'"
+                                                 title="View and Edit"><i class="fas fa-eye"></i>
                                              </a>
                                          </td>
-                                     </tr>";
+                                     </tr>';
                                             }
                                         } ?>
                                     </tbody>
