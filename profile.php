@@ -235,7 +235,7 @@ if ($_SESSION['ADMIN']) {
                                                     }
                                                     ?> -->
 
-                                            <button class="btn btn-primary btn-user btn-block" type="button" name="submit">Update</button>
+                                            <button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Update</button>
                                         </div>
                                     </form>
                                 </div>
