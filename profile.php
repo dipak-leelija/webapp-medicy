@@ -36,6 +36,7 @@ if ($_SESSION['ADMIN']) {
             $firstName = $adminData->fname;
             $lastName = $adminData->lname;
             $image = $adminData->adm_img;
+            $imagePath = ADM_IMG_PATH.$image;
             $userName = $adminData->username;
             $email = $adminData->email;
             $phone = $adminData->mobile_no;
@@ -66,6 +67,7 @@ if ($_SESSION['ADMIN']) {
             $firstName = $firstName;
             $lastName = $lastName;
             $image = $employeeData->emp_img;
+            $imagePath = EMPLOYEE_IMG_PATH.$image;
             $userName = $employeeData->emp_username;
             $email = $employeeData->emp_email;
             $phone = $employeeData->emp_contact_no;
@@ -74,11 +76,6 @@ if ($_SESSION['ADMIN']) {
         }
     }
 }
-
-
-echo ADM_IMG_DIR;
-echo "<br>";
-echo $image;
 
 
 ?>
@@ -167,11 +164,11 @@ echo $image;
                                             <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
                                         </div>
                                     </div>
-                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile">
+                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile" onsubmit="return validateForm()">
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
-                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? ADM_IMG_DIR.$image : ASSETS_PATH.'images/undraw_profile.svg' ?>" alt="">
+                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? $imagePath : ASSETS_PATH.'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
                                                 <label for="img-uv-input" class="btn btn-sm btn-outline-secondary ml-5" style="margin-top: 115%;"><i class="fas fa-edit"></i></label>
@@ -200,46 +197,17 @@ echo $image;
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="password" class="form-control " id="password" name="password" maxlength="12" value="<?= $password; ?>" required>
+                                                    <input type="password" class="form-control " id="password" name="password" maxlength="12" placeholder="Enter Password" required>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <input type="password" class="form-control " id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
+                                                    <small><p id="cpasserror" class="text-danger" style="display: none;"></p></small>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <!-- <input type="" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999"> -->
                                                 <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3" value="<?= $address; ?>" required></textarea>
                                             </div>
-                                            <!-- <?php
-
-                                                    if ($emailExists) {
-                                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>Sorry!</strong> Given Email Already Exists.
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>';
-                                                    }
-
-                                                    if ($userExists) {
-                                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>Sorry!</strong> Username Already Exists.
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>';
-                                                    }
-
-                                                    if ($diffrentPassword) {
-                                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>Sorry!</strong> Password Does not match.
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>';
-                                                    }
-                                                    ?> -->
-
                                             <button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Update</button>
                                         </div>
                                     </form>
@@ -338,6 +306,21 @@ echo $image;
             }
         </script>
 
+        <script>
+            function validateForm() {
+                var password = document.getElementById("password").value;
+                var cpassword = document.getElementById("cpassword").value;
+                // var cpasserror = document.getElementById('cpasserror');
+                if (password !== cpassword) {
+                    document.getElementById('cpasserror').innerHTML = "Password and Confirm Password do not match.";
+                    cpasserror.style.display = "block";
+                    return false;
+                }
+                cpasserror.innerHTML = "";
+                cpasserror.style.display = "none";
+                return true;
+            }
+        </script>
 
 </body>
 
