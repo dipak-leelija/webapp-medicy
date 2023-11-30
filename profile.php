@@ -41,10 +41,8 @@ if ($_SESSION['ADMIN']) {
             $phone = $adminData->mobile_no;
             $password = $adminData->password;
             $address = $adminData->address;
-            
         }
     }
-
 } else {
 
     $employeeDetails = $employees->employeeDetails($employeeId, $adminId);
@@ -53,17 +51,18 @@ if ($_SESSION['ADMIN']) {
     if ($employeeDetails->status) {
         $employeeData = $employeeDetails->data;
 
-        $empName = $employeeData->emp_name;
+        foreach ($employeeData as $employeeData) {
 
-        $lastSpacePos = strrpos($empName, ' ');
+            $empName = $employeeData->emp_name;
 
-        if ($lastSpacePos !== false) {
+            $lastSpacePos = strrpos($empName, ' ');
 
-            $firstName = substr($fullName, 0, $lastSpacePos);
-            $lastName = substr($fullName, $lastSpacePos + 1);
-        }
+            if ($lastSpacePos !== false) {
 
-        foreach($employeeData as $employeeData){
+                $firstName = substr($empName, 0, $lastSpacePos);
+                $lastName = substr($empName, $lastSpacePos + 1);
+            }
+
             $firstName = $firstName;
             $lastName = $lastName;
             $image = $employeeData->emp_img;
@@ -72,8 +71,7 @@ if ($_SESSION['ADMIN']) {
             $phone = $employeeData->emp_contact_no;
             $password = $employeeData->emp_password;
             $address = $employeeData->emp_address;
-
-        }        
+        }
     }
 }
 
