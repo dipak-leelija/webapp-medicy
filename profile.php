@@ -32,7 +32,6 @@ if ($_SESSION['ADMIN']) {
         $adminData = $adminDetails->data;
 
         foreach ($adminData as $adminData) {
-
             $firstName = $adminData->fname;
             $lastName = $adminData->lname;
             $image = $adminData->adm_img;
@@ -164,7 +163,7 @@ if ($_SESSION['ADMIN']) {
                                             <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
                                         </div>
                                     </div>
-                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile" >
+                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile" onsubmit="return validateForm()">
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
@@ -206,7 +205,7 @@ if ($_SESSION['ADMIN']) {
                                             </div>
                                             <div class="form-group">
                                                 <!-- <input type="" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999"> -->
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3" value="<?= $address; ?>" required></textarea>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3" ><?= $address; ?></textarea>
                                             </div>
                                             <button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Update</button>
                                         </div>
