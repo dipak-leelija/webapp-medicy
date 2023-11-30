@@ -32,6 +32,32 @@ class Employees extends DatabaseConnection
 
 
 
+    function employeeDetails($empId, $adminId){
+        try{
+            $selectEmp = "SELECT * FROM employees WHERE `emp_id` = '$empId' AND `admin_id` = '$adminId'";
+
+            $stmt = $this->conn->prepare($selectEmp);
+
+            $stmt->execute();
+
+            $res = $stmt->get_result();
+
+            if($res->num_rows > 0){
+                $empData = array();
+                while ($result = $res->fetch_object()) {
+                    $empData[] = $result;
+                }
+                $stmt->close();
+                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$empData]);
+            } else {
+                $stmt->close();
+                return json_encode(['status'=>'0', 'message'=>'no data', 'data'=> '']);
+            }
+        } catch(Exception $e) {
+            return json_encode(['status'=>'0', 'message'=>$e->getMessage(), 'data'=> '']);
+        }
+    } //end employeesDisplay function
+
 
 
 
@@ -156,6 +182,27 @@ class Employees extends DatabaseConnection
 
 
 
+
+    function updateEmpData($name, $img, $email, $contactNo, $address, $usrnm, $password, $updatedOn, $empid, $adminid) {
+        try {
+            $updateQuery = "UPDATE `employees` SET `emp_name`=?, `emp_img`=?, `emp_email`=?, `emp_contact_no`=?, `emp_address`=?, `emp_role`=?, `emp_username`=?, `emp_password`=? WHERE `updated_on`=? AND `admin_id`=?";
+            
+            $stmt = $this->conn->prepare($updateQuery);
+    
+            $stmt->bind_param("ssssssssss", $name, $img, $email, $contactNo, $address, $usrnm, $password, $updatedOn, $empid, $adminid);
+    
+            $stmt->execute();
+    
+            $stmt->close();
+    
+            return ['result' => '1'];
+        } catch (Exception $e) {
+            return ['result' => '0', 'message' => $e->getMessage()];
+        }
+    }
+
+
+
     
     function updateEmp($empUsername, $empName, $empRole, $empEmail,/*Last Variable for id which one you want to update */ $empId){
         $edit = "UPDATE  `employees` SET `emp_username` = '$empUsername', `emp_name`= '$empName', `emp_role` = '$empRole', `emp_email` = '$empEmail' WHERE `employees`.`emp_id` = '$empId'";
@@ -168,17 +215,11 @@ class Employees extends DatabaseConnection
 
 
 
-
     function deleteEmp($deleteEmpId){
         $delEmp = "DELETE FROM `employees` WHERE `employees`.`emp_id` = '$deleteEmpId'";
         $delEmpQuery = $this->conn->query($delEmp);
         return $delEmpQuery;
     } 
-
-
-
-
-    
 
     
 }//end class

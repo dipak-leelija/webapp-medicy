@@ -54,6 +54,8 @@ session_start();
 	define('CLASS_DIR', 		ROOT_DIR.'classes/');
 	define('ASST_DIR', 			ROOT_DIR.'uploads/contents/');
 	define('PROD_IMG_DIR', 		ROOT_DIR.'images/product-image/');
+	define('ADM_IMG_DIR', 		ROOT_DIR.'images/admin-images/');
+	define('EMP_IMG_DIR', 		ROOT_DIR.'images/employee-images/');
 	
 	
 	define('PAGE',				$_SERVER['PHP_SELF']);
@@ -116,6 +118,8 @@ session_start();
 
 	const LABTEST_IMG_PATH					= 	URL.'img/lab-tests/';
 	const PROD_IMG_PATH						=	URL.'images/product-image/';
+	const ADM_IMG_PATH						=	URL.'images/admin-images/';
+	const EMPLOYEE_IMG_PATH					=	URL.'images/employee-images/';
 	const EMP_PATH							=	URL.'employee/';
 	const EMP_ASSETS						=	URL.'employee/assets/';
 	const EMP_CSS							=	URL.'employee/assets/css/';
