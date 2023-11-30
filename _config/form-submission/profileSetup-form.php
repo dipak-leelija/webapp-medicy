@@ -13,8 +13,12 @@ require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'empRole.class.php';
 
 
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if(isset($_POST['submit'])){
 
-if(isset($_POST['submit'])){
-    echo "hello";
+        echo "hello";
+
+    }
 }
+
 ?>
