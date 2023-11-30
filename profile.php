@@ -1,5 +1,5 @@
 <?php
-$page = "employees";
+$page = "profile-setup";
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
@@ -14,6 +14,7 @@ require_once CLASS_DIR . 'empRole.class.php';
 
 
 $Utility    = new Utility;
+$Admin      = new Admin;
 $employees  = new Employees();
 $desigRole = new Emproles();
 
@@ -22,13 +23,16 @@ $currentUrl = $Utility->currentUrl();
 $showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $desigRole->designationRole($adminId);
 $showDesignation = json_decode($showDesignation, true);
-// print_r($showDesignation);
-
-//Employee Class Initilzed
-// $employees = new Employees();
 
 
+if ($_SESSION['ADMIN']) {
+    $profileDetails = $Admin->adminDetails($adminId);
+} else {
+    $profileDetails = $employees->employeeDetails($employeeId, $adminId);
+}
 
+$profileDetails = json_decode($profileDetails);
+print_r($profileDetails);
 
 ?>
 
