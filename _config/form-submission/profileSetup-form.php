@@ -37,20 +37,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
         if($_SESSION['ADMIN']){
-            $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $userName, $email, $phNo, $hashedPassword, $address, NOW, $adminId);
+            
+            $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $userName, $hashedPassword, $email, $phNo,  $address, NOW, $adminId);
 
             if($updateAdminData['result']){
-                
+
                 $imgFolder = ADM_IMG_DIR.$imageName;
                 move_uploaded_file($tempImgName, $imgFolder);
-
-            }else{
-                echo false;
             }
-        } else {
-            echo 'employee';
-        }
 
+        } else {
+                
+            $updateEmployeeData = $Employees->updateEmpData($fname.$lname, $imageName, $email, $phNo, $address, $userName, $hashedPassword, NOW, $employeeId, $adminId);
+
+            if($updateEmployeeData['result']){
+
+                $imgFolder = EMP_IMG_DIR.$imageName;
+                move_uploaded_file($tempImgName, $imgFolder);
+
+            }
+        } 
     }
 }
 
