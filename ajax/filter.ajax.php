@@ -83,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             $filterPatient = $Patients->filterPatient($col, $match, $adminId);
                             $filterPatient = json_decode($filterPatient);
+                            // $_SESSION['filteredPatientData'] = json_encode($filterPatient);
                             // print_r($filterPatient);
                             if ($filterPatient->status == 1) {
                                 $patientData = $filterPatient->data[0];
@@ -136,9 +137,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             
                         }
                     }
-                // } else {
-                //     echo 'Please Enter Minimum 3 character';
-                // }
+                else {
+                    echo 'Please Enter Minimum 3 character';
+                }
                 break;
             default:
                 echo 'Nothing';

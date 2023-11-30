@@ -37,6 +37,17 @@ if ($allPatients->status) {
     $paginationHTML = '';
 }
 
+// if (isset($_SESSION['filteredPatientData'])) {
+//     // Retrieve and decode the filtered patient data
+//     $filterPatient = json_decode($_SESSION['filteredPatientData'], true);
+//     print_r($filterPatient);
+//     // Clear the session variable if needed
+//     unset($_SESSION['filteredPatientData']);
+// } else {
+//     // If the session variable doesn't exist, set $filterPatient to an empty array or handle it accordingly
+//     $filterPatient = array();
+// }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -182,6 +193,9 @@ if ($allPatients->status) {
                                     </thead>
                                     <tbody>
                                         <?php
+                                        if (!empty($filterPatient->data)) {
+                                            echo "hello ";
+                                        }
                                             if (!empty($slicedPatients)) {
                                                 foreach($slicedPatients as $slicedPatientsdetails){
                                                     // print_r($slicedPatientsdetails);
