@@ -156,9 +156,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             
                         }
                     }
-                // } else {
-                //     echo 'Please Enter Minimum 3 character';
-                // }
+                else {
+                    echo 'Please Enter Minimum 3 character';
+                }
                 break;
             default:
                 echo 'Nothing';

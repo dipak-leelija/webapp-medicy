@@ -131,9 +131,6 @@ class Patients extends DatabaseConnection
                 return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
             }
         } catch (Exception $e) {
-            // Handle the error (e.g., log the error or return an error message)
-            // error_log("Error in allPatients: " . $e->getMessage());
-            // return array("error" => "An error occurred while fetching patient data.");
             echo  $e->getMessage();
             return json_encode(['status' => 0, 'message' => $e->getMessage(), 'data' => '']);
         }
@@ -300,11 +297,9 @@ class Patients extends DatabaseConnection
     function patientsDisplayByPId($patientId)
     {
         try {
-            // Initialize the data array
             $data = array();
 
-            // Prepare the SQL statement with a parameter
-            $sql = "SELECT * FROM patient_details WHERE patient_id = ?";
+            $sql = "SELECT * FROM `patient_details` WHERE patient_id = ?";
             $stmt = $this->conn->prepare($sql);
 
             if ($stmt) {
@@ -317,7 +312,8 @@ class Patients extends DatabaseConnection
 
                     // Check the number of rows returned
                     if ($result->num_rows === 0) {
-                        return $data; // No rows found
+                        // return $data; // No rows found
+                        return json_encode($data);
                     } else {
                         while ($row = $result->fetch_object()) {
                             $data = $row;
