@@ -32,7 +32,15 @@ if ($_SESSION['ADMIN']) {
 }
 
 $profileDetails = json_decode($profileDetails);
-print_r($profileDetails);
+// print_r($profileDetails);
+if ($profileDetails->status == 1)
+    $firstName = $profileDetails->data[0]->fname;
+$lastName = $profileDetails->data[0]->lname;
+$userName = $profileDetails->data[0]->username;
+$email = $profileDetails->data[0]->email;
+$phone = $profileDetails->data[0]->mobile_no;
+$password = $profileDetails->data[0]->password;
+$address = $profileDetails->data[0]->address;
 
 ?>
 
@@ -116,72 +124,81 @@ print_r($profileDetails);
                             <div class=" d-flex justify-content-center align-items-center">
                                 <div class="p-5 w-75">
                                     <div class="d-flex justify-content-start align-items-center">
-                                        <h1 class="h4 text-gray ">Profile</h1>
+                                        <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
                                     </div>
                                     <form class="user" action="register.php" method="post">
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
-                                            <img class="img-uv-view rounded-circle" style="width:20%;" src="<?= ASSETS_PATH ?>images/undraw_profile.svg" alt="">
+
+                                            <img class="img-uv-view  rounded-circle" style="width: 20%;" src="<?= ASSETS_PATH ?>images/undraw_profile.svg" alt="">
                                             <div class="">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="site-logo">
-                                                <label for="img-uv-input" class="btn btn-sm border border-secondary mt-5"><i class="fas fa-edit"></i></label>
+                                                <label for="img-uv-input" class="btn btn-sm btn-outline-success ml-n5" style="margin-top:6rem"><i class="fas fa-edit"></i></label>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="text" class="form-control form-control-user" id="fname" name="fname" maxlength="20" placeholder="First Name">
+                                        <div class=" w-100 p-3 mb-2 bg-light ">
+                                            <div class="form-group row">
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <input type="text" class="form-control form-control-user" id="fname" name="fname" maxlength="20" value="<?= $firstName; ?>">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control form-control-user" id="lname" name="lname" maxlength="20" value="<?= $lastName; ?>">
+                                                </div>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control form-control-user" id="lname" name="lname" maxlength="20" placeholder="Last Name">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" value="<?= $userName; ?>">
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" placeholder="Email Address">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="number" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999">
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-6 mb-3 mb-sm-0">
-                                                <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Password" required>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" value="<?= $email; ?>">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="number" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" value="<?= $phone; ?>" max="9999999999">
+                                                </div>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <input type="password" class="form-control form-control-user" id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" value="<?= $password; ?>" required>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="password" class="form-control form-control-user" id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <!-- <?php
+                                            <div class="form-group">
+                                                <!-- <input type="" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999"> -->
+                                                <textarea class="form-control form-control-user" id="exampleFormControlTextarea1" name="address" rows="3" value="<?= $address; ?>"></textarea>
+                                            </div>
+                                            <!-- <?php
 
-                                                if ($emailExists) {
-                                                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                    if ($emailExists) {
+                                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>Sorry!</strong> Given Email Already Exists.
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
-                                                }
+                                                    }
 
-                                                if ($userExists) {
-                                                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                    if ($userExists) {
+                                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>Sorry!</strong> Username Already Exists.
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
-                                                }
+                                                    }
 
-                                                if ($diffrentPassword) {
-                                                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                    if ($diffrentPassword) {
+                                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>Sorry!</strong> Password Does not match.
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
-                                                }
-                                                ?> -->
+                                                    }
+                                                    ?> -->
 
-                                        <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Update</button>
+                                            <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Update</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -200,27 +217,7 @@ print_r($profileDetails);
         </div>
         <!-- End of Page Wrapper -->
 
-        <!-- Emp Edit and View Modal -->
-        <div class="modal fade" id="empViewAndEditModal" tabindex="-1" role="dialog" aria-labelledby="empViewAndEditModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="empViewAndEditModalLabel">Employee Information</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body viewnedit">
-                        <!-- MODAL CONTENT GOES HERE BY AJAX -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-sm btn-primary" onclick="refreshPage()">Update</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Emp Edit and View Modal End -->
+
 
         <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
@@ -229,14 +226,6 @@ print_r($profileDetails);
 
         <!-- Custom Javascript -->
         <script src="<?php echo JS_PATH ?>custom-js.js"></script>
-        <script>
-            viewAndEdit = (empId) => {
-                let employeeId = empId;
-                let url = "ajax/emp.view.ajax.php?employeeId=" + employeeId;
-                $(".viewnedit").html('<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
-                    url + '"></iframe>');
-            } // end of viewAndEdit function
-        </script>
 
         <!-- Bootstrap core JavaScript-->
         <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
