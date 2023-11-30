@@ -118,7 +118,7 @@ print_r($profileDetails);
                                     <div class="d-flex justify-content-start align-items-center">
                                         <h1 class="h4 text-gray ">Profile</h1>
                                     </div>
-                                    <form class="user" action="register.php" method="post">
+                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post">
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <img class="img-uv-view rounded-circle" style="width:20%;" src="<?= ASSETS_PATH ?>images/undraw_profile.svg" alt="">
                                             <div class="">
@@ -181,7 +181,7 @@ print_r($profileDetails);
                                                 }
                                                 ?> -->
 
-                                        <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Update</button>
+                                        <button class="btn btn-primary btn-user btn-block" type="button" name="update">Update</button>
                                     </form>
                                 </div>
                             </div>
