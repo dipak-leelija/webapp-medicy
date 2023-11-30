@@ -206,7 +206,7 @@ if ($_SESSION['ADMIN']) {
                                             </div>
                                             <div class="form-group">
                                                 <!-- <input type="" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999"> -->
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3" value="<?= $address; ?>"></textarea>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3" value="<?= $address; ?>" required></textarea>
                                             </div>
                                             <!-- <?php
 
