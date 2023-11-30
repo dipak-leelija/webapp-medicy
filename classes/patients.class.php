@@ -297,10 +297,8 @@ class Patients extends DatabaseConnection
     function patientsDisplayByPId($patientId)
     {
         try {
-            // Initialize the data array
             $data = array();
 
-            // Prepare the SQL statement with a parameter
             $sql = "SELECT * FROM `patient_details` WHERE patient_id = ?";
             $stmt = $this->conn->prepare($sql);
 

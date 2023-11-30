@@ -184,13 +184,11 @@ if ($allPatients->status) {
                         <div class="card-header py-3 justify-content-between">
 
                             <div class="row">
-                                <div class="col-12">
-                                    <h6 class=" col-3 mt-2 m-0 font-weight-bold text-primary">List of Patients : <?= $totalItem ?></h6>
+                                <div class="col-md-3 mt-md-2">
+                                    <h6 class="font-weight-bold text-primary">List of Patients : <?= $totalItem ?></h6>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-3 col-4 mt-2">
+                                <div class="col-md-3 mt-2">
                                     <div class="input-group">
                                         <input class="cvx-inp" type="text" placeholder="Patients ID / Patient Name" name="search-by-id-name" id="search-by-id-name" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
 
@@ -200,7 +198,7 @@ if ($allPatients->status) {
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 col-4  mt-2">
+                                <div class="col-md-3 mt-2">
                                     <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
                                         <option value="" disabled="" selected="">Select Duration</option>
                                         <option value="T">Today</option>
@@ -276,25 +274,25 @@ if ($allPatients->status) {
                                                 $slicedPatientsVisited = $slicedPatientsdetails->visited;
                                                 $slicedPatientsLabVisited = $slicedPatientsdetails->lab_visited;
                                                 $slicedPatientsPin = $slicedPatientsdetails->patient_pin;
-                                                echo "<tr>
-                                         <td>$slicedPatientsID</td>
-                                         <td>$slicedPatientsName</td>
-                                         <td>$slicedPatientsAge</td>
-                                         <td><a class='text-decoration-none' href='tel:$slicedPatientsPhone'>$slicedPatientsPhone</a></td>
-                                         <td class='align-middle pb-0 pt-0'>
-                                             <small class='small'>
-                                                 <span>Doctor: $slicedPatientsVisited</span>
+                                                echo '<tr>
+                                         <td>'. $slicedPatientsID .'</td>
+                                         <td>'. $slicedPatientsName .'</td>
+                                         <td>'. $slicedPatientsAge .'</td>
+                                         <td><a class="text-decoration-none" href="tel:$slicedPatientsPhone">'. $slicedPatientsPhone .'</a></td>
+                                         <td class="align-middle pb-0 pt-0">
+                                             <small class="small">
+                                                 <span>Doctor: '. $slicedPatientsVisited .'</span>
                                                  <br>
-                                                 <span>Lab: $slicedPatientsLabVisited</span></small>
+                                                 <span>Lab: '. $slicedPatientsLabVisited .'</span></small>
                                          </td>
                                          <td> $slicedPatientsPin</td>
 
-                                         <td class='text-center'>
-                                             <a class='text-primary' href='patient-details.php?patient=<?= $slicedPatientsID ?>.'
-                                                 title='View and Edit'><i class='fas fa-eye'></i>
+                                         <td class="text-center">
+                                             <a class="text-primary" href="patient-details.php?patient='. $slicedPatientsID.'"
+                                                 title="View and Edit"><i class="fas fa-eye"></i>
                                              </a>
                                          </td>
-                                     </tr>";
+                                     </tr>';
                                             }
                                         } ?>
                                     </tbody>
@@ -396,7 +394,7 @@ if ($allPatients->status) {
 
 
 
-        const customDate = () =>{
+        const customDate = () => {
             let fromDate = document.getElementById('from-date').value;
             let toDate = document.getElementById('to-date').value;
 
