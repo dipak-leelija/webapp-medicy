@@ -32,6 +32,34 @@ class Employees extends DatabaseConnection
 
 
 
+    function employeeDetails($empId, $adminId){
+        try{
+            $selectEmp = "SELECT * FROM employees WHERE `emp_id` = '$empId' AND `admin_id` = '$adminId'";
+
+            $stmt = $this->conn->prepare($selectEmp);
+
+            $stmt->execute();
+
+            $res = $stmt->get_result();
+
+            if($res->num_rows > 0){
+                $empData = array();
+                while ($result = $res->fetch_object()) {
+                    $empData[] = $result;
+                }
+                $stmt->close();
+                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$empData]);
+            } else {
+                $stmt->close();
+                return json_encode(['status'=>'0', 'message'=>'no data', 'data'=> '']);
+            }
+        } catch(Exception $e) {
+            return json_encode(['status'=>'0', 'message'=>$e->getMessage(), 'data'=> '']);
+        }
+    } //end employeesDisplay function
+
+    
+
 
     function employeesDisplay($adminId){
         $empData = array();

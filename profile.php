@@ -1,5 +1,5 @@
 <?php
-$page = "employees";
+$page = "profile-setup";
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
@@ -14,6 +14,7 @@ require_once CLASS_DIR . 'empRole.class.php';
 
 
 $Utility    = new Utility;
+$Admin      = new Admin;
 $employees  = new Employees();
 $desigRole = new Emproles();
 
@@ -22,13 +23,16 @@ $currentUrl = $Utility->currentUrl();
 $showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $desigRole->designationRole($adminId);
 $showDesignation = json_decode($showDesignation, true);
-// print_r($showDesignation);
-
-//Employee Class Initilzed
-// $employees = new Employees();
 
 
+if ($_SESSION['ADMIN']) {
+    $profileDetails = $Admin->adminDetails($adminId);
+} else {
+    $profileDetails = $employees->employeeDetails($employeeId, $adminId);
+}
 
+$profileDetails = json_decode($profileDetails);
+print_r($profileDetails);
 
 ?>
 
@@ -109,87 +113,85 @@ $showDesignation = json_decode($showDesignation, true);
 
                     <div class="card shadow mb-4">
                         <div class="card-body">
-                        <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray mb-4">Profile</h1>
-                            </div>
-                            <form class="user" action="register.php" method="post">
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="fname" name="fname" maxlength="20" placeholder="First Name">
+                            <div class="col-lg-7">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray mb-4">Profile</h1>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="lname" name="lname" maxlength="20" placeholder="Last Name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username">
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" placeholder="Email Address">
-                                </div>
-                                <div class="form-group">
-                                    <input type="number" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999">
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="password" name="password" maxlength="12" placeholder="Password" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
-                                    </div>
-                                </div>
-                                <?php
+                                    <form class="user" action="register.php" method="post">
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <input type="text" class="form-control form-control-user" id="fname" name="fname" maxlength="20" placeholder="First Name">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control form-control-user" id="lname" name="lname" maxlength="20" placeholder="Last Name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" placeholder="Email Address">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="number" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999">
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Password" required>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="password" class="form-control form-control-user" id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
+                                            </div>
+                                        </div>
+                                        <?php
 
-                                    if($emailExists){
-                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        if ($emailExists) {
+                                            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>Sorry!</strong> Given Email Already Exists.
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
-                                    }
+                                        }
 
-                                    if($userExists){
-                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        if ($userExists) {
+                                            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>Sorry!</strong> Username Already Exists.
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
-                                    }
+                                        }
 
-                                    if($diffrentPassword){
-                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        if ($diffrentPassword) {
+                                            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>Sorry!</strong> Password Does not match.
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
-                                    }
-                                ?>
+                                        }
+                                        ?>
 
-                                <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Update</button>
-                                <!-- <hr> -->
-                                <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
+                                        <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Update</button>
+                                        <!-- <hr> -->
+                                        <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
                                     <i class="fab fa-google fa-fw"></i> Register with Google
                                 </a>
                                 <a href="index.html" class="btn btn-facebook btn-user btn-block">
                                     <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
                                 </a> -->
-                            </form>
-                            <!-- <hr> -->
-                            <!-- <div class="text-center" style="margin-top:15px;">
+                                    </form>
+                                    <!-- <hr> -->
+                                    <!-- <div class="text-center" style="margin-top:15px;">
                                 <a class="small" href="forgot-password.html">Reset Password</a>
                             </div>
                             <div class="text-center">
                                 <a class="small" href="login.php">Already have an account? Login!</a>
                             </div> -->
-                        </div>
-                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
