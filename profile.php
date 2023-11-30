@@ -165,13 +165,13 @@ if ($_SESSION['ADMIN']) {
                                             <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
                                         </div>
                                     </div>
-                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post">
+                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile">
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
                                             <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? $image : ASSETS_PATH ?>images/undraw_profile.svg" alt="">
                                             <div class="position-absolute translate-middle">
-                                                <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="site-logo">
+                                                <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
                                                 <label for="img-uv-input" class="btn btn-sm btn-outline-secondary ml-5" style="margin-top: 115%;"><i class="fas fa-edit"></i></label>
                                             </div>
                                             <!-- </div> -->
