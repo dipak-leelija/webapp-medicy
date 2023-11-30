@@ -163,7 +163,7 @@ if ($_SESSION['ADMIN']) {
                                             <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
                                         </div>
                                     </div>
-                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile" onsubmit="return validateForm()">
+                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile" >
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
