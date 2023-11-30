@@ -125,4 +125,10 @@ class Admin extends DatabaseConnection
             return $data;
         }
     }
+
+
+
+    function updateAdminDetails($fname, $lname, $img, $username, $password, $email, $mobNo, $address, $updatedOn, $adminid){
+        $updateQuery = "UPDATE `admin` SET `fname`='$fname',`lname`='$lname',`adm_img`='$img',`username`='$username',`password`='$password',`email`='$email',`mobile_no`='$mobNo',`address`='$address', `updated_on`='$updatedOn' WHERE `admin_id`='$adminid'";
+    }
 } //eof Admin Class
