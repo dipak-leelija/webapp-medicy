@@ -72,6 +72,7 @@ class Admin extends DatabaseConnection{
     }//eof CheckEmail function
 
 
+    
 
     function login($email){
         $login = "SELECT * FROM `admin` WHERE `email` = '$email'";

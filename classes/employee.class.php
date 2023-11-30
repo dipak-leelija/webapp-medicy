@@ -33,8 +33,6 @@ class Employees extends DatabaseConnection
 
 
 
-
-
     function employeesDisplay($adminId){
         $empData = array();
         $selectEmp = "SELECT emp_id,emp_username,emp_name,emp_role,emp_email FROM employees WHERE `admin_id` = '$adminId'";
