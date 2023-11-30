@@ -124,48 +124,52 @@ $address = $profileDetails->data[0]->address;
                             <div class=" d-flex justify-content-center align-items-center">
                                 <div class="p-5 w-75">
                                     <div class="d-flex justify-content-start align-items-center">
-                                        <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
+                                        <div class=" w-100 p-3 mb-2 bg-light ">
+                                            <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
+                                        </div>
                                     </div>
                                     <form class="user" action="_config/form-submission/profileSetup-form.php" method="post">
-                                        <div class=" d-flex justify-content-center align-items-center mb-5">
 
-                                            <img class="img-uv-view  rounded-circle" style="width: 20%;" src="<?= ASSETS_PATH ?>images/undraw_profile.svg" alt="">
-                                            <div class="">
+                                        <div class=" d-flex justify-content-center align-items-center mb-5">
+                                            <!-- <div class="position-relative"> -->
+                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ASSETS_PATH ?>images/undraw_profile.svg" alt="">
+                                            <div class="position-absolute translate-middle">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="site-logo">
-                                                <label for="img-uv-input" class="btn btn-sm btn-outline-success ml-n5" style="margin-top:6rem"><i class="fas fa-edit"></i></label>
+                                                <label for="img-uv-input" class="btn btn-sm btn-outline-secondary ml-5" style="margin-top: 115%;"><i class="fas fa-edit"></i></label>
                                             </div>
+                                            <!-- </div> -->
                                         </div>
                                         <div class=" w-100 p-3 mb-2 bg-light ">
+                                            <div class="form-group row mb-3">
+                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                    <input type="text" class="form-control" id="fname" name="fname" maxlength="20" value="<?= $firstName; ?>">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control " id="lname" name="lname" maxlength="20" value="<?= $lastName; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <input type="text" class="form-control " id="user-name" name="user-name" maxlength="24" value="<?= $userName; ?>">
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <input type="email" class="form-control " id="email" name="email" maxlength="80" value="<?= $email; ?>">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="number" class="form-control " id="mobile-number" name="mobile-number" maxlength="10" value="<?= $phone; ?>" max="9999999999">
+                                                </div>
+                                            </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="text" class="form-control form-control-user" id="fname" name="fname" maxlength="20" value="<?= $firstName; ?>">
+                                                    <input type="password" class="form-control " id="password" name="password" maxlength="12" value="<?= $password; ?>" required>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control form-control-user" id="lname" name="lname" maxlength="20" value="<?= $lastName; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" value="<?= $userName; ?>">
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-6">
-                                                    <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" value="<?= $email; ?>">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <input type="number" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" value="<?= $phone; ?>" max="9999999999">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" value="<?= $password; ?>" required>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <input type="password" class="form-control form-control-user" id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
+                                                    <input type="password" class="form-control " id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <!-- <input type="" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999"> -->
-                                                <textarea class="form-control form-control-user" id="exampleFormControlTextarea1" name="address" rows="3" value="<?= $address; ?>"></textarea>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3" value="<?= $address; ?>"></textarea>
                                             </div>
                                             <!-- <?php
 
@@ -197,7 +201,7 @@ $address = $profileDetails->data[0]->address;
                                                     }
                                                     ?> -->
 
-                                            <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Update</button>
+                                            <button class="btn btn-primary btn-block" type="submit" name="register">Update</button>
                                         </div>
                                     </form>
                                 </div>
