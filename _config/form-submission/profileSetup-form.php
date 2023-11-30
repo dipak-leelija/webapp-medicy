@@ -16,7 +16,14 @@ require_once CLASS_DIR . 'empRole.class.php';
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(isset($_POST['submit'])){
 
+
+
         echo "hello";
+        if($_SESSION['ADMIN']){
+            echo 'admin';
+        } else {
+            echo 'employee';
+        }
 
     }
 }

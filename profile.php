@@ -41,7 +41,7 @@ if ($_SESSION['ADMIN']) {
             $phone = $adminData->mobile_no;
             $password = $adminData->password;
             $address = $adminData->address;
-
+            
         }
     }
 
@@ -72,6 +72,7 @@ if ($_SESSION['ADMIN']) {
             $phone = $employeeData->emp_contact_no;
             $password = $employeeData->emp_password;
             $address = $employeeData->emp_address;
+
         }        
     }
 }
