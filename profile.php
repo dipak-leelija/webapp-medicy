@@ -77,8 +77,6 @@ if ($_SESSION['ADMIN']) {
 
 
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -165,7 +163,7 @@ if ($_SESSION['ADMIN']) {
                                             <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
                                         </div>
                                     </div>
-                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post">
+                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" onsubmit="return validateForm()">
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
@@ -198,46 +196,17 @@ if ($_SESSION['ADMIN']) {
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="password" class="form-control " id="password" name="password" maxlength="12" value="<?= $password; ?>" required>
+                                                    <input type="password" class="form-control " id="password" name="password" maxlength="12" placeholder="Enter Password" required>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <input type="password" class="form-control " id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
+                                                    <small><p id="cpasserror" class="text-danger" style="display: none;"></p></small>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <!-- <input type="" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999"> -->
                                                 <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3" value="<?= $address; ?>" required></textarea>
                                             </div>
-                                            <!-- <?php
-
-                                                    if ($emailExists) {
-                                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>Sorry!</strong> Given Email Already Exists.
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>';
-                                                    }
-
-                                                    if ($userExists) {
-                                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>Sorry!</strong> Username Already Exists.
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>';
-                                                    }
-
-                                                    if ($diffrentPassword) {
-                                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>Sorry!</strong> Password Does not match.
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>';
-                                                    }
-                                                    ?> -->
-
                                             <button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Update</button>
                                         </div>
                                     </form>
@@ -336,6 +305,21 @@ if ($_SESSION['ADMIN']) {
             }
         </script>
 
+        <script>
+            function validateForm() {
+                var password = document.getElementById("password").value;
+                var cpassword = document.getElementById("cpassword").value;
+                // var cpasserror = document.getElementById('cpasserror');
+                if (password !== cpassword) {
+                    document.getElementById('cpasserror').innerHTML = "Password and Confirm Password do not match.";
+                    cpasserror.style.display = "block";
+                    return false;
+                }
+                cpasserror.innerHTML = "";
+                cpasserror.style.display = "none";
+                return true;
+            }
+        </script>
 
 </body>
 
