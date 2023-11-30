@@ -1,4 +1,5 @@
 <?php
+require_once CLASS_DIR.'encrypt.inc.php';
 
 class Employees extends DatabaseConnection
 {
@@ -6,6 +7,8 @@ class Employees extends DatabaseConnection
 
     function addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass)
     {
+        $password = pass_enc($empPass, EMP_PASS);
+
         try {
             $sql = "INSERT INTO `employees` (admin_id, emp_username, emp_name, emp_role, emp_email, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -14,7 +17,7 @@ class Employees extends DatabaseConnection
                 throw new Exception("Error preparing insert statement: " . $this->conn->error);
             }
 
-            $stmt->bind_param("sssssss", $adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
+            $stmt->bind_param("sssssss", $adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $password);
 
             if ($stmt->execute()) {
                 return ["result" => true];

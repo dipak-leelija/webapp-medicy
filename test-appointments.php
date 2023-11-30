@@ -10,6 +10,7 @@ require_once CLASS_DIR . 'labBilling.class.php';
 require_once CLASS_DIR . 'labBillDetails.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
+require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
 
 
@@ -22,38 +23,141 @@ $SubTests        = new SubTests();
 $LabBilling      = new LabBilling();
 $LabBillDetails  = new LabBillDetails();
 $Doctors         = new Doctors();
+$Employees       = new Employees;
 $Pagination      = new Pagination;
 
+
+// ================ doctor detials ===================
 $DoctorsList = json_decode($Doctors->showDoctors($adminId));
 if (!empty($DoctorsList->data)) {
     $DoctorList = $DoctorsList->data;
 }
 
-// exit;
+// ================ employee detials ===================
+$empCol = 'admin_id';
+$employeeDetails = $Employees->selectEmpByCol($empCol, $adminId);
+$employeeDetails = json_decode($employeeDetails);
+$employeeDetails = $employeeDetails->data;
 
-if (isset($_GET['doctor'])) {
-    $doctorID = $_GET['doctor'];
-    $labBillDisplay = $LabBilling->labBillFilter($adminId, 'refered_doctor', $doctorID);
-}elseif (isset($_GET['search'])) {
-    $match = $_GET['search'];
-    $labBillDisplay = $LabBilling->labBillFilter($adminId, 'search', $match);
-}
 
-else {
+// ================ data filter ===================
+if (isset($_GET['search'])) {
+
+    if ($_GET['search'] == 'refered_doctor') {
+
+        $col = $_GET['search'];
+        $doctorID = $_GET['searchKey'];
+
+        $labBillDisplay = $LabBilling->labBillFilter($adminId, $col, $doctorID);
+    }
+
+    if ($_GET['search'] == 'added_by') {
+        $col = $_GET['search'];
+        $doctorID = $_GET['searchKey'];
+
+        $labBillDisplay = $LabBilling->labBillFilter($adminId, $col, $doctorID);
+    }
+
+    if ($_GET['search'] == 'appointment-search') {
+        $match = $_GET['searchKey'];
+
+        $labBillDisplay = $LabBilling->labBillFilter($adminId, 'search', $match);
+    }
+
+    if ($_GET['search'] == 'added_on') {
+        $value = $_GET['searchKey'];
+
+        if ($value == 'T') {
+            $fromDt = date('Y-m-d');
+            $toDt = date('Y-m-d');
+        }
+
+        if ($value == 'Y') {
+            $fromDt = new DateTime('yesterday');
+            $fromDt = $fromDt->format('Y-m-d');
+            $toDt = $fromDt;
+        }
+
+        if ($value == 'LW') {
+            $fromDt = new DateTime('-7 days');
+            $fromDt = $fromDt->format('Y-m-d');
+            $toDt = date('Y-m-d');
+        }
+
+        if ($value == 'LM') {
+            $fromDt = new DateTime('-30 days');
+            $fromDt = $fromDt->format('Y-m-d');
+            $toDt = date('Y-m-d');
+        }
+
+        if ($value == 'LQ') {
+            $fromDt = new DateTime('-90 days');
+            $fromDt = $fromDt->format('Y-m-d');
+            $toDt = date('Y-m-d');
+        }
+
+        if ($value == 'CFY') {
+            $currentYear = new DateTime();
+            $fiscalYear = $currentYear->format('Y');
+            $fiscalYear = intval($fiscalYear) + 1;
+            $currentYear = $currentYear->format('Y');
+
+            $fromDt = $currentYear . '-04-01';
+            $toDt = $fiscalYear . '-03-31';
+        }
+
+        if ($value == 'PFY') {
+            $currentYear = new DateTime();
+            $prevFiscalYr = $currentYear->format('Y');
+            $prevFiscalYr = intval($prevFiscalYr) - 1;
+            $currentYear = $currentYear->format('Y');
+
+            $fromDt = $prevFiscalYr . '-04-01';
+            $toDt = $currentYear . '-03-31';
+        }
+
+        if ($value == 'CR') {
+            $fromDt = $_GET['fromDt'];
+            $toDt = $_GET['toDt'];
+        }
+
+        $labBillDisplay = $LabBilling->labBillFilterByDate($adminId, $fromDt, $toDt);
+
+    }
+
+} else {
     $labBillDisplay = $LabBilling->labBillDisplay($adminId);
 }
 
-$billsResponse  = json_decode($Pagination->arrayPagination($labBillDisplay));
-if ($billsResponse->status == 1) {
-    $slicedLabBills = $billsResponse->items;
-    $billsPagination = $billsResponse->paginationHTML;
-}else {
-    $slicedLabBills = '';
-    $billsPagination = '';
+$labBillDisplay = json_decode($labBillDisplay);
+// print_r($labBillDisplay);
+
+if ($labBillDisplay->status) {
+    if ($labBillDisplay->data != '') {
+        $billsResponseData = $labBillDisplay->data;
+        if (is_array($billsResponseData)) {
+            $response = json_decode($Pagination->arrayPagination($billsResponseData));
+            $slicedLabBills = '';
+            $paginationHTML = '';
+            $totalItem = $slicedLabBills = $response->totalitem;
+
+            if ($response->status == 1) {
+                $slicedLabBills = $response->items;
+                $paginationHTML = $response->paginationHTML;
+            }
+        } else {
+            $totalItem = 0;
+        }
+    }else{
+        $totalItem = 0;
+        $paginationHTML = '';
+    }
+} else {
+    $totalItem = 0;
+    $paginationHTML = '';
 }
-// print_r($slicedLabBills);
-// $showLabAppointments = $LabAppointments->showLabAppointments();
-// exit;
+
+
 ?>
 
 <!DOCTYPE html>
@@ -70,9 +174,7 @@ if ($billsResponse->status == 1) {
     <title>Lab Appointments - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
 
     <!-- Custom fonts for this template-->
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template-->
@@ -111,23 +213,28 @@ if ($billsResponse->status == 1) {
 
                     <!-- Test Appointments -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3 booked_btn">
+
+                        <div class="card-header py-3 justify-content-between">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class=" col-3 mt-2 m-0 font-weight-bold text-primary">List of Bookings : <?= $totalItem ?></h6>
+                                </div>
+                            </div>
 
                             <div class="row mt-2">
                                 <div class="col-md-2 col-6">
                                     <div class="input-group">
-                                        <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID"
-                                            name="appointment-search" id="appointment-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>">
+                                        <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="appointment-search" id="appointment-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>">
+
                                         <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button"
-                                                id="button-addon2" onclick="filterAppointment('appointment-search')"><i class="fas fa-search"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon2" onclick="filterAppointment()"><i class="fas fa-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="added_on" id="added_on"
-                                        onchange="returnFilter(this)">
+                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="returnFilter(this)">
                                         <option value="" disabled="" selected="">Select Duration</option>
                                         <option value="T">Today</option>
                                         <option value="Y">yesterday</option>
@@ -138,11 +245,10 @@ if ($billsResponse->status == 1) {
                                         <option value="PFY">Previous Fiscal Year</option>
                                         <option value="CR">Custom Range </option>
                                     </select>
-
                                 </div>
+
                                 <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
-                                        onchange="dictorFilter(this)">
+                                    <select class="cvx-inp1" name="refered_doctor" id="refered_doctor" onchange="returnFilter(this)">
                                         <option value="" selected="" disabled="">Find By Doctor</option>
                                         <?php
                                         foreach ($DoctorList as $doctor) {
@@ -155,33 +261,40 @@ if ($billsResponse->status == 1) {
                                     <select class="cvx-inp1" id="added_by" onchange="returnFilter(this)">
                                         <option value="" disabled="" selected="">Select Staff
                                         </option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="refund_mode" id="refund_mode"
-                                        onchange="filterAppointment(this)">
-                                        <option value="" selected="" disabled="">payment Mode</option>
-                                        <option value="Credit">Credit</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="UPI">UPI</option>
-                                        <option value="Paypal">Paypal</option>
-                                        <option value="Bank Transfer">Bank Transfer</option>
-                                        <option value="Credit Card">Credit Card</option>
-                                        <option value="Debit Card">Debit Card</option>
-                                        <option value="Net Banking">Net Banking</option>
+                                        <?php
+                                        foreach ($employeeDetails as $empData) {
+                                            echo '<option value="' . $empData->emp_id . '">' . $empData->emp_name . '</option>';
+                                        }
+                                        ?>
                                     </select>
                                 </div>
 
                                 <div class="col-md-1 col-6 text-right">
-                                    <a class="btn btn-sm btn-primary " data-toggle="modal"
-                                        data-target="#labPatientSelection">
+                                    <a class="btn btn-sm btn-primary " data-toggle="modal" data-target="#labPatientSelection">
                                         <i class="fas fa-edit"></i>Entry
                                     </a>
                                 </div>
                             </div>
 
+                            <div class="row mt-3" id="dtPickerDiv" style="display: none;">
+                                <div class="col-md-12">
+                                    <div class="d-flex">
+                                        <div class="dtPicker" style="margin-right: 1rem;">
+                                            <label>Strat Date</label>
+                                            <input type="date" id="from-date" name="from-date">
+                                        </div>
+                                        <div class="dtPicker" style="margin-right: 1rem;">
+                                            <label>End Date</label>
+                                            <input type="date" id="to-date" name="to-date">
+                                        </div>
+                                        <div class="dtPicker">
+                                            <button class="btn btn-sm btn-primary" onclick="customDate()">Find</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" width="100%" cellspacing="0">
@@ -198,7 +311,7 @@ if ($billsResponse->status == 1) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if (is_array($labBillDisplay) && count($labBillDisplay) > 0) {
+                                        if (is_array($slicedLabBills) && count($slicedLabBills) > 0) {
                                             foreach ($slicedLabBills as $rowlabBill) {
                                                 $billId        = $rowlabBill->bill_id;
                                                 $patientId     = $rowlabBill->patient_id;
@@ -228,10 +341,10 @@ if ($billsResponse->status == 1) {
 
                                                 $docId = $referdDoc;
                                                 if (is_numeric($docId)) {
-                                                    $showDoctor = $Doctors->showDoctorById($docId);
-                                                    foreach ($showDoctor as $rowDoctor) {
-                                                        $docName = $rowDoctor['doctor_name'];
-                                                    }
+                                                    $showDoctor = $Doctors->showDoctorNameById($docId);
+                                                    $showDoctor = json_decode($showDoctor);
+
+                                                    $docName = $showDoctor->data;
                                                 } else {
                                                     $docName = $referdDoc;
                                                 }
@@ -273,7 +386,7 @@ if ($billsResponse->status == 1) {
                             </div>
 
                             <div class="d-flex justify-content-center">
-                                <?= $billsPagination ?>
+                                <?= $paginationHTML ?>
                             </div>
 
                         </div>
@@ -303,8 +416,7 @@ if ($billsResponse->status == 1) {
     </a>
 
     <!-- Lab ptient selection Modal -->
-    <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="labPatientSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body d-flex justify-content-around align-items-center py-5">
@@ -322,8 +434,7 @@ if ($billsResponse->status == 1) {
 
 
     <!-- Bill View Modal -->
-    <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -348,87 +459,113 @@ if ($billsResponse->status == 1) {
 
 
     <script>
-    billViewandEdit = (obj) => {
+        billViewandEdit = (obj) => {
 
-        let billId = obj;
-        // alert(billId);
-        let url = "ajax/labBill.view.ajax.php?billId=" + billId;
-        $(".billview").html(
-            '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
-            url + '"></iframe>');
+            let billId = obj;
+            // alert(billId);
+            let url = "ajax/labBill.view.ajax.php?billId=" + billId;
+            $(".billview").html(
+                '<iframe width="99%" height="500px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
+                url + '"></iframe>');
 
-    } // end of viewAndEdit function
+        } // end of viewAndEdit function
 
-    function resizeIframe(obj) {
-        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-    }
-
-
-    cancelBill = (billId) => {
-        swal({
-                title: "Are you sure?",
-                text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-
-                    $.ajax({
-                        url: "ajax/labBill.delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            billId: billId,
-                            status: "Cancelled",
-                        },
-                        success: function(data) {
-                            // alert (data);
-                            if (data == 1) {
-                                swal("Done! Your Bill Has Been Cancelled.", {
-                                    icon: "success",
-                                });
-                                row = document.getElementById(billId);
-                                row.closest('tr').style.background = '#b51212';
-                                row.closest('tr').style.color = '#FFFFFF';
-                            } else {
-                                $("#error-message").html("Cancellation Field !!!").slideDown();
-                            }
-
-                        }
-                    });
-
-                }
-            });
-    }
-
-    const dictorFilter = (t) => {
-        doctorId = t.value;
-        // Get the current URL
-        var currentURL = window.location.href;
-
-        // Get the current URL without the query string
-        var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-
-        var newURL = `${currentURLWithoutQuery}?doctor=${doctorId}`;
-     
-        // alert(newURL);
-        window.location.replace(newURL);
-    }
-
-    const filterAppointment = (searchId) =>{
-        var search = document.getElementById(searchId);
-        var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-        if (search.value.length > 2) {
-            var newURL = `${currentURLWithoutQuery}?search=${search.value}`;
-            window.location.replace(newURL);
-        }else{
-            alert('Please Enter Minimum 3 Character!');
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
         }
 
-    }
+
+        cancelBill = (billId) => {
+            swal({
+                    title: "Are you sure?",
+                    text: "Once Cancelled, You Will Not Be Able to Modify This Bill.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: "ajax/labBill.delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                billId: billId,
+                                status: "Cancelled",
+                            },
+                            success: function(data) {
+                                // alert (data);
+                                if (data == 1) {
+                                    swal("Done! Your Bill Has Been Cancelled.", {
+                                        icon: "success",
+                                    });
+                                    row = document.getElementById(billId);
+                                    row.closest('tr').style.background = '#b51212';
+                                    row.closest('tr').style.color = '#FFFFFF';
+                                } else {
+                                    $("#error-message").html("Cancellation Field !!!").slideDown();
+                                }
+
+                            }
+                        });
+
+                    }
+                });
+        }
+
+        const returnFilter = (t) => {
+
+            document.getElementById('dtPickerDiv').style.display = 'none'
+
+            var search = t.id;
+            var searchKey = t.value;
+
+            if(searchKey != 'CR'){
+                // Get the current URL
+                var currentURL = window.location.href;
+                // Get the current URL without the query string
+                var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+
+                var newURL = `${currentURLWithoutQuery}?search=${search}&searchKey=${searchKey}`;
+
+                window.location.replace(newURL);
+            }
 
 
+            if(searchKey == 'CR'){
+                document.getElementById('dtPickerDiv').style.display = 'block'
+            }
+        }
+
+
+        const customDate = () =>{
+            let fromDate = document.getElementById('from-date').value;
+            let toDate = document.getElementById('to-date').value;
+
+            //fetch current url and pathname
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            // create new url with added value to previous url
+            var newUrl = `${currentURLWithoutQuery}?search=${'added_on'}&searchKey=${'CR'}&fromDt=${fromDate}&toDt=${toDate}`;
+            // replace previous url with new url
+            window.location.replace(newUrl);
+        }
+
+
+        const filterAppointment = (searchId) => {
+            document.getElementById('dtPickerDiv').style.display = 'none'
+
+            // window.alert(searchId);
+            var id = document.getElementById('appointment-search').id;
+            var value = document.getElementById('appointment-search').value;
+
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            if (value.length > 2) {
+                var newURL = `${currentURLWithoutQuery}?search=${id}&searchKey=${value}`;
+                window.location.replace(newURL);
+            } else {
+                alert('Please Enter Minimum 3 Character!');
+            }
+        }
     </script>
 
     <!-- Core plugin JavaScript-->

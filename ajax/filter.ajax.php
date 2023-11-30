@@ -9,31 +9,27 @@ require_once CLASS_DIR . "distributor.class.php";
 require_once CLASS_DIR . "appoinments.class.php";
 require_once CLASS_DIR . 'pagination.class.php';
 require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'doctors.class.php';
 
 $Pagination  = new Pagination;
 $Appointments = new Appointments();
-
+$Doctors = new Doctors;
 $Patients   = new Patients;
-
-
-function functionPagination($slicedAppointments){
-    print_r($slicedAppointments);
-}
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['search'])) {
+
         $match = $_POST['search'];
         $searchFor  = $_POST['searchFor'];
 
 
-
         switch ($searchFor) {
-            
+
             case 'appointment-search':
 
-                if (strlen($match) > 3) {
+                if (strlen($match) > 0) {
                     if (preg_match('/\d/', $match)) {
                         $col = 'appointment_id';
                     } else {
@@ -42,33 +38,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     $resultData = $Appointments->filterAppointmentsByIdOrName($col, $match, $adminId);
                     $resultData = json_decode($resultData);
-                    if ($resultData->status) {
+                    if($resultData->status){
                         $resultData = $resultData->data;
                     } else {
                         $resultData = array();
                     }
 
-                    if (is_array($resultData)) {
-                        // print_r($resultData);
+                    // print_r($resultData);
+                    $dataArray = array();
+                    foreach($resultData as $resultData){
+                        $doctorData = $Doctors->showDoctorNameById($resultData->doctor_id);
+                        $doctorData = json_decode($doctorData);
+                        $doctorName = $doctorData->data;
+                        
+                        array_push($dataArray, array('appointment_id' => $resultData->appointment_id,
+                         'patient_id' => $resultData->patient_id,
+                         'patient_name' => $resultData->patient_name, 
+                         'doc_name' => $doctorName, 
+                         'appointment_date' => $resultData->appointment_date));
+                    }
+                    // print_r($dataArray);
 
-                        $response = json_decode($Pagination->arrayPagination($resultData));
 
-                        $slicedAppointments = '';
-                        $paginationHTML = '';
-                        $totalItem = $slicedAppointments = $response->totalitem;
+                    if (!empty($dataArray)) {
+                        
+                        $allAppointmentsData = $dataArray;
+                        
+                        if (is_array($allAppointmentsData)) {
+                            // print_r($allAppointmentsData);
+                            $response = json_decode($Pagination->arrayPagination($allAppointmentsData));
+                            
+                            $slicedAppointments = '';
+                            $paginationHTML = '';
+                            $totalItem = $slicedAppointments = $response->totalitem;
+                
+                            if ($response->status == 1) {
+                                $slicedAppointments = $response->items;
+                                $paginationHTML = $response->paginationHTML;
+                                // print_r($paginationHTML);
+                                $response = ['data'=>$slicedAppointments, 'pagination'=>$paginationHTML];
 
-                        if ($response->status == 1) {
-                            $slicedAppointments = $response->items;
-                            $paginationHTML = $response->paginationHTML;
-
-                            $paginationFunction = functionPagination($slicedAppointments);
+                                echo json_encode($response);
+                            }
+                        } else {
+                            $totalItem = 0;
                         }
                     } else {
                         $totalItem = 0;
+                        $paginationHTML = '';
                     }
-                } else {
-                    echo 'Please Enter Minimum 3 character';
-                }
+                } 
+                
                 break;
             case 'patients-search':
 
@@ -81,58 +101,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         }
                         if ($match) {
 
-                            $filterPatient = $Patients->filterPatient($col, $match, $adminId);
-                            $filterPatient = json_decode($filterPatient);
-                            // $_SESSION['filteredPatientData'] = json_encode($filterPatient);
-                            // print_r($filterPatient);
-                            if ($filterPatient->status == 1) {
-                                $patientData = $filterPatient->data[0];
-                                $patientID   = $patientData->patient_id;
-                                $patientName = $patientData->name;
-                                $patientAge  = $patientData->age;
-                                $patientContact  = $patientData->phno;
-                                $patientVisit    = $patientData->visited;
-                                $patientLabVisit = $patientData->lab_visited;
-                                $patientPin      = $patientData->patient_pin;
-                                echo "
-                                <div class='table-responsive'>
-                                <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
-                                    <thead>
-                                        <tr>
-                                            <th>Patient ID</th>
-                                            <th>Patient Name</th>
-                                            <th>Age</th>
-                                            <th>Contact</th>
-                                            <th>Visits</th>
-                                            <th>Area PIN</th>
-                                            <th class='text-center'>View</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                    <tr>
-                                    <td>$patientID</td>
-                                    <td>$patientName</td>
-                                    <td>$patientAge</td>
-                                    <td>$patientContact</td>
-                                    <td class='align-middle pb-0 pt-0'>
-                                             <small class='small'>
-                                                 <span>Doctor: $patientVisit</span>
-                                                 <br>
-                                                 <span>Lab: $patientLabVisit</span></small>
-                                         </td>
-                                    <td>$patientPin</td>     
-                                         <td class='text-center'>
-                                         <a class='text-primary' href='patient-details.php?patient=. url_enc($patientID).'
-                                             title='View and Edit'><i class='fas fa-eye'></i>
-                                         </a>
-                                     </td>
-                                    </tr>
-                                    </table>
-                                    </div?
-                                ";
+                            // $filterPatient = $Patients->filterPatient($col, $match, $adminId);
+                            // $filterPatient = json_decode($filterPatient);
+                            // // print_r($filterPatient);
+                            // if ($filterPatient->status == 1) {
+                            //     $patientData = $filterPatient->data[0];
+                            //     $patientID   = $patientData->patient_id;
+                            //     $patientName = $patientData->name;
+                            //     $patientAge  = $patientData->age;
+                            //     $patientContact  = $patientData->phno;
+                            //     $patientVisit    = $patientData->visited;
+                            //     $patientLabVisit = $patientData->lab_visited;
+                            //     $patientPin      = $patientData->patient_pin;
+                            //     echo "
+                            //     <div class='table-responsive'>
+                            //     <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
+                            //         <thead>
+                            //             <tr>
+                            //                 <th>Patient ID</th>
+                            //                 <th>Patient Name</th>
+                            //                 <th>Age</th>
+                            //                 <th>Contact</th>
+                            //                 <th>Visits</th>
+                            //                 <th>Area PIN</th>
+                            //                 <th class='text-center'>View</th>
+                            //             </tr>
+                            //         </thead>
+                            //         <tbody>
+                            //         </tbody>
+                            //         <tr>
+                            //         <td>$patientID</td>
+                            //         <td>$patientName</td>
+                            //         <td>$patientAge</td>
+                            //         <td>$patientContact</td>
+                            //         <td class='align-middle pb-0 pt-0'>
+                            //                  <small class='small'>
+                            //                      <span>Doctor: $patientVisit</span>
+                            //                      <br>
+                            //                      <span>Lab: $patientLabVisit</span></small>
+                            //              </td>
+                            //         <td>$patientPin</td>     
+                            //              <td class='text-center'>
+                            //              <a class='text-primary' href='patient-details.php?patient=. url_enc($patientID).'
+                            //                  title='View and Edit'><i class='fas fa-eye'></i>
+                            //              </a>
+                            //          </td>
+                            //         </tr>
+                            //         </table>
+                            //         </div?
+                            //     ";
 
-                            } 
+                            // } 
                            
                             
                         }

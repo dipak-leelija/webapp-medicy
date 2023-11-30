@@ -8,6 +8,7 @@ require_once CLASS_DIR.'patients.class.php';
 $Patients = new Patients();
 
 $showPatients = json_decode($Patients->allPatients($adminId));
+$showPatients = $showPatients->data;
 ?>
 
 <!doctype html>

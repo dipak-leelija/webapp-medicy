@@ -1,3 +1,131 @@
+
+//////////////////// set distributor name /////////////////////
+
+const distributorInput = document.getElementById("distributor-id");
+const dropdown = document.getElementsByClassName("c-dropdown")[0];
+
+distributorInput.addEventListener("focus", () => {
+    dropdown.style.display = "block";
+});
+
+document.addEventListener("click", (event) => {
+    // Check if the clicked element is not the input field or the dropdown
+    if (!distributorInput.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.style.display = "none";
+    }
+});
+
+document.addEventListener("blur", (event) => {
+    // Check if the element losing focus is not the dropdown or its descendants
+    if (!dropdown.contains(event.relatedTarget)) {
+        // Delay the hiding to allow the click event to be processed
+        setTimeout(() => {
+            dropdown.style.display = "none";
+        }, 100);
+    }
+});
+
+
+
+distributorInput.addEventListener("keyup", () => {
+    // Delay the hiding to allow the click event to be processed
+    let list = document.getElementsByClassName('lists')[0];
+    
+    if(distributorInput.value.length > 2){
+
+        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
+        request.open("GET", distributorURL, false);
+        request.send(null);
+        // console.log();
+        list.innerHTML = request.responseText
+    }else if(distributorInput.value == ''){
+        
+        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
+        request.open("GET", distributorURL, false);
+        request.send(null);
+        // console.log();
+        list.innerHTML = request.responseText
+    }else{
+        
+        list.innerHTML = '';
+    }
+});
+
+const setDistributor=(t)=>{
+    let distributirId = t.id.trim();
+    let distributirName = t.innerHTML.trim();
+
+    document.getElementById("dist-id").value = distributirId;
+    document.getElementById("dist-name").value = distributirName;
+    document.getElementById("distributor-id").value = distributirName;
+
+    document.getElementsByClassName("c-dropdown")[0].style.display = "none";
+}
+
+const addDistributor=()=>{
+    $.ajax({
+        url: "components/distributor-add.php",
+        type: "POST",
+        success: function(response) {
+            let body = document.querySelector('.add-distributor');
+            body.innerHTML = response;
+        },
+        error: function(error) {
+            console.error("Error: ", error);
+        }
+    });
+}
+
+//////////////////// set distributor bill no /////////////////////
+
+const setDistBillNo = (t) => {
+    let val = t.value.toUpperCase();
+    // console.log(val);
+    document.getElementById("distBill-no").value = val;
+}
+
+//////////////////// set bill date \\\\\\\\\\\\\\\\\\\\
+var todayDate = new Date();
+
+var date = todayDate.getDate();
+var month = todayDate.getMonth() + 1;
+var year = todayDate.getFullYear();
+
+if (date < 10) {
+    date = '0' + date;
+}
+if (month < 10) {
+    month = '0' + month;
+}
+var todayFullDate = year + "-" + month + "-" + date;
+document.getElementById("bill-date").setAttribute("max", todayFullDate);
+
+// =======  bill date set ===========
+const getbillDate = (billDate) => {
+    billDate = billDate.value;
+
+    document.getElementById("bill-date-val").value = billDate;
+
+    document.getElementById("due-date").setAttribute("min", billDate);
+
+    var date2 = todayDate.getDate() + 7;
+    var todayFullDate2 = year + "-" + month + "-" + date2;
+    document.getElementById("due-date").setAttribute("max", todayFullDate2);
+}
+
+//////////////////// set due date /////////////////////
+const getDueDate = (t) => {
+    // console.log(t.value);
+    document.getElementById("due-date-val").value = t.value;
+}
+
+/////////////////////// SET PAYMENT MODE \\\\\\\\\\\\\\\\\\\\\\
+const setPaymentMode = (pMode) => {
+    document.getElementById("payment-mode-val").value = pMode.value;
+}
+
+
+
 //////// QANTITY AND FREE QANTITY VALUE CONTROL //////////
 const Qty = document.getElementById('qty');
 Qty.addEventListener('input', function (event) {
@@ -63,64 +191,6 @@ firstInput.addEventListener('input', function (event) {
     }
 });
 
-
-//////////////////// set distributor name /////////////////////
-
-const selectDistributor = (t) => {
-    let id = t.value;
-    let distributirName = t.selectedOptions[0].text;
-
-    document.getElementById("dist-id").value = id;
-    document.getElementById("dist-name").value = distributirName;
-}
-
-//////////////////// set distributor bill no /////////////////////
-
-const setDistBillNo = (t) => {
-    let val = t.value.toUpperCase();
-    // console.log(val);
-    document.getElementById("distBill-no").value = val;
-}
-
-//////////////////// set bill date \\\\\\\\\\\\\\\\\\\\
-var todayDate = new Date();
-
-var date = todayDate.getDate();
-var month = todayDate.getMonth() + 1;
-var year = todayDate.getFullYear();
-
-if (date < 10) {
-    date = '0' + date;
-}
-if (month < 10) {
-    month = '0' + month;
-}
-var todayFullDate = year + "-" + month + "-" + date;
-document.getElementById("bill-date").setAttribute("max", todayFullDate);
-
-// =======  bill date set ===========
-const getbillDate = (billDate) => {
-    billDate = billDate.value;
-
-    document.getElementById("bill-date-val").value = billDate;
-
-    document.getElementById("due-date").setAttribute("min", billDate);
-
-    var date2 = todayDate.getDate() + 7;
-    var todayFullDate2 = year + "-" + month + "-" + date2;
-    document.getElementById("due-date").setAttribute("max", todayFullDate2);
-}
-
-//////////////////// set due date /////////////////////
-const getDueDate = (t) => {
-    // console.log(t.value);
-    document.getElementById("due-date-val").value = t.value;
-}
-
-/////////////////////// SET PAYMENT MODE \\\\\\\\\\\\\\\\\\\\\\
-const setPaymentMode = (pMode) => {
-    document.getElementById("payment-mode-val").value = pMode.value;
-}
 
 //////////////////////////// ITEM SEART START ////////////////////////////////
 function searchItem(input) {
@@ -402,6 +472,7 @@ const getBillAmount = () => {
 const addData = () => {
     // alert('Clicked');
     let distId = document.getElementById("distributor-id");
+    let distId2 = document.getElementById("dist-id");
     // console.log(distId.value1);
     let distBillid = document.getElementById("dist-bill-no");
 
@@ -437,7 +508,7 @@ const addData = () => {
     let base = document.getElementById("base");
     let billAmount = document.getElementById("bill-amount");
 
-    if (distId.value == "") {
+    if (distId.value == "" && distId2.value == "") {
         swal("Blank Field", "Please Selet Distributor First!", "error")
             .then((value) => {
                 distId.focus();

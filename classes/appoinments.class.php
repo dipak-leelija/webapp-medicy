@@ -80,6 +80,7 @@ class Appointments extends DatabaseConnection
     }
 
 
+
     function filterAppointments($filterBy, $column, $adminId)
     {
         $data = array();
@@ -122,18 +123,17 @@ class Appointments extends DatabaseConnection
 
 
 
-    function filterAppointmentsByIdOrName($col, $data, $adminId){
+    function filterAppointmentsByIdOrName($data, $adminId){
 
         try {
-            if ($col == 'appointment_id' || $col == 'patient_name') {
-
-                $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE appointment_id LIKE ? OR  patient_name LIKE ? AND admin_id = ? ORDER BY id DESC");
+            
+                $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE appointment_id LIKE ? OR  patient_id LIKE ? OR patient_name LIKE ? AND admin_id = ? ORDER BY id DESC");
 
 
                 if ($stmt) {
 
                     $searchPattern = "%".$data ."%";
-                    $stmt->bind_param("sss", $searchPattern, $searchPattern, $adminId);
+                    $stmt->bind_param("ssss", $searchPattern, $searchPattern, $searchPattern, $adminId);
                     
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -152,7 +152,7 @@ class Appointments extends DatabaseConnection
                 } else {
                     throw new Exception("Error statement preparation: $stmt->error");
                 }
-            }
+            
 
             
         } catch (Exception $e) {
@@ -162,6 +162,69 @@ class Appointments extends DatabaseConnection
     }
 
 
+
+
+
+
+    function appointmentsFilter($col, $data, $adminId){
+        try {
+            $selectLastMonth = "SELECT * FROM appointments WHERE $col = ? AND admin_id = ?";
+            $stmt = $this->conn->prepare($selectLastMonth);
+
+            $stmt->bind_param("si", $data, $adminId);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if($result->num_rows > 0){
+                $appointmentsRestult = array();
+                while ($row = $result->fetch_object()) {
+                    $appointmentsRestult[] = $row;
+                } 
+                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$appointmentsRestult]);
+            } else {
+                return json_encode(['status'=>'0', 'message'=>'', 'data'=>'']);
+            }
+            $stmt->close();
+        } catch (Exception $e) {
+            error_log("Error in appointmentsFilter: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+
+
+
+
+    function appointmentsFilterByDate($fromDate, $toDate, $adminId){
+        try {
+            $selectLastMonth = "SELECT * FROM `appointments` 
+                                WHERE added_on BETWEEN '$fromDate' AND '$toDate'
+                                AND admin_id = '$adminId'";
+
+            $stmt = $this->conn->prepare($selectLastMonth);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if($result->num_rows > 0){
+                $appointmentsRestult = array();
+                while ($row = $result->fetch_object()) {
+                    $appointmentsRestult[] = $row;
+                } 
+                $stmt->close();
+                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$appointmentsRestult]);
+            } else {
+                $stmt->close();
+                return json_encode(['status'=>'0', 'message'=>'', 'data'=>'']);
+            }
+        } catch (Exception $e) {
+            error_log("Error in appointmentsFilter: " . $e->getMessage());
+        }
+        return 0;
+    }
 
 
 

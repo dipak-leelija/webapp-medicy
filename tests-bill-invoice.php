@@ -125,7 +125,7 @@ if (isset($_POST['bill-generate'])) {
         $totalAfterDiscount = $payable;
 
 
-        $addLabBill = $LabBilling->addLabBill($billId, NOW, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $adminId);
+        $addLabBill = $LabBilling->addLabBill($billId, NOW, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $employeeId, NOW, $adminId);
 
         if ($addLabBill) {
             echo "<script>alert('Bill Generated.');</script>";

@@ -30,29 +30,17 @@ $showDesignation = json_decode($showDesignation, true);
 if (isset($_POST['add-emp']) == true) {
 
 
-    $empName = $_POST['emp-name'];
-    $empUsername = $_POST['emp-username'];
-    $empMail = $_POST['emp-mail'];
-    $empRole = $_POST['emp-role'];
-    $empPass = $_POST['emp-pass'];
-    $empCPass = $_POST['emp-cpass'];
-    $empAddress = $_POST['emp-address'];
-
-    // echo "<br>Admin id : $adminId adn data type : "; echo gettype($adminId);
-    // echo "<br>$empName adn data type : "; echo gettype($empName);
-    // echo "<br>$empUsername adn data type : "; echo gettype($empUsername);
-    // echo "<br>$empMail adn data type : "; echo gettype($empMail);
-    // echo "<br>$empRole adn data type : "; echo gettype($empRole);
-    // echo "<br>$empPass adn data type : "; echo gettype($empPass);
-    // echo "<br>$empCPass adn data type : "; echo gettype($empCPass);
-    // echo "<br>$empAddress adn data type : "; echo gettype($empAddress);
-    // exit;
+    $empName      = $_POST['emp-name'];
+    $empUsername  = $_POST['emp-username'];
+    $empMail      = $_POST['emp-mail'];
+    $empRole      = $_POST['emp-role'];
+    $empPass      = $_POST['emp-pass'];
+    $empCPass     = $_POST['emp-cpass'];
+    $empAddress   = $_POST['emp-address'];
 
 
     if ($empPass == $empCPass) {
         $wrongPasword = false;
-        $empPass = password_hash($empPass, PASSWORD_DEFAULT);
-
         $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
         if ($addEmployee) {
             $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');

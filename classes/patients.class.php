@@ -49,7 +49,8 @@ class Patients extends DatabaseConnection
 
 
 
-    function addLabPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState){
+    function addLabPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState)
+    {
 
         $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `address_2`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`) VALUES
         ('$patientId', '$patientName', '$patientGurdianName', '$patientEmail', '$patientPhoneNumber', '$patientAge', '$gender', '$patientAddress1', '$patientAddress2', '$patientPS', '$patientDist', '$patientPIN', '$patientState')";
@@ -63,7 +64,8 @@ class Patients extends DatabaseConnection
 
 
 
-    function updateLabVisiting($patientId, $Labvisited){
+    function updateLabVisiting($patientId, $Labvisited)
+    {
 
         $insertPatients = " UPDATE `patient_details` SET `lab_visited` = '$Labvisited' WHERE `patient_details`.`patient_id` = '$patientId'";
 
@@ -74,7 +76,8 @@ class Patients extends DatabaseConnection
 
 
 
-    function labVisists($patientId){
+    function labVisists($patientId)
+    {
 
         try {
             $query = "SELECT lab_visited FROM patient_details WHERE patient_id = ?";
@@ -102,7 +105,8 @@ class Patients extends DatabaseConnection
     }
 
 
-    function allPatients($admin){
+    function allPatients($admin)
+    {
 
         $data = array();
 
@@ -135,42 +139,113 @@ class Patients extends DatabaseConnection
         // return json_encode(['status' => 0, 'message' => $e->getMessage(), 'data' => $data]);
     }
 
-    function filterPatient($col, $data, $adminId){
-            try {
-                if ($col == 'patient_id' || $col == 'patient_name') {
-    
-                    $stmt = $this->conn->prepare("SELECT * FROM `patient_details` WHERE `patient_id` LIKE ? OR  `name` LIKE ? AND admin_id = ? ORDER BY id DESC");
 
-                    if ($stmt) {
-    
-                        $searchPattern = "%".$data ."%";
-                        $stmt->bind_param("sss", $searchPattern, $searchPattern, $adminId);
-                        
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-    
-                        if ($result->num_rows > 0) {
-                            $resultData = array();
-                            while ($row = $result->fetch_object()) {
-                                $resultData[] = $row;
-                            }
-                            $stmt->close(); 
-                            return json_encode(['status' => '1', 'message' => 'success', 'data'=> $resultData]);
-                        } else {
-                            return json_encode(['status' => '0', 'message' => '', 'data'=> '']);
-                            $stmt->close();
-                        }
-                    } else {
-                        throw new Exception("Error statement preparation: $stmt->error");
+
+
+    function filterPatientByNameOrPid($data, $adminId)
+    {
+        // function filterAppointmentsByIdOrName($col, $data, $adminId){
+        try {
+
+            $stmt = $this->conn->prepare("SELECT * FROM `patient_details` WHERE `patient_id` LIKE ? OR  `name` LIKE ? AND admin_id = ? ORDER BY id DESC");
+
+            if ($stmt) {
+
+                $searchPattern = "%" . $data . "%";
+                $stmt->bind_param("sss", $searchPattern, $searchPattern, $adminId);
+
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $resultData = array();
+                    while ($row = $result->fetch_object()) {
+                        $resultData[] = $row;
                     }
+                    return json_encode(['status' => '1', 'message' => 'success', 'data' => $resultData]);
+                } else {
+                    return json_encode(['status' => '0', 'message' => '', 'data' => '']);
                 }
-    
-                
-            } catch (Exception $e) {
-                error_log("Error in appointmentsDisplay: " . $e->getMessage());
+                $stmt->close();
+            } else {
+                throw new Exception("Error statement preparation: $stmt->error");
             }
-            return 0;
+        } catch (Exception $e) {
+            error_log("Error in appointmentsDisplay: " . $e->getMessage());
+        }
+        return 0;
     }
+
+
+
+
+
+    function patientFilterByColData($col, $data, $admin)
+    {
+        try {
+            $selectById = "SELECT * FROM patient_details WHERE `$col` = ? AND `admin_id` = ?";
+            $stmt = $this->conn->prepare($selectById);
+
+            if ($stmt) {
+                $stmt->bind_param("si", $data, $admin);
+
+                $stmt->execute();
+
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $patiensData = [];
+                    while ($row = $result->fetch_object()) {
+                        $patiensData[] = $row;
+                    }
+                    return json_encode(['status' => '1', 'message' => 'success', 'data' => $patiensData]);
+                } else {
+                    return json_encode(['status' => '0', 'message' => 'fail', 'data' => '']);
+                }
+                $stmt->close();
+            } else {
+                throw new Exception("Error statement preparation: " . $this->conn->error);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '', 'message' => $e->getMessage(), 'data' => '']);
+        }
+        return 0;
+    }
+
+
+
+
+
+    function patientFilterByDate($fromDate, $toDate, $admin)
+    {
+        try {
+            $selectByDate = "SELECT * FROM `patient_details`
+                            WHERE added_on BETWEEN '$fromDate' AND '$toDate'
+                            AND admin_id = '$admin'";
+
+            $stmt = $this->conn->prepare($selectByDate);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $patiensData = [];
+                while ($row = $result->fetch_object()) {
+                    $patiensData[] = $row;
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $patiensData]);
+            } else {
+                $stmt->close();
+                return json_encode(['status' => '0', 'message' => 'fail', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '', 'message' => $e->getMessage(), 'data' => '']);
+        }
+        return 0;
+    }
+
 
 
 
@@ -187,35 +262,36 @@ class Patients extends DatabaseConnection
         return $data;
     } //end appointmentsDisplay function
 
-    function patientName($patientId){
+    function patientName($patientId)
+    {
         try {
             $selectById = "SELECT name FROM patient_details WHERE `patient_id`= ?";
             $stmt = $this->conn->prepare($selectById);
-    
+
             if (!$stmt) {
                 throw new Exception("Failed to prepare the statement.");
             }
-    
+
             $stmt->bind_param("s", $patientId);
             $stmt->execute();
-    
+
             $result = $stmt->get_result();
-            
+
             if ($result->num_rows > 0) {
                 $data = $result->fetch_assoc()['name'];
             } else {
                 $data = $patientId; // return as it is
             }
-    
+
             $stmt->close();
-    
+
             return $data;
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
             return null;
         }
     }
-    
+
 
 
     function patientsDisplayByPId($patientId)

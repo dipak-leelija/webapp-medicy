@@ -26,6 +26,7 @@ class LoginForm extends DatabaseConnection{
                     $_SESSION['ADMINID']   = $data->admin_id;
 
                     header("Location: ".URL);
+                    exit;
                 } else {
                     return 'Wrong Password';
                 }
@@ -39,8 +40,9 @@ class LoginForm extends DatabaseConnection{
                 while ($data = $result->fetch_object()) {
 
                     $dbPasshash = $data->emp_password;
+                    $x_password = pass_dec($dbPasshash, EMP_PASS);
                     
-                    if (password_verify($password, $dbPasshash)) {
+                    if ($x_password === $password) {
                         session_start();
                         $_SESSION['LOGGEDIN']   = true;
                         $_SESSION['ADMIN']      = false;
@@ -53,7 +55,8 @@ class LoginForm extends DatabaseConnection{
 
                         // echo "employee login";
                         // exit;
-                        header("Location: index.php");
+                        header("Location: ".URL);
+                        exit;
                     } else {
                         return 'Wrong Password';
                     }
