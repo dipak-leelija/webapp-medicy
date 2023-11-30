@@ -31,7 +31,8 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        <?php if ($userRole == 2): ?>
+        <?php
+        if ($userRole == 2 || $userRole == 'ADMIN'): ?>
 
         <!-- Heading -->
         <div class="sidebar-heading">
@@ -108,7 +109,7 @@
         <?php endif; ?>
 
 
-        <?php if ($userRole == 1): ?>
+        <?php if ($userRole == 1 || $userRole == 'ADMIN'): ?>
 
 
         <!-- Heading -->
