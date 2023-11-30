@@ -169,7 +169,6 @@ if ($_SESSION['ADMIN']) {
                                     <form class="user" action="_config/form-submission/profileSetup-form.php" method="post">
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
-                                            <!-- <div class="position-relative"> -->
                                             <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ASSETS_PATH ?>images/undraw_profile.svg" alt="">
                                             <div class="position-absolute translate-middle">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="site-logo">
