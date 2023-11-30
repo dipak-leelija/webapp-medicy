@@ -13,14 +13,40 @@ require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'empRole.class.php';
 
 
+$Admin = new Admin;
+$Employees = new Employees;
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(isset($_POST['submit'])){
 
+        $imageName         = $_FILES['profile-image']['name'];
+        $tempImgName       = $_FILES['profile-image']['tmp_name'];
 
 
-        echo "hello";
+        $fname = $_POST['fname'];
+        $lname = $_POST['lname'];
+        $userName = $_POST['user-name'];
+        $email = $_POST['email'];
+        $phNo = $_POST['mobile-number'];
+
+        $pss = $_POST['password'];
+        $hashedPassword = password_hash($pss, PASSWORD_DEFAULT);
+
+        $cnfPass = $_POST['cpassword'];
+        $address = $_POST['address'];
+
+
         if($_SESSION['ADMIN']){
-            echo 'admin';
+            $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $userName, $email, $phNo, $hashedPassword, $address, NOW, $adminId);
+
+            if($updateAdminData['result']){
+                
+                $imgFolder = ADM_IMG_DIR.$imageName;
+                move_uploaded_file($tempImgName, $imgFolder);
+
+            }else{
+                echo false;
+            }
         } else {
             echo 'employee';
         }
