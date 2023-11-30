@@ -126,7 +126,7 @@ $address = $profileDetails->data[0]->address;
                                     <div class="d-flex justify-content-start align-items-center">
                                         <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
                                     </div>
-                                    <form class="user" action="register.php" method="post">
+                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post">
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
 
                                             <img class="img-uv-view  rounded-circle" style="width: 20%;" src="<?= ASSETS_PATH ?>images/undraw_profile.svg" alt="">
