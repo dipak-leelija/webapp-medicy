@@ -54,8 +54,8 @@ session_start();
 	define('CLASS_DIR', 		ROOT_DIR.'classes/');
 	define('ASST_DIR', 			ROOT_DIR.'uploads/contents/');
 	define('PROD_IMG_DIR', 		ROOT_DIR.'images/product-image/');
-	define('ADM_IMG_DIR', 		ROOT_DIR.'images/admin-images/');
-	define('EMP_IMG_DIR', 		ROOT_DIR.'images/employee-images/');
+	define('ADM_IMG_DIR', 		LOCAL_DIR.'images/admin-images/');
+	define('EMP_IMG_DIR', 		LOCAL_DIR.'images/employee-images/');
 	
 	
 	define('PAGE',				$_SERVER['PHP_SELF']);

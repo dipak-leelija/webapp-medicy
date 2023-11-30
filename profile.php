@@ -76,7 +76,9 @@ if ($_SESSION['ADMIN']) {
 }
 
 
-
+echo ADM_IMG_DIR;
+echo "<br>";
+echo $image;
 
 
 ?>
@@ -169,7 +171,7 @@ if ($_SESSION['ADMIN']) {
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
-                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? $image : ASSETS_PATH ?>images/undraw_profile.svg" alt="">
+                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? ADM_IMG_DIR.$image : ASSETS_PATH.'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
                                                 <label for="img-uv-input" class="btn btn-sm btn-outline-secondary ml-5" style="margin-top: 115%;"><i class="fas fa-edit"></i></label>
