@@ -227,7 +227,7 @@ if ($allPatients->status) {
                                 </div>
                             </div>
 
-                            <div class="row mt-3" id="dtPickerDiv" style="display: none;">
+                            <div class="dropdown-menu row ml-4" id="dtPickerDiv" style="display: none;margin-top: -265px; background-color: rgba(255, 255, 255, 0.8);">
                                 <div class="col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
