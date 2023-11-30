@@ -24,23 +24,61 @@ $showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $desigRole->designationRole($adminId);
 $showDesignation = json_decode($showDesignation, true);
 
-
+$profileDetails = array();
 if ($_SESSION['ADMIN']) {
-    $profileDetails = $Admin->adminDetails($adminId);
+    $adminDetails = $Admin->adminDetails($adminId);
+    $adminDetails = json_decode($adminDetails);
+    if ($adminDetails->status) {
+        $adminData = $adminDetails->data;
+
+        foreach ($adminData as $adminData) {
+
+            $firstName = $adminData->fname;
+            $lastName = $adminData->lname;
+            $image = $adminData->adm_img;
+            $userName = $adminData->username;
+            $email = $adminData->email;
+            $phone = $adminData->mobile_no;
+            $password = $adminData->password;
+            $address = $adminData->address;
+
+        }
+    }
+
 } else {
-    $profileDetails = $employees->employeeDetails($employeeId, $adminId);
+
+    $employeeDetails = $employees->employeeDetails($employeeId, $adminId);
+    $employeeDetails = json_decode($employeeDetails);
+
+    if ($employeeDetails->status) {
+        $employeeData = $employeeDetails->data;
+
+        $empName = $employeeData->emp_name;
+
+        $lastSpacePos = strrpos($empName, ' ');
+
+        if ($lastSpacePos !== false) {
+
+            $firstName = substr($fullName, 0, $lastSpacePos);
+            $lastName = substr($fullName, $lastSpacePos + 1);
+        }
+
+        foreach($employeeData as $employeeData){
+            $firstName = $firstName;
+            $lastName = $lastName;
+            $image = $employeeData->emp_img;
+            $userName = $employeeData->emp_username;
+            $email = $employeeData->emp_email;
+            $phone = $employeeData->emp_contact_no;
+            $password = $employeeData->emp_password;
+            $address = $employeeData->emp_address;
+        }        
+    }
 }
 
-$profileDetails = json_decode($profileDetails);
-// print_r($profileDetails);
-if ($profileDetails->status == 1)
-    $firstName = $profileDetails->data[0]->fname;
-$lastName = $profileDetails->data[0]->lname;
-$userName = $profileDetails->data[0]->username;
-$email = $profileDetails->data[0]->email;
-$phone = $profileDetails->data[0]->mobile_no;
-$password = $profileDetails->data[0]->password;
-$address = $profileDetails->data[0]->address;
+
+
+
 
 ?>
 
@@ -197,7 +235,7 @@ $address = $profileDetails->data[0]->address;
                                                     }
                                                     ?> -->
 
-                                            <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Update</button>
+                                            <button class="btn btn-primary btn-user btn-block" type="button" name="submit">Update</button>
                                         </div>
                                     </form>
                                 </div>

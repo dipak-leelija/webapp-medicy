@@ -174,6 +174,7 @@ if (isset($_POST['add-emp']) == true) {
                                                 $empName = $showEmployees['emp_name'];
                                                 $empRoleId = $showEmployees['emp_role'];
                                                 $empRolData = $desigRole->designationRoleID($adminId, $empRoleId);
+                                                // print_r($empRolData);
                                                 $empRolDatas = json_decode($empRolData, true);
                                                 $empRole    = $empRolDatas['desig_name'];
                                                 

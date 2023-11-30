@@ -128,7 +128,7 @@ class Admin extends DatabaseConnection
 
 
 
-    function updateAdminDetails($fname, $lname, $img, $username, $password, $email, $mobNo, $address, $adminid){
-        $updateQuery = "UPDATE `admin` SET `fname`='[value-2]',`lname`='[value-3]',`adm_img`='[value-4]',`username`='[value-5]',`password`='[value-6]',`email`='[value-7]',`mobile_no`='[value-8]',`address`='[value-9]', `updated_on`='[value-11]' WHERE `admin_id`='$adminid'";
+    function updateAdminDetails($fname, $lname, $img, $username, $password, $email, $mobNo, $address, $updatedOn, $adminid){
+        $updateQuery = "UPDATE `admin` SET `fname`='$fname',`lname`='$lname',`adm_img`='$img',`username`='$username',`password`='$password',`email`='$email',`mobile_no`='$mobNo',`address`='$address', `updated_on`='$updatedOn' WHERE `admin_id`='$adminid'";
     }
 } //eof Admin Class
