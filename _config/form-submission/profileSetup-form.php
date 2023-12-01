@@ -45,11 +45,11 @@ $Employees = new Employees;
 
             $fname = $_POST['fname'];
             $lname = $_POST['lname'];
-            $userName = $_POST['user-name'];
+            // $userName = $_POST['user-name'];
             $email = $_POST['email'];
             $phNo = $_POST['mobile-number'];
 
-            $cnfPass = $_POST['cpassword'];
+            // $cnfPass = $_POST['cpassword'];
             $address = $_POST['address'];
 
 

@@ -163,7 +163,7 @@ if ($_SESSION['ADMIN']) {
                                             <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
                                         </div>
                                     </div>
-                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile" onsubmit="return validateForm()">
+                                    <form class="user" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile" >
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
@@ -318,21 +318,7 @@ if ($_SESSION['ADMIN']) {
             }
         </script>
 
-        <script>
-            function validateForm() {
-                var password = document.getElementById("password").value;
-                var cpassword = document.getElementById("cpassword").value;
-                // var cpasserror = document.getElementById('cpasserror');
-                if (password !== cpassword) {
-                    document.getElementById('cpasserror').innerHTML = "Password and Confirm Password do not match.";
-                    cpasserror.style.display = "block";
-                    return false;
-                }
-                cpasserror.innerHTML = "";
-                cpasserror.style.display = "none";
-                return true;
-            }
-        </script>
+    
         <!-- password modal open -->
         <script>
             passwordUpdate = () => {
