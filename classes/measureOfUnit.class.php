@@ -78,8 +78,8 @@ class MeasureOfUnits extends DatabaseConnection{
         $data          = array();
         $select        = " SELECT * FROM quantity_unit WHERE `quantity_unit`.`id` = '$unitId'";
         $selectQuery   = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array() ) {
-            $data[] = $result;
+        while ($result = $selectQuery->fetch_assoc() ) {
+            $data = $result;
         }
         return $data;
     }//eof showMeasureOfUnits

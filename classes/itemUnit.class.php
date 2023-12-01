@@ -56,14 +56,14 @@ class ItemUnit extends DatabaseConnection{
 
 
 
-    // function showPackagingUnits(){
-    //     $select         = " SELECT * FROM packaging_type";
-    //     $selectQuery    = $this->conn->query($select);
-    //     while ($result  = $selectQuery->fetch_array() ) {
-    //         $data[] = $result;
-    //     }
-    //     return $data;
-    // }//eof showMeasureOfUnits
+    function showItemUnits(){
+        $select         = " SELECT * FROM item_unit";
+        $selectQuery    = $this->conn->query($select);
+        while ($result  = $selectQuery->fetch_assoc() ) {
+            $data[] = $result;
+        }
+        return $data;
+    }//eof showMeasureOfUnits
 
 
 
