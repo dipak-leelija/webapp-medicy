@@ -14,28 +14,36 @@ require_once CLASS_DIR . 'dbconnect.php';
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
-    <title>Document</title>
 </head>
 
 <body>
 
-    <div class="form-group">
-        <div class="form-group mb-3">
-            <input type="password" class="form-control " id="bpassword" name="password" maxlength="12" placeholder="Current Password" required>
-        </div>
-        <div class="form-group  mb-3">
-            <input type="password" class="form-control " id="password" name="password" maxlength="12" placeholder="Enter New Password" required>
-        </div>
-        <div class="form-group mb-3 ">
-            <input type="password" class="form-control " id="cpassword" name="cpassword" maxlength="12" placeholder="Confirm Password" required>
-            <small>
-                <p id="cpasserror" class="text-danger" style="display: none;"></p>
-            </small>
-        </div>
+    <div class="form-group mb-3">
+        <input type="password" class="form-control " id="bpassword" name="password" maxlength="12" placeholder="Current Password" required>
+    </div>
+    <div class="form-group  mb-3">
+        <input type="password" class="form-control " id="password" name="password" maxlength="12" placeholder="Enter New Password" required>
+    </div>
+    <div class="form-group mb-3 ">
+        <input type="password" class="form-control " id="cpassword" name="cpassword" maxlength="12" placeholder="Confirm Password" required>
+        <small>
+            <p id="cpasserror" class="text-danger" style="display: none;"></p>
+        </small>
     </div>
     <div class="mt-2 d-flex justify-content-end">
         <button type="button" class="btn btn-sm btn-primary">Save Changes</button>
     </div>
+
+
+    <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Js -->
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
 
 </body>
 
