@@ -22,7 +22,7 @@
 
         <!-- Nav Item For Healthcare -->
 
-        <li class="nav-item <?php if($page ==  URL){ echo "active";} ?>">
+        <li class="nav-item <?php if($currentURL  ==  LOCAL_DIR){ echo "active";} ?>">
             <a class="nav-link" href="<?= URL ?>">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
@@ -60,12 +60,12 @@
             </a>
 
             <div id="collapseTest"
-                class="collapse <?= $page ==  "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports" ? "show" : ''; ?>"
+                class="collapse <?= $page ==  "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports" || $page == "single-lab-page" || $page == "add-patient" || $page == "lab-patient-selection" ? "show" : ''; ?>"
                 aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item <?= $page ==  "lab-tests" ? "active" : ''; ?>" href="lab-tests.php">Avilable
+                    <a class="collapse-item <?= $page ==  "lab-tests" || $page == "single-lab-page" ? "active" : ''; ?>" href="lab-tests.php">Avilable
                         Tests</a>
-                    <a class="collapse-item <?= $page ==  "test-appointments" ? "active" : ''; ?>"
+                    <a class="collapse-item <?= $page ==  "test-appointments" || $page == "add-patient" || $page == "lab-patient-selection" ? "active" : ''; ?>"
                         href="test-appointments.php">Test Bill Details</a>
                     <a class="collapse-item <?= $page ==  "test-reports" ? "active" : ''; ?>"
                         href="test-reports.php">Test Reports</a>
@@ -84,11 +84,11 @@
             </a>
 
             <div id="collapseDoctor"
-                class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "show" : ''; ?>"
+                class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" || $page == "doctor-specialization" ? "show" : ''; ?>"
                 aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?= $page ==  "doctors" ? "active": ''; ?>" href="doctors.php">Doctors</a>
-                    <a class="collapse-item <?= $page ==  "doc-specialization" ? "active": ''; ?>"
+                    <a class="collapse-item <?= $page ==  "doc-specialization"  || $page == "doctor-specialization" ? "active": ''; ?>"
                         href="doctor-specialization.php">Specializations</a>
                 </div>
             </div>
