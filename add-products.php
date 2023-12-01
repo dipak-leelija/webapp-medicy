@@ -53,6 +53,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <!--Custom CSS -->
     <!-- <link href="css/add-products.css" rel="stylesheet"> -->
     <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
     <!-- css path for bootstrap 5-->
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.min.css">
@@ -107,7 +108,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <input type="text" name="manufacturer" id="manufacturer" class="upr-inp">
 
                                                 <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list">
-                                                    <div class="lists" id="manuf-lists">
+                                                    <div class="lists" id="lists">
                                                         <?php
                                                         if (!empty($showManufacturer)) {
                                                             foreach ($showManufacturer as $eachManuf) {
@@ -133,7 +134,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 ?>
                                                     <p class="text-center font-weight-bold">Manufacturer Not Found!</p>
                                                     <div class="d-flex flex-column justify-content-center" data-toggle="modal" data-target="#add-manufacturer" onclick="addManufacturer()">
-                                                        <button type="button" id="add-manuf-btn" class="text-primary border-0"><i class="fas fa-plus-circle"></i>
+                                                        <button type="button" id="add-manuf-btn" class="text-primary border-0 mt-2"><i class="fas fa-plus-circle"></i>
                                                             Add Now</button>
                                                     </div>
                                                 <?php
@@ -311,22 +312,24 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
         <!-- Custom scripts for all pages-->
         <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+        <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
         <script src="<?php echo JS_PATH ?>custom/add-products.js"></script>
 
         <!-- Sweet Alert Js  -->
         <script src="<?php echo JS_PATH ?>sweetAlert.min.js"></script>
 
-        <!-- Page level plugins -->
-        <!-- <script src="../assets/datatables/jquery.dataTables.min.js"></script> -->
-        <!-- <script src="../assets/datatables/dataTables.bootstrap4.min.js"></script> -->
-
-        <!-- Page level custom scripts -->
-        <!-- <script src="js/demo/datatables-demo.js"></script> -->
-
-        <!-- <script src="/uppy core/dist/uppy.min.js"></script> -->
 
 
-        <!-- js library import -->
+        <script>
+            productViewAndEdit = (productId) => {
+                // alert("productModalBody");
+                let ViewAndEdit = productId;
+                let url = "<?php echo ROOT_DIR ?>ajax/products.View.ajax.php?id=" + ViewAndEdit;
+                $(".productModalBody").html(
+                    '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
+                    url + '"></iframe>');
+            }
+        </script>
 
 
         <script>
@@ -371,153 +374,60 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
             document.getElementById("profit").value = profit.toFixed(2);
         }*/
-        </script>
-        <script>
-            productViewAndEdit = (productId) => {
-                // alert("productModalBody");
-                let ViewAndEdit = productId;
-                let url = "<?php echo ROOT_DIR ?>ajax/products.View.ajax.php?id=" + ViewAndEdit;
-                $(".productModalBody").html(
-                    '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
-                    url + '"></iframe>');
-            }
-        </script>
-<!-- 
-        <script>
-            $(document).on("click", ".back", function() {
-                var backFile = $(this).parents().find(".back-file");
-                backFile.trigger("click");
-            });
-            $('.back-file').change(function(e) {
-                $(".back-img-field").hide();
-                $("#back-preview").show();
+        
+
+        //     $(document).on("click", ".back", function() {
+        //         var backFile = $(this).parents().find(".back-file");
+        //         backFile.trigger("click");
+        //     });
+        //     $('.back-file').change(function(e) {
+        //         $(".back-img-field").hide();
+        //         $("#back-preview").show();
 
 
-                var fileName = e.target.files[0].name;
-                $("#back-file").val(fileName);
+        //         var fileName = e.target.files[0].name;
+        //         $("#back-file").val(fileName);
 
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    // get loaded data and render thumbnail.
-                    document.getElementById("back-preview").src = e.target.result;
-                };
-                // read the image file as a data URL.
-                reader.readAsDataURL(this.files[0]);
-            });
-        </script>
-
-        <script>
-            $(document).on("click", ".side", function() {
-                var SideFile = $(this).parents().find(".side-file");
-                SideFile.trigger("click");
-            });
-            $('.side-file').change(function(img) {
-                $(".side-img-field").hide();
-                $("#side-preview").show();
+        //         var reader = new FileReader();
+        //         reader.onload = function(e) {
+        //             // get loaded data and render thumbnail.
+        //             document.getElementById("back-preview").src = e.target.result;
+        //         };
+        //         // read the image file as a data URL.
+        //         reader.readAsDataURL(this.files[0]);
+        //     });
+        // 
 
 
-                var sideImgName = img.target.files[0].name;
-                $("#side-file").val(sideImgName);
-
-                var reader = new FileReader();
-                reader.onload = function(img) {
-                    // get loaded data and render thumbnail.
-                    document.getElementById("side-preview").src = img.target.result;
-                };
-                // read the image file as a data URL.
-                reader.readAsDataURL(this.files[0]);
-            });
-        </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var choices = new Choices('#manufacturer', {
-                    allowHTML: true,
-                    removeItemButton: true,
-                });
-            });
-        </script> -->
+        //     $(document).on("click", ".side", function() {
+        //         var SideFile = $(this).parents().find(".side-file");
+        //         SideFile.trigger("click");
+        //     });
+        //     $('.side-file').change(function(img) {
+        //         $(".side-img-field").hide();
+        //         $("#side-preview").show();
 
 
+        //         var sideImgName = img.target.files[0].name;
+        //         $("#side-file").val(sideImgName);
 
+        //         var reader = new FileReader();
+        //         reader.onload = function(img) {
+        //             // get loaded data and render thumbnail.
+        //             document.getElementById("side-preview").src = img.target.result;
+        //         };
+        //         // read the image file as a data URL.
+        //         reader.readAsDataURL(this.files[0]);
+        //     });
+        // 
+        //     document.addEventListener('DOMContentLoaded', function() {
+        //         var choices = new Choices('#manufacturer', {
+        //             allowHTML: true,
+        //             removeItemButton: true,
+        //         });
+        //     });
 
-        <script>
-            const manufacturerInput = document.getElementById("manufacturer");
-            const manufDropdown = document.getElementsByClassName("c-dropdown")[0];
-
-            manufacturerInput.addEventListener("focus", () => {
-                manufDropdown.style.display = "block";
-            });
-
-            document.addEventListener("click", (event) => {
-                // Check if the clicked element is not the input field or the manufDropdown
-                if (!manufacturerInput.contains(event.target) && !manufDropdown.contains(event.target)) {
-                    manufDropdown.style.display = "none";
-                }
-            });
-
-            document.addEventListener("blur", (event) => {
-                // Check if the element losing focus is not the manufDropdown or its descendants
-                if (!manufDropdown.contains(event.relatedTarget)) {
-                    // Delay the hiding to allow the click event to be processed
-                    setTimeout(() => {
-                        manufDropdown.style.display = "none";
-                    }, 100);
-                }
-            });
-
-
-
-            manufacturerInput.addEventListener("keyup", () => {
-                // Delay the hiding to allow the click event to be processed
-                let list = document.getElementsByClassName('lists')[0];
-
-                if (manufacturerInput.value.length > 2) {
-
-                    let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + manufacturerInput.value;
-                    request.open("GET", distributorURL, false);
-                    request.send(null);
-                    // console.log();
-                    list.innerHTML = request.responseText
-                } else if (manufacturerInput.value == '') {
-
-                    let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
-                    request.open("GET", distributorURL, false);
-                    request.send(null);
-                    // console.log();
-                    list.innerHTML = request.responseText
-                } else {
-
-                    list.innerHTML = '';
-                }
-            });
-
-
-
-            const setmanufacturer = (t) => {
-                let manufId = t.id.trim();
-                let manufName = t.innerHTML.trim();
-
-                document.getElementById("manufacturer").value = manufName;
-
-                document.getElementsByClassName("c-dropdown")[0].style.display = "none";
-            }
-
-
-            const addManufacturer = () => {
-                $.ajax({
-                    url: "components/manufacturer-add.php",
-                    type: "POST",
-                    success: function(response) {
-                        let body = document.querySelector('.add-manufacturer');
-                        body.innerHTML = response;
-                    },
-                    error: function(error) {
-                        console.error("Error: ", error);
-                    }
-                });
-            }
-        </script>
+        </script> 
 
 </body>
 
