@@ -129,13 +129,13 @@ class Admin extends DatabaseConnection
 
 
 
-    function updateAdminDetails($fname, $lname, $img, $username, $password, $email, $mobNo, $address, $updatedOn, $adminid) {
+    function updateAdminDetails($fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $adminid) {
         try {
-            $updateQuery = "UPDATE `admin` SET `fname`=?, `lname`=?, `adm_img`=?, `username`=?, `password`=?, `email`=?, `mobile_no`=?, `address`=?, `updated_on`=? WHERE `admin_id`=?";
+            $updateQuery = "UPDATE `admin` SET `fname`=?, `lname`=?, `adm_img`=?, `email`=?, `mobile_no`=?, `address`=?, `updated_on`=? WHERE `admin_id`=?";
             
             $stmt = $this->conn->prepare($updateQuery);
     
-            $stmt->bind_param("ssssssssss", $fname, $lname, $img, $username, $password, $email, $mobNo, $address, $updatedOn, $adminid);
+            $stmt->bind_param("ssssssss", $fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $adminid);
     
             $stmt->execute();
     
@@ -147,5 +147,28 @@ class Admin extends DatabaseConnection
         }
     }
 
+
+
+
+    function updateAdminPassword($newPass, $adminid){
+        $password = pass_enc($newPass, ADMIN_PASS);
+
+        try{
+            $updatePass = "UPDATE `admin` SET `password`=? WHERE `admin_id`=?";
+
+            $stmt = $this->conn->prepare($updatePass);
+    
+            $stmt->bind_param("ss", $password, $adminid);
+
+            $stmt->execute();
+    
+            $stmt->close();
+
+            return ['result' => '1'];
+
+        }catch(Exception $e){
+            return json_encode(['status'=> '0', 'message'=>$e->getMessage(), 'data'=> '']);
+        }
+    }
     
 } //eof Admin Class

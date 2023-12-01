@@ -183,13 +183,13 @@ class Employees extends DatabaseConnection
 
 
 
-    function updateEmpData($name, $img, $email, $contactNo, $address, $usrnm, $password, $updatedOn, $empid, $adminid) {
+    function updateEmpData($name, $img, $email, $contactNo, $address, $updatedOn, $empid, $adminid) {
         try {
-            $updateQuery = "UPDATE `employees` SET `emp_name`=?, `emp_img`=?, `emp_email`=?, `emp_contact_no`=?, `emp_address`=?, `emp_role`=?, `emp_username`=?, `emp_password`=? WHERE `updated_on`=? AND `admin_id`=?";
+            $updateQuery = "UPDATE `employees` SET `emp_name`=?, `emp_img`=?, `emp_email`=?, `emp_contact_no`=?, `emp_address`=?, `emp_role`=? WHERE `updated_on`=? AND `admin_id`=?";
             
             $stmt = $this->conn->prepare($updateQuery);
     
-            $stmt->bind_param("ssssssssss", $name, $img, $email, $contactNo, $address, $usrnm, $password, $updatedOn, $empid, $adminid);
+            $stmt->bind_param("ssssssss", $name, $img, $email, $contactNo, $address, $updatedOn, $empid, $adminid);
     
             $stmt->execute();
     
@@ -201,6 +201,30 @@ class Employees extends DatabaseConnection
         }
     }
 
+
+
+
+
+    function updateEmployeePassword($newPass, $empid, $adminid){
+        $password = pass_enc($newPass, EMP_PASS);
+
+        try{
+            $updateEmpPass = "UPDATE `employees` SET `password`=? WHERE `emp_id `=? AND `admin_id`=?";
+
+            $stmt = $this->conn->prepare($updateEmpPass);
+    
+            $stmt->bind_param("sss", $password, $empid, $adminid);
+
+            $stmt->execute();
+    
+            $stmt->close();
+
+            return ['result' => '1'];
+
+        }catch(Exception $e){
+            return ['status'=> '0', 'message'=>$e->getMessage(), 'data'=> ''];
+        }
+    }
 
 
     

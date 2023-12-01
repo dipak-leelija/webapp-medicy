@@ -25,6 +25,7 @@ class LoginForm extends DatabaseConnection{
                     $_SESSION['ADMIN_LNAME']  = $data->lname;
                     $_SESSION['ADMIN_CONTACT_NO']  = $data->mobile_no;
                     $_SESSION['ADMIN_USERNAME']   = $data->username;
+                    $_SESSION['ADMIN_PASSWORD']   = $data->password;
                     $_SESSION['ADMINID']   = $data->admin_id;
 
                     header("Location: ".URL);
@@ -53,6 +54,7 @@ class LoginForm extends DatabaseConnection{
                         $_SESSION['EMP_ROLE']  = $data->emp_role;
                         $_SESSION['EMP_NAME']   = $data->emp_name;
                         $_SESSION['EMP_USERNAME']   = $data->emp_username;
+                        $_SESSION['EMP_PASSWORD']   = $data->password;
                         $_SESSION['EMPID']   = $data->emp_id;
                         $_SESSION['ADMIN_ID'] = $data->admin_id;
 

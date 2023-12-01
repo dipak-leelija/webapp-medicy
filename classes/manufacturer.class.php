@@ -82,10 +82,10 @@ class Manufacturer extends DatabaseConnection{
             $result = $selectQuery->get_result();
     
             if($result->num_rows > 0){
-                while ($row = $result->fetch_assoc()) {
+                while ($row = $result->fetch_object()) {
                     $data[] = $row;
                 }
-                return $data;
+                return json_encode($data);
             }else{
                 return null;
             }

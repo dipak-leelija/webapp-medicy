@@ -99,3 +99,53 @@ function preview() {
 ////////////////////////////// manufacturur search control \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
+
+// manufacturerInput.addEventListener("keyup", () => {
+//     // Delay the hiding to allow the click event to be processed
+//     let list = document.getElementsByClassName('lists')[0];
+
+//     if (manufacturerInput.value.length > 2) {
+
+//         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + manufacturerInput.value;
+//         request.open("GET", distributorURL, false);
+//         request.send(null);
+//         // console.log();
+//         list.innerHTML = request.responseText
+//     } else if (manufacturerInput.value == '') {
+
+//         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
+//         request.open("GET", distributorURL, false);
+//         request.send(null);
+//         // console.log();
+//         list.innerHTML = request.responseText
+//     } else {
+
+//         list.innerHTML = '';
+//     }
+// });
+
+
+
+// const setmanufacturer = (t) => {
+//     let manufId = t.id.trim();
+//     let manufName = t.innerHTML.trim();
+
+//     document.getElementById("manufacturer").value = manufName;
+
+//     document.getElementsByClassName("c-dropdown")[0].style.display = "none";
+// }
+
+
+// const addManufacturer = () => {
+//     $.ajax({
+//         url: "components/manufacturer-add.php",
+//         type: "POST",
+//         success: function(response) {
+//             let body = document.querySelector('.add-manufacturer');
+//             body.innerHTML = response;
+//         },
+//         error: function(error) {
+//             console.error("Error: ", error);
+//         }
+//     });
+// }

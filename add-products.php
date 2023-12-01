@@ -20,6 +20,7 @@ $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
 
 $showManufacturer   = $Manufacturer->showManufacturer();
+$showManufacturer = json_decode($showManufacturer);
 // print_r($showManufacturer);
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
@@ -102,18 +103,44 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                                             <div class="row p-3">
 
-                                                <div class="col-md-12 mt-3 mt-md-0">
-                                                    <select class="form-control" name="manufacturer" id="manufacturer" required onkeyup="getManuf()">
-                                                        <option value="" disabled selected>Select Manufacturer</option>
+                                                <!-- <label class="" for="manufacturer">Select Manufacturer</label> -->
+                                                <input type="text" name="manufacturer" id="manufacturer" class="upr-inp">
+
+                                                <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list">
+                                                    <div class="lists" id="manuf-lists">
                                                         <?php
-                                                        foreach ($showManufacturer as $rowManufacturer) {
-                                                            $manufId   = $rowManufacturer['id'];
-                                                            $manufName = $rowManufacturer['name'];
-                                                            echo '<option value="' . $manufId . '">' . $manufName . '</option>';
-                                                        }
+                                                        if (!empty($showManufacturer)) {
+                                                            foreach ($showManufacturer as $eachManuf) {
+                                                                // print_r($eachManuf);
                                                         ?>
-                                                    </select>
+                                                                <div class="p-1 border-bottom list" id="<?= $eachManuf->id ?>" onclick="setmanufacturer(this)">
+                                                                    <?= $eachManuf->name ?>
+                                                                </div>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                    </div>
+
+                                                    <div class="d-flex flex-column justify-content-center mt-1" data-toggle="modal" data-target="#add-manufacturer" onclick="addManufacturer()">
+                                                        <button type="button" id="add-manuf-btn" class="text-primary border-0">
+                                                            <i class="fas fa-plus-circle"></i>
+                                                            Add Now
+                                                        </button>
+                                                    </div>
+
+                                                <?php
+                                                        } else {
+                                                ?>
+                                                    <p class="text-center font-weight-bold">Manufacturer Not Found!</p>
+                                                    <div class="d-flex flex-column justify-content-center" data-toggle="modal" data-target="#add-manufacturer" onclick="addManufacturer()">
+                                                        <button type="button" id="add-manuf-btn" class="text-primary border-0"><i class="fas fa-plus-circle"></i>
+                                                            Add Now</button>
+                                                    </div>
+                                                <?php
+                                                        }
+                                                ?>
                                                 </div>
+
                                             </div>
 
                                             <!-- Price Row -->
@@ -245,6 +272,27 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
         <!--/end Product modal -->
 
 
+
+        <!-- manufacturer Add Modal -->
+        <div class="modal fade" id="add-manufacturer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Manufacturer</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body add-manufacturer">
+                        <!-- Details Appeare Here by Ajax  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/end Distributor Add Modal -->
+
+
+
         <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
@@ -334,7 +382,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     url + '"></iframe>');
             }
         </script>
-
+<!-- 
         <script>
             $(document).on("click", ".back", function() {
                 var backFile = $(this).parents().find(".back-file");
@@ -388,29 +436,87 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     removeItemButton: true,
                 });
             });
-        </script>
+        </script> -->
+
+
+
 
         <script>
-            // document.addEventListener('DOMContentLoaded', function() {
-            //     // Initialize Choices.js
-            //     var Choices = new Choices('#manufacturer', {
-            //         searchPlaceholderValue: 'Type to search',
-            //         searchChoices: function(callback) {
-            //             // Get the search input value
-            //             var searchValue = event.detail.value;
+            const manufacturerInput = document.getElementById("manufacturer");
+            const manufDropdown = document.getElementsByClassName("c-dropdown")[0];
 
-            //             console.log(searchValue);
-            //             // // Perform AJAX request to get data
-            //             // fetch('your_ajax_endpoint.php?search=' + encodeURIComponent(searchValue))
-            //             //     .then(response => response.json())
-            //             //     .then(data => {
-            //             //         // Pass the retrieved data to Choices.js
-            //             //         callback(data, 'id', 'name');
-            //             //     })
-            //             //     .catch(error => console.error('Error:', error));
-            //         }
-            //     });
-            // });
+            manufacturerInput.addEventListener("focus", () => {
+                manufDropdown.style.display = "block";
+            });
+
+            document.addEventListener("click", (event) => {
+                // Check if the clicked element is not the input field or the manufDropdown
+                if (!manufacturerInput.contains(event.target) && !manufDropdown.contains(event.target)) {
+                    manufDropdown.style.display = "none";
+                }
+            });
+
+            document.addEventListener("blur", (event) => {
+                // Check if the element losing focus is not the manufDropdown or its descendants
+                if (!manufDropdown.contains(event.relatedTarget)) {
+                    // Delay the hiding to allow the click event to be processed
+                    setTimeout(() => {
+                        manufDropdown.style.display = "none";
+                    }, 100);
+                }
+            });
+
+
+
+            manufacturerInput.addEventListener("keyup", () => {
+                // Delay the hiding to allow the click event to be processed
+                let list = document.getElementsByClassName('lists')[0];
+
+                if (manufacturerInput.value.length > 2) {
+
+                    let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + manufacturerInput.value;
+                    request.open("GET", distributorURL, false);
+                    request.send(null);
+                    // console.log();
+                    list.innerHTML = request.responseText
+                } else if (manufacturerInput.value == '') {
+
+                    let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
+                    request.open("GET", distributorURL, false);
+                    request.send(null);
+                    // console.log();
+                    list.innerHTML = request.responseText
+                } else {
+
+                    list.innerHTML = '';
+                }
+            });
+
+
+
+            const setmanufacturer = (t) => {
+                let manufId = t.id.trim();
+                let manufName = t.innerHTML.trim();
+
+                document.getElementById("manufacturer").value = manufName;
+
+                document.getElementsByClassName("c-dropdown")[0].style.display = "none";
+            }
+
+
+            const addManufacturer = () => {
+                $.ajax({
+                    url: "components/manufacturer-add.php",
+                    type: "POST",
+                    success: function(response) {
+                        let body = document.querySelector('.add-manufacturer');
+                        body.innerHTML = response;
+                    },
+                    error: function(error) {
+                        console.error("Error: ", error);
+                    }
+                });
+            }
         </script>
 
 </body>

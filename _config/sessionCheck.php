@@ -13,6 +13,7 @@ if($_SESSION['ADMIN']){
   $userFname    = $_SESSION['ADMIN_FNAME'];
   $adminLname   = $_SESSION['ADMIN_LNAME'];
   $username     = $_SESSION['ADMIN_USERNAME'];
+  $adminPass    = $_SESSION['ADMIN_PASSWORD'];
   $adminId      = $_SESSION['ADMINID'];
   $employeeId   = '';
   $addedBy      = $adminId;
@@ -23,6 +24,7 @@ if($_SESSION['ADMIN']){
   $userRole       = $_SESSION['EMP_ROLE'];
   $userFname      = $_SESSION['EMP_NAME'];
   $username       = $_SESSION['EMP_USERNAME'];
+  $empPass        = $_SESSION['EMP_PASSWORD'];
   $employeeId     = $_SESSION['EMPID'];
   $adminId        = $_SESSION['ADMIN_ID'];
   $addedBy        = $employeeId;
