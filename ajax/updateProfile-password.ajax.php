@@ -24,6 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($oldPassword === $x_password) {
             if ($newPassword === $cnfPassword) {
                 $adminPassUpdate = $Admin->updateAdminPassword($newPassword, $adminId);
+
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Failed!</strong> password changed successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
             } else {
                 echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <strong>Failed!</strong> Inputed password dosenot matched!
@@ -44,6 +49,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($oldPassword === $x_password) {
             if ($newPassword === $cnfPassword) {
                 $empPassUpdate = $Employees->updateEmployeePassword($newPassword, $employeeId, $adminId);
+
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Failed!</strong> password changed successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
             } else {
                     echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <strong>Failed!</strong> Inputed password dosenot matched!
