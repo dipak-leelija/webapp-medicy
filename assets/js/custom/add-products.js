@@ -112,6 +112,80 @@ function preview() {
     }
 }
 
-////////////////////////////// manufacturur search control \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+////////////////////////////// manufacturer search control \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+// const manufacturerInput = document.getElementById("manufacturer");
+// const manufDropdown = document.getElementsByClassName("c-dropdown")[0];
+
+// manufacturerInput.addEventListener("focus", () => {
+//     manufDropdown.style.display = "block";
+// });
+
+// document.addEventListener("click", (event) => {
+//     // Check if the clicked element is not the input field or the manufDropdown
+//     if (!manufacturerInput.contains(event.target) && !manufDropdown.contains(event.target)) {
+//         manufDropdown.style.display = "none";
+//     }
+// });
+
+// document.addEventListener("blur", (event) => {
+//     // Check if the element losing focus is not the manufDropdown or its descendants
+//     if (!manufDropdown.contains(event.relatedTarget)) {
+//         // Delay the hiding to allow the click event to be processed
+//         setTimeout(() => {
+//             manufDropdown.style.display = "none";
+//         }, 100);
+//     }
+// });
 
 
+
+// manufacturerInput.addEventListener("keyup", () => {
+//     // Delay the hiding to allow the click event to be processed
+//     let list = document.getElementsByClassName('lists')[0];
+
+//     if (manufacturerInput.value.length > 2) {
+
+//         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + manufacturerInput.value;
+//         request.open("GET", distributorURL, false);
+//         request.send(null);
+//         // console.log();
+//         list.innerHTML = request.responseText
+//     } else if (manufacturerInput.value == '') {
+
+//         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
+//         request.open("GET", distributorURL, false);
+//         request.send(null);
+//         // console.log();
+//         list.innerHTML = request.responseText
+//     } else {
+
+//         list.innerHTML = '';
+//     }
+// });
+
+
+
+// const setmanufacturer = (t) => {
+//     let manufId = t.id.trim();
+//     let manufName = t.innerHTML.trim();
+
+//     document.getElementById("manufacturer").value = manufName;
+
+//     document.getElementsByClassName("c-dropdown")[0].style.display = "none";
+// }
+
+
+// const addManufacturer = () => {
+//     $.ajax({
+//         url: "components/manufacturer-add.php",
+//         type: "POST",
+//         success: function(response) {
+//             let body = document.querySelector('.add-manufacturer');
+//             body.innerHTML = response;
+//         },
+//         error: function(error) {
+//             console.error("Error: ", error);
+//         }
+//     });
+// }
