@@ -74,9 +74,23 @@ $Employees = new Employees;
             }
 
             if ($updateAdminData['result'] || $updateEmployeeData['result']) {
-                echo "updated.";
+    ?>
+                <script>
+                    swal("Success", "Data Updated!", "success")
+                        .then((value) => {
+                            window.location = '<?php echo LOCAL_DIR ?>profile.php';
+                        });
+                </script>
+            <?php
             } else {
-                echo "failed.";
+            ?>
+                <script>
+                    swal("Error", "Updation Fails!", "error")
+                        .then((value) => {
+                            window.location = '<?php echo LOCAL_DIR ?>profiles.php';
+                        });
+                </script>
+    <?php
             }
         }
     }
