@@ -39,10 +39,9 @@ $showMeasureOfUnit = $MeasureOfUnits->showMeasureOfUnitsById($unitId);
 
     <form>
         <input type="hidden" id="unitId" value="<?php echo $unitId;?>">
-        <!-- <div class="form-group"> -->
+      
             <label for="unit-srt-name" class="form-label mb-0">Unit Short Name:</label>
             <input type="text" class="form-control" id="unit-srt-name" value="<?php echo $unitSrtName; ?>">
-            <!-- </div> -->
     
             <label for="unit" class="form-label mb-0 mt-2">Unit Full Name:</label>
             <input type="text" class="form-control" id="unit" value="<?php echo $unitFullName; ?>">
@@ -53,7 +52,6 @@ $showMeasureOfUnit = $MeasureOfUnits->showMeasureOfUnitsById($unitId);
 
         <div class="mt-2 d-flex justify-content-end">
             <button type="button" class="btn btn-sm btn-primary" onclick="editUnit()">Update</button>
-            <!-- <button type="button" class="btn btn-sm btn-primary" onclick="window.location.reload();">Load</button> -->
         </div>
 
     </form>
