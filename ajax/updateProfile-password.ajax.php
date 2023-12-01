@@ -11,7 +11,7 @@ $Admin = new Admin;
 $Employees = new Employees;
 
 
-if (isset($_POST['change-password'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $oldPassword = $_POST['old-password'];
     $newPassword = $_POST['new-password'];
@@ -24,8 +24,19 @@ if (isset($_POST['change-password'])) {
         if ($oldPassword === $x_password) {
             if ($newPassword === $cnfPassword) {
                 $adminPassUpdate = $Admin->updateAdminPassword($newPassword, $adminId);
+            } else {
+                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Failed!</strong> Inputed password dosenot matched!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
             }
+        } else {
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Failed!</strong> Wrong Old password inputed!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
         }
+        
     } else {
         $oldEmpPass = $empPass;
         $x_password = pass_dec($oldEmpPass, EMP_PASS);
@@ -33,24 +44,25 @@ if (isset($_POST['change-password'])) {
         if ($oldPassword === $x_password) {
             if ($newPassword === $cnfPassword) {
                 $empPassUpdate = $Employees->updateEmployeePassword($newPassword, $employeeId, $adminId);
-            }
+            } else {
+                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>Failed!</strong> Inputed password dosenot matched!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+                }
+            
+        } else {
+            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Failed!</strong> Password Updation Failed!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
         }
-    }
-
-    if ($adminPassUpdate || $empPassUpdate) {
-        echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
-    <strong>Success!</strong> Password is Updated!
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>';
-    } else {
-        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-     <strong>Failed!</strong> Password Updation Failed!
-     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-     </div>';
     }
 }
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
