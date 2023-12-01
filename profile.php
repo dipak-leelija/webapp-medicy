@@ -170,7 +170,7 @@ if ($_SESSION['ADMIN']) {
                                             <img class="img-uv-view shadow-lg rounded-circle" style="width: 20%; border:5px solid #bfbbbb;" src="<?= ($image) ? $imagePath : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
-                                                <label for="img-uv-input" class="btn btn-sm btn-outline-secondary ml-5" style="margin-top: 115%;"><i class="fas fa-edit"></i></label>
+                                                <label for="img-uv-input" class="btn btn-sm btn-success ml-5" style="margin-top: 115%;"><i class="fas fa-edit"></i></label>
                                             </div>
                                             <!-- </div> -->
                                         </div>
@@ -338,8 +338,8 @@ if ($_SESSION['ADMIN']) {
             passwordUpdate = () => {
                 let url = "ajax/updateProfile-password.ajax.php";
                 $('.exampleModalCenter').html(
-                    '<iframe width="99%" height="200px" frameborder="0" allowtransparency="true" src="' +
-                    url + '"></iframe>');
+                    '<iframe width="100%" height="220px" frameborder="0" allowtransparency="true" src="' +
+                    url + '" scrolling="no"></iframe>');
             }
         </script>
 

@@ -218,7 +218,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
                                                     <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
                                                     <p id="num-of-files">No files chosen</p>
-                                                    <div >
+                                                    <div>
                                                         <div id="images">
 
                                                         </div>
@@ -382,7 +382,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     url + '"></iframe>');
             }
         </script>
-<!-- 
+        <!-- 
         <script>
             $(document).on("click", ".back", function() {
                 var backFile = $(this).parents().find(".back-file");

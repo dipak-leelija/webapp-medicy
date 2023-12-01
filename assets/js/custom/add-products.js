@@ -48,7 +48,6 @@ function updateFilesCount() {
 function preview() {
     imageContainer.innerHTML = '';
     numOFFiles.textContent = `${fileInput.files.length} Files Selected`;
-    // updateFilesCount();
 
     for (let i of fileInput.files) {
         let reader = new FileReader();
@@ -80,6 +79,10 @@ function preview() {
         closeButton.onclick = function () {
             figure.remove();
             updateFilesCount();
+        };
+
+        radioButton.onclick = function () {
+            console.log(`Radio button  clicked`);
         };
 
         reader.onload = () => {
