@@ -10,13 +10,13 @@ class LoginForm extends DatabaseConnection{
 
         if ($result->num_rows > 0) {
             while ($data = $result->fetch_object()) {
-                print_r($data);
+                
                 $dbPasshash = $data->password;
                 $x_password = pass_dec($dbPasshash, ADMIN_PASS);
                 // exit;
 
                 if ($x_password === $password) {
-                    session_start();
+                   
                     $_SESSION['LOGGEDIN']   = true;
                     $_SESSION['ADMIN']      = true;
                     $_SESSION['ADMIN_EMAIL'] = $data->email;

@@ -12,6 +12,7 @@ require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'empRole.class.php';
 
+echo $adminLname; 
 
 $Utility    = new Utility;
 $Admin      = new Admin;
