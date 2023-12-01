@@ -50,7 +50,9 @@ $Session = new SessionHandler();
         // print_r($_FILES);
         // echo "<br><br>";
         $imageName         = $_FILES['img-files']['name'];
+        print_r($imageName );
         $tempImgName       = $_FILES['img-files']['tmp_name'];
+        print_r($tempImgName);
         $imageArrayCaount = count($imageName);
         $tempImageNameArrayCaount = count($tempImgName);
 
