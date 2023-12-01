@@ -10,7 +10,7 @@ class LoginForm extends DatabaseConnection{
 
         if ($result->num_rows > 0) {
             while ($data = $result->fetch_object()) {
-                
+                print_r($data);
                 $dbPasshash = $data->password;
                 $x_password = pass_dec($dbPasshash, ADMIN_PASS);
                 // exit;
@@ -19,10 +19,12 @@ class LoginForm extends DatabaseConnection{
                     session_start();
                     $_SESSION['LOGGEDIN']   = true;
                     $_SESSION['ADMIN']      = true;
-                    $_SESSION['USER_EMAIL'] = $data->email;
+                    $_SESSION['ADMIN_EMAIL'] = $data->email;
                     $_SESSION['USER_ROLE'] = 'ADMIN';
-                    $_SESSION['USER_FNAME']  = $data->fname;
-                    $_SESSION['USERNAME']   = $data->username;
+                    $_SESSION['ADMIN_FNAME']  = $data->fname;
+                    $_SESSION['ADMIN_LNAME']  = $data->lname;
+                    $_SESSION['ADMIN_CONTACT_NO']  = $data->mobile_no;
+                    $_SESSION['ADMIN_USERNAME']   = $data->username;
                     $_SESSION['ADMINID']   = $data->admin_id;
 
                     header("Location: ".URL);
@@ -46,10 +48,11 @@ class LoginForm extends DatabaseConnection{
                         session_start();
                         $_SESSION['LOGGEDIN']   = true;
                         $_SESSION['ADMIN']      = false;
-                        $_SESSION['USER_EMAIL'] = $email;
-                        $_SESSION['USER_ROLE']  = $data->emp_role;
-                        $_SESSION['USER_FNAME']   = $data->emp_name;
-                        $_SESSION['USERNAME']   = $data->emp_username;
+                        $_SESSION['EMP_EMAIL'] = $email;
+                        $_SESSION['EMP_CONTACT_NO']  = $data->emp_contact_no;
+                        $_SESSION['EMP_ROLE']  = $data->emp_role;
+                        $_SESSION['EMP_NAME']   = $data->emp_name;
+                        $_SESSION['EMP_USERNAME']   = $data->emp_username;
                         $_SESSION['EMPID']   = $data->emp_id;
                         $_SESSION['ADMIN_ID'] = $data->admin_id;
 

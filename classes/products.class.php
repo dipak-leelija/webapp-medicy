@@ -142,12 +142,12 @@ class Products extends DatabaseConnection{
 
 
     
-    function updateProduct($productid, $productManuf, $productname, $productComposition, $productPower, $productDsc, $productPackaging, $unitQty, $unit, $unitName, $mrp, $gst, $updatedBy, $updatedOn) {
+    function updateProduct($productid, $name, $manufacturerId, $type, $comp_1, $comp_2, $power, $dsc, $quantity, $quantityUnit, $itemUnit, $packagingType, $mrp, $gst, $updatedBy, $updatedOn) {
         try {
-            $updateProduct = "UPDATE `products` SET `manufacturer_id`=?, `name`=?, `product_composition`=?, `power`=?, `dsc`=?, `packaging_type`=?, `unit_quantity`=?, `unit_id`=?, `unit`=?, `mrp`=?, `gst`=?, `updated_by`=?, `updated_on`=? WHERE `product_id`=?";
-    
+            $updateProduct = "UPDATE `products` SET `name`=?, `manufacturer_id`=?, `type`=?, `comp_1`=?, `comp_2`=?, `power`=?, `dsc`=?, `unit_quantity`=?, `unit_id`=?, `unit`=?, `packaging_type`=?, `mrp`=?, `gst`=?, `updated_by`=?, `updated_on`=? WHERE `product_id`=?";
+
             $stmt = $this->conn->prepare($updateProduct);
-            $stmt->bind_param("ssssssssssssss", $productManuf, $productname, $productComposition, $productPower, $productDsc, $productPackaging, $unitQty, $unit, $unitName, $mrp, $gst, $updatedBy, $updatedOn, $productid);
+            $stmt->bind_param("ssssssssssssssss", $name, $manufacturerId, $type, $comp_1, $comp_2, $power, $dsc, $quantity, $quantityUnit, $itemUnit, $packagingType, $mrp, $gst, $updatedBy, $updatedOn, $productid);
     
             if ($stmt->execute()) {
                 // Update successful
