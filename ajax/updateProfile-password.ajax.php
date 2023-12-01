@@ -1,40 +1,50 @@
-<!-- password modal  -->
-                                            <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                                                Password Change
-                                            </button>
+<?php
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
 
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                           <div class="form-group">
-                                                                <div class="form-group ">
-                                                                    <input type="password" class="form-control " id="bpassword" name="password" maxlength="12" placeholder="Current Password" value="<?=  $password; ?>" required>
-                                                                </div>
-                                                                <div class="form-group  ">
-                                                                    <input type="password" class="form-control " id="password" name="password" maxlength="12" placeholder="Enter New Password" required>
-                                                                </div>
-                                                                <div class="form-group  ">
-                                                                    <input type="password" class="form-control " id="cpassword" name="cpassword" maxlength="12" placeholder="Confirm Password" required>
-                                                                    <small>
-                                                                        <p id="cpasserror" class="text-danger" style="display: none;"></p>
-                                                                    </small>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary" type="submit" name="submit">Save changes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- password modal end  -->
+require_once CLASS_DIR . 'dbconnect.php';
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
+</head>
+
+<body>
+
+    <div class="form-group mb-3">
+        <input type="password" class="form-control " id="bpassword" name="password" maxlength="12" placeholder="Current Password" required>
+    </div>
+    <div class="form-group  mb-3">
+        <input type="password" class="form-control " id="password" name="password" maxlength="12" placeholder="Enter New Password" required>
+    </div>
+    <div class="form-group mb-3 ">
+        <input type="password" class="form-control " id="cpassword" name="cpassword" maxlength="12" placeholder="Confirm Password" required>
+        <small>
+            <p id="cpasserror" class="text-danger" style="display: none;"></p>
+        </small>
+    </div>
+    <div class="mt-2 d-flex justify-content-end">
+        <button type="button" class="btn btn-sm btn-primary">Save Changes</button>
+    </div>
+
+
+    <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Js -->
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
+
+</body>
+
+</html>

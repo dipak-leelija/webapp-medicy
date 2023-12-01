@@ -12,7 +12,7 @@ require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'empRole.class.php';
 
-echo $adminLname; 
+// echo $adminId;
 
 $Utility    = new Utility;
 $Admin      = new Admin;
@@ -63,7 +63,6 @@ if ($_SESSION['ADMIN']) {
                 $firstName = substr($empName, 0, $lastSpacePos);
                 $lastName = substr($empName, $lastSpacePos + 1);
             }
-
             $firstName = $firstName;
             $lastName = $lastName;
             $image = $employeeData->emp_img;
@@ -176,6 +175,11 @@ if ($_SESSION['ADMIN']) {
                                             <!-- </div> -->
                                         </div>
                                         <div class=" w-100 p-3 mb-2 bg-light ">
+                                            <div class="form-group mb-3 d-flex justify-content-end">
+                                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" onclick="passwordUpdate()">
+                                                    Password Change
+                                                </button>
+                                            </div>
                                             <div class="form-group row mb-3">
                                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                                     <input type="text" class="form-control" id="fname" name="fname" maxlength="20" value="<?= $firstName; ?>">
@@ -195,12 +199,12 @@ if ($_SESSION['ADMIN']) {
                                                     <input type="number" class="form-control " id="mobile-number" name="mobile-number" maxlength="10" value="<?= $phone; ?>" max="9999999999">
                                                 </div>
                                             </div>
-
+                                            
                                             <div class="form-group">
                                                 <!-- <input type="" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999"> -->
                                                 <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3"><?= $address; ?></textarea>
                                             </div>
-                                            <button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Update</button>
+                                            <button class="btn btn-primary  btn-block" type="submit" name="submit">Update</button>
                                         </div>
                                     </form>
                                 </div>
@@ -220,7 +224,23 @@ if ($_SESSION['ADMIN']) {
         </div>
         <!-- End of Page Wrapper -->
 
+        <!-- password change modal  -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Password Change</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body exampleModalCenter">
 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- password change modal end -->
 
         <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
@@ -311,6 +331,15 @@ if ($_SESSION['ADMIN']) {
                 cpasserror.innerHTML = "";
                 cpasserror.style.display = "none";
                 return true;
+            }
+        </script>
+        <!-- password modal open -->
+        <script>
+            passwordUpdate = () => {
+                let url = "ajax/updateProfile-password.ajax.php";
+                $('.exampleModalCenter').html(
+                    '<iframe width="99%" height="200px" frameborder="0" allowtransparency="true" src="' +
+                    url + '"></iframe>');
             }
         </script>
 
