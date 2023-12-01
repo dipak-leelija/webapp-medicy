@@ -21,7 +21,7 @@ $ProductImages      = new ProductImages();
 $ItemUnit           = new ItemUnit();
 
 
-$showManufacturer   = $Manufacturer->showManufacturer();
+$showManufacturer   = json_decode($Manufacturer->showManufacturer());
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 $itemUnits          = $ItemUnit->showItemUnits();
@@ -256,8 +256,8 @@ $itemUnits          = $ItemUnit->showItemUnits();
                                                 <option value="" disabled selected>Select Manufacturer</option>
                                                 <?php
                                                     foreach ($showManufacturer as $rowManufacturer) {
-                                                        $manufId   = $rowManufacturer['id'];
-                                                        $manufName = $rowManufacturer['name'];
+                                                        $manufId   = $rowManufacturer->id;
+                                                        $manufName = $rowManufacturer->name;
                                                     ?>
                                                 <option <?= $manufId == $manufacturer ?  'selected' : ''; ?> value="<?= $manufId; ?>">
                                                     <?= $manufName; ?></option>
