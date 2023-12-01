@@ -203,6 +203,30 @@ class Employees extends DatabaseConnection
 
 
 
+
+
+    function updateEmployeePassword($newPass, $empid, $adminid){
+        $password = pass_enc($newPass, EMP_PASS);
+
+        try{
+            $updateEmpPass = "UPDATE `employees` SET `password`=? WHERE `emp_id `=? AND `admin_id`=?";
+
+            $stmt = $this->conn->prepare($updateEmpPass);
+    
+            $stmt->bind_param("sss", $password, $empid, $adminid);
+
+            $stmt->execute();
+    
+            $stmt->close();
+
+            return ['result' => '1'];
+
+        }catch(Exception $e){
+            return ['status'=> '0', 'message'=>$e->getMessage(), 'data'=> ''];
+        }
+    }
+
+
     
     function updateEmp($empUsername, $empName, $empRole, $empEmail,/*Last Variable for id which one you want to update */ $empId){
         $edit = "UPDATE  `employees` SET `emp_username` = '$empUsername', `emp_name`= '$empName', `emp_role` = '$empRole', `emp_email` = '$empEmail' WHERE `employees`.`emp_id` = '$empId'";
