@@ -35,7 +35,7 @@ if ($_SESSION['ADMIN']) {
             $firstName = $adminData->fname;
             $lastName = $adminData->lname;
             $image = $adminData->adm_img;
-            $imagePath = ADM_IMG_PATH.$image;
+            $imagePath = ADM_IMG_PATH . $image;
             $userName = $adminData->username;
             $email = $adminData->email;
             $phone = $adminData->mobile_no;
@@ -66,7 +66,7 @@ if ($_SESSION['ADMIN']) {
             $firstName = $firstName;
             $lastName = $lastName;
             $image = $employeeData->emp_img;
-            $imagePath = EMPLOYEE_IMG_PATH.$image;
+            $imagePath = EMPLOYEE_IMG_PATH . $image;
             $userName = $employeeData->emp_username;
             $email = $employeeData->emp_email;
             $phone = $employeeData->emp_contact_no;
@@ -167,7 +167,7 @@ if ($_SESSION['ADMIN']) {
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
-                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? $imagePath : ASSETS_PATH.'images/undraw_profile.svg' ?>" alt="">
+                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? $imagePath : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
                                                 <label for="img-uv-input" class="btn btn-sm btn-outline-secondary ml-5" style="margin-top: 115%;"><i class="fas fa-edit"></i></label>
@@ -194,18 +194,50 @@ if ($_SESSION['ADMIN']) {
                                                     <input type="number" class="form-control " id="mobile-number" name="mobile-number" maxlength="10" value="<?= $phone; ?>" max="9999999999">
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                                    <input type="password" class="form-control " id="password" name="password" maxlength="12" placeholder="Enter Password" required>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <input type="password" class="form-control " id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
-                                                    <small><p id="cpasserror" class="text-danger" style="display: none;"></p></small>
+
+                                            <!-- password modal  -->
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                                                Password Change
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                           <div class="form-group">
+                                                                <div class="form-group ">
+                                                                    <input type="password" class="form-control " id="bpassword" name="password" maxlength="12" placeholder="Current Password" value="<?=  $password; ?>" required>
+                                                                </div>
+                                                                <div class="form-group  ">
+                                                                    <input type="password" class="form-control " id="password" name="password" maxlength="12" placeholder="Enter New Password" required>
+                                                                </div>
+                                                                <div class="form-group  ">
+                                                                    <input type="password" class="form-control " id="cpassword" name="cpassword" maxlength="12" placeholder="Confirm Password" required>
+                                                                    <small>
+                                                                        <p id="cpasserror" class="text-danger" style="display: none;"></p>
+                                                                    </small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-primary" type="submit" name="submit">Save changes</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <!-- password modal end  -->
                                             <div class="form-group">
                                                 <!-- <input type="" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999"> -->
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3" ><?= $address; ?></textarea>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3"><?= $address; ?></textarea>
                                             </div>
                                             <button class="btn btn-primary btn-user btn-block" type="submit" name="submit">Update</button>
                                         </div>
