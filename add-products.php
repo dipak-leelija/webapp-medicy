@@ -501,7 +501,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     url + '"></iframe>');
             }
         </script>
-
+<!-- 
         <script>
             $(document).on("click", ".back", function() {
                 var backFile = $(this).parents().find(".back-file");
@@ -555,7 +555,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     removeItemButton: true,
                 });
             });
-        </script>
+        </script> -->
 
 
 
