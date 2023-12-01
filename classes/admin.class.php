@@ -129,13 +129,13 @@ class Admin extends DatabaseConnection
 
 
 
-    function updateAdminDetails($fname, $lname, $img, $username, $password, $email, $mobNo, $address, $updatedOn, $adminid) {
+    function updateAdminDetails($fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $adminid) {
         try {
-            $updateQuery = "UPDATE `admin` SET `fname`=?, `lname`=?, `adm_img`=?, `username`=?, `password`=?, `email`=?, `mobile_no`=?, `address`=?, `updated_on`=? WHERE `admin_id`=?";
+            $updateQuery = "UPDATE `admin` SET `fname`=?, `lname`=?, `adm_img`=?, `email`=?, `mobile_no`=?, `address`=?, `updated_on`=? WHERE `admin_id`=?";
             
             $stmt = $this->conn->prepare($updateQuery);
     
-            $stmt->bind_param("ssssssssss", $fname, $lname, $img, $username, $password, $email, $mobNo, $address, $updatedOn, $adminid);
+            $stmt->bind_param("ssssssss", $fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $adminid);
     
             $stmt->execute();
     

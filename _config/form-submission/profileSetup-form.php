@@ -49,16 +49,13 @@ $Employees = new Employees;
             $email = $_POST['email'];
             $phNo = $_POST['mobile-number'];
 
-            $pss = $_POST['password'];
-            $hashedPassword = password_hash($pss, PASSWORD_DEFAULT);
-
             $cnfPass = $_POST['cpassword'];
             $address = $_POST['address'];
 
 
             if ($_SESSION['ADMIN']) {
-
-                $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $userName, $hashedPassword, $email, $phNo,  $address, NOW, $adminId);
+                
+                $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $email, $phNo,  $address, NOW, $adminId);
 
                 if ($updateAdminData['result']) {
 
@@ -67,7 +64,7 @@ $Employees = new Employees;
                 }
             } else {
 
-                $updateEmployeeData = $Employees->updateEmpData($fname . $lname, $imageName, $email, $phNo, $address, $userName, $hashedPassword, NOW, $employeeId, $adminId);
+                $updateEmployeeData = $Employees->updateEmpData($fname . $lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
 
                 if ($updateEmployeeData['result']) {
 
