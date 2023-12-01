@@ -16,8 +16,10 @@ $Manufacturer = new Manufacturer();
 $Pagination = new Pagination;
 
 $showManufacturer = $Manufacturer->showManufacturer();
-
+$showManufacturer = json_decode($showManufacturer);
 if (!empty($showManufacturer)) {
+    // print_r($showManufacturer);
+
     if (is_array($showManufacturer)) {
         $response = json_decode($Pagination->arrayPagination($showManufacturer));
         $slicedManuf = '';
