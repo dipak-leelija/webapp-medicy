@@ -222,3 +222,26 @@ figcaption{
     font-size: 2.4vmin;
     margin-top: 0.5vmin;
 }
+
+/* ////// */
+.figure-style{
+    border: 2px solid gray;
+}
+.close-button {
+    position: absolute;
+    margin-top: -72px;
+    margin-left: 41px;
+    /* padding: 5px; */
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    font-size: 12px;
+}
+.close-button:hover {
+    background-color: darkred;
+}
+.radio-button{
+    accent-color:green;
+}

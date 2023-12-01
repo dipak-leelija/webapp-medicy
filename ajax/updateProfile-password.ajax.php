@@ -31,7 +31,7 @@ require_once CLASS_DIR . 'dbconnect.php';
         </small>
     </div>
     <div class="mt-2 d-flex justify-content-end">
-        <button type="button" class="btn btn-sm btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-sm btn-success">Save Changes</button>
     </div>
 
 

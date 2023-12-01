@@ -167,7 +167,7 @@ if ($_SESSION['ADMIN']) {
 
                                         <div class=" d-flex justify-content-center align-items-center mb-5">
                                             <!-- <div class="position-relative"> -->
-                                            <img class="img-uv-view rounded-circle" style="width: 20%;" src="<?= ($image) ? $imagePath : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
+                                            <img class="img-uv-view shadow-lg rounded-circle" style="width: 20%; border:5px solid #bfbbbb;" src="<?= ($image) ? $imagePath : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
                                                 <label for="img-uv-input" class="btn btn-sm btn-outline-secondary ml-5" style="margin-top: 115%;"><i class="fas fa-edit"></i></label>
@@ -204,7 +204,7 @@ if ($_SESSION['ADMIN']) {
                                                 <!-- <input type="" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999"> -->
                                                 <textarea class="form-control" id="exampleFormControlTextarea1" name="address" rows="3"><?= $address; ?></textarea>
                                             </div>
-                                            <button class="btn btn-primary  btn-block" type="submit" name="submit">Update</button>
+                                            <button class="btn btn-primary  btn-block" type="submit" name="submit">UPDATE</button>
                                         </div>
                                     </form>
                                 </div>
