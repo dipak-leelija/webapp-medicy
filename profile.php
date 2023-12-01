@@ -185,7 +185,7 @@ if ($_SESSION['ADMIN']) {
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
-                                                <input type="text" class="form-control " id="user-name" name="user-name" maxlength="24" value="<?= $userName; ?>">
+                                                <input type="text" class="form-control " id="user-name" name="user-name" maxlength="24" value="<?= $userName; ?>" disabled>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-sm-6">
@@ -215,7 +215,7 @@ if ($_SESSION['ADMIN']) {
                                                         <div class="modal-body">
                                                            <div class="form-group">
                                                                 <div class="form-group ">
-                                                                    <input type="password" class="form-control " id="bpassword" name="password" maxlength="12" placeholder="Current Password" value="<?=  $password; ?>" required>
+                                                                    <input type="password" class="form-control " id="bpassword" name="password" maxlength="12" placeholder="Current Password"  required>
                                                                 </div>
                                                                 <div class="form-group  ">
                                                                     <input type="password" class="form-control " id="password" name="password" maxlength="12" placeholder="Enter New Password" required>
