@@ -1,4 +1,4 @@
-var xmlhttp = new XMLHttpRequest();
+// var xmlhttp = new XMLHttpRequest();
 
 // function displayImage() {
 //     let imageType = image.type;
@@ -35,7 +35,6 @@ var xmlhttp = new XMLHttpRequest();
 
 
 ////////////////// IMGAE UPLOAD CONTROL AREA \\\\\\\\\\\\\\\\\
-
 
 let fileInput = document.getElementById('img-file-input');
 let imageContainer = document.getElementById('images');
@@ -97,6 +96,12 @@ function preview() {
         imageContainer.appendChild(figure);
         reader.readAsDataURL(i);
     }
+}
+//  image reset //
+function resetImg() {
+    document.getElementById('img-file-input').value = '';
+    document.getElementById('images').innerHTML = '';
+    document.getElementById('num-of-files').innerText = 'No files chosen';
 }
 
 
