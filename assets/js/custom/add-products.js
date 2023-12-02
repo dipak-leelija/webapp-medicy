@@ -1,4 +1,4 @@
-
+var xmlhttp = new XMLHttpRequest();
 
 // function displayImage() {
 //     let imageType = image.type;
@@ -128,31 +128,41 @@ document.addEventListener("blur", (event) => {
 
 
 
-manufacturerInput.addEventListener("keyup", () => {
+
+
+
+manufacturerInput.addEventListener("keydown", () => {
+
     // Delay the hiding to allow the click event to be processed
     let list = document.getElementsByClassName('lists')[0];
+    let searchVal = document.getElementById("manufacturer").value;
 
-    if (manufacturerInput.value.length > 2) {
+    if (searchVal.length > 2) {
 
-        let manufURL = 'ajax/manufacturer.list-view.ajax.php?match=' + manufacturerInput.value;
-        request.open("GET", manufURL, false);
-        request.send(null);
-        
-        list.innerHTML = request.responseText
+        let manufURL = `ajax/manufacturer.list-view.ajax.php?match=${searchVal}`;
+        xmlhttp.open("GET", manufURL, false);
+        xmlhttp.send(null);
+
+        list.innerHTML = xmlhttp.responseText;
 
 
-    } else if (manufacturerInput.value == '') {
+    } else if (searchVal == '') {
 
-        let manufURL = 'ajax/manufacturer.list-view.ajax.php?match=all';
-        request.open("GET", manufURL, false);
-        request.send(null);
+        console.log("input val blank ",searchVal);
+        searchVal = 'all';
+
+        let manufURL = `ajax/manufacturer.list-view.ajax.php?match=${searchVal}`;
+        xmlhttp.open("GET", manufURL, false);
+        xmlhttp.send(null);
         // console.log();
-        list.innerHTML = request.responseText
+        list.innerHTML = xmlhttp.responseText;
+
     } else {
 
         list.innerHTML = '';
     }
 });
+
 
 
 
@@ -170,11 +180,11 @@ const addManufacturer = () => {
     $.ajax({
         url: "components/manufacturer-add.php",
         type: "POST",
-        success: function(response) {
+        success: function (response) {
             let body = document.querySelector('.add-manufacturer');
             body.innerHTML = response;
         },
-        error: function(error) {
+        error: function (error) {
             console.error("Error: ", error);
         }
     });
