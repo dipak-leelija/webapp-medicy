@@ -166,11 +166,13 @@ manufacturerInput.addEventListener("keydown", () => {
 
 
 
-const setmanufacturer = (t) => {
+const setManufacturer = (t) => {
     let manufId = t.id.trim();
     let manufName = t.innerHTML.trim();
 
     document.getElementById("manufacturer").value = manufName;
+    document.getElementById("manufacturer-id").value = manufId;
+    // document.getElementById("manufacturer").innerHTML = manufName;manufacturer-id
 
     document.getElementsByClassName("c-dropdown")[0].style.display = "none";
 }

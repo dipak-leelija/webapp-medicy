@@ -21,7 +21,7 @@ if ($showmanufacturer->status) {
     $showmanufacturer= $showmanufacturer->data;
 
     foreach ($showmanufacturer as $eachManufacturer) {
-        echo "<div class='p-1 border-bottom list' id='$eachManufacturer->id' onclick='setDistributor(this)'>
+        echo "<div class='p-1 border-bottom list' id='$eachManufacturer->id' onclick='setManufacturer(this)'>
         $eachManufacturer->name
         </div>";
     }
