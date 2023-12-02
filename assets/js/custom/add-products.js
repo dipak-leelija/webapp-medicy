@@ -71,6 +71,7 @@ function preview() {
         closeButton.id = 'close' + (imageContainer.childElementCount + 1);
 
         figCap.innerText = i.name;
+        console.log(figCap);
         figCap.style.display = 'none';
         figure.appendChild(figCap);
         figure.appendChild(radioButton);
@@ -82,7 +83,7 @@ function preview() {
         };
 
         radioButton.onclick = function () {
-            console.log(`Radio button  clicked`);
+            console.log(`Radio button ${i.name}  clicked`);
         };
 
         reader.onload = () => {
