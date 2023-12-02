@@ -4,12 +4,12 @@ class Products extends DatabaseConnection{
 
 
 
-    function addProducts($productId, $manufacturerid, $productName, $productComposition, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId) {
+    function addProducts($productId, $manufacturerid, $productName, $productComposition1, $productComposition2, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId) {
         try {
-            $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `product_composition`, `power`, `dsc`, `packaging_type`, `unit_quantity`, `unit_id`, `unit`, `mrp`, `gst`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `comp_1`,`comp_2`, `power`, `dsc`, `packaging_type`, `unit_quantity`, `unit_id`, `unit`, `mrp`, `gst`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
             $stmt = $this->conn->prepare($insertProducts);
-            $stmt->bind_param("sssssssssssssss", $productId, $manufacturerid, $productName, $productComposition, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId);
+            $stmt->bind_param("ssssssssssssssss", $productId, $manufacturerid, $productName, $productComposition1, $productComposition2, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId);
     
             if ($stmt->execute()) {
                 // Insert successful
