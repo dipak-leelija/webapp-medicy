@@ -19,7 +19,7 @@ $Manufacturer       = new Manufacturer();
 $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
 
-$showManufacturer   = $Manufacturer->showManufacturer();
+$showManufacturer   = $Manufacturer->showManufacturerWithLimit();
 $showManufacturer = json_decode($showManufacturer);
 // print_r($showManufacturer);
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
@@ -106,6 +106,8 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                                                 <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1">
 
+                                                <input type="text" name="manufacturer-id" id="manufacturer-id" class="d-none c-inp w-100 p-1" disabled>
+
                                                 <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list">
                                                     <div class="lists" id="lists">
                                                         <?php
@@ -113,7 +115,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                             foreach ($showManufacturer as $eachManuf) {
                                                                 // print_r($eachManuf);
                                                         ?>
-                                                                <div class="p-1 border-bottom list" id="<?= $eachManuf->id ?>" onclick="setmanufacturer(this)">
+                                                                <div class="p-1 border-bottom list" id="<?= $eachManuf->id ?>" onclick="setManufacturer(this)">
                                                                     <?= $eachManuf->name ?>
                                                                 </div>
                                                             <?php
