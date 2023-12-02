@@ -52,25 +52,30 @@ $Session = new SessionHandler();
         $imageName         = $_FILES['img-files']['name'];
         print_r($imageName );
         $tempImgName       = $_FILES['img-files']['tmp_name'];
-        print_r($tempImgName);
+        // print_r($tempImgName);
         $imageArrayCaount = count($imageName);
+        print_r($imageArrayCaount);
         $tempImageNameArrayCaount = count($tempImgName);
 
 
         $productName        = $_POST['product-name'];
         $productName        = addslashes($productName);
+        print_r("productName-".$productName)."<br>";
 
         $productComposition        = $_POST['product-composition'];
         $productComposition        = addslashes($productComposition);
+        print_r("productComposition-".$productComposition)."<br>";
 
         $power              = $_POST['medicine-power'];
+        print_r("power-".$power)."<br>";
         $manufacturerid     = $_POST['manufacturer'];
+        print_r("manufacturerid-".$manufacturerid)."<br>";
 
 
         $weatage            = $_POST['unit-quantity'];
         $unit               = $_POST['unit'];
         $unitType = $Unit->showMeasureOfUnitsById($unit);
-        $unitName = $unitType[0]['short_name'];
+        $unitName = $unitType['short_name'];
 
         $packagingType      = $_POST['packaging-type'];
         $mrp                = $_POST['mrp'];
