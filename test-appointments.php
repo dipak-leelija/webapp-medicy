@@ -131,13 +131,13 @@ if (isset($_GET['search'])) {
 
 $labBillDisplay = json_decode($labBillDisplay);
 // print_r($labBillDisplay);
-
+$slicedLabBills = '';
 if ($labBillDisplay->status) {
     if ($labBillDisplay->data != '') {
         $billsResponseData = $labBillDisplay->data;
         if (is_array($billsResponseData)) {
             $response = json_decode($Pagination->arrayPagination($billsResponseData));
-            $slicedLabBills = '';
+            
             $paginationHTML = '';
             $totalItem = $slicedLabBills = $response->totalitem;
 
