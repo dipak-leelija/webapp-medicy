@@ -22,7 +22,7 @@
 
         <!-- Nav Item For Healthcare -->
 
-        <li class="nav-item <?php if($page ==  "dashboard"){ echo "active";} ?>">
+        <li class="nav-item <?php if($currentURL  ==  LOCAL_DIR){ echo "active";} ?>">
             <a class="nav-link" href="<?= URL ?>">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
@@ -60,12 +60,12 @@
             </a>
 
             <div id="collapseTest"
-                class="collapse <?= $page ==  "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports" ? "show" : ''; ?>"
+                class="collapse <?= $page ==  "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports" || $page == "single-lab-page" || $page == "add-patient" || $page == "lab-patient-selection" ? "show" : ''; ?>"
                 aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item <?= $page ==  "lab-tests" ? "active" : ''; ?>" href="lab-tests.php">Avilable
+                    <a class="collapse-item <?= $page ==  "lab-tests" || $page == "single-lab-page" ? "active" : ''; ?>" href="lab-tests.php">Avilable
                         Tests</a>
-                    <a class="collapse-item <?= $page ==  "test-appointments" ? "active" : ''; ?>"
+                    <a class="collapse-item <?= $page ==  "test-appointments" || $page == "add-patient" || $page == "lab-patient-selection" ? "active" : ''; ?>"
                         href="test-appointments.php">Test Bill Details</a>
                     <a class="collapse-item <?= $page ==  "test-reports" ? "active" : ''; ?>"
                         href="test-reports.php">Test Reports</a>
@@ -84,11 +84,11 @@
             </a>
 
             <div id="collapseDoctor"
-                class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" ? "show" : ''; ?>"
+                class="collapse <?= $page ==  "doctors" ||  $page ==  "doc-specialization" || $page == "doctor-specialization" ? "show" : ''; ?>"
                 aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?= $page ==  "doctors" ? "active": ''; ?>" href="doctors.php">Doctors</a>
-                    <a class="collapse-item <?= $page ==  "doc-specialization" ? "active": ''; ?>"
+                    <a class="collapse-item <?= $page ==  "doc-specialization"  || $page == "doctor-specialization" ? "active": ''; ?>"
                         href="doctor-specialization.php">Specializations</a>
                 </div>
             </div>
@@ -142,21 +142,21 @@
 
 
         <!-- Product Management collapsed Menu  -->
-        <li class="nav-item <?php if($page ==  "sales" || $page ==  "sales-returns"){ echo "active";} ?>">
+        <li class="nav-item <?php if($page ==  "sales" || $page ==  "sales-returns" || $page == "new-sales" || $page == "sales-returns-items"){ echo "active";} ?>">
             <a active class="nav-link <?php if($page !=  "sales"){ echo "collapsed";} ?>" href="#"
                 data-toggle="collapse" data-target="#collapseSalesManagement"
-                aria-expanded="<?php if($page ==  "sales" || $page ==  "sales-returns"){ echo "true";} ?>"
+                aria-expanded="<?php if($page ==  "sales" || $page ==  "sales-returns" || $page == "new-sales" || $page == "sales-returns-items"){ echo "true";} ?>"
                 aria-controls="collapseSalesManagement">
                 <i class="fas fa-clinic-medical"></i>
                 <span>Sales Management</span>
             </a>
             <div id="collapseSalesManagement"
-                class="collapse <?php if($page ==  "sales" ||  $page ==  "sales-returns"){ echo "show";} ?>"
+                class="collapse <?php if($page ==  "sales" ||  $page ==  "sales-returns" || $page == "new-sales" || $page == "sales-returns-items"){ echo "show";} ?>"
                 aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item <?php if($page ==  "sales" ){ echo "active";} ?>" href="sales.php">Sales
+                    <a class="collapse-item <?php if($page ==  "sales" || $page == "new-sales" ){ echo "active";} ?>" href="sales.php">Sales
                     </a>
-                    <a class="collapse-item <?php if($page ==  "sales-returns"){ echo "active";} ?>"
+                    <a class="collapse-item <?php if($page ==  "sales-returns" || $page == "sales-returns-items"){ echo "active";} ?>"
                         href="sales-returns.php ">Returns </a>
                 </div>
             </div>
@@ -165,22 +165,22 @@
 
 
         <!-- Purchase Management  -->
-        <li class="nav-item <?php if($page ==  "stock-in" || $page == "stock-return"){ echo "active";} ?>">
+        <li class="nav-item <?php if($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item"){ echo "active";} ?>">
             <a active class="nav-link <?php if($page !=  "stock-in"){ echo "collapsed";} ?>" href="#"
                 data-toggle="collapse" data-target="#collapsePurchaseManagement"
-                aria-expanded="<?php if($page ==  "stock-in" || $page == "stock-return"){ echo "true";} ?>"
+                aria-expanded="<?php if($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item"){ echo "true";} ?>"
                 aria-controls="collapsePurchaseManagement">
                 <i class="fas fa-store-alt"></i>
                 <span>Purchase Management</span>
             </a>
             <div id="collapsePurchaseManagement"
-                class="collapse <?php if($page ==  "stock-in" || $page == "stock-return"){ echo "show";} ?>"
+                class="collapse <?php if($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item"){ echo "show";} ?>"
                 aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Purchase Management:</h6>
                     <a class="collapse-item <?php if($page ==  "stock-in"){ echo "active";} ?>"
                         href="stock-in.php ">Purchase </a>
-                    <a class="collapse-item <?php if($page ==  "stock-return"){ echo "active";} ?>"" href="
+                    <a class="collapse-item <?php if($page ==  "stock-return" || $page == "stock-return-item"){ echo "active";} ?>"" href="
                         stock-return.php">Purchase Return</a>
                 </div>
             </div>
@@ -228,15 +228,15 @@
                 <span>Purchase Master</span>
             </a>
             <div id="collapseUtilities"
-                class="collapse <?php if($page ==  "distributor" || $page ==  "manufacturer" || $page ==  "pack-unit" || $page ==  "product-unit"){ echo "show";} ?>"
+                class="collapse <?php if($page ==  "distributor" || $page ==  "manufacturers" || $page ==  "packaging-unit" || $page ==  "product-unit"){ echo "show";} ?>"
                 aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Purchase Master:</h6>
                     <a class="collapse-item <?php if($page ==  "distributor"){ echo "active";} ?>"
                         href="distributor.php">Distributor </a>
-                    <a class="collapse-item <?php if($page ==  "manufacturer"){ echo "active";} ?>"
+                    <a class="collapse-item <?php if($page ==  "manufacturers"){ echo "active";} ?>"
                         href="manufacturers.php">Manufacturer </a>
-                    <a class="collapse-item <?php if($page ==  "pack-unit"){ echo "active";} ?>"
+                    <a class="collapse-item <?php if($page ==  "packaging-unit"){ echo "active";} ?>"
                         href="packaging-unit.php">Packageing Unit </a>
                     <a class="collapse-item <?php if($page ==  "product-unit"){ echo "active";} ?>"
                         href="product-unit.php">Product Unit </a>
