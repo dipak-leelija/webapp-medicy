@@ -103,7 +103,7 @@ function preview() {
 ////////////////////////////// manufacturur search control \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
-const manufacturerInput = document.getElementById("manufacturer");
+const manufacturerInput = document.getElementById("manufacturer-id");
 const manufDropdown = document.getElementsByClassName("c-dropdown")[0];
 
 manufacturerInput.addEventListener("focus", () => {
@@ -136,7 +136,7 @@ manufacturerInput.addEventListener("keydown", () => {
 
     // Delay the hiding to allow the click event to be processed
     let list = document.getElementsByClassName('lists')[0];
-    let searchVal = document.getElementById("manufacturer").value;
+    let searchVal = document.getElementById("manufacturer-id").value;
 
     if (searchVal.length > 2) {
 
@@ -171,8 +171,8 @@ const setManufacturer = (t) => {
     let manufId = t.id.trim();
     let manufName = t.innerHTML.trim();
 
-    document.getElementById("manufacturer").value = manufName;
-    document.getElementById("manufacturer-id").value = manufId;
+    document.getElementById("manufacturer-id").value = manufName;
+    document.getElementById("manufacturer").value = manufId;
     // document.getElementById("manufacturer").innerHTML = manufName;manufacturer-id
 
     document.getElementsByClassName("c-dropdown")[0].style.display = "none";

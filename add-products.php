@@ -112,9 +112,9 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                                             <div class="col-md-12 mt-2">
 
-                                                <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1">
+                                                <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1" disable hidden>
 
-                                                <input type="text" name="manufacturer-id" id="manufacturer-id" class="c-inp w-100 p-1" disabled hidden>
+                                                <input type="text" name="manufacturer-id" id="manufacturer-id" class="c-inp w-100 p-1">
 
                                                 <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list">
                                                     <div class="lists" id="lists">
