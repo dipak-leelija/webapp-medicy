@@ -94,6 +94,38 @@ class Manufacturer extends DatabaseConnection{
         }
         return 0;
     }
+
+
+
+
+
+    function showManufacturerWithLimit() {
+        try {
+            $data = array();
+            $select = "SELECT * FROM `manufacturer` LIMIT 10";
+            $selectQuery = $this->conn->prepare($select);
+    
+            if (!$selectQuery) {
+                throw new Exception("Query preparation failed.");
+            }
+    
+            $selectQuery->execute();
+    
+            $result = $selectQuery->get_result();
+    
+            if($result->num_rows > 0){
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                return json_encode($data);
+            }else{
+                return null;
+            }
+        } catch (Exception $e) {
+            echo "Error in showManufacturer: " . $e->getMessage();
+        }
+        return 0;
+    }
     
 
     

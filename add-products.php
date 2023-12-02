@@ -102,10 +102,9 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" required>
                                             </div>
 
-                                            <div class="row p-3">
+                                            <div class="col-md-12 mt-2">
 
-                                                <!-- <label class="" for="manufacturer">Select Manufacturer</label> -->
-                                                <input type="text" name="manufacturer" id="manufacturer" class="upr-inp">
+                                                <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1">
 
                                                 <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list">
                                                     <div class="lists" id="lists">
