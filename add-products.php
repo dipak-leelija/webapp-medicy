@@ -98,15 +98,23 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                             <div class="col-md-12">
                                                 <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
                                             </div><br>
-                                            <div class="col-md-12">
-                                                <input class="c-inp w-100 p-1" id="product-composition" name="product-composition" placeholder="Product Composition" required>
+
+                                            <div class="d-flex">
+                                                <div class="col-md-6">
+                                                    <input class="c-inp w-100 p-1" id="product-composition-1" name="product-composition-1" placeholder="Product Composition 1" required>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <input class="c-inp w-100 p-1" id="product-composition-2" name="product-composition-2" placeholder="Product Composition 2" required>
+                                                </div>
+
                                             </div>
 
                                             <div class="col-md-12 mt-2">
 
                                                 <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1">
 
-                                                <input type="text" name="manufacturer-id" id="manufacturer-id" class="d-none c-inp w-100 p-1" disabled>
+                                                <input type="text" name="manufacturer-id" id="manufacturer-id" class="c-inp w-100 p-1" disabled hidden>
 
                                                 <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list">
                                                     <div class="lists" id="lists">
@@ -375,60 +383,59 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
             document.getElementById("profit").value = profit.toFixed(2);
         }*/
-        
-
-        //     $(document).on("click", ".back", function() {
-        //         var backFile = $(this).parents().find(".back-file");
-        //         backFile.trigger("click");
-        //     });
-        //     $('.back-file').change(function(e) {
-        //         $(".back-img-field").hide();
-        //         $("#back-preview").show();
 
 
-        //         var fileName = e.target.files[0].name;
-        //         $("#back-file").val(fileName);
-
-        //         var reader = new FileReader();
-        //         reader.onload = function(e) {
-        //             // get loaded data and render thumbnail.
-        //             document.getElementById("back-preview").src = e.target.result;
-        //         };
-        //         // read the image file as a data URL.
-        //         reader.readAsDataURL(this.files[0]);
-        //     });
-        // 
+            //     $(document).on("click", ".back", function() {
+            //         var backFile = $(this).parents().find(".back-file");
+            //         backFile.trigger("click");
+            //     });
+            //     $('.back-file').change(function(e) {
+            //         $(".back-img-field").hide();
+            //         $("#back-preview").show();
 
 
-        //     $(document).on("click", ".side", function() {
-        //         var SideFile = $(this).parents().find(".side-file");
-        //         SideFile.trigger("click");
-        //     });
-        //     $('.side-file').change(function(img) {
-        //         $(".side-img-field").hide();
-        //         $("#side-preview").show();
+            //         var fileName = e.target.files[0].name;
+            //         $("#back-file").val(fileName);
+
+            //         var reader = new FileReader();
+            //         reader.onload = function(e) {
+            //             // get loaded data and render thumbnail.
+            //             document.getElementById("back-preview").src = e.target.result;
+            //         };
+            //         // read the image file as a data URL.
+            //         reader.readAsDataURL(this.files[0]);
+            //     });
+            // 
 
 
-        //         var sideImgName = img.target.files[0].name;
-        //         $("#side-file").val(sideImgName);
+            //     $(document).on("click", ".side", function() {
+            //         var SideFile = $(this).parents().find(".side-file");
+            //         SideFile.trigger("click");
+            //     });
+            //     $('.side-file').change(function(img) {
+            //         $(".side-img-field").hide();
+            //         $("#side-preview").show();
 
-        //         var reader = new FileReader();
-        //         reader.onload = function(img) {
-        //             // get loaded data and render thumbnail.
-        //             document.getElementById("side-preview").src = img.target.result;
-        //         };
-        //         // read the image file as a data URL.
-        //         reader.readAsDataURL(this.files[0]);
-        //     });
-        // 
-        //     document.addEventListener('DOMContentLoaded', function() {
-        //         var choices = new Choices('#manufacturer', {
-        //             allowHTML: true,
-        //             removeItemButton: true,
-        //         });
-        //     });
 
-        </script> 
+            //         var sideImgName = img.target.files[0].name;
+            //         $("#side-file").val(sideImgName);
+
+            //         var reader = new FileReader();
+            //         reader.onload = function(img) {
+            //             // get loaded data and render thumbnail.
+            //             document.getElementById("side-preview").src = img.target.result;
+            //         };
+            //         // read the image file as a data URL.
+            //         reader.readAsDataURL(this.files[0]);
+            //     });
+            // 
+            //     document.addEventListener('DOMContentLoaded', function() {
+            //         var choices = new Choices('#manufacturer', {
+            //             allowHTML: true,
+            //             removeItemButton: true,
+            //         });
+            //     });
+        </script>
 
 </body>
 
