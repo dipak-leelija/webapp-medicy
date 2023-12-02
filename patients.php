@@ -285,7 +285,7 @@ if ($allPatients->status) {
                                                  <br>
                                                  <span>Lab: '. $slicedPatientsLabVisited .'</span></small>
                                          </td>
-                                         <td> $slicedPatientsPin</td>
+                                         <td> '.$slicedPatientsPin.'</td>
 
                                          <td class="text-center">
                                              <a class="text-primary" href="patient-details.php?patient='. $slicedPatientsID.'"

@@ -269,9 +269,10 @@ if ($labBillDisplay->status) {
                                     </select>
                                 </div>
 
-                                <div class="col-md-1 col-6 text-right">
-                                    <a class="btn btn-sm btn-primary " data-toggle="modal" data-target="#labPatientSelection">
-                                        <i class="fas fa-edit"></i>Entry
+                                <div class="col-md-1 col-6 text-right ">
+                                    <a class="btn btn-sm btn-primary w-100  d-flex" data-toggle="modal" data-target="#labPatientSelection">
+                                    <p class="m-0 p-0">Entry</p>&nbsp;&nbsp;&nbsp;    
+                                    <i class="fas fa-edit"></i>
                                     </a>
                                 </div>
                             </div>
