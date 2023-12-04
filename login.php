@@ -31,7 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $errorMessage = 'Please fill up with correct Password !';
         } elseif ($login === 'not found') {
             $errorMessage = 'Please fill up with correct Username !';
-        } 
+        }elseif ($login === 'ENDED') {
+            $errorMessage = 'Subscription Ended!';
+        }
     }
 }
 
