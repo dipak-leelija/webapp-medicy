@@ -1,14 +1,14 @@
 <?php
 
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'productsImages.class.php';
-require_once CLASS_DIR.'pagination.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'productsImages.class.php';
+require_once CLASS_DIR . 'pagination.class.php';
 require_once ROOT_DIR . '_config/accessPermission.php';
 
 
@@ -27,7 +27,11 @@ $col = 'admin_id';
 
 $result = $Pagination->productsWithPagination();
 $allProducts    = $result['products'];
-$totalPtoducts  = $result['totalPtoducts']
+$totalPtoducts  = $result['totalPtoducts'];
+
+
+$productList = json_decode($Products->showProductsByLimit());
+
 ?>
 
 <!DOCTYPE html>
@@ -46,15 +50,14 @@ $totalPtoducts  = $result['totalPtoducts']
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/products.css">
     <!-- Custom styles for this page -->
     <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
 </head>
 
@@ -64,7 +67,7 @@ $totalPtoducts  = $result['totalPtoducts']
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -74,7 +77,7 @@ $totalPtoducts  = $result['totalPtoducts']
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin container-fluid -->
@@ -84,12 +87,34 @@ $totalPtoducts  = $result['totalPtoducts']
                     <div class="col">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Total Items:
-                                        <?= $totalPtoducts ?>
-                                    </h6>
-                                    <a class="btn btn-sm btn-primary" href="add-products.php"><i
-                                            class="fas fa-plus"></i> Add</a>
+                                <div class="d-flex col-12">
+                                    <div class="col-md-3 mt-2">
+                                        <h6 class="m-0 font-weight-bold text-primary">Total Items:
+                                            <?= $totalPtoducts ?>
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input type="text" name="prodcut-search" id="prodcut-search" class="sale-inp w-75 p-0" style="justify-content: center;">
+                                        <div class="p-2 bg-light col-md-9 c-dropdown" id="product-list" style="justify-content: center; overflow: auto;">
+                                            <div class="lists" id="lists">
+                                                <?php
+                                                if (!empty($productList->data) && is_array($productList->data)) {
+                                                    foreach ($productList->data as $eachProd) {
+                                                        // print_r($eachProd);
+                                                ?>
+                                                        <div class="p-1 border-bottom list" id="<?= $eachProd->product_id ?>" onclick="setProduct(this)">
+                                                            <?= $eachProd->name ?>
+                                                        </div>
+                                                <?php
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-2 ">
+                                        <a class="btn btn-sm btn-primary" href="add-products.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -103,14 +128,14 @@ $totalPtoducts  = $result['totalPtoducts']
                                                 <?php
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
-                                                        
+
                                                         $image = $ProductImages->showImageById($item['product_id']);
-                                                
+
                                                         if ($image != null) {
                                                             $imgData = $image[0]['image'];
-                                                            if($imgData == ''){
+                                                            if ($imgData == '') {
                                                                 $productImage = 'medicy-default-product-image.jpg';
-                                                            }else{
+                                                            } else {
                                                                 $productImage = $imgData;
                                                             }
                                                         } else {
@@ -120,35 +145,30 @@ $totalPtoducts  = $result['totalPtoducts']
                                                         if ($item['dsc'] == null) {
                                                             $dsc = '';
                                                         } else {
-                                                            $dsc = $item['dsc'].'...';
+                                                            $dsc = $item['dsc'] . '...';
                                                         }
-                                                        
+
                                                 ?>
 
-                                                <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
-                                                    <div class="card  m-2">
-                                                        <img src="<?php echo PROD_IMG_PATH?><?php echo $productImage ?>"
-                                                            class="card-img-top" alt="...">
-                                                        <div class="card-body">
-                                                            <label><b><?php echo $item['name']; ?></b></label>
-                                                            <p class="mb-0"><b><?php $item['name'] ?></b></p>
-                                                            <small class="card-text mt-0"
-                                                                style="text-align: justify;"><?php echo substr($dsc, 0, 65) ?>...</small>
+                                                        <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
+                                                            <div class="card  m-2">
+                                                                <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="...">
+                                                                <div class="card-body">
+                                                                    <label><b><?php echo $item['name']; ?></b></label>
+                                                                    <p class="mb-0"><b><?php $item['name'] ?></b></p>
+                                                                    <small class="card-text mt-0" style="text-align: justify;"><?php echo substr($dsc, 0, 65) ?>...</small>
 
-                                                        </div>
+                                                                </div>
 
 
-                                                        <div class="row px-3 pb-2">
-                                                            <div class="col-6">₹ <?php echo $item['mrp'] ?></div>
-                                                            <div class="col-6 d-flex justify-content-end">
-                                                                <button class="btn btn-sm border border-info"
-                                                                    data-toggle="modal" data-target="#productModal"
-                                                                    id="<?php echo $item['product_id'] ?>"
-                                                                    onclick="viewItem(this.id)">View</button>
+                                                                <div class="row px-3 pb-2">
+                                                                    <div class="col-6">₹ <?php echo $item['mrp'] ?></div>
+                                                                    <div class="col-6 d-flex justify-content-end">
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item['product_id'] ?>" onclick="viewItem(this.id)">View</button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
                                                 <?php
                                                     }
                                                 } else {
@@ -182,7 +202,7 @@ $totalPtoducts  = $result['totalPtoducts']
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -227,13 +247,13 @@ $totalPtoducts  = $result['totalPtoducts']
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
     <script>
-    const viewItem = (value) => {
-        // console.info(value);
-        let url = 'ajax/product-view-modal.ajax.php?id=' + value;
-        $(".productModal").html(
-            '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
-            url + '"></iframe>');
-    }
+        const viewItem = (value) => {
+            // console.info(value);
+            let url = 'ajax/product-view-modal.ajax.php?id=' + value;
+            $(".productModal").html(
+                '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+        }
     </script>
 
 

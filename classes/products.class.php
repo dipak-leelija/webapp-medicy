@@ -43,6 +43,38 @@ class Products extends DatabaseConnection{
 
 
 
+    function showProductsByLimit() {
+        try {
+            $selectProduct = "SELECT * FROM products LIMIT 10";
+            $stmt = $this->conn->prepare($selectProduct);
+    
+            if (!$stmt) {
+                throw new Exception("Statement preparation failed: " . $this->conn->error);
+            }
+    
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $products = array();
+                while ($res = $result->fetch_object()) {
+                    $products[] = $res;  // Fix: Append to the $products array
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $products]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No products found', 'data' => []]);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => []]);
+        }
+        return 0;
+    }
+    
+
+
+
+
     function showProductsByCol($col, $adminId){
         try {
             $selectProduct = "SELECT * FROM products WHERE `$col` = ?";
