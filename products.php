@@ -145,7 +145,7 @@ if (isset($_GET['search'])) {
 
                                                         if ($image->status != 0) {
 
-                                                            $imgData = $image[0]['image'];
+                                                            $imgData = $image->image;
                                                             if ($imgData == '') {
                                                                 $productImage = 'medicy-default-product-image.jpg';
                                                             } else {
