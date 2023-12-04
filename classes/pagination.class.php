@@ -84,7 +84,7 @@ Class Pagination extends DatabaseConnection{
         $this->conn->close();
     
         // Return the data and pagination HTML
-        return ['totalPtoducts' => $totalRecords, 'products' => $products, 'paginationHTML' => $paginationHTML];
+        return json_encode(['totalPtoducts' => $totalRecords, 'products' => $products, 'paginationHTML' => $paginationHTML]);
     }
     
 
