@@ -61,7 +61,7 @@ class ProductImages extends DatabaseConnection{
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
-                    $data[] = $row;
+                    $data = $row;
                 }
                 $stmt->close();
                 return json_encode(['status' => '1', 'message' => 'Images found', 'data' => $data]);

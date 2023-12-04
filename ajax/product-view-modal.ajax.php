@@ -83,12 +83,14 @@ $QuantityUnit   = new QuantityUnit;
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
        
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
-        // print_r($image);
+        print_r($image);
 
         $Images = array();
-        if ($image != NULL) {
+
+        if ($image->status != 0) {
+            $image = $image->data;
             foreach ($image as $image) {
-                $Images[] = $image['image'];
+                $Images[] = $image->image;
             }
             // print_r($Images);
 
@@ -113,7 +115,7 @@ $QuantityUnit   = new QuantityUnit;
             }
         }
 
-        $itemUnitName = $ItemUnit->itemUnitName($product[0]['unit']);
+        $itemUnitName = $ItemUnit->itemUnitName($product->unit);
 
     ?>
 
