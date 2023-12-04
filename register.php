@@ -11,7 +11,7 @@ require_once CLASS_DIR.'admin.class.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
 
-$admin          = new Admin();
+$admin          = new Admin;
 $HealthCare     = new HealthCare;
 $IdGenerate     = new IdsGeneration;
 
@@ -48,6 +48,7 @@ if (isset($_POST['register'])) {
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, NOW);
                 // print_r($register);
                 if ($register) {
+
                     $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
                     if ($addToClinicInfo) {
                         header("Location: login.php");
