@@ -1,4 +1,4 @@
-// var xmlhttp = new XMLHttpRequest();
+var xmlhttp = new XMLHttpRequest();
 
 // function displayImage() {
 //     let imageType = image.type;
@@ -105,7 +105,9 @@ function resetImg() {
 }
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// manufacturur search control \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\/
 
 
 const manufacturerInput = document.getElementById("manufacturer-id");

@@ -94,8 +94,8 @@ $productList = json_decode($Products->showProductsByLimit());
                                         </h6>
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="text" name="prodcut-search" id="prodcut-search" class="sale-inp w-75 p-0" style="justify-content: center;">
-                                        <div class="p-2 bg-light col-md-9 c-dropdown" id="product-list" style="justify-content: center; overflow: auto;">
+                                        <input type="text" name="prodcut-search" id="prodcut-search" class="sale-inp w-100 p-0" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
+                                        <div class="p-2 bg-light col-md-12 c-dropdown" id="product-list">
                                             <div class="lists" id="lists">
                                                 <?php
                                                 if (!empty($productList->data) && is_array($productList->data)) {
@@ -246,16 +246,87 @@ $productList = json_decode($Products->showProductsByLimit());
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
+    <!-- Custom scripts for products pages-->
+    <script src="<?php echo JS_PATH ?>prodcuts.js"></script>
+
+
     <script>
-        const viewItem = (value) => {
-            // console.info(value);
-            let url = 'ajax/product-view-modal.ajax.php?id=' + value;
-            $(".productModal").html(
-                '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
+        const xmlhttp = new XMLHttpRequest();
+
+        const productsSearch = document.getElementById("prodcut-search");
+        const productsDropdown = document.getElementsByClassName("c-dropdown")[0];
+
+        productsSearch.addEventListener("focus", () => {
+            productsDropdown.style.display = "block";
+        });
+
+        document.addEventListener("click", (event) => {
+            // Check if the clicked element is not the input field or the manufDropdown
+            if (!productsSearch.contains(event.target) && !productsDropdown.contains(event.target)) {
+                productsDropdown.style.display = "none";
+            }
+        });
+
+        document.addEventListener("blur", (event) => {
+            // Check if the element losing focus is not the manufDropdown or its descendants
+            if (!productsDropdown.contains(event.relatedTarget)) {
+                // Delay the hiding to allow the click event to be processed
+                setTimeout(() => {
+                    productsDropdown.style.display = "none";
+                }, 100);
+            }
+        });
+
+
+
+
+        productsSearch.addEventListener("keydown", () => {
+
+            // Delay the hiding to allow the click event to be processed
+            let list = document.getElementsByClassName('lists')[0];
+            let searchVal = document.getElementById("prodcut-search").value;
+
+            if (searchVal.length > 2) {
+
+                let manufURL = `ajax/manufacturer.list-view.ajax.php?match=${searchVal}`;
+                xmlhttp.open("GET", manufURL, false);
+                xmlhttp.send(null);
+
+                list.innerHTML = xmlhttp.responseText;
+
+
+            } else if (searchVal == '') {
+
+                console.log("input val blank ", searchVal);
+
+                searchVal = 'all';
+
+                let manufURL = `ajax/manufacturer.list-view.ajax.php?match=${searchVal}`;
+                xmlhttp.open("GET", manufURL, false);
+                xmlhttp.send(null);
+                // console.log();
+                list.innerHTML = xmlhttp.responseText;
+
+            } else {
+
+                list.innerHTML = '';
+            }
+        });
+
+
+
+
+        const setProduct = (t) => {
+            let prodId = t.id.trim();
+            let prodName = t.innerHTML.trim();
+
+            document.getElementById("prodcut-search").value = prodName;
+            // document.getElementById("manufacturer").value = manufId;
+            // document.getElementById("manufacturer").innerHTML = manufName;manufacturer-id
+
+            document.getElementsByClassName("c-dropdown")[0].style.display = "none";
         }
     </script>
-
 
 </body>
 
