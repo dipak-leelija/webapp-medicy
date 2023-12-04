@@ -107,7 +107,7 @@ if (isset($_GET['search'])) {
                                     <div class="col-md-7">
                                         <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
 
-                                        <div class="p-2 bg-light col-md-12 c-dropdown" id="product-list">
+                                        <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
                                             <div class="lists" id="lists">
                                                 <?php
                                                 if (!empty($productList->data) && is_array($productList->data)) {
@@ -259,7 +259,7 @@ if (isset($_GET['search'])) {
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
-    
+
     <script>
         var xmlhttp = new XMLHttpRequest();
 
@@ -278,13 +278,17 @@ if (isset($_GET['search'])) {
             let prodId = t.id.trim();
             let prodName = t.innerHTML.trim();
 
-            document.getElementById("prodcut-search").value = prodName;
-            document.getElementsByClassName("c-dropdown")[0].style.display = "none";
-
 
             let currentURLWithoutQuery = window.location.origin + window.location.pathname;
             let newURL = `${currentURLWithoutQuery}?search=${prodId}`;
+            
             window.location.replace(newURL);
+            
+            document.getElementById("prodcut-search").value = prodName;
+            document.getElementsByClassName("c-dropdown")[0].style.display = "none";
+
+            console.log(prodName);
+            
         }
 
         // ==========================================================================
@@ -317,19 +321,11 @@ if (isset($_GET['search'])) {
 
 
 
-        document.getElementById('prodcut-search').addEventListener("keyup", () =>{
-            console.log(document.getElementById('prodcut-search').value);
-        });
-
-
-
         productsSearch.addEventListener("keydown", () => {
 
             // Delay the hiding to allow the click event to be processed
             let list = document.getElementsByClassName('lists')[0];
             let searchVal = document.getElementById("prodcut-search").value;
-
-            console.log(searchVal);
 
             if (searchVal.length > 2) {
 
@@ -349,11 +345,10 @@ if (isset($_GET['search'])) {
                 // console.log();
                 list.innerHTML = xmlhttp.responseText;
 
-
-
             } else {
 
                 list.innerHTML = '';
+                // productsDropdown.style.display = "none";
             }
         });
     </script>
