@@ -60,16 +60,20 @@ $Session = new SessionHandler();
 
         $productName        = $_POST['product-name'];
         $productName        = addslashes($productName);
-        print_r("productName-".$productName)."<br>";
+        // print_r("productName-".$productName)."<br>";
 
-        $productComposition        = $_POST['product-composition'];
-        $productComposition        = addslashes($productComposition);
-        print_r("productComposition-".$productComposition)."<br>";
+        $productComposition1        = $_POST['product-composition-1'];
+        $productComposition1        = addslashes($productComposition1);
+        // print_r("productComposition 1-".$productComposition1)."<br>";
+
+        $productComposition2        = $_POST['product-composition-2'];
+        $productComposition2       = addslashes($productComposition2);
+        // print_r("productComposition 2-".$productComposition2)."<br>";
 
         $power              = $_POST['medicine-power'];
-        print_r("power-".$power)."<br>";
+        // print_r("power-".$power)."<br>";
         $manufacturerid     = $_POST['manufacturer'];
-        print_r("manufacturerid-".$manufacturerid)."<br>";
+        // print_r("manufacturerid-".$manufacturerid)."<br>";
 
 
         $weatage            = $_POST['unit-quantity'];
@@ -92,7 +96,7 @@ $Session = new SessionHandler();
 
 
         //Insert into products table of DB
-        $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $productComposition, $power, $productDsc, $packagingType, $weatage, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId);
+        $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $productComposition1, $productComposition2, $power, $productDsc, $packagingType, $weatage, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId);
 
         if ($addProducts === true) {
 

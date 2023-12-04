@@ -279,8 +279,9 @@ if ($allAppointments->status) {
                                 </div>
 
                                 <div class="col-md-1 col-3 mt-2">
-                                    <a class="btn btn-sm btn-primary " data-toggle="modal" data-target="#appointmentSelection">
-                                        <i class="fas fa-edit"></i>Entry
+                                    <a class="btn btn-sm btn-primary h-50 d-flex" data-toggle="modal" data-target="#appointmentSelection">
+                                        <p class="m-0 p-0">Entry</p> &nbsp; &nbsp; &nbsp;
+                                        <i class="fas fa-edit"></i>
                                     </a>
                                 </div>
                             </div>
