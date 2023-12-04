@@ -112,28 +112,90 @@ class Products extends DatabaseConnection{
             $selectProduct = "SELECT * FROM products WHERE product_id = ?";
             $stmt = $this->conn->prepare($selectProduct);
     
+            if (!$stmt) {
+                throw new Exception("Statement preparation failed: " . $this->conn->error);
+            }
+    
             $stmt->bind_param("s", $productId);
             $stmt->execute();
             $result = $stmt->get_result();
     
             if ($result->num_rows == 0) {
-                return 0; 
+                $stmt->close();
+                return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => null]);
             } else {
                 $data = array();
-    
                 while ($row = $result->fetch_assoc()) {
-                    $data[] = $row;
+                    $data = $row;
                 }
     
                 $stmt->close();
     
-                return $data;
+                return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $data]);
             }
         } catch (Exception $e) {
-            return null;
+            error_log("Error in showProductsById: " . $e->getMessage());
+    
+            return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
         }
+        return 0;
     }
     
+    
+    
+
+
+
+
+
+
+    function prodSearchByMatch($match) {
+        try {
+            if ($match == 'all') {
+                
+                $select = "SELECT * FROM `products` LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+
+            }else {
+                
+                $select = "SELECT * FROM `products` WHERE 
+                       `name` LIKE CONCAT('%', ?, '%') OR 
+                       `comp_1` LIKE CONCAT('%', ?, '%') OR
+                       `comp_2` LIKE CONCAT('%', ?, '%') LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+                
+            }
+                       
+
+            if ($stmt) {
+                if ($match != 'all') {
+                    $stmt->bind_param("sss", $match, $match, $match);
+                }
+                
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+    
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+    
+                    return json_encode(['status' => 1, 'message' => 'success', 'data'=> $data]);
+                } else {
+                    return json_encode(['status' => 0, 'message' => 'empty', 'data'=> '']);
+                }
+                $stmt->close();
+            } else {
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: ".$this->conn->error, 'data'=> '']);
+            }
+
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data'=> '']);
+
+        }
+    }
+
 
 
 

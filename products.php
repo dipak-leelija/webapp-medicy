@@ -21,16 +21,27 @@ $Pagination     = new Pagination();
 $ProductImages  = new ProductImages();
 
 
+if (isset($_GET['search'])) {
+    $prodId = $_GET['search'];
+    $productList = json_decode($Products->showProductsById($prodId));
 
-// Function INitilized 
-$col = 'admin_id';
+    $pagination = json_decode($Pagination->arrayPagination($productList->data));
+    // print_r($pagination);
 
-$result = $Pagination->productsWithPagination();
-$allProducts    = $result['products'];
-$totalPtoducts  = $result['totalPtoducts'];
+    $result = $pagination;
+    $allProducts = $pagination->items;
+    $totalPtoducts = $pagination->totalitem;
+} else {
 
+    // Function INitilized 
+    $col = 'admin_id';
+    $result = json_decode($Pagination->productsWithPagination());
+    $allProducts    = $result->products;
+    $totalPtoducts  = $result->totalPtoducts;
 
-$productList = json_decode($Products->showProductsByLimit());
+    $productList = json_decode($Products->showProductsByLimit());
+}
+
 
 ?>
 
@@ -94,8 +105,9 @@ $productList = json_decode($Products->showProductsByLimit());
                                         </h6>
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="text" name="prodcut-search" id="prodcut-search" class="sale-inp w-100 p-0" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
-                                        <div class="p-2 bg-light col-md-12 c-dropdown" id="product-list">
+                                        <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
+
+                                        <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
                                             <div class="lists" id="lists">
                                                 <?php
                                                 if (!empty($productList->data) && is_array($productList->data)) {
@@ -112,7 +124,7 @@ $productList = json_decode($Products->showProductsByLimit());
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 mt-2 ">
+                                    <div class="col-md-2">
                                         <a class="btn btn-sm btn-primary" href="add-products.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
                                     </div>
                                 </div>
@@ -128,10 +140,11 @@ $productList = json_decode($Products->showProductsByLimit());
                                                 <?php
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
+                                                        // print_r($item);
+                                                        $image = json_decode($ProductImages->showImageById($item->product_id));
 
-                                                        $image = $ProductImages->showImageById($item['product_id']);
+                                                        if ($image->status != 0) {
 
-                                                        if ($image != null) {
                                                             $imgData = $image[0]['image'];
                                                             if ($imgData == '') {
                                                                 $productImage = 'medicy-default-product-image.jpg';
@@ -142,29 +155,29 @@ $productList = json_decode($Products->showProductsByLimit());
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }
 
-                                                        if ($item['dsc'] == null) {
+                                                        if ($item->dsc == null) {
                                                             $dsc = '';
                                                         } else {
-                                                            $dsc = $item['dsc'] . '...';
+                                                            $dsc = $item->dsc . '...';
                                                         }
 
                                                 ?>
 
                                                         <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
-                                                            <div class="card  m-2">
+                                                            <div class="card  m-2" style="min-width: 14rem; min-height: 11rem;">
                                                                 <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="...">
                                                                 <div class="card-body">
-                                                                    <label><b><?php echo $item['name']; ?></b></label>
-                                                                    <p class="mb-0"><b><?php $item['name'] ?></b></p>
+                                                                    <label><b><?php echo $item->name; ?></b></label>
+                                                                    <p class="mb-0"><b><?php $item->name ?></b></p>
                                                                     <small class="card-text mt-0" style="text-align: justify;"><?php echo substr($dsc, 0, 65) ?>...</small>
 
                                                                 </div>
 
 
                                                                 <div class="row px-3 pb-2">
-                                                                    <div class="col-6">₹ <?php echo $item['mrp'] ?></div>
+                                                                    <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item['product_id'] ?>" onclick="viewItem(this.id)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item->product_id ?>" onclick="viewItem(this.id)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -180,7 +193,7 @@ $productList = json_decode($Products->showProductsByLimit());
                                             </div>
                                             <div class="d-flex justify-content-center mt-3">
                                                 <nav aria-label="Page navigation">
-                                                    <?= $result['paginationHTML'] ?>
+                                                    <?= $result->paginationHTML ?>
                                                 </nav>
                                             </div>
                                         </section>
@@ -246,20 +259,49 @@ $productList = json_decode($Products->showProductsByLimit());
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
-    <!-- Custom scripts for products pages-->
-    <script src="<?php echo JS_PATH ?>prodcuts.js"></script>
-
 
     <script>
-        const xmlhttp = new XMLHttpRequest();
+        var xmlhttp = new XMLHttpRequest();
+
+        const viewItem = (value) => {
+            console.info(value);
+            let url = 'ajax/product-view-modal.ajax.php?id=' + value;
+            $(".productModal").html(
+                '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+        }
+
+
+        // ============== PRODUCT VIEW MODAL OPEN FUNCTION =============
+
+        const setProduct = (t) => {
+            let prodId = t.id.trim();
+            let prodName = t.innerHTML.trim();
+
+
+            let currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            let newURL = `${currentURLWithoutQuery}?search=${prodId}`;
+            
+            window.location.replace(newURL);
+            
+            document.getElementById("prodcut-search").value = prodName;
+            document.getElementsByClassName("c-dropdown")[0].style.display = "none";
+
+            console.log(prodName);
+            
+        }
+
+        // ==========================================================================
 
         const productsSearch = document.getElementById("prodcut-search");
         const productsDropdown = document.getElementsByClassName("c-dropdown")[0];
 
+
         productsSearch.addEventListener("focus", () => {
             productsDropdown.style.display = "block";
         });
-
+        
+        
         document.addEventListener("click", (event) => {
             // Check if the clicked element is not the input field or the manufDropdown
             if (!productsSearch.contains(event.target) && !productsDropdown.contains(event.target)) {
@@ -279,7 +321,6 @@ $productList = json_decode($Products->showProductsByLimit());
 
 
 
-
         productsSearch.addEventListener("keydown", () => {
 
             // Delay the hiding to allow the click event to be processed
@@ -288,20 +329,17 @@ $productList = json_decode($Products->showProductsByLimit());
 
             if (searchVal.length > 2) {
 
-                let manufURL = `ajax/manufacturer.list-view.ajax.php?match=${searchVal}`;
+                let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
                 xmlhttp.open("GET", manufURL, false);
                 xmlhttp.send(null);
 
                 list.innerHTML = xmlhttp.responseText;
 
-
             } else if (searchVal == '') {
-
-                console.log("input val blank ", searchVal);
 
                 searchVal = 'all';
 
-                let manufURL = `ajax/manufacturer.list-view.ajax.php?match=${searchVal}`;
+                let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
                 xmlhttp.open("GET", manufURL, false);
                 xmlhttp.send(null);
                 // console.log();
@@ -310,22 +348,9 @@ $productList = json_decode($Products->showProductsByLimit());
             } else {
 
                 list.innerHTML = '';
+                // productsDropdown.style.display = "none";
             }
         });
-
-
-
-
-        const setProduct = (t) => {
-            let prodId = t.id.trim();
-            let prodName = t.innerHTML.trim();
-
-            document.getElementById("prodcut-search").value = prodName;
-            // document.getElementById("manufacturer").value = manufId;
-            // document.getElementById("manufacturer").innerHTML = manufName;manufacturer-id
-
-            document.getElementsByClassName("c-dropdown")[0].style.display = "none";
-        }
     </script>
 
 </body>

@@ -74,11 +74,15 @@ $QuantityUnit   = new QuantityUnit;
     <?php
     if (isset($_GET['id'])) {
         $productId = $_GET['id'];
-        $product        = $Products->showProductsById($_GET['id']);
-        $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]['manufacturer_id']));
+        $product        = json_decode($Products->showProductsById($_GET['id']));
+        $product = $product->data;
+        
+
+        $manuf          = json_decode($Manufacturer->showManufacturerById($product->manufacturer_id));
+        
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
-        // print_r($itemstock);
-        $image          = $ProductImages->showImageById($_GET['id']);
+       
+        $image          = json_decode($ProductImages->showImageById($_GET['id']));
         // print_r($image);
 
         $Images = array();
@@ -97,9 +101,9 @@ $QuantityUnit   = new QuantityUnit;
             $Images = "medicy-default-product-image.jpg";
         }
 
-        $pack = $PackagingUnits->showPackagingUnitById($product[0]['packaging_type']);
+        $pack = $PackagingUnits->showPackagingUnitById($product->packaging_type);
 
-        $itemQuantityUnit = $QuantityUnit->quantityUnitName($product[0]['unit_id']);
+        $itemQuantityUnit = $QuantityUnit->quantityUnitName($product->unit_id);
         $itemQuantityUnit = json_decode($itemQuantityUnit, true);
         if ($itemQuantityUnit) {
             if (isset($itemQuantityUnit['data']['short_name'])) {
@@ -142,7 +146,7 @@ $QuantityUnit   = new QuantityUnit;
                     <div class="">
                         <div class="d-flex">
                             <div class="text-start col-7 mb-0 pb-0">
-                                <h4><?php echo $product[0]['name']; ?></h4>
+                                <h4><?php echo $product->name; ?></h4>
                                 <h7><?php echo $manuf->name; ?></h7>
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
                                 <p class="fst-normal"><?php echo $product[0]['unit_quantity']; ?>
@@ -196,11 +200,11 @@ $QuantityUnit   = new QuantityUnit;
                         <div class="text-start">
                             <p>
                                 <b>Composition: </b>
-                                <br><?= $product[0]['comp_1']; ?>
-                                <br><?= $product[0]['comp_2']; ?>
+                                <br><?= $product->comp_1; ?>
+                                <br><?= $product->comp_2; ?>
                             </p>
 
-                            <p><b>Description: </b> <br><?php echo $product[0]['dsc']; ?></p>
+                            <p><b>Description: </b> <br><?php echo $product->dsc; ?></p>
                         </div>
 
                         <div class="row justify-content-center mt-4">
