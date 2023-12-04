@@ -61,7 +61,7 @@ class ProductImages extends DatabaseConnection{
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
-                    $data = $row;
+                    $data[] = $row;
                 }
                 $stmt->close();
                 return json_encode(['status' => '1', 'message' => 'Images found', 'data' => $data]);
@@ -76,6 +76,39 @@ class ProductImages extends DatabaseConnection{
         }
     }
     
+
+
+
+
+
+    function showImageByPrimay($productId) {
+        try {
+            
+            $selectImage = "SELECT * FROM product_images WHERE product_id = ? AND set_priority = '1'";
+            $stmt = $this->conn->prepare($selectImage);
+    
+            $stmt->bind_param("s", $productId);
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'Images found', 'data' => $data]);
+            } else {
+                $stmt->close();
+                return json_encode(['status' => '0', 'message' => 'No images found', 'data' => null]);
+            }
+        } catch (Exception $e) {
+            error_log("Error in showImageById: " . $e->getMessage());
+    
+            return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
+        }
+    }
     
     
     //eof showProductsById function

@@ -141,16 +141,14 @@ if (isset($_GET['search'])) {
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
                                                         // print_r($item);
-                                                        $image = json_decode($ProductImages->showImageById($item->product_id));
-                                                        print_r($image);
+                                                        $image = json_decode($ProductImages->showImageByPrimay($item->product_id));
+                                                        
                                                         if ($image->status != 0) {
-
-                                                            $imgData = $image->image;
-                                                            if ($imgData == '') {
-                                                                $productImage = 'medicy-default-product-image.jpg';
-                                                            } else {
-                                                                $productImage = $imgData;
-                                                            }
+                                                            $imgData = $image->data;
+                                                            // print_r($image);
+                                                            
+                                                            $productImage = $imgData->image;
+                                                            
                                                         } else {
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }
