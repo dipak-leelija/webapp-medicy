@@ -142,10 +142,10 @@ if (isset($_GET['search'])) {
                                                     foreach ($allProducts as $item) {
                                                         // print_r($item);
                                                         $image = json_decode($ProductImages->showImageById($item->product_id));
-
+                                                        print_r($image);
                                                         if ($image->status != 0) {
 
-                                                            $imgData = $image[0]['image'];
+                                                            $imgData = $image->image;
                                                             if ($imgData == '') {
                                                                 $productImage = 'medicy-default-product-image.jpg';
                                                             } else {
