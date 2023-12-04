@@ -49,10 +49,11 @@ class ProductImages extends DatabaseConnection{
 
     function showImageById($productId) {
         try {
+            
             $selectImage = "SELECT * FROM product_images WHERE product_id = ?";
             $stmt = $this->conn->prepare($selectImage);
     
-            $stmt->bind_param("s", $productId); 
+            $stmt->bind_param("s", $productId);
             $stmt->execute();
     
             $result = $stmt->get_result();
@@ -62,16 +63,19 @@ class ProductImages extends DatabaseConnection{
                 while ($row = $result->fetch_assoc()) {
                     $data[] = $row;
                 }
-                return $data;
                 $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'Images found', 'data' => $data]);
             } else {
-                return null;
                 $stmt->close();
+                return json_encode(['status' => '0', 'message' => 'No images found', 'data' => null]);
             }
         } catch (Exception $e) {
-            return null;
+            error_log("Error in showImageById: " . $e->getMessage());
+    
+            return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
         }
     }
+    
     
     
     //eof showProductsById function
