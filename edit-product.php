@@ -172,36 +172,40 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
 // ===================== Fetching Product Details =====================
 
-        $product = $Products->showProductsById($productId)[0];
+        $product = json_decode($Products->showProductsById($productId));
+        $product = $product->data;
 
-        $productName    = $product['name'];
-        $manufacturer   = $product['manufacturer_id'];
+        $productName    = $product->name;
+        $manufacturer   = $product->manufacturer_id;
         $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
         
-        $qty            = $product['unit_quantity'];
-        $qtyUnit        = $product['unit_id'];
-        $itemUnit       = $product['unit'];
-        $packagingType  = $product['packaging_type'];
-        $type           = $product['type'];
-        $power          = $product['power'];
-        $dsc            = $product['dsc'];
-        $mrp            = $product['mrp'];
-        $gst            = $product['gst'];
-        $comp1          = $product['comp_1'];
-        $comp2          = $product['comp_2'];
-        $added_by       = $product['added_by'];
-        $added_on       = $product['added_on'];
-        $updated_by     = $product['updated_by'];
-        $updated_on     = $product['updated_on'];
-        $admin_id       = $product['admin_id'];
+        $qty            = $product->unit_quantity;
+        $qtyUnit        = $product->unit_id;
+        $itemUnit       = $product->unit;
+        $packagingType  = $product->packaging_type;
+        $type           = $product->type;
+        $power          = $product->power;
+        $dsc            = $product->dsc;
+        $mrp            = $product->mrp;
+        $gst            = $product->gst;
+        $comp1          = $product->comp_1;
+        $comp2          = $product->comp_2;
+        $added_by       = $product->added_by;
+        $added_on       = $product->added_on;
+        $updated_by     = $product->updated_by;
+        $updated_on     = $product->updated_on;
+        $admin_id       = $product->admin_id;
 
 
-        $image = $ProductImages->showImageById($productId);
+        $image = json_decode($ProductImages->showImageById($productId));
+        
         // print_r($image);
 
-        if ($image != NULL) {
+        if ($image->status != null && is_array($image->status)) {
+            $image= $image->data;
+
             foreach ($image as $image) {
-                $Images  = $image['image'];
+                $Images  = $image->image;
             }
 
             if ($Images == NULL) {
