@@ -67,6 +67,54 @@ if(isset($_POST['add-manufacturer'])){
             <?php
         }
 }
+
+
+// ============== ADD MANUFACTUERE ON ADD NEW PRODUCTS OR EDIT PRODUCTS ===================
+
+
+if(isset($_POST['add-new-manuf'])){
+    $manufacturerName = $_POST['manuf-name'];
+    $manufacturerName = str_replace("<", "&lt", $manufacturerName);
+    $manufacturerName = str_replace(">", "&gt", $manufacturerName);
+    $manufacturerName = str_replace("'", "&#39", $manufacturerName);
+
+
+    $shortName = $_POST['manuf-mark'];
+    $shortName = str_replace("<", "&lt", $shortName);
+    $shortName = str_replace(">", "&gt", $shortName);
+    $shortName = str_replace("'", "&#39", $shortName);
+
+
+    $manufacturerDsc = $_POST['manuf-dsc'];
+    $manufacturerDsc = str_replace("<", "&lt", $manufacturerDsc);
+    $manufacturerDsc = str_replace(">", "&gt", $manufacturerDsc);
+    $manufacturerDsc = str_replace("'", "&#39", $manufacturerDsc);
+    // echo $manufacturerDsc;
+
+    
+
+    //Inserting Manufacturer Into Database
+    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $adminId);
+        if ($addManufacturer) {
+            ?> 
+             <script>
+            swal("Success", "Manufacturer Added!", "success")
+                .then((value) => {
+                    window.location = '<?= URL ?>add-products.php';
+                });
+            </script>
+             <?php
+        }else{
+            ?>
+            <script>
+            swal("Error", "Manufacturer Addition Failed!", "error")
+                .then((value) => {
+                    window.location = '<?= URL ?>add-products.php';
+                });
+            </script>
+            <?php
+        }
+}
     ?>
 </body>
 

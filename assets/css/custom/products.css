@@ -8,4 +8,7 @@
     height: 12rem;
     object-fit: cover;
 }
+.card-body{
+    min-height: 12rem;
+}
 
