@@ -156,7 +156,6 @@ manufacturerInput.addEventListener("keydown", () => {
 
     } else if (searchVal == '') {
 
-        console.log("input val blank ",searchVal);
         searchVal = 'all';
 
         let manufURL = `ajax/manufacturer.list-view.ajax.php?match=${searchVal}`;
