@@ -126,12 +126,12 @@ class Products extends DatabaseConnection{
             } else {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
-                    $data[] = $row;
+                    $data = $row;
                 }
     
                 $stmt->close();
     
-                return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => $data]);
+                return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $data]);
             }
         } catch (Exception $e) {
             error_log("Error in showProductsById: " . $e->getMessage());
