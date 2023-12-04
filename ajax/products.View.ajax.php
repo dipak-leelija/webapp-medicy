@@ -116,10 +116,10 @@ foreach ($showProduct as $rowProduct) {
                             <select class="form-control" name="manufacturer" id="manufacturer">
                                 <option value="" disabled selected>Select Manufacturer</option>
                                 <?php
-                                                    $showManufacturer = $Manufacturer->showManufacturer();
+                                                    $showManufacturer = json_decode($Manufacturer->showManufacturer());
                                                     foreach ($showManufacturer as $rowManufacturer) {
-                                                        $manufId   = $rowManufacturer['id'];
-                                                        $manufName = $rowManufacturer['name'];
+                                                        $manufId   = $rowManufacturer->id;
+                                                        $manufName = $rowManufacturer->name;
                                                         echo '<option ';
                                                          if($manufacturerId == $manufId){echo "selected";};
                                                          echo ' value="'.$manufId.'">'.$manufName.'</option>';
