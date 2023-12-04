@@ -144,6 +144,7 @@ manufacturerInput.addEventListener("keydown", () => {
     // Delay the hiding to allow the click event to be processed
     let list = document.getElementsByClassName('lists')[0];
     let searchVal = document.getElementById("manufacturer-id").value;
+    // console.log(searchVal);
 
     if (searchVal.length > 2) {
 
