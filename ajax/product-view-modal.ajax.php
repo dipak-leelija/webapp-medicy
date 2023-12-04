@@ -83,7 +83,7 @@ $QuantityUnit   = new QuantityUnit;
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
        
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
-        print_r($image);
+        // print_r($image);
 
         $Images = array();
 
@@ -150,8 +150,8 @@ $QuantityUnit   = new QuantityUnit;
                             <div class="text-start col-7 mb-0 pb-0">
                                 <h4><?php echo $product->name; ?></h4>
                                 <h7><?php echo $manuf->name; ?></h7>
-                                <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]['mrp']; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
-                                <p class="fst-normal"><?php echo $product[0]['unit_quantity']; ?>
+                                <h5 class="fs-5 fst-normal">₹ <?php echo $product->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
+                                <p class="fst-normal"><?php echo $product->unit_quantity; ?>
                                     <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
                                 <p>
                                     <small>
