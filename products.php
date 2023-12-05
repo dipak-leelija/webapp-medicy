@@ -363,13 +363,14 @@ if (isset($_GET['search'])) {
 
             let storedProdName = localStorage.getItem('prodName');
 
-            alert(window.location.href);
+            // alert(window.location.href);
             // if (window.location.href == currentURLWithoutQuery) {
             //     document.getElementById("prodcut-search").value = '';
             //     document.getElementById("prodcut-search").ariaPlaceholder = 'Search Products (Product Name / Product Composition)';
             // } else {
                 if (storedProdName !== null) {
                     document.getElementById("prodcut-search").value = storedProdName;
+                    localStorage.setItem('prodName', '');
                 }
             // }
 
