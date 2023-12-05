@@ -87,16 +87,12 @@ $QuantityUnit   = new QuantityUnit;
             foreach ($image as $image) {
                 $Images[] = $image->image;
             }
-            
-            if ($Images == NULL) {
-                $Images = "medicy-default-product-image.jpg";
-            }   
         } 
         
         if($image == NULL){
-            $Images = "medicy-default-product-image.jpg";
+            $Images[] = "medicy-default-product-image.jpg";
         }
-        print_r($Images);
+        // print_r($Images);
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
 
