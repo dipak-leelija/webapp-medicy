@@ -77,7 +77,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
             $productComp2     = $_POST['product-composition2'];
             $manufacturer     = $_POST['manufacturer'];
 
-            $searchTerms      = $_POST['search_terms'];
+            // $searchTerms      = $_POST['search_terms'];
 
             $quantity         = $_POST['quantity'];
             $qtyUnit          = $_POST['qty-unit'];
@@ -89,70 +89,92 @@ $itemUnits          = $ItemUnit->showItemUnits();
             $mrp              = $_POST['mrp'];
             $gst              = $_POST['gst'];
             $productDesc      = $_POST['product-description'];
+
+            // for img //
             $imageName        = $_FILES['img-files']['name'];
-            print_r($imageName);
-
-            $image         = $imageName[$j];
-            $tempImgname   = $tempImgName[$j];
-
-
-            if ($image) {
-
-                $ImgNm = '';
-                $extention = '';
-                $countImageLen = 0;
-
-
-                // echo "<br>Checking image name on entry : $image";
-
-                if ($image != '') {
-                    if ($image != null) {
-                        if (file_exists(PROD_IMG_PATH . $randomString . '_' . $image)) {
-                            $image = 'medicy-' . $randomString . $image;
-                        }
-                    }
-
-                    $countImageLen = strlen($image);
-                    for ($l = 0; $l < intval($countImageLen) - 4; $l++) {
-                        $ImgNm .= $image[$l];
-                    }
-                    for ($k = intval($countImageLen) - 4; $k < $countImageLen; $k++) {
-                        $extention .= $image[$k];
-                    }
-
-                    $image         = $ImgNm . '-' . $randomString . $extention;
-                    $imgFolder     = PROD_IMG_DIR . $image;
-
-                    move_uploaded_file($tempImgname, $imgFolder);
-                    $image         = addslashes($image);
-                }
-
-                if ($image == '') {
-                    $image = '';
-                }
-
-                $setPriority = '';
-
-                $updateImage = $ProductImages->updateImage($productId, $image);
-            } else {
-                $updateImage = true;
-            }
-
+            $tempImgName       = $_FILES['img-files']['tmp_name'];
+            $imageArrayCaount = count($imageName);
+            $tempImageNameArrayCaount = count($tempImgName);
+            print_r($tempImgName);
 
             $updateProduct = $Products->updateProduct($productId, $productName, $manufacturer, $type = '', $productComp1, $productComp2, $medicinePower, $productDesc, $quantity, $qtyUnit, $itemUnit, $packagingType, $mrp, $gst, $employeeId, NOW);
 
-            $updateImage = true;
             if ($updateProduct === true) {
-                if ($updateImage === true) {
-    ?>
-                    <script>
-                        swal("Success", "Product updated successfully!", "success").then((value) => {
-                            parent.location.reload();
-                        });
-                    </script>
-        <?php
+
+                for ($j = 0; $j < $imageArrayCaount && $j < $tempImageNameArrayCaount; $j++) {
+                    ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
+    
+                    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    $randomString = '';
+                    for ($i = 0; $i < 9; $i++) {
+                        $randomString .= $characters[rand(0, strlen($characters) - 1)];
+                    }
+    
+                    $randomString = $randomString;
+    
+                    ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+                    //===== Main Image 
+                    $image         = $imageName[$j];
+    
+    
+                    if ($image) {
+    
+                        $ImgNm = '';
+                        $extention = '';
+                        $countImageLen = 0;
+    
+    
+                        // echo "<br>Checking image name on entry : $image";
+    
+                        if ($image != '') {
+                            if ($image != null) {
+                                if (file_exists(PROD_IMG_PATH . $randomString . '_' . $image)) {
+                                    $image = 'medicy-' . $randomString . $image;
+                                }
+                            }
+    
+                            $countImageLen = strlen($image);
+                            for ($l = 0; $l < intval($countImageLen) - 4; $l++) {
+                                $ImgNm .= $image[$l];
+                            }
+                            for ($k = intval($countImageLen) - 4; $k < $countImageLen; $k++) {
+                                $extention .= $image[$k];
+                            }
+    
+                            $image         = $ImgNm . '-' . $randomString . $extention;
+                            $imgFolder     = PROD_IMG_DIR . $image;
+    
+                            move_uploaded_file($tempImgname, $imgFolder);
+                            $image         = addslashes($image);
+                        }
+    
+                        if ($image == '') {
+                            $image = '';
+                        }
+    
+                        $setPriority = '';
+    
+                        $updateImage = $ProductImages->updateImage($productId, $image);
+                    } else {
+                        $addImage = true;
+                    }
                 }
             }
+
+            
+
+        //     $updateImage = true;
+        //     if ($updateProduct === true) {
+        //         if ($updateImage === true) {
+        //      ?>
+        //             <script>
+        //                 swal("Success", "Product updated successfully!", "success").then((value) => {
+        //                     parent.location.reload();
+        //                 });
+        //             </script>
+        // <?php
+        //         }
+        //     }
         }
 
 
@@ -164,7 +186,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
         $productName    = $product[0]->name;
         $manufacturer   = $product[0]->manufacturer_id;
         $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
-        print_r($manufData);
+        $manufacturerName = ($manufData->status == 1 && isset($manufData->data)) ? $manufData->data->name : 'unable to retrieve';
 
         $qty            = $product[0]->unit_quantity;
         $qtyUnit        = $product[0]->unit_id;
@@ -236,7 +258,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
                                                 <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1" disable hidden>
 
-                                                <input type="text" name="manufacturer-id" id="manufacturer-id" value="<?= $manufData->name ?>" class="c-inp w-100 p-1">
+                                                <input type="text" name="manufacturer-id" id="manufacturer-id" value="<?= $manufacturerName ?>" class="c-inp w-100 p-1">
 
                                                 <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list" style="display: none;">
                                                     <div class="lists" id="lists">

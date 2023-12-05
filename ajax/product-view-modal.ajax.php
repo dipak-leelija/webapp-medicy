@@ -89,7 +89,7 @@ $QuantityUnit   = new QuantityUnit;
         } else {
             $Images[] = "medicy-default-product-image.jpg";
         }
-        print_r($Images);
+        // print_r($Images);
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
 
