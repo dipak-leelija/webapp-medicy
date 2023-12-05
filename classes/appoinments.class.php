@@ -260,8 +260,8 @@ class Appointments extends DatabaseConnection
 
     function appointmentsDisplaybyId($appointmentId)
     {
-
-        $selectById = "SELECT * FROM appointments WHERE `appointments`.`appointment_id` = '$appointmentId'";
+        $data = [];
+        $selectById = "SELECT * FROM `appointments` WHERE `appointments`.`appointment_id` = '$appointmentId'";
         $selectByIdQuery = $this->conn->query($selectById);
         while ($result = $selectByIdQuery->fetch_array()) {
             $data[]    = $result;

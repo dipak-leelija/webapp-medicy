@@ -13,7 +13,7 @@ Class Pagination extends DatabaseConnection{
         $startFrom = ($page - 1) * $recordsPerPage;
     
         // Query to retrieve records for the current page
-        $sql = "SELECT * FROM products LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM products ORDER BY added_on DESC LIMIT $startFrom, $recordsPerPage";
         $result = $this->conn->query($sql);
     
         // Fetch the records
