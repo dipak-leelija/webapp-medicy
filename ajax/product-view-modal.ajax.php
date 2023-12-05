@@ -78,9 +78,8 @@ $QuantityUnit   = new QuantityUnit;
         $product        = $product->data;
         $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]->manufacturer_id));
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
-        // print_r($itemstock);
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
-        // print_r($image);
+        // print_r($manuf);
 
         if ($image->status) {
             $image = $image->data;
@@ -88,9 +87,9 @@ $QuantityUnit   = new QuantityUnit;
                 $Images[] = $image->image;
             }
         } else {
-            $Images = "medicy-default-product-image.jpg";
+            $Images[] = "medicy-default-product-image.jpg";
         }
-        print_r($Images);
+      
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
 
@@ -128,7 +127,7 @@ $QuantityUnit   = new QuantityUnit;
                         <div class="d-flex">
                             <div class="text-start col-7 mb-0 pb-0">
                                 <h4><?php echo $product[0]->name; ?></h4>
-                                <h7><?php echo $manuf->name; ?></h7>
+                                <h7><?php echo ($manuf->status)? $manuf->data->name : "Manufacturer data not found"; ?></h7>
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
                                 <p class="fst-normal"><?php echo $product[0]->unit_quantity; ?>
                                     <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
