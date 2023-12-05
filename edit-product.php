@@ -95,7 +95,8 @@ $itemUnits          = $ItemUnit->showItemUnits();
             $tempImgName       = $_FILES['img-files']['tmp_name'];
             $imageArrayCaount = count($imageName);
             $tempImageNameArrayCaount = count($tempImgName);
-            print_r($tempImgName);
+            print_r($imageName);
+            // print_r($tempImgName);
 
             $updateProduct = $Products->updateProduct($productId, $productName, $manufacturer, $type = '', $productComp1, $productComp2, $medicinePower, $productDesc, $quantity, $qtyUnit, $itemUnit, $packagingType, $mrp, $gst, $employeeId, NOW);
 
@@ -144,7 +145,9 @@ $itemUnits          = $ItemUnit->showItemUnits();
                             $image         = $ImgNm . '-' . $randomString . $extention;
                             $imgFolder     = PROD_IMG_DIR . $image;
     
-                            move_uploaded_file($tempImgname, $imgFolder);
+                            // move_uploaded_file($tempImgname, $imgFolder);
+                            move_uploaded_file($tempImgName[$j], $imgFolder);
+
                             $image         = addslashes($image);
                         }
     
@@ -493,96 +496,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
             }
             //image selection//
         </script>
-        <script>
-            // productViewAndEdit = (productId) => {
-            //     // alert("productModalBody");
-            //     let ViewAndEdit = productId;
-            //     let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
-            //     $(".productModalBody").html(
-            //         '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
-            //         url + '"></iframe>');
-            // }
-
-            // function update(e) {
-            //     btnID = e.id;
-            //     btn = this;
-            //     $.ajax({
-            //         url: "ajax/products.Edit.ajax.php",
-            //         type: "POST",
-            //         data: {
-            //             id: btnID
-            //         },
-            //         success: function(data) {
-            //             if (data == 1) {
-            //                 Swal.fire({
-            //                     position: 'top-end',
-            //                     icon: 'success',
-            //                     title: 'Your work has been saved',
-            //                     showConfirmButton: false,
-            //                     timer: 1500
-            //                 }).then(function() {
-            //                         parent.location.reload();
-            //                     })
-
-            //             } else {
-            //                 $("#error-message").html("Deletion Field !!!")
-            //                     .slideDown();
-            //                 $("success-message").slideUp();
-            //             }
-
-            //         }
-            //     });
-
-            //     return false;
-            // }
-
-            //========================= Delete Product =========================
-            // $(document).ready(function() {
-            //     $(document).on("click", "#delete-btn", function() {
-
-            //         swal({
-            //                 title: "Are you sure?",
-            //                 text: "Want to Delete This Manufacturer?",
-            //                 icon: "warning",
-            //                 buttons: true,
-            //                 dangerMode: true,
-            //             })
-            //             .then((willDelete) => {
-            //                 if (willDelete) {
-
-            //                     productId = $(this).data("id");
-            //                     btn = this;
-
-            //                     $.ajax({
-            //                         url: "ajax/product.Delete.ajax.php",
-            //                         type: "POST",
-            //                         data: {
-            //                             id: productId
-            //                         },
-            //                         success: function(data) {
-            //                             // alert(data);
-            //                             if (data == 1) {
-            //                                 $(btn).closest("tr").fadeOut()
-            //                                 swal("Deleted", "Manufacturer Has Been Deleted",
-            //                                     "success");
-            //                             } else {
-            //                                 swal("Failed", "Product Deletion Failed!",
-            //                                     "error");
-            //                                 $("#error-message").html("Deletion Field !!!")
-            //                                     .slideDown();
-            //                                 $("success-message").slideUp();
-            //                             }
-            //                         }
-            //                     });
-
-            //                 }
-            //                 return false;
-            //             });
-
-            //     })
-
-            // })
-        </script>
+        
         <script>
             $(document).on("click", ".back", function() {
                 var backFile = $(this).parents().find(".back-file");
