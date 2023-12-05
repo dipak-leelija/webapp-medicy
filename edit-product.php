@@ -93,46 +93,48 @@ $itemUnits          = $ItemUnit->showItemUnits();
             // for img //
             $imageName        = $_FILES['img-files']['name'];
             $tempImgName       = $_FILES['img-files']['tmp_name'];
+            
             $imageArrayCaount = count($imageName);
             $tempImageNameArrayCaount = count($tempImgName);
-            print_r($tempImgName);
 
             $updateProduct = $Products->updateProduct($productId, $productName, $manufacturer, $type = '', $productComp1, $productComp2, $medicinePower, $productDesc, $quantity, $qtyUnit, $itemUnit, $packagingType, $mrp, $gst, $employeeId, NOW);
 
             if ($updateProduct === true) {
 
+                $delProdImage = $ProductImages->deleteImage($productId);
+
                 for ($j = 0; $j < $imageArrayCaount && $j < $tempImageNameArrayCaount; $j++) {
                     ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
-    
+
                     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                     $randomString = '';
                     for ($i = 0; $i < 9; $i++) {
                         $randomString .= $characters[rand(0, strlen($characters) - 1)];
                     }
-    
+
                     $randomString = $randomString;
-    
+
                     ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
                     //===== Main Image 
                     $image         = $imageName[$j];
-    
-    
+
+
                     if ($image) {
-    
+
                         $ImgNm = '';
                         $extention = '';
                         $countImageLen = 0;
-    
-    
+
+
                         // echo "<br>Checking image name on entry : $image";
-    
+
                         if ($image != '') {
                             if ($image != null) {
                                 if (file_exists(PROD_IMG_PATH . $randomString . '_' . $image)) {
                                     $image = 'medicy-' . $randomString . $image;
                                 }
                             }
-    
+
                             $countImageLen = strlen($image);
                             for ($l = 0; $l < intval($countImageLen) - 4; $l++) {
                                 $ImgNm .= $image[$l];
@@ -140,84 +142,89 @@ $itemUnits          = $ItemUnit->showItemUnits();
                             for ($k = intval($countImageLen) - 4; $k < $countImageLen; $k++) {
                                 $extention .= $image[$k];
                             }
-    
+
                             $image         = $ImgNm . '-' . $randomString . $extention;
                             $imgFolder     = PROD_IMG_DIR . $image;
-    
+
                             move_uploaded_file($tempImgname, $imgFolder);
                             $image         = addslashes($image);
                         }
-    
+
                         if ($image == '') {
                             $image = '';
                         }
-    
+
                         $setPriority = '';
-    
-                        $updateImage = $ProductImages->updateImage($productId, $image);
+
+                        
+
+                        $updateImage = $ProductImages->addImages($productId, $productImage, $setPriority, $employeeId, NOW, $adminId);
+                        
                     } else {
                         $addImage = true;
                     }
                 }
             }
 
-            
-
-        //     $updateImage = true;
-        //     if ($updateProduct === true) {
-        //         if ($updateImage === true) {
-        //      ?>
-        //             <script>
-        //                 swal("Success", "Product updated successfully!", "success").then((value) => {
-        //                     parent.location.reload();
-        //                 });
-        //             </script>
-        // <?php
-        //         }
-        //     }
-        }
 
 
-        // ===================== Fetching Product Details =====================
-
-        $product = json_decode($Products->showProductsById($productId));
-        $product = $product->data;
-
-        $productName    = $product[0]->name;
-        $manufacturer   = $product[0]->manufacturer_id;
-        $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
-        $manufacturerName = ($manufData->status == 1 && isset($manufData->data)) ? $manufData->data->name : 'unable to retrieve';
-
-        $qty            = $product[0]->unit_quantity;
-        $qtyUnit        = $product[0]->unit_id;
-        $itemUnit       = $product[0]->unit;
-        $packagingType  = $product[0]->packaging_type;
-        $type           = $product[0]->type;
-        $power          = $product[0]->power;
-        $dsc            = $product[0]->dsc;
-        $mrp            = $product[0]->mrp;
-        $gst            = $product[0]->gst;
-        $comp1          = $product[0]->comp_1;
-        $comp2          = $product[0]->comp_2;
-        $added_by       = $product[0]->added_by;
-        $added_on       = $product[0]->added_on;
-        $updated_by     = $product[0]->updated_by;
-        $updated_on     = $product[0]->updated_on;
-        $admin_id       = $product[0]->admin_id;
-
-
-        $images = json_decode($ProductImages->showImageById($productId));
-
-        $allImg = array();
-        if ($images->status == 1 && !empty($images->data)) {
-            foreach ($images->data as $image) {
-                $allImg[] = $image->image;
+            //     $updateImage = true;
+            //     if ($updateProduct === true) {
+            //         if ($updateImage === true) {
+            //      
+    ?>
+            // <script>
+                //                 swal("Success", "Product updated successfully!", "success").then((value) => {
+                //                     parent.location.reload();
+                //                 });
+                //             
+            </script>
+            // <?php
+                //         }
+                //     }
             }
-        } else {
-            $allImg[] = "medicy-default-product-image.jpg";
-        }
 
-        ?>
+
+            // ===================== Fetching Product Details =====================
+
+            $product = json_decode($Products->showProductsById($productId));
+            $product = $product->data;
+            // print_r($product);
+
+            $productName    = $product[0]->name;
+            $manufacturer   = $product[0]->manufacturer_id;
+            $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
+            $manufacturerName = ($manufData->status == 1 && isset($manufData->data)) ? $manufData->data->name : 'unable to retrieve';
+
+            $qty            = $product[0]->unit_quantity;
+            $qtyUnit        = $product[0]->unit_id;
+            $itemUnit       = $product[0]->unit;
+            $packagingType  = $product[0]->packaging_type;
+            $type           = $product[0]->type;
+            $power          = $product[0]->power;
+            $dsc            = $product[0]->dsc;
+            $mrp            = $product[0]->mrp;
+            $gst            = $product[0]->gst;
+            $comp1          = $product[0]->comp_1;
+            $comp2          = $product[0]->comp_2;
+            $added_by       = $product[0]->added_by;
+            $added_on       = $product[0]->added_on;
+            $updated_by     = $product[0]->updated_by;
+            $updated_on     = $product[0]->updated_on;
+            $admin_id       = $product[0]->admin_id;
+
+            $images = json_decode($ProductImages->showImageById($productId));
+
+            $allImg = array();
+            if ($images->status == 1 && !empty($images->data)) {
+                foreach ($images->data as $image) {
+                    $allImg[] = $image->image;
+                }
+            } else {
+                $allImg[] = "medicy-default-product-image.jpg";
+            }
+
+                ?>
 
         <!-- Page Wrapper -->
         <div id="wrapper">
@@ -441,16 +448,6 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
 
         <script>
-            const customClick1 = (id) => {
-                document.getElementById(id).click();
-
-            }
-
-            const customClick2 = (id) => {
-                document.getElementById(id).click();
-            }
-
-
             //calculating profit only after entering MRP
             function getMarginMrp(value) {
                 this.value = parseFloat(this.value).toFixed(2);
@@ -493,96 +490,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
             }
             //image selection//
         </script>
-        <script>
-            // productViewAndEdit = (productId) => {
-            //     // alert("productModalBody");
-            //     let ViewAndEdit = productId;
-            //     let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
-            //     $(".productModalBody").html(
-            //         '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
-            //         url + '"></iframe>');
-            // }
 
-            // function update(e) {
-            //     btnID = e.id;
-            //     btn = this;
-            //     $.ajax({
-            //         url: "ajax/products.Edit.ajax.php",
-            //         type: "POST",
-            //         data: {
-            //             id: btnID
-            //         },
-            //         success: function(data) {
-            //             if (data == 1) {
-            //                 Swal.fire({
-            //                     position: 'top-end',
-            //                     icon: 'success',
-            //                     title: 'Your work has been saved',
-            //                     showConfirmButton: false,
-            //                     timer: 1500
-            //                 }).then(function() {
-            //                         parent.location.reload();
-            //                     })
-
-            //             } else {
-            //                 $("#error-message").html("Deletion Field !!!")
-            //                     .slideDown();
-            //                 $("success-message").slideUp();
-            //             }
-
-            //         }
-            //     });
-
-            //     return false;
-            // }
-
-            //========================= Delete Product =========================
-            // $(document).ready(function() {
-            //     $(document).on("click", "#delete-btn", function() {
-
-            //         swal({
-            //                 title: "Are you sure?",
-            //                 text: "Want to Delete This Manufacturer?",
-            //                 icon: "warning",
-            //                 buttons: true,
-            //                 dangerMode: true,
-            //             })
-            //             .then((willDelete) => {
-            //                 if (willDelete) {
-
-            //                     productId = $(this).data("id");
-            //                     btn = this;
-
-            //                     $.ajax({
-            //                         url: "ajax/product.Delete.ajax.php",
-            //                         type: "POST",
-            //                         data: {
-            //                             id: productId
-            //                         },
-            //                         success: function(data) {
-            //                             // alert(data);
-            //                             if (data == 1) {
-            //                                 $(btn).closest("tr").fadeOut()
-            //                                 swal("Deleted", "Manufacturer Has Been Deleted",
-            //                                     "success");
-            //                             } else {
-            //                                 swal("Failed", "Product Deletion Failed!",
-            //                                     "error");
-            //                                 $("#error-message").html("Deletion Field !!!")
-            //                                     .slideDown();
-            //                                 $("success-message").slideUp();
-            //                             }
-            //                         }
-            //                     });
-
-            //                 }
-            //                 return false;
-            //             });
-
-            //     })
-
-            // })
-        </script>
         <script>
             $(document).on("click", ".back", function() {
                 var backFile = $(this).parents().find(".back-file");
@@ -628,17 +536,6 @@ $itemUnits          = $ItemUnit->showItemUnits();
                 reader.readAsDataURL(this.files[0]);
             });
         </script>
-
-
-        <!-- <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                new Choices('#manufacturer', {
-                    allowHTML: true,
-                    removeItemButton: true,
-                });
-            });
-        </script> -->
-
 
 </body>
 
