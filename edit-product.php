@@ -52,7 +52,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!--Custom CSS -->
-    <link href="<?= CSS_PATH ?>custom/add-products.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
     <!-- <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" /> -->
@@ -72,9 +72,10 @@ $itemUnits          = $ItemUnit->showItemUnits();
         if (isset($_POST['update-product'])) {
 
             $productName      = $_POST['product-name'];
+             
             $productComp1     = $_POST['product-composition1'];
             $productComp2     = $_POST['product-composition2'];
-            $manufacturer     = $_POST['manufacturer'];
+            $manufacturer     = $_POST['manufacturer-id'];
 
             $searchTerms      = $_POST['search_terms'];
 
@@ -88,6 +89,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
             $mrp              = $_POST['mrp'];
             $gst              = $_POST['gst'];
             $productDesc      = $_POST['product-description'];
+            $imageName         = $_FILES['img-files']['name'];
 
             // $productId = $_POST['imgid'];
             // $imageCheck = $ProductImages->showImageById($productId);
@@ -155,6 +157,8 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
             $updateProduct = $Products->updateProduct($productId, $productName, $manufacturer, $type = '', $productComp1, $productComp2, $medicinePower, $productDesc, $quantity, $qtyUnit, $itemUnit, $packagingType, $mrp, $gst, $employeeId, NOW);
 
+            $updateImage = $ProductImages->addImages($productId, $image, $setPriority, $addedBy, $addedOn, $adminId);
+
             $updateImage = true;
             if ($updateProduct === true) {
                 if ($updateImage === true) {
@@ -178,7 +182,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
         $productName    = $product->name;
         $manufacturer   = $product->manufacturer_id;
         $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
-        
+
         $qty            = $product->unit_quantity;
         $qtyUnit        = $product->unit_id;
         $itemUnit       = $product->unit;
@@ -197,23 +201,15 @@ $itemUnits          = $ItemUnit->showItemUnits();
         $admin_id       = $product->admin_id;
 
 
-        $image = json_decode($ProductImages->showImageById($productId));
-        
-        // print_r($image);
+        $images = json_decode($ProductImages->showImageById($productId));
 
-        if ($image->status != null && is_array($image->status)) {
-            $image= $image->data;
-
-            foreach ($image as $image) {
-                $Images  = $image->image;
-            }
-            // print_r($Images);
-
-            if ($Images == NULL) {
-                $Images = "medicy-default-product-image.jpg";
+        $allImg = array();
+        if ($images->status == 1 && !empty($images->data)) {
+            foreach ($images->data as $image) {
+                $allImg[] = $image->image;
             }
         } else {
-            $Images = "medicy-default-product-image.jpg";
+            $allImg[] = "medicy-default-product-image.jpg";
         }
 
         ?>
@@ -241,11 +237,11 @@ $itemUnits          = $ItemUnit->showItemUnits();
                                         <div class="row">
                                             <div class="d-flex col-md-12">
                                                 <div class="col-md-6">
-                                                    <input class="c-inp w-100 p-1" id="product-composition-1" name="product-composition-1" placeholder="Product Composition 1" value="<?= $comp1  ?>" required>
+                                                    <input class="c-inp w-100 p-1" id="product-composition1" name="product-composition1" placeholder="Product Composition 1" value="<?= $comp1  ?>" required>
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <input class="c-inp w-100 p-1" id="product-composition-2" name="product-composition-2" placeholder="Product Composition 2" value="<?= $comp2  ?>" required>
+                                                    <input class="c-inp w-100 p-1" id="product-composition2" name="product-composition2" placeholder="Product Composition 2" value="<?= $comp2  ?>" required>
                                                 </div>
 
                                             </div>
@@ -377,273 +373,259 @@ $itemUnits          = $ItemUnit->showItemUnits();
                                             <div class="col-md-12">
                                                 <div class="border p-1 rounded">
                                                     <div class="row height-3 mt-2 justify-content-center">
-                                                        <?php foreach ($Images as $index => $imagePath) : ?>
-                                                            <div class="col-2 border p-0">
+                                                        <?php foreach ($allImg as $index => $imagePath) : ?>
+                                                            <div class="col-2 border p-2">
                                                                 <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                                                             </div>
                                                         <?php endforeach; ?>
-                                                    </div>   
-                                                        <!-- <div class="image-area <? !empty($image) ? 'activeted' : ''; ?> rounded" id="imageArea">
-                                                        <img class="browse" src="<?= PROD_IMG_PATH . $Images ?>" alt="">
-                                                    </div> -->
-                                                        <input id="product-image" name="product-image" type="file" hidden onchange="updateImage(this)">
+                                                    </div>
+                                                </div>
+                                                <div id="img-div">
+                                                    <div class="container-fluid" id="img-container">
+                                                        <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
+                                                        <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
+                                                        <p id="num-of-files">No files chosen</p>
+                                                        <div>
+                                                            <div id="images">
+
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--/End Product Image Row  -->
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
-                                                    <button class="btn btn-primary" name="update-product" id="update-btn" type="submit">Update</button>
-                                                </div>
-
+                                        </div>
+                                        <!--/End Product Image Row  -->
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
+                                                <button class="btn btn-primary" name="update-product" id="update-btn" type="submit">Update</button>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <input type="" id="imgid" name="imgid" value="<?php echo isset($image[0]['product_id']) ? $image[0]['product_id'] : ''; ?>" class="d-none">
-
-
-
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
-                    <!-- /end Add Product  -->
-                <?php
-            }
-                ?>
                 </div>
-                <!-- End of Content Wrapper -->
-
+                <!-- /end Add Product  -->
+            <?php
+        }
+            ?>
             </div>
-            <!-- End of Page Wrapper -->
+            <!-- End of Content Wrapper -->
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-            <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-            <!-- <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script> -->
+        </div>
+        <!-- End of Page Wrapper -->
 
-            <!-- Custom scripts for all pages-->
-            <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+        <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+        <!-- <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script> -->
 
-            <!-- Sweet Alert Js  -->
-            <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+        <script src="<?= JS_PATH ?>custom/add-products.js"></script>
+        <!-- Sweet Alert Js  -->
+        <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
-            <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
-            <script src="<?php echo JS_PATH ?>custom/add-products.js"></script>
-
-
-
-            <script>
-                const customClick1 = (id) => {
-                    document.getElementById(id).click();
-
-                }
-
-                const customClick2 = (id) => {
-                    document.getElementById(id).click();
-                }
+        <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
 
 
-                //calculating profit only after entering MRP
-                function getMarginMrp(value) {
-                    this.value = parseFloat(this.value).toFixed(2);
-                    const mrp = parseFloat(value);
-                    const ptr = parseFloat(document.getElementById("ptr").value);
-                    const gst = parseFloat(document.getElementById("gst").value);
-
-                    var profit = (mrp - ptr);
-
-                    profit = parseFloat(profit - ((gst / 100) * ptr));
-
-                    document.getElementById("profit").value = profit.toFixed(2);
-                }
 
 
-                //calculate after entering PTR
-                function getMarginPtr(value) {
-                    const ptr = parseFloat(value);
-                    const mrp = parseFloat(document.getElementById("mrp").value);
-                    const gst = parseFloat(document.getElementById("gst").value);
+        <script>
+            const customClick1 = (id) => {
+                document.getElementById(id).click();
 
-                    var profit = parseFloat(mrp - ptr);
+            }
 
-                    profit = parseFloat(profit - ((gst / 100) * ptr));
-
-                    document.getElementById("profit").value = profit.toFixed(2);
-                }
-
-                //calculate after entering GST
-                function getMarginGst(value) {
-                    const gst = parseFloat(value);
-                    const ptr = parseFloat(document.getElementById("ptr").value);
-                    const mrp = parseFloat(document.getElementById("mrp").value);
-
-                    var profit = parseFloat(mrp - ptr);
-
-                    profit = parseFloat(profit - ((gst / 100) * ptr));
-
-                    document.getElementById("profit").value = profit.toFixed(2);
-                }
-                //image change 
-                function updateImage(input) {
-                    var imageArea = document.getElementById('imageArea');
-                    var reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        imageArea.innerHTML = '<img class="browse" src="' + e.target.result + '" alt="">';
-                    };
-
-                    reader.readAsDataURL(input.files[0]);
-                }
-                // Click event to trigger file input when clicking on the image area
-                $(document).ready(function() {
-                    $('.image-area').click(function() {
-                        $('#product-image').click();
-                    });
-                });
-            </script>
-            <script>
-                // productViewAndEdit = (productId) => {
-                //     // alert("productModalBody");
-                //     let ViewAndEdit = productId;
-                //     let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
-                //     $(".productModalBody").html(
-                //         '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
-                //         url + '"></iframe>');
-                // }
-
-                // function update(e) {
-                //     btnID = e.id;
-                //     btn = this;
-                //     $.ajax({
-                //         url: "ajax/products.Edit.ajax.php",
-                //         type: "POST",
-                //         data: {
-                //             id: btnID
-                //         },
-                //         success: function(data) {
-                //             if (data == 1) {
-                //                 Swal.fire({
-                //                     position: 'top-end',
-                //                     icon: 'success',
-                //                     title: 'Your work has been saved',
-                //                     showConfirmButton: false,
-                //                     timer: 1500
-                //                 }).then(function() {
-                //                         parent.location.reload();
-                //                     })
-
-                //             } else {
-                //                 $("#error-message").html("Deletion Field !!!")
-                //                     .slideDown();
-                //                 $("success-message").slideUp();
-                //             }
-
-                //         }
-                //     });
-
-                //     return false;
-                // }
-
-                //========================= Delete Product =========================
-                // $(document).ready(function() {
-                //     $(document).on("click", "#delete-btn", function() {
-
-                //         swal({
-                //                 title: "Are you sure?",
-                //                 text: "Want to Delete This Manufacturer?",
-                //                 icon: "warning",
-                //                 buttons: true,
-                //                 dangerMode: true,
-                //             })
-                //             .then((willDelete) => {
-                //                 if (willDelete) {
-
-                //                     productId = $(this).data("id");
-                //                     btn = this;
-
-                //                     $.ajax({
-                //                         url: "ajax/product.Delete.ajax.php",
-                //                         type: "POST",
-                //                         data: {
-                //                             id: productId
-                //                         },
-                //                         success: function(data) {
-                //                             // alert(data);
-                //                             if (data == 1) {
-                //                                 $(btn).closest("tr").fadeOut()
-                //                                 swal("Deleted", "Manufacturer Has Been Deleted",
-                //                                     "success");
-                //                             } else {
-                //                                 swal("Failed", "Product Deletion Failed!",
-                //                                     "error");
-                //                                 $("#error-message").html("Deletion Field !!!")
-                //                                     .slideDown();
-                //                                 $("success-message").slideUp();
-                //                             }
-                //                         }
-                //                     });
-
-                //                 }
-                //                 return false;
-                //             });
-
-                //     })
-
-                // })
-            </script>
-            <script>
-                $(document).on("click", ".back", function() {
-                    var backFile = $(this).parents().find(".back-file");
-                    backFile.trigger("click");
-                });
-                $('.back-file').change(function(e) {
-                    $(".back-img-field").hide();
-                    $("#back-preview").show();
+            const customClick2 = (id) => {
+                document.getElementById(id).click();
+            }
 
 
-                    var fileName = e.target.files[0].name;
-                    $("#back-file").val(fileName);
+            //calculating profit only after entering MRP
+            function getMarginMrp(value) {
+                this.value = parseFloat(this.value).toFixed(2);
+                const mrp = parseFloat(value);
+                const ptr = parseFloat(document.getElementById("ptr").value);
+                const gst = parseFloat(document.getElementById("gst").value);
 
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        // get loaded data and render thumbnail.
-                        document.getElementById("back-preview").src = e.target.result;
-                    };
-                    // read the image file as a data URL.
-                    reader.readAsDataURL(this.files[0]);
-                });
-            </script>
+                var profit = (mrp - ptr);
 
-            <script>
-                $(document).on("click", ".side", function() {
-                    var SideFile = $(this).parents().find(".side-file");
-                    SideFile.trigger("click");
-                });
-                $('.side-file').change(function(img) {
-                    $(".side-img-field").hide();
-                    $("#side-preview").show();
+                profit = parseFloat(profit - ((gst / 100) * ptr));
+
+                document.getElementById("profit").value = profit.toFixed(2);
+            }
 
 
-                    var sideImgName = img.target.files[0].name;
-                    $("#side-file").val(sideImgName);
+            //calculate after entering PTR
+            function getMarginPtr(value) {
+                const ptr = parseFloat(value);
+                const mrp = parseFloat(document.getElementById("mrp").value);
+                const gst = parseFloat(document.getElementById("gst").value);
 
-                    var reader = new FileReader();
-                    reader.onload = function(img) {
-                        // get loaded data and render thumbnail.
-                        document.getElementById("side-preview").src = img.target.result;
-                    };
-                    // read the image file as a data URL.
-                    reader.readAsDataURL(this.files[0]);
-                });
-            </script>
+                var profit = parseFloat(mrp - ptr);
+
+                profit = parseFloat(profit - ((gst / 100) * ptr));
+
+                document.getElementById("profit").value = profit.toFixed(2);
+            }
+
+            //calculate after entering GST
+            function getMarginGst(value) {
+                const gst = parseFloat(value);
+                const ptr = parseFloat(document.getElementById("ptr").value);
+                const mrp = parseFloat(document.getElementById("mrp").value);
+
+                var profit = parseFloat(mrp - ptr);
+
+                profit = parseFloat(profit - ((gst / 100) * ptr));
+
+                document.getElementById("profit").value = profit.toFixed(2);
+            }
+            //image selection//
+        </script>
+        <script>
+            // productViewAndEdit = (productId) => {
+            //     // alert("productModalBody");
+            //     let ViewAndEdit = productId;
+            //     let url = "ajax/products.View.ajax.php?id=" + ViewAndEdit;
+            //     $(".productModalBody").html(
+            //         '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
+            //         url + '"></iframe>');
+            // }
+
+            // function update(e) {
+            //     btnID = e.id;
+            //     btn = this;
+            //     $.ajax({
+            //         url: "ajax/products.Edit.ajax.php",
+            //         type: "POST",
+            //         data: {
+            //             id: btnID
+            //         },
+            //         success: function(data) {
+            //             if (data == 1) {
+            //                 Swal.fire({
+            //                     position: 'top-end',
+            //                     icon: 'success',
+            //                     title: 'Your work has been saved',
+            //                     showConfirmButton: false,
+            //                     timer: 1500
+            //                 }).then(function() {
+            //                         parent.location.reload();
+            //                     })
+
+            //             } else {
+            //                 $("#error-message").html("Deletion Field !!!")
+            //                     .slideDown();
+            //                 $("success-message").slideUp();
+            //             }
+
+            //         }
+            //     });
+
+            //     return false;
+            // }
+
+            //========================= Delete Product =========================
+            // $(document).ready(function() {
+            //     $(document).on("click", "#delete-btn", function() {
+
+            //         swal({
+            //                 title: "Are you sure?",
+            //                 text: "Want to Delete This Manufacturer?",
+            //                 icon: "warning",
+            //                 buttons: true,
+            //                 dangerMode: true,
+            //             })
+            //             .then((willDelete) => {
+            //                 if (willDelete) {
+
+            //                     productId = $(this).data("id");
+            //                     btn = this;
+
+            //                     $.ajax({
+            //                         url: "ajax/product.Delete.ajax.php",
+            //                         type: "POST",
+            //                         data: {
+            //                             id: productId
+            //                         },
+            //                         success: function(data) {
+            //                             // alert(data);
+            //                             if (data == 1) {
+            //                                 $(btn).closest("tr").fadeOut()
+            //                                 swal("Deleted", "Manufacturer Has Been Deleted",
+            //                                     "success");
+            //                             } else {
+            //                                 swal("Failed", "Product Deletion Failed!",
+            //                                     "error");
+            //                                 $("#error-message").html("Deletion Field !!!")
+            //                                     .slideDown();
+            //                                 $("success-message").slideUp();
+            //                             }
+            //                         }
+            //                     });
+
+            //                 }
+            //                 return false;
+            //             });
+
+            //     })
+
+            // })
+        </script>
+        <script>
+            $(document).on("click", ".back", function() {
+                var backFile = $(this).parents().find(".back-file");
+                backFile.trigger("click");
+            });
+            $('.back-file').change(function(e) {
+                $(".back-img-field").hide();
+                $("#back-preview").show();
 
 
-            <!-- <script>
+                var fileName = e.target.files[0].name;
+                $("#back-file").val(fileName);
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    // get loaded data and render thumbnail.
+                    document.getElementById("back-preview").src = e.target.result;
+                };
+                // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+            });
+        </script>
+
+        <script>
+            $(document).on("click", ".side", function() {
+                var SideFile = $(this).parents().find(".side-file");
+                SideFile.trigger("click");
+            });
+            $('.side-file').change(function(img) {
+                $(".side-img-field").hide();
+                $("#side-preview").show();
+
+
+                var sideImgName = img.target.files[0].name;
+                $("#side-file").val(sideImgName);
+
+                var reader = new FileReader();
+                reader.onload = function(img) {
+                    // get loaded data and render thumbnail.
+                    document.getElementById("side-preview").src = img.target.result;
+                };
+                // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+            });
+        </script>
+
+
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
                 new Choices('#manufacturer', {
                     allowHTML: true,
