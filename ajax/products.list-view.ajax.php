@@ -21,7 +21,7 @@ if ($showProducts->status) {
     $showProducts= $showProducts->data;
 
     foreach ($showProducts as $showProducts) {
-        echo "<div class='p-1 border-bottom list' id='$showProducts->product_id' onclick='setProduct(this)'>
+        echo "<div class='p-1 border-bottom list' id='$showProducts->product_id' onclick='searchProduct(this)'>
         $showProducts->name
         </div>";
     }
