@@ -1,15 +1,15 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR."products.class.php";
-require_once CLASS_DIR."quantityUnit.class.php";
-require_once CLASS_DIR."packagingUnit.class.php";
-require_once CLASS_DIR."itemUnit.class.php";
-require_once CLASS_DIR."productsImages.class.php";
-require_once CLASS_DIR."manufacturer.class.php";
-require_once CLASS_DIR."currentStock.class.php";
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . "products.class.php";
+require_once CLASS_DIR . "quantityUnit.class.php";
+require_once CLASS_DIR . "packagingUnit.class.php";
+require_once CLASS_DIR . "itemUnit.class.php";
+require_once CLASS_DIR . "productsImages.class.php";
+require_once CLASS_DIR . "manufacturer.class.php";
+require_once CLASS_DIR . "currentStock.class.php";
 
 $Products       = new Products();
 $PackagingUnits = new PackagingUnits();
@@ -67,7 +67,6 @@ $QuantityUnit   = new QuantityUnit;
             align-items: center;
             justify-content: center;
         }
-
     </style>
 </head>
 
@@ -83,29 +82,27 @@ $QuantityUnit   = new QuantityUnit;
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
         // print_r($image);
 
-        $Images = array();
-
-        if ($image->status != 0) {
+        if ($image->status) {
             $image = $image->data;
             foreach ($image as $image) {
                 $Images[] = $image->image;
             }
-            // print_r($Images);
-
+            
             if ($Images == NULL) {
                 $Images = "medicy-default-product-image.jpg";
-            }
-        }
+            }   
+        } 
         
         if($image == NULL){
             $Images = "medicy-default-product-image.jpg";
         }
+        print_r($Images);
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
 
         $itemQuantityUnit = $QuantityUnit->quantityUnitName($product[0]->unit_id);
         $itemQuantityUnit = json_decode($itemQuantityUnit, true);
-        if($itemQuantityUnit){
+        if ($itemQuantityUnit) {
             if (isset($itemQuantityUnit['data']['short_name'])) {
                 $qantityName = $itemQuantityUnit['data']['short_name'];
             } else {
@@ -114,9 +111,8 @@ $QuantityUnit   = new QuantityUnit;
         }
 
         $itemUnitName = $ItemUnit->itemUnitName($product[0]->unit);
-        
-    ?>
 
+    ?>
         <div class="container-fluid d-flex justify-content-center mt-2">
             <div class="row justify-content-center">
                 <div class="col-12 col-sm-4">
@@ -141,7 +137,7 @@ $QuantityUnit   = new QuantityUnit;
                                 <h7><?php echo $manuf->name; ?></h7>
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
                                 <p class="fst-normal"><?php echo $product[0]->unit_quantity; ?>
-                                    <?= $qantityName.' '.$itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
+                                    <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
                                 <p>
                                     <small>
                                         <mark>
@@ -239,7 +235,7 @@ $QuantityUnit   = new QuantityUnit;
                     text: 'Current Stock have this product.'
                 })
             }
-            
+
             if (btnVal == 0) {
                 swal.fire({
                         title: "Are you sure?",
