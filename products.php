@@ -342,10 +342,10 @@ if (isset($_GET['search'])) {
         //================================================================
 
         const searchProduct = (t) => {
-            let prodId = t.id.trim();
-            let prodName = t.innerHTML.trim();
+            var prodId = t.id.trim();
+            var prodName = t.innerHTML.trim();
 
-            let currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
 
             let newUrl = `${currentURLWithoutQuery}?search=${prodId}`;
 
@@ -356,20 +356,25 @@ if (isset($_GET['search'])) {
             // document.getElementById("prodcut-search").value = prodName;
             // productsDropdown.style.display = "none";
 
-            // setProduct(prodId, prodName);
         }
 
 
         document.addEventListener('DOMContentLoaded', function() {
+
             let storedProdName = localStorage.getItem('prodName');
 
-            // If prodName is stored, set it to the input field
-            if (storedProdName !== null) {
-                document.getElementById("prodcut-search").value = storedProdName;
-            }
+            alert(window.location.href);
+            // if (window.location.href == currentURLWithoutQuery) {
+            //     document.getElementById("prodcut-search").value = '';
+            //     document.getElementById("prodcut-search").ariaPlaceholder = 'Search Products (Product Name / Product Composition)';
+            // } else {
+                if (storedProdName !== null) {
+                    document.getElementById("prodcut-search").value = storedProdName;
+                }
+            // }
+
         });
 
-    
     </script>
 
 </body>

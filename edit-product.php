@@ -163,7 +163,8 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
         $productName    = $product[0]->name;
         $manufacturer   = $product[0]->manufacturer_id;
-        $manufData      = json_decode($Manufacturer->showManufacturerById($manufacturer));
+        $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
+        print_r($manufData);
 
         $qty            = $product[0]->unit_quantity;
         $qtyUnit        = $product[0]->unit_id;
@@ -235,7 +236,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
                                                 <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1" disable hidden>
 
-                                                <input type="text" name="manufacturer-id" id="manufacturer-id" value="<?= $manufData ?>" class="c-inp w-100 p-1">
+                                                <input type="text" name="manufacturer-id" id="manufacturer-id" value="<?= $manufData->name ?>" class="c-inp w-100 p-1">
 
                                                 <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list" style="display: none;">
                                                     <div class="lists" id="lists">

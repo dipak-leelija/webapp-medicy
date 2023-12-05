@@ -45,7 +45,7 @@ class Products extends DatabaseConnection{
 
     function showProductsByLimit() {
         try {
-            $selectProduct = "SELECT * FROM products LIMIT 10";
+            $selectProduct = "SELECT * FROM products LIMIT 5";
             $stmt = $this->conn->prepare($selectProduct);
     
             if (!$stmt) {
