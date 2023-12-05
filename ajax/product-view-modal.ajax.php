@@ -83,15 +83,19 @@ $QuantityUnit   = new QuantityUnit;
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
         // print_r($image);
 
-        if ($image->data != NULL) {
-            foreach($image as $image){
-                $Images = $image->image;
+        $Images = array();
+
+        if ($image->status != 0) {
+            $image = $image->data;
+            foreach ($image as $image) {
+                $Images[] = $image->image;
             }
-            
+            // print_r($Images);
+
             if ($Images == NULL) {
                 $Images = "medicy-default-product-image.jpg";
-            }   
-        } 
+            }
+        }
         
         if($image == NULL){
             $Images = "medicy-default-product-image.jpg";
@@ -116,20 +120,16 @@ $QuantityUnit   = new QuantityUnit;
         <div class="container-fluid d-flex justify-content-center mt-2">
             <div class="row justify-content-center">
                 <div class="col-12 col-sm-4">
-                    <div class="">
+                <div class="">
                         <div class="text-center border d-flex justify-content-center">
-                            <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
+                            <img src="<?= PROD_IMG_PATH ?><?php echo $Images[0]; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
                         </div>
                         <div class="row height-3 mt-2 justify-content-center">
-                            <div class="col-2 border p-0">
-                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
-                            </div>
-                            <div class="col-2 border p-0" id="back-div">
-                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
-                            </div>
-                            <div class="col-2 border p-0" id="side-div">
-                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
-                            </div>
+                            <?php foreach ($Images as $index => $imagePath) : ?>
+                                <div class="col-2 border p-0">
+                                    <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
