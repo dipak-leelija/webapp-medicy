@@ -108,7 +108,7 @@ if (isset($_GET['search'])) {
                                         </h6>
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="text" name="prodcut-search" id="prodcut-search" class="c-inp w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
+                                        <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
 
                                         <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
                                             <div class="lists" id="lists">
@@ -119,6 +119,9 @@ if (isset($_GET['search'])) {
                                                 ?>
                                                         <div class="p-1 border-bottom list" id="<?= $eachProd->product_id ?>" onclick="searchProduct(this)">
                                                             <?= $eachProd->name ?>
+                                                        </div>
+                                                        <div>
+                                                            <small><?= $eachProd->comp_1 ?> , <?= $eachProd->comp_2 ?></small>
                                                         </div>
                                                 <?php
                                                     }
