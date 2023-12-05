@@ -13,8 +13,10 @@ $CurrentStock = new CurrentStock();
 
 
 if (isset($_GET["id"])) {
-    $showProducts = $Products->showProductsById($_GET["id"]);
-    echo $showProducts[0]['mrp'];
+    $showProducts = json_decode($Products->showProductsById($_GET["id"]));
+    $showProducts = $showProducts->data;
+
+    echo $showProducts[0]->mrp;
 }
 
 if (isset($_GET["stockmrp"])) {
@@ -26,9 +28,11 @@ if (isset($_GET["stockmrp"])) {
 // =============== ptr check =====================
 
 if (isset($_GET["ptrChk"])) {
-    $showProducts = $Products->showProductsById($_GET["ptrChk"]);
-    $mrp = $showProducts[0]['mrp'];
-    $gst = $showProducts[0]['gst'];
+    $showProducts = json_decode($Products->showProductsById($_GET["ptrChk"]));
+    $showProducts = $showProducts->data;
+
+    $mrp = $showProducts[0]->mrp;
+    $gst = $showProducts[0]->gst;
 
     $maxptr = ($mrp*100)/($gst+100);
     $maxptr = floatval($maxptr);

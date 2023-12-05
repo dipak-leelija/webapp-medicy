@@ -134,8 +134,8 @@ class Products extends DatabaseConnection{
                 return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $data]);
             }
         } catch (Exception $e) {
+            
             error_log("Error in showProductsById: " . $e->getMessage());
-    
             return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
         }
         return 0;
