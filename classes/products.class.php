@@ -126,7 +126,7 @@ class Products extends DatabaseConnection{
             } else {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
-                    $data = $row;
+                    $data[] = $row;
                 }
     
                 $stmt->close();

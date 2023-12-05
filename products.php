@@ -22,11 +22,14 @@ $ProductImages  = new ProductImages();
 
 
 if (isset($_GET['search'])) {
+
     $prodId = $_GET['search'];
     $productList = json_decode($Products->showProductsById($prodId));
 
-    $pagination = json_decode($Pagination->arrayPagination($productList->data));
-    // print_r($pagination);
+    $productList = $productList->data;
+
+    $pagination = json_decode($Pagination->arrayPagination($productList));
+
 
     $result = $pagination;
     $allProducts = $pagination->items;
@@ -114,8 +117,11 @@ if (isset($_GET['search'])) {
                                                     foreach ($productList->data as $eachProd) {
                                                         // print_r($eachProd);
                                                 ?>
-                                                        <div class="p-1 border-bottom list" id="<?= $eachProd->product_id ?>" onclick="setProduct(this)">
+                                                        <div class="p-1 border-bottom list" id="<?= $eachProd->product_id ?>" onclick="searchProduct(this)">
                                                             <?= $eachProd->name ?>
+                                                        </div>
+                                                        <div>
+                                                            <small><?= $eachProd->comp_1 ?> , <?= $eachProd->comp_2 ?></small>
                                                         </div>
                                                 <?php
                                                     }
@@ -138,17 +144,18 @@ if (isset($_GET['search'])) {
                                             <div class="row ">
 
                                                 <?php
+                                                // print_r($allProducts);
+                                                // echo count($allProducts);
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
                                                         // print_r($item);
                                                         $image = json_decode($ProductImages->showImageByPrimay($item->product_id));
-                                                        
+
                                                         if ($image->status != 0) {
                                                             $imgData = $image->data;
                                                             // print_r($image);
-                                                            
+
                                                             $productImage = $imgData->image;
-                                                            
                                                         } else {
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }
@@ -270,26 +277,8 @@ if (isset($_GET['search'])) {
         }
 
 
-        // ============== PRODUCT VIEW MODAL OPEN FUNCTION =============
 
-        const setProduct = (t) => {
-            let prodId = t.id.trim();
-            let prodName = t.innerHTML.trim();
-
-
-            let currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            let newURL = `${currentURLWithoutQuery}?search=${prodId}`;
-            
-            window.location.replace(newURL);
-            
-            document.getElementById("prodcut-search").value = prodName;
-            document.getElementsByClassName("c-dropdown")[0].style.display = "none";
-
-            console.log(prodName);
-            
-        }
-
-        // ==========================================================================
+        // ========================== PRODUCT SEARCH START ===========================
 
         const productsSearch = document.getElementById("prodcut-search");
         const productsDropdown = document.getElementsByClassName("c-dropdown")[0];
@@ -298,14 +287,15 @@ if (isset($_GET['search'])) {
         productsSearch.addEventListener("focus", () => {
             productsDropdown.style.display = "block";
         });
-        
-        
+
+
         document.addEventListener("click", (event) => {
             // Check if the clicked element is not the input field or the manufDropdown
             if (!productsSearch.contains(event.target) && !productsDropdown.contains(event.target)) {
                 productsDropdown.style.display = "none";
             }
         });
+
 
         document.addEventListener("blur", (event) => {
             // Check if the element losing focus is not the manufDropdown or its descendants
@@ -321,7 +311,6 @@ if (isset($_GET['search'])) {
 
         productsSearch.addEventListener("keydown", () => {
 
-            // Delay the hiding to allow the click event to be processed
             let list = document.getElementsByClassName('lists')[0];
             let searchVal = document.getElementById("prodcut-search").value;
 
@@ -349,6 +338,38 @@ if (isset($_GET['search'])) {
                 // productsDropdown.style.display = "none";
             }
         });
+
+        //================================================================
+
+        const searchProduct = (t) => {
+            let prodId = t.id.trim();
+            let prodName = t.innerHTML.trim();
+
+            let currentURLWithoutQuery = window.location.origin + window.location.pathname;
+
+            let newUrl = `${currentURLWithoutQuery}?search=${prodId}`;
+
+            localStorage.setItem('prodName', prodName);
+
+            window.location.href = newUrl;
+
+            // document.getElementById("prodcut-search").value = prodName;
+            // productsDropdown.style.display = "none";
+
+            // setProduct(prodId, prodName);
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let storedProdName = localStorage.getItem('prodName');
+
+            // If prodName is stored, set it to the input field
+            if (storedProdName !== null) {
+                document.getElementById("prodcut-search").value = storedProdName;
+            }
+        });
+
+    
     </script>
 
 </body>

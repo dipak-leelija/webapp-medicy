@@ -178,27 +178,27 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
         $product = json_decode($Products->showProductsById($productId));
         $product = $product->data;
-
-        $productName    = $product->name;
-        $manufacturer   = $product->manufacturer_id;
+        
+        $productName    = $product[0]->name;
+        $manufacturer   = $product[0]->manufacturer_id;
         $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
-
-        $qty            = $product->unit_quantity;
-        $qtyUnit        = $product->unit_id;
-        $itemUnit       = $product->unit;
-        $packagingType  = $product->packaging_type;
-        $type           = $product->type;
-        $power          = $product->power;
-        $dsc            = $product->dsc;
-        $mrp            = $product->mrp;
-        $gst            = $product->gst;
-        $comp1          = $product->comp_1;
-        $comp2          = $product->comp_2;
-        $added_by       = $product->added_by;
-        $added_on       = $product->added_on;
-        $updated_by     = $product->updated_by;
-        $updated_on     = $product->updated_on;
-        $admin_id       = $product->admin_id;
+        
+        $qty            = $product[0]->unit_quantity;
+        $qtyUnit        = $product[0]->unit_id;
+        $itemUnit       = $product[0]->unit;
+        $packagingType  = $product[0]->packaging_type;
+        $type           = $product[0]->type;
+        $power          = $product[0]->power;
+        $dsc            = $product[0]->dsc;
+        $mrp            = $product[0]->mrp;
+        $gst            = $product[0]->gst;
+        $comp1          = $product[0]->comp_1;
+        $comp2          = $product[0]->comp_2;
+        $added_by       = $product[0]->added_by;
+        $added_on       = $product[0]->added_on;
+        $updated_by     = $product[0]->updated_by;
+        $updated_on     = $product[0]->updated_on;
+        $admin_id       = $product[0]->admin_id;
 
 
         $images = json_decode($ProductImages->showImageById($productId));
