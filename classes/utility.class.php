@@ -3928,5 +3928,63 @@ function word_teaser_end($string, $count){
 		return json_decode($response);
 	}
 
+
+	/*****************************************************************************
+	*																			 *
+	*									Date Manipulation						 *
+	*																			 *
+	*****************************************************************************/
+
+	function getNextDate($duration) {
+		// Get the current date
+		$currentDate = new DateTime();
+
+		// Parse the duration string
+		preg_match('/(\d+)\s*(day|week|month|year)s?/i', $duration, $matches);
+
+		if (!$matches) {
+			// Invalid duration format
+			return false;
+		}
+
+		$value = (int)$matches[1];
+		$unit = strtolower($matches[2]);
+
+		// Calculate the next date based on the duration
+		switch ($unit) {
+			case 'day':
+				$currentDate->modify("+$value days");
+				break;
+			case 'week':
+				$currentDate->modify("+$value weeks");
+				break;
+			case 'month':
+				$currentDate->modify("+$value months");
+				break;
+			case 'year':
+				$currentDate->modify("+$value years");
+				break;
+			default:
+				// Invalid duration unit
+				return false;
+		}
+
+		// Format the next date as a string
+		return $currentDate->format('Y-m-d');
+	}
+
 }//eoc
+
+
+// // Example usage:
+// $duration = '1 month';
+// $nextDate = getNextDate($duration);
+
+// if ($nextDate !== false) {
+//     echo "Next date after $duration: $nextDate";
+// } else {
+//     echo "Invalid duration format.";
+// }
+
+
 ?>
