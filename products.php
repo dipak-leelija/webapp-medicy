@@ -24,9 +24,11 @@ $ProductImages  = new ProductImages();
 if (isset($_GET['search'])) {
     $prodId = $_GET['search'];
     $productList = json_decode($Products->showProductsById($prodId));
-
-    $pagination = json_decode($Pagination->arrayPagination($productList->data));
-    // print_r($pagination);
+    
+    $productList = $productList->data;
+    
+    $pagination = json_decode($Pagination->arrayPagination($productList));
+ 
 
     $result = $pagination;
     $allProducts = $pagination->items;
@@ -138,6 +140,8 @@ if (isset($_GET['search'])) {
                                             <div class="row ">
 
                                                 <?php
+                                                // print_r($allProducts);
+                                                // echo count($allProducts);
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
                                                         // print_r($item);
@@ -282,11 +286,12 @@ if (isset($_GET['search'])) {
             
             window.location.replace(newURL);
             
-            document.getElementById("prodcut-search").value = prodName;
+            console.log(prodName);
+            // document.getElementById("prodcut-search").value = prodName;
+            // document.getElementById("lists").value = prodName;
+
             document.getElementsByClassName("c-dropdown")[0].style.display = "none";
 
-            console.log(prodName);
-            
         }
 
         // ==========================================================================
@@ -306,6 +311,7 @@ if (isset($_GET['search'])) {
                 productsDropdown.style.display = "none";
             }
         });
+
 
         document.addEventListener("blur", (event) => {
             // Check if the element losing focus is not the manufDropdown or its descendants

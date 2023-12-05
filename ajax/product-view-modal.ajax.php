@@ -1,15 +1,15 @@
 <?php
-require_once dirname(__DIR__) . '/config/constant.php';
-require_once ROOT_DIR . '_config/sessionCheck.php';
+require_once dirname(__DIR__).'/config/constant.php';
+require_once ROOT_DIR.'_config/sessionCheck.php';
 
-require_once CLASS_DIR . 'dbconnect.php';
-require_once CLASS_DIR . "products.class.php";
-require_once CLASS_DIR . "quantityUnit.class.php";
-require_once CLASS_DIR . "packagingUnit.class.php";
-require_once CLASS_DIR . "itemUnit.class.php";
-require_once CLASS_DIR . "productsImages.class.php";
-require_once CLASS_DIR . "manufacturer.class.php";
-require_once CLASS_DIR . "currentStock.class.php";
+require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR."products.class.php";
+require_once CLASS_DIR."quantityUnit.class.php";
+require_once CLASS_DIR."packagingUnit.class.php";
+require_once CLASS_DIR."itemUnit.class.php";
+require_once CLASS_DIR."productsImages.class.php";
+require_once CLASS_DIR."manufacturer.class.php";
+require_once CLASS_DIR."currentStock.class.php";
 
 $Products       = new Products();
 $PackagingUnits = new PackagingUnits();
@@ -67,6 +67,7 @@ $QuantityUnit   = new QuantityUnit;
             align-items: center;
             justify-content: center;
         }
+
     </style>
 </head>
 
@@ -75,39 +76,32 @@ $QuantityUnit   = new QuantityUnit;
     if (isset($_GET['id'])) {
         $productId = $_GET['id'];
         $product        = json_decode($Products->showProductsById($_GET['id']));
-        $product = $product->data;
-        
-
-        $manuf          = json_decode($Manufacturer->showManufacturerById($product->manufacturer_id));
-        
+        $product        = $product->data;
+        $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]->manufacturer_id));
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
-       
+        // print_r($itemstock);
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
         // print_r($image);
 
-        $Images = array();
-
-        if ($image->status != 0) {
-            $image = $image->data;
-            foreach ($image as $image) {
-                $Images[] = $image->image;
+        if ($image->data != NULL) {
+            foreach($image as $image){
+                $Images = $image->image;
             }
-            // print_r($Images);
-
+            
             if ($Images == NULL) {
                 $Images = "medicy-default-product-image.jpg";
-            }
-        }
-
-        if ($image == NULL) {
+            }   
+        } 
+        
+        if($image == NULL){
             $Images = "medicy-default-product-image.jpg";
         }
 
-        $pack = $PackagingUnits->showPackagingUnitById($product->packaging_type);
+        $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
 
-        $itemQuantityUnit = $QuantityUnit->quantityUnitName($product->unit_id);
+        $itemQuantityUnit = $QuantityUnit->quantityUnitName($product[0]->unit_id);
         $itemQuantityUnit = json_decode($itemQuantityUnit, true);
-        if ($itemQuantityUnit) {
+        if($itemQuantityUnit){
             if (isset($itemQuantityUnit['data']['short_name'])) {
                 $qantityName = $itemQuantityUnit['data']['short_name'];
             } else {
@@ -115,8 +109,8 @@ $QuantityUnit   = new QuantityUnit;
             }
         }
 
-        $itemUnitName = $ItemUnit->itemUnitName($product->unit);
-
+        $itemUnitName = $ItemUnit->itemUnitName($product[0]->unit);
+        
     ?>
 
         <div class="container-fluid d-flex justify-content-center mt-2">
@@ -124,23 +118,18 @@ $QuantityUnit   = new QuantityUnit;
                 <div class="col-12 col-sm-4">
                     <div class="">
                         <div class="text-center border d-flex justify-content-center">
-                            <img src="<?= PROD_IMG_PATH ?><?php echo $Images[0]; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
+                            <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
                         </div>
                         <div class="row height-3 mt-2 justify-content-center">
-                            <?php foreach ($Images as $index => $imagePath) : ?>
-                                <div class="col-2 border p-0">
-                                    <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
-                                </div>
-                            <?php endforeach; ?>
-                            <!-- <div class="col-2 border p-0">
-                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images[0]; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                            <div class="col-2 border p-0">
+                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" id="front-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                             <div class="col-2 border p-0" id="back-div">
-                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images[1]; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" id="back-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                             </div>
                             <div class="col-2 border p-0" id="side-div">
-                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images[2]; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
-                            </div> -->
+                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images; ?>" id="side-img" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -148,11 +137,11 @@ $QuantityUnit   = new QuantityUnit;
                     <div class="">
                         <div class="d-flex">
                             <div class="text-start col-7 mb-0 pb-0">
-                                <h4><?php echo $product->name; ?></h4>
+                                <h4><?php echo $product[0]->name; ?></h4>
                                 <h7><?php echo $manuf->name; ?></h7>
-                                <h5 class="fs-5 fst-normal">₹ <?php echo $product->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
-                                <p class="fst-normal"><?php echo $product->unit_quantity; ?>
-                                    <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
+                                <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
+                                <p class="fst-normal"><?php echo $product[0]->unit_quantity; ?>
+                                    <?= $qantityName.' '.$itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
                                 <p>
                                     <small>
                                         <mark>
@@ -202,11 +191,11 @@ $QuantityUnit   = new QuantityUnit;
                         <div class="text-start">
                             <p>
                                 <b>Composition: </b>
-                                <br><?= $product->comp_1; ?>
-                                <br><?= $product->comp_2; ?>
+                                <br><?= $product[0]->comp_1; ?>
+                                <br><?= $product[0]->comp_2; ?>
                             </p>
 
-                            <p><b>Description: </b> <br><?php echo $product->dsc; ?></p>
+                            <p><b>Description: </b> <br><?php echo $product[0]->dsc; ?></p>
                         </div>
 
                         <div class="row justify-content-center mt-4">
@@ -231,7 +220,6 @@ $QuantityUnit   = new QuantityUnit;
     <script>
         const setImg = (id) => {
             img = document.getElementById(id).src;
-            console.log(img);
             document.getElementById("main-img").src = img;
         }
 
@@ -251,7 +239,7 @@ $QuantityUnit   = new QuantityUnit;
                     text: 'Current Stock have this product.'
                 })
             }
-
+            
             if (btnVal == 0) {
                 swal.fire({
                         title: "Are you sure?",
