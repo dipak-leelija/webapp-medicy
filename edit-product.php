@@ -93,7 +93,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
             // for img //
             $imageName        = $_FILES['img-files']['name'];
             $tempImgName       = $_FILES['img-files']['tmp_name'];
-            
+
             $imageArrayCaount = count($imageName);
             $tempImageNameArrayCaount = count($tempImgName);
 
@@ -101,7 +101,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
             if ($updateProduct === true) {
 
-                $delProdImage = $ProductImages->deleteImage($productId);
+                // $delProdImage = $ProductImages->deleteImage($productId);
 
                 for ($j = 0; $j < $imageArrayCaount && $j < $tempImageNameArrayCaount; $j++) {
                     ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
@@ -145,7 +145,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
                             $image         = $ImgNm . '-' . $randomString . $extention;
                             $imgFolder     = PROD_IMG_DIR . $image;
-    
+
                             // move_uploaded_file($tempImgname, $imgFolder);
                             move_uploaded_file($tempImgName[$j], $imgFolder);
 
@@ -158,10 +158,8 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
                         $setPriority = '';
 
-                        
-                        $updateImage = $ProductImages->addImages($productId, $image, $setPriority, $employeeId, NOW, $adminId);
 
-                        
+                        $updateImage = $ProductImages->addImages($productId, $image, $setPriority, $employeeId, NOW, $adminId);
                     } else {
                         $addImage = true;
                     }
@@ -170,63 +168,63 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
 
 
-            //     $updateImage = true;
-            //     if ($updateProduct === true) {
-            //         if ($updateImage === true) {
-            //      
+            $updateImage = true;
+            if ($updateProduct === true) {
+                if ($updateImage === true) {
+
     ?>
-            // <script>
-                //                 swal("Success", "Product updated successfully!", "success").then((value) => {
-                //                     parent.location.reload();
-                //                 });
-                //             
-            </script>
-            // <?php
-                //         }
-                //     }
-            }
-
-
-            // ===================== Fetching Product Details =====================
-
-            $product = json_decode($Products->showProductsById($productId));
-            $product = $product->data;
-            // print_r($product);
-
-            $productName    = $product[0]->name;
-            $manufacturer   = $product[0]->manufacturer_id;
-            $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
-            $manufacturerName = ($manufData->status == 1 && isset($manufData->data)) ? $manufData->data->name : 'unable to retrieve';
-
-            $qty            = $product[0]->unit_quantity;
-            $qtyUnit        = $product[0]->unit_id;
-            $itemUnit       = $product[0]->unit;
-            $packagingType  = $product[0]->packaging_type;
-            $type           = $product[0]->type;
-            $power          = $product[0]->power;
-            $dsc            = $product[0]->dsc;
-            $mrp            = $product[0]->mrp;
-            $gst            = $product[0]->gst;
-            $comp1          = $product[0]->comp_1;
-            $comp2          = $product[0]->comp_2;
-            $added_by       = $product[0]->added_by;
-            $added_on       = $product[0]->added_on;
-            $updated_by     = $product[0]->updated_by;
-            $updated_on     = $product[0]->updated_on;
-            $admin_id       = $product[0]->admin_id;
-
-            $images = json_decode($ProductImages->showImageById($productId));
-
-            $allImg = array();
-            if ($images->status == 1 && !empty($images->data)) {
-                foreach ($images->data as $image) {
-                    $allImg[] = $image->image;
+                    <script>
+                        swal("Success", "Product updated successfully!", "success").then((value) => {
+                            parent.location.reload();
+                        });
+                    </script>
+        <?php
+                } else {
                 }
-            } else {
-                $allImg[] = "medicy-default-product-image.jpg";
             }
+        }
 
-                ?>
+
+        // ===================== Fetching Product Details =====================
+
+        $product = json_decode($Products->showProductsById($productId));
+        $product = $product->data;
+        // print_r($product);
+
+        $productName    = $product[0]->name;
+        $manufacturer   = $product[0]->manufacturer_id;
+        $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
+        $manufacturerName = ($manufData->status == 1 && isset($manufData->data)) ? $manufData->data->name : 'unable to retrieve';
+
+        $qty            = $product[0]->unit_quantity;
+        $qtyUnit        = $product[0]->unit_id;
+        $itemUnit       = $product[0]->unit;
+        $packagingType  = $product[0]->packaging_type;
+        $type           = $product[0]->type;
+        $power          = $product[0]->power;
+        $dsc            = $product[0]->dsc;
+        $mrp            = $product[0]->mrp;
+        $gst            = $product[0]->gst;
+        $comp1          = $product[0]->comp_1;
+        $comp2          = $product[0]->comp_2;
+        $added_by       = $product[0]->added_by;
+        $added_on       = $product[0]->added_on;
+        $updated_by     = $product[0]->updated_by;
+        $updated_on     = $product[0]->updated_on;
+        $admin_id       = $product[0]->admin_id;
+
+        $images = json_decode($ProductImages->showImageById($productId));
+
+        $allImg = array();
+        if ($images->status == 1 && !empty($images->data)) {
+            foreach ($images->data as $image) {
+                $allImg[] = $image->image;
+            }
+        } else {
+            $allImg[] = "medicy-default-product-image.jpg";
+        }
+
+        ?>
 
         <!-- Page Wrapper -->
         <div id="wrapper">
@@ -388,8 +386,11 @@ $itemUnits          = $ItemUnit->showItemUnits();
                                                 <div class="border p-1 rounded">
                                                     <div class="row height-3 mt-2 justify-content-center">
                                                         <?php foreach ($allImg as $index => $imagePath) : ?>
-                                                            <div class="col-2 border p-2">
-                                                                <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                                            <div class="col-2 border m-1 p-0">
+                                                                <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class=" ob-cover h-100" alt="...">
+
+                                                                    <input type="radio" class="form-check-input mt-5 ml-n5" name="selectedImage" id="radio-<?php echo $index; ?>">
+                                                                    <button type="button" class="btn-close position-absolute rounded border bg-danger  text-white mt-n3 ml-n3" aria-label="Close" onclick="closeImage(this)">x</button>
                                                             </div>
                                                         <?php endforeach; ?>
                                                     </div>
@@ -492,7 +493,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
             }
             //image selection//
         </script>
-        
+
         <script>
             $(document).on("click", ".back", function() {
                 var backFile = $(this).parents().find(".back-file");

@@ -115,7 +115,7 @@ $QuantityUnit   = new QuantityUnit;
                         </div>
                         <div class="row height-3 mt-2 justify-content-center">
                             <?php foreach ($Images as $index => $imagePath) : ?>
-                                <div class="col-2 border p-0">
+                                <div class="col-2 border border-2 m-1 p-0">
                                     <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
                                 </div>
                             <?php endforeach; ?>
