@@ -89,7 +89,7 @@ $QuantityUnit   = new QuantityUnit;
         } else {
             $Images[] = "medicy-default-product-image.jpg";
         }
-      
+        print_r($Images);
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
 
@@ -109,7 +109,7 @@ $QuantityUnit   = new QuantityUnit;
         <div class="container-fluid d-flex justify-content-center mt-2">
             <div class="row justify-content-center">
                 <div class="col-12 col-sm-4">
-                    <div class="">
+                <div class="">
                         <div class="text-center border d-flex justify-content-center">
                             <img src="<?= PROD_IMG_PATH ?><?php echo $Images[0]; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
                         </div>

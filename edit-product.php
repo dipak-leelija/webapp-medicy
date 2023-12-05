@@ -72,10 +72,10 @@ $itemUnits          = $ItemUnit->showItemUnits();
         if (isset($_POST['update-product'])) {
 
             $productName      = $_POST['product-name'];
-             
+
             $productComp1     = $_POST['product-composition1'];
             $productComp2     = $_POST['product-composition2'];
-            $manufacturer     = $_POST['manufacturer-id'];
+            $manufacturer     = $_POST['manufacturer'];
 
             $searchTerms      = $_POST['search_terms'];
 
@@ -89,75 +89,57 @@ $itemUnits          = $ItemUnit->showItemUnits();
             $mrp              = $_POST['mrp'];
             $gst              = $_POST['gst'];
             $productDesc      = $_POST['product-description'];
-            $imageName         = $_FILES['img-files']['name'];
+            $imageName        = $_FILES['img-files']['name'];
+            print_r($imageName);
 
-            // $productId = $_POST['imgid'];
-            // $imageCheck = $ProductImages->showImageById($productId);
-            // // print_r($imageCheck); echo "<br><br>";
-            // foreach ($imageCheck as $imgChk) {
-            //     $mnImgChk = $imgChk['image'];
-            //     $sideImgChk = $imgChk['side_image'];
-            //     $bkImgChk = $imgChk['back_image'];
-            // }
+            $image         = $imageName[$j];
+            $tempImgname   = $tempImgName[$j];
 
-            // //print_r($_FILES)
 
-            // //===== Main Image 
-            // $image         = $_FILES['product-image']['name'];
-            // $tempImgname   = $_FILES['product-image']['tmp_name'];
-            // if ($image != null) {
-            //     if (file_exists("../../../images/product-image/" . $image)) {
-            //         $image = 'medicy-' . $image;
-            //     }
-            // } elseif ($image == null) {
-            //     if ($mnImgChk != null) {
-            //         $image = $mnImgChk;
-            //     }
-            // }
+            if ($image) {
 
-            // $imgFolder     = "../images/product-image/" . $image;
-            // move_uploaded_file($tempImgname, $imgFolder);
-            // $image         = addslashes($image);
+                $ImgNm = '';
+                $extention = '';
+                $countImageLen = 0;
 
-            // //===== Back Image 
-            // $backImage         = $_FILES['back-image']['name'];
-            // $tempBackImg       = $_FILES['back-image']['tmp_name'];
-            // if ($backImage != null) {
-            //     if (file_exists("../../../images/product-image/" . $backImage)) {
-            //         $backImage = 'medicy-' . $backImage;
-            //     }
-            // } elseif ($backImage == null) {
-            //     if ($bkImgChk != null) {
-            //         $backImage = $bkImgChk;
-            //     }
-            // }
 
-            // $imgFolder     = "../images/product-image/" . $backImage;
-            // move_uploaded_file($tempBackImg, $imgFolder);
-            // $backImage         = addslashes($backImage);
+                // echo "<br>Checking image name on entry : $image";
 
-            // //===== Side Image 
-            // $sideImage         = $_FILES['side-image']['name'];
-            // $tempSideImg       = $_FILES['side-image']['tmp_name'];
-            // if ($backImage != null) {
-            //     if (file_exists("../../../images/product-image/" . $sideImage)) {
-            //         $sideImage = 'medicy-' . $sideImage;
-            //     }
-            // } elseif ($sideImage == null) {
-            //     if ($sideImgChk != null) {
-            //         $sideImage = $sideImgChk;
-            //     }
-            // }
+                if ($image != '') {
+                    if ($image != null) {
+                        if (file_exists(PROD_IMG_PATH . $randomString . '_' . $image)) {
+                            $image = 'medicy-' . $randomString . $image;
+                        }
+                    }
 
-            // $imgFolder         = "../images/product-image/" . $sideImage;
-            // move_uploaded_file($tempSideImg, $imgFolder);
-            // $sideImage         = addslashes($sideImage);
-            //_________________________________________________________________________________________
+                    $countImageLen = strlen($image);
+                    for ($l = 0; $l < intval($countImageLen) - 4; $l++) {
+                        $ImgNm .= $image[$l];
+                    }
+                    for ($k = intval($countImageLen) - 4; $k < $countImageLen; $k++) {
+                        $extention .= $image[$k];
+                    }
+
+                    $image         = $ImgNm . '-' . $randomString . $extention;
+                    $imgFolder     = PROD_IMG_DIR . $image;
+
+                    move_uploaded_file($tempImgname, $imgFolder);
+                    $image         = addslashes($image);
+                }
+
+                if ($image == '') {
+                    $image = '';
+                }
+
+                $setPriority = '';
+
+                $updateImage = $ProductImages->updateImage($productId, $image);
+            } else {
+                $updateImage = true;
+            }
 
 
             $updateProduct = $Products->updateProduct($productId, $productName, $manufacturer, $type = '', $productComp1, $productComp2, $medicinePower, $productDesc, $quantity, $qtyUnit, $itemUnit, $packagingType, $mrp, $gst, $employeeId, NOW);
-
-            $updateImage = $ProductImages->addImages($productId, $image, $setPriority, $addedBy, $addedOn, $adminId);
 
             $updateImage = true;
             if ($updateProduct === true) {
@@ -178,7 +160,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
         $product = json_decode($Products->showProductsById($productId));
         $product = $product->data;
-        
+
         $productName    = $product[0]->name;
         $manufacturer   = $product[0]->manufacturer_id;
         $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
@@ -254,7 +236,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
                                                 <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1" disable hidden>
 
-                                                <input type="text" name="manufacturer-id" id="manufacturer-id" value="<?= ($manufData->status)? $manufData->data->name : 'No Manufacturer found'; ?>" class="c-inp w-100 p-1">
+                                                <input type="text" name="manufacturer-id" id="manufacturer-id" value="<?= $manufData->name ?>" class="c-inp w-100 p-1">
 
                                                 <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list" style="display: none;">
                                                     <div class="lists" id="lists">
@@ -406,7 +388,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                        </div>
                         </form>
                     </div>
                 </div>
