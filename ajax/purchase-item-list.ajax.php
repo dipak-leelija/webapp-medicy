@@ -66,11 +66,13 @@ if ($resultData) {
         }
         $packOf      = $weightage . $unitDetials . '/' . $packageType;
         $manufacturerId = $resultRow['manufacturer_id'];
-        $manufacturer = $Manufacturer->showManufacturerById($manufacturerId);
+        $manufacturer = json_decode($Manufacturer->showManufacturerById($manufacturerId));
 
-        foreach ($manufacturer as $row) {
-            $manufacturerName = $row['name'];
-        }
+        $manufacturerName = ($manufacturer->status)? $manufacturer->data->name : 'no data found';
+
+        // foreach ($manufacturer as $row) {
+        //     $manufacturerName = $row['name'];
+        // }
 
         $power = '';
         $power       = $resultRow['power'];

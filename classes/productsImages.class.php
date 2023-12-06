@@ -142,10 +142,9 @@ class ProductImages extends DatabaseConnection{
     // }
 
     
-    function updateImage($productId, $image, $backImage, $sideImage)
-    {
+    function updateImage($productId, $image, $updatedOn, $updatedBy){
         
-        $updateImage = "UPDATE `product_images` SET `image`='$image', `back_image`='$backImage', `side_image`='$sideImage' WHERE `product_images`.`product_id`='$productId'";
+        $updateImage = "UPDATE `product_images` SET `image`='$image', `updated_on`='$updatedOn', `updated_by`='$updatedBy' WHERE `product_images`.`product_id`='$productId'";
 
     
         $updateQuery = $this->conn->query($updateImage);

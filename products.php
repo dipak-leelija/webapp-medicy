@@ -108,7 +108,7 @@ if (isset($_GET['search'])) {
                                         </h6>
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="text" name="prodcut-search" id="prodcut-search" class="c-inp w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
+                                        <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
 
                                         <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
                                             <div class="lists" id="lists">
@@ -119,6 +119,9 @@ if (isset($_GET['search'])) {
                                                 ?>
                                                         <div class="p-1 border-bottom list" id="<?= $eachProd->product_id ?>" onclick="searchProduct(this)">
                                                             <?= $eachProd->name ?>
+                                                        </div>
+                                                        <div>
+                                                            <small><?= $eachProd->comp_1 ?> , <?= $eachProd->comp_2 ?></small>
                                                         </div>
                                                 <?php
                                                     }
@@ -339,10 +342,10 @@ if (isset($_GET['search'])) {
         //================================================================
 
         const searchProduct = (t) => {
-            let prodId = t.id.trim();
-            let prodName = t.innerHTML.trim();
+            var prodId = t.id.trim();
+            var prodName = t.innerHTML.trim();
 
-            let currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
 
             let newUrl = `${currentURLWithoutQuery}?search=${prodId}`;
 
@@ -353,20 +356,26 @@ if (isset($_GET['search'])) {
             // document.getElementById("prodcut-search").value = prodName;
             // productsDropdown.style.display = "none";
 
-            // setProduct(prodId, prodName);
         }
 
 
         document.addEventListener('DOMContentLoaded', function() {
+
             let storedProdName = localStorage.getItem('prodName');
 
-            // If prodName is stored, set it to the input field
-            if (storedProdName !== null) {
-                document.getElementById("prodcut-search").value = storedProdName;
-            }
+            // alert(window.location.href);
+            // if (window.location.href == currentURLWithoutQuery) {
+            //     document.getElementById("prodcut-search").value = '';
+            //     document.getElementById("prodcut-search").ariaPlaceholder = 'Search Products (Product Name / Product Composition)';
+            // } else {
+                if (storedProdName !== null) {
+                    document.getElementById("prodcut-search").value = storedProdName;
+                    localStorage.setItem('prodName', '');
+                }
+            // }
+
         });
 
-    
     </script>
 
 </body>
