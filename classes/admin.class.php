@@ -5,17 +5,17 @@ class Admin extends DatabaseConnection
 
 
 
-    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $added_on)
+    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on)
     {
 
         $password = pass_enc($password, ADMIN_PASS);
 
         try {
-            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($query);
 
             // Bind parameters
-            $stmt->bind_param("ssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $added_on);
+            $stmt->bind_param("sssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on);
 
             if ($stmt->execute()) {
                 // Registration was successful
@@ -26,7 +26,7 @@ class Admin extends DatabaseConnection
             }
         } catch (Exception $e) {
             // Handle any exceptions that may occur
-            return "Error: " . $e->getMessage();
+            return "Error => " . $e->getMessage();
         }
     }
 

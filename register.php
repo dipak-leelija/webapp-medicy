@@ -8,10 +8,12 @@ if (isset($_SESSION['LOGGEDIN'])) {
 
 require_once CLASS_DIR .'dbconnect.php';
 require_once CLASS_DIR.'admin.class.php';
+require_once CLASS_DIR.'subscription.class.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
 
 $admin          = new Admin;
+$Subscription   = new Subscription;
 $HealthCare     = new HealthCare;
 $IdGenerate     = new IdsGeneration;
 
@@ -29,6 +31,12 @@ if (isset($_POST['register'])) {
     $password   =  $_POST['password'];
     $cpassword  = $_POST['cpassword'];
     
+
+    $currentDate = new DateTime(TODAY);
+
+    // Add 30 days to the current date
+    $expiry = $currentDate->modify('+365 days')->format('Y-m-d');
+
     $adminId  = $IdGenerate->generateAdminId();
     $clinicId = $IdGenerate->generateClinicId($adminId);    
 
@@ -45,16 +53,22 @@ if (isset($_POST['register'])) {
             $emailExists = false;
             if($password == $cpassword){
                 $diffrentPassword = false;
-                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, NOW);
+                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW);
                 // print_r($register);
                 if ($register) {
-
-                    $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
-                    if ($addToClinicInfo) {
-                        header("Location: login.php");
-                        exit;
-                    }else{
-                        echo "CLINIC INFO CAN'T ADDED!";
+                    
+                    $subscribed = $Subscription->createSubscription($adminId, 1, NOW, $expiry, 0);
+                    if ($subscribed === true) {
+                        // echo 'True';
+                        $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
+                        if ($addToClinicInfo) {
+                            header("Location: login.php");
+                            exit;
+                        }else{
+                            $errMsg = "Clinic Info Can't Added!";
+                        }
+                    }else {
+                        $errMsg =  $subscribed;
                     }
                 }
             }else {
@@ -79,11 +93,6 @@ if (isset($_POST['register'])) {
     <meta name="author" content="">
 
     <title>Medicy Health Care - Admin Registration</title>
-
-    <!-- Custom fonts for this template-->
-    <!-- <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"> -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet"> -->
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -162,6 +171,15 @@ if (isset($_POST['register'])) {
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
+                                    }
+
+                                    if (isset($errMsg)) {
+                                        echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                                        <strong>Please Contact Support. </strong> $errMsg
+                                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                          <span aria-hidden='true'>&times;</span>
+                                        </button>
+                                      </div>";
                                     }
                                 ?>
 
