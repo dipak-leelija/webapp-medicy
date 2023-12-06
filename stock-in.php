@@ -72,7 +72,9 @@ $todayYr = date("y");
     <title>Medicy Items</title>
 
     <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-in.css">
 
@@ -108,75 +110,70 @@ $todayYr = date("y");
                     <div class="card shadow mb-5">
                         <div class="card-body">
 
-                            <div class="row col-12">
-                                <!-- Distributor Details  -->
-                                <div class="row bg-distributor rounded pt-2 pb-4">
-                                    
-                                        <div class="col-sm-6 col-md-3">
-                                            <label class="mb-1" for="distributor-id">Distributor</label>
-                                            <input type="text" name="" id="distributor-id" class="upr-inp">
-                                            <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
-                                                <div class="lists" id="lists">
-                                                    <?php
-                                                    if (!empty($showDistributors)) {
-                                                        foreach ($showDistributors as $eachDistributor) {
-                                                    ?>
-                                                            <div class="p-1 border-bottom list" id="<?= $eachDistributor->id ?>" onclick="setDistributor(this)">
-                                                                <?= $eachDistributor->name ?>
-                                                            </div>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center mt-1" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
-                                                    <button type="button" id="add-customer" class="text-primary border-0">
-                                                        <i class="fas fa-plus-circle"></i>
-                                                        Add Now
-                                                    </button>
-                                                </div>
-                                            <?php
-                                                    } else {
-                                            ?>
-                                                <p class="text-center font-weight-bold">Distributor Not Found!</p>
-                                                <div class="d-flex flex-column justify-content-center" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
-                                                    <button type="button" id="add-customer" class="text-primary border-0"><i class="fas fa-plus-circle"></i>
-                                                        Add Now</button>
-                                                </div>
-                                            <?php
-                                                    }
-                                            ?>
+                            <!-- Distributor Details  -->
+                            <div class="row bg-distributor rounded pt-2 pb-4">
+
+                                <div class="col-sm-6 col-md-3">
+                                    <label class="mb-1" for="distributor-id">Distributor</label>
+                                    <input type="text" name="" id="distributor-id" class="upr-inp">
+                                    <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
+                                        <?php if (!empty($showDistributors)): ?>
+                                        <div class="lists" id="lists">
+                                            <?php foreach ($showDistributors as $eachDistributor) {?>
+                                            <div class="p-1 border-bottom list" id="<?= $eachDistributor->id ?>"
+                                                onclick="setDistributor(this)">
+                                                <?= $eachDistributor->name ?>
                                             </div>
+                                            <?php } ?>
                                         </div>
+                                        <div class="d-flex flex-column justify-content-center mt-1" data-toggle="modal"
+                                            data-target="#add-distributor" onclick="addDistributor()">
+                                            <button type="button" id="add-customer" class="text-primary border-0">
+                                                <i class="fas fa-plus-circle"></i> Add Now</button>
+                                        </div>
+                                        <?php else: ?>
+                                        <p class="text-center font-weight-bold">Distributor Not Found!</p>
+                                        <div class="d-flex flex-column justify-content-center" data-toggle="modal"
+                                            data-target="#add-distributor" onclick="addDistributor()">
+                                            <button type="button" id="add-customer" class="text-primary border-0">
+                                                <i class="fas fa-plus-circle"></i>Add Now</button>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
 
 
-                                        <div class="col-sm-6 col-md-3">
-                                            <label class="mb-1" for="dist-bill-no">Distributor Bill No.</label>
-                                            <input type="text" class="upr-inp " name="dist-bill-no" id="dist-bill-no" placeholder="Enter Distributor Bill" value="" autocomplete="off" style="text-transform: uppercase;" onkeyup="setDistBillNo(this)">
-                                        </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <label class="mb-1" for="dist-bill-no">Distributor Bill No.</label>
+                                    <input type="text" class="upr-inp " name="dist-bill-no" id="dist-bill-no"
+                                        placeholder="Enter Distributor Bill" value="" autocomplete="off"
+                                        style="text-transform: uppercase;" onkeyup="setDistBillNo(this)">
+                                </div>
 
-                                        <div class="col-sm-6 col-md-2">
-                                            <label class="mb-1" for="bill-date">Bill Date</label>
-                                            <input type="date" class="upr-inp" name="bill-date" id="bill-date" onchange="getbillDate(this)">
-                                        </div>
-                                        <div class="col-sm-6 col-md-2">
-                                            <label class="mb-1" for="due-date">Due Date</label>
-                                            <input type="date" class="upr-inp" name="due-date" id="due-date" onchange="getDueDate(this)">
-                                        </div>
-                                        <div class="col-sm-6 col-md-2">
-                                            <label class="mb-1" for="payment-mode">Payment Mode</label>
-                                            <select class="upr-inp" name="payment-mode" id="payment-mode" onchange="setPaymentMode(this)">
-                                                <option value="" selected disabled>Select</option>
-                                                <option value="Credit">Credit</option>
-                                                <option value="Cash">Cash</option>
-                                                <option value="UPI">UPI</option>
-                                                <option value="Paypal">Paypal</option>
-                                                <option value="Bank Transfer">Bank Transfer</option>
-                                                <option value="Credit Card">Credit Card</option>
-                                                <option value="Debit Card">Debit Card</option>
-                                                <option value="Net Banking">Net Banking</option>
-                                            </select>
-                                        </div>
-                                    
+                                <div class="col-sm-6 col-md-2">
+                                    <label class="mb-1" for="bill-date">Bill Date</label>
+                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date"
+                                        onchange="getbillDate(this)">
+                                </div>
+                                <div class="col-sm-6 col-md-2">
+                                    <label class="mb-1" for="due-date">Due Date</label>
+                                    <input type="date" class="upr-inp" name="due-date" id="due-date"
+                                        onchange="getDueDate(this)">
+                                </div>
+                                <div class="col-sm-6 col-md-2">
+                                    <label class="mb-1" for="payment-mode">Payment Mode</label>
+                                    <select class="upr-inp" name="payment-mode" id="payment-mode"
+                                        onchange="setPaymentMode(this)">
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="Credit">Credit</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Paypal">Paypal</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Credit Card">Credit Card</option>
+                                        <option value="Debit Card">Debit Card</option>
+                                        <option value="Net Banking">Net Banking</option>
+                                    </select>
                                 </div>
 
                             </div>
@@ -187,7 +184,7 @@ $todayYr = date("y");
                             <hr class="sidebar-divider">
 
                             <div class="row">
-                                <?php // require_once  ROOT_COMPONENT."purchase-product-fields.php" ?>
+                                <?php require_once  ROOT_COMPONENT."purchase-product-fields.php" ?>
                             </div>
 
                             <!-- /end Add Product  -->
@@ -195,7 +192,7 @@ $todayYr = date("y");
                             <!--=========================== Show Bill Items ===========================-->
                             <div class="card shadow mb-4">
 
-                                    <?php // require_once  ROOT_COMPONENT."purchase-summary.php" ?>
+                                <?php require_once  ROOT_COMPONENT."purchase-summary.php" ?>
                             </div>
                             <!--=========================== Show Bill Items ===========================-->
 
@@ -221,7 +218,8 @@ $todayYr = date("y");
     <!-- End of Page Wrapper -->
 
     <!-- Distributor Add Modal -->
-    <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

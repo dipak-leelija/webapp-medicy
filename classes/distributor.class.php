@@ -5,17 +5,17 @@ require_once 'dbconnect.php';
 class Distributor extends DatabaseConnection{
 
 
-    function addDistributor($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $adminId) {
+    function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $adminId) {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO distributor (`name`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
     
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("ssiisssss", $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $adminId);
+                $stmt->bind_param("sssissssss", $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $adminId);
     
                 // Execute the query
                 $insertQuery = $stmt->execute();
