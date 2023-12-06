@@ -42,6 +42,23 @@ let numOFFiles = document.getElementById('num-of-files');
 
 function updateFilesCount() {
     numOFFiles.textContent = `${imageContainer.childElementCount} Files Selected`;
+
+}
+
+function setPriority(){
+    let selectedRadioButton = document.querySelector('input[name="priority-group"]:checked');
+    
+    if (selectedRadioButton) {
+        selectedRadioButton.value = 1;
+
+        // Log the selected radio button
+        console.log(selectedRadioButton);
+
+        return {
+            name: selectedRadioButton.name,
+            value: selectedRadioButton.value
+        };
+    }
 }
 
 function preview() {
@@ -82,7 +99,8 @@ function preview() {
         };
 
         radioButton.onclick = function () {
-            console.log(`Radio button ${i.name}  clicked`);
+            setPriority();
+            // console.log(`Radio button ${i.name}  clicked`);
         };
 
         reader.onload = () => {
@@ -103,12 +121,35 @@ function resetImg() {
     document.getElementById('images').innerHTML = '';
     document.getElementById('num-of-files').innerText = 'No files chosen';
 }
-// update close image //
-function closeImage(element) {
-    var imageContainer = element.closest('.col-2');
-    imageContainer.remove();
+
+// fetch image delete //
+function closeImage(imageID, index) {
+    console.log(imageID);
+
+    if (confirm("Are You Sure?")) {
+    $.ajax({
+        url: 'ajax/remove-image.ajax.php', 
+        type: 'POST',
+        data: { imageID: imageID },
+        success: function(response) {
+            console.log(response);
+            alert(response);
+            // showAlertWithTimeout(response, 3000);
+            $('#img-' + index).parent().remove();
+        },
+        error: function(error) {
+            console.error('Error removing image:', error);
+        }
+    });
+}
 }
 
+// function showAlertWithTimeout(message, timeout) {
+//     alert(message);
+//     setTimeout(function() {
+//         $('.alert').alert('close'); 
+//     }, timeout);
+// }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// manufacturur search control \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

@@ -10,7 +10,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 
 require_once CLASS_DIR . 'labtypes.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
-require_once CLASS_DIR.'encrypt.inc.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 
 
 $labTypes = new LabTypes;
@@ -198,7 +198,7 @@ if (isset($_POST['subtest-submit']) == true) {
                                                                                     </div>
                                                                                     <div
                                                                                         class="text-center mb-4 view_edit">
-                                                                                        <a href="single-lab-page.php?labtypeid=<?= url_enc($testTypeId) ?>"
+                                                                                        <a href="single-lab-page.php?labtypeid='.url_enc($testTypeId).'"
                                                                                             class="btn btn-sm btn-primary mx-4 view">View</a>
 
                                                                                         <a class="btn btn-sm btn-primary mx-4 editCategory" data-bs-toggle="modal" data-bs-target="#LabCategoryEditModal" onclick="LabCategoryEditModal(' . $testTypeId . ')">Edit</a>

@@ -10,7 +10,7 @@ require_once CLASS_DIR.'gst.class.php';
 
 $Products       = new Products();
 $CurrentStock = new CurrentStock();
-$gst            = new Gst;
+$Gst            = new Gst;
 
 
 if (isset($_GET["id"])) {

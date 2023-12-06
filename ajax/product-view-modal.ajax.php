@@ -79,17 +79,20 @@ $QuantityUnit   = new QuantityUnit;
         $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]->manufacturer_id));
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
-        // print_r($manuf);
+        // print_r($image );
 
         if ($image->status) {
             $image = $image->data;
             foreach ($image as $image) {
                 $Images[] = $image->image;
+                $productId = $image->product_id;
             }
         } else {
             $Images[] = "medicy-default-product-image.jpg";
         }
-        // print_r($Images);
+        echo '<script>';
+        echo 'var productId = ' . json_encode($productId) . '; console.log("pID-"+productId)';
+        echo '</script>';
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
 
@@ -109,7 +112,7 @@ $QuantityUnit   = new QuantityUnit;
         <div class="container-fluid d-flex justify-content-center mt-2">
             <div class="row justify-content-center">
                 <div class="col-12 col-sm-4">
-                <div class="">
+                    <div class="">
                         <div class="text-center border d-flex justify-content-center">
                             <img src="<?= PROD_IMG_PATH ?><?php echo $Images[0]; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
                         </div>
@@ -127,7 +130,7 @@ $QuantityUnit   = new QuantityUnit;
                         <div class="d-flex">
                             <div class="text-start col-7 mb-0 pb-0">
                                 <h4><?php echo $product[0]->name; ?></h4>
-                                <h7><?php echo ($manuf->status)? $manuf->data->name : "Manufacturer data not found"; ?></h7>
+                                <h7><?php echo ($manuf->status) ? $manuf->data->name : "Manufacturer data not found"; ?></h7>
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
                                 <p class="fst-normal"><?php echo $product[0]->unit_quantity; ?>
                                     <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
@@ -239,12 +242,14 @@ $QuantityUnit   = new QuantityUnit;
                     })
                     .then((willDelete) => {
                         if (willDelete) {
-
+                            var productId = window.productId; 
+                            // console.log("product ID-"+productId);
                             $.ajax({
                                 url: "product.Delete.ajax.php",
                                 type: "POST",
                                 data: {
-                                    id: btnID
+                                    productId: productId,
+                                    id: btnID,
                                 },
                                 success: function(data) {
                                     if (data == 1) {

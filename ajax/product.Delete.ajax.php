@@ -15,13 +15,16 @@ $CurrentStock   = new CurrentStock();
 
 
 $Products       = new Products();
+$ProductImages = new ProductImages;
 
 
 $productTableId = $_POST['id'];
+$productId      = $_POST['productId'];
 
 $deleteProduct  = $Products->deleteProduct($productTableId);
+$deleteProductImg = $ProductImages->deleteImageByPID($productId);
 
-if ($deleteProduct) {
+if ($deleteProduct && $deleteProductImg) {
     echo 1;
 }else {
     echo 0;

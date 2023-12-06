@@ -312,7 +312,8 @@ const getDtls = (productId) => {
 
         xmlhttp.open("GET", gstUrl, false);
         xmlhttp.send(null);
-        console.log("gst check : ",xmlhttp.responseText);
+
+        // console.log("gst check : ",xmlhttp.responseText);
 
         if (xmlhttp.responseText != ' ' || xmlhttp.responseText != null) {
             document.getElementById("gst").value = xmlhttp.responseText;
@@ -422,7 +423,7 @@ const getBillAmount = () => {
 
 
     let gst = document.getElementById('gst').value;
-    console.log("change gst : "+gst);
+    // console.log("change gst : "+gst);
     
     let qty = document.getElementById('qty').value;
     if (qty == '') {
@@ -438,11 +439,12 @@ const getBillAmount = () => {
     let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
     maxPtr = maxPtr.toFixed(2);
 
-    console.log("max ptr "+ maxPtr);
-    console.log("change ptr "+ ptr);
-    // if (ptr < maxPtr) {
-    //     maxPtr = ptr;
-    // }
+    // console.log("max ptr "+ maxPtr);
+    // console.log("change ptr "+ ptr);
+
+    if (ptr != maxPtr) {
+        document.getElementById('ptr').value = maxPtr;
+    }
 
     if (ptr > maxPtr) {
         swal({
@@ -492,10 +494,10 @@ const getBillAmount = () => {
             prodId : prodId
         },
         success: function (response) {
-            console.log(response);
+            // console.log(response);
         },
         error: function (error) {
-            console.error('Error removing image:', error);
+            // console.error('Error removing image:', error);
         }
     });
 } //eof getBillAmount function

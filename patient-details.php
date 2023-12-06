@@ -16,7 +16,7 @@ require_once CLASS_DIR . 'report-generate.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
 
 
-$patientId = ($_GET['patient']);
+$patientId = url_dec($_GET['patient']);
 
 $Patients       = new Patients;
 $LabBilling     = new LabBilling;

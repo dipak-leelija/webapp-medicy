@@ -216,13 +216,19 @@ $itemUnits          = $ItemUnit->showItemUnits();
         $images = json_decode($ProductImages->showImageById($productId));
 
         $allImg = array();
+        $allImgId = array();
         if ($images->status == 1 && !empty($images->data)) {
             foreach ($images->data as $image) {
                 $allImg[] = $image->image;
+                $allImgId[] = $image->id;
             }
         } else {
             $allImg[] = "medicy-default-product-image.jpg";
         }
+
+        // foreach ($allImgId as $index => $imageID) {
+        //     print_r($imageID);
+        // }
 
         ?>
 
@@ -384,13 +390,17 @@ $itemUnits          = $ItemUnit->showItemUnits();
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="border p-1 rounded">
-                                                    <div class="row height-3 mt-2 justify-content-center">
+                                                    <div class="row h-75 mt-2 justify-content-center">
                                                         <?php foreach ($allImg as $index => $imagePath) : ?>
                                                             <div class="col-2 border m-1 p-0">
                                                                 <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class=" ob-cover h-100" alt="...">
-
-                                                                    <input type="radio" class="form-check-input mt-5 ml-n5" name="selectedImage" id="radio-<?php echo $index; ?>">
-                                                                    <button type="button" class="btn-close position-absolute rounded border bg-danger  text-white mt-n3 ml-n3" aria-label="Close" onclick="closeImage(this)">x</button>
+                                            
+                                                                <?php foreach ($allImgId as $idIndex => $imageID) : ?>
+                                                                    <?php if ($idIndex === $index) : ?>
+                                                                        <input class="form-check-input mt-5 ml-n5" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                                                        <button type="button" class="btn-close position-absolute rounded border bg-danger text-white mt-n3 ml-n3" aria-label="Close" onclick="closeImage('<?php echo $imageID; ?>', <?php echo $index; ?>)">x</button>
+                                                                    <?php endif; ?>
+                                                                <?php endforeach; ?>
                                                             </div>
                                                         <?php endforeach; ?>
                                                     </div>
