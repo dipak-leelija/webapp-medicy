@@ -1,15 +1,16 @@
 <?php
 
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'distributor.class.php';
-require_once CLASS_DIR.'measureOfUnit.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'measureOfUnit.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
+require_once CLASS_DIR . 'gst.class.php';
 
 
 //objects Initilization
@@ -17,20 +18,28 @@ $Products           = new Products();
 $Distributor        = new Distributor();
 $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
-
+$Gst                = new Gst;
 
 //function's called
 $showProducts          = $Products->showProducts();
 $showDistributor       = json_decode($Distributor->showDistributor());
 $showDistributors      = $showDistributor->data;
 
+$gstData = json_decode($Gst->seletGst());
+$gstData = $gstData->data;
+
+// foreach($gstData as $gstData){
+//     print_r($gstData);
+//     echo $gstData->id;
+// }
+
 $showMeasureOfUnits    = $MeasureOfUnits->showMeasureOfUnits();
-$showPackagingUnits = $PackagingUnits->showPackagingUnits();
+$showPackagingUnits    = $PackagingUnits->showPackagingUnits();
 
 $edit = FALSE;
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    require_once CLASS_DIR.'stockIn.class.php';
-    require_once CLASS_DIR.'stockInDetails.class.php';
+    require_once CLASS_DIR . 'stockIn.class.php';
+    require_once CLASS_DIR . 'stockInDetails.class.php';
 
     if (isset($_GET['edit'])) {
         $edit = TRUE;
@@ -63,9 +72,7 @@ $todayYr = date("y");
     <title>Medicy Items</title>
 
     <!-- Custom fonts for this template -->
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-in.css">
 
@@ -82,7 +89,7 @@ $todayYr = date("y");
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -92,7 +99,7 @@ $todayYr = date("y");
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -108,62 +115,53 @@ $todayYr = date("y");
                                     <input type="text" name="" id="distributor-id" class="upr-inp">
                                     <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
                                         <div class="lists" id="lists">
-                                            <?php 
-                                            if(!empty($showDistributors)) {
+                                            <?php
+                                            if (!empty($showDistributors)) {
                                                 foreach ($showDistributors as $eachDistributor) {
                                             ?>
-                                            <div class="p-1 border-bottom list" id="<?= $eachDistributor->id ?>"
-                                                onclick="setDistributor(this)">
-                                                <?= $eachDistributor->name ?>
-                                            </div>
-                                            <?php
+                                                    <div class="p-1 border-bottom list" id="<?= $eachDistributor->id ?>" onclick="setDistributor(this)">
+                                                        <?= $eachDistributor->name ?>
+                                                    </div>
+                                                <?php
                                                 }
                                                 ?>
                                         </div>
-                                        <div class="d-flex flex-column justify-content-center mt-1" data-toggle="modal"
-                                            data-target="#add-distributor" onclick="addDistributor()">
+                                        <div class="d-flex flex-column justify-content-center mt-1" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
                                             <button type="button" id="add-customer" class="text-primary border-0">
                                                 <i class="fas fa-plus-circle"></i>
                                                 Add Now
                                             </button>
                                         </div>
-                                        <?php
-                                            }else {
-                                            ?>
+                                    <?php
+                                            } else {
+                                    ?>
                                         <p class="text-center font-weight-bold">Distributor Not Found!</p>
-                                        <div class="d-flex flex-column justify-content-center" data-toggle="modal"
-                                            data-target="#add-distributor" onclick="addDistributor()">
-                                            <button type="button" id="add-customer" class="text-primary border-0"><i
-                                                    class="fas fa-plus-circle"></i>
+                                        <div class="d-flex flex-column justify-content-center" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
+                                            <button type="button" id="add-customer" class="text-primary border-0"><i class="fas fa-plus-circle"></i>
                                                 Add Now</button>
                                         </div>
-                                        <?php
+                                    <?php
                                             }
-                                            ?>
+                                    ?>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="mb-1" for="dist-bill-no">Distributor Bill No.</label>
-                                    <input type="text" class="upr-inp " name="dist-bill-no" id="dist-bill-no"
-                                        placeholder="Enter Distributor Bill" value="" autocomplete="off"
-                                        style="text-transform: uppercase;" onkeyup="setDistBillNo(this)">
+                                    <input type="text" class="upr-inp " name="dist-bill-no" id="dist-bill-no" placeholder="Enter Distributor Bill" value="" autocomplete="off" style="text-transform: uppercase;" onkeyup="setDistBillNo(this)">
                                 </div>
 
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="bill-date">Bill Date</label>
-                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date"
-                                        onchange="getbillDate(this)">
+                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date" onchange="getbillDate(this)">
                                 </div>
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
-                                    <input type="date" class="upr-inp" name="due-date" id="due-date"
-                                        onchange="getDueDate(this)">
+                                    <input type="date" class="upr-inp" name="due-date" id="due-date" onchange="getDueDate(this)">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="mb-1" for="payment-mode">Payment Mode</label>
-                                    <select class="upr-inp" name="payment-mode" id="payment-mode"
-                                        onchange="setPaymentMode(this)">
+                                    <select class="upr-inp" name="payment-mode" id="payment-mode" onchange="setPaymentMode(this)">
                                         <option value="" selected disabled>Select</option>
                                         <option value="Credit">Credit</option>
                                         <option value="Cash">Cash</option>
@@ -187,13 +185,9 @@ $todayYr = date("y");
                                         <div class="row mt-4 mb-2">
                                             <div class="col-md-12 ">
                                                 <!-- <label for="product-name" class="mb-0">Product Name</label> -->
-                                                <input class="upr-inp mt-2" list="datalistOptions" id="product-name"
-                                                    name="product-name" placeholder="Search Product"
-                                                    onkeyup="searchItem(this.value);" autocomplete="off" value=""
-                                                    onkeydown="chekForm()">
+                                                <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" autocomplete="off" value="" onkeydown="chekForm()">
 
-                                                <div class="p-2 bg-light" id="product-select"
-                                                    style="max-height: 25rem; max-width: 100%;">
+                                                <div class="p-2 bg-light" id="product-select" style="max-height: 25rem; max-width: 100%;">
                                                 </div>
                                             </div>
                                         </div>
@@ -206,10 +200,8 @@ $todayYr = date("y");
                                                 <option value="" disabled selected>Select </option>
 
                                             </select> -->
-                                                <input class="d-none upr-inp" id="manufacturer-id"
-                                                    name="manufacturer-id" value="">
-                                                <input class="upr-inp" id="manufacturer-name" name="manufacturer-name"
-                                                    value="">
+                                                <input class="d-none upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
+                                                <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
                                             </div>
                                         </div>
 
@@ -219,8 +211,7 @@ $todayYr = date("y");
 
                                                     <div class="col-sm-4 col-md-3 mt-2 ">
                                                         <label class="mb-0" for="weightage">Weightage</label>
-                                                        <input type="text" class="upr-inp" id="weightage" value=""
-                                                            readonly>
+                                                        <input type="text" class="upr-inp" id="weightage" value="" readonly>
                                                     </div>
 
                                                     <div class="col-sm-4 col-md-3 mt-2 ">
@@ -230,20 +221,17 @@ $todayYr = date("y");
 
                                                     <div class="col-sm-4 col-md-3 mt-2 ">
                                                         <label class="mb-0" for="packaging-in">Packaging-in</label>
-                                                        <input type="text" class="upr-inp" id="packaging-in" value=""
-                                                            readonly>
+                                                        <input type="text" class="upr-inp" id="packaging-in" value="" readonly>
                                                     </div>
                                                     <div class="col-sm-4 col-md-3 mt-2 ">
                                                         <label class="mb-0" for="medicine-power">Medicine Power</label>
-                                                        <input class="upr-inp" type="text" name="medicine-power"
-                                                            id="medicine-power">
+                                                        <input class="upr-inp" type="text" name="medicine-power" id="medicine-power">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="row">
-
                                             <div class="col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="mrp">MRP/Package</label>
                                                 <input type="number" class="upr-inp" name="mrp" id="mrp">
@@ -251,37 +239,44 @@ $todayYr = date("y");
 
                                             <div class="col-sm-6 col-md-6 mt-2">
                                                 <label class="mb-0" for="gst">GST%</label>
-                                                <input type="number" class="upr-inp" name="gst" id="gst"
-                                                    onfocusout="getBillAmount()">
-                                            </div>
 
+                                                <!-- <input type="number" class="upr-inp" name="gst" id="gst" onfocusout="getBillAmount()"> -->
+
+                                                <select class="upr-inp" name="gst" id="gst" onchange="getBillAmount(this)">
+
+                                                    <option value="" selected disabled>Select GST%</option>
+
+                                                    <?php 
+                                                        foreach($gstData as $gstData){
+                                                            echo '<option value="'.$gstData->percentage.'" >'.$gstData->percentage.'</option>';
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
                                         </div>
+
+
 
                                         <div class="row">
 
                                             <div class="col-sm-4  mt-2">
                                                 <label class="mb-0" for="batch-no">Batch No.</label>
-                                                <input type="text" class="upr-inp" name="batch-no" id="batch-no"
-                                                    style="text-transform: uppercase;">
+                                                <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                                             </div>
                                             <div class="col-sm-4  mt-2">
                                                 <label class="mb-0 mt-1" for="mfd-date">MFD</label>
                                                 <div class="d-flex date-field">
-                                                    <input class="month " type="number" id="mfd-month"
-                                                        onkeyup="setMfdMonth(this);" onfocusout="setmfdMonth(this);">
+                                                    <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);" onfocusout="setmfdMonth(this);">
                                                     <span class="date-divider">&#47;</span>
-                                                    <input class="year " type="number" id="mfd-year"
-                                                        onfocusout="setMfdYear(this);" onkeyup="setMfdYEAR(this)">
+                                                    <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);" onkeyup="setMfdYEAR(this)">
                                                 </div>
                                             </div>
                                             <div class="col-sm-4 mt-2">
                                                 <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                                                 <div class="d-flex date-field">
-                                                    <input class="month " type="number" id="exp-month"
-                                                        onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
+                                                    <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                                                     <span class="date-divider">&#47;</span>
-                                                    <input class="year " type="number" id="exp-year"
-                                                        onfocusout="setExpYear(this);" onkeyup="setExpYEAR(this)">
+                                                    <input class="year " type="number" id="exp-year" onfocusout="setExpYear(this);" onkeyup="setExpYEAR(this)">
                                                 </div>
                                             </div>
                                             <div class="d-none col-md-4 mt-2">
@@ -303,14 +298,12 @@ $todayYr = date("y");
 
                                             <div class="col-sm-4 col-md-4 mt-2">
                                                 <label class="mb-0" for="purchase-price">PTR/Package</label>
-                                                <input type="number" class="upr-inp" name="ptr" id="ptr"
-                                                    onfocusout="getBillAmount()">
+                                                <input type="number" class="upr-inp" name="ptr" id="ptr" onfocusout="getBillAmount()">
                                             </div>
 
                                             <div class="col-sm-4 col-md-4 mt-2">
                                                 <label class="mb-0" for="qty">Quantity</label>
-                                                <input type="number" class="upr-inp" name="qty" id="qty"
-                                                    onfocusout="getBillAmount()">
+                                                <input type="number" class="upr-inp" name="qty" id="qty" onfocusout="getBillAmount()">
                                             </div>
                                             <div class="col-sm-4 col-md-4 mt-2">
                                                 <label class="mb-0" for="free-qty">Free</label>
@@ -353,8 +346,7 @@ $todayYr = date("y");
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="discount">Discount%</label>
-                                                    <input type="number" class="upr-inp" name="discount" id="discount"
-                                                        placeholder="Discount %" onfocusout="getBillAmount()">
+                                                    <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount %" onfocusout="getBillAmount()">
                                                 </div>
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
@@ -364,8 +356,7 @@ $todayYr = date("y");
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="bill-amount">Bill Amount</label>
-                                                    <input type="any" class="upr-inp" name="bill-amount"
-                                                        id="bill-amount" readonly required>
+                                                    <input type="any" class="upr-inp" name="bill-amount" id="bill-amount" readonly required>
                                                 </div>
 
                                                 <!-- <div class="col-sm-6 col-md-6 mt-2">
@@ -394,8 +385,7 @@ $todayYr = date("y");
                                         </div>
 
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                            <button type="button" class="btn btn-primary me-md-2"
-                                                onclick="addData()">Add
+                                            <button type="button" class="btn btn-primary me-md-2" onclick="addData()">Add
                                                 <i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
@@ -411,17 +401,14 @@ $todayYr = date("y");
                                     <div class="card-body stock-in-summary">
                                         <div class="table-responsive">
 
-                                            <table class="table item-table" id="stock-in-data-table"
-                                                style="font-size: .7rem;">
+                                            <table class="table item-table" id="stock-in-data-table" style="font-size: .7rem;">
                                                 <thead class="thead-light">
                                                     <tr>
                                                         <th scope="col" style="width: 2rem;"></th>
                                                         <th scope="col">
-                                                            <input type="number" value="0" id="dynamic-id"
-                                                                class="d-none">
+                                                            <input type="number" value="0" id="dynamic-id" class="d-none">
                                                         </th>
-                                                        <th scope="col" class="d-none"><input type="number" value="0"
-                                                                id="serial-control" style="width:2rem;"></th>
+                                                        <th scope="col" class="d-none"><input type="number" value="0" id="serial-control" style="width:2rem;"></th>
                                                         <th scope="col">Items</th>
                                                         <th scope="col">Batch</th>
                                                         <th scope="col">MFD.</th>
@@ -446,17 +433,14 @@ $todayYr = date("y");
                                         </div>
                                     </div>
 
-                                    <div
-                                        class="m-3 p-3 pt-3 font-weight-bold text-light purchase-items-summary rounded">
+                                    <div class="m-3 p-3 pt-3 font-weight-bold text-light purchase-items-summary rounded">
                                         <div class="row mb-3">
                                             <div class="col-md-3  d-flex justify-content-start">
                                                 <p>Distributor :
 
-                                                    <input class="summary-inp w-60" name="distributor-name"
-                                                        id="dist-name" type="text" value="" readonly>
+                                                    <input class="summary-inp w-60" name="distributor-name" id="dist-name" type="text" value="" readonly>
 
-                                                    <input class="d-none summary-inp w-60" name="distributor-id"
-                                                        id="dist-id" type="text" value="" readonly>
+                                                    <input class="d-none summary-inp w-60" name="distributor-id" id="dist-id" type="text" value="" readonly>
 
                                                     <!-- <input  class="summary-inp w-60" name="distributor-id"
                                                     id="distributor-id" value="" type="text"
@@ -465,23 +449,17 @@ $todayYr = date("y");
                                             </div>
                                             <div class="col-md-3 d-flex justify-content-start">
                                                 <p>Dist. Bill :
-                                                    <input class="summary-inp w-65" name="distributor-bill"
-                                                        id="distBill-no" type="text" value="" readonly>
+                                                    <input class="summary-inp w-65" name="distributor-bill" id="distBill-no" type="text" value="" readonly>
                                                 </p>
                                             </div>
                                             <div class="col-md-3  d-flex justify-content-start">
                                                 <p>Bill Date :
-                                                    <input class="summary-inp w-65" name="bill-date-val"
-                                                        id="bill-date-val" type="text" value="" readonly
-                                                        style="margin-left: 0rem;">
+                                                    <input class="summary-inp w-65" name="bill-date-val" id="bill-date-val" type="text" value="" readonly style="margin-left: 0rem;">
                                                 </p>
                                             </div>
                                             <div class="col-md-3  d-flex justify-content-start">
                                                 <p>Due Date :
-                                                    <input class="summary-inp w-65" name="due-date-val"
-                                                        id="due-date-val" type="text"
-                                                        value="<?= $edit == TRUE ? $stockIn[0]['due_date'] : '' ;?>"
-                                                        readonly style="margin-left: 0rem;">
+                                                    <input class="summary-inp w-65" name="due-date-val" id="due-date-val" type="text" value="<?= $edit == TRUE ? $stockIn[0]['due_date'] : ''; ?>" readonly style="margin-left: 0rem;">
                                                 </p>
                                             </div>
 
@@ -490,40 +468,33 @@ $todayYr = date("y");
                                         <div class="row">
                                             <div class="col-sm-6 col-md-3 d-flex justify-content-start">
                                                 <span>Payment :
-                                                    <input class="summary-inp w-65" name="payment-mode-val"
-                                                        id="payment-mode-val" type="text" value="0" readonly
-                                                        style="margin-left: 0rem;">
+                                                    <input class="summary-inp w-65" name="payment-mode-val" id="payment-mode-val" type="text" value="0" readonly style="margin-left: 0rem;">
                                                 </span>
                                             </div>
 
                                             <div class="col-sm-6 col-md-2  d-flex justify-content-start">
                                                 <p>Items :
-                                                    <input class="summary-inp w-65" name="items" id="items-val"
-                                                        type="text" value="0" readonly style="margin-left: 0rem;">
+                                                    <input class="summary-inp w-65" name="items" id="items-val" type="text" value="0" readonly style="margin-left: 0rem;">
                                                 </p>
                                             </div>
                                             <div class="col-sm-6 col-md-2 d-flex justify-content-start">
                                                 <p>Qty :
-                                                    <input class="summary-inp w-65" name="total-qty" id="qty-val"
-                                                        type="text" value="0" readonly style="margin-left: 0rem;">
+                                                    <input class="summary-inp w-65" name="total-qty" id="qty-val" type="text" value="0" readonly style="margin-left: 0rem;">
                                                 </p>
                                             </div>
                                             <div class="col-sm-6 col-md-2 d-flex justify-content-start">
                                                 <p>GST :
-                                                    <input class="summary-inp w-65" name="totalGst" id="gst-val"
-                                                        type="text" value="0" readonly style="margin-left: 0rem;">
+                                                    <input class="summary-inp w-65" name="totalGst" id="gst-val" type="text" value="0" readonly style="margin-left: 0rem;">
                                                 </p>
                                             </div>
                                             <div class="col-sm-6 col-md-3  d-flex justify-content-start">
                                                 <p>Net :
-                                                    <input class="summary-inp w-65" name="netAmount" id="net-amount"
-                                                        type="text" value="0" readonly style="margin-left: 0rem;">
+                                                    <input class="summary-inp w-65" name="netAmount" id="net-amount" type="text" value="0" readonly style="margin-left: 0rem;">
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="d-flex  justify-content-end">
-                                            <button class="btn btn-sm btn-primary" style="width: 8rem;" type="submit"
-                                                name="stock-in" id="stock-in-submit">Save</button>
+                                            <button class="btn btn-sm btn-primary" style="width: 8rem;" type="submit" name="stock-in" id="stock-in-submit">Save</button>
 
                                         </div>
                                     </div>
@@ -543,7 +514,7 @@ $todayYr = date("y");
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -553,8 +524,7 @@ $todayYr = date("y");
     <!-- End of Page Wrapper -->
 
     <!-- Distributor Add Modal -->
-    <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

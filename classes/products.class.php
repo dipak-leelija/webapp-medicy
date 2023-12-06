@@ -235,6 +235,29 @@ class Products extends DatabaseConnection{
 
 
 
+
+
+
+    function updateProductValuebyCol($productid, $col, $value, $updatedBy, $updatedOn, $adminId) {
+        try {
+            $updateProduct = "UPDATE `products` SET `$col`=?, `updated_by`=?, `updated_on`=?, `admin_id`=? WHERE `product_id`=?";
+    
+            $stmt = $this->conn->prepare($updateProduct);
+            $stmt->bind_param("sssss", $value, $updatedBy, $updatedOn, $adminId, $productid);
+    
+            if ($stmt->execute()) {
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'success']);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'fail']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => 'error', 'details' => $e->getMessage()]);
+        }
+    }
+    
+
+
     
     function updateProduct($productid, $name, $manufacturerId, $type, $comp_1, $comp_2, $power, $dsc, $quantity, $quantityUnit, $itemUnit, $packagingType, $mrp, $gst, $updatedBy, $updatedOn) {
         try {
