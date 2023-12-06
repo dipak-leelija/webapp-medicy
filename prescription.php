@@ -81,7 +81,7 @@ if ($doctorCategory->status == 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>prescription.css">
-    <title>Prescription - <?= $patientId ?></title>
+    <title>Prescription - <?= url_enc($patientId) ?></title>
 </head>
 
 <body>
@@ -94,7 +94,7 @@ if ($doctorCategory->status == 1) {
                 <div class="col-4 headerHospitalDetails">
                     <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?= $healthCareName ?></h1>
                     <p class="text-start  me-3">
-                        <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ',<br>' . $healthCareState . ', ' . $healthCarePin; ?></small>
+                        <small><?php echo $healthCareAddress1 . ', ' . $healthCareCity . ', ' . $patientDist . ',<br>' . $healthCareState . ', ' . $healthCarePin; ?></small>
                     </p>
                 </div>
                 <div class="col-2 header-doc-img"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
