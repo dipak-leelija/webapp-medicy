@@ -6,15 +6,13 @@ require_once dirname(__DIR__) . '/config/constant.php';
     <form method="post" action="<?= URL?>ajax/distributor.add.ajax.php">
 
         <div class="col-md-12">
-            <label class="mb-0 mt-1" for="distributor-name">Distributor Name</Address>
-            </label>
+            <label class="mb-0 mt-1" for="distributor-name">Distributor Name</label>
             <input class="form-control" id="distributor-name" name="distributor-name" placeholder="Distributor Name"
                 maxlength="155" required>
         </div>
 
         <div class="col-md-12">
-            <label class="mb-0 mt-1" for="distributor-phno">Mobile Number</Address>
-            </label>
+            <label class="mb-0 mt-1" for="distributor-phno">Mobile Number</label>
             <input type="number" class="form-control" id="distributor-phno" name="distributor-phno"
                 placeholder="Distributor Mobile Number"
                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -24,31 +22,35 @@ require_once dirname(__DIR__) . '/config/constant.php';
         </div>
 
         <div class="col-md-12">
-            <label class="mb-0 mt-1" for="distributor-email">Email Address</Address>
-            </label>
+            <label class="mb-0 mt-1" for="distributor-phno">GST ID</label>
+            <input type="text" class="form-control" id="distributor-gstid" name="distributor-gstid"
+                placeholder="Distributor GST ID" required>
+        </div>
+
+        <div class="col-md-12">
+            <label class="mb-0 mt-1" for="distributor-email">Email Address</label>
             <input type="email" class="form-control" id="distributor-email" name="distributor-email"
                 placeholder="Distributor Email Address" maxlength="50">
         </div>
 
         <div class="col-md-12">
-            <label class="mb-0 mt-1" for="distributor-area-pin">Area PIN Code</Address>
-            </label>
+            <label class="mb-0 mt-1" for="distributor-area-pin">Area PIN Code</label>
             <input type="number" class="form-control" id="distributor-area-pin" name="distributor-area-pin"
                 placeholder="Distributor Area PIN Code"
                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                 maxlength="6"
                 oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);"
-                minlength="6" required>
+                minlength="6">
         </div>
 
         <div class="col-md-12">
-            <label class="mb-0 mt-1" for="distributor-address">Address</Address></label>
+            <label class="mb-0 mt-1" for="distributor-address">Address</label>
             <textarea name="distributor-address" id="distributor-address" class="form-control" cols="30" rows="3"
-                maxlength="255" required></textarea>
+                maxlength="255"></textarea>
         </div>
 
         <div class="col-md-12">
-            <label class="mb-0 mt-1" for="distributor-dsc">Description</Address></label>
+            <label class="mb-0 mt-1" for="distributor-dsc">Description</label>
             <textarea name="distributor-dsc" id="distributor-dsc" class="form-control" cols="30" rows="3"
                 maxlength="355"></textarea>
         </div>

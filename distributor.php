@@ -118,57 +118,6 @@ $showDistributor = $showDistributor->data;
                         </div>
                         <!-- /end Show Distributor -->
 
-                        <!-- Add Distributor -->
-                        <!-- <div class="col-sm-5">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <form method="post" action="_config/form-submission/add-distributor.php">
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="distributor-name">Distributor Name</Address>
-                                            </label>
-                                            <input class="form-control" id="distributor-name" name="distributor-name" placeholder="Distributor Name" maxlength="155" required>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="distributor-phno">Mobile Number</Address>
-                                            </label>
-                                            <input type="number" class="form-control" id="distributor-phno" name="distributor-phno" placeholder="Distributor Mobile Number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);" minlength="10" required>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="distributor-email">Email Address</Address>
-                                            </label>
-                                            <input type="email" class="form-control" id="distributor-email" name="distributor-email" placeholder="Distributor Email Address" maxlength="50">
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="distributor-area-pin">Area PIN Code</Address>
-                                            </label>
-                                            <input type="number" class="form-control" id="distributor-area-pin" name="distributor-area-pin" placeholder="Distributor Area PIN Code" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="7" oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);" minlength="7" required>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="distributor-address">Address</Address></label>
-                                            <textarea name="distributor-address" id="distributor-address" class="form-control" cols="30" rows="3" maxlength="255" required></textarea>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="distributor-dsc">Description</Address></label>
-                                            <textarea name="distributor-dsc" id="distributor-dsc" class="form-control" cols="30" rows="3" maxlength="355"></textarea>
-                                        </div>
-
-
-
-                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                            <button class="btn btn-primary me-md-2" name="add-distributor" type="submit">Add Distributor</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- /end Add Distributor  -->
-
                     </div>
 
                 </div>
@@ -308,8 +257,6 @@ $showDistributor = $showDistributor->data;
                                     swal("Deleted", "Distributor Has Been Deleted",
                                         "success");
                                 } else {
-                                    // $("#error-message").html("Deletion Field !!!").slideDown();
-                                    // $("success-message").slideUp();
                                     swal("Failed", data, "error");
                                 }
                             }
