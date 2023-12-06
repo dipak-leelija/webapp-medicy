@@ -81,7 +81,7 @@ if ($doctorCategory->status == 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>prescription.css">
-    <title>Prescription - <?= $patientId ?></title>
+    <title>Prescription - <?= url_enc($patientId) ?></title>
 </head>
 
 <body>
