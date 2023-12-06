@@ -298,14 +298,14 @@ const getDtls = (productId) => {
         document.getElementById("ptr").value = pTr;
 
         // //==================== ptr check url ===================
-        // chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + productId;
-        // // alert(unitUrl);
-        // // window.location.href = unitUrl;
-        // xmlhttp.open("GET", chkPtr, false);
-        // xmlhttp.send(null);
-        // // alert(xmlhttp.responseText);
+        chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + productId;
+        // alert(unitUrl);
+        // window.location.href = unitUrl;
+        xmlhttp.open("GET", chkPtr, false);
+        xmlhttp.send(null);
+        alert(xmlhttp.responseText);
         // document.getElementById("chk-ptr").value = xmlhttp.responseText;
-        // document.getElementById("ptr").value = xmlhttp.responseText;
+        document.getElementById("ptr").value = xmlhttp.responseText;
 
         //==================== GST ====================
         gstUrl = 'ajax/product.getGst.ajax.php?id=' + productId;
@@ -422,6 +422,7 @@ const getBillAmount = () => {
 
 
     let gst = document.getElementById('gst').value;
+    console.log("change gst : "+gst);
     
     let qty = document.getElementById('qty').value;
     if (qty == '') {
@@ -436,11 +437,12 @@ const getBillAmount = () => {
 
     let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
     maxPtr = maxPtr.toFixed(2);
-    console.log("max ptr"+ maxPtr);
 
-    if (ptr < maxPtr) {
-        maxPtr = ptr;
-    }
+    console.log("max ptr "+ maxPtr);
+    console.log("change ptr "+ ptr);
+    // if (ptr < maxPtr) {
+    //     maxPtr = ptr;
+    // }
 
     if (ptr > maxPtr) {
         swal({
