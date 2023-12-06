@@ -50,8 +50,9 @@ if (isset($_GET['bill-no'])) {
             $mrp = $item['mrp'];
             $expDate = $item['exp_date'];
 
-            $product = $Products->showProductsById($productId);
-            $productName = $product[0]['name'];
+            $product = json_decode($Products->showProductsById($productId));
+            $product = $product->data;
+            $productName = $product[0]->name;
 
             $stoks = $CurrentStock->checkStock($productId, $batchNo);
             // print_r($stoks);

@@ -262,13 +262,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         $prodId = $itemsData['product_id'];
 
-                        $productDetails = $Products->showProductsById($prodId);
+                        $productDetails = json_decode($Products->showProductsById($prodId));
+                        $productDetails = $productDetails->data;
+
                         foreach ($productDetails as $pData) {
-                            $pname = $pData['name'];
-                            $pManfId = $pData['manufacturer_id'];
-                            $pType  = $pData['packaging_type'];
-                            $pQTY = $pData['unit_quantity'];
-                            $pUnit = $pData['unit'];
+                            $pname = $pData->name;
+                            $pManfId = $pData->manufacturer_id;
+                            $pType  = $pData->packaging_type;
+                            $pQTY = $pData->unit_quantity;
+                            $pUnit = $pData->unit;
                             $pUnitName = $ItemUnit->itemUnitName($pUnit);
                         }
 
@@ -278,10 +280,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         }
 
 
-                        $manufDetails = $Manufacturer->showManufacturerById($pManfId);
-                        foreach ($manufDetails as $manufData) {
-                            $manufName = $manufData['short_name'];
-                        }
+                        $manufDetails = json_decode($Manufacturer->showManufacturerById($pManfId));
+                        $manufDetails = $manufDetails->data;
+
+                        // foreach ($manufDetails as $manufData) {
+                            $manufName = $manufDetails->short_name;
+                        // }
 
 
 

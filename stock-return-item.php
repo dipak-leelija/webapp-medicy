@@ -11,7 +11,8 @@ require_once CLASS_DIR . 'packagingUnit.class.php';
 
 
 $Distributor        = new Distributor();
-$showDistributor    = $Distributor->showDistributor();
+$showDistributor    = json_decode($Distributor->showDistributor());
+$showDistributor = $showDistributor->data;
 
 ?>
 
@@ -75,9 +76,9 @@ $showDistributor    = $Distributor->showDistributor();
                                         <option value="" disabled selected>Select Distributor</option>
                                         <?php
                                         foreach ($showDistributor as $rowDistributor) {
-                                            $rowDistributor['id'];
-                                            $rowDistributor['name'];
-                                            echo '<option value="' . $rowDistributor['id'] . '">' . $rowDistributor['name'] . '</option>';
+                                            $rowDistributor->id;
+                                            $rowDistributor->name;
+                                            echo '<option value="' . $rowDistributor->id . '">' . $rowDistributor->name . '</option>';
                                         }
                                         ?>
                                     </select>

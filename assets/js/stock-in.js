@@ -303,7 +303,7 @@ const getDtls = (productId) => {
         // window.location.href = unitUrl;
         xmlhttp.open("GET", chkPtr, false);
         xmlhttp.send(null);
-        alert(xmlhttp.responseText);
+        // alert(xmlhttp.responseText);
         // document.getElementById("chk-ptr").value = xmlhttp.responseText;
         document.getElementById("ptr").value = xmlhttp.responseText;
 
