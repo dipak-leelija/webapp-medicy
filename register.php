@@ -8,10 +8,12 @@ if (isset($_SESSION['LOGGEDIN'])) {
 
 require_once CLASS_DIR .'dbconnect.php';
 require_once CLASS_DIR.'admin.class.php';
+require_once CLASS_DIR.'subscription.class.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
 
-$admin          = new Admin();
+$admin          = new Admin;
+$Subscription   = new Subscription;
 $HealthCare     = new HealthCare;
 $IdGenerate     = new IdsGeneration;
 
@@ -29,6 +31,12 @@ if (isset($_POST['register'])) {
     $password   =  $_POST['password'];
     $cpassword  = $_POST['cpassword'];
     
+
+    $currentDate = new DateTime(TODAY);
+
+    // Add 30 days to the current date
+    $expiry = $currentDate->modify('+365 days')->format('Y-m-d');
+
     $adminId  = $IdGenerate->generateAdminId();
     $clinicId = $IdGenerate->generateClinicId($adminId);    
 
@@ -45,15 +53,22 @@ if (isset($_POST['register'])) {
             $emailExists = false;
             if($password == $cpassword){
                 $diffrentPassword = false;
-                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, NOW);
+                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW);
                 // print_r($register);
                 if ($register) {
-                    $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
-                    if ($addToClinicInfo) {
-                        header("Location: login.php");
-                        exit;
-                    }else{
-                        echo "CLINIC INFO CAN'T ADDED!";
+                    
+                    $subscribed = $Subscription->createSubscription($adminId, 1, NOW, $expiry, 0);
+                    if ($subscribed === true) {
+                        // echo 'True';
+                        $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
+                        if ($addToClinicInfo) {
+                            header("Location: login.php");
+                            exit;
+                        }else{
+                            $errMsg = "Clinic Info Can't Added!";
+                        }
+                    }else {
+                        $errMsg =  $subscribed;
                     }
                 }
             }else {
@@ -79,60 +94,57 @@ if (isset($_POST['register'])) {
 
     <title>Medicy Health Care - Admin Registration</title>
 
-    <!-- Custom fonts for this template-->
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>register.css" rel="stylesheet">
 
 </head>
 
 <body class="bg-gradient-primary">
 
-    <div class="container">
+    <main>
 
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block "><img style="width:100%;" src="<?= ASSETS_PATH ?>img/welcome-admin.jpg"
-                            alt=""></div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                    </div>
+                    <form class="user" action="register.php" method="post">
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <input type="text" class="form-control form-control-user" id="fname" name="fname"
+                                    maxlength="20" placeholder="First Name">
                             </div>
-                            <form class="user" action="register.php" method="post">
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="fname" name="fname" maxlength="20" placeholder="First Name">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="lname" name="lname" maxlength="20" placeholder="Last Name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username">
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" placeholder="Email Address">
-                                </div>
-                                <div class="form-group">
-                                    <input type="number" class="form-control form-control-user" id="mobile-number" name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999">
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="password" name="password" maxlength="12" placeholder="Password" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
-                                    </div>
-                                </div>
-                                <?php
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-user" id="lname" name="lname"
+                                    maxlength="20" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name"
+                                maxlength="24" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control form-control-user" id="email" name="email"
+                                maxlength="80" placeholder="Email Address">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" class="form-control form-control-user" id="mobile-number"
+                                name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999">
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <input type="password" class="form-control form-control-user" id="password"
+                                    name="password" maxlength="12" placeholder="Password" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control form-control-user" id="cpassword"
+                                    name="cpassword" maxlength="12" placeholder="Repeat Password" required>
+                            </div>
+                        </div>
+                        <?php
 
                                     if($emailExists){
                                         echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -160,31 +172,39 @@ if (isset($_POST['register'])) {
                                         </button>
                                       </div>';
                                     }
+
+                                    if (isset($errMsg)) {
+                                        echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                                        <strong>Please Contact Support. </strong> $errMsg
+                                        <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                                          <span aria-hidden='true'>&times;</span>
+                                        </button>
+                                      </div>";
+                                    }
                                 ?>
 
-                                <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Register Account</button>
-                                <!-- <hr> -->
-                                <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
+                        <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Register
+                            Account</button>
+                        <!-- <hr> -->
+                        <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
                                     <i class="fab fa-google fa-fw"></i> Register with Google
                                 </a>
                                 <a href="index.html" class="btn btn-facebook btn-user btn-block">
                                     <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
                                 </a> -->
-                            </form>
-                            <!-- <hr> -->
-                            <div class="text-center" style="margin-top:15px;">
-                                <a class="small" href="forgot-password.html">Reset Password</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.php">Already have an account? Login!</a>
-                            </div>
-                        </div>
+                    </form>
+                    <!-- <hr> -->
+                    <div class="text-center" style="margin-top:15px;">
+                        <a class="small" href="forgot-password.html">Reset Password</a>
+                    </div>
+                    <div class="text-center">
+                        <a class="small" href="login.php">Already have an account? Login!</a>
                     </div>
                 </div>
             </div>
         </div>
 
-    </div>
+    </main>
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>

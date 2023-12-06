@@ -1,11 +1,23 @@
 <?php
 require_once CLASS_DIR.'hospital.class.php';
+require_once CLASS_DIR.'subscription.class.php';
 
-$HealthCare     = new HealthCare();
+$HealthCare     = new HealthCare;
+$Subscription   = new Subscription;
 
-$healthCare     = $HealthCare->showHealthCare($adminId);
-$healthCare     = json_decode($healthCare);
+$healthCare   = json_decode($HealthCare->showHealthCare($adminId));
+$SubsDetails  = json_decode($Subscription->getSubscription($adminId));
+$checkSubscription = $Subscription->checkSubscription($adminId, NOW);
 
+// ========================== CHECK SUBSCRIPTION ========================== 
+
+if (!$checkSubscription){
+    header("Location:".URL."premium/plans.php");
+    exit;
+}
+
+
+// ========================== CLINIC SETUP ========================== 
 if ($healthCare->status === 1 ) {
     $healthCare = $healthCare->data;
     // print_r($healthCare);
@@ -14,7 +26,7 @@ if ($healthCare->status === 1 ) {
         $healthCareName = $healthCare->hospital_name;
     }else {
         if (!str_contains(PAGE, 'clinic-setup')) {
-            header('Location: '.URL.'clinic-setup.php?setup=Please complete your Organization/Healthcare setup!');
+            header('Location: '.URL.'clinic-setup.php?setup=Please complete your Pharmacy/Healthcare setup!');
         }
     }
 
@@ -32,8 +44,9 @@ if ($healthCare->status === 1 ) {
     $healthCareEmail     = $healthCare->hospital_email;
     $healthCarePhno      = $healthCare->hospital_phno;
     $healthCareApntbkNo  = $healthCare->appointment_help_line;
+    
 }else {
     if (!str_contains(PAGE, 'clinic-setup')) {
-        header('Location: '.URL.'clinic-setup.php?setup=Please complete your Organization/Healthcare setup!');
+        header('Location: '.URL.'clinic-setup.php?setup=Please complete your Pharmacy/Healthcare setup!');
     }
 }

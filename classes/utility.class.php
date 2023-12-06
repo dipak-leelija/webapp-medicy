@@ -122,55 +122,6 @@ class Utility extends DatabaseConnection{
 	
 	
 	/**
-	*	Upload a file in the server. Before uploading it rename the file. This is advanced
-	*	version than the previous one.
-	*
-	*	@param
-	*		$fileName		Name of the file
-	*		$fileIndex		User wants to give an identity
-	*		$path			Desitination directory which contain the file
-	*		$column_file	Column name of the file to upload
-	*		$column_id		Coulmn name of the primary key
-	*		$id				Primary key of the table
-	*		$table			Table name where we are uploading the file
-	*
-	*	@return string
-	*/
-	function fileUpload2($fileName, $fileIndex, $name ,$path, $id, $column_file, 
-						 $column_id, $table) 
-	{
-		//get the new name 
-		$newName = $name;
-		
-		if(isset($fileName['name']))
-		{
-			
-			if (move_uploaded_file($fileName['tmp_name'], $path.$newName)) 
-			{
-				$msg = "File is valid, and was successfully uploaded. ";
-			}
-			
-			//update 
-			$update = "UPDATE ".$table." SET ".$column_file."='$newName' WHERE ".
-					  $column_id."='$id' ";
-			
-			
-			$query  = mysql_query($update);
-			
-			if(!$query)
-			{
-				return mysql_error();
-			}
-			else
-			{
-				return $fileName['tmp_name']." ".$path.$newName;
-			} 
-		}
-		
-	}//eof
-	
-	
-	/**
 	*	Check validity of a file. Whether file fall into a particular type or not.
 	*	
 	*	@param
@@ -588,135 +539,7 @@ class Utility extends DatabaseConnection{
 		return $newName;
 	}//eof
   
-   	/**
-	*	This is a newer vertion of the earlier funtion which will use array instead of single file.
-	*
-	*	Generate unique file name before uploading in the server. This name will be generating 
-	*	automatically, highly usable for SEO.
-	*/
-	function getNewName4Arr($i, $fileName, $fileIndex, $id)
-	{
-		$newName = '';
-		
-		//manipulate the file name
-		$timestamp 	= time();
-		$randNum 	= $this->randomkeys(5);
-		
-		$file = explode('.',$fileName['name'][$i]);
-		$file_name = $file[0];
-		
-		$type_arr = array("'",":","\"","\\","~","`","!","@","#","$","%","^","&","*","+","|",
-						  ";",",","<",">","?","\/","/","{","}","=");
-		
-		$name	= str_replace($type_arr, "",$file_name);
-		$name	= str_replace(" ", "-",$name);
-		
-		
-		//counting the number of element in the array
-		$num = (int)count($file);
-		
-		//getting the file extension, applicable specially when user puts 2 or 3 dots 
-		//before the extension,
-		// like 1.jpg.jpg
-		$file_extension = $file[$num - 1];
-		
-		if($fileIndex == '')
-		{
-			//generate unique file name
-			$newName = $name."-".$id."".$randNum.".".$file_extension;
-		}
-		else
-		{
-			//generate unique file name
-			$newName = $name.'-'.$fileIndex."-".$id."".$randNum.".".$file_extension;
-		}
-		
-		//return the value
-		return $newName;
-	}//eof
-  
    
-   
-   
-	
-	/////////////////////////////////////////////////////////////////////////////////////
-	//
-	//										End of file and Image 
-	//
-	/////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	
-	/**
-	*	Check if a field is empty agaist is unique id or primary key
-	*
-	*	@param
-	*			$check_column		The element to check for its existence
-	*			$id					Primary key associated with the table
-	*			$id_column			Primary key column name
-	*			$tableName			Table name
-	*
-	*	@return string
-	*/
-	function ifEmpty($check_column, $id, $id_column, $tableName)
-	{
-		$msg = '';
-		
-		$select 	= "SELECT ".$check_column." FROM ".$tableName." WHERE  ".$id_column." = '$id'";
-		$query  	= mysql_query($select);
-		$result    	= mysql_fetch_array($query);
-		$data		= $result[$check_column];
-		
-		
-		if(mysql_num_rows($query) <= 0)
-		{
-			$msg = 'ER001';
-		}
-		else
-		{
-			$msg 	= $data;
-		}
-		
-		//return the result
-		return $msg;
-	}//eof
-	
-	
-	
-	
-	
-	/**
-	*	Change the status, if the date expired it will change the status depend upon the date field
-	*
-	*	@param
-	*			$date		Date column name
-	*			$id			Status column name
-	*			$table		Table name
-	*
-	*	@return NULL
-	*/
-	function changeStatus($date, $id, $table)
-	{
-		$today	= date("Y-m-d");
-		$update	= "UPDATE ".$table." SET ".$id."= 0 WHERE ".$date."< '$today'";
-		$query  = mysql_query($update);
-		
-	}//eof changeStatus
-	
-	/**
-	* Hits Counter 
-	*
-	*/
-	function counter()
-	{
-		$sel = "select Count from hits_counter where Count_Id=1";
-		$qry = mysql_query($sel);
-		$data = mysql_fetch_array($qry);
-		$count = $data['Count'];
-		return $count;
-	}//eof
-	
-	
 	/**
 	* 	Check the proper date format 
 	*
@@ -898,56 +721,8 @@ class Utility extends DatabaseConnection{
 		}
 		return $data;
 	}//end of check reserve handle
+
 	
-	/**
-	*	Update a single field value associated with it's key
-	*	@return NULL
-	*/
-	function updateField($key,$key_column,$upd_value,$upd_coulmn,$table_name,$modify,$date_coulmn)
-	{
-		if($modify == 'YES')
-		{
-			$sql	= "UPDATE ".$table_name." SET ".$upd_coulmn."= '".$upd_value."', ".$date_coulmn."= now() WHERE ".$key_column."= '".$key."'";
-			mysql_query($sql);
-		}
-		else
-		{
-			$sql	= "UPDATE ".$table_name." SET ".$upd_coulmn."= '".$upd_value."' WHERE ".$key_column."= ".$key."";
-			mysql_query($sql);
-		}
-		//echo $sql;
-		
-	}//end of updation
-	
-	
-	
-	/**
-	*	Update a single field value associated with it's key. This is an upgraded version, will only dealt with integer values
-	*
-	*	@date December 24, 2010
-	*
-	*	@return NULL
-	*/
-	function updateFieldInt($key,$key_column,$upd_value,$upd_coulmn,$table_name,$modify,$date_coulmn)
-	{
-		if($modify == 'YES')
-		{
-			$sql	= "UPDATE ".$table_name." SET ".$upd_coulmn."= ".$upd_value.", ".$date_coulmn."= now() WHERE ".$key_column."= ".$key."";
-			$query 	= mysql_query($sql);
-		}
-		else
-		{
-			$sql	= "UPDATE ".$table_name." SET ".$upd_coulmn."= ".$upd_value." WHERE ".$key_column."= ".$key."";
-			$query	= mysql_query($sql);
-		}
-		
-		/*if(!$query)
-		{
-			echo $sql."<br />".mysql_error();
-		}*/
-		
-		
-	}//end of updation
 	
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1306,67 +1081,7 @@ class Utility extends DatabaseConnection{
 		
 	}//eof
 	
-	/**
-	*	Activate deactivate functionality, will activate a particular one
-	*	and at the same time deactivate others, we mostly hace used 
-	*	a='activate' and d='deactivate'
-	*	
-	*	@param	$id_active 		The id that has to active
-	*	@param	$key_coulmn 	Primary key field
-	*	@param	$status_column 	Column holds the value
-	*	@param	$table 			The table name
-	*
-	*	@return NULL
-	*	@date	November 10, 2006
-	*/
-	function activeDeactive($id_active, $key_coulmn ,$status_column, $table)
-	{
-		//locak table
-		mysql_query("LOCK TABLES ".$table." WRITE");
-		//update database to deactive all
-		$sql	= "SELECT * FROM ".$table."";
-		$query	= mysql_query($sql);
-		if(mysql_num_rows($query) > 0)
-		{
-			$sql2   = "UPDATE ".$table." SET status='d'";
-			$query2 = mysql_query($sql2);
-			$sql3   = "UPDATE ".$table." SET status= 'a' WHERE ".$key_coulmn." = ".$id_active."";
-			$query3 = mysql_query($sql3);
-			
-		}
-		//unlock table
-		mysql_query("UNLOCK TABLES");
-	}//eof
-	
-	
-	
-	/**
-	*	Change YES or NO while changing the status of the fornt display or similar kind of activity
-	*	
-	*	@param	$id_active 		The id that has to active
-	*	@param	$key_coulmn 	Primary key field
-	*	@param	$status_column 	Column holds the value
-	*	@param	$table 			The table name
-	*
-	*	@return NULL
-	*	@date	November 10, 2006
-	*/
-	function changeYN($id_active, $key_coulmn ,$status_column, $table)
-	{
-		
-		//update database to deactive all
-		$sql	= "SELECT * FROM ".$table."";
-		$query	= mysql_query($sql);
-		if(mysql_num_rows($query) > 0)
-		{
-			$sql2   = "UPDATE ".$table." SET $status_column='N'";
-			$query2 = mysql_query($sql2);
-			$sql3   = "UPDATE ".$table." SET $status_column= 'Y' WHERE ".$key_coulmn." = '".$id_active."'";
-			$query3 = mysql_query($sql3);
-			
-		}
-	
-	}//eof
+
 	
 	
 	
@@ -3563,122 +3278,6 @@ class Utility extends DatabaseConnection{
 	}//eof
 	
 	
-	########################################################################################################################
-	#
-	#											Static Content and SEO URL
-	#
-	########################################################################################################################
-	
-	/**
-    *   This function is going to display listing by taking a part of the string and removing any html character
-	*
-	*	@date September 23, 2010
-    *
-    *   @param
-    *            $length          	Length of the string. Here value 0 refers to display the entire text.
-    *            $dispText        	Text to display
-    *
-    *   @return string
-    */
-    function displayContent($length, $dispText)
-    {
-        //declare var
-        $textStr    = '';
-        $length        = (int) $length;
-       
-        //strip all the tags 
-        $textStr    = stripslashes(trim($dispText));
-       
-        //condtion whether to show all or part of the string
-        if($length <= 0)
-        {
-            $textStr = $textStr;
-        }
-        else
-        {
-            $textStr = substr($textStr, 0, $length);
-        }
-		
-		//replace the chars
-		$type_arr 	= array("�");
-		$rep_arr	= array("&#233;");
-		
-		$name	= str_replace($type_arr, $rep_arr,$textStr);
-		
-        //return the string
-        return $textStr;
-       
-       
-    }//eof
-	
-	
-	
-	/**
-    *   This function is going to display listing by taking a part of the string and removing any html character
-	*
-	*	@date September 23, 2010
-    *
-    *   @param
-	*			 $dispType			Display type, e.g. DETAIL presents the full content, LISTING presents the part of content
-    *            $length          	Length of the string. Here value 0 refers to display the entire text.
-    *            $dispText        	Text to display
-    *
-    *   @return string
-    */
-	function displayListingContent($dispType, $length, $dispText)
-	{
-		//declare var
-		$textStr = '';
-		
-		//get the strip out content
-		$textStr = $this->displayContent($length, $dispText);   
-		 
-		//get for DETAIL or LISTING
-		if($dispType == 'LISTING')
-		{
-			$textStr = strip_tags($textStr);
-		}
-		else
-		{
-			$textStr = $textStr;
-		}
-		
-		//return the string
-		return $textStr;
-		
-	}//eof
-	
-	
-	
-	/**
-	*	Generate the target or open in page
-	*
-	*	@param
-	*			$openIn			Value of the target
-	*
-	*	@return string
-	*/
-	function genOpenIn($openIn)
-	{
-		//declare var
-		$targetStr	= '';
-		
-		//condition
-		if($openIn == 'Different Window')
-		{
-			$targetStr = 'target="_blank"';
-		}
-		else
-		{
-			$targetStr	= '';
-		}
-		
-		//return target
-		return $targetStr;
-		
-		
-	}//eof
-	
 	
 	
 	
@@ -4329,5 +3928,63 @@ function word_teaser_end($string, $count){
 		return json_decode($response);
 	}
 
+
+	/*****************************************************************************
+	*																			 *
+	*									Date Manipulation						 *
+	*																			 *
+	*****************************************************************************/
+
+	function getNextDate($duration) {
+		// Get the current date
+		$currentDate = new DateTime();
+
+		// Parse the duration string
+		preg_match('/(\d+)\s*(day|week|month|year)s?/i', $duration, $matches);
+
+		if (!$matches) {
+			// Invalid duration format
+			return false;
+		}
+
+		$value = (int)$matches[1];
+		$unit = strtolower($matches[2]);
+
+		// Calculate the next date based on the duration
+		switch ($unit) {
+			case 'day':
+				$currentDate->modify("+$value days");
+				break;
+			case 'week':
+				$currentDate->modify("+$value weeks");
+				break;
+			case 'month':
+				$currentDate->modify("+$value months");
+				break;
+			case 'year':
+				$currentDate->modify("+$value years");
+				break;
+			default:
+				// Invalid duration unit
+				return false;
+		}
+
+		// Format the next date as a string
+		return $currentDate->format('Y-m-d');
+	}
+
 }//eoc
+
+
+// // Example usage:
+// $duration = '1 month';
+// $nextDate = getNextDate($duration);
+
+// if ($nextDate !== false) {
+//     echo "Next date after $duration: $nextDate";
+// } else {
+//     echo "Invalid duration format.";
+// }
+
+
 ?>

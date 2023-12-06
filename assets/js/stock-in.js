@@ -30,28 +30,28 @@ document.addEventListener("blur", (event) => {
 distributorInput.addEventListener("keyup", () => {
     // Delay the hiding to allow the click event to be processed
     let list = document.getElementsByClassName('lists')[0];
-    
-    if(distributorInput.value.length > 2){
+
+    if (distributorInput.value.length > 2) {
 
         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
         request.open("GET", distributorURL, false);
         request.send(null);
         // console.log();
         list.innerHTML = request.responseText
-    }else if(distributorInput.value == ''){
-        
+    } else if (distributorInput.value == '') {
+
         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
         request.open("GET", distributorURL, false);
         request.send(null);
         // console.log();
         list.innerHTML = request.responseText
-    }else{
-        
+    } else {
+
         list.innerHTML = '';
     }
 });
 
-const setDistributor=(t)=>{
+const setDistributor = (t) => {
     let distributirId = t.id.trim();
     let distributirName = t.innerHTML.trim();
 
@@ -62,15 +62,15 @@ const setDistributor=(t)=>{
     document.getElementsByClassName("c-dropdown")[0].style.display = "none";
 }
 
-const addDistributor=()=>{
+const addDistributor = () => {
     $.ajax({
         url: "components/distributor-add.php",
         type: "POST",
-        success: function(response) {
+        success: function (response) {
             let body = document.querySelector('.add-distributor');
             body.innerHTML = response;
         },
-        error: function(error) {
+        error: function (error) {
             console.error("Error: ", error);
         }
     });
@@ -291,33 +291,34 @@ const getDtls = (productId) => {
         xmlhttp.open("GET", mrpUrl, false);
         xmlhttp.send(null);
         document.getElementById("mrp").value = xmlhttp.responseText;
+
+        
         let pTr = parseFloat(xmlhttp.responseText);
         pTr = pTr.toFixed(2);
         document.getElementById("ptr").value = pTr;
 
         // //==================== ptr check url ===================
-        // chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + productId;
-        // // alert(unitUrl);
-        // // window.location.href = unitUrl;
-        // xmlhttp.open("GET", chkPtr, false);
-        // xmlhttp.send(null);
-        // // alert(xmlhttp.responseText);
-        // document.getElementById("chk-ptr").value = xmlhttp.responseText;
-        // document.getElementById("ptr").value = xmlhttp.responseText;
-        
-        //==================== GST ====================
-        gstUrl = 'ajax/product.getGst.ajax.php?id=' + productId;
+        chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + productId;
         // alert(unitUrl);
         // window.location.href = unitUrl;
+        xmlhttp.open("GET", chkPtr, false);
+        xmlhttp.send(null);
+        alert(xmlhttp.responseText);
+        // document.getElementById("chk-ptr").value = xmlhttp.responseText;
+        document.getElementById("ptr").value = xmlhttp.responseText;
+
+        //==================== GST ====================
+        gstUrl = 'ajax/product.getGst.ajax.php?id=' + productId;
+
         xmlhttp.open("GET", gstUrl, false);
         xmlhttp.send(null);
-        if(xmlhttp.responseText != ' ' || xmlhttp.responseText != null){
+
+        // console.log("gst check : ",xmlhttp.responseText);
+
+        if (xmlhttp.responseText != ' ' || xmlhttp.responseText != null) {
             document.getElementById("gst").value = xmlhttp.responseText;
         }
-            
-        
-        
-        
+
         //==================== Product Id ====================
         document.getElementById("product-id").value = productId;
 
@@ -410,49 +411,63 @@ ptrInput.addEventListener('keydown', function (event) {
 });
 
 //=========================================================================================
+// const updateGst = () =>{
+//     
+// }
 
 const getBillAmount = () => {
 
     let mrp = document.getElementById('mrp').value;
 
     let ptr = document.getElementById('ptr').value;
-    
-    
-    let gst = document.getElementById('gst').value;
-    if(gst == ''){
-        gst = 0;
-    }
 
+
+    let gst = document.getElementById('gst').value;
+    // console.log("change gst : "+gst);
+    
     let qty = document.getElementById('qty').value;
-    if(qty == ''){
+    if (qty == '') {
         qty = 0;
     }
 
     let disc = document.getElementById('discount').value;
-    if(disc == ''){
+    if (disc == '') {
         disc = 0;
     }
 
 
-    let maxPtr = (parseFloat(mrp) * 100)/ (parseFloat(gst)+100);
+    let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
     maxPtr = maxPtr.toFixed(2);
 
-    if(ptr < maxPtr){
-        maxPtr = ptr;
+    // console.log("max ptr "+ maxPtr);
+    // console.log("change ptr "+ ptr);
+
+    if (ptr != maxPtr) {
+        document.getElementById('ptr').value = maxPtr;
     }
 
     if (ptr > maxPtr) {
-        swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
+        swal({
+            title: "Error Input",
+            text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
+            icon: "error",
+            button: false, // Hide the "OK" button
+            timer: 1000 // Auto-close the alert after 2 seconds
+        });
+
         document.getElementById("ptr").value = maxPtr;
+
         maxPtr = maxPtr;
-        // document.getElementById("base").value = ChkPtr;
+
         document.getElementById("bill-amount").value = " ";
+
         document.getElementById("ptr").focus();
     }
 
-    
-    let base = parseFloat(maxPtr) - (parseFloat(maxPtr)*(parseFloat(disc)/100));
-    base = parseFloat(base) + (parseFloat(base)*(parseFloat(gst)/100));
+
+
+    let base = parseFloat(maxPtr) - (parseFloat(maxPtr) * (parseFloat(disc) / 100));
+    base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
     base = base.toFixed(2);
 
     let totalAmount = parseFloat(base) * parseInt(qty);
@@ -461,8 +476,30 @@ const getBillAmount = () => {
 
     document.getElementById("base").value = base;
     document.getElementById("bill-amount").value = totalAmount;
-    
 
+
+    // if(gst != 0){
+    //     updateGst();
+    // }
+
+    //=============================================
+    //======= UPDATE GST ON PRODUCT SECTION =======
+    let prodId = document.getElementById("product-id").value;
+
+    $.ajax({
+        url: 'ajax/update-product-gst.ajax.php',
+        type: 'POST',
+        data: {
+            gstPercetn : gst,
+            prodId : prodId
+        },
+        success: function (response) {
+            // console.log(response);
+        },
+        error: function (error) {
+            // console.error('Error removing image:', error);
+        }
+    });
 } //eof getBillAmount function
 
 // ##################################################################################
@@ -471,6 +508,7 @@ const getBillAmount = () => {
 //geeting bills by clicking on add button
 const addData = () => {
     // alert('Clicked');
+
     let distId = document.getElementById("distributor-id");
     let distId2 = document.getElementById("dist-id");
     // console.log(distId.value1);
@@ -562,7 +600,7 @@ const addData = () => {
             });
         return;
     }
-    
+
     if (mfdMonth.value == "") {
         swal("Blank field", "Please Enter Manufacturing Date as MM/YY", "error")
             .then((value) => {
@@ -603,7 +641,7 @@ const addData = () => {
 
     var Ptr = parseFloat(ptr.value);
     var Mrp = parseFloat(mrp.value);
-    
+
     if (Ptr > Mrp) {
         swal("Blank Field", "Please check PTR value", "error")
             .then((value) => {
@@ -640,29 +678,29 @@ const addData = () => {
     }
     if (gst.value == "") {
         swal("Blank Field",
-        "GST should be a number",
-        "error")
-        .then((value) => {
-            gst.focus();
-        });
+            "GST should be a number",
+            "error")
+            .then((value) => {
+                gst.focus();
+            });
         return;
     }
     if (base.value == "") {
         swal("Blank Field",
-        "Base Amount can not be blank",
-        "error")
-        .then((value) => {
-            base.focus();
-        });
+            "Base Amount can not be blank",
+            "error")
+            .then((value) => {
+                base.focus();
+            });
         return;
     }
     if (billAmount.value == "") {
         swal("Blank Field",
-        "Bil Amount can nit be blank",
-        "error")
-        .then((value) => {
-            billAmount.focus();
-        });
+            "Bil Amount can nit be blank",
+            "error")
+            .then((value) => {
+                billAmount.focus();
+            });
         return;
     }
 
@@ -696,15 +734,15 @@ const addData = () => {
     //////////////////////
     let totalMrp = parseFloat(mrp.value) * ((parseFloat(qty.value) + parseFloat(freeQty.value)));
     let payble = parseFloat(base.value) * parseInt(qty.value);
-    
+
     let marginP = 0;
-    if(parseFloat(totalMrp) > parseFloat(payble)){
+    if (parseFloat(totalMrp) > parseFloat(payble)) {
         let margin = parseFloat(totalMrp) - parseFloat(billAmount.value);
         marginP = (parseFloat(margin) / parseFloat(totalMrp)) * 100;
-    }else {
+    } else {
         marginP = 0;
     }
-    
+
     // console.log("discount percent check : ", discount.value);
 
     jQuery("#dataBody")
@@ -808,7 +846,7 @@ const addData = () => {
         packegeinIn: packagingIn.value,
         mrp: mrp.value,
         ptr: ptr.value,
-        
+
         Qty: qty.value,
         freeQty: freeQty.value,
         discPercent: discount.value,
@@ -900,7 +938,7 @@ const editItem = (tupleData) => {
         document.getElementById("packaging-in").value = TupleData.packegeinIn;
         document.getElementById("mrp").value = TupleData.mrp;
         document.getElementById("ptr").value = TupleData.ptr;
-       
+
         document.getElementById("qty").value = TupleData.Qty;
         document.getElementById("free-qty").value = TupleData.freeQty;
         document.getElementById("discount").value = TupleData.discPercent;
@@ -956,8 +994,8 @@ function deleteData(slno, itemQty, gstPerItem, total) {
     rowAdjustment(delRow);
 
     let tBody = document.getElementById('dataBody');
-    
-    if(tBody.getElementsByTagName('tr').length == 0){
+
+    if (tBody.getElementsByTagName('tr').length == 0) {
         stockInSave.setAttribute("disabled", "true");
     }
 }
