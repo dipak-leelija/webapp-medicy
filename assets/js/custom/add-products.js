@@ -103,6 +103,11 @@ function resetImg() {
     document.getElementById('images').innerHTML = '';
     document.getElementById('num-of-files').innerText = 'No files chosen';
 }
+// update close image //
+function closeImage(element) {
+    var imageContainer = element.closest('.col-2');
+    imageContainer.remove();
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////

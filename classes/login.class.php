@@ -16,20 +16,22 @@ class LoginForm extends DatabaseConnection{
                 // exit;
 
                 if ($x_password === $password) {
-                   
-                    $_SESSION['LOGGEDIN']   = true;
-                    $_SESSION['ADMIN']      = true;
-                    $_SESSION['ADMIN_EMAIL'] = $data->email;
-                    $_SESSION['USER_ROLE'] = 'ADMIN';
-                    $_SESSION['ADMIN_FNAME']  = $data->fname;
-                    $_SESSION['ADMIN_LNAME']  = $data->lname;
-                    $_SESSION['ADMIN_CONTACT_NO']  = $data->mobile_no;
-                    $_SESSION['ADMIN_USERNAME']   = $data->username;
-                    $_SESSION['ADMIN_PASSWORD']   = $data->password;
-                    $_SESSION['ADMINID']   = $data->admin_id;
-
+                    
+                    session_start();
+                    $_SESSION['LOGGEDIN']           = true;
+                    $_SESSION['ADMIN']              = true;
+                    $_SESSION['ADMIN_EMAIL']        = $data->email;
+                    $_SESSION['USER_ROLE']          = 'ADMIN';
+                    $_SESSION['ADMIN_FNAME']        = $data->fname;
+                    $_SESSION['ADMIN_LNAME']        = $data->lname;
+                    $_SESSION['ADMIN_CONTACT_NO']   = $data->mobile_no;
+                    $_SESSION['ADMIN_USERNAME']     = $data->username;
+                    $_SESSION['ADMIN_PASSWORD']     = $data->password;
+                    $_SESSION['ADMINID']            = $data->admin_id;
+                        
                     header("Location: ".URL);
                     exit;
+
                 } else {
                     return 'Wrong Password';
                 }
@@ -46,20 +48,19 @@ class LoginForm extends DatabaseConnection{
                     $x_password = pass_dec($dbPasshash, EMP_PASS);
                     
                     if ($x_password === $password) {
+
                         session_start();
-                        $_SESSION['LOGGEDIN']   = true;
-                        $_SESSION['ADMIN']      = false;
-                        $_SESSION['EMP_EMAIL'] = $email;
-                        $_SESSION['EMP_CONTACT_NO']  = $data->emp_contact_no;
-                        $_SESSION['EMP_ROLE']  = $data->emp_role;
-                        $_SESSION['EMP_NAME']   = $data->emp_name;
+                        $_SESSION['LOGGEDIN']       = true;
+                        $_SESSION['ADMIN']          = false;
+                        $_SESSION['EMP_EMAIL']      = $email;
+                        $_SESSION['EMP_CONTACT_NO'] = $data->emp_contact_no;
+                        $_SESSION['EMP_ROLE']       = $data->emp_role;
+                        $_SESSION['EMP_NAME']       = $data->emp_name;
                         $_SESSION['EMP_USERNAME']   = $data->emp_username;
                         $_SESSION['EMP_PASSWORD']   = $data->password;
-                        $_SESSION['EMPID']   = $data->emp_id;
-                        $_SESSION['ADMIN_ID'] = $data->admin_id;
+                        $_SESSION['EMPID']          = $data->emp_id;
+                        $_SESSION['ADMIN_ID']       = $data->admin_id;
 
-                        // echo "employee login";
-                        // exit;
                         header("Location: ".URL);
                         exit;
                     } else {
@@ -71,4 +72,5 @@ class LoginForm extends DatabaseConnection{
             }
         }
     }
+
 }

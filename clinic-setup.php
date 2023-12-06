@@ -1,13 +1,14 @@
 <?php
-$page = "helth-care";
 require_once 'config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
+require_once CLASS_DIR.'subscription.class.php';
 require_once CLASS_DIR.'utility.class.php';
 
-$Utility = new Utility;
+$Subscription   = new Subscription;
+$Utility        = new Utility;
 
 $currentUrl = $Utility->currentUrl();
 // Healthcare Addesss and details
@@ -46,6 +47,14 @@ if (isset($_POST['update']) ==  true) {
     }
 }
 
+$bills = json_decode($Subscription->getSubscription($adminId));
+if ($bills->status) {
+    $allBills = $bills->data;
+}else {
+    $allBills = array();
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +67,7 @@ if (isset($_POST['update']) ==  true) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Buttons</title>
+    <title><?= $healthCareName ." - ". SITE_NAME?></title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -156,8 +165,6 @@ if (isset($_POST['update']) ==  true) {
                                         </div>
 
                                         <div class="col-md-6">
-
-
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="address-1">Address 1</label>
                                                 <textarea class="form-control" maxlength="50" name="address-1"
@@ -213,6 +220,42 @@ if (isset($_POST['update']) ==  true) {
                                 </form>
                             </div>
                         </div>
+
+                        <!-- billing section -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Subscriptions</h6>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Plan</th>
+                                            <th scope="col">Start</th>
+                                            <th scope="col">Upto</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($allBills as $eachBill) {
+                                            echo "
+                                            <tr>
+                                                <th scope='row'>$eachBill->plan</th>
+                                                <td>$eachBill->start</td>
+                                                <td>$eachBill->end</td>
+                                                <td>$eachBill->paid</td>
+                                                <td>$eachBill->status</td>
+                                            </tr>
+                                            ";
+                                        } ?>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- billing section -->
                     </div>
                     <!-- New Section End -->
 
