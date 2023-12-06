@@ -108,7 +108,7 @@ $todayYr = date("y");
                     <div class="card shadow mb-5">
                         <div class="card-body">
 
-                            <div class="d-flex col-12">
+                            <!-- <div class="d-flex col-12"> -->
                                 <!-- Distributor Details  -->
                                 <div class="row bg-distributor rounded pt-2 pb-4">
                                     <div class="col-sm-6 col-md-3">
@@ -176,7 +176,7 @@ $todayYr = date("y");
                                     </div>
                                 </div>
                                 <!-- End Distributor Details  -->
-                            </div>
+                            <!-- </div> -->
 
                             <!-- <div class="h-divider"></div> -->
                             <hr class="sidebar-divider">
