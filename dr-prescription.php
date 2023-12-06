@@ -7,6 +7,7 @@ require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'doctor.category.class.php';
+require_once CLASS_DIR. 'encrypt.inc.php';
 
 
 $appointments = new Appointments();
@@ -16,14 +17,15 @@ $doctors = new Doctors(); //Doctor Class
 
 
 // Fetching Appointments Info
-$getDoctorForPatient = $_GET['prescription'];
-// echo $appointmentId;exit;
+$getDoctorForPatient = url_dec($_GET['prescription']);
+
 
 
 
 // Fetching Doctor Info
 $selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
 // print_r($selectDoctorByid); exit;
+if(is_array($selectDoctorByid))
 foreach ($selectDoctorByid as $DoctorByidDetails) {
     $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
     $DoctorName         = $DoctorByidDetails['doctor_name'];

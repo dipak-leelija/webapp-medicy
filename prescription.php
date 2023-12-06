@@ -6,11 +6,11 @@ require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'doctor.category.class.php';
+require_once CLASS_DIR. 'encrypt.inc.php';
 
 
 // Fetching Appointments Info
-$appointmentId = $_GET['prescription'];
-
+$appointmentId = url_dec($_GET['prescription']);
 $appointments   = new Appointments();
 $DoctorCategory = new DoctorCategory();
 

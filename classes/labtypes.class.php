@@ -40,12 +40,17 @@ class LabTypes extends DatabaseConnection
 
     function showLabTypesById($showLabtypeId)
     {
-        $selectLabType = "SELECT * FROM tests_types WHERE `tests_types`.`id` = '$showLabtypeId'";
-        $labTypeQuery = $this->conn->query($selectLabType);
-        while ($result = $labTypeQuery->fetch_array()) {
-            $data[] = $result;
+        try {
+            $data = [];
+            $selectLabType = "SELECT * FROM tests_types WHERE `tests_types`.`id` = '$showLabtypeId'";
+            $labTypeQuery = $this->conn->query($selectLabType);
+            while ($result = $labTypeQuery->fetch_array()) {
+                $data[] = $result;
+            }
+            return $data;
+        } catch (Exception $e) {
+            $e->getMessage();
         }
-        return $data;
     } // end showLabTypesById function
 
 

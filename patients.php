@@ -288,7 +288,7 @@ if ($allPatients->status) {
                                          <td> '.$slicedPatientsPin.'</td>
 
                                          <td class="text-center">
-                                             <a class="text-primary" href="patient-details.php?patient='. $slicedPatientsID.'"
+                                             <a class="text-primary" href="patient-details.php?patient='. url_enc($slicedPatientsID).'"
                                                  title="View and Edit"><i class="fas fa-eye"></i>
                                              </a>
                                          </td>

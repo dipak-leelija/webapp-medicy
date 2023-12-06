@@ -152,9 +152,12 @@ $Session = new SessionHandler();
                         $image = '';
                     }
 
-                    $setPriority = '';
-
-                    $addImage = $ProductImages->addImages($productId, $image, $setPriority, $addedBy, $addedOn, $adminId);
+                    $setPriority = isset($_POST['priority-group']) ? $_POST['priority-group'] : 0;
+                    print_r($setPriority);
+                    $addImage = $ProductImages->addImages($productId, $image, $addedBy, $addedOn, $adminId);
+                    if($addImage){
+                        $updatePriority = $ProductImages->updatePriority($image,$setPriority,$productId);
+                    }
                 } else {
                     $addImage = true;
                 }

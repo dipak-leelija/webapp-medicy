@@ -72,7 +72,7 @@ class Doctors extends DatabaseConnection
     function showDoctorsForPatient($getDoctorForPatient)
     {
         try {
-
+            $data = [];
             $selectDoctorsForPatient = "SELECT * FROM `doctors` WHERE `doctors`.`doctor_id` = ?";
             $selectDoctorsForPatientQuery = $this->conn->prepare($selectDoctorsForPatient);
 

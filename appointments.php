@@ -358,7 +358,7 @@ if ($allAppointments->status) {
                                                         <td><a class="text-primary" data-toggle="modal" data-target=".AppointmntViewAndEdit" onclick="appointmentViewAndEditModal(' . $appointmentTableID . ')" title="View and Edit"><i class="far fa-edit"></i></a>
 
 
-                                                        <a href="prescription.php?prescription=' . $appointmentID . '" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
+                                                        <a href="prescription.php?prescription=' . url_enc($appointmentID) . '" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
 
 
                                                         <a class="delete-btn" data-id="' . $appointmentID . '"  title="Delete"><i class="far fa-trash-alt"></i></a>

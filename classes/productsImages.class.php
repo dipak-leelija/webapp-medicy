@@ -4,16 +4,16 @@ class ProductImages extends DatabaseConnection{
 
 
 
-    function addImages($productId, $productImage, $setPriority, $addedBy, $addedOn, $adminId) {
+    function addImages($productId, $productImage, $addedBy, $addedOn, $adminId) {
         try {
     
-            $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `set_priority`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?)";
+            $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
     
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insertImage);
             // Bind parameters
             
-            $stmt->bind_param("ssssss", $productId, $productImage, $setPriority, $addedBy, $addedOn, $adminId);
+            $stmt->bind_param("sssss", $productId, $productImage, $addedBy, $addedOn, $adminId);
     
             // Execute the statement
             if ($stmt->execute()) {
@@ -152,6 +152,11 @@ class ProductImages extends DatabaseConnection{
         return $updateQuery;
     }
 
+    function updatePriority($image,$setPriority,$productId){
+        $updateImage = "UPDATE `product_images` SET `set_priority`='$setPriority' WHERE `product_images`.`image`='$image' AND `product_images`.`product_id`='$productId'";
+        $updateQuery = $this->conn->query($updateImage);
+        return $updateQuery;
+    }
     // end updateProduct function*/
 
 
@@ -169,8 +174,16 @@ class ProductImages extends DatabaseConnection{
 
     //delete product image
 
-    function deleteImage($productId){
-        $delImage = "DELETE FROM `product_images` WHERE `id`='$productId'";
+    function deleteImage($imageId){
+        $delImage = "DELETE FROM `product_images` WHERE `id`='$imageId'";
+
+        $delQry = $this->conn->query($delImage);
+        
+        return $delQry;
+    }
+
+    function deleteImageByPID($productId){
+        $delImage = "DELETE FROM `product_images` WHERE `product_id`='$productId'";
 
         $delQry = $this->conn->query($delImage);
         

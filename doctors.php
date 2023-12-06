@@ -8,6 +8,7 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'doctor.category.class.php';
+require_once CLASS_DIR. 'encrypt.inc.php';
 
 
 //Intitilizing Doctor class for fetching doctors
@@ -136,7 +137,7 @@ $showDoctors = json_decode($showDoctors, true);
                                                         <td>'.$docPhno.'</td>
                                                         <td>'.$docEmail.'</td>
                                                         <td>
-                                                        <a href="dr-prescription.php?prescription='.$docId.'" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
+                                                        <a href="dr-prescription.php?prescription='.url_enc($docId).'" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
                                                         
                                                         <a class="" data-toggle="modal" data-target="#docModal" onclick="docViewAndEdit('.$docId.')"><i class="fas fa-edit"></i></a>
                                                         
