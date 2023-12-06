@@ -184,7 +184,7 @@ $todayYr = date("y");
                             <hr class="sidebar-divider">
 
                             <div class="row">
-                                <?php // require_once  ROOT_COMPONENT."purchase-product-fields.php" ?>
+                                <?php require_once  ROOT_COMPONENT."purchase-product-fields.php" ?>
                             </div>
 
                             <!-- /end Add Product  -->
@@ -192,7 +192,7 @@ $todayYr = date("y");
                             <!--=========================== Show Bill Items ===========================-->
                             <div class="card shadow mb-4">
 
-                                <?php // require_once  ROOT_COMPONENT."purchase-summary.php" ?>
+                                <?php require_once  ROOT_COMPONENT."purchase-summary.php" ?>
                             </div>
                             <!--=========================== Show Bill Items ===========================-->
 
