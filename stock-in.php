@@ -111,7 +111,7 @@ $todayYr = date("y");
                             <div class="row col-12">
                                 <!-- Distributor Details  -->
                                 <div class="row bg-distributor rounded pt-2 pb-4">
-                                    <div class="col-sm-6 col-md-12 d-flex">
+                                    
                                         <div class="col-sm-6 col-md-3">
                                             <label class="mb-1" for="distributor-id">Distributor</label>
                                             <input type="text" name="" id="distributor-id" class="upr-inp">
@@ -176,7 +176,7 @@ $todayYr = date("y");
                                                 <option value="Net Banking">Net Banking</option>
                                             </select>
                                         </div>
-                                    </div>
+                                    
                                 </div>
 
                             </div>
