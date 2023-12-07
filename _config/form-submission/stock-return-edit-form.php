@@ -191,8 +191,8 @@ if (isset($_POST['stock-return-edit'])) {
 
                 //===================== update calculation area ===============================
 
-                $CurrentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsItemId[$i]); //
-                // echo "<br><br>current stock data on stock in ited id => ";
+                $CurrentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsItemId[$i])); //
+                // ech"<br><br>current stock data on stock in edit id => ";
                 // print_r($CurrentStockData);
 
                 $currentQty = $CurrentStockData->qty;
@@ -248,18 +248,17 @@ if (isset($_POST['stock-return-edit'])) {
 
 
 
-$healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
+$healthCareDetailsByAdminId = json_decode($HelthCare->showhealthCare($adminId));
+$healthCareDetailsByAdminId = $healthCareDetailsByAdminId->data;
+    // print_r($healthCareDetailsByAdminId);
 
-
-    $healthCareDetails = $healthCareDetailsByAdminId;
-
-    $healthCareName     = $healthCareDetails['hospital_name'];
-    $healthCareAddress1 = $healthCareDetails['address_1'];
-    $healthCareAddress2 = $healthCareDetails['address_2'];
-    $healthCareCity     = $healthCareDetails['city'];
-    $healthCarePIN      = $healthCareDetails['pin'];
-    $healthCarePhno     = $healthCareDetails['hospital_phno'];
-    $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
+    $healthCareName     = $healthCareDetailsByAdminId->hospital_name;
+    $healthCareAddress1 = $healthCareDetailsByAdminId->address_1;
+    $healthCareAddress2 = $healthCareDetailsByAdminId->address_2;
+    $healthCareCity     = $healthCareDetailsByAdminId->city;
+    $healthCarePIN      = $healthCareDetailsByAdminId->pin;
+    $healthCarePhno     = $healthCareDetailsByAdminId->hospital_phno;
+    $healthCareApntbkNo = $healthCareDetailsByAdminId->appointment_help_line;
 
 ?>
 
