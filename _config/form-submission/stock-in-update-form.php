@@ -320,7 +320,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>updated item loose qty : $updatedStockInLooseQty";
 
                 // update to current stock data
-                $currentStockItmeDetails = $CurrentStock->showCurrentStocByStokInDetialsId($updatedItemIdsArray[$i]);
+                $currentStockItmeDetails = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($updatedItemIdsArray[$i]));
 
                 if ($currentStockItmeDetails != null) {
                     $itemId = $currentStockItmeDetails->id;
@@ -552,13 +552,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $prodId = $itemsData['product_id'];
 
-                    $productDetails = $Products->showProductsById($prodId);
+                    $productDetails = json_decode($Products->showProductsById($prodId));
+                    $productDetails = $productDetails->data;
+                    // print_r($productDetails);
+
                     foreach ($productDetails as $pData) {
-                        $pname = $pData['name'];
-                        $pManfId = $pData['manufacturer_id'];
-                        $pType  = $pData['packaging_type'];
-                        $pQTY = $pData['unit_quantity'];
-                        $pUnit = $pData['unit'];
+                        // print_r($pData);
+                        $pname = $pData->name;
+                        $pManfId = $pData->manufacturer_id;
+                        $pType  = $pData->packaging_type;
+                        $pQTY = $pData->unit_quantity;
+                        $pUnit = $pData->unit;
                     }
 
                     $packagingData = $PackagingUnits->showPackagingUnitById($pType);
@@ -567,10 +571,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
 
 
-                    $manufDetails = $Manufacturer->showManufacturerById($pManfId);
-                    foreach ($manufDetails as $manufData) {
-                        $manufName = $manufData['short_name'];
-                    }
+                    $manufDetails = json_decode($Manufacturer->showManufacturerById($pManfId));
+                    $manufDetails = $manufDetails->data;
+                    // print_r($manufDetails);
+                    // foreach ($manufDetails as $manufData) {
+                        $manufName = $manufDetails->short_name;
+                    // }
 
 
 

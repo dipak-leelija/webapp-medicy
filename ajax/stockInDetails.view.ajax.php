@@ -115,12 +115,12 @@ $Products       = new Products();
                     $gst    += $item['gst'];
                     $amount += $item['ptr'];
 
-                    $product = $Products->showProductsById($item['product_id']);
+                    $product = json_decode($Products->showProductsById($item['product_id']));
+                    $product = $product->data;
                     // print_r($product);
-                    foreach($product as $Product){
-                        $pName = $Product['name'];
-                    }
 
+                    $pName = $product[0]->name;
+                    
                     echo "<tr>
                             <th scope='row'>".$sl."</th>
                             <td>".$pName."</td>

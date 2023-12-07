@@ -62,6 +62,7 @@ const setDistributor = (t) => {
     document.getElementsByClassName("c-dropdown")[0].style.display = "none";
 }
 
+
 const addDistributor = () => {
     $.ajax({
         url: "components/distributor-add.php",
@@ -421,7 +422,6 @@ const getBillAmount = () => {
 
     let ptr = document.getElementById('ptr').value;
 
-
     let gst = document.getElementById('gst').value;
     // console.log("change gst : "+gst);
     
@@ -477,10 +477,6 @@ const getBillAmount = () => {
     document.getElementById("base").value = base;
     document.getElementById("bill-amount").value = totalAmount;
 
-
-    // if(gst != 0){
-    //     updateGst();
-    // }
 
     //=============================================
     //======= UPDATE GST ON PRODUCT SECTION =======

@@ -51,19 +51,21 @@ if(isset($_POST['blNo'])){
         $amount = $purchase['amount'];
     }
 
-    $productDetails = $Products->showProductsById($productId);
+    $productDetails = json_decode( $Products->showProductsById($productId));
+    $productDetails = $productDetails->data;
     foreach($productDetails as $products){
-        $prodName = $products['name'];
-        $manufID = $products['manufacturer_id'];
-        $packagingTyp = $products['packaging_type'];
-        $power = $products['power'];
+        $prodName = $products->name;
+        $manufID = $products->manufacturer_id;
+        $packagingTyp = $products->packaging_type;
+        $power = $products->power;
     }
 
 
-    $ManufDetails = $Manufacturer->showManufacturerById($manufID);
-    foreach($ManufDetails as $manuf){
-        $manufName = $manuf['name'];
-    }
+    $ManufDetails = json_decode($Manufacturer->showManufacturerById($manufID));
+    $ManufDetails = $ManufDetails->data;
+    // foreach($ManufDetails as $manuf){
+        $manufName = $ManufDetails->name;
+    // }
 
     // $manufName = str_replace()
     
