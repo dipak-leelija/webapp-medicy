@@ -77,10 +77,11 @@ foreach($distributorDetails as $distributor){
 //===============================================================================================
 
 //==========================fetching data from products table=====================================
-$productDetails = $ProdcutDetails -> showProductsById($ProductId);
+$productDetails = json_decode($ProdcutDetails -> showProductsById($ProductId));
+$productDetails = $productDetails->data;
 
 foreach($productDetails as $products){
-    $productName    =   $products['name'];
+    $productName    =   $products->name;
 }
 
 $productDetails = json_encode($productDetails);
@@ -99,12 +100,13 @@ $stockIn = $StockIn->showStockInById($BillNo);
 //===============================================================================================
 
 //================================fetchin data from current stock================================
-$currentStockDetails = $CurrentStock->showCurrentStocByStokInDetialsId($stokinDetialsItemID);
+$currentStockDetails = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stokinDetialsItemID));
+
 // print_r()
 if($currentStockDetails != null){
-    foreach($currentStockDetails as $currentStock){
-        $currentStockQty   =   $currentStock['qty'];
-    }
+    // foreach($currentStockDetails as $currentStock){
+        $currentStockQty   =   $currentStockDetails->qty;
+    // }
 }else{
     $currentStockQty = 0;
 }

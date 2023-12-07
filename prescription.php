@@ -94,7 +94,7 @@ if ($doctorCategory->status == 1) {
                 <div class="col-4 headerHospitalDetails">
                     <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?= $healthCareName ?></h1>
                     <p class="text-start  me-3">
-                        <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ',<br>' . $healthCareState . ', ' . $healthCarePin; ?></small>
+                        <small><?php echo $healthCareAddress1 . ', ' . $healthCareCity . ', ' . $patientDist . ',<br>' . $healthCareState . ', ' . $healthCarePin; ?></small>
                     </p>
                 </div>
                 <div class="col-2 header-doc-img"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>

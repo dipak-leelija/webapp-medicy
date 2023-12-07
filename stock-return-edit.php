@@ -18,7 +18,8 @@ $Distributor        = new Distributor();
 $StockReturn        = new StockReturn();
 
 
-$showDistributor       = $Distributor->showDistributor();
+$showDistributor       = json_decode($Distributor->showDistributor());
+$showDistributor = $showDistributor->data;
 
 
 if (isset($_GET["returnId"])) {
@@ -114,9 +115,9 @@ if (isset($_GET["returnId"])) {
                                         <option value="" disabled selected>Select Distributor</option>
                                         <?php
                                         foreach ($showDistributor as $rowDistributor) {
-                                            $rowDistributor['id'];
-                                            $rowDistributor['name'];
-                                            echo '<option value="' . $rowDistributor['id'] . '">' . $rowDistributor['name'] . '</option>';
+                                            $rowDistributor->id;
+                                            $rowDistributor->name;
+                                            echo '<option value="' . $rowDistributor->id . '">' . $rowDistributor->name . '</option>';
                                         }
                                         ?>
                                     </select> -->
@@ -402,10 +403,11 @@ if (isset($_GET["returnId"])) {
                                                 /////////////////////////////////////////////////////
 
                                                 $productid = $bill['product_id'];
-                                                $productDetails = $products->showProductsById($productid);
+                                                $productDetails = json_decode($products->showProductsById($productid));
+                                                $productDetails = $productDetails->data;
 
-                                                $productName = $productDetails[0]['name'];
-                                                $productUnit = $productDetails[0]['unit'];
+                                                $productName = $productDetails[0]->name;
+                                                $productUnit = $productDetails[0]->unit;
 
                                                 $slno += 1;
                                                 $slcontrol += 1;

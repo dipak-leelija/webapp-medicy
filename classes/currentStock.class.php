@@ -387,7 +387,7 @@ class CurrentStock extends DatabaseConnection
                 while ($result = $selectQuery->fetch_object()) {
                     $data = $result;
                 }
-                return $data;
+                return json_encode($data);
             }else{
                 return null;
             }
