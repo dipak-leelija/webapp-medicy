@@ -111,6 +111,8 @@ if ($allPatients->status) {
             $response = json_decode($Pagination->arrayPagination($allPatientsData));
             $slicedPatients = '';
             $paginationHTML = '';
+            $totalItem = '';
+            if (property_exists($response, 'totalitem')) 
             $totalItem = $slicedPatients = $response->totalitem;
 
             if ($response->status == 1) {

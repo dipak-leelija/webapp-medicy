@@ -8,7 +8,16 @@ require_once CLASS_DIR.'doctors.class.php';
 $docId = $_GET['doctor_id'];
 
 $Doctors = new Doctors();
-$showDoctor = $Doctors->showDoctorById($docId);
+$showDoctor = $Doctors->showDoctorNameById($docId);
+$showDoctor = json_decode($showDoctor);
+
+// if( is_array($decodedData) && $showDoctor->status == 1 && !empty($showDoctor->data)){
+//     foreach($showDoctor->data as $doctorName){
+//         echo $doctorName;
+//     }
+// } else {
+//     echo "No data found";
+// }
 
 if($showDoctor != 0 ){
     foreach($showDoctor as $rowDoctor){
