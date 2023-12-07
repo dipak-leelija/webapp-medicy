@@ -114,8 +114,10 @@ $todayYr = date("y");
                             <div class="row bg-distributor rounded pt-2 pb-4">
 
                                 <div class="col-sm-6 col-md-3">
+                                    
                                     <label class="mb-1" for="distributor-id">Distributor</label>
                                     <input type="text" name="" id="distributor-id" class="upr-inp">
+
                                     <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
                                         <?php if (!empty($showDistributors)): ?>
                                         <div class="lists" id="lists">

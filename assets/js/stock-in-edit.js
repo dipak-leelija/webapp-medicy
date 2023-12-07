@@ -1,8 +1,13 @@
-//////////////// set distributor \\\\\\\\\\\\\\\
+//////////////////// set distributor name /////////////////////
+
 const distributorInput = document.getElementById("distributor-id");
 const dropdown = document.getElementsByClassName("c-dropdown")[0];
 
+
+
+
 distributorInput.addEventListener("focus", () => {
+    console.log("hello");
     dropdown.style.display = "block";
 });
 
@@ -28,28 +33,28 @@ document.addEventListener("blur", (event) => {
 distributorInput.addEventListener("keyup", () => {
     // Delay the hiding to allow the click event to be processed
     let list = document.getElementsByClassName('lists')[0];
-    
-    if(distributorInput.value.length > 2){
+
+    if (distributorInput.value.length > 2) {
 
         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
         request.open("GET", distributorURL, false);
         request.send(null);
         // console.log();
         list.innerHTML = request.responseText
-    }else if(distributorInput.value == ''){
-        
+    } else if (distributorInput.value == '') {
+
         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
         request.open("GET", distributorURL, false);
         request.send(null);
         // console.log();
         list.innerHTML = request.responseText
-    }else{
-        
+    } else {
+
         list.innerHTML = '';
     }
 });
 
-const setDistributor=(t)=>{
+const setDistributor = (t) => {
     let distributirId = t.id.trim();
     let distributirName = t.innerHTML.trim();
 
@@ -60,29 +65,19 @@ const setDistributor=(t)=>{
     document.getElementsByClassName("c-dropdown")[0].style.display = "none";
 }
 
-const addDistributor=()=>{
+const addDistributor = () => {
     $.ajax({
         url: "components/distributor-add.php",
         type: "POST",
-        success: function(response) {
+        success: function (response) {
             let body = document.querySelector('.add-distributor');
             body.innerHTML = response;
         },
-        error: function(error) {
+        error: function (error) {
             console.error("Error: ", error);
         }
     });
 }
-
-
-
-// const selectDistributor = (t) => {
-//     let id = t.value;
-//     let distributirName = t.selectedOptions[0].text;
-
-//     document.getElementById("updated-dist-id").value = id;
-//     document.getElementById("distributor-name").value = distributirName;
-// }
 
 
 ///////////////// STOCK IN EDIT UPDATE BUTTON CONTROL \\\\\\\\\\
@@ -448,77 +443,85 @@ const getDtls = (value) => {
 }
 
 const getBillAmount = () => {
-    // let mrp = document.getElementById("mrp").value;
-    let ptr = document.getElementById("ptr").value;
-    let Mrp = document.getElementById("mrp").value;
-    let chkPtr = document.getElementById("chk-ptr").value;
 
-    let PTR = parseFloat(ptr);
-    let MRP = parseFloat(Mrp);
-    let ChkPtr = parseFloat(chkPtr);
+    let mrp = document.getElementById('mrp').value;
 
-    if (PTR > ChkPtr) {
-        swal("Error Input", "PTR must be lesser than Calculated Value. Please enter proper PTR value!", "error");
-        document.getElementById("ptr").value = ChkPtr;
-        document.getElementById("bill-amount").value = "";
+    let ptr = document.getElementById('ptr').value;
+
+    let gst = document.getElementById('gst').value;
+    // console.log("change gst : "+gst);
+    
+    let qty = document.getElementById('qty').value;
+    if (qty == '') {
+        qty = 0;
     }
 
-    let qty = document.getElementById("qty").value;
-    let discount = document.getElementById("discount").value;
-
-    //========= base amount calculation area ===========
-    let base = PTR - ((PTR * discount) / 100);
-    document.getElementById("base").value = parseFloat(base).toFixed(2);
-    // ======= eof base amount calculation =============
-
-    let gst = document.getElementById("gst").value;
-
-    let billAmount = document.getElementById("bill-amount");
-
-    if (ptr == "") {
-        billAmount.value = "";
-        base = "";
+    let disc = document.getElementById('discount').value;
+    if (disc == '') {
+        disc = 0;
     }
 
-    if (qty != "" && ptr != "" && gst != "") {
-        subAamount = base * qty;
+    let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
+    maxPtr = maxPtr.toFixed(2);
 
-        let totalGst = ((gst / 100) * subAamount);
-        let amount = subAamount + totalGst;
+    // console.log("max ptr "+ maxPtr);
+    // console.log("change ptr "+ ptr);
 
-        let chkBillAmount = MRP * qty;
+    if (ptr != maxPtr) {
+        document.getElementById('ptr').value = maxPtr;
+    }
 
-        if (amount > chkBillAmount) {
-            amount = chkBillAmount;
+    if (ptr > maxPtr) {
+        swal({
+            title: "Error Input",
+            text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
+            icon: "error",
+            button: false, // Hide the "OK" button
+            timer: 1000 // Auto-close the alert after 2 seconds
+        });
+
+        document.getElementById("ptr").value = maxPtr;
+
+        maxPtr = maxPtr;
+
+        document.getElementById("bill-amount").value = " ";
+
+        document.getElementById("ptr").focus();
+    }
+
+
+    let base = parseFloat(maxPtr) - (parseFloat(maxPtr) * (parseFloat(disc) / 100));
+    base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
+    base = base.toFixed(2);
+
+    let totalAmount = parseFloat(base) * parseInt(qty);
+    totalAmount = totalAmount.toFixed(2);
+
+
+    document.getElementById("base").value = base;
+    document.getElementById("bill-amount").value = totalAmount;
+
+
+    //=============================================
+    //======= UPDATE GST ON PRODUCT SECTION =======
+    let prodId = document.getElementById("product-id").value;
+
+    $.ajax({
+        url: 'ajax/update-product-gst.ajax.php',
+        type: 'POST',
+        data: {
+            gstPercetn : gst,
+            prodId : prodId
+        },
+        success: function (response) {
+            // console.log(response);
+        },
+        error: function (error) {
+            // console.error('Error removing image:', error);
         }
-
-        billAmount.value = parseFloat(amount).toFixed(2);
-    }
-
-    ///======== QUANTITY CALCULETION AFTER EDIT UPDATE ============
-
-    var crntQTY = document.getElementById("qty").value;
-    var crntFreeQTY = document.getElementById("free-qty").value;
-    document.getElementById("updtQTYS").value = Number(crntQTY) + Number(crntFreeQTY);
-
-    //=================== GST CALCULETION AFTER EDIT UPDATE =============================
-
-    let qtys = document.getElementById("qty").value;
-    let updtBasePrice = document.getElementById("base").value;
-    let GST = document.getElementById("gst").value;
-
-    if (GST != 0) {
-        var gstVal = parseFloat(GST) / 100;
-    } else {
-        var gstVal = 0;
-    }
-
-    updtGstAmt = parseFloat(qtys) * parseFloat(updtBasePrice) * parseFloat(gstVal);
-    document.getElementById("crntGstAmnt").value = updtGstAmt.toFixed(2);
-
-    //eof gst calculetion after edit data ---------------
-
+    });
 } //eof getBillAmount function
+
 
 // ============= QTY CALCULETION ON FREE QTY UPDATE ==================
 const editQTY = () => {
