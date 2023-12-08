@@ -64,9 +64,13 @@ const setDistributor = (t) => {
 
 
 const addDistributor = () => {
+
+    var parentLocation = window.location.origin + window.location.pathname;
+
     $.ajax({
         url: "components/distributor-add.php",
         type: "POST",
+        data: { urlData: parentLocation },
         success: function (response) {
             let body = document.querySelector('.add-distributor');
             body.innerHTML = response;
@@ -75,6 +79,18 @@ const addDistributor = () => {
             console.error("Error: ", error);
         }
     });
+}
+
+
+
+function captureCurrentLocation() {
+    // Get the current URL
+    var currentLocation = window.location.href;
+
+    // Log or use the current location as needed
+    console.log("Current Location: " + currentLocation);
+
+    // Your additional logic here...
 }
 
 //////////////////// set distributor bill no /////////////////////
@@ -293,7 +309,7 @@ const getDtls = (productId) => {
         xmlhttp.send(null);
         document.getElementById("mrp").value = xmlhttp.responseText;
 
-        
+
         let pTr = parseFloat(xmlhttp.responseText);
         pTr = pTr.toFixed(2);
         document.getElementById("ptr").value = pTr;
@@ -424,7 +440,7 @@ const getBillAmount = () => {
 
     let gst = document.getElementById('gst').value;
     // console.log("change gst : "+gst);
-    
+
     let qty = document.getElementById('qty').value;
     if (qty == '') {
         qty = 0;
@@ -486,8 +502,8 @@ const getBillAmount = () => {
         url: 'ajax/update-product-gst.ajax.php',
         type: 'POST',
         data: {
-            gstPercetn : gst,
-            prodId : prodId
+            gstPercetn: gst,
+            prodId: prodId
         },
         success: function (response) {
             // console.log(response);

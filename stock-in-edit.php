@@ -778,6 +778,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 <div class="modal-body add-distributor">
                     <!-- Details Appeare Here by Ajax  -->
                 </div>
+                <div id="url">
+                </div>
             </div>
         </div>
     </div>
