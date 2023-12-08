@@ -50,13 +50,11 @@ function setPriority(){
     
     if (selectedRadioButton) {
         selectedRadioButton.value = 1;
-
-        // Log the selected radio button
         console.log(selectedRadioButton);
 
         return {
             name: selectedRadioButton.name,
-            value: selectedRadioButton.value
+            value: selectedRadioButton.value, 
         };
     }
 }
@@ -81,6 +79,7 @@ function preview() {
 
         radioButton.type = 'radio';
         radioButton.name = 'priority-group';
+        radioButton.value = '';
         radioButton.id = 'radio' + (imageContainer.childElementCount + 1);
 
         closeButton.type = 'button';
@@ -100,7 +99,7 @@ function preview() {
 
         radioButton.onclick = function () {
             setPriority();
-            // console.log(`Radio button ${i.name}  clicked`);
+            // console.log(`Radio button ${radioButton.id} clicked `);
         };
 
         reader.onload = () => {
@@ -123,17 +122,16 @@ function resetImg() {
 }
 
 // fetch image delete //
-function closeImage(imageID, index) {
+function closeImage(imageID,imageName, index) {
     console.log(imageID);
-
-    if (confirm("Are You Sure?")) {
+    console.log("imagePath -",imageName);
+    if (confirm("Are you sure want to delete ?")) {
     $.ajax({
         url: 'ajax/remove-image.ajax.php', 
         type: 'POST',
         data: { imageID: imageID },
         success: function(response) {
             console.log(response);
-            alert(response);
             // showAlertWithTimeout(response, 3000);
             $('#img-' + index).parent().remove();
         },
@@ -143,6 +141,7 @@ function closeImage(imageID, index) {
     });
 }
 }
+
 
 // function showAlertWithTimeout(message, timeout) {
 //     alert(message);
