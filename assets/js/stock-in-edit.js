@@ -66,9 +66,13 @@ const setDistributor = (t) => {
 }
 
 const addDistributor = () => {
+   
+    var parentLocation = window.location.origin + window.location.pathname;
+    
     $.ajax({
         url: "components/distributor-add.php",
         type: "POST",
+        data: { urlData: parentLocation },
         success: function (response) {
             let body = document.querySelector('.add-distributor');
             body.innerHTML = response;

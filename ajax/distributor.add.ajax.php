@@ -31,6 +31,7 @@ $Distributor = new Distributor();
         $distributorAddress     = $_POST['distributor-address'];
         $distributorAreaPIN     = $_POST['distributor-area-pin'];
         $distributorDsc         = $_POST['distributor-dsc'];
+        $parentUrl              = $_POST['parent-window-location'];
 
 
         //Insert Into Distributor DB
@@ -43,7 +44,7 @@ $Distributor = new Distributor();
             <script>
                 swal("Success", "Distributor added successfully!", "success")
                     .then((value) => {
-                        window.location = '<?= URL ?>distributor.php';
+                        window.location = '<?= $parentUrl ?>';
                     });
             </script>
         <?php
@@ -52,7 +53,7 @@ $Distributor = new Distributor();
             <script>
                 swal("Error", "Data Not Added!", "error")
                     .then((value) => {
-                        window.location = '<?= URL ?>distributor.php';
+                        window.location = '<?= $parentUrl ?>';
                     });
             </script>
     <?php
