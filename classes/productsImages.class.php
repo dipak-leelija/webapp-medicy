@@ -1,20 +1,22 @@
 <?php
 
-class ProductImages extends DatabaseConnection{
+class ProductImages extends DatabaseConnection
+{
 
 
 
-    function addImages($productId, $productImage, $addedBy, $addedOn, $adminId) {
+    function addImages($productId, $productImage, $addedBy, $addedOn, $adminId)
+    {
         try {
-    
+
             $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
-    
+
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insertImage);
             // Bind parameters
-            
+
             $stmt->bind_param("sssss", $productId, $productImage, $addedBy, $addedOn, $adminId);
-    
+
             // Execute the statement
             if ($stmt->execute()) {
                 // Insert successful
@@ -31,33 +33,34 @@ class ProductImages extends DatabaseConnection{
 
 
 
-    function showImages(){
-        $slectAll   	 = "SELECT * FROM product_images";
+    function showImages()
+    {
+        $slectAll        = "SELECT * FROM product_images";
         $slectAllQuery   = $this->conn->query($slectAll);
         $rows                = $slectAllQuery->num_rows;
         if ($rows == 0) {
             return 0;
-        }else{
+        } else {
             return $slectAllQuery;
         }
-
     }
     //eof showProducts function
 
 
 
 
-    function showImageById($productId) {
+    function showImageById($productId)
+    {
         try {
-            
+
             $selectImage = "SELECT * FROM product_images WHERE product_id = ?";
             $stmt = $this->conn->prepare($selectImage);
-    
+
             $stmt->bind_param("s", $productId);
             $stmt->execute();
-    
+
             $result = $stmt->get_result();
-    
+
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
@@ -71,27 +74,28 @@ class ProductImages extends DatabaseConnection{
             }
         } catch (Exception $e) {
             error_log("Error in showImageById: " . $e->getMessage());
-    
+
             return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
         }
     }
-    
 
 
 
 
 
-    function showImageByPrimay($productId) {
+
+    function showImageByPrimay($productId)
+    {
         try {
-            
+
             $selectImage = "SELECT * FROM product_images WHERE product_id = ? AND set_priority = '1'";
             $stmt = $this->conn->prepare($selectImage);
-    
+
             $stmt->bind_param("s", $productId);
             $stmt->execute();
-    
+
             $result = $stmt->get_result();
-    
+
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
@@ -105,12 +109,43 @@ class ProductImages extends DatabaseConnection{
             }
         } catch (Exception $e) {
             error_log("Error in showImageById: " . $e->getMessage());
-    
+
             return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
         }
     }
-    
-    
+
+
+    function showImageByImgId($productId)
+    {
+        try {
+
+            $selectImage = "SELECT * FROM product_images WHERE product_id = ?";
+            $stmt = $this->conn->prepare($selectImage);
+
+            $stmt->bind_param("s", $productId);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'Images found', 'data' => $data]);
+            } else {
+                $stmt->close();
+                return json_encode(['status' => '0', 'message' => 'No images found', 'data' => null]);
+            }
+        } catch (Exception $e) {
+            error_log("Error in showImageById: " . $e->getMessage());
+
+            return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
+        }
+    }
+
+
     //eof showProductsById function
 
 
@@ -141,18 +176,20 @@ class ProductImages extends DatabaseConnection{
 
     // }
 
-    
-    function updateImage($productId, $image, $updatedOn, $updatedBy){
-        
+
+    function updateImage($productId, $image, $updatedOn, $updatedBy)
+    {
+
         $updateImage = "UPDATE `product_images` SET `image`='$image', `updated_on`='$updatedOn', `updated_by`='$updatedBy' WHERE `product_images`.`product_id`='$productId'";
 
-    
+
         $updateQuery = $this->conn->query($updateImage);
 
         return $updateQuery;
     }
 
-    function updatePriority($image,$setPriority,$productId){
+    function updatePriority($image, $setPriority, $productId)
+    {
         $updateImage = "UPDATE `product_images` SET `set_priority`='$setPriority' WHERE `product_images`.`image`='$image' AND `product_images`.`product_id`='$productId'";
         $updateQuery = $this->conn->query($updateImage);
         return $updateQuery;
@@ -174,23 +211,25 @@ class ProductImages extends DatabaseConnection{
 
     //delete product image
 
-    function deleteImage($imageId){
-        $delImage = "DELETE FROM `product_images` WHERE `id`='$imageId'";
+    function deleteImage($imageId)
+    {
+        try {
+            $delImage = "DELETE FROM `product_images` WHERE `id`='$imageId'";
 
-        $delQry = $this->conn->query($delImage);
-        
-        return $delQry;
+            $delQry = $this->conn->query($delImage);
+
+            return $delQry;
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
     }
 
-    function deleteImageByPID($productId){
+    function deleteImageByPID($productId)
+    {
         $delImage = "DELETE FROM `product_images` WHERE `product_id`='$productId'";
 
         $delQry = $this->conn->query($delImage);
-        
+
         return $delQry;
     }
-
-
-
 }//eof Products class
-

@@ -156,10 +156,13 @@ $itemUnits          = $ItemUnit->showItemUnits();
                             $image = '';
                         }
 
-                        $setPriority = '';
+                        $setPriority = isset($_POST['priority-group']) ? $_POST['priority-group'] : 0;
 
 
-                        $updateImage = $ProductImages->addImages($productId, $image, $setPriority, $employeeId, NOW, $adminId);
+                        $updateImage = $ProductImages->addImages($productId, $image, $employeeId, NOW, $adminId);
+                        if ($updateImage) {
+                            $updatePriority = $ProductImages->updatePriority($image, $setPriority, $productId);
+                        }
                     } else {
                         $addImage = true;
                     }
@@ -394,11 +397,11 @@ $itemUnits          = $ItemUnit->showItemUnits();
                                                         <?php foreach ($allImg as $index => $imagePath) : ?>
                                                             <div class="col-2 border m-1 p-0">
                                                                 <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class=" ob-cover h-100" alt="...">
-                                            
+
                                                                 <?php foreach ($allImgId as $idIndex => $imageID) : ?>
                                                                     <?php if ($idIndex === $index) : ?>
                                                                         <input class="form-check-input mt-5 ml-n5" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                                                        <button type="button" class="btn-close position-absolute rounded border bg-danger text-white mt-n3 ml-n3" aria-label="Close" onclick="closeImage('<?php echo $imageID; ?>', <?php echo $index; ?>)">x</button>
+                                                                        <button type="button" class="btn-close position-absolute rounded border bg-danger text-white mt-n3 ml-n3" aria-label="Close" onclick="closeImage('<?php echo $imageID; ?>', '<?php echo $imagePath; ?>', <?php echo $index; ?>)">x</button>
                                                                     <?php endif; ?>
                                                                 <?php endforeach; ?>
                                                             </div>

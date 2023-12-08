@@ -4,7 +4,7 @@ require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 
-require_once CLASS_DIR.'productsimages.class.php';
+require_once CLASS_DIR.'productsImages.class.php';
 
 $imageId = $_POST['imageID'];
 
