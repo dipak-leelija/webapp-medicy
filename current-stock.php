@@ -132,7 +132,8 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                     // echo "$currentStockId<br>";
                                                     $productId           = $rowStock['product_id'];
                                                     // echo $productId."<br>";
-                                                    $image               = $ProductImages->showImageById($productId);
+                                                    $image               = json_decode($ProductImages->showImageById($productId));
+                                                    $image = $image->data;
                                                     // print_r($image);
                                                     $mainImage = 'medicy-default-product-image.jpg';
                                                     
@@ -148,17 +149,25 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
     
                                                         $productData = $CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId);
                                                        
-                                                        $showProducts = $Products->showProductsById($productId);
-                                                        // print_r($showProducts);
-                                                        $Manuf = $Manufacturer->showManufacturerById($showProducts[0]['manufacturer_id']);
-    
-                                                        foreach($Manuf as $manuf){
-                                                            $manufName = $manuf['name'];
+                                                        $showProducts = json_decode($Products->showProductsById($productId));
+                                                        $showProducts = $showProducts->data;
+                                                        
+
+                                                        $Manuf[] = json_decode($Manufacturer->showManufacturerById($showProducts[0]->manufacturer_id));
+                                                        $Manufs[] = $Manuf[0]->data;
+
+                                                        
+
+                                                        foreach($Manufs as $manuf){
+                                                            $manufName = $manuf->name;
                                                             // echo $manufName;
-    
+                                                        
+                                                            // print_r($showProducts);
                                                         foreach ($showProducts as $rowProducts) {
-                                                            $productName = $rowProducts['name'];
+                                                            $productName = $rowProducts->name;
+
                                                             $showDistributor = $Distributor->showDistributorById($rowStock['distributor_id']);
+                                                            
                                                             foreach ($showDistributor as $rowDistributor) {
                                                                 $distributorName = $rowDistributor['name'];
                                                                 

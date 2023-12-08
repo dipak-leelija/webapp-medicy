@@ -32,9 +32,10 @@ $packagUnit     =   new PackagingUnits();
 if (isset($_GET['currentStockId'])) {
     $productId =  $_GET['currentStockId'];
     
+
     // ================= PRODUCT CURRENT STOCK IN QTY ============
     $showStock = $CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId);
-    // print_r($showStock);
+    
     if ($showStock != null) {
         $overallCurrentStock = 0;
         foreach ($showStock as $currentQty) {
@@ -42,17 +43,22 @@ if (isset($_GET['currentStockId'])) {
             $overallCurrentStock += $currentQty;
         }
     }
+
     if ($overallCurrentStock == null) {
         $overallCurrentStock = 0;
     }
 
 
-    $prodcutDetails = $Product->showProductsById($productId);
-    
-    $manufDetails = $manufacturer->showManufacturerById($prodcutDetails[0]['manufacturer_id']);
+    $prodcutDetails = json_decode($Product->showProductsById($productId));
+    $prodcutDetails = $prodcutDetails->data;
 
-    $image = $ProductImages->showImageById($productId);
-    // print_r($image);
+    $manufDetails = json_decode($manufacturer->showManufacturerById($prodcutDetails[0]->manufacturer_id));
+    $manufDetails = $manufDetails->data;
+    // print_r($manufDetails);
+
+    $image = json_decode($ProductImages->showImageById($productId));
+    $image = $image->data;
+
     if ($image != null) {
         $productImage = $image[0]['image'];
     } else {
@@ -134,10 +140,10 @@ if (isset($_GET['currentStockId'])) {
                  <div class="vl justify-content-center"></div> 
                 </div> -->
                 <div class="col-sm-6 justify-content-center" flex>
-                    <h3><?php echo $prodcutDetails[0]['name']; ?></h3>
-                    <h7><?php echo $prodcutDetails[0]['comp_1']; ?></h7>
-                    <h7><?php echo $prodcutDetails[0]['comp_2']; ?></h7>
-                    <h5><?php echo $manufDetails[0]['name']; ?></h5>
+                    <h3><?php echo $prodcutDetails[0]->name; ?></h3>
+                    <h7><?php echo $prodcutDetails[0]->comp_1; ?></h7>
+                    <h7><?php echo $prodcutDetails[0]->comp_2; ?></h7>
+                    <h5><?php echo $manufDetails->name; ?></h5>
                 </div>
                 <div class="col-sm-1 justify-content-center">
 
@@ -210,7 +216,7 @@ if (isset($_GET['currentStockId'])) {
                 }
 
                 //=================== Packaging Detials ===================
-                $packagingType = $prodcutDetails[0]['packaging_type'];
+                $packagingType = $prodcutDetails[0]->packaging_type;
                 $packagignData = $packagUnit->showPackagingUnitById($packagingType);
                 $pacakagingUnitName = $packagignData[0]['unit_name'];
 
