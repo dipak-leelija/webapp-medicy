@@ -37,6 +37,7 @@ $showDistributor = $showDistributor->data;
     <!-- Custom styles for this template -->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-return-item.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
 
 </head>
@@ -70,18 +71,25 @@ $showDistributor = $showDistributor->data;
                     <div class="card shadow mb-3">
                         <div class="card-body">
                             <div class="row ">
-                                <div class="col-md-2 col-12 ">
+                                <div class="col-md-3 col-12 ">
+
                                     <label class="mb-1 mt-3" for="distributor-id">Distributor :</label>
-                                    <select class="upr-inp mb-1" id="distributor-id" onchange="getBillList(this)">
-                                        <option value="" disabled selected>Select Distributor</option>
-                                        <?php
-                                        foreach ($showDistributor as $rowDistributor) {
-                                            $rowDistributor->id;
-                                            $rowDistributor->name;
-                                            echo '<option value="' . $rowDistributor->id . '">' . $rowDistributor->name . '</option>';
-                                        }
-                                        ?>
-                                    </select>
+                                    <input type="text" name="" id="distributor-id" class="upr-inp" placeholder="Select Distributor">
+
+
+                                    <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
+                                        <?php if (!empty($showDistributor)): ?>
+                                        <div class="lists" id="lists">
+                                            <?php foreach ($showDistributor as $eachDistributor) {?>
+                                            <div class="p-1 border-bottom list" id="<?= $eachDistributor->id ?>"
+                                                onclick="setDistributor(this)">
+                                                <?= $eachDistributor->name ?>
+                                            </div>
+                                            <?php } ?>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+
                                 </div>
 
                                 <div class="col-md-2 col-12 ">
@@ -93,7 +101,7 @@ $showDistributor = $showDistributor->data;
                                     <input type="text" id="bill-no" hidden>
                                 </div>
 
-                                <div class="col-md-6 col-12 ">
+                                <div class="col-md-5 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
                                     <input class="upr-inp mb-1" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
                                     <!-- onchange="getDtls(this);" -->

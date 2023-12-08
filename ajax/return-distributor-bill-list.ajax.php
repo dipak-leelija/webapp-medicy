@@ -43,5 +43,9 @@ if (isset($_GET['dist-id'])) {
         </div>
 <?php
     }
+} else {
+    ?>
+    <div class="col-md-9" style="min-width: 100%;"><?php echo "No Bill Found!"; ?></div>
+    <?php
 }
 ?>

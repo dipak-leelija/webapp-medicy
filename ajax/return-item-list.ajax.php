@@ -25,7 +25,7 @@ if (isset($_GET['bill-no'])) {
     ?>
     <div class="row border-bottom border-primary small mx-0 mb-2">
         <div class="col-2 mb-1" hidden>Batch</div>
-        <div class="col-4 col-sm-3 mb-1">Name</div>
+        <div class="col-4 mb-1">Name</div>
         <div class="col-2 mb-1">Expiry</div>
         <div class="col-2 mb-1">MRP</div>
         <div class="col-2 mb-1">PTR</div>
@@ -68,7 +68,7 @@ if (isset($_GET['bill-no'])) {
              <div class="col-2 mb-0" hidden><?php echo $stockInId; ?></div>
              <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
              <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
-             <div class="col-4 col-sm-3 mb-0"><?php echo $productName; ?></div>
+             <div class="col-4 mb-0"><?php echo $productName; ?></div>
              <div class="col-2 mb-0"><?php echo $expDate; ?></div>
              <div class="col-2 mb-0"><?php echo $mrp; ?></div>
              <div class="col-2 mb-0"><?php echo $ptr; ?></div>

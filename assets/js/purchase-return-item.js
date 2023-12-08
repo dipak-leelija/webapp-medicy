@@ -8,12 +8,84 @@ const rtnFreeQty = document.getElementById('return-free-qty');
 rtnFreeQty.addEventListener('input', function (event) {
     this.value = this.value.replace('.', '');
 });
-//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 
-const getBillList = (t) => {
-    let id = t.value;
-    // console.log(id);
-    let distributirName = t.selectedOptions[0].text;
+
+//////////////////// set distributor name /////////////////////
+
+const distributorInput = document.getElementById("distributor-id");
+const dropdown = document.getElementsByClassName("c-dropdown")[0];
+
+distributorInput.addEventListener("focus", () => {
+    dropdown.style.display = "block";
+});
+
+document.addEventListener("click", (event) => {
+    // Check if the clicked element is not the input field or the dropdown
+    if (!distributorInput.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.style.display = "none";
+    }
+});
+
+document.addEventListener("blur", (event) => {
+    // Check if the element losing focus is not the dropdown or its descendants
+    if (!dropdown.contains(event.relatedTarget)) {
+        // Delay the hiding to allow the click event to be processed
+        setTimeout(() => {
+            dropdown.style.display = "none";
+        }, 100);
+    }
+});
+
+
+
+distributorInput.addEventListener("keyup", () => {
+    // Delay the hiding to allow the click event to be processed
+    let list = document.getElementsByClassName('lists')[0];
+
+    if (distributorInput.value.length > 2) {
+
+        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
+        request.open("GET", distributorURL, false);
+        request.send(null);
+        // console.log();
+        list.innerHTML = request.responseText
+    } else if (distributorInput.value == '') {
+
+        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
+        request.open("GET", distributorURL, false);
+        request.send(null);
+        // console.log();
+        list.innerHTML = request.responseText
+    } else {
+
+        list.innerHTML = '';
+    }
+});
+
+
+const setDistributor = (t) => {
+    let distributirId = t.id.trim();
+    let distributirName = t.innerHTML.trim();
+
+    console.log(distributirId);
+
+    document.getElementById("dist-id").value = distributirId;
+    document.getElementById("dist-name").value = distributirName;
+    document.getElementById("distributor-id").value = distributirName;
+
+    document.getElementsByClassName("c-dropdown")[0].style.display = "none";
+
+    getBillList(distributirId);
+}
+
+
+////////////////////////////////////////////////////////////////////
+
+const getBillList = (distributirId) => {
+    let id = distributirId;
+    console.log("DIST ID FOR BILL LIST : "+id);
+    
     var xmlhttp = new XMLHttpRequest();
     let distIdUrl = `ajax/return-distributor-bill-list.ajax.php?dist-id=${id}`;
     xmlhttp.open("GET", distIdUrl, false);
@@ -21,7 +93,7 @@ const getBillList = (t) => {
     document.getElementById("select-bill").innerHTML = xmlhttp.responseText;
     // console.log(xmlhttp.responseText);
     document.getElementById("dist-id").value = id;
-    document.getElementById("dist-name").value = distributirName;
+    // document.getElementById("dist-name").value = distributirName;
     document.getElementById("select-bill").style.display = "block";
 }
 
@@ -318,8 +390,6 @@ const getRefund = (returnQty) => {
     returnGstAmount = returnGstAmount * returnQty;
     document.getElementById('return-gst-amount').value = returnGstAmount;
 }
-
-
 
 
 
