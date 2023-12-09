@@ -3,11 +3,7 @@
 const distributorInput = document.getElementById("distributor-id");
 const dropdown = document.getElementsByClassName("c-dropdown")[0];
 
-
-
-
 distributorInput.addEventListener("focus", () => {
-    console.log("hello");
     dropdown.style.display = "block";
 });
 

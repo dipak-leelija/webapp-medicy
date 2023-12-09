@@ -186,7 +186,7 @@ if (isset($_GET['search'])) {
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item->name; ?></b></label>
                                                                     <p class="mb-0"><b><?php $item->name ?></b></p>
-                                                                    <small class="card-text mt-0" style="text-align: justify;"><?php echo substr($dsc, 0, 65) ?>...</small>
+                                                                    <small class="card-text mt-0" style="text-align: justify;"><?php echo substr($dsc, 0, 65) ?></small>
 
                                                                 </div>
 
