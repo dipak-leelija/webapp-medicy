@@ -119,22 +119,22 @@
 
 
         <!-- Products -->
-        <li class="nav-item <?php if($page ==  "products" || $page ==  "add-products"){ echo "active";} ?>">
+        <li class="nav-item <?php if($page ==  "products" || $page ==  "add-new-product"){ echo "active";} ?>">
             <a active class="nav-link <?php if($page !=  "sales"){ echo "collapsed";} ?>" href="#"
                 data-toggle="collapse" data-target="#productsManagement"
-                aria-expanded="<?php if($page ==  "products" || $page ==  "add-products"){ echo "true";} ?>"
+                aria-expanded="<?php if($page ==  "products" || $page ==  "add-new-product"){ echo "true";} ?>"
                 aria-controls="productsManagement">
                 <i class="fas fa-pills"></i>
                 <span>Products</span>
             </a>
             <div id="productsManagement"
-                class="collapse <?php if($page ==  "products" ||  $page ==  "add-products"){ echo "show";} ?>"
+                class="collapse <?php if($page ==  "products" ||  $page ==  "add-new-product"){ echo "show";} ?>"
                 aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?php if($page ==  "products" ){ echo "active";} ?>" href="products.php">All
                         Products </a>
-                    <a class="collapse-item <?php if($page ==  "add-products"){ echo "active";} ?>"
-                        href="add-products.php ">Add Product</a>
+                    <a class="collapse-item <?php if($page ==  "add-new-product"){ echo "active";} ?>"
+                        href="add-new-products.php ">Add Product</a>
                 </div>
             </div>
         </li>

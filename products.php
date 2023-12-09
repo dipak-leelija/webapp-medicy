@@ -143,7 +143,7 @@ if (isset($_GET['search'])) {
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <a class="btn btn-sm btn-primary" href="add-products.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
+                                        <a class="btn btn-sm btn-primary" href="add-new-product.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
                                     </div>
                                 </div>
                             </div>
