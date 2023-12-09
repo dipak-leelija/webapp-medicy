@@ -148,7 +148,7 @@ class Manufacturer extends DatabaseConnection{
                     $data = $row;
                 }
                 $stmt->close();
-                return json_encode(['status' => '1', 'message' => '0', 'data' => $data]);
+                return json_encode(['status' => '1', 'message' => '', 'data' => $data]);
             } else {
                 $stmt->close();
                 return json_encode(['status' => '0', 'message' => '', 'data' => '']);

@@ -422,10 +422,10 @@ class CurrentStock extends DatabaseConnection
                 }
                 $stmt->close();
                 
-                return $data;
+                return json_encode(['status' => '1', 'message'=> 'success', 'data'=>$data]);
             }else{
                 $stmt->close();
-                return null;
+                return json_encode(['status' => '0', 'message'=> 'no data found!', 'data'=> '']);
             }
         } catch (Exception $e) {
             return $e->getMessage();

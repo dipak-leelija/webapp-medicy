@@ -34,12 +34,15 @@ if (isset($_GET['currentStockId'])) {
     
 
     // ================= PRODUCT CURRENT STOCK IN QTY ============
-    $showStock = $CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId);
-    
-    if ($showStock != null) {
+    $showStock = json_decode($CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId));
+    // print_r($showStock);
+
+    if ($showStock->status) {
+        $showStock = $showStock->data;
+        // print_r($showStock);
         $overallCurrentStock = 0;
         foreach ($showStock as $currentQty) {
-            $currentQty = $currentQty['qty'];
+            $currentQty = $currentQty->qty;
             $overallCurrentStock += $currentQty;
         }
     }
@@ -163,11 +166,11 @@ if (isset($_GET['currentStockId'])) {
             $slNo = 1;
             foreach ($showStock as $stock) {
                 // print_r($stock);
-                $stokInID = $stock['stock_in_details_id'];
-                $batchNo = $stock['batch_no'];
-                $distId = $stock['distributor_id'];
-                $currentStock = $stock['qty'];
-                $looseStock = $stock['loosely_count'];
+                $stokInID = $stock->stock_in_details_id;
+                $batchNo = $stock->batch_no;
+                $distId = $stock->distributor_id;
+                $currentStock = $stock->qty;
+                $looseStock = $stock->loosely_count;
 
                 //===============distributor details=============
                 $distributorDetails = $distributor->showDistributorById($distId);

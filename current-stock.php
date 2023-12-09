@@ -1,16 +1,16 @@
 <?php
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR.'distributor.class.php';
-require_once CLASS_DIR.'measureOfUnit.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'productsImages.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'measureOfUnit.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'productsImages.class.php';
 
 $page = "current-stock";
 
@@ -24,7 +24,7 @@ $Manufacturer   = new Manufacturer();
 
 $showCurrentStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
 // print_r($showCurrentStock);
-if($showCurrentStock != null){
+if ($showCurrentStock != null) {
     $countCurrentStock = count($showCurrentStock);
 }
 // echo "$countCurrentStock";
@@ -66,7 +66,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -76,7 +76,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -125,117 +125,125 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                     <tbody>
                                         <?php
                                         if ($showCurrentStock != NULL) {
-                                                
-                                                foreach ($currentStockGroup as $rowStock) {
-                                                    // print_r($rowStock);
-                                                    $currentStockId      = $rowStock['id'];
-                                                    // echo "$currentStockId<br>";
-                                                    $productId           = $rowStock['product_id'];
-                                                    // echo $productId."<br>";
-                                                    $image               = json_decode($ProductImages->showImageById($productId));
+
+                                            foreach ($currentStockGroup as $rowStock) {
+                                                // echo "prod details group by - "; print_r($rowStock); echo "<br><br>";
+
+                                                $currentStockId      = $rowStock['id'];
+                                                // echo "$currentStockId<br>";
+
+                                                $productId           = $rowStock['product_id']; // fetch eatch product group by product id
+                                                // echo $productId."<br>";
+
+                                                $image               = json_decode($ProductImages->showImageById($productId));
+                                                // print_r($image);
+                                                $mainImage = 'medicy-default-product-image.jpg';
+
+                                                if ($image->status == 1) {
                                                     $image = $image->data;
-                                                    // print_r($image);
-                                                    $mainImage = 'medicy-default-product-image.jpg';
+                                                    $mainImage = $image[0]->image;
+                                                } else {
+                                                    $mainImage == 'medicy-default-product-image.jpg';
+                                                }
+
+
+                                                // ===============fetch each product data from current stock by product id ==================================
+                                                $productData = json_decode($CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId));
+                                                // echo "prod details - "; print_r($productData); echo "<br><br>";
+
+                                                if ($productData->status) {
+                                                    $productData = $productData->data;
+                                                } else {
+                                                    echo "no product found!";
+                                                }
+
+                                                // ==== fetch product details from product table ====
+                                                $showProducts = json_decode($Products->showProductsById($productId));
+                                                $showProducts = $showProducts->data;
+                                                $manufId = $showProducts[0]->manufacturer_id;
+                                                // echo "prod data - "; print_r($showProducts); echo "<br><br>";
+
+                                                // ==== fetch product manufacturer details ====
+                                                $ManufData = json_decode($Manufacturer->showManufacturerById($manufId));
+
+                                                if ($ManufData->status) {
+                                                    $ManufData = $ManufData->data;
+                                                } else {
+                                                    $manufName = "manfucaturer not found";
+                                                }
+                                                // echo "prod manuf data - "; print_r($ManufData); echo "<br><br><br><br>";
+
+
+                                                
+                                                    $productName = $showProducts[0]->name;
+                                                    $manufName =  $ManufData->name;
                                                     
-                                                    if ($image != NULL) {
-                                                        // echo $mainImage;
-                                                        if ($image[0]['image'] == NULL) {
-                                                            $mainImage == 'medicy-default-product-image.jpg';
-                                                        } else {
-                                                            $mainImage = $image[0]['image'];
-                                                        }
-                                                    }
-                                                    
-    
-                                                        $productData = $CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId);
-                                                       
-                                                        $showProducts = json_decode($Products->showProductsById($productId));
-                                                        $showProducts = $showProducts->data;
-                                                        
+                                        ?>
+                                                        <tr>
 
-                                                        $Manuf[] = json_decode($Manufacturer->showManufacturerById($showProducts[0]->manufacturer_id));
-                                                        $Manufs[] = $Manuf[0]->data;
-
-                                                        
-
-                                                        foreach($Manufs as $manuf){
-                                                            $manufName = $manuf->name;
-                                                            // echo $manufName;
-                                                        
-                                                            // print_r($showProducts);
-                                                        foreach ($showProducts as $rowProducts) {
-                                                            $productName = $rowProducts->name;
-
-                                                            $showDistributor = $Distributor->showDistributorById($rowStock['distributor_id']);
-                                                            
-                                                            foreach ($showDistributor as $rowDistributor) {
-                                                                $distributorName = $rowDistributor['name'];
-                                                                
-                                                                // $bachElemId = 'batch-id' . $batchNo;
-                                                        ?>
-                                                            <tr>
-                                                            
                                                             <td class='align-middle d-dlex'>
-                                            
+
                                                                 <img class="p-img" src="<?= PROD_IMG_PATH ?><?php echo $mainImage; ?>" alt="">
                                                                 <img class="p-img ml-n4 position-absolute" src="<?= PROD_IMG_PATH ?><?php echo $mainImage; ?>" alt="">
-    
-                                                                </td> 
-    
-                                                                    <td class='align-middle'><?php echo "$productName "?> <br>
-                                                                    <small><?php echo " $manufName " ?></small>
-                                                                    </td>
-                                                                    <!-- <td class='align-middle' id='<?php echo " . $bachElemId . "?>' hidden><?php echo" . $batchNo . "?></td> -->
-                                                                    <!-- <td class='align-middle'><?php echo ". $expDate ." ?></td> -->
-                                                                    <td class='align-middle'>
-                                                                        <?php 
-                                                                            // echo print_r($productData); 
-                                                                            if($productData != null){
-                                                                                $productQty = 0;
-                                                                                foreach($productData as $pData){
-                                                                                    $productQty = $productQty +     $pData['qty'];
-                                                                                }
-                                                                            }
-                                                                            echo "$productQty" 
-                                                                        ?>
-                                                                    </td>
-                                                                    <!-- <td class='align-middle'><?php echo "$productMRP" ?></td> -->
-                                                                    <td class='align-middle'>
-                                                                        <?php 
-                                                                            if($productData != null){
-                                                                                $looselyCount = 0;
-                                                                                foreach($productData as $pData){
-                                                                                    if($pData['loosely_count'] != 0){
-                                                                                        $looselyCount = $looselyCount +     $pData['loosely_count'];
-                                                                                    }else{
-                                                                                        $looselyCount = 0;
-                                                                                    }
-                                                                                    
-                                                                                }
-                                                                            }
-                                                                            
-                                                                            echo "$looselyCount" 
-                                                                        ?>
-                                                                    </td>
-                                                                    <!-- <td class='align-middle'><?php echo "$looselyPrice" ?></td> -->
-    
-                                                            
-                                                                    <td class='align-middle'>
-                                                                        <a class='text-primary mr-2' onclick='currentStockView("<?php echo $productId ?>")' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-eye'></i></a>
 
-                                                                        <!-- <a class='text-danger' id='".$productId."' onclick='customDelete(this.id)' data-toggle='modal' data-target='#DeleteCurrentStockModal'><i class='fas fa-trash'></i>
+                                                            </td>
+
+                                                            <td class='align-middle'><?php echo "$productName " ?> <br>
+                                                                <small><?php echo " $manufName " ?></small>
+                                                            </td>
+                                                            
+                                                            <td class='align-middle'>
+                                                                <?php
+
+                                                                $productQty = 0;
+
+                                                                foreach ($productData as $pData) {
+                                                                    $productQty = $productQty +     $pData->qty;
+                                                                }
+                                                                echo "$productQty";
+                                                                ?>
+                                                            </td>
+                                                            <!-- <td class='align-middle'><?php echo "$productMRP" ?></td> -->
+                                                            <td class='align-middle'>
+                                                                <?php
+                                                                if ($productData != null) {
+                                                                    $looselyCount = 0;
+                                                                    foreach ($productData as $pData) {
+
+                                                                        $loose_C = $pData->loosely_count;
+                                                                        // print_r("hk".$loose_C);
+
+                                                                        if ($loose_C != 0) {
+                                                                            // echo "helo";
+                                                                            $looselyCount = $looselyCount +     $pData->loosely_count;
+                                                                        } else {
+                                                                            $looselyCount = 0;
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                echo "$looselyCount"
+                                                                ?>
+                                                            </td>
+                                                            <!-- <td class='align-middle'><?php echo "$looselyPrice" ?></td> -->
+
+
+                                                            <td class='align-middle'>
+                                                                <a class='text-primary mr-2' onclick='currentStockView("<?php echo $productId ?>")' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-eye'></i></a>
+
+                                                                <!-- <a class='text-danger' id='".$productId."' onclick='customDelete(this.id)' data-toggle='modal' data-target='#DeleteCurrentStockModal'><i class='fas fa-trash'></i>
                                                                         </a> -->
-                                                                    </td>
-                                                                </tr>
-                                                            <?php 
-                                                                
-                                                            }
-                                                        }
-                                                    }
-                                                }
+                                                            </td>
+                                                        </tr>
+                                        <?php
+
+                                                    // }
+                                                // }
+                                                // }
                                             }
-                                        
-                                    
+                                        }
+
+
 
                                         ?>
                                     </tbody>
@@ -251,7 +259,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -267,7 +275,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
 
     <!-- View currentStockModal Modal -->
-    <div class="modal fade" id="currentStockModal" tabindex="-1" role="dialog"          aria-labelledby="currentStockModalLabel" aria-hidden="true">
+    <div class="modal fade" id="currentStockModal" tabindex="-1" role="dialog" aria-labelledby="currentStockModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -276,7 +284,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body current-stock-view"> 
+                <div class="modal-body current-stock-view">
                 </div>
             </div>
         </div>
@@ -285,7 +293,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
 
     <!-- DeleteCurrentStockModal Modal -->
-    <div class="modal fade" id="DeleteCurrentStockModal" tabindex="-1" role="dialog"          aria-labelledby="DeleteCurrentStockModalLabel" aria-hidden="true">
+    <div class="modal fade" id="DeleteCurrentStockModal" tabindex="-1" role="dialog" aria-labelledby="DeleteCurrentStockModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -319,7 +327,6 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
     <script>
-
         const customDelete = (productId) => {
             alert(productId);
             let url = "ajax/currentStock.delete.ajax.php?currentStockProductId=" + productId;
