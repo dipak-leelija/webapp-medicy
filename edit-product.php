@@ -97,6 +97,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
             $imageArrayCaount = count($imageName);
             $tempImageNameArrayCaount = count($tempImgName);
 
+
             $updateProduct = $Products->updateProduct($productId, $productName, $manufacturer, $type = '', $productComp1, $productComp2, $medicinePower, $productDesc, $quantity, $qtyUnit, $itemUnit, $packagingType, $mrp, $gst, $employeeId, NOW);
 
             if ($updateProduct === true) {
@@ -197,6 +198,10 @@ $itemUnits          = $ItemUnit->showItemUnits();
         $productName    = $product[0]->name;
         $manufacturer   = $product[0]->manufacturer_id;
         $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
+        // print_r($manufData);
+
+        $manufacturerId = ($manufData->status == 1 && isset($manufData->data)) ? $manufData->data->id : ' ';
+
         $manufacturerName = ($manufData->status == 1 && isset($manufData->data)) ? $manufData->data->name : 'unable to retrieve';
 
         $qty            = $product[0]->unit_quantity;
@@ -272,7 +277,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
                                         <div class="row">
                                             <div class="col-md-12 mt-2">
 
-                                                <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1" disable hidden>
+                                                <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1" value="<?= $manufacturerId ?>" disable hidden>
 
                                                 <input type="text" name="manufacturer-id" id="manufacturer-id" value="<?= $manufacturerName ?>" class="c-inp w-100 p-1">
 
