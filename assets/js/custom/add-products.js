@@ -79,7 +79,7 @@ function preview() {
 
         radioButton.type = 'radio';
         radioButton.name = 'priority-group';
-        radioButton.value = '';
+        // radioButton.value = '';
         radioButton.id = 'radio' + (imageContainer.childElementCount + 1);
 
         closeButton.type = 'button';
@@ -123,8 +123,8 @@ function resetImg() {
 
 // fetch image delete //
 function closeImage(imageID,imageName, index) {
-    console.log(imageID);
-    console.log("imagePath -",imageName);
+    // console.log(imageID);
+    // console.log("imageName -",imageName);
     if (confirm("Are you sure want to delete ?")) {
     $.ajax({
         url: 'ajax/remove-image.ajax.php', 
@@ -132,7 +132,7 @@ function closeImage(imageID,imageName, index) {
         data: { imageID: imageID },
         success: function(response) {
             console.log(response);
-            // showAlertWithTimeout(response, 3000);
+
             $('#img-' + index).parent().remove();
         },
         error: function(error) {
@@ -143,12 +143,6 @@ function closeImage(imageID,imageName, index) {
 }
 
 
-// function showAlertWithTimeout(message, timeout) {
-//     alert(message);
-//     setTimeout(function() {
-//         $('.alert').alert('close'); 
-//     }, timeout);
-// }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// manufacturur search control \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

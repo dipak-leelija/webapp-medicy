@@ -119,7 +119,7 @@ class ProductImages extends DatabaseConnection
     {
         try {
 
-            $selectImage = "SELECT * FROM product_images WHERE product_id = ?";
+            $selectImage = "SELECT * FROM product_images WHERE id = ?";
             $stmt = $this->conn->prepare($selectImage);
 
             $stmt->bind_param("s", $productId);
