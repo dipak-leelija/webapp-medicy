@@ -186,7 +186,7 @@ Class Pagination extends DatabaseConnection{
         }
         // exit;
         
-        if ($myArr != null || count($myArr) > 0) {
+        if ($myArr != null && is_array($myArr) && count($myArr) > 0) {
             
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
         

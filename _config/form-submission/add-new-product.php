@@ -50,11 +50,11 @@ $Session = new SessionHandler();
         // print_r($_FILES);
         // echo "<br><br>";
         $imageName         = $_FILES['img-files']['name'];
-        print_r($imageName );
+        // print_r($imageName );
         $tempImgName       = $_FILES['img-files']['tmp_name'];
         // print_r($tempImgName);
         $imageArrayCaount = count($imageName);
-        print_r($imageArrayCaount);
+        // print_r($imageArrayCaount);
         $tempImageNameArrayCaount = count($tempImgName);
 
 
@@ -153,7 +153,7 @@ $Session = new SessionHandler();
                     }
 
                     $setPriority = isset($_POST['priority-group']) ? $_POST['priority-group'] : 0;
-                    print_r($setPriority);
+                    // print_r($setPriority);
                     $addImage = $ProductImages->addImages($productId, $image, $addedBy, $addedOn, $adminId);
                     if($addImage){
                         $updatePriority = $ProductImages->updatePriority($image,$setPriority,$productId);
