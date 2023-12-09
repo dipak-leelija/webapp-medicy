@@ -32,9 +32,20 @@ if (isset($_GET['search'])) {
     $pagination = json_decode($Pagination->arrayPagination($productList));
 
 
-    $result = $pagination;
-    $allProducts = $pagination->items;
-    $totalPtoducts = $pagination->totalitem;
+    // $result = $pagination;
+    // $allProducts = $pagination->items;
+    // $totalPtoducts = $pagination->totalitem;
+
+    if ($pagination->status == 1) {
+        $result = $pagination;
+        $allProducts = $pagination->items;
+        $totalPtoducts = $pagination->totalitem;
+    } else {
+        // Handle the case when status is not 1
+        $result = $pagination;  
+        $allProducts = [];
+        $totalPtoducts = 0;
+    }
 } else {
 
     // Function INitilized 
