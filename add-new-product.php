@@ -115,7 +115,7 @@ $unitData = $ItemUnit->showItemUnits();
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="col-md-12">
-                                                    <label class="mb-0 mt-1" for="product-name">Enter Prodcut Name</label>
+                                                    <label class="mb-0 mt-1" for="product-name">Prodcut Name</label>
                                                     <input class="c-inp w-100 p-1" id="product-name" name="product-name" required>
                                                 </div>
 
@@ -126,12 +126,12 @@ $unitData = $ItemUnit->showItemUnits();
                                         <div class="row mt-2">
                                             <div class="d-flex col-12">
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="hsno-number">Enter HSNO Number</label>
+                                                    <label class="mb-0 mt-1" for="hsno-number">HSNO Number</label>
                                                     <input class="c-inp w-100 p-1" id="hsno-number" name="hsno-number" required>
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="product-catagory">Select Prodcut Catagory</label>
+                                                    <label class="mb-0 mt-1" for="product-catagory">Prodcut Catagory</label>
                                                     <select class="c-inp p-1 w-100" name="product-catagory" id="product-catagory" required>
                                                         <option value="" disabled selected>Select</option>
                                                         <?php
@@ -152,12 +152,12 @@ $unitData = $ItemUnit->showItemUnits();
                                         <div class="row mt-2">
                                             <div class="d-flex col-12">
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="medicine-power">Enter Medicine Power</label>
+                                                    <label class="mb-0 mt-1" for="medicine-power">Medicine Power</label>
                                                     <input class="c-inp w-100 p-1" id="medicine-power" name="medicine-power" required>
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="qantity-unit">Enter Qantity</label>
+                                                    <label class="mb-0 mt-1" for="qantity-unit">Qantity</label>
                                                     <input class="c-inp w-100 p-1" id="qantity-unit" name="qantity-unit" required>
                                                 </div>
                                             </div>
@@ -167,7 +167,7 @@ $unitData = $ItemUnit->showItemUnits();
                                         <div class="row mt-2">
                                             <div class="d-flex col-12">
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="unit">Enter Unit</label>
+                                                    <label class="mb-0 mt-1" for="unit">Unit</label>
                                                     <select class="c-inp p-1 w-100" id="unit" name="unit" required>
                                                     <option value='' disabled selected>Select</option>
                                                         <?php
@@ -178,7 +178,7 @@ $unitData = $ItemUnit->showItemUnits();
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="packeging-type">Select Packeging Type</label>
+                                                    <label class="mb-0 mt-1" for="packeging-type">Packeging Type</label>
                                                     <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
                                                         <option value="" disabled selected>Select</option>
                                                         <?php
