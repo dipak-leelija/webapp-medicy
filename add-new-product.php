@@ -11,7 +11,9 @@ require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'measureOfUnit.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
-require_once ROOT_DIR . '_config/accessPermission.php';
+require_once CLASS_DIR . 'productCategory.class.php';
+require_once CLASS_DIR . 'gst.class.php';
+
 
 
 //objects Initilization
@@ -19,12 +21,22 @@ $Products           = new Products();
 $Manufacturer       = new Manufacturer();
 $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
+$ProductCategory    = new ProductCategory;
+$Gst                = new Gst;
+
+
 
 $showManufacturer   = $Manufacturer->showManufacturerWithLimit();
 $showManufacturer = json_decode($showManufacturer);
 // print_r($showManufacturer);
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
+
+$prodCategory = json_decode($ProductCategory->selectAllProdCategory());
+
+
+$gstData = json_decode($Gst->seletGst());
+$gstData = $gstData->data;
 
 ?>
 
@@ -85,133 +97,169 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800"> Add New Product</h1>
-
-                    <!-- Add Product -->
-                    <div class="card shadow mb-4" style="min-height: 70vh;">
-                        <div class="card-body">
-                            <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
-                                <div class="row">
-                                    <div class="col-md-7">
-                                        <div class="col-12">
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="product-name">Enter Prodcut Name</label>
-                                                <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
-                                            </div><br>
-                                            
-                                            <!-- Price Row -->
-                                            <div class="row p-3">
-
-                                                <div class="col-12 col-sm-6 col-md-3 mt-3">
-                                                    <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter med Power" required>
+                    <div class="d-flex justify-content-center">
+                        <div class="card shadow mb-4" style="min-height: 80vh; max-width: 70vh;">
+                            <h4 class="h4 d-flex justify-content-center aligen-item-center mt-4"> Add New Product</h1>
+                                <div class="card-body">
+                                    <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
+                                        <!-- product name row -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="col-md-12">
+                                                    <label class="mb-0 mt-1" for="product-name">Enter Prodcut Name</label>
+                                                    <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
                                                 </div>
 
-                                                <div class="col-12 col-sm-6 col-md-3 mt-3">
-                                                    <!-- <label class="mb-0 mt-1" for="unit-quantity">Unit Quantity</label> -->
-                                                    <input type="number" class="c-inp p-1 w-100" name="unit-quantity" id="unit-quantity" placeholder="Enter Unit" step="0.01" required>
-                                                </div>
-
-                                                <div class="col-12 col-sm-6 col-md-3 mt-3">
-                                                    <!-- <label class="mb-0 mt-1" for="unit">Select Unit</label> -->
-                                                    <select class="c-inp p-1 w-100" name="unit" id="unit" required>
-                                                        <option value="" disabled selected>Select Unit</option>
-                                                        <?php
-                                                        foreach ($showMeasureOfUnits as $rowUnit) {
-
-                                                            echo '<option value="' . $rowUnit['id'] . '">' . $rowUnit['short_name'] . '</option>';
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                                <div class="col-12 col-sm-6 col-md-3 mt-3">
-                                                    <!-- <label class="mb-0 mt-1" for="packaging-unit">Packaging Type</label> -->
-                                                    <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type" required>
-                                                        <option value="" disabled selected>Packaging Unit</option>
-                                                        <?php
-                                                        foreach ($showPackagingUnits as $rowPackagingUnits) {
-                                                            echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!--/End Price Row -->
-
-                                            <!-- Price Row -->
-                                            <div class="row p-3">
-                                                <div class="col-12 col-sm-6 col-md-6 mt-3">
-                                                    <!-- <label class="mb-0 mt-1" for="mrp">MRP ₹</label> -->
-                                                    <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" step="0.01" required>
-                                                </div>
-
-                                                <div class="col-12 col-sm-6 col-md-6 mt-3">
-                                                    <!-- <label class="mb-0 mt-1" for="gst">GST %</label> -->
-                                                    <select class="c-inp w-100 p-1" name="gst" id="gst">
-                                                        <option value="" disabled selected>GST%</option>
-                                                        <option value="0">0</option>
-                                                        <option value="5">5</option>
-                                                        <option value="12">12</option>
-                                                        <option value="18">18</option>
-                                                        <option value="28">28</option>
-                                                    </select>
-
-                                                </div>
-
-                                            </div>
-                                            <!--/End Price Row -->
-
-                                            <div class="col-md-12 mt-3">
-                                                <!-- <label for="product-descreption">Product Description</label> -->
-                                                <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3" placeholder="Product Description" required></textarea>
                                             </div>
                                         </div>
-                                    </div>
+
+                                        <!-- product hsno and category row -->
+                                        <div class="row mt-2">
+                                            <div class="d-flex col-12">
+                                                <div class="col-md-6">
+                                                    <label class="mb-0 mt-1" for="hsno-number">Enter HSNO Number</label>
+                                                    <input class="c-inp w-100 p-1" id="hsno-number" name="hsno-number" placeholder="HSNO Number" required>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="mb-0 mt-1" for="product-catagory">Select Prodcut Catagory</label>
+                                                    <select class="c-inp p-1 w-100" name="product-catagory" id="product-catagory" required>
+                                                        <option value="" disabled selected>Select Catagory</option>
+                                                        <?php
+                                                        if ($prodCategory->status == 1 && is_array($prodCategory->data)) {
+                                                            $prodCategory = $prodCategory->data;
+
+                                                            foreach ($prodCategory as $category) {
+                                                                echo '<option value="' . $category->id . '">' . $category->prod_category_name . '</option>';
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- catagory - packging - power and unit row  -->
+                                        <div class="row mt-2">
+                                            <div class="d-flex col-12">
+                                                <div class="col-md-6">
+                                                    <label class="mb-0 mt-1" for="medicine-power">Enter Medicine Power</label>
+                                                    <input class="c-inp w-100 p-1" id="medicine-power" name="medicine-power" placeholder="Power" required>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="mb-0 mt-1" for="qantity-unit">Enter Qantity</label>
+                                                    <input class="c-inp w-100 p-1" id="qantity-unit" name="qantity-unit" placeholder="Enter Qantity" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- catagory - packging - power and unit row  -->
+                                        <div class="row mt-2">
+                                            <div class="d-flex col-12">
+                                                <div class="col-md-6">
+                                                    <label class="mb-0 mt-1" for="unit">Enter Unit</label>
+                                                    <input class="c-inp w-100 p-1" id="unit" name="unit" placeholder="Unit" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="mb-0 mt-1" for="packeging-type">Enter Packeging Type</label>
+                                                    <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
+                                                        <option value="" disabled selected>Select Packeging Type</option>
+                                                        <option value="">Ayurvedic</option>
+                                                        <option value="">Cosmetic</option>
+                                                        <option value="">Drug</option>
+                                                        <option value="">Generic</option>
+                                                        <option value="">Nutraceuticals</option>
+                                                        <option value="">OTC</option>
+                                                        <option value="">Surgical</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- mrp, gst and hsno number row  -->
+                                        <div class="row mt-2">
+                                            <div class="d-flex col-12">
+                                                <div class="col-md-6">
+                                                    <label class="mb-0 mt-1" for="mrp">Enter MRP</label>
+                                                    <input class="c-inp w-100 p-1" id="mrp" name="mrp" placeholder="mrp" required>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="mb-0 mt-1" for="gst">Enter GST</label>
+                                                    <select class="c-inp p-1 w-100" name="gst" id="gst" required>
+                                                        <option value="" disabled selected>Select GST%</option>
+                                                        <?php 
+                                                        if(is_array($gstData)){
+                                                            foreach($gstData as $gstPercent){
+                                                                echo '<option value="'.$gstPercent->id.'" >'.$gstPercent->percentage.'</option>';
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-4">
+                                            <div class="col-md-12 d-flex">
+                                                <div class="col-sm-6 d-flex justify-content-center">
+                                                    <button class="btn btn-danger col-sm-12" id="reset" type="reset"> Reset </button>
+                                                </div>
+
+                                                <div class="col-sm-6 d-flex justify-content-center">
+                                                    <button class="btn btn-primary col-sm-12" name="add-new-product" id="add-new-prod-btn" type="submit">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
                         </div>
+
                     </div>
-                    <!-- /end Add Product  -->
+
                 </div>
-                <!-- /.container-fluid -->
-                <!-- End of Main Content -->
             </div>
-            <!-- End of Content Wrapper -->
-
-            <!-- Footer -->
-            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
-            <!-- End of Footer -->
-
+            <!-- /end Add Product  -->
         </div>
-        <!-- End of Page Wrapper -->
+        <!-- /.container-fluid -->
+        <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
 
-       
+    <!-- Footer -->
+    <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
+    <!-- End of Footer -->
+
+    </div>
+    <!-- End of Page Wrapper -->
 
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
 
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-        <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-        <!-- <script src="<?php echo JS_PATH ?>>bootstrap-js-5/bootstrap.bundle.min.js"></script> -->
-        <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <!-- <script src="<?php echo JS_PATH ?>>bootstrap-js-5/bootstrap.bundle.min.js"></script> -->
+    <script src="<?= PLUGIN_PATH ?>choices/assets/scripts/choices.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-        <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
-        <!-- <script src="<?php echo JS_PATH ?>custom/add-products.js"></script> -->
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
+    <!-- <script src="<?php echo JS_PATH ?>custom/add-products.js"></script> -->
 
-        <!-- Sweet Alert Js  -->
-        <script src="<?php echo JS_PATH ?>sweetAlert.min.js"></script>
+    <!-- Sweet Alert Js  -->
+    <script src="<?php echo JS_PATH ?>sweetAlert.min.js"></script>
 
 
 </body>
