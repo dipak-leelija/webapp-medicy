@@ -344,8 +344,14 @@ if ($labBillDisplay->status) {
                                                 if (is_numeric($docId)) {
                                                     $showDoctor = $Doctors->showDoctorNameById($docId);
                                                     $showDoctor = json_decode($showDoctor);
-
-                                                    $docName = $showDoctor->data;
+                                                    if ($showDoctor->status == 1) {
+                                                        foreach ($showDoctor->data as $rowDoctor) {
+                                                            $docName = $rowDoctor->doctor_name;
+                                                            // echo $doctorName;
+                                                        }
+                                                    } 
+                                                    // $docName = $showDoctor->data;
+                                                    
                                                 } else {
                                                     $docName = $referdDoc;
                                                 }

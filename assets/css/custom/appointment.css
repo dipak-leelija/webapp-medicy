@@ -18,3 +18,15 @@
     text-decoration: none;
     color: white;
 } */
+
+.entry-button-col {
+    text-align: right;
+    margin-top: 10px;
+    color: rgb(18, 22, 21);
+}
+
+@media (min-width: 260px) and (max-width: 767.98px) {
+    .entry-button-col{
+        width: 78%;
+    }   
+}

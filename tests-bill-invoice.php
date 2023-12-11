@@ -69,10 +69,23 @@ if (isset($_POST['bill-generate'])) {
         if ($LabBillDisplay == NULL) {
             $billId = 1;
         }else{
-            foreach ($LabBillDisplay as $rowLabBill) {
-                $billId = $rowLabBill['bill_id'];
-                $billId = $billId+1;
+            $LabBillDisplay = json_decode($LabBillDisplay,true);
+            if(is_array($LabBillDisplay) && isset($LabBillDisplay['data'])){
+                $billData = $LabBillDisplay['data'];
+                // foreach ($LabBillDisplay as $rowLabBill) {
+                //     $billId = $rowLabBill['bill_id'];
+                //     $billId = $billId+1;
+                // }
+                if (!empty($billData)) {
+                    $lastBill = end($billData); 
+                    $billId = $lastBill['bill_id'] + 1;
+                } else {
+                    $billId = 1;
+                }
+            }else{
+                $billId = 1;
             }
+    
         }
         if ($billId < 10) {
             $billId = '0'.$billId;
@@ -81,7 +94,9 @@ if (isset($_POST['bill-generate'])) {
 
 
         ################ Doctor Selection ###############
-
+        $referedDoc = '';
+        $doctorName = '';
+        $doctorReg  = '';
         if ($docId == 'Self') {
             $referedDoc = $docId;
             $doctorName = 'Self';
@@ -89,12 +104,18 @@ if (isset($_POST['bill-generate'])) {
         }else{
             if ($docId != NULL) {
                 //function calling
-                $showDoctorById = $Doctors->showDoctorById($docId);
-                foreach($showDoctorById as $rowDoctor){
-                    $referedDoc = $docId;
-                    $doctorName = $rowDoctor['doctor_name'];
-                    $doctorReg  = $rowDoctor['doctor_reg_no'];
+                $showDoctorById = $Doctors->showDoctorNameById($docId);
+                $showDoctorById = json_decode($showDoctorById);
+                // print_r($showDoctorById);
+                if($showDoctorById->status == 1){
+                    foreach($showDoctorById->data as $rowDoctor){
+                        $referedDoc = $docId;
+                        $doctorName = $rowDoctor->doctor_name;
+                        // print_r($doctorName);
+                        $doctorReg  = $rowDoctor->doctor_reg_no;
+                    }
                 }
+                
             }
         
         }
