@@ -23,7 +23,7 @@ class Products extends DatabaseConnection{
             if ($result->num_rows > 0) {
                 $products = array();
                 while ($res = $result->fetch_object()) {
-                    $products[] = $res;  // Fix: Append to the $products array
+                    $products[] = $res; 
                 }
                 $stmt->close();
                 return json_encode(['status' => '1', 'message' => 'success', 'data' => $products]);
