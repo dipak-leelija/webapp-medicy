@@ -134,7 +134,7 @@
                     <a class="collapse-item <?php if($page ==  "products" ){ echo "active";} ?>" href="products.php">All
                         Products </a>
                     <a class="collapse-item <?php if($page ==  "add-new-product"){ echo "active";} ?>"
-                        href="add-new-products.php ">Add Product</a>
+                        href="add-new-product.php ">Add Product</a>
                 </div>
             </div>
         </li>
