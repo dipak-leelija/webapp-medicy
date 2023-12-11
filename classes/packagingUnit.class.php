@@ -59,7 +59,7 @@ class PackagingUnits extends DatabaseConnection{
     function showPackagingUnits(){
         $select         = " SELECT * FROM packaging_type";
         $selectQuery    = $this->conn->query($select);
-        while ($result  = $selectQuery->fetch_array() ) {
+        while ($result  = $selectQuery->fetch_assoc() ) {
             $data[] = $result;
         }
         return $data;

@@ -4,6 +4,45 @@ class Products extends DatabaseConnection{
 
 
 
+    ##############################################################################################
+    #                                        Product Type                                        #
+    ##############################################################################################
+
+    function productCategory(){
+        try {
+            $selectType = "SELECT * FROM product_type";
+            $stmt = $this->conn->prepare($selectType);
+    
+            if (!$stmt) {
+                throw new Exception("Statement preparation failed: " . $this->conn->error);
+            }
+    
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $products = array();
+                while ($res = $result->fetch_object()) {
+                    $products[] = $res;  // Fix: Append to the $products array
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $products]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'No category found!', 'data' => []]);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => []]);
+        }
+        return 0;
+    }
+
+
+
+
+    ##############################################################################################
+    #                                          Products                                          #
+    ##############################################################################################
+
     function addProducts($productId, $manufacturerid, $productName, $productComposition1, $productComposition2, $power, $productDsc, $packagingType, $unitQuantity, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId) {
         try {
             $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `comp_1`,`comp_2`, `power`, `dsc`, `packaging_type`, `unit_quantity`, `unit_id`, `unit`, `mrp`, `gst`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
