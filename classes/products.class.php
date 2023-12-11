@@ -28,6 +28,36 @@ class Products extends DatabaseConnection{
 
     
 
+
+
+
+    function addProductByUser($productId, $productName, $hsnoNumber, $category, $power, $qantity, $unit, $packagingType, $mrp, $gst, $addedBy, $addedOn, $adminId) {
+        try {
+            $insertProducts = "INSERT INTO `products` (`product_id`, `name`, `hsno_number`, `type`, `power`, `unit_quantity`, `unit`, `packaging_type`, `mrp`, `gst`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+            $stmt = $this->conn->prepare($insertProducts);
+            $stmt->bind_param("sssssssssssss", $productId, $productName, $hsnoNumber, $category, $power, $qantity, $unit, $packagingType, $mrp, $gst, $addedBy, $addedOn, $adminId);
+    
+            if ($stmt->execute()) {
+                // Insert successful
+                $stmt->close();
+                return true;
+            } else {
+                // Insert failed
+                throw new Exception("Error inserting data into the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            // Handle the exception, log the error, or return an error message as needed
+            return "Error: " . $e->getMessage();
+        }
+    }    
+
+
+
+
+
+
+
     function showProducts(){
         $slectProduct   	 = "SELECT * FROM products";
         $slectProductQuery   = $this->conn->query($slectProduct);

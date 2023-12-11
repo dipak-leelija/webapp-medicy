@@ -44,150 +44,55 @@ $Session = new SessionHandler();
     </div>
     <?php
 
-    if (isset($_POST['add-product'])) {
+    if (isset($_POST['add-new-product'])) {
 
 
-        // print_r($_FILES);
-        // echo "<br><br>";
-        $imageName         = $_FILES['img-files']['name'];
-        // print_r($imageName );
-        $tempImgName       = $_FILES['img-files']['tmp_name'];
-        // print_r($tempImgName);
-        $imageArrayCaount = count($imageName);
-        // print_r($imageArrayCaount);
-        $tempImageNameArrayCaount = count($tempImgName);
-
-
-        $productName        = $_POST['product-name'];
-        $productName        = addslashes($productName);
-        // print_r("productName-".$productName)."<br>";
-
-        $productComposition1        = $_POST['product-composition-1'];
-        $productComposition1        = addslashes($productComposition1);
-        // print_r("productComposition 1-".$productComposition1)."<br>";
-
-        $productComposition2        = $_POST['product-composition-2'];
-        $productComposition2       = addslashes($productComposition2);
-        // print_r("productComposition 2-".$productComposition2)."<br>";
-
-        $power              = $_POST['medicine-power'];
-        // print_r("power-".$power)."<br>";
-        $manufacturerid     = $_POST['manufacturer'];
-        // print_r("manufacturerid-".$manufacturerid)."<br>";
-
-
-        $weatage            = $_POST['unit-quantity'];
-        $unit               = $_POST['unit'];
-        $unitType = $Unit->showMeasureOfUnitsById($unit);
-        $unitName = $unitType['short_name'];
-
-        $packagingType      = $_POST['packaging-type'];
-        $mrp                = $_POST['mrp'];
-        $gst                = $_POST['gst'];
-
-        $productDsc         = $_POST['product-descreption'];
-        $productDsc         = addslashes($productDsc);
+        $prodName = $_POST['product-name'];
+        $hsnoNumber = $_POST['hsno-number'];
+        $prodCategory = $_POST['product-catagory'];
+        $medicinePower = $_POST['medicine-power'];
+        $qantityUnit = $_POST['qantity-unit'];
+        $packegingUnit = $_POST['unit'];
+        $packegingType = $_POST['packeging-type'];
+        $mrp = $_POST['mrp'];
+        $gst = $_POST['gst'];
 
         $addedBy            = $employeeId;
-        $addedOn            = NOW;
+
         //ProductId Generation
         $randNum = rand(1, 999999999999);
         $productId = 'PR' . $randNum;
 
 
-        //Insert into products table of DB
-        $addProducts = $Products->addProducts($productId, $manufacturerid, $productName, $productComposition1, $productComposition2, $power, $productDsc, $packagingType, $weatage, $unit, $unitName, $mrp, $gst, $addedBy, $addedOn, $adminId);
+        echo "<br>PRODUCT ID : $productId";
+        echo "<br>PRODUCT NAME : $prodName";
+        echo "<br>PRODUCT HSNO NUMBER : $hsnoNumber";
+        echo "<br>PRODUCT CATAGORY : $prodCategory";
+        echo "<br>PRODUCT POWER : $medicinePower";
+        echo "<br>PRODUCT UNIT : $qantityUnit";
+        echo "<br>PRODUCT UNIT TYPE : $packegingUnit";
+        echo "<br>PRODUCT PACKAGING TYPE : $packegingType";
+        echo "<br>MRP : $mrp";
+        echo "<br>GST : $gst";
+
+        //Insert into products table 
+        $addProducts = $Products->addProductByUser($productId, $prodName, $hsnoNumber, $prodCategory, $medicinePower, $qantityUnit, $packegingUnit, $packegingType, $mrp, $gst, $employeeId, NOW, $adminId);
 
         if ($addProducts === true) {
-
-            for ($j = 0; $j < $imageArrayCaount && $j < $tempImageNameArrayCaount; $j++) {
-                ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
-
-                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $randomString = '';
-                for ($i = 0; $i < 9; $i++) {
-                    $randomString .= $characters[rand(0, strlen($characters) - 1)];
-                }
-
-                $randomString = $randomString;
-
-                ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-                //===== Main Image 
-                $image         = $imageName[$j];
-                $tempImgname   = $tempImgName[$j];
-
-
-                if ($image) {
-
-                    $ImgNm = '';
-                    $extention = '';
-                    $countImageLen = 0;
-
-
-                    // echo "<br>Checking image name on entry : $image";
-
-                    if ($image != '') {
-                        if ($image != null) {
-                            if (file_exists(PROD_IMG_PATH . $randomString . '_' . $image)) {
-                                $image = 'medicy-' . $randomString . $image;
-                            }
-                        }
-
-                        $countImageLen = strlen($image);
-                        for ($l = 0; $l < intval($countImageLen) - 4; $l++) {
-                            $ImgNm .= $image[$l];
-                        }
-                        for ($k = intval($countImageLen) - 4; $k < $countImageLen; $k++) {
-                            $extention .= $image[$k];
-                        }
-
-                        $image         = $ImgNm . '-' . $randomString . $extention;
-                        $imgFolder     = PROD_IMG_DIR . $image;
-
-                        move_uploaded_file($tempImgname, $imgFolder);
-                        $image         = addslashes($image);
-                    }
-
-                    if ($image == '') {
-                        $image = '';
-                    }
-
-                    $setPriority = isset($_POST['priority-group']) ? $_POST['priority-group'] : 0;
-                    // print_r($setPriority);
-                    $addImage = $ProductImages->addImages($productId, $image, $addedBy, $addedOn, $adminId);
-                    if($addImage){
-                        $updatePriority = $ProductImages->updatePriority($image,$setPriority,$productId);
-                    }
-                } else {
-                    $addImage = true;
-                }
-            }
-
-            if ($addImage === true) {
     ?>
-                <script>
-                    swal("Success", "Product Added!", "success")
-                        .then((value) => {
-                            window.location = '<?php echo LOCAL_DIR ?>add-products.php';
-                        });
-                </script>
-            <?php
-            } else {
-            ?>
-                <script>
-                    swal("Error", "Image Not Added!", "error")
-                        .then((value) => {
-                            window.location = '<?php echo LOCAL_DIR ?>add-products.php';
-                        });
-                </script>
-            <?php
-            }
-        } else {
-            ?>
             <script>
-                swal("Error", "Product Insertion Faield!", "error")
+                swal("Success", "Product Added!", "success")
                     .then((value) => {
-                        window.location = '<?php echo LOCAL_DIR ?>add-products.php';
+                        window.location = '<?php echo LOCAL_DIR ?>add-new-product.php';
+                    });
+            </script>
+        <?php
+        } else {
+        ?>
+            <script>
+                swal("Error", "Image Not Added!", "error")
+                    .then((value) => {
+                        window.location = '<?php echo LOCAL_DIR ?>add-new-product.php';
                     });
             </script>
     <?php
