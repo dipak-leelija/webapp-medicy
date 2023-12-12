@@ -134,7 +134,7 @@ $unitData = $ItemUnit->showItemUnits();
                                                             $prodCategory = $prodCategory->data;
 
                                                             foreach ($prodCategory as $category) {
-                                                                echo '<option value="' . $category->id . '">' . $category->prod_category_name . '</option>';
+                                                                echo '<option value="' . $category->id . '">' . $category->name . '</option>';
                                                             }
                                                         }
                                                         ?>

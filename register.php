@@ -111,6 +111,7 @@ if (isset($_POST['register'])) {
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                     </div>
+
                     <form class="user" action="register.php" method="post">
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
@@ -122,18 +123,22 @@ if (isset($_POST['register'])) {
                                     maxlength="20" placeholder="Last Name">
                             </div>
                         </div>
+
                         <div class="form-group">
                             <input type="text" class="form-control form-control-user" id="user-name" name="user-name"
                                 maxlength="24" placeholder="Username">
                         </div>
+
                         <div class="form-group">
                             <input type="email" class="form-control form-control-user" id="email" name="email"
                                 maxlength="80" placeholder="Email Address">
                         </div>
+
                         <div class="form-group">
                             <input type="number" class="form-control form-control-user" id="mobile-number"
-                                name="mobile-number" maxlength="10" placeholder="Mobile Number" max="9999999999">
+                                name="mobile-number" placeholder="Mobile Number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);" minlength="10" required >
                         </div>
+
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
                                 <input type="password" class="form-control form-control-user" id="password"
