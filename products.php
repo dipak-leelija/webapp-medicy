@@ -194,7 +194,10 @@ if (isset($_GET['search'])) {
                                                                 <div class="row px-3 pb-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item->product_id ?>" onclick="viewItem(this.id)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item->product_id ?>"
+
+                                                                        value="<?php echo $item->verified ?>"
+                                                                        onclick="viewItem(this)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -242,11 +245,11 @@ if (isset($_GET['search'])) {
     <!-- End of Page Wrapper -->
 
     <!-- Product Modal -->
-    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="product-view-edit-modal" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-center" id="exampleModalLabel">View Product</h5>
+                    <h5 class="modal-title text-center" id="product-view-edit-modal">View/Edit Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -280,9 +283,18 @@ if (isset($_GET['search'])) {
     <script>
         var xmlhttp = new XMLHttpRequest();
 
-        const viewItem = (value) => {
-            console.info(value);
-            let url = 'ajax/product-view-modal.ajax.php?id=' + value;
+        const viewItem = (t) => {
+            let prodId = t.id;
+            let verifiedValue = t.value;
+            
+            let url = '';
+            if(verifiedValue == 0){
+                console.log(verifiedValue);
+                url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId;
+            }else{
+                url = 'ajax/product-view-modal.ajax.php?id=' + prodId;
+            }
+
             $(".productModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
