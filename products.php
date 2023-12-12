@@ -10,7 +10,7 @@ require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
 require_once ROOT_DIR . '_config/accessPermission.php';
-require_once CLASS_DIR. 'encrypt.inc.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 
 
 
@@ -42,7 +42,7 @@ if (isset($_GET['search'])) {
         $totalPtoducts = $pagination->totalitem;
     } else {
         // Handle the case when status is not 1
-        $result = $pagination;  
+        $result = $pagination;
         $allProducts = [];
         $totalPtoducts = 0;
     }
@@ -113,39 +113,41 @@ if (isset($_GET['search'])) {
                     <div class="col">
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <div class="d-flex col-12">
-                                    <div class="col-md-3 mt-2">
+                                <!-- <div class="d-flex col-12"> -->
+                                    <div class="col-md-3 mt-2 p-2">
                                         <h6 class="m-0 font-weight-bold text-primary">Total Items:
                                             <?= $totalPtoducts ?>
                                         </h6>
                                     </div>
-                                    <div class="col-md-7">
-                                        <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="col-md-7">
+                                            <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
 
-                                        <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
-                                            <div class="lists" id="lists">
-                                                <?php
-                                                if (!empty($productList->data) && is_array($productList->data)) {
-                                                    foreach ($productList->data as $eachProd) {
-                                                        // print_r($eachProd);
-                                                ?>
-                                                        <div class="p-1 border-bottom list" id="<?= $eachProd->product_id ?>" onclick="searchProduct(this)">
-                                                            <?= $eachProd->name ?>
-                                                        </div>
-                                                        <div>
-                                                            <small><?= $eachProd->comp_1 ?> , <?= $eachProd->comp_2 ?></small>
-                                                        </div>
-                                                <?php
+                                            <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
+                                                <div class="lists" id="lists">
+                                                    <?php
+                                                    if (!empty($productList->data) && is_array($productList->data)) {
+                                                        foreach ($productList->data as $eachProd) {
+                                                            // print_r($eachProd);
+                                                    ?>
+                                                            <div class="p-1 border-bottom list" id="<?= $eachProd->product_id ?>" onclick="searchProduct(this)">
+                                                                <?= $eachProd->name ?>
+                                                            </div>
+                                                            <div>
+                                                                <small><?= $eachProd->comp_1 ?> , <?= $eachProd->comp_2 ?></small>
+                                                            </div>
+                                                    <?php
+                                                        }
                                                     }
-                                                }
-                                                ?>
+                                                    ?>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-2">
+                                            <a class="btn btn-sm btn-primary" href="add-new-product.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <a class="btn btn-sm btn-primary" href="add-new-product.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
-                                    </div>
-                                </div>
+                                <!-- </div> -->
                             </div>
                             <div class="card-body">
 
@@ -181,7 +183,7 @@ if (isset($_GET['search'])) {
                                                 ?>
 
                                                         <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
-                                                            <div class="card  m-2" style="min-width: 14rem; min-height: 11rem;">
+                                                            <div class="card  mb-3 p-2" style="min-width: 14rem; min-height: 11rem;">
                                                                 <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="...">
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item->name; ?></b></label>
@@ -392,14 +394,13 @@ if (isset($_GET['search'])) {
             //     document.getElementById("prodcut-search").value = '';
             //     document.getElementById("prodcut-search").ariaPlaceholder = 'Search Products (Product Name / Product Composition)';
             // } else {
-                if (storedProdName !== null) {
-                    document.getElementById("prodcut-search").value = storedProdName;
-                    localStorage.setItem('prodName', '');
-                }
+            if (storedProdName !== null) {
+                document.getElementById("prodcut-search").value = storedProdName;
+                localStorage.setItem('prodName', '');
+            }
             // }
 
         });
-
     </script>
 
 </body>
