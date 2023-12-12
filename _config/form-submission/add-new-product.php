@@ -64,19 +64,21 @@ $Session = new SessionHandler();
         $productId = 'PR' . $randNum;
 
 
-        echo "<br>PRODUCT ID : $productId";
-        echo "<br>PRODUCT NAME : $prodName";
-        echo "<br>PRODUCT HSNO NUMBER : $hsnoNumber";
-        echo "<br>PRODUCT CATAGORY : $prodCategory";
-        echo "<br>PRODUCT POWER : $medicinePower";
-        echo "<br>PRODUCT UNIT : $qantityUnit";
-        echo "<br>PRODUCT UNIT TYPE : $packegingUnit";
-        echo "<br>PRODUCT PACKAGING TYPE : $packegingType";
-        echo "<br>MRP : $mrp";
-        echo "<br>GST : $gst";
+        // echo "<br>PRODUCT ID : $productId";
+        // echo "<br>PRODUCT NAME : $prodName";
+        // echo "<br>PRODUCT HSNO NUMBER : $hsnoNumber";
+        // echo "<br>PRODUCT CATAGORY : $prodCategory";
+        // echo "<br>PRODUCT POWER : $medicinePower";
+        // echo "<br>PRODUCT UNIT : $qantityUnit";
+        // echo "<br>PRODUCT UNIT TYPE : $packegingUnit";
+        // echo "<br>PRODUCT PACKAGING TYPE : $packegingType";
+        // echo "<br>MRP : $mrp";
+        // echo "<br>GST : $gst<br>";
 
         //Insert into products table 
         $addProducts = $Products->addProductByUser($productId, $prodName, $hsnoNumber, $prodCategory, $medicinePower, $qantityUnit, $packegingUnit, $packegingType, $mrp, $gst, $employeeId, NOW, $adminId);
+
+        print_r($addProducts);
 
         if ($addProducts === true) {
     ?>
@@ -90,7 +92,7 @@ $Session = new SessionHandler();
         } else {
         ?>
             <script>
-                swal("Error", "Image Not Added!", "error")
+                swal("Error", "Product Not Added!", "error")
                     .then((value) => {
                         window.location = '<?php echo LOCAL_DIR ?>add-new-product.php';
                     });

@@ -21,7 +21,7 @@ if (isset($_POST['urlData'])){
 
         <div class="col-md-12">
             <label class="mb-0 mt-1" for="distributor-phno">GST ID</label>
-            <input type="text" class="form-control" id="distributor-gstid" name="distributor-gstid" placeholder="Distributor GST ID" required>
+            <input type="text" class="form-control" id="distributor-gstid" name="distributor-gstid" placeholder="Distributor GST ID" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="18" oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);" minlength="18" required>
         </div>
 
         <div class="col-md-12">

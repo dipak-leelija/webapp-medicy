@@ -3,12 +3,12 @@
 class Emproles extends DatabaseConnection
 {
 
-    function addDesigRole($desigName, $adminId)
+    function addDesigRole($desigName)
     {
         try {
-            $sql = "INSERT INTO `emp_role` (desig_name, admin_id) VALUES (?, ?)";
+            $sql = "INSERT INTO `emp_role` (desig_name) VALUES (?)";
             $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("ss", $desigName, $adminId);
+            $stmt->bind_param("s", $desigName);
 
             $result = $stmt->execute();
             $stmt->close();
@@ -20,21 +20,21 @@ class Emproles extends DatabaseConnection
     }
 
 
-    function designationRole($adminId)
-    {
-        try {
-            $data = [];
-            $sql = "SELECT * FROM `emp_role` WHERE `admin_id` = '$adminId' ";
-            $result = $this->conn->query($sql);
-            while ($results =  $result->fetch_object()) {
-                $data[] = $results;
-            }
-            $data = json_encode($data);
-            return $data;
-        } catch (Exception $e) {
-            $e->getMessage();
-        }
-    }
+    // function designationRole($adminId)
+    // {
+    //     try {
+    //         $data = [];
+    //         $sql = "SELECT * FROM `emp_role` WHERE `admin_id` = '$adminId' ";
+    //         $result = $this->conn->query($sql);
+    //         while ($results =  $result->fetch_object()) {
+    //             $data[] = $results;
+    //         }
+    //         $data = json_encode($data);
+    //         return $data;
+    //     } catch (Exception $e) {
+    //         $e->getMessage();
+    //     }
+    // }
 
     function designationRoleCheckForLogin()
     {
@@ -52,10 +52,10 @@ class Emproles extends DatabaseConnection
         }
     }
 
-    function designationRoleID($adminId, $desinId)
+    function designationRoleID($desinId)
     {
         $data = '';
-        $sql = "SELECT * FROM `emp_role` WHERE `admin_id` = '$adminId' AND `id` = '$desinId' ";
+        $sql = "SELECT * FROM `emp_role` WHERE `id` = '$desinId' ";
         $result = $this->conn->query($sql);
         while ($results =  $result->fetch_object()) {
             $data = $results;

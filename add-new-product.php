@@ -126,11 +126,6 @@ $unitData = $ItemUnit->showItemUnits();
                                         <div class="row mt-2">
                                             <div class="d-flex col-12">
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="hsno-number">HSNO Number</label>
-                                                    <input class="c-inp w-100 p-1" id="hsno-number" name="hsno-number" required>
-                                                </div>
-
-                                                <div class="col-md-6">
                                                     <label class="mb-0 mt-1" for="product-catagory">Prodcut Catagory</label>
                                                     <select class="c-inp p-1 w-100" name="product-catagory" id="product-catagory" required>
                                                         <option value="" disabled selected>Select</option>
@@ -139,12 +134,25 @@ $unitData = $ItemUnit->showItemUnits();
                                                             $prodCategory = $prodCategory->data;
 
                                                             foreach ($prodCategory as $category) {
-                                                                echo '<option value="' . $category->id . '">' . $category->prod_category_name . '</option>';
+                                                                echo '<option value="' . $category->id . '">' . $category->name . '</option>';
                                                             }
                                                         }
                                                         ?>
                                                     </select>
                                                 </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="mb-0 mt-1" for="packeging-type">Packeging In</label>
+                                                    <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
+                                                        <option value="" disabled selected>Select</option>
+                                                        <?php
+                                                        foreach ($packagingUnits as $eachPackUnit) {
+                                                            echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+
                                             </div>
                                         </div>
 
@@ -157,8 +165,17 @@ $unitData = $ItemUnit->showItemUnits();
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="qantity-unit">Qantity</label>
-                                                    <input class="c-inp w-100 p-1" id="qantity-unit" name="qantity-unit" required>
+                                                    <label class="mb-0 mt-1" for="unit">Unit</label>
+                                                    <select class="c-inp p-1 w-100" id="unit" name="unit" required>
+                                                        <option value='' disabled selected>Select</option>
+                                                        <?php
+                                                        foreach ($itemUnists as $eachUnit) {
+                                                            echo "<option value='" . $eachUnit['id'] . "'>" . $eachUnit['name'] . "</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -167,51 +184,37 @@ $unitData = $ItemUnit->showItemUnits();
                                         <div class="row mt-2">
                                             <div class="d-flex col-12">
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="unit">Unit</label>
-                                                    <select class="c-inp p-1 w-100" id="unit" name="unit" required>
-                                                    <option value='' disabled selected>Select</option>
-                                                        <?php
-                                                        foreach ($itemUnists as $eachUnit) {
-                                                            echo "<option value='".$eachUnit['id']."'>".$eachUnit['name']."</option>";
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                    <label class="mb-0 mt-1" for="qantity-unit">Qantity</label>
+                                                    <input class="c-inp w-100 p-1" id="qantity-unit" name="qantity-unit" required>
+
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="packeging-type">Packeging Type</label>
-                                                    <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
-                                                        <option value="" disabled selected>Select</option>
-                                                        <?php
-                                                        foreach ($packagingUnits as $eachPackUnit) {
-                                                        echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
-
-                                                        }
-                                                        ?>
-                                                    </select>
+                                                    <label class="mb-0 mt-1" for="mrp">Enter MRP</label>
+                                                    <input class="c-inp w-100 p-1" id="mrp" name="mrp" required>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- mrp, gst and hsno number row  -->
-                                        <div class="row mt-2">
-                                            <div class="d-flex col-12">
-                                                <div class="col-md-6">
-                                                    <label class="mb-0 mt-1" for="mrp">Enter MRP</label>
-                                                    <input class="c-inp w-100 p-1" id="mrp" name="mrp" required>
-                                                </div>
-
-                                                <div class="col-md-6">
+                                        <div class="row mt-4">
+                                            <div class="col-md-12 d-flex">
+                                                <div class="col-sm-6">
                                                     <label class="mb-0 mt-1" for="gst">Enter GST</label>
                                                     <select class="c-inp p-1 w-100" name="gst" id="gst" required>
                                                         <option value="" disabled selected>Select</option>
-                                                        <?php 
-                                                        if(is_array($gstData)){
-                                                            foreach($gstData as $gstPercent){
-                                                                echo '<option value="'.$gstPercent->id.'" >'.$gstPercent->percentage.'</option>';
+                                                        <?php
+                                                        if (is_array($gstData)) {
+                                                            foreach ($gstData as $gstPercent) {
+                                                                echo '<option value="' . $gstPercent->id . '" >' . $gstPercent->percentage . '</option>';
                                                             }
                                                         }
                                                         ?>
                                                     </select>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <label class="mb-0 mt-1" for="hsno-number">HSNO Number</label>
+                                                    <input class="c-inp w-100 p-1" id="hsno-number" name="hsno-number" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -240,12 +243,12 @@ $unitData = $ItemUnit->showItemUnits();
         </div>
         <!-- /.container-fluid -->
         <!-- End of Main Content -->
-        
+
     </div>
     <!-- End of Content Wrapper -->
 
     <!-- Footer -->
-    
+
     <!-- End of Footer -->
 
     </div>
