@@ -81,7 +81,9 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
             $quantity         = $_POST['quantity'];
             $qtyUnit          = $_POST['qty-unit'];
-            $itemUnit         = $_POST['item-unit'];
+            // $itemUnit         = $_POST['item-unit'];
+            $itemUnit = isset($_POST['item-unit']) ? $_POST['item-unit'] : null;
+
             $packagingType    = $_POST['packaging-type'];
 
 

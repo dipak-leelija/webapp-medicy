@@ -127,7 +127,6 @@ if (isset($_GET['search'])) {
 
         $allAppointments = $Appoinments->appointmentsFilterByDate($fromDt, $toDt, $adminId);
         $allAppointments = json_decode($allAppointments);
-
     }
 } else {
     $allAppointments = $Appoinments->appointmentsDisplay($adminId);
@@ -224,70 +223,76 @@ if ($allAppointments->status) {
 
 
                             <div class="row mt-2">
-                                <div class="col-md-4 col-3 mt-2">
-                                    <div class="input-group">
-                                        <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
+                                <div class="d-flex">
+                                    <div class="col-md-6 col-6 mt-2">
+                                        <div class="input-group">
+                                            <input class="cvx-inp" type="text" placeholder="Appointment ID / Patient Id / Patient Name" name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
 
-                                        <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointment()"><i class="fas fa-search"></i></button>
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointment()"><i class="fas fa-search"></i></button>
+                                            </div>
                                         </div>
+                                    </div>
+
+
+                                    <div class="col-md-6 col-6  mt-2">
+                                        <select class="cvx-inp1" name="added_on" id="added_on" onchange="filterAppointmentByValue(this)">
+                                            <option value="" disabled="" selected="">Select Duration</option>
+                                            <option value="T">Today</option>
+                                            <option value="Y">yesterday</option>
+                                            <option value="LW">Last 7 Days</option>
+                                            <option value="LM">Last 30 Days</option>
+                                            <option value="LQ">Last 90 Days</option>
+                                            <option value="CFY">Current Fiscal Year</option>
+                                            <option value="PFY">Previous Fiscal Year</option>
+                                            <option value="CR">Custom Range </option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="col-md-6 col-6 mt-2">
+                                        <select class="cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByValue(this)">
+                                            <option value="" selected="" disabled="">Find By Doctor</option>
+
+                                            <?php
+
+                                            foreach ($doctorList as $doctorList) {
+                                                echo '<option value="' . $doctorList->doctor_id . '">' . $doctorList->doctor_name . '</option>';
+                                            }
+
+                                            ?>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 col-6 mt-2">
+                                        <select class="cvx-inp1" id="added_by" onchange="filterAppointmentByValue(this)">
+                                            <option value="" disabled="" selected="">Select Staff</option>
+
+                                            <?php
+
+                                            foreach ($employeeDetails as $employeeData) {
+                                                echo '<option value="' . $employeeData->emp_id . '">' . $employeeData->emp_name . '</option>';
+                                            }
+
+                                            ?>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <div class=" col-3 mt-2">
+                                        <a class="btn btn-sm btn-primary  " data-toggle="modal" data-target="#appointmentSelection">
+                                            <p class="m-0 ">Entry</p>
+
+                                        </a>
                                     </div>
                                 </div>
 
-
-                                <div class="col-md-2 col-3  mt-2">
-                                    <select class="cvx-inp1" name="added_on" id="added_on" onchange="filterAppointmentByValue(this)">
-                                        <option value="" disabled="" selected="">Select Duration</option>
-                                        <option value="T">Today</option>
-                                        <option value="Y">yesterday</option>
-                                        <option value="LW">Last 7 Days</option>
-                                        <option value="LM">Last 30 Days</option>
-                                        <option value="LQ">Last 90 Days</option>
-                                        <option value="CFY">Current Fiscal Year</option>
-                                        <option value="PFY">Previous Fiscal Year</option>
-                                        <option value="CR">Custom Range </option>
-                                    </select>
-
-                                </div>
-                                <div class="col-md-3 col-3 mt-2">
-                                    <select class="cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByValue(this)">
-                                        <option value="" selected="" disabled="">Find By Doctor</option>
-
-                                        <?php
-
-                                        foreach ($doctorList as $doctorList) {
-                                            echo '<option value="' . $doctorList->doctor_id . '">' . $doctorList->doctor_name . '</option>';
-                                        }
-
-                                        ?>
-
-                                    </select>
-                                </div>
-                                <div class="col-md-2 col-3 mt-2">
-                                    <select class="cvx-inp1" id="added_by" onchange="filterAppointmentByValue(this)">
-                                        <option value="" disabled="" selected="">Select Staff</option>
-
-                                        <?php
-
-                                        foreach ($employeeDetails as $employeeData) {
-                                            echo '<option value="' . $employeeData->emp_id . '">' . $employeeData->emp_name . '</option>';
-                                        }
-
-                                        ?>
-
-                                    </select>
-                                </div>
-
-                                <div class="col-md-1 col-3 mt-2">
-                                    <a class="btn btn-sm btn-primary h-50 d-flex" data-toggle="modal" data-target="#appointmentSelection">
-                                        <p class="m-0 p-0">Entry</p> &nbsp; &nbsp; &nbsp;
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </div>
                             </div>
 
                             <div class="dropdown-menu  p-2 row ml-4" id="dtPickerDiv" style="display: none; margin-top: -280px; background-color: rgba(255, 255, 255, 0.8);">
-                                <div  class=" col-md-12">
+                                <div class=" col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">
                                             <label>Strat Date</label>
@@ -520,7 +525,7 @@ if ($allAppointments->status) {
         }
 
 
-        const customDate = () =>{
+        const customDate = () => {
             let fromDate = document.getElementById('from-date').value;
             let toDate = document.getElementById('to-date').value;
 

@@ -102,11 +102,17 @@ $existsDocName = NULL;
 
 if (is_numeric($refDoc)) {
   $existsDoctorId = $refDoc;
-  $docDetails = $Doctors->showDoctorById($refDoc);
-
-  if (is_array($docDetails) && isset($docDetails[0][2])) {
-    $existsDoctorName = $docDetails[0][2];
-  }
+  $docDetails = $Doctors->showDoctorNameById($refDoc);
+  $docDetails = json_decode($docDetails);
+  if ($docDetails->status == 1) {
+    foreach ($docDetails->data as $rowDoctor) {
+      $existsDoctorName = $rowDoctor->doctor_name;
+        // echo $doctorName;
+    }
+} 
+  // if (is_array($docDetails) && isset($docDetails[0][2])) {
+  //   $existsDoctorName = $docDetails[0][2];
+  // }
   // $existsDoctorName = $docDetails[0][2];
 } else {
   $existsDoctorName = $refDoc;
@@ -218,6 +224,8 @@ if (is_numeric($refDoc)) {
                       <option value="Self">By Self</option>
 
                       <?php
+                      $showDoctors = json_decode($showDoctors, true);
+                      print_r($showDoctors);
                       foreach ($showDoctors as $showDoctorDetails) {
                         $doctorId = $showDoctorDetails['doctor_id'];
                         $doctorName = $showDoctorDetails['doctor_name'];

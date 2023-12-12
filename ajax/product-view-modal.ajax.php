@@ -253,7 +253,6 @@ $QuantityUnit   = new QuantityUnit;
                                 },
                                 success: function(data) {
                                     if (data == 1) {
-
                                         Swal.fire(
                                             "Deleted",
                                             "Manufacturer Has Been Deleted",

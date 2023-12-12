@@ -157,7 +157,7 @@ if ($_SESSION['ADMIN']) {
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <div class=" d-flex justify-content-center align-items-center">
-                                <div class="p-5 w-75">
+                                <div class=" profile">
                                     <div class="d-flex justify-content-start align-items-center">
                                         <div class=" w-100 p-3 mb-2 bg-light ">
                                             <h1 class="h4 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h1>
@@ -174,7 +174,7 @@ if ($_SESSION['ADMIN']) {
                                             </div>
                                             <!-- </div> -->
                                         </div>
-                                        <div class=" w-100 p-3 mb-2 bg-light ">
+                                        <div class="w-100 p-3 mb-2 bg-light ">
                                             <div class="form-group mb-3 d-flex justify-content-end">
                                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" onclick="passwordUpdate()">
                                                     Password Change
