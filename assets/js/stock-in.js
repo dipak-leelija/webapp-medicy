@@ -334,6 +334,7 @@ const getDtls = (productId) => {
 
         if (xmlhttp.responseText != ' ' || xmlhttp.responseText != null) {
             document.getElementById("gst").value = xmlhttp.responseText;
+            document.getElementById("gst-check").value = xmlhttp.responseText;
         }
 
         //==================== Product Id ====================
@@ -441,6 +442,9 @@ const getBillAmount = () => {
     let gst = document.getElementById('gst').value;
     // console.log("change gst : "+gst);
 
+    let prevGst = document.getElementById("gst-check").value;
+    // console.log("prev gst : "+prevGst);
+
     let qty = document.getElementById('qty').value;
     if (qty == '') {
         qty = 0;
@@ -458,8 +462,9 @@ const getBillAmount = () => {
     // console.log("max ptr "+ maxPtr);
     // console.log("change ptr "+ ptr);
 
-    if (ptr != maxPtr) {
+    if (gst != prevGst) {
         document.getElementById('ptr').value = maxPtr;
+        document.getElementById("gst-check").value = gst;
     }
 
     if (ptr > maxPtr) {

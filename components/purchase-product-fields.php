@@ -62,7 +62,7 @@
                     <div class="col-sm-6 col-md-6 mt-2">
                         <label class="mb-0" for="gst">GST%</label>
 
-                        <!-- <input type="number" class="upr-inp" name="gst" id="gst" onfocusout="getBillAmount()"> -->
+                        <input type="number" class="upr-inp" name="gst-check" id="gst-check" hidden>
 
                         <select class="upr-inp" name="gst" id="gst" onchange="getBillAmount(this)">
 

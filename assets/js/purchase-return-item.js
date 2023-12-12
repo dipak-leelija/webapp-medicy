@@ -68,8 +68,6 @@ const setDistributor = (t) => {
     let distributirId = t.id.trim();
     let distributirName = t.innerHTML.trim();
 
-    console.log(distributirId);
-
     document.getElementById("dist-id").value = distributirId;
     document.getElementById("dist-name").value = distributirName;
     document.getElementById("distributor-id").value = distributirName;
@@ -84,8 +82,8 @@ const setDistributor = (t) => {
 
 const getBillList = (distributirId) => {
     let id = distributirId;
-    console.log("DIST ID FOR BILL LIST : "+id);
-    
+    // console.log("DIST ID FOR BILL LIST : " + id);
+
     var xmlhttp = new XMLHttpRequest();
     let distIdUrl = `ajax/return-distributor-bill-list.ajax.php?dist-id=${id}`;
     xmlhttp.open("GET", distIdUrl, false);
@@ -154,10 +152,11 @@ const setMode = (returnMode) => {
     document.getElementById("refund-mode").value = returnMode;
 }
 
-const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, billdate) => {
-    
+const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, billdate, t) => {
+
     document.getElementById('return-mode').focus();
 
+    document.getElementById('select-item-div').value = t.id;
     document.getElementById('stockInId').value = stockInId;
     document.getElementById('stokInDetailsId').value = stokInDetialsId;
     document.getElementById('batch-number').value = batchNo;
@@ -378,9 +377,9 @@ const getRefund = (returnQty) => {
         document.getElementById("refund-amount").value = refund.toFixed(2);
 
 
-    } else if(parseInt(returnQty) == 0){
+    } else if (parseInt(returnQty) == 0) {
         document.getElementById("refund-amount").value = '0';
-    }else{
+    } else {
         document.getElementById("refund-amount").value = '';
     }
 
@@ -400,6 +399,7 @@ const getRefund = (returnQty) => {
 //geeting bills by clicking on add button
 function addData() {
 
+    let seletedItemDiv = document.getElementById('select-item-div').value;
     var distId = document.getElementById("distributor-id");
     //var billNumber = document.getElementById("bill-number");
     var stokInDetailsId = document.getElementById("stokInDetailsId");
@@ -571,12 +571,20 @@ function addData() {
 
     document.getElementById("return-gst-val").value = ReturnGstAmount;
 
+
+    //////////////////// onclik handler data \\\\\\\\\\\\\\\\\\\
+    var divElement = document.getElementById(seletedItemDiv);
+    originalClickHandler = divElement.onclick;
+    
+    // =========================================================
+
+
     const appendData = () => {
 
         jQuery("#dataBody")
             .append(`<tr id="table-row-${slControl}">
                     <td  style="color: red;">
-                        <i class="fas fa-trash pt-3" onclick="deleteData(${slControl}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value})"></i>
+                        <i class="fas fa-trash pt-3" onclick='deleteData(${slControl}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value}, ${seletedItemDiv}, ${originalClickHandler})'></i>
                     </td>
                     <td id="row-${slControl}-col-2" style="font-size:.8rem ; padding-top:1.5rem"scope="row">${slno}</td>
                     <td class="d-none p-0 pt-3">
@@ -666,8 +674,8 @@ function addData() {
             discount: discount.value,
             gst: gst.value,
 
-            basePrice: basePrice.value, 
-            taxableOnPurchase: taxableOnPurchase.value,  
+            basePrice: basePrice.value,
+            taxableOnPurchase: taxableOnPurchase.value,
             RtrnGstAmount: RtrnGstAmount.value,
             crntPrchsQty: crntPrchsQty.value,
             crntFreeQty: crntFreeQty.value,
@@ -735,13 +743,42 @@ function addData() {
 
         document.getElementById("stock-return-item-data").reset();
         event.preventDefault();
+
+
+        /// ============ row modify function ===============
+
+        disableOnClickFunction(seletedItemDiv);
     }
 
 } //eof addData  
 
+
+// ======= item onclick disable and enablel function ========
+const disableOnClickFunction = (divId) => {
+    
+    let divElement = document.getElementById(divId);
+
+    if (divElement) {
+        divElement.onclick = null; // or divElement.onclick = function() {};
+    }
+
+} // eof item onclik disable 
+
+const divOnclikActive = (divId, handelerData) =>{
+    
+    // console.log(divId.id);
+    // console.log(handelerData);
+    
+    let divElement = document.getElementById(divId.id);
+
+    if (divElement) {
+        // Restore the original onclick handler
+        divElement.onclick = handelerData;
+    }
+}
 // ================================ Delet Data ================================
 
-const deleteData = (slno, itemQty, gstPerItem, refundPerItem) => {
+const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerData) => {
 
     let delRow = slno;
 
@@ -776,6 +813,8 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem) => {
     }
 
     rowAdjustment(delRow);
+
+    divOnclikActive(divId, handelerData);
 }
 
 
@@ -797,7 +836,7 @@ function rowAdjustment(delRow) {
 ///////////////////////// item edit funtion /////////////////////////
 
 const editItem = (tData) => {
-    
+
     if (document.getElementById('product-id').value == '') {
         var tData = JSON.parse(tData);
 

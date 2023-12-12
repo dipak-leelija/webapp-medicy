@@ -37,11 +37,19 @@ if (isset($_GET['bill-no'])) {
 
     $details = $StockIn->stockIndataOnBillno($distributorId, $billNo);
 
+    
     foreach ($details as $detail) {
         $billDate = $detail['bill_date'];
         $details = $StockInDetails->showStockInDetailsByStokId($detail['id']);
         // print_r($details);
+
+        $rowCoutn = 0;
         foreach ($details as $item) {
+
+            // print_r($item);
+
+            $rowCoutn++;
+
             $stokInDetailsId = $item['id'];
             $stockInId = $item['stokIn_id'];
             $batchNo = $item['batch_no'];
@@ -64,7 +72,7 @@ if (isset($_GET['bill-no'])) {
 
     ?>
 
-         <div class="row mx-0 py-2 border-bottom p-row item-list" onclick="getDtls('<?php echo $stockInId; ?>', '<?php echo $stokInDetailsId; ?>','<?php echo $batchNo; ?>', '<?php echo $productId; ?>', '<?php echo $productName; ?>', '<?php echo $billDate; ?>');">
+         <div class='row mx-0 py-2 border-bottom p-row item-list' id="divId_<?php echo $rowCoutn; ?>" onclick='getDtls(`<?php echo $stockInId; ?>`, `<?php echo $stokInDetailsId; ?>`, `<?php echo $batchNo; ?>`, `<?php echo $productId; ?>`, `<?php echo $productName; ?>`, `<?php echo $billDate; ?>`, this)'>
              <div class="col-2 mb-0" hidden><?php echo $stockInId; ?></div>
              <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
              <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
