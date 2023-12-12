@@ -215,10 +215,15 @@ if ($allAppointments->status) {
 
                         <div class="card-header py-3 justify-content-between">
 
-                            <div class="row">
-                                <div class="col-12">
-                                    <h6 class="m-0 font-weight-bold text-primary">Total Appointments: <?= $totalItem ?></h6>
+                            <div class="col-12 d-flex justify-content-between">
+                                <div class="">
+                                    <h6 class="font-weight-bold text-primary">Total Appointments: <?= $totalItem ?></h6>
                                 </div>
+                                <div class="ml-4">
+                                        <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#appointmentSelection">
+                                            <p class="m-0 p-0">Entry</p>
+                                        </a>
+                                    </div>
                             </div>
 
 
@@ -280,14 +285,14 @@ if ($allAppointments->status) {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-end">
+                                <!-- <div class="d-flex justify-content-end">
                                     <div class=" col-3 mt-2">
                                         <a class="btn btn-sm btn-primary  " data-toggle="modal" data-target="#appointmentSelection">
                                             <p class="m-0 ">Entry</p>
 
                                         </a>
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>
 

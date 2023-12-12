@@ -122,9 +122,7 @@ if (isset($_GET['search'])) {
         }
 
         $labBillDisplay = $LabBilling->labBillFilterByDate($adminId, $fromDt, $toDt);
-
     }
-
 } else {
     $labBillDisplay = $LabBilling->labBillDisplay($adminId);
 }
@@ -137,7 +135,7 @@ if ($labBillDisplay->status) {
         $billsResponseData = $labBillDisplay->data;
         if (is_array($billsResponseData)) {
             $response = json_decode($Pagination->arrayPagination($billsResponseData));
-            
+
             $paginationHTML = '';
             $totalItem = $slicedLabBills = $response->totalitem;
 
@@ -148,7 +146,7 @@ if ($labBillDisplay->status) {
         } else {
             $totalItem = 0;
         }
-    }else{
+    } else {
         $totalItem = 0;
         $paginationHTML = '';
     }
@@ -216,14 +214,20 @@ if ($labBillDisplay->status) {
 
                         <div class="card-header py-3 justify-content-between">
 
-                            <div class="row">
-                                <div class="col-12">
-                                    <h6 class=" col-3 mt-2 m-0 font-weight-bold text-primary">List of Bookings : <?= $totalItem ?></h6>
+                            <div class=" col-12 d-flex justify-content-between">
+                                <div class="">
+                                    <h6 class="mt-2 m-0 font-weight-bold text-primary">List of Bookings : <?= $totalItem ?></h6>
+                                </div>
+
+                                <div class="col-3 text-right entry ml-5">
+                                    <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#labPatientSelection">
+                                        <p class="m-0 p-0">Entry</p>
+                                    </a>
                                 </div>
                             </div>
 
                             <div class="row mt-2">
-                                <div class="col-md-2 col-6">
+                                <div class="col-md-2 col-6 pb-2">
                                     <div class="input-group">
                                         <input class="cvx-inp" type="text" placeholder="Invoice ID / Patient ID" name="appointment-search" id="appointment-search" style="outline: none;" aria-describedby="button-addon2" value="<?= isset($match) ? $match : ''; ?>">
 
@@ -267,13 +271,6 @@ if ($labBillDisplay->status) {
                                         }
                                         ?>
                                     </select>
-                                </div>
-
-                                <div class="col-md-1 col-6 text-right ">
-                                    <a class="btn btn-sm btn-primary w-100  d-flex" data-toggle="modal" data-target="#labPatientSelection">
-                                    <p class="m-0 p-0">Entry</p>&nbsp;&nbsp;&nbsp;    
-                                    <i class="fas fa-edit"></i>
-                                    </a>
                                 </div>
                             </div>
 
@@ -349,9 +346,9 @@ if ($labBillDisplay->status) {
                                                             $docName = $rowDoctor->doctor_name;
                                                             // echo $doctorName;
                                                         }
-                                                    } 
+                                                    }
                                                     // $docName = $showDoctor->data;
-                                                    
+
                                                 } else {
                                                     $docName = $referdDoc;
                                                 }
@@ -527,7 +524,7 @@ if ($labBillDisplay->status) {
             var search = t.id;
             var searchKey = t.value;
 
-            if(searchKey != 'CR'){
+            if (searchKey != 'CR') {
                 // Get the current URL
                 var currentURL = window.location.href;
                 // Get the current URL without the query string
@@ -539,13 +536,13 @@ if ($labBillDisplay->status) {
             }
 
 
-            if(searchKey == 'CR'){
+            if (searchKey == 'CR') {
                 document.getElementById('dtPickerDiv').style.display = 'block'
             }
         }
 
 
-        const customDate = () =>{
+        const customDate = () => {
             let fromDate = document.getElementById('from-date').value;
             let toDate = document.getElementById('to-date').value;
 

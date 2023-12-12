@@ -11280,3 +11280,15 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+
+/* //lab page responsive// */
+
+@media (min-width: 260px) and (max-width: 767.98px) {
+  .image{
+     padding: 20px;
+  } 
+  .text_box{
+    padding: 20px;
+  }
+}
