@@ -32,7 +32,7 @@
         <hr class="sidebar-divider">
 
         <?php
-        if ($userRole == 2 || $userRole == 'ADMIN'): ?>
+        if ($userRole == 3 || $userRole == 'ADMIN'): ?>
 
         <!-- Heading -->
         <div class="sidebar-heading">

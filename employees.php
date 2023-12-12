@@ -20,7 +20,7 @@ $desigRole = new Emproles();
 $currentUrl = $Utility->currentUrl();
 
 $showEmployees = $employees->employeesDisplay($adminId);
-$showDesignation = $desigRole->designationRole($adminId);
+$showDesignation = $desigRole->designationRoleCheckForLogin();
 $showDesignation = json_decode($showDesignation, true);
 // print_r($showDesignation);
 
