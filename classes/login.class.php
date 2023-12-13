@@ -20,6 +20,7 @@ class LoginForm extends DatabaseConnection{
                     session_start();
                     $_SESSION['LOGGEDIN']           = true;
                     $_SESSION['ADMIN']              = true;
+                    $_SESSION['USER_TYPE']          = 'NOT USER';
                     $_SESSION['ADMIN_EMAIL']        = $data->email;
                     $_SESSION['USER_ROLE']          = 'ADMIN';
                     $_SESSION['ADMIN_FNAME']        = $data->fname;
@@ -52,6 +53,7 @@ class LoginForm extends DatabaseConnection{
                         session_start();
                         $_SESSION['LOGGEDIN']       = true;
                         $_SESSION['ADMIN']          = false;
+                        $_SESSION['USER_TYPE']      = 'USER';
                         $_SESSION['EMP_EMAIL']      = $email;
                         $_SESSION['EMP_CONTACT_NO'] = $data->emp_contact_no;
                         $_SESSION['EMP_ROLE']       = $data->emp_role;

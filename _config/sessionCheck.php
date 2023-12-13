@@ -9,6 +9,7 @@ if($_SESSION['ADMIN']){
   // echo 'true';
   $userEmail    = $_SESSION['ADMIN_EMAIL'];
   $adminContact = $_SESSION['ADMIN_CONTACT_NO'];
+  $userType     = $_SESSION['USER_TYPE'];
   $userRole     = $_SESSION['USER_ROLE'];
   $userFname    = $_SESSION['ADMIN_FNAME'];
   $adminLname   = $_SESSION['ADMIN_LNAME'];
@@ -21,6 +22,7 @@ if($_SESSION['ADMIN']){
   // echo 'false';
   $userEmail      = $_SESSION['EMP_EMAIL'] ;
   $empContact     = $_SESSION['EMP_CONTACT_NO'];
+  $userType       = $_SESSION['USER_TYPE'];
   $userRole       = $_SESSION['EMP_ROLE'];
   $userFname      = $_SESSION['EMP_NAME'];
   $username       = $_SESSION['EMP_USERNAME'];

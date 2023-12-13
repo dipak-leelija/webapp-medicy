@@ -30,7 +30,7 @@ if ($showProducts->status) {
                     <small>" . $showProducts->comp_1 . " , " . $showProducts->comp_2 . "</small>
                 </div>
             </div>";
-        }
+    }
 } else {
     // echo "<p class='text-center font-weight-bold'>manufacturerNot Found!</p>";
     echo "<div class='p-1 border-bottom list'> No data found </div>";
