@@ -19,6 +19,7 @@ $Manufacturer   = new Manufacturer();
 $CurrentStock   = new CurrentStock();
 $QuantityUnit   = new QuantityUnit;
 
+echo $userType;
 ?>
 
 <!DOCTYPE html>
@@ -167,7 +168,7 @@ $QuantityUnit   = new QuantityUnit;
                                     </small>
                                 </p>
                             </div>
-                            <div class="row justify-content-center mt-6 col-6">
+                            <div class="row justify-content-center mt-6 col-6" id='btn-ctrl-1'>
                                 <div class="col-4">
                                     <a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
                                 </div>
@@ -191,14 +192,13 @@ $QuantityUnit   = new QuantityUnit;
                             <p><b>Description: </b> <br><?php echo $product[0]->dsc; ?></p>
                         </div>
 
-                        <div class="row justify-content-center mt-4">
+                        <div class="row justify-content-center mt-4" id='btn-ctrl-2'>
                             <div class="col-2">
                                 <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $productId; ?>">Edit</a></button>
                             </div>
                             <div class="col-2">
                                 <button class="button3 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
                             </div>
-
                         </div>
 
                     </div>
@@ -208,7 +208,21 @@ $QuantityUnit   = new QuantityUnit;
         </div>
     <?php
     }
+
+
+    if($userType == 'USER'){
+        ?>
+        <script>    
+            document.getElementById('btn-ctrl-1').style.display = 'none';
+            document.getElementById('btn-ctrl-2').style.display = 'none';
+        </script>
+        <?php
+    }
     ?>
+
+
+
+
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <script>
         const setImg = (id) => {
