@@ -21,14 +21,16 @@ if ($showProducts->status) {
     $showProducts = $showProducts->data;
 
     foreach ($showProducts as $showProducts) {
-        echo "<div class='p-1 border-bottom list' id='$showProducts->product_id' onclick='searchProduct(this)'>
-            $showProducts->name
-        </div>
+        echo "<div class='p-1 border-bottom list'>
+                <div class='' id='$showProducts->product_id' onclick='searchProduct(this)'>
+                    $showProducts->name
+                </div>
 
-        <div>
-            <small>". $showProducts->comp_1 . " , " . $showProducts->comp_2 ."</small>
-        </div>";
-    }
+                <div>
+                    <small>" . $showProducts->comp_1 . " , " . $showProducts->comp_2 . "</small>
+                </div>
+            </div>";
+        }
 } else {
     // echo "<p class='text-center font-weight-bold'>manufacturerNot Found!</p>";
     echo "<div class='p-1 border-bottom list'> No data found </div>";

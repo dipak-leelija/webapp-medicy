@@ -135,6 +135,11 @@ $showDistributor = $showDistributor->data;
                                     <div class="col-md-6 col-12 ">
                                         <div class="row">
                                             <div class="d-none col-md-6 col-12">
+                                                <label class="mb-1 mt-3" for="select-item-div">Selected Item Div</label>
+                                                <input class="upr-inp mb-1" id="select-item-div" readonly>
+                                            </div>
+
+                                            <div class="d-none col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="stokInDetailsId">Stock In Detaisl Id :</label>
                                                 <input class="upr-inp mb-1" id="stokInDetailsId" readonly>
                                             </div>

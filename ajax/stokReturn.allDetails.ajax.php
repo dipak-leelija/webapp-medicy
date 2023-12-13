@@ -30,7 +30,7 @@ if (isset($_GET['current-stock-qty'])) {
         $ReturnFQty = $stockReturnDetails[0]['return_free_qty'];
     }
 
-    $currentData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId);
+    $currentData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
 
     echo ($currentData->qty - ($freeQty - $ReturnFQty) );
     // echo $stockInDetailsId;

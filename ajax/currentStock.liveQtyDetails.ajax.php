@@ -10,7 +10,7 @@ $CurrentStock = new CurrentStock();
 if (isset($_GET['currentQTY'])) {
     $stockInDetailsId = $_GET['currentQTY'];
 
-    $currentQty = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId);
+    $currentQty = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
     if($currentQty == null){
         $qty = 0;
     }else{
