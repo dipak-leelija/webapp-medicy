@@ -52,6 +52,15 @@ $Employees = new Employees;
             // $cnfPass = $_POST['cpassword'];
             $address = $_POST['address'];
 
+            // echo "<br>$fname";
+            // echo "<br>$lname";
+            // echo "<br>$imageName";
+            // echo "<br>$email";
+            // echo "<br>$phNo";
+            // echo "<br>$address";
+            // echo "<br>$employeeId";
+            // echo "<br>$adminId";
+            
 
             if ($_SESSION['ADMIN']) {
                 
@@ -64,7 +73,8 @@ $Employees = new Employees;
                 }
             } else {
 
-                $updateEmployeeData = $Employees->updateEmpData($fname . $lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
+                $updateEmployeeData = $Employees->updateEmpData($fname.' '.$lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
+
 
                 if ($updateEmployeeData['result']) {
 
@@ -78,7 +88,7 @@ $Employees = new Employees;
                 <script>
                     swal("Success", "Data Updated!", "success")
                         .then((value) => {
-                            window.location = '<?php echo LOCAL_DIR ?>profile.php';
+                            window.location = '<?php echo URL ?>profile.php';
                         });
                 </script>
             <?php
@@ -87,7 +97,7 @@ $Employees = new Employees;
                 <script>
                     swal("Error", "Updation Fails!", "error")
                         .then((value) => {
-                            window.location = '<?php echo LOCAL_DIR ?>profiles.php';
+                            window.location = '<?php echo URL ?>profiles.php';
                         });
                 </script>
     <?php
