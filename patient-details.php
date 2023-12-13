@@ -171,9 +171,9 @@ $occurrences = array_count_values($subTestNames);
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 shadow-sm">
-                                    <div class="row justify-content-between">
-                                        <div class="col-6 p-2">
-                                            <div class="d-flex justify-content-between">
+                                    <div class="">
+                                        <div class="p-2">
+                                            <div class="d-flex justify-content-around flex-wrap">
 
                                                 <div>
                                                     <table class="text-sm">
@@ -231,23 +231,27 @@ $occurrences = array_count_values($subTestNames);
                                             </div>
                                         </div>
 
-                                        <div class="col-5 p-2">
+                                        <!-- <div class="col-5 p-2">
                                             <canvas id="chart2" style="height: 167px; width: 100%;"></canvas>
-                                            <!-- <div id="no-data-msg" class="chart-msg" style="display:none;">No data found</div> -->
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
 
-                            <?php
-                            if (empty($subTestNames)) {
-                                echo " ";
-                            } else {
-                                echo "<div class='graph-Chart'>
-                                    <canvas id='myChart'>Most taken Tests</canvas>
-                                   </div>";
-                            }
-                            ?>
+                            <div class="scondrow d-flex justify-content-around pt-2 ">
+                                <div class=" w- 100 mt-2 p-2 rounded" >
+                                    <canvas id="chart2"></canvas>
+                                </div>
+                                <?php
+                                if (empty($subTestNames)) {
+                                    echo " ";
+                                } else {
+                                    echo "<div class='graph-Chart'>
+                                        <canvas id='myChart'>Most taken Tests</canvas>
+                                      </div>";
+                                }
+                                ?>
+                            </div>
                             <div class="table-div">
                                 <div class="left-table">
                                     <p>List Of Invoice</p>
@@ -317,12 +321,12 @@ $occurrences = array_count_values($subTestNames);
                                                         if (isset($reportIdMap[$patient_id])) {
                                                             $reportId = $reportIdMap[$patient_id];
                                             ?>
-                                                            <tr class="appointment-row"> 
+                                                            <tr class="appointment-row">
                                                                 <td><?= $bill_id ?></td>
                                                                 <td><?= $test_date ?></td>
                                                                 <td><a class="text-primary text-center" title="show" href="reprint-test-bill.php?bill_id=<?= $billID  ?>"><i class="fa fa-link" aria-hidden="true"></i></a></td>
                                                                 <td><a class="text-primary text-center" title="show" href="test-report-show.php?id=<?= $reportId ?>"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
-                                                               
+
                                                             </tr>
                                             <?php
                                                         }
@@ -407,7 +411,7 @@ $occurrences = array_count_values($subTestNames);
             data: {
                 labels: labels,
                 datasets: [{
-                    label:' Most taken Tests',
+                    label: ' Most taken Tests',
                     data: data,
                     backgroundColor: backgroundColors,
                     // borderColor: borderColors,
@@ -422,24 +426,24 @@ $occurrences = array_count_values($subTestNames);
         const labels2 = Object.keys(occurrenceschart2);
         const data2 = Object.values(occurrenceschart2);
 
-            new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: labels2,
-                    datasets: [{
-                        label: ' Most Purchased Medicine',
-                        data: data2,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    label: ' Most Purchased Medicine',
+                    data: data2,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
+            }
+        });
 
 
 
