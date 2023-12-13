@@ -153,13 +153,15 @@ $Gst = new Gst;
 
         <div class="col-12 d-flex justify-content-center container-fluid" style="min-height: 50vh; max-width: 100vh;">
 
-            <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="update-product-data-from-user">
+            <form action="_config\form-submission\update-new-product.php" enctype="multipart/form-data" method="post" id="update-product-data-from-user">
                 <!-- product name row -->
                 <div class="row">
                     <div class="col-12">
                         <div class="col-md-12">
                             <label class="mb-0 mt-1" for="product-name">Prodcut Name</label>
                             <input class="c-inp w-100 p-1" id="product-name" name="product-name" value="<?php echo $product[0]->name ?>" required>
+
+                            <input class="c-inp w-100 p-1" id="product-id" name="product-id" value="<?php echo $product[0]->product_id ?>" required hidden>
                         </div>
 
                     </div>
@@ -267,7 +269,7 @@ $Gst = new Gst;
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="col-sm-12 d-flex justify-content-center">
-                            <button class="btn btn-primary col-sm-12" name="add-new-product" id="add-new-product" type="submit">Update</button>
+                            <button class="btn btn-primary col-sm-12" name="update-new-product-data" id="update-new-product" type="submit">Update</button>
                         </div>
                     </div>
                 </div>

@@ -43,6 +43,7 @@ if ($_SESSION['ADMIN']) {
             $password = $adminData->password;
             $address = $adminData->address;
         }
+        
     }
 } else {
 
