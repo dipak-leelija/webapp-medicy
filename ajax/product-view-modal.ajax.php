@@ -90,8 +90,9 @@ $QuantityUnit   = new QuantityUnit;
         } else {
             $Images[] = "medicy-default-product-image.jpg";
         }
+        
         echo '<script>';
-        echo 'var productId = ' . json_encode($productId) . '; console.log("pID-"+productId)';
+        echo 'var productId = ' . json_encode($productId) . '; ';
         echo '</script>';
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);

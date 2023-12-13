@@ -199,7 +199,7 @@ if (isset($_GET['search'])) {
                                                                 <div class="row px-3 pb-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" onclick="viewItem(this)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" onclick="viewItem(this)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -247,8 +247,8 @@ if (isset($_GET['search'])) {
     <!-- End of Page Wrapper -->
 
     <!-- Product Modal -->
-    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="product-view-edit-modal" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal fade" id="productViewModal" tabindex="-1" aria-labelledby="product-view-edit-modal" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="product-view-edit-modal">View/Edit Product</h5>
@@ -256,7 +256,7 @@ if (isset($_GET['search'])) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body productModal">
+                <div class="modal-body productViewModal">
                     <!-- Product Details goes here by ajax  -->
                 </div>
             </div>
@@ -285,6 +285,29 @@ if (isset($_GET['search'])) {
     <script>
         var xmlhttp = new XMLHttpRequest();
 
+        // =============== modal size control funcion ==============
+        function changeModalSize(flag, modalId) {
+
+
+
+            let modal = document.getElementById(modalId);
+
+            if (modal) {
+                if (flag == 0) {
+                    modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
+
+                    modal.querySelector('.modal-dialog').classList.add('modal-md'); 
+                }
+
+                if (flag == 1) {
+                    modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
+
+                    modal.querySelector('.modal-dialog').classList.add('modal-xl'); 
+                }
+            }
+        }
+        // ================ end of modal size control =============
+
         // ========================== view and edit fucntion =========================
         const viewItem = (t) => {
             let prodId = t.id;
@@ -292,13 +315,14 @@ if (isset($_GET['search'])) {
 
             let url = '';
             if (verifiedValue == 0) {
-                console.log(verifiedValue);
+                changeModalSize('0', 'productViewModal');
                 url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId;
             } else {
+                changeModalSize('1', 'productViewModal');
                 url = 'ajax/product-view-modal.ajax.php?id=' + prodId;
             }
 
-            $(".productModal").html(
+            $(".productViewModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         }
