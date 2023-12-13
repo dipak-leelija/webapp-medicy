@@ -114,39 +114,42 @@ if (isset($_GET['search'])) {
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <!-- <div class="d-flex col-12"> -->
-                                    <div class="col-md-3 mt-2 p-2">
-                                        <h6 class="m-0 font-weight-bold text-primary">Total Items:
-                                            <?= $totalPtoducts ?>
-                                        </h6>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="col-md-7">
-                                            <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
+                                <div class="col-md-3 mt-2 p-2">
+                                    <h6 class="m-0 font-weight-bold text-primary">Total Items:
+                                        <?= $totalPtoducts ?>
+                                    </h6>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="col-md-7">
+                                        <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
 
-                                            <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
-                                                <div class="lists" id="lists">
-                                                    <?php
-                                                    if (!empty($productList->data) && is_array($productList->data)) {
-                                                        foreach ($productList->data as $eachProd) {
-                                                            // print_r($eachProd);
-                                                    ?>
-                                                            <div class="p-1 border-bottom list" id="<?= $eachProd->product_id ?>" onclick="searchProduct(this)">
+                                        <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
+                                            <div class="lists" id="lists">
+                                                <?php
+                                                if (!empty($productList->data) && is_array($productList->data)) {
+                                                    foreach ($productList->data as $eachProd) {
+                                                        // print_r($eachProd);
+                                                ?>
+                                                        <div class="p-1 border-bottom list">
+                                                            <div class="" id="<?= $eachProd->product_id ?>" onclick="searchProduct(this)">
                                                                 <?= $eachProd->name ?>
                                                             </div>
-                                                            <div>
+                                                            <div class="">
                                                                 <small><?= $eachProd->comp_1 ?> , <?= $eachProd->comp_2 ?></small>
                                                             </div>
-                                                    <?php
-                                                        }
+                                                        </div>
+
+                                                <?php
                                                     }
-                                                    ?>
-                                                </div>
+                                                }
+                                                ?>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <a class="btn btn-sm btn-primary" href="add-new-product.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
-                                        </div>
                                     </div>
+                                    <div class="col-md-2">
+                                        <a class="btn btn-sm btn-primary" href="add-new-product.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
+                                    </div>
+                                </div>
                                 <!-- </div> -->
                             </div>
                             <div class="card-body">
@@ -196,10 +199,7 @@ if (isset($_GET['search'])) {
                                                                 <div class="row px-3 pb-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item->product_id ?>"
-
-                                                                        value="<?php echo $item->verified ?>"
-                                                                        onclick="viewItem(this)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" onclick="viewItem(this)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -285,15 +285,16 @@ if (isset($_GET['search'])) {
     <script>
         var xmlhttp = new XMLHttpRequest();
 
+        // ========================== view and edit fucntion =========================
         const viewItem = (t) => {
             let prodId = t.id;
             let verifiedValue = t.value;
-            
+
             let url = '';
-            if(verifiedValue == 0){
+            if (verifiedValue == 0) {
                 console.log(verifiedValue);
                 url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId;
-            }else{
+            } else {
                 url = 'ajax/product-view-modal.ajax.php?id=' + prodId;
             }
 
@@ -301,7 +302,7 @@ if (isset($_GET['search'])) {
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         }
-
+        // === end of view and edit ==================================================
 
 
         // ========================== PRODUCT SEARCH START ===========================
