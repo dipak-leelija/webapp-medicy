@@ -185,7 +185,7 @@ if (isset($_GET['search'])) {
 
                                                 ?>
 
-                                                        <div class="item col-12 col-sm-6 col-md-3 " style="width: 100%;">
+                                                        <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                             <div class="card  mb-3 p-2" style="min-width: 14rem; min-height: 11rem;">
                                                                 <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="...">
                                                                 <div class="card-body">
