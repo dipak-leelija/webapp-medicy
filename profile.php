@@ -51,7 +51,8 @@ if ($_SESSION['ADMIN']) {
 
     if ($employeeDetails->status) {
         $employeeData = $employeeDetails->data;
-
+        $firstName = '';
+        $lastName  = '';
         foreach ($employeeData as $employeeData) {
 
             $empName = $employeeData->emp_name;
@@ -192,7 +193,7 @@ if ($_SESSION['ADMIN']) {
                                                 <input type="text" class="form-control " id="user-name" name="user-name" maxlength="24" value="<?= $userName; ?>" disabled>
                                             </div>
                                             <div class="form-group row">
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-6 mb-3">
                                                     <input type="email" class="form-control " id="email" name="email" maxlength="80" value="<?= $email; ?>">
                                                 </div>
                                                 <div class="col-sm-6">

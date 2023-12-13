@@ -320,7 +320,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
     <!-- Page level custom scripts -->
     <!-- <script src="js/demo/chart-area-demo.js"></script>
     
-
+   
      ======== CUSTOM JS FOR INDEX PAGE ======= -->
     <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 

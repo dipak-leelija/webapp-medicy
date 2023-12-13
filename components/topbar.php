@@ -159,9 +159,17 @@
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['ADMIN'] ? $_SESSION['ADMIN_FNAME'] : $_SESSION['EMP_NAME']; ?>
+                <!-- <span id = 'userText' class="mr-2 d-lg-inline text-gray-600 small"><?php echo $_SESSION['ADMIN'] ? $_SESSION['ADMIN_FNAME'] : $_SESSION['EMP_NAME']; ?> -->
+                <?php if ($_SESSION['ADMIN']) : 
+                     $imagePath = ADM_IMG_PATH . $adminImg;?>
+                    <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?php echo $_SESSION['ADMIN_FNAME']; ?></span>
+                    <img class="img-profile rounded-circle" src="<?= $imagePath ?>">
+                <?php else : $imagePath = ADM_IMG_PATH . $empImg ; ?>
+                    <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?php echo $_SESSION['EMP_NAME']; ?></span>
+                    <img class="img-profile rounded-circle" src="<?= $imagePath ?>">
+                <?php endif; ?>
 
-                    <img class="img-profile rounded-circle" src="<?= ASSETS_PATH ?>images/undraw_profile.svg">
+                <!-- <img class="img-profile rounded-circle" src="<?= ASSETS_PATH ?>images/undraw_profile.svg"> -->
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -173,10 +181,12 @@
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Settings
                 </a>
+                <?php if ($_SESSION['ADMIN']): ?>
                 <a class="dropdown-item" href="<?= URL . 'employees.php' ?>">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Employees
                 </a>
+                <?php endif ?>
                 <!-- <a class="dropdown-item" href="<?= URL . 'empRole.php' ?>">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Designations
