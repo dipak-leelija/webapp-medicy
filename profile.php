@@ -11,6 +11,7 @@ require_once CLASS_DIR . 'employee.class.php';
 require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'empRole.class.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 
 // echo $adminId;
 

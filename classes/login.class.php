@@ -64,7 +64,7 @@ class LoginForm extends DatabaseConnection{
                         $_SESSION['EMP_IMG']        = $data->emp_img;  
                         $_SESSION['EMP_ADDRESS']    = $data->emp_address;  
                         $_SESSION['EMP_USERNAME']   = $data->emp_username;
-                        $_SESSION['EMP_PASSWORD']   = $data->password;
+                        $_SESSION['EMP_PASSWORD']   = $data->emp_password;
                         $_SESSION['EMPID']          = $data->emp_id;
                         $_SESSION['ADMIN_ID']       = $data->admin_id;
 

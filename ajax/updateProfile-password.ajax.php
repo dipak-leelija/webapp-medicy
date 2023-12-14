@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['new-password'];
     $cnfPassword = $_POST['cnf-password'];
 
+
     if ($_SESSION['ADMIN']) {
         $oldAdminPass = $adminPass;
         $x_password = pass_dec($oldAdminPass, ADMIN_PASS);
@@ -41,26 +42,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
         }
-        
     } else {
+
         $oldEmpPass = $empPass;
         $x_password = pass_dec($oldEmpPass, EMP_PASS);
 
         if ($oldPassword === $x_password) {
-            if ($newPassword === $cnfPassword) {
-                $empPassUpdate = $Employees->updateEmployeePassword($newPassword, $employeeId, $adminId);
 
-                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            if ($newPassword === $cnfPassword) {
+
+                $empPassUpdate = $Employees->updateEmployeePassword($newPassword, $employeeId, $adminId);
+                // print_r($empPassUpdate);
+
+                if($empPassUpdate['result']){
+                    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                             <strong>Failed!</strong> password changed successfully!
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>';
-            } else {
+                } else {
                     echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> Inputed password dosenot matched!
+                            <strong>Failed!</strong> Update fail! Internal server error.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>';
                 }
-            
+                
+            } else {
+                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>Failed!</strong> Inputed password dosenot matched!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
+            }
         } else {
             echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong>Failed!</strong> Password Updation Failed!
