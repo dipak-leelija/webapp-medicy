@@ -39,6 +39,8 @@ $Employees = new Employees;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['submit'])) {
 
+            $flag = 0;
+
             $imageName         = $_FILES['profile-image']['name'];
             $tempImgName       = $_FILES['profile-image']['tmp_name'];
 
@@ -70,7 +72,10 @@ $Employees = new Employees;
 
                     $imgFolder = ADM_IMG_DIR . $imageName;
                     move_uploaded_file($tempImgName, $imgFolder);
+
+                    $flag = 1;
                 }
+
             } else {
 
                 $updateEmployeeData = $Employees->updateEmpData($fname.' '.$lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
@@ -80,10 +85,12 @@ $Employees = new Employees;
 
                     $imgFolder = EMP_IMG_DIR . $imageName;
                     move_uploaded_file($tempImgName, $imgFolder);
+
+                    $flag = 1;
                 }
             }
 
-            if ($updateAdminData['result'] || $updateEmployeeData['result']) {
+            if ($flag == 1) {
     ?>
                 <script>
                     swal("Success", "Data Updated!", "success")
