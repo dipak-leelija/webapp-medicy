@@ -19,7 +19,6 @@ $Manufacturer   = new Manufacturer();
 $CurrentStock   = new CurrentStock();
 $QuantityUnit   = new QuantityUnit;
 
-echo $userType;
 ?>
 
 <!DOCTYPE html>
