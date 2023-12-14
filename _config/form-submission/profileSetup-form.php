@@ -39,6 +39,8 @@ $Employees = new Employees;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['submit'])) {
 
+            $flag = 0;
+
             $imageName         = $_FILES['profile-image']['name'];
             $tempImgName       = $_FILES['profile-image']['tmp_name'];
 
@@ -52,6 +54,15 @@ $Employees = new Employees;
             // $cnfPass = $_POST['cpassword'];
             $address = $_POST['address'];
 
+            // echo "<br>$fname";
+            // echo "<br>$lname";
+            // echo "<br>$imageName";
+            // echo "<br>$email";
+            // echo "<br>$phNo";
+            // echo "<br>$address";
+            // echo "<br>$employeeId";
+            // echo "<br>$adminId";
+            
 
             if ($_SESSION['ADMIN']) {
                 
@@ -61,24 +72,30 @@ $Employees = new Employees;
 
                     $imgFolder = ADM_IMG_DIR . $imageName;
                     move_uploaded_file($tempImgName, $imgFolder);
+
+                    $flag = 1;
                 }
+
             } else {
 
-                $updateEmployeeData = $Employees->updateEmpData($fname . $lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
+                $updateEmployeeData = $Employees->updateEmpData($fname.' '.$lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
+
 
                 if ($updateEmployeeData['result']) {
 
                     $imgFolder = EMP_IMG_DIR . $imageName;
                     move_uploaded_file($tempImgName, $imgFolder);
+
+                    $flag = 1;
                 }
             }
 
-            if ($updateAdminData['result'] || $updateEmployeeData['result']) {
+            if ($flag == 1) {
     ?>
                 <script>
                     swal("Success", "Data Updated!", "success")
                         .then((value) => {
-                            window.location = '<?php echo LOCAL_DIR ?>profile.php';
+                            window.location = '<?php echo URL ?>profile.php';
                         });
                 </script>
             <?php
@@ -87,7 +104,7 @@ $Employees = new Employees;
                 <script>
                     swal("Error", "Updation Fails!", "error")
                         .then((value) => {
-                            window.location = '<?php echo LOCAL_DIR ?>profiles.php';
+                            window.location = '<?php echo URL ?>profiles.php';
                         });
                 </script>
     <?php
