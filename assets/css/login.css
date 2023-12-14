@@ -8,6 +8,14 @@ body{
     background-color:#fff;
 }
 
+.field-icon {
+    float: right;
+    margin-left: -25px;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+  }
+
 @media (min-width: 260px) and (max-width: 767.98px) {
     .main{
         width: 78%;

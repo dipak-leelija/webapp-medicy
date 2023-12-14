@@ -76,7 +76,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group ">
                 <label for="password">Password:</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="off">
+                <div>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="off">
+                    <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                </div>
             </div>
             <div class="form-group ">
                 <button class="btn btn-primary btn-s w-100" type="submit" name="login">Login</button>
@@ -104,6 +107,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 errorMessageDiv.innerHTML = ''; // Clear the error message when the user starts typing
                 errorMessageDiv.remove();
             });
+        });
+
+
+        // password view/hide 
+        $(".toggle-password").click(function() {
+
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
         });
     </script>
 
