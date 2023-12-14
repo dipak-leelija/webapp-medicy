@@ -96,6 +96,39 @@ class Products extends DatabaseConnection{
 
 
 
+    function updateProductByUser($productId, $prodName, $prodCategory, $prodPackageType, $prodPower, $prodUnit, $prodQantityPerUnit, $prodMrp, $prodGst, $prodHSNO, $employeeId, $updatedOn) {
+        try {
+            $updateProdData = "UPDATE products SET `name`=?, `type`=?, `packaging_type`=?, `power`=?, `unit`=?, `unit_quantity`=?, `mrp`=?, `gst`=?, `hsno_number`=?, `updated_by`=?, `updated_on`=? WHERE `product_id`=?";
+    
+            $stmt = $this->conn->prepare($updateProdData);
+    
+            if (!$stmt) {
+                throw new Exception("Error in preparing the SQL statement.");
+            }
+    
+            $stmt->bind_param("ssssssssssss", $prodName, $prodCategory, $prodPackageType, $prodPower, $prodUnit, $prodQantityPerUnit, $prodMrp, $prodGst, $prodHSNO, $employeeId, $updatedOn, $productId);
+    
+            if (!$stmt) {
+                throw new Exception("Error in binding parameters.");
+            }
+    
+            if ($stmt->execute()) {
+                $stmt->close();
+                return ['status' => '1', 'message' => 'success'];
+            } else {
+                throw ['status' => '0', 'message' => new Exception()];
+            }
+        } catch (Exception $e) {
+            return ['status' => ' ', 'message' => $e->getMessage()];
+        }
+    }
+    
+
+
+
+
+
+
 
     function showProducts(){
         $slectProduct   	 = "SELECT * FROM products";
