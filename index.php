@@ -109,7 +109,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
                     <!-- Content Row -->
                     <?php
-                    if ($userRole == 2 || $userRole == 'ADMIN') : ?>
+                    if ($userRole != 2 || $userRole == 'ADMIN') : ?>
                         <div class="row">
                             <!-- Earnings (Monthly) Card Example -->
                             <div class="col-xl-3 col-md-6 mb-4">
