@@ -99,17 +99,19 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
 
                     <!-- CONTENT USER DATA ROW -->
-                    <div class="row">
-                        <!-- Sold By Card  -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once ROOT_COMPONENT . "soldby.php"; ?>
+                    <?php
+                    if ($userRole != 2 || $userRole == 'ADMIN') : ?>
+                        <div class="row">
+                            <!-- Sold By Card  -->
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <?php require_once ROOT_COMPONENT . "soldby.php"; ?>
+                            </div>
                         </div>
-                    </div>
-
+                    <?php endif; ?>
 
                     <!-- Content Row -->
                     <?php
-                    if ($userRole != 2 || $userRole == 'ADMIN') : ?>
+                    if ($userRole != 1 || $userRole == 'ADMIN') : ?>
                         <div class="row">
                             <!-- Earnings (Monthly) Card Example -->
                             <div class="col-xl-3 col-md-6 mb-4">
@@ -192,97 +194,101 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                             </div>
                         </div>
                     <?php endif; ?>
-                    <!-- ================ THIRD ROW ================ -->
-                    <div class="row">
 
-                        <!-- Expiring in 3 Months Card -->
-                        <div class="col-xl-4 col-md-4 mb-4">
-                            <?php require_once ROOT_COMPONENT . "expiring.php"; ?>
-                        </div>
+                    <?php
+                    if ($userRole != 2 || $userRole == 'ADMIN') : ?>
+                        <!-- ================ THIRD ROW ================ -->
+                        <div class="row">
 
-                        <!----------- Sales of the day card ----------->
-                        <div class="col-xl-4 col-md-4 mb-4">
-                            <?php require_once ROOT_COMPONENT . "salesoftheday.php"; ?>
-                        </div>
+                            <!-- Expiring in 3 Months Card -->
+                            <div class="col-xl-4 col-md-4 mb-4">
+                                <?php require_once ROOT_COMPONENT . "expiring.php"; ?>
+                            </div>
 
-                        <!----------- Purchase today card ----------->
-                        <div class="col-xl-4 col-md-4 mb-4">
-                            <?php require_once ROOT_COMPONENT . "purchasedToday.php"; ?>
-                        </div>
+                            <!----------- Sales of the day card ----------->
+                            <div class="col-xl-4 col-md-4 mb-4">
+                                <?php require_once ROOT_COMPONENT . "salesoftheday.php"; ?>
+                            </div>
 
-                    </div>
-
-                    <!-- ================ FORTH ROW ROW ================ -->
-                    <div class="row">
-
-                        <div class="col-xl-6 col-md-6 mb-4">
-                            <?php require_once ROOT_COMPONENT . "mostsolditems.php"; ?>
-                        </div>
-                        <div class="col-xl-6 col-md-6 mb-4">
-                            <?php require_once ROOT_COMPONENT . "lesssolditems.php"; ?>
-                        </div>
-                        <br>
-                        <div class="col-xl-6 col-md-6 mb-4">
-                            <?php require_once ROOT_COMPONENT . "mostvisitedcustomer.php"; ?>
-                        </div>
-                        <br>
-                        <div class="col-xl-6 col-md-6 mb-4">
-                            <?php require_once ROOT_COMPONENT . "highestpurchasedcustomer.php"; ?>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once ROOT_COMPONENT . "mopdByAmount.php"; ?>
-                        </div>
-
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <?php require_once ROOT_COMPONENT . "mopdByItems.php"; ?>
-                        </div>
-
-                    </div>
-
-                    <!-- ================== SECOND ROW ================== -->
-                    <div class="row">
-
-                        <!------------- SALES MARGIN CARD -------------->
-                        <!-- <div class="col-xl-6 col-md-12"> -->
-                        <?php //require_once ROOT_COMPONENT . "salesmargin.php"; 
-                        ?>
-                        <!-- </div> -->
-                        <!------------- END of SALES MARGIN CARD -------------->
-
-                        <div class="col-xl-6 col-md-6">
-                            <!------------- NEEDS TO COLLECT PAYMENTS -------------->
-                            <?php require_once ROOT_COMPONENT . "needstocollect.php"; ?>
-                            <!------------- END NEEDS TO COLLECT PAYMENTS -------------->
+                            <!----------- Purchase today card ----------->
+                            <div class="col-xl-4 col-md-4 mb-4">
+                                <?php require_once ROOT_COMPONENT . "purchasedToday.php"; ?>
+                            </div>
 
                         </div>
 
-                        <div class="col-xl-6 col-md-6">
-                            <!------------- NEEDS TO PAY  -------------->
-                            <?php require_once ROOT_COMPONENT . "needtopay.php"; ?>
-                            <!------------- END NEEDS TO PAY  -------------->
-                        </div>
+                        <!-- ================ FORTH ROW ROW ================ -->
+                        <div class="row">
 
-                    </div>
-                    <!-- ================ END SECOND ROW ================ -->
-
-                    <!-- ================ STRAT THIRD ROW ================ -->
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6">
-                            <!-- Current Stock Quantity & MRP  -->
-                            <?php require_once ROOT_COMPONENT . "stock-qty-mrp.php"; ?>
-                        </div>
-                        <div class="col-xl-9 col-md-6">
-                            <!------------- Stock Summary -------------->
-                            <?php require_once ROOT_COMPONENT . "stock-summary.php"; ?>
-                            <!------------- end Stock Summary -------------->
+                            <div class="col-xl-6 col-md-6 mb-4">
+                                <?php require_once ROOT_COMPONENT . "mostsolditems.php"; ?>
+                            </div>
+                            <div class="col-xl-6 col-md-6 mb-4">
+                                <?php require_once ROOT_COMPONENT . "lesssolditems.php"; ?>
+                            </div>
+                            <br>
+                            <div class="col-xl-6 col-md-6 mb-4">
+                                <?php require_once ROOT_COMPONENT . "mostvisitedcustomer.php"; ?>
+                            </div>
+                            <br>
+                            <div class="col-xl-6 col-md-6 mb-4">
+                                <?php require_once ROOT_COMPONENT . "highestpurchasedcustomer.php"; ?>
+                            </div>
 
                         </div>
-                    </div>
-                    <!-- ================ END OF THIRD ROW ================ -->
+
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <?php require_once ROOT_COMPONENT . "mopdByAmount.php"; ?>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <?php require_once ROOT_COMPONENT . "mopdByItems.php"; ?>
+                            </div>
+
+                        </div>
+
+                        <!-- ================== SECOND ROW ================== -->
+                        <div class="row">
+
+                            <!------------- SALES MARGIN CARD -------------->
+                            <!-- <div class="col-xl-6 col-md-12"> -->
+                            <?php //require_once ROOT_COMPONENT . "salesmargin.php"; 
+                            ?>
+                            <!-- </div> -->
+                            <!------------- END of SALES MARGIN CARD -------------->
+
+                            <div class="col-xl-6 col-md-6">
+                                <!------------- NEEDS TO COLLECT PAYMENTS -------------->
+                                <?php require_once ROOT_COMPONENT . "needstocollect.php"; ?>
+                                <!------------- END NEEDS TO COLLECT PAYMENTS -------------->
+
+                            </div>
+
+                            <div class="col-xl-6 col-md-6">
+                                <!------------- NEEDS TO PAY  -------------->
+                                <?php require_once ROOT_COMPONENT . "needtopay.php"; ?>
+                                <!------------- END NEEDS TO PAY  -------------->
+                            </div>
+
+                        </div>
+                        <!-- ================ END SECOND ROW ================ -->
+
+                        <!-- ================ STRAT THIRD ROW ================ -->
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <!-- Current Stock Quantity & MRP  -->
+                                <?php require_once ROOT_COMPONENT . "stock-qty-mrp.php"; ?>
+                            </div>
+                            <div class="col-xl-9 col-md-6">
+                                <!------------- Stock Summary -------------->
+                                <?php require_once ROOT_COMPONENT . "stock-summary.php"; ?>
+                                <!------------- end Stock Summary -------------->
+
+                            </div>
+                        </div>
+                        <!-- ================ END OF THIRD ROW ================ -->
+                    <?php endif; ?>
 
                 </div>
                 <!-- /.container-fluid -->
