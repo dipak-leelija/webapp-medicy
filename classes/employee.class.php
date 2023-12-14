@@ -209,7 +209,7 @@ class Employees extends DatabaseConnection
         $password = pass_enc($newPass, EMP_PASS);
 
         try{
-            $updateEmpPass = "UPDATE `employees` SET `password`=? WHERE `emp_id `=? AND `admin_id`=?";
+            $updateEmpPass = "UPDATE `employees` SET `emp_password`=? WHERE `emp_id`=? AND `admin_id`=?";
 
             $stmt = $this->conn->prepare($updateEmpPass);
     
