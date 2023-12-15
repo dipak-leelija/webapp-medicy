@@ -40,49 +40,13 @@ $Gst = new Gst;
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <!-- new features added -->
     <link href="<?php echo CSS_PATH ?>add-new-product.css" rel="stylesheet">
-    <style>
-        #main-img {
-            animation: show .5s ease;
-        }
-
-        @keyframes show {
-            0% {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-
-        .height-4 {
-            height: 3rem;
-        }
-
-        .ob-cover {
-            width: 100%;
-            object-fit: cover;
-        }
-
-        #main-img {
-            width: 18rem;
-            height: 20rem;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
 </head>
 
 <body>
     <?php
     if (isset($_GET['id'])) {
 
-        $productId = $_GET['id'];
+        $productId      = $_GET['id'];
         $product        = json_decode($Products->showProductsById($_GET['id']));
         $product        = $product->data;
         // print_r($product);
@@ -91,10 +55,10 @@ $Gst = new Gst;
         $prodCategoryList = $prodCategory->data;
 
         if ($product[0]->type != null) {
-            
+
             if ($product[0]->type == 'allopathy') {
                 $prodCategoryId = '1';
-                $prodCategoryName = 'allopathy';
+                $prodCategoryName = 'Allopathy';
             } else {
                 $prodType = json_decode($ProductCategory->selectAllProdCategoryById($product[0]->type));
                 $prodType = $prodType->data;
@@ -153,7 +117,7 @@ $Gst = new Gst;
 
         <div class="col-12 d-flex justify-content-center container-fluid" style="min-height: 50vh; max-width: 100vh;">
 
-            <form action="_config\form-submission\update-new-product.php" enctype="multipart/form-data" method="post" id="update-product-data-from-user">
+        <form action="../_config/form-submission/update-new-product-data.php" enctype="multipart/form-data" method="post" id="update-new-product-data">
                 <!-- product name row -->
                 <div class="row">
                     <div class="col-12">
@@ -167,14 +131,14 @@ $Gst = new Gst;
                     </div>
                 </div>
 
-                <!-- product hsno and category row -->
+                <!-- product packeging and category row -->
                 <div class="row mt-2">
                     <div class="d-flex col-12">
                         <div class="col-md-6">
                             <label class="mb-0 mt-1" for="product-catagory">Prodcut Catagory</label>
                             <select class="c-inp p-1 w-100" name="product-catagory" id="product-catagory" required>
 
-                                <option value='<?php echo $prodCategoryId; ?>' disabled selected><?php echo $prodCategoryName; ?></option>
+                                <option value='<?php echo $prodCategoryId; ?>'><?php echo $prodCategoryName; ?></option>
 
                                 <?php
 
@@ -189,9 +153,10 @@ $Gst = new Gst;
                         </div>
 
                         <div class="col-md-6">
+                            
                             <label class="mb-0 mt-1" for="packeging-type">Packeging In</label>
                             <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
-                                <option value="<?php echo $product[0]->unit_id ?>"> <?php echo $pack[0]['unit_name']; ?></option>
+                                <option value="<?php echo $product[0]->packaging_type ?>"> <?php echo $pack[0]['unit_name']; ?></option>
                                 <?php
                                 foreach ($packetUnit as $eachPackUnit) {
                                     echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
@@ -203,7 +168,7 @@ $Gst = new Gst;
                     </div>
                 </div>
 
-                <!-- catagory - packging - power and unit row  -->
+                <!-- power and unit row  -->
                 <div class="row mt-2">
                     <div class="d-flex col-12">
                         <div class="col-md-6">
@@ -214,7 +179,7 @@ $Gst = new Gst;
                         <div class="col-md-6">
                             <label class="mb-0 mt-1" for="unit">Unit</label>
                             <select class="c-inp p-1 w-100" id="unit" name="unit" required>
-                                <option value='<?php $product[0]->unit ?>'><?php echo $itemUnitName ?></option>
+                                <option value="<?php echo $product[0]->unit ?>"><?php echo $itemUnitName ?></option>
                                 <?php
                                 foreach ($itemUnit as $eachUnit) {
                                     echo "<option value='" . $eachUnit['id'] . "'>" . $eachUnit['name'] . "</option>";
@@ -227,7 +192,7 @@ $Gst = new Gst;
                     </div>
                 </div>
 
-                <!-- catagory - packging - power and unit row  -->
+                <!-- qantity and mrp row  -->
                 <div class="row mt-2">
                     <div class="d-flex col-12">
                         <div class="col-md-6">
@@ -242,13 +207,13 @@ $Gst = new Gst;
                     </div>
                 </div>
 
-                <!-- mrp, gst and hsno number row  -->
+                <!-- gst and hsno number row  -->
                 <div class="row mt-4">
                     <div class="col-md-12 d-flex">
                         <div class="col-sm-6">
                             <label class="mb-0 mt-1" for="gst">Enter GST</label>
-                            <select class="c-inp p-1 w-100" name="gst" id="gst" required>
-                                <option value="<?php echo $prevGstId ?>" disabled selected><?php echo $prevGstVal ?></option>
+                            <select class="c-inp p-1 w-100" name="gst-percent" id="gst-percent" required>
+                                <option value="<?php echo $prevGstId ?>"><?php echo $prevGstVal ?></option>
                                 <?php
                                 if (is_array($gstData)) {
                                     foreach ($gstData as $gstPercent) {
@@ -267,10 +232,8 @@ $Gst = new Gst;
                 </div>
 
                 <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="col-sm-12 d-flex justify-content-center">
-                            <button class="btn btn-primary col-sm-12" name="update-new-product-data" id="update-new-product" type="submit">Update</button>
-                        </div>
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <button class="btn btn-primary col-sm-12" name="update-new-product-data" id="update-new-product-data" type="submit">Add</button>
                     </div>
                 </div>
             </form>
@@ -279,25 +242,8 @@ $Gst = new Gst;
     <?php
     }
     ?>
-
-    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
-
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
-
-    <script>
-        // let prodCategory = document.getElementById('product-catagory');
-        // prodCategory.value = <?= $product[0]->unit_id ?>
-
-        // let packagingIn = document.getElementById('packeging-type');
-        // packagingIn.value = <?= $product[0]->unit_id ?>
-        // packagingIn.innerHTML = <?= $pack[0]->unit_name ?>
-
-        // let prodCategory = document.getElementById('gst');
-        // prodCategory.value = <?= $product[0]->gst ?>
-        // prodCategory.innerHTML = <?= $product[0]->gst ?>
-    </script>
 </body>
 
 </html>

@@ -97,6 +97,7 @@ if (isset($_POST['register'])) {
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>register.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
 </head>
 
@@ -131,7 +132,7 @@ if (isset($_POST['register'])) {
 
                         <div class="form-group">
                             <input type="email" class="form-control form-control-user" id="email" name="email"
-                                maxlength="80" placeholder="Email Address">
+                                maxlength="80" placeholder="Email Address" onfocusout="verifyEmail()">
                         </div>
 
                         <div class="form-group">
@@ -218,8 +219,13 @@ if (isset($_POST['register'])) {
     <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
+    <!-- custom script for register.php -->
+    <script src="<?= JS_PATH ?>adminRegistration.js"></script>
+
+
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="assets/js/sweetalert2/sweetalert2.all.min.js"></script>
 
 </body>
 

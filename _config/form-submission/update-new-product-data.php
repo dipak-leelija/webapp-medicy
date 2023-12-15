@@ -7,21 +7,6 @@ require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'measureOfUnit.class.php';
 
-$Products       = new Products();
-$ProductImages  = new ProductImages();
-$Unit           = new MeasureOfUnits();
-$Session        = new SessionHandler();
-
-?>
-
-<?php
-require_once dirname(dirname(__DIR__)) . '/config/constant.php';
-require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once CLASS_DIR . 'dbconnect.php';
-require_once CLASS_DIR . 'products.class.php';
-require_once CLASS_DIR . 'productsImages.class.php';
-require_once CLASS_DIR . 'measureOfUnit.class.php';
-
 $Products      = new Products();
 $ProductImages = new ProductImages();
 $Unit = new MeasureOfUnits();
@@ -35,24 +20,26 @@ $Session = new SessionHandler();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Product</title>
+    <title>Update New Product Data</title>
     <script src="<?php echo JS_PATH ?>sweetAlert.min.js"></script>
 </head>
 
 <body>
-    <div>
-    </div>
     <?php
 
     if (isset($_POST['update-new-product-data'])) {
 
+        $productId          = $_POST['product-id'];
+        $prodName           = $_POST['product-name'];
+        $prodCategory       = $_POST['product-catagory'];
+        $prodPackageType    = $_POST['packeging-type'];
+        $prodPower          = $_POST['medicine-power'];
+        $prodUnit           = $_POST['unit'];
+        $prodQantityPerUnit = $_POST['qantity-unit'];
+        $prodMrp            = $_POST['mrp'];
+        $prodGst            = $_POST['gst-percent'];
+        $prodHSNO           = $_POST['hsno-number'];
 
-        echo "hello";
-
-        
-
-
-        // echo "<br>PRODUCT ID : $productId";
         // echo "<br>PRODUCT NAME : $prodName";
         // echo "<br>PRODUCT HSNO NUMBER : $hsnoNumber";
         // echo "<br>PRODUCT CATAGORY : $prodCategory";
@@ -63,17 +50,16 @@ $Session = new SessionHandler();
         // echo "<br>MRP : $mrp";
         // echo "<br>GST : $gst<br>";
 
-        //Insert into products table 
-        // $addProducts = $Products->addProductByUser($productId, $prodName, $hsnoNumber, $prodCategory, $medicinePower, $qantityUnit, $packegingUnit, $packegingType, $mrp, $gst, $employeeId, NOW, $adminId);
+        //update data in products table 
+        $updateProduct = $Products->updateProductByUser($productId, $prodName, $prodCategory, $prodPackageType, $prodPower, $prodUnit, $prodQantityPerUnit, $prodMrp, $prodGst, $prodHSNO, $employeeId, NOW);
 
-        $addProducts = true;
+        if($updateProduct['status']){
 
-        if ($addProducts === true) {
     ?>
             <script>
                 swal("Success", "Product Added!", "success")
                     .then((value) => {
-                        window.location = '<?php echo LOCAL_DIR ?>add-new-product.php';
+                        parent.location.reload();
                     });
             </script>
         <?php
@@ -82,7 +68,7 @@ $Session = new SessionHandler();
             <script>
                 swal("Error", "Product Not Added!", "error")
                     .then((value) => {
-                        window.location = '<?php echo LOCAL_DIR ?>add-new-product.php';
+                        parent.location.reload();
                     });
             </script>
     <?php

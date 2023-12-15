@@ -78,7 +78,7 @@ $Session = new SessionHandler();
         //Insert into products table 
         $addProducts = $Products->addProductByUser($productId, $prodName, $hsnoNumber, $prodCategory, $medicinePower, $qantityUnit, $packegingUnit, $packegingType, $mrp, $gst, $employeeId, NOW, $adminId);
 
-        print_r($addProducts);
+        // print_r($addProducts);
 
         if ($addProducts === true) {
     ?>
