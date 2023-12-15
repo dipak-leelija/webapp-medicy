@@ -6,11 +6,9 @@ use PHPMailer\PHPMailer\Exception;
 
 require_once ROOT_DIR."vendor/autoload.php";
 
-require_once ROOT_DIR."PHPMailer/Exception.php";
-require_once ROOT_DIR."PHPMailer/PHPMailer.php";
-require_once ROOT_DIR."PHPMailer/SMTP.php";
-
-
+require_once ROOT_DIR."vendor/phpmailer/PHPMailer.php";
+require_once ROOT_DIR."vendor/phpmailer/PHPMailer.php";
+require_once ROOT_DIR."vendor/phpmailer/SMTP.php";
 
 
 class MailVerification extends DatabaseConnection
@@ -70,6 +68,7 @@ class MailVerification extends DatabaseConnection
             <a href="'.LOCAL_DIR.'verify.php?email='.$email.'&vCode='.$code.'">Verify</a>';
 
             $mail->send();
+            echo 'Message has been sent.';
             return true;
 
         } catch (Exception $e) {
