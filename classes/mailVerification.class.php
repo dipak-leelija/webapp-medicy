@@ -4,18 +4,13 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require_once ROOT_DIR."vendor/autoload.php";
 
-require_once ROOT_DIR."PHPMailer/Exception.php";
-require_once ROOT_DIR."PHPMailer/PHPMailer.php";
-require_once ROOT_DIR."PHPMailer/SMTP.php";
-
-
-
+require_once "../PHPMailer/PHPMailer.php";
+require_once "../PHPMailer/SMTP.php";
+require_once "../PHPMailer/Exception.php";
 
 class MailVerification extends DatabaseConnection
 {
-
 
     function addVerifyToken($email, $token, $status)
     {
@@ -43,40 +38,39 @@ class MailVerification extends DatabaseConnection
 
 
 
-    function sendMail($email,$code)
+    function sendMail($email, $code)
     {
+       
         $mail = new PHPMailer(true);
 
         try {
             //Server settings
             $mail->SMTPDebug    = SMTP::DEBUG_SERVER;
-            $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'leelijawebsolutions@gmail.com';                     //SMTP username
-            $mail->Password   = 'Password@123';                               //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'leelijawebsolutions@gmail.com';
+            $mail->Password   = 'Password@123';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
 
-            //Recipients
-            $mail->setFrom('roodro.leelija@gmail.com', 'MEDICY.IN');
-            $mail->addAddress($email);     //Add a recipient
+            $mail->setFrom('leelijawebsolutions@gmail.com', 'MEDICY');
+            $mail->addAddress($email);
 
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
             $mail->Subject = 'Email Verification from MEDICY MASTER';
             $mail->Body    = 'Thanks for registration!
             Click the link below to verify the emil address 
-            <a href="'.LOCAL_DIR.'verify.php?email='.$email.'&vCode='.$code.'">Verify</a>';
+            <a href="' . LOCAL_DIR . 'verify.php?email=' . $email . '&vCode=' . $code . '">Verify</a>';
 
             $mail->send();
+            echo 'Message has been sent.';
             return true;
-
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             return $e->getMessage();
             return false;
         }
     }
-
-} 
+}

@@ -136,8 +136,8 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group">
-                            <input type="number" class="form-control form-control-user" id="mobile-number"
-                                name="mobile-number" placeholder="Mobile Number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" oninput="javascript: if (this.value.length > this.minLength) this.value = this.value.slice(0, this.minLength);" minlength="10" required >
+                            <input type="text" class="form-control form-control-user" id="mobile-number"
+                                name="mobile-number" placeholder="Mobile Number" onfocusout="validateMobileNumber()" maxlength="9" required>
                         </div>
 
                         <div class="form-group row">

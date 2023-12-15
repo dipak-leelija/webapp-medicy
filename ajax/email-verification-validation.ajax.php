@@ -32,12 +32,3 @@ if (isset($_POST['chekExistance'])) {
 }
 
 
-
-
-if (isset($_POST['verifyMail'])) {
-
-    echo $_POST['verifyMail'];
-
-
-    
-}
