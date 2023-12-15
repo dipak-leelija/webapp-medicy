@@ -254,7 +254,51 @@ $itemUnits          = $ItemUnit->showItemUnits();
                     <div class="card shadow mb-4 h-100">
                         <div class="card-body">
                             <form action="<?= htmlspecialchars(CURRENT_URL); ?>" method="post" enctype="multipart/form-data">
-                                <div class="d-flex">
+                                <div class="d-flex flex-wrap">
+
+                                <div class="col-md-5">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="border p-1 rounded">
+                                                    <div class="row h-75 mt-2 justify-content-center">
+                                                        <?php foreach ($allImg as $index => $imagePath) : ?>
+                                                            <div class="col-2 border m-1 p-0">
+                                                                <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class=" ob-cover h-100" alt="...">
+
+                                                                <?php foreach ($allImgId as $idIndex => $imageID) : ?>
+                                                                    <?php if ($idIndex === $index) : ?>
+                                                                        <input class="form-check-input mt-5 ml-n5" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                                                        <button type="button" class="btn-close position-absolute rounded border bg-danger text-white mt-n3 ml-n3" aria-label="Close" onclick="closeImage('<?php echo $imageID; ?>', '<?php echo $imagePath; ?>', <?php echo $index; ?>)">x</button>
+                                                                    <?php endif; ?>
+                                                                <?php endforeach; ?>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                </div>
+                                                <div id="img-div">
+                                                    <div class="container-fluid" id="img-container">
+                                                        <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
+                                                        <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
+                                                        <p id="num-of-files">No files chosen</p>
+                                                        <div>
+                                                            <div id="images">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/End Product Image Row  -->
+                                        <br>
+                                        <!-- <div class="row"> -->
+                                            <div class="col-md-12 d-flex justify-content-end">
+                                                <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
+                                                <button class="btn btn-primary" name="update-product" id="update-btn" type="submit">Update</button>
+                                            </div>
+
+                                        <!-- </div> -->
+                                    </div>
                                     <div class="col-md-7">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -393,50 +437,6 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
                                         <div class="col-md-12 mt-4">
                                             <textarea class="c-inp w-100 p-1" name="product-description" id="product-description" placeholder="Product Description" cols="30" rows="3"><?= $dsc ?></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-5">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="border p-1 rounded">
-                                                    <div class="row h-75 mt-2 justify-content-center">
-                                                        <?php foreach ($allImg as $index => $imagePath) : ?>
-                                                            <div class="col-2 border m-1 p-0">
-                                                                <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class=" ob-cover h-100" alt="...">
-
-                                                                <?php foreach ($allImgId as $idIndex => $imageID) : ?>
-                                                                    <?php if ($idIndex === $index) : ?>
-                                                                        <input class="form-check-input mt-5 ml-n5" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                                                        <button type="button" class="btn-close position-absolute rounded border bg-danger text-white mt-n3 ml-n3" aria-label="Close" onclick="closeImage('<?php echo $imageID; ?>', '<?php echo $imagePath; ?>', <?php echo $index; ?>)">x</button>
-                                                                    <?php endif; ?>
-                                                                <?php endforeach; ?>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                    </div>
-                                                </div>
-                                                <div id="img-div">
-                                                    <div class="container-fluid" id="img-container">
-                                                        <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
-                                                        <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
-                                                        <p id="num-of-files">No files chosen</p>
-                                                        <div>
-                                                            <div id="images">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--/End Product Image Row  -->
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
-                                                <button class="btn btn-primary" name="update-product" id="update-btn" type="submit">Update</button>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>

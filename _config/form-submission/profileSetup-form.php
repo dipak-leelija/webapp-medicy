@@ -66,6 +66,12 @@ $Employees = new Employees;
             if (!empty($_FILES['profile-image']['name'])) {
                 if ($_SESSION['ADMIN']) {
 
+                    // Delete the previous image
+                    $prevImage = $_SESSION['ADMIN_IMG'];
+                    if (!empty($prevImage) && file_exists(ADM_IMG_DIR . $prevImage)) {
+                        unlink(ADM_IMG_DIR . $prevImage);
+                    }
+
                     $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $email, $phNo,  $address, NOW, $adminId);
 
                     if ($updateAdminData['result']) {
@@ -77,8 +83,12 @@ $Employees = new Employees;
                     }
                 } else {
 
+                    $prevImage = $_SESSION['EMP_IMG']; 
+                    if(!empty($prevImage) && file_exists(EMP_IMG_DIR . $prevImage)){
+                        unlink(EMP_IMG_DIR . $prevImage);
+                    }
+                    
                     $updateEmployeeData = $Employees->updateEmpData($fname . ' ' . $lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
-
 
                     if ($updateEmployeeData['result']) {
 
