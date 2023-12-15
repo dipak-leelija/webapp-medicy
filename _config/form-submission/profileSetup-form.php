@@ -39,8 +39,6 @@ $Employees = new Employees;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['submit'])) {
 
-            $flag = 0;
-
             $imageName         = $_FILES['profile-image']['name'];
             $tempImgName       = $_FILES['profile-image']['tmp_name'];
 
@@ -62,31 +60,47 @@ $Employees = new Employees;
             // echo "<br>$address";
             // echo "<br>$employeeId";
             // echo "<br>$adminId";
-            
 
-            if ($_SESSION['ADMIN']) {
-                
-                $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $email, $phNo,  $address, NOW, $adminId);
+            $flag = 0;
 
-                if ($updateAdminData['result']) {
+            if (!empty($_FILES['profile-image']['name'])) {
+                if ($_SESSION['ADMIN']) {
 
-                    $imgFolder = ADM_IMG_DIR . $imageName;
-                    move_uploaded_file($tempImgName, $imgFolder);
+                    $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $email, $phNo,  $address, NOW, $adminId);
 
-                    $flag = 1;
+                    if ($updateAdminData['result']) {
+
+                        $imgFolder = ADM_IMG_DIR . $imageName;
+                        move_uploaded_file($tempImgName, $imgFolder);
+                        $_SESSION['ADMIN_IMG'] = $imageName;
+                        $flag = 1;
+                    }
+                } else {
+
+                    $updateEmployeeData = $Employees->updateEmpData($fname . ' ' . $lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
+
+
+                    if ($updateEmployeeData['result']) {
+
+                        $imgFolder = EMP_IMG_DIR . $imageName;
+                        move_uploaded_file($tempImgName, $imgFolder);
+                        $_SESSION['EMP_IMG'] = $imageName;
+                        $flag = 1;
+                    }
                 }
-
             } else {
-
-                $updateEmployeeData = $Employees->updateEmpData($fname.' '.$lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
-
-
-                if ($updateEmployeeData['result']) {
-
-                    $imgFolder = EMP_IMG_DIR . $imageName;
-                    move_uploaded_file($tempImgName, $imgFolder);
-
-                    $flag = 1;
+                if ($_SESSION['ADMIN']) {
+                    $imageName = $_SESSION['ADMIN_IMG'];
+                    $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $email, $phNo,  $address, NOW, $adminId);
+                    if ($updateAdminData['result']) {
+                        $flag = 1;
+                    }
+                } else {
+                    $imageName = $_SESSION['EMP_IMG'];
+                    $updateEmployeeData = $Employees->updateEmpData($fname . ' ' . $lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
+                    if ($updateEmployeeData['result']) {
+                        $flag = 1;
+                    }
                 }
             }
 
@@ -104,7 +118,7 @@ $Employees = new Employees;
                 <script>
                     swal("Error", "Updation Fails!", "error")
                         .then((value) => {
-                            window.location = '<?php echo URL ?>profiles.php';
+                            window.location = '<?php echo URL ?>profile.php';
                         });
                 </script>
     <?php
