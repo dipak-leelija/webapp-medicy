@@ -332,19 +332,6 @@ if ($_SESSION['ADMIN']) {
             }
         }
 
-        function updateButtonContent() {
-            var button = document.getElementById("passwordChangeBtn");
-
-            if (window.innerWidth < 784) {
-                button.innerHTML = '<span><i class="fas fa-key"></span>'; 
-                button.onclick = passwordUpdate; 
-            } else {
-                button.innerHTML = 'Password Change';
-                button.onclick = passwordUpdate; 
-            }
-        }
-        updateButtonContent();
-        window.addEventListener("resize", updateButtonContent);
     </script>
 
 
@@ -356,6 +343,21 @@ if ($_SESSION['ADMIN']) {
                 '<iframe width="100%" height="220px" frameborder="0" allowtransparency="true" src="' +
                 url + '" scrolling="no"></iframe>');
         }
+
+
+        function updateButtonContent() {
+            var button = document.getElementById("passwordChangeBtn");
+
+            if (window.innerWidth < 784) {
+                button.innerHTML = '<span><i class="fas fa-key"></span>'; 
+                button.onclick = passwordUpdate(); 
+            } else {
+                button.innerHTML = 'Password Change';
+                button.onclick = passwordUpdate(); 
+            }
+        }
+        updateButtonContent();
+        window.addEventListener("resize", updateButtonContent);
     </script>
 
 </body>
