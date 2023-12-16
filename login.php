@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group ">
                 <label for="password">Password:</label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="off">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="off">
             </div>
             <div class="form-group ">
                 <button class="btn btn-primary btn-s w-100" type="submit" name="login">Login</button>
@@ -94,18 +94,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var errorMessageDiv = document.getElementById('errorMessage');
 
             var usernameInput = document.getElementById('username');
-            usernameInput.addEventListener('input', function() {
-                errorMessageDiv.innerHTML = ''; // Clear the error message when the user starts typing
-                errorMessageDiv.remove();
-            });
-
             var passwordInput = document.getElementById('password');
-            passwordInput.addEventListener('input', function() {
-                errorMessageDiv.innerHTML = ''; // Clear the error message when the user starts typing
-                errorMessageDiv.remove();
-            });
-        });
+            if (errorMessageDiv) {
+                usernameInput.addEventListener('input', function() {
+                    errorMessageDiv.innerHTML = '';
+                    errorMessageDiv.remove();
+                });
 
+                passwordInput.addEventListener('input', function() {
+                    errorMessageDiv.innerHTML = '';
+                    errorMessageDiv.remove();
+                });
+            }
+        });
     </script>
 
     <!-- Bootstrap core JavaScript-->
