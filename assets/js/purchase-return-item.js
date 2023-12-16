@@ -13,7 +13,7 @@ rtnFreeQty.addEventListener('input', function (event) {
 
 //////////////////// set distributor name /////////////////////
 
-const distributorInput = document.getElementById("distributor-id");
+const distributorInput = document.getElementById("distributor-name");
 const dropdown = document.getElementsByClassName("c-dropdown")[0];
 
 distributorInput.addEventListener("focus", () => {
@@ -64,58 +64,59 @@ distributorInput.addEventListener("keyup", () => {
 });
 
 
+////////////////////////////////////////////////////////////////////
+var xmlhttp = new XMLHttpRequest();
+// ================ SELECTING DISTRIBUTOR ==================
 const setDistributor = (t) => {
     let distributirId = t.id.trim();
     let distributirName = t.innerHTML.trim();
 
     document.getElementById("dist-id").value = distributirId;
     document.getElementById("dist-name").value = distributirName;
-    document.getElementById("distributor-id").value = distributirName;
+    document.getElementById("distributor-name").value = distributirName;
 
     document.getElementsByClassName("c-dropdown")[0].style.display = "none";
 
-    getBillList(distributirId);
+    console.log(distributirId);
+
+    // if (document.getElementById("dist-id-check").value != '') {
+    //     if (document.getElementById("dist-id-check").value != document.getElementById("dist-id").value) {
+    //         alert('you have change distributor');
+    //         window.location.reload();
+    //     } else {
+    //         getItemList(distributirId);
+    //     }
+    // }
+
+    getItemList(distributirId);
 }
 
 
-////////////////////////////////////////////////////////////////////
-
-const getBillList = (distributirId) => {
-    let id = distributirId;
-    // console.log("DIST ID FOR BILL LIST : " + id);
-
-    var xmlhttp = new XMLHttpRequest();
-    let distIdUrl = `ajax/return-distributor-bill-list.ajax.php?dist-id=${id}`;
-    xmlhttp.open("GET", distIdUrl, false);
-    xmlhttp.send(null);
-    document.getElementById("select-bill").innerHTML = xmlhttp.responseText;
-    // console.log(xmlhttp.responseText);
-    document.getElementById("dist-id").value = id;
-    // document.getElementById("dist-name").value = distributirName;
-    document.getElementById("select-bill").style.display = "block";
-}
 
 
-const getItemList = (distId, billNo) => {
-    // console.log("dist id : "+distId, "bill no : "+billNo);
-    document.getElementById("select-bill-no").value = billNo;
-    document.getElementById("select-bill").style.display = "none";
-    let distBillNoCheck = document.getElementById("dist-bill-no").value;
+// ===================== get distributor bill number ======================
+// const getBillList = (distributirId) => {
+//     let id = distributirId;
+//     // console.log("DIST ID FOR BILL LIST : " + id);
 
-    if (distBillNoCheck == "") {
-        document.getElementById("dist-bill-no").value = billNo;
-    }
+//     var xmlhttp = new XMLHttpRequest();
+//     let distIdUrl = `ajax/return-distributor-bill-list.ajax.php?dist-id=${id}`;
+//     xmlhttp.open("GET", distIdUrl, false);
+//     xmlhttp.send(null);
+//     document.getElementById("select-bill").innerHTML = xmlhttp.responseText;
+//     // console.log(xmlhttp.responseText);
+//     document.getElementById("dist-id").value = id;
+//     // document.getElementById("dist-name").value = distributirName;
+//     document.getElementById("select-bill").style.display = "block";
+// }
 
-    if (distBillNoCheck != "") {
-        if (billNo != distBillNoCheck) {
-            swal("Oops", "Distributor bill no changed!", "error");
-            window.location.reload();
-        }
 
-    }
 
-    var xmlhttp = new XMLHttpRequest();
-    let billNoUrl = `ajax/return-item-list.ajax.php?bill-no=${billNo}&dist-id=${distId}`;
+
+// ======= fetch items data ===========
+const getItemList = (distId) => {
+
+    let billNoUrl = `ajax/return-item-list.ajax.php?dist-id=${distId}`;
     xmlhttp.open("GET", billNoUrl, false);
     xmlhttp.send(null);
     document.getElementById("product-select").innerHTML = xmlhttp.responseText;
@@ -124,9 +125,12 @@ const getItemList = (distId, billNo) => {
     document.getElementById("dist-id").value = distId;
 
     document.getElementById("product-select").style.display = "block";
-    document.getElementById("select-bill").style.display = "none";
+    // document.getElementById("select-bill").style.display = "none";
 
 }
+
+
+
 
 // item search
 function searchItem(input) {
@@ -152,7 +156,7 @@ const setMode = (returnMode) => {
     document.getElementById("refund-mode").value = returnMode;
 }
 
-const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, billdate, t) => {
+const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, billdate, billNumber, t) => {
 
     document.getElementById('return-mode').focus();
 
@@ -160,6 +164,7 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
     document.getElementById('stockInId').value = stockInId;
     document.getElementById('stokInDetailsId').value = stokInDetialsId;
     document.getElementById('batch-number').value = batchNo;
+    document.getElementById('bill-number').value = billNumber;
     document.getElementById('product-name').value = productName;
     document.getElementById('bill-date').value = billdate;
 
@@ -167,6 +172,16 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
     if (productId != "") {
 
         document.getElementById("product-id").value = productId;
+
+
+        //==================== MFD Date ====================
+        let mfdUrl = `ajax/stockIn.all.ajax.php?stock-mfd=${stokInDetialsId}`;
+        // alert(expUrl);
+        xmlhttp.open("GET", mfdUrl, false);
+        xmlhttp.send(null);
+        document.getElementById("mfd-date").value = xmlhttp.responseText;
+        // alert(xmlhttp.responseText);
+
 
         //==================== Expiry Date ====================
         let expUrl = `ajax/stockIn.all.ajax.php?stock-exp=${stokInDetialsId}`;
@@ -400,7 +415,7 @@ const getRefund = (returnQty) => {
 function addData() {
 
     let seletedItemDiv = document.getElementById('select-item-div').value;
-    var distId = document.getElementById("distributor-id");
+    var distId = document.getElementById("distributor-name");
     //var billNumber = document.getElementById("bill-number");
     var stokInDetailsId = document.getElementById("stokInDetailsId");
     var batchNumber = document.getElementById("batch-number");
@@ -575,7 +590,7 @@ function addData() {
     //////////////////// onclik handler data \\\\\\\\\\\\\\\\\\\
     var divElement = document.getElementById(seletedItemDiv);
     originalClickHandler = divElement.onclick;
-    
+
     // =========================================================
 
 
@@ -755,7 +770,7 @@ function addData() {
 
 // ======= item onclick disable and enablel function ========
 const disableOnClickFunction = (divId) => {
-    
+
     let divElement = document.getElementById(divId);
 
     if (divElement) {
@@ -764,11 +779,11 @@ const disableOnClickFunction = (divId) => {
 
 } // eof item onclik disable 
 
-const divOnclikActive = (divId, handelerData) =>{
-    
+const divOnclikActive = (divId, handelerData) => {
+
     // console.log(divId.id);
     // console.log(handelerData);
-    
+
     let divElement = document.getElementById(divId.id);
 
     if (divElement) {

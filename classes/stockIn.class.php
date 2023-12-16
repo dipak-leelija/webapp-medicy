@@ -213,7 +213,6 @@ class StockIn extends DatabaseConnection
 
 
     // ============== stock in select query by col ===========
-
     function stockInByAttributeByTable($table, $data)
     {
         try {
@@ -242,12 +241,41 @@ class StockIn extends DatabaseConnection
             }
         }
     }
-
-
     // ============================================================
 
+    // =========== stock in select query for purchase return ================
+    // function stockInDataOnQtyFilter($table, $data)
+    // {
+    //     try {
+    //         $ShowData = array();
+    //         $select = "SELECT * FROM stock_in WHERE `` = ?"
+    //         $stmt = $this->conn->prepare($select);
+
+    //         $stmt->bind_param("s", $data);
+
+    //         $stmt->execute();
+
+    //         $result = $stmt->get_result();
+
+    //         while ($row = $result->fetch_assoc()) {
+    //             $ShowData[] = $row;
+    //         }
+
+    //         $stmt->close();
+
+    //         return $ShowData;
+    //     } catch (Exception $e) {
+    //         if ($e) {
+    //             echo "Error: " . $e->getMessage();
+    //         } else {
+    //             return null;
+    //         }
+    //     }
+    // }
 
 
+
+    
 
 
     // =================== purchase today data by date range ==================
@@ -356,16 +384,18 @@ class StockIn extends DatabaseConnection
 
 
 
-    function showStockInByTables($table1, $table2, $table3, $table4, $data1, $data2, $data3, $data4)
-    {
-        $data   = array();
-        $select = "SELECT * FROM stock_in WHERE `$table1`= '$data1' AND `$table2`= '$data2' AND `$table3`= '$data3' AND `$table4`= '$data4'";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showStockInByTable function
+
+
+    // function showStockInByTables($table1, $table2, $table3, $table4, $data1, $data2, $data3, $data4)
+    // {
+    //     $data   = array();
+    //     $select = "SELECT * FROM stock_in WHERE `$table1`= '$data1' AND `$table2`= '$data2' AND `$table3`= '$data3' AND `$table4`= '$data4'";
+    //     $selectQuery = $this->conn->query($select);
+    //     while ($result = $selectQuery->fetch_array()) {
+    //         $data[] = $result;
+    //     }
+    //     return $data;
+    // } //eof showStockInByTable function
 
 
 
@@ -408,16 +438,7 @@ class StockIn extends DatabaseConnection
     } //eof stockInByDate function
 
 
-    function stockInColumns($col, $data1, $col2, $data2)
-    {
-        // $data   = array();
-        $select = "SELECT * FROM stock_in WHERE `$col`= '$data1' AND `$col2`= '$data2'";
-        $selectQuery = $this->conn->query($select);
-        // while ($result = $selectQuery->fetch_array()) {
-        //     $data[] = $result;
-        // }
-        return $selectQuery;
-    }
+   
 
     function stockIndataOnBillno($distributorId, $billNo)
     {
@@ -431,12 +452,14 @@ class StockIn extends DatabaseConnection
     } //eof stockInByDist function
 
 
+
+    
     function needsToPay($adminId=''){
         $data = array();
     
         try {
             if (!empty($adminId)) {
-                // Use prepared statements to prevent SQL injection
+
                 $sql = "SELECT * FROM stock_in WHERE `payment_mode` = 'Credit' AND admin_id = ?";
             }else{
                 $sql = "SELECT * FROM stock_in WHERE `payment_mode` = 'Credit'";
