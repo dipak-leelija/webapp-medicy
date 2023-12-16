@@ -102,7 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         
             for ($i=0; $i < $ids; $i++) { 
-                $currentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]);
+                $currentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]));
+                // print_r($currentStockData);
                     $wholeQty = $currentStockData->qty;
                     $looseQty = $currentStockData->loosely_count;
                     // echo "<br><br>current stock loose count : $looseQty";
