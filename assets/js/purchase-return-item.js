@@ -415,16 +415,19 @@ const getRefund = (returnQty) => {
 function addData() {
 
     let seletedItemDiv = document.getElementById('select-item-div').value;
+    
     var distId = document.getElementById("distributor-name");
     //var billNumber = document.getElementById("bill-number");
     var stokInDetailsId = document.getElementById("stokInDetailsId");
     var batchNumber = document.getElementById("batch-number");
+    var billNumber = document.getElementById("bill-number");
     var billDate = document.getElementById("bill-date");
     var returnMode = document.getElementById("return-mode");
 
     var productId = document.getElementById("product-id");
     var productName = document.getElementById('product-name').value;
 
+    var mfdDate = document.getElementById("mfd-date");
     var expDate = document.getElementById("exp-date");
     var weatage = document.getElementById("weatage");
     var unit = document.getElementById("unit");
@@ -591,6 +594,7 @@ function addData() {
     var divElement = document.getElementById(seletedItemDiv);
     originalClickHandler = divElement.onclick;
 
+    let flag = 0;
     // =========================================================
 
 
@@ -599,7 +603,7 @@ function addData() {
         jQuery("#dataBody")
             .append(`<tr id="table-row-${slControl}">
                     <td  style="color: red;">
-                        <i class="fas fa-trash pt-3" onclick='deleteData(${slControl}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value}, ${seletedItemDiv}, ${originalClickHandler})'></i>
+                        <i class="fas fa-trash pt-3" onclick='deleteData(${slControl}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value}, ${seletedItemDiv}, ${originalClickHandler}, ${flag})'></i>
                     </td>
                     <td id="row-${slControl}-col-2" style="font-size:.8rem ; padding-top:1.5rem"scope="row">${slno}</td>
                     <td class="d-none p-0 pt-3">
@@ -674,13 +678,20 @@ function addData() {
         ///////////////////////////////////////////////////////////////////////////////////
 
         const dataTuple = {
+
+            seletedItemDiv: seletedItemDiv,
+            originalClickHandler: originalClickHandler,
+
+
             slno: slControl,
             stokInDetailsId: stokInDetailsId.value,
             productId: productId.value,
             productName: productName,
             batchNumber: batchNumber.value,
+            billNumber: billNumber.value,
 
             billDate: billDate.value,
+            mfdDate: mfdDate.value,
             expDate: expDate.value,
             weatage: weatage.value,
             unit: unit.value,
@@ -793,7 +804,7 @@ const divOnclikActive = (divId, handelerData) => {
 }
 // ================================ Delet Data ================================
 
-const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerData) => {
+const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerData, flag) => {
 
     let delRow = slno;
 
@@ -828,8 +839,11 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerDat
     }
 
     rowAdjustment(delRow);
+    // console.log(divId);
 
-    divOnclikActive(divId, handelerData);
+    if(flag == 0){
+        divOnclikActive(divId, handelerData);
+    }
 }
 
 
@@ -854,12 +868,17 @@ const editItem = (tData) => {
 
     if (document.getElementById('product-id').value == '') {
         var tData = JSON.parse(tData);
+        console.log(tData);
+
+        document.getElementById("select-item-div").value = tData.divId;
 
         document.getElementById("stokInDetailsId").value = tData.stokInDetailsId;
+        document.getElementById("bill-number").value = tData.billNumber;
         document.getElementById("batch-number").value = tData.batchNumber;
         document.getElementById("product-id").value = tData.productId;
         document.getElementById('product-name').value = tData.productName;
         document.getElementById("bill-date").value = tData.billDate;
+        document.getElementById("mfd-date").value = tData.mfdDate;
         document.getElementById("exp-date").value = tData.expDate;
 
         document.getElementById("weatage").value = tData.weatage;
@@ -883,9 +902,9 @@ const editItem = (tData) => {
         document.getElementById("return-free-qty").value = tData.returnFreeQty;
         document.getElementById("refund-amount").value = tData.refundAmount;
 
-
+        let flag = 1;
         let itemQty = parseInt(tData.returnQty) + parseInt(tData.returnFreeQty);
-        deleteData(tData.slno, itemQty, tData.RtrnGstAmount, tData.refundAmount);
+        deleteData(tData.slno, itemQty, tData.RtrnGstAmount, tData.refundAmount, tData.divId, tData.handelerData, flag);
     } else {
         swal("Error", "Add or remove Previous data first.", "error");
     }
