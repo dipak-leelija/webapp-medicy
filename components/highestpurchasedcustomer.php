@@ -17,41 +17,45 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 ?>
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-end px-2">
-        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostPurchaseCustomerDtPkr" style="display: none;">
-            <input type="date" id="mostPurchseCustomerDt">
-            <button class="btn btn-sm btn-primary" onclick="mostPurchaseCustomerByDt()" style="height: 2rem;">Find</button>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="col ml-2 mt-3">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                highest purchse 10 customer</div>
         </div>
-        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostPurchseCustomerDtPkrRng" style="display: none;">
-            <label>Start Date</label>
-            <input type="date" id="mostPurchseCustomerStartDate">
-            <label>End Date</label>
-            <input type="date" id="mostPurchseCustomerEndDate">
-            <button class="btn btn-sm btn-primary" onclick="mostPurchaseCustomerDateRange()" style="height: 2rem;">Find</button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <b>...</b>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
-                <button class="dropdown-item" type="button" id="maxPurchaseCustomerLst24hrs" onclick="maxPurchaseCustomer(this.id)">Last 24 hrs</button>
-                <button class="dropdown-item" type="button" id="maxPurchaseCustomerLst7" onclick="maxPurchaseCustomer(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="maxPurchaseCustomerLst30" onclick="maxPurchaseCustomer(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item dropdown" type="button" id="maxPurchaseCustomerByDt" onclick="maxPurchaseCustomer(this.id)">By Date</button>
-                <button class="dropdown-item dropdown" type="button" id="maxPurchaseCustomerByDtRng" onclick="maxPurchaseCustomer(this.id)">By Range</button>
+        <div class="d-flex justify-content-end px-2">
+            <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostPurchaseCustomerDtPkr" style="display: none;">
+                <input type="date" id="mostPurchseCustomerDt">
+                <button class="btn btn-sm btn-primary" onclick="mostPurchaseCustomerByDt()" style="height: 2rem;">Find</button>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostPurchseCustomerDtPkrRng" style="display: none;">
+                <label>Start Date</label>
+                <input type="date" id="mostPurchseCustomerStartDate">
+                <label>End Date</label>
+                <input type="date" id="mostPurchseCustomerEndDate">
+                <button class="btn btn-sm btn-primary" onclick="mostPurchaseCustomerDateRange()" style="height: 2rem;">Find</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <b>...</b>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
+                    <button class="dropdown-item" type="button" id="maxPurchaseCustomerLst24hrs" onclick="maxPurchaseCustomer(this.id)">Last 24 hrs</button>
+                    <button class="dropdown-item" type="button" id="maxPurchaseCustomerLst7" onclick="maxPurchaseCustomer(this.id)">Last 7 Days</button>
+                    <button class="dropdown-item" type="button" id="maxPurchaseCustomerLst30" onclick="maxPurchaseCustomer(this.id)">Last 30 DAYS</button>
+                    <button class="dropdown-item dropdown" type="button" id="maxPurchaseCustomerByDt" onclick="maxPurchaseCustomer(this.id)">By Date</button>
+                    <button class="dropdown-item dropdown" type="button" id="maxPurchaseCustomerByDtRng" onclick="maxPurchaseCustomer(this.id)">By Range</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="card-body pb-0">
+    <div class="card-body mt-n2 pb-0">
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    highest purchse 10 customer</div>
                 <div style="width: 100%; margin: 0 auto;" id="highestPurchaseCustomerChartDiv">
                     <canvas id="highestPurchaseCustomerChart"></canvas>
                 </div>
                 <div style="width: 100%; margin: 0 auto; display:none" id="most-purchase-no-data-found-div">
-                    <label> NO DATA FOUND </label>
+                <p class="text-warning">Oops!, the requested data isn't in our records.</p>
                 </div>
             </div>
         </div>
@@ -60,9 +64,6 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
 
 <script>
-    
-
-
     // =========== most purchase customer chart override function body ==========
     function mostPurchaseCustomerDataFunction(mostPurchaseCustomerData) {
 
@@ -100,13 +101,13 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
     function mostPurchaseCustomerByDt() {
 
         var mostPurchaseCustomerDtPick = document.getElementById('mostPurchseCustomerDt').value;
-        
+
         var mostPrchsCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostPrchsCstmrByDt=${mostPurchaseCustomerDtPick}`;
         xmlhttp.open("GET", mostPrchsCstmrDtUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
         var mostPurchaseCustomerDataByDate = xmlhttp.responseText;
-        
+
         mostPurchaseCustomerDataFunction(JSON.parse(mostPurchaseCustomerDataByDate));
 
         document.getElementById('mostPurchaseCustomerDtPkr').style.display = 'none';

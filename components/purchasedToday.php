@@ -78,7 +78,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
                 </div>
             </div>
             <div class="col-auto  mt-n3" id="pod-no-data-found-div" style="display: none;">
-                <label>NO DATA FOUND</label>
+            <p class="text-warning">Oops!, the requested data isn't in our records.</p>
             </div>
         </div>
     </div>

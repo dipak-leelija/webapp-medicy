@@ -17,44 +17,46 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 ?>
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-end px-2">
-        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostSoldDtPickerDiv" style="display: none; margin-right:1rem;">
-            <input type="date" id="mostSoldDateInput">
-            <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDate()" style="height: 2rem;">Find</button>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="col ml-2 mt-3">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                most sold 10 items</div>
         </div>
-        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostSoldDtRngPickerDiv" style="display: none; margin-right:1rem; ">
-            <label>Start Date</label>
-            <input type="date" id="mostSoldStarDate">
-            <label>End Date</label>
-            <input type="date" id="mostSoldEndDate">
-            <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDateRng()" style="height: 2rem;">Find</button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
+        <div class="d-flex justify-content-end px-2">
+            <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostSoldDtPickerDiv" style="display: none; margin-right:1rem;">
+                <input type="date" id="mostSoldDateInput">
+                <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDate()" style="height: 2rem;">Find</button>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostSoldDtRngPickerDiv" style="display: none; margin-right:1rem; ">
+                <label>Start Date</label>
+                <input type="date" id="mostSoldStarDate">
+                <label>End Date</label>
+                <input type="date" id="mostSoldEndDate">
+                <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDateRng()" style="height: 2rem;">Find</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
 
-                <b>...</b>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
-                <button class="dropdown-item" type="button" id="mostSoldLst24hrs" onclick="mostStoldItemCheck(this.id)">Last 24 hrs</button>
-                <button class="dropdown-item" type="button" id="mostSoldLst7" onclick="mostStoldItemCheck(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="mostSoldLst30" onclick="mostStoldItemCheck(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDt" onclick="mostStoldItemCheck(this.id)">By Date</button>
-                <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDtRng" onclick="mostStoldItemCheck(this.id)">By Range</button>
+                    <b>...</b>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
+                    <button class="dropdown-item" type="button" id="mostSoldLst24hrs" onclick="mostStoldItemCheck(this.id)">Last 24 hrs</button>
+                    <button class="dropdown-item" type="button" id="mostSoldLst7" onclick="mostStoldItemCheck(this.id)">Last 7 Days</button>
+                    <button class="dropdown-item" type="button" id="mostSoldLst30" onclick="mostStoldItemCheck(this.id)">Last 30 DAYS</button>
+                    <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDt" onclick="mostStoldItemCheck(this.id)">By Date</button>
+                    <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDtRng" onclick="mostStoldItemCheck(this.id)">By Range</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="card-body pb-0">
+    <div class="card-body mt-n2 pb-0">
         <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    most sold 10 items</div>
-            </div>
-            <div style="width: 100%; margin: 0 auto;" id = 'mostsolditemchartDiv'>
+            <div style="width: 100%; margin: 0 auto;" id='mostsolditemchartDiv'>
                 <canvas id="mostsolditemchart"></canvas>
             </div>
-            <div style="width: 100%; margin: 0 auto;" id = 'mostsolditemNDFDiv'>
-                <label>NO DATA FOUND</label>
+            <div style="width: 100%; margin: 0 auto;" id='mostsolditemNDFDiv'>
+                <p class="text-warning">Oops!, the requested data isn't in our records.</p>
             </div>
         </div>
     </div>
@@ -63,11 +65,10 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
 <script>
-
     // ====== most sold chart data override function =========
     function updateMostSoldData(mostSold) {
 
-        if(mostSold != null){
+        if (mostSold != null) {
 
             mostSoldChart.data.datasets[0].data = mostSold.map(item => item.total_sold);
 
@@ -97,7 +98,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
 
 
-    function mostSoldItemsChkDate(){
+    function mostSoldItemsChkDate() {
         var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
 
         var xmlhttp = new XMLHttpRequest();
@@ -106,7 +107,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
         var mostSoldDataByDate = xmlhttp.responseText;
-        
+
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
 
         document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
@@ -116,7 +117,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
 
 
-    function mostSoldItemsChkDateRng(){
+    function mostSoldItemsChkDateRng() {
         var mostSoldStarDate = document.getElementById('mostSoldStarDate').value;
         var mostSoldEndDate = document.getElementById('mostSoldEndDate').value;
 
@@ -127,7 +128,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         xmlhttp.send(null);
 
         var mostSoldDataByDate = xmlhttp.responseText;
-    
+
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
 
         document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
@@ -135,7 +136,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
     }
 
 
-    
+
 
     function mostStoldItemCheck(id) {
         if (id == 'mostSoldLst24hrs') {
@@ -156,7 +157,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
             document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
             updateMostSoldData(<?php echo json_encode($monthlyMostStoldItems); ?>);
         }
-        
+
         if (id == 'mostSoldOnDt') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'block';
             // document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
@@ -172,8 +173,8 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
     // ========= most sold item primary data area ============= \\
     var mostSoldDataFromStart = <?php echo json_encode($mostStoldItemsFromStart); ?>;
 
-    if(mostSoldDataFromStart != null){
-       
+    if (mostSoldDataFromStart != null) {
+
         var productIds = mostSoldDataFromStart.map(item => item.product_id);
         productIds = JSON.stringify(productIds);
         var dataToSend = `mostSoldProdId=${productIds}`;
@@ -195,7 +196,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         document.getElementById('mostsolditemchartDiv').style.display = 'none'
         document.getElementById('mostsolditemNDFDiv').style.display = 'block'
     }
-    
+
 
     // =============  most sold item bar chart area =============
     var mostSoldChartCtx = document.getElementById('mostsolditemchart').getContext('2d');
