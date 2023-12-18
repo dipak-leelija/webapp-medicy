@@ -93,6 +93,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
+    <link href="<?php echo CSS_PATH ?>login.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
 </head>
 
 <body>
@@ -103,13 +105,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <div class="form-group mb-3">
-            <input type="password" class="form-control " id="old-password" name="old-password" maxlength="12" placeholder="Current Password" required>
+            <input type="password" class="form-control " id="old-password" name="old-password" maxlength="12" placeholder="Current Password" required oninput="showToggleBtn1()">
+            <button type="button" class=" btn btn-success btn-sm m-0 p-0 rounded btnfocus" id="toggleBtn1" style="display:none;" onclick="togglePassword1()"><i class="fas fa-eye"></i></button>
         </div>
         <div class="form-group  mb-3">
-            <input type="password" class="form-control " id="new-password" name="new-password" maxlength="12" placeholder="Enter New Password" required>
+            <input type="password" class="form-control " id="new-password" name="new-password" maxlength="12" placeholder="Enter New Password" required oninput="showToggleBtn2()">
+            <button type="button" class=" btn btn-success btn-sm m-0 p-0 rounded btnfocus" id="toggleBtn2" style="display:none;" onclick="togglePassword2()"><i class="fas fa-eye"></i></button>
         </div>
         <div class="form-group mb-3 ">
-            <input type="password" class="form-control " id="cnf-password" name="cnf-password" maxlength="12" placeholder="Confirm Password" required>
+            <input type="password" class="form-control " id="cnf-password" name="cnf-password" maxlength="12" placeholder="Confirm Password" required oninput="showToggleBtn3()">
+            <button type="button" class=" btn btn-success btn-sm m-0 p-0 rounded btnfocus" id="toggleBtn3" style="display:none;" onclick="togglePassword3()"><i class="fas fa-eye"></i></button>
             <small>
                 <p id="cpasserror" class="text-danger" style="display: none;"></p>
             </small>
@@ -129,6 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
     <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
+    <script src="<?= JS_PATH ?>password-show-hide.js"></script>
 
 
     <!-- <script>
@@ -164,6 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         } //eof getEditUpdates
     </script> -->
+
 </body>
 
 </html>
