@@ -109,7 +109,7 @@
             default:
                 echo "<br>default case";
         }
-        // print_r($data);
+        print_r($data);
     }
 ?>
 
@@ -144,8 +144,8 @@
         </thead>
         <tbody>
             <?php
-
-            if ($data) {
+            $data = json_decode($data);
+            if ($data->status) {
                 // print_r($data);
                 foreach ($data as $row) { 
                     
@@ -155,7 +155,8 @@
                     }
 
                     $distId = $row['distributor_id'];
-                    $distributorData = $Distributor->showDistributorById($distId);
+                    $distributorData = json_decode($Distributor->showDistributorById($distId));
+                    $distributorData = $distributorData->data;
                     // print_r($distData);
                     foreach($distributorData as $distData){
                         $distName = $distData['name'];

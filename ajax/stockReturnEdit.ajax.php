@@ -48,29 +48,30 @@ foreach($stockReturnDetailsData as $stockReturn){
 
 $stockReturnData = json_encode($stockReturnDetailsData);
 //==========================fetching data from stock_return table=================================
-$stockReturn = $StockReturnEdit->showStockReturnById($StockReturnId);
+$stockReturn = json_decode($StockReturnEdit->showStockReturnById($StockReturnId));
+$stockReturn = $stockReturn->data;
 
 foreach($stockReturn as $stocks){
-    $DistributorId   =   $stocks['distributor_id'];
-    $BillNo = $stocks['bill_no'];
-    $ReturnDate      =   $stocks['return_date'];
-    $RefundMode      =   $stocks['refund_mode'];
-    $Items           =   $stocks['items'];
-    $TotalQTY        =   $stocks['total_qty'];
-    $GSTamount       =   $stocks['gst_amount'];
-    $refundMode      =   $stocks['refund_mode'];
-    $NetRefundAmount =   $stocks['refund_amount'];
+    $DistributorId   =   $stocks->distributor_id;
+    $ReturnDate      =   $stocks->return_date;
+    $RefundMode      =   $stocks->refund_mode;
+    $Items           =   $stocks->items;
+    $TotalQTY        =   $stocks->total_qty;
+    $GSTamount       =   $stocks->gst_amount;
+    $refundMode      =   $stocks->refund_mode;
+    $NetRefundAmount =   $stocks->refund_amount;
 }
 
 //$stockReturn = json_encode($stockReturn);
 //===============================================================================================
 
 //==========================fetching data from distributor table==================================
-$distributorDetails = $DistributorDetails ->showDistributorById($DistributorId);
+$distributorDetails = json_decode($DistributorDetails ->showDistributorById($DistributorId));
+$distributorDetails = $distributorDetails->data;
 
 foreach($distributorDetails as $distributor){
-    $distributorName    =   $distributor['name'];
-    $distributorId      =   $distributor['id'];
+    $distributorName    =   $distributor->name;
+    $distributorId      =   $distributor->id;
 }
 
 // $distributorDetails = json_encode($distributorDetails);
@@ -85,18 +86,6 @@ foreach($productDetails as $products){
 }
 
 $productDetails = json_encode($productDetails);
-//===============================================================================================
-
-//===============================================================================================
-
-//==========================fetchin data from stock in table=====================================
-$stockIn = $StockIn->showStockInById($BillNo);
-
-    foreach($stockIn as $stock){
-        $stockInBillDate    =   $stock['bill_date'];
-    }
-
-//$stockIn = json_encode($stockIn);
 //===============================================================================================
 
 //================================fetchin data from current stock================================
@@ -126,7 +115,6 @@ $stockReturnDetailsDataArry = array(
                                     "product_Name"              =>  $productName,
                                     "batch_no"                  =>  $BatchNo,
 
-                                    "bill_date"                 =>  $stockInBillDate,
                                     "return_date"               =>  $ReturnDate,
                                     "exp_date"                  =>  $ExpDate,
                                     "unit"                      =>  $Unit,

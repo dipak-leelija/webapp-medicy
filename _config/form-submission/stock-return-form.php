@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // echo "<br>admin : "; print_r($Admin); echo gettype($Admin);
         // echo "<br><br><br>";
     
-        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $distBillNo, $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $addedBy, $addedOn, $Admin);
+        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $addedBy, $addedOn, $Admin);
         
         $returnResult = $returned['result'];
 

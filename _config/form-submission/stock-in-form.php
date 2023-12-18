@@ -30,11 +30,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $distributorId        = intval($_POST['distributor-id']);
         $distributorName      = $_POST['distributor-name'];
        
-        $distributorDetial = $distributor->showDistributorById($distributorId);
+        $distributorDetial = json_decode($distributor->showDistributorById($distributorId));
+        $distributorDetial = $distributorDetial->data;
         foreach ($distributorDetial as $distDeta) {
-            $distAddress        = $distDeta['address'];
-            $distPIN            = $distDeta['area_pin_code'];
-            $distContact        = $distDeta['phno'];
+            $distAddress        = $distDeta->address;
+            $distPIN            = $distDeta->area_pin_code;
+            $distContact        = $distDeta->phno;
         }
 
         $updtBatchNoArry    = $_POST['batchNo'];
