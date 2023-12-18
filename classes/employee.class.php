@@ -101,10 +101,10 @@ class Employees extends DatabaseConnection
                 $stmt->close();
                 return json_encode(['status' => '1', 'message' => 'success', 'data' => $empData]);
             }else{
-                return json_encode(['status' => '0', 'message' => '', 'data' => '']);
+                return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
         }
     }
 

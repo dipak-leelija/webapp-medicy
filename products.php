@@ -366,13 +366,13 @@ if (isset($_GET['search'])) {
             let searchVal = document.getElementById("prodcut-search").value;
 
             if (searchVal.length > 2) {
-
+                console.log(searchVal);
                 let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
                 xmlhttp.open("GET", manufURL, false);
                 xmlhttp.send(null);
 
                 list.innerHTML = xmlhttp.responseText;
-
+                document.getElementById('product-list').style.display = 'block';
             } else if (searchVal == '') {
 
                 searchVal = 'all';
@@ -382,12 +382,13 @@ if (isset($_GET['search'])) {
                 xmlhttp.send(null);
                 // console.log();
                 list.innerHTML = xmlhttp.responseText;
-
+                document.getElementById('product-list').style.display = 'block';
             } else {
-
+                document.getElementById('product-list').style.display = 'none';
                 list.innerHTML = '';
                 // productsDropdown.style.display = "none";
             }
+            console.log(xmlhttp.responseText);
         });
 
         //================================================================
@@ -414,17 +415,10 @@ if (isset($_GET['search'])) {
 
             let storedProdName = localStorage.getItem('prodName');
 
-            // alert(window.location.href);
-            // if (window.location.href == currentURLWithoutQuery) {
-            //     document.getElementById("prodcut-search").value = '';
-            //     document.getElementById("prodcut-search").ariaPlaceholder = 'Search Products (Product Name / Product Composition)';
-            // } else {
             if (storedProdName !== null) {
                 document.getElementById("prodcut-search").value = storedProdName;
                 localStorage.setItem('prodName', '');
             }
-            // }
-
         });
     </script>
 

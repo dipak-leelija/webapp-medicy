@@ -109,7 +109,7 @@
             default:
                 echo "<br>default case";
         }
-        print_r($data);
+        // print_r($data);
     }
 ?>
 
@@ -146,36 +146,37 @@
             <?php
             $data = json_decode($data);
             if ($data->status) {
+                $data = $data->data;
                 // print_r($data);
                 foreach ($data as $row) { 
                     
                     $check = '';
-                    if ($row['status'] == "cancelled") {
+                    if ($row->status == "cancelled") {
                         $check  = 'style="background-color:#ff0000; color:#fff"';
                     }
 
-                    $distId = $row['distributor_id'];
+                    $distId = $row->distributor_id;
                     $distributorData = json_decode($Distributor->showDistributorById($distId));
                     $distributorData = $distributorData->data;
                     // print_r($distData);
                     foreach($distributorData as $distData){
-                        $distName = $distData['name'];
+                        $distName = $distData->name;
                     }
 
                     ?>
     <tr <?php echo $check ?>>
-        <td><?php echo $row['id'] ?></td>
+        <td><?php echo $row->id ?></td>
         <td><?php echo $distName ?></td>
-        <td><?php echo $row['return_date'] ?></td>
-        <td><?php echo $row['added_on'] ?></td>
-        <td><?php echo $row['added_by'] ?></td>
-        <td><?php echo $row['refund_mode'] ?></td>
-        <td><?php echo $row['refund_amount'] ?></td>
+        <td><?php echo $row->return_date ?></td>
+        <td><?php echo $row->added_on ?></td>
+        <td><?php echo $row->added_by ?></td>
+        <td><?php echo $row->refund_mode ?></td>
+        <td><?php echo $row->refund_amount ?></td>
         <td >
             <?php echo '
-                <a class="text-primary ml-4" id="edit-btn-' . $row['id'] . '" onclick="editReturnItem(' . $row['id'] . ', this)"><i class="fas fa-edit" ></i></a>'; 
+                <a class="text-primary ml-4" id="edit-btn-' . $row->id . '" onclick="editReturnItem(' . $row->id . ', this)"><i class="fas fa-edit" ></i></a>'; 
             ?>
-            <a class="text-danger ml-2" onclick="cancelPurchaseReturn('<?php echo $row['id'] ?>', this)" ><i class="fas fa-window-close"></i></a>
+            <a class="text-danger ml-2" onclick="cancelPurchaseReturn('<?php echo $row->id ?>', this)" ><i class="fas fa-window-close"></i></a>
         </td>
     </tr>
     <?php
