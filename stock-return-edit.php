@@ -48,8 +48,9 @@ if (isset($_GET["returnId"])) {
     }
 
 
-    $distData = $Distributor->showDistributorById($distId);
-    $distName = $distData[0]["name"];
+    $distData = json_decode($Distributor->showDistributorById($distId));
+    $distData = $distData->data;
+    $distName = $distData[0]->name;
 
 
     // print_r($distData);
@@ -180,12 +181,7 @@ if (isset($_GET["returnId"])) {
                                     <div class="col-md-6 col-12 ">
                                         <div class="row">
 
-                                            <div class="col-md-3 col-12 ">
-                                                <label for="bill-no" class="mb-1 mt-3">Bill No</label>
-                                                <input class="upr-inp mb-1" id="bill-no" value="" readonly>
-                                            </div>
-
-                                            <div class="col-md-3 col-12">
+                                            <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="batch-number">Batch No :</label>
                                                 <input class="upr-inp mb-1" id="batch-number" value="" readonly>
                                             </div>
@@ -205,12 +201,7 @@ if (isset($_GET["returnId"])) {
                                                 <input class="upr-inp mb-1" id="stock-returned-details-item-id" value="" readonly>
                                             </div>
 
-                                            <div class="col-md-3 col-12">
-                                                <label class="mb-1 mt-3" for="bill-date">Bill Date :</label>
-                                                <input class="upr-inp mb-1" id="bill-date" value="" readonly>
-                                            </div>
-
-                                            <div class="col-md-3 col-12">
+                                            <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="returnDate">Return Date :</label>
                                                 <input class="upr-inp mb-1" id="returnDate" value="" readonly>
                                             </div>

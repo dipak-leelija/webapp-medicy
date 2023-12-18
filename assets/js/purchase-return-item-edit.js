@@ -63,7 +63,7 @@ const customEdit = (id, value) => {
                 document.getElementById("product-id").value = dataObject.product_id;
                 document.getElementById("product_name").value = dataObject.product_Name;
                 document.getElementById("batch-number").value = dataObject.batch_no;
-                document.getElementById("bill-date").value = dataObject.bill_date;
+                
                 document.getElementById("returnDate").value = dataObject.return_date;
                 document.getElementById("exp-date").value = dataObject.exp_date;
                 document.getElementById("unit").value = dataObject.unit;
@@ -164,7 +164,7 @@ const addData = async () => {
     let productId = document.getElementById("product-id").value;
     let productName = document.getElementById('product_name').value;
     let batchNumber = document.getElementById("batch-number").value;
-    let billDate = document.getElementById('bill-date').value;
+   
     let returnDate = document.getElementById('returnDate').value;
     let expDate = document.getElementById("exp-date").value;
 
@@ -340,7 +340,7 @@ const addData = async () => {
                 productId: productId,
                 productName: productName,
                 batchNumber: batchNumber,
-                billDate: billDate,
+                
                 returnDate: returnDate,
                 expDate: expDate,
                 unit: unit,
@@ -479,7 +479,7 @@ const editItem = (tupleData) => {
         document.getElementById("product-id").value = tData.productId;
         document.getElementById('product_name').value = tData.productName;
         document.getElementById("batch-number").value = tData.batchNumber;
-        document.getElementById('bill-date').value = tData.billDate;
+      
         document.getElementById('returnDate').value = tData.returnDate;
         document.getElementById("exp-date").value = tData.expDate;
 

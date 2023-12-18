@@ -119,7 +119,7 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                         </option>
                                         <?php
                                         foreach ($empLists as $emp) {
-                                            echo '<option value="' . $emp['emp_username'] . '">' . $emp['emp_username'] . '</option>';
+                                            echo '<option value="' . $emp['emp_id'] . '">' . $emp['emp_username'] . '</option>';
                                         }
                                         ?>
                                     </select>
@@ -179,7 +179,13 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                         foreach ($stockReturnLists as $row) {
                                             $dist = json_decode($Distributor->showDistributorById($row->distributor_id));
                                             $dist = $dist->data;
-                                            // print_r($dist[0]->name);
+
+                                            $col = 'emp_id';
+                                            $empData = json_decode($Employees->selectEmpByCol($col, $row->added_by));
+
+                                            $empData = $empData->data;
+
+                                            // print_r($empData);
 
                                             if (count($dist) > 0) {
 
@@ -195,7 +201,7 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $dist[0]->name . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $returnDate . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $entryDate . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $row->added_by . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $empData[0]->emp_name . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $row->refund_mode . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $row->refund_amount . '</td>
                                                         <td >
