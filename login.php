@@ -55,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>/sb-admin-2.min.css" rel="stylesheet">
     <link href="<?php echo CSS_PATH ?>login.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
     <title>Login</title>
 </head>
 
@@ -74,9 +75,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="username">Username:</label>
                 <input type="text" class="form-control" name="username" id="username" placeholder="Username" required autocomplete="off" value="<?php echo htmlspecialchars($enteredUsername); ?>">
             </div>
-            <div class="form-group ">
+            <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="off">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="off" oninput="showToggleBtn()">
+                <button type="button" class=" btn btn-success btn-sm m-0 p-0 rounded btnfocus" id="toggleBtn" style="display:none;" onclick="togglePassword()"><i class="fas fa-eye"></i></button>
             </div>
             <div class="form-group ">
                 <button class="btn btn-primary btn-s w-100" type="submit" name="login">Login</button>
@@ -118,6 +120,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?= JS_PATH ?>password-show-hide.js"></script>
+
 </body>
 
 </html>
