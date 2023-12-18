@@ -1,14 +1,14 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'stockIn.class.php';
-require_once CLASS_DIR.'stockInDetails.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'stockReturn.class.php';
-require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'stockIn.class.php';
+require_once CLASS_DIR . 'stockInDetails.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'stockReturn.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
 
 
 
@@ -21,46 +21,50 @@ $Distributor    = new Distributor();
 
 
 // getItemList function
-if (isset($_GET['bill-no'])) {
-    ?>
+if (isset($_GET['dist-id'])) {
+?>
     <div class="row border-bottom border-primary small mx-0 mb-2">
-        <div class="col-2 mb-1" hidden>Batch</div>
-        <div class="col-4 mb-1">Name</div>
+        <div class="col-3 mb-1">Name</div>
+        <div class="col-2 mb-1">Batch</div>
         <div class="col-2 mb-1">Expiry</div>
         <div class="col-2 mb-1">MRP</div>
         <div class="col-2 mb-1">PTR</div>
-        <div class="col-2 mb-1">Stock</div>
+        <div class="col-1 mb-1">Stock</div>
     </div>
     <?php
-    $distributorId = $_GET['dist-id'];
-    $billNo = $_GET['bill-no'];
 
-    $details = $StockIn->stockIndataOnBillno($distributorId, $billNo);
 
-    
-    foreach ($details as $detail) {
-        $billDate = $detail['bill_date'];
-        $details = $StockInDetails->showStockInDetailsByStokId($detail['id']);
-        // print_r($details);
+    $details = json_decode($StockInDetails->stockInDetailsDataForReturnFilter($_GET['dist-id']));
+
+    if ($details->status) {
+        $details = $details->data;
 
         $rowCoutn = 0;
-        foreach ($details as $item) {
-
-            // print_r($item);
-
+        foreach ($details as $detail) {
+            // print_r($detail);
             $rowCoutn++;
 
-            $stokInDetailsId = $item['id'];
-            $stockInId = $item['stokIn_id'];
-            $batchNo = $item['batch_no'];
-            $productId = $item['product_id'];
-            $ptr = $item['ptr'];
-            $mrp = $item['mrp'];
-            $expDate = $item['exp_date'];
+            $stokInDetailsId = $detail->id;
+            $stockInId = $detail->stokIn_id;
+
+            $table = 'id';
+            $stockInData = $StockIn->stockInByAttributeByTable($table, $stockInId);
+            // print_r($stockInData);
+            $billDate = $stockInData[0]['bill_date'];
+
+            $billNumber = $detail->distributor_bill;
+            $batchNo = $detail->batch_no;
+            $productId = $detail->product_id;
+            $ptr = $detail->ptr;
+            $mrp = $detail->mrp;
+            $expDate = $detail->exp_date;
+            
+
 
             $product = json_decode($Products->showProductsById($productId));
             $product = $product->data;
             $productName = $product[0]->name;
+
 
             $stoks = $CurrentStock->checkStock($productId, $batchNo);
             // print_r($stoks);
@@ -72,20 +76,26 @@ if (isset($_GET['bill-no'])) {
 
     ?>
 
-         <div class='row mx-0 py-2 border-bottom p-row item-list' id="divId_<?php echo $rowCoutn; ?>" onclick='getDtls(`<?php echo $stockInId; ?>`, `<?php echo $stokInDetailsId; ?>`, `<?php echo $batchNo; ?>`, `<?php echo $productId; ?>`, `<?php echo $productName; ?>`, `<?php echo $billDate; ?>`, this)'>
-             <div class="col-2 mb-0" hidden><?php echo $stockInId; ?></div>
-             <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
-             <div class="col-2 mb-0" hidden><?php echo $batchNo; ?></div>
-             <div class="col-4 mb-0"><?php echo $productName; ?></div>
-             <div class="col-2 mb-0"><?php echo $expDate; ?></div>
-             <div class="col-2 mb-0"><?php echo $mrp; ?></div>
-             <div class="col-2 mb-0"><?php echo $ptr; ?></div>
-             <div class="col-2 mb-0"><?php echo $qantity; ?></div>
-         </div>
+            <div class='row mx-0 py-2 border-bottom p-row item-list' id="divId_<?php echo $rowCoutn; ?>" onclick='getDtls(`<?php echo $stockInId; ?>`, `<?php echo $stokInDetailsId; ?>`, `<?php echo $batchNo; ?>`, `<?php echo $productId; ?>`, `<?php echo $productName; ?>`, `<?php echo $billDate; ?>`, `<?php echo $billNumber; ?>`, this)'>
+                <div class="col-2 mb-0" hidden><?php echo $stockInId; ?></div>
+                <div class="col-2 mb-0" hidden><?php echo $stokInDetailsId; ?></div>
+                <div class="col-3 mb-0"><?php echo $productName; ?></div>
+                <div class="col-2 mb-0"><?php echo $batchNo; ?></div>
+                <div class="col-2 mb-0"><?php echo $expDate; ?></div>
+                <div class="col-2 mb-0"><?php echo $mrp; ?></div>
+                <div class="col-2 mb-0"><?php echo $ptr; ?></div>
+                <div class="col-1 mb-0"><?php echo $qantity; ?></div>
+            </div>
 
 <?php
 
+
         }
+    } else {
+        echo '<div class="row border-bottom border-primary small mx-0 mb-2">
+            <p>No Items Found</p>
+        <small class="text-danger">Please Make sure that you search for correct distributor.</small>
+    </div>';
     }
 }
 ?>
@@ -243,9 +253,9 @@ if (isset($_GET['bill-no'])) {
 ####################################################################################################
 
 if (isset($_GET['invoice'])) {
-    require_once CLASS_DIR."search.class.php";
-    require_once CLASS_DIR."stockOut.class.php";
-    require_once CLASS_DIR."patients.class.php";
+    require_once CLASS_DIR . "search.class.php";
+    require_once CLASS_DIR . "stockOut.class.php";
+    require_once CLASS_DIR . "patients.class.php";
 
     $Search     = new Search();
     $Patients   = new Patients();
@@ -293,45 +303,5 @@ if (isset($_GET['invoice'])) {
             </div>';
     }
 }
-
-?>
-
-
-<?php
-
-
-// // getBatchList function
-// if (isset($_GET['bill-no'])) {
-//     $distBill = $_GET['bill-no'];
-
-//     $details = $StockInDetails->showStockInDetailsById($distBill);
-//     foreach ($details as $detail) {
-//         echo '<option value="'.$detail['batch_no'].'">'; 
-//     }
-// }
-
-// // getBatchList function for geting bill date
-// if (isset($_GET['bill'])) {
-//     $distBill = $_GET['bill'];
-
-//     $details = $StockIn->showStockInById($distBill);
-//     foreach ($details as $detail) {
-//         echo $detail['bill_date'];  
-//     }
-// }
-
-// // getBatchList function
-// if (isset($_GET['batch-item'])) {
-//     $batchNo = $_GET['batch-item'];
-
-//     $details = $StockInDetails->showStockInByBatch($batchNo);
-//     echo '<option value="" selected disabled>Select Item</option>';
-//     foreach ($details as $detail) {
-//         $productId = $detail['product_id'];
-
-//         $product = $Products->showProductsById($productId);
-//         echo '<option value="'.$productId.'">'.$product[0]['name'].'</option>';  
-//     }
-// }
 
 ?>

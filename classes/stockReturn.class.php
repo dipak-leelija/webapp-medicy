@@ -15,11 +15,11 @@ class StockReturn extends DatabaseConnection
     #                                                                                                                                #
     ##################################################################################################################################
 
-    function addStockReturn($stockReturnId, $stockInId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin)
+    function addStockReturn($stockReturnId, $stockInId, $distributorId, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin)
     {
-        try{
+        try {
             // Construct the SQL query with placeholders
-            $sql = "INSERT INTO `stock_return` (`id`, `stockin_id`, `distributor_id`, `bill_no`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `status`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `stock_return` (`id`, `stockin_id`, `distributor_id`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_mode`, `refund_amount`, `status`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($sql);
@@ -28,11 +28,11 @@ class StockReturn extends DatabaseConnection
             }
 
             // Bind the parameters
-            $stmt->bind_param("iiissiidsdssss", $stockReturnId, $stockInId, $distributorId, $distBillNo, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin);
+            $stmt->bind_param("iiisiidsdssss", $stockReturnId, $stockInId, $distributorId, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin);
 
             // Execute the prepared statement
             if ($stmt->execute()) {
-            // Return the ID of the newly inserted record
+                // Return the ID of the newly inserted record
                 $insertedId = $stmt->insert_id;
                 return ["result" => true];
             } else {
@@ -40,69 +40,106 @@ class StockReturn extends DatabaseConnection
             }
         } catch (Exception $e) {
             return ["result" => false, "error" => $e->getMessage()];
-        } 
+        }
     } // eof addStockReturn
 
-    
+
 
     function showStockReturn()
     {
-        $data = array();
-        $sql  = "SELECT * FROM stock_return";
-        $res  = $this->conn->query($sql);
-        while ($result = $res->fetch_array()) {
-            $data[] = $result;
+        try {
+            $data = array();
+            $sql  = "SELECT * FROM stock_return";
+            $res  = $this->conn->query($sql);
+
+            if ($res->num_rows > 0) {
+                while ($result = $res->fetch_object()) {
+                    $data[] = $result;
+                }
+                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $data]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
         }
-        return $data;
     } //eof showStockReturn
+
+
+
 
 
     function showStockReturnById($returnId)
     {
-        $data = array();
-        $sql  = "SELECT * FROM stock_return WHERE `id` = $returnId";
-        $res  = $this->conn->query($sql);
-        while ($result = $res->fetch_array()) {
-            $data[] = $result;
+        try {
+            $sql  = "SELECT * FROM stock_return WHERE `id` = $returnId";
+            $res  = $this->conn->query($sql);
+
+            if ($res->num_rows > 0) {
+                $data = array();
+                while ($result = $res->fetch_object()) {
+                    $data[] = $result;
+                }
+                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $data]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
         }
-        return $data;
-    } //eof showStockReturn
+    }
+
+
 
 
 
     function stockReturnFilter($table, $value)
     {
-        $data = array();
-        $sql  = "SELECT * FROM stock_return WHERE `$table` = '$value'";
-        $res  = $this->conn->query($sql);
-        while ($result = $res->fetch_array()) {
-            $data[] = $result;
+        try {
+            $sql = "SELECT * FROM stock_return WHERE `$table` = '$value'";
+            $result = $this->conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $data]);
+                $result->close();
+            } else {
+                return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
         }
-        return $data;
-    } //eof stockReturnFilter
+
+        return 0;
+    }
 
 
 
 
 
-    function stockReturnFilterbyDate($table, $value1, $value2){
-        try{
+
+    function stockReturnFilterbyDate($table, $value1, $value2)
+    {
+        try {
             $data = array();
             $sql  = $sql = "SELECT * FROM `stock_return`
             WHERE DATE(`$table`) BETWEEN '$value1' AND '$value2'";
             $res  = $this->conn->query($sql);
-            
-            if($res->num_rows > 0){
+
+            if ($res->num_rows > 0) {
                 while ($result = $res->fetch_array()) {
                     $data[] = $result;
                 }
                 return $data;
-            }else{
+            } else {
                 return null;
             }
-        }catch(Exception $e){
-            if($e){
-                echo "Exception occur : ".$e;
+        } catch (Exception $e) {
+            if ($e) {
+                echo "Exception occur : " . $e;
             }
         }
     } //eof stockReturnFilter
@@ -146,7 +183,8 @@ class StockReturn extends DatabaseConnection
 
     // ---------------EDIT STOCK RETURN UPDATE FUNCTION----------------------------
 
-    function stockReturnEditUpdate($id, $items, $totalQty, $gst, $refundMode, $refundAmount, $updatedBy, $updatedOn){
+    function stockReturnEditUpdate($id, $items, $totalQty, $gst, $refundMode, $refundAmount, $updatedBy, $updatedOn)
+    {
         try {
             $editANDupdate = "UPDATE `stock_return` SET `items`=?, `total_qty`=?, `gst_amount`=?, `refund_mode`=?, `refund_amount`=?, `updated_by`=?, `updated_on`=? WHERE `id`=?";
             $stmt = $this->conn->prepare($editANDupdate);
@@ -184,7 +222,7 @@ class StockReturn extends DatabaseConnection
                 $affectedRows = $statement->affected_rows;
                 if ($affectedRows > 0) {
                     $updatedId = $this->conn->insert_id;
-                    return ["result" => true, "id" => $updatedId]; 
+                    return ["result" => true, "id" => $updatedId];
                 } else {
                     return ["result" => false, "message" => "No rows were updated."];
                 }
@@ -212,7 +250,8 @@ class StockReturn extends DatabaseConnection
     #                                                                                                                                 #
     ###################################################################################################################################
 
-    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount){
+    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount)
+    {
         try {
             $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`,     `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`,    `return_qty`, `return_free_qty`, `refund_amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
             $stmt = $this->conn->prepare($sql);
@@ -236,13 +275,14 @@ class StockReturn extends DatabaseConnection
 
     //stock return start-------------------
 
-    function showStockReturnDetails($returnId){
+    function showStockReturnDetails($returnId)
+    {
         try {
             $data = array();
             $sql = "SELECT * FROM stock_return_details WHERE `stock_return_id` = ?";
             $stmt = $this->conn->prepare($sql);
 
-            $stmt->bind_param("i", $returnId); 
+            $stmt->bind_param("i", $returnId);
 
             $stmt->execute();
 
@@ -280,7 +320,7 @@ class StockReturn extends DatabaseConnection
     }
 
 
-    
+
     function showStockReturnDetailsById($Id)
     {
 
@@ -341,9 +381,10 @@ class StockReturn extends DatabaseConnection
 
 
     // ----------------- stock return details edit/update by id ----------------RD-----------
-    function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $updatedBy, $updatedOn){
+    function stockReturnDetailsEditUpdate($id, $returnQTY, $returnFQTY, $refundAmount, $updatedBy, $updatedOn)
+    {
 
-        try{
+        try {
             $editUpdate = "UPDATE `stock_return_details` SET  `return_qty`= ?, `return_free_qty` =  ?,`refund_amount`= ?,`updated_by`= ?, `updated_on` =  ? WHERE `id`= ?";
 
             // Prepare the SQL statement
@@ -364,7 +405,7 @@ class StockReturn extends DatabaseConnection
             } else {
                 throw new Exception("Error executing update statement: " . $statement->error);
             }
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }

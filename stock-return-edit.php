@@ -1,15 +1,15 @@
 <?php
 $page = "stock-return";
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR .'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'distributor.class.php';
-require_once CLASS_DIR.'stockReturn.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'stockReturn.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
 
 
 //objects Initilization
@@ -30,19 +30,21 @@ if (isset($_GET["returnId"])) {
 
     $table = 'id';
     $value = $returnId;
-    $stokReturnData = $StockReturn->stockReturnFilter($table, $value);
+    $stokReturnData = json_decode($StockReturn->stockReturnFilter($table, $value));
+    if($stokReturnData->status){
+        $stokReturnData = $stokReturnData->data;
+    }
     // print_r($stokReturnData);
 
     foreach ($stokReturnData as $returnData) {
-        $stockReturnId = $returnData['id'];
-        $distId = $returnData["distributor_id"];
-        $billNo = $returnData["bill_no"];
-        $returnDate = $returnData["return_date"];
-        $itemsCount = $returnData["items"];
-        $totalReturnQty = $returnData["total_qty"];
-        $returnGSTAmount = $returnData["gst_amount"];
-        $refundMode = $returnData["refund_mode"];
-        $NetRefundAmount = $returnData["refund_amount"];
+        $stockReturnId = $returnData->id;
+        $distId = $returnData->distributor_id;
+        $returnDate = $returnData->return_date;
+        $itemsCount = $returnData->items;
+        $totalReturnQty = $returnData->total_qty;
+        $returnGSTAmount = $returnData->gst_amount;
+        $refundMode = $returnData->refund_mode;
+        $NetRefundAmount = $returnData->refund_amount;
     }
 
 
@@ -86,7 +88,7 @@ if (isset($_GET["returnId"])) {
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -96,7 +98,7 @@ if (isset($_GET["returnId"])) {
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -124,12 +126,7 @@ if (isset($_GET["returnId"])) {
                                     <input class="upr-inp mb-1" id="distributor_name" name="<?php echo $distId ?>" value="<?php echo $distName ?>" onload="getItemList(this)" readonly>
                                 </div>
 
-                                <div class="col-md-2 col-12 ">
-                                    <label for="bill-no" class="mb-1 mt-3">Bill No</label>
-                                    <input class="upr-inp mb-1" id="bill-no" value="<?php echo $billNo; ?>" readonly>
-                                </div>
-
-                                <div class="col-md-5 col-12 ">
+                                <div class="col-md-7 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
                                     <!-- <input class="upr-inp mb-1" id="product_name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
                                      < onchange="getDtls(this);"  -->
@@ -161,7 +158,7 @@ if (isset($_GET["returnId"])) {
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
                                     <label class="mb-1 mt-3" for="return-mode">Return Mode :</label>
                                     <select class="upr-inp" name="return-mode" id="return-mode">
-                                        <option value="" selected disabled>Select</option>
+                                        <option value="<?php echo $refundMode ?>"><?php echo $refundMode ?></option>
                                         <option value="Credit">Credit</option>
                                         <option value="Cash">Cash</option>
                                         <option value="UPI">UPI</option>
@@ -182,8 +179,14 @@ if (isset($_GET["returnId"])) {
                                 <div class="row">
                                     <div class="col-md-6 col-12 ">
                                         <div class="row">
-                                            <div class="col-md-4 col-12">
-                                                <label class="mb-1 mt-3" for="batch-number">Batch Number :</label>
+
+                                            <div class="col-md-3 col-12 ">
+                                                <label for="bill-no" class="mb-1 mt-3">Bill No</label>
+                                                <input class="upr-inp mb-1" id="bill-no" value="" readonly>
+                                            </div>
+
+                                            <div class="col-md-3 col-12">
+                                                <label class="mb-1 mt-3" for="batch-number">Batch No :</label>
                                                 <input class="upr-inp mb-1" id="batch-number" value="" readonly>
                                             </div>
 
@@ -202,12 +205,12 @@ if (isset($_GET["returnId"])) {
                                                 <input class="upr-inp mb-1" id="stock-returned-details-item-id" value="" readonly>
                                             </div>
 
-                                            <div class="col-md-4 col-12">
+                                            <div class="col-md-3 col-12">
                                                 <label class="mb-1 mt-3" for="bill-date">Bill Date :</label>
                                                 <input class="upr-inp mb-1" id="bill-date" value="" readonly>
                                             </div>
 
-                                            <div class="col-md-4 col-12">
+                                            <div class="col-md-3 col-12">
                                                 <label class="mb-1 mt-3" for="returnDate">Return Date :</label>
                                                 <input class="upr-inp mb-1" id="returnDate" value="" readonly>
                                             </div>
@@ -548,7 +551,7 @@ if (isset($_GET["returnId"])) {
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
-                <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+                <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>
@@ -570,7 +573,7 @@ if (isset($_GET["returnId"])) {
         <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
         <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
         <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
-         <!-- Custom scripts for stock return edit page -->
+        <!-- Custom scripts for stock return edit page -->
         <script src="<?= JS_PATH ?>purchase-return-item-edit.js"></script>
 
         <!-- ======================= on clik custom select action =================

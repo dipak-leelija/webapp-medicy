@@ -7,6 +7,14 @@ require_once CLASS_DIR.'stockInDetails.class.php';
 
 $StockInDetails = new StockInDetails();
 
+//get mfd date
+if (isset($_GET["stock-mfd"])) {
+    // echo "error";
+    $id = $_GET["stock-mfd"];
+    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
+    echo $stock[0]['mfd_date'];
+    // print_r($stock);
+}
 
 //get expiry date
 if (isset($_GET["stock-exp"])) {

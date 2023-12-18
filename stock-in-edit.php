@@ -59,10 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stockInDetails = $StockInDetails->showStockInDetailsByStokId($stockIn_id);
 
         //fetching distributo details data by stok in id
-        $distData = $Distributor->showDistributorById($stockIn[0]['distributor_id']);
+        $distData = json_decode($Distributor->showDistributorById($stockIn[0]['distributor_id']));
+        $distData = $distData->data;
 
         // set distributo name in a variable
-        $distName = $distData[0]['name'];
+        $distName = $distData[0]->name;
 
 
         $stockInDetailsIds = array();

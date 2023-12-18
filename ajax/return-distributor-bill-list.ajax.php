@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 require_once dirname(__DIR__).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
@@ -28,24 +28,24 @@ if (isset($_GET['dist-id'])) {
     </div>
 
     <?php
-    $distributorId = $_GET['dist-id'];
-    $col1 = 'distributor_id';
-    $col2 = 'admin_id';
-    $details = $StockIn->stockInColumns($col1, $distributorId, $col2, $adminId);
+    // $distributorId = $_GET['dist-id'];
+    // $col1 = 'distributor_id';
+    // $col2 = 'admin_id';
+    // $details = $StockIn->stockInColumns($col1, $distributorId, $col2, $adminId);
     
-    foreach ($details as $details) {
+    // foreach ($details as $details) {
         
-        $billNo = $details['distributor_bill'];
+    //     $billNo = $details['distributor_bill'];
     ?>
 
         <div class="row mx-2 p-1 border-bottom item-list" onclick="getItemList('<?php echo $distributorId; ?>','<?php echo $billNo; ?>');">
             <div class="col-md-9" style="min-width: 100%;"><?php echo $billNo; ?></div>
         </div>
 <?php
-    }
-} else {
+//     }
+// } else {
     ?>
     <div class="col-md-9" style="min-width: 100%;"><?php echo "No Bill Found!"; ?></div>
     <?php
 }
-?>
+?> -->

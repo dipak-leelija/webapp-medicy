@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // echo "<br>admin : "; print_r($Admin); echo gettype($Admin);
         // echo "<br><br><br>";
     
-        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $distBillNo, $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $addedBy, $addedOn, $Admin);
+        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $addedBy, $addedOn, $Admin);
         
         $returnResult = $returned['result'];
 
@@ -102,7 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         
             for ($i=0; $i < $ids; $i++) { 
-                $currentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]);
+                $currentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]));
+                // print_r($currentStockData);
                     $wholeQty = $currentStockData->qty;
                     $looseQty = $currentStockData->loosely_count;
                     // echo "<br><br>current stock loose count : $looseQty";

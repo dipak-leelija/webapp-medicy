@@ -71,10 +71,10 @@ $showDistributor = $showDistributor->data;
                     <div class="card shadow mb-3">
                         <div class="card-body">
                             <div class="row ">
-                                <div class="col-md-3 col-12 ">
+                                <div class="col-md-2 col-12 ">
 
-                                    <label class="mb-1 mt-3" for="distributor-id">Distributor :</label>
-                                    <input type="text" name="" id="distributor-id" class="upr-inp" placeholder="Select Distributor">
+                                    <label class="mb-1 mt-3" for="distributor-name">Distributor :</label>
+                                    <input type="text" name="" id="distributor-name" class="upr-inp" placeholder="Select Distributor">
 
 
                                     <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
@@ -92,16 +92,16 @@ $showDistributor = $showDistributor->data;
 
                                 </div>
 
-                                <div class="col-md-2 col-12 ">
+                                <!-- <div class="col-md-2 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Select Bill No.</label>
                                     <input class="upr-inp mb-1" id="select-bill-no" name="select-bill-no" placeholder="Search Bill" onkeyup="getItemList(this.value)" autocomplete="off" readonly>
-                                    <!-- onchange="getDtls(this);" -->
+                                    !-- onchange="getDtls(this);" --
                                     <div class="p-2 bg-light" id="select-bill" style="margin-left: 0rem;box-shadow: 0 5px 10px rgb(0 0 0 / 30%); transition: 3.3s ease; overflow: auto; display: none;  max-width: 100%; min-width: 100%; position: absolute; z-index: 100;">
                                     </div>
                                     <input type="text" id="bill-no" hidden>
-                                </div>
+                                </div> -->
 
-                                <div class="col-md-5 col-12 ">
+                                <div class="col-md-8 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
                                     <input class="upr-inp mb-1" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
                                     <!-- onchange="getDtls(this);" -->
@@ -143,7 +143,12 @@ $showDistributor = $showDistributor->data;
                                                 <label class="mb-1 mt-3" for="stokInDetailsId">Stock In Detaisl Id :</label>
                                                 <input class="upr-inp mb-1" id="stokInDetailsId" readonly>
                                             </div>
-                                            <div class="col-md-4 col-12">
+                                           
+                                            <div class="col-md-6 col-12">
+                                                <label class="mb-1 mt-3" for="bill-number">Bill Number :</label>
+                                                <input class="upr-inp mb-1" id="bill-number" readonly>
+                                            </div>
+                                            <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="batch-number">Batch Number :</label>
                                                 <input class="upr-inp mb-1" id="batch-number" readonly>
                                             </div>
@@ -151,10 +156,17 @@ $showDistributor = $showDistributor->data;
                                                 <label class="mb-1 mt-3" for="bill-date">Purchase Date :</label>
                                                 <input class="upr-inp mb-1" id="bill-date" readonly>
                                             </div>
+
+                                            <div class="col-md-4 col-12">
+                                                <label class="mb-1 mt-3" for="mfd-date">MFD</label>
+                                                <input class="upr-inp mb-1" type="text" id="mfd-date" readonly>
+                                            </div>
+
                                             <div class="col-md-4 col-12">
                                                 <label class="mb-1 mt-3" for="exp-date">Expiry</label>
                                                 <input class="upr-inp mb-1" type="text" id="exp-date" readonly>
                                             </div>
+                                            
                                         </div>
 
                                         <div class="col-12 mt-3">
@@ -360,13 +372,13 @@ $showDistributor = $showDistributor->data;
                                 </div>
                             </div>
 
-                            <div class="  p-3 m-2  font-weight-bold text-light purchase-items-summary rounded">
+                            <div class="p-3 m-2  font-weight-bold text-light purchase-items-summary rounded">
                                 <div class="row ">
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
                                         <p>Distributor :
                                             <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name" readonly style="margin-left: 0rem;">
                                             <input class="summary-inp w-60" name="dist-id" id="dist-id" type="text" hidden readonly>
-                                            <input class="  summary-inp w-60" name="dist-bill-no" id="dist-bill-no" type="text" readonly>
+                                            <input class="d-none summary-inp w-60" name="dist-bill-no" id="dist-bill-no" type="text" readonly>
                                         </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">

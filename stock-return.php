@@ -23,11 +23,13 @@ $Employees          = new Employees();
 //function's called
 $showDistributor       = $Distributor->showDistributor();
 $col = 'admin_id';
-$stockReturnLists      = $StockReturn->stockReturnFilter($col, $adminId);
+$stockReturnLists      = json_decode($StockReturn->stockReturnFilter($col, $adminId));
+if($stockReturnLists->status){
+    $stockReturnLists = $stockReturnLists->data;
+}
 // print_r($stockReturnLists);
-$empLists              = $Employees->employeesDisplay($adminId);
 
-$today = date("m-d-Y");
+$empLists              = $Employees->employeesDisplay($adminId);
 
 ?>
 
@@ -175,29 +177,30 @@ $today = date("m-d-Y");
                                     <tbody id="table-data">
                                         <?php
                                         foreach ($stockReturnLists as $row) {
-                                            $dist = $Distributor->showDistributorById($row['distributor_id']);
-                                            // print_r($dist);
+                                            $dist = json_decode($Distributor->showDistributorById($row->distributor_id));
+                                            $dist = $dist->data;
+                                            // print_r($dist[0]->name);
 
                                             if (count($dist) > 0) {
 
-                                                $returnDate = date("d-m-Y", strtotime($row['return_date']));
-                                                $entryDate  = date("d-m-Y", strtotime($row['added_on']));
+                                                $returnDate = date("d-m-Y", strtotime($row->return_date));
+                                                $entryDate  = date("d-m-Y", strtotime($row->added_on));
 
                                                 $check = '';
-                                                if ($row['status'] == "cancelled") {
+                                                if ($row->status == "cancelled") {
                                                     $check  = 'style="background-color:#ff0000; color:#fff"';
                                                 }
                                                 echo '<tr ' . $check . '>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')" >' . $row['id'] . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $dist[0]['name'] . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $returnDate . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $entryDate . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['added_by'] . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_mode'] . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row['id'] . ')">' . $row['refund_amount'] . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')" >' . $row->id . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $dist[0]->name . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $returnDate . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $entryDate . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $row->added_by . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $row->refund_mode . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $row->refund_amount . '</td>
                                                         <td >
-                                                            <a class="text-primary ml-4" id="edit-btn-' . $row['id'] . '" onclick="editReturnItem(' . $row['id'] . ', this)"><i class="fas fa-edit" ></i></a>
-                                                            <a class="text-danger ml-2" id="cancel-btn-' . $row['id'] . '" onclick="cancelPurchaseReturn(' . $row['id'] . ', this)"><i class="fas fa-window-close" ></i></a>
+                                                            <a class="text-primary ml-4" id="edit-btn-' . $row->id . '" onclick="editReturnItem(' . $row->id . ', this)"><i class="fas fa-edit" ></i></a>
+                                                            <a class="text-danger ml-2" id="cancel-btn-' . $row->id . '" onclick="cancelPurchaseReturn(' . $row->id . ', this)"><i class="fas fa-window-close" ></i></a>
                                                         </td>
                                                     </tr>';
                                             } else {
