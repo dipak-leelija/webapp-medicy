@@ -100,7 +100,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
 <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
 <script>
-    var xmlhttp = new XMLHttpRequest();
+    const xmlhttp = new XMLHttpRequest();
 
 
     ///find new patient by selected date ///
