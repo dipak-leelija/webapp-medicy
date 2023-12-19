@@ -330,6 +330,8 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
      ======== CUSTOM JS FOR INDEX PAGE ======= -->
     <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
+
+    <script src="<?php echo JS_PATH; ?>index.js"></script>
 </body>
 
 </html>
