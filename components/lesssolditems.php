@@ -15,43 +15,47 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 ?>
 
 <div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-end px-2">
-        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="lessSoldDtPickerDiv" style="display: none;">
-            <input type="date" id="lessSoldDateInput">
-            <button class="btn btn-sm btn-primary" onclick="lessSoldItemsChkDate()" style="height: 2rem;">Find</button>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="col ml-2 mt-3">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                less sold 10 items</div>
         </div>
-        <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="lessSoldDtRangePickerDiv" style="display: none;">
-            <label>Start Date</label>
-            <input type="date" id="lessSoldStartDate">
-            <label>End Date</label>
-            <input type="date" id="lessSoldEndtDate">
-            <button class="btn btn-sm btn-primary" onclick="lessSoldItemsChkDateRange()" style="height: 2rem;">Find</button>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
+        <div class="d-flex justify-content-end px-2">
+            <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="lessSoldDtPickerDiv" style="display: none;">
+                <input type="date" id="lessSoldDateInput">
+                <button class="btn btn-sm btn-primary" onclick="lessSoldItemsChkDate()" style="height: 2rem;">Find</button>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="lessSoldDtRangePickerDiv" style="display: none;">
+                <label>Start Date</label>
+                <input type="date" id="lessSoldStartDate">
+                <label>End Date</label>
+                <input type="date" id="lessSoldEndtDate">
+                <button class="btn btn-sm btn-primary" onclick="lessSoldItemsChkDateRange()" style="height: 2rem;">Find</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
 
-                <b>...</b>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
-                <button class="dropdown-item" type="button" id="lessSoldLst24hrs" onclick="lessSoldItemChk(this.id)">Last 24 hrs</button>
-                <button class="dropdown-item" type="button" id="lessSoldLst7" onclick="lessSoldItemChk(this.id)">Last 7 Days</button>
-                <button class="dropdown-item" type="button" id="lessSoldLst30" onclick="lessSoldItemChk(this.id)">Last 30 DAYS</button>
-                <button class="dropdown-item dropdown" type="button" id="lessSoldLstDt" onclick="lessSoldItemChk(this.id)">By Date</button>
-                <button class="dropdown-item dropdown" type="button" id="lessSoldLstDtRng" onclick="lessSoldItemChk(this.id)">By Range</button>
+                    <b>...</b>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
+                    <button class="dropdown-item" type="button" id="lessSoldLst24hrs" onclick="lessSoldItemChk(this.id)">Last 24 hrs</button>
+                    <button class="dropdown-item" type="button" id="lessSoldLst7" onclick="lessSoldItemChk(this.id)">Last 7 Days</button>
+                    <button class="dropdown-item" type="button" id="lessSoldLst30" onclick="lessSoldItemChk(this.id)">Last 30 DAYS</button>
+                    <button class="dropdown-item dropdown" type="button" id="lessSoldLstDt" onclick="lessSoldItemChk(this.id)">By Date</button>
+                    <button class="dropdown-item dropdown" type="button" id="lessSoldLstDtRng" onclick="lessSoldItemChk(this.id)">By Range</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="card-body pb-0">
+    <div class="card-body mt-n2 pb-0">
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                    less sold 10 items</div>
-                <div style="width: 100%; margin: 0 auto;" id = 'lesssolditemChartDiv'>
+                <div style="width: 100%; margin: 0 auto;" id='lesssolditemChartDiv'>
                     <canvas id="lesssolditemchart"></canvas>
                 </div>
-                <div style="width: 100%; margin: 0 auto;" id = 'lesssolditemNDFDiv'>
-                    <label>NO DATA FOUND</label>
+                <div style="width: 100%; margin: 0 auto;" id='lesssolditemNDFDiv'>
+                    <p class="text-warning">Oops!, the requested data isn't in our records.</p>
                 </div>
             </div>
         </div>
@@ -63,12 +67,12 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 <script>
     function updateLessSoldData(lessSoldData) {
 
-        if(lessSoldData != null){
+        if (lessSoldData != null) {
             lessSoldChart.data.datasets[0].data = lessSoldData.map(item => item.total_sold);
 
             var productIds = lessSoldData.map(item => item.product_id);
             productIds = JSON.stringify(productIds);
-            
+
             lessSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?lessSoldProdId=${productIds}`;
             xmlhttp.open("GET", lessSoldProdNameUrl, false);
             xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -83,13 +87,13 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
             lessSoldChart.update();
 
-        }else{
+        } else {
 
             document.getElementById('lesssolditemChartDiv').style.display = 'none';
             document.getElementById('lesssolditemNDFDiv').style.display = 'block';
 
         }
-        
+
     }
 
 
@@ -97,7 +101,7 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
 
     function lessSoldItemsChkDate() {
         var lessSolddatePicker = document.getElementById('lessSoldDateInput').value;
-        
+
         lessSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?lessSoldChkDt=${lessSolddatePicker}`;
         xmlhttp.open("GET", lessSoldDtPkrUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -161,12 +165,12 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
             document.getElementById('lessSoldDtRangePickerDiv').style.display = 'block';
         }
     }
-    
+
 
     // ========= less sold primacy chart area ============= \\
     let lessSoldPrimaryData = <?php echo json_encode($leastStoldItemsFromStart); ?>;
-    
-    if(lessSoldPrimaryData != null){
+
+    if (lessSoldPrimaryData != null) {
 
         var productIds = lessSoldPrimaryData.map(item => item.product_id);
         productIds = JSON.stringify(productIds);
@@ -183,11 +187,11 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
         document.getElementById('lesssolditemChartDiv').style.display = 'block';
         document.getElementById('lesssolditemNDFDiv').style.display = 'none';
 
-    }else{
+    } else {
         document.getElementById('lesssolditemChartDiv').style.display = 'none';
         document.getElementById('lesssolditemNDFDiv').style.display = 'block';
     }
-    
+
 
 
     // ========== less sold bar chart area ================
