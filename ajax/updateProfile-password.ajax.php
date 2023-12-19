@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $empPassUpdate = $Employees->updateEmployeePassword($newPassword, $employeeId, $adminId);
                 // print_r($empPassUpdate);
 
-                if($empPassUpdate['result']){
+                if ($empPassUpdate['result']) {
                     echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                             <strong>Failed!</strong> password changed successfully!
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -65,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>';
                 }
-                
             } else {
                 echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <strong>Failed!</strong> Inputed password dosenot matched!
@@ -104,17 +103,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        <div class="form-group mb-3">
+        <!-- <div class="form-group mb-3">
             <input type="password" class="form-control " id="old-password" name="old-password" maxlength="12" placeholder="Current Password" required oninput="showToggleBtn1()">
-            <button type="button" class=" btn btn-success btn-sm m-0 p-0 rounded btnfocus" id="toggleBtn1" style="display:none;" onclick="togglePassword1()"><i class="fas fa-eye"></i></button>
+            <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem" onclick="togglePassword1()"></i>
         </div>
         <div class="form-group  mb-3">
             <input type="password" class="form-control " id="new-password" name="new-password" maxlength="12" placeholder="Enter New Password" required oninput="showToggleBtn2()">
-            <button type="button" class=" btn btn-success btn-sm m-0 p-0 rounded btnfocus" id="toggleBtn2" style="display:none;" onclick="togglePassword2()"><i class="fas fa-eye"></i></button>
+            <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem" onclick="togglePassword2()"></i>
         </div>
         <div class="form-group mb-3 ">
             <input type="password" class="form-control " id="cnf-password" name="cnf-password" maxlength="12" placeholder="Confirm Password" required oninput="showToggleBtn3()">
-            <button type="button" class=" btn btn-success btn-sm m-0 p-0 rounded btnfocus" id="toggleBtn3" style="display:none;" onclick="togglePassword3()"><i class="fas fa-eye"></i></button>
+            <i class="fas fa-eye " id="toggleBtn3" style="display:none;font-size:1.2rem" onclick="togglePassword3()"></i>
+            <small>
+                <p id="cpasserror" class="text-danger" style="display: none;"></p>
+            </small>
+        </div>
+        <div class="mt-2 d-flex justify-content-end">
+            <button type="submit" name="submit" id="change-password" class="btn btn-sm btn-primary">Save Changes</button>
+        </div> -->
+        <div class="form-group mb-3">
+            <input type="password" class="form-control " id="old-password" name="old-password" maxlength="12" placeholder="Current Password" required oninput="showToggleBtn('old-password', 'toggleBtn1')">
+            <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem" onclick="togglePassword('old-password', 'toggleBtn1')"></i>
+        </div>
+        <div class="form-group  mb-3">
+            <input type="password" class="form-control " id="new-password" name="new-password" maxlength="12" placeholder="Enter New Password" required oninput="showToggleBtn('new-password', 'toggleBtn2')">
+            <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem" onclick="togglePassword('new-password', 'toggleBtn2')"></i>
+        </div>
+        <div class="form-group mb-3 ">
+            <input type="password" class="form-control " id="cnf-password" name="cnf-password" maxlength="12" placeholder="Confirm Password" required oninput="showToggleBtn('cnf-password', 'toggleBtn3')">
+            <i class="fas fa-eye " id="toggleBtn3" style="display:none;font-size:1.2rem" onclick="togglePassword('cnf-password', 'toggleBtn3')"></i>
             <small>
                 <p id="cpasserror" class="text-danger" style="display: none;"></p>
             </small>
