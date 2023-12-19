@@ -111,7 +111,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
     function podOnDateFun() {
         let podDateSelect = document.getElementById('purchaseOfTheDayDate').value;
 
-        var xmlhttp = new XMLHttpRequest();
+        // var xmlhttp = new XMLHttpRequest();
         var podOnDateUrl = `<?php echo URL ?>ajax/sod-pod-data-search.ajax.php?podONDate=${podDateSelect}`;
         xmlhttp.open('GET', podOnDateUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -132,7 +132,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
         let podStartDate = document.getElementById('podStartDt').value;
         let podEndDate = document.getElementById('podEndDt').value;
 
-        var xmlhttp = new XMLHttpRequest();
+        // var xmlhttp = new XMLHttpRequest();
         var podOnDateRangeUrl = `<?php echo URL ?>ajax/sod-pod-data-search.ajax.php?podStartDate=${podStartDate}&podEndDate=${podEndDate}`;
         xmlhttp.open('GET', podOnDateRangeUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
