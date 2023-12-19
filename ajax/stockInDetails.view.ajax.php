@@ -61,12 +61,18 @@ $Products       = new Products();
             $StockIn = $StockIn->showStockInById($_GET['distBill']);
             // print_r($StockIn[0]);
 
-            $distributor = $Distributor->showDistributorById($StockIn[0][1]);
+            $distributorData = json_decode($Distributor->showDistributorById($StockIn[0][1]));
+            if ($distributorData->status == 1) {
+                $distributor = $distributorData->data;
+                $distributorName = $distributor->name;
+            }else {
+                $distributorName = '';
+            }
 
         ?>
         <div class="row">
             <div class="col-6 col-sm-4">
-                <p><b> Distribubtor: </b><?php echo $distributor[0][1]; ?></p>
+                <p><b> Distribubtor: </b><?= $distributorName; ?></p>
                 <p><b> Dist. Bill No: </b><?php echo $StockIn[0][2]; ?></p>
             </div>
             <div class="col-6 col-sm-4">

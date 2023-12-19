@@ -116,11 +116,13 @@ $showDistributor       = $Distributor->showDistributor();
                                             $id = $showStockIn[0]['id'];
                                             $slNo = $id - $StockInId;
                                             foreach ($showStockIn as $stockIn) {
-                                                $distributor = $Distributor->showDistributorById($stockIn['distributor_id']);
-                                                // echo $stockIn['id'];
-                                                // echo "stock in id : $StockInId";
-                                                // echo "<br>id : $id";
-                                                // echo "<br>sl no : $slNo";
+                                                $distributor = json_decode($Distributor->showDistributorById($stockIn['distributor_id']));
+                                                if ($distributor->status == 1) {
+                                                    $fetchedDistributor = $distributor->data;
+                                                    $distName = $fetchedDistributor->name;
+                                                }else {
+                                                    $distName = '';
+                                                }
                                                 $slNo++;
 
                                         ?>
@@ -132,7 +134,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                     <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['distributor_bill'] ?>
                                                     </td>
 
-                                                    <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $distributor[0][1] ?>
+                                                    <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?= $distName ?>
                                                     </td>
 
                                                     <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['bill_date'] ?>
