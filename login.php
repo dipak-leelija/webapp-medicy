@@ -77,8 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="off" oninput="showToggleBtn()">
-                <button type="button" class=" btn btn-success btn-sm m-0 p-0 rounded btnfocus" id="toggleBtn" style="display:none;" onclick="togglePassword()"><i class="fas fa-eye"></i></button>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Password" required autocomplete="off" oninput="showToggleBtn('password','toggleBtn')">
+                <i class="fas fa-eye " id="toggleBtn" style="display:none;font-size:1.2rem" onclick="togglePassword('password','toggleBtn')"></i>
             </div>
             <div class="form-group ">
                 <button class="btn btn-primary btn-s w-100" type="submit" name="login">Login</button>
