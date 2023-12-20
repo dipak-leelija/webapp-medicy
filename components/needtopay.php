@@ -1,5 +1,5 @@
 <div class="mb-4">
-    <div class="card border-left-info py-2 pending_border animated--grow-in">
+    <div class="card border-left-info shadow py-2 pending_border animated--grow-in">
         <div class="card-body">
             <a class="text-decoration-none" href="#">
                 <div class="row no-gutters align-items-center">

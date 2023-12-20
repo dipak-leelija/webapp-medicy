@@ -1,4 +1,4 @@
-<div class="card border-left-danger h-100 py-2 animated--grow-in">
+<div class="card border-left-danger shadow h-100 py-2 animated--grow-in">
     <div class="card-body pb-0">
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">

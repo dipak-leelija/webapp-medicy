@@ -14,7 +14,7 @@ if ($maxPurchasedDistAmount->status != 0) {
 
 ?>
 
-<div class="card border-left-info border-right-info h-100 py-2 pending_border animated--grow-in">
+<div class="card border-left-info shadow border-right-info h-100 py-2 pending_border animated--grow-in">
     <div class="card-body pb-0">
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
