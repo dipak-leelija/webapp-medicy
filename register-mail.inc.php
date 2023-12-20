@@ -33,7 +33,7 @@ if(isset($_SESSION['vkey']) && isset($_SESSION['fisrt-name']) && isset($_SESSION
 			<br>
 			Please enter this code to complete the registration process. If you didn't sign up for an account on Medicy, please ignore this email.
 			<br>
-			Thank you for choosing Medicy. We look forward to providing you with the best Healthcare System experience";
+			Thank you for choosing Medicy. We look forward to providing you with the best Healthcare System experience.";
 
 	/*===================================================================================================
 	|									    send mail to new customer									|
