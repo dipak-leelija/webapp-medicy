@@ -116,7 +116,8 @@ $showDistributor       = $Distributor->showDistributor();
                                             $id = $showStockIn[0]['id'];
                                             $slNo = $id - $StockInId;
                                             foreach ($showStockIn as $stockIn) {
-                                                $distributor = $Distributor->showDistributorById($stockIn['distributor_id']);
+                                                $distributor = json_decode($Distributor->showDistributorById($stockIn['distributor_id']));
+                                                $distributor = $distributor->data;
                                                 // echo $stockIn['id'];
                                                 // echo "stock in id : $StockInId";
                                                 // echo "<br>id : $id";
@@ -132,7 +133,7 @@ $showDistributor       = $Distributor->showDistributor();
                                                     <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['distributor_bill'] ?>
                                                     </td>
 
-                                                    <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $distributor[0][1] ?>
+                                                    <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $distributor[0]->name ?>
                                                     </td>
 
                                                     <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['bill_date'] ?>
@@ -222,9 +223,7 @@ $showDistributor       = $Distributor->showDistributor();
 
     <script>
         const stockDetails = (distBill,id) => {
-            // alert(distBill);
-            // alert(id);
-            // alert(value);
+            
             url = `ajax/stockInDetails.view.ajax.php?distBill=${distBill}`;
 
             $(".stockDetails").html(
