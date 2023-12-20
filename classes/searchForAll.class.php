@@ -4,7 +4,6 @@ class SearchForAll extends DatabaseConnection
 {
 function searchAllFilter($searchData, $adminId)
 {
-    $resultData = array();
     $appointmentsResultData = array();
     $searchPattern = "%".$searchData."%";
 
