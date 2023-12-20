@@ -270,7 +270,7 @@ if(isset($_POST['bill-proceed'])){
 
                         <div class="col-xl-7 col-lg-7 col-md-7 text-center">
                             <div class="card shadow p-4 mt-0">
-                                <form class="form-card" action="tests-bill-invoice.php" method="post">
+                                <form class="form-card" action="_config/form-submission/tests-bill-invoice.php" method="post">
                                     <input type="hidden" name="patientId" value="<?php echo $patientId; ?>">
                                     <input type="hidden" name="patientName" value="<?php echo $patientName; ?>">
 
