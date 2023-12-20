@@ -7,42 +7,47 @@ class SearchForAll extends DatabaseConnection
         $resultData = array(); 
         $appointmentsResultData = array();
         $patientsResultData = array();
-        $searchPattern = "%".$searchData."%";
 
         try {
             // ===== QUERY FOR APPOINTMENTS TABLE =====
-            $searchAllForAppointments = "SELECT * FROM appointments WHERE `admin_id` = '$adminId' AND `appointment_id` LIKE '%$searchData%'";
+            $searchAllForAppointments = "SELECT * FROM appointments WHERE 
+                                            `appointment_id` LIKE CONCAT('%', ?, '%') OR
+                                            `patient_id` LIKE CONCAT('%', ?, '%') OR
+                                            `patient_phno` LIKE CONCAT('%', ?, '%')";
 
-            $appointmentsStatement = $this->conn->query($searchAllForAppointments);
+            $appointmentsStatement = $this->conn->prepare($searchAllForAppointments);
+            
+            $appointmentsStatement->bind_param("sss", $searchData, $searchData, $searchData);
+            $appointmentsStatement->execute();
 
-            var_dump($appointmentsStatement);
+            $appointmentsQueryResult = $appointmentsStatement->get_result();
 
-            while ($appointmentsResult = $appointmentsStatement->fetch_assoc()) {
+            while ($appointmentsResult = $appointmentsQueryResult->fetch_assoc()) {
                 $appointmentsResultData[] = $appointmentsResult;
             }
 
 
 
 
-            // // ===== QUERY FOR APPOINTMENTS TABLE =====
-            // $searchAllForPatients = "SELECT * FROM patient_details WHERE `admin_id`= ? AND
-            //                                 `patient_id` LIKE CONCAT('%', ?, '%') OR
-            //                                 `phno` LIKE CONCAT('%', ?, '%')";
+            // ===== QUERY FOR APPOINTMENTS TABLE =====
+            $searchAllForPatients = "SELECT * FROM patient_details WHERE 
+                                            `patient_id` LIKE CONCAT('%', ?, '%') OR
+                                            `phno` LIKE CONCAT('%', ?, '%')";
 
-            // $patientsStatement = $this->conn->prepare($searchAllForPatients);
+            $patientsStatement = $this->conn->prepare($searchAllForPatients);
             
-            // $patientsStatement->bind_param("sss", $adminId, $searchData, $searchData);
-            // $patientsStatement->execute();
+            $patientsStatement->bind_param("ss", $searchData, $searchData);
+            $patientsStatement->execute();
 
-            // $patientsQueryResult = $patientsStatement->get_result();
+            $patientsQueryResult = $patientsStatement->get_result();
 
-            // while ($patientsResult = $patientsQueryResult->fetch_assoc()) {
-            //     $patientsResultData[] = $patientsResult;
-            // }
+            while ($patientsResult = $patientsQueryResult->fetch_assoc()) {
+                $patientsResultData[] = $patientsResult;
+            }
 
-            // $resultData = array_merge($appointmentsResultData, $patientsResultData);
+            $result = array_merge($appointmentsResultData, $patientsResultData);
 
-            return json_encode(['status' => '1', 'message' => 'Data found', 'data' => $appointmentsResultData]);
+            return json_encode(['status' => '1', 'message' => 'Data found', 'data' => $result]);
 
         } catch (Exception $e) {
             return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
