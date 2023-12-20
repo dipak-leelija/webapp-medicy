@@ -33,7 +33,7 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
                 <button class="btn btn-sm btn-primary" onclick="lessSoldItemsChkDateRange()" style="height: 2rem;">Find</button>
             </div>
             <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
 
                     <b>...</b>
