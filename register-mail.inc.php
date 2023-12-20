@@ -28,7 +28,7 @@ if(isset($_SESSION['vkey']) && isset($_SESSION['fisrt-name']) && isset($_SESSION
 			To ensure the security of your account, please use the following One-Time Password (OTP) for verification:
 			<br>
 			<br>
-			<b>Your Verification OTP: $verifyKey<b>
+			<b>Your Verification OTP: $verifyKey</b>
 			<br>
 			<br>
 			Please enter this code to complete the registration process. If you didn't sign up for an account on Medicy, please ignore this email.
