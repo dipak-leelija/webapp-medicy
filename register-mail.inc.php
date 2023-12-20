@@ -2,8 +2,10 @@
 include_once __DIR__ . "/config/constant.php";
 require_once CLASS_DIR .'dbconnect.php';
 require_once __DIR__.'/PHPMailer/PHPMailer.php';
+require_once CLASS_DIR.'utility.class.php';
 
 $PHPMailer		= new PHPMailer();
+$Utility        = new Utility;
 
 $_SESSION['vkey']		= 87677;
 $_SESSION['fisrt-name'] = 'Dipak';
@@ -17,9 +19,8 @@ if(isset($_SESSION['vkey']) && isset($_SESSION['fisrt-name']) && isset($_SESSION
 	$txtEmail 		= strip_tags(trim($_SESSION['email']));
 
 	$sess_arr	= array('vkey', 'newCustomerSess', 'fisrt-name', 'last-name', 'profession');
-	$utility->delSessArr($sess_arr);			
-	$uMesg->dispMesgWithMesgVal(SUCONTACT001,"SUCCESS","images/icon/",'','error-block','success-block');
-
+	$Utility->delSessArr($sess_arr);			
+	
 	$msgBody = "Dear $firstName,
 			<br>
 			Welcome to Medicy! We're thrilled to have you on board.
