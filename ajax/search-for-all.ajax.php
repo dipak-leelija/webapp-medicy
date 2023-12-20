@@ -10,13 +10,20 @@ $SearchForAll = new SearchForAll;
 // === sod fixd date data fetch =======
 if(isset($_GET['searchKey'])){
     $searchFor = $_GET['searchKey'];
-    
-    $searchResult = json_decode($SearchForAll->searchAllFilter($searchFor, $adminId));
+    print_r($searchFor);
+    $appointmentsResult = json_decode($SearchForAll->searchAllFilterForAppointment($searchFor, $adminId));
+    $patientsResult = json_decode($SearchForAll->searchAllFilterForPatient($searchFor, $adminId));
+    $stockIn = json_decode($SearchForAll->searchAllFilterForStockIn($searchFor, $adminId));
     // if($searchResult->status){
     //     $searchResult = $searchResult->data;
     // }
+    $combinedResult = [
+        'appointments' => $appointmentsResult,
+        'patients'     => $patientsResult,
+        'stockin'      => $stockIn
+    ];
 
-    print_r($searchResult);
+    print_r($combinedResult);
 }
 
 ?>
