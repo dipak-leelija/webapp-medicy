@@ -335,9 +335,9 @@ if (isset($_GET['search'])) {
         const productsDropdown = document.getElementsByClassName("c-dropdown")[0];
 
 
-        productsSearch.addEventListener("focus", () => {
-            productsDropdown.style.display = "block";
-        });
+        // productsSearch.addEventListener("focus", () => {
+        //     productsDropdown.style.display = "block";
+        // });
 
 
         document.addEventListener("click", (event) => {
@@ -366,7 +366,7 @@ if (isset($_GET['search'])) {
             let searchVal = document.getElementById("prodcut-search").value;
 
             if (searchVal.length > 2) {
-                console.log(searchVal);
+                
                 let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
                 xmlhttp.open("GET", manufURL, false);
                 xmlhttp.send(null);
@@ -386,9 +386,9 @@ if (isset($_GET['search'])) {
             } else {
                 document.getElementById('product-list').style.display = 'none';
                 list.innerHTML = '';
-                // productsDropdown.style.display = "none";
+                productsDropdown.style.display = "none";
             }
-            console.log(xmlhttp.responseText);
+            
         });
 
         //================================================================
