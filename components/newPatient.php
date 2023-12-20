@@ -50,8 +50,10 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
                     <div class="text-xs font-weight-bold text-success text-uppercase mt-n2 mb-2">
                         <i class="fas fa-user-plus"></i> New Patients
                     </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <span id="newPatient"><?= ($newPatients) ? $totalCount : 'No Data Found' ?> </span>
+                    <div class=" mb-0">
+                        <div class="h5 mb-0 font-weight-bold <?= (!$newPatients) ? 'text-warning h6' : 'text-dark' ?>">
+                            <p id="newPatient"><?= ($newPatients) ? $totalCount : 'Oops!, the requested data is not in our records.' ?></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,7 +82,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
                 <button class="btn btn-sm btn-primary" onclick="newPatientDateRange()" style="height: 1.5rem; padding:0px;">Find</button>
             </div>
             <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown " data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <b>...</b>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
@@ -165,7 +167,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
     }
 
 
-    
+
     /// selection button ////
     function newPatientCount(buttonId) {
         document.getElementById('newPatientDtPkr').style.display = 'none';

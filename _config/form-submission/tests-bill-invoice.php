@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/config/constant.php';
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
@@ -379,7 +379,7 @@ if (isset($_POST['bill-generate'])) {
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
         <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
-        <a class="btn btn-primary shadow mx-2" href="test-appointments.php">Go Back</a>
+        <a class="btn btn-primary shadow mx-2" href="../../test-appointments.php">Go Back</a>
         <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
     </div>
     </div>

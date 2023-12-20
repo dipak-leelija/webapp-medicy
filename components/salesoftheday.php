@@ -22,7 +22,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
 
 ?>
 
-<div class="card border-left-info border-right-info h-100 py-2 pending_border animated--grow-in">
+<div class="card border-left-info shadow border-right-info h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-between align-items-start px-4 ">
         <div class="row no-gutters align-items-center mt-4">
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
@@ -46,7 +46,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
                 </div>
             </div>
             <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <b>...</b>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">

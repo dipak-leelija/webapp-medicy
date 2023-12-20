@@ -6,7 +6,7 @@ require_once ROOT_DIR . '_config/user-details.inc.php';
 
 ?>
 
-<div class="card border-left-primary h-100 py-2 animated--grow-in">
+<div class="card border-left-primary shadow h-100 py-2 animated--grow-in">
     <div class="card-body pb-0">
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">

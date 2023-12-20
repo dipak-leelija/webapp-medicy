@@ -15,7 +15,7 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 // print_r($mostVistedCustomerFromStart);
 ?>
 
-<div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
+<div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-between align-items-center">
         <div class="col ml-2 mt-3">
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
@@ -34,7 +34,7 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
                 <button class="btn btn-sm btn-primary" onclick="mostVistedCustomerDateRange()" style="height: 2rem;">Find</button>
             </div>
             <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <b>...</b>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">

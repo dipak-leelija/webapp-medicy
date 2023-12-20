@@ -9,50 +9,30 @@ require_once 'dbconnect.php';
 class LabBilling extends DatabaseConnection
 {
 
-
     function addLabBill($billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $addedBy, $addedOn, $adminId)
     {
-        // Use prepared statements to prevent SQL injection
-        $insertBill = "INSERT INTO lab_billing 
-                       (`bill_id`, `bill_date`, `patient_id`, `refered_doctor`, `test_date`, `total_amount`, `discount`, `total_after_discount`, `cgst`, `sgst`, `paid_amount`, `due_amount`, `status`, `added_by`, `added_on`, `admin_id`) 
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $stmt = $this->conn->prepare($insertBill);
+        try {
+            $insertBill = "INSERT INTO lab_billing (`bill_id`, `bill_date`, `patient_id`, `refered_doctor`, `test_date`, `total_amount`, `discount`, `total_after_discount`, `cgst`, `sgst`, `paid_amount`, `due_amount`, `status`, `added_by`, `added_on`, `admin_id`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        if ($stmt) {
-            // Bind parameters
-            $stmt->bind_param(
-                'ssssssssssssssss', // Adjust these types according to your actual data types
-                $billId,
-                $billingDate,
-                $patientId,
-                $referedDoc,
-                $testDate,
-                $totalAmount,
-                $discountOnTotal,
-                $totalAfterDiscount,
-                $cgst,
-                $sgst,
-                $paidAmount,
-                $dueAmount,
-                $status,
-                $addedBy,
-                $addedOn,
-                $adminId
-            );
+            $stmt = $this->conn->prepare($insertBill);
 
-            // Execute the prepared statement
-            $insertBillQuery = $stmt->execute();
+            if ($stmt) {
+                $stmt->bind_param('isssssssssssssss', $billId, $billingDate, $patientId, $referedDoc, $testDate, $totalAmount, $discountOnTotal, $totalAfterDiscount, $cgst, $sgst, $paidAmount, $dueAmount, $status, $addedBy, $addedOn, $adminId);
 
-            // Close the statement
-            $stmt->close();
+                $res = $stmt->execute();
 
-            return $insertBillQuery;
-        } else {
-            // Handle the error if the statement preparation fails
-            return false;
+                $stmt->close();
+
+                return $res;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
+
 
 
 
@@ -108,14 +88,14 @@ class LabBilling extends DatabaseConnection
 
     function labBillFilter($adminId, $col, $filterVal)
     {
-        try{
+        try {
 
-            if($col == 'search' ){
+            if ($col == 'search') {
                 $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId' AND (bill_id LIKE '%$filterVal%' OR patient_id LIKE '%$filterVal%') ORDER BY bill_id ASC";
             } else {
                 $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId' AND $col = $filterVal";
             }
-            
+
 
             $stmt = $this->conn->prepare($selectBill);
 
@@ -134,7 +114,7 @@ class LabBilling extends DatabaseConnection
                 $stmt->close();
                 return json_encode(['status' => '0', 'message' => 'fail', 'data' => '']);
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
         }
     } //end employeesDisplay function
@@ -144,13 +124,13 @@ class LabBilling extends DatabaseConnection
 
     function labBillFilterByDate($adminId, $fromDate, $toDate)
     {
-        try{
+        try {
 
-           
+
             $selectBill = "SELECT * FROM lab_billing 
                             WHERE date(added_on) BETWEEN '$fromDate' AND '$toDate' 
                             AND admin_id = '$adminId'";
-            
+
             $stmt = $this->conn->prepare($selectBill);
 
             $stmt->execute();
@@ -168,7 +148,7 @@ class LabBilling extends DatabaseConnection
                 $stmt->close();
                 return json_encode(['status' => '0', 'message' => 'fail', 'data' => '']);
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
         }
     } //end employeesDisplay function

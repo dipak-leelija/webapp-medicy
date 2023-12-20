@@ -34,12 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $prevDistId         = $_POST['prev-distributor-id'];
         $distributorId      = $_POST['updated-distributor-id'];
 
-        $distributorDetial = $distributor->showDistributorById($distributorId);
+        $distributorDetial = json_decode($distributor->showDistributorById($distributorId));
+        $distributorDetial = $distributorDetial->data;
         foreach ($distributorDetial as $distDeta) {
-            $distributorName      = $distDeta['name'];
-            $distAddress          = $distDeta['address'];
-            $distPIN              = $distDeta['area_pin_code'];
-            $distContact          = $distDeta['phno'];
+            $distributorName      = $distDeta->name;
+            $distAddress          = $distDeta->address;
+            $distPIN              = $distDeta->area_pin_code;
+            $distContact          = $distDeta->phno;
         }
 
         $distPrevBillNo     = $_POST['prev-distributor-bill'];
@@ -390,9 +391,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // updated table where dist id = $prevDistId, and dist bill number =  $distPrevBillNo;
                 $updateStockReturn = $StcokReturn->updateStockReturnOnEditStockIn($table1, $data1, $distributorId, $distributorBill, $addedBy);
 
-                $selectStockReturnData = $StcokReturn->stockReturnFilter($table1, $data1);
+                $selectStockReturnData = json_decode($StcokReturn->stockReturnFilter($table1, $data1));
+                $selectStockReturnData = $selectStockReturnData->data;
+
                 if (!empty($selectStockReturnData)) {
-                    $stockReturnId = $selectStockReturnData[0]['id'];
+                    $stockReturnId = $selectStockReturnData[0]->id;
                 }
 
                 // update stock return details table

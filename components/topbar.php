@@ -11,22 +11,25 @@
     </a> -->
 
     <!-- Topbar Search -->
+
+
     <div class="d-flex">
-        <div class="div">
-            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" onkeydown="searchFor()" id="search-all">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fas fa-search fa-sm"></i>
-                        </button>
-                    </div>
+        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" onkeydown="searchFor()" id="search-all">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
                 </div>
-            </form>
-        </div>
-        <div class="p-2 bg-light" id="search-for" style="max-height: 25rem; max-width: 100%;">
+            </div>
+        </form>
+        <div class="p-2 bg-light " id="search-for" style="max-height: 25rem; max-width: 33%;">
         </div>
     </div>
+
+
+
 
 
 

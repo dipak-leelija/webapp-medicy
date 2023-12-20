@@ -123,6 +123,11 @@ $showDistributor       = $Distributor->showDistributor();
                                                 }else {
                                                     $distName = '';
                                                 }
+                                                // $distributor = $distributor->data;
+                                                // echo $stockIn['id'];
+                                                // echo "stock in id : $StockInId";
+                                                // echo "<br>id : $id";
+                                                // echo "<br>sl no : $slNo";
                                                 $slNo++;
 
                                         ?>
@@ -224,9 +229,7 @@ $showDistributor       = $Distributor->showDistributor();
 
     <script>
         const stockDetails = (distBill,id) => {
-            // alert(distBill);
-            // alert(id);
-            // alert(value);
+            
             url = `ajax/stockInDetails.view.ajax.php?distBill=${distBill}`;
 
             $(".stockDetails").html(
