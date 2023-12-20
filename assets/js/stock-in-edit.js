@@ -204,6 +204,7 @@ const customClick = (id, value1, value2, value3) => {
                 document.getElementById("packaging-type-edit").value = dataObject.packageType;
 
                 document.getElementById("discount").value = dataObject.disc;
+                document.getElementById("gst-check").value = dataObject.gst;
                 document.getElementById("gst").value = dataObject.gst;
                 document.getElementById("crntGstAmnt").value = dataObject.GstAmount;
                 document.getElementById('base').value = dataObject.baseAmount;
@@ -450,6 +451,8 @@ const getBillAmount = () => {
 
     let gst = document.getElementById('gst').value;
     // console.log("change gst : "+gst);
+
+    let prevGst = document.getElementById("gst-check").value;
     
     let qty = document.getElementById('qty').value;
     if (qty == '') {
@@ -464,11 +467,9 @@ const getBillAmount = () => {
     let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
     maxPtr = maxPtr.toFixed(2);
 
-    // console.log("max ptr "+ maxPtr);
-    // console.log("change ptr "+ ptr);
-
-    if (ptr != maxPtr) {
+    if (gst != prevGst) {
         document.getElementById('ptr').value = maxPtr;
+        document.getElementById("gst-check").value = gst;
     }
 
     if (ptr > maxPtr) {
