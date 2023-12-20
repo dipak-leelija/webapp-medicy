@@ -16,7 +16,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
 ?>
 
-<div class="card border-left-primary h-100 py-2 pending_border animated--grow-in">
+<div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-between align-items-center">
         <div class="col ml-2 mt-3">
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">

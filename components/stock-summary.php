@@ -64,7 +64,7 @@ if ($currentStockExpItemData != null) {
 
 ?>
 <div class="mb-4">
-    <div class="card border-top-primary pending_border animated--grow-in">
+    <div class="card border-top-primary shadow pending_border animated--grow-in">
         <div class="card-body">
             <a class="text-decoration-none" href="#">
                 <div class="row no-gutters align-items-center">

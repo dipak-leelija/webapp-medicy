@@ -1,6 +1,6 @@
 <!-- Current Stock Quantity  -->
 <div class="mb-4 ">
-    <div class="card border-left-secondary py-2 animated--grow-in">
+    <div class="card border-left-secondary shadow py-2 animated--grow-in">
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
@@ -32,7 +32,7 @@
 
 <!-- Current Stock MRP -->
 <div class="mb-4">
-    <div class="card border-left-secondary py-2 animated--grow-in">
+    <div class="card border-left-secondary shadow py-2 animated--grow-in">
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">

@@ -19,7 +19,7 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 // print_r($purchaeTodayDataLst30dys);
 ?>
 
-<div class="card border-left-info h-100 py-2 pending_border animated--grow-in">
+<div class="card border-left-info shadow h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-between align-items-start px-4 ">
     <div class="row no-gutters align-items-center mt-4">
         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
