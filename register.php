@@ -62,7 +62,7 @@ if (isset($_POST['register'])) {
                         // echo 'True';
                         $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
                         if ($addToClinicInfo) {
-                            header("Location: login.php");
+                            header("Location: register-mail.inc.php");
                             exit;
                         }else{
                             $errMsg = "Clinic Info Can't Added!";

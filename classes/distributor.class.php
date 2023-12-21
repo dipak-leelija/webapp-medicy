@@ -145,12 +145,12 @@ class Distributor extends DatabaseConnection
             $selectQuery    = $this->conn->query($select);
             if ($selectQuery->num_rows > 0) {
                 $data = array();
-                while ($result  = $selectQuery->fetch_array()) {
-                    $data[] = $result;
+                while ($result  = $selectQuery->fetch_assoc()) {
+                    $data = $result;
                 }
-                return json_encode(['status'=>'1', 'message'=>'data found', 'data'=>$data]);
+                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$data]);
             } else {
-                return json_encode(['status'=>'0', 'message'=>'no data found', 'data'=>'']);
+                return json_encode(['status'=>'0', 'message'=>'empty', 'data'=>array()]);
             }
         } catch (Exception $e) {
             return json_encode(['status'=>' ', 'message'=>$e->getMessage(), 'data'=>'']);
