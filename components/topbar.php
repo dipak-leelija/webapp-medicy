@@ -26,7 +26,7 @@
 
         </form>
     </div>
-    <div class="p-2 bg-light" id="searchAll-list" style="max-height: 10rem; max-width:100%; position: absolute; z-index: 9999; top: 58px; overflow: scroll; display:none; margin-left: 1rem;background: rgb(255, 255, 255); border-radius: 0 0 3px 3px; margin-top: 0.1rem; transition: 3.3s ease; box-shadow: 0 5px 10px rgb(0 0 0 / 20%);">
+    <div class="p-2 bg-light" id="searchAll-list" style="max-height: 15rem; max-width:100%; position: absolute; z-index: 9999; top: 58px; overflow: scroll; display:none; margin-left: 1rem;background: rgb(255, 255, 255); border-radius: 0 0 3px 3px; margin-top: 0.1rem; transition: 3.3s ease; box-shadow: 0 5px 10px rgb(0 0 0 / 20%);">
     </div>
 
 
