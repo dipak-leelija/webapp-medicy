@@ -11,17 +11,21 @@ function searchAllFilterForAppointment($searchData, $adminId){
         $searchAllForAppointments = "SELECT * FROM appointments WHERE `admin_id` = ? AND `appointment_id` LIKE ? OR `patient_id` LIKE ? OR `patient_phno` LIKE ?";
 
         $stmt = $this->conn->prepare($searchAllForAppointments);
-        $stmt->bind_param("ssss",$adminId, $searchPattern,$searchPattern,$searchPattern);
+        $stmt->bind_param("ssss",$adminId, $searchPattern, $searchPattern, $searchPattern);
         $stmt->execute();
         $appointmentsStatement = $stmt->get_result();
 
-        while ($appointmentsResult = $appointmentsStatement->fetch_assoc()) {
-            $appointmentsResultData[] = $appointmentsResult;
+        if($appointmentsStatement->num_rows > 0){
+            while ($appointmentsResult = $appointmentsStatement->fetch_assoc()) {
+                $appointmentsResultData[] = $appointmentsResult;
+            }
+    
+            return json_encode(['status' => '1', 'message' => 'Data found', 'data' => $appointmentsResultData]);
+        }else{
+            return json_encode(['status' => '0', 'message' => 'Data not found', 'data' => '']);
         }
-
-        return json_encode(['status' => '1', 'message' => 'Data found', 'data' => $appointmentsResultData]);
     } catch (Exception $e) {
-        return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
+        return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
     }
 }
 
@@ -39,13 +43,18 @@ function searchAllFilterForPatient($searchData, $adminId){
         $stmt->execute();
         $patientStatement = $stmt->get_result();
 
-        while ($patientResult = $patientStatement->fetch_assoc()) {
-            $patientData[] = $patientResult;
+        if($patientStatement->num_rows > 0){
+            while ($patientResult = $patientStatement->fetch_assoc()) {
+                $patientData[] = $patientResult;
+            }
+            return json_encode(['status' => '1', 'message' => 'Data found', 'data' => $patientData]);
+        }else{
+            return json_encode(['status' => '0', 'message' => 'Data not found', 'data' => '']);
         }
 
-        return json_encode(['status' => '1', 'message' => 'Data found', 'data' => $patientData]);
+        
     } catch (Exception $e) {
-        return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
+        return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
     }
 }
 
@@ -63,13 +72,17 @@ function searchAllFilterForStockIn($searchData, $adminId){
         $stmt->execute();
         $stockinStatement = $stmt->get_result();
 
-        while ($stockInResult = $stockinStatement->fetch_assoc()) {
-             $stockinResultData[] = $stockInResult;
+        if($stockinStatement->num_rows > 0){
+            while ($stockInResult = $stockinStatement->fetch_assoc()) {
+                $stockinResultData[] = $stockInResult;
+           }
+           return json_encode(['status' => '1', 'message' => 'Data found', 'data' =>  $stockinResultData]);
+        }else {
+            return json_encode(['status' => '0', 'message' => 'Data not found', 'data' => '']);
         }
-
-        return json_encode(['status' => '1', 'message' => 'Data found', 'data' =>  $stockinResultData]);
+                
     } catch (Exception $e) {
-        return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
+        return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
     }
 }
 
