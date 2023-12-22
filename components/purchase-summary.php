@@ -13,7 +13,7 @@
                                 style="width:2rem;"></th>
                         <th scope="col">Items</th>
                         <th scope="col">Batch</th>
-                        <th scope="col">MFD.</th>
+                        <!-- <th scope="col">MFD.</th> -->
                         <th scope="col">Exp.</th>
                         <th scope="col" hidden>Power</th>
                         <th scope="col">Unit</th>
