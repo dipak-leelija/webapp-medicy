@@ -15,8 +15,18 @@ require_once CLASS_DIR."patients.class.php";
 $StockOut = new StockOut();
 $Patients = new Patients();
 
-$soldItems = $StockOut->stockOutDisplay(strval($adminId));
-//print_r($soldItems);
+
+
+
+if (isset($_GET['searchKey'])) {
+    $id = $_GET['searchKey'];
+    $table1 = 'id';
+    $table2 = 'admin_id';
+    $soldItems = $StockOut->stokOutDataByTwoCol($table1, $id, $table2, $adminId);
+} else {
+    $soldItems = $StockOut->stockOutDisplay(strval($adminId));
+}
+
 ?>
 
 <!DOCTYPE html>

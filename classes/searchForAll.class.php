@@ -69,7 +69,7 @@ class SearchForAll extends DatabaseConnection{
 
         try {
             // ===== QUERY FOR APPOINTMENTS TABLE =====
-            $searchAllForStockIn = "SELECT * FROM stock_in WHERE `admin_id` = ? AND `distributor_bill` LIKE ?   LIMIT 6";
+            $searchAllForStockIn = "SELECT * FROM stock_in WHERE `admin_id` = ? AND `distributor_bill` LIKE ? LIMIT 6";
 
             $stmt = $this->conn->prepare($searchAllForStockIn);
             $stmt->bind_param("ss",$adminId, $searchPattern);
@@ -89,6 +89,41 @@ class SearchForAll extends DatabaseConnection{
             return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
         }
     }
+
+
+
+
+
+    function searchAllFilterForStockOut($searchData, $adminId){
+
+        $stockOutResultData = array();
+        $searchPattern = "%".$searchData."%";
+
+        try {
+            // ===== QUERY FOR APPOINTMENTS TABLE =====
+            $searchAllForStockOut = "SELECT * FROM stock_out WHERE `admin_id` = ? AND `customer_id` LIKE ? OR `amount` LIKE ? OR `payment_mode` LIKE ? LIMIT 6";
+
+            $stmt = $this->conn->prepare($searchAllForStockOut);
+            $stmt->bind_param("ssds",$adminId, $searchPattern, $searchPattern, $searchPattern);
+            $stmt->execute();
+            $stockOutStatement = $stmt->get_result();
+
+            if($stockOutStatement->num_rows > 0){
+                while ($stockOutResult = $stockOutStatement->fetch_assoc()) {
+                    $stockOutResultData[] = $stockOutResult;
+               }
+               return json_encode(['status' => '1', 'message' => 'Data found', 'data' =>  $stockOutResultData]);
+            }else {
+                return json_encode(['status' => '0', 'message' => 'Data not found', 'data' => '']);
+            }
+
+        } catch (Exception $e) {
+            return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
+        }
+    }
+
+
+
 
 
 

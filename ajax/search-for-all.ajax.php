@@ -51,7 +51,7 @@ if (isset($_GET['searchKey'])) {
         // }
 
     // } else {
-
+        // echo $searchFor;
         $stockIn = json_decode($SearchForAll->searchAllFilterForStockIn($searchFor, $adminId));
         // print_r($stockIn);
         if ($stockIn->status) {
@@ -62,6 +62,20 @@ if (isset($_GET['searchKey'])) {
             $stockInTable = '';
             $stockInStatus = $stockIn->status;
             $stockInData = $stockIn->message;
+        }
+
+
+
+
+        $salesData = json_decode($SearchForAll->searchAllFilterForStockOut($searchFor, $adminId));
+        if ($salesData->status) {
+            $stockOutTable = 'stock_out';
+            $stockOutStatus = $salesData->status;
+            $stockOutData = $salesData->data;
+        } else {
+            $stockOutTable = '';
+            $stockOutStatus = $salesData->status;
+            $stockOutData = $salesData->message;
         }
 
 
@@ -86,7 +100,17 @@ if (isset($_GET['searchKey'])) {
     }
 
 
-    $margedResultData = ['appointments'=>['token' => $appointmentsTable, 'status' => $appointmentsStatus, 'data' => $appointmentsData], 'patients'=>['token' => $patientsTable, 'status' => $patientsStatus, 'data' => $patientsData], 'stock_in'=>['token' => $stockInTable, 'status' => $stockInStatus, 'data'=> $stockInData], 'lab_billing'=>['token' => $labBillTable, 'status' => $labBillStatus, 'data'=> $labBillData]];
+    $margedResultData = [
+        'appointments'=>['token' => $appointmentsTable, 'status' => $appointmentsStatus, 'data' => $appointmentsData], 
+        
+        'patients'=>['token' => $patientsTable, 'status' => $patientsStatus, 'data' => $patientsData], 
+        
+        'stock_in'=>['token' => $stockInTable, 'status' => $stockInStatus, 'data'=> $stockInData], 
+
+        'stock_out'=>['token' => $stockOutTable, 'status' => $stockOutStatus, 'data'=> $stockOutData], 
+        
+        'lab_billing'=>['token' => $labBillTable, 'status' => $labBillStatus, 'data'=> $labBillData]
+    ];
 
 
     // print_r($margedResultData['appointments']['data']);
@@ -122,6 +146,7 @@ if (isset($_GET['searchKey'])) {
                 <div class="col-md-12">No Data Found</div>
             </div>';
         }
+
         
         if ($margedResultData['patients']['status']) {
             echo '
@@ -149,6 +174,7 @@ if (isset($_GET['searchKey'])) {
                 <div class="col-md-12">No Patient Data Found</div>
             </div>';
         }
+
         
         if ($margedResultData['stock_in']['status']) {
             echo '
@@ -174,9 +200,43 @@ if (isset($_GET['searchKey'])) {
         } else {
             echo '
             <div class="row border-bottom border-primary small mx-0 mb-2">
-                <div class="col-md-12">No STOK IN Data Found</div>
+                <div class="col-md-12">No Stock In Data Found</div>
             </div>';
         }
+
+
+        if ($margedResultData['stock_out']['status']) {
+            echo '
+            <div class="row border-bottom border-primary small mx-0 mb-2">
+                <div class="col-md-2">Invoice Id</div>
+                <div class="col-md-4">Customer Id</div>
+                <div class="col-md-3">Amount</div>
+                <div class="col-md-3">Payment Mode</div>
+            </div>';
+
+            foreach ($margedResultData['stock_out']['data'] as $result) {
+            
+            ?>
+                <div class="row mx-0 py-2 border-bottom p-row item-list" id="search-all-listed-items" tabindex="0" onclick="getDtls('<?php echo $margedResultData['stock_out']['token'] ?>', 
+                '<?php echo $result->invoice_id  ?> ');">
+
+            <?php
+
+            echo'
+                <div class="col-md-2">' . $result->invoice_id . '</div>
+                <div class="col-md-4"><small>' . $result->customer_id . '</small></div>
+                <div class="col-md-3"><small>' . $result->amount . '</small></div>
+                <div class="col-md-3"><small>' . $result->payment_mode . '</small></div>
+            </div>';
+            }
+
+        } else {
+            echo '
+            <div class="row border-bottom border-primary small mx-0 mb-2">
+                <div class="col-md-12">No Stock Out Data Found</div>
+            </div>';
+        }
+
 
         if ($margedResultData['lab_billing']['status']) {
             echo '

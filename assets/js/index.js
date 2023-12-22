@@ -35,7 +35,7 @@ const searchFor = () => {
         return;
     }
 
-    if (searchForData.value.length > 3) {
+    if (searchForData.value.length > 2) {
         let searchAllUrl = `ajax/search-for-all.ajax.php?searchKey=${searchForData.value}`;
         let xmlhttp = new XMLHttpRequest();
 
@@ -53,6 +53,8 @@ const searchFor = () => {
 }
 
 const getDtls = (key, id) =>{
+    console.log(key);
+    console.log(id);
    
     if(key == 'appointments'){
         window.location.href = `appointments.php?search=${'appointment_search'}&searchKey=${id}`;
@@ -66,5 +68,16 @@ const getDtls = (key, id) =>{
     if(key == 'lab_billing'){
         window.location.href = `test-appointments.php?search=${'appointment-search'}&searchKey=${id}`;
     }
+
+
+    if(key == 'stock_in'){
+        window.location.href = `stock-in-details.php?search=${'stock_in'}&searchKey=${id}`;
+    }
+
+
+    if(key == 'stock_out'){
+        window.location.href = `stock-in-details.php?search=${'stock_out'}&searchKey=${id}`;
+    }
+
 
 }
