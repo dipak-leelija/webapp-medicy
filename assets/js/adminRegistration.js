@@ -20,7 +20,7 @@ mobileInput.addEventListener('input', function () {
 const validateMobileNumber = () => {
     let mobileInputLength = document.getElementById('mobile-number');
 
-    if (mobileInputLength.value.length != 9) {
+    if (mobileInputLength.value.length != 10) {
         mobileInputLength.focus();
         console.log('input 10 digits');
     }
@@ -56,7 +56,6 @@ const verifyEmail = () => {
 const checkEmailAvailability = (inputedMail) => {
     let mailId = inputedMail.value;
 
-
     $.ajax({
         url: "ajax/email-verification-validation.ajax.php",
         type: "POST",
@@ -64,13 +63,11 @@ const checkEmailAvailability = (inputedMail) => {
             chekExistance: mailId,
         },
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             if (data == 0) {
-                alert('Email Exits!');
-                // document.getElementById('email').focus();
-            } else {
-                console.log(data);
-            }
+                alert('Email Exits as registered!');
+                document.getElementById('email').value = '';
+            } 
         }
     });
 }
