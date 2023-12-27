@@ -15,7 +15,7 @@ class Admin extends DatabaseConnection
             $stmt = $this->conn->prepare($query);
 
             // Bind parameters
-            $stmt->bind_param("ssssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
+            $stmt->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
 
             if ($stmt->execute()) {
                 

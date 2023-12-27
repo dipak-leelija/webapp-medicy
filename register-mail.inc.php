@@ -169,7 +169,7 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 						<form class="user" action="_config/form-submission/register-inc.php" method="post">
 
 							<div class="">
-								<div class="otp-input">
+								<div class="input-group">
 									<input type="text" maxlength="1" name="digit1" id="digit1" pattern="\d" title="Please enter only digits" required>
 									<input type="text" maxlength="1" name="digit2" id="digit2" pattern="\d" title="Please enter only digits" required>
 									<input type="text" maxlength="1" name="digit3" id="digit3" pattern="\d" title="Please enter only digits" required>
@@ -218,6 +218,11 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 	<script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 	<script src="assets/js/sweetalert2/sweetalert2.all.min.js"></script>
 
+
+
+	<script>
+
+	</script>
 </body>
 
 </html>
