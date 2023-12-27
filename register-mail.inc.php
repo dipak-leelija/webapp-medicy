@@ -27,7 +27,7 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 
 
 	// echo $sessionStartTime, "<br>";
-	echo $verificationKey, "<br>";
+	// echo $verificationKey, "<br>";
 	// echo $fname, "<br>";
 	// echo $email, "<br>";
 	// echo $timeOut, "<br>";
@@ -42,7 +42,7 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 	// }
 
 	
-/*
+
 	$verifyKey  	= strip_tags(trim($_SESSION['vkey']));
 	$firstName 		= strip_tags(trim($_SESSION['first-name']));
 	$txtEmail 		= strip_tags(trim($_SESSION['email']));
@@ -65,12 +65,12 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 			<br>
 			Please enter this code to complete the registration process. If you didn't sign up for an account on Medicy, please ignore this email.
 			<br>
-			Thank you for choosing Medicy. We look forward to providing you with the best Healthcare System experience."; */
+			Thank you for choosing Medicy. We look forward to providing you with the best Healthcare System experience."; 
 
 	/*===================================================================================================
 	|									    send mail to new customer									|
 	====================================================================================================*/
-	/*
+	
 	try {
 		$PHPMailer->IsSendmail();
 		$PHPMailer->IsHTML(true);
@@ -93,7 +93,7 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 		$PHPMailer->clearAllRecipients();
 	} catch (Exception $e) {
 		echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
-	} */
+	} 
 } else {
 	session_destroy();
 }
@@ -154,7 +154,7 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 
 
 		<?php
-		if (isset($_SESSION['vkey']) && isset($_SESSION['adm_id']) && isset($_SESSION['last_activity']) && isset($_SESSION['time_out'])) {  echo $_SESSION['vkey']; ?>
+		if (isset($_SESSION['vkey']) && isset($_SESSION['adm_id']) && isset($_SESSION['last_activity']) && isset($_SESSION['time_out'])) {  ?>
 
 
 
