@@ -5,24 +5,24 @@ class Admin extends DatabaseConnection
 
 
 
-    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on)
+    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status)
     {
 
         $password = pass_enc($password, ADMIN_PASS);
 
         try {
-            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($query);
 
             // Bind parameters
-            $stmt->bind_param("sssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on);
+            $stmt->bind_param("ssssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
 
             if ($stmt->execute()) {
-                // Registration was successful
-                return "Registration successful";
+                
+                return 1;
             } else {
                 // Registration failed
-                return "Registration failed";
+                return 0;
             }
         } catch (Exception $e) {
             // Handle any exceptions that may occur
@@ -125,6 +125,30 @@ class Admin extends DatabaseConnection
             return $data;
         }
     }
+
+
+
+
+
+    function updateAdminStatus($admId, $status) {
+        try {
+            $updateQuery = "UPDATE `admin` SET `reg_status`=? WHERE `admin_id`=?";
+            
+            $stmt = $this->conn->prepare($updateQuery);
+    
+            $stmt->bind_param("is", $status, $admId);
+    
+            $stmt->execute();
+    
+            $stmt->close();
+    
+            return ['result' => '1'];
+
+        } catch (Exception $e) {
+            return ['result' => '0', 'message' => $e->getMessage()];
+        }
+    }
+
 
 
 
