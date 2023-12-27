@@ -136,7 +136,7 @@ class Admin extends DatabaseConnection
             
             $stmt = $this->conn->prepare($updateQuery);
     
-            $stmt->bind_param("is", $status, $admId);
+            $stmt->bind_param("ss", $status, $admId);
     
             $stmt->execute();
     
@@ -211,7 +211,7 @@ class Admin extends DatabaseConnection
             }
     
             return true;
-            
+
         } catch (Exception $e) {
             // return false;
             return $e->getMessage();
