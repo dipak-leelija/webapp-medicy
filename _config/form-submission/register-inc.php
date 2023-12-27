@@ -10,14 +10,14 @@ if ($_SESSION['vkey'] && $_SESSION['adm_id'] && $_SESSION['last_activity'] && $_
    
     $Key = $_SESSION['vkey'];
     $admId = $_SESSION['adm_id'];
-    $status = '0';
+    $status = 0;
 
     if (isset($_POST['otp-submit'])) {
       
         $chkOtp = $_POST['digit1'].$_POST['digit2'].$_POST['digit3'].$_POST['digit4'].$_POST['digit5'].$_POST['digit6'];
 
         if ($chkOtp == $Key) {
-            $status = '1';
+            $status = 1;
 
             $admStatusUpdate = $Admin->updateAdminStatus($admId, $status);
 
