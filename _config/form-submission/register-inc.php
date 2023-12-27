@@ -20,7 +20,6 @@ if ($_SESSION['vkey'] && $_SESSION['adm_id'] && $_SESSION['last_activity'] && $_
             $status = '1';
 
             $admStatusUpdate = $Admin->updateAdminStatus($admId, $status);
-            // print_r($admStatusUpdate);
 
             if ($admStatusUpdate['result']) {
                 
@@ -28,10 +27,12 @@ if ($_SESSION['vkey'] && $_SESSION['adm_id'] && $_SESSION['last_activity'] && $_
                 exit; 
 
             } else {
+                $delAdmn = $Admin->deleteAdminData($admId);
                 echo "Status update failed.";
             }
 
         } else {
+            $delAdmn = $Admin->deleteAdminData($admId);
             echo "Invalid OTP.";
         }
     }

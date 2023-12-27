@@ -195,4 +195,27 @@ class Admin extends DatabaseConnection
         }
     }
     
+
+
+
+
+    // admin delete function
+
+    function deleteAdminData($adminId) {
+        try {
+            $deleteAdminQuery = "DELETE FROM `admin` WHERE `admin_id` = '$adminId'";
+            $query = $this->conn->query($deleteAdminQuery);
+    
+            if ($query === false) {
+                throw new Exception("Error executing query: " . $this->conn->error);
+            }
+    
+            return true;
+            
+        } catch (Exception $e) {
+            // return false;
+            return $e->getMessage();
+        }
+    }
+    
 } //eof Admin Class
