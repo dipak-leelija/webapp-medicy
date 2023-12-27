@@ -1,16 +1,17 @@
 <?php
-require_once __DIR__. '/config/constant.php';
+require_once __DIR__ . '/config/constant.php';
 // Check if a specific session variable exists to determine if the user is logged in
 if (isset($_SESSION['LOGGEDIN'])) {
-    header("Location: ".URL);
+    echo 'logged in';
+    header("Location: " . URL);
     exit;
 }
 
-require_once CLASS_DIR .'dbconnect.php';
-require_once CLASS_DIR.'admin.class.php';
-require_once CLASS_DIR.'subscription.class.php';
-require_once CLASS_DIR.'hospital.class.php';
-require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'admin.class.php';
+require_once CLASS_DIR . 'subscription.class.php';
+require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'idsgeneration.class.php';
 
 $admin          = new Admin;
 $Subscription   = new Subscription;
@@ -30,7 +31,8 @@ if (isset($_POST['register'])) {
     $mobNo      = $_POST['mobile-number'];
     $password   =  $_POST['password'];
     $cpassword  = $_POST['cpassword'];
-    
+
+    echo $Fname;
 
     $currentDate = new DateTime(TODAY);
 
@@ -38,45 +40,63 @@ if (isset($_POST['register'])) {
     $expiry = $currentDate->modify('+365 days')->format('Y-m-d');
 
     $adminId  = $IdGenerate->generateAdminId();
-    $clinicId = $IdGenerate->generateClinicId($adminId);    
+    $clinicId = $IdGenerate->generateClinicId($adminId);
 
+    $status = '0';
+    $timeout_duration = 180; // 3*60(seconds) = 3 minutes.
+
+    $randomNumber = rand(000000, 999999); // use this for otp
 
     $checkUser = $admin->echeckUsername($username);
-    if($checkUser > 0){
+    // print_r($checkUser->data);
+
+    if ($checkUser) {
         $userExists = true;
-    }else{
+
+    } else {
         $userExists = false;
         $checkMail = $admin->echeckEmail($email);
-        if($checkMail > 0){
+        if ($checkMail > 0) {
             $emailExists = true;
-        }else {
+        } else {
             $emailExists = false;
-            if($password == $cpassword){
+            if ($password == $cpassword) {
                 $diffrentPassword = false;
-                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW);
+                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, $status);
                 // print_r($register);
+
                 if ($register) {
-                    
+
+                    session_start();
+
+                    $_SESSION['last_activity']  = date('H:i:s');
+                    $_SESSION['time_out']       = $timeout_duration;
+                    $_SESSION['vkey']           = $randomNumber;
+                    $_SESSION['first-name']     = $Fname;
+                    $_SESSION['email']          = $email;
+                    $_SESSION['adm_id']         = $adminId;
+
+
                     $subscribed = $Subscription->createSubscription($adminId, 1, NOW, $expiry, 0);
+
                     if ($subscribed === true) {
                         // echo 'True';
                         $addToClinicInfo = $HealthCare->addClinicInfo($clinicId, $adminId, NOW);
                         if ($addToClinicInfo) {
                             header("Location: register-mail.inc.php");
                             exit;
-                        }else{
+                        } else {
                             $errMsg = "Clinic Info Can't Added!";
                         }
-                    }else {
+                    } else {
                         $errMsg =  $subscribed;
                     }
                 }
-            }else {
+            } else {
                 $diffrentPassword = true;
             }
         }
     }
-
 }
 
 ?>
@@ -116,78 +136,71 @@ if (isset($_POST['register'])) {
                     <form class="user" action="register.php" method="post">
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                <input type="text" class="form-control form-control-user" id="fname" name="fname"
-                                    maxlength="20" placeholder="First Name">
+                                <input type="text" class="form-control form-control-user" id="fname" name="fname" maxlength="20" placeholder="First Name">
                             </div>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control form-control-user" id="lname" name="lname"
-                                    maxlength="20" placeholder="Last Name">
+                                <input type="text" class="form-control form-control-user" id="lname" name="lname" maxlength="20" placeholder="Last Name">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name"
-                                maxlength="24" placeholder="Username">
+                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username">
                         </div>
 
                         <div class="form-group">
-                            <input type="email" class="form-control form-control-user" id="email" name="email"
-                                maxlength="80" placeholder="Email Address" onfocusout="verifyEmail()">
+                            <input type="email" class="form-control form-control-user" id="email" name="email" maxlength="80" placeholder="Email Address" onfocusout="verifyEmail()">
                         </div>
 
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user" id="mobile-number"
-                                name="mobile-number" placeholder="Mobile Number" onfocusout="validateMobileNumber()" maxlength="9" required>
+                            <input type="text" class="form-control form-control-user" id="mobile-number" name="mobile-number" placeholder="Mobile Number" onfocusout="validateMobileNumber()" maxlength="10" required>
                         </div>
 
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="password"
-                                    name="password" maxlength="12" placeholder="Password" required>
+                                <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Password" required>
                             </div>
                             <div class="col-sm-6">
-                                <input type="password" class="form-control form-control-user" id="cpassword"
-                                    name="cpassword" maxlength="12" placeholder="Repeat Password" required>
+                                <input type="password" class="form-control form-control-user" id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
                             </div>
                         </div>
                         <?php
 
-                                    if($emailExists){
-                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        if ($emailExists) {
+                            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>Sorry!</strong> Given Email Already Exists.
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
-                                    }
+                        }
 
-                                    if($userExists){
-                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        if ($userExists) {
+                            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>Sorry!</strong> Username Already Exists.
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
-                                    }
+                        }
 
-                                    if($diffrentPassword){
-                                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        if ($diffrentPassword) {
+                            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>Sorry!</strong> Password Does not match.
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>';
-                                    }
+                        }
 
-                                    if (isset($errMsg)) {
-                                        echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                        if (isset($errMsg)) {
+                            echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
                                         <strong>Please Contact Support. </strong> $errMsg
                                         <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                                           <span aria-hidden='true'>&times;</span>
                                         </button>
                                       </div>";
-                                    }
-                                ?>
+                        }
+                        ?>
 
                         <button class="btn btn-primary btn-user btn-block" type="submit" name="register">Register
                             Account</button>
