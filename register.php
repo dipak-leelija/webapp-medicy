@@ -152,7 +152,7 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user" id="mobile-number" name="mobile-number" placeholder="Mobile Number" onfocusout="validateMobileNumber()" maxlength="10" required>
+                            <input type="text" class="form-control form-control-user" id="mobile-number" name="mobile-number" placeholder="Mobile Number" onkeydown="validateMobileNumber()" maxlength="10" required>
                         </div>
 
                         <div class="form-group row">
