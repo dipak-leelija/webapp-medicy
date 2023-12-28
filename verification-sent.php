@@ -45,7 +45,7 @@
 
 
 		<?php
-		if (isset($_SESSION['vkey']) && isset($_SESSION['adm_id']) && isset($_SESSION['last_activity']) && isset($_SESSION['time_out'])) {  ?>
+		if ($_SESSION['vkey'] && $_SESSION['adm_id'] && $_SESSION['last_activity'] && $_SESSION['time_out']) {  ?>
 
 
 

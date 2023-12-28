@@ -24,23 +24,6 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 	$fname = $_SESSION['first-name'];
 	$email = $_SESSION['email'];
 	$timeOut = $_SESSION['time_out'];
-
-
-	// echo $sessionStartTime, "<br>";
-	// echo $verificationKey, "<br>";
-	// echo $fname, "<br>";
-	// echo $email, "<br>";
-	// echo $timeOut, "<br>";
-
-
-
-	// $elapsed_time = time() - $_SESSION['last_activity'];
-	// if ($elapsed_time > $timeout_duration) {
-	// 	session_unset();
-	// 	session_destroy();
-	// 	header("Location: registration.php"); 
-	// }
-
 	
 
 	$verifyKey  	= strip_tags(trim($_SESSION['vkey']));
@@ -91,7 +74,7 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 			echo 'mail sent';
 			header("location: verification-sent.php");
 		}
-		
+
 		$PHPMailer->clearAllRecipients();
 	} catch (Exception $e) {
 		echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
