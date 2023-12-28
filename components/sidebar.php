@@ -217,7 +217,7 @@
 
 
         <!-- Nav Item - Distributo -->
-        <li class="nav-item <?= $page ==  "distributo" ? "active" : '' ?>">
+        <li class="nav-item <?php if($page ==  "distributor"){echo "active";}  ?>">
             <a class="nav-link" href="distributor.php">
                 <i class="fas fa-clinic-medical"></i>
                 <span>Distributor</span></a>
