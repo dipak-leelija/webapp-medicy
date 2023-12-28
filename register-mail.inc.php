@@ -30,8 +30,9 @@ if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSIO
 	$firstName 		= strip_tags(trim($_SESSION['first-name']));
 	$txtEmail 		= strip_tags(trim($_SESSION['email']));
 
+	// header("location: verification-sent.php");
 
-
+	
 	$sess_arr	= array('vkey', 'newCustomerSess', 'fisrt-name', 'last-name', 'profession');
 	$Utility->delSessArr($sess_arr);
 
