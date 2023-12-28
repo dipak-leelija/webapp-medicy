@@ -1,10 +1,13 @@
 <?php
 
 include_once __DIR__ . "/config/constant.php";
+require_once ROOT_DIR . '_config/registrationSessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once __DIR__ . '/PHPMailer/PHPMailer.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'admin.class.php';
+require_once CLASS_DIR . 'admin.class.php';
+
 
 
 $PHPMailer        = new PHPMailer();
@@ -49,10 +52,10 @@ $Admin             = new Admin;
 
     <main>
 
-
-        <?php
-        if ($_SESSION['vkey'] && $_SESSION['adm_id'] && $_SESSION['last_activity'] && $_SESSION['time_out']) {  
-        ?>
+        <!-- <?php
+        echo $adminId."<br>";
+        echo $randomNumber;
+        ?> -->
 
 
 
@@ -88,10 +91,6 @@ $Admin             = new Admin;
                 </div>
             </div>
         </div>
-
-        <?php
-        }
-        ?>
     </main>
 
     <!-- Bootstrap core JavaScript-->

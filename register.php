@@ -68,7 +68,8 @@ if (isset($_POST['register'])) {
                 if ($register) {
 
                     session_start();
-
+                    $_SESSION['REGISTRATION']   = true;
+                    $_SESSION['ADMIN_REGISER']  = true;
                     $_SESSION['last_activity']  = date('H:i:s');
                     $_SESSION['time_out']       = $timeout_duration;
                     $_SESSION['vkey']           = $randomNumber;

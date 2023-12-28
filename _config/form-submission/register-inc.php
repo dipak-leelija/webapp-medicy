@@ -1,15 +1,16 @@
 <?php
 include_once dirname(dirname(__DIR__)) . "/config/constant.php";
+require_once ROOT_DIR . '_config/registrationSessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'admin.class.php';
 
 $Admin = new Admin;
 
-if ($_SESSION['vkey'] && $_SESSION['adm_id'] && $_SESSION['last_activity'] && $_SESSION['time_out']) {
+// if ($_SESSION['vkey'] && $_SESSION['adm_id'] && $_SESSION['last_activity'] && $_SESSION['time_out']) {
 
    
-    $Key = $_SESSION['vkey'];
-    $admId = $_SESSION['adm_id'];
+    $Key = $randomNumber;
+    $admId = $adminId;
     $status = 0;
 
     if (isset($_POST['otp-submit'])) {
@@ -36,5 +37,5 @@ if ($_SESSION['vkey'] && $_SESSION['adm_id'] && $_SESSION['last_activity'] && $_
             echo "Invalid OTP.";
         }
     }
-}
+// }
 ?>
