@@ -38,6 +38,7 @@ $Admin = new Admin;
             $delAdmn = $Admin->deleteAdminData($admId);
             echo "Invalid OTP.";
             session_destroy();
+            header("Location: " . LOCAL_DIR . "login.php");
         }
     }
 // }
