@@ -32,7 +32,7 @@ if (isset($_POST['register'])) {
     $password   =  $_POST['password'];
     $cpassword  = $_POST['cpassword'];
 
-    echo $Fname;
+    // echo $Fname;
 
     $currentDate = new DateTime(TODAY);
 

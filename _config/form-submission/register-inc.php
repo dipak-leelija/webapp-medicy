@@ -25,16 +25,19 @@ $Admin = new Admin;
             if ($admStatusUpdate['result']) {
                 
                 header("Location: " . LOCAL_DIR . "login.php");
+                session_destroy();
                 exit; 
 
             } else {
                 $delAdmn = $Admin->deleteAdminData($admId);
                 echo "Status update failed.";
+                session_destroy();
             }
 
         } else {
             $delAdmn = $Admin->deleteAdminData($admId);
             echo "Invalid OTP.";
+            session_destroy();
         }
     }
 // }
