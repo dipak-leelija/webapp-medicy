@@ -296,7 +296,7 @@ if (isset($_GET['search'])) {
                 if (flag == 0) {
                     modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
 
-                    modal.querySelector('.modal-dialog').classList.add('modal-md'); 
+                    modal.querySelector('.modal-dialog').classList.add('modal-lg'); 
                 }
 
                 if (flag == 1) {
