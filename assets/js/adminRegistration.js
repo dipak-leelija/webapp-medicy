@@ -10,17 +10,16 @@ let xmlhttp = new XMLHttpRequest();
 // ======== code to chek mobile number input validity ===========
 var mobileInput = document.getElementById('mobile-number');
 
-mobileInput.addEventListener('input', function () {
+const validateMobileNumber = () => {
+
+    let mobileInput = document.getElementById('mobile-number');
+
     var inputValue = mobileInput.value;
     var numericValue = inputValue.replace(/[^0-9]/g, '');
+    document.getElementById('mobile-number').value = numericValue;
+    
 
-    mobileInput.value = numericValue;
-});
-
-const validateMobileNumber = () => {
-    let mobileInputLength = document.getElementById('mobile-number');
-
-    if (mobileInputLength.value.length != 10) {
+    if (mobileInput.value.length != 10) {
         mobileInputLength.focus();
         console.log('input 10 digits');
     }
