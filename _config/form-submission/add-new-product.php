@@ -53,18 +53,16 @@ $Session = new SessionHandler();
         $randNum = rand(1, 999999999999);
         $productId = 'PR' . $randNum;
 
-
-        echo "<br>PRODUCT ID : $productId";
-        echo "<br>PRODUCT NAME : $prodName";
-        echo "<br>PRODUCT HSNO NUMBER : $hsnoNumber";
-        echo "<br>PRODUCT CATAGORY : $prodCategory";
-        echo "<br>PRODUCT POWER : $medicinePower";
-        echo "<br>PRODUCT UNIT : $qantityUnit";
-        echo "<br>PRODUCT UNIT TYPE : $packegingUnit";
-        echo "<br>PRODUCT PACKAGING TYPE : $packegingType";
-        echo "<br>MRP : $mrp";
-        echo "<br>GST : $gst<br>";
-
+        // echo "<br>PRODUCT ID : $productId";
+        // echo "<br>PRODUCT NAME : $prodName";
+        // echo "<br>PRODUCT HSNO NUMBER : $hsnoNumber";
+        // echo "<br>PRODUCT CATAGORY : $prodCategory";
+        // echo "<br>PRODUCT POWER : $medicinePower";
+        // echo "<br>PRODUCT UNIT : $qantityUnit";
+        // echo "<br>PRODUCT UNIT TYPE : $packegingUnit";
+        // echo "<br>PRODUCT PACKAGING TYPE : $packegingType";
+        // echo "<br>MRP : $mrp";
+        // echo "<br>GST : $gst<br>";
 
         //Insert into products table 
         $addProducts = $Products->addProductByUser($productId, $prodName, $hsnoNumber, $prodCategory, $medicinePower, $qantityUnit, $packegingUnit, $packegingType, $mrp, $gst, $employeeId, NOW, $adminId);
@@ -86,12 +84,12 @@ $Session = new SessionHandler();
 
                 ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
                 //===== Main Image 
-                $image         = $imagesName[$j];
+                $imageNm        = $imagesName[$j];
                 $tempImgname   = $tempImgsName[$j];
 
-                $ImgNm = '';
-                $extention = '';
-                $countImageLen = 0;
+                // $ImgNm = '';
+                // $extention = '';
+                // $countImageLen = 0;
 
 
                 if ($image != '') {
@@ -111,7 +109,7 @@ $Session = new SessionHandler();
                     //     $extention .= $image[$k];
                     // }
 
-                    $image         = $ImgNm . '-' . $randomString . $extention;
+                    $image         = $imageNm . '-' . $randomString . $extention;
                     $imgFolder     = ROOT_DIR."images/product-image/" . $image;
 
                     move_uploaded_file($tempImgname, $imgFolder);
