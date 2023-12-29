@@ -85,9 +85,9 @@ if (isset($_POST['register'])) {
 
 
                 if($register){
-                    echo "success";
+                    echo "reg success";
                 }else{
-                    echo "fail";
+                    echo "reg fail";
                 }
 
 
