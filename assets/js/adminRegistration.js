@@ -71,3 +71,28 @@ const checkEmailAvailability = (inputedMail) => {
     });
 }
 
+
+
+let otpInput = document.getElementsByClassName('input-group');
+otpInput.addEventListener('keydown', function (event) {
+    if (event.keyCode === 9) {
+        if (otpInput.value.trim() === '') {
+            event.preventDefault();
+        }
+    }
+});
+
+otpInput.addEventListener('input', function (event) {
+    // Remove dots from the input value
+    this.value = this.value.replace('.', '');
+});
+
+
+otpInput.forEach((input, index) => {
+    otpInput.addEventListener('input', function () {
+        
+        if (index < otpInput.length - 1) {
+            otpInput[index + 1].focus();
+        }
+    });
+});

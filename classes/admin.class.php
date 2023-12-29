@@ -203,19 +203,43 @@ class Admin extends DatabaseConnection
 
     function deleteAdminData($adminId) {
         try {
-            $deleteAdminQuery = "DELETE FROM `admin` WHERE `admin_id` = '$adminId'";
-            $query = $this->conn->query($deleteAdminQuery);
+            // Use prepared statements to prevent SQL injection
+            $deleteFromAdmin = "DELETE FROM `admin` WHERE `admin_id` = ?";
+            $deleteFromSubscription = "DELETE FROM `subscription` WHERE `admin_id` = ?";
+            $deleteFromClinicInfo = "DELETE FROM `clinic_info` WHERE  `admin_id` = ?";
     
-            if ($query === false) {
+            // Use prepared statements to prevent SQL injection
+            $stmt1 = $this->conn->prepare($deleteFromAdmin);
+            $stmt2 = $this->conn->prepare($deleteFromSubscription);
+            $stmt3 = $this->conn->prepare($deleteFromClinicInfo);
+    
+            // Bind parameters
+            $stmt1->bind_param("s", $adminId);
+            $stmt2->bind_param("s", $adminId);
+            $stmt3->bind_param("s", $adminId);
+    
+            // Execute queries
+            $stmt1->execute();
+            $stmt2->execute();
+            $stmt3->execute();
+    
+            if ($stmt1->error || $stmt2->error || $stmt3->error) {
                 throw new Exception("Error executing query: " . $this->conn->error);
             }
     
-            return true;
-
+            if ($stmt1->affected_rows > 0 || $stmt2->affected_rows > 0 || $stmt3->affected_rows > 0) {
+                return true;
+            } else {
+                throw new Exception("No records deleted. Admin ID not found.");
+            }
+    
         } catch (Exception $e) {
-            // return false;
+            
+            error_log("Error deleting admin data: " . $e->getMessage());
+    
             return $e->getMessage();
         }
     }
+    
     
 } //eof Admin Class

@@ -17,20 +17,21 @@ $Admin 			= new Admin;
 
 /// =========== REGISTRATION HANDELING SECTION  ================
 
-if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_SESSION['email']) && isset($_SESSION['last_activity']) && isset($_SESSION['time_out'])) {
+if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_SESSION['email']) && isset($_SESSION['username'])) {
 
 	$sessionStartTime = $_SESSION['last_activity'];
 	$verificationKey = $_SESSION['verify_key'];
 	$fname = $_SESSION['first-name'];
 	$email = $_SESSION['email'];
-	$timeOut = $_SESSION['time_out'];
+	$userName = $_SESSION['username'];
 	
 
 	$verifyKey  	= strip_tags(trim($_SESSION['verify_key']));
 	$firstName 		= strip_tags(trim($_SESSION['first-name']));
 	$txtEmail 		= strip_tags(trim($_SESSION['email']));
+	$userNm 		= strip_tags(trim($_SESSION['username']));
 
-	header("location: verification-sent.php");
+	// header("location: verification-sent.php");
 
 	
 	$sess_arr	= array('vkey', 'newCustomerSess', 'fisrt-name', 'last-name', 'profession');
@@ -40,6 +41,10 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 	$msgBody = "Dear $firstName,
 			<br>
 			Welcome to Medicy! We're thrilled to have you on board.
+			<br>
+			Just a friendly reminder: you can use either your username or your email address as your login credentials. 
+			<br>
+			Your Username is - $userNm,
 			<br>
 			To ensure the security of your account, please use the following One-Time Password (OTP) for verification:
 			<br>

@@ -69,19 +69,20 @@ if (isset($_POST['register'])) {
             if ($password == $cpassword) {
                 $diffrentPassword = false;
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, $status);
-                // print_r($register);
+                print_r($register);
 
                 if ($register) {
 
                     session_start();
-                    $_SESSION['REGISTRATION']   = true;
-                    $_SESSION['ADMIN_REGISER']  = true;
-                    $_SESSION['last_activity']  = date('H:i:s');
-                    $_SESSION['time_out']       = $timeout_duration;
-                    $_SESSION['verify_key']     = $randomString;
-                    $_SESSION['first-name']     = $Fname;
-                    $_SESSION['email']          = $email;
-                    $_SESSION['adm_id']         = $adminId;
+                    $_SESSION['REGISTRATION']       = true;
+                    $_SESSION['ADMIN_REGISER']      = true;
+                    $_SESSION['session_start_time']  = date('H:i:s');
+                    $_SESSION['time_out']           = $timeout_duration;
+                    $_SESSION['verify_key']         = $randomString;
+                    $_SESSION['first-name']         = $Fname;
+                    $_SESSION['email']              = $email;
+                    $_SESSION['username']           = $username;
+                    $_SESSION['adm_id']             = $adminId;
 
 
                     $subscribed = $Subscription->createSubscription($adminId, 1, NOW, $expiry, 0);
