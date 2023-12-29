@@ -70,20 +70,20 @@ if (isset($_POST['register'])) {
                 $diffrentPassword = false;
 
 
-                echo gettype($adminId)."<br>";
-                echo gettype($Fname)."<br>";
-                echo gettype($Lname)."<br>";
-                echo gettype($username)."<br>";
-                echo gettype($password)."<br>";
-                echo gettype($email)."<br>";
-                echo gettype($mobNo)."<br>";
-                echo gettype($expiry)."<br>";
-                echo gettype(NOW)."<br>";
-                echo gettype($status)."<br>";
+                echo $adminId."<br>";
+                echo $Fname."<br>";
+                echo $Lname."<br>";
+                echo $username."<br>";
+                echo $password."<br>";
+                echo $email."<br>";
+                echo $mobNo."<br>";
+                echo $expiry."<br>";
+                echo NOW."<br>";
+                echo $status."<br>";
 
                 exit;
-                
-                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, $status);
+
+                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
 
 
                 if($register){
