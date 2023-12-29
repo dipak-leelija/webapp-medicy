@@ -3,34 +3,35 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 class Admin extends DatabaseConnection
 {
 
-    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status){
-
-    $password = pass_enc($password, ADMIN_PASS);
-
-    try {
-        $insertAdmin = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES ('$adminId', '$Fname', '$Lname', '$username', '$password', '$email', '$mobNo', '$expiry', '$added_on', '$status')";
-
-        $insertQuery = $this->conn->prepare($insertAdmin);
-
-        print_r($insertAdmin);
-
-        if ($insertQuery->affected_rows > 0){
+    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status) {
+        
+        $password = pass_enc($password, ADMIN_PASS);
+    
+        try {
             
-            return $insertQuery;
-
-        }else {
-            // Handle the case where the prepared statement couldn't be created
-            throw new Exception("Failed to add data.");
+            $insertAdmin = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertQuery = $this->conn->prepare($insertAdmin);
+    
+            
+            $insertQuery->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
+    
+            $insertQuery->execute();
+    
+            if ($insertQuery->affected_rows > 0) {
+                
+                return true;
+            } else {
+                throw new Exception("Failed to add data.");
+            }
+    
+        } catch (Exception $e) {
+            
+            error_log("Error in registration: " . $e->getMessage());
+            
+            return "Registration failed. Please try again later.";
         }
-
-    } catch (Exception $e) {
-        return "Error => " . $e->getMessage();
     }
-}
-
-
-
-
+    
 
 
     function adminDetails($adminId){
