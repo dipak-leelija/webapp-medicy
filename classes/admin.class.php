@@ -10,9 +10,9 @@ class Admin extends DatabaseConnection
     try {
         $insertAdmin = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES ('$adminId', '$Fname', '$Lname', '$username', '$password', '$email', '$mobNo', '$expiry', '$added_on', '$status')";
 
-        print_r($insertAdmin);
-
         $insertQuery = $this->conn->prepare($insertAdmin);
+
+        print_r($insertAdmin);
 
         if ($insertQuery->affected_rows > 0){
             
