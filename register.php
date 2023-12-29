@@ -69,13 +69,21 @@ if (isset($_POST['register'])) {
             if ($password == $cpassword) {
                 $diffrentPassword = false;
 
-                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, $status);
 
-                if($register){
-                    echo "success";
-                }else{
-                    echo "fail";
-                }
+                echo gettype($adminId)."<br>";
+                echo gettype($Fname)."<br>";
+                echo gettype($Lname)."<br>";
+                echo gettype($username)."<br>";
+                echo gettype($password)."<br>";
+                echo gettype($email)."<br>";
+                echo gettype($mobNo)."<br>";
+                echo gettype($expiry)."<br>";
+                echo gettype(NOW)."<br>";
+                echo gettype($status)."<br>";
+
+                exit;
+                
+                $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, $status);
 
 
                 if($register){
