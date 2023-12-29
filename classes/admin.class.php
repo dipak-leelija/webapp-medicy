@@ -3,30 +3,32 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 class Admin extends DatabaseConnection
 {
 
+    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status){
 
-    // $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, $status);
+    $password = pass_enc($password, ADMIN_PASS);
 
-    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status)
-    {
+    try {
+        $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $password = pass_enc($password, ADMIN_PASS);
+        $stmt = $this->conn->prepare($query);
 
-        try {
-            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES ($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status)";
+        $stmt->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
 
-            $result = $this->conn->query($query);
-
-            if ($result) {
-                return true;
-            } else {
-                return false;
-            }
-            
-        } catch (Exception $e) {
-            // Handle any exceptions that may occur
-            return "Error => " . $e->getMessage();
+        $result = $stmt->execute();
+        print_r($result);
+        return $result;
+        
+        if ($result) {
+            return true;
+        } else {
+            return false;
         }
+
+    } catch (Exception $e) {
+        return "Error => " . $e->getMessage();
     }
+}
+
 
 
 

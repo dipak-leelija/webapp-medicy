@@ -68,10 +68,17 @@ if (isset($_POST['register'])) {
             $emailExists = false;
             if ($password == $cpassword) {
                 $diffrentPassword = false;
+
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, $status);
 
-                echo "registration validation check : ";
-                print_r($register);
+                if($register){
+                    echo "registration success";
+                    print_r($register);
+                }else{
+                    echo "registration fail";
+                    print_r($register);
+                }
+    
 
                 if ($register) {
 
