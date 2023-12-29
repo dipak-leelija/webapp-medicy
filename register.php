@@ -98,6 +98,7 @@ if (isset($_POST['register'])) {
                     session_destroy();
 
                     session_start();
+                    
                     $_SESSION['REGISTRATION']       = true;
                     $_SESSION['ADMIN_REGISER']      = true;
                     $_SESSION['session_start_time']  = date('H:i:s');

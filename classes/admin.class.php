@@ -12,11 +12,14 @@ class Admin extends DatabaseConnection
             $insertAdmin = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $insertQuery = $this->conn->prepare($insertAdmin);
     
+            print_r(gettype($status));
             
             $insertQuery->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
     
             $insertQuery->execute();
-    
+            
+            print_r( $insertQuery);
+
             if ($insertQuery->affected_rows > 0) {
                 
                 return true;
