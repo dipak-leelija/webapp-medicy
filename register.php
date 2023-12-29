@@ -86,6 +86,12 @@ if (isset($_POST['register'])) {
 
                 if($register){
                     echo "success";
+                }else{
+                    echo "fail";
+                }
+
+                if($register){
+                    echo "success";
 
                     session_start();
                     $_SESSION['REGISTRATION']       = true;
