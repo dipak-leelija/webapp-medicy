@@ -14,7 +14,7 @@ class Admin extends DatabaseConnection
     
             print_r(gettype($status));
             
-            $insertQuery->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
+            $insertQuery->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, intval($status));
     
             $insertQuery->execute();
             
