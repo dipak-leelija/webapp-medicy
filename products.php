@@ -326,6 +326,7 @@ if (isset($_GET['search'])) {
                 url = 'ajax/product-view-modal.ajax.php?id=' + prodId;
             }
 
+            
             $(".productViewModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');

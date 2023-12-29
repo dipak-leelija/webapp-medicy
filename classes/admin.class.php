@@ -4,6 +4,7 @@ class Admin extends DatabaseConnection
 {
 
 
+    // $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, $status);
 
     function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status)
     {
@@ -11,19 +12,16 @@ class Admin extends DatabaseConnection
         $password = pass_enc($password, ADMIN_PASS);
 
         try {
-            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $this->conn->prepare($query);
+            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES ($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status)";
 
-            // Bind parameters
-            $stmt->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
+            $result = $this->conn->query($query);
 
-            if ($stmt->execute()) {
-                
-                return 1;
+            if ($result) {
+                return true;
             } else {
-                // Registration failed
-                return 0;
+                return false;
             }
+            
         } catch (Exception $e) {
             // Handle any exceptions that may occur
             return "Error => " . $e->getMessage();
