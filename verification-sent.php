@@ -70,12 +70,12 @@ $Admin          = new Admin;
 
                         <div class="otp-input">
                             <div class="d-flex justify-content-center">
-                                <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" pattern="\d" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" pattern="\d" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" pattern="\d" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit4" id="digit4" pattern="\d" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit5" id="digit5" pattern="\d" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" pattern="\d" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit4" id="digit4" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit5" id="digit5" required>
+                                <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" required>
                             </div>
 
                             <!-- <div class="d-none"><input type="text" name="adm-val" id="adm-val" value="<?php $_SESSION['adm_id']; ?>"><?php $_SESSION['adm_id']; ?></div> -->

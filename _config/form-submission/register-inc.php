@@ -24,7 +24,7 @@ $Admin = new Admin;
 
             if ($admStatusUpdate['result']) {
                 
-                exit;
+                // exit;
                 header("Location: " . LOCAL_DIR . "login.php");
                 session_destroy();
                 exit; 
