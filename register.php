@@ -71,16 +71,10 @@ if (isset($_POST['register'])) {
 
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, $status);
 
-                if($register){
-                    echo "registration success";
-                    print_r($register);
-                }else{
-                    echo "registration fail";
-                    print_r($register);
-                }
-    
+                print_r($register);
+                exit;
 
-                if ($register) {
+                if($register){
 
                     session_start();
                     $_SESSION['REGISTRATION']       = true;

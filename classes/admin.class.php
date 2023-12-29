@@ -15,14 +15,8 @@ class Admin extends DatabaseConnection
         $stmt->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
 
         $result = $stmt->execute();
-        print_r($result);
-        return $result;
         
-        if ($result) {
-            return true;
-        } else {
-            return false;
-        }
+        return $result;
 
     } catch (Exception $e) {
         return "Error => " . $e->getMessage();
