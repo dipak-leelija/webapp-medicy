@@ -12,11 +12,21 @@ class Admin extends DatabaseConnection
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
+        if ($stmt){
+            $stmt->bind_param("ssssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
 
-        $result = $stmt->execute();
+            $result = $stmt->execute();
+            $stmt->close();
+            return $result;
+            
+        }else {
+            // Handle the case where the prepared statement couldn't be created
+            throw new Exception("Failed to prepare the statement.");
+        }
+
         
-        return $result;
+        
+        
 
     } catch (Exception $e) {
         return "Error => " . $e->getMessage();

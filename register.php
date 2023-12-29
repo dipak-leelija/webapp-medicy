@@ -83,12 +83,13 @@ if (isset($_POST['register'])) {
 
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
 
-
+                
                 if($register){
                     echo "success";
                 }else{
                     echo "fail";
                 }
+
 
                 if($register){
                     echo "success";
