@@ -81,8 +81,6 @@ if (isset($_POST['register'])) {
                 echo NOW."<br>";
                 echo $status."<br>";
 
-                exit;
-
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
 
 
