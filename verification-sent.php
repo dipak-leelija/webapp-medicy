@@ -79,6 +79,7 @@ $Admin          = new Admin;
                             </div>
 
                             <!-- <div class="d-none"><input type="text" name="adm-val" id="adm-val" value="<?php $_SESSION['adm_id']; ?>"><?php $_SESSION['adm_id']; ?></div> -->
+                            
                         </div>
                         <div class="">
                             <button class="btn btn-primary btn-user btn-block mt-3" type="submit" name="otp-submit">Register
