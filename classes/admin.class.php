@@ -13,7 +13,7 @@ class Admin extends DatabaseConnection
         $stmt = $this->conn->prepare($query);
 
         if ($stmt){
-            $stmt->bind_param("ssssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
+            $stmt->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
 
             $result = $stmt->execute();
             $stmt->close();
