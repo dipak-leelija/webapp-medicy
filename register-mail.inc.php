@@ -31,7 +31,7 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 	$txtEmail 		= strip_tags(trim($_SESSION['email']));
 	$userNm 		= strip_tags(trim($_SESSION['username']));
 
-	// header("location: verification-sent.php");
+	header("location: verification-sent.php");
 
 	
 	$sess_arr	= array('vkey', 'newCustomerSess', 'fisrt-name', 'last-name', 'profession');

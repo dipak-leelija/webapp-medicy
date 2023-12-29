@@ -41,7 +41,7 @@ const verifyEmail = () => {
             document.getElementById('email').value = ' ';
             if(!allowedDomains.includes(domain)){
                 alert('Check Domain name');
-                document.getElementById('email').value = '';
+                // document.getElementById('email').value = '';
             }
         } else {
             checkEmailAvailability(inputedMail);
