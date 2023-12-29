@@ -17,16 +17,16 @@ $Admin 			= new Admin;
 
 /// =========== REGISTRATION HANDELING SECTION  ================
 
-if (isset($_SESSION['vkey']) && isset($_SESSION['first-name']) && isset($_SESSION['email']) && isset($_SESSION['last_activity']) && isset($_SESSION['time_out'])) {
+if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_SESSION['email']) && isset($_SESSION['last_activity']) && isset($_SESSION['time_out'])) {
 
 	$sessionStartTime = $_SESSION['last_activity'];
-	$verificationKey = $_SESSION['vkey'];
+	$verificationKey = $_SESSION['verify_key'];
 	$fname = $_SESSION['first-name'];
 	$email = $_SESSION['email'];
 	$timeOut = $_SESSION['time_out'];
 	
 
-	$verifyKey  	= strip_tags(trim($_SESSION['vkey']));
+	$verifyKey  	= strip_tags(trim($_SESSION['verify_key']));
 	$firstName 		= strip_tags(trim($_SESSION['first-name']));
 	$txtEmail 		= strip_tags(trim($_SESSION['email']));
 

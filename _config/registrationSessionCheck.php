@@ -9,7 +9,7 @@ if (!isset($_SESSION['REGISTRATION'])) {
 
 if($_SESSION['ADMIN_REGISER']){
     echo "Debugging: " . print_r($_SESSION, true);
-    $randomNumber = $_SESSION['vkey'];
+    $randomNumber = $_SESSION['verify_key'];
     $Fname = $_SESSION['first-name'];
     $email = $_SESSION['email'];
     $adminId = $_SESSION['adm_id'];
