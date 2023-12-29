@@ -296,7 +296,9 @@ if (isset($_GET['search'])) {
                 if (flag == 0) {
                     modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
 
-                    modal.querySelector('.modal-dialog').classList.add('modal-lg'); 
+                    // modal.querySelector('.modal-dialog').classList.add('modal-md'); 
+
+                    modal.querySelector('.modal-dialog').classList.add('modal-xl');
                 }
 
                 if (flag == 1) {
@@ -316,7 +318,9 @@ if (isset($_GET['search'])) {
             let url = '';
             if (verifiedValue == 0) {
                 changeModalSize('0', 'productViewModal');
-                url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId;
+                // url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId; // updated path for user view
+
+                url = 'ajax/temp-product-view-modal.ajax.php?id=' + prodId; // temporary file path for user view and edit.
             } else {
                 changeModalSize('1', 'productViewModal');
                 url = 'ajax/product-view-modal.ajax.php?id=' + prodId;

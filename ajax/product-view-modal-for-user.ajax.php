@@ -39,6 +39,7 @@ $Gst = new Gst;
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <!-- new features added -->
+    <!-- <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet"> -->
     <link href="<?php echo CSS_PATH ?>add-new-product.css" rel="stylesheet">
 </head>
 
@@ -117,7 +118,7 @@ $Gst = new Gst;
 
         <div class="col-12 d-flex justify-content-center container-fluid d-flex" style="min-height: 50vh; max-width: 150vh;">
 
-            <div class="col-6">
+            <div class="col-12">
                 <form action="../_config/form-submission/update-new-product-data.php" enctype="multipart/form-data" method="post" id="update-new-product-data">
                     <!-- product name row -->
                     <div class="row">
@@ -244,7 +245,7 @@ $Gst = new Gst;
                 </form>
             </div>
 
-            <div class="col-6">
+            <!-- <div class="col-6">
                 <div class="col-12">
                     <div id="img-div">
                         <div class="container-fluid" id="img-container">
@@ -259,7 +260,7 @@ $Gst = new Gst;
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
     <?php
@@ -267,6 +268,7 @@ $Gst = new Gst;
     ?>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="<?php echo JS_PATH ?>custom/add-new-product.js"></script>
 </body>
 
 </html>
