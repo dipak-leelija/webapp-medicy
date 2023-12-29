@@ -8,20 +8,19 @@ class Admin extends DatabaseConnection
     $password = pass_enc($password, ADMIN_PASS);
 
     try {
-        $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $insertAdmin = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES ('$adminId', '$Fname', '$Lname', '$username', '$password', '$email', '$mobNo', '$expiry', '$added_on', '$status')";
 
-        $stmt = $this->conn->prepare($query);
+        $insertQuery = $this->conn->prepare($insertAdmin);
 
-        if ($stmt){
-            $stmt->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
+        print_r($insertQuery);
 
-            $result = $stmt->execute();
-            $stmt->close();
-            return $result;
+        if ($insertQuery->num_rows > 0){
+            
+            return $insertQuery;
 
         }else {
             // Handle the case where the prepared statement couldn't be created
-            throw new Exception("Failed to prepare the statement.");
+            throw new Exception("Failed to add data.");
         }
 
     } catch (Exception $e) {
