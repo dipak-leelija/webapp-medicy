@@ -18,15 +18,11 @@ class Admin extends DatabaseConnection
             $result = $stmt->execute();
             $stmt->close();
             return $result;
-            
+
         }else {
             // Handle the case where the prepared statement couldn't be created
             throw new Exception("Failed to prepare the statement.");
         }
-
-        
-        
-        
 
     } catch (Exception $e) {
         return "Error => " . $e->getMessage();

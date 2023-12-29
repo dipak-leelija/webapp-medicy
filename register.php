@@ -83,7 +83,7 @@ if (isset($_POST['register'])) {
 
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
 
-                
+
                 if($register){
                     echo "success";
                 }else{
@@ -92,8 +92,7 @@ if (isset($_POST['register'])) {
 
 
                 if($register){
-                    echo "success";
-
+        
                     session_start();
                     $_SESSION['REGISTRATION']       = true;
                     $_SESSION['ADMIN_REGISER']      = true;
@@ -122,7 +121,6 @@ if (isset($_POST['register'])) {
                     }
                 }
             } else {
-                echo "fail";
                 $diffrentPassword = true;
             }
         }
