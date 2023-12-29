@@ -19,7 +19,7 @@ $Admin 			= new Admin;
 
 if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_SESSION['email']) && isset($_SESSION['username'])) {
 
-	$sessionStartTime = $_SESSION['last_activity'];
+	// $sessionStartTime = $_SESSION['last_activity'];
 	$verificationKey = $_SESSION['verify_key'];
 	$fname = $_SESSION['first-name'];
 	$email = $_SESSION['email'];

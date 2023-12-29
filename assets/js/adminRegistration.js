@@ -73,26 +73,16 @@ const checkEmailAvailability = (inputedMail) => {
 
 
 
-let otpInput = document.getElementsByClassName('input-group');
-otpInput.addEventListener('keydown', function (event) {
-    if (event.keyCode === 9) {
-        if (otpInput.value.trim() === '') {
-            event.preventDefault();
-        }
-    }
-});
-
-otpInput.addEventListener('input', function (event) {
-    // Remove dots from the input value
-    this.value = this.value.replace('.', '');
-});
-
+let otpInput = document.querySelectorAll('input-group');
 
 otpInput.forEach((input, index) => {
     otpInput.addEventListener('input', function () {
-        
+        // Move focus to the next input field if available
         if (index < otpInput.length - 1) {
             otpInput[index + 1].focus();
+        } else {
+            // Dismiss the keypad by removing focus from the last input
+            otpInput.blur();
         }
     });
 });

@@ -79,7 +79,7 @@ $Admin          = new Admin;
                             </div>
 
                             <!-- <div class="d-none"><input type="text" name="adm-val" id="adm-val" value="<?php $_SESSION['adm_id']; ?>"><?php $_SESSION['adm_id']; ?></div> -->
-                            
+
                         </div>
                         <div class="">
                             <button class="btn btn-primary btn-user btn-block mt-3" type="submit" name="otp-submit">Register
@@ -107,6 +107,8 @@ $Admin          = new Admin;
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="assets/js/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- custom script for register.php -->
+    <script src="<?= JS_PATH ?>adminRegistration.js"></script>
 
 
 
