@@ -49,12 +49,7 @@ if (isset($_POST['register'])) {
     $timeout_duration = 180; // 3*60(seconds) = 3 minutes.
 
     // ======== OTP GENERATOR =========
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $randomString = '';
-    for ($i = 0; $i < 6; $i++) {
-        $randomString .= $characters[rand(0, strlen($characters) - 1)];
-    }
-    $randomString = $randomString;
+    $OTP  = $IdGenerate->otpGgenerator();
     //----------------------------------
 
     $checkUser = $admin->echeckUsername($username);
@@ -106,7 +101,7 @@ if (isset($_POST['register'])) {
                     $_SESSION['ADMIN_REGISER']      = true;
                     $_SESSION['session_start_time']  = date('H:i:s');
                     $_SESSION['time_out']           = $timeout_duration;
-                    $_SESSION['verify_key']         = $randomString;
+                    $_SESSION['verify_key']         = $OTP;
                     $_SESSION['first-name']         = $Fname;
                     $_SESSION['email']              = $email;
                     $_SESSION['username']           = $username;

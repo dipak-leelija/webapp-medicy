@@ -8,7 +8,7 @@ if (!isset($_SESSION['REGISTRATION'])) {
 
 
 if($_SESSION['ADMIN_REGISER']){
-    echo "Debugging: " . print_r($_SESSION, true);
+    // echo "Debugging: " . print_r($_SESSION, true);
     $sessionStartTime       = $_SESSION['session_start_time'];
     $verificationKey        = $_SESSION['verify_key'];
     $Fname                  = $_SESSION['first-name'];

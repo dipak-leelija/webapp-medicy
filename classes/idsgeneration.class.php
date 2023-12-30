@@ -165,7 +165,7 @@ class IdsGeneration extends DatabaseConnection
 
         $dateTime = new DateTime();
         $microsecond =  $dateTime->format("u");
-        $uniquenumber = $dateTimeFormatted.$microsecond;
+        $uniquenumber = $dateTimeFormatted . $microsecond;
         $uniqueID = substr($uniquenumber, 0, 15);
 
         // Construct the final ADM ID with the current date
@@ -181,6 +181,22 @@ class IdsGeneration extends DatabaseConnection
 
         $newId = filter_var($adminId, FILTER_SANITIZE_NUMBER_INT);
         return $newId;
+    }
+
+
+
+
+    function otpGgenerator(){
+
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+        for ($i = 0; $i < 6; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        // $randomString = $randomString;
+
+        return $randomString;
     }
 
 
