@@ -165,9 +165,11 @@ class IdsGeneration extends DatabaseConnection
 
         $dateTime = new DateTime();
         $microsecond =  $dateTime->format("u");
-        
+        $uniquenumber = $dateTimeFormatted.$microsecond;
+        $uniqueID = substr($uniquenumber, 0, 15);
+
         // Construct the final ADM ID with the current date
-        $newID = "ADM{$dateTimeFormatted}{$microsecond}";
+        $newID = "ADM{$uniqueID}";
 
         return $newID;
     }
