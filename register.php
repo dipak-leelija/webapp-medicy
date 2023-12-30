@@ -22,6 +22,8 @@ $userExists = false;
 $emailExists = false;
 $diffrentPassword = false;
 
+// $adminId  = $IdGenerate->generateAdminId();
+// echo $adminId;
 
 if (isset($_POST['register'])) {
     $Fname      = $_POST['fname'];
@@ -40,6 +42,7 @@ if (isset($_POST['register'])) {
     $expiry = $currentDate->modify('+365 days')->format('Y-m-d');
 
     $adminId  = $IdGenerate->generateAdminId();
+    
     $clinicId = $IdGenerate->generateClinicId($adminId);
 
     $status = '0';
@@ -69,16 +72,16 @@ if (isset($_POST['register'])) {
             if ($password == $cpassword) {
                 $diffrentPassword = false;
 
-                echo $adminId."<br>";
-                echo $Fname."<br>";
-                echo $Lname."<br>";
-                echo $username."<br>";
-                echo $password."<br>";
-                echo $email."<br>";
-                echo $mobNo."<br>";
-                echo $expiry."<br>";
-                echo NOW."<br>";
-                echo $status."<br>";
+                // echo $adminId."<br>";
+                // echo $Fname."<br>";
+                // echo $Lname."<br>";
+                // echo $username."<br>";
+                // echo $password."<br>";
+                // echo $email."<br>";
+                // echo $mobNo."<br>";
+                // echo $expiry."<br>";
+                // echo NOW."<br>";
+                // echo $status."<br>";
 
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
 
