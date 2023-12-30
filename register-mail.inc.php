@@ -90,7 +90,4 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 }
 
 
-// header("location: verification-sent.php");
-// exit;
-
 ?>
