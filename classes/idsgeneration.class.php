@@ -1,36 +1,38 @@
 <?php
 require_once 'dbconnect.php';
-class IdsGeneration extends DatabaseConnection{
+class IdsGeneration extends DatabaseConnection
+{
 
 
-    function patientidGenerate(){
+    function patientidGenerate()
+    {
 
         $select = "SELECT * FROM patient_details";
         $selectQuery = $this->conn->query($select);
         $data = [];
-        while($result = $selectQuery->fetch_array()){
-            $data[]	= $result;
+        while ($result = $selectQuery->fetch_array()) {
+            $data[]    = $result;
         }
-        $sl = count($data)+1;
+        $sl = count($data) + 1;
         if ($sl < 10) {
             $sl = "000000000$sl";
-        }elseif($sl >=10 && $sl < 100){
+        } elseif ($sl >= 10 && $sl < 100) {
             $sl = "00000000$sl";
-        }elseif($sl >=100 && $sl < 1000){
+        } elseif ($sl >= 100 && $sl < 1000) {
             $sl = "0000000$sl";
-        }elseif($sl >=1000 && $sl < 10000){
+        } elseif ($sl >= 1000 && $sl < 10000) {
             $sl = "000000$sl";
-        }elseif($sl >=10000 && $sl < 100000){
+        } elseif ($sl >= 10000 && $sl < 100000) {
             $sl = "00000$sl";
-        }elseif($sl >=100000 && $sl < 1000000){
+        } elseif ($sl >= 100000 && $sl < 1000000) {
             $sl = "0000$sl";
-        }elseif($sl >=1000000 && $sl < 10000000){
+        } elseif ($sl >= 1000000 && $sl < 10000000) {
             $sl = "000$sl";
-        }elseif($sl >=10000000 && $sl < 100000000){
+        } elseif ($sl >= 10000000 && $sl < 100000000) {
             $sl = "00$sl";
-        }elseif($sl >=100000000 && $sl < 1000000000){
+        } elseif ($sl >= 100000000 && $sl < 1000000000) {
             $sl = "0$sl";
-        }else {
+        } else {
             $sl = $sl;
         }
         $alph = 'A';
@@ -40,21 +42,22 @@ class IdsGeneration extends DatabaseConnection{
 
 
 
-    function getAppointmentIds() {
+    function getAppointmentIds()
+    {
         $data = array(); // Initialize the array
-    
+
         try {
             $select = "SELECT appointment_id FROM appointments ORDER BY added_on ASC";
             $stmt = $this->conn->prepare($select);
-    
+
             if ($stmt) {
                 $stmt->execute();
                 $result = $stmt->get_result();
-    
+
                 while ($row = $result->fetch_array()) {
                     $data[] = $row;
                 }
-    
+
                 $stmt->close();
             } else {
                 echo "Statement preparation failed: " . $this->conn->error;
@@ -62,74 +65,78 @@ class IdsGeneration extends DatabaseConnection{
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
-    
+
         return $data;
     }
-    
-    
 
-    function concatId($half, $lastid){
+
+
+    function concatId($half, $lastid)
+    {
 
         if ($lastid < 10) {
             $lastid = "00000$lastid";
-        }elseif($lastid >=10 && $lastid < 100){
+        } elseif ($lastid >= 10 && $lastid < 100) {
             $lastid = "0000$lastid";
-        }elseif($lastid >=100 && $lastid < 1000){
+        } elseif ($lastid >= 100 && $lastid < 1000) {
             $lastid = "000$lastid";
-        }elseif($lastid >=1000 && $lastid < 10000){
+        } elseif ($lastid >= 1000 && $lastid < 10000) {
             $lastid = "00$lastid";
-        }elseif($lastid >=10000 && $lastid < 100000){
+        } elseif ($lastid >= 10000 && $lastid < 100000) {
             $lastid = "0$lastid";
-        }else {
+        } else {
             $lastid = $lastid;
         }
         $alph = 'A';
         $tempappointmentid = "$half$alph$lastid";
         return $tempappointmentid;
     }
-    
 
 
 
 
-    function appointmentidGeneration($half) {
+
+    function appointmentidGeneration($half)
+    {
         // echo $half;
         $idList = $this->getAppointmentIds();
-        
+
         $lastid = 0;
-        
+
         if (!empty($idList)) {
             $lastAppointment = end($idList);
-            
+
             $lastAppointment = $lastAppointment['appointment_id'];
             $lastid = preg_replace('/\D/', '', $lastAppointment);
             $lastid = substr($lastid, -6);
             // $lastid = intval(substr(json_encode($lastAppointment), 9)); // Extract the numeric part 
         }
-    
+
         // Increment the last ID
         $lastid += 1;
-        
+
         // Generate a new appointment ID
         $tempappointmentid = $this->concatId($half, $lastid);
-    
+
         // Check if the new ID already exists
         while (in_array($tempappointmentid, $idList)) {
             $lastid += 1;
             $tempappointmentid = $this->concatId($half, $lastid);
         }
-    
+
         // Output the generated ID
         return $tempappointmentid;
-        
+
         // You can return the generated ID instead of exiting
         return $tempappointmentid;
     }
 
 
 
-    function generateAdminId() {
+    function generateAdminId()
+    {
 
+        /*
         // geeting the current last admin id
         $currentID = $this->lastAdminId();
 
@@ -152,31 +159,38 @@ class IdsGeneration extends DatabaseConnection{
         $formattedNumber = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
     
         // Get the current date in the format 'Ymd' (e.g., 091123 for November 9, 2023)
-        $currentDate = date('dmy');
-    
+        $currentDate = date('dmy');*/
+
+        $dateTimeFormatted = date("ymdHis", strtotime(NOW));
+
+        $dateTime = new DateTime();
+        $microsecond =  $dateTime->format("u");
+        
         // Construct the final ADM ID with the current date
-        $newID = "ADM{$currentDate}{$formattedNumber}";
-    
+        $newID = "ADM{$dateTimeFormatted}{$microsecond}";
+
         return $newID;
     }
-        
-    
 
-    function generateClinicId($adminId) {
+
+
+    function generateClinicId($adminId)
+    {
 
         $newId = filter_var($adminId, FILTER_SANITIZE_NUMBER_INT);
         return $newId;
     }
 
 
-    
 
-    function lastAdminId(){
+
+    function lastAdminId()
+    {
         $sql = "SELECT admin_id FROM `admin` ORDER BY added_on DESC LIMIT 1";
         $query = $this->conn->query($sql);
         if ($query->num_rows > 0) {
-    
-            while($result = $query->fetch_array()){
+
+            while ($result = $query->fetch_array()) {
                 $data = $result['admin_id'];
             }
             return $data;
@@ -184,7 +198,7 @@ class IdsGeneration extends DatabaseConnection{
         return;
     }
     // function appointmentidGeneration($half){
-        
+
     //     $idList = $this->getAppointmentIds();
 
     //     if(in_array('ME310322A000012', $idList )) {
@@ -204,8 +218,8 @@ class IdsGeneration extends DatabaseConnection{
     //         // echo $lastid;exit;
     //         $tempappointmentid = $this->concatId($half, $lastid);
 
-           
-    
+
+
     //             $lastid +=1;
     //         while(array_search($tempappointmentid, $idList)) {
     //             $tempappointmentid = $this->concatId($half, $lastid);
@@ -260,30 +274,31 @@ class IdsGeneration extends DatabaseConnection{
     //     return $tempappointmentid;
     // }
 
-    
-    function pharmecyInvoiceId(){
+
+    function pharmecyInvoiceId()
+    {
         $data = array();
         $select = "SELECT * FROM stock_out";
         $selectQuery = $this->conn->query($select);
-        while($result = $selectQuery->fetch_array()){
-            $data[]	= $result;
+        while ($result = $selectQuery->fetch_array()) {
+            $data[]    = $result;
         }
-        $invoice = count($data)+1;
+        $invoice = count($data) + 1;
         return $invoice;
     }
 
 
-    function stockReturnId(){
+    function stockReturnId()
+    {
         $data = array();
         $select = "SELECT * FROM stock_return";
         $selectQuery = $this->conn->query($select);
-        while($result = $selectQuery->fetch_array()){
-            $data[]	= $result;
+        while ($result = $selectQuery->fetch_array()) {
+            $data[]    = $result;
         }
-        $id = count($data)+1;
+        $id = count($data) + 1;
         return $id;
     }
-
 }
 
 
@@ -292,6 +307,3 @@ class IdsGeneration extends DatabaseConnection{
 // echo $id->lastAdminId();
 // echo '<br>';
 // echo $id->generateAdminId();
-
-
-?>
