@@ -9,6 +9,7 @@ if (!isset($_SESSION['PASS_RECOVERY'])) {
 
 if ($_SESSION['PASS_RECOVERY']) {
     if ($_SESSION['ADM_PASS_RECOVERY']) {
+        $adminId    =   $_SESSION['ADM_ID'];
         $admFname   =   $_SESSION['ADM_FNAME'];
         $admUsrNm   =   $_SESSION['ADM_USRNM'];
         $admEmail   =   $_SESSION['ADM_EMAIL'];

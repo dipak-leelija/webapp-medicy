@@ -50,6 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 session_start();
                 $_SESSION['PASS_RECOVERY']       = true;
                 $_SESSION['ADM_PASS_RECOVERY']      = true;
+                $_SESSION['ADM_ID']    = $admData[0]->admin_id ;
                 $_SESSION['ADM_FNAME'] = $admData[0]->fname;
                 $_SESSION['ADM_USRNM'] = $admData[0]->username;
                 $_SESSION['ADM_EMAIL'] = $admData[0]->email;

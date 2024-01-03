@@ -65,16 +65,19 @@ $Admin          = new Admin;
                         <h1 class="h4 text-gray-900 mb-4">Verify OTP</h1>
                     </div>
 
-                    <form class="user" action="_config/form-submission/register-inc.php" method="post">
+                    <form class="user" action="_config/form-submission/adm-password-reset-form.php" method="post">
 
                         <div class="otp-input">
-                            <div class="col-12 mb-3 mb-sm-0">
+
+                            <div class="col-12 mb-3 mt-1 mb-sm-0">
                                 <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Password" required>
                             </div>
-                            <div class="col-12 mb-3 mb-sm-0">
+                            
+                            <div class="col-12 mb-3 mt-3 mb-sm-0">
                                 <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Password" required>
                             </div>
-                            <div class="d-flex justify-content-center">
+
+                            <div class="d-flex justify-content-center mt-4">
                                 <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveNext(this)" required>
                                 <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveNext(this)" required>
                                 <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveNext(this)" required>
@@ -83,12 +86,10 @@ $Admin          = new Admin;
                                 <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveNext(this)" required>
                             </div>
 
-                            <!-- <div class="d-none"><input type="text" name="adm-val" id="adm-val" value="<?php $_SESSION['adm_id']; ?>"><?php $_SESSION['adm_id']; ?></div> -->
-
                         </div>
                         <div class="">
-                            <button class="btn btn-primary btn-user btn-block mt-3" type="submit" name="otp-submit">Register
-                                Account</button>
+                            <button class="btn btn-primary btn-user btn-block mt-3" type="submit" name="adm-pass-reset">Reset Password
+                            </button>
                         </div>
 
                     </form>
