@@ -17,3 +17,24 @@ if($_SESSION['ADMIN_REGISER']){
     $adminId                = $_SESSION['adm_id'];
     $sessionTimeOutDuration = $_SESSION['time_out'];
 }
+
+
+
+if($_SESSION['PASS_RECOVERY']){
+    if($_SESSION['ADM_PASS_RECOVERY']){
+        $admFname   =   $_SESSION['ADM_FNAME'];
+        $admUsrNm   =   $_SESSION['ADM_USRNM'];
+        $admEmail   =   $_SESSION['ADM_EMAIL']; 
+        $admOtp     =   $_SESSION['ADM_OTP'] ;
+    }
+
+
+    if($_SESSION['EMP_PASS_RECOVERY']){
+        $empFname   =   $_SESSION['ADM_FNAME'];
+        $empUsrNm   =   $_SESSION['ADM_USRNM'];
+        $empEmail   =   $_SESSION['ADM_EMAIL']; 
+        $empOtp     =   $_SESSION['ADM_OTP'] ;
+    }
+}
+
+                
