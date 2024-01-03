@@ -67,27 +67,9 @@ if (isset($_POST['register'])) {
             if ($password == $cpassword) {
                 $diffrentPassword = false;
 
-                // echo $adminId."<br>";
-                // echo $Fname."<br>";
-                // echo $Lname."<br>";
-                // echo $username."<br>";
-                // echo $password."<br>";
-                // echo $email."<br>";
-                // echo $mobNo."<br>";
-                // echo $expiry."<br>";
-                // echo NOW."<br>";
-                // echo $status."<br>";
-
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
 
-                print_r($register);
-
-                // if($register){
-                //     echo "reg success";
-                // }else{
-                //     echo "reg fail";
-                // }
-
+                // print_r($register);
 
                 if($register){
 
