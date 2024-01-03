@@ -4,14 +4,14 @@ require_once ROOT_DIR . '_config/passRecoverySessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once __DIR__ . '/PHPMailer/PHPMailer.php';
 require_once CLASS_DIR . 'utility.class.php';
-require_once CLASS_DIR . 'admin.class.php';
-require_once CLASS_DIR . 'admin.class.php';
 
 
 
 $PHPMailer      = new PHPMailer();
 $Utility        = new Utility;
-$Admin          = new Admin;
+
+
+// print_r($_SESSION);
 
 ?>
 
@@ -70,14 +70,18 @@ $Admin          = new Admin;
                         <div class="otp-input">
 
                             <div class="col-12 mb-3 mt-1 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Password" required>
+                                <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Enter New Password" required>
                             </div>
                             
                             <div class="col-12 mb-3 mt-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Password" required>
+                                <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Retype New Password" required>
                             </div>
 
-                            <div class="d-flex justify-content-center mt-4">
+                            <div class="d-flex justify-content-center col-12 mb-3 mt-4 mb-sm-0">
+                                <label>Eter Verification OTP send to your registereed e-mial</label>
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-2">
                                 <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveNext(this)" required>
                                 <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveNext(this)" required>
                                 <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveNext(this)" required>

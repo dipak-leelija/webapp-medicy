@@ -9,8 +9,6 @@ require_once CLASS_DIR . 'utility.class.php';
 $PHPMailer		= new PHPMailer();
 $Utility        = new Utility;
 
-print_r($_SESSION);
-
 // $_SESSION['vkey']		= 87677;
 // $_SESSION['fisrt-name'] = 'Dipak';
 // $_SESSION['email']		= 'dipakmajumdar.leelija@gmail.com';
@@ -19,7 +17,6 @@ print_r($_SESSION);
 
 if (isset( $_SESSION['PASS_RECOVERY']) && isset($_SESSION['ADM_PASS_RECOVERY'])) {
 
-	echo "adm pass recover mail sent process";
 	// $sessionStartTime = $_SESSION['last_activity'];
 	$verificationKey = $admOtp;
 	$fname = $admFname;
@@ -32,14 +29,14 @@ if (isset( $_SESSION['PASS_RECOVERY']) && isset($_SESSION['ADM_PASS_RECOVERY']))
 	$txtEmail 		= strip_tags(trim($admEmail));
 	$userNm 		= strip_tags(trim($admUsrNm));
 
-	echo $userNm;
-	// header("location: adm-pass-reset.php");
-
 
 	$sess_arr	= array('vkey', 'admPassRecoverySession', 'fisrt-name', 'email');
 	$Utility->delSessArr($sess_arr);
 
 
+	header("location: adm-pass-reset.php");
+
+	/*
 	$msgBody = $msgBody = "Hello $firstName,
 
 	We're delighted to welcome you back!
@@ -62,7 +59,7 @@ if (isset( $_SESSION['PASS_RECOVERY']) && isset($_SESSION['ADM_PASS_RECOVERY']))
 	/*===================================================================================================
 	|									    send mail to new customer									|
 	====================================================================================================*/
-
+/*
 	try {
 		$PHPMailer->IsSendmail();
 		$PHPMailer->IsHTML(true);
@@ -87,7 +84,7 @@ if (isset( $_SESSION['PASS_RECOVERY']) && isset($_SESSION['ADM_PASS_RECOVERY']))
 		$PHPMailer->clearAllRecipients();
 	} catch (Exception $e) {
 		echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
-	}
+	} */
 } else {
 	session_destroy();
 }

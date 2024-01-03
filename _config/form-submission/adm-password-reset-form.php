@@ -1,11 +1,12 @@
 
 <?php
 include_once dirname(dirname(__DIR__)) . "/config/constant.php";
-require_once ROOT_DIR . '_config/registrationSessionCheck.php';
+require_once ROOT_DIR . '_config/passRecoverySessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'admin.class.php';
 
 $Admin = new Admin;
+
 
 ?>
 
@@ -28,6 +29,8 @@ $Admin = new Admin;
 
 if (isset($_POST['adm-pass-reset'])) {
 
+    print_r($_SESSION);
+    
     $key = $verificationKey;
     $admId = $adminId;
 
@@ -43,10 +46,11 @@ if (isset($_POST['adm-pass-reset'])) {
         
         $admStatusUpdate = $Admin->updateAdminPassword($pass, $admId);
         
-        if ($admStatusUpdate['result']) {
-            
-            handelPassResetSuccess();
+        print_r($admStatusUpdate);
+        exit;
 
+        if ($admStatusUpdate['result']) {
+            handelPassResetSuccess();
         } else {
             handelPassResetFailure($admStatusUpdate['message']);
         }
