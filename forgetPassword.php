@@ -50,9 +50,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 session_start();
                 $_SESSION['PASS_RECOVERY']       = true;
                 $_SESSION['ADM_PASS_RECOVERY']      = true;
-                $_SESSION['ADM_FNAME'] = $admData->fname;
-                $_SESSION['ADM_USRNM'] = $admData->username;
-                $_SESSION['ADM_EMAIL'] = $admData->email;
+                $_SESSION['ADM_FNAME'] = $admData[0]->fname;
+                $_SESSION['ADM_USRNM'] = $admData[0]->username;
+                $_SESSION['ADM_EMAIL'] = $admData[0]->email;
                 $_SESSION['ADM_OTP']   = $OTP;
                 
                 header("Location: adm-pass-recover-mail.inc.php");

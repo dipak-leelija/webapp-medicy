@@ -1,6 +1,6 @@
 <?php
 include_once __DIR__ . "/config/constant.php";
-require_once ROOT_DIR . '_config/registrationSessionCheck.php';
+require_once ROOT_DIR . '_config/passRecoverySessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once __DIR__ . '/PHPMailer/PHPMailer.php';
 require_once CLASS_DIR . 'utility.class.php';
