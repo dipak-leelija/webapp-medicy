@@ -78,7 +78,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
                 </div>
             </div>
             <div class="col-auto mt-n3 " style="display: none;" id='sod-no-data'>
-                <p class="text-warning">Oops!, the requested data isn't in our records.</p>
+                <p class="text-secondary">Nothing sold yet.</p>
             </div>
         </div>
     </div>
