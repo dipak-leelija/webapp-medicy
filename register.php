@@ -159,7 +159,7 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username">
+                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username" onfocusout="verifyUsername(this)">
                         </div>
 
                         <div class="form-group">
@@ -233,7 +233,7 @@ if (isset($_POST['register'])) {
                     </form>
                     <!-- <hr> -->
                     <div class="text-center" style="margin-top:15px;">
-                        <a class="small" href="forgot-password.html">Reset Password</a>
+                        <a class="small" href="forgetPassword.php">Reset Password</a>
                     </div>
                     <div class="text-center">
                         <a class="small" href="login.php">Already have an account? Login!</a>

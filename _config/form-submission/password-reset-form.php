@@ -4,8 +4,10 @@ include_once dirname(dirname(__DIR__)) . "/config/constant.php";
 require_once ROOT_DIR . '_config/passRecoverySessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'admin.class.php';
+require_once CLASS_DIR . 'employee.class.php';
 
 $Admin = new Admin;
+$Employee = new Employees;
 
 
 ?>
@@ -27,41 +29,55 @@ $Admin = new Admin;
 
 <?php 
 
-if (isset($_POST['adm-pass-reset'])) {
+if (isset($_POST['pass-reset'])) {
 
-    print_r($_SESSION);
+    // print_r($_SESSION);
     
-    $key = $verificationKey;
-    $admId = $adminId;
-
-    $passWord = $_POST['adm-pass-reset'];
+    $passWord = $_POST['password'];
     
-
     $chkOtp = $_POST['digit1'] . $_POST['digit2'] . $_POST['digit3'] . $_POST['digit4'] . $_POST['digit5'] . $_POST['digit6'];
 
-    // echo "key value = $key<br>";
-    // echo "check otp = $chkOtp<br><br>";
-
-    if ($chkOtp == $key) {
+    // ========= admin table access =============
+    if($admPassReset){
+        if ($chkOtp == $Otp) {
         
-        $admStatusUpdate = $Admin->updateAdminPassword($pass, $admId);
-        
-        print_r($admStatusUpdate);
-        exit;
-
-        if ($admStatusUpdate['result']) {
-            handelPassResetSuccess();
+            $admStatusUpdate = $Admin->updateAdminPassword($passWord, $admId);
+    
+            if ($admStatusUpdate['result']) {
+                handelPassResetSuccess();
+                session_destroy();
+            } else {
+                handelPassResetFailure($admStatusUpdate['message']);
+                session_destroy();
+            }
         } else {
-            handelPassResetFailure($admStatusUpdate['message']);
+            handleFailure();
+            session_destroy();
         }
+    }
+    
 
-    } else {
-        handleFailure();
+    // ========= employee table access =============
+    if($empPassReset){
+        if ($chkOtp == $Otp) {
+        
+            $empStatusUpdate = $Employee->updateEmployeePassword($passWord, $empId, $admIdOfEmp);
+    
+            if ($empStatusUpdate['result']) {
+                handelPassResetSuccess();
+            } else {
+                handelPassResetFailure($empStatusUpdate['message']);
+            }
+    
+        } else {
+            handleFailure();
+        }
     }
 }
 
+
+
 function handelPassResetSuccess() {
-    global $Admin, $admId;
 
     session_destroy();
 

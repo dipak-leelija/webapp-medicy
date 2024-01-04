@@ -9,34 +9,34 @@ require_once CLASS_DIR . 'utility.class.php';
 $PHPMailer		= new PHPMailer();
 $Utility        = new Utility;
 
-// $_SESSION['vkey']		= 87677;
-// $_SESSION['fisrt-name'] = 'Dipak';
-// $_SESSION['email']		= 'dipakmajumdar.leelija@gmail.com';
-
-/// =========== ADMIN REGISTRATION MAIL SENDING SECTION  ================
-
-if (isset( $_SESSION['PASS_RECOVERY']) && isset($_SESSION['ADM_PASS_RECOVERY'])) {
-
-	// $sessionStartTime = $_SESSION['last_activity'];
-	$verificationKey = $admOtp;
-	$fname = $admFname;
-	$email = $admEmail;
-	$userName = $admUsrNm;
 
 
-	$verifyKey  	= strip_tags(trim($admOtp));
-	$firstName 		= strip_tags(trim($admFname));
-	$txtEmail 		= strip_tags(trim($admEmail));
-	$userNm 		= strip_tags(trim($admUsrNm));
 
+if (isset($_SESSION['PASS_RECOVERY'])) {
 
-	$sess_arr	= array('vkey', 'admPassRecoverySession', 'fisrt-name', 'email');
+	if ($_SESSION['ADM_PASS_RECOVERY'] == true) {
+		// print_r($_SESSION);
+
+		$verifyKey  	= strip_tags(trim($Otp));
+		$firstName 		= strip_tags(trim($admFname));
+		$txtEmail 		= strip_tags(trim($admEmail));
+		$userNm 		= strip_tags(trim($admUsrNm));
+
+	} elseif ($_SESSION['EMP_PASS_RECOVERY'] == true) {
+		// print_r($_SESSION);
+
+		$verifyKey  	= strip_tags(trim($Otp));
+		$firstName 		= strip_tags(trim($empFname));
+		$txtEmail 		= strip_tags(trim($empEmail));
+		$userNm 		= strip_tags(trim($empUsrNm));
+
+	}
+
+	$sess_arr	= array('passRecoverySession', 'fisrt-name', 'email', 'vkey');
 	$Utility->delSessArr($sess_arr);
 
+	// header("location: pass-reset.php");
 
-	header("location: adm-pass-reset.php");
-
-	/*
 	$msgBody = $msgBody = "Hello $firstName,
 
 	We're delighted to welcome you back!
@@ -57,9 +57,9 @@ if (isset( $_SESSION['PASS_RECOVERY']) && isset($_SESSION['ADM_PASS_RECOVERY']))
 	Medicy";
 
 	/*===================================================================================================
-	|									    send mail to new customer									|
-	====================================================================================================*/
-/*
+	|									    send mail for password reset								|
+	===================================================================================================*/
+
 	try {
 		$PHPMailer->IsSendmail();
 		$PHPMailer->IsHTML(true);
@@ -78,15 +78,18 @@ if (isset( $_SESSION['PASS_RECOVERY']) && isset($_SESSION['ADM_PASS_RECOVERY']))
 			echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
 		} else {
 			echo 'mail sent';
-			header("location: adm-pass-reset.php");
+			header("location: pass-reset.php");
 		}
 
 		$PHPMailer->clearAllRecipients();
 	} catch (Exception $e) {
 		echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
-	} */
-} else {
+	} 
+
+}else {
 	session_destroy();
 }
 
-?>
+
+
+
