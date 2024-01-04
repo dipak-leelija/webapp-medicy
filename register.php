@@ -157,7 +157,7 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username">
+                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username" onfocusout="verifyUsername(this)">
                         </div>
 
                         <div class="form-group">

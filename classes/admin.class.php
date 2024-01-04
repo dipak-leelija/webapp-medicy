@@ -91,7 +91,6 @@ class Admin extends DatabaseConnection
 
 
 
-
     function echeckEmail($email)
     {
         $chkEmail = " SELECT * FROM `admin` WHERE `email`= '$email' ";
@@ -126,6 +125,40 @@ class Admin extends DatabaseConnection
                 $data[] = $result;
             }
             return $data;
+        }
+    }
+
+
+
+
+
+
+    function adminDataOnUserNmOrEmail($user)
+    {
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM `admin` WHERE (`email` = ? OR `username` = ?) AND `reg_status` = 1");
+
+            $stmt->bind_param("ss", $user, $user);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $admData = array();
+                while ($res = $result->fetch_object()) {
+                    $admData[] = $res;
+                }
+                $response = ['status' => '1', 'data' => $admData];
+            } else {
+                $response = ['status' => '0', 'message' => 'No data found', 'data' => ''];
+            }
+
+            $stmt->close();
+
+            return json_encode($response);
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
         }
     }
 
