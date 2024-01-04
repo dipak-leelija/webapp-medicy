@@ -179,15 +179,15 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                         foreach ($stockReturnLists as $row) {
                                             $dist = json_decode($Distributor->showDistributorById($row->distributor_id));
                                             $dist = $dist->data;
-
+                                            // print_r($dist);
                                             $col = 'emp_id';
                                             $empData = json_decode($Employees->selectEmpByCol($col, $row->added_by));
 
                                             $empData = $empData->data;
 
                                             // print_r($empData);
-
-                                            if (count($dist) > 0) {
+                                            // if (is_array($dist) || ($dist instanceof Countable) || is_countable($dist))
+                                            // if (count($dist) > 0 && count($empData) > 0) {
 
                                                 $returnDate = date("d-m-Y", strtotime($row->return_date));
                                                 $entryDate  = date("d-m-Y", strtotime($row->added_on));
@@ -197,8 +197,8 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                                     $check  = 'style="background-color:#ff0000; color:#fff"';
                                                 }
                                                 echo '<tr ' . $check . '>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')" >' . $row->id . '</td>
-                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $dist[0]->name . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')" >'. $row->id . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $dist->name . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $returnDate . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $entryDate . '</td>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')">' . $empData[0]->emp_name . '</td>
@@ -209,9 +209,9 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                                             <a class="text-danger ml-2" id="cancel-btn-' . $row->id . '" onclick="cancelPurchaseReturn(' . $row->id . ', this)"><i class="fas fa-window-close" ></i></a>
                                                         </td>
                                                     </tr>';
-                                            } else {
-                                                echo '<tr><td>No Matching Data Found</td></tr>';
-                                            }
+                                            // } else {
+                                            //     echo '<tr><td>No Matching Data Found</td></tr>';
+                                            // }
                                         }
                                         ?>
                                     </tbody>

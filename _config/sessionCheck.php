@@ -13,7 +13,7 @@ if($_SESSION['ADMIN']){
   $userRole     = $_SESSION['USER_ROLE'];
   $userFname    = $_SESSION['ADMIN_FNAME'];
   $adminLname   = $_SESSION['ADMIN_LNAME'];
-  $adminImg     = $_SESSION['ADMIN_IMG'] ;
+  $userImg      = $_SESSION['ADMIN_IMG'] ;
   $adminAddress = $_SESSION['ADMIN_ADDRESS'];
   $username     = $_SESSION['ADMIN_USERNAME'];
   $adminPass    = $_SESSION['ADMIN_PASSWORD'];
@@ -27,7 +27,7 @@ if($_SESSION['ADMIN']){
   $userType       = $_SESSION['USER_TYPE'];
   $userRole       = $_SESSION['EMP_ROLE'];
   $userFname      = $_SESSION['EMP_NAME'];
-  $empImg         = $_SESSION['EMP_IMG']; 
+  $userImg        = $_SESSION['EMP_IMG']; 
   $empAddress     = $_SESSION['EMP_ADDRESS'];
   $username       = $_SESSION['EMP_USERNAME'];
   $empPass        = $_SESSION['EMP_PASSWORD'];

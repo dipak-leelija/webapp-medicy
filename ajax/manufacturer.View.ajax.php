@@ -8,7 +8,16 @@ $Manufacturer = new Manufacturer();
 $manufacturerId = $_GET['Id'];
 
 $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
+$showManufacturer = json_decode($showManufacturer,true);
 
+if(isset($showManufacturer['status']) && $showManufacturer['status'] == '1'){
+    $data = $showManufacturer['data'];
+    if(!empty($data)){
+        $manufacturerName = $data['name'];
+        $shortName        = $data['short_name'];
+        $manufacturerDsc  = $data['dsc']; 
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,14 +34,6 @@ $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
 </head>
 
 <body class="mx-2">
-
-    <?php
-        foreach ($showManufacturer as $rowManufacturer) {
-            $manufacturerName = $rowManufacturer['name'];
-            $shortName = $rowManufacturer['short_name'];
-            $manufacturerDsc  = $rowManufacturer['dsc'];
-        }
-    ?>
 
     <form>
         <input type="hidden" id="manufacturerId" name="" value="<?php echo $manufacturerId;?>">

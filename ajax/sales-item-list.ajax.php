@@ -49,10 +49,16 @@ if($searchResult){
 
         $manufacturerId = $resultRow['manufacturer_id'];
         $manufacturer   = $Manufacturer->showManufacturerById($manufacturerId);
-
-        foreach ($manufacturer as $row) {
-            $manufacturerName = $row['name'];
+        $manufacturer   = json_decode($manufacturer, true);
+        // print_r($manufacturer);
+        if($manufacturer['status'] == '1'){
+            $manufacturer = $manufacturer['data'];
+            $manufacturerName =  $manufacturer['name'];
+            // foreach ($manufacturer as $row) {
+            //     $manufacturerName = $row['name'];
+            // }
         }
+        
         
         $power = '';
         $power       = $resultRow['power'];

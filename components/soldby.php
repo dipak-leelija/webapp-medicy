@@ -12,7 +12,7 @@ require_once ROOT_DIR . '_config/user-details.inc.php';
             <div class="col mr-2">
                 <div class="d-flex justify-content-between align-items-start mt-2 mr-n3">
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                    Sold By <?= $userRole == 'ADMIN' ? 'ALL' : $username; ?>
+                    <?= $userRole == 'ADMIN' ? 'Sales' : 'Sold By '.$username; ?>
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-user"></i>
