@@ -171,23 +171,11 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group row">
-<<<<<<< HEAD
-                            <div class="form-group col-sm-6 mb-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="password"
-                                    name="password" maxlength="12" placeholder="Password" required oninput="showToggleBtn('password','toggleBtn1')">
-                                    <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('password','toggleBtn1')"></i>
-                            </div>
-                            <div class="form-group col-sm-6 mb-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="cpassword"
-                                    name="cpassword" maxlength="12" placeholder="Repeat Password" required oninput="showToggleBtn('cpassword','toggleBtn2')">
-                                    <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('cpassword','toggleBtn2')"></i>
-=======
                             <div class="col-sm-6 mb-3 mb-sm-0">
                                 <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Password" required>
                             </div>
                             <div class="col-sm-6">
                                 <input type="password" class="form-control form-control-user" id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
->>>>>>> af0afdc15c8bb40f4c477fd00a9fb09e0880015d
                             </div>
                         </div>
                         <?php
