@@ -113,7 +113,7 @@ session_start();
 	const ASSETS_PATH						=	URL.'assets/';
 	const CSS_PATH							=	URL.'assets/css/';
 	const JS_PATH							=	URL.'assets/js/';
-	const IMG_PATH							=	URL.'assets/images/';
+	const IMG_PATH							=	URL.'assets/img/';
 	const PLUGIN_PATH						=	URL.'assets/plugins/';
 	const SITE_IMG_PATH						=	IMG_PATH.'site-imgs/';
 
@@ -132,8 +132,8 @@ session_start();
 	
 
 	
-	define('CURRENCY',							'$');
-	define('CURRENCY_CODE',						'USD');
+	define('CURRENCY',							'₹');
+	define('CURRENCY_CODE',						'INR');
 	define('START_YEAR',						'2023');
 	define('HOME',								'Home');
 	define('END_YEAR',  						date('Y')); 

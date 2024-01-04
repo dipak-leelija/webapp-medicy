@@ -6,9 +6,11 @@ $HealthCare     = new HealthCare;
 $Subscription   = new Subscription;
 
 $healthCare   = json_decode($HealthCare->showHealthCare($adminId));
-$SubsDetails  = json_decode($Subscription->getSubscription($adminId));
+// $SubsDetails  = json_decode($Subscription->getSubscription($adminId));
 $checkSubscription = $Subscription->checkSubscription($adminId, NOW);
 
+// print_r($checkSubscription);
+// exit;
 // ========================== CHECK SUBSCRIPTION ========================== 
 
 if (!$checkSubscription){
@@ -20,7 +22,6 @@ if (!$checkSubscription){
 // ========================== CLINIC SETUP ========================== 
 if ($healthCare->status === 1 ) {
     $healthCare = $healthCare->data;
-    // print_r($healthCare);
 
     if (!empty($healthCare->hospital_name)){
         $healthCareName = $healthCare->hospital_name;
