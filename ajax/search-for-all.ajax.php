@@ -24,6 +24,7 @@ if(isset($_GET['searchKey'])){
     ];
 
     print_r($combinedResult);
+    echo json_encode($combinedResult);
 }
 
 ?>

@@ -55,11 +55,18 @@ class DoctorCategory extends DatabaseConnection
 
 
 
-    function showDoctorCategoryByAdmin($adminId){
+    function showDoctorCategoryByAdmin($adminId=''){
         try {
+            if (!empty($adminId)) {
             $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `admin_id` = ? OR `admin_id` = ''";
             $stmt = $this->conn->prepare($selectDoctorCategory);
             $stmt->bind_param("s", $adminId);
+            }else{
+            $selectDoctorCategory = "SELECT * FROM `doctor_category` ";
+            $stmt = $this->conn->prepare($selectDoctorCategory);
+            }
+            // $stmt = $this->conn->prepare($selectDoctorCategory);
+            // $stmt->bind_param("s", $adminId); 
 
             if (!$stmt->execute()) {
                 throw new Exception("Error in query execution: " . $stmt->error);

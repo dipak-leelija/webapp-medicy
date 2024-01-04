@@ -29,16 +29,23 @@ class HealthCare extends DatabaseConnection
 
 
 
-    function showHealthCare($adminId)
+    function showHealthCare($adminId='')
     {
         $response = array();
 
         try {
+            if(!empty($adminId)){
             $sql = "SELECT * FROM clinic_info WHERE `admin_id` = ?";
             $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("s", $adminId);
+            }else{
+            $sql = "SELECT * FROM clinic_info ";  
+            $stmt = $this->conn->prepare($sql);
+            }
+            // $stmt = $this->conn->prepare($sql);
 
             if ($stmt) {
-                $stmt->bind_param("s", $adminId);
+                // $stmt->bind_param("s", $adminId);
 
                 if ($stmt->execute()) {
                     $result = $stmt->get_result();

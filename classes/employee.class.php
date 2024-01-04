@@ -61,10 +61,14 @@ class Employees extends DatabaseConnection
 
 
 
-    function employeesDisplay($adminId){
+    function employeesDisplay($adminId=''){
         $empData = array();
+        
+        if(!empty($adminId)){
         $selectEmp = "SELECT emp_id,emp_username,emp_name,emp_role,emp_email FROM employees WHERE `admin_id` = '$adminId'";
-
+        }else{
+            $selectEmp = "SELECT emp_id,emp_username,emp_name,emp_role,emp_email FROM employees ";  
+        }
         $empQuery = $this->conn->query($selectEmp);
 
         while ($result = $empQuery->fetch_array()) {
@@ -78,17 +82,23 @@ class Employees extends DatabaseConnection
 
 
 
-    function selectEmpByCol($col, $data){
+    function selectEmpByCol($col='', $data=''){
         try {
+            if (!empty($adminId)) {
             $selectEmp = "SELECT * FROM employees WHERE `$col` = ?";
-
             $stmt = $this->conn->prepare($selectEmp);
+            $stmt->bind_param("s", $data);
+            }else{
+                $selectEmp = "SELECT * FROM employees ";  
+                $stmt = $this->conn->prepare($selectEmp);
+            }
+            // $stmt = $this->conn->prepare($selectEmp);
 
             if (!$stmt) {
                 throw new Exception("Prepare statement failed.");
             }
 
-            $stmt->bind_param("s", $data);
+            // $stmt->bind_param("s", $data);
             $stmt->execute();
 
             $result = $stmt->get_result();

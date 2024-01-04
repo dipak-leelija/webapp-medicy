@@ -32,14 +32,21 @@ class Doctors extends DatabaseConnection
 
 
 
-    function showDoctors($adminId)
+    function showDoctors($adminId='')
     {
         try {
+            if (!empty($adminId)) {
             $selectDoctors = "SELECT * FROM `doctors` WHERE admin_id = ?";
             $stmt = $this->conn->prepare($selectDoctors);
+            $stmt->bind_param("s", $adminId);
+            }else{
+                $selectDoctors = "SELECT * FROM `doctors`";
+                $stmt = $this->conn->prepare($selectDoctors);
+            }
+            // $stmt = $this->conn->prepare($selectDoctors);
 
             if ($stmt) {
-                $stmt->bind_param("s", $adminId);
+                // $stmt->bind_param("s", $adminId);
 
                 $stmt->execute();
 

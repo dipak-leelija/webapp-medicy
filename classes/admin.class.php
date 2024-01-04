@@ -34,9 +34,13 @@ class Admin extends DatabaseConnection
 
 
 
-    function adminDetails($adminId){
+    function adminDetails($adminId=''){
         try{
-            $chkUser = " SELECT * FROM `admin` WHERE `admin_id`= '$adminId' ";
+            if(!empty($adminId)){
+                $chkUser = " SELECT * FROM `admin` WHERE `admin_id`= '$adminId' ";
+            }else{
+                $chkUser = " SELECT * FROM `admin` ";
+            }
 
             $stmt = $this->conn->prepare($chkUser);
 
@@ -170,5 +174,4 @@ class Admin extends DatabaseConnection
             return json_encode(['status'=> '0', 'message'=>$e->getMessage(), 'data'=> '']);
         }
     }
-    
 } //eof Admin Class

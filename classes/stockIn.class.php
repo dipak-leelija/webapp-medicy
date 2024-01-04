@@ -49,20 +49,27 @@ class StockIn extends DatabaseConnection
 
 
 
-    function showStockInDecendingOrder($adminId)
+    function showStockInDecendingOrder($adminId='')
     {
         try {
             $data = array();
 
             // Define the SQL query using a prepared statement
+            if(!empty($adminId)){
             $select = "SELECT * FROM stock_in WHERE `admin_id` = ? ORDER BY id ASC";
+            $stmt = $this->conn->prepare($select);
+            $stmt->bind_param("s", $adminId);
+            }else{
+                $select = "SELECT * FROM stock_in  ORDER BY id ASC";
+                $stmt = $this->conn->prepare($select);
+            }
 
             // Prepare the SQL statement
-            $stmt = $this->conn->prepare($select);
+            // $stmt = $this->conn->prepare($select);
 
             if ($stmt) {
                 // Bind the parameter
-                $stmt->bind_param("s", $adminId);
+                // $stmt->bind_param("s", $adminId);
 
                 // Execute the query
                 $stmt->execute();
@@ -101,35 +108,45 @@ class StockIn extends DatabaseConnection
 
 
 
-    function maxPurchasedDistAmount($adminId)
+    function maxPurchasedDistAmount($adminId = '')
     {
         try {
-            $selectQuery = "SELECT distributor_id, SUM(amount) AS total 
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT distributor_id, SUM(amount) AS total 
                        FROM stock_in
                        WHERE admin_id = ?
                        GROUP BY distributor_id
                        ORDER BY total DESC
                        LIMIT 1";
 
-            $stmt = $this->conn->prepare($selectQuery);
-
-            if ($stmt) {
+                $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("s", $adminId);
+            } else {
+                $selectQuery = "SELECT distributor_id, SUM(amount) AS total 
+                FROM stock_in
+                GROUP BY distributor_id
+                ORDER BY total DESC
+                LIMIT 1";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
+            if ($stmt) {
+                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
                     $data = $result->fetch_object();
-                    return json_encode(['status'=> 1, 'message'=> 'success', 'data'=> $data]);
+                    return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
                 } else {
-                    return json_encode(['status'=> 0, 'message'=> 'empty', 'data'=> '']);
+                    return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
                 }
                 $stmt->close();
             } else {
-                return json_encode(['status'=> 0, 'message'=> 'Statement preparation failed:'.$this->conn->error, 'data'=> '']);
+                return json_encode(['status' => 0, 'message' => 'Statement preparation failed:' . $this->conn->error, 'data' => '']);
             }
         } catch (Exception $e) {
-            return json_encode(['status'=> 0, 'message'=> "Error: " . $e->getMessage(), 'data'=> '']);
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data' => '']);
         }
     }
 
@@ -140,35 +157,45 @@ class StockIn extends DatabaseConnection
 
 
 
-    function selectDistOnMaxItems($adminId)
+    function selectDistOnMaxItems($adminId = '')
     {
         try {
-            $selectQuery = "SELECT distributor_id, COUNT(*) AS number_of_purchases
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT distributor_id, COUNT(*) AS number_of_purchases
                            FROM stock_in
                            WHERE admin_id = ?
                            GROUP BY distributor_id
                            ORDER BY number_of_purchases DESC
                            LIMIT 1";
 
-            $stmt = $this->conn->prepare($selectQuery);
-
-            if ($stmt) {
+                $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("s", $adminId);
+            } else {
+                $selectQuery = "SELECT distributor_id, COUNT(*) AS number_of_purchases
+                FROM stock_in
+                GROUP BY distributor_id
+                ORDER BY number_of_purchases DESC
+                LIMIT 1";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
+            if ($stmt) {
+                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
                     $data = $result->fetch_object();
-                    return json_encode(['status'=> 1, 'message'=> "success", 'data'=> $data]);
+                    return json_encode(['status' => 1, 'message' => "success", 'data' => $data]);
                 } else {
-                    return json_encode(['status'=> 0, 'message'=> "empty", 'data'=> '']);
+                    return json_encode(['status' => 0, 'message' => "empty", 'data' => '']);
                 }
                 $stmt->close();
             } else {
-                return json_encode(['status'=> 0, 'message'=> "Statement preparation failed: " . $this->conn->error, 'data'=> '']);
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: " . $this->conn->error, 'data' => '']);
             }
         } catch (Exception $e) {
-            return json_encode(['status'=> 0, 'message'=> "Error: " . $e->getMessage(), 'data'=> '']);
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data' => '']);
         }
     }
 
@@ -275,7 +302,7 @@ class StockIn extends DatabaseConnection
 
 
 
-    
+
 
 
     // =================== purchase today data by date range ==================
@@ -438,7 +465,7 @@ class StockIn extends DatabaseConnection
     } //eof stockInByDate function
 
 
-   
+
 
     function stockIndataOnBillno($distributorId, $billNo)
     {
@@ -453,37 +480,38 @@ class StockIn extends DatabaseConnection
 
 
 
-    
-    function needsToPay($adminId=''){
+
+    function needsToPay($adminId = '')
+    {
         $data = array();
-    
+
         try {
             if (!empty($adminId)) {
 
                 $sql = "SELECT * FROM stock_in WHERE `payment_mode` = 'Credit' AND admin_id = ?";
-            }else{
+            } else {
                 $sql = "SELECT * FROM stock_in WHERE `payment_mode` = 'Credit'";
             }
-            
+
             $stmt = $this->conn->prepare($sql);
-        
+
             if ($stmt) {
                 if (!empty($adminId)) {
                     // Bind parameters
                     $stmt->bind_param('s', $adminId); // Assuming admin_id is a string
                 }
-                
+
                 // Execute the prepared statement
                 $stmt->execute();
-        
+
                 // Get the result set
                 $result = $stmt->get_result();
-        
+
                 // Fetch results into an array
                 while ($row = $result->fetch_assoc()) {
-                        $data[] = $row;
+                    $data[] = $row;
                 }
-                    
+
                 // Close the statement
                 $stmt->close();
             } else {
@@ -492,10 +520,10 @@ class StockIn extends DatabaseConnection
         } catch (Exception $e) {
             return array("error" => $e->getMessage());
         }
-    
+
         return $data;
     }
-    
+
 
 
 
@@ -517,12 +545,11 @@ class StockIn extends DatabaseConnection
 
             $stmt->close();
 
-            if($result > 0){
+            if ($result > 0) {
                 return true;
-            }else{
+            } else {
                 return $result;
             }
-            
         } catch (Exception $e) {
             if ($e) {
                 echo "Error: " . $e->getMessage();

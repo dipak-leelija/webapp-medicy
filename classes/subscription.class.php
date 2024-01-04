@@ -59,14 +59,21 @@ class Subscription extends DatabaseConnection{
     
       
 
-    function getSubscription($adminId){
+    function getSubscription($adminId=''){
         try {
             // Query to get subscription information for the given admin ID
+            if(!empty($adminId)){
             $query = "SELECT * FROM subscription WHERE admin_id = ?";
             $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("s", $adminId);
+            }else{
+            $query = "SELECT * FROM subscription ";
+            $stmt = $this->conn->prepare($query);
+            }
+            // $stmt = $this->conn->prepare($query);
     
             if ($stmt) {
-                $stmt->bind_param("s", $adminId); // Use "s" for integer
+                // $stmt->bind_param("s", $adminId); // Use "s" for integer
                 $stmt->execute();
                 $result = $stmt->get_result();
     
@@ -89,14 +96,21 @@ class Subscription extends DatabaseConnection{
         }
     }    
 
-    function checkSubscription($adminId, $today) {
+    function checkSubscription($adminId='', $today='') {
         $endDate ='';
         // Query to get subscription information for the given admin ID
+        if(!empty($adminId)){
         $query = "SELECT end FROM subscription WHERE admin_id = ?";
         $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("s", $adminId);
+        }else{
+        $query = "SELECT end FROM subscription "; 
+        $stmt = $this->conn->prepare($query); 
+        }
+        // $stmt = $this->conn->prepare($query);
     
         if ($stmt) {
-            $stmt->bind_param("s", $adminId); // Use "s" for integer
+            // $stmt->bind_param("s", $adminId); // Use "s" for integer
             $stmt->execute();
             $stmt->bind_result($endDate);
             $stmt->fetch();

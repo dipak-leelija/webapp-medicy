@@ -149,17 +149,21 @@ class CurrentStock extends DatabaseConnection
 
 
     // ================== SHOW CURRENT STOCK BY ADMIN ID ========================
-    function showCurrentStockbyAdminId($adminId)
+    function showCurrentStockbyAdminId($adminId='')
     {
         try {
             $data = array();
-
+            if(!empty($adminId)){
             $select = "SELECT * FROM `current_stock` WHERE (`qty` > 0 OR `loosely_count` > 0) AND `admin_id` = ? ORDER BY added_on ASC";
-
             $stmt = $this->conn->prepare($select);
+            $stmt->bind_param("s", $adminId);    
+           }else{
+            $select = "SELECT * FROM `current_stock` WHERE (`qty` > 0 OR `loosely_count` > 0) ORDER BY added_on ASC";
+            $stmt = $this->conn->prepare($select);
+           }
 
             if ($stmt) {
-                $stmt->bind_param("s", $adminId);
+                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
 
                 $result = $stmt->get_result();
@@ -194,17 +198,23 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    function currentStockGroupbyPidOnAdmin($adminId)
+    function currentStockGroupbyPidOnAdmin($adminId='')
     {
         try {
             $data = array();
-
-            $select = "SELECT * FROM current_stock WHERE `admin_id` = ? GROUP BY `product_id`";
-
-            $stmt = $this->conn->prepare($select);
+            if(!empty($adminId)){
+                $select = "SELECT * FROM current_stock WHERE `admin_id` = ? GROUP BY `product_id`";
+                $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("s", $adminId);
+            }else{
+                $select = "SELECT * FROM current_stock GROUP BY `product_id`";
+                $stmt = $this->conn->prepare($select);
+            }
+            
+            // $stmt = $this->conn->prepare($select);
 
             if ($stmt) {
-                $stmt->bind_param("s", $adminId);
+                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -233,12 +243,16 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    function showStockExpiry($currentdate, $adminId)
+    function showStockExpiry($currentdate='', $adminId='')
     {
         $currentdate = date('Y-m-d', strtotime($currentdate));
         try {
             $data = array();
-            $select = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD('$currentdate', INTERVAL 2 MONTH) AND admin_id = '$adminId'";
+            if(!empty($adminId)){
+                $select = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD('$currentdate', INTERVAL 2 MONTH) AND admin_id = '$adminId'";
+            }else{
+                $select = "SELECT * FROM current_stock WHERE STR_TO_DATE(CONCAT('01/', exp_date), '%d/%m/%Y') < DATE_ADD('$currentdate', INTERVAL 2 MONTH) ";
+            }
 
             $query = $this->conn->query($select);
 
@@ -341,19 +355,30 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    function showExpStockForStocksummaryCard($chkDt, $adminId)
+    function showExpStockForStocksummaryCard($chkDt='', $adminId='')
     {
         try {
             $data = array();
+            if(!empty($adminId)){
             $select = "SELECT DISTINCT * FROM `current_stock`
                     WHERE CONCAT(SUBSTRING(current_stock.exp_date, 4, 4), '-', SUBSTRING(current_stock.exp_date, 1, 2)) < ?
                     AND (`qty` > 0 OR `loosely_count` > 0)
                     AND `admin_id` = ?
                     ORDER BY added_on ASC";
 
+                    $stmt = $this->conn->prepare($select);
+                    $stmt->bind_param("ss", $chkDt, $adminId);
+            }else{
+                $select = "SELECT DISTINCT * FROM `current_stock`
+                    WHERE CONCAT(SUBSTRING(current_stock.exp_date, 4, 4), '-', SUBSTRING(current_stock.exp_date, 1, 2)) < ?
+                    AND (`qty` > 0 OR `loosely_count` > 0)
+                    ORDER BY added_on ASC";
+
+                    $stmt = $this->conn->prepare($select);
+            }
             // Use prepared statements to prevent SQL injection
-            $stmt = $this->conn->prepare($select);
-            $stmt->bind_param("ss", $chkDt, $adminId);
+            // $stmt = $this->conn->prepare($select);
+            // $stmt->bind_param("ss", $chkDt, $adminId);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -403,7 +428,7 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    function showCurrentStockByPIdAndAdmin($productId, $admin){
+    function showCurrentStockByPIdAndAdmin($productId='', $admin=''){
         try {
             $data = array();
             $select = "SELECT * FROM current_stock WHERE `product_id` = ? AND `admin_id` = ? AND `qty` > '0' ORDER BY added_on ASC";
