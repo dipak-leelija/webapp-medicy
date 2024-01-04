@@ -31,42 +31,43 @@ $OTP  = $IdGenerate->otpGgenerator();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (isset($_POST['adm-recover-password'])) {
+    if (isset($_POST['recover-password'])) {
 
-        $admUsername = $_POST["adm-username"];
+        $username = $_POST["username"];
         // $enteredUsername = $admUsername;
 
-        if (empty($admUsername)) {
-            $admErrorMessage = 'Please fill username or Email id !';
+        if (empty($username)) {
+            $errorMessage = 'Please fill username or Email id !';
         } else {
-            $admRecoverPassword    = json_decode($RecoverPass->adminPassRecover($admUsername));
+            $recoverPassword    = json_decode($RecoverPass->recoverPassword($username));
 
-            // print_r($admRecoverPassword);
+            print_r($recoverPassword);
 
-            if ($admRecoverPassword->status) {
-                $admData = $admRecoverPassword->data;
-                // print_r($admData);
+            // if ($admRecoverPassword->status) {
+            //     $admData = $admRecoverPassword->data;
+            //     // print_r($admData);
 
-                session_start();
-                $_SESSION['PASS_RECOVERY']       = true;
-                $_SESSION['ADM_PASS_RECOVERY']      = true;
-                $_SESSION['ADM_ID']    = $admData[0]->admin_id ;
-                $_SESSION['ADM_FNAME'] = $admData[0]->fname;
-                $_SESSION['ADM_USRNM'] = $admData[0]->username;
-                $_SESSION['ADM_EMAIL'] = $admData[0]->email;
-                $_SESSION['ADM_OTP']   = $OTP;
+            //     session_start();
+            //     $_SESSION['PASS_RECOVERY']       = true;
+            //     $_SESSION['ADM_PASS_RECOVERY']      = true;
+            //     $_SESSION['ADM_ID']    = $admData[0]->admin_id ;
+            //     $_SESSION['ADM_FNAME'] = $admData[0]->fname;
+            //     $_SESSION['ADM_USRNM'] = $admData[0]->username;
+            //     $_SESSION['ADM_EMAIL'] = $admData[0]->email;
+            //     $_SESSION['ADM_OTP']   = $OTP;
                 
-                header("Location: adm-pass-recover-mail.inc.php");
-            } else {
-                $admErrorMessage = 'Please fill up with correct Username or Email !';
-                $selectedRadio = 'admin';
-                // echo $admErrorMessage;
-            }
+            //     header("Location: adm-pass-recover-mail.inc.php");
+            // } else {
+            //     $admErrorMessage = 'Please fill up with correct Username or Email !';
+            //     $selectedRadio = 'admin';
+            //     // echo $admErrorMessage;
+            // }
         }
     }
 
 
-    if (isset($_POST['emp-recover-password'])) {
+
+    /* if (isset($_POST['emp-recover-password'])) {
 
         $admUsername = $_POST["adm-email"];
         $empUsernmae = $_POST["emp-username"];
@@ -109,7 +110,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $selectedRadio = 'employee';
             }
         }
-    }
+    }*/
+
 }
 
 
@@ -143,44 +145,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h5 class="">Recover Password</h5>
             </div>
 
-            <div class="d-flex justify-content-around">
+            <!-- <div class="d-flex justify-content-around">
                 <label>
                     <input type="radio" name="checkUser" id="adm-radio" value="admin" onclick="chkUsr(this.value)" <?php if ($selectedRadio == 'admin') echo 'checked'; ?>> Admin
                 </label>
                 <label>
                     <input type="radio" name="checkUser" id="emp-radio" value="employee" onclick="chkUsr(this.value)" <?php if ($selectedRadio == 'employee') echo 'checked'; ?>> Employee
                 </label>
-            </div>
+            </div> -->
 
 
-            <?php if (!empty($admErrorMessage)) : ?>
-                <div class="alert alert-warning text-center" role="alert" id='admErrorMessage'><?php echo $admErrorMessage ?></div>
-                <script>
-                    let admVal = 'admin';
-                    // chkUsr(admVal);
-                </script>
+
+            <?php if (!empty($errorMessage)) : ?>
+                <div class="alert alert-warning text-center" role="alert" id='errorMessage'><?php echo $errorMessage ?></div>
             <?php endif; ?>
 
-            <?php if (!empty($empErrorMessage)) : ?>
+
+
+            <!-- <?php if (!empty($empErrorMessage)) : ?>
                 <div class="alert alert-warning text-center" role="alert" id='empErrorMessage'><?php echo $empErrorMessage ?></div>
                 <script>
                     let empVal = 'employee';
                     // chkUsr(empVal);
                 </script>
-            <?php endif; ?>
+            <?php endif; ?> -->
 
 
-            <div class="recoverAdmin" style="display: none;">
+
+            <div class="recoverPassword">
 
                 <form class="" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off">
 
                     <div class="form-group">
-                        <label for="adm-username">Username / Email:</label>
-                        <input type="text" class="form-control" name="adm-username" id="adm-username" placeholder="Enter Your Username/ Email" required autocomplete="off">
+                        <label for="username">Username / Email:</label>
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Enter Your Username / Email" required autocomplete="off">
                     </div>
 
                     <div class="form-group">
-                        <button class="btn btn-primary btn-s w-100" type="submit" name="adm-recover-password">Go</button>
+                        <button class="btn btn-primary btn-s w-100" type="submit" name="recover-password">Go</button>
                     </div>
                 </form>
             </div>
@@ -188,17 +190,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-            <div class="recoverEmployee" style="display: none;">
+            <!-- <div class="recoverEmployee" style="display: none;">
 
                 <form class="" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off">
 
                     <div class="form-group">
-                        <label for="adm-email">Admin Email:</label>
-                        <input type="text" class="form-control" name="adm-email" id="adm-email" placeholder="Admin Email" required autocomplete="off">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="emp-username">Employee Username / Email:</label>
+                        <label for="emp-username">Username / Email:</label>
                         <input type="text" class="form-control" name="emp-username" id="emp-username" placeholder="Enter Your Username/ Email" required autocomplete="off">
                     </div>
 
@@ -206,34 +203,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <button class="btn btn-primary btn-s w-100" type="submit" name="emp-recover-password">Go</button>
                     </div>
                 </form>
-            </div>
+            </div> -->
+
         </div>
     </div>
 
 
     <script>
-        const chkUsr = (val) => {
-            console.log("chk usr function val : " + val);
-            var recoverAdminDiv = document.querySelector('.recoverAdmin');
-            var recoverEmployeeDiv = document.querySelector('.recoverEmployee');
+        // const chkUsr = (val) => {
+        //     console.log("chk usr function val : " + val);
+        //     var recoverAdminDiv = document.querySelector('.recoverAdmin');
+        //     var recoverEmployeeDiv = document.querySelector('.recoverEmployee');
 
-            if (val == 'admin') {
-                recoverAdminDiv.style.display = 'block';
-                recoverEmployeeDiv.style.display = 'none';
-            }
+        //     if (val == 'admin') {
+        //         recoverAdminDiv.style.display = 'block';
+        //         recoverEmployeeDiv.style.display = 'none';
+        //     }
 
-            if (val == 'employee') {
-                recoverAdminDiv.style.display = 'none';
-                recoverEmployeeDiv.style.display = 'block';
-            }
-        }
+        //     if (val == 'employee') {
+        //         recoverAdminDiv.style.display = 'none';
+        //         recoverEmployeeDiv.style.display = 'block';
+        //     }
+        // }
         
         document.addEventListener('DOMContentLoaded', function() {
-            var admErrorMessageDiv = document.getElementById('admErrorMessage');
-            var empErrorMessageDiv = document.getElementById('empErrorMessage');
+            var errorMessageDiv = document.getElementById('errorMessage');
+            // var empErrorMessageDiv = document.getElementById('empErrorMessage');
 
-            var admUsernmInput = document.getElementById('adm-username');
-            var empUsernmInput = document.getElementById('emp-username');
+            var usernmInput = document.getElementById('username');
+            // var empUsernmInput = document.getElementById('emp-username');
 
             if (admErrorMessageDiv) {
                 admUsernmInput.addEventListener('input', function() {
