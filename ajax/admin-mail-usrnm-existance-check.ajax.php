@@ -18,10 +18,12 @@ if (isset($_POST['chekEmailExistance'])) {
 
     $checkAdminMailExistance = $Admin->echeckEmail($checkEmail);
 
+    
     $empCol1 = 'emp_email';
-    $checkEmpMailExistance = json_decode($Employee->selectEmpByCol($empCol1, $checkEmail));
+    $checkEmpMailExistance = json_decode($Employee->selectEmpByColData($empCol1, $checkEmail));
+    // print_r($checkEmpMailExistance);
 
-    if ($checkAdminMailExistance == 1 || $checkEmpMailExistance->status == 1) {
+    if ($checkAdminMailExistance == 1 || $checkEmpMailExistance->status == '1') {
         echo '1';
     } else {
         echo '0';
@@ -34,12 +36,12 @@ if (isset($_POST['chekEmailExistance'])) {
 if (isset($_POST['chekUsrnmExistance'])) {
     $checkUsername = $_POST['chekUsrnmExistance'];
 
-    $checkAdminMailExistance = $Admin->echeckUsername($checkUsername);
+    $checkAdminUsrnmExistance = $Admin->echeckUsername($checkUsername);
 
     $empCol1 = 'emp_username';
-    $checkEmpMailExistance = json_decode($Employee->selectEmpByCol($empCol1, $checkUsername));
+    $checkEmpUsrnmExistance = json_decode($Employee->selectEmpByColData($empCol1, $checkUsername));
 
-    if ($checkAdminMailExistance == 1 || $checkEmpMailExistance->status == 1) {
+    if ($checkAdminUsrnmExistance == 1 || $checkEmpUsrnmExistance->status == 1) {
         echo '1';
     } else {
         echo '0';

@@ -35,13 +35,13 @@ const verifyEmail = () => {
         let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailRegex.test(inputedMail.value)) {
-            alert('Email valid email id!');
+            alert('Enter valid email id!');
+            document.getElementById('email').value = ' ';
         } else {
             checkEmailAvailability();
         }
-    } else {
-        alert('Email input field not found');
     }
+    
 }
 
 
@@ -56,8 +56,8 @@ const checkEmailAvailability = () => {
             chekEmailExistance: mailId,
         },
         success: function (data) {
-            // console.log("ajax return data : " + data);
-            if (data == 1) {
+            console.log("ajax admin return data : " + data);
+            if (data == '1') {
                 alert('Email Exits as registered!');
                 document.getElementById('email').value = ' ';
                 // document.getElementById('email').focus();
@@ -83,7 +83,7 @@ const verifyUsername = (t) => {
             chekUsrnmExistance: admUsrnm,
         },
         success: function (data) {
-            // console.log("ajax return data : " + data);
+            console.log("ajax return data : " + data);
             if (data == 1) {
                 alert('Username Exits as registered!');
                 document.getElementById('user-name').value = ' ';

@@ -122,6 +122,40 @@ class Employees extends DatabaseConnection
 
 
 
+    function selectEmpByColData($col, $data){
+        try {
+            $selectEmp = "SELECT * FROM employees WHERE `$col` = ?";
+            $stmt = $this->conn->prepare($selectEmp);
+            $stmt->bind_param("s", $data);
+           
+
+            if (!$stmt) {
+                throw new Exception("Prepare statement failed.");
+            }
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if($result->num_rows > 0){
+                $empData = array();
+                while ($row = $result->fetch_object()) {
+                    $empData[] = $row;
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $empData]);
+            }else{
+                return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
+        }
+    }
+
+
+
+
+
     function employeesDisplayByUsername($empUsername){
 
         $select = "SELECT id,employee_username,employee_name,emp_role FROM employees WHERE employee_username = '$empUsername'";
