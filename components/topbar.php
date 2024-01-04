@@ -172,12 +172,18 @@
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <?php if ($_SESSION['ADMIN']) :
-                    $imagePath = ADM_IMG_PATH . $adminImg; ?>
-                    <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?php echo $_SESSION['ADMIN_FNAME']; ?></span>
-                <?php elseif ($_SESSION['EMP_NAME']) :  $imagePath = EMPLOYEE_IMG_PATH . $empImg; ?>
-                    <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?php echo $_SESSION['EMP_NAME']; ?></span>
-                <?php endif; ?>
+                <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?= $userFname ?></span>
+
+                <?php
+                // echo $userImg;
+                // exit;
+                if ($_SESSION['ADMIN']):
+                    $imagePath = ADM_IMG_PATH . $userImg;
+                else:
+                    $imagePath = USER_IMG_PATH . $userImg;
+                endif;
+                    
+                ?>
 
                 <img class="img-profile rounded-circle" src="<?= ($imagePath) ? $imagePath :  IMG_PATH . 'undraw_profile.svg' ?>">
                 <!-- <img class="img-profile rounded-circle" src="<?= IMG_PATH . 'undraw_profile.svg'; ?>"> -->
