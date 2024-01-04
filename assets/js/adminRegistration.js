@@ -56,7 +56,7 @@ const checkEmailAvailability = () => {
             chekEmailExistance: mailId,
         },
         success: function (data) {
-            console.log("ajax admin return data : " + data);
+            // console.log("ajax admin return data : " + data);
             if (data == '1') {
                 alert('Email Exits as registered!');
                 document.getElementById('email').value = ' ';
@@ -83,7 +83,7 @@ const verifyUsername = (t) => {
             chekUsrnmExistance: admUsrnm,
         },
         success: function (data) {
-            console.log("ajax return data : " + data);
+            // console.log("ajax return data : " + data);
             if (data == 1) {
                 alert('Username Exits as registered!');
                 document.getElementById('user-name').value = ' ';
