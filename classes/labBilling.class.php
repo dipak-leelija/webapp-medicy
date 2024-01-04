@@ -38,11 +38,14 @@ class LabBilling extends DatabaseConnection
 
 
 
-    function labBillDisplay($adminId)
+    function labBillDisplay($adminId = '')
     {
         try {
-            $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId'";
-
+            if (!empty($adminId)) {
+                $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId'";
+            } else {
+                $selectBill = "SELECT * FROM lab_billing ";
+            }
             $stmt = $this->conn->prepare($selectBill);
 
             $stmt->execute();
@@ -86,14 +89,21 @@ class LabBilling extends DatabaseConnection
 
 
 
-    function labBillFilter($adminId, $col, $filterVal)
+    function labBillFilter($adminId = '', $col = '', $filterVal = '')
     {
         try {
-
-            if ($col == 'search') {
-                $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId' AND (bill_id LIKE '%$filterVal%' OR patient_id LIKE '%$filterVal%') ORDER BY bill_id ASC";
+            if (!empty($adminId)) {
+                if ($col == 'search') {
+                    $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId' AND (bill_id LIKE '%$filterVal%' OR patient_id LIKE '%$filterVal%') ORDER BY bill_id ASC";
+                } else {
+                    $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId' AND $col = $filterVal";
+                }
             } else {
-                $selectBill = "SELECT * FROM lab_billing WHERE admin_id = '$adminId' AND $col = $filterVal";
+                if ($col == 'search') {
+                    $selectBill = "SELECT * FROM lab_billing WHERE  (bill_id LIKE '%$filterVal%' OR patient_id LIKE '%$filterVal%') ORDER BY bill_id ASC";
+                } else {
+                    $selectBill = "SELECT * FROM lab_billing WHERE  admin_id = ' $col' ";
+                }
             }
 
 
@@ -119,6 +129,35 @@ class LabBilling extends DatabaseConnection
         }
     } //end employeesDisplay function
 
+
+    ///====== Lab Bill Filter based on AdminId=====///
+    function labBillFilterByAdminID($adminId)
+    {
+        try {
+            $selectBill = "SELECT * FROM `lab_billing` WHERE `admin_id` = ?";
+
+            $stmt = $this->conn->prepare($selectBill);
+            $stmt->bind_param('s', $adminId);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $billData = array();
+                while ($row = $result->fetch_object()) {
+                    $billData[] = $row;
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $billData]);
+            } else {
+                $stmt->close();
+                return json_encode(['status' => '0', 'message' => 'fail', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
+        }
+    }
 
 
 

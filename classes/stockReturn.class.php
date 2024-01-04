@@ -93,7 +93,7 @@ class StockReturn extends DatabaseConnection
 
 
 
-    function stockReturnFilter($table, $value)
+    function stockReturnFilter($table='', $value='')
     {
         try {
             $sql = "SELECT * FROM stock_return WHERE `$table` = '$value'";

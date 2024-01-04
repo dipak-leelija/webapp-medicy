@@ -59,10 +59,15 @@ class LabAppointments extends DatabaseConnection
         }
     } //end appointmentsDisplay function
 
-    function showLabAppointmentsByAdminId($adminId)
+    function showLabAppointmentsByAdminId($adminId='')
     {
         try {
-            $select = "SELECT  COUNT(*) as count  FROM lab_appointments WHERE `lab_appointments`.`admin_id` = '$adminId'";
+            if(!empty($adminId)){
+                $select = "SELECT  COUNT(*) as count  FROM lab_appointments WHERE `lab_appointments`.`admin_id` = '$adminId'";
+            }else{
+                $select = "SELECT  COUNT(*) as count  FROM lab_appointments";
+            }
+            
             $selectQuery = $this->conn->query($select);
             $result = $selectQuery->fetch_assoc();
             return $result['count'];

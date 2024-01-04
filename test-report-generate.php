@@ -119,9 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <?php
                                     $showpatient = json_decode($showpatient);
                                     if ($showpatient !== null) {
-                                        $patientName = $showpatient->name;
-                                        $patientAge = $showpatient->age;
-                                        $patientSex = $showpatient->gender;
+                                        $patientName = isset($showpatient->name)   ? $showpatient->name   : 'N/A';
+                                        $patientAge  = isset($showpatient->age)    ? $showpatient->age    : 'N/A';
+                                        $patientSex  = isset($showpatient->gender) ? $showpatient->gender : 'N/A';
                                     }
                                     $testDate = $labBillingData[0]['test_date'];
                                     ?>

@@ -112,6 +112,12 @@ if (isset($_GET['searchKey'])) {
         'lab_billing'=>['token' => $labBillTable, 'status' => $labBillStatus, 'data'=> $labBillData]
     ];
 
+<<<<<<< HEAD
+    print_r($combinedResult);
+    echo json_encode($combinedResult);
+}
+=======
+>>>>>>> af0afdc15c8bb40f4c477fd00a9fb09e0880015d
 
     // print_r($margedResultData['appointments']['data']);
 

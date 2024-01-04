@@ -50,19 +50,25 @@ class SalesReturn extends DatabaseConnection
 
 
 
-    function selectSalesReturn($table, $data) {
+    function selectSalesReturn($table='', $data='') {
         try {
             $res = array();
     
             // Define the SQL query using a prepared statement
+            if(!empty($data)){
             $sql = "SELECT * FROM sales_return WHERE $table = ?";
-            
-            // Prepare the SQL statement
             $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("s", $data);
+            }else{
+            $sql = "SELECT * FROM sales_return WHERE $table = ?";
+            $stmt = $this->conn->prepare($sql);   
+            }
+            // Prepare the SQL statement
+            // $stmt = $this->conn->prepare($sql);
     
             if ($stmt) {
                 // Bind the parameter
-                $stmt->bind_param("s", $data);
+                // $stmt->bind_param("s", $data);
     
                 // Execute the query
                 $stmt->execute();

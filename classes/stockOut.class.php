@@ -33,18 +33,25 @@ class StockOut extends DatabaseConnection
 
 
 
-    function stockOutDisplay($adminId)
+    function stockOutDisplay($adminId ='')
     {
         try {
             $billData = array();
+            if (!empty($adminId)) {
+                $selectBill = "SELECT * FROM `stock_out` WHERE admin_id = ?
+                ORDER BY invoice_id DESC";
+                $stmt = $this->conn->prepare($selectBill);
+                $stmt->bind_param("s", $adminId);
+            } else {
+                $selectBill = "SELECT * FROM `stock_out` 
+                ORDER BY invoice_id DESC";
+                $stmt = $this->conn->prepare($selectBill);
+            }
 
-            $selectBill = "SELECT * FROM `stock_out` WHERE admin_id = ?
-            ORDER BY invoice_id DESC";
-
-            $stmt = $this->conn->prepare($selectBill);
+            // $stmt = $this->conn->prepare($selectBill);
 
             if ($stmt) {
-                $stmt->bind_param("s", $adminId);
+                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -91,11 +98,15 @@ class StockOut extends DatabaseConnection
 
 
     // fethc sold amount on admin id
-    function amountSoldByAll($adminId)
+    function amountSoldByAll($adminId = '')
     {
         try {
             $sold = array();
-            $sql = "SELECT items,amount FROM stock_out WHERE `admin_id` = '$adminId'";
+            if (!empty($adminId)) {
+                $sql = "SELECT items,amount FROM stock_out WHERE `admin_id` = '$adminId'";
+            } else {
+                $sql = "SELECT items,amount FROM stock_out";
+            }
             $sqlQuery = $this->conn->query($sql);
 
             if ($sqlQuery) {
@@ -271,10 +282,11 @@ class StockOut extends DatabaseConnection
     // =========== most visited customer data ====================
 
 
-    function mostVistedCustomerFrmStart($adminId) //overall most visited customer function
+    function mostVistedCustomerFrmStart($adminId = '') //overall most visited customer function
     {
         try {
-            $selectQuery = "SELECT customer_id, COUNT(customer_id) AS visit_count
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT customer_id, COUNT(customer_id) AS visit_count
             FROM stock_out
             WHERE admin_id = ?
             AND added_on >= (SELECT MIN(added_on) FROM stock_out WHERE admin_id = '11') 
@@ -283,10 +295,21 @@ class StockOut extends DatabaseConnection
             ORDER BY visit_count DESC
             LIMIT 10";
 
-            $stmt = $this->conn->prepare($selectQuery);
-
-            if ($stmt) {
+                $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("s", $adminId);
+            } else {
+                $selectQuery = "SELECT customer_id, COUNT(customer_id) AS visit_count
+            FROM stock_out
+            WHERE added_on >= (SELECT MIN(added_on) FROM stock_out) 
+            AND added_on <= NOW()
+            GROUP BY customer_id
+            ORDER BY visit_count DESC
+            LIMIT 10";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
+            if ($stmt) {
+                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -313,20 +336,31 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostVisitCustomersByDay($adminId) //current date most visited customer function
+    function mostVisitCustomersByDay($adminId = '') //current date most visited customer function
     {
         try {
-            $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
             FROM stock_out
             WHERE admin_id = ? AND DATE(added_on) = CURDATE()
             GROUP BY customer_id
             ORDER BY visit_count DESC
             LIMIT 10";
 
-            $stmt = $this->conn->prepare($selectQuery);
-
-            if ($stmt) {
+                $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("s", $adminId);
+            } else {
+                $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
+                    FROM stock_out
+                    WHERE DATE(added_on) = CURDATE()
+                    GROUP BY customer_id
+                    ORDER BY visit_count DESC
+                    LIMIT 10";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
+            if ($stmt) {
+                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -353,10 +387,11 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostVisitCustomersByWeek($adminId) //last week most visited customer function
+    function mostVisitCustomersByWeek($adminId = '') //last week most visited customer function
     {
         try {
-            $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
             FROM stock_out
             WHERE admin_id = ? 
             AND added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
@@ -364,10 +399,20 @@ class StockOut extends DatabaseConnection
             ORDER BY visit_count DESC
             LIMIT 10";
 
-            $stmt = $this->conn->prepare($selectQuery);
-
-            if ($stmt) {
+                $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("s", $adminId);
+            } else {
+                $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
+            FROM stock_out
+            WHERE added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+            GROUP BY customer_id
+            ORDER BY visit_count DESC
+            LIMIT 10";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
+            if ($stmt) {
+                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -394,10 +439,11 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostVisitCustomersByMonth($adminId) //lst 30 days most visited customer function
+    function mostVisitCustomersByMonth($adminId = '') //lst 30 days most visited customer function
     {
         try {
-            $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
             FROM stock_out
             WHERE admin_id = ? 
             AND added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
@@ -405,10 +451,21 @@ class StockOut extends DatabaseConnection
             ORDER BY visit_count DESC
             LIMIT 10";
 
-            $stmt = $this->conn->prepare($selectQuery);
+                $stmt = $this->conn->prepare($selectQuery);
+                $stmt->bind_param("s", $adminId);
+            } else {
+                $selectQuery = "SELECT customer_id, COUNT(*) AS visit_count
+                FROM stock_out
+                WHERE added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                GROUP BY customer_id
+                ORDER BY visit_count DESC
+                LIMIT 10";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
 
             if ($stmt) {
-                $stmt->bind_param("s", $adminId);
+                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -523,10 +580,11 @@ class StockOut extends DatabaseConnection
 
     // ============= most purchase customer data functions ==============
 
-    function overallMostPurchaseCustomer($admin) // overall most purchase customer fucntion
+    function overallMostPurchaseCustomer($admin = '') // overall most purchase customer fucntion
     {
         try {
-            $selectQuery = "SELECT customer_id, amount AS total_purchase
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales'
                             UNION ALL
@@ -537,10 +595,24 @@ class StockOut extends DatabaseConnection
                             ORDER BY total_purchase DESC
                             LIMIT 10;";
 
-            $stmt = $this->conn->prepare($selectQuery);
-
-            if ($stmt) {
+                $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("ss", $admin, $admin);
+            } else {
+                $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE  customer_id = 'Cash Sales'
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE customer_id != 'Cash Sales'
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10;";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
+            if ($stmt) {
+                // $stmt->bind_param("ss", $admin, $admin);
 
                 if ($stmt->execute()) {
                     $result = $stmt->get_result();
@@ -572,10 +644,11 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByDay($admin) // most purchase customer on current date fucntion
+    function mostPurchaseCustomerByDay($admin = '') // most purchase customer on current date fucntion
     {
         try {
-            $selectQuery = "SELECT customer_id, amount AS total_purchase
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales' 
                                 AND DATE(added_on) = CURDATE()
@@ -588,10 +661,26 @@ class StockOut extends DatabaseConnection
                             ORDER BY total_purchase DESC
                             LIMIT 10";
 
-            $stmt = $this->conn->prepare($selectQuery);
-
-            if ($stmt) {
+                $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("ss", $admin, $admin);
+            } else {
+                $selectQuery = "SELECT customer_id, amount AS total_purchase
+                            FROM stock_out
+                            WHERE customer_id = 'Cash Sales' 
+                                AND DATE(added_on) = CURDATE()
+                            UNION ALL
+                            SELECT customer_id, SUM(amount) AS total_purchase
+                            FROM stock_out
+                            WHERE customer_id != 'Cash Sales' 
+                                AND DATE(added_on) = CURDATE()
+                            GROUP BY customer_id
+                            ORDER BY total_purchase DESC
+                            LIMIT 10";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
+            if ($stmt) {
+                // $stmt->bind_param("ss", $admin, $admin);
 
                 if ($stmt->execute()) {
                     $result = $stmt->get_result();
@@ -622,10 +711,11 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByWeek($admin) // most purchase customer last week fucntion
+    function mostPurchaseCustomerByWeek($admin = '') // most purchase customer last week fucntion
     {
         try {
-            $selectQuery = "SELECT customer_id, amount AS total_purchase
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales' 
                             AND added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
@@ -638,10 +728,26 @@ class StockOut extends DatabaseConnection
                             ORDER BY total_purchase DESC
                             LIMIT 10";
 
-            $stmt = $this->conn->prepare($selectQuery);
-
-            if ($stmt) {
+                $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("ss", $admin, $admin);
+            } else {
+                $selectQuery = "SELECT customer_id, amount AS total_purchase
+                FROM stock_out
+                WHERE customer_id = 'Cash Sales' 
+                AND added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                UNION ALL
+                SELECT customer_id, SUM(amount) AS total_purchase
+                FROM stock_out
+                WHERE customer_id != 'Cash Sales' 
+                AND added_on >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                GROUP BY customer_id
+                ORDER BY total_purchase DESC
+                LIMIT 10";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
+            if ($stmt) {
+                // $stmt->bind_param("ss", $admin, $admin);
 
                 if ($stmt->execute()) {
                     $result = $stmt->get_result();
@@ -674,10 +780,11 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByMonth($admin) // most purchase customer last 30 days fucntion
+    function mostPurchaseCustomerByMonth($admin = '') // most purchase customer last 30 days fucntion
     {
         try {
-            $selectQuery = "SELECT customer_id, amount AS total_purchase
+            if (!empty($adminId)) {
+                $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales' 
                             AND added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
@@ -690,10 +797,26 @@ class StockOut extends DatabaseConnection
                             ORDER BY total_purchase DESC
                             LIMIT 10";
 
-            $stmt = $this->conn->prepare($selectQuery);
-
-            if ($stmt) {
+                $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("ss", $admin, $admin);
+            } else {
+                $selectQuery = "SELECT customer_id, amount AS total_purchase
+                FROM stock_out
+                WHERE customer_id = 'Cash Sales' 
+                AND added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                UNION ALL
+                SELECT customer_id, SUM(amount) AS total_purchase
+                FROM stock_out
+                WHERE customer_id != 'Cash Sales' 
+                AND added_on >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                GROUP BY customer_id
+                ORDER BY total_purchase DESC
+                LIMIT 10";
+
+                $stmt = $this->conn->prepare($selectQuery);
+            }
+            if ($stmt) {
+                // $stmt->bind_param("ss", $admin, $admin);
 
                 if ($stmt->execute()) {
                     $result = $stmt->get_result();
@@ -840,10 +963,14 @@ class StockOut extends DatabaseConnection
 
 
     // fethc sold amount on admin id and employee id
-    function amountSoldByEmployee($pharmacist, $adminId)
+    function amountSoldByEmployee($pharmacist = '', $adminId = '')
     {
         $sold = array();
-        $sql = "SELECT items,amount FROM stock_out WHERE `added_by` = '$pharmacist' AND `admin_id` = '$adminId'";
+        if (!empty($adminId)) {
+            $sql = "SELECT items,amount FROM stock_out WHERE `added_by` = '$pharmacist' AND `admin_id` = '$adminId'";
+        } else {
+            $sql = "SELECT items,amount FROM stock_out ";
+        }
         $sqlQuery = $this->conn->query($sql);
         while ($result = $sqlQuery->fetch_array()) {
             $sold[]    = $result;
@@ -865,36 +992,37 @@ class StockOut extends DatabaseConnection
     } // eof amountSoldBy
 
 
-    function needsToCollect($adminId=''){
+    function needsToCollect($adminId = '')
+    {
         $data = array();
-    
+
         try {
             if (!empty($adminId)) {
                 // Use prepared statements to prevent SQL injection
                 $sql = "SELECT * FROM stock_out WHERE `payment_mode` = 'Credit' AND admin_id = ?";
-            }else{
+            } else {
                 $sql = "SELECT * FROM stock_out WHERE `payment_mode` = 'Credit'";
             }
-            
+
             $stmt = $this->conn->prepare($sql);
-        
+
             if ($stmt) {
                 if (!empty($adminId)) {
                     // Bind parameters
                     $stmt->bind_param('s', $adminId); // Assuming admin_id is a string
                 }
-                
+
                 // Execute the prepared statement
                 $stmt->execute();
-        
+
                 // Get the result set
                 $result = $stmt->get_result();
-        
+
                 // Fetch results into an array
                 while ($row = $result->fetch_assoc()) {
-                        $data[] = $row;
+                    $data[] = $row;
                 }
-                    
+
                 // Close the statement
                 $stmt->close();
             } else {
@@ -903,12 +1031,12 @@ class StockOut extends DatabaseConnection
         } catch (Exception $e) {
             return array("error" => $e->getMessage());
         }
-    
+
         return $data;
     }
 
 
-    
+
 
     function cancelLabBill($billId, $status)
     {
@@ -1622,9 +1750,10 @@ class StockOut extends DatabaseConnection
 
 
 
-    function salesMarginData($adminId){
+    function salesMarginData($adminId)
+    {
         $data = array();
-        try{
+        try {
             $selectData = "SELECT SUM(stock_out_details.qty) AS sales_pack, 
                         SUM(stock_out_details.mrp) AS sales_mrp, 
                         SUM(stock_out_details.margin) AS sell_margin 
@@ -1634,17 +1763,17 @@ class StockOut extends DatabaseConnection
 
             $dataQuery = $this->conn->query($selectData);
 
-            if($dataQuery->num_rows > 0){
+            if ($dataQuery->num_rows > 0) {
                 while ($result = $dataQuery->fetch_object()) {
                     $data[]    = $result;
                 }
                 return $data;
-            }else {
+            } else {
                 return null;
             }
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return $e;
-        } 
+        }
     } // eof stockOutDisplayById 
 
 

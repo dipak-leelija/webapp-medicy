@@ -67,27 +67,9 @@ if (isset($_POST['register'])) {
             if ($password == $cpassword) {
                 $diffrentPassword = false;
 
-                // echo $adminId."<br>";
-                // echo $Fname."<br>";
-                // echo $Lname."<br>";
-                // echo $username."<br>";
-                // echo $password."<br>";
-                // echo $email."<br>";
-                // echo $mobNo."<br>";
-                // echo $expiry."<br>";
-                // echo NOW."<br>";
-                // echo $status."<br>";
-
                 $register = $admin->registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, NOW, intval($status));
 
-                print_r($register);
-
-                // if($register){
-                //     echo "reg success";
-                // }else{
-                //     echo "reg fail";
-                // }
-
+                // print_r($register);
 
                 if($register){
 
@@ -142,12 +124,14 @@ if (isset($_POST['register'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <title>Medicy Health Care - Admin Registration</title>
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>register.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
 </head>
@@ -175,7 +159,7 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username">
+                            <input type="text" class="form-control form-control-user" id="user-name" name="user-name" maxlength="24" placeholder="Username" onfocusout="verifyUsername(this)">
                         </div>
 
                         <div class="form-group">
@@ -265,7 +249,7 @@ if (isset($_POST['register'])) {
 
     <!-- custom script for register.php -->
     <script src="<?= JS_PATH ?>adminRegistration.js"></script>
-
+    <script src="<?= JS_PATH ?>password-show-hide.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>

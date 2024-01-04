@@ -6,6 +6,7 @@ class LoginForm extends DatabaseConnection{
     function login($email, $password, $roleData){
 
         $sql = "SELECT * FROM `admin` WHERE (`email` = '$email' OR `username` = '$email') AND `reg_status`= 1";
+        
         $result = $this->conn->query($sql);
 
         if ($result->num_rows > 0) {

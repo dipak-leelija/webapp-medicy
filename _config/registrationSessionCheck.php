@@ -16,4 +16,5 @@ if($_SESSION['ADMIN_REGISER']){
     $userName               = $_SESSION['username'];
     $adminId                = $_SESSION['adm_id'];
     $sessionTimeOutDuration = $_SESSION['time_out'];
-}
+
+} 

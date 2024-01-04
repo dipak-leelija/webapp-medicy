@@ -188,7 +188,7 @@ class IdsGeneration extends DatabaseConnection
 
     function otpGgenerator(){
 
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = '0123456789';
         $randomString = '';
         for ($i = 0; $i < 6; $i++) {
             $randomString .= $characters[rand(0, strlen($characters) - 1)];

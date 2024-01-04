@@ -56,10 +56,10 @@ if ($labBillingDetails !== 0) {
 $patientDatafetch = $LabReport->patientDatafetch($patient_id);
 $patientDatafetch = json_decode($patientDatafetch, true);
 if ($patientDatafetch !== null) {
-    $name       = $patientDatafetch['name'];
-    $patient_id = $patientDatafetch['patient_id'];
-    $age        = $patientDatafetch['age'];
-    $gender     = $patientDatafetch['gender'];
+    $name       = isset($patientDatafetch['name']) ? $patientDatafetch['name'] : 'N/A';
+    $patient_id = isset($patientDatafetch['patient_id']) ? $patientDatafetch['patient_id'] : 'N/A';
+    $age        = isset($patientDatafetch['age']) ? $patientDatafetch['age'] : 'N/A';
+    $gender     = isset($patientDatafetch['gender']) ? $patientDatafetch['gender'] : 'N/A';
 }
 
 
