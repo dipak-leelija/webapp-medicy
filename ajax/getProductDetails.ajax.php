@@ -16,7 +16,15 @@ $CurrentStock   = new CurrentStock();
 // ================ get product name =========================
 if (isset($_GET["id"])) {
     $showProducts = $Products->showProductsById($_GET["id"]);
-    echo $showProducts[0]['name'];
+    $showProductsData = json_decode($showProducts,true);
+    // print_r($showProductsData);
+    if(isset($showProductsData['status']) && $showProductsData['status'] == '1'){
+        $productData  = $showProductsData['data'][0];
+        $showProducts = $productData['name'];
+    }else{
+        $showProducts = 'Data Not Found';
+    }
+    echo $showProducts;
 }
 // echo "Hi";
 
@@ -31,9 +39,17 @@ if (isset($_GET["Pid"])) {
 if (isset($_GET["weightage"])) {
     $productId = $_GET["weightage"];
     $showProducts = $Products->showProductsById($productId);
-    if ($showProducts) {
-        echo $showProducts[0]['unit_quantity'];
+    $showProductsData = json_decode( $showProducts, true);
+    if(isset($showProductsData['status']) && $showProductsData['status'] == '1'){
+        $productData  = $showProductsData['data'][0];
+        $showProducts = $productData['unit_quantity'];
+    }else{
+        $showProducts = 'No Data Found'; 
     }
+    // if ($showProducts) {
+        // echo $showProducts[0]['unit_quantity'];
+    // }
+    echo $showProducts;
 }
 
 // ============== UNIT ====================
@@ -41,7 +57,15 @@ if (isset($_GET["weightage"])) {
 if (isset($_GET["itemUnit"])) {
     $prodId = $_GET["itemUnit"];
     $showProducts = $Products->showProductsById($prodId);
-    echo $ItemUnit->itemUnitName($showProducts[0]['unit']);
+    $showProductsData = json_decode( $showProducts, true);
+    // print_r($showProductsData);
+    if (isset($showProductsData['status']) && $showProductsData['status'] == 1 && isset($showProductsData['data']) && is_array($showProductsData['data']) && !empty($showProductsData['data'])) {
+        $productData = $showProductsData['data'][0];
+        echo $ItemUnit->itemUnitName($productData['unit']);
+    }else{
+        echo 'Product Unit Not Found';
+    }
+    // echo $ItemUnit->itemUnitName($showProducts[0]['unit']);
     // echo $showProducts[0]['unit'];
 }
 

@@ -280,6 +280,7 @@ class StockInDetails extends DatabaseConnection
 
     function showStockInDetailsById($DistBill)
     {
+        $data = [];
         $select = " SELECT * FROM `stock_in_details` WHERE  `distributor_bill`= '$DistBill'";
         $selectQuery = $this->conn->query($select);
         while ($result = $selectQuery->fetch_array()) {

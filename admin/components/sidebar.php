@@ -137,7 +137,7 @@
 
 
         <!-- Product Management collapsed Menu  -->
-        <li class="nav-item <?php if($page ==  "sales" || $page ==  "sales-returns" || $page == "new-sales" || $page == "sales-returns-items"){ echo "active";} ?>">
+        <!-- <li class="nav-item <?php if($page ==  "sales" || $page ==  "sales-returns" || $page == "new-sales" || $page == "sales-returns-items"){ echo "active";} ?>">
             <a active class="nav-link <?php if($page !=  "sales"){ echo "collapsed";} ?>" href="#"
                 data-toggle="collapse" data-target="#collapseSalesManagement"
                 aria-expanded="<?php if($page ==  "sales" || $page ==  "sales-returns" || $page == "new-sales" || $page == "sales-returns-items"){ echo "true";} ?>"
@@ -155,12 +155,12 @@
                         href="sales-returns.php ">Returns </a>
                 </div>
             </div>
-        </li>
+        </li> -->
         <!--/end Purchase Master collapsed Menu  -->
 
 
         <!-- Purchase Management  -->
-        <li class="nav-item <?php if($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item"){ echo "active";} ?>">
+        <!-- <li class="nav-item <?php if($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item"){ echo "active";} ?>">
             <a active class="nav-link <?php if($page !=  "stock-in"){ echo "collapsed";} ?>" href="#"
                 data-toggle="collapse" data-target="#collapsePurchaseManagement"
                 aria-expanded="<?php if($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item"){ echo "true";} ?>"
@@ -179,12 +179,12 @@
                         stock-return.php">Purchase Return</a>
                 </div>
             </div>
-        </li>
+        </li> -->
         <!--/end Purchase Master collapsed Menu  -->
 
 
         <!-- Product Management collapsed Menu  -->
-        <li
+        <!-- <li
             class="nav-item <?php if($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" || $page == "stock-in-edit"){ echo "active";} ?>">
             <a class="nav-link <?php if($page !=  "current-stock"){ echo "collapsed";} ?>" href="#"
                 data-toggle="collapse" data-target="#collapseStock"
@@ -206,7 +206,7 @@
                         href="stock-expiring.php">Stock Expiring </a>
                 </div>
             </div>
-        </li>
+        </li> -->
 
 
         <!--/end Purchase Master collapsed Menu  -->

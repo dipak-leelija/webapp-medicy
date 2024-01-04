@@ -14,8 +14,13 @@ $Products     = new Products();
 if (isset($_GET["pid"])) {
     
     $showProducts = $Products->showProductsById($_GET["pid"]);
+    $showProducts = json_decode($showProducts,true);
+    if(isset($showProducts['status']) && $showProducts['status'] == '1'){
+        $data = $showProducts['data'][0];
+        echo $data['comp_1'] . ',' . $data['comp_2'];
+    }
     
-    echo $showProducts[0]['comp_1'].', '.$showProducts[0]['comp_1'];
+    // echo $showProducts[0]['comp_1'].', '.$showProducts[0]['comp_1'];
 }
 
 ?>

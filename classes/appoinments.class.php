@@ -184,8 +184,9 @@ class Appointments extends DatabaseConnection
             $stmt = $this->conn->prepare($selectLastMonth);
             $stmt->bind_param("si", $data, $adminId);
             }else{
-                $selectLastMonth = "SELECT * FROM appointments "; 
+                $selectLastMonth = "SELECT * FROM appointments  WHERE  doctor_id = ?"; 
                 $stmt = $this->conn->prepare($selectLastMonth);
+                $stmt->bind_param("s", $data,);
             }
             // $stmt = $this->conn->prepare($selectLastMonth);
 

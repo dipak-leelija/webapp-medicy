@@ -43,9 +43,17 @@ if($ProductBatchData != ''){
         $id = $itemData->id;
 
         $prodNameFetch = $Products->showProductsById($productId);
-        foreach($prodNameFetch as $productData){
-            $prodName = $productData['name'];
+        $prodNameFetch = json_decode($prodNameFetch,true);
+        if(isset($prodNameFetch['status']) && $prodNameFetch['status'] == '1'){
+            foreach($prodNameFetch['data'] as $productData){
+                $prodName = $productData['name'];
+            } 
+        }else{
+            $prodName = 'No Data Found';
         }
+        // foreach($prodNameFetch['data'] as $productData){
+        //     $prodName = $productData['name'];
+        // }
 
         $prodBatch   = $itemData->batch_no;
         $qantity   = $itemData->qty;

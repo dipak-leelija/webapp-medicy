@@ -75,8 +75,8 @@ $LabReport  = new LabReport ;
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between">
                             <h6 class="m-0 font-weight-bold text-primary">List of Report</h6>
-                            <a data-toggle="modal" data-target="#appointmentSelection"><button
-                                    class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a>
+                            <!-- <a data-toggle="modal" data-target="#appointmentSelection"><button
+                                    class="btn btn-sm btn-primary"><i class="fas fa-edit"></i>Add New</button></a> -->
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

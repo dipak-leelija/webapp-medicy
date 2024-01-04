@@ -117,7 +117,7 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
                     <?php
                     if ($status != "Cancelled") {
 
-                        echo '<h6><a class="btn btn-sm btn-primary" href="' . ADM_URL . 'edit-lab-billing.php?invoice=' . $billId . '">Edit</a></h6>';
+                        // echo '<h6><a class="btn btn-sm btn-primary" href="' . ADM_URL . 'edit-lab-billing.php?invoice=' . $billId . '">Edit</a></h6>';
                     } else {
                         echo '<h6 class="border border-danger text-danger p-1"> Bill Cancelled</h6>';
                     }

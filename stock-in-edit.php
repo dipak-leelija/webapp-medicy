@@ -59,16 +59,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stockInDetails = $StockInDetails->showStockInDetailsByStokId($stockIn_id);
 
         //fetching distributo details data by stok in id
-        $distData = json_decode($Distributor->showDistributorById($stockIn[0]['distributor_id']));
-        $distData = $distData->data;
+        $distData = json_decode($Distributor->showDistributorById($stockIn[0]['distributor_id']), true);
+        // $distData = json_decode($distData, true);
 
+        if (isset($distData['status']) && $distData['status'] == '1') {
+            $data     = $distData['data'];
+            $distName = $data['name'];
+        }
         // set distributo name in a variable
-        $distName = $distData[0]->name;
+        // $distName = $distData[0]->name;
 
 
         $stockInDetailsIds = array();
-        foreach ($stockInDetails as $stockInData) {
-            array_push($stockInDetailsIds, $stockInData['id']); // store stok in details id for additional use
+        if (is_array($stockInDetails) && !empty($stockInDetails)) {
+            foreach ($stockInDetails as $stockInData) {
+                array_push($stockInDetailsIds, $stockInData['id']); // store stok in details id for additional use
+            }
+        }else{
+            echo 'No Data Found';
         }
     }
 }

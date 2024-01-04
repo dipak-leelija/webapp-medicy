@@ -174,9 +174,13 @@ if (isset($_GET['currentStockId'])) {
 
                 //===============distributor details=============
                 $distributorDetails = $distributor->showDistributorById($distId);
-                // echo "<br><br>";
-                // print_r($distributorDetails);
-                $distName = $distributorDetails[0]['name'];
+                $distributorDetails = json_decode($distributorDetails,true);
+
+                if(isset($distributorDetails['status']) && $distributorDetails['status'] == '1'){
+                    $data     = $distributorDetails['data'];
+                    $distName = $data['name'];
+                }
+                // $distName = $distributorDetails[0]['name'];
 
                 $stokInDetailsCol1 = 'product_id';
                 $stokInDetailsCol2 = 'batch_no';
