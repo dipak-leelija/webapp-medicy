@@ -17,67 +17,90 @@ const validateMobileNumber = () => {
     var inputValue = mobileInput.value;
     var numericValue = inputValue.replace(/[^0-9]/g, '');
     document.getElementById('mobile-number').value = numericValue;
-    
+
 
     if (mobileInput.value.length != 10) {
-        mobileInputLength.focus();
+        mobileInput.focus();
         console.log('input 10 digits');
     }
 }
 
+
+
 const verifyEmail = () => {
     var inputedMail = document.getElementById('email');
+    // console.log(inputedMail);
 
-    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (emailRegex.test(inputedMail.value)) {
-
-        var domain = inputedMail.value.split('@')[1];
-
-        var allowedDomains = ['gmail.com', 'yahoo.com', 'yahoo.in', 'ovi.com', 'rediffmail.com'];
+    if (inputedMail.value) {
+        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailRegex.test(inputedMail.value)) {
-            alert('Email not valid');
-            document.getElementById('email').value = ' ';
-            if(!allowedDomains.includes(domain)){
-                alert('Check Domain name');
-                // document.getElementById('email').value = '';
-            }
+            alert('Email valid email id!');
         } else {
-            checkEmailAvailability(inputedMail);
+            checkEmailAvailability();
         }
     } else {
-        alert('Email is not valid');
+        alert('Email input field not found');
     }
 }
 
 
-const checkEmailAvailability = (inputedMail) => {
-    let mailId = inputedMail.value;
+
+const checkEmailAvailability = () => {
+    let mailId = document.getElementById('email').value;
 
     $.ajax({
-        url: "ajax/email-verification-validation.ajax.php",
+        url: "ajax/admin-mail-usrnm-existance-check.ajax.php",
         type: "POST",
         data: {
-            chekExistance: mailId,
+            chekEmailExistance: mailId,
         },
         success: function (data) {
-            // console.log(data);
-            if (data == 0) {
+            // console.log("ajax return data : " + data);
+            if (data == 1) {
                 alert('Email Exits as registered!');
-                document.getElementById('email').value = '';
-            } 
+                document.getElementById('email').value = ' ';
+                // document.getElementById('email').focus();
+                return 1;
+            } else {
+                return 0;
+            }
         }
     });
 }
 
 
 
-const moveNext = (input) =>{
+
+const verifyUsername = (t) => {
+    let admUsrnm = document.getElementById("user-name").value;
+    console.log(t.value);
+
+    $.ajax({
+        url: "ajax/admin-mail-usrnm-existance-check.ajax.php",
+        type: "POST",
+        data: {
+            chekUsrnmExistance: admUsrnm,
+        },
+        success: function (data) {
+            // console.log("ajax return data : " + data);
+            if (data == 1) {
+                alert('Username Exits as registered!');
+                document.getElementById('user-name').value = ' ';
+            }
+        }
+    });
+}
+
+
+
+
+
+const moveNext = (input) => {
     let inputedValue = input.value;
     let inputLength = input.value.length;
 
-    if(inputedValue == ' '){
+    if (inputedValue == ' ') {
         inputLength = 0;
         inputedValue = null;
     }
