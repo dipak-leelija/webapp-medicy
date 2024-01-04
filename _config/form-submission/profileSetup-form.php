@@ -16,6 +16,7 @@ require_once CLASS_DIR . 'empRole.class.php';
 $Admin = new Admin;
 $Employees = new Employees;
 
+print_r($_SESSION);
 
 ?>
 
