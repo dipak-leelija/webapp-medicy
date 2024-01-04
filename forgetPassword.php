@@ -41,27 +41,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $recoverPassword    = json_decode($RecoverPass->recoverPassword($username));
 
-            print_r($recoverPassword);
+            // print_r($recoverPassword);
 
-            // if ($admRecoverPassword->status) {
-            //     $admData = $admRecoverPassword->data;
-            //     // print_r($admData);
 
-            //     session_start();
-            //     $_SESSION['PASS_RECOVERY']       = true;
-            //     $_SESSION['ADM_PASS_RECOVERY']      = true;
-            //     $_SESSION['ADM_ID']    = $admData[0]->admin_id ;
-            //     $_SESSION['ADM_FNAME'] = $admData[0]->fname;
-            //     $_SESSION['ADM_USRNM'] = $admData[0]->username;
-            //     $_SESSION['ADM_EMAIL'] = $admData[0]->email;
-            //     $_SESSION['ADM_OTP']   = $OTP;
-                
-            //     header("Location: adm-pass-recover-mail.inc.php");
-            // } else {
-            //     $admErrorMessage = 'Please fill up with correct Username or Email !';
-            //     $selectedRadio = 'admin';
-            //     // echo $admErrorMessage;
-            // }
+            if ($recoverPassword->status) {
+
+                if ($recoverPassword->message == 'adminData') {
+
+                    $admData = $recoverPassword->data;
+
+                    session_start();
+
+                    $_SESSION['PASS_RECOVERY']       = true;
+                    $_SESSION['ADM_PASS_RECOVERY']      = true;
+                    $_SESSION['EMP_PASS_RECOVERY']      = false;
+                    $_SESSION['ADM_ID']    = $admData[0]->admin_id;
+                    $_SESSION['ADM_FNAME'] = $admData[0]->fname;
+                    $_SESSION['ADM_USRNM'] = $admData[0]->username;
+                    $_SESSION['ADM_EMAIL'] = $admData[0]->email;
+                    $_SESSION['ADM_OTP']   = $OTP;
+
+                    header("Location: pass-recover-mail.inc.php");
+
+                } elseif ($recoverPassword->message == 'empData') {
+                    $empData = $recoverPassword->data;
+                    
+                    session_start();
+                    $_SESSION['PASS_RECOVERY']       = true;
+                    $_SESSION['ADM_PASS_RECOVERY']      = false;
+                    $_SESSION['EMP_PASS_RECOVERY']      = true;
+                    $_SESSION['EMP_ID']     = $empData[0]->emp_id;
+                    $_SESSION['EMP_ADM_ID'] = $empData[0]->admin_id;
+                    $_SESSION['EMP_NAME']   = $empData[0]->emp_name;
+                    $_SESSION['EMP_USRNM']  = $empData[0]->emp_username;
+                    $_SESSION['EMP_EMAIL']  = $empData[0]->emp_email;
+                    $_SESSION['EMP_OTP']    = $OTP;
+
+                    header("Location: pass-recover-mail.inc.php");
+                }
+            } else {
+                $errorMessage = 'Enter corret data !';
+            }
         }
     }
 
@@ -98,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['EMP_EMAIL'] = $empData[0]->emp_email;
                     $_SESSION['EMP_OTP']   = $OTP;
                 
-                // header("Location: register-mail.inc.php");
+                    header("Location: register-mail.inc.php");
                     echo 'redirect to mail service page';
                 } else {
                     $empErrorMessage = 'Please fill up with correct Username or Email !';
@@ -111,7 +131,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }*/
-
 }
 
 
@@ -178,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="form-group">
                         <label for="username">Username / Email:</label>
-                        <input type="text" class="form-control" name="username" id="username" placeholder="Enter Your Username / Email" required autocomplete="off">
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Enter Your Username / Email" autocomplete="off">
                     </div>
 
                     <div class="form-group">
@@ -187,7 +206,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </form>
             </div>
 
-
+            <div class="d-flex justify-content-around col-12">
+                <div class="col-md-6 text-center">
+                    <a class="small" href="register.php"><b>Sign Up</b></a>
+                </div>
+                <div class=" col-md-6 text-center">
+                    <a class="small" href="login.php"><b>Sign In</b></a>
+                </div>
+            </div>
 
 
             <!-- <div class="recoverEmployee" style="display: none;">
@@ -225,7 +251,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //         recoverEmployeeDiv.style.display = 'block';
         //     }
         // }
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             var errorMessageDiv = document.getElementById('errorMessage');
             // var empErrorMessageDiv = document.getElementById('empErrorMessage');
@@ -233,19 +259,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var usernmInput = document.getElementById('username');
             // var empUsernmInput = document.getElementById('emp-username');
 
-            if (admErrorMessageDiv) {
-                admUsernmInput.addEventListener('input', function() {
-                    admErrorMessageDiv.innerHTML = '';
-                    admErrorMessageDiv.remove();
-                });
-
-                empUsernmInput.addEventListener('input', function() {
-                    empErrorMessageDiv.innerHTML = '';
-                    empErrorMessageDiv.remove();
+            if (errorMessageDiv) {
+                usernmInput.addEventListener('input', function() {
+                    errorMessageDiv.innerHTML = '';
+                    errorMessageDiv.remove();
                 });
             }
         });
-       
     </script>
 
     <!-- Bootstrap core JavaScript-->
