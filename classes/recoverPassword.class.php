@@ -5,71 +5,130 @@ class recoverPass extends DatabaseConnection
 {
 
 
+    // function recoverPassword($user)
+    // {
+    //     try {
+
+    //         $chkAdmin = " SELECT * FROM `admin` WHERE `username`= '$user' OR `email` = '$user'";
+
+    //         $admStmt = $this->conn->prepare($chkAdmin);
+    //         $admStmt->execute();            
+    //         $admRes = $admStmt->get_result();
+
+
+    //         $chkEmployee = " SELECT * FROM `employees` WHERE `emp_username`= '$user' OR `emp_email` = '$user' ";
+
+    //         $empStmt = $this->conn->prepare($chkEmployee);
+    //         $empStmt->execute();
+    //         $empRes = $empStmt->get_result();
+
+
+    //         if ($admRes->num_rows > 0) {
+    //             $data = array();
+    //             while ($result = $admRes->fetch_object()) {
+    //                 $data[] = $result;
+    //             }
+    //             $admStmt->close();
+    //             return json_encode(['status' => '1', 'message' => 'adminData', 'data' => $data]);
+    //         } elseif ($empRes->num_rows > 0) {
+    //             $data = array();
+    //             while ($result = $empRes->fetch_object()) {
+    //                 $data[] = $result;
+    //             }
+    //             $empStmt->close();
+    //             return json_encode(['status' => '1', 'message' => 'empData', 'data' => $data]);
+    //         } else {
+    //             $admStmt->close();
+    //             $empStmt->close();
+    //             return json_encode(['status' => '0', 'message' => 'no data', 'data' => '']);
+    //         }
+    //     } catch (Exception $e) {
+    //         return json_encode(['status' => '', 'message' => $e->getMessage(), 'data' => '']);
+    //     }
+    //     return 0;
+    // }
+
+
+
+
+
     function recoverPassword($user)
     {
         try {
-            $chkAdmin = " SELECT * FROM `admin` WHERE `username`= '$user' OR `email` = '$user'";
+            $chkAdmin = "SELECT * FROM `admin` WHERE `username`= ? OR `email` = ?";
+            $admStmt = $this->conn->prepare($chkAdmin);
+            $admStmt->bind_param("ss", $user, $user);
+            $admStmt->execute();
+            $admRes = $admStmt->get_result();
+            $admStmt->close();
 
-            $chkEmployee = " SELECT * FROM `employees` WHERE `emp_username`= '$user' OR `emp_email` = '$user' ";
-
-            $stmt1 = $this->conn->prepare($chkAdmin);
-            $stmt2 = $this->conn->prepare($chkEmployee);
-
-            $stmt1->execute();
-            $stmt2->execute();
-
-            $res1 = $stmt1->get_result();
-            $res2 = $stmt2->get_result();
-
-
-            if ($res1->num_rows > 0 || $res2->num_rows > 0) {
+            if ($admRes->num_rows > 0) {
                 $data = array();
-                while ($result = $res1->fetch_object() || $result = $res2->fetch_object()) {
-                    $adminData[] = $result;
+                while ($result = $admRes->fetch_object()) {
+                    $data[] = $result;
                 }
-                $stmt1->close();
-                return json_encode(['status' => '1', 'message' => 'success', 'data' => $adminData]);
+                return json_encode(['status' => '1', 'message' => 'adminData', 'data' => $data]);
             } else {
-                $stmt2->close();
-                return json_encode(['status' => '0', 'message' => 'no data', 'data' => '']);
-            }
-        } catch (Exception $e) {
-            return json_encode(['status' => '', 'message' => $e->getMessage(), 'data' => '']);
-        }
-        return 0;
-    }
+                $chkEmployee = "SELECT * FROM `employees` WHERE `emp_username`= ? OR `emp_email` = ?";
+                $empStmt = $this->conn->prepare($chkEmployee);
+                $empStmt->bind_param("ss", $user, $user);
+                $empStmt->execute();
+                $empRes = $empStmt->get_result();
+                $empStmt->close();
 
-
-
-
-
-    function adminPassRecover($user){
-        try {
-            $stmt = $this->conn->prepare("SELECT * FROM `admin` WHERE (`email` = ? OR `username` = ?) AND `reg_status` = 1");
-
-            $stmt->bind_param("ss", $user, $user);
-
-            $stmt->execute();
-
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                $admData = array();
-                while ($res = $result->fetch_object()) {
-                    $admData[] = $res;
+                if ($empRes->num_rows > 0) {
+                    $data = array();
+                    while ($result = $empRes->fetch_object()) {
+                        $data[] = $result;
+                    }
+                    return json_encode(['status' => '1', 'message' => 'empData', 'data' => $data]);
                 }
-                $response = ['status' => '1', 'data' => $admData];
-            } else {
-                $response = ['status' => '0', 'message' => 'No data found', 'data' => ''];
             }
 
-            $stmt->close();
-
-            return json_encode($response);
+            return json_encode(['status' => '0', 'message' => 'no data', 'data' => '']);
         } catch (Exception $e) {
-            return "Error: " . $e->getMessage();
+            return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => '']);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+    // function adminPassRecover($user)
+    // {
+    //     try {
+    //         $stmt = $this->conn->prepare("SELECT * FROM `admin` WHERE (`email` = ? OR `username` = ?) AND `reg_status` = 1");
+
+    //         $stmt->bind_param("ss", $user, $user);
+
+    //         $stmt->execute();
+
+    //         $result = $stmt->get_result();
+
+    //         if ($result->num_rows > 0) {
+    //             $admData = array();
+    //             while ($res = $result->fetch_object()) {
+    //                 $admData[] = $res;
+    //             }
+    //             $response = ['status' => '1', 'data' => $admData];
+    //         } else {
+    //             $response = ['status' => '0', 'message' => 'No data found', 'data' => ''];
+    //         }
+
+    //         $stmt->close();
+
+    //         return json_encode($response);
+    //     } catch (Exception $e) {
+    //         return "Error: " . $e->getMessage();
+    //     }
+    // }
 
 
 
@@ -135,7 +194,6 @@ class recoverPass extends DatabaseConnection
             $stmt->close();
 
             return json_encode($response);
-
         } catch (Exception $e) {
             return "Error: " . $e->getMessage();
         }

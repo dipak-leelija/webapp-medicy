@@ -7,21 +7,25 @@ if (!isset($_SESSION['PASS_RECOVERY'])) {
 }
 
 
-if ($_SESSION['PASS_RECOVERY']) {
-    if ($_SESSION['ADM_PASS_RECOVERY']) {
-        $adminId    =   $_SESSION['ADM_ID'];
-        $admFname   =   $_SESSION['ADM_FNAME'];
-        $admUsrNm   =   $_SESSION['ADM_USRNM'];
-        $admEmail   =   $_SESSION['ADM_EMAIL'];
-        $admOtp     =   $_SESSION['ADM_OTP'];
-    }
 
+if ($_SESSION['PASS_RECOVERY'] && $_SESSION['ADM_PASS_RECOVERY']) {
 
-    // if ($_SESSION['EMP_PASS_RECOVERY']) {
-    //     $empFname   =   $_SESSION['ADM_FNAME'];
-    //     $empUsrNm   =   $_SESSION['ADM_USRNM'];
-    //     $empEmail   =   $_SESSION['ADM_EMAIL'];
-    //     $empOtp     =   $_SESSION['ADM_OTP'];
-    // }
+    $admPassReset       =   true;
+    $empPassReset       =   false;
+    $admId              =   $_SESSION['ADM_ID'];
+    $admFname           =   $_SESSION['ADM_FNAME'];
+    $admUsrNm           =   $_SESSION['ADM_USRNM'];
+    $admEmail           =   $_SESSION['ADM_EMAIL'];
+    $Otp                =   $_SESSION['ADM_OTP'];
+
+} elseif ($_SESSION['PASS_RECOVERY'] && $_SESSION['EMP_PASS_RECOVERY']) {
+
+    $admPassReset   =   false;
+    $empPassReset   =   true;
+    $empId          =   $_SESSION['EMP_ID'];
+    $admIdOfEmp     =   $_SESSION['EMP_ADM_ID'];
+    $empFname       =   $_SESSION['EMP_NAME'];
+    $empUsrNm       =   $_SESSION['EMP_USRNM'];
+    $empEmail       =   $_SESSION['EMP_EMAIL'];
+    $Otp            =   $_SESSION['EMP_OTP'];
 }
-
