@@ -65,9 +65,9 @@ $Utility        = new Utility;
                             <div class="col-12 mb-3 mt-1 mb-sm-0">
                                 <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Enter New Password" required>
                             </div>
-                            
+
                             <div class="col-12 mb-3 mt-3 mb-sm-0">
-                                <input type="password" class="form-control form-control-user" id="confirm-password" name="confirm-password" maxlength="12" placeholder="Retype New Password" required>
+                                <input type="password" class="form-control form-control-user" id="confirm-password" name="confirm-password" maxlength="12" placeholder="Retype New Password" required onfocusout="chechMatch(this)">
                             </div>
 
                             <div class="d-flex justify-content-center mt-4">
@@ -80,7 +80,7 @@ $Utility        = new Utility;
                             </div>
 
                             <div class="d-flex justify-content-center col-12 mb-3 mt-1 mb-sm-0">
-                                <label style="color: red;"><small>Eter Verification OTP send to your registereed e-mail</small></label>
+                                <label style="color: red;"><small>Enter Verification OTP send to your registereed e-mail</small></label>
                             </div>
 
                         </div>
@@ -115,8 +115,27 @@ $Utility        = new Utility;
 
 
 
-    <script>
 
+    <script>
+        const chechMatch = (t) => {
+            let pass = document.getElementById("password").value;
+            let retypePass = t.value;
+
+            if (pass != retypePass) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Password missmatch",
+                    showConfirmButton: true,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "OK"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById("password").value = "";
+                        document.getElementById("confirm-password").value = "";
+                    }
+                });
+            }
+        }
     </script>
 </body>
 
