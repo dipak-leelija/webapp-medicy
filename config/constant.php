@@ -46,11 +46,12 @@ session_start();
 
 	
 	define('ROOT_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR);
-	define('ADM_DIR', 			$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'admin/');
+	define('SUP_ADM_DIR', 		$_SERVER['DOCUMENT_ROOT'].LOCAL_DIR.'admin/');
 	
 	define('ROOT_COMPONENT', 	ROOT_DIR.'components/');
-	define('PORTAL_COMPONENT', 	ADM_DIR.'components/');
-	define('ADM_VNDR_CHRT', 	ADM_DIR.'vendor/chart.js/');
+	define('SUP_ROOT_COMPONENT', SUP_ADM_DIR.'components/');
+	// define('PORTAL_COMPONENT', 	ADM_DIR.'components/');
+	// define('ADM_VNDR_CHRT', 	ADM_DIR.'vendor/chart.js/');
 	
 	define('CLASS_DIR', 		ROOT_DIR.'classes/');
 	define('ASST_DIR', 			ROOT_DIR.'uploads/contents/');
@@ -120,6 +121,7 @@ session_start();
 	const LABTEST_IMG_PATH					= 	URL.'img/lab-tests/';
 	const PROD_IMG_PATH						=	URL.'images/product-image/';
 	const ADM_IMG_PATH						=	URL.'images/admin-images/';
+	const SUP_ADM_IMG_PATH					=	URL.'admin/images/admin-images/';
 	const EMPLOYEE_IMG_PATH					=	URL.'images/employee-images/';
 	const EMP_PATH							=	URL.'employee/';
 	const EMP_ASSETS						=	URL.'employee/assets/';

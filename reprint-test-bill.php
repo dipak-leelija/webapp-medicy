@@ -50,10 +50,10 @@ if (isset($_GET['bill_id'])) {
     }
 
     $patient = json_decode($Patients->patientsDisplayByPId($patientId));
-        $patientName    = $patient->name;
-        $patientPhno    = $patient->phno;
-        $patientAge     = $patient->age;
-        $patientGender  = $patient->gender;
+        $patientName    = isset($patient->name) ? $patient->name : 'N/A';
+        $patientPhno    = isset($patient->phno) ? $patient->phno : 'N/A';
+        $patientAge     = isset($patient->age)  ? $patient->age  : 'N/A';
+        $patientGender  = isset($patient->gender) ? $patient->gender : 'N/A';
 
 
     if (is_numeric($docId)) {

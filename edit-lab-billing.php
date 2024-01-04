@@ -185,7 +185,7 @@ if (is_numeric($refDoc)) {
                         <p>Patient Name: </p>
                       </div>
                       <div class="col-md-7 mb-0 justify-content-start">
-                        <p class="text-start"><b><?php echo $patientsDisplay->name; ?> </b></p>
+                        <p class="text-start"><b><?php echo isset($patientsDisplay->name) ? $patientsDisplay->name : 'N/A' ; ?> </b></p>
                       </div>
 
                       <div class="col-md-5 mb-0">

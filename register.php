@@ -124,12 +124,14 @@ if (isset($_POST['register'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <title>Medicy Health Care - Admin Registration</title>
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>register.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
 </head>
@@ -169,11 +171,23 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group row">
+<<<<<<< HEAD
+                            <div class="form-group col-sm-6 mb-3 mb-sm-0">
+                                <input type="password" class="form-control form-control-user" id="password"
+                                    name="password" maxlength="12" placeholder="Password" required oninput="showToggleBtn('password','toggleBtn1')">
+                                    <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('password','toggleBtn1')"></i>
+                            </div>
+                            <div class="form-group col-sm-6 mb-3 mb-sm-0">
+                                <input type="password" class="form-control form-control-user" id="cpassword"
+                                    name="cpassword" maxlength="12" placeholder="Repeat Password" required oninput="showToggleBtn('cpassword','toggleBtn2')">
+                                    <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem;right:26px;" onclick="togglePassword('cpassword','toggleBtn2')"></i>
+=======
                             <div class="col-sm-6 mb-3 mb-sm-0">
                                 <input type="password" class="form-control form-control-user" id="password" name="password" maxlength="12" placeholder="Password" required>
                             </div>
                             <div class="col-sm-6">
                                 <input type="password" class="form-control form-control-user" id="cpassword" name="cpassword" maxlength="12" placeholder="Repeat Password" required>
+>>>>>>> af0afdc15c8bb40f4c477fd00a9fb09e0880015d
                             </div>
                         </div>
                         <?php
@@ -247,7 +261,7 @@ if (isset($_POST['register'])) {
 
     <!-- custom script for register.php -->
     <script src="<?= JS_PATH ?>adminRegistration.js"></script>
-
+    <script src="<?= JS_PATH ?>password-show-hide.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>

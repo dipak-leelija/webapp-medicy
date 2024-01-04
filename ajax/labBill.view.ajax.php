@@ -68,13 +68,14 @@ $labBil      = $LabBilling->labBillDisplayById($billId);
         }
 
         $patient = $Patients->patientsDisplayByPId($patientId);
+      
         if ($patient !== false) {
             $patientData = json_decode($patient, true);
             if ($patientData !== null) {
-                $patientName = $patientData['name'];
-                $patientPhno = $patientData['phno'];
-                $patientAge  = $patientData['age'];
-                $patientGender = $patientData['gender'];
+                $patientName   = isset($patientData['name']) ? $patientData['name'] : 'N/A';
+                $patientPhno   = isset($patientData['phno']) ? $patientData['phno'] : 'N/A';
+                $patientAge    = isset($patientData['age'])  ? $patientData['age']  : 'N/A';
+                $patientGender = isset($patientData['gender']) ? $patientData['gender'] : 'N/A';
             } else {
                 echo "Error decoding patient data.";
             }
