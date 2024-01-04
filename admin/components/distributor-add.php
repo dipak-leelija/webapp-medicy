@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__) . '/config/constant.php';
+require_once realpath(dirname(dirname(__DIR__))) . '/config/constant.php';
 
 if (isset($_POST['urlData'])){
     $url = $_POST['urlData'];

@@ -10,7 +10,21 @@ $distributorId = $_GET['Id'];
 
 $Distributor        = new Distributor();
 $showDistributor    = $Distributor->showDistributorById($distributorId);
+$showDistributor    = json_decode($showDistributor);
 
+
+if (isset($showDistributor->status) && $showDistributor->status == 1) {
+    $data = $showDistributor->data;
+
+    if (!empty($data)) {
+        $DistributorName    = $data->name;
+        $DistributorAddress = $data->address;
+        $DistributorPIN     = $data->area_pin_code;
+        $DistributorPhno    = $data->phno;
+        $DistributorEmail   = $data->email;
+        $DistributorDsc     = $data->dsc;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,18 +41,6 @@ $showDistributor    = $Distributor->showDistributorById($distributorId);
 </head>
 
 <body class="mx-2">
-
-    <?php
-        foreach ($showDistributor as $rowDistributor) {
-            $DistributorName     = $rowDistributor['name'];
-            $DistributorAddress  = $rowDistributor['address'];
-            $DistributorPIN      = $rowDistributor['area_pin_code'];
-            $DistributorPhno     = $rowDistributor['phno'];
-            $DistributorEmail    = $rowDistributor['email'];
-            $DistributorDsc      = $rowDistributor['dsc'];
-
-        }
-    ?>
 
     <form >
         <input type="hidden" id="distributorId" value="<?php echo $distributorId;?>">

@@ -226,11 +226,11 @@ if ($labBillDisplay->status) {
                                     <h6 class="mt-2 m-0 font-weight-bold text-primary">List of Bookings : <?= $totalItem ?></h6>
                                 </div>
 
-                                <div class="col-3 text-right entry ml-5">
+                                <!-- <div class="col-3 text-right entry ml-5">
                                     <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#labPatientSelection">
                                         <p class="m-0 p-0">Entry</p>
                                     </a>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="row mt-2">
@@ -389,8 +389,8 @@ if ($labBillDisplay->status) {
 
                                                         <a class="text-primary text-center" title="Print" href="reprint-test-bill.php?bill_id=' . $billId . '"><i class="fas fa-print"></i></a>
 
-                                                        <a class="delete-btn text-danger mx-2" id="' . $billId . '" title="Cancel" onclick="cancelBill(' . $billId . ')"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                        <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id=' . $billId . '"><i class="fa fa-flask" aria-hidden="true"></i></a>
+                                                        <a class="delete-btn text-danger mx-2" id="' . $billId . '" title="Cancel" onclick="cancelBill(' . $billId . ')" hidden><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                        <a class="text-primary text-center" title="Print" href="test-report-generate.php?bill-id=' . $billId . '" hidden><i class="fa fa-flask" aria-hidden="true"></i></a>
                                                         </td>
                                                     </tr>';
                                                 // }

@@ -56,6 +56,7 @@ if (isset($_GET['search'])) {
         $col = $_GET['search'];
         $allAppointments = $Appoinments->appointmentsFilter($col, $doctorID);
         $allAppointments = json_decode($allAppointments);
+        // print_r($allAppointments);
     }
 
     if ($search == 'appointment_search') {
@@ -230,11 +231,11 @@ if ($allAppointments->status) {
                                 <div class="">
                                     <h6 class="font-weight-bold text-primary">Total Appointments: <?= $totalItem ?></h6>
                                 </div>
-                                <div class="ml-4">
+                                <!-- <div class="ml-4">
                                         <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#appointmentSelection">
                                             <p class="m-0 p-0">Entry</p>
                                         </a>
-                                    </div>
+                                    </div> -->
                             </div>
 
 
@@ -267,7 +268,7 @@ if ($allAppointments->status) {
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center">
-                                    <!-- <div class="col-md-6 col-6 mt-2">
+                                    <div class="col-md-6 col-6 mt-2">
                                         <select class="cvx-inp1" name="doctor-filter" id="doctor_id" onchange="filterAppointmentByValue(this)">
                                             <option value="" selected="" disabled="">Find By Doctor</option>
 
@@ -280,8 +281,8 @@ if ($allAppointments->status) {
                                             ?>
 
                                         </select>
-                                    </div> -->
-                                    <div class="col-md-12 col-12 mt-2">
+                                    </div>
+                                    <div class="col-md-6 col-6 mt-2">
                                         <select class="cvx-inp1" id="added_by" onchange="filterAppointmentByValue(this)">
                                             <option value="" disabled="" selected="">Select Admin</option>
 
@@ -383,13 +384,10 @@ if ($allAppointments->status) {
                                                         <td>' . $docName . '</td>
                                                         <td>' . $appointmentDate . '</td>
 
-                                                        <td><a class="text-primary" data-toggle="modal" data-target=".AppointmntViewAndEdit" onclick="appointmentViewAndEditModal(' . $appointmentTableID . ')" title="View and Edit"><i class="far fa-edit"></i></a>
-
-
+                                                        <td>
+                                
                                                         <a href="prescription.php?prescription=' . url_enc($appointmentID) . '" class="text-primary" title="View and Print"><i class="fas fa-print"></i></a>
 
-
-                                                        <a class="delete-btn" data-id="' . $appointmentID . '"  title="Delete"><i class="far fa-trash-alt"></i></a>
                                                         </td>
                                                     </tr>';
                                             }

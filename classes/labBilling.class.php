@@ -102,7 +102,7 @@ class LabBilling extends DatabaseConnection
                 if ($col == 'search') {
                     $selectBill = "SELECT * FROM lab_billing WHERE  (bill_id LIKE '%$filterVal%' OR patient_id LIKE '%$filterVal%') ORDER BY bill_id ASC";
                 } else {
-                    $selectBill = "SELECT * FROM lab_billing WHERE  admin_id = ' $col' ";
+                    $selectBill = "SELECT * FROM lab_billing WHERE  refered_doctor = ' $filterVal' ";
                 }
             }
 

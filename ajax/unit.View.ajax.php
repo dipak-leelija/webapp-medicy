@@ -30,11 +30,11 @@ $showMeasureOfUnit = $MeasureOfUnits->showMeasureOfUnitsById($unitId);
 <body class="mx-2">
 
     <?php
-        foreach ($showMeasureOfUnit as $rowMeasureOfUnits) {
-            $unitId      = $rowMeasureOfUnits['id'];
-            $unitSrtName = $rowMeasureOfUnits['short_name'];
-            $unitFullName  = $rowMeasureOfUnits['full_name'];
-        }
+        // foreach ($showMeasureOfUnit as $rowMeasureOfUnits) {
+            $unitId        = $showMeasureOfUnit['id'];
+            $unitSrtName   = $showMeasureOfUnit['short_name'];
+            $unitFullName  = $showMeasureOfUnit['full_name'];
+        // }
     ?>
 
     <form>

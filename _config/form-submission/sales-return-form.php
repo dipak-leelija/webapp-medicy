@@ -203,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card-body border-bottom border-dark">
                     <div class="row">
                         <div class="col-sm-1">
-                            <img class="float-end" style="height: 55px; width: 58px;" src="<?= IMG_PATH ?>logo-p.jpg" alt="Medicy">
+                            <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo?>" alt="Medicy">
                         </div>
                         <div class="col-sm-8">
                             <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
@@ -308,7 +308,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     $itemDetails = $CurrentStock->showCurrentStocById($itemID[$i]);
                     $productDetails = $Products->showProductsById($itemDetails[0]['product_id']);
-                    $productName = $productDetails[0]['name'];
+                    $productDetails = json_decode($productDetails,true);
+                    if(isset($productDetails['status']) && $productDetails['status'] == '1'){
+                        $data = $productDetails['data'];
+                        $productName = $data[0]['name'];
+                    }
 
                     echo '
                                 <div class="row">
