@@ -201,8 +201,6 @@ class Admin extends DatabaseConnection
             return json_encode(['status'=> '0', 'message'=>$e->getMessage(), 'data'=> '']);
         }
     }
-<<<<<<< HEAD
-=======
     
 
 
@@ -251,5 +249,4 @@ class Admin extends DatabaseConnection
     }
     
     
->>>>>>> af0afdc15c8bb40f4c477fd00a9fb09e0880015d
 } //eof Admin Class
