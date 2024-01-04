@@ -33,9 +33,9 @@ if ($labReportShow !== null) {
 }
 /// find patient details
 $showPatientData = json_decode($Patients->patientsDisplayByPId($patienId));
-$patientName = $showPatientData->name;
-$patientAge  = $showPatientData->age;
-$patientSex  = $showPatientData->gender;
+$patientName = isset($showPatientData->name)   ? $showPatientData->name   : 'N/A';
+$patientAge  = isset($showPatientData->age)    ? $showPatientData->age    : 'N/A';
+$patientSex  = isset($showPatientData->gender) ? $showPatientData->gender : 'N/A';
 
 ///fetch labreportdetails data by id //
 $labReportDetailbyId = $LabReport->labReportDetailbyId($reportId);
