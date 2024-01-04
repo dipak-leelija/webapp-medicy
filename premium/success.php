@@ -1,21 +1,21 @@
 <?php
 require_once dirname(__DIR__) . '/config/constant.php';
-// Prevent page from being cached
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+// // Prevent page from being cached
+// header("Cache-Control: no-cache, must-revalidate");
+// header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
-// Force the browser to check for updates on every request
-header("Pragma: no-cache");
+// // Force the browser to check for updates on every request
+// header("Pragma: no-cache");
 
-// Set the Content-Type header to HTML
-header("Content-Type: text/html; charset=utf-8");
+// // Set the Content-Type header to HTML
+// header("Content-Type: text/html; charset=utf-8");
 
-// Use JavaScript to disable the back button
-echo '<script>
-    if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href);
-    }
-</script>';
+// // Use JavaScript to disable the back button
+// echo '<script>
+//     if (window.history.replaceState) {
+//         window.history.replaceState(null, null, window.location.href);
+//     }
+// </script>';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
@@ -50,7 +50,12 @@ $expDate    = getNextDate(TODAY, $planDuration);
 $paidAmount = 00;
 
 $response = json_decode($Subscription->updateSubscription($adminId, $planId, $startDate, $expDate, $paidAmount));
-// $result = $response->status;
+$result = $response->status;
+if ($result != 1) {
+    header("Location: error.php");
+    exit;
+}
+
 ?>
 <html>
 
@@ -103,6 +108,7 @@ i {
         </div>
         <h1>Success</h1>
         <p>We received your purchase request;<br /> we'll be in touch shortly!</p>
+        <a href="<?= URL ?>" class="btn btn-sm btn-primary w-100 mt-4">Dashboard</a>
     </div>
 </body>
 
