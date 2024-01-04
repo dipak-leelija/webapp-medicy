@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 session_start();
 
+
 	date_default_timezone_set("Asia/Calcutta");   //India time (GMT+5:30)
 
 	define("NOW", 			date("Y-m-d H:i:s"));
@@ -77,8 +78,8 @@ session_start();
 	
 	define('SITE_BILLING_EMAIL', 				"");
 	define('SITE_BILLING_NAME',  				"");
-	define('SITE_EMAIL', 						"");
-	define('SITE_EMAIL_P', 						"");
+	define('SITE_EMAIL', 						"admin@fastlinky.com");
+	define('SITE_EMAIL_P', 						"=CnBV7Zu)YV}");
 	
 	define('CONTACT_MAIL', 						"");
 	define('INFO_MAIL', 						"");

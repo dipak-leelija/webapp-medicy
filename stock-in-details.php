@@ -1,12 +1,12 @@
 <?php
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once ROOT_DIR . '_config/accessPermission.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'distributor.class.php';
-require_once CLASS_DIR.'stockIn.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'stockIn.class.php';
 
 
 $page = "stock-in-details";
@@ -16,23 +16,20 @@ $Distributor        = new Distributor();
 $StockIn            = new StockIn();
 
 
-//function calling
-$showStockIn = $StockIn->showStockInDecendingOrder($adminId);
-// print_r($showStockIn);
-// echo "<br><br>";
-if($showStockIn != null){
-    $StockInId = $showStockIn[0]['id'];
-    // echo $StockInId;
+
+if (isset($_GET['searchKey'])) {
+    $id = $_GET['searchKey'];
+    $showStockIn = $StockIn->selectStockInById($id);
+} else {
+    $showStockIn = $StockIn->showStockInDecendingOrder($adminId);
+    if ($showStockIn != null) {
+        $StockInId = $showStockIn[0]['id'];
+    }
 }
 
-// echo "<br>check stokinid : $StockInId";
-// foreach($showStockIn as $stokIn){
-//     // print_r($stokIn);
-//     $id = $stokIn['id'];
-//     $slNo = $id - $StockInId;
-//     $slNo++;
-//     echo "<br>$slNo";
-// }
+
+
+
 $showDistributor       = $Distributor->showDistributor();
 
 ?>
@@ -71,7 +68,7 @@ $showDistributor       = $Distributor->showDistributor();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -81,7 +78,7 @@ $showDistributor       = $Distributor->showDistributor();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -117,7 +114,13 @@ $showDistributor       = $Distributor->showDistributor();
                                             $slNo = $id - $StockInId;
                                             foreach ($showStockIn as $stockIn) {
                                                 $distributor = json_decode($Distributor->showDistributorById($stockIn['distributor_id']));
-                                                $distributor = $distributor->data;
+                                                if ($distributor->status == 1) {
+                                                    $fetchedDistributor = $distributor->data;
+                                                    $distName = $fetchedDistributor->name;
+                                                } else {
+                                                    $distName = '';
+                                                }
+                                                // $distributor = $distributor->data;
                                                 // echo $stockIn['id'];
                                                 // echo "stock in id : $StockInId";
                                                 // echo "<br>id : $id";
@@ -133,20 +136,20 @@ $showDistributor       = $Distributor->showDistributor();
                                                     <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['distributor_bill'] ?>
                                                     </td>
 
-                                                    <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $distributor[0]->name ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?= $distName ?>
                                                     </td>
 
-                                                    <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['bill_date'] ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['bill_date'] ?>
                                                     </td>
 
-                                                    <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['amount'] ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['amount'] ?>
                                                     </td>
 
-                                                    <td   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['payment_mode'] ?>
+                                                    <td onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>' )" data-toggle="modal" data-target="#exampleModal"><?php echo $stockIn['payment_mode'] ?>
                                                     </td>
-                                                    
+
                                                     <td class="d-flex justify-content-around align-middle">
-                                                        <a class="text-primary pe-auto" role="button"   onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>' , this.value1)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i>
+                                                        <a class="text-primary pe-auto" role="button" onclick="stockDetails('<?php echo $stockIn['distributor_bill'] ?>','<?php echo $stockIn['id'] ?>','<?php echo $StockInId ?>' , this.value1)" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-eye"></i>
                                                         </a>
                                                         <a class="text-primary" id="<?php echo $stockIn['distributor_bill'] ?>" href="stock-in-edit.php?edit=<?php echo $stockIn['distributor_bill'] ?>&editId=<?php echo $stockIn['id'] ?>" role="button"><i class=" fas fa-edit"></i>
                                                         </a>
@@ -190,7 +193,7 @@ $showDistributor       = $Distributor->showDistributor();
             </div>
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -222,8 +225,8 @@ $showDistributor       = $Distributor->showDistributor();
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
     <script>
-        const stockDetails = (distBill,id) => {
-            
+        const stockDetails = (distBill, id) => {
+
             url = `ajax/stockInDetails.view.ajax.php?distBill=${distBill}`;
 
             $(".stockDetails").html(
@@ -262,7 +265,7 @@ $showDistributor       = $Distributor->showDistributor();
                                 DeleteId: id,
                             },
                             success: function(response) {
-                                console.log("final response",response);
+                                console.log("final response", response);
                                 if (response) {
                                     swal(
                                         "Deleted",

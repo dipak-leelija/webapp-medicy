@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $adminPassUpdate = $Admin->updateAdminPassword($newPassword, $adminId);
 
                 echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> password changed successfully!
+                            <strong>Success.</strong> password changed successfully!
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>';
             } else {

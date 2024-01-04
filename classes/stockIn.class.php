@@ -54,8 +54,11 @@ class StockIn extends DatabaseConnection
         try {
             $data = array();
 
+<<<<<<< HEAD
             // Define the SQL query using a prepared statement
             if(!empty($adminId)){
+=======
+>>>>>>> af0afdc15c8bb40f4c477fd00a9fb09e0880015d
             $select = "SELECT * FROM stock_in WHERE `admin_id` = ? ORDER BY id ASC";
             $stmt = $this->conn->prepare($select);
             $stmt->bind_param("s", $adminId);
@@ -64,40 +67,39 @@ class StockIn extends DatabaseConnection
                 $stmt = $this->conn->prepare($select);
             }
 
+<<<<<<< HEAD
             // Prepare the SQL statement
             // $stmt = $this->conn->prepare($select);
 
             if ($stmt) {
                 // Bind the parameter
                 // $stmt->bind_param("s", $adminId);
+=======
+            $stmt = $this->conn->prepare($select);
 
-                // Execute the query
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+>>>>>>> af0afdc15c8bb40f4c477fd00a9fb09e0880015d
+
                 $stmt->execute();
 
-                // Get the result
                 $result = $stmt->get_result();
 
-                // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
                         $data[] = $row;
                     }
                 } else {
-                    // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
                 }
 
-                // Close the statement
                 $stmt->close();
             } else {
-                // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
 
             return $data;
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // Customize this part to suit your needs
             echo "Error: " . $e->getMessage();
             return array();
         }

@@ -23,8 +23,11 @@ if (isset($_GET['customerId'])) {
         }else{
             $customerData = $Patients->patientsDisplayByPId($customerId[$i]);
             $customerData = json_decode($customerData);
-            array_push($customerNameArray, $customerData->name);
+            if($customerData != null){
+                array_push($customerNameArray, $customerData->name);
             // print_r($customerData);
+            }
+            
         }
     }
     $customerNameArray = json_encode($customerNameArray);

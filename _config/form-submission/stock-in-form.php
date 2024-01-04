@@ -32,11 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
        
         $distributorDetial = json_decode($distributor->showDistributorById($distributorId));
         $distributorDetial = $distributorDetial->data;
-        foreach ($distributorDetial as $distDeta) {
-            $distAddress        = $distDeta->address;
-            $distPIN            = $distDeta->area_pin_code;
-            $distContact        = $distDeta->phno;
-        }
+        // print_r($distributorDetial);
+        // foreach ($distributorDetial as $distDeta) {
+            $distAddress        = $distributorDetial->address;
+            $distPIN            = $distributorDetial->area_pin_code;
+            $distContact        = $distributorDetial->phno;
+        // }
 
         $updtBatchNoArry    = $_POST['batchNo'];
         
@@ -54,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $totalGst           = $_POST['totalGst'];
         $amount             = $_POST['netAmount'];
         $BatchNo            = $_POST['batchNo'];
-        $MFDCHECK           = $_POST['mfdDate'];
+        // $MFDCHECK           = $_POST['mfdDate'];
         $expDate            = $_POST['expDate'];
 
         $addedBy            = $employeeId;
@@ -71,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             foreach ($_POST['productId'] as $productId) {
                 $batchNo            = array_shift($_POST['batchNo']);
-                $mfdDate            = array_shift($_POST['mfdDate']);
+                // $mfdDate            = array_shift($_POST['mfdDate']);
                 $expDate            = array_shift($_POST['expDate']);
 
                 $weightage          = array_shift($_POST['weightage']);
@@ -103,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
 
-                $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $mfdDate, $expDate, intval($weightage), $unit, intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
+                $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), $unit, intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
                 // stockIn_Details_id
 
                 if ($addStockInDetails["result"]) {
@@ -204,9 +205,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="col-sm-1" style="width: 10%;">
                     <small><b>Batch</b></small>
                 </div>
-                <div class="col-sm-1" style="width: 5%;">
-                    <small><b>MFD.</b></small>
-                </div>
                 <div class="col-sm-1" style="width: 5%">
                     <small><b>Exp.</b></small>
                 </div>
@@ -291,7 +289,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                         $batchNo = $itemsData['batch_no'];
-                        $MfdDate = $itemsData['mfd_date'];
+                        // $MfdDate = $itemsData['mfd_date'];
                         $ExpDate = $itemsData['exp_date'];
                         $qty = $itemsData['qty'];
                         $FreeQty = $itemsData['free_qty'];
@@ -336,9 +334,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="col-sm-1b" style="width: 10%;">
                         <small><?php echo "$batchNo" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$MfdDate" ?></small>
                     </div>
                     <div class="col-sm-1 text-center" style="width: 5%;">
                         <small><?php echo "$ExpDate" ?></small>

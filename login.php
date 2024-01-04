@@ -1,11 +1,10 @@
 <?php
-require_once __DIR__ . '/config/constant.php';
-
 if (isset($_SESSION['LOGGEDIN'])) {
     header("Location: " . URL);
     exit;
 }
 
+require_once __DIR__ . '/config/constant.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'login.class.php';
 
@@ -85,7 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class=" d-flex justify-content-around mt-1">
                 <a href="register.php">Register</a>
-                <a href="reset-password.php">Forget password</a>
+                <!-- <a href="reset-password.php">Forget password</a> -->
+                <a href="forgetPassword.php">Forget password</a>
             </div>
         </form>
     </div>

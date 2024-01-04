@@ -3,10 +3,10 @@
 class StockInDetails extends DatabaseConnection
 {
 
-    function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount)
+    function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount)
     {
         try {
-            $insertStockInDetails = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`, `mfd_date`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `base`, `gst`, `gst_amount`, `margin`, `amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertStockInDetails = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `base`, `gst`, `gst_amount`, `margin`, `amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $responce = $this->conn->prepare($insertStockInDetails);
@@ -16,7 +16,7 @@ class StockInDetails extends DatabaseConnection
             }
 
             // Binding parameters
-            $responce->bind_param("isssssisiiiddididdd", $stokInid, $productId, $distBill, $batchNo, $mfdDate, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount);
+            $responce->bind_param("issssisiiiddididdd", $stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount);
 
             // Execute the prepared statement
             if ($responce->execute()) {

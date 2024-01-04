@@ -10,17 +10,16 @@ let xmlhttp = new XMLHttpRequest();
 // ======== code to chek mobile number input validity ===========
 var mobileInput = document.getElementById('mobile-number');
 
-mobileInput.addEventListener('input', function () {
+const validateMobileNumber = () => {
+
+    let mobileInput = document.getElementById('mobile-number');
+
     var inputValue = mobileInput.value;
     var numericValue = inputValue.replace(/[^0-9]/g, '');
+    document.getElementById('mobile-number').value = numericValue;
+    
 
-    mobileInput.value = numericValue;
-});
-
-const validateMobileNumber = () => {
-    let mobileInputLength = document.getElementById('mobile-number');
-
-    if (mobileInputLength.value.length != 9) {
+    if (mobileInput.value.length != 10) {
         mobileInputLength.focus();
         console.log('input 10 digits');
     }
@@ -42,7 +41,7 @@ const verifyEmail = () => {
             document.getElementById('email').value = ' ';
             if(!allowedDomains.includes(domain)){
                 alert('Check Domain name');
-                document.getElementById('email').value = '';
+                // document.getElementById('email').value = '';
             }
         } else {
             checkEmailAvailability(inputedMail);
@@ -56,7 +55,6 @@ const verifyEmail = () => {
 const checkEmailAvailability = (inputedMail) => {
     let mailId = inputedMail.value;
 
-
     $.ajax({
         url: "ajax/email-verification-validation.ajax.php",
         type: "POST",
@@ -64,14 +62,27 @@ const checkEmailAvailability = (inputedMail) => {
             chekExistance: mailId,
         },
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             if (data == 0) {
-                alert('Email Exits!');
-                // document.getElementById('email').focus();
-            } else {
-                console.log(data);
-            }
+                alert('Email Exits as registered!');
+                document.getElementById('email').value = '';
+            } 
         }
     });
 }
 
+
+
+const moveNext = (input) =>{
+    let inputedValue = input.value;
+    let inputLength = input.value.length;
+
+    if(inputedValue == ' '){
+        inputLength = 0;
+        inputedValue = null;
+    }
+
+    if (inputLength === parseInt(input.getAttribute('maxlength')) && input.nextElementSibling) {
+        input.nextElementSibling.focus();
+    }
+}

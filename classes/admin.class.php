@@ -3,35 +3,38 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 class Admin extends DatabaseConnection
 {
 
-
-
-    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on)
-    {
-
+    function registration($adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status) {
+        
         $password = pass_enc($password, ADMIN_PASS);
-
+    
         try {
-            $query = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $this->conn->prepare($query);
+            
+            $insertAdmin = "INSERT INTO `admin` (`admin_id`, `fname`, `lname`, `username`, `password`, `email`, `mobile_no`, `expiry`, `added_on`, `reg_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertQuery = $this->conn->prepare($insertAdmin);
+    
+            print_r(gettype($status));
+            
+            $insertQuery->bind_param("sssssssssi", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on, $status);
+    
+            $insertQuery->execute();
+            
+            print_r( $insertQuery);
 
-            // Bind parameters
-            $stmt->bind_param("sssssssss", $adminId, $Fname, $Lname, $username, $password, $email, $mobNo, $expiry, $added_on);
-
-            if ($stmt->execute()) {
-                // Registration was successful
-                return "Registration successful";
+            if ($insertQuery->affected_rows > 0) {
+                
+                return true;
             } else {
-                // Registration failed
-                return "Registration failed";
+                throw new Exception("Failed to add data.");
             }
+    
         } catch (Exception $e) {
-            // Handle any exceptions that may occur
-            return "Error => " . $e->getMessage();
+            
+            error_log("Error in registration: " . $e->getMessage());
+            
+            return "Registration failed. Please try again later.";
         }
     }
-
-
-
+    
 
 
     function adminDetails($adminId=''){
@@ -133,6 +136,30 @@ class Admin extends DatabaseConnection
 
 
 
+
+    function updateAdminStatus($admId, $status) {
+        try {
+            $updateQuery = "UPDATE `admin` SET `reg_status`=? WHERE `admin_id`=?";
+            
+            $stmt = $this->conn->prepare($updateQuery);
+    
+            $stmt->bind_param("is", $status, $admId);
+    
+            $stmt->execute();
+    
+            $stmt->close();
+    
+            return ['result' => '1'];
+
+        } catch (Exception $e) {
+            return ['result' => '0', 'message' => $e->getMessage()];
+        }
+    }
+
+
+
+
+
     function updateAdminDetails($fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $adminid) {
         try {
             $updateQuery = "UPDATE `admin` SET `fname`=?, `lname`=?, `adm_img`=?, `email`=?, `mobile_no`=?, `address`=?, `updated_on`=? WHERE `admin_id`=?";
@@ -174,4 +201,55 @@ class Admin extends DatabaseConnection
             return json_encode(['status'=> '0', 'message'=>$e->getMessage(), 'data'=> '']);
         }
     }
+<<<<<<< HEAD
+=======
+    
+
+
+
+
+    // admin delete function
+
+    function deleteAdminData($adminId) {
+        try {
+            // Use prepared statements to prevent SQL injection
+            $deleteFromAdmin = "DELETE FROM `admin` WHERE `admin_id` = ?";
+            $deleteFromSubscription = "DELETE FROM `subscription` WHERE `admin_id` = ?";
+            $deleteFromClinicInfo = "DELETE FROM `clinic_info` WHERE  `admin_id` = ?";
+    
+            // Use prepared statements to prevent SQL injection
+            $stmt1 = $this->conn->prepare($deleteFromAdmin);
+            $stmt2 = $this->conn->prepare($deleteFromSubscription);
+            $stmt3 = $this->conn->prepare($deleteFromClinicInfo);
+    
+            // Bind parameters
+            $stmt1->bind_param("s", $adminId);
+            $stmt2->bind_param("s", $adminId);
+            $stmt3->bind_param("s", $adminId);
+    
+            // Execute queries
+            $stmt1->execute();
+            $stmt2->execute();
+            $stmt3->execute();
+    
+            if ($stmt1->error || $stmt2->error || $stmt3->error) {
+                throw new Exception("Error executing query: " . $this->conn->error);
+            }
+    
+            if ($stmt1->affected_rows > 0 || $stmt2->affected_rows > 0 || $stmt3->affected_rows > 0) {
+                return true;
+            } else {
+                throw new Exception("No records deleted. Admin ID not found.");
+            }
+    
+        } catch (Exception $e) {
+            
+            error_log("Error deleting admin data: " . $e->getMessage());
+    
+            return $e->getMessage();
+        }
+    }
+    
+    
+>>>>>>> af0afdc15c8bb40f4c477fd00a9fb09e0880015d
 } //eof Admin Class

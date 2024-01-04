@@ -546,10 +546,10 @@ const addData = () => {
     let expYear = document.getElementById("exp-year");
     let expDate = `${expMonth.value}/${expYear.value}`;
     expDate = expDate.toString();
-    let mfdMonth = document.getElementById("mfd-month");
-    let mfdYear = document.getElementById("mfd-year");
-    let mfdDate = `${mfdMonth.value}/${mfdYear.value}`;
-    mfdDate = mfdDate.toString()
+    // let mfdMonth = document.getElementById("mfd-month");
+    // let mfdYear = document.getElementById("mfd-year");
+    // let mfdDate = `${mfdMonth.value}/${mfdYear.value}`;
+    // mfdDate = mfdDate.toString()
     // var producDsc       = document.getElementById("product-descreption");
     let weightage = document.getElementById("weightage");
     let unit = document.getElementById("unit");
@@ -618,13 +618,14 @@ const addData = () => {
         return;
     }
 
-    if (mfdMonth.value == "") {
-        swal("Blank field", "Please Enter Manufacturing Date as MM/YY", "error")
-            .then((value) => {
-                mfdMonth.focus();
-            });
-        return;
-    }
+    // if (mfdMonth.value == "") {
+    //     swal("Blank field", "Please Enter Manufacturing Date as MM/YY", "error")
+    //         .then((value) => {
+    //             mfdMonth.focus();
+    //         });
+    //     return;
+    // }
+
     if (expMonth.value == "") {
         swal("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
             .then((value) => {
@@ -777,10 +778,6 @@ const addData = () => {
                 <input class="table-data w-4r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size: .7rem;">
             </td>
 
-            <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-5">
-                <input class="table-data w-3r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size: .7rem;">
-            </td>
-
             <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-6">
                 <input class="table-data w-3r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size: .7rem;">
             </td>
@@ -854,8 +851,8 @@ const addData = () => {
         ManufId: manufId.value,
         manufName: manufName.value,
         medPower: medicinePower.value,
-        mfdMnth: mfdMonth.value,
-        mfdYr: mfdYear.value,
+        // mfdMnth: mfdMonth.value,
+        // mfdYr: mfdYear.value,
         expMnth: expMonth.value,
         expYr: expYear.value,
         itemWeightage: weightage.value,
@@ -883,9 +880,9 @@ const addData = () => {
     document.getElementById(`row-${slControl}-col-4`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(`row-${slControl}-col-5`).onclick = function () {
-        editItem(tupleData);
-    };
+    // document.getElementById(`row-${slControl}-col-5`).onclick = function () {
+    //     editItem(tupleData);
+    // };
     document.getElementById(`row-${slControl}-col-6`).onclick = function () {
         editItem(tupleData);
     };
@@ -946,7 +943,7 @@ const editItem = (tupleData) => {
         document.getElementById("medicine-power").value = TupleData.medPower;
 
         document.getElementById("mfd-month").value = TupleData.mfdMnth;
-        document.getElementById("mfd-year").value = TupleData.mfdYr;
+        // document.getElementById("mfd-year").value = TupleData.mfdYr;
         document.getElementById("exp-month").value = TupleData.expMnth;
         document.getElementById("exp-year").value = TupleData.expYr;
 
@@ -1035,18 +1032,18 @@ function rowAdjustment(delRow) {
 
 // ========================= Mfd and Expiry Date Setting =========================
 
-let mfdMonthInput = document.getElementById('mfd-month');
-mfdMonthInput.addEventListener('keydown', function (event) {
-    if (event.keyCode === 9) {
-        if (mfdMonthInput.value.trim() === '') {
-            event.preventDefault();
-        }
-    }
-});
-mfdMonthInput.addEventListener('input', function (event) {
-    // Remove dots from the input value
-    this.value = this.value.replace('.', '');
-});
+// let mfdMonthInput = document.getElementById('mfd-month');
+// mfdMonthInput.addEventListener('keydown', function (event) {
+//     if (event.keyCode === 9) {
+//         if (mfdMonthInput.value.trim() === '') {
+//             event.preventDefault();
+//         }
+//     }
+// });
+// mfdMonthInput.addEventListener('input', function (event) {
+//     // Remove dots from the input value
+//     this.value = this.value.replace('.', '');
+// });
 
 
 let expMonthInput = document.getElementById('exp-month');
@@ -1062,35 +1059,35 @@ expMonthInput.addEventListener('input', function (event) {
     this.value = this.value.replace('.', '');
 });
 
-// set mfd month control
-const setmfdMonth = (mnth) => {
-    if (mnth.value.length != 2) {
-        mnth.value = '';
-        mnth.focus();
-    }
-}
+// // set mfd month control
+// const setmfdMonth = (mnth) => {
+//     if (mnth.value.length != 2) {
+//         mnth.value = '';
+//         mnth.focus();
+//     }
+// }
 
-const setMfdMonth = (month) => {
-    let yr = new Date();
-    let thisMonth = yr.getMonth();
+// const setMfdMonth = (month) => {
+//     let yr = new Date();
+//     let thisMonth = yr.getMonth();
 
-    if (month.value.length > 2) {
-        month.value = '';
-        month.focus();
-    } else if (month.value.length < 2) {
-        month.focus();
-    } else if (month.value.length == 2) {
-        if (month.value > 12) {
-            month.value = '';
-            month.focus();
-        } else {
-            document.getElementById("mfd-year").focus();
-        }
-    } else {
-        month.value = '';
-        month.focus();
-    }
-}
+//     if (month.value.length > 2) {
+//         month.value = '';
+//         month.focus();
+//     } else if (month.value.length < 2) {
+//         month.focus();
+//     } else if (month.value.length == 2) {
+//         if (month.value > 12) {
+//             month.value = '';
+//             month.focus();
+//         } else {
+//             document.getElementById("mfd-year").focus();
+//         }
+//     } else {
+//         month.value = '';
+//         month.focus();
+//     }
+// }
 
 // set exp month control
 const setexpMonth = (mnth) => {
@@ -1128,51 +1125,51 @@ const setExpMonth = (month) => {
 }
 
 
-function setMfdYEAR(year) {
-    let yr = new Date();
-    let thisYear = yr.getFullYear();
-    if (year.value.length == 4) {
-        if (year.value > thisYear) {
-            document.getElementById("mfd-month").focus();
-        } else {
-            document.getElementById("exp-month").focus();
-        }
-    } else if (year.value.length > 4) {
-        year.value = '';
-        year.focus();
-    }
-}
+// function setMfdYEAR(year) {
+//     let yr = new Date();
+//     let thisYear = yr.getFullYear();
+//     if (year.value.length == 4) {
+//         if (year.value > thisYear) {
+//             document.getElementById("mfd-month").focus();
+//         } else {
+//             document.getElementById("exp-month").focus();
+//         }
+//     } else if (year.value.length > 4) {
+//         year.value = '';
+//         year.focus();
+//     }
+// }
 
-function setMfdYear(year) {
-    let yr = new Date();
-    let thisYear = yr.getFullYear();
-    let thisMonth = yr.getMonth();
-    let mfdMnth = document.getElementById("mfd-month").value;
+// function setMfdYear(year) {
+//     let yr = new Date();
+//     let thisYear = yr.getFullYear();
+//     let thisMonth = yr.getMonth();
+//     let mfdMnth = document.getElementById("mfd-month").value;
 
-    if (year.value.length < 4) {
-        document.getElementById("mfd-year").value = '';
-        document.getElementById("mfd-year").focus();
-    }
-    if (year.value.length == 4) {
-        if (year.value > thisYear) {
-            document.getElementById("mfd-year").value = '';
-            document.getElementById("mfd-year").focus();
-        }
+//     if (year.value.length < 4) {
+//         document.getElementById("mfd-year").value = '';
+//         document.getElementById("mfd-year").focus();
+//     }
+//     if (year.value.length == 4) {
+//         if (year.value > thisYear) {
+//             document.getElementById("mfd-year").value = '';
+//             document.getElementById("mfd-year").focus();
+//         }
 
-        if (year.value < thisYear) {
-            document.getElementById("exp-month").focus();
-        }
+//         if (year.value < thisYear) {
+//             document.getElementById("exp-month").focus();
+//         }
 
-        if (year.value == thisYear) {
-            if (mfdMnth > thisMonth) {
-                document.getElementById("mfd-month").value = '';
-                document.getElementById("mfd-month").focus();
-            } else if (mfdMnth <= thisMonth) {
-                document.getElementById("exp-month").focus();
-            }
-        }
-    }
-}
+//         if (year.value == thisYear) {
+//             if (mfdMnth > thisMonth) {
+//                 document.getElementById("mfd-month").value = '';
+//                 document.getElementById("mfd-month").focus();
+//             } else if (mfdMnth <= thisMonth) {
+//                 document.getElementById("exp-month").focus();
+//             }
+//         }
+//     }
+// }
 
 
 function setExpYEAR(year) {
@@ -1184,27 +1181,27 @@ function setExpYEAR(year) {
     }
 }
 
-const setExpYear = (year) => {
-    var MFDYR = document.getElementById("mfd-year").value;
-    var mfdMnth = document.getElementById("mfd-month").value;
-    var expMnth = document.getElementById("exp-month").value;
+// const setExpYear = (year) => {
+//     // var MFDYR = document.getElementById("mfd-year").value;
+//     // var mfdMnth = document.getElementById("mfd-month").value;
+//     var expMnth = document.getElementById("exp-month").value;
 
-    if (year.value.length < 4) {
-        year.value = '';
-        year.focus();
-    }
+//     if (year.value.length < 4) {
+//         year.value = '';
+//         year.focus();
+//     }
 
-    if (year.value.length == 4) {
-        if (year.value == MFDYR) {
-            if (expMnth < mfdMnth) {
-                document.getElementById("exp-month").value = '';
-                document.getElementById("exp-month").focus();
-            }
-        } else if (year.value < MFDYR) {
-            year.value = '';
-            year.focus();
-        }
-    }
-}
+//     if (year.value.length == 4) {
+//         if (year.value == MFDYR) {
+//             if (expMnth < mfdMnth) {
+//                 document.getElementById("exp-month").value = '';
+//                 document.getElementById("exp-month").focus();
+//             }
+//         } else if (year.value < MFDYR) {
+//             year.value = '';
+//             year.focus();
+//         }
+//     }
+// }
 
 ///////////////// ===== product select arrow key effect ===== \\\\\\\\\\\\\\\\\\\\\\\

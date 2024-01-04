@@ -81,12 +81,12 @@
 
                 <div class="row">
 
-                    <div class="col-sm-4  mt-2">
+                    <div class="col-sm-6  mt-2">
                         <label class="mb-0" for="batch-no">Batch No.</label>
                         <input type="text" class="upr-inp" name="batch-no" id="batch-no"
                             style="text-transform: uppercase;">
                     </div>
-                    <div class="col-sm-4  mt-2">
+                    <!-- <div class="col-sm-4  mt-2">
                         <label class="mb-0 mt-1" for="mfd-date">MFD</label>
                         <div class="d-flex date-field">
                             <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);"
@@ -95,15 +95,14 @@
                             <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);"
                                 onkeyup="setMfdYEAR(this)">
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-sm-4 mt-2">
                         <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                         <div class="d-flex date-field">
                             <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);"
                                 onfocusout="setexpMonth(this);">
                             <span class="date-divider">&#47;</span>
-                            <input class="year " type="number" id="exp-year" onfocusout="setExpYear(this);"
-                                onkeyup="setExpYEAR(this)">
+                            <input class="year " type="number" id="exp-year" onfocusout="setExpYEAR(this)">
                         </div>
                     </div>
                     <div class="d-none col-md-4 mt-2">
