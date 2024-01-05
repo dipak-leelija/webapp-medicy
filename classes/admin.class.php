@@ -220,7 +220,7 @@ class Admin extends DatabaseConnection
             $updateQuery = "UPDATE `admin` SET `fname` = '$fname', `lname` = '$lname', `adm_img` = '$img', 
                             `email` = '$email', `mobile_no` = '$mobNo', `address` = '$address', 
                             `updated_on` = '$updatedOn' WHERE `admin_id` = '$adminid'";
-            print_r($updateQuery);
+            // print_r($updateQuery);
     
             $affectedRows = $this->conn->query($updateQuery);
             // print_r($affectedRows);
