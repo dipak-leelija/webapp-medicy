@@ -121,7 +121,7 @@ const submitOtp = () => {
     let digit5 = document.getElementById('digit5').value;
     let digit6 = document.getElementById('digit6').value;
 
-    let submittedOtp = (digit1 + digit2 + digit3 + digit4 + digit5 + digit6);
+    var submittedOtp = (digit1 + digit2 + digit3 + digit4 + digit5 + digit6);
 
     console.log(submittedOtp);
 
@@ -139,7 +139,7 @@ const submitOtp = () => {
             } else if (data == 2) {
                 handleFailure();
             } else {
-                // handleRegistrationFailure(data);
+                handleRegistrationFailure(data);
             }
         }
     });
@@ -195,7 +195,7 @@ function handleFailure() {
         confirmButtonText: "OK"
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = "register.php";
+            window.location.href = "verification-sent.php";
         }
     });
 
