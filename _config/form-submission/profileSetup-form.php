@@ -75,7 +75,7 @@ $Employees = new Employees;
 
                     $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $email, $phNo,  $address, NOW, $adminId);
                     $_SESSION['ADMIN_IMG'] = $imageName;
-                    echo "updated session" .print_r($_SESSION);
+                    echo "updated session" .print_r($_SESSION)."<br>";
                     print_r($updateAdminData);
                     exit;
                     if ($updateAdminData['result']) {
