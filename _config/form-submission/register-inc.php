@@ -52,7 +52,7 @@ if (isset($_POST['otp-submit'])) {
 
         } else {
 
-            $delAdmn = $Admin->deleteAdminData($admId);
+            // $delAdmn = $Admin->deleteAdminData($admId);
             // print_r($delAdmn);
 
             handleRegistrationFailure($admStatusUpdate['message']);

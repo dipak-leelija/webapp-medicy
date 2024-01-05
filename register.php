@@ -46,7 +46,7 @@ if (isset($_POST['register'])) {
     $clinicId = $IdGenerate->generateClinicId($adminId);
 
     $status = '0';
-    $timeout_duration = 180; // 3*60(seconds) = 3 minutes.
+    $timeout_duration = 600; // 3*60(seconds) = 3 minutes.
 
     // ======== OTP GENERATOR =========
     $OTP  = $IdGenerate->otpGgenerator();
@@ -81,6 +81,8 @@ if (isset($_POST['register'])) {
                     
                     $_SESSION['REGISTRATION']       = true;
                     $_SESSION['ADMIN_REGISER']      = true;
+                    $_SESSION['PRIMARY_REGISTER']   = true;
+                    $_SESSION['SECONDARY_REGISTER'] = false;
                     $_SESSION['session_start_time']  = date('H:i:s');
                     $_SESSION['time_out']           = $timeout_duration;
                     $_SESSION['verify_key']         = $OTP;
