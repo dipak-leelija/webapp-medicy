@@ -132,18 +132,25 @@ if (isset($_POST['add-emp']) == true) {
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <div class="d-flex">
-                                <h6 class="m-0 font-weight-bold text-primary">Employees List</h6>
-                                <?php
-                                if (isset($_GET['action'])) {
-                                    if (isset($_GET['msg'])) {
-                                        echo "<p><strong>{$_GET['msg']}</strong></p>";
+                            <div class="d-flex col-12">
+                                <div class="d-flex col-md-4 justify-content-left">
+                                    <h6 class="m-0 font-weight-bold text-primary">Employees List</h6>
+                                </div>
+                                <div class="d-flex col-md-4 justify-content-center">
+                                    <?php
+                                    if (isset($_GET['action'])) {
+                                        if (isset($_GET['msg'])) {
+                                            echo "<p><strong>{$_GET['msg']}</strong></p>";
+                                        }
                                     }
-                                }
-                                ?>
+                                    ?>
+                                </div>
+                                <div class="d-flex col-md-4 justify-content-end">
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg">Add New Employee</button>
+                                </div>
                             </div>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg">Add New Employee</button>
                         </div>
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -178,8 +185,8 @@ if (isset($_POST['add-emp']) == true) {
                                                 $empRolDatas = json_decode($empRolData, true);
                                                 $empRole = '';
                                                 if (is_array($empRolDatas))
-                                                $empRole    = $empRolDatas['desig_name'];
-                                                
+                                                    $empRole    = $empRolDatas['desig_name'];
+
                                                 $empMail = $showEmployees['emp_email'];
                                                 // $emp['employee_password'];
                                                 // $emp[''];
@@ -214,7 +221,7 @@ if (isset($_POST['add-emp']) == true) {
                     <div class="card shadow mb-4">
 
                     </div>
-                    <!-- ...........modal start........ -->
+                    <!-- .........employee add modal start........ -->
                     <div class="modal fade bd-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -234,12 +241,12 @@ if (isset($_POST['add-emp']) == true) {
                                                 </div>
                                                 <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-username">Employee Username:</label>
-                                                    <input class="form-control" type="text" name="emp-username" id="emp-username" maxlength="12" required>
+                                                    <input class="form-control" type="text" name="emp-username" id="emp-username" maxlength="12" required onfocusout="checkEmpUsrNm(this)">
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-mail">Employee Mail:</label>
-                                                    <input class="form-control" type="email" name="emp-mail" id="emp-mail" maxlength="100" required>
+                                                    <input class="form-control" type="email" name="emp-mail" id="emp-mail" maxlength="100" required onfocusout="checkEmpEmail(this)">
                                                 </div>
 
                                                 <div class="col-md-12">
@@ -328,12 +335,7 @@ if (isset($_POST['add-emp']) == true) {
     <!-- Custom Javascript -->
     <script src="<?php echo JS_PATH ?>custom-js.js"></script>
     <script>
-        viewAndEdit = (empId) => {
-            let employeeId = empId;
-            let url = "ajax/emp.view.ajax.php?employeeId=" + employeeId;
-            $(".viewnedit").html('<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
-        } // end of viewAndEdit function
+
     </script>
 
     <!-- Bootstrap core JavaScript-->
@@ -353,56 +355,8 @@ if (isset($_POST['add-emp']) == true) {
     <!-- Page level custom scripts -->
     <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
 
-
-    <script>
-        $(document).ready(function() {
-            $(document).on("click", ".delete-btn", function() {
-
-                if (confirm("Are you want delete data?")) {
-                    empId = $(this).data("id");
-                    //echo $empDelete.$this->conn->error;exit;
-
-                    btn = this;
-                    $.ajax({
-                        url: "ajax/employee.Delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            id: empId
-                        },
-                        success: function(response) {
-
-                            if (response == 1) {
-                                $(btn).closest("tr").fadeOut()
-                            } else {
-                                // $("#error-message").html("Deletion Field !!!").slideDown();
-                                // $("success-message").slideUp();
-                                alert(response);
-                            }
-
-                        }
-                    });
-                }
-                return false;
-
-            })
-
-        })
-    </script>
-    <script>
-        function showHide(fieldId) {
-            const password = document.getElementById(fieldId);
-            const toggle = document.getElementById('toggle');
-
-            if (password.type === 'password') {
-                password.setAttribute('type', 'text');
-                // toggle.classList.add('hide');
-            } else {
-                password.setAttribute('type', 'password');
-                // toggle.classList.remove('hide');
-            }
-        }
-    </script>
-
+    <!-- custom script path -->
+    <script src="<?php echo JS_PATH ?>custom/employees.js"></script>
 
 </body>
 
