@@ -74,8 +74,7 @@ const checkEmailAvailability = () => {
 
 const verifyUsername = (t) => {
     let admUsrnm = document.getElementById("user-name").value;
-    console.log(t.value);
-
+    // console.log(t.value);
     $.ajax({
         url: "ajax/admin-mail-usrnm-existance-check.ajax.php",
         type: "POST",
@@ -83,8 +82,8 @@ const verifyUsername = (t) => {
             chekUsrnmExistance: admUsrnm,
         },
         success: function (data) {
-            // console.log("ajax return data : " + data);
-            if (data == 1) {
+            console.log("ajax return data : " + data);
+            if (data == '1') {
                 alert('Username Exits as registered!');
                 document.getElementById('user-name').value = ' ';
             }
@@ -195,7 +194,7 @@ function handleFailure() {
         confirmButtonText: "OK"
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = "verification-sent.php";
+            window.location.reload();
         }
     });
 

@@ -50,10 +50,10 @@ $Admin          = new Admin;
 
     <main>
 
-        <!-- <?php
+        <?php
                 echo $adminId . "<br>";
-                echo $randomNumber;
-                ?> -->
+                echo $verificationKey;
+                ?>
 
 
 
@@ -87,7 +87,7 @@ $Admin          = new Admin;
                             <button class="btn btn-primary btn-user btn-block mt-0" type="submit" name="otp-submit" onclick="submitOtp()">Register
                                 Account</button>
                         </div>
-                        
+
                     <!-- </form> -->
                   
                 </div>

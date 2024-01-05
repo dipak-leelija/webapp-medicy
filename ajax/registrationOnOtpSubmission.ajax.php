@@ -45,9 +45,9 @@ if (isset($_POST['otpsubmit'])) {
 
     } else {
 
-        $delAdmn = $Admin->deleteAdminData($admId);
+        // $delAdmn = $Admin->deleteAdminData($admId);
         // print_r($delAdmn);
-        session_destroy();
+        // session_destroy();
         
         echo 2;
 
