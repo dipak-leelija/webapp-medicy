@@ -51,9 +51,9 @@ $Admin          = new Admin;
     <main>
 
         <?php
-                echo $adminId . "<br>";
-                echo $verificationKey;
-                ?>
+        echo $adminId . "<br>";
+        echo $verificationKey;
+        ?>
 
 
 
@@ -67,29 +67,29 @@ $Admin          = new Admin;
 
                     <!-- <form class="user" action="_config/form-submission/register-inc.php" method="post"> -->
 
-                        <div class="otp-input">
-                            <div class="d-flex justify-content-center">
-                                <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit4" id="digit4" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit5" id="digit5" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveNext(this)" required>
-                            </div>
-
+                    <div class="otp-input">
+                        <div class="d-flex justify-content-center">
+                            <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit4" id="digit4" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit5" id="digit5" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveNext(this)" required>
                         </div>
 
-                        <div class="text-center m-0">
-                            <h6 class="h6 text-green-900 mb-2 mt-2 alert alert-info p-2 m-0">OTP sent to your registerd mail address <b><?php echo $email; ?></b></h6>
-                        </div> 
+                    </div>
 
-                        <div class="m-0">
-                            <button class="btn btn-primary btn-user btn-block mt-0" type="submit" name="otp-submit" onclick="submitOtp()">Register
-                                Account</button>
-                        </div>
+                    <div class="text-center m-0">
+                        <h6 class="h6 text-green-900 mb-2 mt-2 alert alert-info p-2 m-0">OTP sent to your registerd mail address <b><?php echo $email; ?></b></h6>
+                    </div>
+
+                    <div class="m-0">
+                        <button class="btn btn-primary btn-user btn-block mt-0" type="submit" name="otp-submit" onclick="submitOtp()">Register
+                            Account</button>
+                    </div>
 
                     <!-- </form> -->
-                  
+
                 </div>
             </div>
         </div>
@@ -113,6 +113,98 @@ $Admin          = new Admin;
     <!-- custom script for register.php -->
     <script src="<?= JS_PATH ?>adminRegistration.js"></script>
 
+
+    <script>
+        // ============ otp submit button action ===============
+        const submitOtp = () => {
+
+            let digit1 = document.getElementById('digit1').value;
+            let digit2 = document.getElementById('digit2').value;
+            let digit3 = document.getElementById('digit3').value;
+            let digit4 = document.getElementById('digit4').value;
+            let digit5 = document.getElementById('digit5').value;
+            let digit6 = document.getElementById('digit6').value;
+
+            var submittedOtp = (digit1 + digit2 + digit3 + digit4 + digit5 + digit6);
+
+            console.log(submittedOtp);
+
+
+            $.ajax({
+                url: "ajax/registrationOnOtpSubmission.ajax.php",
+                type: "POST",
+                data: {
+                    otpsubmit: submittedOtp,
+                },
+                success: function(data) {
+                    console.log("ajax return data : " + data);
+                    if (data == 1) {
+                        handleRegistrationSuccess();
+                    } else if (data == 2) {
+                        handleFailure();
+                    } else {
+                        handleRegistrationFailure(data);
+                    }
+                }
+            });
+        }
+
+
+
+
+
+
+        function handleRegistrationSuccess() {
+
+            Swal.fire({
+                icon: "success",
+                title: "Registration Successful",
+                showConfirmButton: true,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "login.php";
+                }
+            });
+        }
+
+
+
+
+        function handleRegistrationFailure($message) {
+
+            Swal.fire({
+                icon: "error",
+                title: "'.$message.'",
+                showConfirmButton: true,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "login.php";
+                }
+            });
+
+        }
+
+
+        function handleFailure() {
+
+            Swal.fire({
+                icon: "error",
+                title: "INVALID OTP",
+                showConfirmButton: true,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+
+        }
+    </script>
 
 
     <script>
