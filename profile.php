@@ -14,6 +14,7 @@ require_once CLASS_DIR . 'empRole.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
 // echo $adminId;
+echo "current session" .print_r($_SESSION);
 
 $Utility    = new Utility;
 $Admin      = new Admin;

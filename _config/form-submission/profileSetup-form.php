@@ -12,6 +12,7 @@ require_once CLASS_DIR . 'admin.class.php';
 require_once CLASS_DIR . 'utility.class.php';
 require_once CLASS_DIR . 'empRole.class.php';
 
+echo "current session" .print_r($_SESSION);
 
 $Admin = new Admin;
 $Employees = new Employees;
@@ -74,12 +75,15 @@ $Employees = new Employees;
 
                     $updateAdminData = $Admin->updateAdminDetails($fname, $lname, $imageName, $email, $phNo,  $address, NOW, $adminId);
 
+                    print_r($updateAdminData);
+                    exit;
                     if ($updateAdminData['result']) {
 
                         $imgFolder = ADM_IMG_DIR . $imageName;
                         move_uploaded_file($tempImgName, $imgFolder);
                         $_SESSION['ADMIN_IMG'] = $imageName;
                         $flag = 1;
+                       echo "updated session" .print_r($_SESSION);
                     }
                 } else {
 

@@ -204,8 +204,9 @@ class Admin extends DatabaseConnection
             $stmt->execute();
     
             $stmt->close();
-    
-            return ['result' => '1'];
+            
+            return $stmt;
+            // return ['result' => '1'];
         } catch (Exception $e) {
             return ['result' => '0', 'message' => $e->getMessage()];
         }
