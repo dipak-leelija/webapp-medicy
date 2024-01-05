@@ -193,48 +193,25 @@ class Admin extends DatabaseConnection
 
 
 
-    // function updateAdminDetails($fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $adminid) {
-    //     try {
-    //         $updateQuery = "UPDATE `admin` SET `fname`=?, `lname`=?, `adm_img`=?, `email`=?, `mobile_no`=?, `address`=?, `updated_on`=? WHERE `admin_id`=?";
-            
-    //         $stmt = $this->conn->prepare($updateQuery);
-    
-    //         $stmt->bind_param("ssssssss", $fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $adminid);
-    
-    //         $stmt->execute();
-    
-    //         $stmt->close();
-    
-    //         return ['result' => '1'];
-    //     } catch (Exception $e) {
-    //         return ['result' => '0', 'message' => $e->getMessage()];
-    //     }
-    // }
-
-
-
-
     function updateAdminDetails($fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $adminid) {
         try {
-           
-            $updateQuery = "UPDATE `admin` SET `fname` = '$fname', `lname` = '$lname', `adm_img` = '$img', 
-                            `email` = '$email', `mobile_no` = '$mobNo', `address` = '$address', 
-                            `updated_on` = '$updatedOn' WHERE `admin_id` = '$adminid'";
-            // print_r($updateQuery);
+            $updateQuery = "UPDATE `admin` SET `fname`=?, `lname`=?, `adm_img`=?, `email`=?, `mobile_no`=?, `address`=?, `updated_on`=? WHERE `admin_id`=?";
+            
+            $stmt = $this->conn->prepare($updateQuery);
+                 if ($stmt === false) {
+                     throw new Exception("Error preparing statement: " . $this->conn->error);
+                 }
+            $stmt->bind_param("ssssssss", $fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $adminid);
     
-            $affectedRows = $this->conn->query($updateQuery);
-            // print_r($affectedRows);
-            // if ($affectedRows > 0) {
-            //     return ['result' => '1'];
-            // } else {
-            //     return ['result' => '0', 'message' => 'No rows were updated.'];
-            // }
-                return $affectedRows;
-        } catch (PDOException $e) {
+            $stmt->execute();
+    
+            $stmt->close();
+    
+            return ['result' => '1', 'stmt' => $stmt];
+        } catch (Exception $e) {
             return ['result' => '0', 'message' => $e->getMessage()];
         }
     }
-    
 
 
 
