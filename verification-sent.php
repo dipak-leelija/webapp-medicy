@@ -65,7 +65,7 @@ $Admin          = new Admin;
                         <h1 class="h4 text-gray-900 mb-4">Verify OTP</h1>
                     </div>
 
-                    <form class="user" action="_config/form-submission/register-inc.php" method="post">
+                    <!-- <form class="user" action="_config/form-submission/register-inc.php" method="post"> -->
 
                         <div class="otp-input">
                             <div class="d-flex justify-content-center">
@@ -84,10 +84,11 @@ $Admin          = new Admin;
                         </div> 
 
                         <div class="m-0">
-                            <button class="btn btn-primary btn-user btn-block mt-0" type="submit" name="otp-submit">Register
+                            <button class="btn btn-primary btn-user btn-block mt-0" type="submit" name="otp-submit" onclick="submitOtp()">Register
                                 Account</button>
                         </div>
-                    </form>
+                        
+                    <!-- </form> -->
                   
                 </div>
             </div>
@@ -101,13 +102,14 @@ $Admin          = new Admin;
     <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- custom script for register.php -->
-    <script src="<?= JS_PATH ?>adminRegistration.js"></script>
+    <!-- custom script for register.php
+    <script src="<?= JS_PATH ?>adminRegistration.js"></script> -->
 
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="assets/js/sweetalert2/sweetalert2.all.min.js"></script>
+
     <!-- custom script for register.php -->
     <script src="<?= JS_PATH ?>adminRegistration.js"></script>
 

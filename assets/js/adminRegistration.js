@@ -41,7 +41,7 @@ const verifyEmail = () => {
             checkEmailAvailability();
         }
     }
-    
+
 }
 
 
@@ -94,7 +94,7 @@ const verifyUsername = (t) => {
 
 
 
-
+// === otp submit move next ===
 
 const moveNext = (input) => {
     let inputedValue = input.value;
@@ -108,4 +108,95 @@ const moveNext = (input) => {
     if (inputLength === parseInt(input.getAttribute('maxlength')) && input.nextElementSibling) {
         input.nextElementSibling.focus();
     }
+}
+
+
+// ============ otp submit button action ===============
+const submitOtp = () => {
+
+    let digit1 = document.getElementById('digit1').value;
+    let digit2 = document.getElementById('digit2').value;
+    let digit3 = document.getElementById('digit3').value;
+    let digit4 = document.getElementById('digit4').value;
+    let digit5 = document.getElementById('digit5').value;
+    let digit6 = document.getElementById('digit6').value;
+
+    let submittedOtp = (digit1 + digit2 + digit3 + digit4 + digit5 + digit6);
+
+    console.log(submittedOtp);
+
+
+    $.ajax({
+        url: "ajax/registrationOnOtpSubmission.ajax.php",
+        type: "POST",
+        data: {
+            otpsubmit: submittedOtp,
+        },
+        success: function (data) {
+            console.log("ajax return data : " + data);
+            if (data == 1) {
+                handleRegistrationSuccess();
+            } else if (data == 2) {
+                handleFailure();
+            } else {
+                // handleRegistrationFailure(data);
+            }
+        }
+    });
+}
+
+
+
+
+
+
+function handleRegistrationSuccess() {
+
+    Swal.fire({
+        icon: "success",
+        title: "Registration Successful",
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "login.php";
+        }
+    });
+}
+
+
+
+
+function handleRegistrationFailure($message) {
+
+    Swal.fire({
+        icon: "error",
+        title: "'.$message.'",
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "login.php";
+        }
+    });
+
+}
+
+
+function handleFailure() {
+
+    Swal.fire({
+        icon: "error",
+        title: "INVALID OTP",
+        showConfirmButton: true,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "register.php";
+        }
+    });
+
 }

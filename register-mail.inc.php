@@ -32,7 +32,6 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 
 	// header("location: verification-sent.php");
 
-
 	$sess_arr	= array('vkey', 'newCustomerSess', 'fisrt-name', 'last-name', 'profession');
 	$Utility->delSessArr($sess_arr);
 
