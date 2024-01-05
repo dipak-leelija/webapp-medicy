@@ -62,4 +62,19 @@ function url_dec($url){
     $url = base64_decode($url);
     return $url;
 }
+
+
+
+function otpGgenerator(){
+
+    $characters = '0123456789';
+    $randomString = '';
+    for ($i = 0; $i < 6; $i++) {
+        $randomString .= $characters[rand(0, strlen($characters) - 1)];
+    }
+
+    // $randomString = $randomString;
+
+    return $randomString;
+}
 ?>
