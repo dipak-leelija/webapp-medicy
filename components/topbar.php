@@ -177,16 +177,15 @@
                 <?php
                 // echo $userImg;
                 // exit;
-                if ($_SESSION['ADMIN']):
+                if ($_SESSION['ADMIN']){
                     $imagePath = ADM_IMG_PATH . $userImg;
-                else:
+                }else{
                     $imagePath = USER_IMG_PATH . $userImg;
-                endif;
-                    
+                } 
                 ?>
 
-                <img class="img-profile rounded-circle" src="<?= ($imagePath) ? $imagePath :  IMG_PATH . 'undraw_profile.svg' ?>">
-                <!-- <img class="img-profile rounded-circle" src="<?= IMG_PATH . 'undraw_profile.svg'; ?>"> -->
+                <img class="img-profile rounded-circle" src="<?= ($imagePath) ? $imagePath :  ASSETS_PATH . 'images/undraw_profile.svg' ?>">
+                <!-- <img class="img-profile rounded-circle" src="<?=  ASSETS_PATH . 'images/undraw_profile.svg'; ?>"> -->
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

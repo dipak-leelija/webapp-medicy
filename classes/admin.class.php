@@ -220,15 +220,16 @@ class Admin extends DatabaseConnection
             $updateQuery = "UPDATE `admin` SET `fname` = '$fname', `lname` = '$lname', `adm_img` = '$img', 
                             `email` = '$email', `mobile_no` = '$mobNo', `address` = '$address', 
                             `updated_on` = '$updatedOn' WHERE `admin_id` = '$adminid'";
+            // print_r($updateQuery);
     
             $affectedRows = $this->conn->query($updateQuery);
-    
-            if ($affectedRows > 0) {
-                return ['result' => '1'];
-            } else {
-                return ['result' => '0', 'message' => 'No rows were updated.'];
-            }
-    
+            // print_r($affectedRows);
+            // if ($affectedRows > 0) {
+            //     return ['result' => '1'];
+            // } else {
+            //     return ['result' => '0', 'message' => 'No rows were updated.'];
+            // }
+                return $affectedRows;
         } catch (PDOException $e) {
             return ['result' => '0', 'message' => $e->getMessage()];
         }
