@@ -35,7 +35,6 @@ $Admin          = new Admin;
 
 
     <style>
-
         .input-group {
             width: 2rem;
             text-align: center;
@@ -52,9 +51,9 @@ $Admin          = new Admin;
     <main>
 
         <!-- <?php
-        echo $adminId."<br>";
-        echo $randomNumber;
-        ?> -->
+                echo $adminId . "<br>";
+                echo $randomNumber;
+                ?> -->
 
 
 
@@ -78,16 +77,18 @@ $Admin          = new Admin;
                                 <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveNext(this)" required>
                             </div>
 
-                            <!-- <div class="d-none"><input type="text" name="adm-val" id="adm-val" value="<?php $_SESSION['adm_id']; ?>"><?php $_SESSION['adm_id']; ?></div> -->
-
                         </div>
-                        <div class="">
-                            <button class="btn btn-primary btn-user btn-block mt-3" type="submit" name="otp-submit">Register
+
+                        <div class="text-center m-0">
+                            <h6 class="h6 text-green-900 mb-2 mt-2 alert alert-info p-2 m-0">OTP sent to your registerd mail address <b><?php echo $email; ?></b></h6>
+                        </div> 
+
+                        <div class="m-0">
+                            <button class="btn btn-primary btn-user btn-block mt-0" type="submit" name="otp-submit">Register
                                 Account</button>
                         </div>
-
                     </form>
-                    <!-- <hr> -->
+                  
                 </div>
             </div>
         </div>
