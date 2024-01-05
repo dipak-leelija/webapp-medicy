@@ -51,8 +51,8 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
                         <i class="fas fa-user-plus"></i> New Patients
                     </div>
                     <div class=" mb-0">
-                        <div class="h5 mb-0 font-weight-bold <?= (!$newPatients) ? 'text-warning h6' : 'text-dark' ?>">
-                            <p id="newPatient"><?= ($newPatients) ? $totalCount : 'Oops!, the requested data is not in our records.' ?></p>
+                        <div class="h5 mb-0 font-weight-bold <?= (!$newPatients) ? 'text-secondary h6' : 'text-dark' ?>">
+                            <p id="newPatient"><?= ($newPatients) ? $totalCount : 'Oops!, No Appointments yet.' ?></p>
                         </div>
                     </div>
                 </div>

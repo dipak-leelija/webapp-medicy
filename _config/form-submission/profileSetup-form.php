@@ -17,6 +17,7 @@ echo "current session" .print_r($_SESSION);
 $Admin = new Admin;
 $Employees = new Employees;
 
+print_r($_SESSION);
 
 ?>
 

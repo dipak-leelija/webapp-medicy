@@ -27,6 +27,8 @@ $showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $desigRole->designationRoleCheckForLogin();
 $showDesignation = json_decode($showDesignation, true);
 
+print_r($_SESSION);
+
 $profileDetails = array();
 if ($_SESSION['ADMIN']) {
     $adminDetails = $Admin->adminDetails($adminId);
