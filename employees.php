@@ -69,7 +69,7 @@ if (isset($_POST['add-emp']) == true) {
     <title>Medicy Employees</title>
 
     <!-- Custom fonts for this template -->
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo PLUGIN_PATH ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
@@ -78,6 +78,7 @@ if (isset($_POST['add-emp']) == true) {
     <!-- Custom styles for this page -->
     <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/employees.css">
+    <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
     <style>
         #toggle {
             /* position: absolutte;
@@ -265,15 +266,15 @@ if (isset($_POST['add-emp']) == true) {
                                                     <textarea class="form-control" name="emp-address" id="emp-address" cols="30" rows="4" maxlength="255"></textarea>
                                                 </div>
 
-                                                <div class="col-md-12">
+                                                <div class="form-group col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-pass">Password:</label>
-                                                    <input class="form-control" type="password" name="emp-pass" id="emp-pass" maxlength="12" required>
-                                                    <div id="toggle" onclick="showHide('emp-pass');"></div>
+                                                    <input class="form-control" type="password" name="emp-pass" id="emp-pass" maxlength="12" required oninput="showToggleBtn('emp-pass','toggleBtn')">
+                                                    <i class="fas fa-eye " id="toggleBtn" style="display:none;font-size:1.2rem;margin-right:14px" onclick="togglePassword('emp-pass','toggleBtn')"></i>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-conf-pass">Confirm Password:</label>
-                                                    <input class="form-control" type="password" name="emp-cpass" id="emp-conf-pass" maxlength="12" required>
-                                                    <div id="toggle" onclick="showHide('emp-conf-pass');"></div>
+                                                    <input class="form-control" type="password" name="emp-cpass" id="emp-conf-pass" maxlength="12" required oninput="showToggleBtn('emp-conf-pass','toggleBtn1')">
+                                                    <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem;margin-right:12px;margin-top:12px;" onclick="togglePassword('emp-conf-pass','toggleBtn1')"></i>
                                                 </div>
                                             </div>
                                         </div>
@@ -357,6 +358,7 @@ if (isset($_POST['add-emp']) == true) {
 
     <!-- custom script path -->
     <script src="<?php echo JS_PATH ?>custom/employees.js"></script>
+    <script src="<?= JS_PATH ?>password-show-hide.js"></script>
 
 </body>
 
