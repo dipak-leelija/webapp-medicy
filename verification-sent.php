@@ -50,15 +50,6 @@ $Admin          = new Admin;
 
     <main>
 
-        <!-- <?php
-                echo $Fname;
-                echo $email;
-                echo $userName;
-                echo $adminId . "<br>";
-                echo $verificationKey;
-                ?> -->
-
-
 
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
