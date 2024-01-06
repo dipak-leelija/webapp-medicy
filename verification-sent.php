@@ -50,10 +50,13 @@ $Admin          = new Admin;
 
     <main>
 
-        <?php
-        echo $adminId . "<br>";
-        echo $verificationKey;
-        ?>
+        <!-- <?php
+                echo $Fname;
+                echo $email;
+                echo $userName;
+                echo $adminId . "<br>";
+                echo $verificationKey;
+                ?> -->
 
 
 
@@ -65,9 +68,20 @@ $Admin          = new Admin;
                         <h1 class="h4 text-gray-900 mb-4">Verify OTP</h1>
                     </div>
 
-                    <!-- <form class="user" action="_config/form-submission/register-inc.php" method="post"> -->
+                    <div id="timer-div">
+                        <small><span class="d-flex justify-content-center" id="timer"></span></small>
+                    </div>
 
-                    <div class="otp-input">
+
+                    <!-- <button id="resendOTP" style="display: none;"><small><span class="d-flex justify-content-center" onclick="getNewotp()"><u>Resend OTP</u></span></small></button> -->
+
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-small" type="button" name="resendOTP" id="resendOTP" onclick="getNewotp()" style="display: none; color: blue; text-decoration: underline;">Resend OTP</button>
+                    </div>
+
+
+
+                    <div class="otp-input mt-2">
                         <div class="d-flex justify-content-center">
                             <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveNext(this)" required>
                             <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveNext(this)" required>
@@ -88,11 +102,10 @@ $Admin          = new Admin;
                             Account</button>
                     </div>
 
-                    <!-- </form> -->
-
                 </div>
             </div>
         </div>
+
     </main>
 
     <!-- Bootstrap core JavaScript-->
@@ -204,11 +217,86 @@ $Admin          = new Admin;
             });
 
         }
-    </script>
 
 
-    <script>
 
+
+
+        function messageResentAlert() {
+
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "NEW OTP SEND",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+
+        // =============== timer script =================
+
+        let timerOn = true;
+
+        function timer(remaining) {
+            var m = Math.floor(remaining / 60);
+            var s = remaining % 60;
+
+            m = m < 10 ? '0' + m : m;
+            s = s < 10 ? '0' + s : s;
+            document.getElementById('timer').innerHTML = m + ':' + s;
+            remaining -= 1;
+
+            if (remaining >= 0 && timerOn) {
+                setTimeout(function() {
+                    timer(remaining);
+                }, 1000);
+                return;
+            }
+
+            if (!timerOn) {
+                // Do validate stuff here
+                return;
+            }
+
+            // Do timeout stuff here
+            document.getElementById("resendOTP").style.display = 'block';
+            document.getElementById("timer-div").style.display = 'none';
+
+        }
+
+        timer(120);
+
+
+
+        // ============ new otp generation =============
+        const getNewotp = () => {
+            console.log('get new otp');
+
+            document.getElementById("resendOTP").style.display = 'none';
+            document.getElementById("timer-div").style.display = 'block';
+
+            timer(150);
+
+
+            $.ajax({
+                url: "ajax/resendOtpOnRegistration.ajax.php",
+                type: "POST",
+                data: {
+                    resendOtp: 'generate-new-otp',
+                },
+                success: function(data) {
+                    console.log("ajax return data : " + data);
+                    if (data == 1) {
+                        messageResentAlert();
+                    } else {
+                        // messageResentAlert();
+                        alert(data);
+                    }
+                }
+            });
+
+        }
     </script>
 </body>
 

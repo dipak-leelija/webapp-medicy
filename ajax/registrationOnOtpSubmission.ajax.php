@@ -9,8 +9,7 @@ $Admin = new Admin;
 
 if (isset($_POST['otpsubmit'])) {
 
-    $key = $verificationKey;
-    // $key = '123456';
+    $key = $_SESSION['verify_key'];
     $admId = $adminId;
     $status = 0;
 
