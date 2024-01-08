@@ -177,6 +177,7 @@ if (isset($_POST['add-emp']) == true) {
                                                     $empUsername = $showEmployees['emp_username'];
                                                     $empName = $showEmployees['emp_name'];
                                                     $empRoleId = $showEmployees['emp_role'];
+                                                    print_r($empRoleId);
                                                     $empRolData = $desigRole->designationRoleID($adminId, $empRoleId);
                                                     // print_r($empRolData);
                                                     $empRolDatas = json_decode($empRolData, true);
@@ -211,12 +212,12 @@ if (isset($_POST['add-emp']) == true) {
                                                     $empUsername = $showEmployees['emp_username'];
                                                     $empName = $showEmployees['emp_name'];
                                                     $empRoleId = $showEmployees['emp_role'];
-                                                    $empRolData = $desigRole->designationRoleID($adminId, $empRoleId);
-                                                    // print_r($empRolData);
+                                                    $empRolData = $desigRole->designationRoleID($empRoleId);
                                                     $empRolDatas = json_decode($empRolData, true);
                                                     $empRole = '';
-                                                    if (is_array($empRolDatas))
-                                                        $empRole    = $empRolDatas['desig_name'];
+                                                    if ($empRolDatas['status'] == '1')
+                                                        $designationData = $empRolDatas['data'];
+                                                        $empRole    = $designationData['desig_name'];
 
                                                     $empMail = $showEmployees['emp_email'];
                                                     // $emp['employee_password'];
