@@ -4,11 +4,24 @@ require_once dirname(__DIR__) . '/config/constant.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'employee.class.php';
+require_once CLASS_DIR . 'empRole.class.php';
 
 $empId = $_GET['employeeId'];
 
 $employees = new Employees();
-$showEmployee = $employees->empDisplayById($empId);
+$showEmployee = json_decode($employees->empDisplayById($empId));
+$desigRole = new Emproles();
+
+
+$empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
+
+// foreach($empRoleList as $empRoleList){
+//     // print_r($empRoleList);
+//     echo $empRoleList->id;
+//     echo $empRoleList->desig_name;
+// }
+
+
 
 ?>
 
@@ -29,26 +42,35 @@ $showEmployee = $employees->empDisplayById($empId);
 <body class="mx-2">
 
     <?php
-    $showEmployee = json_decode($showEmployee);
+    // print_r($showEmployee);
 
     if ($showEmployee !== null) {
         $empId = $showEmployee->emp_id;
         $empUsername = $showEmployee->emp_username;
         $empName = $showEmployee->emp_name;
-        $empRole = $showEmployee->emp_role;
+        $empRoleId = $showEmployee->emp_role;
+
+        $empRolData = json_decode($desigRole->designationRoleID($empRoleId), true);
+        // print_r($empRolData);
+
+        if ($empRolData['status']) {
+            $empRole = $empRolData['data']['desig_name'];
+
+            if ($empRole == 'pharmacist') {
+                $empRole = 'Pharmacist';
+            } elseif ($empRole == 'receptionist') {
+                $empRole = 'Receptionist';
+            }
+        } else {
+            $empRole = '';
+        }
+
         $empEmail = $showEmployee->emp_email;
         $empAddress = $showEmployee->emp_address;
     }
-    // print_r($showEmployee);
-    // foreach ($showEmployee as $Employee) {
-    //     print_r($Employee);
-    //     $empId = $Employee['emp_id'];
-    //     $empUsername = $Employee['emp_username'];
-    //     $empName = $Employee['emp_name'];
-    //     $empRole = $Employee['emp_role'];
-    //     $empEmail = $Employee['emp_email'];
-    //     $empAddress = $Employee['emp_address'];
-    // }
+
+
+
     ?>
 
     <form>
@@ -63,7 +85,16 @@ $showEmployee = $employees->empDisplayById($empId);
         </div>
         <div class="form-group">
             <label for="" class="col-form-label">Employee Role:</label>
-            <input type="text" class="form-control" id="empRole" value="<?php echo $empRole; ?>">
+            <!-- <input type="text" class="form-control" id="empRole" value="<?php echo $empRoleId; ?>"> -->
+            
+            <select class="form-control" name="empRole" id="empRole" required>
+                <option value="<?php echo $empRoleId; ?>"><?php echo $empRole; ?></option>
+                <?php foreach ($empRoleList as $empRoleList) { ?>
+                   
+                    <option value="<?php echo $empRoleList->id; ?>"><?php echo $empRoleList->desig_name; ?></option>
+
+                <?php } ?>
+            </select>
         </div>
         <div class="form-group">
             <label for="" class="col-form-label">Employee Email:</label>
@@ -88,12 +119,14 @@ $showEmployee = $employees->empDisplayById($empId);
             let empName = document.getElementById("empName").value;
             let empRole = document.getElementById("empRole").value;
             let empEmail = document.getElementById("empEmail").value;
+            let empAddress = document.getElementById("empAddress").value;
+
+            console.log(empId, empUsername, empName, empRole, empEmail, empAddress);
+
             // console.log(editTestCategoryDsc);
+            
             let url = "emp.edit.ajax.php?empId=" + escape(empId) + "&empUsername=" + escape(empUsername) + "&empName=" + escape(empName) + "&empRole=" + escape(empRole) + "&empEmail=" + escape(empEmail);
-            // console.log(url);
-            // alert('Working');
-            // $("#reportUpdate").html('<iframe width="99%" height="40px" frameborder="0" allowtransparency="true" src="'+url+'"></iframe>');
-            // alert("Hello");
+
             request.open('GET', url, true);
 
             request.onreadystatechange = getEditUpdates;

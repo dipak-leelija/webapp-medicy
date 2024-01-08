@@ -20,9 +20,8 @@ $desigRole = new Emproles();
 $currentUrl = $Utility->currentUrl();
 
 $showEmployees = $employees->employeesDisplay($adminId);
-$showDesignation = $desigRole->designationRoleCheckForLogin();
-$showDesignation = json_decode($showDesignation, true);
-// print_r($showDesignation);
+$showDesignation = json_decode($desigRole->designationRoleCheckForLogin(), true);
+
 
 //Employee Class Initilzed
 // $employees = new Employees();
@@ -181,17 +180,23 @@ if (isset($_POST['add-emp']) == true) {
                                                 $empUsername = $showEmployees['emp_username'];
                                                 $empName = $showEmployees['emp_name'];
                                                 $empRoleId = $showEmployees['emp_role'];
-                                                $empRolData = $desigRole->designationRoleID($adminId, $empRoleId);
+                                                $empRolData = json_decode($desigRole->designationRoleID($empRoleId), true);
                                                 // print_r($empRolData);
-                                                $empRolDatas = json_decode($empRolData, true);
-                                                $empRole = '';
-                                                if (is_array($empRolDatas))
-                                                    $empRole    = $empRolDatas['desig_name'];
 
+                                                if($empRolData['status']){
+                                                    $empRole = $empRolData['data']['desig_name'];
+
+                                                    if($empRole == 'pharmacist'){
+                                                        $empRole = 'Pharmacist';
+                                                    }elseif($empRole == 'receptionist'){
+                                                        $empRole = 'Receptionist';
+                                                    }
+                                                }else{
+                                                    $empRole = '';
+                                                }
+                                                
                                                 $empMail = $showEmployees['emp_email'];
-                                                // $emp['employee_password'];
-                                                // $emp[''];
-
+                                                
                                                 echo '<tr>
                                                         <td>' . $empId . '</td>
                                                         <td>' . $empUsername . '</td>

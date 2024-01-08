@@ -52,17 +52,43 @@ class Emproles extends DatabaseConnection
         }
     }
 
+
+
     function designationRoleID($desinId)
     {
-        $data = '';
-        $sql = "SELECT * FROM `emp_role` WHERE `id` = '$desinId' ";
-        $result = $this->conn->query($sql);
-        while ($results =  $result->fetch_object()) {
-            $data = $results;
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM `emp_role` WHERE `id` = ?");
+
+            if (!$stmt) {
+                throw new Exception("Error preparing statement");
+            }
+
+            $stmt->bind_param("i", $desinId);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if (!$result) {
+                throw new Exception("Error executing query");
+            }
+
+            $data = null;
+
+            while ($results = $result->fetch_object()) {
+                $data = $results;
+            }
+
+            $stmt->close();
+
+            return json_encode(['status'=> '1', 'message'=>'success', 'data'=>$data]);
+        } catch (Exception $e) {
+
+            return json_encode(['status'=> '0', 'message'=>$e->getMessage(), 'data'=>'']);
         }
-        $data = json_encode($data);
-        return $data;
     }
+
+
+
 
     function deleteDesign($deleteRole)
     {
