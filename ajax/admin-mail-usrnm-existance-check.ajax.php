@@ -41,6 +41,7 @@ if (isset($_POST['chekUsrnmExistance'])) {
     $empCol1 = 'emp_username';
     $checkEmpUsrnmExistance = json_decode($Employee->selectEmpByColData($empCol1, $checkUsername));
 
+    
     if ($checkAdminUsrnmExistance == 1 || $checkEmpUsrnmExistance->status == 1) {
         echo '1';
     } else {

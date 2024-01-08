@@ -50,12 +50,6 @@ $Admin          = new Admin;
 
     <main>
 
-        <!-- <?php
-                echo $adminId . "<br>";
-                echo $randomNumber;
-                ?> -->
-
-
 
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
@@ -65,33 +59,44 @@ $Admin          = new Admin;
                         <h1 class="h4 text-gray-900 mb-4">Verify OTP</h1>
                     </div>
 
-                    <form class="user" action="_config/form-submission/register-inc.php" method="post">
+                    <div id="timer-div">
+                        <small><span class="d-flex justify-content-center" id="timer"></span></small>
+                    </div>
 
-                        <div class="otp-input">
-                            <div class="d-flex justify-content-center">
-                                <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit4" id="digit4" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit5" id="digit5" oninput="moveNext(this)" required>
-                                <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveNext(this)" required>
-                            </div>
 
+                    <!-- <button id="resendOTP" style="display: none;"><small><span class="d-flex justify-content-center" onclick="getNewotp()"><u>Resend OTP</u></span></small></button> -->
+
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-small" type="button" name="resendOTP" id="resendOTP" onclick="getNewotp()" style="display: none; color: blue; text-decoration: underline;">Resend OTP</button>
+                    </div>
+
+
+
+                    <div class="otp-input mt-2">
+                        <div class="d-flex justify-content-center">
+                            <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit4" id="digit4" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit5" id="digit5" oninput="moveNext(this)" required>
+                            <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveNext(this)" required>
                         </div>
 
-                        <div class="text-center m-0">
-                            <h6 class="h6 text-green-900 mb-2 mt-2 alert alert-info p-2 m-0">OTP sent to your registerd mail address <b><?php echo $email; ?></b></h6>
-                        </div> 
+                    </div>
 
-                        <div class="m-0">
-                            <button class="btn btn-primary btn-user btn-block mt-0" type="submit" name="otp-submit">Register
-                                Account</button>
-                        </div>
-                    </form>
-                  
+                    <div class="text-center m-0">
+                        <h6 class="h6 text-green-900 mb-2 mt-2 alert alert-info p-2 m-0">OTP sent to your registerd mail address <b><?php echo $email; ?></b></h6>
+                    </div>
+
+                    <div class="m-0">
+                        <button class="btn btn-primary btn-user btn-block mt-0" type="submit" name="otp-submit" onclick="submitOtp()">Register
+                            Account</button>
+                    </div>
+
                 </div>
             </div>
         </div>
+
     </main>
 
     <!-- Bootstrap core JavaScript-->
@@ -101,20 +106,188 @@ $Admin          = new Admin;
     <!-- Core plugin JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- custom script for register.php -->
-    <script src="<?= JS_PATH ?>adminRegistration.js"></script>
+    <!-- custom script for register.php
+    <script src="<?= JS_PATH ?>adminRegistration.js"></script> -->
 
 
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="assets/js/sweetalert2/sweetalert2.all.min.js"></script>
+
     <!-- custom script for register.php -->
     <script src="<?= JS_PATH ?>adminRegistration.js"></script>
 
 
-
     <script>
+        // ============ otp submit button action ===============
+        const submitOtp = () => {
 
+            let digit1 = document.getElementById('digit1').value;
+            let digit2 = document.getElementById('digit2').value;
+            let digit3 = document.getElementById('digit3').value;
+            let digit4 = document.getElementById('digit4').value;
+            let digit5 = document.getElementById('digit5').value;
+            let digit6 = document.getElementById('digit6').value;
+
+            var submittedOtp = (digit1 + digit2 + digit3 + digit4 + digit5 + digit6);
+
+            console.log(submittedOtp);
+
+
+            $.ajax({
+                url: "ajax/registrationOnOtpSubmission.ajax.php",
+                type: "POST",
+                data: {
+                    otpsubmit: submittedOtp,
+                },
+                success: function(data) {
+                    console.log("ajax return data : " + data);
+                    if (data == 1) {
+                        handleRegistrationSuccess();
+                    } else if (data == 2) {
+                        handleFailure();
+                    } else {
+                        handleRegistrationFailure(data);
+                    }
+                }
+            });
+        }
+
+
+
+
+
+
+        function handleRegistrationSuccess() {
+
+            Swal.fire({
+                icon: "success",
+                title: "Registration Successful",
+                showConfirmButton: true,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "login.php";
+                }
+            });
+        }
+
+
+
+
+        function handleRegistrationFailure($message) {
+
+            Swal.fire({
+                icon: "error",
+                title: "'.$message.'",
+                showConfirmButton: true,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "login.php";
+                }
+            });
+
+        }
+
+
+        function handleFailure() {
+
+            Swal.fire({
+                icon: "error",
+                title: "INVALID OTP",
+                showConfirmButton: true,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.reload();
+                }
+            });
+
+        }
+
+
+
+
+
+        function messageResentAlert() {
+
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "NEW OTP SEND",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+
+        // =============== timer script =================
+
+        let timerOn = true;
+
+        function timer(remaining) {
+            var m = Math.floor(remaining / 60);
+            var s = remaining % 60;
+
+            m = m < 10 ? '0' + m : m;
+            s = s < 10 ? '0' + s : s;
+            document.getElementById('timer').innerHTML = m + ':' + s;
+            remaining -= 1;
+
+            if (remaining >= 0 && timerOn) {
+                setTimeout(function() {
+                    timer(remaining);
+                }, 1000);
+                return;
+            }
+
+            if (!timerOn) {
+                // Do validate stuff here
+                return;
+            }
+
+            // Do timeout stuff here
+            document.getElementById("resendOTP").style.display = 'block';
+            document.getElementById("timer-div").style.display = 'none';
+
+        }
+
+        timer(120);
+
+
+
+        // ============ new otp generation =============
+        const getNewotp = () => {
+            console.log('get new otp');
+
+            document.getElementById("resendOTP").style.display = 'none';
+            document.getElementById("timer-div").style.display = 'block';
+
+            timer(150);
+
+
+            $.ajax({
+                url: "ajax/resendOtpOnRegistration.ajax.php",
+                type: "POST",
+                data: {
+                    resendOtp: 'generate-new-otp',
+                },
+                success: function(data) {
+                    console.log("ajax return data : " + data);
+                    if (data == 1) {
+                        messageResentAlert();
+                    } else {
+                        // messageResentAlert();
+                        alert(data);
+                    }
+                }
+            });
+
+        }
     </script>
 </body>
 

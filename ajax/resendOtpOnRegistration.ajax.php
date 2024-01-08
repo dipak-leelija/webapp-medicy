@@ -1,25 +1,33 @@
 <?php
-include_once __DIR__ . "/config/constant.php";
+include_once dirname(__DIR__) . "/config/constant.php";
+require_once ROOT_DIR . '_config/registrationSessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
-require_once __DIR__ . '/PHPMailer/PHPMailer.php';
+require_once CLASS_DIR . 'admin.class.php';
+
+require_once CLASS_DIR . 'idsgeneration.class.php';
+
+require_once dirname(__DIR__ ) . '/PHPMailer/PHPMailer.php';
 require_once CLASS_DIR . 'utility.class.php';
 
 
 $PHPMailer		= new PHPMailer();
 $Utility        = new Utility;
 
+$IdGenerate     = new IdsGeneration;
+
+$Admin = new Admin;
 
 
-// $_SESSION['vkey']		= 87677;
-// $_SESSION['fisrt-name'] = 'Dipak';
-// $_SESSION['email']		= 'dipakmajumdar.leelija@gmail.com';
+if (isset($_POST['resendOtp'])) {
 
-/// =========== ADMIN REGISTRATION MAIL SENDING SECTION  ================
+   
+    $OTP  = $IdGenerate->otpGgenerator();
 
-if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_SESSION['email']) && isset($_SESSION['username'])) {
+    $_SESSION['verify_key'] = $OTP;
 
-	// $sessionStartTime = $_SESSION['last_activity'];
-	$verificationKey = $_SESSION['verify_key'];
+    $verificationKey = $OTP;
+
+
 	$fname = $_SESSION['first-name'];
 	$email = $_SESSION['email'];
 	$userName = $_SESSION['username'];
@@ -30,7 +38,6 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 	$txtEmail 		= strip_tags(trim($_SESSION['email']));
 	$userNm 		= strip_tags(trim($_SESSION['username']));
 
-	// header("location: verification-sent.php");
 
 	$sess_arr	= array('vkey', 'newCustomerSess', 'fisrt-name', 'last-name', 'profession');
 	$Utility->delSessArr($sess_arr);
@@ -75,10 +82,8 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 		if (!$PHPMailer->send()) {
 			echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
 		} else {
-			echo 'mail sent';
-			header("location: verification-sent.php");
+			echo '1';
 		}
-
 		$PHPMailer->clearAllRecipients();
 	} catch (Exception $e) {
 		echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
