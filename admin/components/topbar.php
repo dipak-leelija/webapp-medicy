@@ -1,4 +1,4 @@
-
+<!-- <?= ADM_URL . 'profile.php'?> -->
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -193,7 +193,7 @@
                         Employees
                     </a>
                 <?php endif ?> 
-                <!-- <a class="dropdown-item" href="<?= URL . 'empRole.php' ?>">
+                <!-- <a class="dropdown-item" href="<?= ADM_URL . 'empRole.php' ?>">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Designations
                 </a> -->

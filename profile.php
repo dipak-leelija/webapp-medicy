@@ -220,7 +220,7 @@ if ($_SESSION['ADMIN']) {
                                         </div>
                                         <hr>
                                         <div class="d-flex justify-content-end">
-                                            <button class="btn btn-success" type="submit" name="submit">UPDATE</button>
+                                            <button class="btn btn-success" type="submit" name="submit" id="updateBtn">UPDATE</button>
                                         </div>
                                     </div>
                                 </form>
@@ -319,6 +319,36 @@ if ($_SESSION['ADMIN']) {
             })
 
         })
+
+        // $(document).ready(function () {
+        //     $("#updateBtn").click(function () {
+        //         var formData = new FormData($("#edit-profile")[0]);
+
+        //         $.ajax({
+        //             type: "POST",
+        //             url: "_config/form-submission/profileSetup-form.php",
+        //             data: formData,
+        //             contentType: false,
+        //             processData: false,
+        //             success: function (response) {
+        //                 if (response.result === '1') {
+        //                     swal("Success", "Data Updated!", "success")
+        //                         .then(function (value) {
+        //                             window.location = '<?php echo URL ?>profile.php';
+        //                         });
+        //                 } else {
+        //                     swal("Error", "Updation Fails!", "error")
+        //                         .then(function (value) {
+        //                             window.location = '<?php echo URL ?>profile.php';
+        //                         });
+        //                 }
+        //             },
+        //             error: function (xhr, status, error) {
+        //                 console.error(xhr.responseText);
+        //             }
+        //         });
+        //     });
+        // });
     </script>
     <script>
         function showHide(fieldId) {

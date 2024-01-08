@@ -3,22 +3,27 @@ require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once SUP_ADM_DIR . '_config/accessPermission.php';
 
-require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR   . 'dbconnect.php';
 require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
 require_once SUP_ADM_DIR . '_config/user-details.inc.php';
-require_once CLASS_DIR . 'employee.class.php';
-require_once CLASS_DIR . 'admin.class.php';
-require_once CLASS_DIR . 'utility.class.php';
-require_once CLASS_DIR . 'empRole.class.php';
+require_once CLASS_DIR   . 'employee.class.php';
+require_once CLASS_DIR   . 'encrypt.inc.php';
+require_once CLASS_DIR   . 'utility.class.php';
+require_once CLASS_DIR   . 'empRole.class.php';
 
 
-$Utility    = new Utility;
-$employees  = new Employees();
-$desigRole = new Emproles();
+
+
+$Utility     = new Utility;
+$employees   = new Employees();
+$desigRole   = new Emproles();
+
 
 $currentUrl = $Utility->currentUrl();
 
 $showEmployees = $employees->employeesDisplay();
+$adminId = url_dec($_GET['customerId']);
+$showEmployees = $employees->employeesDisplay($adminId);
 $showDesignation = $desigRole->designationRoleCheckForLogin();
 $showDesignation = json_decode($showDesignation, true);
 // print_r($showDesignation);
@@ -164,26 +169,26 @@ if (isset($_POST['add-emp']) == true) {
                                         //employeesDisplay function initilized to feth employees data
                                         // $table = 'admin_id';
                                         // $showEmployees = $employees->selectEmpByCol($table, $adminId);
+                                        if (!$adminId) {
+                                            if (!empty($showEmployees)) {
 
-                                        if (!empty($showEmployees)) {
+                                                foreach ($showEmployees as $showEmployees) {
+                                                    $empId = $showEmployees['emp_id'];
+                                                    $empUsername = $showEmployees['emp_username'];
+                                                    $empName = $showEmployees['emp_name'];
+                                                    $empRoleId = $showEmployees['emp_role'];
+                                                    $empRolData = $desigRole->designationRoleID($adminId, $empRoleId);
+                                                    // print_r($empRolData);
+                                                    $empRolDatas = json_decode($empRolData, true);
+                                                    $empRole = '';
+                                                    if (is_array($empRolDatas))
+                                                        $empRole    = $empRolDatas['desig_name'];
 
-                                            foreach ($showEmployees as $showEmployees) {
-                                                $empId = $showEmployees['emp_id'];
-                                                $empUsername = $showEmployees['emp_username'];
-                                                $empName = $showEmployees['emp_name'];
-                                                $empRoleId = $showEmployees['emp_role'];
-                                                $empRolData = $desigRole->designationRoleID($adminId, $empRoleId);
-                                                // print_r($empRolData);
-                                                $empRolDatas = json_decode($empRolData, true);
-                                                $empRole = '';
-                                                if (is_array($empRolDatas))
-                                                $empRole    = $empRolDatas['desig_name'];
-                                                
-                                                $empMail = $showEmployees['emp_email'];
-                                                // $emp['employee_password'];
-                                                // $emp[''];
+                                                    $empMail = $showEmployees['emp_email'];
+                                                    // $emp['employee_password'];
+                                                    // $emp[''];
 
-                                                echo '<tr>
+                                                    echo '<tr>
                                                         <td>' . $empId . '</td>
                                                         <td>' . $empUsername . '</td>
                                                         <td>' . $empName . '</td>
@@ -196,6 +201,41 @@ if (isset($_POST['add-emp']) == true) {
                                                             <a class="delete-btn" data-id="' . $empId . '"  title="Delete"><i class="far fa-trash-alt"></i></a>
                                                         </td>
                                                     </tr>';
+                                                }
+                                            }
+                                        } else {
+                                            if (!empty($showEmployees)) {
+
+                                                foreach ($showEmployees as $showEmployees) {
+                                                    $empId = $showEmployees['emp_id'];
+                                                    $empUsername = $showEmployees['emp_username'];
+                                                    $empName = $showEmployees['emp_name'];
+                                                    $empRoleId = $showEmployees['emp_role'];
+                                                    $empRolData = $desigRole->designationRoleID($adminId, $empRoleId);
+                                                    // print_r($empRolData);
+                                                    $empRolDatas = json_decode($empRolData, true);
+                                                    $empRole = '';
+                                                    if (is_array($empRolDatas))
+                                                        $empRole    = $empRolDatas['desig_name'];
+
+                                                    $empMail = $showEmployees['emp_email'];
+                                                    // $emp['employee_password'];
+                                                    // $emp[''];
+
+                                                    echo '<tr>
+                                                        <td>' . $empId . '</td>
+                                                        <td>' . $empUsername . '</td>
+                                                        <td>' . $empName . '</td>
+                                                        <td>' . $empRole . '</td>
+                                                        <td>' . $empMail . '</td>
+                                                        <td>2011/04/25</td>
+                                                        <td>
+                                                            <a class="text-primary" onclick="viewAndEdit(' . $empId . ')" title="Edit" data-toggle="modal" data-target="#empViewAndEditModal"><i class="fas fa-edit"></i></a>
+    
+                                                            <a class="delete-btn" data-id="' . $empId . '"  title="Delete"><i class="far fa-trash-alt"></i></a>
+                                                        </td>
+                                                    </tr>';
+                                                }
                                             }
                                         }
 
