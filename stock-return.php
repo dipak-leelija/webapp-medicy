@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once ROOT_DIR . '_config/accessPermission.php';
+// require_once ROOT_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
@@ -156,10 +156,11 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                 </div>
                             </div>
 
-                            <!-- ============================ eof date picker div ================================ -->
+                            <!-- ================== eof date picker div ======================== -->
 
                             <div class="table-responsive" id="filter-table">
-                                <table class="table table-sm table-hover" id="<?php if (count($stockReturnLists) > 10) {
+                                <?php if($stockReturnLists->status){ ; ?>
+                                <table class="table table-sm table-hover" id="<?php if (count($stockReturnLists->data) > 10) {
                                                                                     echo "dataTable";
                                                                                 } ?>" width="100%" cellspacing="0">
                                     <thead class="bg-primary text-light">
@@ -216,6 +217,11 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                         ?>
                                     </tbody>
                                 </table>
+                                <?php }else{ ?>
+                                    <tr>
+                                            <th>No data Available</th>
+                                    </tr>
+                                    <?php } ?>
                             </div>
                         </div>
                     </div>
