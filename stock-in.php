@@ -147,19 +147,17 @@ $todayYr = date("y");
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="mb-1" for="dist-bill-no">Distributor Bill No.</label>
-                                    <input type="text" class="upr-inp " name="dist-bill-no" id="dist-bill-no"
-                                        placeholder="Enter Distributor Bill" value="" autocomplete="off"
-                                        style="text-transform: uppercase;" onkeyup="setDistBillNo(this)">
+                                    <input type="text" class="text-uppercase upr-inp " name="dist-bill-no" id="dist-bill-no" value="" autocomplete="off" onkeyup="setDistBillNo(this)">
                                 </div>
 
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="bill-date">Bill Date</label>
-                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date"
+                                    <input type="date" class="text-uppercase upr-inp" name="bill-date" id="bill-date"
                                         onchange="getbillDate(this)">
                                 </div>
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
-                                    <input type="date" class="upr-inp" name="due-date" id="due-date"
+                                    <input type="date" class="text-uppercase upr-inp" name="due-date" id="due-date"
                                         onchange="getDueDate(this)">
                                 </div>
                                 <div class="col-sm-6 col-md-2">
