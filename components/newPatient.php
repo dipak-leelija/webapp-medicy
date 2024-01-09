@@ -52,7 +52,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
                     </div>
                     <div class=" mb-0">
                         <div class="h5 mb-0 font-weight-bold <?= (!$newPatients) ? 'text-secondary h6' : 'text-dark' ?>">
-                            <p id="newPatient"><?= ($newPatients) ? $totalCount : 'Oops!, No Appointments yet.' ?></p>
+                            <p id="newPatient"><?= ($newPatients) ? $totalCount : 'Oops! No Patients yet.' ?></p>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
         }
         ?>
         <div class="d-flex justify-content-end px-1">
-            <div class="dropdown-menu dropdown-menu-right p-2 mt-n5 mr-1" id="newPatientDtPkr" style="display: none; background-color: rgba(255, 255, 255, 0.8);">
+            <div class="dropdown-menu dropdown-menu-right shadow-lg p-2 mt-n5 mr-1" id="newPatientDtPkr" style="display: none; background-color: rgba(255, 255, 255, 0.8);">
                 <input style="height: 20px;" type="date" id="newPatientDt">
                 <button class="btn btn-sm btn-primary" onclick="newPatientByDt()" style="height: 1.5rem; padding:0px;">Find</button>
             </div>
