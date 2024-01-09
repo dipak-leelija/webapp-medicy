@@ -13,7 +13,7 @@ function supAdminDetails(){
             $res = $stmt->get_result();
 
             if ($res->num_rows > 0) {
-                $data = array();
+                $adminData = array();
                 while ($result = $res->fetch_object()) {
                     $adminData[] = $result;
                 }

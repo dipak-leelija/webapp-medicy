@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_SESSION['SUPERADMINLOGGEDIN'])) {
-  header("Location: " . SUP_ADM_DIR . "login-superAdmin.php");
+  header("Location: " . ADM_URL . "login-superAdmin.php");
   exit;
 }
 

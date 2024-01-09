@@ -84,6 +84,13 @@ class LoginForm extends DatabaseConnection
                     $_SESSION['ADMIN_ADDRESS']      = $admData1->address;
                     $_SESSION['ADMINID']            = $admData1->admin_id;
 
+
+                    // Insert login time into login_time table
+                    $adminId = $_SESSION['ADMINID'];
+                    $loginTime = date('Y-m-d H:i:s');
+                    $this->insertLoginTime($adminId, $loginTime);
+
+
                     header("Location: " . URL);
                     exit;
                 } else {
@@ -127,6 +134,20 @@ class LoginForm extends DatabaseConnection
             } else {
                 return 'not found';
             }
+        }
+    }
+ 
+
+    /// =======for login time =========///
+    function insertLoginTime($adminId, $loginTime)
+    {
+        $sql = "INSERT INTO login_time (id, login_time) VALUES ('$adminId', '$loginTime')";
+        $result = $this->conn->query($sql);
+        if ($result) {
+            return true;
+        } else {
+            error_log("Error inserting login time: " . $this->conn->error);
+            return false; 
         }
     }
 }

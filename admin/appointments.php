@@ -1,7 +1,6 @@
 <?php
-
 require_once dirname(__DIR__) . '/config/constant.php';
-require_once SUP_ADM_DIR . '_config/sessionCheck.php';
+require_once SUP_ADM_DIR      . '_config/sessionCheck.php';
 // require_once __DIR__ . '/config/constant.php';
 // require_once ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 // require_once ADM_DIR . '_config/accessPermission.php';
@@ -411,7 +410,7 @@ if ($allAppointments->status) {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
+            <?php include  SUP_ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

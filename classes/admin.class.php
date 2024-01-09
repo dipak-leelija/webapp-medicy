@@ -283,5 +283,34 @@ class Admin extends DatabaseConnection
         }
     }
     
+
+
+    ///======show Login Time======///
+    function showLoginTime($customerID){
+        try{
+            $ID = " SELECT * FROM `login_time` WHERE `id`= '$customerID' ";
+
+            $stmt = $this->conn->prepare($ID);
+
+            $stmt->execute();
+
+            $res = $stmt->get_result();
+
+            if ($res->num_rows > 0) {
+                $data = array();
+                while ($result = $res->fetch_object()) {
+                    $data[] = $result;
+                }
+                $stmt->close();
+                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$data]);
+            } else {
+                $stmt->close();
+                return json_encode(['status'=>'0', 'message'=>'no data', 'data'=> '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status'=>'', 'message'=>$e->getMessage(), 'data'=> '']);
+        }
+        return 0;
+    }
     
 } //eof Admin Class

@@ -1,7 +1,8 @@
 <?php
+print_r(dirname(__DIR__) . '/config/constant.php');
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php';  //check admin loggedin or not
-require_once SUP_ADM_DIR . '_config/accessPermission.php';
+// require_once SUP_ADM_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
@@ -36,7 +37,7 @@ if ($_SESSION['SUPER_ADMIN']) {
             $firstName = $adminData->fname;
             $lastName  = $adminData->lname;
             $image     = $adminData->adm_img;
-            $imagePath = ADM_IMG_PATH . $image;
+            $imagePath = SUP_ADM_IMG_PATH . $image;
             $userName  = $adminData->username;
             $email     = $adminData->email;
             $phone     = $adminData->mobile_no;
@@ -44,37 +45,38 @@ if ($_SESSION['SUPER_ADMIN']) {
             $address   = $adminData->address;
         }
     }
-} else {
+} 
+// else {
 
-    $employeeDetails = $employees->employeeDetails($employeeId, $adminId);
-    $employeeDetails = json_decode($employeeDetails);
+//     $employeeDetails = $employees->employeeDetails($employeeId, $adminId);
+//     $employeeDetails = json_decode($employeeDetails);
 
-    if ($employeeDetails->status) {
-        $employeeData = $employeeDetails->data;
+//     if ($employeeDetails->status) {
+//         $employeeData = $employeeDetails->data;
 
-        foreach ($employeeData as $employeeData) {
+//         foreach ($employeeData as $employeeData) {
 
-            $empName = $employeeData->emp_name;
+//             $empName = $employeeData->emp_name;
 
-            $lastSpacePos = strrpos($empName, ' ');
+//             $lastSpacePos = strrpos($empName, ' ');
 
-            if ($lastSpacePos !== false) {
+//             if ($lastSpacePos !== false) {
 
-                $firstName = substr($empName, 0, $lastSpacePos);
-                $lastName = substr($empName, $lastSpacePos + 1);
-            }
-            $firstName = $firstName;
-            $lastName = $lastName;
-            $image = $employeeData->emp_img;
-            $imagePath = EMPLOYEE_IMG_PATH . $image;
-            $userName = $employeeData->emp_username;
-            $email = $employeeData->emp_email;
-            $phone = $employeeData->emp_contact_no;
-            $password = $employeeData->emp_password;
-            $address = $employeeData->emp_address;
-        }
-    }
-}
+//                 $firstName = substr($empName, 0, $lastSpacePos);
+//                 $lastName = substr($empName, $lastSpacePos + 1);
+//             }
+//             $firstName = $firstName;
+//             $lastName = $lastName;
+//             $image = $employeeData->emp_img;
+//             $imagePath = EMPLOYEE_IMG_PATH . $image;
+//             $userName = $employeeData->emp_username;
+//             $email = $employeeData->emp_email;
+//             $phone = $employeeData->emp_contact_no;
+//             $password = $employeeData->emp_password;
+//             $address = $employeeData->emp_address;
+//         }
+//     }
+// }
 
 
 ?>

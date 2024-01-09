@@ -11,10 +11,10 @@ $checkSubscription = $Subscription->checkSubscription(NOW);
 
 // ========================== CHECK SUBSCRIPTION ========================== 
 
-if (!$checkSubscription){
-    header("Location:".URL."premium/plans.php");
-    exit;
-}
+// if (!$checkSubscription){
+//     header("Location:".ADM_URL."premium/plans.php");
+//     exit;
+// }
 
 
 // ========================== CLINIC SETUP ========================== 
