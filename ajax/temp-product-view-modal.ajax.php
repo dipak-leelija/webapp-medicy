@@ -74,9 +74,16 @@ $QuantityUnit   = new QuantityUnit;
     <?php
     if (isset($_GET['id'])) {
         $productId = $_GET['id'];
-        $product        = json_decode($Products->showProductsById($_GET['id']));
+        $product        = json_decode($Products->showProductsByIdOnUser($_GET['id'], $adminId));
         $product        = $product->data;
-        $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]->manufacturer_id));
+
+        if (property_exists($product[0], 'manufacturer_id')) {
+            $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]->manufacturer_id));
+        }else{
+            $manuf = json_encode(['status'=>0]);
+            $manuf = json_decode($manuf);
+        }
+
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
         // print_r($image );
@@ -97,18 +104,40 @@ $QuantityUnit   = new QuantityUnit;
 
         $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
 
-        $itemQuantityUnit = $QuantityUnit->quantityUnitName($product[0]->unit_id);
-        $itemQuantityUnit = json_decode($itemQuantityUnit, true);
-        if ($itemQuantityUnit) {
-            if (isset($itemQuantityUnit['data']['short_name'])) {
-                $qantityName = $itemQuantityUnit['data']['short_name'];
+        if (property_exists($product[0], 'unit_id')) {
+            $itemQuantityUnit = json_decode($QuantityUnit->quantityUnitName($product[0]->unit_id));
+            $itemQuantityUnit = $itemQuantityUnit->data;
+
+            if ($itemQuantityUnit) {
+                $qantityName = $itemQuantityUnit->short_name;
             } else {
                 $qantityName = '';
             }
+        }else{
+            $qantityName = '';
         }
 
         $itemUnitName = $ItemUnit->itemUnitName($product[0]->unit);
 
+
+        if(property_exists($product[0], 'comp_1')){
+            $comp1 = $product[0]->comp_1;
+        }else{
+            $comp1 = '';
+        }
+
+        if(property_exists($product[0], 'comp_2')){
+            $comp2 = $product[0]->comp_2;
+        }else{
+            $comp2 = '';
+        }
+
+
+        if(property_exists($product[0], 'dsc')){
+            $dsc = $product[0]->dsc;
+        }else{
+            $dsc = '';
+        }
     ?>
         <div class="container-fluid d-flex justify-content-center mt-2">
             <div class="container-fluid">
@@ -176,36 +205,36 @@ $QuantityUnit   = new QuantityUnit;
                         <div class="text-start">
                             <p>
                                 <b>Composition: </b>
-                                <br><?= $product[0]->comp_1; ?>
-                                <br><?= $product[0]->comp_2; ?>
+                                <br><?= $comp1; ?>
+                                <br><?= $comp2; ?>
                             </p>
 
-                            <p><b>Description: </b> <br><?php echo $product[0]->dsc; ?></p>
+                            <p><b>Description: </b> <br><?php echo $dsc; ?></p>
                         </div>
                     </div>
                     <div class="col-12 col-md-2" id="btn-ctrl-1">
                         <div class="col-md-12 d-flex">
                             <div class="col-sm-6 m-2">
-                                <a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
+                                <a id="anchor" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
                             </div>
-                            <div class="col-sm-6 m-2">
+                            <!-- <div class="col-sm-6 m-2">
                                 <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
 
                 <div class="row justify-content-center mt-4" id='btn-ctrl-2'>
-                    <div class="col-4 d-flex">
-                        <div class="col-sm-6 d-flex jsutify-content-center">
-                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $productId; ?>">Edit</a></button>
+                    <div class="col-md-1 d-flex jsutify-content-end">
+                        <div class="col-sm-2 d-flex jsutify-content-end">
+                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product-user.php?id=<?php echo $productId; ?>">Edit</a></button>
                         </div>
-                        <div class="col-sm-6 d-flex jsutify-content-center">
+                        <!-- <div class="col-sm-6 d-flex jsutify-content-center">
                             <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
-                
+
             </div>
         </div>
     <?php
@@ -221,11 +250,6 @@ $QuantityUnit   = new QuantityUnit;
     <?php
     }*/
     ?>
-
-
-
-
-
 
 
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>

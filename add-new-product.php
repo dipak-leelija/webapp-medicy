@@ -112,7 +112,7 @@ $unitData = $ItemUnit->showItemUnits();
                         <div class="card shadow mb-4 col-12" style="min-height: 70vh; max-width: 150vh;">
                             <h4 class="h4 d-flex justify-content-center aligen-item-center mt-4"> Add New Product</h1>
                                 <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
-                                    <div class="card-body d-flex">
+                                    <div class="card-body d-flex flex-wrap">
                                         <div class="col-6">
                                             <!-- product name row -->
                                             <div class="row">
@@ -252,9 +252,9 @@ $unitData = $ItemUnit->showItemUnits();
                                             </div>
                                             <br>
                                             <div class="col-12">
-                                                <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
-                                                <button class="btn btn-primary" name="add-new-product" id="add-btn" type="submit">Add
-                                                    Product</button>
+                                                <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()" style="width: 12rem;"> Reset</button>
+                                                <button class="btn btn-primary" name="add-new-product" id="add-btn" type="submit" style="width: 12rem;">Add
+                                                    Product Request</button>
 
                                             </div>
                                         </div>

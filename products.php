@@ -180,16 +180,16 @@ if (isset($_GET['search'])) {
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }
 
-                                                        if(property_exists($item, 'dsc')){
+                                                        if (property_exists($item, 'dsc')) {
                                                             if ($item->dsc == null) {
                                                                 $dsc = '';
                                                             } else {
                                                                 $dsc = $item->dsc . '...';
                                                             }
-                                                        }else{
+                                                        } else {
                                                             $dsc = '';
                                                         }
-                                                        
+
                                                 ?>
                                                         <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                             <div class="card  mb-3 p-3" style="min-width: 14rem; min-height: 11rem;">
@@ -254,7 +254,7 @@ if (isset($_GET['search'])) {
 
     <!-- Product Modal -->
     <div class="modal fade" id="productViewModal" tabindex="-1" aria-labelledby="product-view-edit-modal" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="product-view-edit-modal">View/Edit Product</h5>
@@ -292,9 +292,7 @@ if (isset($_GET['search'])) {
         var xmlhttp = new XMLHttpRequest();
 
         // =============== modal size control funcion ==============
-        function changeModalSize(flag, modalId) {
-
-
+        /*function changeModalSize(flag, modalId) {
 
             let modal = document.getElementById(modalId);
 
@@ -310,29 +308,21 @@ if (isset($_GET['search'])) {
                 if (flag == 1) {
                     modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
 
-                    modal.querySelector('.modal-dialog').classList.add('modal-xl'); 
+                    modal.querySelector('.modal-dialog').classList.add('modal-xl');
                 }
             }
-        }
+        }*/
         // ================ end of modal size control =============
 
         // ========================== view and edit fucntion =========================
         const viewItem = (t) => {
             let prodId = t.id;
-            let verifiedValue = t.value;
+            // let verifiedValue = t.value;
 
-            let url = '';
-            if (verifiedValue == 0) {
-                changeModalSize('0', 'productViewModal');
-                // url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId; // updated path for user view
+            // url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId; // updated path for user view
 
-                url = 'ajax/temp-product-view-modal.ajax.php?id=' + prodId; // temporary file path for user view and edit.
-            } else {
-                changeModalSize('1', 'productViewModal');
-                url = 'ajax/product-view-modal.ajax.php?id=' + prodId;
-            }
+            url = 'ajax/temp-product-view-modal.ajax.php?id=' + prodId; // temporary file path for user view and edit.
 
-            
             $(".productViewModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
@@ -377,7 +367,7 @@ if (isset($_GET['search'])) {
             let searchVal = document.getElementById("prodcut-search").value;
 
             if (searchVal.length > 2) {
-                
+
                 let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
                 xmlhttp.open("GET", manufURL, false);
                 xmlhttp.send(null);
@@ -399,7 +389,7 @@ if (isset($_GET['search'])) {
                 list.innerHTML = '';
                 productsDropdown.style.display = "none";
             }
-            
+
         });
 
         //================================================================
