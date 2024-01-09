@@ -111,6 +111,10 @@ session_start();
 	define("USER_IMG_PATH",						URL.'/images/user/');						//location of users avatar
 	define("DFAULT_AVATAR_PATH",				URL.'/images/user/default-user-icon.png');	//location of default users avatarassets
 
+
+	define("PROD_IMG", 							ROOT_DIR.'images/product-image/');
+	
+
 	const ASSETS_PATH						=	URL.'assets/';
 	const CSS_PATH							=	URL.'assets/css/';
 	const JS_PATH							=	URL.'assets/js/';
