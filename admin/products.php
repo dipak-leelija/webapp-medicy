@@ -147,7 +147,7 @@ if (isset($_GET['search'])) {
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <a class="btn btn-sm btn-primary" href="add-new-product.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
+                                        <a class="btn btn-sm btn-primary" href="add-products.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
                                     </div>
                                 </div>
                                 <!-- </div> -->
@@ -248,7 +248,7 @@ if (isset($_GET['search'])) {
 
     <!-- Product Modal -->
     <div class="modal fade" id="productViewModal" tabindex="-1" aria-labelledby="product-view-edit-modal" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="product-view-edit-modal">View/Edit Product</h5>
@@ -286,26 +286,26 @@ if (isset($_GET['search'])) {
         var xmlhttp = new XMLHttpRequest();
 
         // =============== modal size control funcion ==============
-        function changeModalSize(flag, modalId) {
+        // function changeModalSize(flag, modalId) {
 
 
 
-            let modal = document.getElementById(modalId);
+        //     let modal = document.getElementById(modalId);
 
-            if (modal) {
-                if (flag == 0) {
-                    modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
+        //     if (modal) {
+        //         if (flag == 0) {
+        //             modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
 
-                    modal.querySelector('.modal-dialog').classList.add('modal-md'); 
-                }
+        //             modal.querySelector('.modal-dialog').classList.add('modal-xl'); 
+        //         }
 
-                if (flag == 1) {
-                    modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
+        //         if (flag == 1) {
+        //             modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
 
-                    modal.querySelector('.modal-dialog').classList.add('modal-xl'); 
-                }
-            }
-        }
+        //             modal.querySelector('.modal-dialog').classList.add('modal-xl'); 
+        //         }
+        //     }
+        // }
         // ================ end of modal size control =============
 
         // ========================== view and edit fucntion =========================
@@ -314,16 +314,14 @@ if (isset($_GET['search'])) {
             let verifiedValue = t.value;
 
             let url = '';
-            if (verifiedValue == 0) {
-                changeModalSize('0', 'productViewModal');
-                url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId;
-            } else {
-                changeModalSize('1', 'productViewModal');
                 url = 'ajax/product-view-modal.ajax.php?id=' + prodId;
-            }
+            // if (verifiedValue) {
+            //     changeModalSize('0', 'productViewModal');
+            //     url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId;
+            // } 
 
             $(".productViewModal").html(
-                '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
+                '<iframe width="100%" height="500px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         }
         // === end of view and edit ==================================================

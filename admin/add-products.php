@@ -1,15 +1,15 @@
 <?php
-require_once __DIR__ . '/config/constant.php';
-require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once ROOT_DIR . '_config/accessPermission.php';
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once  SUP_ADM_DIR     . '_config/sessionCheck.php'; //check admin loggedin or not
+require_once  SUP_ADM_DIR     . '_config/accessPermission.php';
 
-require_once CLASS_DIR . 'dbconnect.php';
-require_once ROOT_DIR . '_config/healthcare.inc.php';
-require_once CLASS_DIR . 'products.class.php';
-require_once CLASS_DIR . 'manufacturer.class.php';
-require_once CLASS_DIR . 'measureOfUnit.class.php';
-require_once CLASS_DIR . 'packagingUnit.class.php';
-require_once ROOT_DIR . '_config/accessPermission.php';
+require_once CLASS_DIR    . 'dbconnect.php';
+require_once  SUP_ADM_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR    . 'products.class.php';
+require_once CLASS_DIR    . 'manufacturer.class.php';
+require_once CLASS_DIR    . 'measureOfUnit.class.php';
+require_once CLASS_DIR    . 'packagingUnit.class.php';
+require_once  SUP_ADM_DIR . '_config/accessPermission.php';
 
 
 //objects Initilization
@@ -68,7 +68,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
+        <?php include SUP_ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -78,7 +78,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
+                <?php include SUP_ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -255,7 +255,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             <!-- End of Content Wrapper -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
+            <?php include_once SUP_ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

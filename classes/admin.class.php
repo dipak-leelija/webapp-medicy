@@ -70,7 +70,40 @@ class Admin extends DatabaseConnection
 
 
 
+    function filterAdminByIdOrName($searchPattern){
 
+        try{
+            $stmt = $this->conn->prepare("SELECT * FROM `admin` WHERE admin_id LIKE ? OR  username LIKE ? OR fname LIKE ? ");
+
+            if ($stmt) {
+
+                $searchPattern = "%".$searchPattern ."%";
+                $stmt->bind_param("sss", $searchPattern, $searchPattern, $searchPattern);
+                
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    $resultData = array();
+                    while ($row = $result->fetch_object()) {
+                        $resultData[] = $row;
+                    }
+                    $stmt->close(); 
+                    return json_encode(['status' => '1', 'message' => 'success', 'data'=> $resultData]);
+                } else {
+                    return json_encode(['status' => '0', 'message' => '', 'data'=> '']);
+                    $stmt->close();
+                }
+            } else {
+                throw new Exception("Error statement preparation: $stmt->error");
+            }
+        }catch (Exception $e) {
+            error_log("Error in appointmentsDisplay: " . $e->getMessage());
+            return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
+        }
+        return 0;
+
+    }
 
 
     function echeckUsername($username)
@@ -288,7 +321,7 @@ class Admin extends DatabaseConnection
     ///======show Login Time======///
     function showLoginTime($customerID){
         try{
-            $ID = " SELECT * FROM `login_time` WHERE `id`= '$customerID' ";
+            $ID = " SELECT * FROM `login_activity` WHERE `admin_id`= '$customerID' ";
 
             $stmt = $this->conn->prepare($ID);
 
