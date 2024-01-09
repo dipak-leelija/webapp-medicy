@@ -129,13 +129,13 @@
                 <span>Products</span>
             </a>
             <div id="productsManagement"
-                class="collapse <?php if($page ==  "products" ||  $page ==  "add-new-product"){ echo "show";} ?>"
+                class="collapse <?php if($page ==  "products" ||  $page ==  "add-products"){ echo "show";} ?>"
                 aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?php if($page ==  "products" ){ echo "active";} ?>" href="products.php">All
                         Products </a>
-                    <a class="collapse-item <?php if($page ==  "add-new-product"){ echo "active";} ?>"
-                        href="add-new-product.php ">Add Product</a>
+                    <a class="collapse-item <?php if($page ==  "add-products"){ echo "active";} ?>"
+                        href="add-products.php ">Add Product</a>
                 </div>
             </div>
         </li>
