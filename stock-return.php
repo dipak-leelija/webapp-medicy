@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once ROOT_DIR . '_config/accessPermission.php';
+// require_once ROOT_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
@@ -24,9 +24,7 @@ $Employees          = new Employees();
 $showDistributor       = $Distributor->showDistributor();
 $col = 'admin_id';
 $stockReturnLists      = json_decode($StockReturn->stockReturnFilter($col, $adminId));
-if($stockReturnLists->status){
-    $stockReturnLists = $stockReturnLists->data;
-}
+
 // print_r($stockReturnLists);
 
 $empLists              = $Employees->employeesDisplay($adminId);
@@ -156,9 +154,13 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                 </div>
                             </div>
 
-                            <!-- ============================ eof date picker div ================================ -->
+                            <!-- ================== eof date picker div ======================== -->
 
                             <div class="table-responsive" id="filter-table">
+                                <?php 
+                                    if($stockReturnLists->status){ 
+                                    $stockReturnLists = $stockReturnLists->data ; 
+                                ?>
                                 <table class="table table-sm table-hover" id="<?php if (count($stockReturnLists) > 10) {
                                                                                     echo "dataTable";
                                                                                 } ?>" width="100%" cellspacing="0">
@@ -216,6 +218,11 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                         ?>
                                     </tbody>
                                 </table>
+                                <?php }else{ ?>
+                                    <tr>
+                                            <th>No data Available</th>
+                                    </tr>
+                                    <?php } ?>
                             </div>
                         </div>
                     </div>

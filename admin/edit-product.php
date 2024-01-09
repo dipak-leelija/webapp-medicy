@@ -162,7 +162,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
                         $setPriority = isset($_POST['priority-group']) ? $_POST['priority-group'] : 0;
 
 
-                        $updateImage = $ProductImages->addImages($productId, $image, $employeeId, NOW, $adminId);
+                        $updateImage = $ProductImages->addImages($productId, $image, $employeeId, NOW);
                         if ($updateImage) {
                             $updatePriority = $ProductImages->updatePriority($image, $setPriority, $productId);
                         }

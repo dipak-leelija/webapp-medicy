@@ -92,7 +92,30 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                         <div class="card-body">
                             <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
                                 <div class="row">
-                                    <div class="col-md-7">
+                                    <div class="col-md-5">
+                                        <div class="col-12">
+                                            <div id="img-div">
+                                                <div class="container-fluid" id="img-container">
+                                                    <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
+                                                    <label class="d-flex justify-content-center" for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
+                                                    <p id="num-of-files">No files chosen</p>
+                                                    <div>
+                                                        <div id="images">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="col-12 d-flex justify-content-around">
+                                            <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
+                                            <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add
+                                                Product</button>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 mt-5">
                                         <div class="col-12">
                                             <div class="col-md-12">
                                                 <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
@@ -220,7 +243,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                         </div>
                                     </div>
 
-                                    <div class="col-md-5">
+                                    <!-- <div class="col-md-5">
                                         <div class="col-12">
                                             <div id="img-div">
                                                 <div class="container-fluid" id="img-container">
@@ -242,7 +265,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 Product</button>
 
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </form>
                         </div>
