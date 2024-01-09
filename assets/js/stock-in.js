@@ -485,9 +485,10 @@ const getBillAmount = () => {
         document.getElementById("ptr").focus();
     }
 
+    let modifiedPtr = document.getElementById("ptr").value;
+    console.log(modifiedPtr);
 
-
-    let base = parseFloat(maxPtr) - (parseFloat(maxPtr) * (parseFloat(disc) / 100));
+    let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
     base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
     base = base.toFixed(2);
 

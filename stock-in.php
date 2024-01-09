@@ -72,9 +72,7 @@ $todayYr = date("y");
     <title>Medicy Items</title>
 
     <!-- Custom fonts for this template -->
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-in.css">
 
@@ -114,32 +112,29 @@ $todayYr = date("y");
                             <div class="row bg-distributor rounded pt-2 pb-4">
 
                                 <div class="col-sm-6 col-md-3">
-                                    
+
                                     <label class="mb-1" for="distributor-id">Distributor</label>
                                     <input type="text" name="" id="distributor-id" class="upr-inp">
 
                                     <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
-                                        <?php if (!empty($showDistributors)): ?>
-                                        <div class="lists" id="lists">
-                                            <?php foreach ($showDistributors as $eachDistributor) {?>
-                                            <div class="p-1 border-bottom list" id="<?= $eachDistributor->id ?>"
-                                                onclick="setDistributor(this)">
-                                                <?= $eachDistributor->name ?>
+                                        <?php if (!empty($showDistributors)) : ?>
+                                            <div class="lists" id="lists">
+                                                <?php foreach ($showDistributors as $eachDistributor) { ?>
+                                                    <div class="p-1 border-bottom list" id="<?= $eachDistributor->id ?>" onclick="setDistributor(this)">
+                                                        <?= $eachDistributor->name ?>
+                                                    </div>
+                                                <?php } ?>
                                             </div>
-                                            <?php } ?>
-                                        </div>
-                                        <div class="d-flex flex-column justify-content-center mt-1" data-toggle="modal"
-                                            data-target="#add-distributor" onclick="addDistributor()">
-                                            <button type="button" id="add-customer" class="text-primary border-0">
-                                                <i class="fas fa-plus-circle"></i> Add Now</button>
-                                        </div>
-                                        <?php else: ?>
-                                        <p class="text-center font-weight-bold">Distributor Not Found!</p>
-                                        <div class="d-flex flex-column justify-content-center" data-toggle="modal"
-                                            data-target="#add-distributor" onclick="addDistributor()">
-                                            <button type="button" id="add-customer" class="text-primary border-0">
-                                                <i class="fas fa-plus-circle"></i>Add Now</button>
-                                        </div>
+                                            <div class="d-flex flex-column justify-content-center mt-1" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
+                                                <button type="button" id="add-customer" class="text-primary border-0">
+                                                    <i class="fas fa-plus-circle"></i> Add Now</button>
+                                            </div>
+                                        <?php else : ?>
+                                            <p class="text-center font-weight-bold">Distributor Not Found!</p>
+                                            <div class="d-flex flex-column justify-content-center" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
+                                                <button type="button" id="add-customer" class="text-primary border-0">
+                                                    <i class="fas fa-plus-circle"></i>Add Now</button>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -152,18 +147,15 @@ $todayYr = date("y");
 
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="bill-date">Bill Date</label>
-                                    <input type="date" class="text-uppercase upr-inp" name="bill-date" id="bill-date"
-                                        onchange="getbillDate(this)">
+                                    <input type="date" class="text-uppercase upr-inp" name="bill-date" id="bill-date" onchange="getbillDate(this)">
                                 </div>
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
-                                    <input type="date" class="text-uppercase upr-inp" name="due-date" id="due-date"
-                                        onchange="getDueDate(this)">
+                                    <input type="date" class="text-uppercase upr-inp" name="due-date" id="due-date" onchange="getDueDate(this)">
                                 </div>
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="payment-mode">Payment Mode</label>
-                                    <select class="upr-inp" name="payment-mode" id="payment-mode"
-                                        onchange="setPaymentMode(this)">
+                                    <select class="upr-inp" name="payment-mode" id="payment-mode" onchange="setPaymentMode(this)">
                                         <option value="" selected disabled>Select</option>
                                         <option value="Credit">Credit</option>
                                         <option value="Cash">Cash</option>
@@ -184,7 +176,7 @@ $todayYr = date("y");
                             <hr class="sidebar-divider">
 
                             <div class="row">
-                                <?php require_once  ROOT_COMPONENT."purchase-product-fields.php" ?>
+                                <?php require_once  ROOT_COMPONENT . "purchase-product-fields.php" ?>
                             </div>
 
                             <!-- /end Add Product  -->
@@ -192,7 +184,7 @@ $todayYr = date("y");
                             <!--=========================== Show Bill Items ===========================-->
                             <div class="card shadow mb-4">
 
-                                <?php require_once  ROOT_COMPONENT."purchase-summary.php" ?>
+                                <?php require_once  ROOT_COMPONENT . "purchase-summary.php" ?>
                             </div>
                             <!--=========================== Show Bill Items ===========================-->
 
@@ -218,8 +210,7 @@ $todayYr = date("y");
     <!-- End of Page Wrapper -->
 
     <!-- Distributor Add Modal -->
-    <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header" onload="captureCurrentLocation()">
@@ -252,6 +243,97 @@ $todayYr = date("y");
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
     <script src="<?= JS_PATH ?>stock-in.js"></script>
 
+
+
+    <script>
+        
+        // const getBillAmount = () => {
+
+        //     let mrp = document.getElementById('mrp').value;
+
+        //     let ptr = document.getElementById('ptr').value;
+
+        //     let gst = document.getElementById('gst').value;
+        //     // console.log("change gst : "+gst);
+
+        //     let prevGst = document.getElementById("gst-check").value;
+        //     // console.log("prev gst : "+prevGst);
+
+        //     let qty = document.getElementById('qty').value;
+        //     if (qty == '') {
+        //         qty = 0;
+        //     }
+
+        //     let disc = document.getElementById('discount').value;
+        //     if (disc == '') {
+        //         disc = 0;
+        //     }
+
+
+        //     let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
+        //     maxPtr = maxPtr.toFixed(2);
+
+        //     // console.log("max ptr "+ maxPtr);
+        //     // console.log("change ptr "+ ptr);
+
+        //     if (gst != prevGst) {
+        //         document.getElementById('ptr').value = maxPtr;
+        //         document.getElementById("gst-check").value = gst;
+        //     }
+
+        //     if (ptr > maxPtr) {
+        //         swal({
+        //             title: "Error Input",
+        //             text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
+        //             icon: "error",
+        //             button: false, // Hide the "OK" button
+        //             timer: 1000 // Auto-close the alert after 2 seconds
+        //         });
+
+        //         document.getElementById("ptr").value = maxPtr;
+
+        //         maxPtr = maxPtr;
+
+        //         document.getElementById("bill-amount").value = " ";
+
+        //         document.getElementById("ptr").focus();
+        //     }
+
+        //     let curretnPtr = document.getElementById("ptr").value;
+        //     console.log(curretnPtr);
+
+        //     let base = parseFloat(maxPtr) - (parseFloat(maxPtr) * (parseFloat(disc) / 100));
+        //     base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
+        //     base = base.toFixed(2);
+
+        //     let totalAmount = parseFloat(base) * parseInt(qty);
+        //     totalAmount = totalAmount.toFixed(2);
+
+
+        //     document.getElementById("base").value = base;
+        //     document.getElementById("bill-amount").value = totalAmount;
+
+
+        //     //=============================================
+        //     //======= UPDATE GST ON PRODUCT SECTION =======
+        //     let prodId = document.getElementById("product-id").value;
+
+        //     $.ajax({
+        //         url: 'ajax/update-product-gst.ajax.php',
+        //         type: 'POST',
+        //         data: {
+        //             gstPercetn: gst,
+        //             prodId: prodId
+        //         },
+        //         success: function(response) {
+        //             // console.log(response);
+        //         },
+        //         error: function(error) {
+        //             // console.error('Error removing image:', error);
+        //         }
+        //     });
+        // } //eof getBillAmount function
+    </script>
 </body>
 
 </html>
