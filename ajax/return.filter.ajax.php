@@ -1,15 +1,13 @@
 <?php
 
     require_once dirname(__DIR__).'/config/constant.php';
-    
+    require_once ROOT_DIR . '_config/sessionCheck.php';
     require_once CLASS_DIR.'dbconnect.php';
     require_once CLASS_DIR."stockReturn.class.php";
     require_once CLASS_DIR."distributor.class.php";
 
-
     $StockReturn    = new StockReturn();
     $Distributor = new Distributor();
-
 
     $today = date("Y-m-d");
     $value1 = date("Y-m-d");
@@ -40,7 +38,7 @@
         switch ($n) {
             case 1:
                 // echo "<br>this is case 1";
-                $data1 = $StockReturn->stockReturnFilter($table, $value);
+                $data1 = $StockReturn->stockReturnFilterByTableName($table, $value, $adminId);
                 $data = $data1;
                 break;
             case 2:
@@ -91,7 +89,7 @@
                 // echo "<br>from date : $fromDate";
                 // echo "<br>to date : $toDate";
 
-                $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
+                $data2 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate, $adminId);
                 $data = $data2;
                
                 break;
@@ -100,7 +98,7 @@
                 $fromDate = $from_date;
                 $toDate = $to_date;
                 if ($fromDate <= $toDate) {
-                    $data3 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate);
+                    $data3 = $StockReturn->stockReturnFilterbyDate($table, $fromDate, $toDate, $adminId);
                     $data = $data3;
                 } else {
                     echo "DATE RANGE IS NOT ACCURATE"; 
@@ -144,40 +142,41 @@
         </thead>
         <tbody>
         <?php
+        print_r($data);
             $data = json_decode($data,true);
-            print_r($data);
-            if ($data->status) {
-                $data = $data->data;
-                // print_r($data);
+            if ($data['status']) {
+                $data = $data['data'];
+                
                 foreach ($data as $row) { 
-                    
+                    // print_r($row);
                     $check = '';
-                    if ($row->status == "cancelled") {
+                    if ($row['status'] == "cancelled") {
                         $check  = 'style="background-color:#ff0000; color:#fff"';
                     }
 
-                    $distId = $row->distributor_id;
+                    $distId = $row['distributor_id'];
                     $distributorData = json_decode($Distributor->showDistributorById($distId));
                     $distributorData = $distributorData->data;
-                    // print_r($distData);
-                    foreach($distributorData as $distData){
-                        $distName = $distData->name;
-                    }
+                    
+                    // foreach($distributorData as $distData){
+                    //     print_r($distData);
+                        $distName = $distributorData->name;
+                    // }
 
                     ?>
                     <tr <?php echo $check ?>>
-                        <td><?php echo $row->id ?></td>
+                        <td><?php echo $row['id'] ?></td>
                         <td><?php echo $distName ?></td>
-                        <td><?php echo $row->return_date ?></td>
-                        <td><?php echo $row->added_on ?></td>
-                        <td><?php echo $row->added_by ?></td>
-                        <td><?php echo $row->refund_mode ?></td>
-                        <td><?php echo $row->refund_amount ?></td>
+                        <td><?php echo $row['return_date'] ?></td>
+                        <td><?php echo $row['added_on'] ?></td>
+                        <td><?php echo $row['added_by'] ?></td>
+                        <td><?php echo $row['refund_mode'] ?></td>
+                        <td><?php echo $row['refund_amount'] ?></td>
                         <td >
                         <?php echo '
-                            <a class="text-primary ml-4" id="edit-btn-' . $row->id . '" onclick="editReturnItem(' . $row->id . ', this)"><i class="fas fa-edit" ></i></a>'; 
+                            <a class="text-primary ml-4" id="edit-btn-' . $row['id'] . '" onclick="editReturnItem(' . $row['id'] . ', this)"><i class="fas fa-edit" ></i></a>'; 
                         ?>
-                        <a class="text-danger ml-2" onclick="cancelPurchaseReturn('<?php echo $row->id ?>', this)" ><i class="fas fa-window-close"></i></a>
+                        <a class="text-danger ml-2" onclick="cancelPurchaseReturn('<?php echo $row['id'] ?>', this)" ><i class="fas fa-window-close"></i></a>
                        </td>
                     </tr>
                 <?php
