@@ -146,9 +146,9 @@ const customClick = (id, value1, value2, value3) => {
                 gstPerItem = gstPerItem.toFixed(2);
                 var total = totalAmnt.toFixed(2);
 
-                var purchaseDetailsMfdDate = dataObject.mfdDate;
-                var mfdMonth = purchaseDetailsMfdDate.slice(0, 2);
-                var mfdYear = purchaseDetailsMfdDate.slice(3, 7);
+                // var purchaseDetailsMfdDate = dataObject.mfdDate;
+                // var mfdMonth = purchaseDetailsMfdDate.slice(0, 2);
+                // var mfdYear = purchaseDetailsMfdDate.slice(3, 7);
 
                 var purchaseDetailsExpDate = dataObject.expDate;
                 var expMonth = purchaseDetailsExpDate.slice(0, 2);
@@ -187,8 +187,8 @@ const customClick = (id, value1, value2, value3) => {
 
                 document.getElementById("medicine-power").value = dataObject.power;
 
-                document.getElementById("mfd-month").value = mfdMonth;
-                document.getElementById("mfd-year").value = mfdYear;
+                // document.getElementById("mfd-month").value = mfdMonth;
+                // document.getElementById("mfd-year").value = mfdYear;
 
                 document.getElementById("exp-month").value = expMonth;
                 document.getElementById("exp-year").value = expYear;
@@ -453,7 +453,8 @@ const getBillAmount = () => {
     // console.log("change gst : "+gst);
 
     let prevGst = document.getElementById("gst-check").value;
-    
+    // console.log("prev gst : "+prevGst);
+
     let qty = document.getElementById('qty').value;
     if (qty == '') {
         qty = 0;
@@ -464,8 +465,12 @@ const getBillAmount = () => {
         disc = 0;
     }
 
+
     let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
     maxPtr = maxPtr.toFixed(2);
+
+    // console.log("max ptr "+ maxPtr);
+    // console.log("change ptr "+ ptr);
 
     if (gst != prevGst) {
         document.getElementById('ptr').value = maxPtr;
@@ -490,8 +495,9 @@ const getBillAmount = () => {
         document.getElementById("ptr").focus();
     }
 
+    let modifiedPtr = document.getElementById("ptr").value;
 
-    let base = parseFloat(maxPtr) - (parseFloat(maxPtr) * (parseFloat(disc) / 100));
+    let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
     base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
     base = base.toFixed(2);
 
@@ -511,8 +517,8 @@ const getBillAmount = () => {
         url: 'ajax/update-product-gst.ajax.php',
         type: 'POST',
         data: {
-            gstPercetn : gst,
-            prodId : prodId
+            gstPercetn: gst,
+            prodId: prodId
         },
         success: function (response) {
             // console.log(response);
@@ -555,10 +561,10 @@ const addData = () => {
     var manufId = document.getElementById("manufacturer-id");
     var manufName = document.getElementById('manufacturer-name');
     var medicinePower = document.getElementById("medicine-power");
-    var mfdMonth = document.getElementById("mfd-month");
-    var mfdYear = document.getElementById("mfd-year");
-    var mfdDate = `${mfdMonth.value}/${mfdYear.value}`;
-    mfdDate = mfdDate.toString()
+    // var mfdMonth = document.getElementById("mfd-month");
+    // var mfdYear = document.getElementById("mfd-year");
+    // var mfdDate = `${mfdMonth.value}/${mfdYear.value}`;
+    // mfdDate = mfdDate.toString()
     var expMonth = document.getElementById("exp-month");
     var expYear = document.getElementById("exp-year");
     var expDate = `${expMonth.value}/${expYear.value}`;
@@ -647,13 +653,15 @@ const addData = () => {
         medicinePower.focus();
         return;
     }
-    if (mfdMonth.value == "") {
-        swal("Blank Field", "Please Enter Manufacturing Date as MM/YY", "error")
-            .then((value) => {
-                mfdMonth.focus();
-            });
-        return;
-    }
+
+    // if (mfdMonth.value == "") {
+    //     swal("Blank Field", "Please Enter Manufacturing Date as MM/YY", "error")
+    //         .then((value) => {
+    //             mfdMonth.focus();
+    //         });
+    //     return;
+    // }
+    
     if (expMonth.value == "") {
         swal("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
             .then((value) => {
@@ -781,10 +789,6 @@ const addData = () => {
                 <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.65rem;">
             </td>
 
-            <td class="p-0 pt-3" id="row-${slControl}-col-5">
-                <input class="col table-data w-4r" type="text" name="mfdDate[]" value="${mfdDate}" readonly style="font-size:0.65rem; ">
-            </td>
-
             <td class="p-0 pt-3" id="row-${slControl}-col-6">
                 <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.65rem;">
             </td>
@@ -859,8 +863,8 @@ const addData = () => {
         batchNo: batchNo,
         ManufId: manufId.value,
         manufName: manufName.value,
-        mfdMnth: mfdMonth.value,
-        mfdYr: mfdYear.value,
+        // mfdMnth: mfdMonth.value,
+        // mfdYr: mfdYear.value,
         expMnth: expMonth.value,
         expYr: expYear.value,
         weightage: weightage.value,
@@ -891,9 +895,9 @@ const addData = () => {
     document.getElementById(`row-${slControl}-col-4`).onclick = function () {
         editItem(tupleData);
     };
-    document.getElementById(`row-${slControl}-col-5`).onclick = function () {
-        editItem(tupleData);
-    };
+    // document.getElementById(`row-${slControl}-col-5`).onclick = function () {
+    //     editItem(tupleData);
+    // };
     document.getElementById(`row-${slControl}-col-6`).onclick = function () {
         editItem(tupleData);
     };
@@ -944,8 +948,8 @@ const editItem = (tData) => {
         document.getElementById("batch-no").value = tuple.batchNo;
         document.getElementById("manufacturer-id").value = tuple.ManufId;
         document.getElementById('manufacturer-name').value = tuple.manufName;
-        document.getElementById("mfd-month").value = tuple.mfdMnth;
-        document.getElementById("mfd-year").value = tuple.mfdYr;
+        // document.getElementById("mfd-month").value = tuple.mfdMnth;
+        // document.getElementById("mfd-year").value = tuple.mfdYr;
         document.getElementById("exp-month").value = tuple.expMnth;
         document.getElementById("exp-year").value = tuple.expYr;
 
@@ -1036,18 +1040,18 @@ function rowAdjustment(delRow) {
 
 // ======================= Manufacturing date setting ===================
 
-let mfdMonthInput = document.getElementById('mfd-month');
-mfdMonthInput.addEventListener('keydown', function (event) {
-    if (event.keyCode === 9) {
-        if (mfdMonthInput.value.trim() === '') {
-            event.preventDefault();
-        }
-    }
-});
-mfdMonthInput.addEventListener('input', function (event) {
-    // Remove dots from the input value
-    this.value = this.value.replace('.', '');
-});
+// let mfdMonthInput = document.getElementById('mfd-month');
+// mfdMonthInput.addEventListener('keydown', function (event) {
+//     if (event.keyCode === 9) {
+//         if (mfdMonthInput.value.trim() === '') {
+//             event.preventDefault();
+//         }
+//     }
+// });
+// mfdMonthInput.addEventListener('input', function (event) {
+//     // Remove dots from the input value
+//     this.value = this.value.replace('.', '');
+// });
 
 
 let expMonthInput = document.getElementById('exp-month');
@@ -1065,34 +1069,34 @@ expMonthInput.addEventListener('input', function (event) {
 
 
 // set mfd month control
-const setmfdMonth = (mnth) => {
-    if (mnth.value.length != 2) {
-        mnth.value = '';
-        mnth.focus();
-    }
-}
+// const setmfdMonth = (mnth) => {
+//     if (mnth.value.length != 2) {
+//         mnth.value = '';
+//         mnth.focus();
+//     }
+// }
 
-const setMfdMonth = (month) => {
-    let yr = new Date();
-    let thisMonth = yr.getMonth();
+// const setMfdMonth = (month) => {
+//     let yr = new Date();
+//     let thisMonth = yr.getMonth();
 
-    if (month.value.length > 2) {
-        month.value = '';
-        month.focus();
-    } else if (month.value.length < 2) {
-        month.focus();
-    } else if (month.value.length == 2) {
-        if (month.value > 12) {
-            month.value = '';
-            month.focus();
-        } else {
-            document.getElementById("mfd-year").focus();
-        }
-    } else {
-        month.value = '';
-        month.focus();
-    }
-}
+//     if (month.value.length > 2) {
+//         month.value = '';
+//         month.focus();
+//     } else if (month.value.length < 2) {
+//         month.focus();
+//     } else if (month.value.length == 2) {
+//         if (month.value > 12) {
+//             month.value = '';
+//             month.focus();
+//         } else {
+//             document.getElementById("mfd-year").focus();
+//         }
+//     } else {
+//         month.value = '';
+//         month.focus();
+//     }
+// }
 
 // set exp month control
 const setexpMonth = (mnth) => {
@@ -1130,51 +1134,51 @@ const setExpMonth = (month) => {
 }
 
 
-function setMfdYEAR(year) {
-    let yr = new Date();
-    let thisYear = yr.getFullYear();
-    if (year.value.length == 4) {
-        if (year.value > thisYear) {
-            document.getElementById("mfd-month").focus();
-        } else {
-            document.getElementById("exp-month").focus();
-        }
-    } else if (year.value.length > 4) {
-        year.value = '';
-        year.focus();
-    }
-}
+// function setMfdYEAR(year) {
+//     let yr = new Date();
+//     let thisYear = yr.getFullYear();
+//     if (year.value.length == 4) {
+//         if (year.value > thisYear) {
+//             document.getElementById("mfd-month").focus();
+//         } else {
+//             document.getElementById("exp-month").focus();
+//         }
+//     } else if (year.value.length > 4) {
+//         year.value = '';
+//         year.focus();
+//     }
+// }
 
-function setMfdYear(year) {
-    let yr = new Date();
-    let thisYear = yr.getFullYear();
-    let thisMonth = yr.getMonth();
-    let mfdMnth = document.getElementById("mfd-month").value;
+// function setMfdYear(year) {
+//     let yr = new Date();
+//     let thisYear = yr.getFullYear();
+//     let thisMonth = yr.getMonth();
+//     let mfdMnth = document.getElementById("mfd-month").value;
 
-    if (year.value.length < 4) {
-        document.getElementById("mfd-year").value = '';
-        document.getElementById("mfd-year").focus();
-    }
-    if (year.value.length == 4) {
-        if (year.value > thisYear) {
-            document.getElementById("mfd-year").value = '';
-            document.getElementById("mfd-year").focus();
-        }
+//     if (year.value.length < 4) {
+//         document.getElementById("mfd-year").value = '';
+//         document.getElementById("mfd-year").focus();
+//     }
+//     if (year.value.length == 4) {
+//         if (year.value > thisYear) {
+//             document.getElementById("mfd-year").value = '';
+//             document.getElementById("mfd-year").focus();
+//         }
 
-        if (year.value < thisYear) {
-            document.getElementById("exp-month").focus();
-        }
+//         if (year.value < thisYear) {
+//             document.getElementById("exp-month").focus();
+//         }
 
-        if (year.value == thisYear) {
-            if (mfdMnth > thisMonth) {
-                document.getElementById("mfd-month").value = '';
-                document.getElementById("mfd-month").focus();
-            } else if (mfdMnth <= thisMonth) {
-                document.getElementById("exp-month").focus();
-            }
-        }
-    }
-}
+//         if (year.value == thisYear) {
+//             if (mfdMnth > thisMonth) {
+//                 document.getElementById("mfd-month").value = '';
+//                 document.getElementById("mfd-month").focus();
+//             } else if (mfdMnth <= thisMonth) {
+//                 document.getElementById("exp-month").focus();
+//             }
+//         }
+//     }
+// }
 
 
 function setExpYEAR(year) {
@@ -1187,24 +1191,33 @@ function setExpYEAR(year) {
 }
 
 const setExpYear = (year) => {
-    var MFDYR = document.getElementById("mfd-year").value;
-    var mfdMnth = document.getElementById("mfd-month").value;
-    var expMnth = document.getElementById("exp-month").value;
+    // var MFDYR = document.getElementById("mfd-year").value;
+    // var mfdMnth = document.getElementById("mfd-month").value;
+    // var expMnth = document.getElementById("exp-month").value;
 
-    if (year.value.length < 4) {
+    // if (year.value.length < 4) {
+    //     year.value = '';
+    //     year.focus();
+    // }
+
+    // if (year.value.length == 4) {
+    //     // if (year.value == MFDYR) {
+    //         if (expMnth < mfdMnth) {
+    //             document.getElementById("exp-month").value = '';
+    //             document.getElementById("exp-month").focus();
+    //         }
+    //     // } else if (year.value < MFDYR) {
+    //         year.value = '';
+    //         year.focus();
+    //     // }
+    // }
+
+
+    var currentDate = new Date();
+    var currentYear = currentDate.getFullYear();
+
+    if(year.value <= currentYear){
         year.value = '';
         year.focus();
-    }
-
-    if (year.value.length == 4) {
-        if (year.value == MFDYR) {
-            if (expMnth < mfdMnth) {
-                document.getElementById("exp-month").value = '';
-                document.getElementById("exp-month").focus();
-            }
-        } else if (year.value < MFDYR) {
-            year.value = '';
-            year.focus();
-        }
     }
 }
