@@ -168,7 +168,7 @@ $unitData = $ItemUnit->showItemUnits();
                                                 <div class="d-flex col-12">
                                                     <div class="col-md-6">
                                                         Qantity
-                                                        <input class="c-inp w-100 p-1 mt-1" id="qantity-unit" name="qantity-unit" placeholder="e.g. 10,20,200">
+                                                        <input class="c-inp w-100 p-1 mt-1" id="qantity" name="qantity" placeholder="e.g. 10,20,200">
 
                                                     </div>
 
@@ -179,7 +179,7 @@ $unitData = $ItemUnit->showItemUnits();
                                                             <option value='' disabled selected>Select</option>
                                                             <?php 
                                                             foreach ($itemUnists as $eachUnit) {
-                                                                if($eachUnit['name'] == 'Tablets' || $eachUnit['name'] == 'Capsules' || $eachUnit['name'] == 'Soflets' || $eachUnit['name'] == 'Lozenges' || $eachUnit['name'] == 'Bolus' || $eachUnit['name'] == 'Syrup'){
+                                                                if($eachUnit['id'] == '1' || $eachUnit['id'] == '5' || $eachUnit['id'] == '99' || $eachUnit['id'] == '101' || $eachUnit['id'] == '102' || $eachUnit['name'] == 'Syrup'){
                                                                     echo "<option value='" . $eachUnit['id'] . "'>" . $eachUnit['name'] . "</option>";
                                                                 }
                                                                 

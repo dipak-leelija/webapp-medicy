@@ -25,9 +25,10 @@ $ProductImages  = new ProductImages();
 if (isset($_GET['search'])) {
 
     $prodId = $_GET['search'];
-    $productList = json_decode($Products->showProductsById($prodId));
+    $productList = json_decode($Products->showProductsByIdOnUser($prodId, $adminId));
 
     $productList = $productList->data;
+
 
     $pagination = json_decode($Pagination->arrayPagination($productList));
 
@@ -50,11 +51,13 @@ if (isset($_GET['search'])) {
 
     // Function INitilized 
     $col = 'admin_id';
-    $result = json_decode($Pagination->productsWithPagination());
+    $result = json_decode($Pagination->productsWithPaginationForUser($adminId));
+
     $allProducts    = $result->products;
     $totalPtoducts  = $result->totalPtoducts;
 
-    $productList = json_decode($Products->showProductsByLimit());
+    $productList = json_decode($Products->showProductsByLimitForUser($adminId));
+    // print_r($productList);
 }
 
 
@@ -177,14 +180,17 @@ if (isset($_GET['search'])) {
                                                             $productImage = 'medicy-default-product-image.jpg';
                                                         }
 
-                                                        if ($item->dsc == null) {
+                                                        if(property_exists($item, 'dsc')){
+                                                            if ($item->dsc == null) {
+                                                                $dsc = '';
+                                                            } else {
+                                                                $dsc = $item->dsc . '...';
+                                                            }
+                                                        }else{
                                                             $dsc = '';
-                                                        } else {
-                                                            $dsc = $item->dsc . '...';
                                                         }
-
+                                                        
                                                 ?>
-
                                                         <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                             <div class="card  mb-3 p-3" style="min-width: 14rem; min-height: 11rem;">
                                                                 <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="...">

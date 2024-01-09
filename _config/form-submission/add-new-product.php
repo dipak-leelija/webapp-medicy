@@ -6,11 +6,16 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'measureOfUnit.class.php';
+require_once CLASS_DIR . 'request.class.php';
+
 
 $Products      = new Products();
 $ProductImages = new ProductImages();
 $Unit = new MeasureOfUnits();
 $Session = new SessionHandler();
+$Request = new Request;
+
+
 
 ?>
 <!DOCTYPE html>
@@ -38,41 +43,48 @@ $Session = new SessionHandler();
 
 
         $prodName = $_POST['product-name'];
-        $hsnoNumber = $_POST['hsno-number'];
         $prodCategory = $_POST['product-catagory'];
-        $medicinePower = $_POST['medicine-power'];
-        $qantityUnit = $_POST['qantity-unit'];
-        $packegingUnit = $_POST['unit'];
         $packegingType = $_POST['packeging-type'];
+        $qantity        = $_POST['qantity'];
+        $packegingUnit = $_POST['unit'];
+        $medicinePower = $_POST['medicine-power'];
         $mrp = $_POST['mrp'];
         $gst = $_POST['gst'];
+        $hsnoNumber = $_POST['hsno-number'];
 
-        $addedBy            = $employeeId;
-
-        //ProductId Generation
         $randNum = rand(1, 999999999999);
         $productId = 'PR' . $randNum;
 
+        $status = 0;
+
         // echo "<br>PRODUCT ID : $productId";
         // echo "<br>PRODUCT NAME : $prodName";
-        // echo "<br>PRODUCT HSNO NUMBER : $hsnoNumber";
         // echo "<br>PRODUCT CATAGORY : $prodCategory";
-        // echo "<br>PRODUCT POWER : $medicinePower";
-        // echo "<br>PRODUCT UNIT : $qantityUnit";
-        // echo "<br>PRODUCT UNIT TYPE : $packegingUnit";
         // echo "<br>PRODUCT PACKAGING TYPE : $packegingType";
+        // echo "<br>PRODUCT UNIT : $qantity";
+        // echo "<br>PRODUCT UNIT TYPE : $packegingUnit";
+        // echo "<br>PRODUCT POWER : $medicinePower";
         // echo "<br>MRP : $mrp";
-        // echo "<br>GST : $gst<br>";
+        // echo "<br>GST : $gst";
+        // echo "<br>PRODUCT HSNO NUMBER : $hsnoNumber<br><br>";
 
-        //Insert into products table 
-        $addProducts = $Products->addProductByUser($productId, $prodName, $hsnoNumber, $prodCategory, $medicinePower, $qantityUnit, $packegingUnit, $packegingType, $mrp, $gst, $employeeId, NOW, $adminId);
+
+
+        //Insert into request table 
+
+        $addProductRequest = $Request->addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $employeeId, NOW, $adminId, $status);
+
 
         // print_r($addProducts);
 
-        if ($addProducts === true) {
+        $addProductRequest = true;
+
+        if ($addProductRequest === true) {
 
             for ($j = 0; $j < $imageArrayCaount && $j < $tempImageArrayCaount; $j++) {
                 ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
+
+                $imgStatus = 0;
 
                 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $randomString = '';
@@ -84,45 +96,32 @@ $Session = new SessionHandler();
 
                 ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
                 //===== Main Image 
-                $imageNm        = $imagesName[$j];
+                $imageNmame        = $imagesName[$j];
                 $tempImgname   = $tempImgsName[$j];
 
-                // $ImgNm = '';
-                // $extention = '';
-                // $countImageLen = 0;
+                $extention = substr($imageNmame, -4);
+                $imageNm = substr($imageNmame, 0, -4);
 
-
-                if ($image != '') {
-                    if ($image != null) {
-                        if (file_exists(ROOT_DIR."images/product-image/" . $randomString . '_' . $image)) {
-                            $image = 'medicy-' . $randomString . $image;
-                        }
-                    }
-
-
-                    // $countImageLen = strlen($image);
-                    // for($l=0; $l<intval($countImageLen)-4; $l++){
-                    //     $ImgNm .= $image[$l];
-                    // }
-
-                    // for($k=intval($countImageLen)-4; $k<$countImageLen; $k++){
-                    //     $extention .= $image[$k];
-                    // }
+                if ($imageNmame != null) {
 
                     $image         = $imageNm . '-' . $randomString . $extention;
-                    $imgFolder     = ROOT_DIR."images/product-image/" . $image;
+                    $imgFolder     = PROD_IMG . $image;
+
+                    // echo $image."<br>";
 
                     move_uploaded_file($tempImgname, $imgFolder);
                     $image         = addslashes($image);
-                }
 
-                if ($image == '') {
+                } else {
                     $image = '';
                 }
 
-                $addImage = $ProductImages->addImages($productId, $image, $addedBy, NOW, $adminId);
+
+                $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
+
+                // print_r($addImagesRequest);
             }
-        
+
     ?>
             <script>
                 swal("Success", "Product Added!", "success")

@@ -111,23 +111,23 @@ $QuantityUnit   = new QuantityUnit;
 
     ?>
         <div class="container-fluid d-flex justify-content-center mt-2">
-            <div class="row justify-content-center">
-                <div class="col-12 col-sm-4">
-                    <div class="">
-                        <div class="text-center border d-flex justify-content-center">
-                            <img src="<?= PROD_IMG_PATH ?><?php echo $Images[0]; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
-                        </div>
-                        <div class="row height-3 mt-2 justify-content-center">
-                            <?php foreach ($Images as $index => $imagePath) : ?>
-                                <div class="col-2 border border-2 m-1 p-0">
-                                    <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
-                                </div>
-                            <?php endforeach; ?>
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-4">
+                        <div class="">
+                            <div class="text-center border d-flex justify-content-center">
+                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images[0]; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
+                            </div>
+                            <div class="row height-3 mt-2 justify-content-center">
+                                <?php foreach ($Images as $index => $imagePath) : ?>
+                                    <div class="col-2 border border-2 m-1 p-0">
+                                        <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-6">
-                    <div class="">
+                    <div class="col-12 col-md-6">
                         <div class="d-flex">
                             <div class="text-start col-7 mb-0 pb-0">
                                 <h4><?php echo $product[0]->name; ?></h4>
@@ -167,14 +167,6 @@ $QuantityUnit   = new QuantityUnit;
                                     </small>
                                 </p>
                             </div>
-                            <div class="row justify-content-center mt-6 col-6" id='btn-ctrl-1'>
-                                <div class="col-4">
-                                    <a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
-                                </div>
-                                <div class="col-4">
-                                    <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="d-flex justify-content-center">
@@ -190,19 +182,30 @@ $QuantityUnit   = new QuantityUnit;
 
                             <p><b>Description: </b> <br><?php echo $product[0]->dsc; ?></p>
                         </div>
-
-                        <div class="row justify-content-center mt-4" id='btn-ctrl-2'>
-                            <div class="col-2">
-                                <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $productId; ?>">Edit</a></button>
+                    </div>
+                    <div class="col-12 col-md-2" id="btn-ctrl-1">
+                        <div class="col-md-12 d-flex">
+                            <div class="col-sm-6 m-2">
+                                <a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
                             </div>
-                            <div class="col-2">
-                                <button class="button3 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
+                            <div class="col-sm-6 m-2">
+                                <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
+
+                <div class="row justify-content-center mt-4" id='btn-ctrl-2'>
+                    <div class="col-4 d-flex">
+                        <div class="col-sm-6 d-flex jsutify-content-center">
+                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product.php?id=<?php echo $productId; ?>">Edit</a></button>
+                        </div>
+                        <div class="col-sm-6 d-flex jsutify-content-center">
+                            <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     <?php
