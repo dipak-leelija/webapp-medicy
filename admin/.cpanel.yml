@@ -1,5 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home/qt504q5qgm0e/app.medicy.in/
-    - /qt504q5qgm0e/bin/cp * $DEPLOYPATH
