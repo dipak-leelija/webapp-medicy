@@ -24,9 +24,7 @@ $Employees          = new Employees();
 $showDistributor       = $Distributor->showDistributor();
 $col = 'admin_id';
 $stockReturnLists      = json_decode($StockReturn->stockReturnFilter($col, $adminId));
-if($stockReturnLists->status){
-    $stockReturnLists = $stockReturnLists->data;
-}
+
 // print_r($stockReturnLists);
 
 $empLists              = $Employees->employeesDisplay($adminId);
@@ -159,8 +157,11 @@ $empLists              = $Employees->employeesDisplay($adminId);
                             <!-- ================== eof date picker div ======================== -->
 
                             <div class="table-responsive" id="filter-table">
-                                <?php if($stockReturnLists->status){ ; ?>
-                                <table class="table table-sm table-hover" id="<?php if (count($stockReturnLists->data) > 10) {
+                                <?php 
+                                    if($stockReturnLists->status){ 
+                                    $stockReturnLists = $stockReturnLists->data ; 
+                                ?>
+                                <table class="table table-sm table-hover" id="<?php if (count($stockReturnLists) > 10) {
                                                                                     echo "dataTable";
                                                                                 } ?>" width="100%" cellspacing="0">
                                     <thead class="bg-primary text-light">
