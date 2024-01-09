@@ -144,7 +144,6 @@
         </thead>
         <tbody>
         <?php
-            // if(!is_array($data)){
             $data = json_decode($data,true);
             print_r($data);
             if ($data->status) {
@@ -189,7 +188,6 @@
                    </tr>
                    <?php
              }
-            // }
         ?>
         </tbody>
     </table>

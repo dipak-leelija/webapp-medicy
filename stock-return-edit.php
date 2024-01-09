@@ -50,7 +50,7 @@ if (isset($_GET["returnId"])) {
 
     $distData = json_decode($Distributor->showDistributorById($distId));
     $distData = $distData->data;
-    $distName = $distData[0]->name;
+    $distName = $distData->name;
 
 
     // print_r($distData);
