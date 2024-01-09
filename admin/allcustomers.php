@@ -20,22 +20,14 @@ $Admin       = new Admin();
 // $adminDetails = $Admin->adminDetails();
 // $adminDetails = json_decode($adminDetails);
 
-$employeeDetails = $Employees->employeesDisplay();
-// print_r($employeeDetails);
 
 if (isset($_GET['search'])) {
     $search = $_GET['search'];
 
-    if ($search == 'added_by') {
-        $doctorID = $_GET['searchKey'];
-        $col = $_GET['search'];
-        print_r($doctorID);
-        $adminDetails = $Admin->adminDetails();
+    if ($search == 'appointment_search') {
+        $searchPattern = $_GET['searchKey'];
+        $adminDetails = $Admin->filterAdminByIdOrName($searchPattern);
         $adminDetails = json_decode($adminDetails);
-        
-        ///find allappointment based on admin///
-        // $allAppointments = $Appoinments->allAppointmentByAdmin($doctorID);
-        // $allAppointments = json_decode($allAppointments);
         // print_r($allAppointments);
     }
 }else{
@@ -209,7 +201,7 @@ if ($adminDetails->status) {
 
                                                 $link = $admin->reg_status == 1
                                                     ? '<a href="employees.php?customerId=' . url_enc($customerId) . '" class="text-success text-decoration-none ml-4" data-toggle="tooltip" data-placement="right" title="Show Employees"><i class="fas fa-eye"></a>'
-                                                    : '<a href="" class="text-danger text-decoration-none ml-4" data-toggle="tooltip" data-placement="right" title="Inactive ID"><i class="fas fa-eye-slash"></a>';
+                                                    : '<a href="" class="text-danger text-decoration-none ml-4" data-toggle="tooltip" data-placement="right" title="Inactive Customer"><i class="fas fa-eye-slash"></a>';
 
                                                 echo '<tr>
                                                           <td>' . $customerId . '</td>
@@ -400,11 +392,12 @@ if ($adminDetails->status) {
 
         const filterAppointment = () => {
 
-            document.getElementById('dtPickerDiv').style.display = 'none';
+            // document.getElementById('dtPickerDiv').style.display = 'none';
 
             var key = document.getElementById("appointment_search").id;
             var val = document.getElementById("appointment_search").value;
-
+            console.log(key);
+            console.log(val);
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
             if (val.length > 2) {
                 var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
