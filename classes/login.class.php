@@ -84,12 +84,8 @@ class LoginForm extends DatabaseConnection
                     $_SESSION['ADMIN_ADDRESS']      = $admData1->address;
                     $_SESSION['ADMINID']            = $admData1->admin_id;
 
-
                     // Insert login time into login_activity table
-                    $adminId = $_SESSION['ADMINID'];
-                    $loginTime = date('Y-m-d H:i:s');
-                    $this->insertLoginTime($adminId, $loginTime);
-
+                    $this->insertLoginTime($_SESSION['ADMINID'], NOW);
 
                     header("Location: " . URL);
                     exit;
