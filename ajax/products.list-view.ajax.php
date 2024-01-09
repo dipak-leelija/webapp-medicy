@@ -11,23 +11,33 @@ $match = $_GET['match'];
 $Products        = new Products();
 
 if ($match == 'all') {
-    $showProducts   = json_decode($Products->prodSearchByMatch($match));
+    $showProducts   = json_decode($Products->prodSearchByMatchForUser($match, $adminId));
 } else {
-    $showProducts   = json_decode($Products->prodSearchByMatch($match));
+    $showProducts   = json_decode($Products->prodSearchByMatchForUser($match, $adminId));
 }
 
 
 if ($showProducts->status) {
     $showProducts = $showProducts->data;
-
+    
     foreach ($showProducts as $showProducts) {
+        // print_r($showProducts);
+
+        if(property_exists($showProducts, 'comp_1') || property_exists($showProducts, 'comp_2')){
+            $comp1 = $showProducts->comp_1;
+            $comp2 = $showProducts->comp_2;
+        }else{
+            $comp1 = '';
+            $comp2 = '';
+        }
+
         echo "<div class='p-1 border-bottom list'>
                 <div class='' id='$showProducts->product_id' onclick='searchProduct(this)'>
                     $showProducts->name
                 </div>
 
                 <div>
-                    <small>" . $showProducts->comp_1 . " , " . $showProducts->comp_2 . "</small>
+                    <small>" . $comp1 . " , " . $comp2 . "</small>
                 </div>
             </div>";
     }
