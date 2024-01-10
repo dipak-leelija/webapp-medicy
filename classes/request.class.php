@@ -30,17 +30,24 @@ class Request extends DatabaseConnection
 
 
 
-    function addImageRequest($productId, $productImage, $addedBy, $addedOn, $adminId, $status)
+    function addImageRequest($productId='', $productImage='', $addedBy='', $addedOn='', $adminId='', $status='')
     {
         try {
-
-            $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`, `added_on`, `admin_id`, `status`) VALUES (?, ?, ?, ?, ?, ?)";
+            if(!empty($adminId)){
+                $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`, `added_on`, `admin_id`, `status`) VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt = $this->conn->prepare($insertImage);
+                $stmt->bind_param("sssssi", $productId, $productImage, $addedBy, $addedOn, $adminId, $status);
+            }else{
+                $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`, `added_on`, `status`) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $this->conn->prepare($insertImage);
+                $stmt->bind_param("ssssi", $productId, $productImage, $addedBy, $addedOn, $status);
+            }
 
             // Prepare the SQL statement
-            $stmt = $this->conn->prepare($insertImage);
+            // $stmt = $this->conn->prepare($insertImage);
             // Bind parameters
 
-            $stmt->bind_param("sssssi", $productId, $productImage, $addedBy, $addedOn, $adminId, $status);
+            // $stmt->bind_param("sssssi", $productId, $productImage, $addedBy, $addedOn, $adminId, $status);
 
             // Execute the statement
             if ($stmt->execute()) {

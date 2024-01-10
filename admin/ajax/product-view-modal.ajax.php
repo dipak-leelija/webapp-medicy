@@ -1,6 +1,6 @@
 <?php
 // require_once dirname(__DIR__) . '/config/constant.php';
-require_once realpath(dirname(dirname(__DIR__)). '/config/constant.php');
+require_once realpath(dirname(dirname(__DIR__)) . '/config/constant.php');
 require_once SUP_ADM_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -91,7 +91,7 @@ $QuantityUnit   = new QuantityUnit;
         } else {
             $Images[] = "medicy-default-product-image.jpg";
         }
-        
+
         echo '<script>';
         echo 'var productId = ' . json_encode($productId) . '; ';
         echo '</script>';
@@ -210,17 +210,21 @@ $QuantityUnit   = new QuantityUnit;
     }
 
 
-    if($userType == 'USER'){
-        ?>
-        <script>    
-            document.getElementById('btn-ctrl-1').style.display = 'none';
-            document.getElementById('btn-ctrl-2').style.display = 'none';
-        </script>
-        <?php
-    }
+
+
     ?>
 
-
+    <!-- <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth >= 800) {
+            document.getElementById('btn-ctrl-1').style.display = 'block';
+            document.getElementById('btn-ctrl-2').style.display = 'none';
+        } else {
+            document.getElementById('btn-ctrl-1').style.display = 'none';
+            document.getElementById('btn-ctrl-2').style.display = 'block';
+        }
+        });
+    </script> -->
 
 
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
@@ -257,7 +261,7 @@ $QuantityUnit   = new QuantityUnit;
                     })
                     .then((willDelete) => {
                         if (willDelete) {
-                            var productId = window.productId; 
+                            var productId = window.productId;
                             // console.log("product ID-"+productId);
                             $.ajax({
                                 url: "product.Delete.ajax.php",

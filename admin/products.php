@@ -167,7 +167,7 @@ if (isset($_GET['search'])) {
                                                     foreach ($allProducts as $item) {
                                                         // print_r($item);
                                                         $image = json_decode($ProductImages->showImageByPrimay($item->product_id));
-
+                                                        // print_r($image);
                                                         if ($image->status != 0) {
                                                             $imgData = $image->data;
                                                             // print_r($image);

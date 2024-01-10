@@ -94,8 +94,8 @@ class ProductImages extends DatabaseConnection
     function showImageByPrimay($productId)
     {
         try {
-
-            $selectImage = "SELECT * FROM product_images WHERE product_id = ? AND set_priority = '1'";
+            // $selectImage = "SELECT * FROM product_images WHERE product_id = ? AND set_priority = '1'";
+            $selectImage = "SELECT * FROM product_images WHERE product_id = ? ";
             $stmt = $this->conn->prepare($selectImage);
 
             $stmt->bind_param("s", $productId);

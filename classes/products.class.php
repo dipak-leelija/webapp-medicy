@@ -67,6 +67,29 @@ class Products extends DatabaseConnection
         }
     }
 
+  /// ===========product add by superAdmin=========///
+    function addProductBySuperAdmin($productId, $manufacturer, $prodName,$Composition1,$Composition2, $medicinePower,  $unitQuantity, $unit, $packagingType, $mrp, $gst,  $productDsc, $addedBy, $addedOn)
+    {
+        try {
+            $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `comp_1`,`comp_2`, `power`,`unit_quantity`, `unit`, `packaging_type`, `mrp`, `gst`, `dsc`, `added_by`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = $this->conn->prepare($insertProducts);
+            $stmt->bind_param("ssssssssssssss", $productId, $manufacturer, $prodName, $Composition1, $Composition2, $medicinePower, $unitQuantity,$unit, $packagingType, $mrp, $gst,$productDsc, $addedBy, $addedOn);
+
+            if ($stmt->execute()) {
+                // Insert successful
+                $stmt->close();
+                return true;
+            } else {
+                // Insert failed
+                throw new Exception("Error inserting data into the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            // Handle the exception, log the error, or return an error message as needed
+            return "Error: " . $e->getMessage();
+        }
+    }
+
 
 
 
@@ -95,6 +118,7 @@ class Products extends DatabaseConnection
         }
     }
 
+    
 
 
 
