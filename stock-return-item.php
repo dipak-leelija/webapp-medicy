@@ -152,17 +152,17 @@ $showDistributor = $showDistributor->data;
                                                 <label class="mb-1 mt-3" for="batch-number">Batch Number :</label>
                                                 <input class="upr-inp mb-1" id="batch-number" readonly>
                                             </div>
-                                            <div class="col-md-4 col-12">
+                                            <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="bill-date">Purchase Date :</label>
                                                 <input class="upr-inp mb-1" id="bill-date" readonly>
                                             </div>
 
-                                            <div class="col-md-4 col-12">
+                                            <!-- <div class="col-md-4 col-12">
                                                 <label class="mb-1 mt-3" for="mfd-date">MFD</label>
                                                 <input class="upr-inp mb-1" type="text" id="mfd-date" readonly>
-                                            </div>
+                                            </div> -->
 
-                                            <div class="col-md-4 col-12">
+                                            <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="exp-date">Expiry</label>
                                                 <input class="upr-inp mb-1" type="text" id="exp-date" readonly>
                                             </div>

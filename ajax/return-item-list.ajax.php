@@ -61,7 +61,7 @@ if (isset($_GET['dist-id'])) {
             
 
 
-            $product = json_decode($Products->showProductsById($productId));
+            $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId));
             $product = $product->data;
             $productName = $product[0]->name;
 

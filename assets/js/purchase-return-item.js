@@ -173,15 +173,13 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
 
         document.getElementById("product-id").value = productId;
 
-
-        //==================== MFD Date ====================
-        let mfdUrl = `ajax/stockIn.all.ajax.php?stock-mfd=${stokInDetialsId}`;
-        // alert(expUrl);
-        xmlhttp.open("GET", mfdUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("mfd-date").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
-
+        // //==================== MFD Date ====================
+        // let mfdUrl = `ajax/stockIn.all.ajax.php?stock-mfd=${stokInDetialsId}`;
+        // // alert(expUrl);
+        // xmlhttp.open("GET", mfdUrl, false);
+        // xmlhttp.send(null);
+        // document.getElementById("mfd-date").value = xmlhttp.responseText;
+        // // alert(xmlhttp.responseText);
 
         //==================== Expiry Date ====================
         let expUrl = `ajax/stockIn.all.ajax.php?stock-exp=${stokInDetialsId}`;
@@ -427,7 +425,7 @@ function addData() {
     var productId = document.getElementById("product-id");
     var productName = document.getElementById('product-name').value;
 
-    var mfdDate = document.getElementById("mfd-date");
+    // var mfdDate = document.getElementById("mfd-date");
     var expDate = document.getElementById("exp-date");
     var weatage = document.getElementById("weatage");
     var unit = document.getElementById("unit");
@@ -691,7 +689,7 @@ function addData() {
             billNumber: billNumber.value,
 
             billDate: billDate.value,
-            mfdDate: mfdDate.value,
+            // mfdDate: mfdDate.value,
             expDate: expDate.value,
             weatage: weatage.value,
             unit: unit.value,
@@ -878,7 +876,7 @@ const editItem = (tData) => {
         document.getElementById("product-id").value = tData.productId;
         document.getElementById('product-name').value = tData.productName;
         document.getElementById("bill-date").value = tData.billDate;
-        document.getElementById("mfd-date").value = tData.mfdDate;
+        // document.getElementById("mfd-date").value = tData.mfdDate;
         document.getElementById("exp-date").value = tData.expDate;
 
         document.getElementById("weatage").value = tData.weatage;
