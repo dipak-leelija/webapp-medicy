@@ -435,22 +435,24 @@ ptrInput.addEventListener('keydown', function (event) {
 
 const getBillAmount = () => {
 
-    let mrp = document.getElementById('mrp').value;
+    let mrp = parseFloat(document.getElementById('mrp').value);
 
-    let ptr = document.getElementById('ptr').value;
+    let ptr = parseFloat(document.getElementById('ptr').value);
+    
+    console.log('check 1 : '+ptr);
 
-    let gst = document.getElementById('gst').value;
+    let gst = parseInt(document.getElementById('gst').value);
     // console.log("change gst : "+gst);
 
-    let prevGst = document.getElementById("gst-check").value;
+    let prevGst = parseInt(document.getElementById("gst-check").value);
     // console.log("prev gst : "+prevGst);
 
-    let qty = document.getElementById('qty').value;
+    let qty = parseInt(document.getElementById('qty').value);
     if (qty == '') {
         qty = 0;
     }
 
-    let disc = document.getElementById('discount').value;
+    let disc = parseFloat(document.getElementById('discount').value);
     if (disc == '') {
         disc = 0;
     }
@@ -466,6 +468,9 @@ const getBillAmount = () => {
         document.getElementById('ptr').value = maxPtr;
         document.getElementById("gst-check").value = gst;
     }
+
+    console.log(ptr);
+    console.log(maxPtr);
 
     if (ptr > maxPtr) {
         swal({
