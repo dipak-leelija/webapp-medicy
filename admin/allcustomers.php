@@ -199,9 +199,11 @@ if ($adminDetails->status) {
                                                 $AddedOn          = $admin->added_on;
                                                 $expiryDate       = $admin->expiry;
 
+                                                $EmployeeCount = $admin->reg_status == '1' ? count($Employees->employeesDisplay($customerId)) : '';
+
                                                 $link = $admin->reg_status == 1
-                                                    ? '<a href="employees.php?customerId=' . url_enc($customerId) . '" class="text-success text-decoration-none ml-4" data-toggle="tooltip" data-placement="top" title="Show Employees"><i class="fas fa-eye"></a>'
-                                                    : '<a href="" class="text-danger text-decoration-none ml-4" data-toggle="tooltip" data-placement="top" title="Inactive Customer"><i class="fas fa-eye-slash"></a>';
+                                                    ? '<a href="employees.php?customerId=' . url_enc($customerId) . '" class="text-success text-decoration-none " data-toggle="tooltip" data-placement="left" title="Show Employees"><i class="fas fa-eye"> Emp: ' . $EmployeeCount . '</a>'
+                                                    : '<a href="" class="text-danger text-decoration-none ml-4" data-toggle="tooltip" data-placement="left" title="Inactive Customer"><i class="fas fa-eye-slash"></a>';
 
                                                 echo '<tr>
                                                           <td>' . $customerId . '</td>
