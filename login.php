@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errorMessage = 'Please fill in both username and password !';
     } else {
         $login    = $loginForm->login($username, $password, $roleData);
+        // print_r($login);
         if ($login === 'Wrong Password') {
             $errorMessage = 'Please fill up with correct Password !';
         } elseif ($login === 'not found') {

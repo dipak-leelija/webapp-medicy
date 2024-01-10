@@ -88,7 +88,7 @@ function captureCurrentLocation() {
     var currentLocation = window.location.href;
 
     // Log or use the current location as needed
-    console.log("Current Location: " + currentLocation);
+    // console.log("Current Location: " + currentLocation);
 
     // Your additional logic here...
 }
@@ -435,26 +435,29 @@ ptrInput.addEventListener('keydown', function (event) {
 
 const getBillAmount = () => {
 
-    let mrp = document.getElementById('mrp').value;
+    let mrp = parseFloat(document.getElementById('mrp').value);
 
-    let ptr = document.getElementById('ptr').value;
+    let ptr = parseFloat(document.getElementById('ptr').value);
+    
+    // console.log('check 1 : '+ptr);
 
-    let gst = document.getElementById('gst').value;
+    let gst = parseInt(document.getElementById('gst').value);
     // console.log("change gst : "+gst);
 
-    let prevGst = document.getElementById("gst-check").value;
+    let prevGst = parseInt(document.getElementById("gst-check").value);
     // console.log("prev gst : "+prevGst);
 
-    let qty = document.getElementById('qty').value;
-    if (qty == '') {
+    let qty = parseInt(document.getElementById('qty').value);
+    if (isNaN(qty)) {
         qty = 0;
     }
+    // console.log(qty);
 
-    let disc = document.getElementById('discount').value;
-    if (disc == '') {
+    let disc = parseFloat(document.getElementById('discount').value);
+    if (isNaN(disc)) {
         disc = 0;
     }
-
+    // console.log(disc);
 
     let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
     maxPtr = maxPtr.toFixed(2);
@@ -466,6 +469,9 @@ const getBillAmount = () => {
         document.getElementById('ptr').value = maxPtr;
         document.getElementById("gst-check").value = gst;
     }
+
+    // console.log(ptr);
+    // console.log(maxPtr);
 
     if (ptr > maxPtr) {
         swal({
@@ -486,7 +492,7 @@ const getBillAmount = () => {
     }
 
     let modifiedPtr = document.getElementById("ptr").value;
-    console.log(modifiedPtr);
+    // console.log(modifiedPtr);
 
     let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
     base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
@@ -1182,27 +1188,27 @@ function setExpYEAR(year) {
     }
 }
 
-// const setExpYear = (year) => {
-//     // var MFDYR = document.getElementById("mfd-year").value;
-//     // var mfdMnth = document.getElementById("mfd-month").value;
-//     var expMnth = document.getElementById("exp-month").value;
+const setExpYear = (year) => {
+    // var MFDYR = document.getElementById("mfd-year").value;
+    // var mfdMnth = document.getElementById("mfd-month").value;
+    var expMnth = document.getElementById("exp-month").value;
 
-//     if (year.value.length < 4) {
-//         year.value = '';
-//         year.focus();
-//     }
+    if (year.value.length < 4) {
+        year.value = '';
+        year.focus();
+    }
 
-//     if (year.value.length == 4) {
-//         if (year.value == MFDYR) {
-//             if (expMnth < mfdMnth) {
-//                 document.getElementById("exp-month").value = '';
-//                 document.getElementById("exp-month").focus();
-//             }
-//         } else if (year.value < MFDYR) {
-//             year.value = '';
-//             year.focus();
-//         }
-//     }
-// }
+    if (year.value.length == 4) {
+        if (year.value == MFDYR) {
+            if (expMnth < mfdMnth) {
+                document.getElementById("exp-month").value = '';
+                document.getElementById("exp-month").focus();
+            }
+        } else if (year.value < MFDYR) {
+            year.value = '';
+            year.focus();
+        }
+    }
+}
 
 ///////////////// ===== product select arrow key effect ===== \\\\\\\\\\\\\\\\\\\\\\\

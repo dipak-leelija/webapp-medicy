@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
+// require_once ROOT_DIR . '_config/accessPermission.php';
 
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -127,16 +128,13 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                         if ($showCurrentStock != NULL) {
 
                                             foreach ($currentStockGroup as $rowStock) {
-                                                // echo "prod details group by - "; print_r($rowStock); echo "<br><br>";
-
+                                                
                                                 $currentStockId      = $rowStock['id'];
-                                                // echo "$currentStockId<br>";
-
-                                                $productId           = $rowStock['product_id']; // fetch eatch product group by product id
-                                                // echo $productId."<br>";
+                                                
+                                                $productId           = $rowStock['product_id']; // fetch 
 
                                                 $image               = json_decode($ProductImages->showImageById($productId));
-                                                // print_r($image);
+                                                
                                                 $mainImage = 'medicy-default-product-image.jpg';
 
                                                 if ($image->status == 1) {
@@ -148,20 +146,23 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
 
                                                 // ===============fetch each product data from current stock by product id ==================================
-                                                $productData = json_decode($CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId));
-                                                // echo "prod details - "; print_r($productData); echo "<br><br>";
+                                                $productData = json_decode($CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId));                                                
 
                                                 if ($productData->status) {
                                                     $productData = $productData->data;
+                                                    echo "product data from current stock : "; print_r($productData); echo "<br><br>";
                                                 } else {
                                                     echo "no product found!";
                                                 }
 
                                                 // ==== fetch product details from product table ====
                                                 $showProducts = json_decode($Products->showProductsById($productId));
+                                                
                                                 $showProducts = $showProducts->data;
+                                                // print_r($showProducts);
+
                                                 $manufId = $showProducts[0]->manufacturer_id;
-                                                // echo "prod data - "; print_r($showProducts); echo "<br><br>";
+                                                
 
                                                 // ==== fetch product manufacturer details ====
                                                 $ManufData = json_decode($Manufacturer->showManufacturerById($manufId));
@@ -171,10 +172,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                 } else {
                                                     $manufName = "manfucaturer not found";
                                                 }
-                                                // echo "prod manuf data - "; print_r($ManufData); echo "<br><br><br><br>";
-
-
-                                                
+                                                                                                
                                                     $productName = $showProducts[0]->name;
                                                     $manufName =  $ManufData->name;
                                                     

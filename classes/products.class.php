@@ -338,59 +338,59 @@ class Products extends DatabaseConnection
 
 
     function showProductsByIdOnUser($productId, $adminId)
-{
-    try {
-        $selectProduct = "SELECT * FROM products WHERE product_id = ?";
-        $prodStmt = $this->conn->prepare($selectProduct);
+    {
+        try {
+            $selectProduct = "SELECT * FROM products WHERE product_id = ?";
+            $prodStmt = $this->conn->prepare($selectProduct);
 
-        if (!$prodStmt) {
-            throw new Exception("Statement preparation failed: " . $this->conn->error);
-        }
+            if (!$prodStmt) {
+                throw new Exception("Statement preparation failed: " . $this->conn->error);
+            }
 
-        $prodStmt->bind_param("s", $productId);
-        $prodStmt->execute();
-        $prodResult = $prodStmt->get_result();
+            $prodStmt->bind_param("s", $productId);
+            $prodStmt->execute();
+            $prodResult = $prodStmt->get_result();
 
-        $productData = array();
-        while ($row = $prodResult->fetch_assoc()) {
-            $productData[] = $row;
+            $productData = array();
+            while ($row = $prodResult->fetch_assoc()) {
+                $productData[] = $row;
+            }
+
+            $prodStmt->close();
+
+            $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ?";
+            $prodReqStmt = $this->conn->prepare($selectProductRequest);
+
+            if (!$prodReqStmt) {
+                throw new Exception("Statement preparation failed: " . $this->conn->error);
+            }
+
+            $prodReqStmt->bind_param("ss", $productId, $adminId);
+            $prodReqStmt->execute();
+            $prodReqResult = $prodReqStmt->get_result();
+
+            $productReqData = array();
+            while ($row = $prodReqResult->fetch_assoc()) {
+                $productReqData[] = $row;
+            }
+
+            $prodReqStmt->close();
+
+            if ($prodResult->num_rows > 0 || $prodReqResult->num_rows > 0) {
+                $productData = array_merge($productData, $productReqData);
+                return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $productData]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            error_log("Error in showProductsById: " . $e->getMessage());
+            return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
         }
 
         $prodStmt->close();
-
-        $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ?";
-        $prodReqStmt = $this->conn->prepare($selectProductRequest);
-
-        if (!$prodReqStmt) {
-            throw new Exception("Statement preparation failed: " . $this->conn->error);
-        }
-
-        $prodReqStmt->bind_param("ss", $productId, $adminId);
-        $prodReqStmt->execute();
-        $prodReqResult = $prodReqStmt->get_result();
-
-        $productReqData = array();
-        while ($row = $prodReqResult->fetch_assoc()) {
-            $productReqData[] = $row;
-        }
-
         $prodReqStmt->close();
-
-        if ($prodResult->num_rows > 0 || $prodReqResult->num_rows > 0) {
-            $productData = array_merge($productData, $productReqData);
-            return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $productData]);
-        } else {
-            return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => '']);
-        }
-    } catch (Exception $e) {
-        error_log("Error in showProductsById: " . $e->getMessage());
-        return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
+        return 0;
     }
-    
-    $prodStmt->close();
-    $prodReqStmt->close();
-    return 0;
-}
 
 
 
@@ -452,80 +452,81 @@ class Products extends DatabaseConnection
 
 
 
-    function prodSearchByMatchForUser($match, $adminId){
-    try {
-        $productData = array(); // Initialize productData array
-        $productReqData = array(); // Initialize productReqData array
+    function prodSearchByMatchForUser($match, $adminId)
+    {
+        try {
+            $productData = array(); // Initialize productData array
+            $productReqData = array(); // Initialize productReqData array
 
-        if ($match == 'all') {
-            $select = "SELECT * FROM `products` LIMIT 6";
-            $stmt = $this->conn->prepare($select);
-        } else {
-            $select = "SELECT * FROM `products` WHERE 
+            if ($match == 'all') {
+                $select = "SELECT * FROM `products` LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+            } else {
+                $select = "SELECT * FROM `products` WHERE 
                    `name` LIKE CONCAT('%', ?, '%') OR 
                    `comp_1` LIKE CONCAT('%', ?, '%') OR
                    `comp_2` LIKE CONCAT('%', ?, '%') LIMIT 6";
-            $stmt = $this->conn->prepare($select);
-        }
-
-        if ($stmt) {
-            if ($match != 'all') {
-                $stmt->bind_param("sss", $match, $match, $match);
+                $stmt = $this->conn->prepare($select);
             }
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+            if ($stmt) {
+                if ($match != 'all') {
+                    $stmt->bind_param("sss", $match, $match, $match);
+                }
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_object()) {
-                    $productData[] = $row;
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_object()) {
+                        $productData[] = $row;
+                    }
                 }
             }
-        }
 
-        // ----- SEARCH FROM PRODUCT REQUEST TABLE ----------
-        if ($match == 'all') {
-            $selectProdReq = "SELECT * FROM `product_request` LIMIT 6";
-            $prodReqStmt = $this->conn->prepare($selectProdReq);
-        } else {
-            $selectProdReq = "SELECT * FROM `product_request` WHERE 
+            // ----- SEARCH FROM PRODUCT REQUEST TABLE ----------
+            if ($match == 'all') {
+                $selectProdReq = "SELECT * FROM `product_request` LIMIT 6";
+                $prodReqStmt = $this->conn->prepare($selectProdReq);
+            } else {
+                $selectProdReq = "SELECT * FROM `product_request` WHERE 
                    `name` LIKE CONCAT('%', ?, '%') AND admin_id = ? LIMIT 6";
-            $prodReqStmt = $this->conn->prepare($selectProdReq);
-        }
-
-        if ($prodReqStmt) {
-            if ($match != 'all') {
-                $prodReqStmt->bind_param("ss", $match, $adminId);
+                $prodReqStmt = $this->conn->prepare($selectProdReq);
             }
 
-            $prodReqStmt->execute();
-            $prodReqResult = $prodReqStmt->get_result();
+            if ($prodReqStmt) {
+                if ($match != 'all') {
+                    $prodReqStmt->bind_param("ss", $match, $adminId);
+                }
 
-            // print_r($prodReqResult);
+                $prodReqStmt->execute();
+                $prodReqResult = $prodReqStmt->get_result();
 
-            if ($prodReqResult->num_rows > 0) {
-                while ($row = $prodReqResult->fetch_object()) {
-                    $productReqData[] = $row;
+                // print_r($prodReqResult);
+
+                if ($prodReqResult->num_rows > 0) {
+                    while ($row = $prodReqResult->fetch_object()) {
+                        $productReqData[] = $row;
+                    }
                 }
             }
-        }
 
-        if (!$stmt || !$prodReqStmt) {
-            return json_encode(['status' => 0, 'message' => "Statement preparation failed: " . $this->conn->error, 'data' => '']);
-        }
+            if (!$stmt || !$prodReqStmt) {
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: " . $this->conn->error, 'data' => '']);
+            }
 
-        if ($result->num_rows > 0 || $prodReqResult->num_rows > 0) {
-            $data = array_merge($productData, $productReqData);
-            // $data = $productReqData;
+            if ($result->num_rows > 0 || $prodReqResult->num_rows > 0) {
+                $data = array_merge($productData, $productReqData);
+                // $data = $productReqData;
 
-            return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
-        } else {
-            return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
+                return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
+            } else {
+                return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data' => '']);
         }
-    } catch (Exception $e) {
-        return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data' => '']);
     }
-}
 
 
 
@@ -649,6 +650,70 @@ class Products extends DatabaseConnection
 
         return $resultData;
     }
+
+
+
+
+
+
+
+    function selectItemLikeForStcoIn($data, $adminid)
+{
+    $resultData1 = array();
+    $resultData2 = array();
+
+    try {
+        $searchSql1 = "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ? LIMIT 10";
+        $stmt1 = $this->conn->prepare($searchSql1);
+
+        if ($stmt1) {
+            $searchPattern = "%" . $data . "%";
+            $stmt1->bind_param("sss", $searchPattern, $searchPattern, $searchPattern);
+            $stmt1->execute();
+
+            // Get the results
+            $result1 = $stmt1->get_result();
+
+            while ($row = $result1->fetch_assoc()) {
+                $resultData1[] = $row;
+            }
+
+            $stmt1->close();
+        } else {
+            throw new Exception("Failed to prepare the statement 1.");
+        }
+
+        $searchSql2 = "SELECT * FROM `product_request` WHERE `name` LIKE ? AND `admin_id`= ? LIMIT 10";
+        $stmt2 = $this->conn->prepare($searchSql2);
+
+        if ($stmt2) {
+            $searchPattern = "%" . $data . "%";
+            $stmt2->bind_param("ss", $searchPattern, $adminid);
+            $stmt2->execute();
+
+            // Get the results
+            $result2 = $stmt2->get_result();
+
+            while ($row = $result2->fetch_assoc()) {
+                $resultData2[] = $row;
+            }
+            
+            $stmt2->close();
+        } else {
+            throw new Exception("Failed to prepare the statement 2.");
+        }
+
+        $mergedResults = array_merge($resultData1, $resultData2);
+        
+        return (['status'=> '1', 'message'=>'data forund', 'data'=>$mergedResults]);
+            
+    } catch (Exception $e) {
+        // Log or handle the exception appropriately
+        error_log("Error: " . $e->getMessage());
+    }
+
+    return (['status' => '0', 'message' => 'no data found']);
+}
 
 
 

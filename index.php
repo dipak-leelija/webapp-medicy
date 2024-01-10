@@ -14,6 +14,7 @@ require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'labAppointments.class.php';
+
 // require_once ROOT_DIR . '_config/accessPermission.php';
 // require_once ROOT_DIR . '_config/toastOnPermission.php';
 

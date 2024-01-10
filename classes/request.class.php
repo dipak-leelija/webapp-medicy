@@ -62,6 +62,48 @@ class Request extends DatabaseConnection
             return "Error: " . $e->getMessage();
         }
     }
+
+
+
+
+
+
+    function selectItemLikeProdReqest($data,$adminId)
+    {
+        $resultData = array();
+
+        try {
+            $searchSql = "SELECT * FROM `product_request` WHERE `name` LIKE ? AND `admin_id`= ? LIMIT 10";
+            $stmt = $this->conn->prepare($searchSql);
+
+            if ($stmt) {
+
+                $searchPattern = "%" . $data . "%";
+                $stmt->bind_param("ss", $searchPattern, $adminId);
+                $stmt->execute();
+
+                // Get the results
+                $result = $stmt->get_result();
+
+                if($result->num_rows > 0){
+                    while ($row = $result->fetch_assoc()) {
+                        $resultData[] = $row;
+                    }
+                    return json_encode(['status'=>'1', 'message'=>'data found', 'data'=>$resultData]);
+                }else{
+                    return json_encode(['status'=>'0', 'message'=>'no data found', 'data'=>'']);
+                }
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+            $stmt->close();
+        } catch (Exception $e) {
+
+            echo "Error: " . $e->getMessage();
+        }
+
+        return 0;
+    }
 }
 
 ?>

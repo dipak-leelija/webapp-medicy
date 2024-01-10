@@ -121,21 +121,49 @@ class StockReturn extends DatabaseConnection
 
 
 
-    function stockReturnFilterbyDate($table, $value1, $value2)
+    function stockReturnFilterByTableName($table, $value, $admin)
+    {
+        try {
+            $sql = "SELECT * FROM stock_return WHERE `$table` = '$value' AND admin_id = '$admin'";
+            $result = $this->conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $data]);
+                $result->close();
+            } else {
+                return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
+        }
+
+        return 0;
+    }
+
+
+
+
+
+
+    function stockReturnFilterbyDate($table, $value1, $value2, $Admin)
     {
         try {
             $data = array();
             $sql  = $sql = "SELECT * FROM `stock_return`
-            WHERE DATE(`$table`) BETWEEN '$value1' AND '$value2'";
+            WHERE admin_id = '$Admin' AND DATE(`$table`) BETWEEN '$value1' AND '$value2'";
             $res  = $this->conn->query($sql);
 
             if ($res->num_rows > 0) {
                 while ($result = $res->fetch_array()) {
                     $data[] = $result;
                 }
-                return $data;
+                return json_encode(['status'=>'1', 'message'=>'data found', 'data'=>$data]);
             } else {
-                return null;
+                return json_encode(['status'=>'0', 'message'=>'no data found', 'data'=>'']);
             }
         } catch (Exception $e) {
             if ($e) {

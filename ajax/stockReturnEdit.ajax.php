@@ -69,10 +69,10 @@ foreach($stockReturn as $stocks){
 $distributorDetails = json_decode($DistributorDetails ->showDistributorById($DistributorId));
 $distributorDetails = $distributorDetails->data;
 
-foreach($distributorDetails as $distributor){
-    $distributorName    =   $distributor->name;
-    $distributorId      =   $distributor->id;
-}
+// foreach($distributorDetails as $distributor){
+    $distributorName    =   $distributorDetails->name;
+    $distributorId      =   $distributorDetails->id;
+// }
 
 // $distributorDetails = json_encode($distributorDetails);
 //===============================================================================================
