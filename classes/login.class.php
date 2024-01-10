@@ -58,6 +58,7 @@ class LoginForm extends DatabaseConnection
                 $result2 = $this->conn->query($admSql2);
 
 
+
                 if ($result2->num_rows > 0) {
                     $OTP = otpGgenerator();
                     $timeout_duration = 600; // 10 * 60 seconds
@@ -90,8 +91,7 @@ class LoginForm extends DatabaseConnection
                         return 'Wrong Password';
                     }
                 }
-                header("Location: register.php");
-                exit;
+                return 'not found';
             }
 
             // ======== admin login =========
