@@ -175,7 +175,7 @@
                 <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?= $userFname ?></span>
 
                 <?php
-                // echo $userImg;
+                // echo $supAdminImg;
                 // exit;
                 if ($_SESSION['ADMIN']){
                     $imagePath = ADM_IMG_PATH . $userImg;
