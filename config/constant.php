@@ -57,6 +57,7 @@ session_start();
 	define('ASST_DIR', 			ROOT_DIR.'uploads/contents/');
 	define('PROD_IMG_DIR', 		ROOT_DIR.'images/product-image/');
 	define('ADM_IMG_DIR', 		ROOT_DIR.'images/admin-images/');
+	define('SUP_ADM_IMG_DIR',	SUP_ADM_DIR.'images/admin-images/');
 	define('EMP_IMG_DIR', 		ROOT_DIR.'images/employee-images/');
 	
 	

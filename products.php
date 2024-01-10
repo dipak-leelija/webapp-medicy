@@ -9,7 +9,7 @@ require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
-require_once ROOT_DIR . '_config/accessPermission.php';
+// require_once ROOT_DIR . '_config/accessPermission.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
 
