@@ -551,6 +551,7 @@ class Products extends DatabaseConnection
     function updateProductValuebyCol($productid, $col, $value, $updatedBy, $updatedOn, $adminId)
     {
         try {
+            
             $updateProduct = "UPDATE `products` SET `$col`=?, `updated_by`=?, `updated_on`=?, `admin_id`=? WHERE `product_id`=?";
 
             $stmt = $this->conn->prepare($updateProduct);
