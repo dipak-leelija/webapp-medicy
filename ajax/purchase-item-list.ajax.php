@@ -16,6 +16,7 @@ require_once CLASS_DIR.'currentStock.class.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'request.class.php';
 require_once CLASS_DIR.'itemUnit.class.php';
 
 
@@ -24,6 +25,7 @@ $Manufacturer = new Manufacturer();
 $Search       = new Search();
 $PackagingUnits = new PackagingUnits();
 $Products = new Products;
+$Request = new Request;
 $ItemUnit = new ItemUnit;
 
 // require_once '../../employee/config/dbconnect.php';
@@ -34,13 +36,14 @@ if (isset($_GET['data'])) {
     // echo $data;
     // echo "<br>",$adminId;
     $col = 'admin_id';
-    $resultData = $Products->selectItemLike($data);
-    // print_r($resultData);
+    $resultData = $Products->selectItemLikeForStcoIn($data, $adminId);
 }
 
-if ($resultData) {
 
-    // echo "<h5 style='padding-left: 12px ; padding-top: 5px ;'><a>".$searchResult."</a></h5>";
+if ($resultData["status"]) {
+    $resultData = $resultData['data'];
+    
+
 ?>
     <div class="row border-bottom border-primary small mx-0 mb-2">
         <div class="col-md-4">Searched For</div>
@@ -50,6 +53,8 @@ if ($resultData) {
     </div>
     <?php
     foreach ($resultData as $resultRow) {
+
+        // print_r($resultRow);
 
         $productId      = $resultRow['product_id'];
         $productName    = $resultRow['name'];
@@ -82,10 +87,10 @@ if ($resultData) {
 
         if ($unit == "tablets" || $unit == "capsules") {
             $unitType = 'loosely_count';
-            $stock = $CurrentStock->showCurrentStocByUnit($productId, $unitType);
+            $stock = $CurrentStock->showCurrentStockByUnit($productId, $unitType, $adminId);
         } else {
             $unitType = 'qty';
-            $stock = $CurrentStock->showCurrentStocByUnit($productId, $unitType);
+            $stock = $CurrentStock->showCurrentStockByUnit($productId, $unitType, $adminId);
         }
 
 

@@ -439,7 +439,7 @@ const getBillAmount = () => {
 
     let ptr = parseFloat(document.getElementById('ptr').value);
     
-    console.log('check 1 : '+ptr);
+    // console.log('check 1 : '+ptr);
 
     let gst = parseInt(document.getElementById('gst').value);
     // console.log("change gst : "+gst);
@@ -448,15 +448,16 @@ const getBillAmount = () => {
     // console.log("prev gst : "+prevGst);
 
     let qty = parseInt(document.getElementById('qty').value);
-    if (qty == '') {
+    if (isNaN(qty)) {
         qty = 0;
     }
+    // console.log(qty);
 
     let disc = parseFloat(document.getElementById('discount').value);
-    if (disc == '') {
+    if (isNaN(disc)) {
         disc = 0;
     }
-
+    // console.log(disc);
 
     let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
     maxPtr = maxPtr.toFixed(2);
@@ -469,8 +470,8 @@ const getBillAmount = () => {
         document.getElementById("gst-check").value = gst;
     }
 
-    console.log(ptr);
-    console.log(maxPtr);
+    // console.log(ptr);
+    // console.log(maxPtr);
 
     if (ptr > maxPtr) {
         swal({

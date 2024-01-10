@@ -5,9 +5,7 @@
                 <div class="row mt-4 mb-2">
                     <div class="col-md-12 ">
                         <!-- <label for="product-name" class="mb-0">Product Name</label> -->
-                        <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name"
-                            placeholder="Search Product" onkeyup="searchItem(this.value);" autocomplete="off" value=""
-                            onkeydown="chekForm()">
+                        <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" autocomplete="off" value="" onkeydown="chekForm()">
 
                         <div class="p-2 bg-light" id="product-select" style="max-height: 25rem; max-width: 100%;">
                         </div>
@@ -69,22 +67,19 @@
                             <option value="" selected disabled>Select GST%</option>
 
                             <?php
-                                                            foreach ($gstData as $gstData) {
-                                                                echo '<option value="' . $gstData->percentage . '" >' . $gstData->percentage . '</option>';
-                                                            }
-                                                            ?>
+                            foreach ($gstData as $gstData) {
+                                echo '<option value="' . $gstData->percentage . '" >' . $gstData->percentage . '</option>';
+                            }
+                            ?>
                         </select>
                     </div>
                 </div>
-
-
 
                 <div class="row">
 
                     <div class="col-sm-6  mt-2">
                         <label class="mb-0" for="batch-no">Batch No.</label>
-                        <input type="text" class="upr-inp" name="batch-no" id="batch-no"
-                            style="text-transform: uppercase;">
+                        <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                     </div>
                     <!-- <div class="col-sm-4  mt-2">
                         <label class="mb-0 mt-1" for="mfd-date">MFD</label>
@@ -99,8 +94,7 @@
                     <div class="col-sm-4 mt-2">
                         <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                         <div class="d-flex date-field">
-                            <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);"
-                                onfocusout="setexpMonth(this);">
+                            <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                             <span class="date-divider">&#47;</span>
                             <input class="year " type="number" id="exp-year" onfocusout="setExpYEAR(this)">
                         </div>
@@ -139,10 +133,10 @@
                     <select class="upr-inp" name="packaging-type" id="packaging-type">
                         <option value="" disabled selected>Select Packaging Type </option>
                         <?php
-                                                        foreach ($showPackagingUnits as $rowPackagingUnits) {
-                                                            echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
-                                                        }
-                                                        ?>
+                        foreach ($showPackagingUnits as $rowPackagingUnits) {
+                            echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
+                        }
+                        ?>
                     </select>
                 </div>
                 <!--/End Quantity Row  -->
@@ -152,8 +146,7 @@
 
                     <div class="col-sm-4 col-md-4 mt-2">
                         <label class="mb-0" for="discount">Discount%</label>
-                        <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount %"
-                            onfocusout="getBillAmount()">
+                        <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount %" onfocusout="getBillAmount()">
                     </div>
 
                     <div class="col-sm-4 col-md-4 mt-2">

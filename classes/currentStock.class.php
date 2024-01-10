@@ -594,19 +594,43 @@ class CurrentStock extends DatabaseConnection
     } //eof showCurrentStocByProductIdandBatchNoDistributorId
 
 
-    function showCurrentStocByUnit($productId, $unitType)
-    {
-        // echo $productId;
-        $data = array();
-        $select = "SELECT * FROM current_stock WHERE `current_stock`.`product_id` = '$productId' AND `current_stock`.`$unitType` > 0  ORDER BY added_on ASC";
-        // echo $select;
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
-        }
-        return $data;
-    } //eof showCurrentStocByPId
 
+
+
+    function showCurrentStockByUnit($productId, $unitType, $adminId){
+
+        $data = array();
+
+        try {
+            $select = "SELECT * FROM current_stock WHERE (product_id = ? AND $unitType > 0) AND admin_id = ?    ORDER BY added_on ASC";
+
+            $stmt = $this->conn->prepare($select);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $productId, $adminId);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
+
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+
+                $stmt->close();
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Log or handle the exception appropriately
+            error_log("Error: " . $e->getMessage());
+        }
+
+        return $data;
+    }
+
+
+
+    
 
     function checkStockExist($productId)
     {
