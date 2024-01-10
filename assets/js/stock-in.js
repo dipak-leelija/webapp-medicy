@@ -88,7 +88,7 @@ function captureCurrentLocation() {
     var currentLocation = window.location.href;
 
     // Log or use the current location as needed
-    console.log("Current Location: " + currentLocation);
+    // console.log("Current Location: " + currentLocation);
 
     // Your additional logic here...
 }
@@ -486,7 +486,7 @@ const getBillAmount = () => {
     }
 
     let modifiedPtr = document.getElementById("ptr").value;
-    console.log(modifiedPtr);
+    // console.log(modifiedPtr);
 
     let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
     base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
@@ -1182,27 +1182,27 @@ function setExpYEAR(year) {
     }
 }
 
-// const setExpYear = (year) => {
-//     // var MFDYR = document.getElementById("mfd-year").value;
-//     // var mfdMnth = document.getElementById("mfd-month").value;
-//     var expMnth = document.getElementById("exp-month").value;
+const setExpYear = (year) => {
+    // var MFDYR = document.getElementById("mfd-year").value;
+    // var mfdMnth = document.getElementById("mfd-month").value;
+    var expMnth = document.getElementById("exp-month").value;
 
-//     if (year.value.length < 4) {
-//         year.value = '';
-//         year.focus();
-//     }
+    if (year.value.length < 4) {
+        year.value = '';
+        year.focus();
+    }
 
-//     if (year.value.length == 4) {
-//         if (year.value == MFDYR) {
-//             if (expMnth < mfdMnth) {
-//                 document.getElementById("exp-month").value = '';
-//                 document.getElementById("exp-month").focus();
-//             }
-//         } else if (year.value < MFDYR) {
-//             year.value = '';
-//             year.focus();
-//         }
-//     }
-// }
+    if (year.value.length == 4) {
+        if (year.value == MFDYR) {
+            if (expMnth < mfdMnth) {
+                document.getElementById("exp-month").value = '';
+                document.getElementById("exp-month").focus();
+            }
+        } else if (year.value < MFDYR) {
+            year.value = '';
+            year.focus();
+        }
+    }
+}
 
 ///////////////// ===== product select arrow key effect ===== \\\\\\\\\\\\\\\\\\\\\\\

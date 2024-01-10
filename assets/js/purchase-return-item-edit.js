@@ -18,6 +18,9 @@ rtnFreeQtyInputField.addEventListener('input', function () {
 
 const customEdit = (id, value) => {
 
+    console.log(id);
+    console.log(value);
+
     var value;
     var row = document.getElementById(id);
 
@@ -33,7 +36,7 @@ const customEdit = (id, value) => {
                 EditId: value
             },
             success: function (data) {
-                // alert(data);
+                alert(data);
                 var dataObject = JSON.parse(data);
                 slno = id.replace(/\D/g, '');
 

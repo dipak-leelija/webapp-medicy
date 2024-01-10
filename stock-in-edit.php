@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
@@ -368,14 +369,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <label class="mb-0" for="batch-no">Batch No.</label>
                                                     <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                                                 </div>
-                                                <div class="col-sm-6 col-md-4 mt-2">
+                                                <!-- <div class="col-sm-6 col-md-4 mt-2">
                                                     <label class="mb-0 mt-1" for="exp-date">MFD</label>
                                                     <div class="d-flex date-field">
                                                         <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);" onfocusout="setmfdMonth(this);">
                                                         <span class="date-divider">&#47;</span>
                                                         <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);" onkeyup="setMfdYEAR(this)">
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-sm-6 col-md-4 mt-2">
                                                     <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                                                     <div class="d-flex date-field">
@@ -540,7 +541,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <!-- <th scope="col"></th> -->
                                                 <th scope="col">Items</th>
                                                 <th scope="col">Batch</th>
-                                                <th scope="col">Mfd</th>
+                                                <!-- <th scope="col">Mfd</th> -->
                                                 <th scope="col">Exp</th>
                                                 <th scope="col">Unit</th>
                                                 <th scope="col">Qty.</th>
