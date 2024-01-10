@@ -7,17 +7,17 @@
 
 <?php
 
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'search.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'request.class.php';
-require_once CLASS_DIR.'itemUnit.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'search.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'request.class.php';
+require_once CLASS_DIR . 'itemUnit.class.php';
 
 
 $CurrentStock = new CurrentStock();
@@ -42,7 +42,7 @@ if (isset($_GET['data'])) {
 
 if ($resultData["status"]) {
     $resultData = $resultData['data'];
-    
+
 
 ?>
     <div class="row border-bottom border-primary small mx-0 mb-2">
@@ -58,8 +58,20 @@ if ($resultData["status"]) {
 
         $productId      = $resultRow['product_id'];
         $productName    = $resultRow['name'];
-        $pComposition   = $resultRow['comp_1'];
-        $pComposition2  = $resultRow['comp_2'];
+
+        $key1 = 'comp_1';
+        if (isset($resultRow['comp_1'])) {
+            $pComposition1   = $resultRow['comp_1'];
+        } else {
+            $pComposition1 = '';
+        }
+
+        if (isset($resultRow['comp_2'])) {
+            $pComposition2  = $resultRow['comp_2'];
+        } else {
+            $pComposition2 = '';
+        }
+
         $weightage      = $resultRow['unit_quantity'];
         $unit           = $resultRow['unit'];
         $unitDetials    = $ItemUnit->itemUnitName($unit);
@@ -70,10 +82,16 @@ if ($resultData["status"]) {
             $packageType = $packData['unit_name'];
         }
         $packOf      = $weightage . $unitDetials . '/' . $packageType;
-        $manufacturerId = $resultRow['manufacturer_id'];
-        $manufacturer = json_decode($Manufacturer->showManufacturerById($manufacturerId));
 
-        $manufacturerName = ($manufacturer->status)? $manufacturer->data->name : 'no data found';
+        if (isset($resultRow['manufacturer_id'])) {
+            $manufacturerId = $resultRow['manufacturer_id'];
+            $manufacturer = json_decode($Manufacturer->showManufacturerById($manufacturerId));
+
+            $manufacturerName = ($manufacturer->status) ? $manufacturer->data->name : 'no data found';
+        }else{
+            $manufacturerName = '';
+        }
+
 
         // foreach ($manufacturer as $row) {
         //     $manufacturerName = $row['name'];
@@ -110,7 +128,7 @@ if ($resultData["status"]) {
                 <small><?php echo $manufacturerName ?></small>
             </div>
             <div class="col-md-4">
-                <small><?= $pComposition ?></small>
+                <small><?= $pComposition1 ?></small>
                 <br>
                 <small><?= $pComposition2 ?></small>
             </div>
@@ -124,7 +142,6 @@ if ($resultData["status"]) {
 <?php
 
     }
-
 } else {
     echo '<div class="row border-bottom border-primary small mx-0 mb-2">
     <label style="color: red;"><b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"Product Not Found / Check Spelling";</b></label>

@@ -14,7 +14,7 @@ $Gst            = new Gst;
 
 
 if (isset($_GET["id"])) {
-    $showProducts = json_decode($Products->showProductsById($_GET["id"]));
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId));
     $showProducts = $showProducts->data;
 
     echo $showProducts[0]->mrp;
@@ -29,7 +29,7 @@ if (isset($_GET["stockmrp"])) {
 // =============== ptr check =====================
 
 if (isset($_GET["ptrChk"])) {
-    $showProducts = json_decode($Products->showProductsById($_GET["ptrChk"]));
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["ptrChk"], $adminId));
     $showProducts = $showProducts->data;
 
     $mrp = $showProducts[0]->mrp;
