@@ -162,8 +162,8 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                 $showProducts = json_decode($Products->showProductsByIdOnUser($productId, $adminId));
 
                                                 $showProducts = $showProducts->data;
-                                                echo "<br>";
-                                                print_r($showProducts);
+                                                // echo "<br>";
+                                                // print_r($showProducts);
 
                                                 if (isset($showProducts[0]->manufacturer_id)) {
                                                     $manufId = $showProducts[0]->manufacturer_id;
