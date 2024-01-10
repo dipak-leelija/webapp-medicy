@@ -2,7 +2,6 @@
 
 require_once realpath(dirname(dirname(dirname(__DIR__))) . '/config/constant.php');
 require_once SUP_ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once SUP_ADM_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
@@ -64,23 +63,23 @@ $SuperAdmin = new SuperAdmin;
 
             if (!empty($_FILES['profile-image']['name'])) {
                 if ($_SESSION['SUPER_ADMIN']) {
-
                     // Delete the previous image
                     $prevImage = $_SESSION['SUPER_ADMIN_IMG'];
-                    if (!empty($prevImage) && file_exists(ADM_IMG_DIR . $prevImage)) {
-                        unlink(ADM_IMG_DIR . $prevImage);
+                    if (!empty($prevImage) && file_exists(SUP_ADM_IMG_DIR . $prevImage)) {
+                        unlink(SUP_ADM_IMG_DIR . $prevImage);
                     }
-
-                    $updateAdminData = $SuperAdmin->updateSupAdminDetails($fname, $lname, $imageName, $email, $phNo,  $address, NOW, $supAdminId);
-
+            
+                    $updateAdminData = $SuperAdmin->updateSupAdminDetails($fname, $lname, $imageName, $email, $phNo, $address, NOW, $supAdminId);
+            
                     if ($updateAdminData['result']) {
-
-                        $imgFolder = ADM_IMG_DIR . $imageName;
+                        $imgFolder = SUP_ADM_IMG_DIR . $imageName;
                         move_uploaded_file($tempImgName, $imgFolder);
-                        $_SESSION['ADMIN_IMG'] = $imageName;
+                        $_SESSION['SUPER_ADMIN_IMG'] = $imageName;
                         $flag = 1;
                     }
                 } 
+            
+            
                 // else {
 
                 //     $prevImage = $_SESSION['EMP_IMG']; 

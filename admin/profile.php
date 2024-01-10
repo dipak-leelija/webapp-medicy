@@ -1,5 +1,4 @@
 <?php
-print_r(dirname(__DIR__) . '/config/constant.php');
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php';  //check admin loggedin or not
 // require_once SUP_ADM_DIR . '_config/accessPermission.php';
@@ -169,7 +168,7 @@ if ($_SESSION['SUPER_ADMIN']) {
 
                                     <div class="p-main d-flex justify-content-start align-items-start flex-wrap ml-3 mt-3">
                                         <div class="ml-3">
-                                            <img class="img-uv-view shadow-lg " src="<?= ($image) ? $imagePath : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
+                                        <img class="img-uv-view shadow-lg " src="<?= ($image) ? $imagePath : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle ml-5">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
                                                 <label for="img-uv-input" class="btn btn-sm btn-success ml-5 mt-n5"><i class="fas fa-camera"></i></label>

@@ -355,7 +355,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
             productViewAndEdit = (productId) => {
                 // alert("productModalBody");
                 let ViewAndEdit = productId;
-                let url = "<?php echo ROOT_DIR ?>ajax/products.View.ajax.php?id=" + ViewAndEdit;
+                let url = "<?php echo SUP_ADM_DIR ?>ajax/products.View.ajax.php?id=" + ViewAndEdit;
                 $(".productModalBody").html(
                     '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
                     url + '"></iframe>');

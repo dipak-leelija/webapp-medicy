@@ -28,11 +28,17 @@
     text-decoration: none;
 }
 
-@media (min-width: 800px) {
-    .button2,.button3{
+/* @media (min-width: 800px) {
+    .button2{
         display: none;
     }
  }
+
+ @media (min-width: 800px) {
+    .button3 {
+        display: none;
+    }
+ } */
  
  @media(max-width: 1000px){
     .button1{
