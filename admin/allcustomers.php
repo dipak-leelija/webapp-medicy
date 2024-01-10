@@ -71,7 +71,7 @@ if ($adminDetails->status) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Appointments - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
+    <title>All Customer | <?= SITE_NAME ?></title>
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -200,8 +200,8 @@ if ($adminDetails->status) {
                                                 $expiryDate       = $admin->expiry;
 
                                                 $link = $admin->reg_status == 1
-                                                    ? '<a href="employees.php?customerId=' . url_enc($customerId) . '" class="text-success text-decoration-none ml-4" data-toggle="tooltip" data-placement="right" title="Show Employees"><i class="fas fa-eye"></a>'
-                                                    : '<a href="" class="text-danger text-decoration-none ml-4" data-toggle="tooltip" data-placement="right" title="Inactive Customer"><i class="fas fa-eye-slash"></a>';
+                                                    ? '<a href="employees.php?customerId=' . url_enc($customerId) . '" class="text-success text-decoration-none ml-4" data-toggle="tooltip" data-placement="top" title="Show Employees"><i class="fas fa-eye"></a>'
+                                                    : '<a href="" class="text-danger text-decoration-none ml-4" data-toggle="tooltip" data-placement="top" title="Inactive Customer"><i class="fas fa-eye-slash"></a>';
 
                                                 echo '<tr>
                                                           <td>' . $customerId . '</td>
