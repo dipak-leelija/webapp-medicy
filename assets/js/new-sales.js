@@ -478,7 +478,7 @@ const onQty = (qty) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if (itemUnit == 'tablets' || itemUnit == 'capsules') {
+    if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
@@ -498,7 +498,7 @@ const onQty = (qty) => {
         string_4 = string_1.concat(string_2).concat(string_3);
         window.alert(string_4);
     }
-    
+
     // =============================== Item pack type calculation ======================
     let unitType = document.getElementById("item-unit-type").value;
     let itemWeightage = document.getElementById("item-weightage").value;
@@ -529,14 +529,12 @@ const onQty = (qty) => {
 
     if (disc != '') {
         disc = disc;
-    }
-    else {
+    } else {
         disc = 0;
     }
 
-
     if (qty > 0) {
-        if (itemPackType == '') {
+        if (itemPackType == ' ') {
             // =========== (item except 'tab' or 'cap' calculation area) ===================
             discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
@@ -551,6 +549,7 @@ const onQty = (qty) => {
             document.getElementById('amount').value = netPayble;
         } else {
             // =========== (item = tab or item = cap calculation area) ===================
+            console.log("disc value on qty function : "+disc);
             discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
@@ -568,8 +567,9 @@ const onQty = (qty) => {
         document.getElementById("amount").value = '';
         document.getElementById("type-check").value = '';
     }
-    // console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
+    
 
+    /// console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
     //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
     xmlhttp.open("GET", marginUrl, false);
@@ -578,7 +578,7 @@ const onQty = (qty) => {
 }
 
 
-const ondDisc = (disc) => {
+const onDisc = (disc) => {
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -586,7 +586,7 @@ const ondDisc = (disc) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if (itemUnit == 'tablets' || itemUnit == 'capsules') {
+    if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
@@ -617,6 +617,8 @@ const ondDisc = (disc) => {
     else {
         disc = 0;
     }
+
+    console.log("disc value on disc function : "+disc);
 
     if (qty > 0) {
         if (itemTypeCheck == '') {
@@ -657,6 +659,8 @@ const ondDisc = (disc) => {
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
 }
+
+
 
 const addSummary = () => {
 

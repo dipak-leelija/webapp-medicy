@@ -128,15 +128,16 @@ if (isset($_GET["looseStock"])) {
 if (isset($_GET["availibility"])) {
 
     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["availibility"], $_GET["batchNo"]);
-    print_r($stock);
+
     foreach($stock as $stock){
+        // print_r($stock);
         if ($stock['unit'] == 'Tablets' || $stock['unit'] == 'Capsules') {
             $availibility = $stock['loosely_count'];
         } else {
             $availibility = $stock['qty'];
         }
     }
-    // echo $availibility;
+    echo $availibility;
 }
 
 // ========================== CURRENT STOCK ITEM LOOSE STOCK CHECKING =============================

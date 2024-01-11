@@ -225,7 +225,7 @@ $doctor = json_decode($doctor , true);
 
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem;  font-weight: bold;">Disc%</label><br>
-                                            <input class="sale-inp" type="any" id="disc" onkeyup="ondDisc(this.value)">
+                                            <input class="sale-inp" type="any" id="disc" onkeyup="onDisc(this.value)">
                                         </div>
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">D.Price</label><br>

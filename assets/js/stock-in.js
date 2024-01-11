@@ -495,10 +495,10 @@ const getBillAmount = () => {
     // console.log(modifiedPtr);
 
     let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
-    base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
+    // base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
     base = base.toFixed(2);
 
-    let totalAmount = parseFloat(base) * parseInt(qty);
+    let totalAmount = (parseFloat(base)+ (parseFloat(base) * (parseFloat(gst) / 100))) * parseInt(qty);
     totalAmount = totalAmount.toFixed(2);
 
 
@@ -757,12 +757,16 @@ const addData = () => {
 
     //////////////////////
     let totalMrp = parseFloat(mrp.value) * ((parseFloat(qty.value) + parseFloat(freeQty.value)));
-    let payble = parseFloat(base.value) * parseInt(qty.value);
+    let payble = (((parseFloat(base.value)) + (parseFloat(base.value) * (parseInt(gst.value)/100))) * parseInt(qty.value)).toFixed(2);
+
+    // console.log("total mrp : "+totalMrp);
+    // console.log("payble : "+payble);
+    // console.log("bill amount : "+billAmount.value);
 
     let marginP = 0;
     if (parseFloat(totalMrp) > parseFloat(payble)) {
-        let margin = parseFloat(totalMrp) - parseFloat(billAmount.value);
-        marginP = (parseFloat(margin) / parseFloat(totalMrp)) * 100;
+        let marginAmount = parseFloat(totalMrp) - parseFloat(billAmount.value);
+        marginP = (parseFloat(marginAmount) / parseFloat(totalMrp)) * 100;
     } else {
         marginP = 0;
     }
@@ -948,7 +952,7 @@ const editItem = (tupleData) => {
         document.getElementById("manufacturer-name").value = TupleData.manufName;
         document.getElementById("medicine-power").value = TupleData.medPower;
 
-        document.getElementById("mfd-month").value = TupleData.mfdMnth;
+        // document.getElementById("mfd-month").value = TupleData.mfdMnth;
         // document.getElementById("mfd-year").value = TupleData.mfdYr;
         document.getElementById("exp-month").value = TupleData.expMnth;
         document.getElementById("exp-year").value = TupleData.expYr;
