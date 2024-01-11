@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             $setof          = $_POST['setof'];
             $unit           = preg_replace('/[0-9]/','',$setof);
-            $weightage      = preg_replace('/[a-z]/','',$setof);
+            $weightage      = preg_replace('/[a-z-A-Z]/','',$setof);
 
             $purchasedQty   = $_POST['purchasedQty'];
             $freeQty        = $_POST['freeQty'];

@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $expDate = array_shift($_POST['expDate']);
                 $unit =  array_shift($_POST['setof']);
                 $itemUnit =  preg_replace('/[0-9]/', '', $unit);
-                $itemWeatage =  preg_replace('/[a-z]/', '', $unit);
+                $itemWeatage =  preg_replace('/[a-z-A-Z]/', '', $unit);
                 $MRP = array_shift($_POST['mrp']);;
                 $discountPercent =  array_shift($_POST['disc']);
                 $gstPercent =  array_shift($_POST['gst']);

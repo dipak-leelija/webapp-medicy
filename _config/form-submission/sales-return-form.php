@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $unit = $setOf[$i];
 
-                $itemWeatage = preg_replace('/[a-z]/', '', $unit);
+                $itemWeatage = preg_replace('/[a-z-A-Z]/', '', $unit);
                 $unitType = preg_replace('/[0-9]/', '', $unit);
 
 

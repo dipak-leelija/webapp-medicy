@@ -141,7 +141,7 @@ if (isset($_POST['stock-return-edit'])) {
             $expDate = $_POST['expDate'];
             $setof = $_POST['setof'];
             $updatedItemUnit = preg_replace('/[0-9]/', '', $setof[$i]);
-            $updatedItemWeightage = preg_replace('/[a-z]/', '', $setof[$i]);
+            $updatedItemWeightage = preg_replace('/[a-z-A-Z]/', '', $setof[$i]);
             $mrp = $_POST['mrp'];
             $ptr = $_POST['ptr'];
             $gstParcent = $_POST['gst'];
