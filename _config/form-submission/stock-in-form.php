@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $looselyPrice = '';
 
-                if ($unit == "tablets" || $unit == "capsules") {
+                if ($unit == "Tablets" || $unit == "Capsules") {
                     $looselyCount = $weightage * ($qty + $freeQty);
                     $looselyPrice = ($mrp * $qty) / ($weightage * $qty);
                 }else{

@@ -93,7 +93,7 @@ if (isset($_POST['stock-return-edit'])) {
             $itemUnit = preg_replace('/[0-9]/', '', $unit);
             $itemWeightage = preg_replace('/[a-z]/', '', $unit);
 
-            if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
+            if ($itemUnit == 'Tablets' || $itemUnit == 'Capsules') {
                 $returnQty = intval($totalReturnQTY) * intval($itemWeightage);
             } else {
                 $returnQty = $totalReturnQTY;
@@ -105,7 +105,7 @@ if (isset($_POST['stock-return-edit'])) {
                 $CurrentItemQTY = $currenStockData['qty'];
                 $CurrentLooselyCount = $currenStockData['loosely_count'];
 
-                if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
+                if ($itemUnit == 'Tablets' || $itemUnit == 'Capsules') {
                     $updatedLooseCount = intval($CurrentLooselyCount) + intval($returnQty);
                     $updatedQty = intdiv($updatedLooseCount, $itemWeightage);
                 } else {
@@ -199,7 +199,7 @@ if (isset($_POST['stock-return-edit'])) {
                 $currentLooseQty = $CurrentStockData->loosely_count;
                 
 
-                if ($updatedItemUnit == 'tablets' || $updatedItemUnit == 'capsules') {
+                if ($updatedItemUnit == 'Tablets' || $updatedItemUnit == 'Capsules') {
                     $updatedLooseQty = intval($currentLooseQty) + (intval($itemRetundQtyDiff) * intval($updatedItemWeightage));
                     $updatedLooseQty = intval($updatedLooseQty);
                     $updatedItemWeightage = intval($updatedItemWeightage);

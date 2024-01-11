@@ -331,9 +331,9 @@ const stockDetails = (productId, batchNo, itemId) => {
         // alert(xmlhttp.responseText);
 
         //==================== Weightage ====================
-        weightageUrl = `ajax/getProductDetails.ajax.php?weightage=${productId}`;
+        itemWeightageUrl = `ajax/getProductDetails.ajax.php?itemWeightage=${productId}`;
         // alert(url);
-        xmlhttp.open("GET", weightageUrl, false);
+        xmlhttp.open("GET", itemWeightageUrl, false);
         xmlhttp.send(null);
         let packWeightage = xmlhttp.responseText;
         document.getElementById("item-weightage").value = xmlhttp.responseText;
@@ -428,13 +428,7 @@ const stockDetails = (productId, batchNo, itemId) => {
         // alert(xmlhttp.responseText);
         document.getElementById("manufName").value = xmlhttp.responseText;
 
-        //////// STRING REPLACE IN MANUFACTURER DETAILS //////////
-        // let manufactururName = document.getElementById("manufName").value;
-        // manufactururName = manufactururName.replace("<", "&lt");
-        // manufactururName = manufactururName.replace(">", "&gt");
-        // manufName = manufactururName.replace("'", "_");
-        // document.getElementById("manufNameStrngReplace").value = manufName;
-        // console.log(manufName);
+        //////=======================================\\\\\\
         //==================== Content ====================
         contentUrl = 'ajax/product.getContent.ajax.php?pid=' + productId;
         xmlhttp.open("GET", contentUrl, false);
@@ -504,13 +498,14 @@ const onQty = (qty) => {
         string_4 = string_1.concat(string_2).concat(string_3);
         window.alert(string_4);
     }
+    
     // =============================== Item pack type calculation ======================
     let unitType = document.getElementById("item-unit-type").value;
     let itemWeightage = document.getElementById("item-weightage").value;
     let checkSum = '';
     let itemPackType = '';
 
-    if (unitType == 'tablets' || unitType == 'capsules') {
+    if (unitType == 'Tablets' || unitType == 'Capsules') {
         checkSum = parseInt(qty) % parseInt(itemWeightage);
         if (checkSum == 0) {
             itemPackType = 'Pack';

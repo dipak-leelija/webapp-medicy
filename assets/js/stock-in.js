@@ -747,7 +747,6 @@ const addData = () => {
     netAmount = parseFloat(net) + parseFloat(billAmount.value);
 
     ///////// gst amount calculation \\\\\\\\\\\\\\\\\\\\\
-
     let withoutGstAmount = parseFloat(base.value) * parseInt(qty.value);
     let gstPerItem = parseFloat(billAmount.value) - parseFloat(withoutGstAmount);
     gstPerItem = parseFloat(gstPerItem);

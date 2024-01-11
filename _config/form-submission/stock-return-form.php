@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 // echo "<br>Return free qty : $returnFQty[$i]";
                 // echo "<br>Item Unit name : $unit[$i]";
 
-                if($unit[$i] == 'tablets' || $unit[$i] == 'capsules'){
+                if($unit[$i] == 'Tablets' || $unit[$i] == 'Capsules'){
                     $updatedLooseQty = intval($looseQty) - ((intval($returnQty[$i]) +  intval($returnFQty[$i])) * $weightage[$i]);
                     $updatedQty = intdiv($updatedLooseQty, $weightage[$i]);
                 }else{
