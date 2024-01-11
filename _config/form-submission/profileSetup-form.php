@@ -90,6 +90,7 @@ $Employees = new Employees;
                     if ($updateEmployeeData['result']) {
 
                         $imgFolder = EMP_IMG_DIR . $imageName;
+                        // print_r($imgFolder);
                         move_uploaded_file($tempImgName, $imgFolder);
                         $_SESSION['EMP_IMG'] = $imageName;
                         $flag = 1;
@@ -114,7 +115,7 @@ $Employees = new Employees;
             if ($flag == 1) {
     ?>
                 <script>
-                    swal("Success", "Data Updated!", "success")
+                    swal("Success", "Successfully Updated!", "success")
                         .then((value) => {
                             window.location = '<?php echo URL ?>profile.php';
                         });
