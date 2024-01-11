@@ -190,12 +190,12 @@
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Settings
                 </a> -->
-                <?php if ($_SESSION['SUPERADMINLOGGEDIN']) : ?>
+                <!-- <?php if ($_SESSION['SUPERADMINLOGGEDIN']) : ?>
                     <a class="dropdown-item" href="<?= ADM_URL . 'employees.php' ?>">
                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                         Employees
                     </a>
-                <?php endif ?> 
+                <?php endif ?>  -->
                 <!-- <a class="dropdown-item" href="<?= ADM_URL . 'empRole.php' ?>">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Designations
