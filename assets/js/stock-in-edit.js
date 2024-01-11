@@ -133,7 +133,7 @@ const customClick = (id, value1, value2, value3) => {
                 bhNo: batchNo
             },
             success: function (data) {
-                alert(data);
+                // alert(data);
                 var dataObject = JSON.parse(data);
 
                 var totalItmQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);

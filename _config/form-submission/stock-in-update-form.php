@@ -258,7 +258,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $item_total_qty = intval($item_qty[$i]) + intval($item_free_qty[$i]);
                 // echo "<br>item total qty check : $item_total_qty";
-                if ($item_unit[$i] == 'tablets' || $item_unit[$i] == 'capsules') {
+                if ($item_unit[$i] == 'Tablets' || $item_unit[$i] == 'Capsules') {
                     $item_loose_qty = intval($item_total_qty) * intval($item_weightage);
                     $item_loose_price = floatval($item_mrp[$i]) / intval($item_weightage[$i]);
                 } else {
@@ -309,7 +309,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $itemFreeQty = $item_free_qty[$i];
                 $updatedQty = (intval($itemQty) + intval($itemFreeQty)) - intval($prevStockInItemQty);
 
-                if ($item_unit[$i] == 'tablets' || $item_unit[$i] == 'capsules') {
+                if ($item_unit[$i] == 'Tablets' || $item_unit[$i] == 'Capsules') {
                     $updatedStockInLooseQty = intval($updatedQty) * intval($item_weightage[$i]);
                 } else {
                     $updatedStockInLooseQty = 0;
@@ -330,7 +330,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
 
-                if ($item_unit[$i] == 'tablets' || $item_unit[$i] == 'capsules') {
+                if ($item_unit[$i] == 'Tablets' || $item_unit[$i] == 'Capsules') {
                     $updated_Loose_Qty = intval($Loose_Qty) + intval($updatedStockInLooseQty);
                     $updated_item_qty = intdiv($updated_Loose_Qty, $item_weightage[$i]);
                 } else {
@@ -346,7 +346,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 /* update to current stock */
                 $updateCurrentStockItemData = $CurrentStock->updateCurrentStockByStockInId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $updated_Loose_Qty, $updated_item_qty, $item_ptr[$i], $addedBy);
 
-                if ($item_unit[$i] == 'tablets' || $item_unit[$i] == 'capsules') {
+                if ($item_unit[$i] == 'Tablets' || $item_unit[$i] == 'Capsules') {
                     $stockInLooseCount = (intval($item_qty[$i]) + intval($item_free_qty[$i])) * intval($item_weightage[$i]);
                 } else {
                     $stockInLooseCount = 0;

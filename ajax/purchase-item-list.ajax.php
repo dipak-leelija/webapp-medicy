@@ -36,7 +36,7 @@ if (isset($_GET['data'])) {
     // echo $data;
     // echo "<br>",$adminId;
     $col = 'admin_id';
-    $resultData = $Products->selectItemLikeForStcoIn($data, $adminId);
+    $resultData = $Products->selectItemLikeForStockInOut($data, $adminId);
 }
 
 

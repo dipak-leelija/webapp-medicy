@@ -658,7 +658,7 @@ class Products extends DatabaseConnection
 
 
 
-    function selectItemLikeForStcoIn($data, $adminid)
+    function selectItemLikeForStockInOut($data, $adminid)
 {
     $resultData1 = array();
     $resultData2 = array();
