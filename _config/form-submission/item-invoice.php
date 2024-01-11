@@ -152,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $ItemUnit = preg_replace("/[^a-z]/", '', $weightage[$i]);
                 $ItemWeightage = preg_replace("/[^0-9]/", '', $weightage[$i]);
 
-                if ($ItemUnit == 'tablets' || $ItemUnit == 'capsules') {
+                if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') {
                     // $itemSellQty = $qty[$i];
                     if (intval($qty[$i]) % intval($ItemWeightage) == 0) {
                         $wholeCount = intval($qty[$i]) / intval($ItemWeightage);
@@ -234,7 +234,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
 
                 $itemSellQty = $qty[$i];
-                if ($ItemUnit == 'tablets' || $ItemUnit == 'capsules') {
+                if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') {
 
                     $updatedLooseCount     = intval($itemLooseQty) - intval($itemSellQty);
                     $UpdatedNewQuantity   = intval($updatedLooseCount / $ItemWeightage);
