@@ -549,7 +549,6 @@ const onQty = (qty) => {
             document.getElementById('amount').value = netPayble;
         } else {
             // =========== (item = tab or item = cap calculation area) ===================
-            console.log("disc value on qty function : "+disc);
             discPrice = (parseFloat(loosePrice) - (parseFloat(loosePrice) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
@@ -618,7 +617,7 @@ const onDisc = (disc) => {
         disc = 0;
     }
 
-    console.log("disc value on disc function : "+disc);
+    // console.log("disc value on disc function : "+disc);
 
     if (qty > 0) {
         if (itemTypeCheck == '') {
