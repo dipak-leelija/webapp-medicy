@@ -66,6 +66,8 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
         }
 
         $empEmail = $showEmployee->emp_email;
+        $empContact = $showEmployee->contact;
+
         $empAddress = $showEmployee->emp_address;
     }
 
@@ -75,14 +77,27 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
 
     <form>
         <input type="hidden" id="empId" name="nm_option" value="<?php echo $empId; ?>">
+        
         <div class="form-group">
             <label for="" class="col-form-label">Employee Username:</label>
-            <input type="text" class="form-control" id="empUsername" value="<?php echo $empUsername; ?>">
+            <input type="text" class="form-control" id="empUsername" value="<?= $empUsername; ?>" readonly>
         </div>
+
         <div class="form-group">
             <label for="" class="col-form-label">Employee Name:</label>
             <input type="text" class="form-control" id="empName" value="<?php echo $empName; ?>">
         </div>
+        
+        <div class="form-group">
+            <label for="" class="col-form-label">Employee Email:</label>
+            <input type="email" class="form-control" id="empEmail" value="<?php echo $empEmail; ?>">
+        </div>
+
+        <div class="form-group">
+            <label for="" class="col-form-label">Contact:</label>
+            <input type="text" class="form-control" id="contact" value="<?php echo $empContact; ?>" minlength="10" maxlength="10">
+        </div>
+
         <div class="form-group">
             <label for="" class="col-form-label">Employee Role:</label>
             <!-- <input type="text" class="form-control" id="empRole" value="<?php echo $empRoleId; ?>"> -->
@@ -96,10 +111,7 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
                 <?php } ?>
             </select>
         </div>
-        <div class="form-group">
-            <label for="" class="col-form-label">Employee Email:</label>
-            <input type="text" class="form-control" id="empEmail" value="<?php echo $empEmail; ?>">
-        </div>
+
         <div class="form-group">
             <label for="empAddress" class="col-form-label">Employee Address:</label>
             <textarea class="form-control" name="empAddress" id="empAddress" rows="4"><?php echo $empAddress; ?></textarea>
@@ -112,27 +124,78 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
         </div>
     </form>
 
+    
+
+    <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <!-- <script src="<?php echo PLUGIN_PATH ?>bootstrap/js/bootstrap.bundle.min.js"></script> -->
+
+    <!-- Bootstrap Js -->
+    <!-- <script src="<?php echo PLUGIN_PATH ?>bootstrap-5.0.2/js/bootstrap.js"></script> -->
+    <!-- <script src="<?php echo PLUGIN_PATH ?>bootstrap-5.0.2/js/bootstrap.min.js"></script> -->
+
+
+    <!-- Core plugin JavaScript-->
+    <!-- <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script> -->
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+
     <script>
+
         function editEmp() {
+            // Get input values
             let empId = $("#empId").val();
             let empUsername = document.getElementById("empUsername").value;
             let empName = document.getElementById("empName").value;
             let empRole = document.getElementById("empRole").value;
             let empEmail = document.getElementById("empEmail").value;
+            let empContact = document.getElementById("contact").value;
             let empAddress = document.getElementById("empAddress").value;
 
-            console.log(empId, empUsername, empName, empRole, empEmail, empAddress);
+            // Validate input values
+            if (!empId || !empUsername || !empName || !empRole || !empEmail || !empContact || !empAddress) {
+                alert("Please fill in all the required fields.");
+                return;
+            }
 
-            // console.log(editTestCategoryDsc);
-            
-            let url = "emp.edit.ajax.php?empId=" + escape(empId) + "&empUsername=" + escape(empUsername) + "&empName=" + escape(empName) + "&empRole=" + escape(empRole) + "&empEmail=" + escape(empEmail);
+            // Additional validation for email format
+            if (!isValidEmail(empEmail)) {
+                alert("Please enter a valid email address.");
+                return;
+            }
 
+            // Additional validation for contact number format
+            if (!isValidContact(empContact)) {
+                alert("Please enter a valid contact number.");
+                return;
+            }
+
+            // Construct the URL for the AJAX request
+            let url = "emp.edit.ajax.php?empId=" + escape(empId) + "&empUsername=" + escape(empUsername) + "&empName=" + escape(empName) + "&empRole=" + escape(empRole) + "&empEmail=" + escape(empEmail) + "&empContact=" + escape(empContact);
+
+            // Make the AJAX request
             request.open('GET', url, true);
-
             request.onreadystatechange = getEditUpdates;
-
             request.send(null);
         }
+
+        // Function to validate email format
+        function isValidEmail(email) {
+            // Implement your email validation logic here
+            // You can use a regular expression or any other method
+            return true; // Placeholder, replace with your logic
+        }
+
+        // Function to validate contact number format
+        function isValidContact(contact) {
+            // Implement your contact number validation logic here
+            // You can use a regular expression or any other method
+            return true; // Placeholder, replace with your logic
+        }
+
 
         function getEditUpdates() {
             if (request.readyState == 4) {
@@ -155,24 +218,6 @@ $empRoleList = json_decode($desigRole->designationRoleCheckForLogin());
             }
         } //eof
     </script>
-
-    <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Bootstrap Js -->
-    <script src="<?php echo PLUGIN_PATH ?>bootstrap-5.0.2/js/bootstrap.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>bootstrap-5.0.2/js/bootstrap.min.js"></script>
-
-
-    <!-- Core plugin JavaScript-->
-    <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
-
 
 </body>
 

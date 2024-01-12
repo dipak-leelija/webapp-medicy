@@ -32,6 +32,7 @@ if (isset($_POST['add-emp']) == true) {
     $empName      = $_POST['emp-name'];
     $empUsername  = $_POST['emp-username'];
     $empMail      = $_POST['emp-mail'];
+    $empContact   = $_POST['emp-contact'];
     $empRole      = $_POST['emp-role'];
     $empPass      = $_POST['emp-pass'];
     $empCPass     = $_POST['emp-cpass'];
@@ -40,11 +41,13 @@ if (isset($_POST['add-emp']) == true) {
 
     if ($empPass == $empCPass) {
         $wrongPasword = false;
-        $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
+        $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empContact, $empAddress, $empPass);
+        // print_r($addEmployee);
         if ($addEmployee) {
             $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
         } else {
-            echo "<script>alert('Employee Insertion Failed!')</script>";
+            $response = json_encode($addEmployee);
+            echo "<script>alert($response)</script>";
         }
     } else {
         echo "<script>alert('Password Did Not Matched!')</script>";
@@ -125,29 +128,24 @@ if (isset($_POST['add-emp']) == true) {
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Employees</h1>
-
                     <!-- DataTales Example -->
 
-                    <div class="card shadow mb-4">
+                    <div class="card shadow-sm">
                         <div class="card-header py-3">
-                            <div class="d-flex col-12">
-                                <div class="d-flex col-md-4 justify-content-left">
-                                    <h6 class="m-0 font-weight-bold text-primary">Employees List</h6>
-                                </div>
-                                <div class="d-flex col-md-4 justify-content-center">
-                                    <?php
-                                    if (isset($_GET['action'])) {
-                                        if (isset($_GET['msg'])) {
-                                            echo "<p><strong>{$_GET['msg']}</strong></p>";
-                                        }
+                            <div class="col-12 d-flex align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Employees List</h6>
+                                
+                                <?php
+                                if (isset($_GET['action'])) {
+                                    if (isset($_GET['msg'])) {
+                                        echo "<p><strong>{$_GET['msg']}</strong></p>";
                                     }
-                                    ?>
-                                </div>
-                                <div class="d-flex col-md-4 justify-content-end">
-                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg">Add New Employee</button>
-                                </div>
+                                }
+                                ?>
+                                
+                                
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg">Add New Employee</button>
+
                             </div>
                         </div>
 
@@ -224,13 +222,11 @@ if (isset($_POST['add-emp']) == true) {
                 <!-- /.container-fluid -->
                 <!--Entry Section-->
                 <div class="col" style="margin: 0 auto; width:98%;">
-                    <div class="card shadow mb-4">
-
-                    </div>
+                    
                     <!-- .........employee add modal start........ -->
-                    <div class="modal fade bd-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
+                    <div class="modal fade bd-example-modal-lg" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content modal-center">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Add New Employee</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -253,6 +249,11 @@ if (isset($_POST['add-emp']) == true) {
                                                 <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-mail">Employee Mail:</label>
                                                     <input class="form-control" type="email" name="emp-mail" id="emp-mail" maxlength="100" required onfocusout="checkEmpEmail(this)">
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <label class="mb-0 mt-1" for="emp-mail">Employee Contact:</label>
+                                                    <input class="form-control" type="number" name="emp-contact" id="emp-contact" minlength="10" maxlength="10" required>
                                                 </div>
 
                                                 <div class="col-md-12">
@@ -287,7 +288,7 @@ if (isset($_POST['add-emp']) == true) {
                                         <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2"> -->
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button class="btn btn-success me-md-2" type="submit" name="add-emp">Add Now</button>
+                                            <button class="btn btn-primary me-md-2" type="submit" name="add-emp">Add Now</button>
                                         </div>
                                     </form>
                                 </div>

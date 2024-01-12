@@ -5,19 +5,19 @@ class Employees extends DatabaseConnection
 {
 
 
-    function addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass)
+    function addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $contactNo, $empAddress, $empPass)
     {
         $password = pass_enc($empPass, EMP_PASS);
 
         try {
-            $sql = "INSERT INTO `employees` (admin_id, emp_username, emp_name, emp_role, emp_email, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `employees` (admin_id, emp_username, emp_name, emp_role, emp_email, contact, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {
                 throw new Exception("Error preparing insert statement: " . $this->conn->error);
             }
 
-            $stmt->bind_param("sssssss", $adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $password);
+            $stmt->bind_param("sssssiss", $adminId, $empUsername, $empName, $empRole, $empMail, $contactNo, $empAddress, $password);
 
             if ($stmt->execute()) {
                 return ["result" => true];
@@ -272,12 +272,45 @@ class Employees extends DatabaseConnection
 
 
     
-    function updateEmp($empUsername, $empName, $empRole, $empEmail,/*Last Variable for id which one you want to update */ $empId){
-        $edit = "UPDATE  `employees` SET `emp_username` = '$empUsername', `emp_name`= '$empName', `emp_role` = '$empRole', `emp_email` = '$empEmail' WHERE `employees`.`emp_id` = '$empId'";
-        $editQuery = $this->conn->query($edit);
+    // function updateEmp($empUsername, $empName, $empRole, $empEmail, $empContact, /*Last Variable for id which one you want to update */ $empId){
+    //     $edit = "UPDATE  `employees` SET `emp_username` = '$empUsername', `emp_name`= '$empName', `emp_role` = '$empRole', `emp_email` = '$empEmail', `contact` = '$empContact' WHERE `employees`.`emp_id` = '$empId'";
+
+    //     $editQuery = $this->conn->query($edit);
         
-        return $editQuery;
-    } //end updateEmp function
+    //     return $editQuery;
+    // } //end updateEmp function
+
+
+    function updateEmp($empUsername, $empName, $empRole, $empEmail, $empContact, $empId) {
+        try {
+            // Prepare the SQL statement with placeholders
+            $edit = "UPDATE `employees` SET `emp_username` = ?, `emp_name` = ?, `emp_role` = ?, `emp_email` = ?, `contact` = ? WHERE `emp_id` = ?";
+            $stmt = $this->conn->prepare($edit);
+    
+            // Bind parameters to the placeholders
+            $stmt->bind_param("ssssss", $empUsername, $empName, $empRole, $empEmail, $empContact, $empId);
+    
+            // Execute the prepared statement
+            $stmt->execute();
+    
+            // Check if the query was successful
+            if ($stmt->affected_rows > 0) {
+                return true; // Update successful
+            } else {
+                throw new Exception("Error updating employee: " . $this->conn->error);
+
+                return false; // No rows affected, probably the ID doesn't exist
+            }
+        } catch (Exception $e) {
+
+            return ['status'=> '0', 'message'=>$e->getMessage()];
+
+        } finally {
+            // Close the statement regardless of the outcome
+            $stmt->close();
+        }
+    }
+    
 
 
 
