@@ -498,10 +498,10 @@ const getBillAmount = () => {
     let modifiedPtr = document.getElementById("ptr").value;
 
     let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
-    base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
+    // base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
     base = base.toFixed(2);
 
-    let totalAmount = parseFloat(base) * parseInt(qty);
+    let totalAmount = (parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100))) * parseInt(qty);
     totalAmount = totalAmount.toFixed(2);
 
 
@@ -747,21 +747,23 @@ const addData = () => {
     var qtyVal = document.getElementById("qty-val").value;
     totalQty = parseFloat(qtyVal) + parseFloat(itemQty);
 
-    // net amount count
+    // net amount calculation
     var net = document.getElementById("net-amount").value;
     var addAmount = parseFloat(billAmount.value);
-    netAmount = parseFloat(net) + addAmount;
+    netAmount = parseFloat(net) + parseFloat(addAmount);
 
 
     // total gst amount calculation
-    let total = qty.value * ptr.value;
-    let totalWithDisc = total - (discount.value / 100 * total);
-    let gstPerItem = parseFloat(crntGstAmount.value);
-    // let gstPerItem = withGst - total;
-    let gstVal = document.getElementById("gst-val").value;
+    // let total = qty.value * ptr.value;
+    let baseAmt = base.value;
+    let gstPerItem = ((parseFloat(baseAmt)*parseInt(gst.value))/100);
+    // console.log("gst per item : "+gstPerItem);
+    let totalItemGstAmt = parseFloat(gstPerItem) * parseInt(qty.value);
+    // let gstVal = document.getElementById("gst-val").value;
 
-    let onlyGst = parseFloat(gstVal) + gstPerItem;
-    onlyGst = onlyGst.toFixed(2);
+    let onlyGst = totalItemGstAmt.toFixed(2);
+    // console.log("nnly gst : "+onlyGst);
+    // onlyGst = onlyGst.toFixed(2);
 
     ////////////////////// marging amount calculation
     // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
@@ -826,7 +828,7 @@ const addData = () => {
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-14">
-                <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(2)}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-16">

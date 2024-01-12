@@ -113,7 +113,7 @@ if (isset($_GET['return-id'])) {
                                 $gst    += $item['gst'];
                                 $amount += $item['ptr'];
 
-                                $productData = json_decode($Product->showProductsById($item['product_id']));
+                                $productData = json_decode($Product->showProductsByIdOnUser($item['product_id'], $adminId));
 
                                 if($productData->status){
                                     $productData = $productData->data;

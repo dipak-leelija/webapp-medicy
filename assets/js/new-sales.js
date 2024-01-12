@@ -331,9 +331,9 @@ const stockDetails = (productId, batchNo, itemId) => {
         // alert(xmlhttp.responseText);
 
         //==================== Weightage ====================
-        weightageUrl = `ajax/getProductDetails.ajax.php?weightage=${productId}`;
+        itemWeightageUrl = `ajax/getProductDetails.ajax.php?itemWeightage=${productId}`;
         // alert(url);
-        xmlhttp.open("GET", weightageUrl, false);
+        xmlhttp.open("GET", itemWeightageUrl, false);
         xmlhttp.send(null);
         let packWeightage = xmlhttp.responseText;
         document.getElementById("item-weightage").value = xmlhttp.responseText;
@@ -428,13 +428,7 @@ const stockDetails = (productId, batchNo, itemId) => {
         // alert(xmlhttp.responseText);
         document.getElementById("manufName").value = xmlhttp.responseText;
 
-        //////// STRING REPLACE IN MANUFACTURER DETAILS //////////
-        // let manufactururName = document.getElementById("manufName").value;
-        // manufactururName = manufactururName.replace("<", "&lt");
-        // manufactururName = manufactururName.replace(">", "&gt");
-        // manufName = manufactururName.replace("'", "_");
-        // document.getElementById("manufNameStrngReplace").value = manufName;
-        // console.log(manufName);
+        //////=======================================\\\\\\
         //==================== Content ====================
         contentUrl = 'ajax/product.getContent.ajax.php?pid=' + productId;
         xmlhttp.open("GET", contentUrl, false);
@@ -484,7 +478,7 @@ const onQty = (qty) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if (itemUnit == 'tablets' || itemUnit == 'capsules') {
+    if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
@@ -504,13 +498,14 @@ const onQty = (qty) => {
         string_4 = string_1.concat(string_2).concat(string_3);
         window.alert(string_4);
     }
+
     // =============================== Item pack type calculation ======================
     let unitType = document.getElementById("item-unit-type").value;
     let itemWeightage = document.getElementById("item-weightage").value;
     let checkSum = '';
     let itemPackType = '';
 
-    if (unitType == 'tablets' || unitType == 'capsules') {
+    if (unitType == 'Tablets' || unitType == 'Capsules') {
         checkSum = parseInt(qty) % parseInt(itemWeightage);
         if (checkSum == 0) {
             itemPackType = 'Pack';
@@ -534,14 +529,12 @@ const onQty = (qty) => {
 
     if (disc != '') {
         disc = disc;
-    }
-    else {
+    } else {
         disc = 0;
     }
 
-
     if (qty > 0) {
-        if (itemPackType == '') {
+        if (itemPackType == ' ') {
             // =========== (item except 'tab' or 'cap' calculation area) ===================
             discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
@@ -573,8 +566,9 @@ const onQty = (qty) => {
         document.getElementById("amount").value = '';
         document.getElementById("type-check").value = '';
     }
-    // console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
+    
 
+    /// console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
     //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
     xmlhttp.open("GET", marginUrl, false);
@@ -583,7 +577,7 @@ const onQty = (qty) => {
 }
 
 
-const ondDisc = (disc) => {
+const onDisc = (disc) => {
 
     var xmlhttp = new XMLHttpRequest();
 
@@ -591,7 +585,7 @@ const ondDisc = (disc) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if (itemUnit == 'tablets' || itemUnit == 'capsules') {
+    if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
@@ -622,6 +616,8 @@ const ondDisc = (disc) => {
     else {
         disc = 0;
     }
+
+    // console.log("disc value on disc function : "+disc);
 
     if (qty > 0) {
         if (itemTypeCheck == '') {
@@ -662,6 +658,8 @@ const ondDisc = (disc) => {
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
 }
+
+
 
 const addSummary = () => {
 

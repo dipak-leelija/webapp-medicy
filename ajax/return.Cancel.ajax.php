@@ -14,13 +14,14 @@ if (isset($_POST["id"])) {
 
     $table = 'id';
     $cancelId = $_POST['id'];
-    $statusValue = "cancelled";
+    $statusValue = 0;
 
     // check what the status is
 
-    $checkStatus = $StockReturn->stockReturnFilter($table, $cancelId);
-
-    if($checkStatus[0]['status'] != 'cancelled'){
+    $checkStatus = json_decode($StockReturn->stockReturnFilter($table, $cancelId));
+    $checkStatus = $checkStatus->data;
+   
+    if($checkStatus[0]->status){
 
         $updated = $StockReturn->stockReturnStatus($cancelId, $statusValue);
 
@@ -31,15 +32,15 @@ if (isset($_POST["id"])) {
             $returnFQTY = $stock['return_free_qty'];
             $totalReturnQTY = intval($returnQTY) + intval($returnFQTY);
     
-            $stockCheck = $CurrentStock->showCurrentStocByStokInDetialsId($stokInId);
+            $stockCheck = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stokInId));
             // print_r($stockCheck);
           
-            foreach($stockCheck as $currentStock){
+            // foreach($stockCheck as $currentStock){
                 $currentStockQTY = $stockCheck->qty;
                 $currentStockLQTY = $stockCheck->loosely_count;
                 $currentStockWeightage = $stockCheck->weightage;
                 $currentStockUnit = $stockCheck->unit;
-            }
+            // }
 
             if($currentStockUnit == 'tablets' || $currentStockUnit == 'capsules'){
                 $updatedLQTY = intval($currentStockLQTY) + (intval($totalReturnQTY) * intval($currentStockWeightage));
@@ -50,8 +51,10 @@ if (isset($_POST["id"])) {
                 $updatedLQTY = 0;
             }
 
+            // echo "$updatedQTY<br>$updatedLQTY";
             $updateCurretnStock = $CurrentStock->updateStockByStockInDetailsId($stokInId, $updatedQTY, $updatedLQTY); 
             // $updateCurretnStock = true;
+            
         }
 
         if ($updateCurretnStock == true) {
@@ -59,7 +62,8 @@ if (isset($_POST["id"])) {
         }else{
             echo 0;
         }
+
     }else{
-        echo 'cancel';
+        echo 'Canclled';
     }
 }

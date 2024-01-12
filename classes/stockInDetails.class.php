@@ -85,16 +85,16 @@ class StockInDetails extends DatabaseConnection
 
     //======================================== UPDATE TABEL ==============================================
 
-    function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn)
+    function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn)
     {
 
         try {
-            $update = "UPDATE `stock_in_details` SET `product_id`=?, `distributor_bill`=?, `batch_no`=?, `mfd_date`=?, `exp_date`=?, `weightage`=?, `unit`=?, `qty`=?, `free_qty`=?, `loosely_count`=?, `mrp`=?, `ptr`=?, `discount`=?, `base`=?, `gst`=?, `gst_amount`=?, `margin`=?, `amount`=?, `update_emp_id`=?, `updated_on`=? WHERE `id`=?";
+            $update = "UPDATE `stock_in_details` SET `product_id`=?, `distributor_bill`=?, `batch_no`=?, `exp_date`=?, `weightage`=?, `unit`=?, `qty`=?, `free_qty`=?, `loosely_count`=?, `mrp`=?, `ptr`=?, `discount`=?, `base`=?, `gst`=?, `gst_amount`=?, `margin`=?, `amount`=?, `update_emp_id`=?, `updated_on`=? WHERE `id`=?";
 
 
             $stmt = $this->conn->prepare($update);
 
-            $stmt->bind_param("sssssisiiiddididddssi", $productId, $distBillNo, $BatchNo, $mfd, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn, $id);
+            $stmt->bind_param("ssssisiiiddididddssi", $productId, $distBillNo, $BatchNo, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn, $id);
 
             // return var_dump($stmt);
 

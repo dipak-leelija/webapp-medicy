@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $looselyPrice = '';
 
-                if ($unit == "tablets" || $unit == "capsules") {
+                if ($unit == "Tablets" || $unit == "Capsules") {
                     $looselyCount = $weightage * ($qty + $freeQty);
                     $looselyPrice = ($mrp * $qty) / ($weightage * $qty);
                 }else{
@@ -261,12 +261,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         $prodId = $itemsData['product_id'];
 
-                        $productDetails = json_decode($Products->showProductsById($prodId));
+                        $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId));
                         $productDetails = $productDetails->data;
 
                         foreach ($productDetails as $pData) {
                             $pname = $pData->name;
-                            $pManfId = $pData->manufacturer_id;
+
+                            if(isset($pData->manufacturer_id)){
+                                $pManfId = $pData->manufacturer_id;
+                            }else{
+                                $pManfId = '';
+                            }
+                            
                             $pType  = $pData->packaging_type;
                             $pQTY = $pData->unit_quantity;
                             $pUnit = $pData->unit;

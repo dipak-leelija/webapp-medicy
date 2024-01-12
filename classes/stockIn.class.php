@@ -34,15 +34,25 @@ class StockIn extends DatabaseConnection
 
 
 
-    function showStockIn()
-    {
-        $data   = array();
-        $select = "SELECT * FROM stock_in";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
+    function showStockIn($adminId='')
+    {   
+        try{
+            $data   = array();
+            if(empty($adminId)){
+                $select = "SELECT * FROM stock_in";
+            }else{
+                $select = "SELECT * FROM `stock_in` WHERE `admin_id`  = '$adminId' ";
+            }
+           
+            $selectQuery = $this->conn->query($select);
+            while ($result = $selectQuery->fetch_array()) {
+                $data[] = $result;
+            }
+            return $data;
+        }catch(Exception $e){
+            echo "Error: " . $e->getMessage();
         }
-        return $data;
+       
     } //eof showStockIn function
 
 

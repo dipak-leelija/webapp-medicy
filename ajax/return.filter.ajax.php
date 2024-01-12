@@ -142,7 +142,7 @@
         </thead>
         <tbody>
         <?php
-        print_r($data);
+        // print_r($data);
             $data = json_decode($data,true);
             if ($data['status']) {
                 $data = $data['data'];

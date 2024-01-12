@@ -86,26 +86,29 @@ if (isset($_POST['stock-return-edit'])) {
         foreach ($prevStokReturnDetailsData as $returnData) {
             $StokInDetailsId = $returnData['stokIn_details_id'];
             $unit = $returnData['unit'];
+
             $returnQty = $returnData['return_qty'];
             $returnFQty = $returnData['return_free_qty'];
             $totalReturnQTY = intval($returnQty) + intval($returnFQty);
 
             $itemUnit = preg_replace('/[0-9]/', '', $unit);
-            $itemWeightage = preg_replace('/[a-z]/', '', $unit);
+            $itemWeightage = preg_replace('/[a-z-A-Z]/', '', $unit);
 
-            if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
+            if ($itemUnit == 'Tablets' || $itemUnit == 'Capsules') {
                 $returnQty = intval($totalReturnQTY) * intval($itemWeightage);
             } else {
                 $returnQty = $totalReturnQTY;
             }
 
-            $currenStockData = $CurrentStock->showCurrentStocByStokInDetialsId($StokInDetailsId);
+            echo "return qty : $returnQty<br>";
 
-            foreach ($currenStockData as $currenStockData) {
-                $CurrentItemQTY = $currenStockData['qty'];
-                $CurrentLooselyCount = $currenStockData['loosely_count'];
+            $currenStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($StokInDetailsId));
+            print_r($currenStockData);
+            // foreach ($currenStockData as $currenStockData) {
+                $CurrentItemQTY = $currenStockData->qty;
+                $CurrentLooselyCount = $currenStockData->loosely_count;
 
-                if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
+                if ($itemUnit == 'Tablets' || $itemUnit == 'Capsules') {
                     $updatedLooseCount = intval($CurrentLooselyCount) + intval($returnQty);
                     $updatedQty = intdiv($updatedLooseCount, $itemWeightage);
                 } else {
@@ -117,7 +120,7 @@ if (isset($_POST['stock-return-edit'])) {
 
                 $attribute = 'id';
                 $deleteStockReturnDetails = $StockReturn->deleteStockByTableData($attribute, $deleteItemId);
-            }
+            // }
         }
     }
 
@@ -140,8 +143,9 @@ if (isset($_POST['stock-return-edit'])) {
             $batchNo = $_POST['batchNo'];
             $expDate = $_POST['expDate'];
             $setof = $_POST['setof'];
+            print_r($setof);
             $updatedItemUnit = preg_replace('/[0-9]/', '', $setof[$i]);
-            $updatedItemWeightage = preg_replace('/[a-z]/', '', $setof[$i]);
+            $updatedItemWeightage = preg_replace('/[a-z-A-Z]/', '', $setof[$i]);
             $mrp = $_POST['mrp'];
             $ptr = $_POST['ptr'];
             $gstParcent = $_POST['gst'];
@@ -186,7 +190,7 @@ if (isset($_POST['stock-return-edit'])) {
                 }
 
                 $itemRetundQtyDiff = $totalPrevReturn - $totalUpdatedReturnQty;
-                // echo "<br><br>return difference : $itemRetundQtyDiff";
+                echo "<br><br>return difference : $itemRetundQtyDiff<br>";
 
 
                 //===================== update calculation area ===============================
@@ -197,44 +201,27 @@ if (isset($_POST['stock-return-edit'])) {
 
                 $currentQty = $CurrentStockData->qty;
                 $currentLooseQty = $CurrentStockData->loosely_count;
-                
+                echo "current qty : $currentQty<br>";
+                echo "current l qty : $currentLooseQty<br>";
 
-                if ($updatedItemUnit == 'tablets' || $updatedItemUnit == 'capsules') {
+                echo "$updatedItemUnit<br>";
+                echo "$updatedItemWeightage<br>";
+
+                if ($updatedItemUnit == 'Tablets' || $updatedItemUnit == 'Capsules') {
                     $updatedLooseQty = intval($currentLooseQty) + (intval($itemRetundQtyDiff) * intval($updatedItemWeightage));
-                    $updatedLooseQty = intval($updatedLooseQty);
-                    $updatedItemWeightage = intval($updatedItemWeightage);
+
                     $updatedQty = intdiv($updatedLooseQty, $updatedItemWeightage);
                 } else {
                     $updatedLooseQty = 0;
                     $updatedQty = intval($currentQty) + (intval($itemRetundQtyDiff));
                 }
 
-                // echo "<br><br>Current stock unit : $updatedItemUnit";
-                // echo "<br>current qantity after update : $updatedQty";
-                // echo "<br>current Loose qantity after update : $updatedLooseQty";
-                // echo "<br><br>//===============================\\<br><br>";
-
-                // echo "<br>current stock update item id : $stockInDetailsItemId[$i]";
-                // echo "<br>updated qty for current stock : $updatedQty";
-                // echo "<br>updated loose qty for current stock : $updatedLooseQty";
-                // echo "<br>updated by : $updatedBy";
-                // echo "<br>Updated on : $updatedOn";
-                // echo "<br>Exp Date : $expDate[$i]";
-                // echo "<br>Pack of : $setof[$i]";
-                // echo "<br>Item Unit of : $updatedItemUnit";
-                // echo "<br>Item Weightage of : $updatedItemWeightage";
-                // echo "<br><br>MRP : $mrp[$i]";
+                echo "on cap tap updated l qty : $updatedLooseQty<br>";
+                echo "on cap tap updated qty : $updatedQty";
 
                 //========= current stock update function call ============
                 $CurrentStockUpdate = $CurrentStock->updateStockByReturnEdit(intval($stockInDetailsItemId[$i]), intval($updatedQty), intval($updatedLooseQty), $updatedBy, $updatedOn);  //updating current stock after edit purchase return
                 
-                // echo "<br><br>stock return details item id : $stockReturnDetailsItemId"; echo gettype($stockReturnDetailsItemId);
-                // echo "<br>edit stock return qty : $editReturnQTY[$i]"; echo gettype($editReturnQTY[$i]);
-                // echo "<br>edit stock return free qty : $editReturnFQty[$i]"; echo gettype($editReturnFQty[$i]);
-                // echo "<br>edit refund amount : $PerItemsRefundAmount[$i]"; echo gettype($PerItemsRefundAmount[$i]);
-                // echo "<br>Updated by : $updatedBy"; echo gettype($updatedBy);
-                // echo "<br>Updated on : $updatedOn"; echo gettype($updatedOn);
-                // echo "<br><br><br>";
 
                 //========= stock return details update function call ============
                 $stockReturnDetailsEdit = $StockReturn->stockReturnDetailsEditUpdate(intval($stockReturnDetailsItemId), intval($editReturnQTY[$i]), intval($editReturnFQty[$i]), floatval($PerItemsRefundAmount[$i]), $updatedBy, $updatedOn);  //updating stock return details table

@@ -30,7 +30,7 @@ if (isset($_GET['search'])) {
         $adminDetails = json_decode($adminDetails);
         // print_r($allAppointments);
     }
-}else{
+} else {
     $adminDetails = $Admin->adminDetails();
     $adminDetails = json_decode($adminDetails);
 }
@@ -199,9 +199,11 @@ if ($adminDetails->status) {
                                                 $AddedOn          = $admin->added_on;
                                                 $expiryDate       = $admin->expiry;
 
+                                                $EmployeeCount = $admin->reg_status == '1' ? count($Employees->employeesDisplay($customerId)) : '';
+
                                                 $link = $admin->reg_status == 1
-                                                    ? '<a href="employees.php?customerId=' . url_enc($customerId) . '" class="text-success text-decoration-none ml-4" data-toggle="tooltip" data-placement="top" title="Show Employees"><i class="fas fa-eye"></a>'
-                                                    : '<a href="" class="text-danger text-decoration-none ml-4" data-toggle="tooltip" data-placement="top" title="Inactive Customer"><i class="fas fa-eye-slash"></a>';
+                                                    ? '<a href="employees.php?customerId=' . url_enc($customerId) . '" class="text-success text-decoration-none " data-toggle="tooltip" data-placement="left" title="Show Employees"><i class="fas fa-eye"> Emp: ' . $EmployeeCount . '</a>'
+                                                    : '<a href="" class="text-danger text-decoration-none ml-4" data-toggle="tooltip" data-placement="left" title="Inactive Customer"><i class="fas fa-eye-slash"></a>';
 
                                                 echo '<tr>
                                                           <td>' . $customerId . '</td>
@@ -213,6 +215,7 @@ if ($adminDetails->status) {
                                                           <td>' . $link . '</td>
                                                           <td>
                                                               <a href="prescription.php?prescription=' . url_enc($customerId) . '" class="text-primary" data-toggle="tooltip" data-placement="left" title="View and Print"><i class="fas fa-print"></i></a>
+                                                              <a href="customer-report.php?report=' . url_enc($customerId) . '" class="text-success" data-toggle="tooltip" data-placement="left" title="Live Report"><i class="fas fa-chart-pie"></i></a>
                                                               <a href="ajax/appointment.delete.ajax.php?appointmentId=' . $customerId . '" class="text-danger" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a>
                                                           </td>
                                                      </tr>';

@@ -427,15 +427,14 @@ class CurrentStock extends DatabaseConnection
 
 
 
-
-    function showCurrentStockByPIdAndAdmin($productId='', $admin=''){
+    function showCurrentStockByPIdAndAdmin($productId, $admin){
         try {
             $data = array();
             $select = "SELECT * FROM current_stock WHERE `product_id` = ? AND `admin_id` = ? AND `qty` > '0' ORDER BY added_on ASC";
 
             $stmt = $this->conn->prepare($select);
 
-            $stmt->bind_param("si", $productId, $admin); 
+            $stmt->bind_param("ss", $productId, $admin); 
 
             $stmt->execute();
 
@@ -580,6 +579,7 @@ class CurrentStock extends DatabaseConnection
         return $data;
     } //eof showCurrentStocByPIdAndProductBatchNo
 
+    
     //showCurrentStocByProductIdandBatchNoDistributorId
     function showCurrentStocByPIdBNoDId($productId, $BatchNo, $distributorId)
     {
@@ -630,7 +630,7 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    
+
 
     function checkStockExist($productId)
     {

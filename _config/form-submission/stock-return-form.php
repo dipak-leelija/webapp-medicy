@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $addedBy         = $employeeId;
         $addedOn         = NOW;
         $Admin           = $adminId;
-        $status          = 'active';
+        $status          = 1;
 
         // echo "<br>Stock Return Id : "; print_r($stockReturnId); echo gettype($stockReturnId);
         // echo "<br>stock in Id : "; print_r($stockInId); echo gettype($stockInId);
@@ -79,8 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $expDate        = $_POST['expDate'];
 
             $setof          = $_POST['setof'];
+            // print_r($setof);
             $unit           = preg_replace('/[0-9]/','',$setof);
-            $weightage      = preg_replace('/[a-z]/','',$setof);
+            $weightage      = preg_replace('/[a-z-A-Z]/','',$setof);
 
             $purchasedQty   = $_POST['purchasedQty'];
             $freeQty        = $_POST['freeQty'];
@@ -115,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 // echo "<br>Return free qty : $returnFQty[$i]";
                 // echo "<br>Item Unit name : $unit[$i]";
 
-                if($unit[$i] == 'tablets' || $unit[$i] == 'capsules'){
+                if($unit[$i] == 'Tablets' || $unit[$i] == 'Capsules'){
                     $updatedLooseQty = intval($looseQty) - ((intval($returnQty[$i]) +  intval($returnFQty[$i])) * $weightage[$i]);
                     $updatedQty = intdiv($updatedLooseQty, $weightage[$i]);
                 }else{
@@ -166,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 // echo "<br>Refund Amount : "; print_r($refundAmount); echo "<br>",gettype($refundAmount[$i]);
       
                 // exit;
-
+                // echo "set of : $setof[$i]<br>";
                 // ====== add stock return function =============
                 $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, intval($stokInDetailsId[$i]), $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], intval($purchasedQty[$i]), intval($freeQty[$i]), floatval($mrp[$i]), floatval($ptr[$i]), intval($gstPercent[$i]), intval($discParcent[$i]), intval($returnQty[$i]), intval($returnFQty[$i]), floatval($refundAmount[$i]));
 

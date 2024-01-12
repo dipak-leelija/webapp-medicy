@@ -1,20 +1,20 @@
 <?php
 
 // echo $_GET['currentStockId'];
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'idsgeneration.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'stockIn.class.php';
-require_once CLASS_DIR.'stockInDetails.class.php';
-require_once CLASS_DIR.'productsImages.class.php';
-require_once CLASS_DIR.'distributor.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'idsgeneration.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'stockIn.class.php';
+require_once CLASS_DIR . 'stockInDetails.class.php';
+require_once CLASS_DIR . 'productsImages.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
 
 //Classes Initilizing
 // $Patients       =   new Patients();
@@ -31,7 +31,7 @@ $packagUnit     =   new PackagingUnits();
 
 if (isset($_GET['currentStockId'])) {
     $productId =  $_GET['currentStockId'];
-    
+
 
     // ================= PRODUCT CURRENT STOCK IN QTY ============
     $showStock = json_decode($CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId));
@@ -52,18 +52,45 @@ if (isset($_GET['currentStockId'])) {
     }
 
 
-    $prodcutDetails = json_decode($Product->showProductsById($productId));
+    $prodcutDetails = json_decode($Product->showProductsByIdOnUser($productId, $adminId));
     $prodcutDetails = $prodcutDetails->data;
 
-    $manufDetails = json_decode($manufacturer->showManufacturerById($prodcutDetails[0]->manufacturer_id));
-    $manufDetails = $manufDetails->data;
+    // print_r($prodcutDetails);
+
+    if(isset($prodcutDetails[0]->comp_1)){
+        $prodComp1 = $prodcutDetails[0]->comp_1;
+    }else{
+        $prodComp1 = '';
+    }
+
+    if(isset($prodcutDetails[0]->comp_1)){
+        $prodComp2 = $prodcutDetails[0]->comp_2;
+    }else{
+        $prodComp2 = '';
+    }
+
+
+    if (isset($prodcutDetails[0]->manufacturer_id)) {
+        $manufDetails = json_decode($manufacturer->showManufacturerById($prodcutDetails[0]->manufacturer_id));
+        if($manufDetails->status){
+            $manufDetails = $manufDetails->data;
+            $manufName = $manufDetails->name;
+        }else{
+            $manufName = '';
+        }
+    }else{
+        $manufName = '';
+    }
+
+
     // print_r($manufDetails);
 
     $image = json_decode($ProductImages->showImageById($productId));
     $image = $image->data;
+    // print_r($image);
 
     if ($image != null) {
-        $productImage = $image[0]['image'];
+        $productImage = $image[0]->image;
     } else {
         $productImage = 'medicy-default-product-image.jpg';
     }
@@ -83,8 +110,6 @@ if (isset($_GET['currentStockId'])) {
     if ($StockinQty == null) {
         $overallStockInQTY = 0;
     }
-
-    
 }
 
 ?>
@@ -95,15 +120,15 @@ if (isset($_GET['currentStockId'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="<?= CSS_PATH?>bootstrap 5/bootstrap.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <title>Product Details</title>
 
-    <link href="<?= PLUGIN_PATH?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Sweet Alert Js  -->
-    <script src="<?= JS_PATH?>sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <!-- <script src="../../assets/jquery-easing/jquery.easing.min.js"></script> -->
@@ -111,8 +136,8 @@ if (isset($_GET['currentStockId'])) {
     <!-- <script src="../../js/jquery.prettyPhoto.js"></script>
     <script src="../../js/jquery.vide.js"></script> -->
 
-    <script src="<?= JS_PATH?>contact-us-js/jquery.min.js"></script>
-    <script src="<?= JS_PATH?>contact-us-js/jquery.validate.min.js"></script>
+    <script src="<?= JS_PATH ?>contact-us-js/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>contact-us-js/jquery.validate.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <!-- <script src="../js/sb-admin-2.js"></script> -->
@@ -121,12 +146,12 @@ if (isset($_GET['currentStockId'])) {
     <script src="../vendor/product-table/dataTables.bootstrap4.js"></script> -->
 
     <!-- Bootstrap core JavaScript-->
-    <script src="<?= PLUGIN_PATH?>jquery/jquery.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <!-- <script src="../../js/bootstrap-js-4/bootstrap.bundle.min.js"></script> -->
 
     <!-- Custom JS -->
-    <script src="<?= JS_PATH?>custom-js.js"></script>
-    <script src="<?= JS_PATH?>ajax.custom-lib.js"></script>
+    <script src="<?= JS_PATH ?>custom-js.js"></script>
+    <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
 </head>
 
 <body>
@@ -135,7 +160,7 @@ if (isset($_GET['currentStockId'])) {
             <div class="row p-4 justify-content-left">
                 <div class="col-sm-3 justify-content-center">
                     <div class="text-center border d-flex justify-content-center">
-                        <img src="<?= PROD_IMG_PATH?><?php echo $productImage ?>" class="img-fluid rounded" alt="...">
+                        <img src="<?= PROD_IMG_PATH ?><?php echo $productImage ?>" class="img-fluid rounded" alt="...">
                         <!-- <hr class="hl justify-content-center" style="color: black;"> -->
                     </div>
                 </div>
@@ -144,9 +169,9 @@ if (isset($_GET['currentStockId'])) {
                 </div> -->
                 <div class="col-sm-6 justify-content-center" flex>
                     <h3><?php echo $prodcutDetails[0]->name; ?></h3>
-                    <h7><?php echo $prodcutDetails[0]->comp_1; ?></h7>
-                    <h7><?php echo $prodcutDetails[0]->comp_2; ?></h7>
-                    <h5><?php echo $manufDetails->name; ?></h5>
+                    <h7><?php echo $prodComp1; ?></h7>
+                    <h7><?php echo $prodComp2; ?></h7>
+                    <h5><?php echo $manufName; ?></h5>
                 </div>
                 <div class="col-sm-1 justify-content-center">
 
@@ -161,7 +186,7 @@ if (isset($_GET['currentStockId'])) {
             <!-- <div class="d-flex justify-content-top">
                 <hr class="text-center w-100" style="height: 2px; color:black">
             </div> -->
-            
+
             <?php
             $slNo = 1;
             foreach ($showStock as $stock) {
@@ -174,9 +199,9 @@ if (isset($_GET['currentStockId'])) {
 
                 //===============distributor details=============
                 $distributorDetails = $distributor->showDistributorById($distId);
-                $distributorDetails = json_decode($distributorDetails,true);
+                $distributorDetails = json_decode($distributorDetails, true);
 
-                if(isset($distributorDetails['status']) && $distributorDetails['status'] == '1'){
+                if (isset($distributorDetails['status']) && $distributorDetails['status'] == '1') {
                     $data     = $distributorDetails['data'];
                     $distName = $data['name'];
                 }
@@ -186,10 +211,10 @@ if (isset($_GET['currentStockId'])) {
                 $stokInDetailsCol2 = 'batch_no';
                 // ================ stok in detials ==================
                 $stockInData = $StockInDetail->showStockInDetailsByTable($stokInDetailsCol1, $stokInDetailsCol2, $productId,  $batchNo);
-                
+
                 foreach ($stockInData as $stockData) {
                     $stockInId = $stockData['stokIn_id'];
-                    $stockInDate = $StockIn->stockInByAttributeByTable('id',$stockInId);
+                    $stockInDate = $StockIn->stockInByAttributeByTable('id', $stockInId);
                     $purchaseDate = $stockInDate[0]['added_on'];
                     $purchaseDate = date("d/m/Y", strtotime($purchaseDate));
                     $mfd = $stockData['mfd_date'];
@@ -216,7 +241,7 @@ if (isset($_GET['currentStockId'])) {
 
                     $totalStockinQty = intval($purchaseQTY) + intval($freeQTY);
 
-                    $perItemGst = floatval($GST)/intval($purchaseQTY);
+                    $perItemGst = floatval($GST) / intval($purchaseQTY);
                     $perItemGst = floatval($perItemGst);
                     $perItemGst = number_format($perItemGst, 2);
                     // $overallQTY = 0;
@@ -317,7 +342,7 @@ if (isset($_GET['currentStockId'])) {
                             },
                             success: function(response) {
                                 alert(response);
-                                
+
                                 if (response == true) {
                                     swal(
                                         "Deleted",
@@ -344,7 +369,7 @@ if (isset($_GET['currentStockId'])) {
     // ====================== DELTE PERTICULER STOCK DATA =======================
 
     const customDelete = (id, currentStockQty, tableRowNo, stockinQty) => {
-        
+
         // alert(id);
         // alert(currentStockQty);
         // alert(stockinQty);
@@ -352,7 +377,7 @@ if (isset($_GET['currentStockId'])) {
 
         // let btnId = document.getElementById(itemId);
         let row = document.getElementById(tableRowNo);
-        
+
         if (currentStockQty != stockinQty) {
             swal({
                 icon: 'error',

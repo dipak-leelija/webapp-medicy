@@ -4,15 +4,15 @@
 #                                      Stock In Edit Page                              (RD)              #
 #                                                                                                        #
 ##########################################################################################################
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR."stockInDetails.class.php";
-require_once CLASS_DIR."stockIn.class.php";
-require_once CLASS_DIR."products.class.php";
-require_once CLASS_DIR."manufacturer.class.php";
-require_once CLASS_DIR."packagingUnit.class.php";
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . "stockInDetails.class.php";
+require_once CLASS_DIR . "stockIn.class.php";
+require_once CLASS_DIR . "products.class.php";
+require_once CLASS_DIR . "manufacturer.class.php";
+require_once CLASS_DIR . "packagingUnit.class.php";
 
 $StockIn = new StockIn();
 $StockInDetails = new StockInDetails();
@@ -20,7 +20,7 @@ $Products  = new Products();
 $Manufacturer = new Manufacturer();
 $Packaging = new PackagingUnits();
 
-if(isset($_POST['blNo'])){
+if (isset($_POST['blNo'])) {
 
     $prodId = $_POST['pId'];
     $billNo = $_POST['blNo'];
@@ -28,14 +28,14 @@ if(isset($_POST['blNo'])){
 
     $purchaseDetail = $StockInDetails->stokInDetials($prodId, $billNo, $batchNo);
 
-    foreach($purchaseDetail as $purchase){
+    foreach ($purchaseDetail as $purchase) {
         $purchaseId = $purchase['id'];
-        $productId = $purchase['product_id']; 
+        $productId = $purchase['product_id'];
         $distBillNo = $purchase['distributor_bill'];
         $prodBatchNo = $purchase['batch_no'];
         $prodMfdDate = $purchase['mfd_date'];
         $prodExpDate = $purchase['exp_date'];
-        
+
         $prodWeightage = $purchase['weightage'];
         $prodUnit = $purchase['unit'];
         $QTY = $purchase['qty'];
@@ -51,27 +51,41 @@ if(isset($_POST['blNo'])){
         $amount = $purchase['amount'];
     }
 
-    $productDetails = json_decode( $Products->showProductsById($productId));
-    $productDetails = $productDetails->data;
-    foreach($productDetails as $products){
-        $prodName = $products->name;
-        $manufID = $products->manufacturer_id;
-        $packagingTyp = $products->packaging_type;
-        $power = $products->power;
+    $productDetails = json_decode($Products->showProductsByIdOnUser($productId, $adminId));
+    if ($productDetails->status) {
+        $productDetails = $productDetails->data;
+        foreach ($productDetails as $products) {
+            $prodName = $products->name;
+
+            if (isset($products->manufacturer_id)) {
+                $manufID = $products->manufacturer_id;
+            } else {
+                $manufID = null;
+            }
+
+            $packagingTyp = $products->packaging_type;
+            $power = $products->power;
+        }
+    } else {
+        return "no data found!";
     }
 
 
-    $ManufDetails = json_decode($Manufacturer->showManufacturerById($manufID));
-    $ManufDetails = $ManufDetails->data;
-    // foreach($ManufDetails as $manuf){
+    if ($manufID != null) {
+        $ManufDetails = json_decode($Manufacturer->showManufacturerById($manufID));
+        $ManufDetails = $ManufDetails->data;
+        // foreach($ManufDetails as $manuf){
         $manufName = $ManufDetails->name;
-    // }
+        // }
+    } else {
+        $manufName = '';
+    }
 
     // $manufName = str_replace()
-    
+
 
     $packagingDetails = $Packaging->showPackagingUnitById($packagingTyp);
-    foreach($packagingDetails as $packageType){
+    foreach ($packagingDetails as $packageType) {
         $packType = $packageType['unit_name'];
     }
 
@@ -96,7 +110,7 @@ if(isset($_POST['blNo'])){
         "mrp"           => $MRP,
         "ptr"           => $PTR,
         "disc"          => $discunt,
-        "baseAmount"    => $base,    
+        "baseAmount"    => $base,
         "gst"           => $GST,
         "GstAmount"     => $gstAmount,
         "mrgn"          => $margin,

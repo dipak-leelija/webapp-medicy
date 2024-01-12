@@ -172,9 +172,12 @@
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <?php if ($_SESSION['SUPERADMINLOGGEDIN']) : ?>
-                    <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?php echo $_SESSION['SUPER_ADMIN_USERNAME']; ?></span>
-                <?php endif; ?>
+            <span class="mr-2 d-lg-inline text-gray-600 small" id="userText"><?php echo $_SESSION['SUPER_ADMIN_USERNAME']; ?></span>   
+            <?php
+                if ($_SESSION['SUPERADMINLOGGEDIN']){
+                    $imagePath = SUP_ADM_IMG_PATH . $supAdminImg;
+                }
+                ?>
                 <img class="img-profile rounded-circle" src="<?= ($imagePath) ? $imagePath :  IMG_PATH . 'undraw_profile.svg' ?>">
             </a>
             <!-- Dropdown - User Information -->
@@ -187,12 +190,12 @@
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Settings
                 </a> -->
-                <?php if ($_SESSION['SUPERADMINLOGGEDIN']) : ?>
+                <!-- <?php if ($_SESSION['SUPERADMINLOGGEDIN']) : ?>
                     <a class="dropdown-item" href="<?= ADM_URL . 'employees.php' ?>">
                         <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                         Employees
                     </a>
-                <?php endif ?> 
+                <?php endif ?>  -->
                 <!-- <a class="dropdown-item" href="<?= ADM_URL . 'empRole.php' ?>">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Designations

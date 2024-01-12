@@ -43,8 +43,6 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 $edit = FALSE;
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
-
-
     if (isset($_GET['edit'])) {
         $edit = TRUE;
 
@@ -528,14 +526,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col"><input class="d-none" type="number" value="<?php
-                                                                                                            if ($edit == TRUE) {
-                                                                                                                echo count($stockInDetails);
-                                                                                                            } ?>" id="dynamic-id" style="width:2rem;">
+                                                            if ($edit == TRUE) {
+                                                                echo count($stockInDetails);
+                                                            } 
+                                                        ?>" id="dynamic-id" style="width:2rem;">
                                                 </th>
                                                 <th scope="col"><input class="d-none" type="number" value="<?php
-                                                                                                            if ($edit == TRUE) {
-                                                                                                                echo count($stockInDetails);
-                                                                                                            } ?>" id="serial-control" style="width:2rem;">
+                                                        if ($edit == TRUE) {
+                                                            echo count($stockInDetails);
+                                                        } ?>" id="serial-control" style="width:2rem;">
                                                 </th>
                                                 <th scope="col" hidden>StockInDetaislId</th>
                                                 <!-- <th scope="col"></th> -->
@@ -566,7 +565,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                     $slno += 1;
 
-                                                    $product = json_decode($Products->showProductsById($detail['product_id']));
+                                                    $product = json_decode($Products->showProductsByIdOnUser($detail['product_id'], $adminId));
                                                     $product = $product->data;
                                                     // print_r($product);
                                             ?>
@@ -592,9 +591,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                             <input class="col table-data w-6r" type="text" name="batchNo[]" value="<?php echo $detail['batch_no'] ?>" readonly style="font-size: 0.65rem; text-align:start;">
                                                         </td>
 
-                                                        <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">
+                                                        <!-- <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">
                                                             <input class="col table-data w-4r" type="text" style="font-size: 0.65rem; text-align:start;" name="mfdDate[]" id="mfdDate" value="<?php echo $detail['mfd_date'] ?>" readonly>
-                                                        </td>
+                                                        </td> -->
 
                                                         <td class="p-0 pt-3" onclick="customClick('<?php echo 'table-row-' . $slno ?>','<?php echo $detail['product_id'] ?>','<?php echo $detail['distributor_bill'] ?>','<?php echo $detail['batch_no'] ?>')">
                                                             <input class="col table-data w-4r" type="text" name="expDate[]" value="<?php echo $detail['exp_date'] ?>" readonly style="text-align:start; font-size: 0.65rem">

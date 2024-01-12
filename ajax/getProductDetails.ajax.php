@@ -15,12 +15,12 @@ $CurrentStock   = new CurrentStock();
 
 // ================ get product name =========================
 if (isset($_GET["id"])) {
-    $showProducts = $Products->showProductsById($_GET["id"]);
+    $showProducts = $Products->showProductsByIdOnUser($_GET["id"], $adminId);
     $showProductsData = json_decode($showProducts,true);
     // print_r($showProductsData);
-    if(isset($showProductsData['status']) && $showProductsData['status'] == '1'){
-        $productData  = $showProductsData['data'][0];
-        $showProducts = $productData['name'];
+    if($showProductsData['status']){
+        $productData  = $showProductsData['data'];
+        $showProducts = $productData[0]['name'];
     }else{
         $showProducts = 'Data Not Found';
     }
@@ -30,19 +30,21 @@ if (isset($_GET["id"])) {
 
 
 if (isset($_GET["Pid"])) {
-    $productDetails = $Products->showProductsById($_GET["Pid"]);
+    // $productDetails = $Products->showProductsById($_GET["Pid"]);
     echo ($_GET["Pid"]);
 }
 
 // ===================== PRODUCT WEIGHTAGE ======================
 
-if (isset($_GET["weightage"])) {
-    $productId = $_GET["weightage"];
-    $showProducts = $Products->showProductsById($productId);
-    $showProductsData = json_decode( $showProducts, true);
-    if(isset($showProductsData['status']) && $showProductsData['status'] == '1'){
-        $productData  = $showProductsData['data'][0];
-        $showProducts = $productData['unit_quantity'];
+if (isset($_GET["itemWeightage"])) {
+    $productId = $_GET["itemWeightage"];
+    $showProducts = json_decode($Products->showProductsByIdOnUser($productId, $adminId));
+    
+    // print_r($showProducts);
+
+    if($showProducts->status){
+        $productData  = $showProducts->data;
+        $showProducts = $productData[0]->unit_quantity;
     }else{
         $showProducts = 'No Data Found'; 
     }
@@ -56,12 +58,12 @@ if (isset($_GET["weightage"])) {
 
 if (isset($_GET["itemUnit"])) {
     $prodId = $_GET["itemUnit"];
-    $showProducts = $Products->showProductsById($prodId);
-    $showProductsData = json_decode( $showProducts, true);
-    // print_r($showProductsData);
-    if (isset($showProductsData['status']) && $showProductsData['status'] == 1 && isset($showProductsData['data']) && is_array($showProductsData['data']) && !empty($showProductsData['data'])) {
-        $productData = $showProductsData['data'][0];
-        echo $ItemUnit->itemUnitName($productData['unit']);
+    $showProducts = json_decode($Products->showProductsByIdOnUser($prodId, $adminId));
+    
+    if ($showProducts->status) {
+        $productData = $showProducts->data;
+        
+        echo $ItemUnit->itemUnitName($productData[0]->unit);
     }else{
         echo 'Product Unit Not Found';
     }
@@ -126,8 +128,10 @@ if (isset($_GET["looseStock"])) {
 if (isset($_GET["availibility"])) {
 
     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["availibility"], $_GET["batchNo"]);
+
     foreach($stock as $stock){
-        if ($stock['unit'] == 'tablets' || $stock['unit'] == 'capsules') {
+        // print_r($stock);
+        if ($stock['unit'] == 'Tablets' || $stock['unit'] == 'Capsules') {
             $availibility = $stock['loosely_count'];
         } else {
             $availibility = $stock['qty'];

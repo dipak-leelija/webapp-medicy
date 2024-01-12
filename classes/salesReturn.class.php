@@ -34,15 +34,24 @@ class SalesReturn extends DatabaseConnection
 
 
 
-    function salesReturnDisplay()
+    function salesReturnDisplay($adminId='')
     {
-        $res  = array();
-        $query = "SELECT * FROM sales_return";
-        $queryres  = $this->conn->query($query);
-        while ($result = $queryres->fetch_array()) {
-            $res[]    = $result;
+        try{
+            $res  = array();
+            if(empty($adminId)){
+                $query = "SELECT * FROM sales_return";
+            }else{
+                $query = "SELECT * FROM sales_return WHERE `admin_id` = '$adminId' ";
+            }
+            $queryres  = $this->conn->query($query);
+            while ($result = $queryres->fetch_array()) {
+                $res[]    = $result;
+            }
+            return $res;
+        }catch(Exception $e){
+            echo "Error: " . $e->getMessage();
         }
-        return $res;
+       
     } //end employeesDisplay function
 
 

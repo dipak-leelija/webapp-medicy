@@ -2,7 +2,6 @@
 
 require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once ROOT_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
@@ -91,6 +90,7 @@ $Employees = new Employees;
                     if ($updateEmployeeData['result']) {
 
                         $imgFolder = EMP_IMG_DIR . $imageName;
+                        // print_r($imgFolder);
                         move_uploaded_file($tempImgName, $imgFolder);
                         $_SESSION['EMP_IMG'] = $imageName;
                         $flag = 1;
@@ -115,7 +115,7 @@ $Employees = new Employees;
             if ($flag == 1) {
     ?>
                 <script>
-                    swal("Success", "Data Updated!", "success")
+                    swal("Success", "Successfully Updated!", "success")
                         .then((value) => {
                             window.location = '<?php echo URL ?>profile.php';
                         });
