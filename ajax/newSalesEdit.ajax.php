@@ -1,12 +1,12 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR."doctors.class.php";
-require_once CLASS_DIR.'stockOut.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
-require_once CLASS_DIR.'manufacturer.class.php';
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . "doctors.class.php";
+require_once CLASS_DIR . 'stockOut.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
 
 $StockOut = new StockOut();
 $Products = new Products();
@@ -22,7 +22,7 @@ $table = 'id';
 
 // // //==================== ITEM DETAILS FROM STOK OUT DETAILS TABLE =====================
 $stockOutItemDetails = $StockOut->stokOutDetailsDataOnTable($table, $StockOutDetaislId);
-foreach($stockOutItemDetails as $selsItemData){
+foreach ($stockOutItemDetails as $selsItemData) {
     $stockOutDetailsId = $selsItemData['id'];
     $stockOutDetailsInvoiceId = $selsItemData['invoice_id'];
     $stockOutDetailsItemId = $selsItemData['item_id'];
@@ -44,21 +44,21 @@ foreach($stockOutItemDetails as $selsItemData){
     $stockOutDetailsamount = $selsItemData['amount'];
 
 
-    if($stockOutDetailsItemUnit == 'tab' || $stockOutDetailsItemUnit == 'cap'){
+    if ($stockOutDetailsItemUnit == 'tab' || $stockOutDetailsItemUnit == 'cap') {
         $sellQty = $stockOutDetailsLooselyCount;
-    }else{
+    } else {
         $sellQty = $stockOutDetailsItemQty;
     }
 }
 
 // // //================== AVAILIBILITY CHECK FROM CURRENT STOCK ====================
 $currentStockData = $CurrentStock->showCurrentStocById($stockOutDetailsItemId);
-foreach($currentStockData as $currenStock){
+foreach ($currentStockData as $currenStock) {
     $currentStockUnit = $currenStock['unit'];
 
-    if($currentStockUnit == 'tablets' || $currentStockUnit == 'capsules'){
+    if ($currentStockUnit == 'Tablets' || $currentStockUnit == 'Capsules') {
         $currentStockAvailibility = $currenStock['loosely_count'];
-    }else{
+    } else {
         $currentStockAvailibility = $currenStock['qty'];
     }
 
@@ -67,14 +67,26 @@ foreach($currentStockData as $currenStock){
 
 
 // // // ============================== MANUFACTURUR DETAILS ===================================
-$prodDetails = $Products->showProductsById($stockOutDetailsProductId);
-$composition = $prodDetails[0]['product_composition'];
+$prodDetails = json_decode($Products->showProductsByIdOnUser($stockOutDetailsProductId, $adminId));
+$prodDetails = $prodDetails->data;
 
-$manufData = $Manufacturer->showManufacturerById($prodDetails[0]['manufacturer_id']);
-foreach($manufData as $manufData){
-    $manufId = $manufData['id'];
-    $manufName = $manufData['name'];
+if (isset($prodDetails[0]->product_composition)) {
+    $composition = $prodDetails[0]->product_composition;
+} else {
+    $composition = '';
 }
+
+if (isset($prodDetails[0]->manufacturer_id)) {
+    $manufData = json_decode($Manufacturer->showManufacturerById($prodDetails[0]->manufacturer_id));
+    foreach ($manufData as $manufData) {
+        $manufId = $manufData['id'];
+        $manufName = $manufData['name'];
+    }
+} else {
+    $manufId = '';
+    $manufName = '';
+}
+
 
 // // //////////////////////\\\\\\\\\\\\\\\\\\\\\\\\================///////////////////////\\\\\\\\\\\\\\\\\\\\\\
 $stockOutDetailsDataArry = array(
@@ -83,15 +95,15 @@ $stockOutDetailsDataArry = array(
     "itemId"                    =>  $stockOutDetailsItemId,
     "productId"                 =>  $stockOutDetailsProductId,
     "productName"               =>  $stockOutDetailsItemName,
-    "manufId"                   =>  $manufId,                   
+    "manufId"                   =>  $manufId,
     "manufName"                 =>  $manufName,
     "productComposition"        =>  $composition,
     "batchNo"                   =>  $stockOutDetailsBatchNo,
-    "packOf"                    =>  $stockOutDetailsItemWeatage.$stockOutDetailsItemUnit,
+    "packOf"                    =>  $stockOutDetailsItemWeatage . $stockOutDetailsItemUnit,
     "itemWeatage"               =>  $stockOutDetailsItemWeatage,
     "itemUnit"                  =>  $stockOutDetailsItemUnit,
     "expDate"                   =>  $stockOutDetailsExpDate,
-    "qantity"                   =>  $stockOutDetailsItemQty,  
+    "qantity"                   =>  $stockOutDetailsItemQty,
     "looseCount"                =>  $stockOutDetailsLooselyCount,
     "availableQty"              =>  $currentStockAvailibility,
     "sellQty"                   =>  $sellQty,

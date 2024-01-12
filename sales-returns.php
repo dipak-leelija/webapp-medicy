@@ -146,9 +146,8 @@ $currentStock  = new CurrentStock();
                                         $table2 = "status";  # fetching those data whose STATUS are 
                                         $data2 = "1";   #  ACTIVE FROM SALES RETURN TABLE
 
-                                        $returns = $SalesReturn->selectSalesReturn($table1, $adminId, $table2, $data2);
-                                        // print_r($returns);
-
+                                        $returns = $SalesReturn->salesReturnDisplay($adminId);
+                                        
                                         if (count($returns) > 0) {
                                             foreach ($returns as $item) {
                                                 //print_r($item); echo "<br><br>"; 

@@ -136,7 +136,7 @@ if (isset($_GET["p_qty"])) {
     $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $itemId);
     foreach($item as $item){
         $itemUnitType = $item['unit'];
-        if($itemUnitType == 'tab' || $itemUnitType == 'cap'){
+        if($itemUnitType == 'Tablets' || $itemUnitType == 'Capsules'){
             echo $item['loosely_count'];
         }else{
             echo $item['qty'];
@@ -182,7 +182,7 @@ if (isset($_GET["qty"])) {
         $totalReturnQTY = 0;
     }
     
-    if($itemType == 'tab' || $itemType == 'cap'){
+    if($itemType == 'Tablets' || $itemType == 'Capsules'){
         $currentQty = ($item[0]['loosely_count'] - intval($totalReturnQTY)); 
     }
     else{ 
