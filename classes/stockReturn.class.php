@@ -45,11 +45,16 @@ class StockReturn extends DatabaseConnection
 
 
 
-    function showStockReturn()
+    function showStockReturn($adminId='')
     {
         try {
             $data = array();
-            $sql  = "SELECT * FROM stock_return";
+            if(empty($adminId)){
+                $sql  = "SELECT * FROM stock_return";
+            }else{
+                $sql  = "SELECT * FROM stock_return WHERE `admin_id` = '$adminId' ";
+            }
+            // $sql  = "SELECT * FROM stock_return";
             $res  = $this->conn->query($sql);
 
             if ($res->num_rows > 0) {
