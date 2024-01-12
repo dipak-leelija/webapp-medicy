@@ -10,7 +10,7 @@ class Employees extends DatabaseConnection
         $password = pass_enc($empPass, EMP_PASS);
 
         try {
-            $sql = "INSERT INTO `employees` (admin_id, emp_username, emp_name, emp_role, emp_email, contact_no, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO `employees` (admin_id, emp_username, emp_name, emp_role, emp_email, contact, emp_address, emp_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {

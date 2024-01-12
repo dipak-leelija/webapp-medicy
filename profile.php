@@ -49,8 +49,8 @@ if ($_SESSION['ADMIN']) {
     }
 } else {
 
-    $employeeDetails = $employees->employeeDetails($employeeId, $adminId);
-    $employeeDetails = json_decode($employeeDetails);
+    $employeeDetails = json_decode($employees->employeeDetails($employeeId, $adminId));
+    print_r($employeeDetails);
 
     if ($employeeDetails->status) {
         $employeeData = $employeeDetails->data;
@@ -66,15 +66,15 @@ if ($_SESSION['ADMIN']) {
                 $firstName = substr($empName, 0, $lastSpacePos);
                 $lastName = substr($empName, $lastSpacePos + 1);
             }
-            $firstName = $firstName;
-            $lastName = $lastName;
-            $image = $employeeData->emp_img;
-            $imagePath = EMPLOYEE_IMG_PATH . $image;
-            $userName = $employeeData->emp_username;
-            $email = $employeeData->emp_email;
-            $phone = $employeeData->emp_contact_no;
-            $password = $employeeData->emp_password;
-            $address = $employeeData->emp_address;
+            $firstName  = $firstName;
+            $lastName   = $lastName;
+            $image      = $employeeData->emp_img;
+            $imagePath  = EMPLOYEE_IMG_PATH . $image;
+            $userName   = $employeeData->emp_username;
+            $email      = $employeeData->emp_email;
+            $phone      = $employeeData->contact_no;
+            $password   = $employeeData->emp_password;
+            $address    = $employeeData->emp_address;
         }
     }
 }
