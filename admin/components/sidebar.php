@@ -29,7 +29,7 @@
                 <span>Dashboard</span></a>
         </li>
 
-        <li class="nav-item <?php if($page == "allcustomers" || $page == 'employees'){ echo "active";} ?>">
+        <li class="nav-item <?php if($page == "allcustomers" || $page == 'employees' || $page == 'customer-report'){ echo "active";} ?>">
             <a class="nav-link collapsed" href="<?= ADM_URL ?>allcustomers.php">
                 <i class="fas fa-fw fa-users"></i>
                 <span>Customer</span>

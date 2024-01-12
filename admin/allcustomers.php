@@ -30,7 +30,7 @@ if (isset($_GET['search'])) {
         $adminDetails = json_decode($adminDetails);
         // print_r($allAppointments);
     }
-}else{
+} else {
     $adminDetails = $Admin->adminDetails();
     $adminDetails = json_decode($adminDetails);
 }
@@ -215,7 +215,7 @@ if ($adminDetails->status) {
                                                           <td>' . $link . '</td>
                                                           <td>
                                                               <a href="prescription.php?prescription=' . url_enc($customerId) . '" class="text-primary" data-toggle="tooltip" data-placement="left" title="View and Print"><i class="fas fa-print"></i></a>
-                                                              <a href="customer-report.php?report='. url_enc($customerId) .'" class="text-success" data-toggle="tooltip" data-placement="left" title="Live Report"><i class="fas fa-chart-pie"></i></a>
+                                                              <a href="customer-report.php?report=' . url_enc($customerId) . '" class="text-success" data-toggle="tooltip" data-placement="left" title="Live Report"><i class="fas fa-chart-pie"></i></a>
                                                               <a href="ajax/appointment.delete.ajax.php?appointmentId=' . $customerId . '" class="text-danger" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a>
                                                           </td>
                                                      </tr>';
