@@ -4,7 +4,7 @@ require_once ROOT_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'hospital.class.php';
-require_once ROOT_DIR  .'_config/healthcare.inc.php';
+require_once ROOT_DIR  . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'idsgeneration.class.php';
 require_once CLASS_DIR . 'patients.class.php';
@@ -96,76 +96,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $gstAmountPerItem   = $_POST['gstVal'];
     $amount             = $_POST['amount'];
 
-    // echo "<br><br>product ids array : ";
-    // print_r($prductId);
-    // echo "<br>Product name array : ";
-    // print_r($prodName);
-    // echo "<br>Manufacturur id array : ";
-    // print_r($manufId);
-    // echo "<br>Manufacturur name array : ";
-    // print_r($manufName);
-    // echo "<br>CURRENT STOCK ITEM ID array : ";
-    // print_r($itemId);
-    // echo "<br>BATCH NUMBER array : ";
-    // print_r($batchNo);
-    // echo "<br>items WEIGHTAGE arrya : ";
-    // print_r($weightage);
-    // echo "<br>items item weightage array : "; print_r($itemWeightage);
-    // echo "<br>items item unit : "; print_r($ItemUnit);
-    // echo "<br>items expiary date : ";
-    // print_r($expDate);
-    // echo "<br>items MRP : ";
-    // print_r($mrp);
-    // echo "<br>items PTR : ";
-    // print_r($ptr);
-    // echo "<br>PER ITEM QANTITY TYPES : ";
-    // print_r($qtyTp);
-    // echo "<br>PER ITEM QANTITY: ";
-    // print_r($qty);
-    // echo "<br>PER ITEM DISCOUNT PERCETN : ";
-    // print_r($discountPercent);
-    // echo "<br>PER ITEM MARGINE AMOUNT : ";
-    // print_r($marginPerItem);
-    // echo "<br>PER ITEM TAXABLE AMOUNT : ";
-    // print_r($taxable);
-    // echo "<br>PER ITEM GST PARCENT : ";
-    // print_r($gstparcent);
-    // echo "<br>PER ITEM GST AMOUNT : ";
-    // print_r($gstAmountPerItem);
-    // echo "<br>PER ITEM PAYBLE AMOUNT array : ";
-    // print_r($amount);
-
-    // echo "<br><br>";
-
-    // ========================== checking end ===================================
-
     // ===================== STOCK OUT AND SALES ITEM BILL GENERATION AREA =========================
     if (isset($_POST['submit'])) {
         $invoiceId = $IdsGeneration->pharmecyInvoiceId();
 
         $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $status, $billdate, $addedBy, $addedOn, $adminId);
         // print_r($StockOut);
+        // $stockOut = true;
 
         if ($stockOut) {
             for ($i = 0; $i < count($prductId); $i++) {
                 // echo "<br>qantity types : $qtyTypes[$i]";
-                $ItemUnit = preg_replace("/[^a-z]/", '', $weightage[$i]);
+                $ItemUnit = preg_replace("/[^a-z-A-Z]/", '', $weightage[$i]);
                 $ItemWeightage = preg_replace("/[^0-9]/", '', $weightage[$i]);
 
-                if ($ItemUnit == 'tablets' || $ItemUnit == 'capsules') {
-                    // $itemSellQty = $qty[$i];
-                    if (intval($qty[$i]) % intval($ItemWeightage) == 0) {
-                        $wholeCount = intval($qty[$i]) / intval($ItemWeightage);
-                        $looseCount = $qty[$i];        // loose count of item
-                    } else {
-                        $wholeCount = 0;
-                        $looseCount = $qty[$i];        // loose count of item
-                    }
+                if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') {
+
+                    $itemSellQty = $qty[$i];
+
+                    $looseCount = intval($qty[$i]);
+                    $wholeCount = intdiv($looseCount, intval($ItemWeightage));
+
+                    // if (intval($qty[$i]) % intval($ItemWeightage) == 0) {
+                    //     $wholeCount = intval($qty[$i]) / intval($ItemWeightage);
+                    //     $looseCount = $qty[$i];        // loose count of item
+                    // } else {
+                    //     $wholeCount = 0;
+                    //     $looseCount = $qty[$i];        // loose count of item
+                    // }
                 } else {
+                    $itemSellQty = $qty[$i];
+
                     $looseCount = 0;
                     $wholeCount = $qty[$i];
                 }
                 $wholeCount = strval($wholeCount);
+
+                // echo "<br>item unit : $ItemUnit";
+                // echo "<br>Whole count : $wholeCount";
+                // echo "<br>Loose count : $looseCount";
+                // echo "<br>item Sell qty : $itemSellQty";
 
                 $colName = 'id';
                 $productDetails = $CurrentStock->selectByColAndData($colName, intval($itemId[$i]));
@@ -185,61 +155,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $itemLooseQty = $itemData['loosely_count'];
                 }
 
-                // echo "<br><br>CURRENT STOCK ITEM DATA<br>";
-                // echo "<br>Item id : $itemId[$i]";
-                // echo "<br>Product ID : $productID";
-                // echo "<br>Item current stock qantity : $itemQty";
-                // echo "<br>Item current stock Loose qantity : $itemLooseQty";
 
-                // echo "<br><br>Invoice ids : $invoiceId";
-                // echo "<br>", gettype($invoiceId);
-                // echo "<br>Item id: $itemId[$i]";
-                // echo "<br>", gettype($itemId[$i]);
-                // echo "<br>Product id : $prductId[$i]";
-                // echo "<br>", gettype($prductId[$i]);
-                // echo "<br>Product Name : $prodName[$i]";
-                // echo "<br>", gettype($prodName[$i]);
-                // echo "<br>BATCH NUMBER : $batchNo[$i]";
-                // echo "<br>", gettype($batchNo[$i]);
-                // echo "<br>items exp date array : $expDate[$i]";
-                // echo "<br>", gettype($expDate[$i]);
-                // echo "<br>Item weightage : $ItemWeightage";
-                // echo "<br>", gettype($ItemWeightage);
-                // echo "<br>Item unit  : $ItemUnit";
-                // echo "<br>", gettype($ItemUnit);
-                // echo "<br>Whole count : $wholeCount";
-                // echo "<br>", gettype($wholeCount);
-                // echo "<br>Loose Count : $looseCount";
-                // echo "<br>", gettype($looseCount);
-                // echo "<br>items MRP array : $mrp[$i]";
-                // echo "<br>", gettype($mrp[$i]);
-                // echo "<br>items PTR array : $ptr[$i]";
-                // echo "<br>", gettype($ptr[$i]);
-                // echo "<br>PER ITEM DISCOUNT PERCENT : $discountPercent[$i]";
-                // echo "<br>", gettype($discountPercent[$i]);
-                // echo "<br>PER ITEM gst PERCENT : $gstparcent[$i]";
-                // echo "<br>", gettype( $gstparcent[$i]);
-                // echo "<br>PER ITEM gst AMOUNT : $gstAmountPerItem[$i]";
-                // echo "<br>", gettype($gstAmountPerItem[$i]);
-                // echo "<br>PER ITEM MARGINE AMOUNT array : $marginPerItem[$i]";
-                // echo "<br>", gettype($marginPerItem[$i]);
-                // echo "<br>PER ITEM TAXABLE : $taxable[$i]";
-                // echo "<br>", gettype($taxable[$i]);
-                // echo "<br>PER ITEM AMOUNT : $amount[$i]";
-                // echo "<br>", gettype($amount[$i]);
+
 
                 $stockOutDetails = $StockOut->addStockOutDetails(intval($invoiceId), intval($itemId[$i]), $prductId[$i], $prodName[$i], $batchNo[$i], $expDate[$i], $ItemWeightage, $ItemUnit, $wholeCount, $looseCount, floatval($mrp[$i]), floatval($ptr[$i]), $discountPercent[$i], $gstparcent[$i], floatval($gstAmountPerItem[$i]), floatval($marginPerItem[$i]), floatval($taxable[$i]), floatval($amount[$i]));
                 // print_r($stockOutDetails);
 
                 // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
 
-                $itemSellQty = $qty[$i];
-                if ($ItemUnit == 'tablets' || $ItemUnit == 'capsules') {
-
+                if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') {
                     $updatedLooseCount     = intval($itemLooseQty) - intval($itemSellQty);
                     $UpdatedNewQuantity   = intval($updatedLooseCount / $ItemWeightage);
                 } else {
-                    $UpdatedNewQuantity = $itemQty - $itemSellQty;
+                    $UpdatedNewQuantity = intval($itemQty) - intval($itemSellQty);
                     $updatedLooseCount = 0;
                 }
 
@@ -254,18 +182,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-
-// $healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
-
-// $healthCareDetails = $healthCareDetailsByAdminId;
-
-//     $healthCareName     = $healthCareDetails['hospital_name'];
-//     $healthCareAddress1 = $healthCareDetails['address_1'];
-//     $healthCareAddress2 = $healthCareDetails['address_2'];
-//     $healthCareCity     = $healthCareDetails['city'];
-//     $healthCarePIN      = $healthCareDetails['pin'];
-//     $healthCarePhno     = $healthCareDetails['hospital_phno'];
-//     $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
 
 ?>
 
@@ -381,8 +297,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $subTotal = floatval(00.00);
                 $itemIds    = $_POST['product-id'];
                 $count = count($itemIds);
+
                 for ($i = 0; $i < $count; $i++) {
                     $slno++;
+                    // echo $slno;
                     $string1 = ' (';
                     $string2 = ')';
                     $looseString = 'L';
@@ -400,54 +318,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $perItemTotalSell =  $ItemSellQantity;
 
-
-                    $manufDetail = $Manufacturur->showManufacturerById($manufId[$i]);
-                    $manufDetail = json_decode($manufDetail,true);
-                    print_r($manufDetail);
-                    if(isset($manufDetail['status']) && $manufDetail['status'] == '1'){
-                        $data = $manufDetail['data'];
-                        echo $manufSName = $data['short_name'];
+                    if ($manufId[$i] != '') {
+                        $manufDetail = $Manufacturur->showManufacturerById($manufId[$i]);
+                        $manufDetail = json_decode($manufDetail, true);
+                        // print_r($manufDetail);
+                        if (isset($manufDetail['status']) && $manufDetail['status'] == '1') {
+                            $data = $manufDetail['data'];
+                            echo $manufSName = $data['short_name'];
+                        } else {
+                            $manufSName = $data['name'];
+                        }
+                    } else {
+                        $manufSName = '';
                     }
+
                     // $manufSName = $manufDetail[0]['short_name'];
 
+                    // print_r($prodName);
 
                     if ($slno > 1) {
                         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                     }
 
                     echo '<div class="col-sm-1 text-center">
-                                    <small>' . $slno . '</small>
+                                <small>' . $slno . '</small>
                             </div>
-                                <div class="col-sm-2 ">
-                                    <small>' . $prodName[$i] . '</small>
-                                </div>
-                                <div class="col-sm-1">
-                                    <small>' . isset($manufSName) ? $manufSName : 'N/A' . '</small>
-                                </div>
-                                <div class="col-sm-1">
-                                    <small>' . $batchNo[$i] . '</small>
-                                </div>
-                                <div class="col-sm-1">
-                                    <small>' . $weightage[$i] . '</small>
-                                </div>
-                                <div class="col-sm-1">
-                                    <small>' . $expDate[$i] . '</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                    <small>' . $perItemTotalSell . '</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                    <small>' . $mrp[$i] . '</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                    <small>' . $discountPercent[$i] . '</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                    <small>' . $gstparcent[$i] . '</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                    <small>' . $amount[$i] . '</small>
-                                </div>';
+                            <div class="col-sm-2 ">
+                                <small>'.$prodName[$i].'</small>
+                            </div>
+                            <div class="col-sm-1">
+                                <small>'.$manufSName.'</small>
+                            </div>
+                            <div class="col-sm-1">
+                                <small>'.$batchNo[$i].'</small>
+                            </div>
+                            <div class="col-sm-1">
+                                <small>'.$weightage[$i].'</small>
+                            </div>
+                            <div class="col-sm-1">
+                                <small>'.$expDate[$i].'</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <small>'.$perItemTotalSell.'</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <small>'.$mrp[$i].'</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <small>'.$discountPercent[$i].'</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <small>'.$gstparcent[$i].'</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <small>'.$amount[$i].'</small>
+                            </div>';
 
                     // $subTotal = floatval($subTotal + $amount);
                 }
@@ -552,11 +477,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
 <script>
-const goBack = () => {
-    
-    window.location.href = '../../new-sales.php';
-    
-}
+    const goBack = () => {
 
+        window.location.href = '../../new-sales.php';
+
+    }
 </script>
+
 </html>

@@ -20,7 +20,6 @@ $Patients       = new Patients();
 $Manufacturer   = new Manufacturer();
 
 
-
 if ($_GET['id']) {
     $billId     = url_dec($_GET['id']);
     $stockOut   = $StockOut->stockOutDisplayById($billId);
@@ -419,9 +418,20 @@ if ($_GET['id']) {
                                                             }
                                                             //=======================
                                                             $table = 'product_id';
-                                                            $productData = $Products->showProductsById($stockOutDetails[$i]['product_id']);
+                                                            $productData = json_decode($Products->showProductsByIdOnUser($stockOutDetails[$i]['product_id'], $adminId));
 
+                                                            $productData = $productData->data;
+
+                                                            // print_r($productData);
                                                             //=======================
+                                                            if(isset($productData[0]->manufacturer_id)){
+                                                                $manufId = $productData[0]->manufacturer_id;
+                                                            }else{
+                                                                $manufId = '';
+                                                            }
+
+
+                                                            //===========================
                                                             $slno = $slno + 1;
                                                             // echo $slno;
                                                             $discPercetn = $details[$i]['discount'];
@@ -440,13 +450,13 @@ if ($_GET['id']) {
 
                                                                 <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
 
-                                                                    <input class="summary-items" type="text" name="product-name[]" value="<?php echo $productData[0]['name']; ?>" readonly style="width: 12rem;"> 
+                                                                    <input class="summary-items" type="text" name="product-name[]" value="<?php echo $productData[0]->name; ?>" readonly style="width: 12rem;"> 
 
                                                                     <input type="text" name="product-id[]" value="<?php echo $stockOutDetails[$i]['product_id']; ?>" class="d-none">
 
                                                                     <input type="text" name="item-id[]" value="<?php echo $details[$i]['item_id']; ?>" class="d-none">
 
-                                                                    <input type="text" name="Manuf[]" value="<?php echo $productData[0]['manufacturer_id']; ?>" class="d-none">
+                                                                    <input type="text" name="Manuf[]" value="<?php echo $manufId; ?>" class="d-none">
 
                                                                 </td>
 
