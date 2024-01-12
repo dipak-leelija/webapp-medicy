@@ -21,7 +21,7 @@ $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
 foreach ($selectStockInDetails as $stockInDetails) {
     $stockInDetailsId = $stockInDetails['id'];
     $table = 'stock_in_details_id';
-    $selectCurrentStockData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId);
+    $selectCurrentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
     // print_r($selectCurrentStockData);
 
     $currentQty = $selectCurrentStockData->qty;

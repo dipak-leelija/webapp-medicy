@@ -87,7 +87,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $marginAmount_perItem = $_POST['margin'];
         $billAmount_perItem = $_POST['billAmount'];
 
-
+        // print_r($item_qty);
+        // echo "<br>"; print_r($item_weightage);
 
         // ==== check data =====
         $stockInAttrib = 'id';
@@ -170,7 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
 
-            ///////////////////////////////////////////////// check this area again \\\\\\\\\\\\\\
+           
             // update stock in data according item details.
             $stockInAttribute = 'id';
             $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttribute, $stockIn_Id);
@@ -199,37 +200,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         for ($i = 0; $i < count($updatedItemIdsArray); $i++) {
             if ($updatedItemIdsArray[$i] == '') {
 
-                // add new data
-                // echo "<br><br> === new data === ";
-                // echo "<br>" . $i . "-> updated item id array : $updatedItemIdsArray[$i]<br>";
-                // echo "$product_ids[$i]<br>";
-                // echo "$distributorBill<br>";
-                // echo "$batch_no[$i]<br>";
-                // echo "$mfd_date[$i]<br>";
-                // echo "$exp_date[$i]<br>";
-                // echo "$set_of[$i]<br>";
-                // echo "$item_weightage[$i]<br>";
-                // echo "$item_unit[$i]<br>";
-                // echo "$item_qty[$i]<br>";
-                // echo "$item_free_qty[$i]<br>";
-                // echo "$item_mrp[$i]<br>";
-                // echo "$item_ptr[$i]<br>";
-                // echo "$item_gst[$i]<br>";
-                // echo "$gstAmount_perItem[$i]<br>";
-                // echo "$baseAmount_perItem[$i]<br>";
-                // echo "$discountPercent[$i]<br>";
-                // echo "$marginAmount_perItem[$i]<br>";
-                // echo "$billAmount_perItem[$i]<br>";
 
                 $item_total_qty = intval($item_qty[$i]) + intval($item_free_qty[$i]);
                 // echo "<br>item total qty check : $item_total_qty";
                 if ($item_unit[$i] == 'Tablets' || $item_unit[$i] == 'Capsules') {
-                    $item_loose_qty = intval($item_total_qty) * intval($item_weightage);
+                    $item_loose_qty = intval($item_total_qty) * intval($item_weightage[$i]);
                     $item_loose_price = floatval($item_mrp[$i]) / intval($item_weightage[$i]);
                 } else {
                     $item_loose_qty = 0;
                     $item_loose_price = 0;
                 }
+
+                // echo $item_loose_qty;
 
                 /* add new data to Stock in Details */
                 $addToStockInDetails = $StockInDetails->addStockInDetails($stockIn_Id, $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], $item_weightage[$i], $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_loose_qty, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $baseAmount_perItem[$i], $item_gst[$i], $gstAmount_perItem[$i], $marginAmount_perItem[$i], $billAmount_perItem[$i], $employeeId, NOW, $adminId);
@@ -239,28 +221,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 /* add new data to current stock */
                 $addToCurrentStock = $CurrentStock->addCurrentStock($stockInDetailsId, $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $item_loose_qty, $item_loose_price, $item_weightage[$i], $item_unit[$i], $item_total_qty, $item_mrp[$i], $item_ptr[$i], $item_gst[$i], $addedBy, NOW, $adminId);
             } else {
-
-                // update old data
-                // echo "<br><br> === old data ===";
-                // echo "<br>" . $i . "-> updated item id array : $updatedItemIdsArray[$i]<br>";
-                // echo "Product id : $product_ids[$i]<br>";
-                // echo "$distributorBill<br>";
-                // echo "$batch_no[$i]<br>";
-                // echo "$mfd_date[$i]<br>";
-                // echo "$exp_date[$i]<br>";
-                // echo "$set_of[$i]<br>";
-                // echo "$item_weightage[$i]<br>";
-                // echo "$item_unit[$i]<br>";
-                // echo "$item_qty[$i]<br>";
-                // echo "$item_free_qty[$i]<br>";
-                // echo "$item_mrp[$i]<br>";
-                // echo "$item_ptr[$i]<br>";
-                // echo "$item_gst[$i]<br>";
-                // echo "$gstAmount_perItem[$i]<br>";
-                // echo "$baseAmount_perItem[$i]<br>";
-                // echo "$discountPercent[$i]<br>";
-                // echo "$marginAmount_perItem[$i]<br>";
-                // echo "$billAmount_perItem[$i]<br>";
 
                 /* update old item data */
 
