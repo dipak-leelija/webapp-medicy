@@ -276,6 +276,36 @@ class StockOut extends DatabaseConnection
         }
     }
 
+    function customerDayRange($strtDt, $endDt, $adminId)
+    {
+        try {
+            $select = "SELECT * FROM stock_out WHERE DATE(added_on) BETWEEN ? AND ? AND admin_id = ?";
+
+            $stmt = $this->conn->prepare($select);
+
+            if ($stmt) {
+                $stmt->bind_param("sss", $strtDt, $endDt, $adminId);
+                $stmt->execute(); // Corrected here
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_object()) {
+                        $data = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+
 
     // =================== end of sales of the day data ==================
 

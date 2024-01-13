@@ -1,6 +1,6 @@
 <?php 
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once realpath(dirname(dirname(__DIR__)) . '/config/constant.php');
+require_once SUP_ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'stockOut.class.php';
@@ -14,7 +14,7 @@ $StockIn = new StockIn;
 if(isset($_GET['sodONDate'])){
     $onDate = $_GET['sodONDate'];
     
-    $SodOnDateData = $StockOut->salesOfTheDayRange($onDate, $onDate, $adminId);
+    $SodOnDateData = $StockOut->customerDayRange($onDate, $onDate, $adminId);
     echo json_encode($SodOnDateData);
 }
 
