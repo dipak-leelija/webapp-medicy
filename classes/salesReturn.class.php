@@ -10,23 +10,22 @@ class SalesReturn extends DatabaseConnection
             $addReturn = "INSERT INTO  sales_return (`invoice_id`, `patient_id`, `bill_date`, `return_date`, `items`, `total_qty`, `gst_amount`, `refund_amount`, `refund_mode`, `status`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $res = $this->conn->prepare($addReturn);
-            // binding parameters --------
+            
             $res->bind_param("isssiiddsssss", $invoiceId, $patientId, $billdate, $returnDate, $items, $totalQty, $gstAmount, $refundAmount, $refundMode, $status, $added_by, $addedOn, $adminId);
-            // Execute the prepared statement
+            
             if ($res->execute()) {
-                // Return the ID of the newly inserted record
+                
                 $salesReturnId = $this->conn->insert_id;
                 return ["result" => true, "sales_return_id" => $salesReturnId];
-                // return $res;
+                
             } else {
-                // Handle the error (e.g., log or return an error message)
+                
                 throw new Exception("Error executing SQL statement: " . $res->error);
             }
         } catch (Exception $e) {
-            // Handle exceptions (e.g., log the error or return an error message)
-            return $e; // You can customize the error handling as needed
+            return $e; 
         }
-    } //end addLabBill function
+    } 
 
 
 
@@ -34,22 +33,20 @@ class SalesReturn extends DatabaseConnection
 
 
 
-    function salesReturnDisplay($adminId='')
+    function salesReturnDisplay($adminId)
     {
         try{
             $res  = array();
-            if(empty($adminId)){
-                $query = "SELECT * FROM sales_return";
-            }else{
-                $query = "SELECT * FROM sales_return WHERE `admin_id` = '$adminId' ";
-            }
+            
+            $query = "SELECT * FROM sales_return WHERE `admin_id` = '$adminId' ";
+            
             $queryres  = $this->conn->query($query);
             while ($result = $queryres->fetch_array()) {
                 $res[]    = $result;
             }
             return $res;
         }catch(Exception $e){
-            echo "Error: " . $e->getMessage();
+            return $e->getMessage();
         }
        
     } //end employeesDisplay function
@@ -59,55 +56,36 @@ class SalesReturn extends DatabaseConnection
 
 
 
-    function selectSalesReturn($table='', $data='') {
+    function selectSalesReturn($table, $data) {
         try {
             $res = array();
     
-            // Define the SQL query using a prepared statement
-            if(!empty($data)){
             $sql = "SELECT * FROM sales_return WHERE $table = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("s", $data);
-            }else{
-            $sql = "SELECT * FROM sales_return WHERE $table = ?";
-            $stmt = $this->conn->prepare($sql);   
-            }
-            // Prepare the SQL statement
-            // $stmt = $this->conn->prepare($sql);
-    
+
             if ($stmt) {
-                // Bind the parameter
-                // $stmt->bind_param("s", $data);
-    
-                // Execute the query
+                
                 $stmt->execute();
     
-                // Get the result
                 $result = $stmt->get_result();
     
-                // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
                         $res[] = $row;
                     }
                 } else {
-                    // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
                 }
     
-                // Close the statement
                 $stmt->close();
             } else {
-                // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
     
             return $res;
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // Customize this part to suit your needs
-            echo "Error: " . $e->getMessage();
-            return array();
+            return $e->getMessage();
         }
     }
     
@@ -121,45 +99,36 @@ class SalesReturn extends DatabaseConnection
         try {
             $res = array();
     
-            // Define the SQL query using a prepared statement
             $sql = "SELECT * FROM `sales_return` WHERE $table1 = ? AND $table2 = ?";
             
-            // Prepare the SQL statement
             $stmt = $this->conn->prepare($sql);
     
             if ($stmt) {
-                // Bind the parameters
+              
                 $stmt->bind_param("ss", $data1, $data2);
     
-                // Execute the query
                 $stmt->execute();
     
-                // Get the result
                 $result = $stmt->get_result();
     
-                // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
                         $res[] = $row;
                     }
                 } else {
-                    // Handle the case where the query failed
+                    
                     echo "Query failed: " . $this->conn->error;
                 }
     
-                // Close the statement
                 $stmt->close();
             } else {
-                // Handle the case where the statement preparation failed
+                
                 echo "Statement preparation failed: " . $this->conn->error;
             }
     
             return $res;
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // Customize this part to suit your needs
-            echo "Error: " . $e->getMessage();
-            return array();
+            return $e->getMessage();
         }
     }
 

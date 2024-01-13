@@ -220,7 +220,7 @@ const getRefund = (returnQty) => {
     // console.log("chk current qty : "+maxRtrnQty);
     // console.log("chk prevReturn qty : "+prevReturnQty);
     let maxRtrnQty = parseInt(currentQty.value) + parseInt(prevReturnQty.value);
-    console.log("chk max return qty : "+maxRtrnQty);
+    // console.log("chk max return qty : "+maxRtrnQty);
     let reviceTaxable = '';
     let reviceRefund = '';
     let reviceDiscAmt = '';
@@ -238,11 +238,24 @@ const getRefund = (returnQty) => {
             Swal.fire("Error", "Return edit Quantity must be lesser than Editabel Qty! This item current max return qty is "+maxRtrnQty, "error");
             document.getElementById('return-qty').value = '';
         }
-        else if (parseFloat(returnQty) >= 0 ) {
-            if(unitType == 'tab' || unitType == 'cap'){
+
+        else if (parseFloat(returnQty) >= 0) {
+            if(unitType == 'Tablets' || unitType == 'Capsules'){
+
+                console.log("disc parcent : "+disc);
+                // console.log("ptr : "+disc);
+                console.log("mrp : "+mrp);
+                console.log("gst : "+gst);
+                console.log("item weatage : "+itemWeatage);
+                
                 reviceDiscAmt = (parseFloat(mrp) - (parseFloat(mrp)*parseFloat(disc)/100)) / parseInt(itemWeatage);
+                console.log("disc amount : "+reviceDiscAmt);
+
                 reviceRefund = parseFloat(reviceDiscAmt) * parseInt(returnQty);
+                console.log("refund amount : "+reviceRefund);
+
                 reviceTaxable = (parseFloat(reviceRefund) * 100) / (parseFloat(gst) + 100);
+                console.log("taxable amount : "+reviceTaxable);
 
                 reviceRefund = parseFloat(reviceRefund).toFixed(2);
                 reviceTaxable = parseFloat(reviceTaxable).toFixed(2);
@@ -265,9 +278,9 @@ const getRefund = (returnQty) => {
                 // document.getElementById("add-btn").disabled = false;
             }
                 
-        } else if (parseFloat(returnQty1) == 0 ) {
+        } else if (parseFloat(returnQty) == 0) {
             
-            if(unitType == 'tab' || unitType == 'cap'){
+            if(unitType == 'Tablets' || unitType == 'Capsules'){
                 reviceDiscAmt = (parseFloat(mrp) - (parseFloat(mrp)*parseFloat(disc)/100)) / parseInt(itemWeatage);
                 reviceRefund = parseFloat(reviceDiscAmt) * parseInt(returnQty);
                 reviceTaxable = (parseFloat(reviceRefund) * 100) / (parseFloat(gst) + 100);

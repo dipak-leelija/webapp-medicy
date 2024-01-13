@@ -28,7 +28,7 @@ class StockReturn extends DatabaseConnection
             }
 
             // Bind the parameters
-            $stmt->bind_param("iiisiidsdssss", $stockReturnId, $stockInId, $distributorId, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin);
+            $stmt->bind_param("iiisiidsdisss", $stockReturnId, $stockInId, $distributorId, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $addedBy, $addedOn, $Admin);
 
             // Execute the prepared statement
             if ($stmt->execute()) {
@@ -98,7 +98,7 @@ class StockReturn extends DatabaseConnection
 
 
 
-    function stockReturnFilter($table='', $value='')
+    function stockReturnFilter($table, $value)
     {
         try {
             $sql = "SELECT * FROM stock_return WHERE `$table` = '$value'";
@@ -193,14 +193,26 @@ class StockReturn extends DatabaseConnection
     }
 
 
-    function stockReturnStatus($returnId, $statusValue)
-    {
-        $sql  = "UPDATE stock_return SET `status` = '$statusValue' WHERE `stock_return`.`id` = '$returnId'";
-        // echo $sql.$this->conn->error;
-        $res  = $this->conn->query($sql);
-        $data = $this->conn->affected_rows;
-        return $data;
-    } //eof stockReturnStatus
+
+    function stockReturnStatus($returnId, $statusValue){
+        try {
+
+            $sql  = "UPDATE stock_return SET `status` = ? WHERE `id` = ?";
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->bind_param("ii", $statusValue, $returnId);
+
+            $stmt->execute();
+
+            $data = $stmt->affected_rows;
+
+            $stmt->close();
+
+            return $data;
+        } catch (Exception $e) {
+            return false;
+        }
+    } 
 
 
     //stockReturn Edit\update function...........

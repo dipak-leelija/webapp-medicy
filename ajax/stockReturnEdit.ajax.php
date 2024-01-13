@@ -78,7 +78,7 @@ $distributorDetails = $distributorDetails->data;
 //===============================================================================================
 
 //==========================fetching data from products table=====================================
-$productDetails = json_decode($ProdcutDetails -> showProductsById($ProductId));
+$productDetails = json_decode($ProdcutDetails -> showProductsByIdOnUser($ProductId, $adminId));
 $productDetails = $productDetails->data;
 
 foreach($productDetails as $products){

@@ -65,9 +65,10 @@ if (isset($_GET["products"])) {
     echo '<option value="" selected disabled>Select item</option>';
     foreach ($items as $item) {
         // print_r($items);
-        $product = $Products->showProductsById($item['product_id']);
-        // print_r($product); echo "<br><br>";
-        echo '<option data-invoice="'.$invoiceId.'" sales-return-id="'.$item['sales_return_id'].'" value="'.$item['product_id'].'" returned-item-id="'.$item['id'].'" current-stock-item-id="'.$item['item_id'].'">'.$product[0]['name'].'</option>';
+        $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId));
+        $product = $product->data;
+        print_r($product); echo "<br><br>";
+        echo '<option data-invoice="'.$invoiceId.'" sales-return-id="'.$item['sales_return_id'].'" value="'.$item['product_id'].'" returned-item-id="'.$item['id'].'" current-stock-item-id="'.$item['item_id'].'">'.$product[0]->name.'</option>';
     }
 }
 
@@ -109,7 +110,7 @@ if (isset($_GET["unitType"])) {
 if (isset($_GET["itemWeatage"])) {
     $item = $salesReturn->selectSalesReturnList($tabel, $_GET["itemWeatage"]);
     $unit = $item[0]['weatage'];
-    $itemWeatage = preg_replace('/[a-z]/','', $unit);
+    $itemWeatage = preg_replace('/[a-z-A-Z]/','', $unit);
     echo $itemWeatage;
 }//=======================================================================
 

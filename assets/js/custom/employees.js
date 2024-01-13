@@ -10,8 +10,8 @@ viewAndEdit = (empId) => {
 
 
 // employee delete scritp
-$(document).ready(function() {
-    $(document).on("click", ".delete-btn", function() {
+$(document).ready(function () {
+    $(document).on("click", ".delete-btn", function () {
 
         if (confirm("Are you want delete data?")) {
             empId = $(this).data("id");
@@ -24,7 +24,7 @@ $(document).ready(function() {
                 data: {
                     id: empId
                 },
-                success: function(response) {
+                success: function (response) {
 
                     if (response == 1) {
                         $(btn).closest("tr").fadeOut()
@@ -62,7 +62,7 @@ function showHide(fieldId) {
 
 // ========== employee username and email contol ==========
 
-const checkEmpUsrNm = (t) =>{
+const checkEmpUsrNm = (t) => {
 
     let empUsrNm = t.value;
 
@@ -87,9 +87,28 @@ const checkEmpUsrNm = (t) =>{
 }
 
 
-const checkEmpEmail = (t) =>{
 
-    let email = t.value;
+const checkEmpEmail = (t) => {
+    var inputedMail = t.value;
+    // console.log(inputedMail);
+
+    if (inputedMail != '') {
+        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(inputedMail)) {
+            alert('Enter valid email id!');
+            document.getElementById('emp-mail').value = ' ';
+        } else {
+            checkEmpEmailAvailability();
+        }
+    }
+
+}
+
+const checkEmpEmailAvailability = (inputedMail) => {
+
+    let email = inputedMail;
+    // console.log("cll fucntion mail : " + inputedMail)
 
     $.ajax({
         url: "ajax/empUsernameEmailCheckExistance.ajax.php",

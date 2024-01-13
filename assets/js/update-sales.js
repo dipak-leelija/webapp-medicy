@@ -13,10 +13,11 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 Stock_out_item_id: itemId
             },
             success: function (data) {
-                // alert(data);
+                alert(data);
+                // alert(dataObject.itemWeatage);
+
                 var dataObject = JSON.parse(data);
 
-                var sellQty = parseInt(dataObject.sellQty);
                 var mrp = parseFloat(dataObject.Mrp);
                 var itemUnit = dataObject.itemUnit;
                 var itemWeatage = parseInt(dataObject.itemWeatage);
@@ -25,8 +26,8 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 var loosePrice = '';
                 var typeCheck = '';
 
-                if (itemUnit == 'tab' || itemUnit == 'cap') {
-                    looseStock = dataObject.availableQty;;
+                if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
+                    looseStock = dataObject.availableQty;
                     loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
                     if (sellQty % itemWeatage == 0) {
                         typeCheck = 'Pack';
@@ -38,6 +39,14 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                     loosePrice = '';
                     typeCheck = '';
                 }
+
+                var sellQty = 0;
+                if (itemUnit == 'Tablets' || itemUnit == 'Capsules'){
+                    sellQty = parseInt(dataObject.sellQty) * parseInt(dataObject.itemWeatage);
+                }else{
+                    sellQty = dataObject.sellQty;
+                }
+                
 
                 var discPrice = parseFloat(mrp) - (parseFloat(mrp) * parseFloat(discPercent) / 100);
                 //==============================================================
@@ -59,7 +68,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 document.getElementById('ptr').value = dataObject.Ptr;
                 document.getElementById('aqty').value = dataObject.availableQty;
                 document.getElementById('loose-stock').value = looseStock;
-                document.getElementById('qty').value = dataObject.sellQty;
+                document.getElementById('qty').value = sellQty;
                 document.getElementById('type-check').value = typeCheck;
                 document.getElementById('disc').value = dataObject.dicPercent;
                 document.getElementById('dPrice').value = discPrice;

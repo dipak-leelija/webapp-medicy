@@ -28,8 +28,6 @@ if (isset($_GET['searchKey'])) {
 }
 
 
-
-
 $showDistributor       = $Distributor->showDistributor();
 
 ?>
@@ -120,11 +118,8 @@ $showDistributor       = $Distributor->showDistributor();
                                                 } else {
                                                     $distName = '';
                                                 }
-                                                // $distributor = $distributor->data;
-                                                // echo $stockIn['id'];
-                                                // echo "stock in id : $StockInId";
-                                                // echo "<br>id : $id";
-                                                // echo "<br>sl no : $slNo";
+                                                
+
                                                 $slNo++;
 
                                         ?>

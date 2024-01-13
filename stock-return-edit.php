@@ -129,32 +129,10 @@ if (isset($_GET["returnId"])) {
 
                                 <div class="col-md-7 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
-                                    <!-- <input class="upr-inp mb-1" id="product_name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
-                                     < onchange="getDtls(this);"  -->
-                                    <!-- <div class="p-2 bg-light " id="product-select">
-                                        <div class="m-0 text-danger text-center">
-                                            <b> Select Distributor First </b>
-                                        </div>
-                                    </div>-->
+                                    
                                     <input class="d-none" type="text" id="product-id">
                                     <input class="upr-inp mb-1" id="product_name" value="" readonly>
                                 </div>
-
-                                <!-- ==================================== CHECKING ======================================= -->
-                                <!-- <div class="col-md-7 col-12 ">
-                                    <label for="product-name" class="mb-1 mt-3">Product Name</label>
-                                    <input class="upr-inp mb-1" id="product-name" name="product-name"
-                                        placeholder="Search Product" onkeyup="searchItem(this.value)"
-                                        autocomplete="off">
-                                    < onchange="getDtls(this);" --
-                                    <div class="p-2 bg-light " id="product-select">
-                                        <div class="m-0 text-danger text-center">
-                                            <b> Select Distributor First </b>
-                                        </div>
-                                    </div>
-                                    <input type="text" id="product-id" hidden>
-                                </div> -->
-                                <!-- ===================================================================================== -->
 
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
                                     <label class="mb-1 mt-3" for="return-mode">Return Mode :</label>
@@ -171,8 +149,6 @@ if (isset($_GET["returnId"])) {
                                     </select>
                                     <!-- <input class="upr-inp mb-1" id="refund-mode" value="" readonly> -->
                                 </div>
-
-
 
                             </div>
                             <hr>
@@ -397,7 +373,7 @@ if (isset($_GET["returnId"])) {
                                                 /////////////////////////////////////////////////////
 
                                                 $productid = $bill['product_id'];
-                                                $productDetails = json_decode($products->showProductsById($productid));
+                                                $productDetails = json_decode($products->showProductsByIdOnUser($productid, $adminId));
                                                 $productDetails = $productDetails->data;
 
                                                 $productName = $productDetails[0]->name;

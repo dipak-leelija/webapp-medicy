@@ -81,7 +81,7 @@ $Products       = new Products();
             </div>
             <div class="col-6 col-sm-4">
                 <p><b> Payment Mode: </b><?php echo $StockIn[0][7]; ?></p>
-                <p>Action</p>
+                <!-- <p>Action</p> -->
             </div>
         </div>
 <hr>
@@ -121,7 +121,7 @@ $Products       = new Products();
                     $gst    += $item['gst'];
                     $amount += $item['ptr'];
 
-                    $product = json_decode($Products->showProductsById($item['product_id']));
+                    $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId));
                     $product = $product->data;
                     // print_r($product);
 

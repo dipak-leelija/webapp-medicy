@@ -217,21 +217,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $totalRefundAmount = $totalRefundAmount;
         }
 
-
-        // $healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
-        
-        // $healthCareDetails = $healthCareDetailsByAdminId;
-        
-        // for ($i; $i < count($healthCareDetails); $i++) {
-
-        //     $healthCareName     = $healthCareDetails['hospital_name'];
-        //     $healthCareAddress1 = $healthCareDetails['address_1'];
-        //     $healthCareAddress2 = $healthCareDetails['address_2'];
-        //     $healthCareCity     = $healthCareDetails['city'];
-        //     $healthCarePIN      = $healthCareDetails['pin'];
-        //     $healthCarePhno     = $healthCareDetails['hospital_phno'];
-        //     $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
-        // }
     }
 }
 
@@ -365,9 +350,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
 
 
-                    $showProducts = $Products->showProductsById($product);
-
-
+                    $showProducts = json_decode($Products->showProductsByIdOnUser($product, $adminId));
+                    $showProducts = $showProducts->data;
 
                     echo '
                                 <div class="row">
@@ -375,7 +359,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <small>' . $slno . '</small>
                                     </div>
                                     <div class="col-sm-2 ">
-                                        <small>' . substr($showProducts[0]['name'], 0, 15) . '</small>
+                                        <small>' . substr($showProducts[0]->name, 0, 15) . '</small>
                                     </div>
                     
                                     <div class="col-sm-1">

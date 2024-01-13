@@ -307,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $slno++;
 
                     $itemDetails = $CurrentStock->showCurrentStocById($itemID[$i]);
-                    $productDetails = $Products->showProductsById($itemDetails[0]['product_id']);
+                    $productDetails = $Products->showProductsByIdOnUser($itemDetails[0]['product_id'], $adminId);
                     $productDetails = json_decode($productDetails,true);
                     if(isset($productDetails['status']) && $productDetails['status'] == '1'){
                         $data = $productDetails['data'];
