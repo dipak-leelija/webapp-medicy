@@ -11,13 +11,13 @@ $lst24hrs = date('Y-m-d', strtotime($strtDt . ' - 1 days'));
 $lst7 = date('Y-m-d', strtotime($strtDt . ' - 7 days'));
 $lst30 = date('Y-m-d', strtotime($strtDt . ' - 30 days'));
 
-$salesOfTheDayToday = $StockOut->salesOfTheDayRange($strtDt, $strtDt, $supAdminId );
+$salesOfTheDayToday = $StockOut->salesOfTheDayRange($strtDt, $strtDt, $supAdminId);
 
-$sodLst24Hrs = $StockOut->salesOfTheDayRange($lst24hrs, $strtDt, $supAdminId );
+$sodLst24Hrs = $StockOut->salesOfTheDayRange($lst24hrs, $strtDt, $supAdminId);
 
-$sodLst7Days = $StockOut->salesOfTheDayRange($lst7, $strtDt, $supAdminId );
+$sodLst7Days = $StockOut->salesOfTheDayRange($lst7, $strtDt, $supAdminId);
 
-$sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $supAdminId );
+$sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $supAdminId);
 
 
 ?>
