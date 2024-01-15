@@ -77,7 +77,7 @@ const setDistributor = (t) => {
 
     document.getElementsByClassName("c-dropdown")[0].style.display = "none";
 
-    console.log(distributirId);
+    // console.log(distributirId);
 
     // if (document.getElementById("dist-id-check").value != '') {
     //     if (document.getElementById("dist-id-check").value != document.getElementById("dist-id").value) {

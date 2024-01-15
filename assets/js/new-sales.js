@@ -1,3 +1,6 @@
+//============= constant data declaretion =============
+const allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
 //======================= new sell generate bill button disable and enable control ===================
 var tableBody = document.getElementById('item-body');
 var newSellGenerateBill = document.getElementById('new-sell-bill-generate');
@@ -478,11 +481,20 @@ const onQty = (qty) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
+
+    // if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
+    //     loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
+    // } else {
+    //     loosePrice = '';
+    // }
+
+    if (allowedUnits.map(unit => unit.toLowerCase()).includes(unitType.toLowerCase())) {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
     }
+    
+
     document.getElementById('loose-price').value = loosePrice;
 
     //=============================== AVAILIBILITY CHECK ================================
@@ -505,7 +517,8 @@ const onQty = (qty) => {
     let checkSum = '';
     let itemPackType = '';
 
-    if (unitType == 'Tablets' || unitType == 'Capsules') {
+    
+    if (allowedUnits.map(unit => unit.toLowerCase()).includes(unitType.toLowerCase())) {
         checkSum = parseInt(qty) % parseInt(itemWeightage);
         if (checkSum == 0) {
             itemPackType = 'Pack';
@@ -515,6 +528,7 @@ const onQty = (qty) => {
     } else {
         itemPackType = '';
     }
+
     document.getElementById("type-check").value = itemPackType;
 
     // =========================== ========================== ====================
@@ -585,11 +599,13 @@ const onDisc = (disc) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit-type').value;
     let loosePrice = "";
-    if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
+
+    if (allowedUnits.map(unit => unit.toLowerCase()).includes(unitType.toLowerCase())) {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
     }
+
     document.getElementById('loose-price').value = loosePrice;
 
 

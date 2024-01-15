@@ -73,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
+        $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
 
         //=====================================================================
 
@@ -193,7 +194,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $crntLQTY = $crntStock['loosely_count'];
                 }
 
-                if ($itemUnit == 'Tablets' || $itemUnit == 'Capsules') {
+                // if ($itemUnit == 'Tablets' || $itemUnit == 'Capsules') 
+                if (in_array(strtolower($itemUnit), $allowedUnits)){
                     $updatedLooseQty = intval($crntLQTY) + (intval($returnDiff));
                     $updatedQty = intdiv($updatedLooseQty, $itemWeatage);
                 } else {

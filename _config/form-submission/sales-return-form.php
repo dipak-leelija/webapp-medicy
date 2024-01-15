@@ -99,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $itemWeatage = preg_replace('/[a-z]/', '', $setOf);
         $unitType = preg_replace('/[0-9]/', '', $setOf);
 
+        $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
 
         // --------------------------------------
         // echo "<br><br>";
@@ -141,7 +142,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 foreach ($currentStockDetaisl as $currentStockDetaisl) {
                     $currentStockItemUnit = $currentStockDetaisl['unit'];
-                    if ($currentStockItemUnit == 'Tablets' || $currentStockItemUnit == 'Capsules') {
+                    // if ($currentStockItemUnit == 'Tablets' || $currentStockItemUnit == 'Capsules') 
+                    if (in_array(strtolower($currentStockItemUnit), $allowedUnits)){
                         $curretnStockQty = $currentStockDetaisl['loosely_count'];
                         $UpdatedLooseQty = intval($curretnStockQty) + intval(array_shift($_POST['return']));
                         $UpdatedQty = intdiv(intval($UpdatedLooseQty), intval($itemWeatage));

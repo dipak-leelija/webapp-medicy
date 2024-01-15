@@ -2,6 +2,8 @@
 const xmlhttp = new XMLHttpRequest();
 const listArea = document.getElementById("bills-list");
 
+const allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
 //========================= return submit button disable and enable control ======================
 var returnSubmitBtn = document.getElementById('return-btn');
 returnSubmitBtn.setAttribute("disabled", "true");
@@ -240,7 +242,8 @@ const getRefund = (returnQty) => {
         }
 
         else if (parseFloat(returnQty) >= 0) {
-            if(unitType == 'Tablets' || unitType == 'Capsules'){
+            // if(unitType == 'Tablets' || unitType == 'Capsules')
+            if (allowedUnits.map(unit => unit.toLowerCase()).includes(unitType.toLowerCase())){
 
                 console.log("disc parcent : "+disc);
                 // console.log("ptr : "+disc);
@@ -280,7 +283,9 @@ const getRefund = (returnQty) => {
                 
         } else if (parseFloat(returnQty) == 0) {
             
-            if(unitType == 'Tablets' || unitType == 'Capsules'){
+            // if(unitType == 'Tablets' || unitType == 'Capsules')
+            if (allowedUnits.map(unit => unit.toLowerCase()).includes(unitType.toLowerCase())){
+                
                 reviceDiscAmt = (parseFloat(mrp) - (parseFloat(mrp)*parseFloat(disc)/100)) / parseInt(itemWeatage);
                 reviceRefund = parseFloat(reviceDiscAmt) * parseInt(returnQty);
                 reviceTaxable = (parseFloat(reviceRefund) * 100) / (parseFloat(gst) + 100);
