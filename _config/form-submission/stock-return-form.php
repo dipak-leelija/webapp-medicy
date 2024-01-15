@@ -45,6 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $Admin           = $adminId;
         $status          = 1;
 
+        $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
+
         // echo "<br>Stock Return Id : "; print_r($stockReturnId); echo gettype($stockReturnId);
         // echo "<br>stock in Id : "; print_r($stockInId); echo gettype($stockInId);
         // echo "<br>Distributor Id : "; print_r($distributorId); echo gettype(intval($distributorId));
@@ -116,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 // echo "<br>Return free qty : $returnFQty[$i]";
                 // echo "<br>Item Unit name : $unit[$i]";
 
-                if($unit[$i] == 'Tablets' || $unit[$i] == 'Capsules'){
+                if (in_array(strtolower($unit[$i]), $allowedUnits)){
                     $updatedLooseQty = intval($looseQty) - ((intval($returnQty[$i]) +  intval($returnFQty[$i])) * $weightage[$i]);
                     $updatedQty = intdiv($updatedLooseQty, $weightage[$i]);
                 }else{

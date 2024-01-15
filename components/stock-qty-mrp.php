@@ -6,7 +6,7 @@
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                         Stock Quantity</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                    <div class="mb-0 font-weight-bold text-gray-800">
                         <?php
                             $cStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
                             // print_r($cStock);
@@ -38,7 +38,7 @@
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                         Total Stock MRP</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                    <div class="mb-0 font-weight-bold text-gray-800">
                         <?php
                             $cStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
                             // print_r($cStock);

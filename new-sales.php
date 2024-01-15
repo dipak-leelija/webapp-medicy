@@ -247,7 +247,7 @@ $doctor = json_decode($doctor , true);
                                         </div>
                                         
                                         <div class="col-md-1 mt-3 col-12">
-                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Net Amt.</label><br>
+                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Nt Amt.</label><br>
                                             <input class="sale-inp" type="any" id="amount" readonly>
                                         </div>
 

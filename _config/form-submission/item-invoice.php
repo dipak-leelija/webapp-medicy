@@ -96,6 +96,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $gstAmountPerItem   = $_POST['gstVal'];
     $amount             = $_POST['amount'];
 
+
+    $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
     // ===================== STOCK OUT AND SALES ITEM BILL GENERATION AREA =========================
     if (isset($_POST['submit'])) {
         $invoiceId = $IdsGeneration->pharmecyInvoiceId();
@@ -110,20 +113,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $ItemUnit = preg_replace("/[^a-z-A-Z]/", '', $weightage[$i]);
                 $ItemWeightage = preg_replace("/[^0-9]/", '', $weightage[$i]);
 
-                if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') {
+                // if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') 
+                if (in_array(strtolower($ItemUnit), $allowedUnits)){
 
                     $itemSellQty = $qty[$i];
 
                     $looseCount = intval($qty[$i]);
                     $wholeCount = intdiv($looseCount, intval($ItemWeightage));
 
-                    // if (intval($qty[$i]) % intval($ItemWeightage) == 0) {
-                    //     $wholeCount = intval($qty[$i]) / intval($ItemWeightage);
-                    //     $looseCount = $qty[$i];        // loose count of item
-                    // } else {
-                    //     $wholeCount = 0;
-                    //     $looseCount = $qty[$i];        // loose count of item
-                    // }
                 } else {
                     $itemSellQty = $qty[$i];
 
@@ -131,11 +128,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $wholeCount = $qty[$i];
                 }
                 $wholeCount = strval($wholeCount);
-
-                // echo "<br>item unit : $ItemUnit";
-                // echo "<br>Whole count : $wholeCount";
-                // echo "<br>Loose count : $looseCount";
-                // echo "<br>item Sell qty : $itemSellQty";
 
                 $colName = 'id';
                 $productDetails = $CurrentStock->selectByColAndData($colName, intval($itemId[$i]));
@@ -163,7 +155,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
 
-                if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') {
+                // if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') 
+                if (in_array(strtolower($ItemUnit), $allowedUnits)){
                     $updatedLooseCount     = intval($itemLooseQty) - intval($itemSellQty);
                     $UpdatedNewQuantity   = intval($updatedLooseCount / $ItemWeightage);
                 } else {

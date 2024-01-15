@@ -9,7 +9,7 @@
                         <i class="fas fa-calendar-times"></i>
                     </div>
                 </div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                <div class="mb-0 font-weight-bold text-gray-800">
                     <?php
                     $expStok = $CurrentStock->showStockExpiry(NOW, $adminId);
                     echo count($expStok);

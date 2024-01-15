@@ -95,13 +95,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $looselyPrice = '';
 
-                if ($unit == "Tablets" || $unit == "Capsules") {
+                $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
+                if (in_array(strtolower($unit), $allowedUnits)) {
                     $looselyCount = $weightage * ($qty + $freeQty);
                     $looselyPrice = ($mrp * $qty) / ($weightage * $qty);
-                }else{
-                    $looselyCount = 0;
-                    $looselyPrice = 0;
+                } else {
+                    $looselyCount = $looselyPrice = 0;
                 }
+
 
 
                 $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), $unit, intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));

@@ -20,13 +20,13 @@ if ($maxPurchasedDistAmount->status != 0) {
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                     most purchaed distributor by amount</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByAmount-info-div">
+                <div class="mb-0 font-weight-bold text-gray-800" id="mopdByAmount-info-div">
                     <i class="fas fa-rupee-sign"></i>
                     <label type="text" id="salesAmount" name="salesAmount"><?= $totalAmount; ?></label>
                     <br>
                     <label type="text" id="distName" name="distName"><?= $distributorName; ?></label>
                 </div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByAmount-no-data-div" style="display: none;">
+                <div class="mb-0 font-weight-bold text-gray-800" id="mopdByAmount-no-data-div" style="display: none;">
                     <label for="no-data">NO DATA FOUND</label>
                 </div>
             </div>
