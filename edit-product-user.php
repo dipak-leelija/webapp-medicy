@@ -9,6 +9,7 @@ require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'measureOfUnit.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
 require_once CLASS_DIR . 'itemUnit.class.php';
+require_once CLASS_DIR . 'productCategory.class.php';
 
 
 
@@ -19,12 +20,18 @@ $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
 $ProductImages      = new ProductImages();
 $ItemUnit           = new ItemUnit();
+$ProductCategory    = new ProductCategory;
 
 
 $showManufacturer   = json_decode($Manufacturer->showManufacturerWithLimit());
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
+
 $itemUnits          = $ItemUnit->showItemUnits();
+
+$prodCategoryList   = json_decode($ProductCategory->selectAllProdCategory());
+$prodCategoryList   = $prodCategoryList->data;
+
 ?>
 
 
@@ -177,7 +184,6 @@ $itemUnits          = $ItemUnit->showItemUnits();
             $updateImage = true;
             if ($updateProduct === true) {
                 if ($updateImage === true) {
-
     ?>
                     <script>
                         swal("Success", "Product updated successfully!", "success").then((value) => {
@@ -193,34 +199,33 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
         // ===================== Fetching Product Details =====================
 
-        $product = json_decode($Products->showProductsById($productId));
+        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId));
         $product = $product->data;
         // print_r($product);
 
         $productName    = $product[0]->name;
-        $manufacturer   = $product[0]->manufacturer_id;
-        $manufData = json_decode($Manufacturer->showManufacturerById($manufacturer));
-        // print_r($manufData);
 
-        $manufacturerId = ($manufData->status == 1 && isset($manufData->data)) ? $manufData->data->id : ' ';
-
-        $manufacturerName = ($manufData->status == 1 && isset($manufData->data)) ? $manufData->data->name : 'unable to retrieve';
+        $type           = $product[0]->type;
+        $prodCategoryName   = json_decode($ProductCategory->selectNameById($type));
+        $prodCategoryName   = $prodCategoryName->data;
+        
+        
 
         $qty            = $product[0]->unit_quantity;
-        $qtyUnit        = $product[0]->unit_id;
+        // $qtyUnit        = $product[0]->unit_id;
         $itemUnit       = $product[0]->unit;
+        echo "<br>Item unit : $itemUnit";        
         $packagingType  = $product[0]->packaging_type;
-        $type           = $product[0]->type;
+        echo "<br>Packaging Type : $packagingType";    
+            
         $power          = $product[0]->power;
-        $dsc            = $product[0]->dsc;
+    
         $mrp            = $product[0]->mrp;
         $gst            = $product[0]->gst;
-        $comp1          = $product[0]->comp_1;
-        $comp2          = $product[0]->comp_2;
-        $added_by       = $product[0]->added_by;
-        $added_on       = $product[0]->added_on;
-        $updated_by     = $product[0]->updated_by;
-        $updated_on     = $product[0]->updated_on;
+        // $added_by       = $product[0]->added_by;
+        // $added_on       = $product[0]->added_on;
+        // $updated_by     = $product[0]->updated_by;
+        // $updated_on     = $product[0]->updated_on;
         $admin_id       = $product[0]->admin_id;
 
         $images = json_decode($ProductImages->showImageById($productId));
@@ -314,15 +319,15 @@ $itemUnits          = $ItemUnit->showItemUnits();
                                                 <div class="col-md-6 mt-3">
                                                     Prodcut Catagory
                                                     <select class="c-inp p-1 w-100" name="product-catagory" id="product-catagory" required>
-                                                        <option value="" disabled selected>Select</option>
+                                                        <option value="" disabled selected><?php echo $prodCategoryName[0]->name ?></option>
                                                         <?php
-                                                        if ($prodCategory->status == 1 && is_array($prodCategory->data)) {
-                                                            $prodCategory = $prodCategory->data;
+                                                        
+                                                            // print_r($prodCategoryList);
 
-                                                            foreach ($prodCategory as $category) {
+                                                            foreach ($prodCategoryList as $category) {
                                                                 echo '<option value="' . $category->id . '">' . $category->name . '</option>';
                                                             }
-                                                        }
+                                                        
                                                         ?>
                                                     </select>
                                                 </div>

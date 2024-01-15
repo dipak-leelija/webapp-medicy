@@ -534,23 +534,29 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByTable($table, $data)
-    {
-        //echo $productId;
-        $slectProduct        = "SELECT * FROM products WHERE `$table` = '$data'";
-        $slectProductQuery   = $this->conn->query($slectProduct);
-        $rows                = $slectProductQuery->num_rows;
-        if ($rows == 0) {
-            return 0;
-        } else {
-            while ($result  = $slectProductQuery->fetch_array()) {
-                $data[] = $result;
+    function showProductsByTable($table, $data){
+        try{
+            //echo $productId;
+            $slectProduct        = "SELECT * FROM products WHERE `$table` = '$data'";
+            $slectProductQuery   = $this->conn->query($slectProduct);
+            $rows                = $slectProductQuery->num_rows;
+            if ($rows > 0) {
+                while ($result  = $slectProductQuery->fetch_array()) {
+                    $data[] = $result;
+                }
+                return json_encode(['status'=>'1', 'message'=>'data found', 'data'=>$data]);
+            }else{
+                return json_encode(['status'=>'0', 'message'=>'no data found', 'data'=>'']);
             }
-            return $data;
+        }catch(Exception $e){
+            return $e->errorMessage();
         }
     } //eof showProductsById function
 
 
+
+
+    
 
     function showProductsByTId($productTId)
     {

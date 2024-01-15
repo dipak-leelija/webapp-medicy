@@ -88,5 +88,41 @@ class ProductCategory extends DatabaseConnection{
         }
         return 0;
     }
+
+
+
+
+
+
+    function selectNameById($id) {
+        try {
+            $selectCategoryName = "SELECT `name` FROM `product_type` WHERE id = $id";
+        
+            $selectProductQuery = $this->conn->query($selectCategoryName);
+    
+            if (!$selectProductQuery) {
+                throw new Exception("Query execution failed");
+            }
+    
+            $rows = $selectProductQuery->num_rows;
+    
+            if ($rows > 0) {
+               
+                $categories = array();
+    
+                while ($category = $selectProductQuery->fetch_object()) {
+                    $categories[] = $category;
+                }
+                return json_encode(['status'=>'1', 'message' => 'success', 'data' => $categories]);
+            }else {
+
+                return json_encode(['status' => '0', 'message' => 'No categories found.', 'data' => '']);
+            
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '', 'message' => $e->getMessage(), 'data'=>'']);
+        }
+        return 0;
+    }
     
 }
