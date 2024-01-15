@@ -19,11 +19,11 @@ if($maxItemPurchase->status != 0){
             <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                     most purchaed distributor by times</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByItems-info-div">
+                <div class="mb-0 font-weight-bold text-gray-800" id="mopdByItems-info-div">
                     <label type="text" id="itemCount" name="itemCount"><?= $NosOfPurchased; ?> Times</label><br>
                     <label type="text" id="distName" name="distName"><?= $distNameOnMaxItem; ?></label>
                 </div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800" id="mopdByItems-no-data-div">
+                <div class="mb-0 font-weight-bold text-gray-800" id="mopdByItems-no-data-div">
                     <label for="no-data">NO DATA FOUND</label>
                 </div>
             </div>
