@@ -214,9 +214,9 @@ $prodCategoryList   = $prodCategoryList->data;
         $qty            = $product[0]->unit_quantity;
         // $qtyUnit        = $product[0]->unit_id;
         $itemUnit       = $product[0]->unit;
-        echo "<br>Item unit : $itemUnit";        
+        // echo "<br>Item unit : $itemUnit";        
         $packagingType  = $product[0]->packaging_type;
-        echo "<br>Packaging Type : $packagingType";    
+        // echo "<br>Packaging Type : $packagingType";    
             
         $power          = $product[0]->power;
     
@@ -319,7 +319,7 @@ $prodCategoryList   = $prodCategoryList->data;
                                                 <div class="col-md-6 mt-3">
                                                     Prodcut Catagory
                                                     <select class="c-inp p-1 w-100" name="product-catagory" id="product-catagory" required>
-                                                        <option value="" disabled selected><?php echo $category->name ?></option>
+                                                        <option value="<?php echo $type ?>" disabled selected><?php echo $prodCategoryList[0]->name ?></option>
                                                         <?php
                                                         
                                                             // print_r($prodCategoryList);
