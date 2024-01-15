@@ -10,6 +10,7 @@ require_once CLASS_DIR        . "salesReturn.class.php";
 require_once CLASS_DIR        . "stockin.class.php";
 require_once CLASS_DIR        . "stockReturn.class.php";
 
+
 $CustomerId = url_dec($_GET['report']);
 
 $Employees   = new Employees;
@@ -43,6 +44,21 @@ foreach ($soldItems as $item) {
     }
 }
 
+$strtDt = date('Y-m-d');
+$lst24hrs = date('Y-m-d', strtotime($strtDt . ' - 1 days'));
+$lst7 = date('Y-m-d', strtotime($strtDt . ' - 7 days'));
+$lst30 = date('Y-m-d', strtotime($strtDt . ' - 30 days'));
+
+$salesOfTheDayToday = $StockOut->customerDayRange($strtDt, $strtDt, $CustomerId);
+
+$sodLst24Hrs = $StockOut->customerDayRange($lst24hrs, $strtDt, $CustomerId);
+
+$sodLst7Days = $StockOut->customerDayRange($lst7, $strtDt, $CustomerId);
+
+$sodLst30Days = $StockOut->customerDayRange($lst30, $strtDt, $CustomerId);
+// print_r($sodLst30Days);
+
+
 ///=========purches amount==================///
 $CountPurchesItems = count($StockIn->showStockIn($CustomerId));
 $PurchesItems      = $StockIn->showStockIn($CustomerId);
@@ -73,6 +89,21 @@ if ($PurchesRetun['status'] == 1 && isset($PurchesRetun['data']) && is_array($Pu
     $data = $PurchesRetun['data'];
     $totalPurchesRetun = count($data);
 }
+
+
+$podStrtDt = date('Y-m-d');
+$podLst24hrs = date('Y-m-d', strtotime($strtDt . ' - 1 days'));
+$podLst7 = date('Y-m-d', strtotime($strtDt . ' - 7 days'));
+$podLst30 = date('Y-m-d', strtotime($strtDt . ' - 30 days'));
+
+$purchaeTodayCurrentData = $StockIn->customerPurchDayRange($podStrtDt, $podStrtDt, $CustomerId);
+
+$purchaeTodayDataLst24hrs = $StockIn->customerPurchDayRange($podLst24hrs, $podStrtDt, $CustomerId);
+
+$purchaeTodayDataLst7dys = $StockIn->customerPurchDayRange($podLst7, $podStrtDt, $CustomerId);
+
+$purchaeTodayDataLst30dys = $StockIn->customerPurchDayRange($podLst30, $podStrtDt, $CustomerId);
+// print_r($purchaeTodayDataLst30dys);
 
 ?>
 
@@ -144,24 +175,41 @@ if ($PurchesRetun['status'] == 1 && isset($PurchesRetun['data']) && is_array($Pu
                             <div class="card-body pt-1">
                                 <div class="d-flex justify-content-between flex-wrap">
                                     <div class="bg-white border border-0 rounded shadow" style="width: 50%;">
-                                        <div class="ml-5" style="width: 70%;">
+                                        <div class="ml-4" style="width: 70%;">
                                             <div class="d-flex justify-content-between mb-0 pb-0" style="width: 127%;">
                                                 <h5 class="pt-3 pb-n5 mb-0" style="color: #5a5c69;font-weight: 600;">Sales Item Based On Payment Mode</h5>
                                                 <!-- <button class="btn btn-sm d-flex justify-content-end m-3 mb-0 pb-0 border ">...</button> -->
-                                                <?php require_once SUP_ROOT_COMPONENT . "customerSale.php"; ?>
-                                                <!-- <div class="btn-group">
-                                                    <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold shadow mt-2 mr-2 pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkSod(this.id)">Today</button>
-                                                        <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkSod(this.id)">Last 24 hrs</button>
-                                                        <button class="dropdown-item" type="button" id="sodLst7" onclick="chkSod(this.id)">Last 7 Days</button>
-                                                        <button class="dropdown-item" type="button" id="sodLst30" onclick="chkSod(this.id)">Last 30 Days</button>
-                                                        <button class="dropdown-item dropdown" type="button" id="sodGvnDt" onclick="chkSod(this.id)">By Date</button>
-                                                        <button class="dropdown-item dropdown" type="button" id="sodDtRng" onclick="chkSod(this.id)">By Date Range</button>
+                                                <div class="d-flex justify-content-end px-2 mr-n4 mt-2">
+                                                    <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDatePikDiv" style="display: none; margin-right:1rem;position: relative;">
+                                                        <input type="date" id="salesOfTheDayDate">
+                                                        <button class="btn btn-sm btn-primary" onclick="sodOnDate()" style="height: 2rem;">Find</button>
                                                     </div>
-                                                </div> -->
+                                                    <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDtPikRngDiv" style="display: none; margin-right:1rem; position: relative;">
+                                                        <div class="d-flex d-flex justify-content-start">
+                                                            <div>
+                                                                <label>Start Date</label>&nbsp<input type="date" id="sodStartDt"><br>
+                                                                <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="sodEndDt">
+                                                            </div>&nbsp
+                                                            <div>
+                                                                <br>
+                                                                <button class="btn btn-sm btn-primary" onclick="sodDtRange()" style="height: 2rem;">Find</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkSod(this.id)">Today</button>
+                                                            <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkSod(this.id)">Last 24 hrs</button>
+                                                            <button class="dropdown-item" type="button" id="sodLst7" onclick="chkSod(this.id)">Last 7 Days</button>
+                                                            <button class="dropdown-item" type="button" id="sodLst30" onclick="chkSod(this.id)">Last 30 Days</button>
+                                                            <button class="dropdown-item dropdown" type="button" id="sodGvnDt" onclick="chkSod(this.id)">By Date</button>
+                                                            <button class="dropdown-item dropdown" type="button" id="sodDtRng" onclick="chkSod(this.id)">By Date Range</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class='bg-white pl-5 pr-5 pt-1 pb-2'>
                                                 <canvas id="myChart" width="50" height="50"></canvas>
@@ -178,18 +226,35 @@ if ($PurchesRetun['status'] == 1 && isset($PurchesRetun['data']) && is_array($Pu
                                             <div class="d-flex justify-content-between mb-0 pb-0" style="width: 127%;">
                                                 <h5 class="pt-3" style="color: #5a5c69;font-weight: 600;">Purches Item Based On Payment Mode</h5>
                                                 <!-- <button class="btn btn-sm d-flex justify-content-end mr-1 mt-3 ml-3 mb-0 pb-0 border ">...</button> -->
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold shadow mt-2 mr-2 pt-0 pb-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                        <!-- <i class="fas fa-bars"></i> -->
+                                                <div class="d-flex justify-content-end px-2 mt-2 ">
+                                                    <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDatePikDiv" style="display: none; margin-right:1rem;position: relative;">
+                                                        <input type="date" id="purchaseOfTheDayDate">
+                                                        <button class="btn btn-sm btn-primary" onclick="podOnDateFun()" style="height: 2rem;">Find</button>
+                                                    </div>
+                                                    <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDtPikRngDiv" style="display: none; margin-right:1rem;position: relative;">
+                                                        <div class="d-flex d-flex justify-content-start">
+                                                            <div>
+                                                                <label>Start Date</label>&nbsp<input type="date" id="podStartDt"><br>
+                                                                <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="podEndDt">
+                                                            </div>&nbsp
+                                                            <div>
+                                                                <br>
+                                                                <button class="btn btn-sm btn-primary" onclick="podOnDtRange()" style="height: 2rem;">Find</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkSod(this.id)">Today</button>
-                                                        <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkSod(this.id)">Last 24 hrs</button>
-                                                        <button class="dropdown-item" type="button" id="sodLst7" onclick="chkSod(this.id)">Last 7 Days</button>
-                                                        <button class="dropdown-item" type="button" id="sodLst30" onclick="chkSod(this.id)">Last 30 Days</button>
-                                                        <button class="dropdown-item dropdown" type="button" id="sodGvnDt" onclick="chkSod(this.id)">By Date</button>
-                                                        <button class="dropdown-item dropdown" type="button" id="sodDtRng" onclick="chkSod(this.id)">By Date Range</button>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <button class="dropdown-item" type="button" id="podCurrentDt" onclick="chkPod(this.id)">Today</button>
+                                                            <button class="dropdown-item" type="button" id="podLst24hrs" onclick="chkPod(this.id)">Last 24 hrs</button>
+                                                            <button class="dropdown-item" type="button" id="podLst7" onclick="chkPod(this.id)">Last 7 Days</button>
+                                                            <button class="dropdown-item" type="button" id="podLst30" onclick="chkPod(this.id)">Last 30 Days</button>
+                                                            <button class="dropdown-item dropdown" type="button" id="podGvnDt" onclick="chkPod(this.id)">By Date</button>
+                                                            <button class="dropdown-item dropdown" type="button" id="podDtRng" onclick="chkPod(this.id)">By Date Range</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,9 +312,267 @@ if ($PurchesRetun['status'] == 1 && isset($PurchesRetun['data']) && is_array($Pu
     <!-- <script src="<?= JS_PATH ?>filter.js"></script> -->
 
     <script>
+        //////////////========satart Sales Item==========/////////
+        function updateSod(uploadSodData) {
+            if (uploadSodData != null && typeof uploadSodData === 'object' && Array.isArray(uploadSodData) && uploadSodData.length > 0) {
+                console.log("get..", uploadSodData);
+                let paymentModeOccurrences30days = {};
+
+                uploadSodData.forEach(function(data) {
+                    if (data && typeof data === 'object' && 'payment_mode' in data) {
+                        let paymentMode = data.payment_mode;
+
+                        if (paymentMode in paymentModeOccurrences30days) {
+                            paymentModeOccurrences30days[paymentMode]++;
+                        } else {
+                            paymentModeOccurrences30days[paymentMode] = 1;
+                        }
+                    }
+                });
+
+                console.log(paymentModeOccurrences30days);
+                updateSaleChart('myChart', paymentModeOccurrences30days);
+            } else {
+                console.log('uploadSodData is not an object or is null');
+            }
+        }
+
+
+        function sodOnDate() {
+            
+            let sodDateSelect = document.getElementById('salesOfTheDayDate').value;
+
+            var xmlhttp = new XMLHttpRequest();
+            var sodOnDateUrl = `<?php echo ADM_URL ?>ajax/customerSalePurcItem.ajax.php?sodONDate=${sodDateSelect}&customerId=<?php echo $CustomerId ?>`;
+            xmlhttp.open('GET', sodOnDateUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(null);
+
+            updateSod(JSON.parse(xmlhttp.responseText));
+
+            // Hide the date picker divs after clicking "Find"
+            document.getElementById('sodDatePikDiv').style.display = 'none';
+            document.getElementById('sodDtPikRngDiv').style.display = 'none';
+        }
+
+        // === sod date range select from calander ...
+        function sodDtRange() {
+            let sodStartDate = document.getElementById('sodStartDt').value;
+            let sodEndDate = document.getElementById('sodEndDt').value;
+            var xmlhttp = new XMLHttpRequest();
+            var sodOnDateRangeUrl = `<?php echo ADM_URL ?>ajax/customerSalePurcItem.ajax.php?sodStartDate=${sodStartDate}&sodEndDate=${sodEndDate}&customerId=<?php echo $CustomerId ?>`;
+
+            xmlhttp.open('GET', sodOnDateRangeUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(null);
+            // console.log(xmlhttp.responseText);
+            updateSod(JSON.parse(xmlhttp.responseText));
+
+            // Hide the date picker divs after clicking "Find"
+            document.getElementById('sodDatePikDiv').style.display = 'none';
+            document.getElementById('sodDtPikRngDiv').style.display = 'none';
+        }
+
+        function chkSod(id) {
+
+            if (id == 'sodCurrentDt') {
+                document.getElementById('sodDatePikDiv').style.display = 'none';
+                document.getElementById('sodDtPikRngDiv').style.display = 'none';
+                updateSod(<?php echo json_encode($salesOfTheDayToday) ?>);
+            }
+            if (id == 'sodLst24hrs') {
+                document.getElementById('sodDatePikDiv').style.display = 'none';
+                document.getElementById('sodDtPikRngDiv').style.display = 'none';
+                updateSod(<?php echo json_encode($sodLst24Hrs) ?>);
+            }
+            if (id == 'sodLst7') {
+                document.getElementById('sodDatePikDiv').style.display = 'none';
+                document.getElementById('sodDtPikRngDiv').style.display = 'none';
+                updateSod(<?php echo json_encode($sodLst7Days) ?>);
+            }
+            if (id == 'sodLst30') {
+                updateSod(<?php echo json_encode($sodLst30Days) ?>);
+            }
+            if (id == 'sodGvnDt') {
+                document.getElementById('sodDatePikDiv').style.display = 'block';
+                document.getElementById('sodDtPikRngDiv').style.display = 'none';
+
+            }
+            if (id == 'sodDtRng') {
+                document.getElementById('sodDatePikDiv').style.display = 'none';
+                document.getElementById('sodDtPikRngDiv').style.display = 'block';
+            }
+        }
+        //////////////=========end sales item==========///////////////
+
+        /////////////==========start purches item======///////////////
+        function updatePod(uploadPodData) {
+            if (uploadPodData != null && typeof uploadPodData === 'object' && Array.isArray(uploadPodData) && uploadPodData.length > 0) {
+                // console.log("get..", uploadPodData);
+                let paymentModeOccurrences30days = {};
+
+                uploadPodData.forEach(function(data) {
+                    if (data && typeof data === 'object' && 'payment_mode' in data) {
+                        let paymentMode = data.payment_mode;
+
+                        if (paymentMode in paymentModeOccurrences30days) {
+                            paymentModeOccurrences30days[paymentMode]++;
+                        } else {
+                            paymentModeOccurrences30days[paymentMode] = 1;
+                        }
+                    }
+                });
+
+                console.log(paymentModeOccurrences30days);
+                updatePurchChart('myChart1', paymentModeOccurrences30days);
+            } else {
+                console.log('uploadPodData is not an object or is null');
+            }
+        }
+
+        function podOnDateFun() {
+            let podDateSelect = document.getElementById('purchaseOfTheDayDate').value;
+
+            var xmlhttp = new XMLHttpRequest();
+            var podOnDateUrl = `<?php echo ADM_URL ?>ajax/customerSalePurcItem.ajax.php?podONDate=${podDateSelect}&customerId=<?php echo $CustomerId ?>`;
+            xmlhttp.open('GET', podOnDateUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(null);
+
+            updatePod(JSON.parse(xmlhttp.responseText));
+
+            document.getElementById('podDtPikRngDiv').style.display = 'none';
+            document.getElementById('podDatePikDiv').style.display = 'none';
+        }
+
+        function podOnDtRange() {
+            let podStartDate = document.getElementById('podStartDt').value;
+            let podEndDate = document.getElementById('podEndDt').value;
+            // console.log(sodEndDate);
+            var xmlhttp = new XMLHttpRequest();
+            var podOnDateRangeUrl = `<?php echo ADM_URL ?>ajax/customerSalePurcItem.ajax.php?podStartDate=${podStartDate}&podEndDate=${podEndDate}&customerId=<?php echo $CustomerId ?>`;
+
+            xmlhttp.open('GET', podOnDateRangeUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(null);
+            console.log(xmlhttp.responseText);
+            updatePod(JSON.parse(xmlhttp.responseText));
+
+            document.getElementById('podDtPikRngDiv').style.display = 'none';
+            document.getElementById('podDatePikDiv').style.display = 'none';
+
+        }
+
+        function chkPod(id) {
+
+            if (id == 'podCurrentDt') {
+                document.getElementById('podDatePikDiv').style.display = 'none';
+                document.getElementById('podDtPikRngDiv').style.display = 'none';
+                updatePod(<?php echo json_encode($purchaeTodayCurrentData) ?>);
+
+            }
+
+            if (id == 'podLst24hrs') {
+                document.getElementById('podDatePikDiv').style.display = 'none';
+                document.getElementById('podDtPikRngDiv').style.display = 'none';
+                updatePod(<?php echo json_encode($purchaeTodayDataLst24hrs) ?>);
+            }
+
+            if (id == 'podLst7') {
+                document.getElementById('podDatePikDiv').style.display = 'none';
+                document.getElementById('podDtPikRngDiv').style.display = 'none';
+                updatePod(<?php echo json_encode($purchaeTodayDataLst7dys) ?>);
+            }
+
+            if (id == 'podLst30') {
+                document.getElementById('podDatePikDiv').style.display = 'none';
+                document.getElementById('podDtPikRngDiv').style.display = 'none';
+                updatePod(<?php echo json_encode($purchaeTodayDataLst30dys) ?>);
+            }
+
+            if (id == 'podGvnDt') {
+                document.getElementById('podDatePikDiv').style.display = 'block';
+                document.getElementById('podDtPikRngDiv').style.display = 'none';
+            }
+
+            if (id == 'podDtRng') {
+                document.getElementById('podDatePikDiv').style.display = 'none';
+                document.getElementById('podDtPikRngDiv').style.display = 'block';
+            }
+        }
+
+        ///=====updated sales chart ======////
+        function updateSaleChart(chartId, newData) {
+            const ctx = document.getElementById(chartId).getContext('2d');
+            const labels = Object.keys(newData);
+            const data = Object.values(newData);
+            const backgroundColors = generateRandomColors(data.length);
+
+            // Get existing chart instance if it exists and destroy it
+            const existingChart = Chart.getChart(ctx);
+            if (existingChart) {
+                existingChart.destroy();
+            }
+
+            // Create a new chart with updated data
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Most Payment',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    labels: {
+                        display: true,
+                        position: 'left',
+                    },
+                },
+            });
+        }
+        ////======end sales chart=====/////
+        ////======start purches chart====///
+        function updatePurchChart(chartId, newData) {
+            const ctx1 = document.getElementById(chartId).getContext('2d');
+            const labels1 = Object.keys(newData);
+            const data1 = Object.values(newData);
+            const backgroundColors1 = generateRandomColors1(data1.length);
+
+            // Get existing chart instance if it exists and destroy it
+            const existingChart = Chart.getChart(ctx1);
+            if (existingChart) {
+                existingChart.destroy();
+            }
+
+            // Create a new chart with updated data
+            new Chart(ctx1, {
+                type: 'pie',
+                data: {
+                    labels: labels1,
+                    datasets: [{
+                        label: 'Most Payment',
+                        data: data1,
+                        backgroundColors1: backgroundColors1,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    labels: {
+                        display: true,
+                        position: 'left',
+                    },
+                },
+            });
+        }
+
+        ////...........by default chart ...............////
         const labels = Object.keys(<?php echo json_encode($paymentModeOccurrences); ?>);
         const labels1 = Object.keys(<?php echo json_encode($purchesPaymentModeOccur); ?>);
-        // console.log(labels1);
+
         const data = Object.values(<?php echo json_encode($paymentModeOccurrences); ?>);
         const data1 = Object.values(<?php echo json_encode($purchesPaymentModeOccur); ?>);
         // console.log(data1);
