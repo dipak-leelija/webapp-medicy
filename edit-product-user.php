@@ -319,7 +319,7 @@ $prodCategoryList   = $prodCategoryList->data;
                                                 <div class="col-md-6 mt-3">
                                                     Prodcut Catagory
                                                     <select class="c-inp p-1 w-100" name="product-catagory" id="product-catagory" required>
-                                                        <option value="" disabled selected><?php echo $prodCategoryName[0]->name ?></option>
+                                                        <option value="" disabled selected><?php echo $category->name ?></option>
                                                         <?php
                                                         
                                                             // print_r($prodCategoryList);
