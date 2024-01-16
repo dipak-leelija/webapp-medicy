@@ -1,5 +1,8 @@
 var updateSalesBtn = document.getElementById("update-sales-btn");
 
+//============= constant data declaretion =============
+const allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
 /////////////////////////////// edit item from table select \\\\\\\\\\\\\\\\\\\\\\\\
 
 const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payblePerItem) => {
@@ -26,7 +29,9 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 var loosePrice = '';
                 var typeCheck = '';
 
-                if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
+                var sellQty = 0;
+
+                if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
                     looseStock = dataObject.availableQty;
                     loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
                     if (sellQty % itemWeatage == 0) {
@@ -34,18 +39,36 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                     } else {
                         typeCheck = 'Loose';
                     }
+
+                    sellQty = parseInt(dataObject.sellQty) * parseInt(dataObject.itemWeatage);
                 } else {
                     looseStock = '';
                     loosePrice = '';
-                    typeCheck = '';
-                }
-
-                var sellQty = 0;
-                if (itemUnit == 'Tablets' || itemUnit == 'Capsules'){
-                    sellQty = parseInt(dataObject.sellQty) * parseInt(dataObject.itemWeatage);
-                }else{
+                    typeCheck = 'others';
                     sellQty = dataObject.sellQty;
                 }
+
+                // if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
+                //     looseStock = dataObject.availableQty;
+                //     loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
+                //     if (sellQty % itemWeatage == 0) {
+                //         typeCheck = 'Pack';
+                //     } else {
+                //         typeCheck = 'Loose';
+                //     }
+                // } else {
+                //     looseStock = '';
+                //     loosePrice = '';
+                //     typeCheck = '';
+                // }
+
+                // var sellQty = 0;
+
+                // if (itemUnit == 'Tablets' || itemUnit == 'Capsules'){
+                //     sellQty = parseInt(dataObject.sellQty) * parseInt(dataObject.itemWeatage);
+                // }else{
+                //     sellQty = dataObject.sellQty;
+                // }
                 
 
                 var discPrice = parseFloat(mrp) - (parseFloat(mrp) * parseFloat(discPercent) / 100);
@@ -477,11 +500,13 @@ const onQty = (qty) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit').value;
     let loosePrice = "";
-    if (itemUnit == 'tab' || itemUnit == 'cap') {
+
+    if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
     }
+
     document.getElementById('loose-price').value = loosePrice;
 
     //=============================== AVAILIBILITY CHECK ================================
@@ -500,14 +525,14 @@ const onQty = (qty) => {
     }
     // =============================== Item pack type calculation ======================
 
-    let unitType = document.getElementById("item-unit").value;
+    // let unitType = document.getElementById("item-unit").value;
     
     let itemWeightage = document.getElementById("item-weightage").value;
     
     let checkSum = '';
     let itemPackType = '';
 
-    if (unitType == 'tab' || unitType == 'cap') {
+    if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
         checkSum = parseInt(qty) % parseInt(itemWeightage);
         
         if (checkSum == 0) {
@@ -516,7 +541,7 @@ const onQty = (qty) => {
             itemPackType = 'Loose';
         }
     } else {
-        itemPackType = '';
+        itemPackType = 'others';
     }
     document.getElementById("type-check").value = itemPackType;
 
@@ -539,7 +564,7 @@ const onQty = (qty) => {
 
 
     if (qty > 0) {
-        if (itemPackType == '') {
+        if (itemPackType == 'others') {
             // =========== (item except 'tab' or 'cap' calculation area) ===================
             discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
@@ -591,7 +616,8 @@ const ondDisc = (disc) => {
     let itemWeatage = document.getElementById('item-weightage').value;
     let itemUnit = document.getElementById('item-unit').value;
     let loosePrice = "";
-    if (itemUnit == 'tab' || itemUnit == 'cap') {
+
+    if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())){
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
@@ -623,7 +649,7 @@ const ondDisc = (disc) => {
     }
 
     if (qty > 0) {
-        if (itemTypeCheck == '') {
+        if (itemTypeCheck == 'others') {
             discPrice = (parseFloat(mrp) - (parseFloat(mrp) * (parseFloat(disc) / 100)));
             netPayble = parseFloat(discPrice) * parseInt(qty);
             netPayble = parseFloat(netPayble).toFixed(2);
