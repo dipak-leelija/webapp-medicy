@@ -92,16 +92,6 @@ class Request extends DatabaseConnection
 
 
 
-    function editUpdateProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $addedBy, $addedOn, $adminId, $status, $oldProdFlag){
-        try{
-            $updateProdRequest = "UPDATE product_request SET `name` = ?, type, packaging_type, unit_quantity, unit, power, mrp, gst, ";
-        }catch(Exception $e){
-            return $e->getMessage();
-        }
-    }
-
-
-
     function selectProductById($prodId, $adminId)
     {
         $resultData = array();
@@ -184,18 +174,29 @@ class Request extends DatabaseConnection
 
 
 
-
-
-    function updateProductRequest($productId, $productName, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $imageName, $tempImgName){
-
-        try{
-            $updateQuery = "UPDATE product_request SET `product_id` = ?, `name`, `type`, `packaging_type`, `unit_quantity`, `unit`, `power`, `mrp`, `gst`, `hsno_number`, `admin_id`";
-
-
-        }catch(Exception $e){
-            return $e->errorMessage();
+    function editUpdateProductRequest($productId, $prodName, $prodCategory, $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $adminId) {
+        try {
+            $updateProdRequest = "UPDATE product_request SET `name` = ?, `type` = ?, `packaging_type` = ?, `unit_quantity` = ?, `unit` = ?, `power` = ?, `mrp` = ?, `gst` = ?, `hsno_number` = ?, `requested_by` = ?,  `requested_on` = ?, `prod_req_status` = ?, `old_prod_flag` = ? WHERE product_id = ? AND `admin_id` = ?";
+    
+            $stmt = $this->conn->prepare($updateProdRequest);
+    
+            if (!$stmt) {
+                throw new Exception("Error preparing update statement: " . $this->conn->error);
+            }
+    
+            $stmt->bind_param("ssisssdisssiiss", $prodName, $prodCategory, $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $productId, $adminId);
+    
+            if (!$stmt->execute()) {
+                throw new Exception("Error updating product request: " . $stmt->error);
+            }
+    
+            $stmt->close();
+            return true;
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
+    
 }
 
 ?>

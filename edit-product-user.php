@@ -125,7 +125,7 @@ if ($_SESSION['ADMIN']) {
             $tempImageNameArrayCaount = count($tempImgName);
 
 
-
+            echo "Admin Id : $adminId <br>";
             echo "Product iD : $productId <br>";
             echo "productName : ";
             print_r($productName);
@@ -174,27 +174,58 @@ if ($_SESSION['ADMIN']) {
                     // add product request to product request table through request class.
                     $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $status, $oldProdFlag);
 
-                    //update product tabel
+                    $editRqstFlgData = intval($prodDataFromProducts->data[0]->edit_request_flag);
                     if ($addOldProdEditRequest) {
                         $col = 'edit_request_flag';
-                        $data = 1;
-                        $updateProduct = $Products->updateOnColData($col, $data, $productId);
+                        $editRqstFlgData += 1;
+                        $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
+
+                        $editRequest = true;
                     }
                 } else {
-                    // echo "request submitted previously. wt for responce";
-                    //update product request by prod id and admin id
-                    $prodDetailsFromProductRequest = json_decode($Request->selectProductById($productId, $adminId));
-                    print_r($prodDetaislFromProductRequest);
+
+                    $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
+                    print_r($selectFromProdReqTable);
+                    if ($selectFromProdReqTable->status) {
+                        $prodReqStatus = 0;
+                        $oldProdFlag = 1;
+
+                        $editRequest = $Request->editUpdateProductRequest($productId, $productName, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+
+                        // echo "check edit request data : ";
+                        // print_r($editRequest);
+                    } else {
+
+                        $oldProdFlag = 1;
+                        $status = 0;
+
+                        $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $status, $oldProdFlag);
+
+                        $editRqstFlgData = intval($prodDataFromProducts->data[0]->edit_request_flag);
+                        if ($addOldProdEditRequest) {
+                            $col = 'edit_request_flag';
+                            $editRqstFlgData += 1;
+                            $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
+
+                            $editRequest = true;
+                        }
+                    }
                 }
             } else {
-                echo "2";
-                $prodDetaislFromProductRequest = json_decode($Request->selectProductById($productId, $adminId));
-                print_r($prodDetaislFromProductRequest);
-                // update product request
+
+                $prodReqStatus = 0;
+                $oldProdFlag = 0;
+
+                $editRequest = $Request->editUpdateProductRequest($productId, $productName, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+
+                echo "check edit request data : ";
+                print_r($editRequest);
             }
 
 
-            // $updateProduct = $Products->updateProduct($productId, $productName, $manufacturer, $type = '', $productComp1, $productComp2, $medicinePower, $productDesc, $quantity, $qtyUnit, $itemUnit, $packagingType, $mrp, $gst, $employeeId, NOW);
+            if ($editRequest) {
+                echo "edit update done";
+            }
 
 
 
@@ -271,7 +302,7 @@ if ($_SESSION['ADMIN']) {
 
 
             // $updateImage = true;
-            if ($updateProduct === true) {
+            if ($editRequest === true) {
                 // if ($updateImage === true) {
     ?>
                 <script>

@@ -95,6 +95,7 @@ Class Pagination extends DatabaseConnection{
     function productsWithPaginationForUser($adminId) {
         // Number of records per page
         $recordsPerPage = 16;
+        $recordsPerPage2 = 4;
     
         // Get the current page number from the URL, default to 1
         $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -102,7 +103,7 @@ Class Pagination extends DatabaseConnection{
         // Calculate the starting record for the current page
         $startFrom = ($page - 1) * $recordsPerPage;
     
-        // Query to retrieve records for the current page
+        // Query to retrieve records for the current page FROM products table
         $productsTableSql = "SELECT * FROM products ORDER BY added_on LIMIT $startFrom, $recordsPerPage";
         $productResult = $this->conn->query($productsTableSql);
     
@@ -112,9 +113,8 @@ Class Pagination extends DatabaseConnection{
             $products[] = $row;
         }
 
-        
-
-        $productReuquestTableSql = "SELECT * FROM product_request WHERE admin_id = '$adminId' ORDER BY requested_on LIMIT $startFrom, $recordsPerPage";
+         // Query to retrieve records for the current page FROM product_request table for curretn user
+        $productReuquestTableSql = "SELECT * FROM product_request WHERE admin_id = '$adminId' AND 	old_prod_flag = 0 ORDER BY requested_on LIMIT $startFrom, $recordsPerPage2";
         $productRequestResult = $this->conn->query($productReuquestTableSql);
     
         // Fetch the records

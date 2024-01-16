@@ -358,7 +358,7 @@ class Products extends DatabaseConnection
 
             $prodStmt->close();
 
-            $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ?";
+            $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ? AND old_prod_flag = 0";
             $prodReqStmt = $this->conn->prepare($selectProductRequest);
 
             if (!$prodReqStmt) {
@@ -770,7 +770,7 @@ class Products extends DatabaseConnection
     
             if ($stmt->execute()) {
                 $stmt->close();
-                return json_encode(['status' => '1', 'message' => true]);
+                return true;
             } else {
                 return new Exception("Error updating data in the database: " . $stmt->error);
             }
