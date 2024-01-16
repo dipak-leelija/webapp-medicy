@@ -33,7 +33,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function stockOutDisplay($adminId ='')
+    function stockOutDisplay($adminId = '')
     {
         try {
             $billData = array();
@@ -290,7 +290,7 @@ class StockOut extends DatabaseConnection
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_object()) {
-                        $data = $row;
+                        $data[] = $row;
                     }
                     return $data;
                 } else {
@@ -304,6 +304,36 @@ class StockOut extends DatabaseConnection
             echo "Error: " . $e->getMessage();
         }
     }
+
+    function customerOnDay($onDt, $adminId)
+    {
+        try {
+            $select = "SELECT * FROM stock_out WHERE DATE(added_on) LIKE ? AND admin_id = ?";
+
+            $stmt = $this->conn->prepare($select);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $onDt, $adminId); // Remove the extra space here
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return $data;
+                } else {
+                    return null;
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
 
 
 

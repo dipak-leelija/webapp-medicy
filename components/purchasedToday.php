@@ -20,13 +20,13 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
 ?>
 
 <div class="card border-left-info shadow h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-between align-items-start px-4 ">
-    <div class="row no-gutters align-items-center mt-4">
+    <div class="d-flex justify-content-between align-items-center px-3 mt-2">
+    <div class="row no-gutters align-items-center">
         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
             Purchased today
         </div>
     </div>
-    <div class="d-flex justify-content-end px-2 mt-2 mr-n4">
+    <div class="d-flex justify-content-end">
         <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDatePikDiv" style="display: none; margin-right:1rem;">
             <input type="date" id="purchaseOfTheDayDate">
             <button class="btn btn-sm btn-primary" onclick="podOnDateFun()" style="height: 2rem;">Find</button>
@@ -44,9 +44,13 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
             </div>
         </div>
         <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <!-- <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 ...
-            </button>
+            </button> -->
+            <span class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ...
+            </span>
+
             <div class="dropdown-menu dropdown-menu-right">
                 <button class="dropdown-item" type="button" id="podCurrentDt" onclick="chkPod(this.id)">Today</button>
                 <button class="dropdown-item" type="button" id="podLst24hrs" onclick="chkPod(this.id)">Last 24 hrs</button>
@@ -58,26 +62,18 @@ $purchaeTodayDataLst30dys = $StockIn->purchaseTodayByDateRange($podLst30, $podSt
         </div>
     </div>
     </div>
-    <div class="card-body pb-0">
-        <!-- <div class="row no-gutters align-items-center">
-            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                Purchased today
-            </div>
-        </div> -->
+    <div class="card-body py-0">
         <div class="row no-gutters align-items-center">
             <div class="col mr-2" id="pod-data-div" style="display: none;">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                <div class="mb-0 font-weight-bold text-gray-800">
                     <div>
-                        <label type="symble" id="rupeeSymble" name="rupeeSymble">₹</label>
-                        <label type="text" id="podAmount"></label>
-                    </div>
-                    <div>
-                        <label type="text" id="podItemsCount" name="itemsCount"><small></small></label>
-                        <label type="text"><small>Items</small></label>
+                        <label type="symble" class="mb-0" id="rupeeSymble" name="rupeeSymble">₹</label>
+                        <label type="text" class="mb-0" id="podAmount"></label>
+                        <p class="small" name="itemsCount"><span id="podItemsCount"></span> Items</p>
                     </div>
                 </div>
             </div>
-            <div class="col-auto  mt-n3" id="pod-no-data-found-div" style="display: none;">
+            <div class="col-auto  mt-n2" id="pod-no-data-found-div" style="display: none;">
             <p class="text-warning">Oops!, the requested data isn't in our records.</p>
             </div>
         </div>
