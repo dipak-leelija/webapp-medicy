@@ -3,9 +3,9 @@ require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once SUP_ADM_DIR . '_config/accessPermission.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once SUP_ADM_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'measureOfUnit.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'measureOfUnit.class.php';
 
 
 //Class Initilization
@@ -45,7 +45,7 @@ $MeasureOfUnits = new MeasureOfUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include SUP_ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include SUP_ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -55,7 +55,7 @@ $MeasureOfUnits = new MeasureOfUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include SUP_ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include SUP_ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- =========================== Measure of Units Content =========================== -->
@@ -92,14 +92,19 @@ $MeasureOfUnits = new MeasureOfUnits();
                                                             $shortName  = $rowMeasureOfUnits['short_name'];
                                                             $fullName   = $rowMeasureOfUnits['full_name'];
 
+                                                            $showUnitactivity = $MeasureOfUnits->showUnitactivity($unitId);
+                                                            // print_r($showUnitactivity);
                                                             echo '<tr>
                                                         <td>' . $unitId . '</td>
                                                                 <td>' . $shortName . '</td>
                                                                 <td>' . $fullName . '</td>
                                                                 <td>
-                                                                <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $unitId . ')"><i class="fas fa-edit"></i></a>
-                                                                
-                                                                    <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
+                                                                <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $unitId . ')"><i class="fas fa-edit"></i></a>   
+                                                                <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
+                                                                <div class="custom-control custom-switch">
+                                                                <input type="checkbox" class="custom-control-input" id="switch' . $unitId . '" onchange="toggleSwitch(' . $unitId . ')" ' . (isset($showUnitactivity['id']) ? 'checked' : '') . ' > 
+                                                                <label class="custom-control-label" for="switch' . $unitId . '"></label>
+                                                                </div>
                                                                 </td>
                                                                 </tr>';
                                                         }
@@ -148,7 +153,7 @@ $MeasureOfUnits = new MeasureOfUnits();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once SUP_ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once SUP_ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -203,6 +208,50 @@ $MeasureOfUnits = new MeasureOfUnits();
     <!-- Page level custom scripts -->
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
     <script>
+        function toggleSwitch(unitId) {
+            console.log(unitId);
+            var switchElement = document.getElementById('switch' + unitId);
+            console.log(switchElement);
+            if (!switchElement.checked) {
+                // alert("Are you sure you want to delete?");
+
+                var confirmation = confirm("Are you sure you want to unchecked?");
+
+                if (confirmation) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/medicy.in/admin/ajax/prodUnitLooseactiv.ajax.php', 
+                        data: {
+                            unitId: unitId
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.message);
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                    })
+                }
+            } else {
+                // alert("not checked switch is checkes");
+                $.ajax({
+                    type: 'POST',
+                    url: '/medicy.in/admin/_config/form-submission/prodUnit-updateStatus.php',
+                    data: {
+                        unitId: unitId
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.error('Error toggling switch:', error);
+                    }
+                });
+            }
+        }
+
         //View and Edit Manufacturer function
         unitViewAndEdit = (unitId) => {
             let ViewAndEdit = unitId;
@@ -250,14 +299,13 @@ $MeasureOfUnits = new MeasureOfUnits();
             });
 
         });
-    
-//  =============on modal close page reload ===================== 
 
-function pageReload(){
-    parent.location.reload();
-}
+        //  =============on modal close page reload ===================== 
 
-</script>
+        function pageReload() {
+            parent.location.reload();
+        }
+    </script>
 </body>
 
 </html>
