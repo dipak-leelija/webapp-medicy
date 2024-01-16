@@ -13,7 +13,7 @@ $Product = new Products();
 
 $table1 = 'id';
 $table2 = 'status';
-$data2 = 'active';
+$data2 = '1';
 
 $checkId = $_POST['Id'];
 

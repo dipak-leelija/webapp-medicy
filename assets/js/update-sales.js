@@ -16,7 +16,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 Stock_out_item_id: itemId
             },
             success: function (data) {
-                alert(data);
+                // alert(data);
                 // alert(dataObject.itemWeatage);
 
                 var dataObject = JSON.parse(data);

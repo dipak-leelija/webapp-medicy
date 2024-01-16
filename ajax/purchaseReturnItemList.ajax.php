@@ -109,7 +109,7 @@ if (isset($_GET['return-id'])) {
                             foreach ($items as $item) {
 
                                 $sl     += 1;
-                                $rtnqty    += $item['return_qty'];
+                                $rtnqty    = $item['return_qty'];
                                 $gst    += $item['gst'];
                                 $amount += $item['ptr'];
 
