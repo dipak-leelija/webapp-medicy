@@ -4,33 +4,55 @@ require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'request.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'measureOfUnit.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
 require_once CLASS_DIR . 'itemUnit.class.php';
 require_once CLASS_DIR . 'productCategory.class.php';
+require_once CLASS_DIR . 'gst.class.php';
+
 
 
 
 //objects Initilization
 $Products           = new Products();
+$Request            = new Request;
 $Manufacturer       = new Manufacturer();
 $MeasureOfUnits     = new MeasureOfUnits();
 $PackagingUnits     = new PackagingUnits();
 $ProductImages      = new ProductImages();
 $ItemUnit           = new ItemUnit();
 $ProductCategory    = new ProductCategory;
+$Gst                = new Gst;
 
 
 $showManufacturer   = json_decode($Manufacturer->showManufacturerWithLimit());
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
+
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
 $itemUnits          = $ItemUnit->showItemUnits();
-
+// print_r($itemUnits);
 $prodCategoryList   = json_decode($ProductCategory->selectAllProdCategory());
 $prodCategoryList   = $prodCategoryList->data;
+
+$gstDetails = json_decode($Gst->seletGst());
+$gstDetails = $gstDetails->data;
+
+
+
+$allowedPackegingUnits = ["strip", "bottle", "tube", "box", "sachet", "packet", "jar", "kit", "bag", "vial", "ampoule", "respules", "cartridge"];
+
+$allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "soflets", "soflet", "lozenges", "bolus"];
+
+
+if ($_SESSION['ADMIN']) {
+    $addedBy = $adminId;
+} else {
+    $addedBy = $employeeId;
+}
 
 ?>
 
@@ -78,28 +100,24 @@ $prodCategoryList   = $prodCategoryList->data;
 
         if (isset($_POST['update-product'])) {
 
+            $productId  =   $_POST['product-id'];
             $productName      = $_POST['product-name'];
 
-            $productComp1     = $_POST['product-composition1'];
-            $productComp2     = $_POST['product-composition2'];
-            $manufacturer     = $_POST['manufacturer'];
+            $productCategory = $_POST['product-category']; // like : allopathy, drugs,  cosmetics etc.
+            $packagingIn    = $_POST['packeging-type']; // strip, bottle, tubes etc.
 
-            // $searchTerms      = $_POST['search_terms'];
+            $quantity = $_POST['qantity']; // e.g. 10,20,100 etc.
+            $unit = $_POST['unit']; // e.g. tablet, capsule, syrup etc.
 
-            $quantity         = $_POST['quantity'];
-            $qtyUnit          = $_POST['qty-unit'];
-            // $itemUnit         = $_POST['item-unit'];
-            $itemUnit = isset($_POST['item-unit']) ? $_POST['item-unit'] : null;
+            $medicinePower = $_POST['medicine-power']; // e.g. 5, 10, 25, 50, 500 etc.
+            $mrp = $_POST['mrp'];
 
-            $packagingType    = $_POST['packaging-type'];
+            $gstPercent = $_POST['gst'];
+            $hsnoNumber = $_POST['hsno-number'];
 
 
-            $medicinePower    = $_POST['medicine-power'];
-            $mrp              = $_POST['mrp'];
-            $gst              = $_POST['gst'];
-            $productDesc      = $_POST['product-description'];
 
-            // for img //
+            // ============ for img ============ //
             $imageName        = $_FILES['img-files']['name'];
             $tempImgName       = $_FILES['img-files']['tmp_name'];
 
@@ -107,9 +125,80 @@ $prodCategoryList   = $prodCategoryList->data;
             $tempImageNameArrayCaount = count($tempImgName);
 
 
-            $updateProduct = $Products->updateProduct($productId, $productName, $manufacturer, $type = '', $productComp1, $productComp2, $medicinePower, $productDesc, $quantity, $qtyUnit, $itemUnit, $packagingType, $mrp, $gst, $employeeId, NOW);
 
-            if ($updateProduct === true) {
+            echo "Product iD : $productId <br>";
+            echo "productName : ";
+            print_r($productName);
+            echo "<br>";
+            echo "product category : ";
+            print_r($productCategory);
+            echo "<br>";
+            echo "packeging in : ";
+            print_r($packagingIn);
+            echo "<br>";
+            echo "qantity : ";
+            print_r($quantity);
+            echo "<br>";
+            echo "unit : ";
+            print_r($unit);
+            echo "<br>";
+            echo "medicine power : ";
+            print_r($medicinePower);
+            echo "<br>";
+            echo "mrp : ";
+            print_r($mrp);
+            echo "<br>";
+            echo "gst : ";
+            print_r($gstPercent);
+            echo "<br>";
+            echo "hsno : ";
+            print_r($hsnoNumber);
+            echo "<br>";
+
+            echo "images name : ";
+            print_r($imageName);
+            echo "<br>";
+            echo "temp images name : ";
+            print_r($tempImgName);
+            echo "<br>";
+
+
+
+            // $column = 'product_id';
+            $prodDataFromProducts = json_decode($Products->showProductsById($productId));
+            if ($prodDataFromProducts->status) {
+                if ($prodDataFromProducts->data[0]->edit_request_flag == 0) {
+                    $oldProdFlag = 1;
+                    $status = 0;
+                    // print_r($prodDataFromProducts->data);
+                    // add product request to product request table through request class.
+                    $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $status, $oldProdFlag);
+
+                    //update product tabel
+                    if ($addOldProdEditRequest) {
+                        $col = 'edit_request_flag';
+                        $data = 1;
+                        $updateProduct = $Products->updateOnColData($col, $data, $productId);
+                    }
+                } else {
+                    // echo "request submitted previously. wt for responce";
+                    //update product request by prod id and admin id
+                    $prodDetailsFromProductRequest = json_decode($Request->selectProductById($productId, $adminId));
+                    print_r($prodDetaislFromProductRequest);
+                }
+            } else {
+                echo "2";
+                $prodDetaislFromProductRequest = json_decode($Request->selectProductById($productId, $adminId));
+                print_r($prodDetaislFromProductRequest);
+                // update product request
+            }
+
+
+            // $updateProduct = $Products->updateProduct($productId, $productName, $manufacturer, $type = '', $productComp1, $productComp2, $medicinePower, $productDesc, $quantity, $qtyUnit, $itemUnit, $packagingType, $mrp, $gst, $employeeId, NOW);
+
+
+
+            /*if ($updateProduct === true) {
 
                 // $delProdImage = $ProductImages->deleteImage($productId);
 
@@ -169,7 +258,7 @@ $prodCategoryList   = $prodCategoryList->data;
                         $setPriority = isset($_POST['priority-group']) ? $_POST['priority-group'] : 0;
 
 
-                        $updateImage = $ProductImages->addImages($productId, $image, $employeeId, NOW, $adminId);
+                        // $updateImage = $ProductImages->addImages($productId, $image, $employeeId, NOW, $adminId);
                         if ($updateImage) {
                             $updatePriority = $ProductImages->updatePriority($image, $setPriority, $productId);
                         }
@@ -177,22 +266,23 @@ $prodCategoryList   = $prodCategoryList->data;
                         $addImage = true;
                     }
                 }
-            }
+            }*/
 
 
 
-            $updateImage = true;
+            // $updateImage = true;
             if ($updateProduct === true) {
-                if ($updateImage === true) {
+                // if ($updateImage === true) {
     ?>
-                    <script>
-                        swal("Success", "Product updated successfully!", "success").then((value) => {
-                            parent.location.reload();
-                        });
-                    </script>
+                <script>
+                    swal("Success", "Product updated successfully!", "success").then((value) => {
+                        parent.location.reload();
+                    });
+                </script>
         <?php
-                } else {
-                }
+            } else {
+
+                // }
             }
         }
 
@@ -208,8 +298,8 @@ $prodCategoryList   = $prodCategoryList->data;
         $type           = $product[0]->type;
         $prodCategoryName   = json_decode($ProductCategory->selectNameById($type));
         $prodCategoryName   = $prodCategoryName->data;
-        
-        
+
+
 
         $qty            = $product[0]->unit_quantity;
         // $qtyUnit        = $product[0]->unit_id;
@@ -217,9 +307,9 @@ $prodCategoryList   = $prodCategoryList->data;
         // echo "<br>Item unit : $itemUnit";        
         $packagingType  = $product[0]->packaging_type;
         // echo "<br>Packaging Type : $packagingType";    
-            
+
         $power          = $product[0]->power;
-    
+
         $mrp            = $product[0]->mrp;
         $gst            = $product[0]->gst;
         // $added_by       = $product[0]->added_by;
@@ -310,7 +400,10 @@ $prodCategoryList   = $prodCategoryList->data;
                                                 <div class="col-md-12">
                                                     <b>Prodcut Name</b>
                                                     <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?= $productName ?>" required>
+
+                                                    <input class="d-none c-inp w-100 p-1" id="product-id" name="product-id" value="<?= $productId ?>" required>
                                                 </div>
+
                                             </div>
                                         </div>
 
@@ -318,16 +411,13 @@ $prodCategoryList   = $prodCategoryList->data;
                                             <div class="d-flex col-12">
                                                 <div class="col-md-6 mt-3">
                                                     Prodcut Catagory
-                                                    <select class="c-inp p-1 w-100" name="product-catagory" id="product-catagory" required>
-                                                        <option value="<?php echo $type ?>" disabled selected><?php echo $prodCategoryList[0]->name ?></option>
+                                                    <select class="c-inp p-1 w-100" name="product-category" id="product-category" required>
+                                                        <!-- <option value="<?php echo $type ?>" disabled selected><?php echo $prodCategoryList[0]->name ?></option> -->
+                                                        <option value="" disabled selected>Select</option>
                                                         <?php
-                                                        
-                                                            // print_r($prodCategoryList);
-
-                                                            foreach ($prodCategoryList as $category) {
-                                                                echo '<option value="' . $category->id . '">' . $category->name . '</option>';
-                                                            }
-                                                        
+                                                        foreach ($prodCategoryList as $category) {
+                                                            echo '<option value="' . $category->id . '">' . $category->name . '</option>';
+                                                        }
                                                         ?>
                                                     </select>
                                                 </div>
@@ -335,10 +425,11 @@ $prodCategoryList   = $prodCategoryList->data;
                                                 <div class="col-md-6 mt-3">
                                                     Packeging In
                                                     <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
+                                                        <!-- <option value="<?php echo $packagingType; ?>" disabled selected><?php echo $showPackagingUnits[0]['unit_name'] ?></option> -->
                                                         <option value="" disabled selected>Select</option>
                                                         <?php
-                                                        foreach ($packagingUnits as $eachPackUnit) {
-                                                            if ($eachPackUnit['unit_name'] == 'strip' || $eachPackUnit['unit_name'] == 'bottle' || $eachPackUnit['unit_name'] == 'tube' || $eachPackUnit['unit_name'] == 'box' || $eachPackUnit['unit_name'] == 'sachet' || $eachPackUnit['unit_name'] == 'packet' || $eachPackUnit['unit_name'] == 'jar' || $eachPackUnit['unit_name'] == 'Kit' || $eachPackUnit['unit_name'] == 'Bag' || $eachPackUnit['unit_name'] == 'vial' || $eachPackUnit['unit_name'] == 'ampoule' || $eachPackUnit['unit_name'] == 'Respules' || $eachPackUnit['unit_name'] == 'cartridge') {
+                                                        foreach ($showPackagingUnits as $eachPackUnit) {
+                                                            if (in_array(strtolower($eachPackUnit['unit_name']), $allowedPackegingUnits)) {
                                                                 echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
                                                             }
                                                         }
@@ -355,18 +446,18 @@ $prodCategoryList   = $prodCategoryList->data;
                                             <div class="d-flex col-12 mt-3">
                                                 <div class="col-md-6">
                                                     Qantity
-                                                    <input class="c-inp w-100 p-1 mt-1" id="qantity" name="qantity" placeholder="e.g. 10,20,200">
-
+                                                    <input class="c-inp w-100 p-1 mt-1" id="qantity" name="qantity" value="<?php echo $qty; ?>" placeholder="e.g. 10,20,200" required>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     Unit
                                                     <select class="c-inp p-1 w-100 mt-1" id="unit" name="unit" required>
-                                                        <option value='' disabled selected>Select</option>
+                                                        <!-- <option value='<?php echo $itemUnit; ?>' disabled selected><?php echo $itemUnits[0]['name']; ?></option> -->
+                                                        <option value="" disabled selected>Select</option>
                                                         <?php
-                                                        foreach ($itemUnists as $eachUnit) {
-                                                            if ($eachUnit['id'] == '1' || $eachUnit['id'] == '5' || $eachUnit['id'] == '99' || $eachUnit['id'] == '101' || $eachUnit['id'] == '102' || $eachUnit['name'] == 'Syrup') {
-                                                                echo "<option value='" . $eachUnit['id'] . "'>" . $eachUnit['name'] . "</option>";
+                                                        foreach ($itemUnits as $itemUnits) {
+                                                            if (in_array(strtolower($itemUnits['name']), $allowedItemUnits)) {
+                                                                echo "<option value=''>" . $itemUnits['name'] . "</option>";
                                                             }
                                                         }
                                                         ?>
@@ -381,13 +472,12 @@ $prodCategoryList   = $prodCategoryList->data;
                                             <div class="d-flex col-12 mt-3">
                                                 <div class="col-md-6">
                                                     Medicine Power
-                                                    <input class="c-inp w-100 p-1 mt-1" id="medicine-power" name="medicine-power" required>
+                                                    <input class="c-inp w-100 p-1 mt-1" id="medicine-power" name="medicine-power" value="<?php echo $power; ?>" required>
                                                 </div>
-
 
                                                 <div class="col-md-6">
                                                     Enter MRP
-                                                    <input class="c-inp w-100 p-1 mt-1" id="mrp" name="mrp" required>
+                                                    <input class="c-inp w-100 p-1 mt-1" id="mrp" name="mrp" value="<?php echo $mrp; ?>" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -398,20 +488,18 @@ $prodCategoryList   = $prodCategoryList->data;
                                                 <div class="col-sm-6">
                                                     Enter GST
                                                     <select class="c-inp p-1 w-100 mt-1" name="gst" id="gst" required>
+                                                        <!-- <option value="" disabled selected><?php echo $gstDetails[0]->percentage; ?></option> -->
                                                         <option value="" disabled selected>Select</option>
                                                         <?php
-                                                        if (is_array($gstData)) {
-                                                            foreach ($gstData as $gstPercent) {
-                                                                echo '<option value="' . $gstPercent->id . '" >' . $gstPercent->percentage . '</option>';
-                                                            }
+                                                        foreach ($gstDetails as $gstDetail) {
+                                                            echo '<option value="' . $gstDetail->id . '" >' . $gstDetail->percentage . '</option>';
                                                         }
                                                         ?>
                                                     </select>
                                                 </div>
-
                                                 <div class="col-sm-6">
                                                     HSNO Number
-                                                    <input class="c-inp w-100 p-1 mt-1" id="hsno-number" name="hsno-number" required>
+                                                    <input class="c-inp w-100 p-1 mt-1" id="hsno-number" name="hsno-number" value="<?php echo $product[0]->hsno_number; ?>" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -438,7 +526,7 @@ $prodCategoryList   = $prodCategoryList->data;
 
         <!-- Custom scripts for all pages-->
         <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-        <script src="<?= JS_PATH ?>custom/add-products.js"></script>
+        <script src="<?= JS_PATH ?>custom/add-products-user.js"></script>
         <!-- Sweet Alert Js  -->
         <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
@@ -475,6 +563,7 @@ $prodCategoryList   = $prodCategoryList->data;
 
                 document.getElementById("profit").value = profit.toFixed(2);
             }
+
 
             //calculate after entering GST
             function getMarginGst(value) {

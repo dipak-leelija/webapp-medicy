@@ -6,6 +6,7 @@ require_once CLASS_DIR.'dbconnect.php';
 
 require_once CLASS_DIR.'measureOfUnit.class.php';
 
+// echo $supAdminId;
 
 $unitId    = $_GET['id'];
 $srtName   = $_GET['unit-srt-name'];
@@ -13,7 +14,7 @@ $fullName  = $_GET['unit'];
 
 
 $MeasureOfUnits = new MeasureOfUnits();
-$updateUnit = $MeasureOfUnits->updateUnit($srtName, $fullName, $unitId, $employeeId, $adminId);
+$updateUnit = $MeasureOfUnits->updateUnit($srtName, $fullName, $unitId, $employeeId, $supAdminId);
 
 //check if the data has been updated or not
 if($updateUnit){

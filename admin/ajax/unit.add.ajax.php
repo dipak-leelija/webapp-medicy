@@ -26,10 +26,11 @@ $MeasureOfUnits = new MeasureOfUnits();
     <?php
 
     if (isset($_POST['add-unit'])) {
+        echo $supAdminId;
         $srtName  = $_POST['unit-srt-name'];
         $fullName = $_POST['unit-full-name'];
 
-        $addMeasureOfUnits = $MeasureOfUnits->addMeasureOfUnits($srtName, $fullName, $employeeId, NOW, $adminId);
+        $addMeasureOfUnits = $MeasureOfUnits->addMeasureOfUnits($srtName, $fullName, $employeeId, NOW, $supAdminId);
 
         if ($addMeasureOfUnits) {
            // echo "<script>alert('Unit Added!'); window.location='../../product-unit.php';</script>";
@@ -38,7 +39,7 @@ $MeasureOfUnits = new MeasureOfUnits();
             <script>
                 swal("Success", "Unit Added!", "success")
                     .then((value) => {
-                        window.location = '<?= URL ?>product-unit.php';
+                        window.location = '<?= ADM_URL ?>product-unit.php';
                     });
             </script>
         <?php
@@ -47,7 +48,7 @@ $MeasureOfUnits = new MeasureOfUnits();
             <script>
                 swal("Error", "Unit Addition Failed!", "error")
                     .then((value) => {
-                        window.location = '<?= URL ?>product-unit.php';
+                        window.location = '<?= ADM_URL ?>product-unit.php';
                     });
             </script>
     <?php

@@ -1,5 +1,8 @@
 const xmlhttp = new XMLHttpRequest();
 
+//============= constant data declaretion =============
+const allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
 //========================= return submit button disable and enable control ======================
 var returnSubmitBtn = document.getElementById('sales-return-btn');
 returnSubmitBtn.setAttribute("disabled", "true");
@@ -326,7 +329,7 @@ const getRefund = (returnQty) => {
     let itemUnit = document.getElementById('item-unit').value;
 
     if (parseInt(returnQty) <= parseInt(currenQty)) {
-        if (itemUnit == 'tab' || itemUnit == 'cap') {
+        if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
             let refundAmount = ((parseFloat(mrp) / parseInt(weatage)) - ((parseFloat(mrp) / parseInt(weatage)) * parseFloat(disc) / 100)) * parseInt(returnQty);
 
             refundTaxable = (parseFloat(refundAmount) * 100) / (parseFloat(gst) + 100);

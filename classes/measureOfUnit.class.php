@@ -102,6 +102,47 @@ class MeasureOfUnits extends DatabaseConnection{
     }//end deleteManufacturer function
 
 
+    //===========insert and update unit activity=======//
+    function insertUnitactivity($unitId,$sortName,$fullName, $addedBy,$addedOn,$updatedBy,$updatedOn){
+        try{
+            $insert = "INSERT INTO loose_unit (`unit_id`, `short_name`, `full_name`, `added_by`, `added_on`, `updated_by`, `updated_on`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($insert);
+    
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("issssss",$unitId, $sortName, $fullName, $addedBy, $addedOn, $updatedBy,$updatedOn);
+    
+                // Execute the query
+                $insertQuery = $stmt->execute();
+                $stmt->close();
+                return $insertQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        }catch(Exception $e){
+
+        }
+    }
+
+    function showUnitactivity($unitId){
+        $data = '';
+        $result = "SELECT * FROM loose_unit WHERE `unit_id` = '$unitId'";
+        $selectQuery   = $this->conn->query($result);
+        while ($result = $selectQuery->fetch_assoc() ) {
+            $data = $result;
+        }
+        return $data;
+    }
+
+    function deleteUnitActivity($unitId){
+
+        $Delete = "DELETE FROM `loose_unit` WHERE `loose_unit`.`unit_id` = '$unitId'";
+        $DeleteQuey = $this->conn->query($Delete);
+        return $DeleteQuey;
+
+    }
 
     
 
