@@ -22,6 +22,8 @@ $salesReturn = new SalesReturn();
 $attribute1 = 'invoice_id';
 $attribute2 = 'item_id';
 
+$allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
 // get patient name
 if (isset($_GET["patient"])) {
     $invoiceId = $_GET["patient"];
@@ -136,7 +138,8 @@ if (isset($_GET["p_qty"])) {
     $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $itemId);
     foreach($item as $item){
         $itemUnitType = $item['unit'];
-        if($itemUnitType == 'Tablets' || $itemUnitType == 'Capsules'){
+        // if($itemUnitType == 'Tablets' || $itemUnitType == 'Capsules')
+        if (in_array(strtolower($itemUnitType), $allowedUnits)){
             echo $item['loosely_count'];
         }else{
             echo $item['qty'];
@@ -182,7 +185,8 @@ if (isset($_GET["qty"])) {
         $totalReturnQTY = 0;
     }
     
-    if($itemType == 'Tablets' || $itemType == 'Capsules'){
+    // if($itemType == 'Tablets' || $itemType == 'Capsules')
+    if (in_array(strtolower($itemType), $allowedUnits)){
         $currentQty = ($item[0]['loosely_count'] - intval($totalReturnQTY)); 
     }
     else{ 
