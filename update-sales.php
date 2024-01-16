@@ -51,10 +51,14 @@ if ($_GET['id']) {
     
     $stockOutDetails = $StockOut->stockOutDetailsDisplayById($billId);
     
-    //=============== doctor data =================
+    // =============== doctor data =================
     $doctor = $Doctors->showDoctors($adminId);
     $doctor = json_decode($doctor, true);
     // print_r($doctor);
+
+    // =============================================
+    $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -400,7 +404,9 @@ if ($_GET['id']) {
                                                             $itemUnit = $details[$i]['unit'];
                                                             $itemWeatage = $details[$i]['weightage'];
                                                             //========================
-                                                            if ($itemUnit == 'tab' || $itemUnit == 'cap') {
+
+
+                                                            if (in_array(strtolower($itemUnit), $allowedUnits)) {
                                                                 $qty = $details[$i]['loosely_count'];
                                                                 $MRP = floatval($mrp) / intval($itemWeatage);
                                                                 $billAmountPerItem = floatval($MRP) * intval($qty);
@@ -414,7 +420,7 @@ if ($_GET['id']) {
                                                                 $qty = $details[$i]['qty'];
                                                                 $billAmountPerItem = floatval($mrp) * intval($qty);
 
-                                                                $qtyType = '';
+                                                                $qtyType = 'others';
                                                             }
                                                             //=======================
                                                             $table = 'product_id';

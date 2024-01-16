@@ -35,7 +35,11 @@ $InvoiceId = $_GET['invoice'];
 $salesReturnId = $_GET['salesReturnId'];
 
 $id = "id";
-//echo $salesReturnId;
+// echo $salesReturnId;
+
+
+$salesReturnData = $SalesReturnTable->selectSalesReturnByAttribs('id', 'admin_id', $salesReturnId, $adminId);
+// print_r($salesReturnData);
 
 $StockoutDetails = $Stockout->stockOutDisplayById($InvoiceId);
 $refferBy = $StockoutDetails[0]['reff_by'];
@@ -325,7 +329,7 @@ if ($patientId == 'Cash Sales') {
                                         <label for="invoice">Invoice :</label>
                                         <input class="summary-inp w-60" name="invoice" id="invoice" type="text" readonly>
 
-                                        <input class="  summary-inp w-60" name="salesreturn-id" id="salesreturn-id" type="text" value="<?php echo $salesReturnId ?>" readonly>
+                                        <input class="d-none summary-inp w-60" name="salesreturn-id" id="salesreturn-id" type="text" value="<?php echo $salesReturnId ?>" readonly>
                                     </div>
 
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
