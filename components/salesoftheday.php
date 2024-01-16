@@ -23,12 +23,12 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
 ?>
 
 <div class="card border-left-info shadow border-right-info h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-between align-items-start px-4 ">
-        <div class="row no-gutters align-items-center mt-4">
+    <div class="d-flex justify-content-between align-items-center px-3 mt-2">
+        <div class="row no-gutters align-items-center">
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                 sales of the day</div>
         </div>
-        <div class="d-flex justify-content-end px-2 mr-n4 mt-2">
+        <div class="d-flex justify-content-end">
             <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDatePikDiv" style="display: none; margin-right:1rem;">
                 <input type="date" id="salesOfTheDayDate">
                 <button class="btn btn-sm btn-primary" onclick="sodOnDate()" style="height: 2rem;">Find</button>
@@ -60,7 +60,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
             </div>
         </div>
     </div>
-    <div class="card-body pb-0">
+    <div class="card-body py-0">
         <!-- <div class="row no-gutters align-items-center"> -->
         <!-- <div class="col-mr-2"> -->
 
@@ -77,7 +77,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
                     <label type="text"><small>Items</small></label>
                 </div>
             </div>
-            <div class="col-auto mt-n3 " style="display: none;" id='sod-no-data'>
+            <div class="col-auto mt-n2 " style="display: none;" id='sod-no-data'>
                 <p class="text-secondary">Nothing sold yet.</p>
             </div>
         </div>
