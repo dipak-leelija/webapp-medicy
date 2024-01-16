@@ -64,9 +64,14 @@ $MeasureOfUnits = new MeasureOfUnits();
 
                     <div class="card shadow mb-4">
                         <!-- Page Heading -->
-                        <h1 class="h3 m-3 text-gray-800">Mesure of Unit</h1>
+                        <div class="d-flex justify-content-between">
+                            <h1 class="h3 m-3 text-gray-800">Mesure of Unit</h1>
+                            <div class="d-flex justify-content-end m-3">
+                                <button class="btn btn-primary btn-sm m-0 pt-0 pb-0" data-toggle="modal" data-target="#addNewitModal" name="add-unit" type="submit">Add Unit</button>
+                            </div>
+                        </div>
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-12">
                                 <div class="card m-2">
                                     <div class="card-body">
                                         <!-- Showing Unit Table -->
@@ -77,6 +82,7 @@ $MeasureOfUnits = new MeasureOfUnits();
                                                         <th>SL. No.</th>
                                                         <th>Short Name</th>
                                                         <th>Full Name</th>
+                                                        <th>Activity</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -99,12 +105,14 @@ $MeasureOfUnits = new MeasureOfUnits();
                                                                 <td>' . $shortName . '</td>
                                                                 <td>' . $fullName . '</td>
                                                                 <td>
+                                                                    <div class="custom-control custom-switch">
+                                                                       <input type="checkbox" class="custom-control-input" id="switch' . $unitId . '" onchange="toggleSwitch(' . $unitId . ')" ' . (isset($showUnitactivity['id']) ? 'checked' : '') . ' > 
+                                                                       <label class="custom-control-label" for="switch' . $unitId . '"></label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
                                                                 <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $unitId . ')"><i class="fas fa-edit"></i></a>   
                                                                 <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
-                                                                <div class="custom-control custom-switch">
-                                                                <input type="checkbox" class="custom-control-input" id="switch' . $unitId . '" onchange="toggleSwitch(' . $unitId . ')" ' . (isset($showUnitactivity['id']) ? 'checked' : '') . ' > 
-                                                                <label class="custom-control-label" for="switch' . $unitId . '"></label>
-                                                                </div>
                                                                 </td>
                                                                 </tr>';
                                                         }
@@ -118,29 +126,6 @@ $MeasureOfUnits = new MeasureOfUnits();
                                 </div>
                             </div>
 
-                            <div class="col-md-5">
-                                <div class="card m-2">
-                                    <div class="card-body">
-                                        <form method="post" action="ajax/unit.add.ajax.php">
-
-                                            <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="unit-srt-name">Short Name</Address></label>
-                                                <input class="form-control" id="unit-srt-name" name="unit-srt-name" placeholder="Short Name of Unit" required>
-                                            </div>
-
-                                            <div class="col-md-12 mt-3">
-                                                <label class="mb-0 mt-1" for="unit-full-name">Full Name</Address></label>
-                                                <input type="text" class="form-control" id="unit-full-name" name="unit-full-name" placeholder="Full Name of Unit" required>
-                                            </div>
-
-                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                                <button class="btn btn-primary me-md-2" name="add-unit" type="submit">Add
-                                                    Unit</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -181,6 +166,41 @@ $MeasureOfUnits = new MeasureOfUnits();
     </div>
     <!--/end Manufacturer View and Edit Modal -->
 
+    <!-- add new Manufacturer unit -->
+    <div class="modal fade" id="addNewitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unitModalLabel">Add New Unit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pageReload()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body addNewitModal">
+                    <!-- <div class="card-body"> -->
+                        <form method="post" action="ajax/unit.add.ajax.php">
+
+                            <div class="col-md-12">
+                                <label class="mb-0 mt-1" for="unit-srt-name">Short Name</Address></label>
+                                <input class="form-control" id="unit-srt-name" name="unit-srt-name" placeholder="Short Name of Unit" required>
+                            </div>
+
+                            <div class="col-md-12 mt-3">
+                                <label class="mb-0 mt-1" for="unit-full-name">Full Name</Address></label>
+                                <input type="text" class="form-control" id="unit-full-name" name="unit-full-name" placeholder="Full Name of Unit" required>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
+                                <button class="btn btn-primary me-md-2" name="add-unit" type="submit">Add
+                                    Unit</button>
+                            </div>
+                        </form>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Scroll to Top Button-->
@@ -220,7 +240,7 @@ $MeasureOfUnits = new MeasureOfUnits();
                 if (confirmation) {
                     $.ajax({
                         type: 'POST',
-                        url: '/medicy.in/admin/ajax/prodUnitLooseactiv.ajax.php', 
+                        url: '/medicy.in/admin/ajax/prodUnitLooseactiv.ajax.php',
                         data: {
                             unitId: unitId
                         },
