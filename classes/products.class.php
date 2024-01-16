@@ -664,63 +664,62 @@ class Products extends DatabaseConnection
 
 
 
-    function selectItemLikeForStockInOut($data, $adminid)
-{
-    $resultData1 = array();
-    $resultData2 = array();
+    function selectItemLikeForStockInOut($data, $adminid){
+        $resultData1 = array();
+        $resultData2 = array();
 
-    try {
-        $searchSql1 = "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ? LIMIT 10";
-        $stmt1 = $this->conn->prepare($searchSql1);
+        try {
+            $searchSql1 = "SELECT * FROM `products` WHERE `name` LIKE ? OR `comp_1` LIKE ? OR `comp_2` LIKE ?   LIMIT 10";
+            $stmt1 = $this->conn->prepare($searchSql1);
 
-        if ($stmt1) {
-            $searchPattern = "%" . $data . "%";
-            $stmt1->bind_param("sss", $searchPattern, $searchPattern, $searchPattern);
-            $stmt1->execute();
+            if ($stmt1) {
+                $searchPattern = "%" . $data . "%";
+                $stmt1->bind_param("sss", $searchPattern, $searchPattern, $searchPattern);
+                $stmt1->execute();
 
-            // Get the results
-            $result1 = $stmt1->get_result();
+                // Get the results
+                $result1 = $stmt1->get_result();
 
-            while ($row = $result1->fetch_assoc()) {
-                $resultData1[] = $row;
+                while ($row = $result1->fetch_assoc()) {
+                    $resultData1[] = $row;
+                }
+
+                $stmt1->close();
+            } else {
+                throw new Exception("Failed to prepare the statement 1.");
             }
 
-            $stmt1->close();
-        } else {
-            throw new Exception("Failed to prepare the statement 1.");
-        }
+            $searchSql2 = "SELECT * FROM `product_request` WHERE `name` LIKE ? AND `admin_id`= ? LIMIT 10";
+            $stmt2 = $this->conn->prepare($searchSql2);
 
-        $searchSql2 = "SELECT * FROM `product_request` WHERE `name` LIKE ? AND `admin_id`= ? LIMIT 10";
-        $stmt2 = $this->conn->prepare($searchSql2);
+            if ($stmt2) {
+                $searchPattern = "%" . $data . "%";
+                $stmt2->bind_param("ss", $searchPattern, $adminid);
+                $stmt2->execute();
 
-        if ($stmt2) {
-            $searchPattern = "%" . $data . "%";
-            $stmt2->bind_param("ss", $searchPattern, $adminid);
-            $stmt2->execute();
+                // Get the results
+                $result2 = $stmt2->get_result();
 
-            // Get the results
-            $result2 = $stmt2->get_result();
+                while ($row = $result2->fetch_assoc()) {
+                    $resultData2[] = $row;
+                }
 
-            while ($row = $result2->fetch_assoc()) {
-                $resultData2[] = $row;
+                $stmt2->close();
+            } else {
+                throw new Exception("Failed to prepare the statement 2.");
             }
-            
-            $stmt2->close();
-        } else {
-            throw new Exception("Failed to prepare the statement 2.");
+
+            $mergedResults = array_merge($resultData1, $resultData2);
+
+            return (['status'=> '1', 'message'=>'data forund', 'data'=>$mergedResults]);
+
+        } catch (Exception $e) {
+            // Log or handle the exception appropriately
+            error_log("Error: " . $e->getMessage());
         }
 
-        $mergedResults = array_merge($resultData1, $resultData2);
-        
-        return (['status'=> '1', 'message'=>'data forund', 'data'=>$mergedResults]);
-            
-    } catch (Exception $e) {
-        // Log or handle the exception appropriately
-        error_log("Error: " . $e->getMessage());
+        return (['status' => '0', 'message' => 'no data found']);
     }
-
-    return (['status' => '0', 'message' => 'no data found']);
-}
 
 
 
@@ -728,42 +727,58 @@ class Products extends DatabaseConnection
 
 
     //==================== product availibity on stock in based on admin id ======================
-    function selectItemLikeOnCol($data, $col, $colData)
-    {
+    function selectItemLikeOnCol($data, $col, $colData){
         $resultData = array();
 
         try {
-            // Prepare the SQL statement with placeholders
             $searchSql = "SELECT * FROM `products` WHERE `products`.`name` LIKE ? AND `$col` = ?";
             $stmt = $this->conn->prepare($searchSql);
 
             if ($stmt) {
-                // Bind the parameters and execute the query
                 $searchPattern = "%" . $data . "%";
                 $stmt->bind_param("ss", $searchPattern, $colData);
                 $stmt->execute();
 
-                // Get the results
                 $result = $stmt->get_result();
 
                 while ($row = $result->fetch_assoc()) {
                     $resultData[] = $row;
                 }
 
-                // Close the statement
                 $stmt->close();
             } else {
                 throw new Exception("Failed to prepare the statement.");
             }
         } catch (Exception $e) {
-            // Handle the exception (e.g., log the error, return an error message, etc.)
-            // You can customize this part to suit your needs.
             echo "Error: " . $e->getMessage();
         }
 
         return $resultData;
     }
 
+
+
+
+
+    function updateOnColData($col, $data, $prodId){
+        try {
+            $updateOnColQry = "UPDATE products SET `$col` = ? WHERE `product_id` = ?";
+    
+            $stmt = $this->conn->prepare($updateOnColQry);
+    
+            $stmt->bind_param("is", $data, $prodId);
+    
+            if ($stmt->execute()) {
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => true]);
+            } else {
+                return new Exception("Error updating data in the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    
 
 
 

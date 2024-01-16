@@ -304,7 +304,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     } elseif ($qtyTp[$i] == 'Loose') {
                         $wholeQty = '';
                         $ItemSellQantity = $wholeQty . $qty[$i] . $string1 . $looseString . $string2;
-                    } elseif ($qtyTp[$i] == '') {
+                    } elseif ($qtyTp[$i] == 'others') {
                         $wholeQty = '';
                         $ItemSellQantity = $wholeQty . $qty[$i];
                     }
