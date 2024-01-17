@@ -79,6 +79,16 @@ class PackagingUnits extends DatabaseConnection{
         }
     }//eof showMeasureOfUnits
 
+    function packagingTypeName($unitId){
+        $select        = " SELECT unit_name FROM packaging_type WHERE `id` = '$unitId'";
+        $selectQuery   = $this->conn->query($select);
+        if ( $selectQuery->num_rows > 0) {
+            while ($result = $selectQuery->fetch_array() ) {
+                $data = $result['unit_name'];
+            }
+            return $data;
+        }
+    }//eof showMeasureOfUnits
 
 
 
