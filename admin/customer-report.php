@@ -164,107 +164,117 @@ $purchaeTodayDataLst30dys = $StockIn->customerPurchDayRange($podLst30, $podStrtD
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 justify-content-between">
                             <div class="d-flex justify-content-around w-100">
-                                <div class="d-flex justify-content-start">
+                                <!-- <div class="d-flex justify-content-start">
                                     <h6 class="font-weight-bold text-secondary"><b>Total Sold Item :</b> <?= $CountSoldItems ?></h6>
-                                </div>
-                                <div class="d-flex justify-content-start">
+                                </div> -->
+                                <!-- <div class="d-flex justify-content-start">
                                     <h6 class="font-weight-bold text-secondary"><b>Total Purches item :</b><?= $CountPurchesItems ?> </h6>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="card-body pt-1">
                                 <div class="d-flex justify-content-between flex-wrap">
-                                    <div class="bg-white border border-0 rounded shadow" style="width: 50%;">
-                                        <div class="ml-4" style="width: 70%;">
-                                            <div class="d-flex justify-content-between mb-0 pb-0" style="width: 127%;">
-                                                <h5 class="pt-3 pb-n5 mb-0" style="color: #5a5c69;font-weight: 600;">Sales Item Based On Payment Mode</h5>
-                                                <!-- <button class="btn btn-sm d-flex justify-content-end m-3 mb-0 pb-0 border ">...</button> -->
-                                                <div class="d-flex justify-content-end px-2 mr-n4 mt-2">
-                                                    <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDatePikDiv" style="display: none; margin-right:1rem;position: relative;">
-                                                        <input type="date" id="salesOfTheDayDate">
-                                                        <button class="btn btn-sm btn-primary" onclick="sodOnDate()" style="height: 2rem;">Find</button>
-                                                    </div>
-                                                    <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDtPikRngDiv" style="display: none; margin-right:1rem; position: relative;">
-                                                        <div class="d-flex d-flex justify-content-start">
-                                                            <div>
-                                                                <label>Start Date</label>&nbsp<input type="date" id="sodStartDt"><br>
-                                                                <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="sodEndDt">
-                                                            </div>&nbsp
-                                                            <div>
-                                                                <br>
-                                                                <button class="btn btn-sm btn-primary" onclick="sodDtRange()" style="height: 2rem;">Find</button>
+                                    <div class="d-flex flex-column flex-wrap mb-3">
+                                        <div class="d-flex justify-content-start">
+                                            <h6 class="font-weight-bold text-secondary"><b>Total Sold Item :</b> <?= $CountSoldItems ?></h6>
+                                        </div>
+                                        <div class="bg-white border border-0 rounded shadow" style="width: 106%;">
+                                            <div class="ml-4" style="width: 72%;">
+                                                <div class="d-flex justify-content-between mb-0 pb-0" style="width: 127%;">
+                                                    <h5 class="pt-3 pb-n5 mb-0" style="color: #5a5c69;font-weight: 600;">Sales Item Based On Payment Mode</h5>
+                                                    <!-- <button class="btn btn-sm d-flex justify-content-end m-3 mb-0 pb-0 border ">...</button> -->
+                                                    <div class="d-flex justify-content-end px-2 mr-n4 mt-2">
+                                                        <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDatePikDiv" style="display: none; margin-right:1rem;position: relative;">
+                                                            <input type="date" id="salesOfTheDayDate">
+                                                            <button class="btn btn-sm btn-primary" onclick="sodOnDate()" style="height: 2rem;">Find</button>
+                                                        </div>
+                                                        <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDtPikRngDiv" style="display: none; margin-right:1rem; position: relative;">
+                                                            <div class="d-flex d-flex justify-content-start">
+                                                                <div>
+                                                                    <label>Start Date</label>&nbsp<input type="date" id="sodStartDt"><br>
+                                                                    <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="sodEndDt">
+                                                                </div>&nbsp
+                                                                <div>
+                                                                    <br>
+                                                                    <button class="btn btn-sm btn-primary" onclick="sodDtRange()" style="height: 2rem;">Find</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="btn-group mr-2">
+                                                            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkSod(this.id)">Today</button>
+                                                                <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkSod(this.id)">Last 24 hrs</button>
+                                                                <button class="dropdown-item" type="button" id="sodLst7" onclick="chkSod(this.id)">Last 7 Days</button>
+                                                                <button class="dropdown-item" type="button" id="sodLst30" onclick="chkSod(this.id)">Last 30 Days</button>
+                                                                <button class="dropdown-item dropdown" type="button" id="sodGvnDt" onclick="chkSod(this.id)">By Date</button>
+                                                                <button class="dropdown-item dropdown" type="button" id="sodDtRng" onclick="chkSod(this.id)">By Date Range</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkSod(this.id)">Today</button>
-                                                            <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkSod(this.id)">Last 24 hrs</button>
-                                                            <button class="dropdown-item" type="button" id="sodLst7" onclick="chkSod(this.id)">Last 7 Days</button>
-                                                            <button class="dropdown-item" type="button" id="sodLst30" onclick="chkSod(this.id)">Last 30 Days</button>
-                                                            <button class="dropdown-item dropdown" type="button" id="sodGvnDt" onclick="chkSod(this.id)">By Date</button>
-                                                            <button class="dropdown-item dropdown" type="button" id="sodDtRng" onclick="chkSod(this.id)">By Date Range</button>
-                                                        </div>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class='bg-white pl-5 pr-5 pt-1 pb-2'>
-                                                <canvas id="myChart" width="50" height="50"></canvas>
-                                            </div>
-                                            <div class="ml-n4 d-flex justify-content-between" style="width: 130%;">
-                                                <h6 class="font-weight-bold text-secondary"><b>Total Amount : </b><?= $totalAmount ?></h6>
-                                                <h6 class="font-weight-bold text-secondary  mb-0 pb-0"><b>Return Item : </b><?= $salesReturn ?></h6>
-                                                <h6 class="font-weight-bold text-secondary  mb-0 pb-0"><b>Credit Amount : </b><?= $creditCount ?> </h6>
+                                                <div class='bg-white pl-5 pr-5 pt-1 pb-2'>
+                                                    <canvas id="myChart" width="50" height="50"></canvas>
+                                                </div>
+                                                <div class="ml-n2 d-flex justify-content-between" style="width: 130%;">
+                                                    <h6 class="font-weight-bold text-secondary"><b>Total Amount : </b><?= $totalAmount ?></h6>
+                                                    <h6 class="font-weight-bold text-secondary  mb-0 pb-0"><b>Return Item : </b><?= $salesReturn ?></h6>
+                                                    <h6 class="font-weight-bold text-secondary  mb-0 pb-0"><b>Credit Amount : </b><?= $creditCount ?> </h6>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="bg-white border border-0 rounded shadow" style="width: 49%;">
-                                        <div class="ml-5" style="width: 70%;">
-                                            <div class="d-flex justify-content-between mb-0 pb-0" style="width: 127%;">
-                                                <h5 class="pt-3" style="color: #5a5c69;font-weight: 600;">Purches Item Based On Payment Mode</h5>
-                                                <!-- <button class="btn btn-sm d-flex justify-content-end mr-1 mt-3 ml-3 mb-0 pb-0 border ">...</button> -->
-                                                <div class="d-flex justify-content-end px-2 mt-2 ">
-                                                    <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDatePikDiv" style="display: none; margin-right:1rem;position: relative;">
-                                                        <input type="date" id="purchaseOfTheDayDate">
-                                                        <button class="btn btn-sm btn-primary" onclick="podOnDateFun()" style="height: 2rem;">Find</button>
-                                                    </div>
-                                                    <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDtPikRngDiv" style="display: none; margin-right:1rem;position: relative;">
-                                                        <div class="d-flex d-flex justify-content-start">
-                                                            <div>
-                                                                <label>Start Date</label>&nbsp<input type="date" id="podStartDt"><br>
-                                                                <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="podEndDt">
-                                                            </div>&nbsp
-                                                            <div>
-                                                                <br>
-                                                                <button class="btn btn-sm btn-primary" onclick="podOnDtRange()" style="height: 2rem;">Find</button>
+                                    <div class="d-flex flex-column flex-wrap">
+                                        <div class="d-flex justify-content-start">
+                                            <h6 class="font-weight-bold text-secondary"><b>Total Purches item :</b><?= $CountPurchesItems ?> </h6>
+                                        </div>
+                                        <div class="bg-white border border-0 rounded shadow" style="width: 100%;">
+                                            <div class="ml-5" style="width: 70%;">
+                                                <div class="d-flex justify-content-between mb-0 pb-0" style="width: 127%;">
+                                                    <h5 class="pt-3" style="color: #5a5c69;font-weight: 600;">Purches Item Based On Payment Mode</h5>
+                                                    <!-- <button class="btn btn-sm d-flex justify-content-end mr-1 mt-3 ml-3 mb-0 pb-0 border ">...</button> -->
+                                                    <div class="d-flex justify-content-end px-2 mt-2 ">
+                                                        <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDatePikDiv" style="display: none; margin-right:1rem;position: relative;">
+                                                            <input type="date" id="purchaseOfTheDayDate">
+                                                            <button class="btn btn-sm btn-primary" onclick="podOnDateFun()" style="height: 2rem;">Find</button>
+                                                        </div>
+                                                        <div class="dropdown-menu dropdown-menu-right p-2  mt-n5" id="podDtPikRngDiv" style="display: none; margin-right:1rem;position: relative;">
+                                                            <div class="d-flex d-flex justify-content-start">
+                                                                <div>
+                                                                    <label>Start Date</label>&nbsp<input type="date" id="podStartDt"><br>
+                                                                    <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="podEndDt">
+                                                                </div>&nbsp
+                                                                <div>
+                                                                    <br>
+                                                                    <button class="btn btn-sm btn-primary" onclick="podOnDtRange()" style="height: 2rem;">Find</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <button class="dropdown-item" type="button" id="podCurrentDt" onclick="chkPod(this.id)">Today</button>
+                                                                <button class="dropdown-item" type="button" id="podLst24hrs" onclick="chkPod(this.id)">Last 24 hrs</button>
+                                                                <button class="dropdown-item" type="button" id="podLst7" onclick="chkPod(this.id)">Last 7 Days</button>
+                                                                <button class="dropdown-item" type="button" id="podLst30" onclick="chkPod(this.id)">Last 30 Days</button>
+                                                                <button class="dropdown-item dropdown" type="button" id="podGvnDt" onclick="chkPod(this.id)">By Date</button>
+                                                                <button class="dropdown-item dropdown" type="button" id="podDtRng" onclick="chkPod(this.id)">By Date Range</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <button class="dropdown-item" type="button" id="podCurrentDt" onclick="chkPod(this.id)">Today</button>
-                                                            <button class="dropdown-item" type="button" id="podLst24hrs" onclick="chkPod(this.id)">Last 24 hrs</button>
-                                                            <button class="dropdown-item" type="button" id="podLst7" onclick="chkPod(this.id)">Last 7 Days</button>
-                                                            <button class="dropdown-item" type="button" id="podLst30" onclick="chkPod(this.id)">Last 30 Days</button>
-                                                            <button class="dropdown-item dropdown" type="button" id="podGvnDt" onclick="chkPod(this.id)">By Date</button>
-                                                            <button class="dropdown-item dropdown" type="button" id="podDtRng" onclick="chkPod(this.id)">By Date Range</button>
-                                                        </div>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class='bg-white pl-5 pr-5 pt-1 pb-2'>
-                                                <canvas id="myChart1" width="50" height="50"></canvas>
-                                            </div>
-                                            <div class=" d-flex justify-content-between" style="width: 140%; margin-left:-13%;">
-                                                <h6 class="font-weight-bold text-secondary mb-0 pb-0"><b>Total Amount: </b><?= $totalPurchesAmount ?></h6>
-                                                <h6 class="font-weight-bold text-secondary mb-0 pb-0"><b>Return Item: </b><?= $totalPurchesRetun ?></h6>
-                                                <h6 class="font-weight-bold text-secondary mb-0 pb-0"><b>Credit Amount:</b><?= $creditPurchesCount ?> </h6>
+                                                <div class='bg-white pl-5 pr-5 pt-1 pb-2'>
+                                                    <canvas id="myChart1" width="50" height="50"></canvas>
+                                                </div>
+                                                <div class=" d-flex justify-content-between" style="width: 140%; margin-left:-13%;">
+                                                    <h6 class="font-weight-bold text-secondary mb-0 pb-0"><b>Total Amount: </b><?= $totalPurchesAmount ?></h6>
+                                                    <h6 class="font-weight-bold text-secondary mb-0 pb-0"><b>Return Item: </b><?= $totalPurchesRetun ?></h6>
+                                                    <h6 class="font-weight-bold text-secondary mb-0 pb-0"><b>Credit Amount:</b><?= $creditPurchesCount ?> </h6>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -339,7 +349,7 @@ $purchaeTodayDataLst30dys = $StockIn->customerPurchDayRange($podLst30, $podStrtD
 
 
         function sodOnDate() {
-            
+
             let sodDateSelect = document.getElementById('salesOfTheDayDate').value;
 
             var xmlhttp = new XMLHttpRequest();

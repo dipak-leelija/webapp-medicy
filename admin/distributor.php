@@ -30,9 +30,7 @@ $showDistributor = $showDistributor->data;
 
     <!-- Custom fonts for this template-->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -70,8 +68,7 @@ $showDistributor = $showDistributor->data;
                         <div class="col-12">
                             <div class="card shadow">
                                 <div class="card-header d-flex justify-content-end">
-                                    <button class="btn btn-sm btn-primary shadow-none" data-toggle="modal"
-                                        data-target="#add-distributor" onclick="addDistributor()">
+                                    <button class="btn btn-sm btn-primary shadow-none" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
                                         Add new
                                     </button>
                                 </div>
@@ -84,6 +81,7 @@ $showDistributor = $showDistributor->data;
                                                     <th>Name</th>
                                                     <th>Contact</th>
                                                     <th>Area PIN</th>
+                                                    <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -95,12 +93,45 @@ $showDistributor = $showDistributor->data;
                                                         $distributorName    = $rowDistributor->name;
                                                         $distributorPhno    = $rowDistributor->phno;
                                                         $distributorPin     = $rowDistributor->area_pin_code;
+                                                        $distributorStatus  = $rowDistributor->dis_status;
+
+                                                        $statusLabel = '';
+                                                        $statusColor = '';
+                                                        switch ($distributorStatus) {
+                                                            case 0:
+                                                                $statusLabel = 'Disabled';
+                                                                $statusColor = 'red';
+                                                                break;
+                                                            case 1:
+                                                                $statusLabel = 'Pending';
+                                                                $statusColor = '#4e73df';
+                                                                break;
+                                                            case 2:
+                                                                $statusLabel = 'Active';
+                                                                $statusColor = 'green';
+                                                                break;
+                                                            default:
+                                                                $statusLabel = 'Disabled';
+                                                                break;
+                                                        }
 
                                                         echo '<tr>
                                                                 <td>' . $distributorId . '</td>
                                                                 <td>' . $distributorName . '</td>
                                                                 <td>' . $distributorPhno . '</td>
                                                                 <td>' . $distributorPin . '</td>
+                                                                <td>
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-secondary dropdown-toggle bg-white border-0" type="button" id="statusDropdown' . $distributorId . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: ' . $statusColor . ';">
+                                                                            ' . $statusLabel . '
+                                                                        </button>
+                                                                        <div class="dropdown-menu" aria-labelledby="statusDropdown' . $distributorId . '">
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $distributorId . ', 0, this)">Disabled</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $distributorId . ', 1, this)">Pending</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $distributorId . ', 2, this)">Active</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
                                                                 <td>
                                                                     <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a>
 
@@ -137,8 +168,7 @@ $showDistributor = $showDistributor->data;
     <!-- End of Page Wrapper -->
 
     <!-- Manufacturer View and Edit Modal -->
-    <div class="modal fade" id="distributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="distributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -157,8 +187,7 @@ $showDistributor = $showDistributor->data;
 
 
     <!-- Manufacturer View and Edit Modal -->
-    <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -202,77 +231,99 @@ $showDistributor = $showDistributor->data;
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
     <script>
-    const addDistributor = () => {
+        const addDistributor = () => {
 
-        var parentLocation = window.location.origin + window.location.pathname;
+            var parentLocation = window.location.origin + window.location.pathname;
 
-        $.ajax({
-            url: "components/distributor-add.php",
-            type: "POST",
-            data: { urlData: parentLocation },
-            success: function(response) {
-                let body = document.querySelector('.add-distributor');
-                body.innerHTML = response;
-            },
-            error: function(error) {
-                console.error("Error: ", error);
-            }
-        });
-    }
-
-
-    //View and Edit Manufacturer function
-    distViewAndEdit = (distributorId) => {
-        let ViewAndEdit = distributorId;
-        let url = "ajax/distributor.View.ajax.php?Id=" + ViewAndEdit;
-        $(".distributorModal").html(
-            '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
-            url + '"></iframe>');
-    } // end of viewAndEdit function
+            $.ajax({
+                url: "components/distributor-add.php",
+                type: "POST",
+                data: {
+                    urlData: parentLocation
+                },
+                success: function(response) {
+                    let body = document.querySelector('.add-distributor');
+                    body.innerHTML = response;
+                },
+                error: function(error) {
+                    console.error("Error: ", error);
+                }
+            });
+        }
 
 
+        //View and Edit Manufacturer function
+        distViewAndEdit = (distributorId) => {
+            let ViewAndEdit = distributorId;
+            let url = "ajax/distributor.View.ajax.php?Id=" + ViewAndEdit;
+            $(".distributorModal").html(
+                '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+        } // end of viewAndEdit function
 
-    //delete distributor
-    $(document).ready(function() {
-        $(document).on("click", "#delete-btn", function() {
+        //update distributor status//
+        function updateStatus(distributorId, newStatus) {
 
-            swal({
-                    title: "Are you sure?",
-                    text: "Want to Delete This Distributor?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-
-                        distributorId = $(this).data("id");
-                        btn = this;
-
-                        $.ajax({
-                            url: "ajax/distributor.Delete.ajax.php",
-                            type: "POST",
-                            data: {
-                                id: distributorId
-                            },
-                            success: function(data) {
-                                if (data == 1) {
-                                    $(btn).closest("tr").fadeOut()
-                                    swal("Deleted", "Distributor Has Been Deleted",
-                                        "success");
-                                } else {
-                                    swal("Failed", data, "error");
-                                }
-                            }
-                        });
-
+            if (confirm('Are you sure you want to change the status?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/medicy.in/admin/ajax/distributorStatus.update.ajax.php',
+                    data: {
+                        distributorId: distributorId,
+                        newStatus: newStatus
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error updating status:', error);
                     }
-                    return false;
                 });
+            }
+        } // end distributor status //
+
+        //delete distributor
+        $(document).ready(function() {
+            $(document).on("click", "#delete-btn", function() {
+
+                swal({
+                        title: "Are you sure?",
+                        text: "Want to Delete This Distributor?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+
+                            distributorId = $(this).data("id");
+                            btn = this;
+
+                            $.ajax({
+                                url: "ajax/distributor.Delete.ajax.php",
+                                type: "POST",
+                                data: {
+                                    id: distributorId
+                                },
+                                success: function(data) {
+                                    if (data == 1) {
+                                        $(btn).closest("tr").fadeOut()
+                                        swal("Deleted", "Distributor Has Been Deleted",
+                                            "success");
+                                    } else {
+                                        swal("Failed", data, "error");
+                                    }
+                                }
+                            });
+
+                        }
+                        return false;
+                    });
+
+            })
 
         })
-
-    })
     </script>
 
 
