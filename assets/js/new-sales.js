@@ -477,11 +477,11 @@ const onQty = (qty) => {
 
     var xmlhttp = new XMLHttpRequest();
 
-    console.log(qty);
+    // console.log(qty);
     if(qty == ''){
         qty = 0;
     }
-    console.log(qty);
+    // console.log(qty);
 
     let mrp = document.getElementById("mrp").value;
     let itemWeatage = document.getElementById('item-weightage').value;
