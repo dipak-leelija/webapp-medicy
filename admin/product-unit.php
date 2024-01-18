@@ -229,12 +229,8 @@ $MeasureOfUnits = new MeasureOfUnits();
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
     <script>
         function toggleSwitch(unitId) {
-            console.log(unitId);
             var switchElement = document.getElementById('switch' + unitId);
-            console.log(switchElement);
             if (!switchElement.checked) {
-                // alert("Are you sure you want to delete?");
-
                 var confirmation = confirm("Are you sure you want to unchecked?");
 
                 if (confirmation) {
