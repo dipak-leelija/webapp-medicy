@@ -229,7 +229,7 @@ class Employees extends DatabaseConnection
 
     function updateEmpData($name, $img, $email, $contactNo, $address, $updatedOn, $empid, $adminid) {
         try {
-            $updateQuery = "UPDATE `employees` SET `emp_name`=?, `emp_img`=?, `emp_email`=?, `emp_contact_no`=?, `emp_address`=?, `updated_on`=? WHERE `emp_id`=? AND `admin_id`=?";
+            $updateQuery = "UPDATE `employees` SET `emp_name`=?, `emp_img`=?, `emp_email`=?, `contact`=?, `emp_address`=?, `updated_on`=? WHERE `emp_id`=? AND `admin_id`=?";
             
             $stmt = $this->conn->prepare($updateQuery);
     
