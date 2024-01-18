@@ -16,7 +16,7 @@ if (isset($_GET["pid"])) {
     $showProducts = $Products->showProductsById($_GET["pid"]);
     $showProducts = json_decode($showProducts,true);
     if(isset($showProducts['status']) && $showProducts['status'] == '1'){
-        $data = $showProducts['data'][0];
+        $data = $showProducts['data'];
         echo $data['comp_1'] . ',' . $data['comp_2'];
     }
     

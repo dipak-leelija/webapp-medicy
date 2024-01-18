@@ -7,6 +7,13 @@ require_once ROOT_DIR.'_config/user-details.inc.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockOut.class.php';
+require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR.'itemUnit.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'patients.class.php';
+
+
 require_once CLASS_DIR.'encrypt.inc.php';
 
 
@@ -14,25 +21,46 @@ $invoiceId = $_GET['id'];
 
 //  INSTANTIATING CLASS
 $StockOut        = new StockOut();
+$Products        = new Products();
+$ItemUnit        = new ItemUnit();
+$PackagingUnits  = new PackagingUnits();
+$Manufacturer    = new Manufacturer();
+$Patients        = new Patients;
 
 if (isset($_GET['id'])) {
     $invoiceId = url_dec($_GET['id']);
     $stockOut  = $StockOut->stockOutDisplayById($invoiceId);
     // print_r($stockOut);
     foreach($stockOut as $stockOut){
-    $invoiceId      = $stockOut['invoice_id'];
-    $customerName   = $stockOut['customer_id'];
-    $reffby         = $stockOut['reff_by'];	
-    $totalMrp       = $stockOut['mrp'];	
-    $totalGSt       = $stockOut['gst'];	
-    $billAmout      = $stockOut['amount'];	
-    $pMode          = $stockOut['payment_mode'];	
-    $billdate       = $stockOut['bill_date'];	
+        $invoiceId      = $stockOut['invoice_id'];
+        $customerId     = $stockOut['customer_id'];
+        $reffby         = $stockOut['reff_by'];	
+        $totalMrp       = $stockOut['mrp'];	
+        $totalGSt       = $stockOut['gst'];	
+        $billAmout      = $stockOut['amount'];	
+        $pMode          = $stockOut['payment_mode'];	
+        $billdate       = $stockOut['bill_date'];	
 
-    $details = $StockOut->stockOutDetailsBY1invoiveID($invoiceId);
-    $details = json_decode($details, true);
+        $details = $StockOut->stockOutDetailsBY1invoiveID($invoiceId);
+        $details = json_decode($details, true);
+        // print_r($details);
     }
     
+}
+
+if ($customerId != 'Cash Sales') {
+    $patient = json_decode($Patients->patientsDisplayByPId($customerId));
+    
+    $patientName = $patient->name;
+    $patientPhno = $patient->phno;
+    $patientAge  = $patient->age;
+
+    $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'>
+                        <small><b>Patient: </b>  $patientName, <b>Age:</b> $patientAge </small></p>
+                    <p style='margin-top: -5px; margin-bottom: 0px;'><small><b>M:</b> $patientPhno </small></p>";
+}else {
+    $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'>
+                        <small><b>Patient: </b>  $customerId</small></p>";
 }
 
 
@@ -85,17 +113,11 @@ if (isset($_GET['id'])) {
             <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
             <div class="row my-0">
                 <div class="col-sm-6 my-0">
-                    <p style="margin-top: -3px; margin-bottom: 0px;"><small><b>Patient: </b>
-                            <?php echo $customerName.', Age: 25'; ?></small></p>
-                    <p style="margin-top: -5px; margin-bottom: 0px;"><small>M:
-                            <?php echo 7699753019; echo ', Test date: 241544';?></small></p>
+                    <?= $patientElement ?>
                 </div>
                 <div class="col-sm-6 my-0">
                     <p class="text-end" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered By:</b>
                             <?php echo $reffby; ?></small></p>
-                    <p class="text-end" style="margin-top: -5px; margin-bottom: 0px;">
-                        <small><?php //if($doctorReg != NULL){echo 'Reg: '.$doctorReg; } ?></small>
-                    </p>
                 </div>
 
             </div>
@@ -103,6 +125,7 @@ if (isset($_GET['id'])) {
 
             <div class="row">
                 <!-- table heading -->
+
                 <div class="col-sm-1 text-center">
                     <small><b>SL.</b></small>
                 </div>
@@ -112,9 +135,12 @@ if (isset($_GET['id'])) {
                 <div class="col-sm-1">
                     <small><b>Manuf.</b></small>
                 </div>
-                <div class="col-sm-1">
+                <!-- <div class="col-sm-1">
                     <small><b>Packing</b></small>
                 </div>
+                <div class="col-sm-1">
+                    <small>' . $weatage . '</small>
+                </div> -->
                 <div class="col-sm-1">
                     <small><b>Batch</b></small>
                 </div>
@@ -136,6 +162,7 @@ if (isset($_GET['id'])) {
                 <div class="col-sm-1 text-end">
                     <small><b>Amount</b></small>
                 </div>
+
                 <!--/end table heading -->
             </div>
 
@@ -146,53 +173,80 @@ if (isset($_GET['id'])) {
                 $slno = 0;
                 $subTotal = floatval(00.00);
                     foreach ($details as $detail) {
+
+                        $productResponse = json_decode($Products->showProductsById($detail['product_id']));
+                        $product = $productResponse->data;
+                        $packQty = $product->unit_quantity;
+
+                        $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
+                        
+                        $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
+
+                        $itemunit = $ItemUnit->itemUnitName($product->unit);
+                        $packUnit = $PackagingUnits->packagingTypeName($product->packaging_type);
+
+                        $weatage = "$itemunit of $packUnit";
+                        
                         $slno++;
-                 
-                                if ($slno >1) {
-                                    echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
-                                }
+                        if ($slno >1) {
+                            echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                        }
+                        
+                        $itemQty = $detail['loosely_count']/$packQty;
+
+                        // ===================================================
+
+                        if (is_float($itemQty)) {
+                            // If the result is a decimal
+                            $integerPart = floor($itemQty);
+                            $decimalPart = ($itemQty - $integerPart) * 10; // Assuming a single-digit decimal
+
+                            if ($integerPart == 0) {
+                                $itemQty = $decimalPart.'(L)';
+                            }else {
+                                $itemQty = $integerPart . '(' . $decimalPart . 'L)';
+                            }
+                        }
+
+                        // ===================================================
+
                                 
-                           echo '<div class="col-sm-1 text-center">
-                                    <small>'.$slno.'</small>
-                                </div>
-                                <div class="col-sm-2 ">
-                                    <small>'.substr($detail['item_name'], 0, 15).'</small>
-                                </div>
-                                <div class="col-sm-1">
-                                    <small>'.strtoupper(substr("Dr. Reddys Pvt Ltd", 0, 7)).'</small>
-                                </div>
-                                <div class="col-sm-1">
-                                <small>' . (isset($detail['weatage']) ? $detail['weatage'] : '') . '</small>
-                                </div>
-                                <div class="col-sm-1">
-                                    <small>'.$detail['batch_no'].'</small>
-                                </div>
-                                <div class="col-sm-1">
-                                    <small>'.$detail['exp_date'].'</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                    <small>'.$detail['qty'].'</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                    <small>'.$detail['mrp'].'</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                <small>' . (isset($detail['disc']) ? $detail['disc'] : '') . '</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                    <small>'.$detail['gst'].'</small>
-                                </div>
-                                <div class="col-sm-1 text-end">
-                                    <small>'.$detail['amount'].'</small>
-                                </div>';
+                        echo '<div class="col-sm-1 text-center">
+                                <small>'.$slno.'</small>
+                            </div>
+                            <div class="col-sm-2 ">
+                                <small>'.substr($detail['item_name'], 0, 15).'</small>
+                            </div>
+                            <div class="col-sm-1">
+                                <small>'.$manufacturerName.'</small>
+                            </div>
+                            <div class="col-sm-1">
+                                <small>'.$detail['batch_no'].'</small>
+                            </div>
+                            <div class="col-sm-1">
+                                <small>'.$detail['exp_date'].'</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <small>'.$itemQty.'</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <small>'.$detail['mrp'].'</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                            <small>' . (isset($detail['discount']) ? $detail['discount'] : '') . '</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <small>'.$detail['gst'].'</small>
+                            </div>
+                            <div class="col-sm-1 text-end">
+                                <small>'.$detail['amount'].'</small>
+                            </div>';
 
                     }
                 ?>
 
             </div>
-            <!-- </div> -->
 
-            <!-- </div> -->
             <div class="footer">
                 <hr calss="my-0" style="height: 1px;">
 

@@ -36,22 +36,20 @@ if ($_SESSION['ADMIN']) {
         $adminData = $adminDetails->data;
 
         foreach ($adminData as $adminData) {
-            $firstName = $adminData->fname;
-            $lastName = $adminData->lname;
-            $image = $adminData->adm_img;
-            $imagePath = ADM_IMG_PATH . $image;
-            // print_r($imagePath );
-            $userName = $adminData->username;
-            $email = $adminData->email;
-            $phone = $adminData->mobile_no;
-            $password = $adminData->password;
-            $address = $adminData->address;
+            $firstName  = $adminData->fname;
+            $lastName   = $adminData->lname;
+            $image      = $adminData->adm_img;
+            $profileImg = ADM_IMG_PATH . $image;
+            $userName   = $adminData->username;
+            $email      = $adminData->email;
+            $phone      = $adminData->mobile_no;
+            $password   = $adminData->password;
+            $address    = $adminData->address;
         }
     }
 } else {
 
     $employeeDetails = json_decode($employees->employeeDetails($employeeId, $adminId));
-    print_r($employeeDetails);
 
     if ($employeeDetails->status) {
         $employeeData = $employeeDetails->data;
@@ -67,13 +65,11 @@ if ($_SESSION['ADMIN']) {
                 $firstName = substr($empName, 0, $lastSpacePos);
                 $lastName = substr($empName, $lastSpacePos + 1);
             }
-            $firstName  = $firstName;
-            $lastName   = $lastName;
             $image      = $employeeData->emp_img;
-            $imagePath  = EMPLOYEE_IMG_PATH . $image;
+            $profileImg = EMPLOYEE_IMG_PATH . $image;
             $userName   = $employeeData->emp_username;
             $email      = $employeeData->emp_email;
-            $phone      = $employeeData->contact_no;
+            $phone      = $employeeData->contact;
             $password   = $employeeData->emp_password;
             $address    = $employeeData->emp_address;
         }
@@ -171,7 +167,7 @@ if ($_SESSION['ADMIN']) {
 
                                     <div class="p-main d-flex justify-content-start align-items-start flex-wrap ml-3 mt-3">
                                         <div class="ml-3">
-                                            <img class="img-uv-view shadow-lg " src="<?= ($imagePath) ?  $imagePath : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
+                                            <img class="img-uv-view shadow-lg " src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle ml-5">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
                                                 <label for="img-uv-input" class="btn btn-sm btn-success ml-5 mt-n5"><i class="fas fa-camera"></i></label>

@@ -26,7 +26,7 @@ if ($healthCare->status === 1 ) {
         $healthCareName = $healthCare->hospital_name;
     }else {
         if (!str_contains(PAGE, 'clinic-setup')) {
-            header('Location: '.URL.'clinic-setup.php?setup=Please complete your Pharmacy/Healthcare setup!');
+            // header('Location: '.URL.'clinic-setup.php?setup=Please complete your Pharmacy/Healthcare setup!');
         }
     }
 

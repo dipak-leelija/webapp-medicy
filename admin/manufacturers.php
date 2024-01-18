@@ -115,6 +115,7 @@ if (isset($_GET['return'])) {
                                                     <th>SL.</th>
                                                     <th>Name</th>
                                                     <th>Description</th>
+                                                    <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -128,12 +129,44 @@ if (isset($_GET['return'])) {
                                                         $manufacturerName        = $rowManufacturer->name;
                                                         // $distributorId       = $rowManufacturer['distributor_id'];
                                                         $manufacturerDsc         = $rowManufacturer->dsc;
+                                                        $manufacturerStatus      = $rowManufacturer->manu_status;
 
+                                                        $statusLabel = '';
+                                                        $statusColor = '';
+                                                        switch ($manufacturerStatus) {
+                                                            case 0:
+                                                                $statusLabel = 'Disabled';
+                                                                $statusColor = 'red';
+                                                                break;
+                                                            case 1:
+                                                                $statusLabel = 'Pending';
+                                                                $statusColor = '#4e73df';
+                                                                break;
+                                                            case 2:
+                                                                $statusLabel = 'Active';
+                                                                $statusColor = 'green';
+                                                                break;
+                                                            default:
+                                                                $statusLabel = 'Disabled';
+                                                                break;
+                                                        }
 
                                                         echo  '<tr>
                                                                 <td>' . $manufacturerId . '</td>
                                                                 <td>' . $manufacturerName . '</td>
                                                                 <td>' . $manufacturerDsc . '</td>
+                                                                <td> 
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-secondary dropdown-toggle bg-white border-0 " type="button" id="statusDropdown' . $manufacturerId . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: ' . $statusColor . ';">
+                                                                            ' . $statusLabel . '
+                                                                        </button>
+                                                                        <div class="dropdown-menu" aria-labelledby="statusDropdown' . $manufacturerId . '">
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $manufacturerId . ', 0, this)">Disabled</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $manufacturerId . ', 1, this)">Pending</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $manufacturerId . ', 2, this)">Active</a>
+                                                                        </div>
+                                                                    </div>
+                                                                 </td>   
                                                                 <td>
                                                                     <a class="" data-toggle="modal" data-target="#manufacturerModal" onclick="manufViewAndEdit(' . $manufacturerId . ')"><i class="fas fa-edit"></i></a>
 
@@ -255,11 +288,27 @@ if (isset($_GET['return'])) {
                 '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of viewAndEdit function
-        // <?php
-            // $tp =  gettype("manufacturerId");
-            // echo $tp;
-            // 
-            ?>
+
+        function updateStatus(manufacturerId, newStatus) {
+
+            if (confirm('Are you sure you want to change the status?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/medicy.in/admin/ajax/manufactureStatus.update.ajax.php',
+                    data: {
+                        manufacturerId: manufacturerId,
+                        newStatus: newStatus
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error updating status:', error);
+                    }
+                });
+            }
+        } // end distributor status //
 
         //delete manufacturer
         const customDel = (id) => {

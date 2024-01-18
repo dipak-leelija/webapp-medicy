@@ -375,12 +375,12 @@ class Products extends DatabaseConnection
             } else {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
-                    $data[] = $row;
+                    $data = $row;
                 }
 
                 $stmt->close();
 
-                return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $data]);
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
             }
         } catch (Exception $e) {
 

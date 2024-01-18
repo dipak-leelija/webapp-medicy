@@ -219,7 +219,12 @@
 
 
         <!-- Purchase Master collapsed Menu  -->
-        <li
+        <li class="nav-item <?= $page ==  "purchesmaster" || $page ==  "purchesmaster"? "active" : '' ?>">
+            <a class="nav-link" href="purchesmaster.php">
+                <i class="fas fa-users"></i>
+                <span>Purchase Master</span></a>
+        </li>
+        <!-- <li
             class="nav-item <?php if($page ==  "distributor" || $page ==  "manufacturer" || $page ==  "pack-unit" || $page ==  "product-unit"){ echo "active";} ?>">
             <a class="nav-link <?php if($page !=  "distributor"){ echo "collapsed";} ?>" href="#" data-toggle="collapse"
                 data-target="#collapseUtilities"
@@ -243,7 +248,7 @@
                         href="product-unit.php">Product Unit </a>
                 </div>
             </div>
-        </li>
+        </li> -->
         <!--/end Purchase Master collapsed Menu  -->
 
 

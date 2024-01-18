@@ -3,6 +3,7 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'idsgeneration.class.php';
 
 
+
 class LoginForm extends DatabaseConnection
 {
 
@@ -27,7 +28,7 @@ class LoginForm extends DatabaseConnection
                     $_SESSION['ADMIN']          = false;
                     $_SESSION['USER_TYPE']      = 'USER';
                     $_SESSION['EMP_EMAIL']      = $email;
-                    $_SESSION['EMP_CONTACT_NO'] = $data->emp_contact_no;
+                    $_SESSION['EMP_CONTACT_NO'] = $data->contact;
                     $_SESSION['EMP_ROLE']       = $data->emp_role;
                     $_SESSION['EMP_NAME']       = $data->emp_name;
                     $_SESSION['EMP_IMG']        = $data->emp_img;
@@ -36,6 +37,8 @@ class LoginForm extends DatabaseConnection
                     $_SESSION['EMP_PASSWORD']   = $data->emp_password;
                     $_SESSION['EMPID']          = $data->emp_id;
                     $_SESSION['ADMIN_ID']       = $data->admin_id;
+
+                    $this->insertLoginTime($data->admin_id, $data->emp_id, NOW);
 
                     header("Location: " . URL);
                     exit;
@@ -121,9 +124,7 @@ class LoginForm extends DatabaseConnection
 
 
                         // Insert login time into login_time table
-                        // $adminId = $_SESSION['ADMINID'];
-                        // $loginTime = date('Y-m-d H:i:s');
-                        // $this->insertLoginTime($adminId, $loginTime);
+                        $this->insertLoginTime($admData1->admin_id, null, NOW);
 
 
                         header("Location: " . URL);
@@ -138,15 +139,15 @@ class LoginForm extends DatabaseConnection
 
 
     /// =======for login time =========///
-    // function insertLoginTime($adminId, $loginTime)
-    // {
-    //     $sql = "INSERT INTO login_time (id, login_time) VALUES ('$adminId', '$loginTime')";
-    //     $result = $this->conn->query($sql);
-    //     if ($result) {
-    //         return true;
-    //     } else {
-    //         error_log("Error inserting login time: " . $this->conn->error);
-    //         return false; 
-    //     }
-    // }
+    function insertLoginTime($adminId, $empId, $loginTime)
+    {
+        $sql = "INSERT INTO login_activity (admin_id, emp_id, login_time) VALUES ('$adminId', '$empId', '$loginTime')";
+        $result = $this->conn->query($sql);
+        if ($result) {
+            return true;
+        } else {
+            error_log("Error inserting login time: " . $this->conn->error);
+            return false; 
+        }
+    }    
 }

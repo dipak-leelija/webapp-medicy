@@ -44,23 +44,20 @@ if($ProductBatchData != ''){
 
         $prodNameFetch = $Products->showProductsById($productId);
         $prodNameFetch = json_decode($prodNameFetch,true);
+        
         if(isset($prodNameFetch['status']) && $prodNameFetch['status'] == '1'){
-            foreach($prodNameFetch['data'] as $productData){
-                $prodName = $productData['name'];
-            } 
+            $productData = $prodNameFetch['data'];
+            $prodName = $productData['name']; 
         }else{
             $prodName = 'No Data Found';
         }
-        // foreach($prodNameFetch['data'] as $productData){
-        //     $prodName = $productData['name'];
-        // }
 
-        $prodBatch   = $itemData->batch_no;
-        $qantity   = $itemData->qty;
-        $looseQty   = $itemData->loosely_count;
-        $weightage   = $itemData->weightage;
-        $unit        = $itemData->unit;
-        $packOf      = $weightage.'/'.$unit;
+        $prodBatch      = $itemData->batch_no;
+        $qantity        = $itemData->qty;
+        $looseQty       = $itemData->loosely_count;
+        $weightage      = $itemData->weightage;
+        $unit           = $itemData->unit;
+        $packOf         = $weightage.'/'.$unit;
         ?>
             <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" value="<?php echo $prodBatch ?>" value1="<?php echo $id ?>" onclick="stockDetails('<?php echo $productId ?>','<?php echo $prodBatch ?>', '<?php echo $id ?>', this.id, this.value, this.value1);">
                 <!-- <div class="col-md-5"><?php echo $prodName ?></div> -->

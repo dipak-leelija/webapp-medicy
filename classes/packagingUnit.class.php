@@ -2,17 +2,17 @@
 
 class PackagingUnits extends DatabaseConnection{
 
-    function addPackagingUnit($unitName, $addedby, $addedOn, $adminId) {
+    function addPackagingUnit($unitName, $addedby, $addedOn, $packStatus, $adminId) {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO packaging_type (`unit_name`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?)";
+            $insert = "INSERT INTO packaging_type (`unit_name`, `added_by`, `added_on`,`pack_status`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
             
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
     
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("ssss", $unitName, $addedby, $addedOn, $adminId);
+                $stmt->bind_param("sssis", $unitName, $addedby, $addedOn, $packStatus, $adminId);
     
                 // Execute the query
                 $insertQuery = $stmt->execute();
@@ -54,6 +54,27 @@ class PackagingUnits extends DatabaseConnection{
         }
     }
 
+    ///======= Update Packaging Status ======///
+    function updatePackStatus($newStatus , $packagingUnitId){
+        try {
+            $update = "UPDATE `packaging_type` SET `pack_status` = ? WHERE `id` = ?";
+            
+            $stmt = $this->conn->prepare($update);
+    
+            if ($stmt) {
+                $stmt->bind_param("ii", $newStatus, $packagingUnitId);
+    
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    } ///======= End Update Packaging Status ======///
 
 
     function showPackagingUnits(){
@@ -79,6 +100,16 @@ class PackagingUnits extends DatabaseConnection{
         }
     }//eof showMeasureOfUnits
 
+    function packagingTypeName($unitId){
+        $select        = " SELECT unit_name FROM packaging_type WHERE `id` = '$unitId'";
+        $selectQuery   = $this->conn->query($select);
+        if ( $selectQuery->num_rows > 0) {
+            while ($result = $selectQuery->fetch_array() ) {
+                $data = $result['unit_name'];
+            }
+            return $data;
+        }
+    }//eof showMeasureOfUnits
 
 
 
