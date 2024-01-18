@@ -81,45 +81,43 @@ $Request = new Request;
 
         if ($addProductRequest === true) {
 
-            for ($j = 0; $j < $imageArrayCaount && $j < $tempImageArrayCaount; $j++) {
+            for ($i = 0, $j = 0; $i < $imageArrayCaount && $j < $tempImageArrayCaount; $i++, $j++) {
                 ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
-
                 $imgStatus = 0;
 
                 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $randomString = '';
-                for ($i = 0; $i < 9; $i++) {
+
+                for ($k = 0; $k < 9; $k++) {
                     $randomString .= $characters[rand(0, strlen($characters) - 1)];
                 }
 
-                $randomString = $randomString;
-
                 ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
                 //===== Main Image 
-                $imageNmame        = $imagesName[$j];
-                $tempImgname   = $tempImgsName[$j];
+                $image          = $imagesName[$i];
+                $tempImage        = $tempImgsName[$j];
 
-                $extention = substr($imageNmame, -4);
-                $imageNm = substr($imageNmame, 0, -4);
 
-                if ($imageNmame != null) {
+                $extention = substr($image, -4);
+                $imageFileName = substr($image, 0, -4);
 
-                    $image         = $imageNm . '-' . $randomString . $extention;
-                    $imgFolder     = PROD_IMG . $image;
 
-                    // echo $image."<br>";
+                if ($imageFileName != null) {
 
-                    move_uploaded_file($tempImgname, $imgFolder);
-                    $image         = addslashes($image);
+                    $imageFile  =   $imageFileName . '-' . $randomString . $extention;
+                    $imgFolder     = PROD_IMG . $imageFile;
 
+                    move_uploaded_file($tempImage, $imgFolder);
+                    $image         = addslashes($imageFile);
                 } else {
-                    $image = '';
+                    $image = null;
                 }
 
-
-                $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
-
-                // print_r($addImagesRequest);
+                if($image != null){
+                    $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
+                } else {
+                    $addImagesRequest = true;
+                }
             }
 
     ?>
