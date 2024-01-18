@@ -129,9 +129,11 @@ if (isset($_GET["availibility"])) {
 
     $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["availibility"], $_GET["batchNo"]);
 
+    $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
     foreach($stock as $stock){
         // print_r($stock);
-        if ($stock['unit'] == 'Tablets' || $stock['unit'] == 'Capsules') {
+        if (in_array(strtolower($stock['unit']), $allowedUnits)) {
             $availibility = $stock['loosely_count'];
         } else {
             $availibility = $stock['qty'];

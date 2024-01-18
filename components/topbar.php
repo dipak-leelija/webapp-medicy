@@ -180,7 +180,7 @@
                 if ($_SESSION['ADMIN']){
                     $imagePath = ADM_IMG_PATH . $userImg;
                 }else{
-                    $imagePath = USER_IMG_PATH . $userImg;
+                    $imagePath = EMPLOYEE_IMG_PATH . $userImg;
                 } 
                 ?>
 

@@ -101,99 +101,8 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId();
 
 
                     <!-- CONTENT USER DATA ROW -->
-                        <div class="row">
-
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "soldby.php"; ?>
-                            </div>
-                        </div>
 
                     <!-- Content Row -->
-                    <!-- <?php
-                    if ($userRole != 1 || $userRole == 'SUPER_ADMIN') : ?> -->
-                        <div class="row">
-                            <!-- Earnings (Monthly) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-primary shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                        Total Appointments</div>
-                                                    <div class="col-auto mr-n3">
-                                                        <i class="fas fa-calendar-check"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    <?php echo $totalAppointmentsCount; ?> </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"> </div>
-                                        <p class="mb-0 pb-0"><small class="mb-0 pb-0">
-                                                Lab Appointments: <?php echo ($labAppointment > 0) ? $labAppointment : '0'; ?></small></p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Earnings (Monthly) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <?php require_once SUP_ROOT_COMPONENT . "newPatient.php"; ?>
-                            </div>
-
-                            <!-- Earnings (Monthly) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-info shadow h-100 py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Patient
-                                                        Treated
-                                                    </div>
-                                                    <div class="col-auto mr-n3">
-                                                        <i class="fas fa-theater-masks"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col-auto">
-                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0</div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="progress progress-sm mr-2">
-                                                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pending Requests Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card border-left-warning shadow h-100 py-2 pending_border">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                        Pending Requests</div>
-                                                    <div class="col-auto  mr-n3">
-                                                        <i class="fas fa-pencil-ruler"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <!-- <?php endif; ?> -->
-
                         <!-- ================ THIRD ROW ================ -->
                         <div class="row">
 
@@ -244,48 +153,6 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId();
                             </div>
 
                         </div>
-
-                        <!-- ================== SECOND ROW ================== -->
-                        <div class="row">
-
-                            <!------------- SALES MARGIN CARD -------------->
-                            <!-- <div class="col-xl-6 col-md-12"> -->
-                            <?php //require_once ROOT_COMPONENT . "salesmargin.php"; 
-                            ?>
-                            <!-- </div> -->
-                            <!------------- END of SALES MARGIN CARD -------------->
-
-                            <div class="col-xl-6 col-md-6">
-                                <!------------- NEEDS TO COLLECT PAYMENTS -------------->
-                                <?php require_once SUP_ROOT_COMPONENT . "needstocollect.php"; ?>
-                                <!------------- END NEEDS TO COLLECT PAYMENTS -------------->
-
-                            </div>
-
-                            <div class="col-xl-6 col-md-6">
-                                <!------------- NEEDS TO PAY  -------------->
-                                <?php require_once SUP_ROOT_COMPONENT . "needtopay.php"; ?>
-                                <!------------- END NEEDS TO PAY  -------------->
-                            </div>
-
-                        </div>
-                        <!-- ================ END SECOND ROW ================ -->
-
-                        <!-- ================ STRAT THIRD ROW ================ -->
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <!-- Current Stock Quantity & MRP  -->
-                                <?php require_once SUP_ROOT_COMPONENT . "stock-qty-mrp.php"; ?>
-                            </div>
-                            <div class="col-xl-9 col-md-6">
-                                <!------------- Stock Summary -------------->
-                                <?php require_once SUP_ROOT_COMPONENT . "stock-summary.php"; ?>
-                                <!------------- end Stock Summary -------------->
-
-                            </div>
-                        </div>
-                        <!-- ================ END OF THIRD ROW ================ -->
-
 
                 </div>
                 <!-- /.container-fluid -->

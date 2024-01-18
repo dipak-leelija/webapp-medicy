@@ -1,6 +1,7 @@
 <?php
 require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
+require_once CLASS_DIR.'encrypt.inc.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'hospital.class.php';
@@ -17,7 +18,7 @@ require_once CLASS_DIR . 'manufacturer.class.php';
 $HelthCare       = new HealthCare();
 $Doctors         = new Doctors();
 $Patients        = new Patients();
-$IdsGeneration    = new IdsGeneration();
+$IdsGeneration   = new IdsGeneration();
 $StockOut        = new StockOut();
 $CurrentStock    = new CurrentStock();
 $Manufacturur    = new Manufacturer();
@@ -28,11 +29,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     $customerName   = $_POST['customer-name'];
-    $patientId     = $_POST['customer-id'];
-    $patientAge = '';
-    $patientPhno = '';
-
-    //echo $patientId; 
+    $patientId      = $_POST['customer-id'];
+    $patientAge     = '';
+    $patientPhno    = '';
+ 
     if ($patientId != 'Cash Sales') {
         $patientName = $Patients->patientsDisplayByPId($patientId);
         $patientName = json_decode($patientName);
@@ -53,8 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $disc = $totalMrp - $billAmout;
 
     $status = '1';
-    $addedBy;
-    $addedOn        = NOW;
 
     // echo "<br>Invoice id : $invoiceId<br>";
     // echo "Paticent id check : $patientId<br>";
@@ -103,9 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['submit'])) {
         $invoiceId = $IdsGeneration->pharmecyInvoiceId();
 
-        $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $status, $billdate, $addedBy, $addedOn, $adminId);
-        // print_r($StockOut);
-        // $stockOut = true;
+        $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $status, $billdate, $addedBy, NOW, $adminId);
 
         if ($stockOut) {
             for ($i = 0; $i < count($prductId); $i++) {
@@ -113,7 +109,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $ItemUnit = preg_replace("/[^a-z-A-Z]/", '', $weightage[$i]);
                 $ItemWeightage = preg_replace("/[^0-9]/", '', $weightage[$i]);
 
-                // if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') 
                 if (in_array(strtolower($ItemUnit), $allowedUnits)){
 
                     $itemSellQty = $qty[$i];
@@ -134,20 +129,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // print_r($productDetails);
 
                 foreach ($productDetails as $itemData) {
-                    $productID = $itemData['product_id'];
-                    $BatchNo = $itemData['batch_no'];
-                    $ExpairyDate = $itemData['exp_date'];
-                    $Weightage = $itemData['weightage'];
-                    $Unit = $itemData['unit'];
-                    $MRP = $itemData['mrp'];
-                    $PTR = $itemData['ptr'];
-                    $GST = $itemData['gst'];
-                    $LooselyPrice = $itemData['loosely_price'];
-                    $itemQty = $itemData['qty'];
-                    $itemLooseQty = $itemData['loosely_count'];
+                    $productID      = $itemData['product_id'];
+                    $BatchNo        = $itemData['batch_no'];
+                    $ExpairyDate    = $itemData['exp_date'];
+                    $Weightage      = $itemData['weightage'];
+                    $Unit           = $itemData['unit'];
+                    $MRP            = $itemData['mrp'];
+                    $PTR            = $itemData['ptr'];
+                    $GST            = $itemData['gst'];
+                    $LooselyPrice   = $itemData['loosely_price'];
+                    $itemQty        = $itemData['qty'];
+                    $itemLooseQty   = $itemData['loosely_count'];
                 }
-
-
 
 
                 $stockOutDetails = $StockOut->addStockOutDetails(intval($invoiceId), intval($itemId[$i]), $prductId[$i], $prodName[$i], $batchNo[$i], $expDate[$i], $ItemWeightage, $ItemUnit, $wholeCount, $looseCount, floatval($mrp[$i]), floatval($ptr[$i]), $discountPercent[$i], $gstparcent[$i], floatval($gstAmountPerItem[$i]), floatval($marginPerItem[$i]), floatval($taxable[$i]), floatval($amount[$i]));
@@ -155,7 +148,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
 
-                // if ($ItemUnit == 'Tablets' || $ItemUnit == 'Capsules') 
                 if (in_array(strtolower($ItemUnit), $allowedUnits)){
                     $updatedLooseCount     = intval($itemLooseQty) - intval($itemSellQty);
                     $UpdatedNewQuantity   = intval($updatedLooseCount / $ItemWeightage);
@@ -164,8 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updatedLooseCount = 0;
                 }
 
-                // echo "<br><br>UPDATED CURRENT STOCK QTY : $UpdatedNewQuantity";
-                // echo "<br>UPDATED CURRENT LOOSE QTY : $updatedLooseCount";
 
                 $updateCurrentStock = $CurrentStock->updateStockOnSell($itemId[$i], $UpdatedNewQuantity, $updatedLooseCount);
                 // print_r($updateCurrentStock);
@@ -174,13 +164,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-
+header("Location: item-invoice-reprint.php?id=".url_enc($invoiceId));
+exit;
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -190,13 +180,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/test-bill.css">
 
 </head>
-
-
 <body>
     <div class="custom-container">
-        <div class="custom-body <?php if ($pMode != 'Credit') {
-                                    echo "paid-bg";
-                                } ?>">
+        <div class="custom-body <?= $pMode != 'Credit' ?  "paid-bg" : ""; ?>">
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
@@ -317,7 +303,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         // print_r($manufDetail);
                         if (isset($manufDetail['status']) && $manufDetail['status'] == '1') {
                             $data = $manufDetail['data'];
-                            echo $manufSName = $data['short_name'];
+                            $manufSName = $data['short_name'];
                         } else {
                             $manufSName = $data['name'];
                         }
@@ -372,9 +358,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ?>
 
             </div>
-            <!-- </div> -->
 
-            <!-- </div> -->
             <div class="footer">
                 <hr calss="my-0" style="height: 1px;">
 

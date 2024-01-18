@@ -181,6 +181,33 @@ class Manufacturer extends DatabaseConnection{
     }
     
 
+    function manufacturerShortName($manufacturerId) {
+        try {
+            $select = "SELECT short_name FROM `manufacturer` WHERE `manufacturer`.`id` = ?";
+            $stmt = $this->conn->prepare($select);
+    
+            $stmt->bind_param("s", $manufacturerId); 
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_object()) {
+                    $data = $row->short_name;
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => '', 'data' => $data]);
+            } else {
+                $stmt->close();
+                return json_encode(['status' => '0', 'message' => '', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            
+            return json_encode(['status' => '', 'message' => $e->getMessage(), 'data' => '']);
+        }
+        return 0;
+    }
+
 
 
 

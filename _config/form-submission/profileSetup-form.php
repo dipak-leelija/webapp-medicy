@@ -40,27 +40,14 @@ $Employees = new Employees;
             $imageName         = $_FILES['profile-image']['name'];
             $tempImgName       = $_FILES['profile-image']['tmp_name'];
 
-
-            $fname = $_POST['fname'];
-            $lname = $_POST['lname'];
-            // $userName = $_POST['user-name'];
-            $email = $_POST['email'];
-            $phNo = $_POST['mobile-number'];
-
-            // $cnfPass = $_POST['cpassword'];
+            $fname   = $_POST['fname'];
+            $lname   = $_POST['lname'];
+            $email   = $_POST['email'];
+            $phNo    = $_POST['mobile-number'];
             $address = $_POST['address'];
 
-            // echo "<br>$fname";
-            // echo "<br>$lname";
-            // echo "<br>$imageName";
-            // echo "<br>$email";
-            // echo "<br>$phNo";
-            // echo "<br>$address";
-            // echo "<br>$employeeId";
-            // echo "<br>$adminId";
-
             $flag = 0;
-
+            
             if (!empty($_FILES['profile-image']['name'])) {
                 if ($_SESSION['ADMIN']) {
 
@@ -79,7 +66,8 @@ $Employees = new Employees;
                         $flag = 1;
                     }
                 } else {
-
+                    print_r($_SESSION);
+                    
                     $prevImage = $_SESSION['EMP_IMG']; 
                     if(!empty($prevImage) && file_exists(EMP_IMG_DIR . $prevImage)){
                         unlink(EMP_IMG_DIR . $prevImage);

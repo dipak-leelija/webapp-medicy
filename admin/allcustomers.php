@@ -75,7 +75,9 @@ if ($adminDetails->status) {
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -111,47 +113,25 @@ if ($adminDetails->status) {
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
 
-                        <div class="card-header py-3 justify-content-between">
+                        <div class="card-header row justify-content-between py-3 m-0">
 
-                            <div class="col-12 d-flex justify-content-between">
-                                <div class="">
-                                    <h6 class="font-weight-bold text-primary">Total Customer: <?= $totalItem ?> </h6>
-                                </div>
+                            <div class="col-12 col-sm-3 d-flex justify-content-start align-items-center">
+                                <h6 class="font-weight-bold text-primary mb-0">Total Customer: <?= $totalItem ?>
+                                </h6>
                             </div>
 
+                            <div class="col-12 mt-2 col-sm-6 mt-sm-0 ">
+                                <div class="input-group">
+                                    <input class="cvx-inp" type="text" placeholder="Customer ID / Customer Name ..."
+                                        name="appointment-search" id="appointment_search" style="outline: none;"
+                                        value="<?= isset($match) ? $match : ''; ?>">
 
-                            <div class="row mt-2">
-                                <!-- <div class="d-flex"> -->
-                                <div class="col-md-6 col-6 mt-2">
-                                    <div class="input-group">
-                                        <input class="cvx-inp" type="text" placeholder="Customer ID / Customer Name ..." name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
-
-                                        <div class="input-group-append">
-                                            <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointment()"><i class="fas fa-search"></i></button>
-                                        </div>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button"
+                                            id="button-addon" onclick="filterAppointment()"><i
+                                                class="fas fa-search"></i></button>
                                     </div>
                                 </div>
-                                <!-- </div> -->
-                                <!-- <div class="col-md-3 col-3 mt-2">
-                                    <select class="cvx-inp1" id="added_by" onchange="filterAppointmentByValue(this)">
-                                        <option value="" disabled="" selected="">Select Admin</option>
-                                        <?php
-
-                                        // foreach ($employeeDetails as $employeeData) {
-                                        //     echo '<option value="' . $employeeData->emp_id . '">' . $employeeData->emp_name . '</option>';
-                                        // }
-
-                                        if ($adminDetails && isset($adminDetails->status) && $adminDetails->status == 1 && isset($adminDetails->data)) {
-                                            foreach ($adminDetails->data as $admin) {
-                                                $username = $admin->username;
-                                                $adminID  =  $admin->admin_id;
-                                                echo '<option value="' . $admin->admin_id . '">' . $username . '</option>';
-                                            }
-                                        }
-                                        ?>
-
-                                    </select>
-                                </div> -->
                             </div>
 
                         </div>
@@ -159,7 +139,8 @@ if ($adminDetails->status) {
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
+                                <table class="table table-sm table-bordered sortable-table" id="appointments-dataTable"
+                                    width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Customer ID</th>
@@ -253,7 +234,8 @@ if ($adminDetails->status) {
         <i class="fas fa-angle-up"></i>
     </a>
     <!-- Select Appointment Type Modal  -->
-    <div class="modal fade" id="appointmentSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="appointmentSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog centered" role="document">
             <div class="modal-content">
                 <div class="modal-body d-flex justify-content-around align-items-center py-4">
@@ -270,7 +252,8 @@ if ($adminDetails->status) {
     <!--/end Select Appointment Type Modal  -->
 
     <!-- View & Edit Appointment Modal -->
-    <div class="modal fade AppointmntViewAndEdit" tabindex="-1" role="dialog" aria-labelledby="AppointmntViewAndEditLabel" aria-hidden="true">
+    <div class="modal fade AppointmntViewAndEdit" tabindex="-1" role="dialog"
+        aria-labelledby="AppointmntViewAndEditLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -300,50 +283,50 @@ if ($adminDetails->status) {
     <script src="<?php echo JS_PATH ?>custom-js.js"></script>
     <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
     <script>
-        $(function() {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
     </script>
 
     <script>
-        $(document).ready(function() {
-            $(document).on("click", ".delete-btn", function() {
+    $(document).ready(function() {
+        $(document).on("click", ".delete-btn", function() {
 
-                if (confirm("Are You Sure?")) {
-                    apntID = $(this).data("id");
-                    btn = this;
+            if (confirm("Are You Sure?")) {
+                apntID = $(this).data("id");
+                btn = this;
 
-                    $.ajax({
-                        url: "ajax/appointment.delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            id: apntID
-                        },
-                        success: function(data) {
-                            if (data == 1) {
-                                $(btn).closest("tr").fadeOut()
-                            } else {
-                                $("#error-message").html("Deletion Field !!!").slideDown();
-                                $("success-message").slideUp();
-                            }
-
+                $.ajax({
+                    url: "ajax/appointment.delete.ajax.php",
+                    type: "POST",
+                    data: {
+                        id: apntID
+                    },
+                    success: function(data) {
+                        if (data == 1) {
+                            $(btn).closest("tr").fadeOut()
+                        } else {
+                            $("#error-message").html("Deletion Field !!!").slideDown();
+                            $("success-message").slideUp();
                         }
-                    });
-                }
-                return false;
-            })
 
+                    }
+                });
+            }
+            return false;
         })
+
+    })
     </script>
     <script>
-        appointmentViewAndEditModal = (appointmentTableID) => {
+    appointmentViewAndEditModal = (appointmentTableID) => {
 
-            let url = "ajax/appointment.view.ajax.php?appointmentTableID=" + appointmentTableID;
-            $(".view-and-edit-appointments").html(
-                '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
+        let url = "ajax/appointment.view.ajax.php?appointmentTableID=" + appointmentTableID;
+        $(".view-and-edit-appointments").html(
+            '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
+            url + '"></iframe>');
 
-        } // end of LabCategoryEditModal function
+    } // end of LabCategoryEditModal function
     </script>
 
     <!-- Core plugin JavaScript-->
@@ -355,60 +338,61 @@ if ($adminDetails->status) {
 
 
     <script>
-        const filterAppointmentByValue = (t) => {
+    const filterAppointmentByValue = (t) => {
 
-            document.getElementById('dtPickerDiv').style.display = 'none';
+        document.getElementById('dtPickerDiv').style.display = 'none';
 
-            key = t.id;
-            val = t.value;
-            print_r(key);
+        key = t.id;
+        val = t.value;
+        print_r(key);
 
-            if (val != 'CR') {
-                var currentURL = window.location.href;
+        if (val != 'CR') {
+            var currentURL = window.location.href;
 
-                // Get the current URL without the query string
-                var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-
-                var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
-
-                window.location.replace(newURL);
-            }
-
-            if (val == 'CR') {
-                document.getElementById('dtPickerDiv').style.display = 'block';
-            }
-        }
-
-
-        const customDate = () => {
-            let fromDate = document.getElementById('from-date').value;
-            let toDate = document.getElementById('to-date').value;
-
-            //fetch current url and pathname
+            // Get the current URL without the query string
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            // create new url with added value to previous url
-            var newUrl = `${currentURLWithoutQuery}?search=${'added_on'}&searchKey=${'CR'}&fromDt=${fromDate}&toDt=${toDate}`;
-            // replace previous url with new url
-            window.location.replace(newUrl);
+
+            var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
+
+            window.location.replace(newURL);
         }
 
-
-        const filterAppointment = () => {
-
-            // document.getElementById('dtPickerDiv').style.display = 'none';
-
-            var key = document.getElementById("appointment_search").id;
-            var val = document.getElementById("appointment_search").value;
-            console.log(key);
-            console.log(val);
-            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            if (val.length > 2) {
-                var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
-                window.location.replace(newURL);
-            } else {
-                console.log("min 3 char");;
-            }
+        if (val == 'CR') {
+            document.getElementById('dtPickerDiv').style.display = 'block';
         }
+    }
+
+
+    const customDate = () => {
+        let fromDate = document.getElementById('from-date').value;
+        let toDate = document.getElementById('to-date').value;
+
+        //fetch current url and pathname
+        var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+        // create new url with added value to previous url
+        var newUrl =
+            `${currentURLWithoutQuery}?search=${'added_on'}&searchKey=${'CR'}&fromDt=${fromDate}&toDt=${toDate}`;
+        // replace previous url with new url
+        window.location.replace(newUrl);
+    }
+
+
+    const filterAppointment = () => {
+
+        // document.getElementById('dtPickerDiv').style.display = 'none';
+
+        var key = document.getElementById("appointment_search").id;
+        var val = document.getElementById("appointment_search").value;
+        console.log(key);
+        console.log(val);
+        var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+        if (val.length > 2) {
+            var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
+            window.location.replace(newURL);
+        } else {
+            console.log("min 3 char");;
+        }
+    }
     </script>
 
 </body>
