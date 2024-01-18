@@ -75,6 +75,7 @@ $PackagingUnits = new PackagingUnits();
                                                     <tr>
                                                         <th>SL. No.</th>
                                                         <th>Unit Name</th>
+                                                        <th>Status</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -84,11 +85,32 @@ $PackagingUnits = new PackagingUnits();
                                                     $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     foreach ($showPackagingUnits as $rowPackagingUnits) {
                                                         $unitId     = $rowPackagingUnits['id'];
-                                                        $unitName  = $rowPackagingUnits['unit_name'];
+                                                        $unitName   = $rowPackagingUnits['unit_name'];
+                                                        $packStatus = $rowPackagingUnits['pack_status'];
 
+                                                        $statusLabel = '';
+                                                        $statusColor = '';
+                                                        switch ($packStatus) {
+                                                            case 0:
+                                                                $statusLabel = 'Disabled';
+                                                                $statusColor = 'red';
+                                                                break;
+                                                            case 1:
+                                                                $statusLabel = 'Pending';
+                                                                $statusColor = '#4e73df';
+                                                                break;
+                                                            case 2:
+                                                                $statusLabel = 'Active';
+                                                                $statusColor = 'green';
+                                                                break;
+                                                            default:
+                                                                $statusLabel = 'Disabled';
+                                                                break;
+                                                        }
                                                         echo '<tr>
                                                                 <td>' . $unitId . '</td>
                                                                 <td>' . $unitName . '</td>
+                                                                <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                                                                 <td>
                                                                     <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $unitId . ')"><i class="fas fa-edit"></i></a>
     

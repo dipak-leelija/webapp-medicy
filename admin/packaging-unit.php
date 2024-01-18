@@ -2,9 +2,9 @@
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once SUP_ADM_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
 
 $page = "pack-unit";
 
@@ -44,7 +44,7 @@ $PackagingUnits = new PackagingUnits();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include SUP_ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include SUP_ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -54,7 +54,7 @@ $PackagingUnits = new PackagingUnits();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include SUP_ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include SUP_ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- =========================== Packaging of Units Content =========================== -->
@@ -75,6 +75,7 @@ $PackagingUnits = new PackagingUnits();
                                                     <tr>
                                                         <th>SL. No.</th>
                                                         <th>Unit Name</th>
+                                                        <th>Status</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -84,18 +85,50 @@ $PackagingUnits = new PackagingUnits();
                                                     $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                     foreach ($showPackagingUnits as $rowPackagingUnits) {
                                                         $unitId     = $rowPackagingUnits['id'];
-                                                        $unitName  = $rowPackagingUnits['unit_name'];
+                                                        $unitName   = $rowPackagingUnits['unit_name'];
+                                                        $packStatus = $rowPackagingUnits['pack_status'];
 
+                                                        $statusLabel = '';
+                                                        $statusColor = '';
+                                                        switch ($packStatus) {
+                                                            case 0:
+                                                                $statusLabel = 'Disabled';
+                                                                $statusColor = 'red';
+                                                                break;
+                                                            case 1:
+                                                                $statusLabel = 'Pending';
+                                                                $statusColor = '#4e73df';
+                                                                break;
+                                                            case 2:
+                                                                $statusLabel = 'Active';
+                                                                $statusColor = 'green';
+                                                                break;
+                                                            default:
+                                                                $statusLabel = 'Disabled';
+                                                                break;
+                                                        }
                                                         echo '<tr>
                                                                 <td>' . $unitId . '</td>
                                                                 <td>' . $unitName . '</td>
+                                                                <td>
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-secondary dropdown-toggle bg-white border-0 " type="button" id="statusDropdown' . $unitId . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: ' . $statusColor . ';">
+                                                                            ' . $statusLabel . '
+                                                                        </button>
+                                                                        <div class="dropdown-menu" aria-labelledby="statusDropdown' . $unitId . '">
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $unitId . ', 0, this)">Disabled</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $unitId . ', 1, this)">Pending</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $unitId . ', 2, this)">Active</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
                                                                 <td>
                                                                     <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $unitId . ')"><i class="fas fa-edit"></i></a>
     
                                                                     <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                             </tr>';
-                                                        }
+                                                    }
                                                     ?>
 
                                                 </tbody>
@@ -136,7 +169,7 @@ $PackagingUnits = new PackagingUnits();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once SUP_ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once SUP_ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -206,7 +239,27 @@ $PackagingUnits = new PackagingUnits();
                 url + '"></iframe>');
         } // end of viewAndEdit function
 
+        //update Packaging Unit status//
+        function updateStatus(unitId, newStatus) {
 
+            if (confirm('Are you sure you want to change the status?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/medicy.in/admin/ajax/packagingUnitStatus.update.ajax.php',
+                    data: {
+                        unitId: unitId,
+                        newStatus: newStatus
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error updating status:', error);
+                    }
+                });
+            }
+        } // end Packaging Unit status //
 
         //delete unit
 

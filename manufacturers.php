@@ -1,7 +1,7 @@
 <?php
 require_once 'config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once ROOT_DIR . '_config/accessPermission.php';
+
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
@@ -115,6 +115,7 @@ if (isset($_GET['return'])) {
                                                     <th>SL.</th>
                                                     <th>Name</th>
                                                     <th>Description</th>
+                                                    <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -128,12 +129,34 @@ if (isset($_GET['return'])) {
                                                         $manufacturerName        = $rowManufacturer->name;
                                                         // $distributorId       = $rowManufacturer['distributor_id'];
                                                         $manufacturerDsc         = $rowManufacturer->dsc;
+                                                        $manufacturerStatus      = $rowManufacturer->manu_status;
+
+                                                        $statusLabel = '';
+                                                        $statusColor = '';
+                                                        switch ($manufacturerStatus) {
+                                                            case 0:
+                                                                $statusLabel = 'Disabled';
+                                                                $statusColor = 'red';
+                                                                break;
+                                                            case 1:
+                                                                $statusLabel = 'Pending';
+                                                                $statusColor = '#4e73df';
+                                                                break;
+                                                            case 2:
+                                                                $statusLabel = 'Active';
+                                                                $statusColor = 'green';
+                                                                break;
+                                                            default:
+                                                                $statusLabel = 'Disabled';
+                                                                break;
+                                                        }
 
 
                                                         echo  '<tr>
                                                                 <td>' . $manufacturerId . '</td>
                                                                 <td>' . $manufacturerName . '</td>
                                                                 <td>' . $manufacturerDsc . '</td>
+                                                                <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                                                                 <td>
                                                                     <a class="" data-toggle="modal" data-target="#manufacturerModal" onclick="manufViewAndEdit(' . $manufacturerId . ')"><i class="fas fa-edit"></i></a>
 
@@ -255,11 +278,6 @@ if (isset($_GET['return'])) {
                 '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of viewAndEdit function
-        // <?php
-            // $tp =  gettype("manufacturerId");
-            // echo $tp;
-            // 
-            ?>
 
         //delete manufacturer
         const customDel = (id) => {

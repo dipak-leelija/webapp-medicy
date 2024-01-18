@@ -5,17 +5,17 @@ require_once 'dbconnect.php';
 class Manufacturer extends DatabaseConnection{
 
 
-    function addManufacturer($manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $adminId) {
+    function addManufacturer($manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $adminId) {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`, `added_by`, `added_on`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`, `added_by`, `added_on`, `manu_status`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("ssssss", $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn,    $adminId);
+                $stmt->bind_param("sssssis", $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
@@ -64,8 +64,28 @@ class Manufacturer extends DatabaseConnection{
         }
     }
 
+    ///======Uodate Manufacture Status=======///
+    function updateManuStatus($status, $manufacturerId){
+        try{
+            $update =  "UPDATE `manufacturer` SET `manu_status`=? WHERE `id`=?";
+            $stmt = $this->conn->prepare($update);
 
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("ii",$status, $manufacturerId);
 
+                // Execute the query
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        }catch(Exception $e){
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    } ///====== End Uodate Manufacture Status=======///
 
     function showManufacturer() {
         try {

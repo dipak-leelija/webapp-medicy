@@ -122,7 +122,7 @@ $showDistributor = $showDistributor->data;
                                                                 <td>' . $distributorPin . '</td>
                                                                 <td>
                                                                     <div class="dropdown">
-                                                                        <button class="btn btn-secondary dropdown-toggle bg-white border-0" type="button" id="statusDropdown' . $distributorId . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: ' . $statusColor . ';">
+                                                                        <button class="btn btn-secondary dropdown-toggle bg-white border-0 " type="button" id="statusDropdown' . $distributorId . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: ' . $statusColor . ';">
                                                                             ' . $statusLabel . '
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="statusDropdown' . $distributorId . '">
