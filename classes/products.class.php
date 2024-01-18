@@ -358,7 +358,7 @@ class Products extends DatabaseConnection
 
             $prodStmt->close();
 
-            $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ?";
+            $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ? AND old_prod_flag = 0";
             $prodReqStmt = $this->conn->prepare($selectProductRequest);
 
             if (!$prodReqStmt) {
@@ -486,7 +486,7 @@ class Products extends DatabaseConnection
 
             // ----- SEARCH FROM PRODUCT REQUEST TABLE ----------
             if ($match == 'all') {
-                $selectProdReq = "SELECT * FROM `product_request` LIMIT 6";
+                $selectProdReq = "SELECT * FROM `product_request` WHERE `admin_id` = '$adminId' LIMIT 6";
                 $prodReqStmt = $this->conn->prepare($selectProdReq);
             } else {
                 $selectProdReq = "SELECT * FROM `product_request` WHERE 
@@ -770,7 +770,7 @@ class Products extends DatabaseConnection
     
             if ($stmt->execute()) {
                 $stmt->close();
-                return json_encode(['status' => '1', 'message' => true]);
+                return true;
             } else {
                 return new Exception("Error updating data in the database: " . $stmt->error);
             }

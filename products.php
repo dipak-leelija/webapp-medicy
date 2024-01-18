@@ -169,17 +169,25 @@ if (isset($_GET['search'])) {
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
                                                         // print_r($item);
-                                                        $image = json_decode($ProductImages->showImageByPrimay($item->product_id));
+                                                        $image = json_decode($ProductImages->showImageById($item->product_id));
 
-                                                        if ($image->status != 0) {
+                                                        if ($image->status) {
                                                             $imgData = $image->data;
-                                                            // print_r($image);
-
-                                                            $productImage = $imgData->image;
+                                                        
+                                                            $productImage = $imgData[0]->image;
                                                         } else {
-                                                            $productImage = 'medicy-default-product-image.jpg';
-                                                        }
 
+                                                            $image = json_decode($ProductImages->showImageByPrimay($item->product_id, $adminId));
+
+                                                            if ($image->status) {
+                                                                $imgData = $image->data;
+                                                                // print_r($imgData);
+                                                                $productImage = $imgData[0]->image;
+                                                            }else{
+                                                                $productImage = 'default-product-image/medicy-default-product-image.jpg';
+                                                            }  
+                                                        }
+                                                        
                                                         if (property_exists($item, 'dsc')) {
                                                             if ($item->dsc == null) {
                                                                 $dsc = '';
@@ -319,9 +327,9 @@ if (isset($_GET['search'])) {
             let prodId = t.id;
             // let verifiedValue = t.value;
 
-            // url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId; // updated path for user view
+            // url = 'ajax/temp-product-view-modal.ajax.php?id=' + prodId; //temporary file path for user view and edit.
 
-            url = 'ajax/temp-product-view-modal.ajax.php?id=' + prodId; // temporary file path for user view and edit.
+            url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId; //  updated path for user.
 
             $(".productViewModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
@@ -374,6 +382,7 @@ if (isset($_GET['search'])) {
 
                 list.innerHTML = xmlhttp.responseText;
                 document.getElementById('product-list').style.display = 'block';
+
             } else if (searchVal == '') {
 
                 searchVal = 'all';

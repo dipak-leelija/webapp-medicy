@@ -432,6 +432,7 @@ const addData = () => {
         return;
     }
 
+    
     let existsItems = document.querySelectorAll('tr');
     for (let i = 0; i < existsItems.length; i++) {
         if (i > 0) {

@@ -6,18 +6,18 @@ class Distributor extends DatabaseConnection
 {
 
 
-    function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $adminId)
+    function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn,$distributorStatus, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`,`status`,`admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("sssissssss", $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $adminId);
+                $stmt->bind_param("sssisssssis", $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
@@ -33,9 +33,6 @@ class Distributor extends DatabaseConnection
             return false;
         }
     }
-
-
-
 
 
     function updateDist($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $updatedBy, $updatedOn, $distributorId)
@@ -68,8 +65,28 @@ class Distributor extends DatabaseConnection
 
 
 
+    function updateDistStatus($status, $distributorId){
+        try{
+            $update =  "UPDATE `distributor` SET `dis_status`=? WHERE `id`=?";
+            $stmt = $this->conn->prepare($update);
 
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("ii",$status, $distributorId);
 
+                // Execute the query
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        }catch(Exception $e){
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+       
+    }
 
 
     function distributorName($DistributorId)
@@ -148,12 +165,12 @@ class Distributor extends DatabaseConnection
                 while ($result  = $selectQuery->fetch_assoc()) {
                     $data = $result;
                 }
-                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$data]);
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
             } else {
-                return json_encode(['status'=>'0', 'message'=>'empty', 'data'=>array()]);
+                return json_encode(['status' => '0', 'message' => 'empty', 'data' => array()]);
             }
         } catch (Exception $e) {
-            return json_encode(['status'=>' ', 'message'=>$e->getMessage(), 'data'=>'']);
+            return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
         }
     } //eof showDistributorById functiion
 

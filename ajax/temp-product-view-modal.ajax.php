@@ -85,8 +85,12 @@ $QuantityUnit   = new QuantityUnit;
         }
 
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
+
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
-        // print_r($image );
+        
+        if ($image->status == 0){
+            $image  =   json_decode($ProductImages->showImageByPrimay($_GET['id'], $adminId));    
+        }
 
         if ($image->status) {
             $image = $image->data;
@@ -95,7 +99,7 @@ $QuantityUnit   = new QuantityUnit;
                 $productId = $image->product_id;
             }
         } else {
-            $Images[] = "medicy-default-product-image.jpg";
+            $Images[] = "default-product-image/medicy-default-product-image.jpg";
         }
 
         echo '<script>';

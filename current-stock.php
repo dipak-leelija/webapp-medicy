@@ -137,15 +137,20 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
                                                 $image               = json_decode($ProductImages->showImageById($productId));
 
-                                                $mainImage = 'medicy-default-product-image.jpg';
-
-                                                if ($image->status == 1) {
+                                                if ($image->status) {
                                                     $image = $image->data;
                                                     $mainImage = $image[0]->image;
                                                 } else {
-                                                    $mainImage == 'medicy-default-product-image.jpg';
-                                                }
+                                                    $image  =   json_decode($ProductImages->showImageByPrimay($productId, $adminId));
 
+                                                    // print_r($image);
+                                                    if ($image->status) {
+                                                        $image = $image->data;
+                                                        $mainImage = $image[0]->image;
+                                                    }else{
+                                                        $mainImage = 'default-product-image/medicy-default-product-image.jpg';
+                                                    }
+                                                }
 
                                                 // =============== fetch each product data from current stock group by product id ========================
 
@@ -191,7 +196,6 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                 <tr>
 
                                                     <td class='align-middle d-dlex'>
-
                                                         <img class="p-img" src="<?= PROD_IMG_PATH ?><?php echo $mainImage; ?>" alt="">
                                                         <img class="p-img ml-n4 position-absolute" src="<?= PROD_IMG_PATH ?><?php echo $mainImage; ?>" alt="">
 
@@ -245,10 +249,8 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                     </td>
                                                 </tr>
                                         <?php
-
-                                                // }
-                                                // }
-                                                // }
+                                            $mainImage = '';
+                                                
                                             }
                                         }
 
@@ -324,8 +326,21 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
     </div>
     <!-- End of View DeleteCurrentStockModal Modal -->
 
-    <!-- Bootstrap core JavaScript-->
+
+    <!-- Page level custom scripts -->
+    <!-- <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script> -->
+
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script>
+    <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+
+    <!-- Bootstrap core JavaScript-->
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
@@ -355,19 +370,6 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                 url + '"></iframe>');
         } // end of currentStockView function
     </script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="<?= PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-
-    <script src="<?= PLUGIN_PATH ?>product-table/jquery.dataTables.js"></script>
-    <script src="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
-
 </body>
 
 </html>
