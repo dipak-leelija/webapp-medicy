@@ -327,9 +327,9 @@ if (isset($_GET['search'])) {
             let prodId = t.id;
             // let verifiedValue = t.value;
 
-            // url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId; // updated path for user view
+            // url = 'ajax/temp-product-view-modal.ajax.php?id=' + prodId; //temporary file path for user view and edit.
 
-            url = 'ajax/temp-product-view-modal.ajax.php?id=' + prodId; // temporary file path for user view and edit.
+            url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId; //  updated path for user.
 
             $(".productViewModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +

@@ -4,20 +4,20 @@ require_once ROOT_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . "products.class.php";
-require_once CLASS_DIR . "productCategory.class.php";
 require_once CLASS_DIR . "quantityUnit.class.php";
 require_once CLASS_DIR . "packagingUnit.class.php";
 require_once CLASS_DIR . "itemUnit.class.php";
-require_once CLASS_DIR . 'gst.class.php';
-
+require_once CLASS_DIR . "productsImages.class.php";
+require_once CLASS_DIR . "manufacturer.class.php";
+require_once CLASS_DIR . "currentStock.class.php";
 
 $Products       = new Products();
-$ProductCategory = new ProductCategory;
 $PackagingUnits = new PackagingUnits();
 $ItemUnit       = new ItemUnit;
+$ProductImages  = new ProductImages();
+$Manufacturer   = new Manufacturer();
+$CurrentStock   = new CurrentStock();
 $QuantityUnit   = new QuantityUnit;
-$Gst = new Gst;
-
 
 ?>
 
@@ -29,246 +29,310 @@ $Gst = new Gst;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
-    <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Fontawsome Link -->
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>font-awesome.css">
-
-    <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <!-- new features added -->
-    <!-- <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet"> -->
-    <link href="<?php echo CSS_PATH ?>add-new-product.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/product-view-modal.css">
+    <style>
+        #main-img {
+            animation: show .5s ease;
+        }
+
+        @keyframes show {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        .height-4 {
+            height: 3rem;
+        }
+
+        .ob-cover {
+            width: 100%;
+            object-fit: cover;
+        }
+
+        #main-img {
+            width: 18rem;
+            height: 20rem;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
     <?php
     if (isset($_GET['id'])) {
-
-        $productId      = $_GET['id'];
-        $product        = json_decode($Products->showProductsById($_GET['id']));
+        $productId = $_GET['id'];
+        $product        = json_decode($Products->showProductsByIdOnUser($_GET['id'], $adminId));
         $product        = $product->data;
-        // print_r($product);
 
-        $prodCategory = json_decode($ProductCategory->selectAllProdCategory());
-        $prodCategoryList = $prodCategory->data;
+        if (property_exists($product[0], 'manufacturer_id')) {
+            $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]->manufacturer_id));
+        }else{
+            $manuf = json_encode(['status'=>0]);
+            $manuf = json_decode($manuf);
+        }
 
-        if ($product[0]->type != null) {
+        $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
 
-            if ($product[0]->type == 'allopathy') {
-                $prodCategoryId = '1';
-                $prodCategoryName = 'Allopathy';
-            } else {
-                $prodType = json_decode($ProductCategory->selectAllProdCategoryById($product[0]->type));
-                $prodType = $prodType->data;
+        $image          = json_decode($ProductImages->showImageById($_GET['id']));
+        
+        if ($image->status == 0){
+            $image  =   json_decode($ProductImages->showImageByPrimay($_GET['id'], $adminId));    
+        }
 
-                $prodCategoryId = $prodType[0]->id;
-                $prodCategoryName = $prodType[0]->name;
+        if ($image->status) {
+            $image = $image->data;
+            foreach ($image as $image) {
+                $Images[] = $image->image;
+                $productId = $image->product_id;
             }
+        } else {
+            $Images[] = "default-product-image/medicy-default-product-image.jpg";
         }
 
-        if ($product[0]->type == null) {
+        echo '<script>';
+        echo 'var productId = ' . json_encode($productId) . '; ';
+        echo '</script>';
 
-            $prodCategoryId = '';
-            $prodCategoryName = 'Select';
-        }
-
-
-
-        $packetUnit = $PackagingUnits->showPackagingUnits();
         $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
 
-        $itemQuantityUnit = $QuantityUnit->quantityUnitName($product[0]->unit_id);
-        $itemQuantityUnit = json_decode($itemQuantityUnit, true);
-        if ($itemQuantityUnit) {
-            if (isset($itemQuantityUnit['data']['short_name'])) {
-                $qantityName = $itemQuantityUnit['data']['short_name'];
+        if (property_exists($product[0], 'unit_id')) {
+            $itemQuantityUnit = json_decode($QuantityUnit->quantityUnitName($product[0]->unit_id));
+            $itemQuantityUnit = $itemQuantityUnit->data;
+
+            if ($itemQuantityUnit) {
+                $qantityName = $itemQuantityUnit->short_name;
             } else {
                 $qantityName = '';
             }
+        }else{
+            $qantityName = '';
         }
 
         $itemUnitName = $ItemUnit->itemUnitName($product[0]->unit);
-        $itemUnit = $ItemUnit->showItemUnits();
-
-        $gstData = json_decode($Gst->seletGst());
-        $gstData = $gstData->data;
 
 
-        if ($product[0]->gst != null) {
-            if ($product[0]->gst == '0') {
-                $prevGstId = '';
-                $prevGstVal = 'Select';
-            } else {
-                $col = 'id';
-                $gstVal = json_decode($Gst->seletGstByColVal($col, $product[0]->gst));
-                $gstVal = $gstVal->data;
-
-                $prevGstId = $product[0]->gst;
-                $prevGstVal = $gstVal[0]->percentage;
-            }
-        } else {
-            $prevGstId = '';
-            $prevGstVal = 'Select';
+        if(property_exists($product[0], 'comp_1')){
+            $comp1 = $product[0]->comp_1;
+        }else{
+            $comp1 = '';
         }
 
+        if(property_exists($product[0], 'comp_2')){
+            $comp2 = $product[0]->comp_2;
+        }else{
+            $comp2 = '';
+        }
+
+
+        if(property_exists($product[0], 'dsc')){
+            $dsc = $product[0]->dsc;
+        }else{
+            $dsc = '';
+        }
     ?>
-
-        <div class="col-12 d-flex justify-content-center container-fluid d-flex" style="min-height: 50vh; max-width: 150vh;">
-
-            <div class="col-12">
-                <form action="../_config/form-submission/update-new-product-data.php" enctype="multipart/form-data" method="post" id="update-new-product-data">
-                    <!-- product name row -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="col-md-12">
-                                <label class="mb-0 mt-1" for="product-name">Prodcut Name</label>
-                                <input class="c-inp w-100 p-1" id="product-name" name="product-name" value="<?php echo $product[0]->name ?>" required>
-
-                                <input class="c-inp w-100 p-1" id="product-id" name="product-id" value="<?php echo $product[0]->product_id ?>" required hidden>
+        <div class="container-fluid d-flex justify-content-center mt-2">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-4">
+                        <div class="">
+                            <div class="text-center border d-flex justify-content-center">
+                                <img src="<?= PROD_IMG_PATH ?><?php echo $Images[0]; ?>" class="rounded ob-cover animated--grow-in" id="main-img" alt="...">
                             </div>
-
-                        </div>
-                    </div>
-
-                    <!-- product packeging and category row -->
-                    <div class="row mt-2">
-                        <div class="d-flex col-12">
-                            <div class="col-md-6">
-                                <label class="mb-0 mt-1" for="product-catagory">Prodcut Catagory</label>
-                                <select class="c-inp p-1 w-100" name="product-catagory" id="product-catagory" required>
-
-                                    <option value='<?php echo $prodCategoryId; ?>'><?php echo $prodCategoryName; ?></option>
-
-                                    <?php
-
-                                    foreach ($prodCategoryList as $category) {
-
-                                        echo '<option value="' . $category->id . '">' . $category->name . '</option>';
-                                    }
-
-                                    ?>
-
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
-
-                                <label class="mb-0 mt-1" for="packeging-type">Packeging In</label>
-                                <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
-                                    <option value="<?php echo $product[0]->packaging_type ?>"> <?php echo $pack[0]['unit_name']; ?></option>
-                                    <?php
-                                    foreach ($packetUnit as $eachPackUnit) {
-                                        if ($eachPackUnit['unit_name'] == 'strip' || $eachPackUnit['unit_name'] == 'bottle' || $eachPackUnit['unit_name'] == 'tube' || $eachPackUnit['unit_name'] == 'box' || $eachPackUnit['unit_name'] == 'sachet' || $eachPackUnit['unit_name'] == 'packet' || $eachPackUnit['unit_name'] == 'jar' || $eachPackUnit['unit_name'] == 'Kit' || $eachPackUnit['unit_name'] == 'Bag' || $eachPackUnit['unit_name'] == 'vial' || $eachPackUnit['unit_name'] == 'ampoule' || $eachPackUnit['unit_name'] == 'Respules' || $eachPackUnit['unit_name'] == 'cartridge') {
-                                            echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- power and unit row  -->
-                    <div class="row mt-2">
-                        <div class="d-flex col-12">
-
-                            <div class="col-md-6">
-                                Qantity
-                                <input class="c-inp w-100 p-1 mt-1" id="qantity-unit" name="qantity-unit" placeholder="e.g. 10,20,200">
-
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="mb-0 mt-1" for="unit">Unit</label>
-                                <select class="c-inp p-1 w-100" id="unit" name="unit" required>
-                                    <option value="<?php echo $product[0]->unit ?>"><?php echo $itemUnitName ?></option>
-                                    <?php
-                                    foreach ($itemUnit as $eachUnit) {
-                                        if ($eachUnit['name'] == 'Tablets' || $eachUnit['name'] == 'Capsules' || $eachUnit['name'] == 'Soflets' || $eachUnit['name'] == 'Lozenges' || $eachUnit['name'] == 'Bolus' || $eachUnit['name'] == 'Syrup') {
-                                            echo "<option value='" . $eachUnit['id'] . "'>" . $eachUnit['name'] . "</option>";
-                                        }
-                                    }
-                                    ?>
-                                </select>
+                            <div class="row height-3 mt-2 justify-content-center">
+                                <?php foreach ($Images as $index => $imagePath) : ?>
+                                    <div class="col-2 border border-2 m-1 p-0">
+                                        <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class="rounded ob-cover h-100" alt="...">
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
-
-                    <!-- qantity and mrp row  -->
-                    <div class="row mt-2">
-                        <div class="d-flex col-12">
-                            <div class="col-md-6">
-                                <label class="mb-0 mt-1" for="medicine-power">Medicine Power</label>
-                                <input class="c-inp w-100 p-1" id="medicine-power" name="medicine-power" value="<?php echo $product[0]->power ?>" required>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="mb-0 mt-1" for="mrp">Enter MRP</label>
-                                <input class="c-inp w-100 p-1" id="mrp" name="mrp" value="<?php echo $product[0]->mrp ?>" required>
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex">
+                            <div class="text-start col-7 mb-0 pb-0">
+                                <h4><?php echo $product[0]->name; ?></h4>
+                                <h7><?php echo ($manuf->status) ? $manuf->data->name : "Manufacturer data not found"; ?></h7>
+                                <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
+                                <p class="fst-normal"><?php echo $product[0]->unit_quantity; ?>
+                                    <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
+                                <p>
+                                    <small>
+                                        <mark>
+                                            Current Stock have :
+                                            <?php
+                                            if ($itemstock != null) {
+                                                $qty = 0;
+                                                foreach ($itemstock as $itemQty) {
+                                                    $qty = $qty + $itemQty['qty'];
+                                                }
+                                                echo $qty;
+                                                if ($qty == 1) {
+                                            ?>
+                                                    Unit
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    Units
+                                                <?php
+                                                }
+                                            } else {
+                                                echo 0;
+                                                ?>
+                                                Unit
+                                            <?php
+                                                $qty = 0;
+                                            }
+                                            ?>
+                                        </mark>
+                                    </small>
+                                </p>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- gst and hsno number row  -->
-                    <div class="row mt-4">
+                        <div class="d-flex justify-content-center">
+                            <hr class="text-center w-100" style="height: 2px;">
+                            <!-- <hr class="divider d-md-block" style="height: 2px;> -->
+                        </div>
+                        <div class="text-start">
+                            <p>
+                                <b>Composition: </b>
+                                <br><?= $comp1; ?>
+                                <br><?= $comp2; ?>
+                            </p>
+
+                            <p><b>Description: </b> <br><?php echo $dsc; ?></p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-2" id="btn-ctrl-1">
                         <div class="col-md-12 d-flex">
-                            <div class="col-sm-6">
-                                <label class="mb-0 mt-1" for="gst">Enter GST</label>
-                                <select class="c-inp p-1 w-100" name="gst-percent" id="gst-percent" required>
-                                    <option value="<?php echo $prevGstId ?>"><?php echo $prevGstVal ?></option>
-                                    <?php
-                                    if (is_array($gstData)) {
-                                        foreach ($gstData as $gstPercent) {
-                                            echo '<option value="' . $gstPercent->id . '" >' . $gstPercent->percentage . '</option>';
-                                        }
-                                    }
-                                    ?>
-                                </select>
+                            <div class="col-sm-6 m-2">
+                                <a id="anchor" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
                             </div>
-
-                            <div class="col-sm-6">
-                                <label class="mb-0 mt-1" for="hsno-number">HSNO Number</label>
-                                <input class="c-inp w-100 p-1" id="hsno-number" name="hsno-number" value="<?php echo $product[0]->hsno_number ?>" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-12 d-flex justify-content-center">
-                            <button class="btn btn-primary col-sm-12" name="update-new-product-data" id="update-new-product-data" type="submit">Add</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <!-- <div class="col-6">
-                <div class="col-12">
-                    <div id="img-div">
-                        <div class="container-fluid" id="img-container">
-                            <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
-                            <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
-                            <p id="num-of-files">No files chosen</p>
-                            <div>
-                                <div id="images">
-
-                                </div>
-                            </div>
+                            <!-- <div class="col-sm-6 m-2">
+                                <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
+                            </div> -->
                         </div>
                     </div>
                 </div>
-            </div> -->
 
+                <div class="row justify-content-center mt-4" id='btn-ctrl-2'>
+                    <div class="col-md-1 d-flex jsutify-content-end">
+                        <div class="col-sm-2 d-flex jsutify-content-end">
+                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product-user.php?id=<?php echo $productId; ?>">Edit</a></button>
+                        </div>
+                        <!-- <div class="col-sm-6 d-flex jsutify-content-center">
+                            <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
+                        </div> -->
+                    </div>
+                </div>
+
+            </div>
         </div>
     <?php
     }
+
+
+    /*if ($userType == 'USER') {
     ?>
+        <!-- <script>
+            document.getElementById('btn-ctrl-1').style.display = 'none';
+            document.getElementById('btn-ctrl-2').style.display = 'none';
+        </script> -->
+    <?php
+    }*/
+    ?>
+
+
+    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
+
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
-    <script src="<?php echo JS_PATH ?>custom/add-new-product.js"></script>
+
+
+    <script>
+        const setImg = (id) => {
+            img = document.getElementById(id).src;
+            document.getElementById("main-img").src = img;
+        }
+
+        //========================= Delete Product =========================
+
+        const del = (e) => {
+            btnID = e.id;
+            btnVal = e.value;
+            btn = this;
+            // alert(btnVal);
+            // alert(btnID);
+
+            if (btnVal > 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Current Stock have this product.'
+                })
+            }
+
+            if (btnVal == 0) {
+                swal.fire({
+                        title: "Are you sure?",
+                        text: "Want to Delete This Manufacturer?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            var productId = window.productId;
+                            // console.log("product ID-"+productId);
+                            $.ajax({
+                                url: "product.Delete.ajax.php",
+                                type: "POST",
+                                data: {
+                                    productId: productId,
+                                    id: btnID,
+                                },
+                                success: function(data) {
+                                    if (data == 1) {
+                                        Swal.fire(
+                                            "Deleted",
+                                            "Manufacturer Has Been Deleted",
+                                            "success"
+                                        ).then(function() {
+                                            parent.location.reload();
+                                        });
+
+                                    } else {
+                                        Swal.fire("Failed", "Product Deletion Failed!",
+                                            "error");
+                                        $("#error-message").html("Deletion Field !!!")
+                                            .slideDown();
+                                        $("success-message").slideUp();
+                                    }
+                                }
+                            });
+                        }
+                        return false;
+                    });
+            }
+        }
+    </script>
+
+
 </body>
 
 </html>
