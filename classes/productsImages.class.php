@@ -60,7 +60,7 @@ class ProductImages extends DatabaseConnection
     {
         try {
 
-            $selectImage = "SELECT * FROM product_images WHERE product_id = ?";
+            $selectImage = "SELECT * FROM product_images WHERE product_id = ? AND `status` = 1 ";
             $stmt = $this->conn->prepare($selectImage);
 
             $stmt->bind_param("s", $productId);
@@ -91,14 +91,14 @@ class ProductImages extends DatabaseConnection
 
 
 
-    function showImageByPrimay($productId)
+    function showImageByPrimay($productId, $adminId)
     {
         try {
             // $selectImage = "SELECT * FROM product_images WHERE product_id = ? AND set_priority = '1'";
-            $selectImage = "SELECT * FROM product_images WHERE product_id = ? ";
+            $selectImage = "SELECT * FROM product_images WHERE product_id = ? AND `admin_id` = ?";
             $stmt = $this->conn->prepare($selectImage);
 
-            $stmt->bind_param("s", $productId);
+            $stmt->bind_param("ss", $productId, $adminId);
             $stmt->execute();
 
             $result = $stmt->get_result();
@@ -106,7 +106,7 @@ class ProductImages extends DatabaseConnection
             if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
-                    $data = $row;
+                    $data[] = $row;
                 }
                 $stmt->close();
                 return json_encode(['status' => '1', 'message' => 'Images found', 'data' => $data]);

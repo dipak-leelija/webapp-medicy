@@ -117,52 +117,20 @@ if ($_SESSION['ADMIN']) {
 
 
 
-            // ============ for img ============ //
+            // ==================== for img ===================== //
             $imageName        = $_FILES['img-files']['name'];
             $tempImgName       = $_FILES['img-files']['tmp_name'];
 
             $imageArrayCaount = count($imageName);
             $tempImageNameArrayCaount = count($tempImgName);
+            // ====================================================
 
-
-            echo "Admin Id : $adminId <br>";
-            echo "Product iD : $productId <br>";
-            echo "productName : ";
-            print_r($productName);
-            echo "<br>";
-            echo "product category : ";
-            print_r($productCategory);
-            echo "<br>";
-            echo "packeging in : ";
-            print_r($packagingIn);
-            echo "<br>";
-            echo "qantity : ";
-            print_r($quantity);
-            echo "<br>";
-            echo "unit : ";
-            print_r($unit);
-            echo "<br>";
-            echo "medicine power : ";
-            print_r($medicinePower);
-            echo "<br>";
-            echo "mrp : ";
-            print_r($mrp);
-            echo "<br>";
-            echo "gst : ";
-            print_r($gstPercent);
-            echo "<br>";
-            echo "hsno : ";
-            print_r($hsnoNumber);
-            echo "<br>";
-
-            echo "images name : ";
-            print_r($imageName);
-            echo "<br>";
-            echo "temp images name : ";
-            print_r($tempImgName);
-            echo "<br>";
-
-
+            // echo "images name : ";
+            // print_r($imageName);
+            // echo "<br>";
+            // echo "temp images name : ";
+            // print_r($tempImgName);
+            // echo "<br>";
 
             // $column = 'product_id';
             $prodDataFromProducts = json_decode($Products->showProductsById($productId));
@@ -185,7 +153,7 @@ if ($_SESSION['ADMIN']) {
                 } else {
 
                     $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
-                    print_r($selectFromProdReqTable);
+                    // print_r($selectFromProdReqTable);
                     if ($selectFromProdReqTable->status) {
                         $prodReqStatus = 0;
                         $oldProdFlag = 1;
@@ -218,90 +186,49 @@ if ($_SESSION['ADMIN']) {
 
                 $editRequest = $Request->editUpdateProductRequest($productId, $productName, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
-                echo "check edit request data : ";
-                print_r($editRequest);
+                // echo "check edit request data : ";
+                // print_r($editRequest);
             }
 
-
+            // $editRequest = false;
             if ($editRequest) {
-                echo "edit update done";
-            }
 
-
-
-            /*if ($updateProduct === true) {
-
-                // $delProdImage = $ProductImages->deleteImage($productId);
-
-                for ($j = 0; $j < $imageArrayCaount && $j < $tempImageNameArrayCaount; $j++) {
+                for ($i = 0, $j = 0; $i < $imageArrayCaount && $j < $tempImageNameArrayCaount; $i++, $j++) {
                     ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
+                    $imgStatus = 0;
 
                     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                     $randomString = '';
-                    for ($i = 0; $i < 9; $i++) {
+
+                    for ($k = 0; $k < 9; $k++) {
                         $randomString .= $characters[rand(0, strlen($characters) - 1)];
                     }
 
-                    $randomString = $randomString;
-
                     ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
                     //===== Main Image 
-                    $image         = $imageName[$j];
+                    $image          = $imageName[$i];
+                    $tempImage        = $tempImgName[$j];
 
 
-                    if ($image) {
-
-                        $ImgNm = '';
-                        $extention = '';
-                        $countImageLen = 0;
+                    $extention = substr($image, -4);
+                    $imageFileName = substr($image, 0, -4);
 
 
-                        // echo "<br>Checking image name on entry : $image";
+                    if ($imageFileName != null) {
 
-                        if ($image != '') {
-                            if ($image != null) {
-                                if (file_exists(PROD_IMG_PATH . $randomString . '_' . $image)) {
-                                    $image = 'medicy-' . $randomString . $image;
-                                }
-                            }
+                        $imageFile  =   $imageFileName . '-' . $randomString . $extention;
+                        $imgFolder     = PROD_IMG . $imageFile;
 
-                            $countImageLen = strlen($image);
-                            for ($l = 0; $l < intval($countImageLen) - 4; $l++) {
-                                $ImgNm .= $image[$l];
-                            }
-                            for ($k = intval($countImageLen) - 4; $k < $countImageLen; $k++) {
-                                $extention .= $image[$k];
-                            }
-
-                            $image         = $ImgNm . '-' . $randomString . $extention;
-                            $imgFolder     = PROD_IMG_DIR . $image;
-
-                            // move_uploaded_file($tempImgname, $imgFolder);
-                            move_uploaded_file($tempImgName[$j], $imgFolder);
-
-                            $image         = addslashes($image);
-                        }
-
-                        if ($image == '') {
-                            $image = '';
-                        }
-
-                        $setPriority = isset($_POST['priority-group']) ? $_POST['priority-group'] : 0;
-
-
-                        // $updateImage = $ProductImages->addImages($productId, $image, $employeeId, NOW, $adminId);
-                        if ($updateImage) {
-                            $updatePriority = $ProductImages->updatePriority($image, $setPriority, $productId);
-                        }
+                        move_uploaded_file($tempImage, $imgFolder);
+                        $image         = addslashes($imageFile);
                     } else {
-                        $addImage = true;
+                        $image = '';
                     }
+
+                    $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
                 }
-            }*/
+            }
 
-
-
-            // $updateImage = true;
             if ($editRequest === true) {
                 // if ($updateImage === true) {
     ?>
@@ -310,15 +237,20 @@ if ($_SESSION['ADMIN']) {
                         parent.location.reload();
                     });
                 </script>
-        <?php
+            <?php
             } else {
-
-                // }
+            ?>
+                <script>
+                    swal("Error", "Product(image) updatation fail!", "error").then((value) => {
+                        parent.location.reload();
+                    });
+                </script>
+        <?php
             }
         }
 
 
-        // ===================== Fetching Product Details =====================
+        // ==================================== Fetching Product Details ====================================
 
         $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId));
         $product = $product->data;
@@ -330,14 +262,12 @@ if ($_SESSION['ADMIN']) {
         $prodCategoryName   = json_decode($ProductCategory->selectNameById($type));
         $prodCategoryName   = $prodCategoryName->data;
 
-
-
         $qty            = $product[0]->unit_quantity;
         // $qtyUnit        = $product[0]->unit_id;
         $itemUnit       = $product[0]->unit;
         // echo "<br>Item unit : $itemUnit";        
         $packagingType  = $product[0]->packaging_type;
-        // echo "<br>Packaging Type : $packagingType";    
+        $packagingUnit = $PackagingUnits->showPackagingUnitById($packagingType);
 
         $power          = $product[0]->power;
 
@@ -350,7 +280,10 @@ if ($_SESSION['ADMIN']) {
         $admin_id       = $product[0]->admin_id;
 
         $images = json_decode($ProductImages->showImageById($productId));
-
+        if($images->status == 0){
+            $images = json_decode($ProductImages->showImageByPrimay($productId, $adminId));
+        }
+        
         $allImg = array();
         $allImgId = array();
         if ($images->status == 1 && !empty($images->data)) {
@@ -359,7 +292,7 @@ if ($_SESSION['ADMIN']) {
                 $allImgId[] = $image->id;
             }
         } else {
-            $allImg[] = "medicy-default-product-image.jpg";
+            $allImg[] = "default-product-image/medicy-default-product-image.jpg";
         }
 
         // foreach ($allImgId as $index => $imageID) {
@@ -430,6 +363,7 @@ if ($_SESSION['ADMIN']) {
                                             <div class="col-12">
                                                 <div class="col-md-12">
                                                     <b>Prodcut Name</b>
+
                                                     <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?= $productName ?>" required>
 
                                                     <input class="d-none c-inp w-100 p-1" id="product-id" name="product-id" value="<?= $productId ?>" required>
@@ -443,7 +377,6 @@ if ($_SESSION['ADMIN']) {
                                                 <div class="col-md-6 mt-3">
                                                     Prodcut Catagory
                                                     <select class="c-inp p-1 w-100" name="product-category" id="product-category" required>
-                                                        <!-- <option value="<?php echo $type ?>" disabled selected><?php echo $prodCategoryList[0]->name ?></option> -->
                                                         <option value="" disabled selected>Select</option>
                                                         <?php
                                                         foreach ($prodCategoryList as $category) {
@@ -456,8 +389,8 @@ if ($_SESSION['ADMIN']) {
                                                 <div class="col-md-6 mt-3">
                                                     Packeging In
                                                     <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
-                                                        <!-- <option value="<?php echo $packagingType; ?>" disabled selected><?php echo $showPackagingUnits[0]['unit_name'] ?></option> -->
                                                         <option value="" disabled selected>Select</option>
+
                                                         <?php
                                                         foreach ($showPackagingUnits as $eachPackUnit) {
                                                             if (in_array(strtolower($eachPackUnit['unit_name']), $allowedPackegingUnits)) {
@@ -483,7 +416,6 @@ if ($_SESSION['ADMIN']) {
                                                 <div class="col-md-6">
                                                     Unit
                                                     <select class="c-inp p-1 w-100 mt-1" id="unit" name="unit" required>
-                                                        <!-- <option value='<?php echo $itemUnit; ?>' disabled selected><?php echo $itemUnits[0]['name']; ?></option> -->
                                                         <option value="" disabled selected>Select</option>
                                                         <?php
                                                         foreach ($itemUnits as $itemUnits) {
@@ -519,7 +451,6 @@ if ($_SESSION['ADMIN']) {
                                                 <div class="col-sm-6">
                                                     Enter GST
                                                     <select class="c-inp p-1 w-100 mt-1" name="gst" id="gst" required>
-                                                        <!-- <option value="" disabled selected><?php echo $gstDetails[0]->percentage; ?></option> -->
                                                         <option value="" disabled selected>Select</option>
                                                         <?php
                                                         foreach ($gstDetails as $gstDetail) {

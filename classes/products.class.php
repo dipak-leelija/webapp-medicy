@@ -486,7 +486,7 @@ class Products extends DatabaseConnection
 
             // ----- SEARCH FROM PRODUCT REQUEST TABLE ----------
             if ($match == 'all') {
-                $selectProdReq = "SELECT * FROM `product_request` LIMIT 6";
+                $selectProdReq = "SELECT * FROM `product_request` WHERE `admin_id` = '$adminId' LIMIT 6";
                 $prodReqStmt = $this->conn->prepare($selectProdReq);
             } else {
                 $selectProdReq = "SELECT * FROM `product_request` WHERE 
