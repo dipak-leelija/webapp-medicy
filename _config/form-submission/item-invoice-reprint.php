@@ -32,18 +32,18 @@ if (isset($_GET['id'])) {
     $stockOut  = $StockOut->stockOutDisplayById($invoiceId);
     // print_r($stockOut);
     foreach($stockOut as $stockOut){
-    $invoiceId      = $stockOut['invoice_id'];
-    $customerId     = $stockOut['customer_id'];
-    $reffby         = $stockOut['reff_by'];	
-    $totalMrp       = $stockOut['mrp'];	
-    $totalGSt       = $stockOut['gst'];	
-    $billAmout      = $stockOut['amount'];	
-    $pMode          = $stockOut['payment_mode'];	
-    $billdate       = $stockOut['bill_date'];	
+        $invoiceId      = $stockOut['invoice_id'];
+        $customerId     = $stockOut['customer_id'];
+        $reffby         = $stockOut['reff_by'];	
+        $totalMrp       = $stockOut['mrp'];	
+        $totalGSt       = $stockOut['gst'];	
+        $billAmout      = $stockOut['amount'];	
+        $pMode          = $stockOut['payment_mode'];	
+        $billdate       = $stockOut['bill_date'];	
 
-    $details = $StockOut->stockOutDetailsBY1invoiveID($invoiceId);
-    $details = json_decode($details, true);
-    // print_r($details);
+        $details = $StockOut->stockOutDetailsBY1invoiveID($invoiceId);
+        $details = json_decode($details, true);
+        // print_r($details);
     }
     
 }
@@ -173,19 +173,17 @@ if ($customerId != 'Cash Sales') {
                 $slno = 0;
                 $subTotal = floatval(00.00);
                     foreach ($details as $detail) {
-                        // print_r($detail);
+
                         $productResponse = json_decode($Products->showProductsById($detail['product_id']));
                         $product = $productResponse->data;
-                        // print_r($product->manufacturer_id);
+                        $packQty = $product->unit_quantity;
+
                         $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
                         
                         $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
 
-
                         $itemunit = $ItemUnit->itemUnitName($product->unit);
-                        // print_r($itemunit);
                         $packUnit = $PackagingUnits->packagingTypeName($product->packaging_type);
-                        // print_r($packUnit);
 
                         $weatage = "$itemunit of $packUnit";
                         
@@ -193,11 +191,25 @@ if ($customerId != 'Cash Sales') {
                         if ($slno >1) {
                             echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                         }
-                        if (!empty($detail['qty'])) {
-                            $itemQty = $detail['qty'];
-                        }else {
-                            $itemQty = $detail['loosely_count']." (L)";
+                        
+                        $itemQty = $detail['loosely_count']/$packQty;
+
+                        // ===================================================
+
+                        if (is_float($itemQty)) {
+                            // If the result is a decimal
+                            $integerPart = floor($itemQty);
+                            $decimalPart = ($itemQty - $integerPart) * 10; // Assuming a single-digit decimal
+
+                            if ($integerPart == 0) {
+                                $itemQty = $decimalPart.'(L)';
+                            }else {
+                                $itemQty = $integerPart . '(' . $decimalPart . 'L)';
+                            }
                         }
+
+                        // ===================================================
+
                                 
                         echo '<div class="col-sm-1 text-center">
                                 <small>'.$slno.'</small>
@@ -234,9 +246,7 @@ if ($customerId != 'Cash Sales') {
                 ?>
 
             </div>
-            <!-- </div> -->
 
-            <!-- </div> -->
             <div class="footer">
                 <hr calss="my-0" style="height: 1px;">
 
