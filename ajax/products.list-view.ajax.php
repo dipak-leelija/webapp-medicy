@@ -31,8 +31,17 @@ if ($showProducts->status) {
             $comp2 = '';
         }
 
+
+        if(property_exists($showProducts, 'prod_req_status')){
+            $prodReqStatus = $showProducts->prod_req_status;
+        }else{
+            $prodReqStatus = null;
+        }
+
+        // echo  $prodReqStatus;
+
         echo "<div class='p-1 border-bottom list'>
-                <div class='' id='$showProducts->product_id' onclick='searchProduct(this)'>
+                <div class='' id='$showProducts->product_id' value1='$prodReqStatus' onclick='searchProduct(this)'>
                     $showProducts->name
                 </div>
 

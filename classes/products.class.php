@@ -67,14 +67,14 @@ class Products extends DatabaseConnection
         }
     }
 
-  /// ===========product add by superAdmin=========///
-    function addProductBySuperAdmin($productId, $manufacturer, $prodName,$Composition1,$Composition2, $medicinePower,  $unitQuantity, $unit, $packagingType, $mrp, $gst,  $productDsc, $addedBy, $addedOn)
+    /// ===========product add by superAdmin=========///
+    function addProductBySuperAdmin($productId, $manufacturer, $prodName, $Composition1, $Composition2, $medicinePower,  $unitQuantity, $unit, $packagingType, $mrp, $gst,  $productDsc, $addedBy, $addedOn)
     {
         try {
             $insertProducts = "INSERT INTO `products` (`product_id`, `manufacturer_id`, `name`, `comp_1`,`comp_2`, `power`,`unit_quantity`, `unit`, `packaging_type`, `mrp`, `gst`, `dsc`, `added_by`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($insertProducts);
-            $stmt->bind_param("ssssssssssssss", $productId, $manufacturer, $prodName, $Composition1, $Composition2, $medicinePower, $unitQuantity,$unit, $packagingType, $mrp, $gst,$productDsc, $addedBy, $addedOn);
+            $stmt->bind_param("ssssssssssssss", $productId, $manufacturer, $prodName, $Composition1, $Composition2, $medicinePower, $unitQuantity, $unit, $packagingType, $mrp, $gst, $productDsc, $addedBy, $addedOn);
 
             if ($stmt->execute()) {
                 // Insert successful
@@ -118,7 +118,7 @@ class Products extends DatabaseConnection
         }
     }
 
-    
+
 
 
 
@@ -156,9 +156,6 @@ class Products extends DatabaseConnection
 
 
 
-
-
-
     function showProducts()
     {
         $slectProduct        = "SELECT * FROM products";
@@ -170,6 +167,67 @@ class Products extends DatabaseConnection
             return $slectProductQuery;
         }
     } //eof showProducts function
+
+
+
+
+
+    function showAllProducts()
+    {
+        try {
+            $products = array();
+            $productReqst = array();
+
+            $selectQuery1 = "SELECT * FROM products LIMIT 5";
+            $stmt1 = $this->conn->prepare($selectQuery1);
+
+            if (!$stmt1) {
+                throw new Exception("Error in preparing the SQL statement for products.");
+            }
+
+            if ($stmt1->execute()) {
+                $result1 = $stmt1->get_result();
+
+                if ($result1->num_rows > 0) {
+                    while ($res1 = $result1->fetch_object()) {
+                        $products[] = $res1;
+                    }
+                }
+            } else {
+                throw new Exception("Error in statement1 execution.");
+            }
+
+            $selectQuery2 = "SELECT * FROM product_request";
+            $stmt2 = $this->conn->prepare($selectQuery2);
+
+            if (!$stmt2) {
+                throw new Exception("Error in preparing the SQL statement for product requests.");
+            }
+
+            if ($stmt2->execute()) {
+                $result2 = $stmt2->get_result();
+
+                if ($result2->num_rows > 0) {
+                    while ($res2 = $result2->fetch_object()) {
+                        $productReqst[] = $res2;
+                    }
+                }
+            } else {
+                throw new Exception("Error in statement2 execution.");
+            }
+
+            $productData = array_merge($products, $productReqst);
+
+            return json_encode(['status' => '1', 'message' => 'data found', 'data' => $productData]);
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage(), 'data' => '']);
+        }
+    }
+
+
+
+
+
 
 
 
@@ -206,6 +264,7 @@ class Products extends DatabaseConnection
 
 
 
+
     function showProductsByLimitForUser($adminId)
     {
         try {
@@ -223,7 +282,6 @@ class Products extends DatabaseConnection
             while ($prodRes = $productResult->fetch_object()) {
                 $products[] = $prodRes;
             }
-
 
 
 
@@ -296,6 +354,7 @@ class Products extends DatabaseConnection
 
 
 
+
     function showProductsById($productId)
     {
         try {
@@ -337,46 +396,45 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByIdOnUser($productId, $adminId)
-    {
+    function showProductsByIdOnUser($productId, $adminId, $reqStatus){
+            $productData = array();    
+            $productReqData = array();        
         try {
-            $selectProduct = "SELECT * FROM products WHERE product_id = ?";
-            $prodStmt = $this->conn->prepare($selectProduct);
+            if ($reqStatus != 0) {
+                $selectProduct = "SELECT * FROM products WHERE product_id = ?";
+                $prodStmt = $this->conn->prepare($selectProduct);
 
-            if (!$prodStmt) {
-                throw new Exception("Statement preparation failed: " . $this->conn->error);
+                if (!$prodStmt) {
+                    throw new Exception("Statement preparation failed: " . $this->conn->error);
+                }
+
+                $prodStmt->bind_param("s", $productId);
+                $prodStmt->execute();
+                $prodResult = $prodStmt->get_result();
+
+                while ($row = $prodResult->fetch_assoc()) {
+                    $productData[] = $row;
+                }
+                $prodStmt->close();
+            } else {
+                $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ? AND (old_prod_flag = 1 OR old_prod_flag = 0)";
+                $prodReqStmt = $this->conn->prepare($selectProductRequest);
+
+                if (!$prodReqStmt) {
+                    throw new Exception("Statement preparation failed: " . $this->conn->error);
+                }
+
+                $prodReqStmt->bind_param("ss", $productId, $adminId);
+                $prodReqStmt->execute();
+                $prodReqResult = $prodReqStmt->get_result();
+
+                while ($row = $prodReqResult->fetch_assoc()) {
+                    $productReqData[] = $row;
+                }
+                $prodReqStmt->close();
             }
-
-            $prodStmt->bind_param("s", $productId);
-            $prodStmt->execute();
-            $prodResult = $prodStmt->get_result();
-
-            $productData = array();
-            while ($row = $prodResult->fetch_assoc()) {
-                $productData[] = $row;
-            }
-
-            $prodStmt->close();
-
-            $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ? AND old_prod_flag = 0";
-            $prodReqStmt = $this->conn->prepare($selectProductRequest);
-
-            if (!$prodReqStmt) {
-                throw new Exception("Statement preparation failed: " . $this->conn->error);
-            }
-
-            $prodReqStmt->bind_param("ss", $productId, $adminId);
-            $prodReqStmt->execute();
-            $prodReqResult = $prodReqStmt->get_result();
-
-            $productReqData = array();
-            while ($row = $prodReqResult->fetch_assoc()) {
-                $productReqData[] = $row;
-            }
-
-            $prodReqStmt->close();
-
-            if ($prodResult->num_rows > 0 || $prodReqResult->num_rows > 0) {
+            // return $productReqData;
+            if ($productData != null || $productReqData != null) {
                 $productData = array_merge($productData, $productReqData);
                 return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $productData]);
             } else {
@@ -534,8 +592,9 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByTable($table, $data){
-        try{
+    function showProductsByTable($table, $data)
+    {
+        try {
             //echo $productId;
             $slectProduct        = "SELECT * FROM products WHERE `$table` = '$data'";
             $slectProductQuery   = $this->conn->query($slectProduct);
@@ -544,11 +603,11 @@ class Products extends DatabaseConnection
                 while ($result  = $slectProductQuery->fetch_array()) {
                     $data[] = $result;
                 }
-                return json_encode(['status'=>'1', 'message'=>'data found', 'data'=>$data]);
-            }else{
-                return json_encode(['status'=>'0', 'message'=>'no data found', 'data'=>'']);
+                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $data]);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
             }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return $e->errorMessage();
         }
     } //eof showProductsById function
@@ -556,7 +615,7 @@ class Products extends DatabaseConnection
 
 
 
-    
+
 
     function showProductsByTId($productTId)
     {
@@ -581,7 +640,7 @@ class Products extends DatabaseConnection
     function updateProductValuebyCol($productid, $col, $value, $updatedBy, $updatedOn, $adminId)
     {
         try {
-            
+
             $updateProduct = "UPDATE `products` SET `$col`=?, `updated_by`=?, `updated_on`=?, `admin_id`=? WHERE `product_id`=?";
 
             $stmt = $this->conn->prepare($updateProduct);
@@ -664,7 +723,8 @@ class Products extends DatabaseConnection
 
 
 
-    function selectItemLikeForStockInOut($data, $adminid){
+    function selectItemLikeForStockInOut($data, $adminid)
+    {
         $resultData1 = array();
         $resultData2 = array();
 
@@ -711,8 +771,7 @@ class Products extends DatabaseConnection
 
             $mergedResults = array_merge($resultData1, $resultData2);
 
-            return (['status'=> '1', 'message'=>'data forund', 'data'=>$mergedResults]);
-
+            return (['status' => '1', 'message' => 'data forund', 'data' => $mergedResults]);
         } catch (Exception $e) {
             // Log or handle the exception appropriately
             error_log("Error: " . $e->getMessage());
@@ -727,7 +786,8 @@ class Products extends DatabaseConnection
 
 
     //==================== product availibity on stock in based on admin id ======================
-    function selectItemLikeOnCol($data, $col, $colData){
+    function selectItemLikeOnCol($data, $col, $colData)
+    {
         $resultData = array();
 
         try {
@@ -760,14 +820,15 @@ class Products extends DatabaseConnection
 
 
 
-    function updateOnColData($col, $data, $prodId){
+    function updateOnColData($col, $data, $prodId)
+    {
         try {
             $updateOnColQry = "UPDATE products SET `$col` = ? WHERE `product_id` = ?";
-    
+
             $stmt = $this->conn->prepare($updateOnColQry);
-    
+
             $stmt->bind_param("is", $data, $prodId);
-    
+
             if ($stmt->execute()) {
                 $stmt->close();
                 return true;
@@ -778,7 +839,7 @@ class Products extends DatabaseConnection
             return $e->getMessage();
         }
     }
-    
+
 
 
 

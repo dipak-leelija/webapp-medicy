@@ -222,10 +222,14 @@ if ($_SESSION['ADMIN']) {
                         move_uploaded_file($tempImage, $imgFolder);
                         $image         = addslashes($imageFile);
                     } else {
-                        $image = '';
+                        $image = null;
                     }
 
-                    $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
+                    if($image != null){
+                        $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
+                    }else{
+                        $addImagesRequest = true;
+                    }
                 }
             }
 
@@ -250,11 +254,11 @@ if ($_SESSION['ADMIN']) {
         }
 
 
-        // ==================================== Fetching Product Details ====================================
+        // ================================ Fetching Product Details =================================
 
-        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId));
+        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $status = 0));
         $product = $product->data;
-        // print_r($product);
+        print_r($product);
 
         $productName    = $product[0]->name;
 
