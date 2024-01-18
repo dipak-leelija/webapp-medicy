@@ -28,7 +28,7 @@ class LoginForm extends DatabaseConnection
                     $_SESSION['ADMIN']          = false;
                     $_SESSION['USER_TYPE']      = 'USER';
                     $_SESSION['EMP_EMAIL']      = $email;
-                    $_SESSION['EMP_CONTACT_NO'] = $data->emp_contact_no;
+                    $_SESSION['EMP_CONTACT_NO'] = $data->contact;
                     $_SESSION['EMP_ROLE']       = $data->emp_role;
                     $_SESSION['EMP_NAME']       = $data->emp_name;
                     $_SESSION['EMP_IMG']        = $data->emp_img;
