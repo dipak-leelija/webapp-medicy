@@ -74,10 +74,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             customerId = JSON.stringify(customerId);
 
             var mostPurchaseCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
-            xmlhttp.open("GET", mostPurchaseCustomerDataUrl, false);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(null);
-            var mostPurchaseCustomerNameArray = xmlhttp.responseText;
+            request.open("GET", mostPurchaseCustomerDataUrl, false);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(null);
+            var mostPurchaseCustomerNameArray = request.responseText;
 
             mostPurchaseCustomerNameArray = JSON.parse(mostPurchaseCustomerNameArray);
 
@@ -103,10 +103,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         var mostPurchaseCustomerDtPick = document.getElementById('mostPurchseCustomerDt').value;
 
         var mostPrchsCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostPrchsCstmrByDt=${mostPurchaseCustomerDtPick}`;
-        xmlhttp.open("GET", mostPrchsCstmrDtUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var mostPurchaseCustomerDataByDate = xmlhttp.responseText;
+        request.open("GET", mostPrchsCstmrDtUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var mostPurchaseCustomerDataByDate = request.responseText;
 
         mostPurchaseCustomerDataFunction(JSON.parse(mostPurchaseCustomerDataByDate));
 
@@ -121,10 +121,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         var mostPurchaseCustomerEndtDt = document.getElementById('mostPurchseCustomerEndDate').value;
 
         var mostPrchsCstmrDtRngUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostPurchaseStartDt=${mostPurchaseCustomerStartDt}&mostPurchaseEndDt=${mostPurchaseCustomerEndtDt}`;
-        xmlhttp.open("GET", mostPrchsCstmrDtRngUrl, false);
-        xmlhttp.send(null);
+        request.open("GET", mostPrchsCstmrDtRngUrl, false);
+        request.send(null);
 
-        var mostPurchaseCustomerDataByDateRange = xmlhttp.responseText;
+        var mostPurchaseCustomerDataByDateRange = request.responseText;
 
         mostPurchaseCustomerDataFunction(JSON.parse(mostPurchaseCustomerDataByDateRange));
 
@@ -174,10 +174,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         customerId = JSON.stringify(customerId);
 
         highestPurchaseCustomerUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
-        xmlhttp.open("GET", highestPurchaseCustomerUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var customerNameArray = xmlhttp.responseText;
+        request.open("GET", highestPurchaseCustomerUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var customerNameArray = request.responseText;
 
         customerNameArray = JSON.parse(customerNameArray);
 
@@ -198,8 +198,8 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             datasets: [{
                 label: 'Purchase Amount',
                 data: purchaseAmount,
-                backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(96, 89, 240, 0.8)',
+                // borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
         },
