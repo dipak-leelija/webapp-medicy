@@ -349,14 +349,14 @@ class StockOut extends DatabaseConnection
                 $selectQuery = "SELECT customer_id, COUNT(customer_id) AS visit_count
             FROM stock_out
             WHERE admin_id = ?
-            AND added_on >= (SELECT MIN(added_on) FROM stock_out WHERE admin_id = '11') 
+            AND added_on >= (SELECT MIN(added_on) FROM stock_out WHERE admin_id = ?) 
             AND added_on <= NOW()
             GROUP BY customer_id
             ORDER BY visit_count DESC
             LIMIT 10";
 
                 $stmt = $this->conn->prepare($selectQuery);
-                $stmt->bind_param("s", $adminId);
+                $stmt->bind_param("ss", $adminId, $adminId);
             } else {
                 $selectQuery = "SELECT customer_id, COUNT(customer_id) AS visit_count
             FROM stock_out

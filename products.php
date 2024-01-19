@@ -171,7 +171,7 @@ if (isset($_GET['search'])) {
                                                 // echo count($allProducts);
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
-                                                        print_r($item);
+                                                        // print_r($item);
                                                         $image = json_decode($ProductImages->showImageById($item->product_id));
 
                                                         if ($image->status) {

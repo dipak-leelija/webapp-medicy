@@ -1,8 +1,4 @@
 <?php
-// require_once dirname(__DIR__) . '/config/constant.php';
-$includePath = get_include_path();
-
-$today = NOW;
 
 $mostVistedCustomerFromStart = $StockOut->mostVistedCustomerFrmStart($adminId);
 
@@ -12,7 +8,7 @@ $weeklyMostVistiCustomerData = $StockOut->mostVisitCustomersByWeek($adminId);
 
 $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 
-// print_r($mostVistedCustomerFromStart);
+// print_r($mostVistedCustomerFromStart);exit;
 ?>
 
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
@@ -75,10 +71,10 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
             customerId = JSON.stringify(customerId);
 
             mostVisitedCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
-            xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(null);
-            var mostVistiCustomerNameArray = xmlhttp.responseText;
+            request.open("GET", mostVisitedCustomerDataUrl, false);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(null);
+            var mostVistiCustomerNameArray = request.responseText;
 
             mostVistiCustomerNameArray = JSON.parse(mostVistiCustomerNameArray);
 
@@ -103,10 +99,10 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         var mostVistedCustomerDt = document.getElementById('mostVisiteCustomerDt').value;
 
         mostVstCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostVstCstmrByDt=${mostVistedCustomerDt}`;
-        xmlhttp.open("GET", mostVstCstmrDtUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var mostVistiCustomerDataByDate = xmlhttp.responseText;
+        request.open("GET", mostVstCstmrDtUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var mostVistiCustomerDataByDate = request.responseText;
         console.log(mostVistiCustomerDataByDate);
         // mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDate));
 
@@ -121,10 +117,10 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         var mostVistedCustomerEndtDt = document.getElementById('mostVisiteCustomerEndDate').value;
 
         mostVstCstmrDtRngUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostVisitStartDt=${mostVistedCustomerStartDt}&mostVisitEndDt=${mostVistedCustomerEndtDt}`;
-        xmlhttp.open("GET", mostVstCstmrDtRngUrl, false);
-        xmlhttp.send(null);
+        request.open("GET", mostVstCstmrDtRngUrl, false);
+        request.send(null);
 
-        var mostVistiCustomerDataByDateRange = xmlhttp.responseText;
+        var mostVistiCustomerDataByDateRange = request.responseText;
 
         mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDateRange));
 
@@ -178,10 +174,10 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
         customerId = JSON.stringify(customerId);
 
         mostVisitedCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
-        xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var customerNameArray = xmlhttp.responseText;
+        request.open("GET", mostVisitedCustomerDataUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var customerNameArray = request.responseText;
 
         customerNameArray = JSON.parse(customerNameArray);
 
@@ -202,8 +198,8 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
             datasets: [{
                 label: 'Visit Count',
                 data: totalVisit,
-                backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(176, 110, 96, 0.8)',
+                // borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
         },

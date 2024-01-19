@@ -1,4 +1,5 @@
 <?php
+$page = "product-request-lsit";
 
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
@@ -9,52 +10,30 @@ require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
+require_once CLASS_DIR . 'request.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
 
 
-$page = "products";
 
 //Intitilizing Doctor class for fetching doctors
 $Products       = new Products();
 $Pagination     = new Pagination();
 $ProductImages  = new ProductImages();
+$Request        = new Request;
 
 
-// $productsData = json_decode($Products->showAllProducts());
-// print_r($productsData->data);
 
-if (isset($_GET['search'])) {
+// Function INitilized 
+$col = 'admin_id';
+$result = json_decode($Pagination->productRequestWithPagination()); //showAllProducts
+// print_r($result);
 
-    $prodId = $_GET['search'];
-    $productList = json_decode($Products->showProductsById($prodId));
+$allProducts    = $result->products;
+$totalPtoducts  = $result->totalPtoducts;
 
-    $productList = $productList->data;
+$productList = json_decode($Products->showProductsByLimit());
 
-    $pagination = json_decode($Pagination->arrayPagination($productList));
-
-
-    if ($pagination->status == 1) {
-        $result = $pagination;
-        $allProducts = $pagination->items;
-        $totalPtoducts = $pagination->totalitem;
-    } else {
-        // Handle the case when status is not 1
-        $result = $pagination;
-        $allProducts = [];
-        $totalPtoducts = 0;
-    }
-    
-} else {
-
-    // Function INitilized 
-    $col = 'admin_id';
-    $result = json_decode($Pagination->productsWithPagination()); //showAllProducts
-    $allProducts    = $result->products;
-    $totalPtoducts  = $result->totalPtoducts;
-
-    $productList = json_decode($Products->showProductsByLimit());
-}
 
 
 ?>
@@ -79,7 +58,7 @@ if (isset($_GET['search'])) {
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/products.css">
+    <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/product-request-list.css">
     <!-- Custom styles for this page -->
     <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
@@ -119,32 +98,7 @@ if (isset($_GET['search'])) {
                                     </h6>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <div class="col-md-7">
-                                        <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
-
-                                        <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
-                                            <div class="lists" id="lists">
-                                                <?php
-                                                if (!empty($productList->data) && is_array($productList->data)) {
-                                                    foreach ($productList->data as $eachProd) {
-                                                        // print_r($eachProd);
-                                                ?>
-                                                        <div class="p-1 border-bottom list">
-                                                            <div class="" id="<?= $eachProd->product_id ?>" onclick="searchProduct(this)">
-                                                                <?= $eachProd->name ?>
-                                                            </div>
-                                                            <div class="">
-                                                                <small><?= $eachProd->comp_1 ?> , <?= $eachProd->comp_2 ?></small>
-                                                            </div>
-                                                        </div>
-
-                                                <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div class="col-md-7"></div>
                                     <div class="col-md-2">
                                         <a class="btn btn-sm btn-primary" href="add-products.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
                                     </div>
@@ -155,32 +109,28 @@ if (isset($_GET['search'])) {
 
                                 <div class="d-flex justify-content-center">
                                     <div class="row card-div">
-
                                         <section>
                                             <div class="row ">
-
                                                 <?php
-                                                // print_r($allProducts);
-                                                // echo count($allProducts);
+
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
                                                         // print_r($item);
                                                         $image = json_decode($ProductImages->showImagesByProduct($item->product_id));
-                                                        
+
                                                         if ($image->status) {
                                                             $imgData = $image->data;
-                                                            
+
                                                             $productImage = $imgData->image;
                                                         } else {
                                                             $productImage = 'default-product-image/medicy-default-product-image.jpg';
                                                         }
 
-                                                        if ($item->dsc == null) {
-                                                            $dsc = '';
-                                                        } else {
+                                                        if (isset($item->dsc)) {
                                                             $dsc = $item->dsc . '...';
+                                                        } else {
+                                                            $dsc = ' ';
                                                         }
-
                                                 ?>
 
                                                         <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
@@ -283,40 +233,13 @@ if (isset($_GET['search'])) {
     <script>
         var xmlhttp = new XMLHttpRequest();
 
-        // =============== modal size control funcion ==============
-        // function changeModalSize(flag, modalId) {
-
-
-
-        //     let modal = document.getElementById(modalId);
-
-        //     if (modal) {
-        //         if (flag == 0) {
-        //             modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
-
-        //             modal.querySelector('.modal-dialog').classList.add('modal-xl'); 
-        //         }
-
-        //         if (flag == 1) {
-        //             modal.querySelector('.modal-dialog').classList.remove('modal-sm', 'modal-md', 'modal-lg', 'modal-xl');
-
-        //             modal.querySelector('.modal-dialog').classList.add('modal-xl'); 
-        //         }
-        //     }
-        // }
-        // ================ end of modal size control =============
-
         // ========================== view and edit fucntion =========================
         const viewItem = (t) => {
             let prodId = t.id;
             let verifiedValue = t.value;
 
             let url = '';
-                url = `ajax/product-view-modal.ajax.php?id=${prodId}&table=${'products'}`;
-            // if (verifiedValue) {
-            //     changeModalSize('0', 'productViewModal');
-            //     url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId;
-            // } 
+            url = `ajax/product-view-modal.ajax.php?id=${prodId}&table=${'product_request'}`;
 
             $(".productViewModal").html(
                 '<iframe width="100%" height="500px" frameborder="0" allowtransparency="true" src="' +
@@ -327,95 +250,84 @@ if (isset($_GET['search'])) {
 
         // ========================== PRODUCT SEARCH START ===========================
 
-        const productsSearch = document.getElementById("prodcut-search");
-        const productsDropdown = document.getElementsByClassName("c-dropdown")[0];
+        // const productsSearch = document.getElementById("prodcut-search");
+        // const productsDropdown = document.getElementsByClassName("c-dropdown")[0];
 
-
-        // productsSearch.addEventListener("focus", () => {
-        //     productsDropdown.style.display = "block";
+        // document.addEventListener("click", (event) => {
+        //     if (!productsSearch.contains(event.target) && !productsDropdown.contains(event.target)) {
+        //         productsDropdown.style.display = "none";
+        //     }
         // });
 
 
-        document.addEventListener("click", (event) => {
-            // Check if the clicked element is not the input field or the manufDropdown
-            if (!productsSearch.contains(event.target) && !productsDropdown.contains(event.target)) {
-                productsDropdown.style.display = "none";
-            }
-        });
-
-
-        document.addEventListener("blur", (event) => {
-            // Check if the element losing focus is not the manufDropdown or its descendants
-            if (!productsDropdown.contains(event.relatedTarget)) {
-                // Delay the hiding to allow the click event to be processed
-                setTimeout(() => {
-                    productsDropdown.style.display = "none";
-                }, 100);
-            }
-        });
+        // document.addEventListener("blur", (event) => {
+        //     if (!productsDropdown.contains(event.relatedTarget)) {
+        //         setTimeout(() => {
+        //             productsDropdown.style.display = "none";
+        //         }, 100);
+        //     }
+        // });
 
 
 
-        productsSearch.addEventListener("keydown", () => {
+        // productsSearch.addEventListener("keydown", () => {
 
-            let list = document.getElementsByClassName('lists')[0];
-            let searchVal = document.getElementById("prodcut-search").value;
+        //     let list = document.getElementsByClassName('lists')[0];
+        //     let searchVal = document.getElementById("prodcut-search").value;
 
-            if (searchVal.length > 2) {
-                
-                let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
-                xmlhttp.open("GET", manufURL, false);
-                xmlhttp.send(null);
+        //     if (searchVal.length > 2) {
 
-                list.innerHTML = xmlhttp.responseText;
-                document.getElementById('product-list').style.display = 'block';
-            } else if (searchVal == '') {
+        //         let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
+        //         xmlhttp.open("GET", manufURL, false);
+        //         xmlhttp.send(null);
 
-                searchVal = 'all';
+        //         list.innerHTML = xmlhttp.responseText;
+        //         document.getElementById('product-list').style.display = 'block';
+        //     } else if (searchVal == '') {
 
-                let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
-                xmlhttp.open("GET", manufURL, false);
-                xmlhttp.send(null);
-                // console.log();
-                list.innerHTML = xmlhttp.responseText;
-                document.getElementById('product-list').style.display = 'block';
-            } else {
-                document.getElementById('product-list').style.display = 'none';
-                list.innerHTML = '';
-                productsDropdown.style.display = "none";
-            }
-            
-        });
+        //         searchVal = 'all';
+
+        //         let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
+        //         xmlhttp.open("GET", manufURL, false);
+        //         xmlhttp.send(null);
+        //         // console.log();
+        //         list.innerHTML = xmlhttp.responseText;
+        //         document.getElementById('product-list').style.display = 'block';
+        //     } else {
+        //         document.getElementById('product-list').style.display = 'none';
+        //         list.innerHTML = '';
+        //         productsDropdown.style.display = "none";
+        //     }
+
+        // });
 
         //================================================================
 
-        const searchProduct = (t) => {
-            var prodId = t.id.trim();
-            var prodName = t.innerHTML.trim();
+        // const searchProduct = (t) => {
+        //     var prodId = t.id.trim();
+        //     var prodName = t.innerHTML.trim();
 
-            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+        //     var currentURLWithoutQuery = window.location.origin + window.location.pathname;
 
-            let newUrl = `${currentURLWithoutQuery}?search=${prodId}`;
+        //     let newUrl = `${currentURLWithoutQuery}?search=${prodId}`;
 
-            localStorage.setItem('prodName', prodName);
+        //     localStorage.setItem('prodName', prodName);
 
-            window.location.href = newUrl;
+        //     window.location.href = newUrl;
 
-            // document.getElementById("prodcut-search").value = prodName;
-            // productsDropdown.style.display = "none";
-
-        }
+        // }
 
 
-        document.addEventListener('DOMContentLoaded', function() {
+        // document.addEventListener('DOMContentLoaded', function() {
 
-            let storedProdName = localStorage.getItem('prodName');
+        //     let storedProdName = localStorage.getItem('prodName');
 
-            if (storedProdName !== null) {
-                document.getElementById("prodcut-search").value = storedProdName;
-                localStorage.setItem('prodName', '');
-            }
-        });
+        //     if (storedProdName !== null) {
+        //         document.getElementById("prodcut-search").value = storedProdName;
+        //         localStorage.setItem('prodName', '');
+        //     }
+        // });
+
     </script>
 
 </body>
