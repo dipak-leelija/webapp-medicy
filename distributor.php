@@ -12,6 +12,7 @@ $Distributor = new Distributor();
 
 $showDistributor = json_decode($Distributor->showDistributor());
 $showDistributor = $showDistributor->data;
+
 ?>
 
 <!DOCTYPE html>
