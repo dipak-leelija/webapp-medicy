@@ -9,7 +9,6 @@ require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
-require_once SUP_ADM_DIR . '_config/accessPermission.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
 
@@ -22,8 +21,8 @@ $Pagination     = new Pagination();
 $ProductImages  = new ProductImages();
 
 
-$productsData = json_decode($Products->showAllProducts());
-print_r($productsData->data);
+// $productsData = json_decode($Products->showAllProducts());
+// print_r($productsData->data);
 
 if (isset($_GET['search'])) {
 
@@ -35,10 +34,6 @@ if (isset($_GET['search'])) {
     $pagination = json_decode($Pagination->arrayPagination($productList));
 
 
-    // $result = $pagination;
-    // $allProducts = $pagination->items;
-    // $totalPtoducts = $pagination->totalitem;
-
     if ($pagination->status == 1) {
         $result = $pagination;
         $allProducts = $pagination->items;
@@ -49,6 +44,7 @@ if (isset($_GET['search'])) {
         $allProducts = [];
         $totalPtoducts = 0;
     }
+    
 } else {
 
     // Function INitilized 
@@ -316,7 +312,7 @@ if (isset($_GET['search'])) {
             let verifiedValue = t.value;
 
             let url = '';
-                url = 'ajax/product-view-modal.ajax.php?id=' + prodId;
+                url = `ajax/product-view-modal.ajax.php?id=${prodId}&table=${'products'}`;
             // if (verifiedValue) {
             //     changeModalSize('0', 'productViewModal');
             //     url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId;
