@@ -198,8 +198,8 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             datasets: [{
                 label: 'Purchase Amount',
                 data: purchaseAmount,
-                backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(96, 89, 240, 0.8)',
+                // borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
         },
