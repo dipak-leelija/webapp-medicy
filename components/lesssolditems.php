@@ -74,10 +74,10 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
             productIds = JSON.stringify(productIds);
 
             lessSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?lessSoldProdId=${productIds}`;
-            xmlhttp.open("GET", lessSoldProdNameUrl, false);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(null);
-            var prodNameArray = xmlhttp.responseText;
+            request.open("GET", lessSoldProdNameUrl, false);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(null);
+            var prodNameArray = request.responseText;
             prodNameArray = JSON.parse(prodNameArray);
 
             lessSoldChart.data.labels = prodNameArray;
@@ -103,10 +103,10 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
         var lessSolddatePicker = document.getElementById('lessSoldDateInput').value;
 
         lessSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?lessSoldChkDt=${lessSolddatePicker}`;
-        xmlhttp.open("GET", lessSoldDtPkrUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var lessSoldDataByDate = xmlhttp.responseText;
+        request.open("GET", lessSoldDtPkrUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var lessSoldDataByDate = request.responseText;
         updateLessSoldData(JSON.parse(lessSoldDataByDate));
 
         document.getElementById('lessSoldDtPickerDiv').style.display = 'none';
@@ -121,10 +121,10 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
         var lessSoldEndDt = document.getElementById('lessSoldEndtDate').value;
 
         lessSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?lessSoldStartDt=${lessSoldStarDt}&lessSoldEndDt=${lessSoldEndDt}`;
-        xmlhttp.open("GET", lessSoldDtPkrUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var lessSoldDataInDtRange = xmlhttp.responseText;
+        request.open("GET", lessSoldDtPkrUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var lessSoldDataInDtRange = request.responseText;
 
         updateLessSoldData(JSON.parse(lessSoldDataInDtRange));
 
@@ -176,10 +176,10 @@ $monthlyLeastStoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId)
         productIds = JSON.stringify(productIds);
 
         lessSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?lessSoldProdId=${productIds}`;
-        xmlhttp.open("GET", lessSoldProdNameUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var prodNameArray = xmlhttp.responseText;
+        request.open("GET", lessSoldProdNameUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var prodNameArray = request.responseText;
         prodNameArray = JSON.parse(prodNameArray);
 
         var totalSold = lessSoldPrimaryData.map(item => item.total_sold);

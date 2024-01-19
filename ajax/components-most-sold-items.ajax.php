@@ -13,12 +13,18 @@ $StockOut   = new StockOut;
 
 //// ============ most sold items ==================
 if (isset($_GET['mostSoldProdId'])) {
+
     $productId =  $_GET['mostSoldProdId'];
+    
     $productId = json_decode($productId);
     $prodName = array();
     for($i = 0; $i<count($productId); $i++){
-        $proData = $Products->showProductsById($productId[$i]);
-        array_push($prodName, $proData[0]['name']);
+        $proData = json_decode($Products->showProductsById($productId[$i]));
+        if($proData->status){
+            $theProductData = $proData->data;
+            // print_r($theProductData->name);
+            array_push($prodName, $theProductData->name);
+        }
     }
     $prodName = json_encode($prodName);
     echo $prodName;
@@ -49,8 +55,13 @@ if (isset($_GET['lessSoldProdId'])) {
     $productId = json_decode($productId);
     $prodName = array();
     for($i = 0; $i<count($productId); $i++){
-        $proData = $Products->showProductsById($productId[$i]);
-        array_push($prodName, $proData[0]['name']);
+        $proData = json_decode($Products->showProductsById($productId[$i]));
+        if($proData->status){
+            $theProductData = $proData->data;
+            // print_r($theProductData->name);
+            array_push($prodName, $theProductData->name);
+        }
+        // array_push($prodName, $proData[0]['name']);
     }
     $prodName = json_encode($prodName);
     echo $prodName;

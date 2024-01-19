@@ -77,10 +77,10 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
             // var xmlhttp = new XMLHttpRequest();
             mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}   `;
-            xmlhttp.open("GET", mostSoldProdNameUrl, false);
-            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xmlhttp.send(null);
-            var prodNameArray = xmlhttp.responseText;
+            request.open("GET", mostSoldProdNameUrl, false);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            request.send(null);
+            var prodNameArray = request.responseText;
             prodNameArray = JSON.parse(prodNameArray);
 
             mostSoldChart.data.labels = prodNameArray;
@@ -103,10 +103,10 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
         // var xmlhttp = new XMLHttpRequest();
         mostSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldByDt=${mostSolddatePicker}`;
-        xmlhttp.open("GET", mostSoldDtPkrUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var mostSoldDataByDate = xmlhttp.responseText;
+        request.open("GET", mostSoldDtPkrUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var mostSoldDataByDate = request.responseText;
 
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
 
@@ -123,11 +123,11 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
         // var xmlhttp = new XMLHttpRequest();
         mostSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldStarDate=${mostSoldStarDate}&mostSoldEndDate=${mostSoldEndDate}`;
-        xmlhttp.open("GET", mostSoldDtPkrUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
+        request.open("GET", mostSoldDtPkrUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
 
-        var mostSoldDataByDate = xmlhttp.responseText;
+        var mostSoldDataByDate = request.responseText;
 
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
 
@@ -181,10 +181,10 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
         // var xmlhttp = new XMLHttpRequest();
         mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}`;
-        xmlhttp.open("GET", mostSoldProdNameUrl, false);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send(null);
-        var prodNameArray = xmlhttp.responseText;
+        request.open("GET", mostSoldProdNameUrl, false);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(null);
+        var prodNameArray = request.responseText;
         prodNameArray = JSON.parse(prodNameArray);
 
         var totalSold = mostSoldDataFromStart.map(item => item.total_sold);
