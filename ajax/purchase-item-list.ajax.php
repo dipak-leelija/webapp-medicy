@@ -54,7 +54,7 @@ if ($resultData["status"]) {
     <?php
     foreach ($resultData as $resultRow) {
 
-        // print_r($resultRow);
+        print_r($resultRow);
 
         $productId      = $resultRow['product_id'];
         $productName    = $resultRow['name'];
@@ -70,6 +70,19 @@ if ($resultData["status"]) {
             $pComposition2  = $resultRow['comp_2'];
         } else {
             $pComposition2 = '';
+        }
+
+
+        if(isset($resultRow['prod_req_status'])){
+            $prodReqStatus = $resultRow['prod_req_status'];
+        }else{
+            $prodReqStatus = null;
+        }
+
+        if(isset($resultRow['old_prod_flag'])){
+            $oldProdFlag = $resultRow['old_prod_flag'];
+        }else{
+            $oldProdFlag = null;
         }
 
         $weightage      = $resultRow['unit_quantity'];
@@ -123,7 +136,7 @@ if ($resultData["status"]) {
         }
 
     ?>
-        <div class="row mx-0 py-2 border-bottom p-row item-list" id="listed-items" tabindex="0" onclick="getDtls('<?php echo $productId ?>');">
+        <div class="row mx-0 py-2 border-bottom p-row item-list" id="listed-items" tabindex="0" onclick="getDtls('<?php echo $productId ?>', '<?php echo $prodReqStatus ?>', '<?php echo $oldProdFlag ?>');">
             <div class="col-md-4"><?php echo $productName, $power ?><br>
                 <small><?php echo $manufacturerName ?></small>
             </div>

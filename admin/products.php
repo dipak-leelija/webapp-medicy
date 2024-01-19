@@ -22,6 +22,9 @@ $Pagination     = new Pagination();
 $ProductImages  = new ProductImages();
 
 
+$productsData = json_decode($Products->showAllProducts());
+print_r($productsData->data);
+
 if (isset($_GET['search'])) {
 
     $prodId = $_GET['search'];
@@ -50,7 +53,7 @@ if (isset($_GET['search'])) {
 
     // Function INitilized 
     $col = 'admin_id';
-    $result = json_decode($Pagination->productsWithPagination());
+    $result = json_decode($Pagination->productsWithPagination()); //showAllProducts
     $allProducts    = $result->products;
     $totalPtoducts  = $result->totalPtoducts;
 
@@ -166,15 +169,14 @@ if (isset($_GET['search'])) {
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
                                                         // print_r($item);
-                                                        $image = json_decode($ProductImages->showImageByPrimay($item->product_id));
-                                                        // print_r($image);
-                                                        if ($image->status != 0) {
+                                                        $image = json_decode($ProductImages->showImagesByProduct($item->product_id));
+                                                        
+                                                        if ($image->status) {
                                                             $imgData = $image->data;
-                                                            // print_r($image);
-
+                                                            
                                                             $productImage = $imgData->image;
                                                         } else {
-                                                            $productImage = 'medicy-default-product-image.jpg';
+                                                            $productImage = 'default-product-image/medicy-default-product-image.jpg';
                                                         }
 
                                                         if ($item->dsc == null) {

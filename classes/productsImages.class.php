@@ -18,13 +18,6 @@ class ProductImages extends DatabaseConnection
                 $stmt->bind_param("ssss", $productId, $productImage, $addedBy, $addedOn);
             }
 
-            // Prepare the SQL statement
-            // $stmt = $this->conn->prepare($insertImage);
-            // Bind parameters
-
-            // $stmt->bind_param("sssss", $productId, $productImage, $addedBy, $addedOn, $adminId);
-
-            // Execute the statement
             if ($stmt->execute()) {
                 // Insert successful
                 $stmt->close();
@@ -55,6 +48,40 @@ class ProductImages extends DatabaseConnection
 
 
 
+
+
+    function showImagesByProduct($productId){
+        try {
+            $selectImage = "SELECT * FROM product_images WHERE product_id = ? ";
+            $stmt = $this->conn->prepare($selectImage);
+
+            $stmt->bind_param("s", $productId);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'Images found', 'data' => $data]);
+            } else {
+                $stmt->close();
+                return json_encode(['status' => '0', 'message' => 'No images found', 'data' => null]);
+            }
+        } catch (Exception $e) {
+            error_log("Error in showImageById: " . $e->getMessage());
+
+            return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
+        }
+    }
+
+
+
+
+    
 
     function showImageById($productId)
     {
