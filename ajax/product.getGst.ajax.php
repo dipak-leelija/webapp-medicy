@@ -14,7 +14,7 @@ $Gst = new Gst;
 
 
 if (isset($_GET["id"])) {
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId));
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId, $_GET["prodReqStatus"]));
     $showProducts = $showProducts->data;
     $gstId = $showProducts[0]->gst;
 

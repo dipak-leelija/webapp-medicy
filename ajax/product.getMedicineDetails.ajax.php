@@ -13,9 +13,13 @@ $Products       = new Products();
 $PackagingUnits = new PackagingUnits();
 $ItemUnit       = new ItemUnit;
 
+// prodReqStatus
+// oldProdReqStatus
 // ============= get product name =================
 if (isset($_GET["pName"])) {
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["pName"], $adminId));
+    $prodReqStatus = $_GET["prodReqStatus"];
+
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["pName"], $adminId, $prodReqStatus));
     $showProducts = $showProducts->data;
     // print_r($showProducts);
     foreach ($showProducts as $row) {
@@ -25,7 +29,7 @@ if (isset($_GET["pName"])) {
 
 // ================ get power ===============
 if (isset($_GET["power"])) {
-    $showProducts = $Products->showProductsByIdOnUser($_GET["power"], $adminId);
+    $showProducts = $Products->showProductsByIdOnUser($_GET["power"], $adminId, $_GET["prodReqStatus"]);
     print_r($showProducts);
     // echo $showProducts[0]['power'];
 }
@@ -33,7 +37,7 @@ if (isset($_GET["power"])) {
 
 // ========================= packege Type ====================
 if (isset($_GET["pType"])) {
-    $showProductsPType = $Products->showProductsByIdOnUser($_GET["pType"], $adminId);
+    $showProductsPType = $Products->showProductsByIdOnUser($_GET["pType"], $adminId, $_GET["prodReqStatus"]);
     $showPackType = $PackagingUnits->showPackagingUnitById($showProductsPType[0]['packaging_type']);
     // print_r($showPackType);
     foreach ($showPackType as $row) {
@@ -44,7 +48,7 @@ if (isset($_GET["pType"])) {
 
 // ========================== packege In ====================
 if (isset($_GET["packegeIn"])) {
-    $showProductsPackegeIn = $Products->showProductsByIdOnUser($_GET["packegeIn"], $adminId);
+    $showProductsPackegeIn = $Products->showProductsByIdOnUser($_GET["packegeIn"], $adminId, $_GET["prodReqStatus"]);
     $showPackType = $PackagingUnits->showPackagingUnitById($showProductsPackegeIn[0]['packaging_type']);
     foreach ($showPackType as $row) {
        echo $row["unit_name"];
@@ -53,7 +57,7 @@ if (isset($_GET["packegeIn"])) {
 
 // ======================= weightage ========================
 if (isset($_GET["weightage"])) {
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["weightage"], $adminId));
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["weightage"], $adminId, $_GET["prodReqStatus"]));
     $showProducts = $showProducts->data;
     // print_r($showProducts);
     // $showWeightage = $Products->showProductsById($showProducts[0]['packaging_type']);
@@ -65,7 +69,7 @@ if (isset($_GET["weightage"])) {
 
 // ========================= unit ==============================
 if (isset($_GET["unit"])) {
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["unit"], $adminId));
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["unit"], $adminId, $_GET["prodReqStatus"]));
     $showProducts = $showProducts->data;
 
     foreach ($showProducts as $row) {

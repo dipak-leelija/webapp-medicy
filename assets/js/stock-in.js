@@ -241,7 +241,10 @@ function searchItem(input) {
 
 }
 
-const getDtls = (productId) => {
+const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
+
+    console.log(prodReqStatus+'   '+oldProdReqStatus);
+    console.log("hello");
 
     let xmlhttp = new XMLHttpRequest();
 
@@ -261,7 +264,7 @@ const getDtls = (productId) => {
         document.getElementById("manufacturer-name").value = xmlhttp.responseText;
 
         //==================== Medicine Power ====================
-        powerurl = 'ajax/product.getMedicineDetails.ajax.php?power=' + productId;
+        powerurl = `ajax/product.getMedicineDetails.ajax.php?power=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         // alert(url);
         xmlhttp.open("GET", powerurl, false);
         xmlhttp.send(null);
@@ -269,14 +272,14 @@ const getDtls = (productId) => {
         document.getElementById("medicine-power").value = xmlhttp.responseText;
 
         //==================== Packaging Type ====================
-        packTypeUrl = 'ajax/product.getMedicineDetails.ajax.php?pType=' + productId;
+        packTypeUrl = `ajax/product.getMedicineDetails.ajax.php?pType=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         // alert(url);
         xmlhttp.open("GET", packTypeUrl, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText);
         document.getElementById("packaging-type").innerHTML = xmlhttp.responseText;
 
-        packTypeFieldUrl = 'ajax/product.getMedicineDetails.ajax.php?packegeIn=' + productId;
+        packTypeFieldUrl = `ajax/product.getMedicineDetails.ajax.php?packegeIn=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         // // alert(url);
         xmlhttp.open("GET", packTypeFieldUrl, false);
         xmlhttp.send(null);
@@ -284,7 +287,7 @@ const getDtls = (productId) => {
         document.getElementById("packaging-in").value = xmlhttp.responseText;
 
         //==================== Weightage ====================
-        weightage = 'ajax/product.getMedicineDetails.ajax.php?weightage=' + productId;
+        weightage = `ajax/product.getMedicineDetails.ajax.php?weightage=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         // alert(url);
         xmlhttp.open("GET", weightage, false);
         xmlhttp.send(null);
@@ -293,7 +296,7 @@ const getDtls = (productId) => {
 
 
         //==================== Unit ====================
-        unitUrl = 'ajax/product.getMedicineDetails.ajax.php?unit=' + productId;
+        unitUrl = `ajax/product.getMedicineDetails.ajax.php?unit=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
@@ -302,7 +305,7 @@ const getDtls = (productId) => {
         // alert(xmlhttp.responseText);
 
         //==================== MRP ====================
-        mrpUrl = 'ajax/product.getMrp.ajax.php?id=' + productId;
+        mrpUrl = `ajax/product.getMrp.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", mrpUrl, false);
@@ -315,7 +318,7 @@ const getDtls = (productId) => {
         document.getElementById("ptr").value = pTr;
 
         // //==================== ptr check url ===================
-        chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + productId;
+        chkPtr = `ajax/product.getMrp.ajax.php?ptrChk=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", chkPtr, false);
@@ -325,7 +328,7 @@ const getDtls = (productId) => {
         document.getElementById("ptr").value = xmlhttp.responseText;
 
         //==================== GST ====================
-        gstUrl = 'ajax/product.getGst.ajax.php?id=' + productId;
+        gstUrl = `ajax/product.getGst.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
 
         xmlhttp.open("GET", gstUrl, false);
         xmlhttp.send(null);
@@ -348,7 +351,7 @@ const getDtls = (productId) => {
         // console.log(xmlhttp.responseText);
 
         //==================== Product Name ====================
-        nameUrl = 'ajax/product.getMedicineDetails.ajax.php?pName=' + productId;
+        nameUrl = `ajax/product.getMedicineDetails.ajax.php?pName=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         // alert(unitUrl);
         xmlhttp.open("GET", nameUrl, false);
         xmlhttp.send(null);

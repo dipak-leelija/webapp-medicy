@@ -74,7 +74,7 @@ $QuantityUnit   = new QuantityUnit;
     <?php
     if (isset($_GET['id'])) {
         $productId = $_GET['id'];
-        $product        = json_decode($Products->showProductsByIdOnUser($_GET['id'], $adminId));
+        $product        = json_decode($Products->showProductsByIdOnUser($_GET['id'], $adminId, $_GET['prodReqStatus']));
         $product        = $product->data;
 
         if (property_exists($product[0], 'manufacturer_id')) {
@@ -219,7 +219,7 @@ $QuantityUnit   = new QuantityUnit;
                     <div class="col-12 col-md-2" id="btn-ctrl-1">
                         <div class="col-md-12 d-flex">
                             <div class="col-sm-6 m-2">
-                                <a id="anchor" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>"><button class="button1 btn-primary">Edit</button></a>
+                                <a id="anchor" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>&prodReqStatus=<?php $_GET['prodReqStatus']; ?>"><button class="button1 btn-primary">Edit</button></a>
                             </div>
                             <!-- <div class="col-sm-6 m-2">
                                 <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
@@ -231,7 +231,7 @@ $QuantityUnit   = new QuantityUnit;
                 <div class="row justify-content-center mt-4" id='btn-ctrl-2'>
                     <div class="col-md-1 d-flex jsutify-content-end">
                         <div class="col-sm-2 d-flex jsutify-content-end">
-                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product-user.php?id=<?php echo $productId; ?>">Edit</a></button>
+                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product-user.php?id=<?php echo $productId; ?>&prodReqStatus=<?php $_GET['prodReqStatus']; ?>">Edit</a></button>
                         </div>
                         <!-- <div class="col-sm-6 d-flex jsutify-content-center">
                             <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>

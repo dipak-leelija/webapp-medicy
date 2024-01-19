@@ -163,6 +163,7 @@ $itemUnits          = $ItemUnit->showItemUnits();
 
 
                         $updateImage = $ProductImages->addImages($productId, $image, $employeeId, NOW, $adminId);
+
                         if ($updateImage) {
                             $updatePriority = $ProductImages->updatePriority($image, $setPriority, $productId);
                         }

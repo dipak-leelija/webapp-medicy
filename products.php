@@ -25,13 +25,16 @@ $ProductImages  = new ProductImages();
 if (isset($_GET['search'])) {
 
     $prodId = $_GET['search'];
-    $productList = json_decode($Products->showProductsByIdOnUser($prodId, $adminId));
+    $reqStatus = $_GET['prodReqStatus']; 
+    // echo $reqStatus;
+    
+    $productList = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $reqStatus));
 
     $productList = $productList->data;
 
+    // print_r($productList);
 
     $pagination = json_decode($Pagination->arrayPagination($productList));
-
 
     // $result = $pagination;
     // $allProducts = $pagination->items;
@@ -168,7 +171,7 @@ if (isset($_GET['search'])) {
                                                 // echo count($allProducts);
                                                 if ($allProducts != null) {
                                                     foreach ($allProducts as $item) {
-                                                        // print_r($item);
+                                                        print_r($item);
                                                         $image = json_decode($ProductImages->showImageById($item->product_id));
 
                                                         if ($image->status) {
@@ -213,7 +216,7 @@ if (isset($_GET['search'])) {
                                                                 <div class="row px-3 pb-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" onclick="viewItem(this)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" value1="<?php echo $item->prod_req_status ?>" value2="<?php echo $item->old_prod_flag ?>" onclick="viewItem(this)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -325,11 +328,12 @@ if (isset($_GET['search'])) {
         // ========================== view and edit fucntion =========================
         const viewItem = (t) => {
             let prodId = t.id;
-            // let verifiedValue = t.value;
+            let prodReqStatus = t.getAttribute("value1");
+            let oldProdFlag = t.getAttribute("value2");
 
-            // url = 'ajax/temp-product-view-modal.ajax.php?id=' + prodId; //temporary file path for user view and edit.
+            console.log(prodReqStatus+'      '+oldProdFlag);
 
-            url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId; //  updated path for user.
+            url = `ajax/product-view-modal-for-user.ajax.php?id=${prodId}&prodReqStatus=${prodReqStatus}`; //  updated path for user.
 
             $(".productViewModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
@@ -406,17 +410,20 @@ if (isset($_GET['search'])) {
         const searchProduct = (t) => {
             var prodId = t.id.trim();
             var prodName = t.innerHTML.trim();
+            var prodReqStatus = t.getAttribute("value1");
 
+            // console.log("prod request status : "+t.getAttribute("value1"));
+            
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
 
-            let newUrl = `${currentURLWithoutQuery}?search=${prodId}`;
+            let newUrl = `${currentURLWithoutQuery}?search=${prodId}&prodReqStatus=${prodReqStatus}`;
 
             localStorage.setItem('prodName', prodName);
 
             window.location.href = newUrl;
 
-            // document.getElementById("prodcut-search").value = prodName;
-            // productsDropdown.style.display = "none";
+            document.getElementById("prodcut-search").value = prodName;
+            productsDropdown.style.display = "none";
 
         }
 
