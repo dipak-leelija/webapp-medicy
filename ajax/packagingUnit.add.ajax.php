@@ -32,7 +32,7 @@ if( isset($_POST['add-unit'])){
         <script>
             swal("Success", "Unit Added!", "success")
                 .then((value) => {
-                    window.location = '<?= URL ?>packaging-unit.php';
+                    window.location = '<?= URL ?>purchesmaster.php';
                 });
             </script>
         <?php
@@ -41,7 +41,7 @@ if( isset($_POST['add-unit'])){
             <script>
             swal("Error", "Packaging Unit Addition Failed!", "error")
                 .then((value) => {
-                    window.location = '<?= URL ?>packaging-unit.php';
+                    window.location = '<?= URL ?>purchesmaster.php';
                 });
             </script>
          <?php
