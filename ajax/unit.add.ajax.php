@@ -38,7 +38,7 @@ $MeasureOfUnits = new MeasureOfUnits();
             <script>
                 swal("Success", "Unit Added!", "success")
                     .then((value) => {
-                        window.location = '<?= URL ?>product-unit.php';
+                        window.location = '<?= URL ?>purchesmaster.php';
                     });
             </script>
         <?php
@@ -47,7 +47,7 @@ $MeasureOfUnits = new MeasureOfUnits();
             <script>
                 swal("Error", "Unit Addition Failed!", "error")
                     .then((value) => {
-                        window.location = '<?= URL ?>product-unit.php';
+                        window.location = '<?= URL ?>purchesmaster.php';
                     });
             </script>
     <?php
