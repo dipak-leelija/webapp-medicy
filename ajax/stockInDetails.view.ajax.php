@@ -121,7 +121,7 @@ $Products       = new Products();
                     $gst    += $item['gst'];
                     $amount += $item['ptr'];
 
-                    $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId));
+                    $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId, 1));
                     $product = $product->data;
                     // print_r($product);
 

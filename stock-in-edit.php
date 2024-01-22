@@ -565,7 +565,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                     $slno += 1;
 
-                                                    $product = json_decode($Products->showProductsByIdOnUser($detail['product_id'], $adminId));
+                                                    $product = json_decode($Products->showProductsByIdOnUser($detail['product_id'], $adminId, 1));
                                                     $product = $product->data;
                                                     // print_r($product);
                                             ?>

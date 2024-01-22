@@ -263,7 +263,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         $prodId = $itemsData['product_id'];
 
-                        $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId));
+                        $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, 1));
                         $productDetails = $productDetails->data;
 
                         foreach ($productDetails as $pData) {
