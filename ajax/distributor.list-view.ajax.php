@@ -50,7 +50,7 @@ if ($showDistributor->status == 1) {
                 $distributorName    = $rowDistributor->name;
                 $distributorPhno    = $rowDistributor->phno;
                 $distributorPin     = $rowDistributor->area_pin_code;
-                $distributorStatus  = $rowDistributor->dis_status;
+                $distributorStatus  = $rowDistributor->status;
 
                 $statusLabel = '';
                 $statusColor = '';

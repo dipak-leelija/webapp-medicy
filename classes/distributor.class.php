@@ -10,7 +10,7 @@ class Distributor extends DatabaseConnection
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`,`dis_status`,`admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`,`status`,`admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
@@ -68,7 +68,7 @@ class Distributor extends DatabaseConnection
     function updateDistStatus($status, $distributorId)
     {
         try {
-            $update =  "UPDATE `distributor` SET `dis_status`=? WHERE `id`=?";
+            $update =  "UPDATE `distributor` SET `status`=? WHERE `id`=?";
             $stmt = $this->conn->prepare($update);
 
             if ($stmt) {
