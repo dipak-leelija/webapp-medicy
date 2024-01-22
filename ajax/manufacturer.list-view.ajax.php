@@ -6,7 +6,7 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 
 
-$match = $_GET['match'];
+$match = $_POST['search'];
 
 $Manufacturer        = new Manufacturer();
 
@@ -19,14 +19,68 @@ if ($match == 'all') {
 
 if ($showmanufacturer->status) {
     $showmanufacturer= $showmanufacturer->data;
-
-    foreach ($showmanufacturer as $eachManufacturer) {
-        echo "<div class='p-1 border-bottom list' id='$eachManufacturer->id' onclick='setManufacturer(this)'>
-        $eachManufacturer->name
-        </div>";
-    }
+    // print_r($showmanufacturer);
+    // foreach ($showmanufacturer as $eachManufacturer) {
+    //     echo "<div class='p-1 border-bottom list' id='$eachManufacturer->id' onclick='setManufacturer(this)'>
+    //     $eachManufacturer->name
+    //     </div>";
+    // }
 }else {
     // echo "<p class='text-center font-weight-bold'>manufacturerNot Found!</p>";
     echo "<div class='p-1 border-bottom list'> $match </div>";
 }
 ?>
+
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>SL.</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if (is_array($showmanufacturer)) {
+            foreach ($showmanufacturer as $rowmanufacturer) {
+                $manufacturerId      = $rowmanufacturer->id;
+                $manufacturerName    = $rowmanufacturer->name;
+                $manufacturerDsc     = $rowmanufacturer->dsc;
+                $manufacturerStatus  = $rowmanufacturer->manu_status;
+
+                $statusLabel = '';
+                $statusColor = '';
+                switch ($manufacturerStatus) {
+                    case 0:
+                        $statusLabel = 'Disabled';
+                        $statusColor = 'red';
+                        break;
+                    case 1:
+                        $statusLabel = 'Pending';
+                        $statusColor = '#4e73df';
+                        break;
+                    case 2:
+                        $statusLabel = 'Active';
+                        $statusColor = 'green';
+                        break;
+                    default:
+                        $statusLabel = 'Disabled';
+                        break;
+                }
+                echo '<tr>
+                        <td>' . $manufacturerId  . '</td>
+                        <td>' . $manufacturerName . '</td>
+                        <td>' . $manufacturerDsc . '</td>
+                        <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
+                        <td>
+                            <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $manufacturerId . ')"><i class="fas fa-edit"
+                            <a class="mx-1" id="delete-btn" data-id="' . $manufacturerId . '"><i class="far fa-trash-alt"></i></a>
+                        </td>
+                       </tr>';
+            }
+        }
+        ?>
+    </tbody>
+</table>
