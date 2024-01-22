@@ -134,8 +134,9 @@ if ($_SESSION['ADMIN']) {
 
             // $column = 'product_id';
             $prodDataFromProducts = json_decode($Products->showProductsById($productId));
+            // print_r($prodDataFromProducts);
             if ($prodDataFromProducts->status) {
-                if ($prodDataFromProducts->data[0]->edit_request_flag == 0) {
+                if ($prodDataFromProducts->data->edit_request_flag == 0) {
                     $oldProdFlag = 1;
                     $status = 0;
                     // print_r($prodDataFromProducts->data);
@@ -258,7 +259,7 @@ if ($_SESSION['ADMIN']) {
 
         $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $status = 0));
         $product = $product->data;
-        print_r($product);
+        // print_r($product);
 
         $productName    = $product[0]->name;
 

@@ -396,9 +396,10 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByIdOnUser($productId, $adminId, $reqStatus){
-            $productData = array();    
-            $productReqData = array();        
+    function showProductsByIdOnUser($productId, $adminId, $reqStatus)
+    {
+        $productData = array();
+        $productReqData = array();
         try {
             if ($reqStatus != 0) {
                 $selectProduct = "SELECT * FROM products WHERE product_id = ?";
@@ -417,7 +418,7 @@ class Products extends DatabaseConnection
                 }
                 $prodStmt->close();
             } else {
-                $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ? AND (old_prod_flag = 1 OR old_prod_flag = 0)";
+                $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ? AND (old_prod_flag = 1 OR prod_req_status = 0)";
                 $prodReqStmt = $this->conn->prepare($selectProductRequest);
 
                 if (!$prodReqStmt) {
@@ -454,6 +455,65 @@ class Products extends DatabaseConnection
 
 
 
+
+
+
+    function showProductsByIdOnTableName($productId, $tableName)
+    {
+        $productData = array();
+        $productReqData = array();
+        try {
+            if ($tableName == 'products') {
+                $selectProduct = "SELECT * FROM products WHERE product_id = ?";
+                $prodStmt = $this->conn->prepare($selectProduct);
+
+                if (!$prodStmt) {
+                    throw new Exception("Statement preparation failed: " . $this->conn->error);
+                }
+
+                $prodStmt->bind_param("s", $productId);
+                $prodStmt->execute();
+                $prodResult = $prodStmt->get_result();
+
+                if ($prodResult->num_rows > 0) {
+                    while ($row = $prodResult->fetch_assoc()) {
+                        $productData[] = $row;
+                    }
+                    return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $productData]);
+                    $prodStmt->close();
+                } else {
+                    return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => '']);
+                    $prodStmt->close();
+                }
+            }
+
+            if ($tableName == 'product_request') {
+                $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ?";
+                $prodReqStmt = $this->conn->prepare($selectProductRequest);
+
+                if (!$prodReqStmt) {
+                    throw new Exception("Statement preparation failed: " . $this->conn->error);
+                }
+
+                $prodReqStmt->bind_param("s", $productId);
+                $prodReqStmt->execute();
+                $prodReqResult = $prodReqStmt->get_result();
+
+                if ($prodReqResult->num_rows > 0) {
+                    while ($row = $prodReqResult->fetch_assoc()) {
+                        $productReqData[] = $row;
+                    }
+                    return json_encode(['status' => '1', 'message' => 'Product found', 'data' => $productReqData]);
+                    $prodReqStmt->close();
+                } else {
+                    return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => '']);
+                    $prodReqStmt->close();
+                }
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
+        }
+    }
 
 
 

@@ -100,7 +100,7 @@ if(isset($_POST['add-new-manuf'])){
              <script>
             swal("Success", "Manufacturer Added!", "success")
                 .then((value) => {
-                    window.location = '<?= URL ?>add-products.php';
+                    window.location = '<?= URL ?>purchesmaster.php';
                 });
             </script>
              <?php

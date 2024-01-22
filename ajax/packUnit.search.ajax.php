@@ -3,28 +3,23 @@ require_once dirname(__DIR__).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'manufacturer.class.php';
+// require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR.'packagingUnit.class.php';
 
 
 $match = $_POST['search'];
 
-$Manufacturer        = new Manufacturer();
+$packUnit       = new PackagingUnits();
 
 if ($match == 'all') {
-    $showmanufacturer   = json_decode($Manufacturer->manufSearch($match));
+    $showPackUnit = json_decode($packUnit ->packUnitSearch($match));
 }else {
-    $showmanufacturer   = json_decode($Manufacturer->manufSearch($match));
+    $showPackUnit    = json_decode($packUnit ->packUnitSearch($match));
 }
 
 
-if ($showmanufacturer->status) {
-    $showmanufacturer= $showmanufacturer->data;
-    // print_r($showmanufacturer);
-    // foreach ($showmanufacturer as $eachManufacturer) {
-    //     echo "<div class='p-1 border-bottom list' id='$eachManufacturer->id' onclick='setManufacturer(this)'>
-    //     $eachManufacturer->name
-    //     </div>";
-    // }
+if ($showPackUnit->status) {
+    $showPackUnit= $showPackUnit->data;
 }else {
     // echo "<p class='text-center font-weight-bold'>manufacturerNot Found!</p>";
     echo "<div class='p-1 border-bottom list'> $match </div>";
@@ -35,24 +30,22 @@ if ($showmanufacturer->status) {
     <thead>
         <tr>
             <th>SL.</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th>Unit Name</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
         <?php
-        if (is_array($showmanufacturer)) {
-            foreach ($showmanufacturer as $rowmanufacturer) {
-                $manufacturerId      = $rowmanufacturer->id;
-                $manufacturerName    = $rowmanufacturer->name;
-                $manufacturerDsc     = $rowmanufacturer->dsc;
-                $manufacturerStatus  = $rowmanufacturer->manu_status;
+        if (is_array($showPackUnit)) {
+            foreach ($showPackUnit as $rowPackUnit) {
+                $packUnitId      = $rowPackUnit->id;
+                $packUnitName    = $rowPackUnit->unit_name;
+                $packUnitStatus  = $rowPackUnit->pack_status;
 
                 $statusLabel = '';
                 $statusColor = '';
-                switch ($manufacturerStatus) {
+                switch ($packUnitStatus) {
                     case 0:
                         $statusLabel = 'Disabled';
                         $statusColor = 'red';
@@ -70,13 +63,12 @@ if ($showmanufacturer->status) {
                         break;
                 }
                 echo '<tr>
-                        <td>' . $manufacturerId  . '</td>
-                        <td>' . $manufacturerName . '</td>
-                        <td>' . $manufacturerDsc . '</td>
+                        <td>' . $packUnitId  . '</td>
+                        <td>' . $packUnitName . '</td>
                         <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                         <td>
-                            <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $manufacturerId . ')"><i class="fas fa-edit"
-                            <a class="mx-1" id="delete-btn" data-id="' . $manufacturerId . '"><i class="far fa-trash-alt"></i></a>
+                            <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $packUnitId . ')"><i class="fas fa-edit"
+                            <a class="mx-1" id="delete-btn" data-id="' . $packUnitId . '"><i class="far fa-trash-alt"></i></a>
                         </td>
                        </tr>';
             }
