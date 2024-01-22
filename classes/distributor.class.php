@@ -120,10 +120,15 @@ class Distributor extends DatabaseConnection
 
 
 
-    function showDistributor()
+    function showDistributor($adminId='')
     {
         try {
-            $select = "SELECT * FROM distributor";
+            if(!empty($adminId)){
+                $select = "SELECT * FROM distributor WHERE `admin_id` = '$adminId' OR `status` = '2'";
+            }else{
+                $select = "SELECT * FROM distributor";
+            }
+            // $select = "SELECT * FROM distributor";
             $selectQuery = $this->conn->prepare($select);
 
             if (!$selectQuery) {
@@ -185,27 +190,28 @@ class Distributor extends DatabaseConnection
 
 
 
-    function distributorSearch($match)
+    function distributorSearch($match, $adminId)
     {
         try {
             if ($match == 'all') {
-
-                $select = "SELECT * FROM `distributor` LIMIT 6";
+                $select = "SELECT * FROM `distributor` WHERE `admin_id` = ? OR `status` = '2' LIMIT 6";
                 $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("s", $adminId);
             } else {
 
                 $select = "SELECT * FROM `distributor` WHERE 
                        `name` LIKE CONCAT('%', ?, '%') OR 
                        `id` LIKE CONCAT('%', ?, '%') OR 
-                       `address` LIKE CONCAT('%', ?, '%')";
+                       `address` LIKE CONCAT('%', ?, '%') AND `admin_id` = ? LIMIT 6";
                 $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("sssi", $match, $match, $match, $adminId);
             }
 
 
             if ($stmt) {
-                if ($match != 'all') {
-                    $stmt->bind_param("sss", $match, $match, $match);
-                }
+                // if ($match != 'all') {
+                //     $stmt->bind_param("sss", $match, $match, $match);
+                // }
 
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -229,6 +235,7 @@ class Distributor extends DatabaseConnection
         }
     }
 
+    
 
     function deleteDist($distributorId)
     {

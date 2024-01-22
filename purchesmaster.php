@@ -16,7 +16,7 @@ $Manufacturer   = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
 $MeasureOfUnits = new MeasureOfUnits();
 
-$showDistributor = json_decode($Distributor->showDistributor());
+$showDistributor = json_decode($Distributor->showDistributor($adminId));
 $countDistributor = count($showDistributor->data);
 $showDistributor = $showDistributor->data;
 // print_r($showDistributor);
@@ -104,7 +104,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Distributor</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor()">
+                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor('all')">
                                                     Find
                                                 </button>
 
@@ -207,7 +207,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Distributor : &nbsp;</h5>
-                        <input id="searchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="distSearch()">
+                        <input id="searchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="distSearch('all')">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -440,27 +440,35 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
     </script>
 
     <script>
-        function distSearch() {
-            var search = document.getElementById('searchInput').value;
-            distributorSearch(search);
+        function distSearch(defaultSearch) {
+            var search = document.getElementById('searchInput').value.trim();
+            // distributorSearch(search);
+            if (search === '') {
+                distributorSearch(defaultSearch);
+            } else {
+                distributorSearch(search);
+            }
         }
-        function manuSearch(){
+
+        function manuSearch() {
             var manusearch = document.getElementById('manuSearchInput').value;
             manufacturerSearch(manusearch);
         }
-        function packSearch(){
+
+        function packSearch() {
             var packSearchInput = document.getElementById('packSearchInput').value;
             packUnitSearch(packSearchInput);
         }
-        function prodSearch(){
+
+        function prodSearch() {
             var prodSearchInput = document.getElementById('prodSearchInput').value;
             prodUnitSearch(prodSearchInput);
         }
     </script>
 
     <script>
-        function findDistributor() {
-            var search = document.getElementById('searchInput').value;
+        function findDistributor(defaultSearch) {
+            var search = document.getElementById('searchInput').value || defaultSearch;
             distributorSearch(search);
         }
 
@@ -469,15 +477,16 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
             manufacturerSearch(manusearch);
         }
 
-        function findPackUnit(){
+        function findPackUnit() {
             var packSearchInput = document.getElementById('packSearchInput').value;
             packUnitSearch(packSearchInput);
         }
 
-        function findProdUnit(){
+        function findProdUnit() {
             var prodSearchInput = document.getElementById('prodSearchInput').value;
             prodUnitSearch(prodSearchInput);
         }
+
         function distributorSearch(search) {
             $.ajax({
                 url: 'ajax/distributor.list-view.ajax.php',
