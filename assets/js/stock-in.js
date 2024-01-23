@@ -241,30 +241,30 @@ function searchItem(input) {
 
 }
 
-const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
+const getDtls = (productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag) => {
 
-    console.log(prodReqStatus+'   '+oldProdReqStatus);
-    console.log("hello");
+
+    console.log(productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag);
 
     let xmlhttp = new XMLHttpRequest();
 
     if (productId != "") {
         // console.log(productId);
         //==================== Manufacturere List ====================
-        manufacturerurl = `ajax/product.getManufacturer.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        manufacturerurl = `ajax/product.getManufacturer.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // alert(url);
         xmlhttp.open("GET", manufacturerurl, false);
         xmlhttp.send(null);
         document.getElementById("manufacturer-id").value = xmlhttp.responseText;
 
-        manufacturerName = `ajax/product.getManufacturer.ajax.php?name=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        manufacturerName = `ajax/product.getManufacturer.ajax.php?name=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         xmlhttp.open("GET", manufacturerName, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText);
         document.getElementById("manufacturer-name").value = xmlhttp.responseText;
 
         //==================== Medicine Power ====================
-        powerurl = `ajax/product.getMedicineDetails.ajax.php?power=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        powerurl = `ajax/product.getMedicineDetails.ajax.php?power=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // alert(url);
         xmlhttp.open("GET", powerurl, false);
         xmlhttp.send(null);
@@ -272,14 +272,14 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
         document.getElementById("medicine-power").value = xmlhttp.responseText;
 
         //==================== Packaging Type ====================
-        packTypeUrl = `ajax/product.getMedicineDetails.ajax.php?pType=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        packTypeUrl = `ajax/product.getMedicineDetails.ajax.php?pType=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // alert(url);
         xmlhttp.open("GET", packTypeUrl, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText);
         document.getElementById("packaging-type").innerHTML = xmlhttp.responseText;
 
-        packTypeFieldUrl = `ajax/product.getMedicineDetails.ajax.php?packegeIn=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        packTypeFieldUrl = `ajax/product.getMedicineDetails.ajax.php?packegeIn=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // // alert(url);
         xmlhttp.open("GET", packTypeFieldUrl, false);
         xmlhttp.send(null);
@@ -287,7 +287,7 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
         document.getElementById("packaging-in").value = xmlhttp.responseText;
 
         //==================== Weightage ====================
-        weightage = `ajax/product.getMedicineDetails.ajax.php?weightage=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        weightage = `ajax/product.getMedicineDetails.ajax.php?weightage=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // alert(url);
         xmlhttp.open("GET", weightage, false);
         xmlhttp.send(null);
@@ -296,7 +296,7 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
 
 
         //==================== Unit ====================
-        unitUrl = `ajax/product.getMedicineDetails.ajax.php?unit=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        unitUrl = `ajax/product.getMedicineDetails.ajax.php?unit=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
@@ -305,7 +305,7 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
         // alert(xmlhttp.responseText);
 
         //==================== MRP ====================
-        mrpUrl = `ajax/product.getMrp.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        mrpUrl = `ajax/product.getMrp.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", mrpUrl, false);
@@ -318,7 +318,7 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
         document.getElementById("ptr").value = pTr;
 
         // //==================== ptr check url ===================
-        chkPtr = `ajax/product.getMrp.ajax.php?ptrChk=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        chkPtr = `ajax/product.getMrp.ajax.php?ptrChk=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", chkPtr, false);
@@ -328,7 +328,7 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
         document.getElementById("ptr").value = xmlhttp.responseText;
 
         //==================== GST ====================
-        gstUrl = `ajax/product.getGst.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        gstUrl = `ajax/product.getGst.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
 
         xmlhttp.open("GET", gstUrl, false);
         xmlhttp.send(null);
@@ -351,7 +351,7 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
         // console.log(xmlhttp.responseText);
 
         //==================== Product Name ====================
-        nameUrl = `ajax/product.getMedicineDetails.ajax.php?pName=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
+        nameUrl = `ajax/product.getMedicineDetails.ajax.php?pName=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // alert(unitUrl);
         xmlhttp.open("GET", nameUrl, false);
         xmlhttp.send(null);
