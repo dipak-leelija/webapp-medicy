@@ -19,6 +19,12 @@ if ($match == 'all') {
 
 if ($showDistributor->status == 1) {
     $showDistributor = $showDistributor->data;
+     // print_r($showmanufacturer);
+    // foreach (showDistributor as $eachDistributor) {
+    //     echo "<div class='p-1 border-bottom list' id='$eachDistributor->id' onclick='setManufacturer(this)'>
+    //     $eachManufacturer->name
+    //     </div>";
+    // }
 } else {
     echo "<p class='text-center font-weight-bold'>Distributor Not Found!</p>";
     // echo "<div class='p-1 border-bottom list'> $match </div>";
