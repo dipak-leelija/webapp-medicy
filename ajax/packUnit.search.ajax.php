@@ -13,9 +13,9 @@ $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 $packUnit       = new PackagingUnits();
 
 if ($match == 'all') {
-    $showPackUnit = json_decode($packUnit ->packUnitSearch($match,$adminId));
+    $showPackUnit = json_decode($packUnit ->packUnitCardSearch($match,$adminId));
 }else {
-    $showPackUnit    = json_decode($packUnit ->packUnitSearch($match, $adminId));
+    $showPackUnit    = json_decode($packUnit ->packUnitCardSearch($match, $adminId));
 }
 
 

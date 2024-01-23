@@ -13,10 +13,10 @@ $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 $prodUnit       = new MeasureOfUnits();
 
 if ($match == 'all') {
-    $showProdUnit = json_decode($prodUnit ->prodUnitSearch($match, $adminId));
+    $showProdUnit = json_decode($prodUnit ->prodUnitCardSearch($match, $adminId));
     // print_r($showProdUnit);
 }else {
-    $showProdUnit    = json_decode($prodUnit ->prodUnitSearch($match, $adminId));
+    $showProdUnit    = json_decode($prodUnit ->prodUnitCardSearch($match, $adminId));
 }
 
 

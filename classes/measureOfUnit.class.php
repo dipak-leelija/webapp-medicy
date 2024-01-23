@@ -150,7 +150,52 @@ class MeasureOfUnits extends DatabaseConnection{
     }
 
     
-    function prodUnitSearch($match, $adminId) {
+    function prodUnitSearch($match) {
+        try {
+            if ($match == 'all') {
+                
+                $select = "SELECT * FROM `quantity_unit` LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+            }else {
+                
+                $select = "SELECT * FROM `quantity_unit` WHERE 
+                       `short_name` LIKE CONCAT('%', ?, '%') OR 
+                       `full_name` LIKE CONCAT('%', ?, '%') OR
+                       `id` LIKE CONCAT('%', ?, '%')  LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+            }
+                       
+
+            if ($stmt) {
+                if ($match != 'all') {
+                    $stmt->bind_param("sss", $match, $match, $match);
+                }
+                
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+    
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+    
+                    return json_encode(['status' => 1, 'message' => 'success', 'data'=> $data]);
+                } else {
+                    return json_encode(['status' => 0, 'message' => 'empty', 'data'=> '']);
+                }
+                $stmt->close();
+            } else {
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: ".$this->conn->error, 'data'=> '']);
+            }
+
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data'=> '']);
+
+        }
+    }
+
+    function prodUnitCardSearch($match, $adminId) {
         try {
             if ($match == 'all') {
                 

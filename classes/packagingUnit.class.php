@@ -128,7 +128,52 @@ class PackagingUnits extends DatabaseConnection{
 
 
 
-    function packUnitSearch($match, $adminId) {
+    function packUnitSearch($match) {
+        try {
+            if ($match == 'all') {
+                
+                $select = "SELECT * FROM `packaging_type` LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+
+            }else {
+                
+                $select = "SELECT * FROM `packaging_type` WHERE 
+                       `unit_name` LIKE CONCAT('%', ?, '%') OR 
+                       `id` LIKE CONCAT('%', ?, '%')  LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+            }
+                       
+
+            if ($stmt) {
+                if ($match != 'all') {
+                    $stmt->bind_param("ss", $match, $match);
+                }
+                
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+    
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+    
+                    return json_encode(['status' => 1, 'message' => 'success', 'data'=> $data]);
+                } else {
+                    return json_encode(['status' => 0, 'message' => 'empty', 'data'=> '']);
+                }
+                $stmt->close();
+            } else {
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: ".$this->conn->error, 'data'=> '']);
+            }
+
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data'=> '']);
+
+        }
+    }
+
+    function packUnitCardSearch($match, $adminId) {
         try {
             if ($match == 'all') {
                 
