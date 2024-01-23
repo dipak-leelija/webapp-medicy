@@ -13,9 +13,19 @@ $ItemUnit       = new itemUnit();
 $CurrentStock   = new CurrentStock();
 
 
+
 // ================ get product name =========================
 if (isset($_GET["id"])) {
-    $showProducts = $Products->showProductsByIdOnUser($_GET["id"], $adminId);
+
+    // =========== edit req flag key check ==========
+    $prodCheck = json_decode($Products->productExistanceCheck($_GET["id"]));
+    if($prodCheck->status == 1){
+        $editReqFlag = 0;
+    }else{
+        $editReqFlag = '';
+    }
+
+    $showProducts = $Products->showProductsByIdOnUser($_GET["id"], $adminId, $editReqFlag);
     $showProductsData = json_decode($showProducts,true);
     // print_r($showProductsData);
     if($showProductsData['status']){
@@ -38,7 +48,16 @@ if (isset($_GET["Pid"])) {
 
 if (isset($_GET["itemWeightage"])) {
     $productId = $_GET["itemWeightage"];
-    $showProducts = json_decode($Products->showProductsByIdOnUser($productId, $adminId));
+
+    // =========== edit req flag key check ==========
+    $prodCheck = json_decode($Products->productExistanceCheck($productId));
+    if($prodCheck->status == 1){
+        $editReqFlag = 0;
+    }else{
+        $editReqFlag = '';
+    }
+
+    $showProducts = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editReqFlag));
     
     // print_r($showProducts);
 
@@ -58,7 +77,16 @@ if (isset($_GET["itemWeightage"])) {
 
 if (isset($_GET["itemUnit"])) {
     $prodId = $_GET["itemUnit"];
-    $showProducts = json_decode($Products->showProductsByIdOnUser($prodId, $adminId));
+
+    // =========== edit req flag key check ==========
+    $prodCheck = json_decode($Products->productExistanceCheck($prodId));
+    if($prodCheck->status == 1){
+        $editReqFlag = 0;
+    }else{
+        $editReqFlag = '';
+    }
+
+    $showProducts = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $editReqFlag));
     
     if ($showProducts->status) {
         $productData = $showProducts->data;

@@ -61,7 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $addedBy            = $employeeId;
         $addedOn            = NOW;
         $adminId            = $adminId;
-        
+
+        $editReqFlag        = $_POST['edit-req-flag'];
+        // print_r($editReqFlag);
         
         $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy, $addedOn, $adminId);
         // print_r($addStockIn);
@@ -263,8 +265,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         $prodId = $itemsData['product_id'];
 
-                        $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, 1));
+                        $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $editReqFlag[$i]));
+                        // print_r($productDetails);
                         $productDetails = $productDetails->data;
+                       
 
                         foreach ($productDetails as $pData) {
                             $pname = $pData->name;

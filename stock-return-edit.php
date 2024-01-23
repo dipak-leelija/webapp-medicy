@@ -31,7 +31,7 @@ if (isset($_GET["returnId"])) {
     $table = 'id';
     $value = $returnId;
     $stokReturnData = json_decode($StockReturn->stockReturnFilter($table, $value));
-    if($stokReturnData->status){
+    if ($stokReturnData->status) {
         $stokReturnData = $stokReturnData->data;
     }
     // print_r($stokReturnData);
@@ -129,7 +129,7 @@ if (isset($_GET["returnId"])) {
 
                                 <div class="col-md-7 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
-                                    
+
                                     <input class="d-none" type="text" id="product-id">
                                     <input class="upr-inp mb-1" id="product_name" value="" readonly>
                                 </div>
@@ -373,7 +373,18 @@ if (isset($_GET["returnId"])) {
                                                 /////////////////////////////////////////////////////
 
                                                 $productid = $bill['product_id'];
-                                                $productDetails = json_decode($products->showProductsByIdOnUser($productid, $adminId));
+
+                                                // =========== edit req flag key check ==========
+                                                $prodCheck = json_decode($Products->productExistanceCheck($productid));
+                                                if ($prodCheck->status == 1) {
+                                                    $editReqFlag = 0;
+                                                } else {
+                                                    $editReqFlag = '';
+                                                }
+                                                //========================
+
+                                                $productDetails = json_decode($products->showProductsByIdOnUser($productid, $adminId, $editReqFlag));
+                                                
                                                 $productDetails = $productDetails->data;
 
                                                 $productName = $productDetails[0]->name;

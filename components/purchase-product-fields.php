@@ -96,12 +96,17 @@
                         <div class="d-flex date-field">
                             <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                             <span class="date-divider">&#47;</span>
-                            <input class="year " type="number" id="exp-year" onfocusout="setExpYEAR(this)">
+                            <input class="year " type="number" id="exp-year" /*onkeyup="setExpyear(this)"*/ onfocusout="setExpYEAR(this)">
                         </div>
                     </div>
                     <div  class="d-none col-md-4 mt-2">
                         <label class="mb-0" for="product-id">Product Id</label>
                         <input class="upr-inp" id="product-id" name="product-id" readonly>
+                    </div>
+
+                    <div  class="d-none col-md-4 mt-2">
+                        <label class="mb-0" for="edit-request-flag">Edit Request Flag</label>
+                        <input class="upr-inp" id="edit-request-flag" name="edit-request-flag" readonly>
                     </div>
                 </div>
                 <!--/End Quantity Row  -->

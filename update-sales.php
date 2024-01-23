@@ -424,7 +424,17 @@ if ($_GET['id']) {
                                                             }
                                                             //=======================
                                                             $table = 'product_id';
-                                                            $productData = json_decode($Products->showProductsByIdOnUser($stockOutDetails[$i]['product_id'], $adminId));
+
+                                                            // =========== edit req flag key check ==========
+                                                            $prodCheck = json_decode($Products->productExistanceCheck($stockOutDetails[$i]['product_id']));
+                                                            if ($prodCheck->status == 1) {
+                                                                $editReqFlag = 0;
+                                                            } else {
+                                                                $editReqFlag = '';
+                                                            }
+                                                            //========================
+
+                                                            $productData = json_decode($Products->showProductsByIdOnUser($stockOutDetails[$i]['product_id'], $adminId, $editReqFlag));
 
                                                             $productData = $productData->data;
 

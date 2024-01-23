@@ -74,7 +74,19 @@ $QuantityUnit   = new QuantityUnit;
     <?php
     if (isset($_GET['id'])) {
         $productId = $_GET['id'];
-        $product        = json_decode($Products->showProductsByIdOnUser($_GET['id'], $adminId));
+
+        // =========== edit req flag key check ==========
+        $prodCheck = json_decode($Products->productExistanceCheck($productId));
+        if ($prodCheck->status == 1) {
+            $editReqFlag = 0;
+        } else {
+            $editReqFlag = '';
+        }
+        //========================
+
+
+        $product        = json_decode($Products->showProductsByIdOnUser($_GET['id'], $adminId, $editReqFlag));
+        
         $product        = $product->data;
 
         if (property_exists($product[0], 'manufacturer_id')) {

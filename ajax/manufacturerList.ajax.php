@@ -8,15 +8,15 @@ $distributorId = $_GET['manufacturer_id'];
 // $distributorId = 2;
 
 $Manufacturer         = new Manufacturer();
-$showManufacturerByDistributorId = $Manufacturer->showManufacturerById($distributorId);
-
+$showManufacturerByDistributorId = json_decode($Manufacturer->showManufacturerById($distributorId));
+$rowManufacturer = $showManufacturerByDistributorId->data;
 // if($doctor!=""){
-    foreach($showManufacturerByDistributorId as $rowManufacturer){
+    // foreach($showManufacturerByDistributorId as $rowManufacturer){
         $manufacturerId   = $rowManufacturer['id'];
         $manufacturerName = $rowManufacturer['name'];
         // echo $days , $shift;
         echo'<option value="'.$manufacturerId.'">'. $manufacturerName.'</option>';
-    }
+    // }
 // }
                                  
 ?>

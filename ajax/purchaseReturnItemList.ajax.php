@@ -113,7 +113,17 @@ if (isset($_GET['return-id'])) {
                                 $gst    += $item['gst'];
                                 $amount += $item['ptr'];
 
-                                $productData = json_decode($Product->showProductsByIdOnUser($item['product_id'], $adminId));
+
+                                // =========== edit req flag key check ==========
+                                $prodCheck = json_decode($Products->productExistanceCheck($item['product_id']));
+                                if ($prodCheck->status == 1) {
+                                    $editReqFlag = 0;
+                                } else {
+                                    $editReqFlag = '';
+                                }
+
+                                //========================
+                                $productData = json_decode($Product->showProductsByIdOnUser($item['product_id'], $adminId, $editReqFlag));
 
                                 if($productData->status){
                                     $productData = $productData->data;
