@@ -16,21 +16,21 @@ $Manufacturer   = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
 $MeasureOfUnits = new MeasureOfUnits();
 
-$showDistributor = json_decode($Distributor->showDistributor());
+$showDistributor = json_decode($Distributor->showDistributor($adminId));
 $countDistributor = count($showDistributor->data);
 $showDistributor = $showDistributor->data;
 // print_r($showDistributor);
 
-$showManufacturer = $Manufacturer->showManufacturer();
+$showManufacturer = $Manufacturer->showManufacturer($adminId);
 $countManufacturer = count(json_decode($showManufacturer));
 // print_r($countManufacturer);
 
-$showPackagingUnits  = $PackagingUnits->showPackagingUnits();
-$countPackagingUnits = count($PackagingUnits->showPackagingUnits());
+// $showPackagingUnits  = $PackagingUnits->showPackagingUnits($adminId);
+$countPackagingUnits = count($PackagingUnits->showPackagingUnits($adminId));
 // print_r($countPackagingUnits);
 
-$showMeasureOfUnits  = $MeasureOfUnits->showMeasureOfUnits();
-$countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
+// $showMeasureOfUnits  = $MeasureOfUnits->showMeasureOfUnits();
+$countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
 // print_r($countMeasureOfUnits);
 ?>
 
@@ -104,7 +104,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Distributor</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor()">
+                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor('all')">
                                                     Find
                                                 </button>
 
@@ -126,7 +126,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Manufacturer</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#ManufacturModal" onclick="findManufacturer()">
+                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#ManufacturModal" onclick="findManufacturer('all')">
                                                     Find
                                                 </button>
                                             </div>
@@ -147,7 +147,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Packaging Unit</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#PackUnitModal" onclick="findPackUnit()">
+                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#PackUnitModal" onclick="findPackUnit('all')">
                                                     Find
                                                 </button>
                                             </div>
@@ -168,7 +168,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Product Unit</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#ProdUnitModal" onclick="findProdUnit()">
+                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#ProdUnitModal" onclick="findProdUnit('all')">
                                                     Find
                                                 </button>
                                             </div>
@@ -207,7 +207,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Distributor : &nbsp;</h5>
-                        <input id="searchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="distSearch()">
+                        <input id="searchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="distSearch('all')">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -243,7 +243,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Manufacturer : &nbsp;</h5>
-                        <input id="manuSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="manuSearch()">
+                        <input id="manuSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="manuSearch('all')">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -278,7 +278,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Pack Unit : &nbsp;</h5>
-                        <input id="packSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="packSearch()">
+                        <input id="packSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="packSearch('all')">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -325,7 +325,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Pack Unit : &nbsp;</h5>
-                        <input id="prodSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="prodSearch()">
+                        <input id="prodSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="prodSearch('all')">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -440,44 +440,66 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
     </script>
 
     <script>
-        function distSearch() {
-            var search = document.getElementById('searchInput').value;
-            distributorSearch(search);
+        function distSearch(defaultSearch) {
+            var search = document.getElementById('searchInput').value.trim();
+            // distributorSearch(search);
+            if (search === '') {
+                distributorSearch(defaultSearch);
+            } else {
+                distributorSearch(search);
+            }
         }
-        function manuSearch(){
-            var manusearch = document.getElementById('manuSearchInput').value;
-            manufacturerSearch(manusearch);
+
+        function manuSearch(defaultSearch) {
+            var manusearch = document.getElementById('manuSearchInput').value.trim();
+            if(manusearch === ''){
+                manufacturerSearch(defaultSearch);
+            }else{
+                manufacturerSearch(manusearch);
+            }
         }
-        function packSearch(){
-            var packSearchInput = document.getElementById('packSearchInput').value;
-            packUnitSearch(packSearchInput);
+
+        function packSearch(defaultSearch) {
+            var packSearchInput = document.getElementById('packSearchInput').value.trim();
+            if(packSearchInput === ''){
+                packUnitSearch(defaultSearch);
+            }else{
+                packUnitSearch(packSearchInput);
+            }
         }
-        function prodSearch(){
-            var prodSearchInput = document.getElementById('prodSearchInput').value;
-            prodUnitSearch(prodSearchInput);
+
+        function prodSearch(defaultSearch) {
+            var prodSearchInput = document.getElementById('prodSearchInput').value.trim();
+            // prodUnitSearch(prodSearchInput);
+            if(prodSearchInput === ''){
+                prodUnitSearch(defaultSearch);
+            }else{
+                prodUnitSearch(prodSearchInput);
+            }
         }
     </script>
 
     <script>
-        function findDistributor() {
-            var search = document.getElementById('searchInput').value;
+        function findDistributor(defaultSearch) {
+            var search = document.getElementById('searchInput').value || defaultSearch;
             distributorSearch(search);
         }
 
-        function findManufacturer() {
-            var manusearch = document.getElementById('manuSearchInput').value;
+        function findManufacturer(defaultSearch) {
+            var manusearch = document.getElementById('manuSearchInput').value || defaultSearch;
             manufacturerSearch(manusearch);
         }
 
-        function findPackUnit(){
-            var packSearchInput = document.getElementById('packSearchInput').value;
+        function findPackUnit(defaultSearch) {
+            var packSearchInput = document.getElementById('packSearchInput').value || defaultSearch;
             packUnitSearch(packSearchInput);
         }
 
-        function findProdUnit(){
-            var prodSearchInput = document.getElementById('prodSearchInput').value;
+        function findProdUnit(defaultSearch) {
+            var prodSearchInput = document.getElementById('prodSearchInput').value || defaultSearch;
             prodUnitSearch(prodSearchInput);
         }
+
         function distributorSearch(search) {
             $.ajax({
                 url: 'ajax/distributor.list-view.ajax.php',

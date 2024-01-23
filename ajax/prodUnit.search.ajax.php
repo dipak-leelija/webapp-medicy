@@ -7,14 +7,16 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'measureOfUnit.class.php';
 
 
-$match = $_POST['search'];
-
+// $match = $_POST['search'];
+$match = isset($_POST['search']) ? $_POST['search'] : $adminId;
+// echo $match;
 $prodUnit       = new MeasureOfUnits();
 
 if ($match == 'all') {
-    $showProdUnit = json_decode($prodUnit ->prodUnitSearch($match));
+    $showProdUnit = json_decode($prodUnit ->prodUnitSearch($match, $adminId));
+    // print_r($showProdUnit);
 }else {
-    $showProdUnit    = json_decode($prodUnit ->prodUnitSearch($match));
+    $showProdUnit    = json_decode($prodUnit ->prodUnitSearch($match, $adminId));
 }
 
 
@@ -48,8 +50,7 @@ if ($showProdUnit->status) {
                         <td>' . $prodUnitSName . '</td>
                         <td>' . $prodUnitFName . '</td>
                         <td>
-                            <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $prodUnitId . ')"><i class="fas fa-edit"
-                            <a class="mx-1" id="delete-btn" data-id="' . $prodUnitId . '"><i class="far fa-trash-alt"></i></a>
+                            <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $prodUnitId . ')"><i class="fas fa-edit"</i></a>
                         </td>
                        </tr>';
             }

@@ -129,7 +129,7 @@ if (isset($_GET['return'])) {
                                                         $manufacturerName        = $rowManufacturer->name;
                                                         // $distributorId       = $rowManufacturer['distributor_id'];
                                                         $manufacturerDsc         = $rowManufacturer->dsc;
-                                                        $manufacturerStatus      = $rowManufacturer->manu_status;
+                                                        $manufacturerStatus      = $rowManufacturer->status;
 
                                                         $statusLabel = '';
                                                         $statusColor = '';

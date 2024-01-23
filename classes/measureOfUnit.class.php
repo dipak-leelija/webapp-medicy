@@ -60,9 +60,14 @@ class MeasureOfUnits extends DatabaseConnection{
 
 
 
-    function showMeasureOfUnits(){
+    function showMeasureOfUnits($adminId = ''){
         $data           = array();
-        $select         = " SELECT * FROM quantity_unit";
+        if(!empty($adminId)){
+            $select         = " SELECT * FROM quantity_unit WHERE `admin_id` = '$adminId'";
+        }else{
+            $select         = " SELECT * FROM quantity_unit";
+        }
+    
         $selectQuery    = $this->conn->query($select);
         while ($result  = $selectQuery->fetch_array() ) {
             $data[] = $result;
@@ -145,28 +150,28 @@ class MeasureOfUnits extends DatabaseConnection{
     }
 
     
-    function prodUnitSearch($match) {
+    function prodUnitSearch($match, $adminId) {
         try {
             if ($match == 'all') {
                 
-                $select = "SELECT * FROM `quantity_unit` LIMIT 6";
+                $select = "SELECT * FROM `quantity_unit` WHERE `admin_id` = ?  LIMIT 6";
                 $stmt = $this->conn->prepare($select);
-
+                $stmt->bind_param("s", $adminId);
             }else {
                 
                 $select = "SELECT * FROM `quantity_unit` WHERE 
                        `short_name` LIKE CONCAT('%', ?, '%') OR 
                        `full_name` LIKE CONCAT('%', ?, '%') OR
-                       `id` LIKE CONCAT('%', ?, '%') LIMIT 6";
+                       `id` LIKE CONCAT('%', ?, '%') AND `admin_id` = ? LIMIT 6";
                 $stmt = $this->conn->prepare($select);
-                
+                $stmt->bind_param("ssss", $match, $match, $match, $adminId);
             }
                        
 
             if ($stmt) {
-                if ($match != 'all') {
-                    $stmt->bind_param("sss", $match, $match, $match);
-                }
+                // if ($match != 'all') {
+                //     $stmt->bind_param("sss", $match, $match, $match);
+                // }
                 
                 $stmt->execute();
                 $result = $stmt->get_result();

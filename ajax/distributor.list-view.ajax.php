@@ -1,32 +1,27 @@
-<?php 
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+<?php
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'distributor.class.php';
 
 
-$match = $_POST['search'];
+// $match = $_POST['search'];
+$match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 
 $Distributor        = new Distributor();
 
 if ($match == 'all') {
     $showDistributor    = json_decode($Distributor->distributorSearch($match,$adminId));
-}else {
-    $showDistributor    = json_decode($Distributor->distributorSearch($match,$adminId));
+} else {
+    $showDistributor    = json_decode($Distributor->distributorSearch($match, $adminId));
 }
 
 if ($showDistributor->status == 1) {
     $showDistributor = $showDistributor->data;
-
-    // foreach ($showDistributor as $eachDistributor) {
-    //     echo "<div class='p-1 border-bottom list' id='$eachDistributor->id' onclick='setDistributor(this)'>
-    //     $eachDistributor->name
-    //     </div>";
-    // }
-}else {
-    // echo "<p class='text-center font-weight-bold'>Distributor Not Found!</p>";
-    echo "<div class='p-1 border-bottom list'> $match </div>";
+} else {
+    echo "<p class='text-center font-weight-bold'>Distributor Not Found!</p>";
+    // echo "<div class='p-1 border-bottom list'> $match </div>";
 }
 ?>
 
@@ -79,14 +74,14 @@ if ($showDistributor->status == 1) {
                         <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                         <td>
                             <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"
-                            <a class="mx-1" id="delete-btn" data-id="' . $distributorId . '"><i class="far fa-trash-alt"></i></a>
                         </td>
                        </tr>';
                 $rowCount++;
-                if ($rowCount == 5) {
-                    break;
-                }
+                // if ($rowCount == 5) {
+                //     break;
+                // }
             }
+            // echo $rowCount;
         }
         ?>
     </tbody>
