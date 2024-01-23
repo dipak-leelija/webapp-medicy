@@ -5,6 +5,7 @@ require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
 
 
 require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR  . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
@@ -15,21 +16,21 @@ $Manufacturer   = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
 $MeasureOfUnits = new MeasureOfUnits();
 
-$showDistributor = json_decode($Distributor->showDistributor());
+$showDistributor = json_decode($Distributor->showDistributor($adminId));
 $countDistributor = count($showDistributor->data);
-$showDistributor = count($showDistributor->data);
+$showDistributor = $showDistributor->data;
 // print_r($showDistributor);
 
-$showManufacturer = $Manufacturer->showManufacturer();
+$showManufacturer = $Manufacturer->showManufacturer($adminId);
 $countManufacturer = count(json_decode($showManufacturer));
 // print_r($countManufacturer);
 
-$showPackagingUnits  = $PackagingUnits->showPackagingUnits();
-$countPackagingUnits = count($PackagingUnits->showPackagingUnits());
+// $showPackagingUnits  = $PackagingUnits->showPackagingUnits($adminId);
+$countPackagingUnits = count($PackagingUnits->showPackagingUnits($adminId));
 // print_r($countPackagingUnits);
 
-$showMeasureOfUnits  = $MeasureOfUnits->showMeasureOfUnits();
-$countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
+// $showMeasureOfUnits  = $MeasureOfUnits->showMeasureOfUnits();
+$countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
 // print_r($countMeasureOfUnits);
 ?>
 
@@ -44,7 +45,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Appointments - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
+    <title>Purchase Master - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -57,9 +58,16 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/return-page.css">
     <style>
+        .card-hover img {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            -webkit-transition: .3s ease-in-out;
+            transition: .3s ease-in-out;
+        }
+
         .card-hover:hover img {
-            width: 85px;
-            height: 65px;
+            -webkit-transform: scale(1.3);
+            transform: scale(1.3);
         }
     </style>
 </head>
@@ -96,9 +104,10 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Distributor</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor()">
+                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor('all')">
                                                     Find
                                                 </button>
+
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <img src="<?= IMG_PATH . 'Distributor.png' ?>" class="ml-0" style="width: 80px; height: 60px; opacity: 0.5;" alt="">
@@ -117,7 +126,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Manufacturer</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor()">
+                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#ManufacturModal" onclick="findManufacturer('all')">
                                                     Find
                                                 </button>
                                             </div>
@@ -138,7 +147,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Packaging Unit</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor()">
+                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#PackUnitModal" onclick="findPackUnit('all')">
                                                     Find
                                                 </button>
                                             </div>
@@ -148,18 +157,18 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-end">
-                                            <button class="btn btn-sm text-white bg-transparent mt-n2 mr-3 mb-2" data-toggle="modal" data-target="#add-packagingUnit" onclick="addPackUnit()">
+                                            <button class="btn btn-sm text-white bg-transparent mt-n2 mr-3 mb-2" data-toggle="modal" data-target="#add-packagingUnit">
                                                 Add new
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 mt-2">
-                                    <div class="card bg-gradient-success">
+                                    <div class="card bg-gradient-success card-hover">
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Product Unit</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor()">
+                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#ProdUnitModal" onclick="findProdUnit('all')">
                                                     Find
                                                 </button>
                                             </div>
@@ -169,7 +178,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-end">
-                                            <button class="btn btn-sm text-white bg-transparent mt-n2 mr-3 mb-2" data-toggle="modal" data-target="#add-ProdUnit" onclick="addProdUnit()">
+                                            <button class="btn btn-sm text-white bg-transparent mt-n2 mr-3 mb-2" data-toggle="modal" data-target="#add-ProdUnit">
                                                 Add new
                                             </button>
                                         </div>
@@ -198,18 +207,14 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Distributor : &nbsp;</h5>
-                        <input id="searchInput" type="search" class="form-control form-control-sm w-50" placeholder="" aria-controls="dataTable" onchange="currentSearch()">
+                        <input id="searchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="distSearch('all')">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body DistributorModal">
 
                     </div>
-                    <!-- <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -232,6 +237,24 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
         </div>
         <!--end add distributor Modal -->
 
+        <!-- Manufacture search modal -->
+        <div class="modal fade" id="ManufacturModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Search Manufacturer : &nbsp;</h5>
+                        <input id="manuSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="manuSearch('all')">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ManufacturModal">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end manufacture modal  -->
         <!-- add manufacturer modal -->
         <div class="modal fade" id="add-manufacturer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -249,12 +272,30 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
             </div>
         </div><!-- end manufacturer modal -->
 
+        <!-- Packaging search modal  -->
+        <div class="modal fade" id="PackUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Search Pack Unit : &nbsp;</h5>
+                        <input id="packSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="packSearch('all')">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body PackUnitModal">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end Packaging search modal  -->
         <!-- add packaging unit -->
-        <div class="modal fade" id="add-packagingUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="add-packagingUnit" tabindex="-1" role="dialog" aria-labelledby="packUnitModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Packaging Unit</h5>
+                        <h5 class="modal-title" id="packUnitModalLabel">Add Packaging Unit</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -278,6 +319,24 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
             </div>
         </div>
         <!-- end packaging unit -->
+        <!-- Prod Unit search modal  -->
+        <div class="modal fade" id="ProdUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Search Pack Unit : &nbsp;</h5>
+                        <input id="prodSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="prodSearch('all')">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ProdUnitModal">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end Prod Unit search modal  -->
         <!-- add product unit modal -->
         <div class="modal fade" id="add-ProdUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -380,42 +439,124 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
         }
     </script>
 
-    <!-- <script>
-        const addPackUnit = () => {
-            var parentLocation = window.location.origin + window.location.pathname;
-            $.ajax({
-                url: "components/manufacturer-add.php",
-                type: "POST",
-                data: {
-                    urlData: parentLocation
-                },
-                success: function(response) {
-                    let body = document.querySelector('.add-manufacturer');
-                    body.innerHTML = response;
-                },
-                error: function(error) {
-                    console.error("Error: ", error);
-                }
-            });
+    <script>
+        function distSearch(defaultSearch) {
+            var search = document.getElementById('searchInput').value.trim();
+            // distributorSearch(search);
+            if (search === '') {
+                distributorSearch(defaultSearch);
+            } else {
+                distributorSearch(search);
+            }
         }
-    </script> -->
+
+        function manuSearch(defaultSearch) {
+            var manusearch = document.getElementById('manuSearchInput').value.trim();
+            if(manusearch === ''){
+                manufacturerSearch(defaultSearch);
+            }else{
+                manufacturerSearch(manusearch);
+            }
+        }
+
+        function packSearch(defaultSearch) {
+            var packSearchInput = document.getElementById('packSearchInput').value.trim();
+            if(packSearchInput === ''){
+                packUnitSearch(defaultSearch);
+            }else{
+                packUnitSearch(packSearchInput);
+            }
+        }
+
+        function prodSearch(defaultSearch) {
+            var prodSearchInput = document.getElementById('prodSearchInput').value.trim();
+            // prodUnitSearch(prodSearchInput);
+            if(prodSearchInput === ''){
+                prodUnitSearch(defaultSearch);
+            }else{
+                prodUnitSearch(prodSearchInput);
+            }
+        }
+    </script>
 
     <script>
-        function currentSearch() {
-            var search = document.getElementById('searchInput').value;
-            console.log(search);
-            findDistributor(search)
+        function findDistributor(defaultSearch) {
+            var search = document.getElementById('searchInput').value || defaultSearch;
+            distributorSearch(search);
         }
 
-        function findDistributor(search) {
+        function findManufacturer(defaultSearch) {
+            var manusearch = document.getElementById('manuSearchInput').value || defaultSearch;
+            manufacturerSearch(manusearch);
+        }
+
+        function findPackUnit(defaultSearch) {
+            var packSearchInput = document.getElementById('packSearchInput').value || defaultSearch;
+            packUnitSearch(packSearchInput);
+        }
+
+        function findProdUnit(defaultSearch) {
+            var prodSearchInput = document.getElementById('prodSearchInput').value || defaultSearch;
+            prodUnitSearch(prodSearchInput);
+        }
+
+        function distributorSearch(search) {
             $.ajax({
-                url: 'ajax/distributor.search.ajax.php',
+                url: 'ajax/distributor.list-view.ajax.php',
                 type: 'POST',
                 data: {
                     search: search
                 },
                 success: function(data) {
-                    $('.modal-body').html(data);
+                    $('.DistributorModal').html(data);
+                },
+                error: function(error) {
+                    console.error('Error loading distributor modal:', error);
+                }
+            });
+        }
+
+        function manufacturerSearch(manusearch) {
+            $.ajax({
+                url: 'ajax/manufacturer.list-view.ajax.php',
+                type: 'POST',
+                data: {
+                    search: manusearch
+                },
+                success: function(data) {
+                    $('.ManufacturModal').html(data);
+                },
+                error: function(error) {
+                    console.error('Error loading distributor modal:', error);
+                }
+            });
+        }
+
+        function packUnitSearch(packSearchInput) {
+            $.ajax({
+                url: 'ajax/packUnit.search.ajax.php',
+                type: 'POST',
+                data: {
+                    search: packSearchInput
+                },
+                success: function(data) {
+                    $('.PackUnitModal').html(data);
+                },
+                error: function(error) {
+                    console.error('Error loading distributor modal:', error);
+                }
+            });
+        }
+
+        function prodUnitSearch(prodSearchInput) {
+            $.ajax({
+                url: 'ajax/prodUnit.search.ajax.php',
+                type: 'POST',
+                data: {
+                    search: prodSearchInput
+                },
+                success: function(data) {
+                    $('.ProdUnitModal').html(data);
                 },
                 error: function(error) {
                     console.error('Error loading distributor modal:', error);
@@ -423,6 +564,8 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits());
             });
         }
     </script>
+
+
 </body>
 
 </html>

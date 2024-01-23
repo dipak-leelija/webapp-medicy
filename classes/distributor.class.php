@@ -6,11 +6,11 @@ class Distributor extends DatabaseConnection
 {
 
 
-    function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn,$distributorStatus, $adminId)
+    function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`,`dis_status`,`admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`,`status`,`admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
@@ -65,14 +65,15 @@ class Distributor extends DatabaseConnection
 
 
 
-    function updateDistStatus($status, $distributorId){
-        try{
-            $update =  "UPDATE `distributor` SET `dis_status`=? WHERE `id`=?";
+    function updateDistStatus($status, $distributorId)
+    {
+        try {
+            $update =  "UPDATE `distributor` SET `status`=? WHERE `id`=?";
             $stmt = $this->conn->prepare($update);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("ii",$status, $distributorId);
+                $stmt->bind_param("ii", $status, $distributorId);
 
                 // Execute the query
                 $updatedQuery = $stmt->execute();
@@ -81,11 +82,10 @@ class Distributor extends DatabaseConnection
             } else {
                 throw new Exception("Failed to prepare the statement.");
             }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
             return false;
         }
-       
     }
 
 
@@ -120,10 +120,15 @@ class Distributor extends DatabaseConnection
 
 
 
-    function showDistributor()
+    function showDistributor($adminId='')
     {
         try {
-            $select = "SELECT * FROM distributor";
+            if(!empty($adminId)){
+                $select = "SELECT * FROM distributor WHERE `admin_id` = '$adminId' OR `status` = '2'";
+            }else{
+                $select = "SELECT * FROM distributor";
+            }
+            // $select = "SELECT * FROM distributor";
             $selectQuery = $this->conn->prepare($select);
 
             if (!$selectQuery) {
@@ -151,9 +156,6 @@ class Distributor extends DatabaseConnection
             return json_encode(['status' => 0, 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
         }
     }
-
-
-
 
     function showDistributorById($distributorId)
     {
@@ -188,27 +190,28 @@ class Distributor extends DatabaseConnection
 
 
 
-    function distributorSearch($match)
+    function distributorSearch($match, $adminId)
     {
         try {
             if ($match == 'all') {
-
-                $select = "SELECT * FROM `distributor` LIMIT 6";
+                $select = "SELECT * FROM `distributor` WHERE `admin_id` = ? OR `status` = '2' LIMIT 6";
                 $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("s", $adminId);
             } else {
 
                 $select = "SELECT * FROM `distributor` WHERE 
                        `name` LIKE CONCAT('%', ?, '%') OR 
                        `id` LIKE CONCAT('%', ?, '%') OR 
-                       `address` LIKE CONCAT('%', ?, '%')";
+                       `address` LIKE CONCAT('%', ?, '%') AND `admin_id` = ? LIMIT 6";
                 $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("sssi", $match, $match, $match, $adminId);
             }
 
 
             if ($stmt) {
-                if ($match != 'all') {
-                    $stmt->bind_param("sss", $match, $match, $match);
-                }
+                // if ($match != 'all') {
+                //     $stmt->bind_param("sss", $match, $match, $match);
+                // }
 
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -232,8 +235,7 @@ class Distributor extends DatabaseConnection
         }
     }
 
-
-
+    
 
     function deleteDist($distributorId)
     {

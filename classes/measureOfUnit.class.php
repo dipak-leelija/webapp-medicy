@@ -60,9 +60,14 @@ class MeasureOfUnits extends DatabaseConnection{
 
 
 
-    function showMeasureOfUnits(){
+    function showMeasureOfUnits($adminId = ''){
         $data           = array();
-        $select         = " SELECT * FROM quantity_unit";
+        if(!empty($adminId)){
+            $select         = " SELECT * FROM quantity_unit WHERE `admin_id` = '$adminId'";
+        }else{
+            $select         = " SELECT * FROM quantity_unit";
+        }
+    
         $selectQuery    = $this->conn->query($select);
         while ($result  = $selectQuery->fetch_array() ) {
             $data[] = $result;
@@ -145,6 +150,53 @@ class MeasureOfUnits extends DatabaseConnection{
     }
 
     
+    function prodUnitSearch($match, $adminId) {
+        try {
+            if ($match == 'all') {
+                
+                $select = "SELECT * FROM `quantity_unit` WHERE `admin_id` = ?  LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("s", $adminId);
+            }else {
+                
+                $select = "SELECT * FROM `quantity_unit` WHERE 
+                       `short_name` LIKE CONCAT('%', ?, '%') OR 
+                       `full_name` LIKE CONCAT('%', ?, '%') OR
+                       `id` LIKE CONCAT('%', ?, '%') AND `admin_id` = ? LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("ssss", $match, $match, $match, $adminId);
+            }
+                       
+
+            if ($stmt) {
+                // if ($match != 'all') {
+                //     $stmt->bind_param("sss", $match, $match, $match);
+                // }
+                
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+    
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+    
+                    return json_encode(['status' => 1, 'message' => 'success', 'data'=> $data]);
+                } else {
+                    return json_encode(['status' => 0, 'message' => 'empty', 'data'=> '']);
+                }
+                $stmt->close();
+            } else {
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: ".$this->conn->error, 'data'=> '']);
+            }
+
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data'=> '']);
+
+        }
+    }
+
 
 }//end of LabTypes Class
 

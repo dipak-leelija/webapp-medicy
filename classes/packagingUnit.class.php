@@ -57,7 +57,7 @@ class PackagingUnits extends DatabaseConnection{
     ///======= Update Packaging Status ======///
     function updatePackStatus($newStatus , $packagingUnitId){
         try {
-            $update = "UPDATE `packaging_type` SET `pack_status` = ? WHERE `id` = ?";
+            $update = "UPDATE `packaging_type` SET `status` = ? WHERE `id` = ?";
             
             $stmt = $this->conn->prepare($update);
     
@@ -77,8 +77,13 @@ class PackagingUnits extends DatabaseConnection{
     } ///======= End Update Packaging Status ======///
 
 
-    function showPackagingUnits(){
-        $select         = " SELECT * FROM packaging_type";
+    function showPackagingUnits($adminId = ''){
+        $data = [];
+        if(!empty($adminId)){
+            $select         = " SELECT * FROM `packaging_type` WHERE `admin_id` = '$adminId' OR `status` = '2'";
+        }else{
+            $select         = " SELECT * FROM `packaging_type` ";
+        }
         $selectQuery    = $this->conn->query($select);
         while ($result  = $selectQuery->fetch_assoc() ) {
             $data[] = $result;
@@ -122,6 +127,53 @@ class PackagingUnits extends DatabaseConnection{
     }//end deleteManufacturer function
 
 
+
+    function packUnitSearch($match, $adminId) {
+        try {
+            if ($match == 'all') {
+                
+                $select = "SELECT * FROM `packaging_type` WHERE `admin_id` = ? OR `status` = '2' LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("s", $adminId);
+
+            }else {
+                
+                $select = "SELECT * FROM `packaging_type` WHERE 
+                       `unit_name` LIKE CONCAT('%', ?, '%') OR 
+                       `id` LIKE CONCAT('%', ?, '%') AND `admin_id` = ?  OR `status` = '2' LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("sss", $match, $match, $adminId);
+            }
+                       
+
+            if ($stmt) {
+                // if ($match != 'all') {
+                //     $stmt->bind_param("ss", $match, $match);
+                // }
+                
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+    
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+    
+                    return json_encode(['status' => 1, 'message' => 'success', 'data'=> $data]);
+                } else {
+                    return json_encode(['status' => 0, 'message' => 'empty', 'data'=> '']);
+                }
+                $stmt->close();
+            } else {
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: ".$this->conn->error, 'data'=> '']);
+            }
+
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data'=> '']);
+
+        }
+    }
 
     
 

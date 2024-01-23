@@ -86,7 +86,7 @@ $PackagingUnits = new PackagingUnits();
                                                     foreach ($showPackagingUnits as $rowPackagingUnits) {
                                                         $unitId     = $rowPackagingUnits['id'];
                                                         $unitName   = $rowPackagingUnits['unit_name'];
-                                                        $packStatus = $rowPackagingUnits['pack_status'];
+                                                        $packStatus = $rowPackagingUnits['status'];
 
                                                         $statusLabel = '';
                                                         $statusColor = '';
