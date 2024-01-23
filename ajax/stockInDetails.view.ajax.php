@@ -1,12 +1,12 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR."stockIn.class.php";
-require_once CLASS_DIR."stockInDetails.class.php";
-require_once CLASS_DIR."distributor.class.php";
-require_once CLASS_DIR."products.class.php";
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . "stockIn.class.php";
+require_once CLASS_DIR . "stockInDetails.class.php";
+require_once CLASS_DIR . "distributor.class.php";
+require_once CLASS_DIR . "products.class.php";
 
 
 // CLASS INITIATING
@@ -24,29 +24,27 @@ $Products       = new Products();
 <head>
     <!-- Custom fonts for this template-->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <!-- <link href="../css/sb-admin-2.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <style>
-    .container-fluid {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
+        .container-fluid {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    .summary {
-        margin-top: auto;
-        min-height: 5rem;
-        background: #af3636;
-        align-items: center;
-        color: #fff;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
+        .summary {
+            margin-top: auto;
+            min-height: 5rem;
+            background: #af3636;
+            align-items: center;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
     </style>
 
 </head>
@@ -65,97 +63,107 @@ $Products       = new Products();
             if ($distributorData->status == 1) {
                 $distributor = $distributorData->data;
                 $distributorName = $distributor->name;
-            }else {
+            } else {
                 $distributorName = '';
             }
 
         ?>
-        <div class="row">
-            <div class="col-6 col-sm-4">
-                <p><b> Distribubtor: </b><?= $distributorName; ?></p>
-                <p><b> Dist. Bill No: </b><?php echo $StockIn[0][2]; ?></p>
+            <div class="row">
+                <div class="col-6 col-sm-4">
+                    <p><b> Distribubtor: </b><?= $distributorName; ?></p>
+                    <p><b> Dist. Bill No: </b><?php echo $StockIn[0][2]; ?></p>
+                </div>
+                <div class="col-6 col-sm-4">
+                    <p><b> Bill Date: </b><?php echo $StockIn[0][5]; ?></p>
+                    <p><b> Due Date: </b><?php echo $StockIn[0][6]; ?></p>
+                </div>
+                <div class="col-6 col-sm-4">
+                    <p><b> Payment Mode: </b><?php echo $StockIn[0][7]; ?></p>
+                    <!-- <p>Action</p> -->
+                </div>
             </div>
-            <div class="col-6 col-sm-4">
-                <p><b> Bill Date: </b><?php echo $StockIn[0][5]; ?></p>
-                <p><b> Due Date: </b><?php echo $StockIn[0][6]; ?></p>
-            </div>
-            <div class="col-6 col-sm-4">
-                <p><b> Payment Mode: </b><?php echo $StockIn[0][7]; ?></p>
-                <!-- <p>Action</p> -->
-            </div>
-        </div>
-<hr>
-        <div class="table-responsive my-3">
+            <hr>
+            <div class="table-responsive my-3">
 
-            <table class="table table-sm table-hover" style="font-size:0.9rem;">
-                <thead class="bg-primary text-light">
-                    <tr>
-                        <th>SL.</th>
-                        <th>Item Name</th>
-                        <th>Batch</th>
-                        <th>Exp.</th>
-                        <th>Weatage</th>
-                        <th>Unit</th>
-                        <th>Qty.</th>
-                        <th>F.Qty</th>
-                        <th>Disc.</th>
-                        <th>Base</th>
-                        <th>GST</th>
-                        <th>PTR</th>
-                        <th>Margin</th>
-                        <th>MRP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                $sl = 0;
-                $qty = 0;
-                $gst = 0;
-                $amount = 0;
+                <table class="table table-sm table-hover" style="font-size:0.9rem;">
+                    <thead class="bg-primary text-light">
+                        <tr>
+                            <th>SL.</th>
+                            <th>Item Name</th>
+                            <th>Batch</th>
+                            <th>Exp.</th>
+                            <th>Weatage</th>
+                            <th>Unit</th>
+                            <th>Qty.</th>
+                            <th>F.Qty</th>
+                            <th>Disc.</th>
+                            <th>Base</th>
+                            <th>GST</th>
+                            <th>PTR</th>
+                            <th>Margin</th>
+                            <th>MRP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $sl = 0;
+                        $qty = 0;
+                        $gst = 0;
+                        $amount = 0;
 
-                $items = $StockInDetails->showStockInDetailsById($_GET['distBill']);
-                // print_r($items);
-                foreach ($items as $item) {
-                    $sl     += 1;
-                    $qty    += $item['qty'];
-                    $gst    += $item['gst'];
-                    $amount += $item['ptr'];
+                        $items = $StockInDetails->showStockInDetailsById($_GET['distBill']);
+                        // print_r($items);
+                        foreach ($items as $item) {
+                            $sl     += 1;
+                            $qty    += $item['qty'];
+                            $gst    += $item['gst'];
+                            $amount += $item['ptr'];
 
-                    $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId));
-                    $product = $product->data;
-                    // print_r($product);
 
-                    $pName = $product[0]->name;
-                    
-                    echo "<tr>
-                            <th scope='row'>".$sl."</th>
-                            <td>".$pName."</td>
-                            <td>".$item['batch_no']."</td>
-                            <td>".$item['exp_date']."</td>
-                            <td>".$item['weightage']."</td>
-                            <td>".$item['unit']."</td>
-                            <td>".$item['qty']."</td>
-                            <td>".$item['free_qty']."</td>
-                            <td>".$item['discount']."%</td>
-                            <td>".$item['base']."</td>
-                            <td>".$item['gst']."</td>
-                            <td>".$item['ptr']."</td>
-                            <td>".$item['margin']."</td>
-                            <td>".$item['mrp']."</td>
+                            // =========== edit req flag key check ==========
+                            $prodCheck = json_decode($Products->productExistanceCheck($item['product_id']));
+                            if ($prodCheck->status == 1) {
+                                $editReqFlag = 0;
+                            } else {
+                                $editReqFlag = '';
+                            }
+                            //========================
+
+                            $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId, $editReqFlag));
+                            $product = $product->data;
+                            // print_r($product);
+
+                            $pName = $product[0]->name;
+
+                            echo "<tr>
+                            <th scope='row'>" . $sl . "</th>
+                            <td>" . $pName . "</td>
+                            <td>" . $item['batch_no'] . "</td>
+                            <td>" . $item['exp_date'] . "</td>
+                            <td>" . $item['weightage'] . "</td>
+                            <td>" . $item['unit'] . "</td>
+                            <td>" . $item['qty'] . "</td>
+                            <td>" . $item['free_qty'] . "</td>
+                            <td>" . $item['discount'] . "%</td>
+                            <td>" . $item['base'] . "</td>
+                            <td>" . $item['gst'] . "</td>
+                            <td>" . $item['ptr'] . "</td>
+                            <td>" . $item['margin'] . "</td>
+                            <td>" . $item['mrp'] . "</td>
                           </tr>";
-                }
-                ?>
-                </tbody>
-            </table>
-        </div>
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="row summary rounded align-middle">
-            <div class="col-6 col-sm-3">Items: <?php echo count($items);?></div>
-            <div class="col-6 col-sm-3">Quantity: <?php echo $qty;?></div>
-            <div class="col-6 col-sm-3">GST: <?php echo $StockIn[0]['gst'];?></div>
-            <div class="col-6 col-sm-3">Amount: <?php echo $StockIn[0]['amount'];?></div>
+            <div class="row summary rounded align-middle">
+                <div class="col-6 col-sm-3">Items: <?php echo count($items); ?></div>
+                <div class="col-6 col-sm-3">Quantity: <?php echo $qty; ?></div>
+                <div class="col-6 col-sm-3">GST: <?php echo $StockIn[0]['gst']; ?></div>
+                <div class="col-6 col-sm-3">Amount: <?php echo $StockIn[0]['amount']; ?></div>
 
-        </div>
+            </div>
 
         <?php
         }

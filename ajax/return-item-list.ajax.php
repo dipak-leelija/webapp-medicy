@@ -60,8 +60,16 @@ if (isset($_GET['dist-id'])) {
             $expDate = $detail->exp_date;
             
 
+            // =========== edit req flag key check ==========
+            $prodCheck = json_decode($Products->productExistanceCheck($productId));
+            if ($prodCheck->status == 1) {
+                $editReqFlag = 0;
+            } else {
+                $editReqFlag = '';
+            }
+            //========================
 
-            $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId));
+            $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editReqFlag));
             $product = $product->data;
             $productName = $product[0]->name;
 
