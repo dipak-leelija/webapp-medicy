@@ -31,6 +31,7 @@ $packagUnit     =   new PackagingUnits();
 
 if (isset($_GET['currentStockId'])) {
     $productId =  $_GET['currentStockId'];
+    $editReqFlag = $_GET['editReqFlag'];
 
 
     // ================= PRODUCT CURRENT STOCK IN QTY ============
@@ -52,7 +53,7 @@ if (isset($_GET['currentStockId'])) {
     }
 
 
-    $prodcutDetails = json_decode($Product->showProductsByIdOnUser($productId, $adminId));
+    $prodcutDetails = json_decode($Product->showProductsByIdOnUser($productId, $adminId, $editReqFlag));
     $prodcutDetails = $prodcutDetails->data;
 
     // print_r($prodcutDetails);

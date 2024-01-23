@@ -260,8 +260,8 @@ if ($_SESSION['ADMIN']) {
 
         // ================================ Fetching Product Details =================================
 
-        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $prodReqStatus,
-        $oldProdFlag, $editRequestFlag));
+        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editRequestFlag, $prodReqStatus,
+        $oldProdFlag));
         $product = $product->data;
         // print_r($product);
 

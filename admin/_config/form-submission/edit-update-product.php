@@ -113,7 +113,7 @@ $Category = $Category->data;
                 // print_r($addProductOnRequest);
                 $addProductOnRequest = json_decode($addProductOnRequest);
                 if ($addProductOnRequest->status) {
-                    // $deleteRequest = $Request->deleteRequest($productid);
+                    $deleteRequest = $Request->deleteRequest($productid);
                     $updateProduct = true;
                 }
             } elseif ($prodReqStatus == 0 && $oldProdFlag == 1) {
@@ -126,7 +126,7 @@ $Category = $Category->data;
                 // print_r($addProductOnRequest);
                 $addProductOnRequest = json_decode($addProductOnRequest);
                 if ($addProductOnRequest->status) {
-                    // $deleteRequest = $Request->deleteRequest($productid);
+                    $deleteRequest = $Request->deleteRequest($productid);
                     $updateProduct = true;
                     $productid = $newProductId;
                 }

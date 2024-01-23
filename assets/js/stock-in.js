@@ -244,12 +244,14 @@ function searchItem(input) {
 const getDtls = (productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag) => {
 
 
-    console.log(productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag);
+    // console.log(productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag);
 
     let xmlhttp = new XMLHttpRequest();
 
     if (productId != "") {
         // console.log(productId);
+        //==================== edit request flag ====================
+        document.getElementById('edit-request-flag').value = edtiRequestFlag;
         //==================== Manufacturere List ====================
         manufacturerurl = `ajax/product.getManufacturer.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}&edtiRequestFlag=${edtiRequestFlag}`;
         // alert(url);
@@ -535,7 +537,7 @@ const getBillAmount = () => {
 //geeting bills by clicking on add button
 const addData = () => {
     // alert('Clicked');
-
+    let editRequestFlag = document.getElementById('edit-request-flag');
     let distId = document.getElementById("distributor-id");
     let distId2 = document.getElementById("dist-id");
     // console.log(distId.value1);
@@ -647,10 +649,12 @@ const addData = () => {
         weightage.focus();
         return;
     }
-    if (unit.value == "") {
-        unit.focus();
-        return;
-    }
+
+    // if (unit.value == "") {
+    //     unit.focus();
+    //     return;
+    // }
+
     if (packagingIn.value == "") {
         packagingIn.focus();
         return;
@@ -837,6 +841,10 @@ const addData = () => {
             <td class="p-0 pt-3 w-4r" id="row-${slControl}-col-14">
                 <input class="table-data w-4r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="padding: 0%; font-size: .7rem; text-align: end;">
             </td>
+
+            <td class="d-none p-0 pt-3 w-4r" id="row-${slControl}-col-15">
+                <input class="table-data w-4r amnt-inp" type="text" name="edit-req-flag[]" value="${editRequestFlag.value}" readonly style="padding: 0%; font-size: .7rem; text-align: end;">
+            </td>editRequestFlag
         </tr>`);
 
 
@@ -880,6 +888,7 @@ const addData = () => {
         base: base.value,
         gst: gst.value,
         amount: billAmount.value,
+        editRequestFlag: editRequestFlag.value
     };
 
     let tupleData = JSON.stringify(dataTuple);
@@ -929,6 +938,9 @@ const addData = () => {
     document.getElementById(`row-${slControl}-col-14`).onclick = function () {
         editItem(tupleData);
     };
+    document.getElementById(`row-${slControl}-col-15`).onclick = function () {
+        editItem(tupleData);
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -972,6 +984,7 @@ const editItem = (tupleData) => {
         document.getElementById("gst").value = TupleData.gst;
         document.getElementById("base").value = TupleData.base;
         document.getElementById("bill-amount").value = TupleData.amount;
+        document.getElementById("edit-request-flag").value = TupleData.editRequestFlag;
 
         let gstPerItem = parseFloat(TupleData.amount) - (parseFloat(TupleData.base) * parseInt(TupleData.Qty));
         gstPerItem = gstPerItem.toFixed(2);
@@ -1102,7 +1115,7 @@ expMonthInput.addEventListener('input', function (event) {
 //     }
 // }
 
-// set exp month control
+// ===set exp month control
 const setexpMonth = (mnth) => {
     if (mnth.value.length != 2) {
         mnth.value = '';
@@ -1185,36 +1198,39 @@ const setExpMonth = (month) => {
 // }
 
 
-function setExpYEAR(year) {
-    if (year.value.length == 4) {
-        document.getElementById('ptr').focus();
-    } else if (year.value.length > 4) {
-        year.value = '';
-        year.focus();
-    }
-}
+// function setExpYEAR(year) {
+//     if (year.value.length > 4) {
+//         document.getElementById('ptr').focus();
+//     } else {
+//         document.getElementById('exp-year').focus();
+//     }
+// }
 
-const setExpYear = (year) => {
-    // var MFDYR = document.getElementById("mfd-year").value;
-    // var mfdMnth = document.getElementById("mfd-month").value;
-    var expMnth = document.getElementById("exp-month").value;
+const setExpYEAR = (year) => {
+    expMnth = document.getElementById("exp-month").value;
+    
+    let today = new Date();
+    let currentMnth = today.getMonth();
+    let curretnYr = today.getFullYear();
 
-    if (year.value.length < 4) {
-        year.value = '';
-        year.focus();
-    }
-
-    if (year.value.length == 4) {
-        if (year.value == MFDYR) {
-            if (expMnth < mfdMnth) {
-                document.getElementById("exp-month").value = '';
-                document.getElementById("exp-month").focus();
+    if(year.value.length == 4){
+        if (year.value < curretnYr) {
+            document.getElementById('exp-year').value = '';
+            document.getElementById('exp-year').focus();
+        }else if(year.value == curretnYr){
+            if(expMnth < currentMnth){
+                document.getElementById('exp-month').value = '';
+                document.getElementById('exp-year').value = '';
+                document.getElementById('exp-month').focus();
             }
-        } else if (year.value < MFDYR) {
-            year.value = '';
-            year.focus();
+        }else{
+            document.getElementById('ptr').focus();
         }
+    }else{
+        document.getElementById('exp-year').value = '';
+        document.getElementById('exp-year').focus();
     }
+    
 }
 
 ///////////////// ===== product select arrow key effect ===== \\\\\\\\\\\\\\\\\\\\\\\
