@@ -22,8 +22,8 @@ $showDistributor = $showDistributor->data;
 // print_r($showDistributor);
 
 $showManufacturer = $Manufacturer->showManufacturer($adminId);
-$countManufacturer = count(json_decode($showManufacturer));
-// print_r($countManufacturer);
+$decodedManufacturer = ($showManufacturer !== null) ? json_decode($showManufacturer) : null;
+$countManufacturer = ($decodedManufacturer !== null) ? count($decodedManufacturer) : 0;
 
 // $showPackagingUnits  = $PackagingUnits->showPackagingUnits($adminId);
 $countPackagingUnits = count($PackagingUnits->showPackagingUnits($adminId));
