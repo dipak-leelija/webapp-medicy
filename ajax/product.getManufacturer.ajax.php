@@ -11,7 +11,7 @@ $Manufacturer = new Manufacturer();
 $Products     = new Products();
 
 if (isset($_GET["id"])) {
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId, $_GET["prodReqStatus"]));
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId, $_GET["edtiRequestFlag"], $_GET["prodReqStatus"], $_GET["oldProdReqStatus"]));
 
     if ($showProducts->status) {
         $prodData =  $showProducts->data;
@@ -28,7 +28,7 @@ if (isset($_GET["id"])) {
 }
 
 if (isset($_GET["manufName"])) {
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["manufName"], $adminId, $_GET["prodReqStatus"]));
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["manufName"], $adminId, $_GET["edtiRequestFlag"], $_GET["prodReqStatus"], $_GET["oldProdReqStatus"]));
 
     if ($showProducts->status) {
         $prodData = $showProducts->data;
@@ -65,7 +65,7 @@ if (isset($_GET["manufName"])) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 if (isset($_GET["name"])) {
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["name"], $adminId, $_GET["prodReqStatus"]));
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["name"], $adminId, $_GET["edtiRequestFlag"], $_GET["prodReqStatus"], $_GET["oldProdReqStatus"]));
     if ($showProducts->status) {
         $showProducts = $showProducts->data;
         if (isset($showProducts[0]->manufacturer_id)) {
