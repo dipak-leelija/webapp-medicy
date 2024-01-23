@@ -139,8 +139,8 @@ class PackagingUnits extends DatabaseConnection{
             }else {
                 
                 $select = "SELECT * FROM `packaging_type` WHERE 
-                       `unit_name` LIKE CONCAT('%', ?, '%') OR 
-                       `id` LIKE CONCAT('%', ?, '%') AND `admin_id` = ?  OR `status` = '2' LIMIT 6";
+                       (`unit_name` LIKE CONCAT('%', ?, '%') OR 
+                       `id` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ?  OR `status` = '2') LIMIT 6";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("sss", $match, $match, $adminId);
             }

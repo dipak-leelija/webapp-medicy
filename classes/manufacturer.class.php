@@ -227,9 +227,9 @@ class Manufacturer extends DatabaseConnection{
             }else {
                 
                 $select = "SELECT * FROM `manufacturer` WHERE 
-                       `name` LIKE CONCAT('%', ?, '%') OR 
+                       (`name` LIKE CONCAT('%', ?, '%') OR 
                        `id` LIKE CONCAT('%', ?, '%') OR 
-                       `short_name` LIKE CONCAT('%', ?, '%') AND `admin_id` = ? LIMIT 6";
+                       `short_name` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ? OR `status` = '2') LIMIT 6";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("ssss", $match, $match, $match, $adminId);
                 

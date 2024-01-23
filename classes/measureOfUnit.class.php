@@ -160,9 +160,9 @@ class MeasureOfUnits extends DatabaseConnection{
             }else {
                 
                 $select = "SELECT * FROM `quantity_unit` WHERE 
-                       `short_name` LIKE CONCAT('%', ?, '%') OR 
+                       (`short_name` LIKE CONCAT('%', ?, '%') OR 
                        `full_name` LIKE CONCAT('%', ?, '%') OR
-                       `id` LIKE CONCAT('%', ?, '%') AND `admin_id` = ? LIMIT 6";
+                       `id` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ?) LIMIT 6";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("ssss", $match, $match, $match, $adminId);
             }

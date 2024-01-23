@@ -12,9 +12,9 @@ $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 $Distributor        = new Distributor();
 
 if ($match == 'all') {
-    $showDistributor    = json_decode($Distributor->distributorSearch($match,$adminId));
+    $showDistributor    = json_decode($Distributor->distCardSearch($match,$adminId));
 } else {
-    $showDistributor    = json_decode($Distributor->distributorSearch($match, $adminId));
+    $showDistributor    = json_decode($Distributor->distCardSearch($match, $adminId));
 }
 
 if ($showDistributor->status == 1) {

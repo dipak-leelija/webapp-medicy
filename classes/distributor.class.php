@@ -190,7 +190,50 @@ class Distributor extends DatabaseConnection
 
 
 
-    function distributorSearch($match, $adminId)
+    function distributorSearch($match)
+    {
+        try {
+            if ($match == 'all') {
+                $select = "SELECT * FROM `distributor` LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+            } else {
+
+                $select = "SELECT * FROM `distributor` WHERE 
+                       `name` LIKE CONCAT('%', ?, '%') OR 
+                       `id` LIKE CONCAT('%', ?, '%') OR 
+                       `address` LIKE CONCAT('%', ?, '%')  LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+            }
+
+
+            if ($stmt) {
+                if ($match != 'all') {
+                    $stmt->bind_param("sss", $match, $match, $match);
+                }
+
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+
+                    return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
+                } else {
+                    return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
+                }
+                $stmt->close();
+            } else {
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: " . $this->conn->error, 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data' => '']);
+        }
+    }
+
+    function distCardSearch($match, $adminId)
     {
         try {
             if ($match == 'all') {
@@ -200,11 +243,11 @@ class Distributor extends DatabaseConnection
             } else {
 
                 $select = "SELECT * FROM `distributor` WHERE 
-                       `name` LIKE CONCAT('%', ?, '%') OR 
+                       (`name` LIKE CONCAT('%', ?, '%') OR 
                        `id` LIKE CONCAT('%', ?, '%') OR 
-                       `address` LIKE CONCAT('%', ?, '%') AND `admin_id` = ? LIMIT 6";
+                       `address` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ? OR `status` = '2') LIMIT 6";
                 $stmt = $this->conn->prepare($select);
-                $stmt->bind_param("sssi", $match, $match, $match, $adminId);
+                $stmt->bind_param("ssss", $match, $match, $match, $adminId);
             }
 
 
