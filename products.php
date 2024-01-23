@@ -27,15 +27,15 @@ if (isset($_GET['search'])) {
     $prodId = $_GET['search'];
     $prodReqStatus = $_GET['prodReqStatus']; 
     $oldProdReqFlag = $_GET['oldProdReqFlag']; 
-    $reqStatus = $_GET['editRequestFlag']; 
+    $editRequestStatus = $_GET['editRequestFlag']; 
     
-    if($reqStatus != ''){
-        $status = $reqStatus;
+    if($editRequestStatus != ''){
+        $editRequestStatus = $editRequestStatus;
     }else{
-        $status = 0;
+        $editRequestStatus = 0;
     }
     
-    $productList = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $prodReqStatus, $oldProdReqFlag, $status));
+    $productList = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $editRequestStatus, $prodReqStatus, $oldProdReqFlag));
 
     $productList = $productList->data;
 

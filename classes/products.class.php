@@ -429,12 +429,12 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByIdOnUser($productId, $adminId, $reqStatus, $oldProdFlag, $status)
+    function showProductsByIdOnUser($productId, $adminId, $editReqFlag, $prodReqStatus='', $oldProdFlag='')
     {
         $productData = array();
         $productReqData = array();
         try {
-            if ($reqStatus == '' && $oldProdFlag == '' && $status != '') {
+            if ($prodReqStatus == '' && $oldProdFlag == '' && $editReqFlag != '') {
                 $selectProduct = "SELECT * FROM products WHERE product_id = ?";
                 $prodStmt = $this->conn->prepare($selectProduct);
 

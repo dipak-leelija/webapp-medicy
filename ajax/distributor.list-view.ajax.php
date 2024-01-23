@@ -12,13 +12,19 @@ $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 $Distributor        = new Distributor();
 
 if ($match == 'all') {
-    $showDistributor    = json_decode($Distributor->distributorSearch($match,$adminId));
+    $showDistributor    = json_decode($Distributor->distCardSearch($match,$adminId));
 } else {
-    $showDistributor    = json_decode($Distributor->distributorSearch($match, $adminId));
+    $showDistributor    = json_decode($Distributor->distCardSearch($match, $adminId));
 }
 
 if ($showDistributor->status == 1) {
     $showDistributor = $showDistributor->data;
+     // print_r($showmanufacturer);
+    // foreach (showDistributor as $eachDistributor) {
+    //     echo "<div class='p-1 border-bottom list' id='$eachDistributor->id' onclick='setManufacturer(this)'>
+    //     $eachManufacturer->name
+    //     </div>";
+    // }
 } else {
     echo "<p class='text-center font-weight-bold'>Distributor Not Found!</p>";
     // echo "<div class='p-1 border-bottom list'> $match </div>";

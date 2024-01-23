@@ -12,9 +12,9 @@ $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 $Manufacturer        = new Manufacturer();
 
 if ($match == 'all') {
-    $showmanufacturer   = json_decode($Manufacturer->manufSearch($match, $adminId));
+    $showmanufacturer   = json_decode($Manufacturer->manufCardSearch($match, $adminId));
 }else {
-    $showmanufacturer   = json_decode($Manufacturer->manufSearch($match, $adminId));
+    $showmanufacturer   = json_decode($Manufacturer->manufCardSearch($match, $adminId));
 }
 
 
