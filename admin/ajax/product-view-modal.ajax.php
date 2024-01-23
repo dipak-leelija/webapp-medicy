@@ -77,13 +77,13 @@ $QuantityUnit   = new QuantityUnit;
         $productId = $_GET['id'];
         $product        = json_decode($Products->showProductsByIdOnTableName($_GET['id'], $_GET['table']));
         $product        = $product->data;
-        print_r($product);
-        echo "<br>";
+        // print_r($product);
+        // echo "<br>";
         // ====== manuf data area =====
-        if (isset($product[0]->manufacturer_id)) {
-            $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]->manufacturer_id));
+        if (isset($product->manufacturer_id)) {
+            $manuf          = json_decode($Manufacturer->showManufacturerById($product->manufacturer_id));
             if ($manuf->status) {
-                print_r($manuf->data);
+                // print_r($manuf->data);
                 $manufName = $manuf->data->name;
             } else {
                 $manufName = 'no manufacturer data found';
@@ -94,6 +94,7 @@ $QuantityUnit   = new QuantityUnit;
 
 
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
+
         $image          = json_decode($ProductImages->showImageById($_GET['id']));
         // print_r($image );
 
@@ -104,18 +105,19 @@ $QuantityUnit   = new QuantityUnit;
                 $productId = $image->product_id;
             }
         } else {
-            $Images[] = "medicy-default-product-image.jpg";
+            $Images[] = "default-product-image/medicy-default-product-image.jpg";
         }
+
 
         echo '<script>';
         echo 'var productId = ' . json_encode($productId) . '; ';
         echo '</script>';
 
-        $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
+        $pack = $PackagingUnits->showPackagingUnitById($product->packaging_type);
 
         //======== item unit data fetch =======
-        if (isset($product[0]->unit_id)) {
-            $itemQuantityUnit = json_decode($QuantityUnit->quantityUnitName($product[0]->unit_id));
+        if (isset($product->unit_id)) {
+            $itemQuantityUnit = json_decode($QuantityUnit->quantityUnitName($product->unit_id));
             // print_r($itemQuantityUnit);
 
             if($itemQuantityUnit->status){
@@ -132,25 +134,25 @@ $QuantityUnit   = new QuantityUnit;
         }
 
 
-        $itemUnitName = $ItemUnit->itemUnitName($product[0]->unit);
+        $itemUnitName = $ItemUnit->itemUnitName($product->unit);
 
 
-        if (isset($product[0]->comp_1)) {
-            $comp1 = $product[0]->comp_1;
+        if (isset($product->comp_1)) {
+            $comp1 = $product->comp_1;
         } else {
             $comp1 = '';
         }
 
 
-        if (isset($product[0]->comp_2)) {
-            $comp2 = $product[0]->comp_2;
+        if (isset($product->comp_2)) {
+            $comp2 = $product->comp_2;
         } else {
             $comp2 = '';
         }
 
 
-        if (isset($product[0]->dsc)) {
-            $dsc = $product[0]->dsc;
+        if (isset($product->dsc)) {
+            $dsc = $product->dsc;
         } else {
             $dsc = '';
         }
@@ -177,10 +179,10 @@ $QuantityUnit   = new QuantityUnit;
                     <div class="col-12 col-md-6">
                         <div class="d-flex">
                             <div class="text-start col-7 mb-0 pb-0">
-                                <h4><?php echo $product[0]->name; ?></h4>
+                                <h4><?php echo $product->name; ?></h4>
                                 <h7><?php echo $manufName; ?></h7>
-                                <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
-                                <p class="fst-normal"><?php echo $product[0]->unit_quantity; ?>
+                                <h5 class="fs-5 fst-normal">₹ <?php echo $product->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
+                                <p class="fst-normal"><?php echo $product->unit_quantity; ?>
                                     <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
                                 <p>
                                     <small>
@@ -235,11 +237,11 @@ $QuantityUnit   = new QuantityUnit;
                     <div class="col-12 col-md-2" id="btn-ctrl-1">
                         <div class="col-md-12 d-flex">
                             <div class="col-sm-6 m-2">
-                                <a id="anchor" href="<?= ADM_URL ?>edit-product.php?id=<?php echo $_GET['id']; ?>&table=<?php $_GET['table']; ?>"><button class="button1 btn-primary">Edit</button></a>
+                                <a id="anchor" href="<?= ADM_URL ?>edit-product.php?id=<?php echo $_GET['id']; ?>&table=<?php echo $_GET['table']; ?>"><button class="button1 btn-primary">Edit</button></a>
                             </div>
 
                             <div class="col-sm-6 m-2">
-                                <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
+                                <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Reject</button>
                             </div>
                         </div>
                     </div>
@@ -248,13 +250,13 @@ $QuantityUnit   = new QuantityUnit;
 
                 <div class="row justify-content-center" id='btn-ctrl-2'>
                     <hr class="text-center w-100" style="height: 2px;">
-                    <div class="d-flex col-sm-12 justify-content-center">
-                        <div class="col-md-2">
-                            <a id="anchor" href="<?= ADM_URL ?>edit-product.php?id=<?php echo $_GET['id']; ?>&table=<?php $_GET['table']; ?>"><button class="button2 btn-primary">Edit</button></a>
+                    <div class="d-flex col-sm-12">
+                        <div class="col-md-6">
+                            <a id="anchor" href="<?= ADM_URL ?>edit-product.php?id=<?php echo $_GET['id']; ?>&table=<?php echo $_GET['table']; ?>"><button class="button2 btn-primary">Edit</button></a>
                         </div>
-
-                        <div class="col-md-2">
-                            <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <div class="col-md-6 d-flex justify-content-end">
+                            <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Reject</button>
                         </div>
                     </div>
                 </div>
@@ -293,23 +295,24 @@ $QuantityUnit   = new QuantityUnit;
 
         const del = (e) => {
             btnID = e.id;
-            btnVal = e.value;
+            // btnVal = e.value;
             btn = this;
             // alert(btnVal);
             // alert(btnID);
 
-            if (btnVal > 0) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Current Stock have this product.'
-                })
-            }
+            // if (btnVal > 0) {
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'Oops...',
+            //         text: 'Current Stock have this product.'
+            //     })
+            // }
 
-            if (btnVal == 0) {
+            
+            // if (btnVal == 0) {
                 swal.fire({
                         title: "Are you sure?",
-                        text: "Want to Delete This Manufacturer?",
+                        text: "Want to Delete This Data?",
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,
@@ -329,7 +332,7 @@ $QuantityUnit   = new QuantityUnit;
                                     if (data == 1) {
                                         Swal.fire(
                                             "Deleted",
-                                            "Manufacturer Has Been Deleted",
+                                            "Data Has Been Deleted",
                                             "success"
                                         ).then(function() {
                                             parent.location.reload();
@@ -347,7 +350,7 @@ $QuantityUnit   = new QuantityUnit;
                         }
                         return false;
                     });
-            }
+            // }
         }
     </script>
 

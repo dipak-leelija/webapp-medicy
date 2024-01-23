@@ -97,6 +97,9 @@ if ($_SESSION['ADMIN']) {
     if (isset($_GET['id'])) {
 
         $productId = $_GET['id'];
+        $prodReqStatus = $_GET['prodReqStatus'];
+        $oldProdFlag = $_GET['oldProdFlag'];
+        $editRequestFlag = $_GET['editRequestFlag'];
 
         if (isset($_POST['update-product'])) {
 
@@ -143,7 +146,7 @@ if ($_SESSION['ADMIN']) {
                     // add product request to product request table through request class.
                     $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $status, $oldProdFlag);
 
-                    $editRqstFlgData = intval($prodDataFromProducts->data[0]->edit_request_flag);
+                    $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
                     if ($addOldProdEditRequest) {
                         $col = 'edit_request_flag';
                         $editRqstFlgData += 1;
@@ -170,7 +173,7 @@ if ($_SESSION['ADMIN']) {
 
                         $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $status, $oldProdFlag);
 
-                        $editRqstFlgData = intval($prodDataFromProducts->data[0]->edit_request_flag);
+                        $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
                         if ($addOldProdEditRequest) {
                             $col = 'edit_request_flag';
                             $editRqstFlgData += 1;
@@ -257,7 +260,8 @@ if ($_SESSION['ADMIN']) {
 
         // ================================ Fetching Product Details =================================
 
-        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $status = 0));
+        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $prodReqStatus,
+        $oldProdFlag, $editRequestFlag));
         $product = $product->data;
         // print_r($product);
 

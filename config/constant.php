@@ -114,6 +114,8 @@ session_start();
 
 
 	define("PROD_IMG", 							ROOT_DIR.'images/product-image/');
+
+	// define("ADM_PROD_IMG", 						ROOT_DIR.'images/product-image/');
 	
 
 	const ASSETS_PATH						=	URL.'assets/';

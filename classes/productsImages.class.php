@@ -5,7 +5,7 @@ class ProductImages extends DatabaseConnection
 
 
 
-    function addImages($productId='', $productImage='', $addedBy='', $addedOn='', $adminId='')
+    function addImages($productId, $productImage, $addedBy, $addedOn, $adminId)
     {
         try {
             if(!empty($adminId)){

@@ -35,13 +35,25 @@ if ($showProducts->status) {
         if(property_exists($showProducts, 'prod_req_status')){
             $prodReqStatus = $showProducts->prod_req_status;
         }else{
-            $prodReqStatus = null;
+            $prodReqStatus = '';
+        }
+
+        if(property_exists($showProducts, 'old_prod_flag')){
+            $oldProdReqFlag = $showProducts->old_prod_flag;
+        }else{
+            $oldProdReqFlag = '';
+        }
+
+        if(property_exists($showProducts, 'edit_request_flag')){
+            $editRequestFlag = $showProducts->edit_request_flag;
+        }else{
+            $editRequestFlag = '';
         }
 
         // echo  $prodReqStatus;
 
         echo "<div class='p-1 border-bottom list'>
-                <div class='' id='$showProducts->product_id' value1='$prodReqStatus' onclick='searchProduct(this)'>
+                <div class='' id='$showProducts->product_id' prodReqStatus='$prodReqStatus' oldProdReqFlag='$oldProdReqFlag' editRequestFlag='$editRequestFlag' onclick='searchProduct(this)'>
                     $showProducts->name
                 </div>
 

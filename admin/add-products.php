@@ -90,7 +90,7 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                     <!-- Add Product -->
                     <div class="card shadow mb-4" style="min-height: 70vh;">
                         <div class="card-body">
-                            <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
+                            <form action="_config\form-submission\add-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
                                 <div class="row">
                                     <div class="col-md-5">
                                         <div class="col-12">
