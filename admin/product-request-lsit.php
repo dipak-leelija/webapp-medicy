@@ -35,7 +35,6 @@ $totalPtoducts  = $result->totalPtoducts;
 $productList = json_decode($Products->showProductsByLimit());
 
 
-
 ?>
 
 <!DOCTYPE html>
@@ -90,20 +89,15 @@ $productList = json_decode($Products->showProductsByLimit());
                     <!-- New Section -->
                     <div class="col">
                         <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                                <!-- <div class="d-flex col-12"> -->
-                                <div class="col-md-3 mt-2 p-2">
+                            <div class="card-header py-3 col-12 d-flex">
+                                <div class="col-md-6">
                                     <h6 class="m-0 font-weight-bold text-primary">Total Items:
                                         <?= $totalPtoducts ?>
                                     </h6>
                                 </div>
-                                <div class="d-flex justify-content-between">
-                                    <div class="col-md-7"></div>
-                                    <div class="col-md-2">
-                                        <a class="btn btn-sm btn-primary" href="add-products.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
-                                    </div>
+                                <div class="col-md-6 d-flex justify-content-end">
+                                    <a class="btn btn-sm btn-primary" href="add-products.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
                                 </div>
-                                <!-- </div> -->
                             </div>
                             <div class="card-body">
 
@@ -118,6 +112,7 @@ $productList = json_decode($Products->showProductsByLimit());
                                                         // print_r($item);
                                                         $image = json_decode($ProductImages->showImagesByProduct($item->product_id));
 
+                                                        // print_r($image);
                                                         if ($image->status) {
                                                             $imgData = $image->data;
 
@@ -130,6 +125,15 @@ $productList = json_decode($Products->showProductsByLimit());
                                                             $dsc = $item->dsc . '...';
                                                         } else {
                                                             $dsc = ' ';
+                                                        }
+
+
+                                                        if ($item->prod_req_status == 0) {
+                                                            if ($item->old_prod_flag == 0) {
+                                                                $modalHeading = 'New Product Request';
+                                                            } else {
+                                                                $modalHeading = 'Existing Product Edit Request';
+                                                            }
                                                         }
                                                 ?>
 
@@ -147,7 +151,7 @@ $productList = json_decode($Products->showProductsByLimit());
                                                                 <div class="row px-3 pb-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" onclick="viewItem(this)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $modalHeading; ?>" onclick="viewItem(this)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -157,7 +161,6 @@ $productList = json_decode($Products->showProductsByLimit());
                                                 } else {
                                                     echo "No Item Avilable";
                                                 }
-
                                                 ?>
 
                                             </div>
@@ -194,12 +197,13 @@ $productList = json_decode($Products->showProductsByLimit());
     </div>
     <!-- End of Page Wrapper -->
 
+
     <!-- Product Modal -->
     <div class="modal fade" id="productViewModal" tabindex="-1" aria-labelledby="product-view-edit-modal" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-center" id="product-view-edit-modal">View/Edit Product</h5>
+                    <h5 class="modal-title text-center" id="product-view-edit-modal-title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -236,7 +240,10 @@ $productList = json_decode($Products->showProductsByLimit());
         // ========================== view and edit fucntion =========================
         const viewItem = (t) => {
             let prodId = t.id;
-            let verifiedValue = t.value;
+            let modalHeading = t.value;
+
+            let modalTitle = document.getElementById('product-view-edit-modal-title');
+            modalTitle.textContent = modalHeading;
 
             let url = '';
             url = `ajax/product-view-modal.ajax.php?id=${prodId}&table=${'product_request'}`;
@@ -327,7 +334,6 @@ $productList = json_decode($Products->showProductsByLimit());
         //         localStorage.setItem('prodName', '');
         //     }
         // });
-
     </script>
 
 </body>

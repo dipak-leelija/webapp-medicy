@@ -251,13 +251,13 @@ const getDtls = (productId, prodReqStatus, oldProdReqStatus) => {
     if (productId != "") {
         // console.log(productId);
         //==================== Manufacturere List ====================
-        manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + productId;
+        manufacturerurl = `ajax/product.getManufacturer.ajax.php?id=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         // alert(url);
         xmlhttp.open("GET", manufacturerurl, false);
         xmlhttp.send(null);
         document.getElementById("manufacturer-id").value = xmlhttp.responseText;
 
-        manufacturerName = 'ajax/product.getManufacturer.ajax.php?name=' + productId;
+        manufacturerName = `ajax/product.getManufacturer.ajax.php?name=${productId}&prodReqStatus=${prodReqStatus}&oldProdReqStatus=${oldProdReqStatus}`;
         xmlhttp.open("GET", manufacturerName, false);
         xmlhttp.send(null);
         // alert(xmlhttp.responseText);
