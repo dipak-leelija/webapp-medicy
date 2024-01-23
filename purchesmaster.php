@@ -202,12 +202,18 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         <!-- End of Content Wrapper -->
 
         <!-- distributor search modal -->
-        <div class="modal fade" id="DistributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="DistributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Distributor : &nbsp;</h5>
-                        <input id="searchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="distSearch('all')">
+                        <!-- <input id="searchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-label="Search" onchange="distSearch('all')"> -->
+                        <div class="input-group w-50">
+                            <input id="searchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-sm btn-success" onclick="distSearch('all')"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -220,7 +226,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         </div>
         <!-- end distributor modal  -->
         <!-- add distributor Modal -->
-        <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -238,12 +244,18 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         <!--end add distributor Modal -->
 
         <!-- Manufacture search modal -->
-        <div class="modal fade" id="ManufacturModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="ManufacturModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Manufacturer : &nbsp;</h5>
-                        <input id="manuSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="manuSearch('all')">
+                        <!-- <input id="manuSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="manuSearch('all')"> -->
+                        <div class="input-group w-50">
+                            <input id="manuSearchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-sm btn-success" onclick="manuSearch('all')"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -256,7 +268,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         </div>
         <!-- end manufacture modal  -->
         <!-- add manufacturer modal -->
-        <div class="modal fade" id="add-manufacturer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="add-manufacturer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -273,12 +285,18 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         </div><!-- end manufacturer modal -->
 
         <!-- Packaging search modal  -->
-        <div class="modal fade" id="PackUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="PackUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Pack Unit : &nbsp;</h5>
-                        <input id="packSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="packSearch('all')">
+                        <!-- <input id="packSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="packSearch('all')"> -->
+                        <div class="input-group w-50">
+                            <input id="packSearchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-sm btn-success" onclick="packSearch('all')"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -291,7 +309,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         </div>
         <!-- end Packaging search modal  -->
         <!-- add packaging unit -->
-        <div class="modal fade" id="add-packagingUnit" tabindex="-1" role="dialog" aria-labelledby="packUnitModalLabel" aria-hidden="true">
+        <div class="modal fade" id="add-packagingUnit" tabindex="-1" role="dialog" aria-labelledby="packUnitModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -320,12 +338,18 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         </div>
         <!-- end packaging unit -->
         <!-- Prod Unit search modal  -->
-        <div class="modal fade" id="ProdUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="ProdUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Pack Unit : &nbsp;</h5>
-                        <input id="prodSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="prodSearch('all')">
+                        <!-- <input id="prodSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="prodSearch('all')"> -->
+                        <div class="input-group w-50">
+                            <input id="prodSearchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-sm btn-success" onclick="prodSearch('all')"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -338,7 +362,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         </div>
         <!-- end Prod Unit search modal  -->
         <!-- add product unit modal -->
-        <div class="modal fade" id="add-ProdUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="add-ProdUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -452,18 +476,18 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
 
         function manuSearch(defaultSearch) {
             var manusearch = document.getElementById('manuSearchInput').value.trim();
-            if(manusearch === ''){
+            if (manusearch === '') {
                 manufacturerSearch(defaultSearch);
-            }else{
+            } else {
                 manufacturerSearch(manusearch);
             }
         }
 
         function packSearch(defaultSearch) {
             var packSearchInput = document.getElementById('packSearchInput').value.trim();
-            if(packSearchInput === ''){
+            if (packSearchInput === '') {
                 packUnitSearch(defaultSearch);
-            }else{
+            } else {
                 packUnitSearch(packSearchInput);
             }
         }
@@ -471,9 +495,9 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         function prodSearch(defaultSearch) {
             var prodSearchInput = document.getElementById('prodSearchInput').value.trim();
             // prodUnitSearch(prodSearchInput);
-            if(prodSearchInput === ''){
+            if (prodSearchInput === '') {
                 prodUnitSearch(defaultSearch);
-            }else{
+            } else {
                 prodUnitSearch(prodSearchInput);
             }
         }
