@@ -25,10 +25,17 @@ $ProductImages  = new ProductImages();
 if (isset($_GET['search'])) {
 
     $prodId = $_GET['search'];
-    $reqStatus = $_GET['prodReqStatus']; 
-    // echo $reqStatus;
+    $prodReqStatus = $_GET['prodReqStatus']; 
+    $oldProdReqFlag = $_GET['oldProdReqFlag']; 
+    $reqStatus = $_GET['editRequestFlag']; 
     
-    $productList = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $reqStatus));
+    if($reqStatus != ''){
+        $status = $reqStatus;
+    }else{
+        $status = 0;
+    }
+    
+    $productList = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $prodReqStatus, $oldProdReqFlag, $status));
 
     $productList = $productList->data;
 
@@ -201,6 +208,26 @@ if (isset($_GET['search'])) {
                                                             $dsc = '';
                                                         }
 
+
+                                                        if(isset($item->prod_req_status)){
+                                                            $prodReqStatus = $item->prod_req_status;
+                                                        }else{
+                                                            $prodReqStatus = '';
+                                                        }
+
+                                                        if(isset($item->old_prod_flag)){
+                                                            $oldProdFlag = $item->old_prod_flag;
+                                                        }else{
+                                                            $oldProdFlag = '';
+                                                        }
+
+                                                        if(isset($item->edit_request_flag)){
+                                                            $editRequestFlag = $item->edit_request_flag;
+                                                        }else{
+                                                            $editRequestFlag = '';
+                                                        }
+
+
                                                 ?>
                                                         <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                             <div class="card  mb-3 p-3" style="min-width: 14rem; min-height: 11rem;">
@@ -216,7 +243,7 @@ if (isset($_GET['search'])) {
                                                                 <div class="row px-3 pb-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" value1="<?php echo $item->prod_req_status ?>" value2="<?php echo $item->old_prod_flag ?>" onclick="viewItem(this)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" prodReqStatus="<?php echo $prodReqStatus ?>" oldProdFlag="<?php echo $oldProdFlag ?>" editRequestFlag="<?php echo $editRequestFlag ?>"onclick="viewItem(this)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -328,12 +355,11 @@ if (isset($_GET['search'])) {
         // ========================== view and edit fucntion =========================
         const viewItem = (t) => {
             let prodId = t.id;
-            let prodReqStatus = t.getAttribute("value1");
-            let oldProdFlag = t.getAttribute("value2");
+            let prodReqStatus = t.getAttribute("prodReqStatus");
+            let oldProdFlag = t.getAttribute("oldProdFlag");
+            let editRequestFlag = t.getAttribute("editRequestFlag");
 
-            console.log(prodReqStatus+'      '+oldProdFlag);
-
-            url = `ajax/product-view-modal-for-user.ajax.php?id=${prodId}&prodReqStatus=${prodReqStatus}`; //  updated path for user.
+            url = `ajax/product-view-modal-for-user.ajax.php?id=${prodId}&prodReqStatus=${prodReqStatus}&oldProdFlag=${oldProdFlag}&editRequestFlag=${editRequestFlag}`; //  updated path for user.
 
             $(".productViewModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
@@ -410,13 +436,15 @@ if (isset($_GET['search'])) {
         const searchProduct = (t) => {
             var prodId = t.id.trim();
             var prodName = t.innerHTML.trim();
-            var prodReqStatus = t.getAttribute("value1");
+            var prodReqStatus = t.getAttribute("prodReqStatus");
+            var oldProdReqFlag = t.getAttribute("oldProdReqFlag");
+            var editRequestFlag = t.getAttribute("editRequestFlag");
 
-            // console.log("prod request status : "+t.getAttribute("value1"));
+            console.log("prod request status : "+editRequestFlag);
             
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
 
-            let newUrl = `${currentURLWithoutQuery}?search=${prodId}&prodReqStatus=${prodReqStatus}`;
+            let newUrl = `${currentURLWithoutQuery}?search=${prodId}&prodReqStatus=${prodReqStatus}&oldProdReqFlag=${oldProdReqFlag}&editRequestFlag=${editRequestFlag}`;
 
             localStorage.setItem('prodName', prodName);
 

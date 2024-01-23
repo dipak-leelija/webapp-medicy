@@ -197,6 +197,33 @@ class Request extends DatabaseConnection
         }
     }
     
+
+
+
+    function deleteRequest($prodId) {
+        try {
+            $sql = "DELETE FROM product_request WHERE `product_id` = ?";
+            $statement = $this->conn->prepare($sql);
+    
+            if ($statement) {
+                $statement->bind_param("s", $prodId);
+                $statement->execute();
+    
+                $result = $statement->get_result();
+    
+                if ($statement->affected_rows > 0) {
+                    return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
+                } else {
+                    return json_encode(['status' => '0', 'message' => 'No data found for deletion']);
+                }
+            } else {
+                throw new Exception("Error preparing delete statement: " . $this->conn->error);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => $e->getMessage()]);
+        }
+    }
+    
 }
 
 ?>

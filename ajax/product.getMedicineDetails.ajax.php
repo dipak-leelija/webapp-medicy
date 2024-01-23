@@ -1,13 +1,13 @@
 <?php
 
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
-require_once CLASS_DIR."itemUnit.class.php";
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
+require_once CLASS_DIR . "itemUnit.class.php";
 
 $Products       = new Products();
 $PackagingUnits = new PackagingUnits();
@@ -23,15 +23,20 @@ if (isset($_GET["pName"])) {
     $showProducts = $showProducts->data;
     // print_r($showProducts);
     foreach ($showProducts as $row) {
-       echo $row->name;
+        echo $row->name;
     }
 }
 
 // ================ get power ===============
 if (isset($_GET["power"])) {
-    $showProducts = $Products->showProductsByIdOnUser($_GET["power"], $adminId, $_GET["prodReqStatus"]);
-    print_r($showProducts);
-    // echo $showProducts[0]['power'];
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["power"], $adminId, $_GET["prodReqStatus"]));
+    // print_r($showProducts);
+    if($showProducts->status){
+        $showProducts = $showProducts->data;
+
+        echo $showProducts[0]->power;
+    }
+    
 }
 // echo "Hi";
 
@@ -41,17 +46,22 @@ if (isset($_GET["pType"])) {
     $showPackType = $PackagingUnits->showPackagingUnitById($showProductsPType[0]['packaging_type']);
     // print_r($showPackType);
     foreach ($showPackType as $row) {
-       echo '<option value="'.$row["id"].'">'.$row["unit_name"].'</option>';
-
+        echo '<option value="' . $row["id"] . '">' . $row["unit_name"] . '</option>';
     }
 }
 
 // ========================== packege In ====================
 if (isset($_GET["packegeIn"])) {
-    $showProductsPackegeIn = $Products->showProductsByIdOnUser($_GET["packegeIn"], $adminId, $_GET["prodReqStatus"]);
-    $showPackType = $PackagingUnits->showPackagingUnitById($showProductsPackegeIn[0]['packaging_type']);
-    foreach ($showPackType as $row) {
-       echo $row["unit_name"];
+    $showProductsPackegeIn = json_decode($Products->showProductsByIdOnUser($_GET["packegeIn"], $adminId, $_GET["prodReqStatus"]));
+    
+    if ($showProductsPackegeIn->status) {
+        $showProductsPackegeIn = $showProductsPackegeIn->data;
+        // print_r($showProductsPackegeIn);
+
+        $showPackType = $PackagingUnits->showPackagingUnitById($showProductsPackegeIn[0]->packaging_type);
+        foreach ($showPackType as $row) {
+            echo $row["unit_name"];
+        }
     }
 }
 
@@ -63,7 +73,7 @@ if (isset($_GET["weightage"])) {
     // $showWeightage = $Products->showProductsById($showProducts[0]['packaging_type']);
     // print_r($showPackType);
     foreach ($showProducts as $row) {
-       echo $row->unit_quantity;
+        echo $row->unit_quantity;
     }
 }
 
@@ -78,4 +88,3 @@ if (isset($_GET["unit"])) {
         echo $ItemUnit->itemUnitName($unitId);
     }
 }
-?>

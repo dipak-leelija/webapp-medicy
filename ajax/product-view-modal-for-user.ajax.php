@@ -74,8 +74,31 @@ $QuantityUnit   = new QuantityUnit;
     <?php
     if (isset($_GET['id'])) {
         $productId = $_GET['id'];
-        $product        = json_decode($Products->showProductsByIdOnUser($_GET['id'], $adminId, $_GET['prodReqStatus']));
+        $prodReqStatus = $_GET['prodReqStatus'];
+        $oldProdFlag = $_GET['oldProdFlag'];
+        $editRequestFlag = $_GET['editRequestFlag'];
+
+        if($prodReqStatus != ''){
+            $reqStatus = $prodReqStatus;
+        }else{
+            $reqStatus = '';
+        }
+
+        if($oldProdFlag != ''){
+            $oldProdFlag = $oldProdFlag;
+        }else{
+            $oldProdFlag = '';
+        }
+
+        if($editRequestFlag != ''){
+            $status = 0;
+        }else{
+            $status = 1;
+        }
+
+        $product        = json_decode($Products->showProductsByIdOnUser($_GET['id'], $adminId, $reqStatus, $oldProdFlag, $status));
         $product        = $product->data;
+        // print_r($product);
 
         if (property_exists($product[0], 'manufacturer_id')) {
             $manuf          = json_decode($Manufacturer->showManufacturerById($product[0]->manufacturer_id));
@@ -219,7 +242,8 @@ $QuantityUnit   = new QuantityUnit;
                     <div class="col-12 col-md-2" id="btn-ctrl-1">
                         <div class="col-md-12 d-flex">
                             <div class="col-sm-6 m-2">
-                                <a id="anchor" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>&prodReqStatus=<?php $_GET['prodReqStatus']; ?>"><button class="button1 btn-primary">Edit</button></a>
+                                <a id="anchor" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>&prodReqStatus=<?php echo $prodReqStatus; ?>&oldProdFlag=<?php echo $oldProdFlag; ?>&editRequestFlag=<?php echo $status; ?>"><button class="button1 btn-primary">Edit</button></a>
+
                             </div>
                             <!-- <div class="col-sm-6 m-2">
                                 <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
@@ -231,7 +255,7 @@ $QuantityUnit   = new QuantityUnit;
                 <div class="row justify-content-center mt-4" id='btn-ctrl-2'>
                     <div class="col-md-1 d-flex jsutify-content-end">
                         <div class="col-sm-2 d-flex jsutify-content-end">
-                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product-user.php?id=<?php echo $productId; ?>&prodReqStatus=<?php $_GET['prodReqStatus']; ?>">Edit</a></button>
+                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>&prodReqStatus=<?php echo $prodReqStatus; ?>&oldProdFlag=<?php echo $oldProdFlag; ?>&editRequestFlag=<?php echo $status; ?>">Edit</a></button>
                         </div>
                         <!-- <div class="col-sm-6 d-flex jsutify-content-center">
                             <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>

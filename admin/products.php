@@ -28,10 +28,11 @@ if (isset($_GET['search'])) {
 
     $prodId = $_GET['search'];
     $productList = json_decode($Products->showProductsById($prodId));
+    $newproductList[] = $productList->data;
+    // print_r($newproductList);
 
-    $productList = $productList->data;
-
-    $pagination = json_decode($Pagination->arrayPagination($productList));
+    $pagination = json_decode($Pagination->arrayPagination($newproductList));
+    // print_r($pagination);
 
 
     if ($pagination->status == 1) {
@@ -44,7 +45,6 @@ if (isset($_GET['search'])) {
         $allProducts = [];
         $totalPtoducts = 0;
     }
-    
 } else {
 
     // Function INitilized 
@@ -166,10 +166,10 @@ if (isset($_GET['search'])) {
                                                     foreach ($allProducts as $item) {
                                                         // print_r($item);
                                                         $image = json_decode($ProductImages->showImagesByProduct($item->product_id));
-                                                        
+
                                                         if ($image->status) {
                                                             $imgData = $image->data;
-                                                            
+
                                                             $productImage = $imgData->image;
                                                         } else {
                                                             $productImage = 'default-product-image/medicy-default-product-image.jpg';
@@ -180,6 +180,16 @@ if (isset($_GET['search'])) {
                                                         } else {
                                                             $dsc = $item->dsc . '...';
                                                         }
+
+
+                                                        // if ($item->prod_req_status == 0) {
+                                                        //     if ($item->old_prod_flag == 0) {
+                                                        //         $modalHeading = 'New Product Request';
+                                                        //     } else {
+                                                        //         $modalHeading = 'Existing Product Edit Request';
+                                                        //     }
+                                                        // }
+                                                        $modalTitle = "Existing Product View / Edit";
 
                                                 ?>
 
@@ -197,7 +207,7 @@ if (isset($_GET['search'])) {
                                                                 <div class="row px-3 pb-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" onclick="viewItem(this)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $modalTitle; ?>" onclick="viewItem(this)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -249,7 +259,7 @@ if (isset($_GET['search'])) {
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-center" id="product-view-edit-modal">View/Edit Product</h5>
+                    <h5 class="modal-title text-center" id="product-view-edit-modal-title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -309,10 +319,13 @@ if (isset($_GET['search'])) {
         // ========================== view and edit fucntion =========================
         const viewItem = (t) => {
             let prodId = t.id;
-            let verifiedValue = t.value;
+            let modalHeading = t.value;
+            // console.log(modalHeading);
 
-            let url = '';
-                url = `ajax/product-view-modal.ajax.php?id=${prodId}&table=${'products'}`;
+            let modalTitle = document.getElementById('product-view-edit-modal-title');
+            modalTitle.textContent = modalHeading;
+
+            url = `ajax/product-view-modal.ajax.php?id=${prodId}&table=${'products'}`;
             // if (verifiedValue) {
             //     changeModalSize('0', 'productViewModal');
             //     url = 'ajax/product-view-modal-for-user.ajax.php?id=' + prodId;
@@ -362,7 +375,7 @@ if (isset($_GET['search'])) {
             let searchVal = document.getElementById("prodcut-search").value;
 
             if (searchVal.length > 2) {
-                
+
                 let manufURL = `ajax/products.list-view.ajax.php?match=${searchVal}`;
                 xmlhttp.open("GET", manufURL, false);
                 xmlhttp.send(null);
@@ -384,7 +397,7 @@ if (isset($_GET['search'])) {
                 list.innerHTML = '';
                 productsDropdown.style.display = "none";
             }
-            
+
         });
 
         //================================================================

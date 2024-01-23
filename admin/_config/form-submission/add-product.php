@@ -40,15 +40,22 @@ $Request        = new Request;
         $imageArrayCaount = count($imagesName);
         $tempImageArrayCaount = count($tempImgsName);
 
-        $prodName = $_POST['product-name'];
+        $productName = $_POST['product-name'];
         // print_r($prodName);
-        $Composition1  = $_POST['product-composition-1'];
-        $Composition2  = $_POST['product-composition-2'];
-        $manufacturer  = $_POST['manufacturer'];
+        $productComp1  = $_POST['product-composition-1'];
+        $productComp2  = $_POST['product-composition-2'];
+
+        $hsnNumber  = $_POST['product-composition-2'];
+        $category  = $_POST['product-composition-2'];
+        $packagingType  = $_POST['product-composition-2'];
+
         $medicinePower = $_POST['medicine-power'];
         $unitQuantity  = $_POST['unit-quantity'];
         $unit          = $_POST['unit'];
         $packagingType = $_POST['packaging-type'];
+
+        $manufacturer  = $_POST['manufacturer'];
+        
         $mrp           = $_POST['mrp'];
         $gst           = $_POST['gst'];
         $productDesc   = $_POST['product-descreption'];
@@ -56,10 +63,12 @@ $Request        = new Request;
 
         //ProductId Generation
         $randNum = rand(1, 999999999999);
-        $productId = 'PR' . $randNum;
+        $newProductId = 'PR' . $randNum;
 
         //Insert into products table 
-        $addProducts = $Products->addProductBySuperAdmin($productId, $manufacturer, $prodName, $Composition1, $Composition2, $medicinePower,  $unitQuantity, $unit, $packagingType, $mrp, $gst,  $productDesc, $addedBy, NOW);
+        $addProducts = $Products->addProductBySuperAdmin($newProductId, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, $verifyStatus, NOW);
+
+        // 
 
         print_r($addProducts);
 
