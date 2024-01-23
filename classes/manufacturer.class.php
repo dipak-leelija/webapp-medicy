@@ -8,7 +8,7 @@ class Manufacturer extends DatabaseConnection{
     function addManufacturer($manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $adminId) {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`, `added_by`, `added_on`, `manu_status`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`, `added_by`, `added_on`, `status`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
@@ -67,7 +67,7 @@ class Manufacturer extends DatabaseConnection{
     ///======Uodate Manufacture Status=======///
     function updateManuStatus($status, $manufacturerId){
         try{
-            $update =  "UPDATE `manufacturer` SET `manu_status`=? WHERE `id`=?";
+            $update =  "UPDATE `manufacturer` SET `status`=? WHERE `id`=?";
             $stmt = $this->conn->prepare($update);
 
             if ($stmt) {
@@ -87,10 +87,15 @@ class Manufacturer extends DatabaseConnection{
         }
     } ///====== End Uodate Manufacture Status=======///
 
-    function showManufacturer() {
+    function showManufacturer($adminId = '') {
         try {
             $data = array();
-            $select = "SELECT * FROM `manufacturer`";
+            if(!empty($adminId)){
+                $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = '$adminId' OR `status` = '2'";
+            }else{
+                $select = "SELECT * FROM `manufacturer`";
+            }
+            // $select = "SELECT * FROM `manufacturer`";
             $selectQuery = $this->conn->prepare($select);
     
             if (!$selectQuery) {
@@ -212,28 +217,29 @@ class Manufacturer extends DatabaseConnection{
 
 
 
-    function manufSearch($match) {
+    function manufSearch($match, $adminId) {
         try {
             if ($match == 'all') {
                 
-                $select = "SELECT * FROM `manufacturer` LIMIT 6";
+                $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = ? OR `status` = '2' LIMIT 6";
                 $stmt = $this->conn->prepare($select);
-
+                $stmt->bind_param("s", $adminId);
             }else {
                 
                 $select = "SELECT * FROM `manufacturer` WHERE 
                        `name` LIKE CONCAT('%', ?, '%') OR 
                        `id` LIKE CONCAT('%', ?, '%') OR 
-                       `short_name` LIKE CONCAT('%', ?, '%') LIMIT 6";
+                       `short_name` LIKE CONCAT('%', ?, '%') AND `admin_id` = ? LIMIT 6";
                 $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("ssss", $match, $match, $match, $adminId);
                 
             }
                        
 
             if ($stmt) {
-                if ($match != 'all') {
-                    $stmt->bind_param("sss", $match, $match, $match);
-                }
+                // if ($match != 'all') {
+                //     $stmt->bind_param("sss", $match, $match, $match);
+                // }
                 
                 $stmt->execute();
                 $result = $stmt->get_result();

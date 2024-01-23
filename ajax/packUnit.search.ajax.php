@@ -7,14 +7,15 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 
 
-$match = $_POST['search'];
+// $match = $_POST['search'];
+$match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 
 $packUnit       = new PackagingUnits();
 
 if ($match == 'all') {
-    $showPackUnit = json_decode($packUnit ->packUnitSearch($match));
+    $showPackUnit = json_decode($packUnit ->packUnitSearch($match,$adminId));
 }else {
-    $showPackUnit    = json_decode($packUnit ->packUnitSearch($match));
+    $showPackUnit    = json_decode($packUnit ->packUnitSearch($match, $adminId));
 }
 
 
@@ -41,7 +42,7 @@ if ($showPackUnit->status) {
             foreach ($showPackUnit as $rowPackUnit) {
                 $packUnitId      = $rowPackUnit->id;
                 $packUnitName    = $rowPackUnit->unit_name;
-                $packUnitStatus  = $rowPackUnit->pack_status;
+                $packUnitStatus  = $rowPackUnit->status;
 
                 $statusLabel = '';
                 $statusColor = '';

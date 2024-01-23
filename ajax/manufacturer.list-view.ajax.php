@@ -6,14 +6,15 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 
 
-$match = $_POST['search'];
+// $match = $_POST['search'];
+$match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 
 $Manufacturer        = new Manufacturer();
 
 if ($match == 'all') {
-    $showmanufacturer   = json_decode($Manufacturer->manufSearch($match));
+    $showmanufacturer   = json_decode($Manufacturer->manufSearch($match, $adminId));
 }else {
-    $showmanufacturer   = json_decode($Manufacturer->manufSearch($match));
+    $showmanufacturer   = json_decode($Manufacturer->manufSearch($match, $adminId));
 }
 
 
@@ -48,7 +49,7 @@ if ($showmanufacturer->status) {
                 $manufacturerId      = $rowmanufacturer->id;
                 $manufacturerName    = $rowmanufacturer->name;
                 $manufacturerDsc     = $rowmanufacturer->dsc;
-                $manufacturerStatus  = $rowmanufacturer->manu_status;
+                $manufacturerStatus  = $rowmanufacturer->status;
 
                 $statusLabel = '';
                 $statusColor = '';
