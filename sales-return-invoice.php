@@ -3,119 +3,57 @@ require_once __DIR__. '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR  . '_config/healthcare.inc.php';
-require_once CLASS_DIR . 'hospital.class.php';
-require_once CLASS_DIR . 'stockOut.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'salesReturn.class.php';
-require_once CLASS_DIR . 'currentStock.class.php';
-require_once CLASS_DIR . 'stockInDetails.class.php';
-require_once CLASS_DIR . 'salesReturn.class.php';
-
-// require_once '../../../php_control/idsgeneration.class.php';
 
 //  INSTANTIATING CLASS
-$HelthCare       = new HealthCare();
-$StockOut        = new StockOut();
 $Patients        = new Patients();
 $Products        = new Products();
 $Doctors         = new Doctors();
-$SalesReturn     = new SalesReturn();
-$CurrentStock    = new CurrentStock();
-$StockInDetails  = new StockInDetails();
 $SalesReturn     = new SalesReturn;
 
-// $IdGeneration    = new IdGeneration();
 
-
-
-        // ---------- NON ARRAY ELEMENTS -----------
-        $invoice        = $_GET['data'];
-        $invoiceId = str_replace("#", '', $invoice);
+// ---------- NON ARRAY ELEMENTS -----------
+$invoice        = $_GET['data'];
+$invoiceId = str_replace("#", '', $invoice);
         
-        $patientData = $SalesReturn->selectSalesReturn("invoice_id", $invoice);
-        // print_r($patientData);
-        // echo "<br><br><br>";
+$patientData = $SalesReturn->selectSalesReturn("invoice_id", $invoice);
 
-        $patientId = $patientData[0]['patient_id'];
-        $purchasedDate = $patientData[0]['bill_date'];
+$patientId = $patientData[0]['patient_id'];
+$purchasedDate = $patientData[0]['bill_date'];
 
-        $salesReturnTableId = $patientData[0]['id'];
-        $patientData[0]['invoice_id'];
-        $patientData[0]['status'];
-        $patientData[0]['added_by'];
-        $patientData[0]['added_on'];
-        $patientData[0]['updated_by'];
-        $patientData[0]['updated_on'];
-        $patientData[0]['admin_id'];
+$salesReturnTableId = $patientData[0]['id'];
+$patientData[0]['invoice_id'];
+$patientData[0]['status'];
+$patientData[0]['added_by'];
+$patientData[0]['added_on'];
+$patientData[0]['updated_by'];
+$patientData[0]['updated_on'];
+$patientData[0]['admin_id'];
 
 
-        if ($patientId == 'Cash Sales') {
-            $patientId = 'Cash Sales';
-            $patientName = 'Cash Sales';
-            $contactNumber = "";
-        } else {
-            $patient = $Patients->patientsDisplayByPId($patientId);
-            $patient = json_decode($patient);
-            $patientName = $patient->name;
-            $contactNumber = $patient->phno;
-        }
+if ($patientId == 'Cash Sales') {
+    $patientId      = 'Cash Sales';
+    $patientName    = 'Cash Sales';
+    $contactNumber  = "";
+} else {
+    $patient = $Patients->patientsDisplayByPId($patientId);
+    $patient        = json_decode($patient);
+    $patientName    = $patient->name;
+    $contactNumber  = $patient->phno;
+}
 
-        $billDate       = $purchasedDate;
-        $billDate       = date('Y-m-d', strtotime($billDate));
-        $returnDate     = $patientData[0]['return_date'];
-        $items          = $patientData[0]['items'];
-        $totalQtys      = $patientData[0]['total_qty']; 
-        $gstAmount      = $patientData[0]['gst_amount'];
-        $refundAmount   = $patientData[0]['refund_amount'];
-        $refundMode     = $patientData[0]['refund_mode'];
+$billDate       = $purchasedDate;
+$billDate       = date('Y-m-d', strtotime($billDate));
+$returnDate     = $patientData[0]['return_date'];
+$items          = $patientData[0]['items'];
+$totalQtys      = $patientData[0]['total_qty']; 
+$gstAmount      = $patientData[0]['gst_amount'];
+$refundAmount   = $patientData[0]['refund_amount'];
+$refundMode     = $patientData[0]['refund_mode'];
 
-
-
-        // $returned = $SalesReturn->addSalesReturn(intval($invoiceId), $patientData[0]['customer_id'], $billDate, $returnDate, intval($items), intval($totalQtys), intval($gstAmount), intval($refundAmount), $refundMode, $status, $employeeId, NOW, $adminId);
-
-        // if ($returned['result']) {
-        //     // echo "<br>empty add new return edit";
-        //     for ($i = 0; $i < count($itemID); $i++) {
-
-
-        //         $unit = $setOf[$i];
-
-        //         $itemWeatage = preg_replace('/[a-z-A-Z]/', '', $unit);
-        //         $unitType = preg_replace('/[0-9]/', '', $unit);
-
-
-        //         $gstAmount   = floatval($perItemRefund[$i]) - floatval($taxableArray[$i]);
-        //         // ========================= ADD TO SALES RETURN DETAILS =============================
-        //         $addSalesReturndDetails = $SalesReturn->addReturnDetails($invoiceId, $returned['sales_return_id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $mrp[$i], $ptr[$i], $disc[$i], $gst[$i], $gstAmount, $taxableArray[$i], $returnQty[$i], $perItemRefund[$i], $adminId);
-
-        //         // ============= CURRENT STOCK UPDATE AREA ===========================
-        //         $currentStockDetaisl = $CurrentStock->showCurrentStocById($itemID[$i]);
-
-        //         foreach ($currentStockDetaisl as $currentStockDetaisl) {
-        //             $currentStockItemUnit = $currentStockDetaisl['unit'];
-        //             // if ($currentStockItemUnit == 'Tablets' || $currentStockItemUnit == 'Capsules') 
-        //             if (in_array(strtolower($currentStockItemUnit), $allowedUnits)){
-        //                 $curretnStockQty = $currentStockDetaisl['loosely_count'];
-        //                 $UpdatedLooseQty = intval($curretnStockQty) + intval(array_shift($_POST['return']));
-        //                 $UpdatedQty = intdiv(intval($UpdatedLooseQty), intval($itemWeatage));
-        //             } else {
-        //                 $curretnStockQty = $currentStockDetaisl['qty'];
-        //                 $UpdatedQty = intval($curretnStockQty) + intval(array_shift($_POST['return']));
-        //                 $UpdatedLooseQty = 0;
-        //             }
-        //         }
-
-        //         // echo "<br>Current Stock item quantity : $curretnStockQty";
-        //         // echo "<br>CURRENT STOCK UPDATED LOOSE QTY : $UpdatedLooseQty";
-        //         // echo "<br>CURRENT STOCK UPDATED QTY : $UpdatedQty";
-
-        //         // ========================= CURRENT STOCK UPDATE STRING ============================
-        //         // echo $itemID[$i];
-        //         $updateCurrentStock = $CurrentStock->updateStockOnSell($itemID[$i], $UpdatedQty, $UpdatedLooseQty);
-        //     }
-// }
 ?>
 
 <!DOCTYPE html>
@@ -178,14 +116,6 @@ $SalesReturn     = new SalesReturn;
                     </p>
 
                 </div>
-                <div class="col-sm-6 my-0">
-                    <p class="text-end" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered By:</b>
-                            <?php echo $patientData[0]['reff_by']; ?></small></p>
-                    <p class="text-end" style="margin-top: -5px; margin-bottom: 0px;">
-                        <small><?php //if($doctorReg != NULL){echo 'Reg: '.$doctorReg; } 
-                                    ?></small>
-                    </p>
-                </div>
 
             </div>
             <hr class="my-0" style="height:1px;">
@@ -214,9 +144,12 @@ $SalesReturn     = new SalesReturn;
                 <div class="col-sm-1">
                     <small><b>GST(%)</b></small>
                 </div>
-                <div class="col-sm-1">
+                <!-- <div class="col-sm-1">
                     <small><b>P.QTY</b></small>
                 </div>
+                <div class="col-sm-1">
+                    <small>' . $qtys . '</small>
+                </div> -->
                 <div class="col-sm-1">
                     <small><b>Return</b></small>
                 </div>
@@ -236,45 +169,33 @@ $SalesReturn     = new SalesReturn;
             <?php
                 $slno = 0;
                 $subTotal = floatval(00.00);
-                //$countProduct = count($products);
-                // print_r($products);
-                // print_r($batchNo);
-                // print_r($invoiceId);
-
-                // foreach ($itemID as $itemID) {
-                // for ($i = 0; $i < count($itemID); $i++) {
-
-                //     $slno++;
-
-                //     $itemDetails = $CurrentStock->showCurrentStocById($itemID[$i]);
-                //     $productDetails = $Products->showProductsByIdOnUser($itemDetails[0]['product_id'], $adminId, 1);
-                //     $productDetails = json_decode($productDetails,true);
-                //     if(isset($productDetails['status']) && $productDetails['status'] == '1'){
-                //         $data = $productDetails['data'];
-                //         $productName = $data[0]['name'];
-                //     }
 
                 $allItems = $SalesReturn->selectSalesReturnList("sales_return_id", $salesReturnTableId);
-                foreach ($allItems as $key => $value) {
+                
+                foreach ($allItems as $eachItem) {
 
-                //-------Array elements------------------
-                $itemID   = $_POST['itemId'];
-                $procutId = $_POST['productId'];
-                $batchNo    = $_POST['batchNo'];
-                // print_r($batchNo);
-                $setOf    = $_POST['setof'];
-                $expdates   = $_POST['expDate'];
-                $mrp        = $_POST['mrp'];
-                $ptr        = $_POST['ptr'];
+                    $itemID         = $eachItem['id'];
+                    // $ = $eachItem['invoice_id'];
+                    // $ = $eachItem['sales_return_id'];
+                    // $ = $eachItem['item_id'];
+                    $productId      = $eachItem['product_id'];
+                    $batchNo        = $eachItem['batch_no'];
+                    $setOf          = $eachItem['weatage'];
+                    $expdates       = $eachItem['exp'];
+                    $mrp            = $eachItem['mrp'];
+                    $ptr            = $eachItem['ptr'];
+                    $disc           = $eachItem['disc'];
+                    $gst            = $eachItem['gst'];
+                    $gstAmount      = $eachItem['gst_amount'];
+                    $taxableArray   = $eachItem['taxable'];
+                    $returnQty      = $eachItem['return_qty'];
+                    $perItemRefund  = $eachItem['refund_amount'];
 
-                $qtys       = $_POST['qty'];
-
-                $disc      = $_POST['disc'];
-                $gst        = $_POST['gst'];
-
-                $taxableArray   = $_POST['taxable'];
-                $returnQty  = $_POST['return'];
-                $perItemRefund    = $_POST['refundPerItem'];
+                    $productResponse = json_decode($Products->showProductsById($productId));
+                    if($productResponse->status == 1){
+                        $product = $productResponse->data;
+                        $productName = $product->name;
+                    }
 
                 // --------------------------------------
                 $itemWeatage = preg_replace('/[a-z]/', '', $setOf);
@@ -289,31 +210,28 @@ $SalesReturn     = new SalesReturn;
                                     </div>
                     
                                     <div class="col-sm-1">
-                                        <small>' . $setOf[$i] . '</small>
+                                        <small>' . $setOf . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' .  $batchNo[$i] . '</small>
+                                        <small>' .  $batchNo . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' . $expdates[$i] . '</small>
+                                        <small>' . $expdates . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' . $disc[$i] . '</small>
+                                        <small>' . $disc . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' . $gst[$i] . '</small>
+                                        <small>' . $gst . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' . $qtys[$i] . '</small>
+                                        <small>' . $returnQty . '</small>
                                     </div>
                                     <div class="col-sm-1">
-                                        <small>' . $returnQty[$i] . '</small>
+                                        <small>' . $taxableArray . '</small>
                                     </div>
                                     <div class="col-sm-1" style="text-align: right;">
-                                        <small>' . $taxableArray[$i] . '</small>
-                                    </div>
-                                    <div class="col-sm-1" style="text-align: right;">
-                                        <small>' . $perItemRefund[$i] . '</small>
+                                        <small>' . $perItemRefund . '</small>
                                     </div>
                                 </div>';
                 }
@@ -403,7 +321,7 @@ $SalesReturn     = new SalesReturn;
     </div>
     <script>
     const goBack = () => {
-        window.location.href = '../../sales-returns.php';
+        window.location.href = 'sales-returns.php';
     }
     </script>
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
