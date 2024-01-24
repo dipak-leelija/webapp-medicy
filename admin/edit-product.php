@@ -182,10 +182,12 @@ $Category = $Category->data;
             // $updated_on     = $product[0]->updated_on;
             $admin_id       = $product->admin_id;
 
-            $images = json_decode($ProductImages->showImageById($productId));
+            $images = json_decode($ProductImages->showImagesByProduct($productId));
+            // print_r($images);
 
             $allImg = array();
             $allImgId = array();
+
             if ($images->status == 1 && !empty($images->data)) {
                 foreach ($images->data as $image) {
                     $allImg[] = $image->image;

@@ -112,11 +112,10 @@ $productList = json_decode($Products->showProductsByLimit());
                                                         // print_r($item);
                                                         $image = json_decode($ProductImages->showImagesByProduct($item->product_id));
 
-                                                        // print_r($image);
                                                         if ($image->status) {
                                                             $imgData = $image->data;
-
-                                                            $productImage = $imgData->image;
+                                                            // print_r($imgData);
+                                                            $productImage = $imgData[0]->image;
                                                         } else {
                                                             $productImage = 'default-product-image/medicy-default-product-image.jpg';
                                                         }

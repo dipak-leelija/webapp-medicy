@@ -161,21 +161,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // ========================= CURRENT STOCK UPDATE STRING ============================
                 // echo $itemID[$i];
                 $updateCurrentStock = $CurrentStock->updateStockOnSell($itemID[$i], $UpdatedQty, $UpdatedLooseQty);
+                header("Location: ".URL."sales-return-invoice.php?data=$invoiceId");exit;
             }
         }
     }
-
-    // $healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
-    
-    // $healthCareDetails = $healthCareDetailsByAdminId;
-    
-    // $healthCareName     = $healthCareDetails['hospital_name'];
-    // $healthCareAddress1 = $healthCareDetails['address_1'];
-    // $healthCareAddress2 = $healthCareDetails['address_2'];
-    // $healthCareCity     = $healthCareDetails['city'];
-    // $healthCarePIN      = $healthCareDetails['pin'];
-    // $healthCarePhno     = $healthCareDetails['hospital_phno'];
-    // $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
 
 }
 ?>
@@ -309,7 +298,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $slno++;
 
                     $itemDetails = $CurrentStock->showCurrentStocById($itemID[$i]);
-                    $productDetails = $Products->showProductsByIdOnUser($itemDetails[0]['product_id'], $adminId);
+
+                    $chkExistance = json_decode($Products->productExistanceCheck($itemDetails[0]['product_id']));
+                    if($chkExistance->status){
+                        $edtRqstFlg = 1;
+                    }else{
+                        $edtRqstFlg = '';
+                    }
+
+                    $productDetails = $Products->showProductsByIdOnUser($itemDetails[0]['product_id'], $adminId, $edtRqstFlg);
                     $productDetails = json_decode($productDetails,true);
                     if(isset($productDetails['status']) && $productDetails['status'] == '1'){
                         $data = $productDetails['data'];

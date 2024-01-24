@@ -67,25 +67,34 @@ foreach ($currentStockData as $currenStock) {
 
 
 // // // ============================== MANUFACTURUR DETAILS ===================================
-$prodDetails = json_decode($Products->showProductsByIdOnUser($stockOutDetailsProductId, $adminId));
-$prodDetails = $prodDetails->data;
 
-if (isset($prodDetails[0]->product_composition)) {
-    $composition = $prodDetails[0]->product_composition;
-} else {
-    $composition = '';
-}
+        // =========== edit req flag key check ==========
+        $prodCheck = json_decode($Products->productExistanceCheck($stockOutDetailsProductId));
+        if($prodCheck->status == 1){
+            $editReqFlag = 0;
+        }else{
+            $editReqFlag = '';
+        }
 
-if (isset($prodDetails[0]->manufacturer_id)) {
-    $manufData = json_decode($Manufacturer->showManufacturerById($prodDetails[0]->manufacturer_id));
-    foreach ($manufData as $manufData) {
-        $manufId = $manufData['id'];
-        $manufName = $manufData['name'];
+    $prodDetails = json_decode($Products->showProductsByIdOnUser($stockOutDetailsProductId, $adminId, $editReqFlag));
+    $prodDetails = $prodDetails->data;
+
+    if (isset($prodDetails[0]->product_composition)) {
+        $composition = $prodDetails[0]->product_composition;
+    } else {
+        $composition = '';
     }
-} else {
-    $manufId = '';
-    $manufName = '';
-}
+
+    if (isset($prodDetails[0]->manufacturer_id)) {
+        $manufData = json_decode($Manufacturer->showManufacturerById($prodDetails[0]->manufacturer_id));
+        foreach ($manufData as $manufData) {
+            $manufId = $manufData['id'];
+            $manufName = $manufData['name'];
+        }
+    } else {
+        $manufId = '';
+        $manufName = '';
+    }
 
 
 // // //////////////////////\\\\\\\\\\\\\\\\\\\\\\\\================///////////////////////\\\\\\\\\\\\\\\\\\\\\\

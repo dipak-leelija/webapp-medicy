@@ -163,12 +163,20 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                     echo "no product found!";
                                                 }
 
+                                                // =========== edit req flag key check ==========
+                                                $prodCheck = json_decode($Products->productExistanceCheck($productId));
+                                                if($prodCheck->status == 1){
+                                                    $editReqFlag = 0;
+                                                }else{
+                                                    $editReqFlag = '';
+                                                }
+
                                                 // ==== fetch product details from product table ====
                                                 $showProducts = json_decode($Products->showProductsByIdOnUser($productId, $adminId, 0));
                                                 print_r($showProducts);
                                                 $showProducts = $showProducts->data;
                                                 // echo "<br>";
-                                                print_r($showProducts);
+                                                // print_r($showProducts);
 
                                                 if (isset($showProducts[0]->manufacturer_id)) {
                                                     $manufId = $showProducts[0]->manufacturer_id;
@@ -242,7 +250,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
 
                                                     <td class='align-middle'>
-                                                        <a class='text-primary mr-2' onclick='currentStockView("<?php echo $productId ?>")' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-eye'></i></a>
+                                                        <a class='text-primary mr-2' onclick='currentStockView("<?php echo $productId ?>", "<?php echo $editReqFlag ?>")' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-eye'></i></a>
 
                                                         <!-- <a class='text-danger' id='".$productId."' onclick='customDelete(this.id)' data-toggle='modal' data-target='#DeleteCurrentStockModal'><i class='fas fa-trash'></i>
                                                                         </a> -->
@@ -362,9 +370,9 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
         //======================================= CURRENT STOCK VIEW ========================================
 
-        const currentStockView = (productId) => {
+        const currentStockView = (productId, editReqFlag) => {
             // alert(productId);
-            let url = "ajax/currentStock.view.ajax.php?currentStockId=" + productId;
+            let url = `ajax/currentStock.view.ajax.php?currentStockId=${productId}&editReqFlag=${editReqFlag}`;
             $(".current-stock-view").html(
                 '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');

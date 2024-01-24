@@ -205,6 +205,34 @@ class Products extends DatabaseConnection
 
 
 
+    function productExistanceCheck($prodId){
+        try {
+            $slectProduct = "SELECT `name` FROM products WHERE product_id = ?";
+            $stmt = $this->conn->prepare($slectProduct);
+            
+            $stmt->bind_param("s", $prodId); 
+            
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows == 0) {
+                return json_encode(['status'=>'0', 'data'=>'']); 
+            } else {
+                return json_encode(['status'=>'1', 'data'=>$result]); 
+            }
+        } catch (Exception $e) {
+            return json_encode(['status'=>' ', 'data'=>$e->getMessage()]); 
+        } finally {
+            $stmt->close();
+        }
+    }
+    
+
+
+
+
+
     function showAllProducts()
     {
         try {
@@ -354,7 +382,7 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByCol($col, $adminId)
+    function showProductsByCol($col, $colValue)
     {
         try {
             $selectProduct = "SELECT * FROM products WHERE `$col` = ?";
@@ -365,7 +393,7 @@ class Products extends DatabaseConnection
             }
 
             // Bind parameter
-            $stmt->bind_param("s", $adminId);
+            $stmt->bind_param("s", $colValue);
 
             if ($stmt->execute()) {
                 $result = $stmt->get_result();
@@ -429,8 +457,7 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByIdOnUser($productId, $adminId, $editReqFlag, $prodReqStatus='', $oldProdFlag='')
-    {
+    function showProductsByIdOnUser($productId, $adminId, $editReqFlag, $prodReqStatus='', $oldProdFlag=''){
         $productData = array();
         $productReqData = array();
         try {

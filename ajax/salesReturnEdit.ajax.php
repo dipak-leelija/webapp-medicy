@@ -65,9 +65,19 @@ if (isset($_GET["products"])) {
     echo '<option value="" selected disabled>Select item</option>';
     foreach ($items as $item) {
         // print_r($items);
-        $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId));
+
+        // =========== edit req flag key check ==========
+        $prodCheck = json_decode($Products->productExistanceCheck($item['product_id']));
+        if ($prodCheck->status == 1) {
+            $editReqFlag = 0;
+        } else {
+            $editReqFlag = '';
+        }
+        //========================
+
+        $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId, $editReqFlag));
         $product = $product->data;
-        print_r($product); echo "<br><br>";
+        // print_r($product); echo "<br><br>";
         echo '<option data-invoice="'.$invoiceId.'" sales-return-id="'.$item['sales_return_id'].'" value="'.$item['product_id'].'" returned-item-id="'.$item['id'].'" current-stock-item-id="'.$item['item_id'].'">'.$product[0]->name.'</option>';
     }
 }

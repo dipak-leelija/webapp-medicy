@@ -53,9 +53,7 @@ if ($resultData["status"]) {
     </div>
     <?php
     foreach ($resultData as $resultRow) {
-
-        print_r($resultRow);
-
+        // print_r($resultRow);
         $productId      = $resultRow['product_id'];
         $productName    = $resultRow['name'];
 

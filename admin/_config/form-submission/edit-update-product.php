@@ -113,7 +113,7 @@ $Category = $Category->data;
                 // print_r($addProductOnRequest);
                 $addProductOnRequest = json_decode($addProductOnRequest);
                 if ($addProductOnRequest->status) {
-                    // $deleteRequest = $Request->deleteRequest($productid);
+                    $deleteRequest = $Request->deleteRequest($productid);
                     $updateProduct = true;
                 }
             } elseif ($prodReqStatus == 0 && $oldProdFlag == 1) {
@@ -126,7 +126,7 @@ $Category = $Category->data;
                 // print_r($addProductOnRequest);
                 $addProductOnRequest = json_decode($addProductOnRequest);
                 if ($addProductOnRequest->status) {
-                    // $deleteRequest = $Request->deleteRequest($productid);
+                    $deleteRequest = $Request->deleteRequest($productid);
                     $updateProduct = true;
                     $productid = $newProductId;
                 }
@@ -134,7 +134,7 @@ $Category = $Category->data;
         }
 
         
-        // echo "$productid"; 
+        echo "$productid"; 
 
         // $updateProduct = false;
         if ($addProductOnRequest->status) {
@@ -172,7 +172,9 @@ $Category = $Category->data;
                 }
 
                 if ($image != null) {
-                    $addImages = $ProductImages->addImages($productid, $image, $supAdminId, NOW, $supAdminId);
+                    $status = 1;
+                    $addImages = $ProductImages->addImagesBySupAdmin($productid, $image, $status, $supAdminId, NOW, $supAdminId);
+                    print_r($addImages);
                 } else {
                     $addImages = true;
                 }
@@ -188,7 +190,7 @@ $Category = $Category->data;
             // print_r($addProductOnRequest);
             if ($addImages === true) {
             // echo "<br>after image";
-            // // print_r($addProductOnRequest);
+            // print_r($addProductOnRequest);
             // print_r($addImages);
             $deleteRequest = $Request->deleteRequest($productid);
 

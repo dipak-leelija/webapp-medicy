@@ -61,7 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $addedBy            = $employeeId;
         $addedOn            = NOW;
         $adminId            = $adminId;
-        
+
+        $editReqFlag        = $_POST['edit-req-flag'];
+        // print_r($editReqFlag);
         
         $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy, $addedOn, $adminId);
         // print_r($addStockIn);
@@ -104,8 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $looselyCount = $looselyPrice = 0;
                 }
 
-
-
+                
                 $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), $unit, intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
                 // stockIn_Details_id
 
@@ -118,6 +119,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // ============ ADD TO CURRENT STOCK ============ 
                     $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, intval($looselyCount), floatval($looselyPrice), intval($weightage), $unit, intval($totalQty), floatval($mrp), floatval($ptr), intval($gst), $addedBy, $addedOn, $adminId);
                 }
+
+                // echo "<br>Unit : $pack";
+                // echo "<br>Total qty : $totalQty";
+                // echo "<br>Loosely count : $looselyCount";
             } //eof foreach
 
         } else {
@@ -263,8 +268,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         $prodId = $itemsData['product_id'];
 
-                        $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId));
+                        $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $editReqFlag[$i]));
+                        // print_r($productDetails);
                         $productDetails = $productDetails->data;
+                       
 
                         foreach ($productDetails as $pData) {
                             $pname = $pData->name;
