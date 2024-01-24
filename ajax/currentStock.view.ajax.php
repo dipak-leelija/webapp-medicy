@@ -93,7 +93,7 @@ if (isset($_GET['currentStockId'])) {
     if ($image != null) {
         $productImage = $image[0]->image;
     } else {
-        $productImage = 'medicy-default-product-image.jpg';
+        $productImage = 'default-product-image/medicy-default-product-image.jpg';
     }
 
     // ================= PRODUCT TOTAL STOCK IN QTY ==============
