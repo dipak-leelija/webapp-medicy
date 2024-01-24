@@ -275,6 +275,7 @@ if ($_SESSION['ADMIN']) {
         $productName    = $product[0]->name;
 
         $type           = $product[0]->type;
+        // echo $type;
 
         $qty            = $product[0]->unit_quantity;
         // $qtyUnit        = $product[0]->unit_id;
@@ -405,7 +406,6 @@ if ($_SESSION['ADMIN']) {
                                                     </select>
                                                 </div>
 
-
                                                 <div class="col-md-6 mt-3">
                                                     Packeging In
                                                     <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
@@ -428,8 +428,6 @@ if ($_SESSION['ADMIN']) {
 
                                             </div>
                                         </div>
-
-
 
                                         <div class="row">
                                             <div class="d-flex col-12 mt-3">

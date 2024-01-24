@@ -134,7 +134,7 @@ $Category = $Category->data;
         }
 
         
-        echo "$productid"; 
+        // echo "$productid"; 
 
         // $updateProduct = false;
         if ($addProductOnRequest->status) {
@@ -174,7 +174,7 @@ $Category = $Category->data;
                 if ($image != null) {
                     $status = 1;
                     $addImages = $ProductImages->addImagesBySupAdmin($productid, $image, $status, $supAdminId, NOW, $supAdminId);
-                    print_r($addImages);
+                    // print_r($addImages);
                 } else {
                     $addImages = true;
                 }
