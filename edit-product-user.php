@@ -136,14 +136,18 @@ if ($_SESSION['ADMIN']) {
 
             // $column = 'product_id';
             $prodDataFromProducts = json_decode($Products->showProductsById($productId));
-            // print_r($prodDataFromProducts);
+
             if ($prodDataFromProducts->status) {
                 if ($prodDataFromProducts->data->edit_request_flag == 0) {
                     $oldProdFlag = 1;
-                    $status = 0;
-                    // print_r($prodDataFromProducts->data);
-                    // add product request to product request table through request class.
-                    $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $status, $oldProdFlag);
+                    $prodReqStatus = 0;
+
+                    $randNum = rand(1, 999999999999);
+                    $productId = 'PR' . $randNum;
+
+                    // $prdReq = "PRDREQ";
+
+                    $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
                     $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
                     if ($addOldProdEditRequest) {
@@ -168,9 +172,14 @@ if ($_SESSION['ADMIN']) {
                     } else {
 
                         $oldProdFlag = 1;
-                        $status = 0;
+                        $prodReqStatus = 0;
 
-                        $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $status, $oldProdFlag);
+                        $randNum = rand(1, 999999999999);
+                        $productId = 'PR' . $randNum;
+
+                        // $prdReq = "PRDREQ";
+
+                        $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
                         $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
                         if ($addOldProdEditRequest) {
@@ -473,7 +482,7 @@ if ($_SESSION['ADMIN']) {
                                                     <select class="c-inp p-1 w-100 mt-1" name="gst" id="gst" required>
                                                         <option value="" disabled selected>GST</option>
                                                         <?php
-                                                        foreach ($gstDetails as $gstDetail) { 
+                                                        foreach ($gstDetails as $gstDetail) {
                                                             // print_r($gstDetail);
                                                         ?>
                                                             <option <?= $gst == $gstDetail->id ? 'selected' : ''; ?> value="<?php echo $gstDetail->id ?>">

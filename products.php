@@ -440,7 +440,7 @@ if (isset($_GET['search'])) {
             var oldProdReqFlag = t.getAttribute("oldProdReqFlag");
             var editRequestFlag = t.getAttribute("editRequestFlag");
 
-            console.log("prod request status : "+editRequestFlag);
+            // console.log("prod request status : "+editRequestFlag);
             
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
 

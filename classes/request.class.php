@@ -200,6 +200,34 @@ class Request extends DatabaseConnection
 
 
 
+    function lastRowId() {
+        $sql = "SELECT * FROM product_request ORDER BY id DESC LIMIT 1";
+    
+        try {
+            $stmt = $this->conn->prepare($sql);
+    
+            if ($stmt->execute()) {
+    
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $resultData[] = $row;
+                    }
+                    return json_encode(['status'=>'1', 'data'=>$resultData]);
+                } else {
+                    return json_encode(['status'=>'0', 'data'=>'']);
+                }
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+    
+
+
     function deleteRequest($prodId) {
         try {
             $sql = "DELETE FROM product_request WHERE `product_id` = ?";

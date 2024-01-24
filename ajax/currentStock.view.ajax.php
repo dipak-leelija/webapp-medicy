@@ -52,8 +52,16 @@ if (isset($_GET['currentStockId'])) {
         $overallCurrentStock = 0;
     }
 
+    //========================================
+    $checkProduct = json_decode($Product->productExistanceCheck($productId));
+    if ($checkProduct->status) {
+        $flag = 1;
+    } else {
+        $flag = '';
+    }
+    //=========================================
 
-    $prodcutDetails = json_decode($Product->showProductsByIdOnUser($productId, $adminId));
+    $prodcutDetails = json_decode($Product->showProductsByIdOnUser($productId, $adminId, $flag));
     $prodcutDetails = $prodcutDetails->data;
 
     // print_r($prodcutDetails);
