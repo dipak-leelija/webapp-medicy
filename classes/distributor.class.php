@@ -120,12 +120,12 @@ class Distributor extends DatabaseConnection
 
 
 
-    function showDistributor($adminId='')
+    function showDistributor($adminId = '')
     {
         try {
-            if(!empty($adminId)){
+            if (!empty($adminId)) {
                 $select = "SELECT * FROM distributor WHERE `admin_id` = '$adminId' OR `status` = '2'";
-            }else{
+            } else {
                 $select = "SELECT * FROM distributor";
             }
             // $select = "SELECT * FROM distributor";
@@ -278,7 +278,7 @@ class Distributor extends DatabaseConnection
         }
     }
 
-    
+
 
     function deleteDist($distributorId)
     {
@@ -290,7 +290,76 @@ class Distributor extends DatabaseConnection
 
 
 
+    ///================distributor request============////
 
+    function insertRequestDist($distributorId, $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedOn, $adminId)
+    {
+        try {
+            // Define the SQL query using a prepared statement
+            $insert = "INSERT INTO distributor_request (`dist_id`, `name`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($insert);
+
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("issiissss", $distributorId, $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedOn, $adminId);
+
+                // Execute the query
+                $insertQuery = $stmt->execute();
+                $stmt->close();
+                return $insertQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            // Handle any exceptions that occur
+            // Customize this part to suit your needs
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    function showDistRequest()
+    {
+        try {
+
+            $select = "SELECT * FROM distributor_request";
+            // $select = "SELECT * FROM distributor";
+            $selectQuery = $this->conn->prepare($select);
+
+            if (!$selectQuery) {
+                throw new Exception("Error preparing the query: " . $this->conn->error);
+            }
+
+            $selectQuery->execute();
+
+            if ($selectQuery->error) {
+                throw new Exception("Error executing the query: " . $selectQuery->error);
+            }
+
+            $result = $selectQuery->get_result();
+
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+
+            if (empty($data)) {
+                return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
+            }
+
+            return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
+        }
+    }
+
+    function deleteDistRequest($distributorId)
+    {
+
+        $Delete = "DELETE FROM `distributor_request` WHERE `distributor_request`.`dist_id` = '$distributorId'";
+        $DeleteQuey = $this->conn->query($Delete);
+        return $DeleteQuey;
+    } //end deleteDistRequest function
 
 } //end of LabTypes Class

@@ -13,6 +13,14 @@ $Distributor = new Distributor();
 
 $showDistributor = json_decode($Distributor->showDistributor());
 $showDistributor = $showDistributor->data;
+
+$showDistRequest  = json_decode($Distributor->showDistRequest());
+$countDistRequest = 0; 
+if (!empty($showDistRequest->data)) {
+    $countDistRequest = count($showDistRequest->data);
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -68,6 +76,9 @@ $showDistributor = $showDistributor->data;
                         <div class="col-12">
                             <div class="card shadow">
                                 <div class="card-header d-flex justify-content-end">
+                                    <button type="button" class="btn btn-sm mr-5 p-0" data-toggle="modal" data-target="#req-distributor" onclick="distRequest()">
+                                        <i class="fas fa-folder fa-lg"></i><span class="badge badge-danger position-absolute top-3 start-100 translate-middle"><?= $countDistRequest ?></span>
+                                    </button>
                                     <button class="btn btn-sm btn-primary shadow-none" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
                                         Add new
                                     </button>
@@ -204,6 +215,25 @@ $showDistributor = $showDistributor->data;
     </div>
     <!--/end Manufacturer View and Edit Modal -->
 
+    <!-- show distributor request data  -->
+    <div class="modal fade" id="req-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Distributor Request Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body req-distributor">
+                    <!-- Details Appeare Here by Ajax  -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end distributor request data  -->
+
+
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -251,6 +281,25 @@ $showDistributor = $showDistributor->data;
             });
         }
 
+        const distRequest = () => {
+            var parentLocation = window.location.origin + window.location.pathname;
+            $.ajax({
+                url: "components/distributor-request.php",
+                type: "POST",
+                data: {
+                    urlData: parentLocation
+                },
+                success: function(response) {
+                    let body = document.querySelector('.req-distributor');
+                    body.innerHTML = response;
+                },
+                error: function(error) {
+                    console.error("Error: ", error);
+                }
+            });
+            // $("#req-distributor").modal("hide");
+            // location.reload();
+        }
 
         //View and Edit Manufacturer function
         distViewAndEdit = (distributorId) => {
@@ -259,6 +308,9 @@ $showDistributor = $showDistributor->data;
             $(".distributorModal").html(
                 '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
+
+
+                $("#distributorModal").modal("hide");
         } // end of viewAndEdit function
 
         //update distributor status//
@@ -282,6 +334,29 @@ $showDistributor = $showDistributor->data;
                 });
             }
         } // end distributor status //
+
+        //update distributor Request status//
+        function updateReqStatus(distributorId, newStatus) {
+
+            if (confirm('Are you sure you want to change the status?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/medicy.in/admin/ajax/distributorReqStatus.update.ajax.php',
+                    data: {
+                        distributorId: distributorId,
+                        newStatus: newStatus
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error updating status:', error);
+                    }
+                });
+            }
+            location.reload();
+        } // end distributor Request status //
 
         //delete distributor
         $(document).ready(function() {
