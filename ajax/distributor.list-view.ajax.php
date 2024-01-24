@@ -12,14 +12,14 @@ $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 $Distributor        = new Distributor();
 
 if ($match == 'all') {
-    $showDistributor    = json_decode($Distributor->distCardSearch($match,$adminId));
+    $showDistributor    = json_decode($Distributor->distCardSearch($match, $adminId));
 } else {
     $showDistributor    = json_decode($Distributor->distCardSearch($match, $adminId));
 }
 
 if ($showDistributor->status == 1) {
     $showDistributor = $showDistributor->data;
-     // print_r($showmanufacturer);
+    // print_r($showmanufacturer);
     // foreach (showDistributor as $eachDistributor) {
     //     echo "<div class='p-1 border-bottom list' id='$eachDistributor->id' onclick='setManufacturer(this)'>
     //     $eachManufacturer->name
@@ -79,7 +79,7 @@ if ($showDistributor->status == 1) {
                         <td>' . $distributorPin . '</td>
                         <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                         <td>
-                            <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"
+                            <a class="mx-1" data-toggle="modal" data-target="#distRequestModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"
                         </td>
                        </tr>';
                 $rowCount++;
@@ -92,3 +92,31 @@ if ($showDistributor->status == 1) {
         ?>
     </tbody>
 </table>
+
+<!-- Manufacturer View and Edit Modal -->
+<div class="modal fade" id="distRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">View and Edit Distributor Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body distRequestModal">
+                    <!-- Details Appeare Here by Ajax  -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    //View and Edit Manufacturer function
+    distViewAndEdit = (distributorId) => {
+        let ViewAndEdit = distributorId;
+        let url = "ajax/distributor.request.ajax.php?Id=" + ViewAndEdit;
+        $(".distRequestModal").html(
+            '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
+            url + '"></iframe>');
+    } // end of viewAndEdit function
+</script>
