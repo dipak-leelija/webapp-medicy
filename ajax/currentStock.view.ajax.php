@@ -53,7 +53,7 @@ if (isset($_GET['currentStockId'])) {
     }
 
 
-    $prodcutDetails = json_decode($Product->showProductsByIdOnUser($productId, $adminId, $editReqFlag));
+    $prodcutDetails = json_decode($Product->showProductsByIdOnUser($productId, $adminId));
     $prodcutDetails = $prodcutDetails->data;
 
     // print_r($prodcutDetails);

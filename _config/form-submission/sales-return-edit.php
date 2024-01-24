@@ -214,6 +214,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($successUpdateReturn) {
                     $CurrentStock->updateStockOnSell($itemId, $updatedQty, $updatedLooseQty);
+                    header("Location: ".URL."sales-return-invoice.php?data=$invoiceId");exit;
+
                 }
             }
             $totalRefundAmount = $totalRefundAmount;

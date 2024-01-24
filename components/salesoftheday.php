@@ -60,21 +60,18 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
             </div>
         </div>
     </div>
-    <div class="card-body py-0">
-        <!-- <div class="row no-gutters align-items-center"> -->
-        <!-- <div class="col-mr-2"> -->
 
-        <!-- </div> -->
-        <!-- </div> -->
+
+    <div class="card-body py-0">
         <div class="row no-gutters align-items-center">
             <div class="col mr-2" id='sod-Display'>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                    <label type="symble" id="rupeeSymble" name="rupeeSymble">₹</label>
-                    <label type="text" id="salesAmount" name="salesAmount"></label>
+                <div class="mb-0 font-weight-bold text-gray-800">
+                    <span type="symble" id="rupeeSymble" name="rupeeSymble">₹</span>
+                    <span type="number" id="salesAmount" name="salesAmount"></span>
                 </div>
                 <div>
-                    <label type="text" id="itemsCount" name="itemsCount"><small></small></label>
-                    <label type="text"><small>Items</small></label>
+                    <span type="text" id="itemsCount" name="itemsCount"><small></small></span>
+                    <span type="text"><small>Items</small></span>
                 </div>
             </div>
             <div class="col-auto mt-n2 " style="display: none;" id='sod-no-data'>
@@ -82,6 +79,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
             </div>
         </div>
     </div>
+    
 </div>
 
 <script>

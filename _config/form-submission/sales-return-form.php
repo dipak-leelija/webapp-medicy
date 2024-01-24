@@ -161,21 +161,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // ========================= CURRENT STOCK UPDATE STRING ============================
                 // echo $itemID[$i];
                 $updateCurrentStock = $CurrentStock->updateStockOnSell($itemID[$i], $UpdatedQty, $UpdatedLooseQty);
+                header("Location: ".URL."sales-return-invoice.php?data=$invoiceId");exit;
             }
         }
     }
-
-    // $healthCareDetailsByAdminId = $HelthCare->showhealthCare($adminId);
-    
-    // $healthCareDetails = $healthCareDetailsByAdminId;
-    
-    // $healthCareName     = $healthCareDetails['hospital_name'];
-    // $healthCareAddress1 = $healthCareDetails['address_1'];
-    // $healthCareAddress2 = $healthCareDetails['address_2'];
-    // $healthCareCity     = $healthCareDetails['city'];
-    // $healthCarePIN      = $healthCareDetails['pin'];
-    // $healthCarePhno     = $healthCareDetails['hospital_phno'];
-    // $healthCareApntbkNo = $healthCareDetails['appointment_help_line'];
 
 }
 ?>

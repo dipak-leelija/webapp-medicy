@@ -382,7 +382,7 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByCol($col, $adminId)
+    function showProductsByCol($col, $colValue)
     {
         try {
             $selectProduct = "SELECT * FROM products WHERE `$col` = ?";
@@ -393,7 +393,7 @@ class Products extends DatabaseConnection
             }
 
             // Bind parameter
-            $stmt->bind_param("s", $adminId);
+            $stmt->bind_param("s", $colValue);
 
             if ($stmt->execute()) {
                 $result = $stmt->get_result();

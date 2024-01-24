@@ -172,8 +172,8 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                 }
 
                                                 // ==== fetch product details from product table ====
-                                                $showProducts = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editReqFlag));
-                                                // print_r($showProducts);
+                                                $showProducts = json_decode($Products->showProductsByIdOnUser($productId, $adminId, 0));
+                                                print_r($showProducts);
                                                 $showProducts = $showProducts->data;
                                                 // echo "<br>";
                                                 // print_r($showProducts);
