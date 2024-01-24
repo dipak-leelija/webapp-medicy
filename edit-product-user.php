@@ -111,14 +111,13 @@ if ($_SESSION['ADMIN']) {
 
             $quantity = $_POST['qantity']; // e.g. 10,20,100 etc.
             $unit = $_POST['unit']; // e.g. tablet, capsule, syrup etc.
+            // echo "check unit : $unit";
 
             $medicinePower = $_POST['medicine-power']; // e.g. 5, 10, 25, 50, 500 etc.
             $mrp = $_POST['mrp'];
 
             $gstPercent = $_POST['gst'];
             $hsnoNumber = $_POST['hsno-number'];
-
-
 
             // ==================== for img ===================== //
             $imageName        = $_FILES['img-files']['name'];
@@ -229,9 +228,9 @@ if ($_SESSION['ADMIN']) {
                         $image = null;
                     }
 
-                    if($image != null){
+                    if ($image != null) {
                         $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
-                    }else{
+                    } else {
                         $addImagesRequest = true;
                     }
                 }
@@ -259,24 +258,20 @@ if ($_SESSION['ADMIN']) {
 
 
         // ================================ Fetching Product Details =================================
-
-        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editRequestFlag, $prodReqStatus,
-        $oldProdFlag));
-        $product = $product->data;
+        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editRequestFlag, $prodReqStatus, $oldProdFlag));
         // print_r($product);
+        $product = $product->data;
+
 
         $productName    = $product[0]->name;
 
         $type           = $product[0]->type;
-        $prodCategoryName   = json_decode($ProductCategory->selectNameById($type));
-        $prodCategoryName   = $prodCategoryName->data;
 
         $qty            = $product[0]->unit_quantity;
         // $qtyUnit        = $product[0]->unit_id;
-        $itemUnit       = $product[0]->unit;
+        $prevItemUnit       = $product[0]->unit;
         // echo "<br>Item unit : $itemUnit";        
         $packagingType  = $product[0]->packaging_type;
-        $packagingUnit = $PackagingUnits->showPackagingUnitById($packagingType);
 
         $power          = $product[0]->power;
 
@@ -289,10 +284,10 @@ if ($_SESSION['ADMIN']) {
         $admin_id       = $product[0]->admin_id;
 
         $images = json_decode($ProductImages->showImageById($productId));
-        if($images->status == 0){
+        if ($images->status == 0) {
             $images = json_decode($ProductImages->showImageByPrimay($productId, $adminId));
         }
-        
+
         $allImg = array();
         $allImgId = array();
         if ($images->status == 1 && !empty($images->data)) {
@@ -386,24 +381,36 @@ if ($_SESSION['ADMIN']) {
                                                 <div class="col-md-6 mt-3">
                                                     Prodcut Catagory
                                                     <select class="c-inp p-1 w-100" name="product-category" id="product-category" required>
-                                                        <option value="" disabled selected>Select</option>
+                                                        <option value="" disabled selected>Product Category</option>
                                                         <?php
                                                         foreach ($prodCategoryList as $category) {
-                                                            echo '<option value="' . $category->id . '">' . $category->name . '</option>';
+                                                            // print_r($category);
+                                                        ?>
+                                                            <option <?= $type == $category->id ? 'selected' : ''; ?> value="<?php echo $category->id ?>">
+                                                                <?php echo $category->name ?>
+                                                            </option>';
+
+                                                        <?php
                                                         }
                                                         ?>
                                                     </select>
                                                 </div>
 
+
                                                 <div class="col-md-6 mt-3">
                                                     Packeging In
                                                     <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
-                                                        <option value="" disabled selected>Select</option>
+                                                        <option value="" disabled selected>Packeging In</option>
 
                                                         <?php
                                                         foreach ($showPackagingUnits as $eachPackUnit) {
                                                             if (in_array(strtolower($eachPackUnit['unit_name']), $allowedPackegingUnits)) {
-                                                                echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
+                                                                print_r($eachPackUnit);
+                                                        ?>
+                                                                <option <?= $packagingType == $eachPackUnit['id'] ? 'selected' : ''; ?> value="<?php echo $eachPackUnit['id'] ?>">
+                                                                    <?php echo $eachPackUnit['unit_name'] ?>
+                                                                </option>';
+                                                        <?php
                                                             }
                                                         }
                                                         ?>
@@ -429,7 +436,12 @@ if ($_SESSION['ADMIN']) {
                                                         <?php
                                                         foreach ($itemUnits as $itemUnits) {
                                                             if (in_array(strtolower($itemUnits['name']), $allowedItemUnits)) {
-                                                                echo "<option value=''>" . $itemUnits['name'] . "</option>";
+                                                                print_r($itemUnits);
+                                                        ?>
+                                                                <option <?= $prevItemUnit == $itemUnits['id'] ? 'selected' : ''; ?> value="<?php echo $itemUnits['id'] ?>">
+                                                                    <?php echo $itemUnits['name'] ?>
+                                                                </option>';
+                                                        <?php
                                                             }
                                                         }
                                                         ?>
@@ -454,16 +466,21 @@ if ($_SESSION['ADMIN']) {
                                             </div>
                                         </div>
 
-
                                         <div class="row">
                                             <div class="col-md-12 d-flex mt-3">
                                                 <div class="col-sm-6">
                                                     Enter GST
                                                     <select class="c-inp p-1 w-100 mt-1" name="gst" id="gst" required>
-                                                        <option value="" disabled selected>Select</option>
+                                                        <option value="" disabled selected>GST</option>
                                                         <?php
-                                                        foreach ($gstDetails as $gstDetail) {
-                                                            echo '<option value="' . $gstDetail->id . '" >' . $gstDetail->percentage . '</option>';
+                                                        foreach ($gstDetails as $gstDetail) { 
+                                                            // print_r($gstDetail);
+                                                        ?>
+                                                            <option <?= $gst == $gstDetail->id ? 'selected' : ''; ?> value="<?php echo $gstDetail->id ?>">
+                                                                <?php echo $gstDetail->percentage ?>
+                                                            </option>';
+
+                                                        <?php
                                                         }
                                                         ?>
                                                     </select>

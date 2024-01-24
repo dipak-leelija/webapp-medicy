@@ -353,8 +353,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                     }
 
+                    $chkExistance = json_decode($Products->productExistanceCheck($product));
+                    if($chkExistance->status){
+                        $edtRqstFlg = 1;
+                    }else{
+                        $edtRqstFlg = '';
+                    }
 
-                    $showProducts = json_decode($Products->showProductsByIdOnUser($product, $adminId, 1));
+                    $showProducts = json_decode($Products->showProductsByIdOnUser($product, $adminId, $edtRqstFlg));
                     $showProducts = $showProducts->data;
 
                     echo '

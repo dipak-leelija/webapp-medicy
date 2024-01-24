@@ -481,14 +481,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 foreach ($itemDetials as $itemsData) {
                     $slno++;
 
-
-
                     $prodId = $itemsData['product_id'];
 
-                    $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId));
-                    $productDetails = $productDetails->data;
-                    // print_r($productDetails);
+                    $chkExistance = json_decode($Products->productExistanceCheck($prodId));
+                    if($chkExistance->status){
+                        $edtRqstFlg = 1;
+                    }else{
+                        $edtRqstFlg = '';
+                    }
 
+                    $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $edtRqstFlg));
+                    // print_r($productDetails);
+                    $productDetails = $productDetails->data;
+                    
                     foreach ($productDetails as $pData) {
                         // print_r($pData);
                         $pname = $pData->name;

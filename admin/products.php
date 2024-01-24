@@ -167,8 +167,9 @@ if (isset($_GET['search'])) {
                                                         // print_r($item);
                                                         $image = json_decode($ProductImages->showImagesByProduct($item->product_id));
 
+                                                        // print_r($image);
                                                         if ($image->status) {
-                                                            $imgData = $image->data;
+                                                            $imgData = $image->data[0];
 
                                                             $productImage = $imgData->image;
                                                         } else {
@@ -182,24 +183,18 @@ if (isset($_GET['search'])) {
                                                         }
 
 
-                                                        // if ($item->prod_req_status == 0) {
-                                                        //     if ($item->old_prod_flag == 0) {
-                                                        //         $modalHeading = 'New Product Request';
-                                                        //     } else {
-                                                        //         $modalHeading = 'Existing Product Edit Request';
-                                                        //     }
-                                                        // }
+
                                                         $modalTitle = "Existing Product View / Edit";
 
                                                 ?>
 
                                                         <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
-                                                            <div class="card  mb-3 p-3" style="min-width: 14rem; min-height: 11rem;">
-                                                                <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="...">
+                                                            <div class="card  mb-3 p-3" style="min-width: 14rem; min-height: 11rem; max-width: 14rem; max-height: 21rem;">
+                                                                <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="..." style="max-height: 8rem;">
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item->name; ?></b></label>
                                                                     <p class="mb-0"><b><?php $item->name ?></b></p>
-                                                                    <small class="card-text mt-0" style="text-align: justify;"><?php echo substr($dsc, 0, 65) ?></small>
+                                                                    <small class="card-text mt-0" style="text-align: justify;"><?php echo substr($dsc, 0,25) .'...' ?></small>
 
                                                                 </div>
 

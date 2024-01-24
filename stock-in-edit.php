@@ -415,7 +415,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="d-none col-sm-6 col-md-6 mt-2">
                                                     <label class="mb-0" for="purchase-price">Check PTR</label>
-                                                    <input type="number" class="upr-inp" name="ptr" id="chk-ptr">
+                                                    <input type="text" class="upr-inp" name="chk-ptr" id="chk-ptr">
                                                 </div>
                                             </div>
                                             <!--/End Price Row -->
@@ -470,7 +470,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="d-none col-md-4 mt-2">
                                                     <label class="mb-0" for="discount">Gst Amnt.</label>
-                                                    <input type="number" class="upr-inp" name="crntGstAmnt" id="crntGstAmnt">
+                                                    <input type="text" class="upr-inp" name="crntGstAmnt" id="crntGstAmnt" readonly>
                                                 </div>
 
                                                 <!--/End Price Row -->
@@ -565,7 +565,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                     $slno += 1;
 
-                                                    $product = json_decode($Products->showProductsByIdOnUser($detail['product_id'], $adminId, 1));
+                                                    $prdCheck = json_decode($Products->productExistanceCheck($detail['product_id']));
+                                                    if($prdCheck->status){
+                                                        $editReqFlag = 0;
+                                                    }else{
+                                                        $editReqFlag = '';
+                                                    }
+
+                                                    $product = json_decode($Products->showProductsByIdOnUser($detail['product_id'], $adminId, $editReqFlag));
+
                                                     $product = $product->data;
                                                     // print_r($product);
                                             ?>

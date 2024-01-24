@@ -298,7 +298,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $slno++;
 
                     $itemDetails = $CurrentStock->showCurrentStocById($itemID[$i]);
-                    $productDetails = $Products->showProductsByIdOnUser($itemDetails[0]['product_id'], $adminId, 1);
+
+                    $chkExistance = json_decode($Products->productExistanceCheck($itemDetails[0]['product_id']));
+                    if($chkExistance->status){
+                        $edtRqstFlg = 1;
+                    }else{
+                        $edtRqstFlg = '';
+                    }
+
+                    $productDetails = $Products->showProductsByIdOnUser($itemDetails[0]['product_id'], $adminId, $edtRqstFlg);
                     $productDetails = json_decode($productDetails,true);
                     if(isset($productDetails['status']) && $productDetails['status'] == '1'){
                         $data = $productDetails['data'];

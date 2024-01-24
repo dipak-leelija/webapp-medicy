@@ -649,10 +649,10 @@ const addData = () => {
             });
         return;
     }
-    if (medicinePower.value == "") {
-        medicinePower.focus();
-        return;
-    }
+    // if (medicinePower.value == "") {
+    //     medicinePower.focus();
+    //     return;
+    // }
 
     // if (mfdMonth.value == "") {
     //     swal("Blank Field", "Please Enter Manufacturing Date as MM/YY", "error")
@@ -669,18 +669,18 @@ const addData = () => {
             });
         return;
     }
-    if (weightage.value == "") {
-        weightage.focus();
-        return;
-    }
-    if (unit.value == "") {
-        unit.focus();
-        return;
-    }
-    if (packagingIn.value == "") {
-        packagingIn.focus();
-        return;
-    }
+    // if (weightage.value == "") {
+    //     weightage.focus();
+    //     return;
+    // }
+    // if (unit.value == "") {
+    //     unit.focus();
+    //     return;
+    // }
+    // if (packagingIn.value == "") {
+    //     packagingIn.focus();
+    //     return;
+    // }
     if (mrp.value == "") {
         mrp.focus();
         return;
