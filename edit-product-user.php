@@ -259,11 +259,10 @@ if ($_SESSION['ADMIN']) {
 
 
         // ================================ Fetching Product Details =================================
-
-        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editRequestFlag, $prodReqStatus,
-        $oldProdFlag));
-        $product = $product->data;
+        $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editRequestFlag, $prodReqStatus, $oldProdFlag));
         // print_r($product);
+        $product = $product->data;
+        
 
         $productName    = $product[0]->name;
 
@@ -273,7 +272,7 @@ if ($_SESSION['ADMIN']) {
 
         $qty            = $product[0]->unit_quantity;
         // $qtyUnit        = $product[0]->unit_id;
-        $itemUnit       = $product[0]->unit;
+        $prevItemUnit       = $product[0]->unit;
         // echo "<br>Item unit : $itemUnit";        
         $packagingType  = $product[0]->packaging_type;
         $packagingUnit = $PackagingUnits->showPackagingUnitById($packagingType);

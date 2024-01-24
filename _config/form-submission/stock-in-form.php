@@ -106,9 +106,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $looselyCount = $looselyPrice = 0;
                 }
 
-
-
-                $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), $unit, intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
+                
+                // $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), $unit, intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
                 // stockIn_Details_id
 
                 if ($addStockInDetails["result"]) {
@@ -118,8 +117,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $totalQty = intval($qty) + intval($freeQty);   // buy qantity + free qty
 
                     // ============ ADD TO CURRENT STOCK ============ 
-                    $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, intval($looselyCount), floatval($looselyPrice), intval($weightage), $unit, intval($totalQty), floatval($mrp), floatval($ptr), intval($gst), $addedBy, $addedOn, $adminId);
+                    // $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, intval($looselyCount), floatval($looselyPrice), intval($weightage), $unit, intval($totalQty), floatval($mrp), floatval($ptr), intval($gst), $addedBy, $addedOn, $adminId);
                 }
+
+                echo "<br>Unit : $pack";
+                echo "<br>Total qty : $totalQty";
+                echo "<br>Loosely count : $looselyCount";
             } //eof foreach
 
         } else {
