@@ -46,9 +46,9 @@ distributorInput.addEventListener("keyup", () => {
         // console.log();
         list.innerHTML = request.responseText
     } else {
-
         list.innerHTML = '';
     }
+// console.log("check return : "+request.responseText);
 });
 
 const setDistributor = (t) => {
