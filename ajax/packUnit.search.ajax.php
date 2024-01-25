@@ -82,7 +82,7 @@ if ($showPackUnit->status) {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="unitModalLabel">Units Request</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pageReload()">
+                <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -94,12 +94,16 @@ if ($showPackUnit->status) {
 </div>
 
 <script>
-        // packaging unit rerquest function //
-        packUnitRequest = (unitId) => {
-            let ViewAndEdit = unitId;
-            let url = "ajax/packagingUnit.request.ajax.php?Id=" + ViewAndEdit;
-            $(".unitModal").html(
-                '<iframe width="99%" height="120rem" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
-        } 
+    // packaging unit rerquest function //
+    packUnitRequest = (unitId) => {
+        let ViewAndEdit = unitId;
+        let url = "ajax/packagingUnit.request.ajax.php?Id=" + ViewAndEdit;
+        $(".unitModal").html(
+            '<iframe width="99%" height="120rem" frameborder="0" allowtransparency="true" src="' +
+            url + '"></iframe>');
+    }
+
+    function closeModal() {
+        $('#unitModal').modal('hide');
+    }
 </script>

@@ -122,8 +122,8 @@ if (isset($_GET['match'])) {
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">View and Edit Distributor Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="exampleModalLabel">Distributor Request</h5>
+                    <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -143,6 +143,10 @@ if (isset($_GET['match'])) {
                 '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of viewAndEdit function
+
+        function closeModal() {
+            $('#distRequestModal').modal('hide');
+        }
     </script>
 
 <?php

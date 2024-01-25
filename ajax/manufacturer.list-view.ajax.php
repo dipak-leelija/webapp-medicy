@@ -90,8 +90,8 @@ if ($showmanufacturer->status) {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Manufacturer Request</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" onclick="relode()">&times;</span>
+                <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body manufacturerModal">
@@ -110,7 +110,7 @@ if ($showmanufacturer->status) {
             url + '"></iframe>');
     }
 
-    function relode() {
-        parent.location.reload();
+    function closeModal() {
+        $('#manufacturerModal').modal('hide');
     }
 </script>
