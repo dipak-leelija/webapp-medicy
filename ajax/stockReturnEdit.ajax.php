@@ -79,7 +79,7 @@ $distributorDetails = $distributorDetails->data;
 
 //==========================fetching data from products table=====================================
     // =========== edit req flag key check ==========
-    $prodCheck = json_decode($Products->productExistanceCheck($ProductId));
+    $prodCheck = json_decode($ProdcutDetails->productExistanceCheck($ProductId));
     if ($prodCheck->status == 1) {
         $editReqFlag = 0;
     } else {
@@ -87,7 +87,7 @@ $distributorDetails = $distributorDetails->data;
     }
     //========================
 
-$productDetails = json_decode($ProdcutDetails -> showProductsByIdOnUser($ProductId, $adminId, $$editReqFlag));
+$productDetails = json_decode($ProdcutDetails -> showProductsByIdOnUser($ProductId, $adminId, $editReqFlag));
 $productDetails = $productDetails->data;
 
 foreach($productDetails as $products){

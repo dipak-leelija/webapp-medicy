@@ -36,7 +36,7 @@ const customEdit = (id, value) => {
                 EditId: value
             },
             success: function (data) {
-                // alert(data);
+                alert(data);
                 var dataObject = JSON.parse(data);
                 slno = id.replace(/\D/g, '');
 

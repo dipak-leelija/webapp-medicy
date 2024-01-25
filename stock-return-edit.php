@@ -13,7 +13,7 @@ require_once CLASS_DIR . 'packagingUnit.class.php';
 
 
 //objects Initilization
-$products           = new Products();
+$Products           = new Products();
 $Distributor        = new Distributor();
 $StockReturn        = new StockReturn();
 
@@ -383,7 +383,7 @@ if (isset($_GET["returnId"])) {
                                                 }
                                                 //========================
 
-                                                $productDetails = json_decode($products->showProductsByIdOnUser($productid, $adminId, $editReqFlag));
+                                                $productDetails = json_decode($Products->showProductsByIdOnUser($productid, $adminId, $editReqFlag));
                                                 
                                                 $productDetails = $productDetails->data;
 
