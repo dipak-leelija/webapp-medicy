@@ -1,9 +1,9 @@
-<?php 
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+<?php
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
 
 
 // $match = $_POST['search'];
@@ -13,20 +13,20 @@ $Manufacturer        = new Manufacturer();
 
 if ($match == 'all') {
     $showmanufacturer   = json_decode($Manufacturer->manufCardSearch($match, $adminId));
-}else {
+} else {
     $showmanufacturer   = json_decode($Manufacturer->manufCardSearch($match, $adminId));
 }
 
 
 if ($showmanufacturer->status) {
-    $showmanufacturer= $showmanufacturer->data;
+    $showmanufacturer = $showmanufacturer->data;
     // print_r($showmanufacturer);
     // foreach ($showmanufacturer as $eachManufacturer) {
     //     echo "<div class='p-1 border-bottom list' id='$eachManufacturer->id' onclick='setManufacturer(this)'>
     //     $eachManufacturer->name
     //     </div>";
     // }
-}else {
+} else {
     // echo "<p class='text-center font-weight-bold'>manufacturerNot Found!</p>";
     echo "<div class='p-1 border-bottom list'> $match </div>";
 }
@@ -76,8 +76,7 @@ if ($showmanufacturer->status) {
                         <td>' . $manufacturerDsc . '</td>
                         <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                         <td>
-                            <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $manufacturerId . ')"><i class="fas fa-edit"
-                            <a class="mx-1" id="delete-btn" data-id="' . $manufacturerId . '"><i class="far fa-trash-alt"></i></a>
+                            <a class="mx-1" data-toggle="modal" data-target="#manufacturerModal" onclick="manufacturerRequest(' . $manufacturerId . ')"><i class="fas fa-edit"></i></a>
                         </td>
                        </tr>';
             }
@@ -85,3 +84,33 @@ if ($showmanufacturer->status) {
         ?>
     </tbody>
 </table>
+
+<div class="modal fade" id="manufacturerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Manufacturer Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" onclick="relode()">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body manufacturerModal">
+                <!-- Details Appeare Here by Ajax  -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const manufacturerRequest = (manufacturerId) => {
+        let ViewAndEdit = manufacturerId;
+        let url = "ajax/manufacturer.request.ajax.php?Id=" + ViewAndEdit;
+        $(".manufacturerModal").html(
+            '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
+            url + '"></iframe>');
+    }
+
+    function relode() {
+        parent.location.reload();
+    }
+</script>
