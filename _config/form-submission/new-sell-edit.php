@@ -436,8 +436,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $slno++;
 
                     if ($manufId[$i] != '') {
-                        $manufDetail = $Manufacturur->showManufacturerById($manufId[$i]);
-                        $manufSName = $manufDetail[0]['short_name'];
+                        $manufDetail = json_decode($Manufacturur->showManufacturerById($manufId[$i]));
+                        $manufSName = $manufDetail->data->short_name;
                     } else {
                         $manufSName = '';
                     }

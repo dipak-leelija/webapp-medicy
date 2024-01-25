@@ -132,7 +132,7 @@ $todayYr = date("y");
                                         <?php else : ?>
                                             <p class="text-center font-weight-bold">Distributor Not Found!</p>
                                             <div class="d-flex flex-column justify-content-center" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
-                                                <button type="button" id="add-customer" class="text-primary border-0">
+                                                <button type="button" id="add-distributor" class="text-primary border-0">
                                                     <i class="fas fa-plus-circle"></i>Add Now</button>
                                             </div>
                                         <?php endif; ?>

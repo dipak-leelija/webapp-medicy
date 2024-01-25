@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br> Return QTY : "; print_r($returnQty);
         // echo "<br> Refund Amount : "; print_r($perItemRefund);
 
-
+// exit;
         $returned = $SalesReturn->addSalesReturn(intval($invoiceId), $patientData[0]['customer_id'], $billDate, $returnDate, intval($items), intval($totalQtys), intval($gstAmount), intval($refundAmount), $refundMode, $status, $addedBy, $addedOn, $adminId);
 
         if ($returned['result']) {
@@ -134,6 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
                 $gstAmount   = floatval($perItemRefund[$i]) - floatval($taxableArray[$i]);
+
+
                 // ========================= ADD TO SALES RETURN DETAILS =============================
                 $addSalesReturndDetails = $SalesReturn->addReturnDetails($invoiceId, $returned['sales_return_id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $mrp[$i], $ptr[$i], $disc[$i], $gst[$i], $gstAmount, $taxableArray[$i], $returnQty[$i], $perItemRefund[$i], $adminId);
 
@@ -161,7 +163,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // ========================= CURRENT STOCK UPDATE STRING ============================
                 // echo $itemID[$i];
                 $updateCurrentStock = $CurrentStock->updateStockOnSell($itemID[$i], $UpdatedQty, $UpdatedLooseQty);
-                header("Location: ".URL."sales-return-invoice.php?data=$invoiceId");exit;
+
+                // header("Location: ".URL."sales-return-invoice.php?data=$invoiceId");exit;
             }
         }
     }

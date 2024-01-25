@@ -493,7 +493,7 @@ const stockDetails = (productId, batchNo, itemId) => {
 
 
 const onQty = (qty) => {
-    console.log("item qty input check : "+qty);
+    // console.log("item qty input check : "+qty);
     var xmlhttp = new XMLHttpRequest();
 
     let mrp = document.getElementById("mrp").value;
