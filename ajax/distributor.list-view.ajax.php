@@ -21,7 +21,7 @@ if (isset($_GET['match'])) {
         $showDistributor = $showDistributor->data;
         // print_r($showmanufacturer);
         foreach ($showDistributor as $eachDistributor) {
-            echo "<div class='p-1 border-bottom list' id='$eachDistributor->id' onclick='setManufacturer(this)'>
+            echo "<div class='p-1 border-bottom list' id='$eachDistributor->id' onclick='setDistributor(this)'>
             $eachDistributor->name
             </div>";
         }
