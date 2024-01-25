@@ -15,6 +15,16 @@ $page = "manufacturer";
 $Manufacturer = new Manufacturer();
 $Pagination = new Pagination;
 
+$showManufacturer = $Manufacturer->showRequestManufacturer();
+$countManufacturer = 0;
+if ($showManufacturer !== null) {
+    $manufacturerData = json_decode($showManufacturer, true); 
+    if (!empty($manufacturerData) && is_array($manufacturerData)) {
+        $countManufacturer = count($manufacturerData);
+    }
+}
+
+
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
 if (!empty($showManufacturer)) {
@@ -103,8 +113,15 @@ if (isset($_GET['return'])) {
                     <div class="row">
                         <div class="col-md-7">
                             <div class="card shadow mb-4">
-                                <div class="col-12">
-                                    <h6 class=" col-6 mt-4 m-0 font-weight-bold text-primary">List of Manufacturers : <?= $totalItem ?></h6>
+                                <div class="d-flex justify-content-around">
+                                    <div class="col-10">
+                                        <h6 class=" col-6 mt-4 m-0 font-weight-bold text-primary">List of Manufacturers : <?= $totalItem ?></h6>
+                                    </div>
+                                    <div class="card-header d-flex justify-content-end bg-transparent top-1">
+                                        <button type="button" class="btn btn-sm p-1 btn-primary" data-toggle="modal" data-target="#req-manufacture" onclick="manufRequest()">
+                                            Request</i><span class="badge badge-danger position-absolute top-0 start-100 translate-middle"><?= $countManufacturer ?></span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <!-- Showing Unit Table -->
@@ -251,6 +268,24 @@ if (isset($_GET['return'])) {
     </div>
     <!--/end Manufacturer View and Edit Modal -->
 
+    <!-- Manufacturer request Modal -->
+    <div class="modal fade" id="req-manufacture" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Manufacturer Request</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" onclick="relode()">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body req-manufacture">
+                    <!-- Details Appeare Here by Ajax  -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/end Manufacturer request Modal -->
+
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -289,6 +324,26 @@ if (isset($_GET['return'])) {
                 url + '"></iframe>');
         } // end of viewAndEdit function
 
+        const manufRequest = () => {
+            var parentLocation = window.location.origin + window.location.pathname;
+            $.ajax({
+                url: "components/manufacturer-request.php",
+                type: "POST",
+                data: {
+                    urlData: parentLocation
+                },
+                success: function(response) {
+                    let body = document.querySelector('.req-manufacture');
+                    body.innerHTML = response;
+                },
+                error: function(error) {
+                    console.error("Error: ", error);
+                }
+            });
+            // $("#req-distributor").modal("hide");
+            // location.reload();
+        }
+
         function updateStatus(manufacturerId, newStatus) {
 
             if (confirm('Are you sure you want to change the status?')) {
@@ -308,7 +363,29 @@ if (isset($_GET['return'])) {
                     }
                 });
             }
-        } // end distributor status //
+        } // end manufacturer status //
+
+        // manufacturer request status update//
+        function updateReqStatus(manufacturerId, newStatus) {
+
+            if (confirm('Are you sure you want to change the status?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/medicy.in/admin/ajax/manufactureReqStatus.update.ajax.php',
+                    data: {
+                        manufacturerId: manufacturerId,
+                        newStatus: newStatus
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error updating status:', error);
+                    }
+                });
+            }
+        } // end manufacturer request status update //
 
         //delete manufacturer
         const customDel = (id) => {
