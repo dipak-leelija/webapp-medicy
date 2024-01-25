@@ -231,7 +231,7 @@ if (isset($_GET['search'])) {
                                                 ?>
                                                         <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
                                                             <div class="card  mb-3 p-3" style="min-width: 14rem; min-height: 11rem; max-width: 14rem; max-height: 21rem;">
-                                                                <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="..." style="max-height: 8rem;">
+                                                                <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="..." style="max-height: 9rem;">
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item->name; ?></b></label>
                                                                     <p class="mb-0"><b><?php $item->name ?></b></p>
@@ -440,7 +440,7 @@ if (isset($_GET['search'])) {
             var oldProdReqFlag = t.getAttribute("oldProdReqFlag");
             var editRequestFlag = t.getAttribute("editRequestFlag");
 
-            console.log("prod request status : "+editRequestFlag);
+            // console.log("prod request status : "+editRequestFlag);
             
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
 

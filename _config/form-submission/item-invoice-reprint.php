@@ -28,7 +28,9 @@ $Manufacturer    = new Manufacturer();
 $Patients        = new Patients;
 
 if (isset($_GET['id'])) {
+
     $invoiceId = url_dec($_GET['id']);
+    // echo $invoiceId;
     $stockOut  = $StockOut->stockOutDisplayById($invoiceId);
     // print_r($stockOut);
     foreach($stockOut as $stockOut){
@@ -174,13 +176,32 @@ if ($customerId != 'Cash Sales') {
                 $subTotal = floatval(00.00);
                     foreach ($details as $detail) {
 
-                        $productResponse = json_decode($Products->showProductsById($detail['product_id']));
+
+                        //=========================
+                        $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
+
+                        if($checkTable->status){
+                            $table = 'products';
+                        }else{
+                            $table = 'product_request';
+                        }
+                        //=========================
+
+                        $productResponse = json_decode($Products->showProductsByIdOnTableName($detail['product_id'], $table));
+
                         $product = $productResponse->data;
+                        // print_r($product);
+
                         $packQty = $product->unit_quantity;
 
-                        $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
+                        if(isset($product->manufacturer_id)){
+                            $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
                         
-                        $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
+                            $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
+                        }else{
+                            $manufacturerName = '';
+                        }
+                        
 
                         $itemunit = $ItemUnit->itemUnitName($product->unit);
                         $packUnit = $PackagingUnits->packagingTypeName($product->packaging_type);
