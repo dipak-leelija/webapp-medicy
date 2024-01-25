@@ -11,6 +11,12 @@ $page = "pack-unit";
 //Class Initilization
 $PackagingUnits = new PackagingUnits();
 
+$showPackagingRequest = json_decode($PackagingUnits->showPackagingRequest());
+$countPackagingRequest = 0;
+if (is_object($showPackagingRequest) && property_exists($showPackagingRequest, 'data')) {
+    $countPackagingRequest = is_array($showPackagingRequest->data) ? count($showPackagingRequest->data) : 0;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -67,6 +73,11 @@ $PackagingUnits = new PackagingUnits();
                         <div class="row">
                             <div class="col-md-7">
                                 <div class="card m-2">
+                                    <div class="card-header d-flex justify-content-end bg-transparent top-1">
+                                        <button type="button" class="btn btn-sm p-1 btn-primary" data-toggle="modal" data-target="#req-packagingUnit" onclick="packRequest()">
+                                            Request</i><span class="badge badge-danger position-absolute top-0 start-100 translate-middle"><?= $countPackagingRequest ?></span>
+                                        </button>
+                                    </div>
                                     <div class="card-body">
                                         <!-- Showing Unit Table -->
                                         <div class="table-responsive">
@@ -192,14 +203,28 @@ $PackagingUnits = new PackagingUnits();
                 <div class="modal-body unitModal">
                     <!-- Details Appeare Here by Ajax  -->
                 </div>
-                <!-- <div class="modal-footer"> -->
-                <!-- <button type="button" class="btn btn-sm btn-primary my-0 py-0" data-dismiss="modal">Close</button> -->
-                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                <!-- </div> -->
             </div>
         </div>
     </div>
     <!--/end Manufacturer View and Edit Modal -->
+
+    <!-- show packtype request    -->
+    <div class="modal fade" id="req-packagingUnit" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unitModalLabel">Pack Unit Request Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="pageReload()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body req-packagingUnit">
+                    <!-- Details Appeare Here by Ajax  -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end packtype request    -->
 
 
     <!-- Scroll to Top Button-->
@@ -239,6 +264,25 @@ $PackagingUnits = new PackagingUnits();
                 url + '"></iframe>');
         } // end of viewAndEdit function
 
+        const packRequest = () => {
+            var parentLocation = window.location.origin + window.location.pathname;
+            $.ajax({
+                url: "components/packagingUnit-request.php",
+                type: "POST",
+                data: {
+                    urlData: parentLocation
+                },
+                success: function(response) {
+                    let body = document.querySelector('.req-packagingUnit');
+                    body.innerHTML = response;
+                },
+                error: function(error) {
+                    console.error("Error: ", error);
+                }
+            });
+            // $("#req-distributor").modal("hide");
+            // location.reload();
+        }
         //update Packaging Unit status//
         function updateStatus(unitId, newStatus) {
 
@@ -260,6 +304,28 @@ $PackagingUnits = new PackagingUnits();
                 });
             }
         } // end Packaging Unit status //
+
+        //update Packaging Unit Request status//
+        function updatePackReqStatus(unitId, newStatus) {
+
+            if (confirm('Are you sure you want to change the status?')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/medicy.in/admin/ajax/packUnitReqStatus.update.ajax.php',
+                    data: {
+                        unitId: unitId,
+                        newStatus: newStatus
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error updating status:', error);
+                    }
+                });
+            }
+        } // end Packaging Unit Request status //
 
         //delete unit
 
