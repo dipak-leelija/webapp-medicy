@@ -10,7 +10,7 @@ $Distributor        = new Distributor();
 if (isset($_GET['match'])) {
 
     $match = $_GET['match'];
-    echo $match;
+    // echo $match;
     if ($match == 'all') {
         $showDistributor    = json_decode($Distributor->distributorSearch($match));
     } else {
