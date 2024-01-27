@@ -47,6 +47,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
 
     <title>Purchase Master - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -104,10 +105,10 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Distributor</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor('all')">
+                                                <!-- <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor('all')">
                                                     Find
-                                                </button>
-
+                                                </button> -->
+                                                <a class="btn btn-sm text-white bg-transparent" data-bs-toggle="modal" href="#DistributorModal" role="button" onclick="findDistributor('all')">Find</a>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <img src="<?= IMG_PATH . 'Distributor.png' ?>" class="ml-0" style="width: 80px; height: 60px; opacity: 0.5;" alt="">
@@ -202,12 +203,11 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         <!-- End of Content Wrapper -->
 
         <!-- distributor search modal -->
-        <div class="modal fade" id="DistributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
+        <!-- <div class="modal fade" id="DistributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header d-flex">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Distributor : &nbsp;</h5>
-                        <!-- <input id="searchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-label="Search" onchange="distSearch('all')"> -->
                         <div class="input-group w-50">
                             <input id="searchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
                             <div class="input-group-append">
@@ -223,8 +223,64 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                     </div>
                 </div>
             </div>
+        </div> -->
+
+        <!-- Manufacturer View and Edit Modal -->
+        <!-- <div class="modal fade" id="distRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Distributor Request</h5>
+                        <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body distRequestModal">
+
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- end distributor modal --->
+
+
+        <div class="modal fade" id="DistributorModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Search Distributor : &nbsp;</h5>
+                        <div class="input-group w-50">
+                            <input id="searchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-sm btn-success" onclick="distSearch('all')"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body DistributorModal">
+
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- end distributor modal  -->
+        <div class="modal fade" id="distRequestModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <div class="d-flex justify-content-between w-75">
+                            <h5 class="modal-title" id="exampleModalToggleLabel2">Distributor Request</h5>
+                            <!-- <button class="btn btn-primary btn-sm" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Distributor</button> -->
+                        </div>
+                        <button type="button" class="btn btn-transparent fs-2 p-0"  data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body distRequestModal">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <!-- add distributor Modal -->
         <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -588,7 +644,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
             });
         }
     </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </body>
 

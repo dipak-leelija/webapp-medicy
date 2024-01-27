@@ -33,6 +33,7 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
 
@@ -79,7 +80,7 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
         </div>
 
         <div class="mt-2 d-flex justify-content-end">
-            <button type="button" class="btn btn-sm btn-primary" onclick="editDistRequest();">Update Request</button>
+            <button type="button" class="btn btn-sm btn-primary"  data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="editDistRequest();">Update Request</button>
         </div>
 
     </form>
@@ -136,7 +137,7 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
     } //eof getEditUpdates
 
     </script>
-
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 
 </html>
