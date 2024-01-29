@@ -103,7 +103,7 @@ if (isset($_GET['match'])) {
                     <td>' . $distributorPin . '</td>
                     <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                     <td>
-                        <a class="mx-1" data-toggle="modal" data-target="#distRequestModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"
+                        <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#distRequestModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></button>
                     </td>
                    </tr>';
                     $rowCount++;
@@ -116,23 +116,22 @@ if (isset($_GET['match'])) {
             ?>
         </tbody>
     </table>
-
-    <!-- Manufacturer View and Edit Modal -->
+    <!-- <a class="mx-1" data-toggle="modal" data-target="#distRequestModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a> -->
+    <!-- Manufacturer View and Edit Modal
     <div class="modal fade" id="distRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">View and Edit Distributor Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="exampleModalLabel">Distributor Request</h5>
+                    <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body distRequestModal">
-                    <!-- Details Appeare Here by Ajax  -->
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <script>
         //View and Edit Manufacturer function
@@ -143,6 +142,10 @@ if (isset($_GET['match'])) {
                 '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of viewAndEdit function
+
+        function closeModal() {
+            $('#distRequestModal').modal('hide');
+        }
     </script>
 
 <?php

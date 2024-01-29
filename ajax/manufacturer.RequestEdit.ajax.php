@@ -18,13 +18,13 @@ $updateManufacturer = $Manufacturer->insertRequestManufacturer($manufacturerId,$
 //check if the data has been updated or not
 if($updateManufacturer){
    echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
-   <strong>Success!</strong> Manufacturer Has been Updated!
+   <strong>Success!</strong> Manufacturer Has been Requested !
    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
    </div>';
     
 }else {
     echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Failed!</strong> Manufacturer Updation Failed!
+    <strong>Failed!</strong> Manufacturer Request Failed!
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
 }

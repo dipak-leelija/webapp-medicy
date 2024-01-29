@@ -1,10 +1,10 @@
-<?php 
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+<?php
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR . 'dbconnect.php';
 // require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
 
 
 // $match = $_POST['search'];
@@ -13,17 +13,17 @@ $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 $packUnit       = new PackagingUnits();
 
 if ($match == 'all') {
-    $showPackUnit = json_decode($packUnit ->packUnitCardSearch($match,$adminId));
-}else {
-    $showPackUnit    = json_decode($packUnit ->packUnitCardSearch($match, $adminId));
+    $showPackUnit = json_decode($packUnit->packUnitCardSearch($match, $adminId));
+} else {
+    $showPackUnit    = json_decode($packUnit->packUnitCardSearch($match, $adminId));
 }
 
 
 if ($showPackUnit->status) {
-    $showPackUnit= $showPackUnit->data;
-}else {
-    // echo "<p class='text-center font-weight-bold'>manufacturerNot Found!</p>";
-    echo "<div class='p-1 border-bottom list'> $match </div>";
+    $showPackUnit = $showPackUnit->data;
+} else {
+    echo "<p class='text-center font-weight-bold'>manufacturer Not Found!</p>";
+    // echo "<div class='p-1 border-bottom list'> $match </div>";
 }
 ?>
 
@@ -68,8 +68,7 @@ if ($showPackUnit->status) {
                         <td>' . $packUnitName . '</td>
                         <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                         <td>
-                            <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $packUnitId . ')"><i class="fas fa-edit"
-                            <a class="mx-1" id="delete-btn" data-id="' . $packUnitId . '"><i class="far fa-trash-alt"></i></a>
+                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#unitModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="packUnitRequest(' . $packUnitId . ')"><i class="fas fa-edit"></i></button>
                         </td>
                        </tr>';
             }
@@ -77,3 +76,19 @@ if ($showPackUnit->status) {
         ?>
     </tbody>
 </table>
+
+
+<script>
+    // packaging unit rerquest function //
+    packUnitRequest = (unitId) => {
+        let ViewAndEdit = unitId;
+        let url = "ajax/packagingUnit.request.ajax.php?Id=" + ViewAndEdit;
+        $(".unitModal").html(
+            '<iframe width="99%" height="120rem" frameborder="0" allowtransparency="true" src="' +
+            url + '"></iframe>');
+    }
+
+    function closeModal() {
+        $('#unitModal').modal('hide');
+    }
+</script>

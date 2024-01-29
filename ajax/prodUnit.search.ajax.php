@@ -1,10 +1,10 @@
-<?php 
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+<?php
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR . 'dbconnect.php';
 // require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR.'measureOfUnit.class.php';
+require_once CLASS_DIR . 'measureOfUnit.class.php';
 
 
 // $match = $_POST['search'];
@@ -13,16 +13,16 @@ $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 $prodUnit       = new MeasureOfUnits();
 
 if ($match == 'all') {
-    $showProdUnit = json_decode($prodUnit ->prodUnitCardSearch($match, $adminId));
+    $showProdUnit = json_decode($prodUnit->prodUnitCardSearch($match, $adminId));
     // print_r($showProdUnit);
-}else {
-    $showProdUnit    = json_decode($prodUnit ->prodUnitCardSearch($match, $adminId));
+} else {
+    $showProdUnit    = json_decode($prodUnit->prodUnitCardSearch($match, $adminId));
 }
 
 
 if ($showProdUnit->status) {
-    $showProdUnit= $showProdUnit->data;
-}else {
+    $showProdUnit = $showProdUnit->data;
+} else {
     // echo "<p class='text-center font-weight-bold'>manufacturerNot Found!</p>";
     echo "<div class='p-1 border-bottom list'> $match </div>";
 }
@@ -50,7 +50,7 @@ if ($showProdUnit->status) {
                         <td>' . $prodUnitSName . '</td>
                         <td>' . $prodUnitFName . '</td>
                         <td>
-                            <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $prodUnitId . ')"><i class="fas fa-edit"</i></a>
+                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#prodUnitReqModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="unitViewAndEdit(' . $prodUnitId . ')"><i class="fas fa-edit"></i></button>
                         </td>
                        </tr>';
             }
@@ -58,3 +58,19 @@ if ($showProdUnit->status) {
         ?>
     </tbody>
 </table>
+
+
+<script>
+    //View and Edit Manufacturer function
+    unitViewAndEdit = (unitId) => {
+        let ViewAndEdit = unitId;
+        let url = "ajax/unit.View.ajax.php?Id=" + ViewAndEdit;
+        $(".prodUnitReqModal").html(
+            '<iframe width="99%" height="250px" frameborder="0" allowtransparency="true" src="' +
+            url + '"></iframe>');
+    }
+
+    // function closeModal() {
+    //     $('#unitModal').modal('hide');
+    // }
+</script>

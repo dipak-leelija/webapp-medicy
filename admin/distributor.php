@@ -76,8 +76,8 @@ if (!empty($showDistRequest->data)) {
                         <div class="col-12">
                             <div class="card shadow">
                                 <div class="card-header d-flex justify-content-end">
-                                    <button type="button" class="btn btn-sm mr-5 p-0" data-toggle="modal" data-target="#req-distributor" onclick="distRequest()">
-                                        <i class="fas fa-folder fa-lg"></i><span class="badge badge-danger position-absolute top-3 start-100 translate-middle"><?= $countDistRequest ?></span>
+                                    <button type="button" class="btn btn-sm btn-primary mr-5" data-toggle="modal" data-target="#req-distributor" onclick="distRequest()">
+                                        Request</i><span class="badge badge-danger position-absolute top-3 start-100 translate-middle"><?= $countDistRequest ?></span>
                                     </button>
                                     <button class="btn btn-sm btn-primary shadow-none" data-toggle="modal" data-target="#add-distributor" onclick="addDistributor()">
                                         Add new
