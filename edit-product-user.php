@@ -101,171 +101,7 @@ if ($_SESSION['ADMIN']) {
         $oldProdFlag = $_GET['oldProdFlag'];
         $editRequestFlag = $_GET['editRequestFlag'];
 
-        if (isset($_POST['update-product'])) {
-
-            $productId  =   $_POST['product-id'];
-            $productName      = $_POST['product-name'];
-
-            $productCategory = $_POST['product-category']; // like : allopathy, drugs,  cosmetics etc.
-            $packagingIn    = $_POST['packeging-type']; // strip, bottle, tubes etc.
-
-            $quantity = $_POST['qantity']; // e.g. 10,20,100 etc.
-            $unit = $_POST['unit']; // e.g. tablet, capsule, syrup etc.
-            // echo "check unit : $unit";
-
-            $medicinePower = $_POST['medicine-power']; // e.g. 5, 10, 25, 50, 500 etc.
-            $mrp = $_POST['mrp'];
-
-            $gstPercent = $_POST['gst'];
-            $hsnoNumber = $_POST['hsno-number'];
-
-            // ==================== for img ===================== //
-            $imageName        = $_FILES['img-files']['name'];
-            $tempImgName       = $_FILES['img-files']['tmp_name'];
-
-            $imageArrayCaount = count($imageName);
-            $tempImageNameArrayCaount = count($tempImgName);
-            // ====================================================
-
-            // echo "images name : ";
-            // print_r($imageName);
-            // echo "<br>";
-            // echo "temp images name : ";
-            // print_r($tempImgName);
-            // echo "<br>";
-
-            // $column = 'product_id';
-            $prodDataFromProducts = json_decode($Products->showProductsById($productId));
-
-            if ($prodDataFromProducts->status) {
-                if ($prodDataFromProducts->data->edit_request_flag == 0) {
-                    $oldProdFlag = 1;
-                    $prodReqStatus = 0;
-
-                    $randNum = rand(1, 999999999999);
-                    $productId = 'PR' . $randNum;
-
-                    // $prdReq = "PRDREQ";
-
-                    $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
-
-                    $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
-                    if ($addOldProdEditRequest) {
-                        $col = 'edit_request_flag';
-                        $editRqstFlgData += 1;
-                        $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
-
-                        $editRequest = true;
-                    }
-                } else {
-
-                    $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
-                    // print_r($selectFromProdReqTable);
-                    if ($selectFromProdReqTable->status) {
-                        $prodReqStatus = 0;
-                        $oldProdFlag = 1;
-
-                        $editRequest = $Request->editUpdateProductRequest($productId, $productName, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
-
-                        // echo "check edit request data : ";
-                        // print_r($editRequest);
-                    } else {
-
-                        $oldProdFlag = 1;
-                        $prodReqStatus = 0;
-
-                        $randNum = rand(1, 999999999999);
-                        $productId = 'PR' . $randNum;
-
-                        // $prdReq = "PRDREQ";
-
-                        $addOldProdEditRequest = $Request->addOldProductRequest($productId, $productName, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
-
-                        $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
-                        if ($addOldProdEditRequest) {
-                            $col = 'edit_request_flag';
-                            $editRqstFlgData += 1;
-                            $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
-
-                            $editRequest = true;
-                        }
-                    }
-                }
-            } else {
-
-                $prodReqStatus = 0;
-                $oldProdFlag = 0;
-
-                $editRequest = $Request->editUpdateProductRequest($productId, $productName, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
-
-                // echo "check edit request data : ";
-                // print_r($editRequest);
-            }
-
-            // $editRequest = false;
-            if ($editRequest) {
-
-                for ($i = 0, $j = 0; $i < $imageArrayCaount && $j < $tempImageNameArrayCaount; $i++, $j++) {
-                    ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
-                    $imgStatus = 0;
-
-                    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                    $randomString = '';
-
-                    for ($k = 0; $k < 9; $k++) {
-                        $randomString .= $characters[rand(0, strlen($characters) - 1)];
-                    }
-
-                    ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-                    //===== Main Image 
-                    $image          = $imageName[$i];
-                    $tempImage        = $tempImgName[$j];
-
-
-                    $extention = substr($image, -4);
-                    $imageFileName = substr($image, 0, -4);
-
-
-                    if ($imageFileName != null) {
-
-                        $imageFile  =   $imageFileName . '-' . $randomString . $extention;
-                        $imgFolder     = PROD_IMG . $imageFile;
-
-                        move_uploaded_file($tempImage, $imgFolder);
-                        $image         = addslashes($imageFile);
-                    } else {
-                        $image = null;
-                    }
-
-                    if ($image != null) {
-                        $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
-                    } else {
-                        $addImagesRequest = true;
-                    }
-                }
-            }
-
-            if ($editRequest === true) {
-                // if ($updateImage === true) {
-    ?>
-                <script>
-                    swal("Success", "Product updated successfully!", "success").then((value) => {
-                        parent.location.reload();
-                    });
-                </script>
-            <?php
-            } else {
-            ?>
-                <script>
-                    swal("Error", "Product(image) updatation fail!", "error").then((value) => {
-                        parent.location.reload();
-                    });
-                </script>
-        <?php
-            }
-        }
-
-
+        
         // ================================ Fetching Product Details =================================
         $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editRequestFlag, $prodReqStatus, $oldProdFlag));
         // print_r($product);
@@ -326,7 +162,7 @@ if ($_SESSION['ADMIN']) {
                     <!-- Add Product -->
                     <div class="card shadow mb-4 h-100">
                         <div class="card-body">
-                            <form action="<?= htmlspecialchars(CURRENT_URL); ?>" method="post" enctype="multipart/form-data">
+                            <form action="_config\form-submission\edit-product-user.php" method="post" enctype="multipart/form-data">
                                 <div class="d-flex flex-wrap">
 
                                     <div class="col-md-5">
@@ -498,9 +334,21 @@ if ($_SESSION['ADMIN']) {
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row d-none">
+                                            <div class="col-md-12 d-flex mt-3">
+                                                <div class="col-sm-6">
+                                                    Composition 1
+                                                    <input class="c-inp w-100 p-1 mt-1" id="comp-1" name="comp-1" value="<?php echo $product[0]->comp_1; ?>" required>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    Composition 2
+                                                    <input class="c-inp w-100 p-1 mt-1" id="comp-2" name="comp-2" value="<?php echo $product[0]->comp_2; ?>" required>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                        </div>
+                            </div>
                         </form>
                     </div>
                 </div>

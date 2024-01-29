@@ -180,7 +180,7 @@
                     <h6 class="collapse-header">Purchase Management:</h6>
                     <a class="collapse-item <?php if($page ==  "stock-in"){ echo "active";} ?>"
                         href="stock-in.php ">Purchase </a>
-                    <a class="collapse-item <?php if($page ==  "stock-return" || $page == "stock-return-item"){ echo "active";} ?>"" href="
+                    <a class="collapse-item <?php if($page ==  "stock-return" || $page == "stock-return-item"){ echo "active";} ?>" href="
                         stock-return.php">Purchase Return</a>
                 </div>
             </div>
@@ -189,8 +189,7 @@
 
 
         <!-- Product Management collapsed Menu  -->
-        <li
-            class="nav-item <?php if($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" || $page == "stock-in-edit"){ echo "active";} ?>">
+        <li class="nav-item <?php if($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" || $page == "stock-in-edit"){ echo "active";} ?>">
             <a class="nav-link <?php if($page !=  "current-stock"){ echo "collapsed";} ?>" href="#"
                 data-toggle="collapse" data-target="#collapseStock"
                 aria-expanded="<?php if($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" || $page == "stock-in-edit"){ echo "true";} ?>"
@@ -258,15 +257,17 @@
         </li> -->
         <!--/end Purchase Master collapsed Menu  -->
 
+        <li class="nav-item <?php if($page ==  "edit-ticket-details"){echo "active";}  ?>">
+            <a class="nav-link" href="edit-ticket-details.php">
+                <i class="fas fa-hand-paper"></i>
+                <span>All Request Details</span>
+            </a>
+        </li>
+
         <?php endif; ?>
 
-
-        <!-- Sidebar Toggler (Sidebar) -->
-
         <div class="text-center d-none d-md-inline">
-
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
-
         </div>
 
 
