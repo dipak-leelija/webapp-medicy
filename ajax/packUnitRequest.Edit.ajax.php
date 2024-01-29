@@ -20,12 +20,12 @@ if($insertUnitRequest){
 //check if the data has been updated or not
 if($insertUnitRequest){
    echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
-   <strong>Success!</strong> Unit Has been Updated!
+   <strong>Success!</strong> Unit Has been Requested!
    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
    </div>';
 }else {
     echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Failed!</strong> Unit Updation Failed!
+    <strong>Failed!</strong> Unit Request Failed!
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>';
 }

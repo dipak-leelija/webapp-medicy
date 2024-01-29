@@ -103,7 +103,7 @@ if (isset($_GET['match'])) {
                     <td>' . $distributorPin . '</td>
                     <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                     <td>
-                        <button class="btn btn-sm btn-transparent" data-bs-target="#distRequestModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#distRequestModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></button>
                     </td>
                    </tr>';
                     $rowCount++;

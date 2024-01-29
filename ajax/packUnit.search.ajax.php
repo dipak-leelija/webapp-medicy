@@ -68,7 +68,7 @@ if ($showPackUnit->status) {
                         <td>' . $packUnitName . '</td>
                         <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                         <td>
-                            <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="packUnitRequest(' . $packUnitId . ')"><i class="fas fa-edit"
+                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#unitModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="packUnitRequest(' . $packUnitId . ')"><i class="fas fa-edit"></i></button>
                         </td>
                        </tr>';
             }
@@ -77,21 +77,6 @@ if ($showPackUnit->status) {
     </tbody>
 </table>
 
-<div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="unitModalLabel">Units Request</h5>
-                <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body unitModal">
-                <!-- Details Appeare Here by Ajax  -->
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     // packaging unit rerquest function //

@@ -76,7 +76,7 @@ if ($showmanufacturer->status) {
                         <td>' . $manufacturerDsc . '</td>
                         <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                         <td>
-                            <a class="mx-1" data-toggle="modal" data-target="#manufacturerModal" onclick="manufacturerRequest(' . $manufacturerId . ')"><i class="fas fa-edit"></i></a>
+                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#manufacturerModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="manufacturerRequest(' . $manufacturerId . ')"><i class="fas fa-edit"></i></button>
                         </td>
                        </tr>';
             }
@@ -85,21 +85,6 @@ if ($showmanufacturer->status) {
     </tbody>
 </table>
 
-<div class="modal fade" id="manufacturerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Manufacturer Request</h5>
-                <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body manufacturerModal">
-                <!-- Details Appeare Here by Ajax  -->
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     const manufacturerRequest = (manufacturerId) => {
@@ -110,7 +95,7 @@ if ($showmanufacturer->status) {
             url + '"></iframe>');
     }
 
-    function closeModal() {
-        $('#manufacturerModal').modal('hide');
-    }
+    // function closeModal() {
+    //     $('#manufacturerModal').modal('hide');
+    // }
 </script>

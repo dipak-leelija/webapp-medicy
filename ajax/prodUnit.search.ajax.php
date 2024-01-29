@@ -50,7 +50,7 @@ if ($showProdUnit->status) {
                         <td>' . $prodUnitSName . '</td>
                         <td>' . $prodUnitFName . '</td>
                         <td>
-                            <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $prodUnitId . ')"><i class="fas fa-edit"</i></a>
+                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#prodUnitReqModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="unitViewAndEdit(' . $prodUnitId . ')"><i class="fas fa-edit"></i></button>
                         </td>
                        </tr>';
             }
@@ -59,33 +59,18 @@ if ($showProdUnit->status) {
     </tbody>
 </table>
 
-<div class="modal fade" id="unitModal" tabindex="-1" role="dialog" aria-labelledby="unitModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="unitModalLabel">View and Edit Units</h5>
-                <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body unitModal">
-                <!-- Details Appeare Here by Ajax  -->
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     //View and Edit Manufacturer function
     unitViewAndEdit = (unitId) => {
         let ViewAndEdit = unitId;
         let url = "ajax/unit.View.ajax.php?Id=" + ViewAndEdit;
-        $(".unitModal").html(
+        $(".prodUnitReqModal").html(
             '<iframe width="99%" height="250px" frameborder="0" allowtransparency="true" src="' +
             url + '"></iframe>');
     }
 
-    function closeModal() {
-        $('#unitModal').modal('hide');
-    }
+    // function closeModal() {
+    //     $('#unitModal').modal('hide');
+    // }
 </script>

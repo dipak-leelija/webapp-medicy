@@ -105,9 +105,6 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Distributor</h5>
-                                                <!-- <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#DistributorModal" onclick="findDistributor('all')">
-                                                    Find
-                                                </button> -->
                                                 <a class="btn btn-sm text-white bg-transparent" data-bs-toggle="modal" href="#DistributorModal" role="button" onclick="findDistributor('all')">Find</a>
                                             </div>
                                             <div class="d-flex justify-content-between">
@@ -127,9 +124,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Manufacturer</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#ManufacturModal" onclick="findManufacturer('all')">
-                                                    Find
-                                                </button>
+                                                <a class="btn btn-sm text-white bg-transparent" data-bs-toggle="modal" href="#ManufacturModal" role="button" onclick="findManufacturer('all')"> Find</a>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <img src="<?= IMG_PATH . 'manufacturer.png' ?>" class="ml-0" style="width: 80px; height: 60px; opacity: 0.5;" alt="">
@@ -148,9 +143,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Packaging Unit</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#PackUnitModal" onclick="findPackUnit('all')">
-                                                    Find
-                                                </button>
+                                                <a class="btn btn-sm text-white bg-transparent" data-bs-toggle="modal" href="#PackUnitModal" role="button" onclick="findPackUnit('all')"> Find</a>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <img src="<?= IMG_PATH . 'packUnit.png' ?>" class="ml-0" style="width: 80px; height: 60px; opacity: 0.5;" alt="">
@@ -169,9 +162,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                                         <div class="card-body mb-0 pb-0">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Product Unit</h5>
-                                                <button type="button" class="btn btn-sm text-white bg-transparent" data-toggle="modal" data-target="#ProdUnitModal" onclick="findProdUnit('all')">
-                                                    Find
-                                                </button>
+                                                <a class="btn btn-sm text-white bg-transparent" data-bs-toggle="modal" href="#ProdUnitModal" role="button" onclick="findProdUnit('all')"> Find</a>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <img src="<?= IMG_PATH . 'prodUnit.png' ?>" class="ml-0" style="width: 80px; height: 60px; opacity: 0.5;" alt="">
@@ -203,47 +194,6 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         <!-- End of Content Wrapper -->
 
         <!-- distributor search modal -->
-        <!-- <div class="modal fade" id="DistributorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header d-flex">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Search Distributor : &nbsp;</h5>
-                        <div class="input-group w-50">
-                            <input id="searchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-sm btn-success" onclick="distSearch('all')"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body DistributorModal">
-
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <!-- Manufacturer View and Edit Modal -->
-        <!-- <div class="modal fade" id="distRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered" role="document ">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Distributor Request</h5>
-                        <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body distRequestModal">
-
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- end distributor modal --->
-
-
         <div class="modal fade" id="DistributorModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
@@ -271,15 +221,14 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                             <h5 class="modal-title" id="exampleModalToggleLabel2">Distributor Request</h5>
                             <!-- <button class="btn btn-primary btn-sm" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Distributor</button> -->
                         </div>
-                        <button type="button" class="btn btn-transparent fs-2 p-0"  data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="btn btn-transparent fs-2 p-0" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body distRequestModal">
 
                     </div>
                 </div>
             </div>
-        </div>
-
+        </div> <!-- end distributor modal --->
 
         <!-- add distributor Modal -->
         <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
@@ -299,22 +248,21 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         </div>
         <!--end add distributor Modal -->
 
+
         <!-- Manufacture search modal -->
-        <div class="modal fade" id="ManufacturModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+       
+        <div class="modal fade" id="ManufacturModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header d-flex">
+                    <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Manufacturer : &nbsp;</h5>
-                        <!-- <input id="manuSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="manuSearch('all')"> -->
                         <div class="input-group w-50">
                             <input id="manuSearchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-sm btn-success" onclick="manuSearch('all')"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body ManufacturModal">
 
@@ -322,7 +270,23 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                 </div>
             </div>
         </div>
-        <!-- end manufacture modal  -->
+        <div class="modal fade" id="manufacturerModal" aria-hidden="true" aria-labelledby="exampleModalToggleManufacture" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <div class="d-flex justify-content-between w-75">
+                            <h5 class="modal-title" id="exampleModalToggleManufacture">Manufacturer Request</h5>
+                            <!-- <button class="btn btn-primary btn-sm" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Distributor</button> -->
+                        </div>
+                        <button type="button" class="btn btn-transparent fs-2 p-0" data-bs-target="#ManufacturModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body manufacturerModal">
+
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end manufacture modal  -->
+
         <!-- add manufacturer modal -->
         <div class="modal fade" id="add-manufacturer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -341,21 +305,18 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         </div><!-- end manufacturer modal -->
 
         <!-- Packaging search modal  -->
-        <div class="modal fade" id="PackUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+        <div class="modal fade" id="PackUnitModal" aria-hidden="true" aria-labelledby="exampleModalToggle" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header d-flex">
+                    <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Search Pack Unit : &nbsp;</h5>
-                        <!-- <input id="packSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="packSearch('all')"> -->
                         <div class="input-group w-50">
                             <input id="packSearchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-sm btn-success" onclick="packSearch('all')"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body PackUnitModal">
 
@@ -363,7 +324,23 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                 </div>
             </div>
         </div>
-        <!-- end Packaging search modal  -->
+        <div class="modal fade" id="unitModal" aria-hidden="true" aria-labelledby="unitModalLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <div class="d-flex justify-content-between w-75">
+                            <h5 class="modal-title" id="unitModalLabel">Units Request</h5>
+                            <!-- <button class="btn btn-primary btn-sm" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Distributor</button> -->
+                        </div>
+                        <button type="button" class="btn btn-transparent fs-2 p-0" data-bs-target="#PackUnitModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body unitModal">
+
+                    </div>
+                </div>
+            </div>
+        </div>   <!-- end Packaging search modal  -->
+        
         <!-- add packaging unit -->
         <div class="modal fade" id="add-packagingUnit" tabindex="-1" role="dialog" aria-labelledby="packUnitModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -394,21 +371,19 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
         </div>
         <!-- end packaging unit -->
         <!-- Prod Unit search modal  -->
-        <div class="modal fade" id="ProdUnitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+
+        <div class="modal fade" id="ProdUnitModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header d-flex">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Search Pack Unit : &nbsp;</h5>
-                        <!-- <input id="prodSearchInput" type="search" class="form-control form-control-sm w-50" placeholder="Search by name" aria-controls="dataTable" onchange="prodSearch('all')"> -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Search Product Unit : &nbsp;</h5>
                         <div class="input-group w-50">
                             <input id="prodSearchInput" type="search" class="form-control form-control-sm" placeholder="Search by name" aria-label="Search">
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-sm btn-success" onclick="prodSearch('all')"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body ProdUnitModal">
 
@@ -416,7 +391,24 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                 </div>
             </div>
         </div>
-        <!-- end Prod Unit search modal  -->
+        <div class="modal fade" id="prodUnitReqModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <div class="d-flex justify-content-between w-75">
+                            <h5 class="modal-title" id="exampleModalToggleLabel2">Product Request</h5>
+                            <!-- <button class="btn btn-primary btn-sm" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Distributor</button> -->
+                        </div>
+                        <button type="button" class="btn btn-transparent fs-2 p-0" data-bs-target="#ProdUnitModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body prodUnitReqModal">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- end Prod Unit search modal  -->
+
         <!-- add product unit modal -->
         <div class="modal fade" id="add-ProdUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
