@@ -40,7 +40,7 @@ class Request extends DatabaseConnection
                 throw new Exception("Error preparing SQL query: " . $this->conn->error);
             }
 
-            $bindResult = $stmt->bind_param("ssssisssdisissii", $oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber,    $addedBy, $addedOn, $adminId, $status, $oldProdFlag);
+            $bindResult = $stmt->bind_param("ssssssisssdisissii", $oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber,    $addedBy, $addedOn, $adminId, $status, $oldProdFlag);
             if (!$bindResult) {
                 throw new Exception("Error binding parameters: " . $stmt->error);
             }
