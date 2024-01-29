@@ -16,22 +16,22 @@ $Manufacturer   = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
 $MeasureOfUnits = new MeasureOfUnits();
 
-$showDistributor = json_decode($Distributor->showDistributor($adminId));
-$countDistributor = count($showDistributor->data);
-$showDistributor = $showDistributor->data;
-// print_r($showDistributor);
+// Count Distributor Data
+$showDistributor = $Distributor->showDistributor($adminId);
+$response        = json_decode($showDistributor, true);
+$decodedDistributor = !empty($response['data']) ? $response['data'] : null;
+$countDistributor   = $decodedDistributor !== null ? count($decodedDistributor) : 0;
 
-$showManufacturer = $Manufacturer->showManufacturer($adminId);
+// Count Manufacturer Data
+$showManufacturer    = $Manufacturer->showManufacturer($adminId);
 $decodedManufacturer = ($showManufacturer !== null) ? json_decode($showManufacturer) : null;
-$countManufacturer = ($decodedManufacturer !== null) ? count($decodedManufacturer) : 0;
+$countManufacturer   = ($decodedManufacturer !== null) ? count($decodedManufacturer) : 0;
 
-// $showPackagingUnits  = $PackagingUnits->showPackagingUnits($adminId);
+// Count Packaging Data
 $countPackagingUnits = count($PackagingUnits->showPackagingUnits($adminId));
-// print_r($countPackagingUnits);
-
-// $showMeasureOfUnits  = $MeasureOfUnits->showMeasureOfUnits();
+// Count Product Data
 $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
-// print_r($countMeasureOfUnits);
+
 ?>
 
 <!DOCTYPE html>

@@ -27,8 +27,8 @@ if ($showmanufacturer->status) {
     //     </div>";
     // }
 } else {
-    // echo "<p class='text-center font-weight-bold'>manufacturerNot Found!</p>";
-    echo "<div class='p-1 border-bottom list'> $match </div>";
+    echo "<p class='text-center font-weight-bold'>manufacturer Not Found!</p>";
+    // echo "<div class='p-1 border-bottom list'> $match </div>";
 }
 ?>
 
