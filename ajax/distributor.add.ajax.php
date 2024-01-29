@@ -33,11 +33,12 @@ $Distributor = new Distributor();
         $distributorDsc         = $_POST['distributor-dsc'];
         $parentUrl              = $_POST['parent-window-location'];
         $distributorStatus      = 1;
+        $newData                = 1;
 
 
         //Insert Into Distributor DB
         $addDistributor     = $Distributor->addDistributor(
-            $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $employeeId, NOW,  $distributorStatus, $adminId
+            $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $employeeId, NOW,  $distributorStatus,$newData, $adminId
         );
         
         if ($addDistributor == true) {

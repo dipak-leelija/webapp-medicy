@@ -105,6 +105,7 @@ if (!empty($showDistRequest->data)) {
                                                         $distributorPhno    = $rowDistributor->phno;
                                                         $distributorPin     = $rowDistributor->area_pin_code;
                                                         $distributorStatus  = $rowDistributor->status;
+                                                        $isNew              = $rowDistributor->new;
 
                                                         $statusLabel = '';
                                                         $statusColor = '';
@@ -126,9 +127,10 @@ if (!empty($showDistRequest->data)) {
                                                                 break;
                                                         }
 
+                                                        $newBadge = ($isNew == 1) ? '<span class="badge badge-pill badge-info position-absolute ml-2 top-0 start-50 translate-middle-x">New</span>' : '';
                                                         echo '<tr>
                                                                 <td>' . $distributorId . '</td>
-                                                                <td>' . $distributorName . '</td>
+                                                                <td>' . $distributorName . ' ' . $newBadge . '</td>
                                                                 <td>' . $distributorPhno . '</td>
                                                                 <td>' . $distributorPin . '</td>
                                                                 <td>

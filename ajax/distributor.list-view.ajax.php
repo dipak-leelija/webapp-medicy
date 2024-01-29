@@ -51,10 +51,10 @@ if (isset($_GET['match'])) {
         echo "<p class='text-center font-weight-bold'>Distributor Not Found!</p>";
         // echo "<div class='p-1 border-bottom list'> $match </div>";
     }
-
+ 
 ?>
 
-
+<div class="table-responsive">
     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
             <tr>
@@ -116,6 +116,7 @@ if (isset($_GET['match'])) {
             ?>
         </tbody>
     </table>
+</div>
     <!-- <a class="mx-1" data-toggle="modal" data-target="#distRequestModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a> -->
     <!-- Manufacturer View and Edit Modal
     <div class="modal fade" id="distRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
