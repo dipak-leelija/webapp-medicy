@@ -7,6 +7,7 @@ require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'request.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
 // require_once ROOT_DIR . '_config/accessPermission.php';
@@ -18,6 +19,7 @@ $page = "products";
 
 //Intitilizing Doctor class for fetching doctors
 $Products       = new Products();
+$Request            = new Request;
 $Pagination     = new Pagination();
 $ProductImages  = new ProductImages();
 
@@ -25,16 +27,16 @@ $ProductImages  = new ProductImages();
 if (isset($_GET['search'])) {
 
     $prodId = $_GET['search'];
-    $prodReqStatus = $_GET['prodReqStatus']; 
-    $oldProdReqFlag = $_GET['oldProdReqFlag']; 
-    $editRequestStatus = $_GET['editRequestFlag']; 
-    
-    if($editRequestStatus != ''){
+    $prodReqStatus = $_GET['prodReqStatus'];
+    $oldProdReqFlag = $_GET['oldProdReqFlag'];
+    $editRequestStatus = $_GET['editRequestFlag'];
+
+    if ($editRequestStatus != '') {
         $editRequestStatus = $editRequestStatus;
-    }else{
+    } else {
         $editRequestStatus = 0;
     }
-    
+
     $productList = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $editRequestStatus, $prodReqStatus, $oldProdReqFlag));
 
     $productList = $productList->data;
@@ -136,7 +138,7 @@ if (isset($_GET['search'])) {
                                     <div class="col-md-7">
                                         <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
 
-                                        <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list">
+                                        <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list" style="z-index: 9999;">
                                             <div class="lists" id="lists">
                                                 <?php
                                                 if (!empty($productList->data) && is_array($productList->data)) {
@@ -183,7 +185,7 @@ if (isset($_GET['search'])) {
 
                                                         if ($image->status) {
                                                             $imgData = $image->data;
-                                                        
+
                                                             $productImage = $imgData[0]->image;
                                                         } else {
 
@@ -193,11 +195,11 @@ if (isset($_GET['search'])) {
                                                                 $imgData = $image->data;
                                                                 // print_r($imgData);
                                                                 $productImage = $imgData[0]->image;
-                                                            }else{
+                                                            } else {
                                                                 $productImage = 'default-product-image/medicy-default-product-image.jpg';
-                                                            }  
+                                                            }
                                                         }
-                                                        
+
                                                         if (property_exists($item, 'dsc')) {
                                                             if ($item->dsc == null) {
                                                                 $dsc = '';
@@ -209,29 +211,48 @@ if (isset($_GET['search'])) {
                                                         }
 
 
-                                                        if(isset($item->prod_req_status)){
+                                                        if (isset($item->prod_req_status)) {
                                                             $prodReqStatus = $item->prod_req_status;
-                                                        }else{
+                                                        } else {
                                                             $prodReqStatus = '';
                                                         }
 
-                                                        if(isset($item->old_prod_flag)){
+                                                        if (isset($item->old_prod_flag)) {
                                                             $oldProdFlag = $item->old_prod_flag;
-                                                        }else{
+                                                        } else {
                                                             $oldProdFlag = '';
                                                         }
 
-                                                        if(isset($item->edit_request_flag)){
+                                                        if (isset($item->edit_request_flag)) {
                                                             $editRequestFlag = $item->edit_request_flag;
-                                                        }else{
+                                                        } else {
                                                             $editRequestFlag = '';
                                                         }
 
+                                                        //======== check edit request ========
+                                                        $editRequestCheck = $Request->selectProductById($item->product_id, $adminId);
+                                                        $editRequestCheck = json_decode($editRequestCheck);
+
+                                                        if($editRequestCheck->status){
+                                                            $requestToken = 1;
+                                                        }else{
+                                                            $requestToken = 0;
+                                                        }
 
                                                 ?>
                                                         <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
+                                                            
                                                             <div class="card  mb-3 p-3" style="min-width: 14rem; min-height: 11rem; max-width: 14rem; max-height: 21rem;">
+
+                                                                <?php 
+                                                                if($requestToken){
+                                                                    echo '<div class="d-flex justify-content-end mt-n4 mr-n4" style="z-index: 999; position: absolute; top: 15px; right: 15px; background-color: rgb(0, 160, 152); color: white; padding: 5px;"><small>Edit Request Generated</small></div>
+                                                                    ';
+                                                                }
+                                                                ?>
+
                                                                 <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="..." style="max-height: 9rem;">
+
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item->name; ?></b></label>
                                                                     <p class="mb-0"><b><?php $item->name ?></b></p>
@@ -240,10 +261,10 @@ if (isset($_GET['search'])) {
                                                                 </div>
 
 
-                                                                <div class="row px-3 pb-2">
+                                                                <div class="row px-3 pb-2 mt-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" prodReqStatus="<?php echo $prodReqStatus ?>" oldProdFlag="<?php echo $oldProdFlag ?>" editRequestFlag="<?php echo $editRequestFlag ?>"onclick="viewItem(this)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" prodReqStatus="<?php echo $prodReqStatus ?>" oldProdFlag="<?php echo $oldProdFlag ?>" editRequestFlag="<?php echo $editRequestFlag ?>" onclick="viewItem(this)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -441,7 +462,7 @@ if (isset($_GET['search'])) {
             var editRequestFlag = t.getAttribute("editRequestFlag");
 
             // console.log("prod request status : "+editRequestFlag);
-            
+
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
 
             let newUrl = `${currentURLWithoutQuery}?search=${prodId}&prodReqStatus=${prodReqStatus}&oldProdReqFlag=${oldProdReqFlag}&editRequestFlag=${editRequestFlag}`;

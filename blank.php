@@ -26,7 +26,7 @@
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include PORTAL_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -36,7 +36,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include PORTAL_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT.'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -52,7 +52,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include PORTAL_COMPONENT.'footer-text.php'; ?>
+            <?php include ROOT_COMPONENT.'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>

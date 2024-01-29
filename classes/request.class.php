@@ -30,27 +30,38 @@ class Request extends DatabaseConnection
 
 
 
-    function addOldProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $addedBy, $addedOn, $adminId, $status, $oldProdFlag)
-    {
+    function addOldProductRequest($oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $addedBy, $addedOn, $adminId, $status, $oldProdFlag){
         try {
-            $addQuery = "INSERT INTO `product_request`(`product_id`, `name`, `type`, `packaging_type`,  `unit_quantity`, `unit`, `power`, `mrp`, `gst`, `hsno_number`, `requested_by`, `requested_on`, `admin_id`, `prod_req_status`, `old_prod_flag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $addQuery = "INSERT INTO `product_request`(`old_prod_id`, `product_id`, `name`, `comp_1`, `comp_2`, `type`, `packaging_type`, `unit_quantity`, `unit`, `power`, `mrp`, `gst`, `hsno_number`, `requested_by`,    `requested_on`, `admin_id`, `prod_req_status`, `old_prod_flag`) VALUES     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($addQuery);
-            $stmt->bind_param("sssisssdisisssi", $productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $addedBy, $addedOn, $adminId, $status, $oldProdFlag);
-          
-            if ($stmt->execute()) {
-                // Insert successful
+            if (!$stmt) {
+                throw new Exception("Error preparing SQL query: " . $this->conn->error);
+            }
+
+            $bindResult = $stmt->bind_param("ssssssisssdisissii", $oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber,    $addedBy, $addedOn, $adminId, $status, $oldProdFlag);
+            if (!$bindResult) {
+                throw new Exception("Error binding parameters: " . $stmt->error);
+            }
+            // return $bindResult;
+            $executeResult = $stmt->execute();
+            if (!$executeResult) {
+                throw new Exception("Error executing SQL query: " . $stmt->error);
+            }
+
+            if ($stmt->affected_rows > 0) {
                 $stmt->close();
-                return true;
+                return json_encode(['status' => '1', 'data' => 'success']);
             } else {
-                // Insert failed
-                throw new Exception("Error inserting data into the database: " . $stmt->error);
+                $stmt->close();
+                return json_encode(['status' => '0', 'data' => "No rows affected. Insertion failed."]);
             }
         } catch (Exception $e) {
-            // Handle the exception, log the error, or return an error message as needed
             return "Error: " . $e->getMessage();
         }
     }
+
 
 
 
@@ -97,7 +108,7 @@ class Request extends DatabaseConnection
         $resultData = array();
     
         try {
-            $searchSql = "SELECT * FROM `product_request` WHERE `product_id` = ? AND `admin_id` = ?";
+            $searchSql = "SELECT * FROM `product_request` WHERE `old_prod_id` = ? AND `admin_id` = ?";
             $stmt = $this->conn->prepare($searchSql);
     
             if ($stmt) {
@@ -174,9 +185,9 @@ class Request extends DatabaseConnection
 
 
 
-    function editUpdateProductRequest($productId, $prodName, $prodCategory, $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $adminId) {
+    function editUpdateProductRequest($productId, $prodName, $composition1,  $composition2, $prodCategory, $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $adminId) {
         try {
-            $updateProdRequest = "UPDATE product_request SET `name` = ?, `type` = ?, `packaging_type` = ?, `unit_quantity` = ?, `unit` = ?, `power` = ?, `mrp` = ?, `gst` = ?, `hsno_number` = ?, `requested_by` = ?,  `requested_on` = ?, `prod_req_status` = ?, `old_prod_flag` = ? WHERE product_id = ? AND `admin_id` = ?";
+            $updateProdRequest = "UPDATE product_request SET `name` = ?, `comp_1` = ?, `comp_2` = ?, `type` = ?, `packaging_type` = ?, `unit_quantity` = ?, `unit` = ?, `power` = ?, `mrp` = ?, `gst` = ?, `hsno_number` = ?, `requested_by` = ?,  `requested_on` = ?, `prod_req_status` = ?, `old_prod_flag` = ? WHERE product_id = ? AND `admin_id` = ?";
     
             $stmt = $this->conn->prepare($updateProdRequest);
     
