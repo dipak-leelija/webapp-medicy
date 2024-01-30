@@ -8,6 +8,12 @@ require_once CLASS_DIR.'measureOfUnit.class.php';
 //Class initilization
 $MeasureOfUnits = new MeasureOfUnits();
 
+if($_SESSION['ADMIN']){
+    $employeeId = $adminId;
+}else{
+    $employeeId = $employeeId;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -28,8 +34,9 @@ $MeasureOfUnits = new MeasureOfUnits();
     if (isset($_POST['add-unit'])) {
         $srtName  = $_POST['unit-srt-name'];
         $fullName = $_POST['unit-full-name'];
+        $newData  = 1;
 
-        $addMeasureOfUnits = $MeasureOfUnits->addMeasureOfUnits($srtName, $fullName, $employeeId, NOW, $adminId);
+        $addMeasureOfUnits = $MeasureOfUnits->addMeasureOfUnits($srtName, $fullName, $employeeId, NOW,$newData, $adminId);
 
         if ($addMeasureOfUnits) {
            // echo "<script>alert('Unit Added!'); window.location='../../product-unit.php';</script>";

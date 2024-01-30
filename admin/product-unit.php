@@ -97,23 +97,25 @@ $MeasureOfUnits = new MeasureOfUnits();
                                                             $unitId     = $rowMeasureOfUnits['id'];
                                                             $shortName  = $rowMeasureOfUnits['short_name'];
                                                             $fullName   = $rowMeasureOfUnits['full_name'];
+                                                            $isNew      = $rowMeasureOfUnits['new'];
 
                                                             $showUnitactivity = $MeasureOfUnits->showUnitactivity($unitId);
+                                                            $newBadge = ($isNew == 1) ? '<span class="badge badge-pill badge-info position-absolute ml-2 top-0 start-50 translate-middle-x">New</span>' : '';
                                                             // print_r($showUnitactivity);
                                                             echo '<tr>
-                                                        <td>' . $unitId . '</td>
-                                                                <td>' . $shortName . '</td>
-                                                                <td>' . $fullName . '</td>
-                                                                <td>
-                                                                    <div class="custom-control custom-switch">
-                                                                       <input type="checkbox" class="custom-control-input" id="switch' . $unitId . '" onchange="toggleSwitch(' . $unitId . ')" ' . (isset($showUnitactivity['id']) ? 'checked' : '') . ' > 
-                                                                       <label class="custom-control-label" for="switch' . $unitId . '"></label>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $unitId . ')"><i class="fas fa-edit"></i></a>   
-                                                                <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
-                                                                </td>
+                                                                      <td>' . $unitId . '</td>
+                                                                      <td>' . $shortName . ''.$newBadge.'</td>
+                                                                      <td>' . $fullName . '</td>
+                                                                      <td>
+                                                                         <div class="custom-control custom-switch">
+                                                                            <input type="checkbox" class="custom-control-input" id="switch' . $unitId . '" onchange="toggleSwitch(' . $unitId . ')" ' . (isset($showUnitactivity['id']) ? 'checked' : '') . ' > 
+                                                                            <label class="custom-control-label" for="switch' . $unitId . '"></label>
+                                                                         </div>
+                                                                      </td>
+                                                                      <td>
+                                                                      <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $unitId . ')"><i class="fas fa-edit"></i></a>   
+                                                                      <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
+                                                                      </td>
                                                                 </tr>';
                                                         }
                                                     }
