@@ -252,7 +252,6 @@ if ($allAppointments->status) {
                                             <option value="PFY">Previous Fiscal Year</option>
                                             <option value="CR">Custom Range </option>
                                         </select>
-
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center">

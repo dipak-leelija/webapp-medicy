@@ -80,13 +80,6 @@ class Request extends DatabaseConnection
                 $stmt->bind_param("ssssi", $productId, $productImage, $addedBy, $addedOn, $status);
             }
 
-            // Prepare the SQL statement
-            // $stmt = $this->conn->prepare($insertImage);
-            // Bind parameters
-
-            // $stmt->bind_param("sssssi", $productId, $productImage, $addedBy, $addedOn, $adminId, $status);
-
-            // Execute the statement
             if ($stmt->execute()) {
                 // Insert successful
                 $stmt->close();
@@ -211,6 +204,8 @@ class Request extends DatabaseConnection
 
 
 
+
+
     function lastRowId() {
         $sql = "SELECT * FROM product_request ORDER BY id DESC LIMIT 1";
     
@@ -237,6 +232,82 @@ class Request extends DatabaseConnection
         }
     }
     
+
+
+
+
+
+    function fetchRequestDataByTableName($tableName, $adminId, $name = '', $statusColumn = '', $description = '') {
+        try {
+            if ($tableName == 'product_request') {
+                // $tableName = 'product_request';
+                $name = 'name';
+                $description = 'dsc'; 
+                $statusColumn = 'prod_req_status';
+            } elseif ($tableName == 'distributor_request') {
+                // $tableName = 'distributor_request';
+                $name = 'name';
+                $description = 'dsc'; 
+                $statusColumn = 'status';
+            } elseif ($tableName == 'manufacturer_request') {
+                // $tableName = 'manufacturer_request';
+                $name = 'name';
+                $description = 'dsc'; 
+                $statusColumn = 'status';
+            } elseif ($tableName == 'packtype_request') {
+                // $tableName = 'packtype_request';
+                $name = 'unit_name';
+                $description = 'dsc'; 
+                $statusColumn = 'status';
+            }
+    
+            // Debug: Print the variables to ensure they are correctly set
+            // echo "tableName: $tableName, name: $name, description: $description, statusColumn: $statusColumn<br>";
+    
+            $requestQuery = "SELECT $name, $description, $statusColumn FROM $tableName WHERE admin_id = ?";
+            
+            // Debug: Print the constructed query to verify its correctness
+            // echo "Query: $requestQuery<br>";
+    
+            $requestStmt = $this->conn->prepare($requestQuery);
+    
+            if (!$requestStmt) {
+                throw new Exception("Error preparing SQL query: " . $this->conn->error);
+            }
+    
+            $requestStmt->bind_param("s", $adminId);
+    
+            if (!$requestStmt->execute()) {
+                throw new Exception("Error executing product request query: " . $requestStmt->error);
+            }
+    
+            $requestResult = $requestStmt->get_result();
+    
+            if (!$requestResult) {
+                throw new Exception("Error fetching product request result: " . $this->conn->error);
+            }
+    
+            if ($requestResult->num_rows > 0) {
+                $requestResultData = array();
+                while ($row = $requestResult->fetch_assoc()) {
+                    $requestResultData[] = $row;
+                }
+                return json_encode(['status' => '1', 'data' => $requestResultData]);
+            } else {
+                return json_encode(['status' => '0', 'data' => 'No data found.']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'error' => $e->getMessage()]);
+        }
+    }
+    
+    
+    
+
+
+
+
+
 
 
     function deleteRequest($prodId) {
