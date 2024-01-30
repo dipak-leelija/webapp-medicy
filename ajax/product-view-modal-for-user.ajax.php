@@ -77,6 +77,7 @@ $QuantityUnit   = new QuantityUnit;
         $prodReqStatus = $_GET['prodReqStatus'];
         $oldProdFlag = $_GET['oldProdFlag'];
         $editRequestFlag = $_GET['editRequestFlag'];
+        $table = $_GET['table'];
 
         if($prodReqStatus != ''){
             $reqStatus = $prodReqStatus;
@@ -242,7 +243,7 @@ $QuantityUnit   = new QuantityUnit;
                     <div class="col-12 col-md-2" id="btn-ctrl-1">
                         <div class="col-md-12 d-flex">
                             <div class="col-sm-6 m-2">
-                                <a id="anchor" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>&prodReqStatus=<?php echo $prodReqStatus; ?>&oldProdFlag=<?php echo $oldProdFlag; ?>&editRequestFlag=<?php echo $editRequestFlag; ?>"><button class="button1 btn-primary">Edit</button></a>
+                                <a id="anchor" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>&prodReqStatus=<?php echo $prodReqStatus; ?>&oldProdFlag=<?php echo $oldProdFlag; ?>&editRequestFlag=<?php echo $editRequestFlag; ?>&table=<?php echo $table; ?>"><button class="button1 btn-primary">Edit</button></a>
 
                             </div>
                             <!-- <div class="col-sm-6 m-2">
@@ -255,7 +256,7 @@ $QuantityUnit   = new QuantityUnit;
                 <div class="row justify-content-center mt-4" id='btn-ctrl-2'>
                     <div class="col-md-1 d-flex jsutify-content-end">
                         <div class="col-sm-2 d-flex jsutify-content-end">
-                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>&prodReqStatus=<?php echo $prodReqStatus; ?>&oldProdFlag=<?php echo $oldProdFlag; ?>&editRequestFlag=<?php echo $editRequestFlag; ?>">Edit</a></button>
+                            <button class="button2 btn-primary"><a id="anchor1" href="<?= URL ?>edit-product-user.php?id=<?php echo $_GET['id']; ?>&prodReqStatus=<?php echo $prodReqStatus; ?>&oldProdFlag=<?php echo $oldProdFlag; ?>&editRequestFlag=<?php echo $editRequestFlag; ?>&table=<?php echo $table; ?>">Edit</a></button>
                         </div>
                         <!-- <div class="col-sm-6 d-flex jsutify-content-center">
                             <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Delete</button>
