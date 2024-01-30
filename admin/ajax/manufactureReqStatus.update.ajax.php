@@ -13,7 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['manufacturerId']) && 
     if ($updateManuStatus) {
 
         $deleteManufacturer = $Manufacturer->deleteRequestManufacturer($manufacturerId);
-        if ($deleteManufacturer) {
+        $updateNewBadges = $Manufacturer->updateNewBadges($manufacturerId);
+        if ($deleteManufacturer || $updateNewBadges) {
             echo json_encode(['success' => true]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to delete Manufacturer request']);

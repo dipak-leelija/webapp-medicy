@@ -147,6 +147,7 @@ if (isset($_GET['return'])) {
                                                         // $distributorId       = $rowManufacturer['distributor_id'];
                                                         $manufacturerDsc         = $rowManufacturer->dsc;
                                                         $manufacturerStatus      = $rowManufacturer->status;
+                                                        $isNew                   = $rowManufacturer->new;
 
                                                         $statusLabel = '';
                                                         $statusColor = '';
@@ -167,10 +168,10 @@ if (isset($_GET['return'])) {
                                                                 $statusLabel = 'Disabled';
                                                                 break;
                                                         }
-
+                                                        $newBadge = ($isNew == 1) ? '<span class="badge badge-pill badge-info position-absolute ml-2 top-0 start-50 translate-middle-x">New</span>' : '';
                                                         echo  '<tr>
                                                                 <td>' . $manufacturerId . '</td>
-                                                                <td>' . $manufacturerName . '</td>
+                                                                <td>' . $manufacturerName . ' '. $newBadge .'</td>
                                                                 <td>' . $manufacturerDsc . '</td>
                                                                 <td> 
                                                                     <div class="dropdown">

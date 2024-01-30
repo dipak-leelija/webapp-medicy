@@ -45,8 +45,9 @@ if(isset($_POST['add-manufacturer'])){
     $shortName = str_replace(">", "&gt", $shortName);
     $shortName = str_replace("'", "&#39", $shortName);
     $manufactureStatus = 1;
+    $newData           = 1;
     //Inserting Manufacturer Into Database
-    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus, $adminId);
+    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $adminId);
         if ($addManufacturer) {
             ?> 
              <script>
@@ -91,10 +92,11 @@ if(isset($_POST['add-new-manuf'])){
     $manufacturerDsc = str_replace("'", "&#39", $manufacturerDsc);
     // echo $manufacturerDsc;
     $manufactureStatus = 1;
+    $newData           = 1;
     
 
     //Inserting Manufacturer Into Database
-    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus, $adminId);
+    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $adminId);
         if ($addManufacturer) {
             ?> 
              <script>
