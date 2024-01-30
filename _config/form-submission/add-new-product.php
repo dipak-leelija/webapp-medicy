@@ -52,6 +52,8 @@ $Request = new Request;
         $gst = $_POST['gst'];
         $hsnoNumber = $_POST['hsno-number'];
 
+        $description = 'New Product Request';
+
         $randNum = rand(1, 999999999999);
         $productId = 'PR' . $randNum;
 
@@ -72,7 +74,7 @@ $Request = new Request;
 
         //Insert into request table 
 
-        $addProductRequest = $Request->addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $employeeId, NOW, $adminId, $status);
+        $addProductRequest = $Request->addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $employeeId, NOW, $adminId, $status);
 
 
         // print_r($addProducts);

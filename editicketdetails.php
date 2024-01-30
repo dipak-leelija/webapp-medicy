@@ -54,25 +54,25 @@ foreach ($requestTypes as $table => &$requestType) {
     }
 }
 
-print_r($allRequestResult);
+// print_r($allRequestResult);
 
 
 // $allRequestResult = array_merge($prodReqObjData, $distReqObjData);
 // $allRequestResult = array_merge($allRequestResult, $manufReqObjData);
 
-// $pagination = json_decode($Pagination->arrayPagination($allRequestResult));
+$pagination = json_decode($Pagination->arrayPagination($allRequestResult));
 
 
-// if ($pagination->status == 1) {
-//     $result = $pagination;
-//     $allProducts = $pagination->items;
-//     $totalPtoducts = $pagination->totalitem;
-// } else {
-//     // Handle the case when status is not 1
-//     $result = $pagination;
-//     $allProducts = [];
-//     $totalPtoducts = 0;
-// }
+if ($pagination->status == 1) {
+    $result = $pagination;
+    $allProducts = $pagination->items;
+    $totalPtoducts = $pagination->totalitem;
+} else {
+    // Handle the case when status is not 1
+    $result = $pagination;
+    $allProducts = [];
+    $totalPtoducts = 0;
+}
 
 // print_r($result);
 ?>
@@ -136,7 +136,7 @@ print_r($allRequestResult);
                             <table class="table table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th class="col-2">Item Main Table</th>
+                                        <th class="col-2">Category</th>
                                         <th class="col-3">Item Name</th>
                                         <th class="col-6">Description</th>
                                         <th class="col-1">Status</th>
@@ -149,13 +149,13 @@ print_r($allRequestResult);
                                         $count = 0;
                                         foreach ($resultItems as $resItems) {
                                             $count++;
-                                            print_r($resItems);
+                                            // print_r($resItems);
                                             if($resItems->tableName != null){
                                                 $tableName = $resItems->tableName;
                                             }else{
                                                 $tableName = '';
                                             }
-                                            echo $count;
+                                            // echo $count;
 
                                             if($resItems->name != null){
                                                 $itemName = $resItems->name;
@@ -168,11 +168,14 @@ print_r($allRequestResult);
                                             }else{
                                                 $description = '';
                                             }
+
+                                            $status = 'Pending';
                                             
                                             echo '<tr>
                                                         <td>' . $tableName . '</td>
                                                         <td>' . $itemName . '</td>
                                                         <td>' . $description . '</td>
+                                                        <td>' . $status . '</td>
                                                     </tr>';
                                         }
                                     }
