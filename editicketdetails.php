@@ -14,7 +14,6 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 
 $page = "editicketdetails";
 
-
 //Intitilizing Doctor class for fetching doctors
 $Products       = new Products();
 $Request            = new Request;
@@ -23,6 +22,59 @@ $ProductImages  = new ProductImages();
 
 
 
+
+$allRequestResult = [];
+
+$requestTypes = [
+    'product_request' => ['tableName' => 'Product Request', 'data' => []],
+    'distributor_request' => ['tableName' => 'Distributor Request', 'data' => []],
+    'manufacturer_request' => ['tableName' => 'Manufacturer Request', 'data' => []],
+    'packtype_request' => ['tableName' => 'Packtype Request', 'data' => []]
+];
+
+foreach ($requestTypes as $table => &$requestType) {
+
+    // print_r($table);
+    
+    $requestData = json_decode($Request->fetchRequestDataByTableName($table, $adminId));
+    // print_r($requestData);
+    
+    if ($requestData->status) {
+        $requestType['data'] = $requestData->data;
+    } else {
+        $requestType['data'] = [];
+    }
+    
+    foreach ($requestType['data'] as $requestDataItem) {
+        $allRequestResult[] = [
+            'tableName' => $requestType['tableName'],
+            'name' => $requestDataItem->name,
+            'description' => $requestDataItem->dsc
+        ];
+    }
+}
+
+print_r($allRequestResult);
+
+
+// $allRequestResult = array_merge($prodReqObjData, $distReqObjData);
+// $allRequestResult = array_merge($allRequestResult, $manufReqObjData);
+
+// $pagination = json_decode($Pagination->arrayPagination($allRequestResult));
+
+
+// if ($pagination->status == 1) {
+//     $result = $pagination;
+//     $allProducts = $pagination->items;
+//     $totalPtoducts = $pagination->totalitem;
+// } else {
+//     // Handle the case when status is not 1
+//     $result = $pagination;
+//     $allProducts = [];
+//     $totalPtoducts = 0;
+// }
+
+// print_r($result);
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +102,7 @@ $ProductImages  = new ProductImages();
     <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
+
 </head>
 
 <body id="page-top">
@@ -74,7 +127,66 @@ $ProductImages  = new ProductImages();
                 <!-- Begin container-fluid -->
                 <div class="container-fluid">
 
-                    
+                    <div class="card-body">
+                        <div class="card-header py-3 justify-content-between">
+
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="col-2">Item Main Table</th>
+                                        <th class="col-3">Item Name</th>
+                                        <th class="col-6">Description</th>
+                                        <th class="col-1">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if (!empty($result)) {
+                                        $resultItems = $result->items;
+                                        $count = 0;
+                                        foreach ($resultItems as $resItems) {
+                                            $count++;
+                                            print_r($resItems);
+                                            if($resItems->tableName != null){
+                                                $tableName = $resItems->tableName;
+                                            }else{
+                                                $tableName = '';
+                                            }
+                                            echo $count;
+
+                                            if($resItems->name != null){
+                                                $itemName = $resItems->name;
+                                            }else{
+                                                $itemName = '';
+                                            }
+
+                                            if($resItems->description != null){
+                                                $description = $resItems->description;
+                                            }else{
+                                                $description = '';
+                                            }
+                                            
+                                            echo '<tr>
+                                                        <td>' . $tableName . '</td>
+                                                        <td>' . $itemName . '</td>
+                                                        <td>' . $description . '</td>
+                                                    </tr>';
+                                        }
+                                    }
+                                    // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
+                                    ?>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-center" id="pagination-control">
+                            <?= $result->paginationHTML ?>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- End of container-fluid -->
 
@@ -91,7 +203,7 @@ $ProductImages  = new ProductImages();
     </div>
     <!-- End of Page Wrapper -->
 
-    
+
 </body>
 
 </html>

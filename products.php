@@ -233,20 +233,39 @@ if (isset($_GET['search'])) {
                                                         $editRequestCheck = $Request->selectProductById($item->product_id, $adminId);
                                                         $editRequestCheck = json_decode($editRequestCheck);
 
-                                                        if($editRequestCheck->status){
-                                                            $requestToken = 1;
-                                                        }else{
-                                                            $requestToken = 0;
+                                                        if ($editRequestCheck->status) {
+                                                            $editRequestToken = 1;
+                                                            $newProdRequestToken = 0;
+                                                        } else {
+                                                            $editRequestToken = 0;
+                                                            $newProdRequestToken = 0;
+                                                        }
+
+
+                                                        //====== check new product request =======
+                                                        if(isset($item->product_id) && isset($item->old_prod_flag)){
+                                                            if($item->old_prod_flag == 0){
+                                                                $editRequestToken = 0;
+                                                                $newProdRequestToken = 1;
+                                                            }
                                                         }
 
                                                 ?>
                                                         <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
-                                                            
+
                                                             <div class="card  mb-3 p-3" style="min-width: 14rem; min-height: 11rem; max-width: 14rem; max-height: 21rem;">
 
-                                                                <?php 
-                                                                if($requestToken){
+                                                                <?php
+                                                                if ($editRequestToken) {
                                                                     echo '<div class="d-flex justify-content-end mt-n4 mr-n4" style="z-index: 999; position: absolute; top: 15px; right: 15px; background-color: rgb(0, 160, 152); color: white; padding: 5px;"><small>Edit Request Generated</small></div>
+                                                                    ';
+                                                                }
+                                                                ?>
+
+
+                                                                <?php
+                                                                if ($newProdRequestToken) {
+                                                                    echo '<div class="d-flex justify-content-end mt-n4 mr-n4" style="z-index: 999; position: absolute; top: 15px; right: 15px; background-color: rgb(238, 75, 43); color: white; padding: 5px;"><small>New Product Request</small></div>
                                                                     ';
                                                                 }
                                                                 ?>
