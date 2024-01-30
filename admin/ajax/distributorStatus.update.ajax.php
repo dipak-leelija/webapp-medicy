@@ -11,7 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['distributorId']) && i
     
     $updateDistStatus = $Distributor->updateDistStatus($newStatus,$distributorId);
     if($updateDistStatus){
-        echo json_encode($updateDistStatus);
+        $updateNewBadges = $Distributor->updateNewBadges($distributorId);
+        if ($updateNewBadges) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to update distributor new newBadge ']);
+        }
+    }else {
+        echo json_encode(['success' => false, 'message' => 'Failed to update distributor new newBadge']);
     }
 } else {
     echo 'Invalid request';

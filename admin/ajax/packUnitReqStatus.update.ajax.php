@@ -12,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['unitId']) && isset($_
     $updatePackagingStatus = $PackagingUnits->updatePackStatus($newStatus, $packagingUnitId);
     if ($updatePackagingStatus) {
         $deletePackRequest = $PackagingUnits->deletePackRequest($packagingUnitId);
-        if ($deletePackRequest) {
+        $updateNewBadges   = $PackagingUnits->updateNewBadges($packagingUnitId);
+        if ($deletePackRequest || $updateNewBadges) {
             echo json_encode(['success' => true]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to delete Manufacturer request']);

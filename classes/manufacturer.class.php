@@ -6,18 +6,18 @@ class Manufacturer extends DatabaseConnection
 {
 
 
-    function addManufacturer($manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $adminId)
+    function addManufacturer($manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`, `added_by`, `added_on`, `status`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`, `added_by`, `added_on`, `status`,`new`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("sssssis", $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $adminId);
+                $stmt->bind_param("sssssiis", $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
@@ -407,5 +407,27 @@ class Manufacturer extends DatabaseConnection
         $Delete = "DELETE FROM `manufacturer_request` WHERE `manufacturer_request`.`manu_id` = '$manufacturerId'";
         $DeleteQuey = $this->conn->query($Delete);
         return $DeleteQuey;
+    }
+
+    function updateNewBadges($distributorId){
+        try {
+            $update =  "UPDATE `manufacturer` SET `new`= '0' WHERE `id`=?";
+            $stmt = $this->conn->prepare($update);
+
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("i", $distributorId);
+
+                // Execute the query
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
     }
 }//end of LabTypes Class

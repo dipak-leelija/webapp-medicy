@@ -13,8 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['distributorId']) && i
     if ($updateDistStatus) {
          
         $deleteDistRequest = $Distributor->deleteDistRequest($distributorId);
+        $updateNewBadges   = $Distributor->updateNewBadges($distributorId);
         // echo json_encode($deleteDistRequest);
-        if ($deleteDistRequest) {
+        if ($deleteDistRequest || $updateNewBadges) {
             echo json_encode(['success' => true]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to delete distributor request']);

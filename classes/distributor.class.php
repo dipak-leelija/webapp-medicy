@@ -6,18 +6,18 @@ class Distributor extends DatabaseConnection
 {
 
 
-    function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus, $adminId)
+    function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus,$newData, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`,`status`,`admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`,`status`,`new`,`admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("sssisssssis", $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus, $adminId);
+                $stmt->bind_param("sssisssssiis", $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus,$newData, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
@@ -361,5 +361,27 @@ class Distributor extends DatabaseConnection
         $DeleteQuey = $this->conn->query($Delete);
         return $DeleteQuey;
     } //end deleteDistRequest function
+
+    function updateNewBadges($distributorId){
+        try {
+            $update =  "UPDATE `distributor` SET `new`= '0' WHERE `id`=?";
+            $stmt = $this->conn->prepare($update);
+
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("i", $distributorId);
+
+                // Execute the query
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 
 } //end of LabTypes Class

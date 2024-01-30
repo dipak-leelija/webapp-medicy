@@ -11,7 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['manufacturerId']) && 
     
     $updateManuStatus = $Manufacturer->updateManuStatus($newStatus,$manufacturerId);
     if($updateManuStatus){
-        echo json_encode($updateManuStatus);
+        $updateNewBadges = $Manufacturer->updateNewBadges($manufacturerId);
+        if($updateNewBadges){
+            echo json_encode(['success' => true]);
+        }else{
+            echo json_encode(['success' => false, 'message' => 'Failed to update manufacturer new newBadge ']);
+        }
+    }else {
+        echo json_encode(['success' => false, 'message' => 'Failed to update manufacturer new newBadge']);
     }
 } else {
     echo 'Invalid request';

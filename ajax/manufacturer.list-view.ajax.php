@@ -31,46 +31,46 @@ if ($showmanufacturer->status) {
     // echo "<div class='p-1 border-bottom list'> $match </div>";
 }
 ?>
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>SL.</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if (is_array($showmanufacturer)) {
+                foreach ($showmanufacturer as $rowmanufacturer) {
+                    $manufacturerId      = $rowmanufacturer->id;
+                    $manufacturerName    = $rowmanufacturer->name;
+                    $manufacturerDsc     = $rowmanufacturer->dsc;
+                    $manufacturerStatus  = $rowmanufacturer->status;
 
-<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-    <thead>
-        <tr>
-            <th>SL.</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if (is_array($showmanufacturer)) {
-            foreach ($showmanufacturer as $rowmanufacturer) {
-                $manufacturerId      = $rowmanufacturer->id;
-                $manufacturerName    = $rowmanufacturer->name;
-                $manufacturerDsc     = $rowmanufacturer->dsc;
-                $manufacturerStatus  = $rowmanufacturer->status;
-
-                $statusLabel = '';
-                $statusColor = '';
-                switch ($manufacturerStatus) {
-                    case 0:
-                        $statusLabel = 'Disabled';
-                        $statusColor = 'red';
-                        break;
-                    case 1:
-                        $statusLabel = 'Pending';
-                        $statusColor = '#4e73df';
-                        break;
-                    case 2:
-                        $statusLabel = 'Active';
-                        $statusColor = 'green';
-                        break;
-                    default:
-                        $statusLabel = 'Disabled';
-                        break;
-                }
-                echo '<tr>
+                    $statusLabel = '';
+                    $statusColor = '';
+                    switch ($manufacturerStatus) {
+                        case 0:
+                            $statusLabel = 'Disabled';
+                            $statusColor = 'red';
+                            break;
+                        case 1:
+                            $statusLabel = 'Pending';
+                            $statusColor = '#4e73df';
+                            break;
+                        case 2:
+                            $statusLabel = 'Active';
+                            $statusColor = 'green';
+                            break;
+                        default:
+                            $statusLabel = 'Disabled';
+                            break;
+                    }
+                    echo '<tr>
                         <td>' . $manufacturerId  . '</td>
                         <td>' . $manufacturerName . '</td>
                         <td>' . $manufacturerDsc . '</td>
@@ -79,11 +79,12 @@ if ($showmanufacturer->status) {
                             <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#manufacturerModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="manufacturerRequest(' . $manufacturerId . ')"><i class="fas fa-edit"></i></button>
                         </td>
                        </tr>';
+                }
             }
-        }
-        ?>
-    </tbody>
-</table>
+            ?>
+        </tbody>
+    </table>
+</div>
 
 
 <script>

@@ -98,6 +98,7 @@ if (is_object($showPackagingRequest) && property_exists($showPackagingRequest, '
                                                         $unitId     = $rowPackagingUnits['id'];
                                                         $unitName   = $rowPackagingUnits['unit_name'];
                                                         $packStatus = $rowPackagingUnits['status'];
+                                                        $isNew      = $rowPackagingUnits['new'];
 
                                                         $statusLabel = '';
                                                         $statusColor = '';
@@ -118,9 +119,10 @@ if (is_object($showPackagingRequest) && property_exists($showPackagingRequest, '
                                                                 $statusLabel = 'Disabled';
                                                                 break;
                                                         }
+                                                        $newBadge = ($isNew == 1) ? '<span class="badge badge-pill badge-info position-absolute ml-2 top-0 start-50 translate-middle-x">New</span>' : '';
                                                         echo '<tr>
                                                                 <td>' . $unitId . '</td>
-                                                                <td>' . $unitName . '</td>
+                                                                <td>' . $unitName . ''. $newBadge .'</td>
                                                                 <td>
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-secondary dropdown-toggle bg-white border-0 " type="button" id="statusDropdown' . $unitId . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: ' . $statusColor . ';">

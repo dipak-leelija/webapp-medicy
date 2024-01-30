@@ -3,18 +3,18 @@
 class PackagingUnits extends DatabaseConnection
 {
 
-    function addPackagingUnit($unitName, $addedby, $addedOn, $packStatus, $adminId)
+    function addPackagingUnit($unitName, $addedby, $addedOn, $packStatus, $newData, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO packaging_type (`unit_name`, `added_by`, `added_on`,`pack_status`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO packaging_type (`unit_name`, `added_by`, `added_on`,`status`,`new`, `admin_id`) VALUES (?, ?, ?, ?, ?,?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("sssis", $unitName, $addedby, $addedOn, $packStatus, $adminId);
+                $stmt->bind_param("sssiis", $unitName, $addedby, $addedOn, $packStatus,$newData, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
@@ -284,6 +284,28 @@ class PackagingUnits extends DatabaseConnection
         $DeleteQuey = $this->conn->query($Delete);
         return $DeleteQuey;
         }catch(Exception $e){
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    function updateNewBadges($packagingUnitId){
+        try {
+            $update =  "UPDATE `packaging_type` SET `new`= '0' WHERE `id`=?";
+            $stmt = $this->conn->prepare($update);
+
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("i", $packagingUnitId);
+
+                // Execute the query
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
             return false;
         }
