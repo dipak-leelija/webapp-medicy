@@ -126,7 +126,6 @@ $showManufacturer = $Manufacturer->showRequestManufacturer();
                                                                     </div>
                                                                  </td>   
                                                                 <td>
-                                                                    <a class="" data-toggle="modal" data-target="#manufacturerModal" onclick="manufViewAndEdit(' . $manufacturerId . ')"><i class="fas fa-edit"></i></a>
 
                                                                     <a class="ms-2" id="delete-btn" data-id=' . $manufacturerId . ' onclick="customDel(' . $manufacturerId . ',this.id)"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
@@ -149,7 +148,7 @@ $showManufacturer = $Manufacturer->showRequestManufacturer();
     </div>
     <!-- End of Main Content -->
 
-
+    <!-- <a class="" data-toggle="modal" data-target="#manufacturerModal" onclick="manufViewAndEdit(' . $manufacturerId . ')"><i class="fas fa-edit"></i></a> -->
     </div>
     <!-- End of Content Wrapper -->
 
