@@ -4,17 +4,17 @@ require_once 'dbconnect.php';
 
 class MeasureOfUnits extends DatabaseConnection{
 
-    function addMeasureOfUnits($shortName, $fullName, $addedBy, $addedOn, $adminId) {
+    function addMeasureOfUnits($shortName, $fullName, $addedBy, $addedOn,$newData, $adminId) {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO quantity_unit (`short_name`, `full_name`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO quantity_unit (`short_name`, `full_name`, `added_by`, `added_on`,`new`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?)";
             
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
     
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("ssisi", $shortName, $fullName, $addedBy, $addedOn, $adminId);
+                $stmt->bind_param("ssssis", $shortName, $fullName, $addedBy, $addedOn,$newData, $adminId);
     
                 // Execute the query
                 $insertQuery = $stmt->execute();
@@ -56,7 +56,26 @@ class MeasureOfUnits extends DatabaseConnection{
         }
     }
 
+    function updateBadge($unitId){
+        try {
+            $update = "UPDATE `quantity_unit` SET `new` = '0' WHERE `id` = ?";
+            
+            $stmt = $this->conn->prepare($update);
+    
+            if ($stmt) {
+                $stmt->bind_param("i", $unitId);
 
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 
 
 

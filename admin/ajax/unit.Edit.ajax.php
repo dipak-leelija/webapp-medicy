@@ -18,6 +18,7 @@ $updateUnit = $MeasureOfUnits->updateUnit($srtName, $fullName, $unitId, $employe
 
 //check if the data has been updated or not
 if($updateUnit){
+    $updateBadge = $MeasureOfUnits->updateBadge($unitId);
    echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
    <strong>Success!</strong> Unit Has been Updated!
    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
