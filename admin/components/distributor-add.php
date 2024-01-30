@@ -7,7 +7,7 @@ if (isset($_POST['urlData'])){
 ?>
 
 <div class="card-body pt-0">
-    <form method="post" action="<?= URL ?>ajax/distributor.add.ajax.php">
+    <form method="post" action="<?= ADM_URL ?>ajax/distributor.add.ajax.php">
 
         <div class="col-md-12">
             <label class="mb-0 mt-1" for="distributor-name">Distributor Name</label>

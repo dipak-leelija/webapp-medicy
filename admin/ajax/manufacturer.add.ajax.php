@@ -45,14 +45,15 @@ if(isset($_POST['add-manufacturer'])){
     $shortName = str_replace(">", "&gt", $shortName);
     $shortName = str_replace("'", "&#39", $shortName);
     $manufactureStatus = 1;
+    $newData           = 1;
     //Inserting Manufacturer Into Database
-    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus, $adminId);
+    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $supAdminId);
         if ($addManufacturer) {
             ?> 
              <script>
             swal("Success", "Manufacturer Added!", "success")
                 .then((value) => {
-                    window.location = '<?= URL ?>manufacturers.php';
+                    window.location = '<?= ADM_URL ?>manufacturers.php';
                 });
             </script>
              <?php
@@ -61,7 +62,7 @@ if(isset($_POST['add-manufacturer'])){
             <script>
             swal("Error", "Manufacturer Addition Failed!", "error")
                 .then((value) => {
-                    window.location = '<?= URL ?>manufacturers.php';
+                    window.location = '<?= ADM_URL ?>manufacturers.php';
                 });
             </script>
             <?php
@@ -91,16 +92,17 @@ if(isset($_POST['add-new-manuf'])){
     $manufacturerDsc = str_replace("'", "&#39", $manufacturerDsc);
     // echo $manufacturerDsc;
     $manufactureStatus = 1;
+    $newData           = 1;
     
 
     //Inserting Manufacturer Into Database
-    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus, $adminId);
+    $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $supAdminId);
         if ($addManufacturer) {
             ?> 
              <script>
             swal("Success", "Manufacturer Added!", "success")
                 .then((value) => {
-                    window.location = '<?= URL ?>add-products.php';
+                    window.location = '<?= ADM_URL ?>add-products.php';
                 });
             </script>
              <?php
@@ -109,7 +111,7 @@ if(isset($_POST['add-new-manuf'])){
             <script>
             swal("Error", "Manufacturer Addition Failed!", "error")
                 .then((value) => {
-                    window.location = '<?= URL ?>add-products.php';
+                    window.location = '<?= ADM_URL ?>add-products.php';
                 });
             </script>
             <?php

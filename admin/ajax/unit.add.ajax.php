@@ -26,11 +26,11 @@ $MeasureOfUnits = new MeasureOfUnits();
     <?php
 
     if (isset($_POST['add-unit'])) {
-        echo $supAdminId;
+        // echo $supAdminId;
         $srtName  = $_POST['unit-srt-name'];
         $fullName = $_POST['unit-full-name'];
-
-        $addMeasureOfUnits = $MeasureOfUnits->addMeasureOfUnits($srtName, $fullName, $employeeId, NOW, $supAdminId);
+        $newData  = 1;
+        $addMeasureOfUnits = $MeasureOfUnits->addMeasureOfUnits($srtName, $fullName, $employeeId, NOW,$newData, $supAdminId);
 
         if ($addMeasureOfUnits) {
            // echo "<script>alert('Unit Added!'); window.location='../../product-unit.php';</script>";
