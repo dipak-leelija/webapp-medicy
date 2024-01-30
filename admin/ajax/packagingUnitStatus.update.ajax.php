@@ -11,7 +11,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['unitId']) && isset($_P
     
     $updatePackagingStatus = $PackagingUnits->updatePackStatus($newStatus , $packagingUnitId);
     if($updatePackagingStatus){
-        echo json_encode($updatePackagingStatus);
+        $updateNewBadges = $PackagingUnits->updateNewBadges($packagingUnitId);
+        if($updateNewBadges){
+            echo json_encode(['success' => true]);
+        }else{
+            echo json_encode(['success' => false, 'message' => 'Failed to update packaging Uniu new newBadge ']);
+        }
+    }else {
+        echo json_encode(['success' => false, 'message' => 'Failed to update packaging Uniu new newBadge']);
     }
 } else {
     echo 'Invalid request';

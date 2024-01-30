@@ -23,10 +23,11 @@ $PackagingUnits = new PackagingUnits();
 <?php
 
 if( isset($_POST['add-unit'])){
-    $unitName  = $_POST['uni-name'];
-    $addedby   = $employeeId;
+    $unitName   = $_POST['uni-name'];
+    $addedby    = $employeeId;
     $packStatus = 1;
-    $addPackagingUnits = $PackagingUnits->addPackagingUnit($unitName, $addedby, NOW, $packStatus, $adminId);
+    $newData    = 1;
+    $addPackagingUnits = $PackagingUnits->addPackagingUnit($unitName, $addedby, NOW, $packStatus, $newData, $adminId);
     if ($addPackagingUnits){
         ?>
         <script>

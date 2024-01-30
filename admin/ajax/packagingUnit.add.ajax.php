@@ -26,7 +26,8 @@ if( isset($_POST['add-unit'])){
     $unitName   = $_POST['uni-name'];
     $addedby    = $employeeId;
     $packStatus = 1;
-    $addPackagingUnits = $PackagingUnits->addPackagingUnit($unitName, $addedby, NOW, $packStatus, $supAdminId);
+    $newData    = 1;
+    $addPackagingUnits = $PackagingUnits->addPackagingUnit($unitName, $addedby, NOW, $packStatus,$newData, $supAdminId);
     if ($addPackagingUnits){
         ?>
         <script>
