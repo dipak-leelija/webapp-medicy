@@ -121,8 +121,6 @@ $showDistRequest  = $showDistRequest->data;
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a>
-
                                                                     <a class="mx-1" id="delete-btn" data-id="' . $distributorId . '"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                                </tr>';

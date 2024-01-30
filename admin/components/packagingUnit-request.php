@@ -106,7 +106,6 @@ $showPackagingRequest = json_decode($PackagingUnits->showPackagingRequest());
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <a class="mx-1" data-toggle="modal" data-target="#unitModal" onclick="unitViewAndEdit(' . $unitId . ')"><i class="fas fa-edit"></i></a>
     
                                                                     <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
@@ -127,7 +126,7 @@ $showPackagingRequest = json_decode($PackagingUnits->showPackagingRequest());
 
     </div>
     <!-- End of Content Wrapper -->
-
+    <!-- <a class="" data-toggle="modal" data-target="#manufacturerModal" onclick="manufViewAndEdit(' . $manufacturerId . ')"><i class="fas fa-edit"></i></a> -->
     </div>
     <!-- End of Page Wrapper -->
 

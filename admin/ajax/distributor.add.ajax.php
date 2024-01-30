@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once SUP_ADM_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'distributor.class.php';
@@ -32,12 +32,13 @@ $Distributor = new Distributor();
         $distributorAreaPIN     = $_POST['distributor-area-pin'];
         $distributorDsc         = $_POST['distributor-dsc'];
         $parentUrl              = $_POST['parent-window-location'];
+        $distributorStatus      = 1;
+        $newData                = 1;
 
 
         //Insert Into Distributor DB
         $addDistributor     = $Distributor->addDistributor(
-            $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $employeeId, NOW, $adminId
-        );
+            $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $employeeId, NOW,$distributorStatus,$newData, $supAdminId);
         
         if ($addDistributor == true) {
     ?>
