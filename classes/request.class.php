@@ -243,35 +243,26 @@ class Request extends DatabaseConnection
     function fetchRequestDataByTableName($tableName, $adminId, $name = '', $statusColumn = '', $description = '') {
         try {
             if ($tableName == 'product_request') {
-                // $tableName = 'product_request';
                 $name = 'name';
                 $description = 'req_dsc'; 
                 $statusColumn = 'prod_req_status';
             } elseif ($tableName == 'distributor_request') {
-                // $tableName = 'distributor_request';
                 $name = 'name';
                 $description = 'dsc'; 
                 $statusColumn = 'status';
             } elseif ($tableName == 'manufacturer_request') {
-                // $tableName = 'manufacturer_request';
                 $name = 'name';
                 $description = 'dsc'; 
                 $statusColumn = 'status';
             } elseif ($tableName == 'packtype_request') {
-                // $tableName = 'packtype_request';
                 $name = 'unit_name';
                 $description = 'dsc'; 
                 $statusColumn = 'status';
             }
     
-            // Debug: Print the variables to ensure they are correctly set
-            // echo "tableName: $tableName, name: $name, description: $description, statusColumn: $statusColumn<br>";
-    
+            
             $requestQuery = "SELECT $name, $description, $statusColumn FROM $tableName WHERE admin_id = ?";
             
-            // Debug: Print the constructed query to verify its correctness
-            // echo "Query: $requestQuery<br>";
-    
             $requestStmt = $this->conn->prepare($requestQuery);
     
             if (!$requestStmt) {
