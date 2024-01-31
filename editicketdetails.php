@@ -29,7 +29,11 @@ $requestTypes = [
     'product_request' => ['tableName' => 'Product Request', 'data' => []],
     'distributor_request' => ['tableName' => 'Distributor Request', 'data' => []],
     'manufacturer_request' => ['tableName' => 'Manufacturer Request', 'data' => []],
-    'packtype_request' => ['tableName' => 'Packtype Request', 'data' => []]
+    'packtype_request' => ['tableName' => 'Packtype Request', 'data' => []],
+    'distributor' => ['tableName' => 'Distributer Add', 'data' => []],
+    'manufacturer' => ['tableName' => 'manufacturer Add', 'data' => []],
+    // 'packaging_type' => ['tableName' => 'packaging type Add', 'data' => []],
+    'quantity_unit' => ['tableName' => 'quantity unit add', 'data' => []]
 ];
 
 foreach ($requestTypes as $table => &$requestType) {
@@ -37,7 +41,7 @@ foreach ($requestTypes as $table => &$requestType) {
     // print_r($table);
 
     $requestData = json_decode($Request->fetchRequestDataByTableName($table, $adminId));
-    // print_r($requestData);
+    print_r($requestData);
 
     if ($requestData->status) {
         $requestType['data'] = $requestData->data;
@@ -49,7 +53,8 @@ foreach ($requestTypes as $table => &$requestType) {
         $allRequestResult[] = [
             'tableName' => $requestType['tableName'],
             'name' => $requestDataItem->name,
-            'description' => $requestDataItem->dsc
+            // 'description' => $requestDataItem->dsc
+            'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
         ];
     }
 }

@@ -10,7 +10,7 @@ class Request extends DatabaseConnection
 
             $stmt = $this->conn->prepare($addQuery);
             $stmt->bind_param("sssisssdisssssi", $productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $adminId, $status);
-          
+
             if ($stmt->execute()) {
                 // Insert successful
                 $stmt->close();
@@ -30,7 +30,8 @@ class Request extends DatabaseConnection
 
 
 
-    function addOldProductRequest($oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $description, $gst, $hsnoNumber, $addedBy, $addedOn, $adminId, $status, $oldProdFlag){
+    function addOldProductRequest($oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $description, $gst, $hsnoNumber, $addedBy, $addedOn, $adminId, $status, $oldProdFlag)
+    {
         try {
 
             $addQuery = "INSERT INTO `product_request`(`old_prod_id`, `product_id`, `name`, `comp_1`, `comp_2`, `type`, `packaging_type`, `unit_quantity`, `unit`, `power`, `mrp`, `dsc`, `gst`, `hsno_number`, `requested_by`, `requested_on`, `admin_id`, `prod_req_status`, `old_prod_flag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -71,11 +72,11 @@ class Request extends DatabaseConnection
     function addImageRequest($productId, $productImage, $addedBy, $addedOn, $adminId, $status)
     {
         try {
-            if(!empty($adminId)){
+            if (!empty($adminId)) {
                 $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`, `added_on`, `admin_id`, `status`) VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($insertImage);
                 $stmt->bind_param("sssssi", $productId, $productImage, $addedBy, $addedOn, $adminId, $status);
-            }else{
+            } else {
                 $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`, `added_on`, `status`) VALUES (?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($insertImage);
                 $stmt->bind_param("ssssi", $productId, $productImage, $addedBy, $addedOn, $status);
@@ -102,25 +103,25 @@ class Request extends DatabaseConnection
     function selectProductById($prodId, $adminId)
     {
         $resultData = array();
-    
+
         try {
             $searchSql = "SELECT * FROM `product_request` WHERE `old_prod_id` = ? AND `admin_id` = ?";
             $stmt = $this->conn->prepare($searchSql);
-    
+
             if ($stmt) {
                 $stmt->bind_param("ss", $prodId, $adminId);
                 $stmt->execute();
-    
+
                 // Get the results
                 $result = $stmt->get_result();
-    
+
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         $resultData[] = $row;
                     }
                     return json_encode(['status' => '1', 'message' => 'data found', 'data' => $resultData]);
                 } else {
-                    return json_encode(['status' => '0', 'message' => 'no data found', 'data' => []]); 
+                    return json_encode(['status' => '0', 'message' => 'no data found', 'data' => []]);
                 }
             } else {
                 throw new Exception("Failed to prepare the statement.");
@@ -132,15 +133,15 @@ class Request extends DatabaseConnection
                 $stmt->close();
             }
         }
-    
+
         return 0;
     }
-    
 
 
 
 
-    function selectItemLikeProdReqest($data,$adminId)
+
+    function selectItemLikeProdReqest($data, $adminId)
     {
         $resultData = array();
 
@@ -157,13 +158,13 @@ class Request extends DatabaseConnection
                 // Get the results
                 $result = $stmt->get_result();
 
-                if($result->num_rows > 0){
+                if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         $resultData[] = $row;
                     }
-                    return json_encode(['status'=>'1', 'message'=>'data found', 'data'=>$resultData]);
-                }else{
-                    return json_encode(['status'=>'0', 'message'=>'no data found', 'data'=>'']);
+                    return json_encode(['status' => '1', 'message' => 'data found', 'data' => $resultData]);
+                } else {
+                    return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
                 }
             } else {
                 throw new Exception("Failed to prepare the statement.");
@@ -181,51 +182,53 @@ class Request extends DatabaseConnection
 
 
 
-    function editUpdateProductRequest($productId, $prodName, $composition1,  $composition2, $prodCategory, $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $adminId) {
+    function editUpdateProductRequest($productId, $prodName, $composition1,  $composition2, $prodCategory, $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $adminId)
+    {
         try {
             $updateProdRequest = "UPDATE product_request SET `name` = ?, `comp_1` = ?, `comp_2` = ?, `type` = ?, `packaging_type` = ?, `unit_quantity` = ?, `unit` = ?, `power` = ?, `mrp` = ?,  `gst` = ?, `hsno_number` = ?, `dsc` = ?,`requested_by` = ?,  `requested_on` = ?, `prod_req_status` = ?, `old_prod_flag` = ? WHERE product_id = ? AND `admin_id` = ?";
-    
+
             $stmt = $this->conn->prepare($updateProdRequest);
-    
+
             if (!$stmt) {
                 throw new Exception("Error preparing update statement: " . $this->conn->error);
             }
-    
+
             $stmt->bind_param("ssssisssdissssiiss", $prodName, $composition1,  $composition2, $prodCategory, $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $productId, $adminId);
-    
+
             if (!$stmt->execute()) {
                 throw new Exception("Error updating product request: " . $stmt->error);
             }
-    
+
             $stmt->close();
             return true;
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
-    
 
 
 
 
 
-    function lastRowId() {
+
+    function lastRowId()
+    {
         $sql = "SELECT * FROM product_request ORDER BY id DESC LIMIT 1";
-    
+
         try {
             $stmt = $this->conn->prepare($sql);
-    
+
             if ($stmt->execute()) {
-    
+
                 $result = $stmt->get_result();
-    
+
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         $resultData[] = $row;
                     }
-                    return json_encode(['status'=>'1', 'data'=>$resultData]);
+                    return json_encode(['status' => '1', 'data' => $resultData]);
                 } else {
-                    return json_encode(['status'=>'0', 'data'=>'']);
+                    return json_encode(['status' => '0', 'data' => '']);
                 }
             } else {
                 return null;
@@ -234,53 +237,80 @@ class Request extends DatabaseConnection
             return $e->getMessage();
         }
     }
-    
 
 
 
 
 
-    function fetchRequestDataByTableName($tableName, $adminId, $name = '', $statusColumn = '', $description = '') {
+
+    function fetchRequestDataByTableName($tableName, $adminId, $name = '', $statusColumn = '', $description = '', $newDistributer = '')
+    {
         try {
             if ($tableName == 'product_request') {
                 $name = 'name';
-                $description = 'req_dsc'; 
+                $description = 'req_dsc';
                 $statusColumn = 'prod_req_status';
             } elseif ($tableName == 'distributor_request') {
                 $name = 'name';
-                $description = 'dsc'; 
+                $description = 'dsc';
                 $statusColumn = 'status';
             } elseif ($tableName == 'manufacturer_request') {
                 $name = 'name';
-                $description = 'dsc'; 
+                $description = 'dsc';
                 $statusColumn = 'status';
             } elseif ($tableName == 'packtype_request') {
                 $name = 'unit_name';
-                $description = 'dsc'; 
+                $description = 'dsc';
                 $statusColumn = 'status';
+            } elseif ($tableName == 'distributor') {
+                $name = 'name';
+                $description = 'dsc';
+                $statusColumn = 'status';
+                $newDistributer = 'new';
+            } elseif ($tableName == 'manufacturer') {
+                $name = 'name';
+                $description = 'dsc';
+                $statusColumn = 'status';
+                $newDistributer = 'new';
             }
-    
-            
-            $requestQuery = "SELECT $name, $description, $statusColumn FROM $tableName WHERE admin_id = ?";
-            
+            //  elseif ($tableName == 'packaging_type') {
+            //     $name = 'unit_name';
+            //     $description = '';
+            //     $statusColumn = 'status'; 
+            //     $newDistributer = 'new';
+            // } 
+            elseif ($tableName == 'quantity_unit') {
+                $name = 'short_name';
+                $description = '';
+                $statusColumn = ''; 
+                $newDistributer = 'new';
+            }
+
+            if ($newDistributer) {
+                $requestQuery = "SELECT $name, $description, $statusColumn, $newDistributer FROM $tableName WHERE admin_id = ?";
+            } else {
+                $requestQuery = "SELECT $name, $description, $statusColumn FROM $tableName WHERE admin_id = ?";
+            }
+
+
             $requestStmt = $this->conn->prepare($requestQuery);
-    
+
             if (!$requestStmt) {
                 throw new Exception("Error preparing SQL query: " . $this->conn->error);
             }
-    
+
             $requestStmt->bind_param("s", $adminId);
-    
+
             if (!$requestStmt->execute()) {
                 throw new Exception("Error executing product request query: " . $requestStmt->error);
             }
-    
+
             $requestResult = $requestStmt->get_result();
-    
+
             if (!$requestResult) {
                 throw new Exception("Error fetching product request result: " . $this->conn->error);
             }
-    
+
             if ($requestResult->num_rows > 0) {
                 $requestResultData = array();
                 while ($row = $requestResult->fetch_assoc()) {
@@ -294,9 +324,6 @@ class Request extends DatabaseConnection
             return json_encode(['status' => '0', 'error' => $e->getMessage()]);
         }
     }
-    
-    
-    
 
 
 
@@ -304,17 +331,21 @@ class Request extends DatabaseConnection
 
 
 
-    function deleteRequest($prodId) {
+
+
+
+    function deleteRequest($prodId)
+    {
         try {
             $sql = "DELETE FROM product_request WHERE `product_id` = ?";
             $statement = $this->conn->prepare($sql);
-    
+
             if ($statement) {
                 $statement->bind_param("s", $prodId);
                 $statement->execute();
-    
+
                 $result = $statement->get_result();
-    
+
                 if ($statement->affected_rows > 0) {
                     return json_encode(['status' => '1', 'message' => 'Data deleted successfully']);
                 } else {
@@ -327,9 +358,4 @@ class Request extends DatabaseConnection
             return json_encode(['status' => '0', 'message' => $e->getMessage()]);
         }
     }
-    
 }
-
-?>
-
-
