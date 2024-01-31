@@ -77,7 +77,7 @@ if (isset($_POST['update-product'])) {
   
     // =========== product edit description section =========
     $productData = json_decode($Products->showProductsByIdOnTableNameAdminId($productId, $adminId, $tableName));
-    // print_r($productData);
+    print_r($productData);
     if ($productData->status) {
         $oldProdData = $productData->data;
         // print_r($oldProdData);
@@ -167,7 +167,7 @@ if (isset($_POST['update-product'])) {
         } else {
            
             $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
-            // print_r($selectFromProdReqTable);
+            print_r($selectFromProdReqTable);
             if ($selectFromProdReqTable->status) {
 
                 $modifiedProdId = $selectFromProdReqTable->data[0]->$product_id;

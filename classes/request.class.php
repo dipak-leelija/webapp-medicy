@@ -189,7 +189,7 @@ class Request extends DatabaseConnection
     function editUpdateProductRequest($productId, $prodName, $composition1,  $composition2, $prodCategory, $packagingType, $quantity, $packagingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $prodReqStatus, $oldProdFlag, $adminId)
     {
         try {
-            $updateProdRequest = "UPDATE product_request SET `name` = ?, `comp_1` = ?, `comp_2` = ?, `type` = ?, `packaging_type` = ?, `unit_quantity` = ?, `unit` = ?, `power` = ?, `mrp` = ?,  `gst` = ?, `hsno_number` = ?, `dsc` = ?,`requested_by` = ?,  `requested_on` = ?, `prod_req_status` = ?, `old_prod_flag` = ? WHERE product_id = ? AND `admin_id` = ?";
+            $updateProdRequest = "UPDATE product_request SET `name` = ?, `comp_1` = ?, `comp_2` = ?, `type` = ?, `packaging_type` = ?, `unit_quantity` = ?, `unit` = ?, `power` = ?, `mrp` = ?,  `gst` = ?, `hsno_number` = ?, `req_dsc` = ?,`requested_by` = ?,  `requested_on` = ?, `prod_req_status` = ?, `old_prod_flag` = ? WHERE product_id = ? AND `admin_id` = ?";
 
             $stmt = $this->conn->prepare($updateProdRequest);
 

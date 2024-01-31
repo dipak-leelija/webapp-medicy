@@ -41,7 +41,7 @@ foreach ($requestTypes as $table => &$requestType) {
     // print_r($table);
 
     $requestData = json_decode($Request->fetchRequestDataByTableName($table, $adminId));
-    print_r($requestData);
+    // print_r($requestData);
 
     if ($requestData->status) {
         $requestType['data'] = $requestData->data;
@@ -50,12 +50,22 @@ foreach ($requestTypes as $table => &$requestType) {
     }
 
     foreach ($requestType['data'] as $requestDataItem) {
-        $allRequestResult[] = [
-            'tableName' => $requestType['tableName'],
-            'name' => $requestDataItem->name,
-            // 'description' => $requestDataItem->dsc
-            'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-        ];
+        // print_r($requestType);
+        if($requestType['tableName'] != 'Product Request'){
+            $allRequestResult[] = [
+                'tableName' => $requestType['tableName'],
+                'name' => $requestDataItem->name,
+                // 'description' => $requestDataItem->dsc
+                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+            ];
+        }elseif($requestType['tableName'] == 'Product Request'){
+            $allRequestResult[] = [
+                'tableName' => $requestType['tableName'],
+                'name' => $requestDataItem->name,
+                'description' => $requestDataItem->req_dsc
+                // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+            ];
+        }
     }
 }
 
