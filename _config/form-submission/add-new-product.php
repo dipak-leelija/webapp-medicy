@@ -77,9 +77,9 @@ $Request = new Request;
         $addProductRequest = $Request->addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $employeeId, NOW, $adminId, $status);
 
 
-        // print_r($addProducts);
+        print_r($addProductRequest);
 
-        $addProductRequest = true;
+
 
         if ($addProductRequest === true) {
 

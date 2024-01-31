@@ -84,6 +84,26 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
 
     <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
 
+
+    <style>
+        /* div.row {
+            display: flex;
+            flex-direction: column;
+        }
+
+        [id$='-row'] {
+            order: 2;
+        }
+
+        #first-div {
+            order: 2;
+        }
+
+        #second-div {
+            order: 1;
+        } */
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -108,162 +128,153 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-flex justify-content-center">
-                        <div class="card shadow mb-4 col-12" style="min-height: 70vh; max-width: 150vh;">
-                            <h4 class="h4 d-flex justify-content-center aligen-item-center mt-4"> Add New Product</h1>
-                                <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
-                                    <div class="card-body col-12 d-flex flex-wrap">
-                                        <div class="col-6">
-                                            <!-- product name row -->
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="col-md-12">
-                                                        <!-- <label for="product-name">Prodcut Name</label> -->
-                                                        <label for="product-name">Product Name</label>
-                                                        <input class="c-inp w-100 p-1 mt-1" id="product-name" name="product-name" required>
-                                                    </div>
+                        <div class="card-body shadow mb-4 col-12 d-flex flex-wrap" style="min-height: 70vh; max-width: 150vh;">
+                            <!-- <div class="card-body col-12 d-flex flex-wrap"> -->
+                            <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
+                                <div class="row justify-content-center">
+                                    <h4 class="h4 mt-4"> Add New Product</h4>
+                                </div>
 
-                                                </div>
+                                <div class="row">
+                                    <div class="col-md-6" id="first-div">
+                                        <!-- product name row -->
+                                        <div class="col-sm-12">
+                                            <label for="product-name">Product Name</label>
+                                            <input class="c-inp w-100 p-1" id="product-name" name="product-name" required>
+                                        </div>
+
+                                        <!-- product category row -->
+                                        <div class="d-flex flex-wrap col-md-12 mt-2">
+                                            <div class="col-sm-6">
+                                                <label for="product-catagory">Prodcut Catagory</label>
+                                                <select class="c-inp p-1 w-100  " name="product-catagory" id="product-catagory" required>
+                                                    <option value="" disabled selected>Select</option>
+                                                    <?php
+                                                    if ($prodCategory->status == 1 && is_array($prodCategory->data)) {
+                                                        $prodCategory = $prodCategory->data;
+
+                                                        foreach ($prodCategory as $category) {
+                                                            echo '<option value="' . $category->id . '">' . $category->name . '</option>';
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
                                             </div>
 
-                                            <!-- product hsno and category row -->
-                                            <div class="row mt-3">
-                                                <div class="d-flex col-12">
-                                                    <div class="col-md-6 mt-1">
-                                                        <label for="product-catagory">Prodcut Catagory</label>
-                                                        <select class="c-inp p-1 w-100 mt-1" name="product-catagory" id="product-catagory" required>
-                                                            <option value="" disabled selected>Select</option>
-                                                            <?php
-                                                            if ($prodCategory->status == 1 && is_array($prodCategory->data)) {
-                                                                $prodCategory = $prodCategory->data;
+                                            <div class="col-sm-6">
+                                                <label for="product-catagory">Packeging In</label>
+                                                <select class="c-inp p-1 w-100  " name="packeging-type" id="packeging-type" required>
+                                                    <option value="" disabled selected>Select</option>
+                                                    <?php
+                                                    foreach ($packagingUnits as $eachPackUnit) {
 
-                                                                foreach ($prodCategory as $category) {
-                                                                    echo '<option value="' . $category->id . '">' . $category->name . '</option>';
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-md-6 mt-1">
-                                                        <label for="product-catagory">Packeging In</label>
-                                                        <select class="c-inp p-1 w-100 mt-1" name="packeging-type" id="packeging-type" required>
-                                                            <option value="" disabled selected>Select</option>
-                                                            <?php
-                                                            foreach ($packagingUnits as $eachPackUnit) {
-
-                                                                if (in_array(strtolower($eachPackUnit['unit_name']), $allowedPackegingUnits)) {
-                                                                    echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-
-                                                </div>
+                                                        if (in_array(strtolower($eachPackUnit['unit_name']), $allowedPackegingUnits)) {
+                                                            echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
                                             </div>
 
-                                            <!-- catagory - packging - power and unit row  -->
-                                            <div class="row mt-3">
-                                                <div class="d-flex col-12">
-                                                    <div class="col-md-6">
-                                                        <label for="qantity">Qantity</label>
-                                                        <input class="c-inp w-100 p-1 mt-1" id="qantity" name="qantity" placeholder="e.g. 10,20,200">
-
-                                                    </div>
+                                        </div>
 
 
-                                                    <div class="col-md-6">
-                                                        <label for="unit">Unit</label>
-                                                        <select class="c-inp p-1 w-100 mt-1" id="unit" name="unit" required>
-                                                            <option value='' disabled selected>Select</option>
-                                                            <?php
-                                                            foreach ($itemUnists as $eachUnit) {
+                                        <!-- catagory - packging - power and unit row  -->
+                                        <div class="d-flex flex-wrap col-md-12 mt-2">
+                                            <div class="col-sm-6">
+                                                <label for="qantity">Qantity</label>
+                                                <input class="c-inp w-100 p-1  " id="qantity" name="qantity" placeholder="e.g. 10,20,200">
 
-                                                                if (in_array(strtolower($eachUnit['name']), $allowedItemUnits)) {
-                                                                    echo "<option value='" . $eachUnit['id'] . "'>" . $eachUnit['name'] . "</option>";
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
                                             </div>
 
-                                            <!-- catagory - packging - power and unit row  -->
-                                            <div class="row mt-3">
-                                                <div class="d-flex col-12">
 
-                                                    <div class="col-md-6">
-                                                        <label for="medicine-power">Medicine Power</label>
-                                                        <input class="c-inp w-100 p-1 mt-1" id="medicine-power" name="medicine-power" required>
-                                                    </div>
+                                            <div class="col-sm-6">
+                                                <label for="unit">Unit</label>
+                                                <select class="c-inp p-1 w-100" id="unit" name="unit" required>
+                                                    <option value='' disabled selected>Select</option>
+                                                    <?php
+                                                    foreach ($itemUnists as $eachUnit) {
 
-
-                                                    <div class="col-md-6">
-                                                        <label for="mrp">Enter MRP</label>
-                                                        <input class="c-inp w-100 p-1 mt-1" id="mrp" name="mrp" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- mrp, gst and hsno number row  -->
-                                            <div class="row mt-3">
-                                                <div class="col-md-12 d-flex">
-                                                    <div class="col-sm-6">
-                                                        
-                                                        <label for="mrp">Enter GST</label>
-                                                        <select class="c-inp p-1 w-100 mt-1" name="gst" id="gst" required>
-                                                            <option value="" disabled selected>Select</option>
-                                                            <?php
-                                                            if (is_array($gstData)) {
-                                                                foreach ($gstData as $gstPercent) {
-                                                                    echo '<option value="' . $gstPercent->id . '" >' . $gstPercent->percentage . '</option>';
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        HSNO Number
-                                                        <label for="mrp">Enter MRP</label>
-                                                        <input class="c-inp w-100 p-1 mt-1" id="hsno-number" name="hsno-number" required>
-                                                    </div>
-                                                </div>
+                                                        if (in_array(strtolower($eachUnit['name']), $allowedItemUnits)) {
+                                                            echo "<option value='" . $eachUnit['id'] . "'>" . $eachUnit['name'] . "</option>";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
                                             </div>
                                         </div>
 
-                                        <!-- image and add/reset button secssion -->
-                                        <div class="col-6">
-                                            <div class="col-12">
-                                                <div id="img-div">
-                                                    <div class="container-fluid" id="img-container">
-                                                        <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
-                                                        <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
-                                                        <p id="num-of-files">No files chosen</p>
-                                                        <div>
-                                                            <div id="images">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <!-- catagory - packging - power and unit row  -->
+                                        <div class="d-flex flex-wrap col-md-12 mt-2">
+                                            <div class="col-sm-6">
+                                                <label for="medicine-power">Medicine Power</label>
+                                                <input class="c-inp w-100 p-1  " id="medicine-power" name="medicine-power" required>
                                             </div>
-                                            <br>
-                                            <div class="col-12">
-                                                <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()" style="width: 12rem;"> Reset</button>
-                                                <button class="btn btn-primary" name="add-new-product" id="add-btn" type="submit" style="width: 12rem;">Add
-                                                    Product Request</button>
 
+
+                                            <div class="col-sm-6">
+                                                <label for="mrp">Enter MRP</label>
+                                                <input class="c-inp w-100 p-1  " id="mrp" name="mrp" required>
+                                            </div>
+                                        </div>
+
+                                        <!-- mrp, gst and hsno number row  -->
+                                        <div class="col-md-12 d-flex flex-wrap mt-2">
+                                            <div class="col-sm-6">
+                                                <label for="mrp">Enter GST</label>
+                                                <select class="c-inp p-1 w-100" name="gst" id="gst" required>
+                                                    <option value="" disabled selected>Select</option>
+                                                    <?php
+                                                    if (is_array($gstData)) {
+                                                        foreach ($gstData as $gstPercent) {
+                                                            echo '<option value="' . $gstPercent->id . '" >' . $gstPercent->percentage . '</option>';
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <label for="hsno-number">HSNO Number</label>
+                                                <input class="c-inp w-100 p-1  " id="hsno-number" name="hsno-number" required>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+
+                                    <!-- image and add/reset button secssion -->
+                                    <div class="col-md-6" id="second-div">
+                                        <!-- <div class="col-12"> -->
+                                        <div id="img-div">
+                                            <div class="container-fluid" id="img-container">
+                                                <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
+                                                <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
+                                                <p id="num-of-files">No files chosen</p>
+                                                <div>
+                                                    <div id="images">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                
+                                <div class="row mt-3">
+                                    <div class="col-6"></div>
+                                    <div class="col-6 d-flex justify-content-around">
+                                        <div class="col-sm-6 text-center">
+                                            <button class="btn btn-danger text-center" id="reset" type="reset" onclick="resetImg()"> Reset</button>
+                                        </div>
+                                        <div class="col-sm-6 text-center">
+                                            <button class="btn btn-primary text-center" name="add-new-product" id="add-btn" type="submit">Add new</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- </div> -->
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
             <!-- /end Add Product  -->

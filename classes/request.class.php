@@ -6,7 +6,7 @@ class Request extends DatabaseConnection
     function addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $adminId, $status)
     {
         try {
-            $addQuery = "INSERT INTO `product_request`(`product_id`, `name`, `type`, `packaging_type`,  `unit_quantity`, `unit`, `power`, `mrp`, `gst`, `hsno_number`, `dsc`, `requested_by`, `requested_on`, `admin_id`, `prod_req_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $addQuery = "INSERT INTO `product_request`(`product_id`, `name`, `type`, `packaging_type`,  `unit_quantity`, `unit`, `power`, `mrp`, `gst`, `hsno_number`, `req_dsc`, `requested_by`, `requested_on`, `admin_id`, `prod_req_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($addQuery);
             $stmt->bind_param("sssisssdisssssi", $productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $adminId, $status);
@@ -34,18 +34,22 @@ class Request extends DatabaseConnection
     {
         try {
 
-            $addQuery = "INSERT INTO `product_request`(`old_prod_id`, `product_id`, `name`, `comp_1`, `comp_2`, `type`, `packaging_type`, `unit_quantity`, `unit`, `power`, `mrp`, `dsc`, `gst`, `hsno_number`, `requested_by`, `requested_on`, `admin_id`, `prod_req_status`, `old_prod_flag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            // echo $oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $description, $gst, $hsnoNumber, $addedBy, $addedOn, $adminId, $status, $oldProdFlag;
+
+            $addQuery = "INSERT INTO `product_request`(`old_prod_id`, `product_id`, `name`, `comp_1`, `comp_2`, `type`, `packaging_type`, `unit_quantity`, `unit`, `power`, `mrp`, `gst`, `hsno_number`, `req_dsc`, `requested_by`, `requested_on`, `admin_id`, `prod_req_status`, `old_prod_flag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $this->conn->prepare($addQuery);
+            
             if (!$stmt) {
                 throw new Exception("Error preparing SQL query: " . $this->conn->error);
             }
 
-            $bindResult = $stmt->bind_param("ssssssisssdsisissii", $oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $description, $gst, $hsnoNumber, $addedBy, $addedOn, $adminId, $status, $oldProdFlag);
+            $bindResult = $stmt->bind_param("ssssssisssdsisissii", $oldProdId, $productId, $prodName, $composition1, $composition2, $prodCategory, $packegingType, $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $addedBy, $addedOn, $adminId, $status, $oldProdFlag);
+
             if (!$bindResult) {
                 throw new Exception("Error binding parameters: " . $stmt->error);
             }
-            // return $bindResult;
+            
             $executeResult = $stmt->execute();
             if (!$executeResult) {
                 throw new Exception("Error executing SQL query: " . $stmt->error);
