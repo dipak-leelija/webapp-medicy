@@ -30,22 +30,21 @@ $ItemUnit           = new ItemUnit;
 
 
 $showManufacturer   = $Manufacturer->showManufacturerWithLimit();
-$showManufacturer = json_decode($showManufacturer);
+$showManufacturer   = json_decode($showManufacturer);
 // print_r($showManufacturer);
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
-$packagingUnits = $PackagingUnits->showPackagingUnits();
+$packagingUnits     = $PackagingUnits->showPackagingUnits();
+$prodCategory       = json_decode($Products->productCategory());
+$itemUnists         = $ItemUnit->showItemUnits();
+$gstData            = json_decode($Gst->seletGst());
+$gstData            = $gstData->data;
+$packagingUnitData  = $PackagingUnits->showPackagingUnits();
+$unitData           = $ItemUnit->showItemUnits();
 
-$prodCategory = json_decode($Products->productCategory());
 
-$itemUnists = $ItemUnit->showItemUnits();
+$allowedPackegingUnits = ["strip", "bottle", "tube", "box", "sachet", "packet", "jar", "kit", "bag", "vial", "ampoule", "respules", "cartridge"];
 
-$gstData = json_decode($Gst->seletGst());
-$gstData = $gstData->data;
-
-
-$packagingUnitData = $PackagingUnits->showPackagingUnits();
-
-$unitData = $ItemUnit->showItemUnits();
+$allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "soflets", "soflet", "lozenges", "bolus"];
 
 ?>
 
@@ -73,7 +72,7 @@ $unitData = $ItemUnit->showItemUnits();
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!--Custom CSS -->
-    <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet">
+    <!-- <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet"> -->
     <link href="<?php echo CSS_PATH ?>add-new-product.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
@@ -112,14 +111,14 @@ $unitData = $ItemUnit->showItemUnits();
                         <div class="card shadow mb-4 col-12" style="min-height: 70vh; max-width: 150vh;">
                             <h4 class="h4 d-flex justify-content-center aligen-item-center mt-4"> Add New Product</h1>
                                 <form action="_config\form-submission\add-new-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
-                                    <div class="card-body d-flex flex-wrap">
+                                    <div class="card-body col-12 d-flex flex-wrap">
                                         <div class="col-6">
                                             <!-- product name row -->
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="col-md-12">
                                                         <!-- <label for="product-name">Prodcut Name</label> -->
-                                                        Product Name
+                                                        <label for="product-name">Product Name</label>
                                                         <input class="c-inp w-100 p-1 mt-1" id="product-name" name="product-name" required>
                                                     </div>
 
@@ -130,7 +129,7 @@ $unitData = $ItemUnit->showItemUnits();
                                             <div class="row mt-3">
                                                 <div class="d-flex col-12">
                                                     <div class="col-md-6 mt-1">
-                                                        Prodcut Catagory
+                                                        <label for="product-catagory">Prodcut Catagory</label>
                                                         <select class="c-inp p-1 w-100 mt-1" name="product-catagory" id="product-catagory" required>
                                                             <option value="" disabled selected>Select</option>
                                                             <?php
@@ -146,15 +145,15 @@ $unitData = $ItemUnit->showItemUnits();
                                                     </div>
 
                                                     <div class="col-md-6 mt-1">
-                                                        Packeging In
+                                                        <label for="product-catagory">Packeging In</label>
                                                         <select class="c-inp p-1 w-100 mt-1" name="packeging-type" id="packeging-type" required>
                                                             <option value="" disabled selected>Select</option>
                                                             <?php
                                                             foreach ($packagingUnits as $eachPackUnit) {
-                                                                if($eachPackUnit['unit_name'] == 'strip' || $eachPackUnit['unit_name'] == 'bottle' || $eachPackUnit['unit_name'] == 'tube' || $eachPackUnit['unit_name'] == 'box' || $eachPackUnit['unit_name'] == 'sachet' || $eachPackUnit['unit_name'] == 'packet' || $eachPackUnit['unit_name'] == 'jar' || $eachPackUnit['unit_name'] == 'Kit' || $eachPackUnit['unit_name'] == 'Bag' || $eachPackUnit['unit_name'] == 'vial' || $eachPackUnit['unit_name'] == 'ampoule' || $eachPackUnit['unit_name'] == 'Respules' || $eachPackUnit['unit_name'] == 'cartridge'){
+
+                                                                if (in_array(strtolower($eachPackUnit['unit_name']), $allowedPackegingUnits)) {
                                                                     echo "<option value='{$eachPackUnit['id']}'>{$eachPackUnit['unit_name']}</option>";
                                                                 }
-                                                                
                                                             }
                                                             ?>
                                                         </select>
@@ -167,27 +166,25 @@ $unitData = $ItemUnit->showItemUnits();
                                             <div class="row mt-3">
                                                 <div class="d-flex col-12">
                                                     <div class="col-md-6">
-                                                        Qantity
+                                                        <label for="qantity">Qantity</label>
                                                         <input class="c-inp w-100 p-1 mt-1" id="qantity" name="qantity" placeholder="e.g. 10,20,200">
 
                                                     </div>
 
 
                                                     <div class="col-md-6">
-                                                        Unit
+                                                        <label for="unit">Unit</label>
                                                         <select class="c-inp p-1 w-100 mt-1" id="unit" name="unit" required>
                                                             <option value='' disabled selected>Select</option>
-                                                            <?php 
+                                                            <?php
                                                             foreach ($itemUnists as $eachUnit) {
-                                                                if($eachUnit['id'] == '1' || $eachUnit['id'] == '5' || $eachUnit['id'] == '99' || $eachUnit['id'] == '101' || $eachUnit['id'] == '102' || $eachUnit['name'] == 'Syrup'){
+
+                                                                if (in_array(strtolower($eachUnit['name']), $allowedItemUnits)) {
                                                                     echo "<option value='" . $eachUnit['id'] . "'>" . $eachUnit['name'] . "</option>";
                                                                 }
-                                                                
                                                             }
                                                             ?>
                                                         </select>
-
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,13 +194,13 @@ $unitData = $ItemUnit->showItemUnits();
                                                 <div class="d-flex col-12">
 
                                                     <div class="col-md-6">
-                                                        Medicine Power
+                                                        <label for="medicine-power">Medicine Power</label>
                                                         <input class="c-inp w-100 p-1 mt-1" id="medicine-power" name="medicine-power" required>
                                                     </div>
 
 
                                                     <div class="col-md-6">
-                                                        Enter MRP
+                                                        <label for="mrp">Enter MRP</label>
                                                         <input class="c-inp w-100 p-1 mt-1" id="mrp" name="mrp" required>
                                                     </div>
                                                 </div>
@@ -213,7 +210,8 @@ $unitData = $ItemUnit->showItemUnits();
                                             <div class="row mt-3">
                                                 <div class="col-md-12 d-flex">
                                                     <div class="col-sm-6">
-                                                        Enter GST
+                                                        
+                                                        <label for="mrp">Enter GST</label>
                                                         <select class="c-inp p-1 w-100 mt-1" name="gst" id="gst" required>
                                                             <option value="" disabled selected>Select</option>
                                                             <?php
@@ -228,6 +226,7 @@ $unitData = $ItemUnit->showItemUnits();
 
                                                     <div class="col-sm-6">
                                                         HSNO Number
+                                                        <label for="mrp">Enter MRP</label>
                                                         <input class="c-inp w-100 p-1 mt-1" id="hsno-number" name="hsno-number" required>
                                                     </div>
                                                 </div>

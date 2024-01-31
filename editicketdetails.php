@@ -35,16 +35,16 @@ $requestTypes = [
 foreach ($requestTypes as $table => &$requestType) {
 
     // print_r($table);
-    
+
     $requestData = json_decode($Request->fetchRequestDataByTableName($table, $adminId));
     // print_r($requestData);
-    
+
     if ($requestData->status) {
         $requestType['data'] = $requestData->data;
     } else {
         $requestType['data'] = [];
     }
-    
+
     foreach ($requestType['data'] as $requestDataItem) {
         $allRequestResult[] = [
             'tableName' => $requestType['tableName'],
@@ -150,32 +150,32 @@ if ($pagination->status == 1) {
                                         foreach ($resultItems as $resItems) {
                                             $count++;
                                             // print_r($resItems);
-                                            if($resItems->tableName != null){
+                                            if ($resItems->tableName != null) {
                                                 $tableName = $resItems->tableName;
-                                            }else{
+                                            } else {
                                                 $tableName = '';
                                             }
                                             // echo $count;
 
-                                            if($resItems->name != null){
+                                            if ($resItems->name != null) {
                                                 $itemName = $resItems->name;
-                                            }else{
+                                            } else {
                                                 $itemName = '';
                                             }
 
-                                            if($resItems->description != null){
+                                            if ($resItems->description != null) {
                                                 $description = $resItems->description;
-                                            }else{
+                                            } else {
                                                 $description = '';
                                             }
 
-                                            $status = 'Pending';
-                                            
+                                            $status = 'Request Pending';
+
                                             echo '<tr>
                                                         <td>' . $tableName . '</td>
                                                         <td>' . $itemName . '</td>
                                                         <td>' . $description . '</td>
-                                                        <td>' . $status . '</td>
+                                                        <td style="color: red;">' . $status . '</td>
                                                     </tr>';
                                         }
                                     }

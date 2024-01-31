@@ -47,12 +47,8 @@ $allowedPackegingUnits = ["strip", "bottle", "tube", "box", "sachet", "packet", 
 
 $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "soflets", "soflet", "lozenges", "bolus"];
 
-if ($_SESSION['ADMIN']) {
-    $addedBy = $adminId;
-} else {
-    $addedBy = $employeeId;
-}
 
+$addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
 ?>
 
 

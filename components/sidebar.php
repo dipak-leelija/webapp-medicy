@@ -251,8 +251,11 @@
                 </a>
             </li>
             
-             <!-- ticket details collapsed Menu  -->             
-            <li class="nav-item <?php if ($page ==  "editicketdetails") {
+        <?php endif; ?>
+
+        <?php if ($userRole === 'ADMIN') : ?>
+         <!-- ticket details collapsed Menu  -->             
+         <li class="nav-item <?php if ($page ==  "editicketdetails") {
                                     echo "active";
                                 }  ?>">
                 <a class="nav-link" href="editicketdetails.php">
@@ -260,7 +263,6 @@
                     <span>All Request Details</span>
                 </a>
             </li>
-
         <?php endif; ?>
 
         <div class="text-center d-none d-md-inline">

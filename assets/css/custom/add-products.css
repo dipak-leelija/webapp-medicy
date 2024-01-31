@@ -182,9 +182,9 @@ input[type="file"] {
 }
 
 label {
-    display: block;
+    /* display: block; */
     position: relative;
-    background-color: #025bee;
+    /* background-color: #025bee; */
     color: #ffffff;
     font-size: 18px;
     text-align: center;

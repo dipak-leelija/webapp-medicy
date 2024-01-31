@@ -29,30 +29,21 @@ $Gst                = new Gst;
 
 $showManufacturer   = json_decode($Manufacturer->showManufacturerWithLimit());
 $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
-
 $showPackagingUnits = $PackagingUnits->showPackagingUnits();
-
 $itemUnits          = $ItemUnit->showItemUnits();
-// print_r($itemUnits);
 $prodCategoryList   = json_decode($ProductCategory->selectAllProdCategory());
 $prodCategoryList   = $prodCategoryList->data;
-
-$gstDetails = json_decode($Gst->seletGst());
-$gstDetails = $gstDetails->data;
-
+$gstDetails         = json_decode($Gst->seletGst());
+$gstDetails         = $gstDetails->data;
 
 
+// === allowed units ======
 $allowedPackegingUnits = ["strip", "bottle", "tube", "box", "sachet", "packet", "jar", "kit", "bag", "vial", "ampoule", "respules", "cartridge"];
 
 $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "soflets", "soflet", "lozenges", "bolus"];
 
-
-if ($_SESSION['ADMIN']) {
-    $addedBy = $adminId;
-} else {
-    $addedBy = $employeeId;
-}
-
+// ======== fetch admin or user session ========
+$addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
 
 ?>
 
@@ -128,18 +119,7 @@ if ($_SESSION['ADMIN']) {
 
         $imageArrayCaount = count($imageName);
         $tempImageNameArrayCaount = count($tempImgName);
-        // ====================================================
-
-        // echo "images name : ";
-        // print_r($imageName);
-        // echo "<br>";
-        // echo "temp images name : ";
-        // print_r($tempImgName);
-        // echo "<br>";
-
-        // $column = 'product_id';
-
-
+      
         // =========== product edit description section =========
         $productData = json_decode($Products->showProductsByIdOnTableNameAdminId($productId, $adminId, $tableName));
         // print_r($productData);
@@ -206,19 +186,15 @@ if ($_SESSION['ADMIN']) {
         $prodDataFromProducts = json_decode($Products->showProductsById($productId));
         if ($prodDataFromProducts->status) {
             if ($prodDataFromProducts->data->edit_request_flag == 0) {
-                echo '1';
+
                 $oldProdFlag = 1;
                 $prodReqStatus = 0;
 
                 $randNum = rand(1, 999999999999);
                 $newProductId = 'PR' . $randNum;
 
-                // $prdReq = "PRDREQ";
-
                 $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $description, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
                 $addOldProdEditRequest = json_decode($addOldProdEditRequest);
-
-                // print_r($addOldProdEditRequest);
 
                 $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
                 if ($addOldProdEditRequest->status) {
@@ -230,10 +206,9 @@ if ($_SESSION['ADMIN']) {
                     $productId = $newProductId;
                 }
             } else {
-                echo '2';
-
+               
                 $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
-                print_r($selectFromProdReqTable);
+                // print_r($selectFromProdReqTable);
                 if ($selectFromProdReqTable->status) {
 
                     $modifiedProdId = $selectFromProdReqTable->data[0]->$product_id;
@@ -244,18 +219,13 @@ if ($_SESSION['ADMIN']) {
 
                     $productId = $modifiedProdId;
                 } else {
-                    echo '3';
                     $oldProdFlag = 1;
                     $prodReqStatus = 0;
 
                     $randNum = rand(1, 999999999999);
                     $newProductId = 'PR' . $randNum;
 
-                    // $prdReq = "PRDREQ";
-
                     $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $description, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
-
-                    // echo "hello3";
 
                     $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
                     if ($addOldProdEditRequest) {
@@ -269,8 +239,7 @@ if ($_SESSION['ADMIN']) {
                 }
             }
         } else {
-            echo $productId . "-4";
-
+           
             $prodReqStatus = 0;
             $oldProdFlag = 1;
 
