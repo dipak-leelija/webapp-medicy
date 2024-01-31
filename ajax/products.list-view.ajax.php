@@ -46,14 +46,16 @@ if ($showProducts->status) {
 
         if(property_exists($showProducts, 'edit_request_flag')){
             $editRequestFlag = $showProducts->edit_request_flag;
+            $table = 'products';
         }else{
             $editRequestFlag = '';
+            $table = 'product_request';
         }
 
         // echo  $prodReqStatus;
 
         echo "<div class='p-1 border-bottom list'>
-                <div class='' id='$showProducts->product_id' prodReqStatus='$prodReqStatus' oldProdReqFlag='$oldProdReqFlag' editRequestFlag='$editRequestFlag' onclick='searchProduct(this)'>
+                <div class='' id='$showProducts->product_id' prodReqStatus='$prodReqStatus' oldProdReqFlag='$oldProdReqFlag' editRequestFlag='$editRequestFlag' table='$table' onclick='searchProduct(this)'>
                     $showProducts->name
                 </div>
 

@@ -225,8 +225,10 @@ if (isset($_GET['search'])) {
 
                                                         if (isset($item->edit_request_flag)) {
                                                             $editRequestFlag = $item->edit_request_flag;
+                                                            $table = 'products';
                                                         } else {
                                                             $editRequestFlag = '';
+                                                            $table = 'product_request';
                                                         }
 
                                                         //======== check edit request ========
@@ -283,7 +285,7 @@ if (isset($_GET['search'])) {
                                                                 <div class="row px-3 pb-2 mt-2">
                                                                     <div class="col-6">₹ <?php echo $item->mrp ?></div>
                                                                     <div class="col-6 d-flex justify-content-end">
-                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" prodReqStatus="<?php echo $prodReqStatus ?>" oldProdFlag="<?php echo $oldProdFlag ?>" editRequestFlag="<?php echo $editRequestFlag ?>" onclick="viewItem(this)">View</button>
+                                                                        <button class="btn btn-sm border border-info" data-toggle="modal" data-target="#productViewModal" id="<?php echo $item->product_id ?>" value="<?php echo $item->verified ?>" prodReqStatus="<?php echo $prodReqStatus ?>" oldProdFlag="<?php echo $oldProdFlag ?>" editRequestFlag="<?php echo $editRequestFlag ?>" table="<?php echo $table ?>" onclick="viewItem(this)">View</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -398,8 +400,9 @@ if (isset($_GET['search'])) {
             let prodReqStatus = t.getAttribute("prodReqStatus");
             let oldProdFlag = t.getAttribute("oldProdFlag");
             let editRequestFlag = t.getAttribute("editRequestFlag");
+            let table = t.getAttribute('table');
 
-            url = `ajax/product-view-modal-for-user.ajax.php?id=${prodId}&prodReqStatus=${prodReqStatus}&oldProdFlag=${oldProdFlag}&editRequestFlag=${editRequestFlag}`; //  updated path for user.
+            url = `ajax/product-view-modal-for-user.ajax.php?id=${prodId}&prodReqStatus=${prodReqStatus}&oldProdFlag=${oldProdFlag}&editRequestFlag=${editRequestFlag}&table=${table}`; //  updated path for user.
 
             $(".productViewModal").html(
                 '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +

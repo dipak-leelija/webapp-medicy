@@ -47,7 +47,6 @@ $allowedPackegingUnits = ["strip", "bottle", "tube", "box", "sachet", "packet", 
 
 $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "soflets", "soflet", "lozenges", "bolus"];
 
-
 if ($_SESSION['ADMIN']) {
     $addedBy = $adminId;
 } else {
@@ -89,7 +88,6 @@ if ($_SESSION['ADMIN']) {
     <!-- sweetAlert link -->
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
-
 </head>
 
 <body id="page-top">
@@ -100,23 +98,22 @@ if ($_SESSION['ADMIN']) {
         $prodReqStatus = $_GET['prodReqStatus'];
         $oldProdFlag = $_GET['oldProdFlag'];
         $editRequestFlag = $_GET['editRequestFlag'];
+        $table = $_GET['table'];
 
-        
+
         // ================================ Fetching Product Details =================================
         $product = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $editRequestFlag, $prodReqStatus, $oldProdFlag));
         // print_r($product);
         $product = $product->data;
 
-
         $productName    = $product[0]->name;
 
         $type           = $product[0]->type;
-        // echo $type;
 
         $qty            = $product[0]->unit_quantity;
         // $qtyUnit        = $product[0]->unit_id;
         $prevItemUnit       = $product[0]->unit;
-        // echo "<br>Item unit : $itemUnit";        
+
         $packagingType  = $product[0]->packaging_type;
 
         $power          = $product[0]->power;
@@ -149,7 +146,7 @@ if ($_SESSION['ADMIN']) {
         //     print_r($imageID);
         // }
 
-        ?>
+    ?>
 
         <!-- Page Wrapper -->
         <div id="wrapper">
@@ -164,7 +161,6 @@ if ($_SESSION['ADMIN']) {
                         <div class="card-body">
                             <form action="_config\form-submission\edit-product-user.php" method="post" enctype="multipart/form-data">
                                 <div class="d-flex flex-wrap">
-
                                     <div class="col-md-5">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -217,6 +213,8 @@ if ($_SESSION['ADMIN']) {
                                                     <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?= $productName ?>" required>
 
                                                     <input class="d-none c-inp w-100 p-1" id="product-id" name="product-id" value="<?= $productId ?>" required>
+
+                                                    <input class="d-none c-inp w-100 p-1" id="table-name" name="table-name" value="<?= $table ?>" required>
                                                 </div>
 
                                             </div>
@@ -278,10 +276,12 @@ if ($_SESSION['ADMIN']) {
                                                         <option value="" disabled selected>Select</option>
                                                         <?php
                                                         foreach ($itemUnits as $itemUnits) {
+                                                            // print_r($itemUnits);
                                                             if (in_array(strtolower($itemUnits['name']), $allowedItemUnits)) {
-                                                                print_r($itemUnits);
+                                                                echo $itemUnits['id'];
+
                                                         ?>
-                                                                <option <?= $prevItemUnit == $itemUnits['id'] ? 'selected' : ''; ?> value="<?php echo $itemUnits['id'] ?>">
+                                                                <option <?= $prevItemUnit == $itemUnits['id'] ? 'selected' : '' ?> value="<?php echo $itemUnits['id'] ?>">
                                                                     <?php echo $itemUnits['name'] ?>
                                                                 </option>';
                                                         <?php
@@ -338,18 +338,19 @@ if ($_SESSION['ADMIN']) {
                                             <div class="col-md-12 d-flex mt-3">
                                                 <div class="col-sm-6">
                                                     Composition 1
-                                                    <input class="c-inp w-100 p-1 mt-1" id="comp-1" name="comp-1" value="<?php echo $product[0]->comp_1; ?>" required>
+                                                    <input class="c-inp w-100 p-1 mt-1" id="comp-1" name="comp-1" value="<?php echo $product[0]->comp_1; ?>">
                                                 </div>
                                                 <div class="col-sm-6">
                                                     Composition 2
-                                                    <input class="c-inp w-100 p-1 mt-1" id="comp-2" name="comp-2" value="<?php echo $product[0]->comp_2; ?>" required>
+                                                    <input class="c-inp w-100 p-1 mt-1" id="comp-2" name="comp-2" value="<?php echo $product[0]->comp_2; ?>">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
                 <!-- /end Add Product  -->

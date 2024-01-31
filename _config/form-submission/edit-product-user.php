@@ -99,16 +99,19 @@ if ($_SESSION['ADMIN']) {
     if (isset($_POST['update-product'])) {
 
         $productId  =   $_POST['product-id'];
-        $oldProdId = $productId;
+
+        // $oldProdId = $productId;
+
+        $tableName = $_POST['table-name'];
 
         $productName      = $_POST['product-name'];
 
         $productCategory = $_POST['product-category']; // like : allopathy, drugs,  cosmetics etc.
+
         $packagingIn    = $_POST['packeging-type']; // strip, bottle, tubes etc.
 
         $quantity = $_POST['qantity']; // e.g. 10,20,100 etc.
         $unit = $_POST['unit']; // e.g. tablet, capsule, syrup etc.
-        // echo "check unit : $unit";
 
         $medicinePower = $_POST['medicine-power']; // e.g. 5, 10, 25, 50, 500 etc.
         $mrp = $_POST['mrp'];
@@ -135,11 +138,75 @@ if ($_SESSION['ADMIN']) {
         // echo "<br>";
 
         // $column = 'product_id';
-        $prodDataFromProducts = json_decode($Products->showProductsById($productId));
-        // print_r($prodDataFromProducts);
 
+
+        // =========== product edit description section =========
+        $productData = json_decode($Products->showProductsByIdOnTableNameAdminId($productId, $adminId, $tableName));
+        // print_r($productData);
+        if ($productData->status) {
+            $oldProdData = $productData->data;
+            // print_r($oldProdData);
+            if ($productName != $oldProdData->name) {
+                $nameEdit = 'name edited. ';
+            } else {
+                $nameEdit = '';
+            }
+
+            if ($productCategory != $oldProdData->type) {
+                $categoryEdit = 'Product Category Edited. ';
+            } else {
+                $categoryEdit = '';
+            }
+
+            if ($packagingIn != $oldProdData->packaging_type) {
+                $packegeEdit = 'Package Type Edited. ';
+            } else {
+                $packegeEdit = '';
+            }
+
+            if ($quantity != $oldProdData->unit_quantity) {
+                $medQtyEdit = 'Medicine Qantity Edited. ';
+            } else {
+                $medQtyEdit = '';
+            }
+
+            if ($unit != $oldProdData->unit) {
+                $unitEdit = 'Unit Edited. ';
+            } else {
+                $unitEdit = '';
+            }
+
+            if ($medicinePower != $oldProdData->power) {
+                $medPowerEdit = 'Medicine Power Edited. ';
+            } else {
+                $medPowerEdit = '';
+            }
+
+            if ($mrp != $oldProdData->mrp) {
+                $mrpEdit = 'MRP Edited. ';
+            } else {
+                $mrpEdit = '';
+            }
+
+            if ($gstPercent != $oldProdData->gst) {
+                $gstEdit = 'GST Edited. ';
+            } else {
+                $gstEdit = '';
+            }
+
+            if ($hsnoNumber != $oldProdData->hsno_number) {
+                $hsnEdit = 'HSN Number Edited. ';
+            } else {
+                $hsnEdit = '';
+            }
+
+            $description = $nameEdit . $categoryEdit . $packegeEdit . $medQtyEdit . $unitEdit . $medPowerEdit . $mrpEdit . $gstEdit . $hsnEdit;
+        }
+
+        $prodDataFromProducts = json_decode($Products->showProductsById($productId));
         if ($prodDataFromProducts->status) {
             if ($prodDataFromProducts->data->edit_request_flag == 0) {
+                echo '1';
                 $oldProdFlag = 1;
                 $prodReqStatus = 0;
 
@@ -148,7 +215,7 @@ if ($_SESSION['ADMIN']) {
 
                 // $prdReq = "PRDREQ";
 
-                $addOldProdEditRequest = $Request->addOldProductRequest($oldProdId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+                $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $description, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
                 $addOldProdEditRequest = json_decode($addOldProdEditRequest);
 
                 // print_r($addOldProdEditRequest);
@@ -160,33 +227,33 @@ if ($_SESSION['ADMIN']) {
                     $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
 
                     $editRequest = true;
+                    $productId = $newProductId;
                 }
             } else {
+                echo '2';
 
                 $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
-                // print_r($selectFromProdReqTable);
+                print_r($selectFromProdReqTable);
                 if ($selectFromProdReqTable->status) {
 
                     $modifiedProdId = $selectFromProdReqTable->data[0]->$product_id;
                     $prodReqStatus = 0;
                     $oldProdFlag = 1;
 
-                    $editRequest = $Request->editUpdateProductRequest($modifiedProdId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+                    $editRequest = $Request->editUpdateProductRequest($modifiedProdId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
-                    // echo "hello2";
-                    // echo "check edit request data : ";
-                    // print_r($editRequest);
+                    $productId = $modifiedProdId;
                 } else {
-
+                    echo '3';
                     $oldProdFlag = 1;
                     $prodReqStatus = 0;
 
                     $randNum = rand(1, 999999999999);
-                    $productId = 'PR' . $randNum;
+                    $newProductId = 'PR' . $randNum;
 
                     // $prdReq = "PRDREQ";
 
-                    $addOldProdEditRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+                    $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $description, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
                     // echo "hello3";
 
@@ -197,22 +264,22 @@ if ($_SESSION['ADMIN']) {
                         $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
 
                         $editRequest = true;
+                        $productId = $newProductId;
                     }
                 }
             }
+        } else {
+            echo $productId . "-4";
+
+            $prodReqStatus = 0;
+            $oldProdFlag = 1;
+
+            $description = 'Add new product Request. '.$description;
+
+            $editRequest = $Request->editUpdateProductRequest($productId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+
         }
-        // else {
 
-        //     $prodReqStatus = 0;
-        //     $oldProdFlag = 0;
-
-        //     $editRequest = $Request->editUpdateProductRequest($productId, $productName, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
-
-        //     // echo "check edit request data : ";
-        //     // print_r($editRequest);
-        // }
-
-        // $editRequest = false;
 
         if ($editRequest) {
 
