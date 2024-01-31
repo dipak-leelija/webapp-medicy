@@ -396,7 +396,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                 <div class="modal-content ">
                     <div class="modal-header">
                         <div class="d-flex justify-content-between w-75">
-                            <h5 class="modal-title" id="exampleModalToggleLabel2">Product Request</h5>
+                            <h5 class="modal-title" id="exampleModalToggleLabel2">Product Update</h5>
                             <!-- <button class="btn btn-primary btn-sm" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Distributor</button> -->
                         </div>
                         <button type="button" class="btn btn-transparent fs-2 p-0" data-bs-target="#ProdUnitModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
