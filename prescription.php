@@ -10,9 +10,8 @@ require_once CLASS_DIR. 'encrypt.inc.php';
 
 
 // Fetching Appointments Info
-// $appointmentId = url_dec($_GET['prescription']);
-
-$appointmentId = $_GET['prescription'];
+$appointmentId = url_dec($_GET['prescription']);
+// $appointmentId = $_GET['prescription'];
 // echo $appointmentId;
 $appointments   = new Appointments();
 $DoctorCategory = new DoctorCategory();

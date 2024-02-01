@@ -6,6 +6,7 @@ require_once CLASS_DIR.'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR.'appoinments.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR. 'encrypt.inc.php';
 
 $page = "appointments";
 
@@ -53,6 +54,8 @@ if (isset($_SESSION['appointment-data'])) {
         
         unset($_SESSION['appointment-data']);
         echo '<script>alert(Appointment Added!)</script>';
+
+        $appointmentId = url_enc($appointmentId);
         header("location: appointment-sucess.php?appointmentId=".$appointmentId);
             
     }else{

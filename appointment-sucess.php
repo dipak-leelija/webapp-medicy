@@ -6,10 +6,11 @@ require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'appoinments.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR. 'encrypt.inc.php';
 
 
 if (isset($_GET['appointmentId'])) {
-    $generatedAppointmentId = $_GET['appointmentId'];
+    $generatedAppointmentId = url_dec($_GET['appointmentId']);
     $set = true;
   } else {
     $set = false;
@@ -114,6 +115,7 @@ if (isset($_GET['appointmentId'])) {
 
               <?php
               if ($set) {
+                $generatedAppointmentId = url_enc($generatedAppointmentId);
                 echo '<a href="prescription.php?prescription=' . $generatedAppointmentId . '" id="printBtn">Print</a>';
               }
 
