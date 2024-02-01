@@ -1,9 +1,9 @@
 <?php
+
 $page = "lab-tests";
+
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-
-
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
@@ -12,10 +12,8 @@ require_once CLASS_DIR . 'labtypes.class.php';
 require_once CLASS_DIR . 'sub-test.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
-
 $labTypes = new LabTypes;
 $subTests = new SubTests;
-
 
 //######################################################
 // Adding Lab Category
@@ -198,7 +196,7 @@ if (isset($_POST['subtest-submit']) == true) {
                                                                                     </div>
                                                                                     <div
                                                                                         class="text-center mb-4 view_edit">
-                                                                                        <a href="single-lab-page.php?labtypeid='.url_enc($testTypeId).'"
+                                                                                        <a href="single-lab-page.php?labtypeid=' . url_enc($testTypeId) . '"
                                                                                             class="btn btn-sm btn-primary mx-4 view">View</a>
 
                                                                                         <a class="btn btn-sm btn-primary mx-4 editCategory" data-bs-toggle="modal" data-bs-target="#LabCategoryEditModal" onclick="LabCategoryEditModal(' . $testTypeId . ')">Edit</a>
@@ -281,9 +279,9 @@ if (isset($_POST['subtest-submit']) == true) {
                                                 <option value="" disabled selected>Select Main Test</option>
                                                 <?php
                                                 // if ($showLabTypes && isset($showLabTypes['status']) && $showLabTypes['status'] == 1) {
-                                                    foreach ($showLabTypes as $labTypeName) {
-                                                        echo '<option value="' . $labTypeName['id'] . '">' . $labTypeName['test_type_name'] . '</option>';
-                                                    }
+                                                foreach ($showLabTypes as $labTypeName) {
+                                                    echo '<option value="' . $labTypeName['id'] . '">' . $labTypeName['test_type_name'] . '</option>';
+                                                }
                                                 // }
                                                 ?>
 
@@ -383,9 +381,10 @@ if (isset($_POST['subtest-submit']) == true) {
     </div>
     <!-- End of Category Edit Modal -->
 
-    <!-- Custom Javascript -->
-    <script src="<?php echo JS_PATH ?>custom-js.js"></script>
+    <!-- Custom Javascript  -->
+    <script src="<?php echo JS_PATH ?>custom-js.js"></script>  <!-- LabCategoryEditModal function body gose hear -->
 
+    
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?php echo JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>

@@ -40,7 +40,7 @@ $showLabTypes = $labTypes->showLabTypesById($showLabtypeId);
             ?>
             <input type="hidden" id="editCatDtlsId" name="nm_option" value="<?php echo $showLabtypeId;?>">
             <div class="mb-3">
-                <img src="<?php echo LOCAL_DIR .$testImage; ?>" alt="No Image">
+                <img src="<?php echo LABTEST_IMG_PATH .$testImage; ?>" alt="No Image">
                 <!-- <input type="file" class="form-control" name="editTestCategoryImage" id="editTestCategoryImage"> -->
             </div>
             <div class="mb-3">
