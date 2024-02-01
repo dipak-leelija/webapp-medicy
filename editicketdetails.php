@@ -32,8 +32,8 @@ $requestTypes = [
     'packtype_request' => ['tableName' => 'Packtype Request', 'data' => []],
     'distributor' => ['tableName' => 'Distributer Add', 'data' => []],
     'manufacturer' => ['tableName' => 'manufacturer Add', 'data' => []],
-    // 'packaging_type' => ['tableName' => 'packaging type Add', 'data' => []],
-    'quantity_unit' => ['tableName' => 'quantity unit add', 'data' => []]
+    'packaging_type' => ['tableName' => 'packaging Add', 'data' => []],
+    'quantity_unit' => ['tableName' => 'quantity add', 'data' => []]
 ];
 
 foreach ($requestTypes as $table => &$requestType) {
@@ -49,22 +49,68 @@ foreach ($requestTypes as $table => &$requestType) {
         $requestType['data'] = [];
     }
 
+    // foreach ($requestType['data'] as $requestDataItem) {
+    //     // print_r($requestType);
+    //     if ($requestType['tableName'] != 'Product Request') {
+    //         if ($requestType['tableName'] == 'packaging_type') {
+    //             $allRequestResult[] = [
+    //                 'tableName' => $requestType['tableName'],
+    //                 'name' => $requestDataItem->unit_name,
+    //                 // 'description' => $requestDataItem->req_dsc
+    //                 // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+    //             ];
+    //         } else {
+    //             $allRequestResult[] = [
+    //                 'tableName' => $requestType['tableName'],
+    //                 'name' => $requestDataItem->name,
+    //                 // 'description' => $requestDataItem->dsc
+    //                 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+    //             ];
+    //         }
+    //     } elseif ($requestType['tableName'] == 'Product Request') {
+    //         $allRequestResult[] = [
+    //             'tableName' => $requestType['tableName'],
+    //             'name' => $requestDataItem->name,
+    //             'description' => $requestDataItem->req_dsc
+    //             // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+    //         ];
+    //     }
+    // }
+
     foreach ($requestType['data'] as $requestDataItem) {
-        // print_r($requestType);
-        if($requestType['tableName'] != 'Product Request'){
+        print_r($requestType);
+        if ($requestType['tableName'] == 'Product Request') {
             $allRequestResult[] = [
-                'tableName' => $requestType['tableName'],
-                'name' => $requestDataItem->name,
-                // 'description' => $requestDataItem->dsc
-                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-            ];
-        }elseif($requestType['tableName'] == 'Product Request'){
-            $allRequestResult[] = [
-                'tableName' => $requestType['tableName'],
-                'name' => $requestDataItem->name,
+                'tableName'   => $requestType['tableName'],
+                'name'        => $requestDataItem->name,
                 'description' => $requestDataItem->req_dsc
-                // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
             ];
+        } else {
+            if($requestType['tableName'] == 'Packtype Request'){
+                $allRequestResult[] = [
+                    'tableName'   => $requestType['tableName'],
+                    'name'        => $requestDataItem->unit_name,
+                    'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                ];
+            }elseif ($requestType['tableName'] == 'packaging Add') {
+                $allRequestResult[] = [
+                    'tableName'   => $requestType['tableName'],
+                    'name'        => $requestDataItem->unit_name,
+                    'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                ];
+            } elseif ($requestType['tableName'] == 'quantity add') {
+                $allRequestResult[] = [
+                    'tableName'   => $requestType['tableName'],
+                    'name'        => $requestDataItem->short_name,
+                    'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                ];
+            } else {
+                $allRequestResult[] = [
+                    'tableName'   => $requestType['tableName'],
+                    'name'        => $requestDataItem->name,
+                    'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                ];
+            }
         }
     }
 }
