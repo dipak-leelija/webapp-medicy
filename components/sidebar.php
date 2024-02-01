@@ -243,8 +243,8 @@
 
         <?php if ($userRole == 'ADMIN') : ?>
             <!-- TICKET MENUE -->
-            <li class="nav-item <?php if ($page ==  "editicketdetails" ) { echo "active"; } ?>">
-                <a class="nav-link collapsed" href="editicketdetails.php">
+            <li class="nav-item <?php if ($page ==  "ticket-details" ) { echo "active"; } ?>">
+                <a class="nav-link collapsed" href="ticket-details.php">
                     <i class="fas fa-hand-paper"></i>
                     <span>All Ticket</span>
                 </a>
@@ -255,9 +255,6 @@
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-
-
-
     </ul>
 
     <!-- End of Sidebar -->

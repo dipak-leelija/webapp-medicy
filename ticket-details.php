@@ -12,8 +12,6 @@ require_once CLASS_DIR . 'pagination.class.php';
 // require_once ROOT_DIR . '_config/accessPermission.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
-$page = "editicketdetails";
-
 //Intitilizing Doctor class for fetching doctors
 $Products       = new Products();
 $Request        = new Request;
@@ -41,7 +39,7 @@ foreach ($requestTypes as $table => &$requestType) {
     // print_r($table);
 
     $requestData = json_decode($Request->fetchRequestDataByTableName($table, $adminId));
-    // print_r($requestData);
+    print_r($requestData);
 
     if ($requestData->status) {
         $requestType['data'] = $requestData->data;
@@ -85,35 +83,34 @@ foreach ($requestTypes as $table => &$requestType) {
                 'name'        => $requestDataItem->name,
                 'description' => $requestDataItem->req_dsc
             ];
+        } elseif ($requestType['tableName'] == 'Packtype Request') {
+            $allRequestResult[] = [
+                'tableName'   => $requestType['tableName'],
+                'name'        => $requestDataItem->unit_name,
+                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+            ];
+        } elseif ($requestType['tableName'] == 'packaging Add') {
+            $allRequestResult[] = [
+                'tableName'   => $requestType['tableName'],
+                'name'        => $requestDataItem->unit_name,
+                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+            ];
+        } elseif ($requestType['tableName'] == 'quantity add') {
+            $allRequestResult[] = [
+                'tableName'   => $requestType['tableName'],
+                'name'        => $requestDataItem->short_name,
+                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+            ];
         } else {
-            if($requestType['tableName'] == 'Packtype Request'){
-                $allRequestResult[] = [
-                    'tableName'   => $requestType['tableName'],
-                    'name'        => $requestDataItem->unit_name,
-                    'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-                ];
-            }elseif ($requestType['tableName'] == 'packaging Add') {
-                $allRequestResult[] = [
-                    'tableName'   => $requestType['tableName'],
-                    'name'        => $requestDataItem->unit_name,
-                    'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-                ];
-            } elseif ($requestType['tableName'] == 'quantity add') {
-                $allRequestResult[] = [
-                    'tableName'   => $requestType['tableName'],
-                    'name'        => $requestDataItem->short_name,
-                    'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-                ];
-            } else {
-                $allRequestResult[] = [
-                    'tableName'   => $requestType['tableName'],
-                    'name'        => $requestDataItem->name,
-                    'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-                ];
-            }
+            $allRequestResult[] = [
+                'tableName'   => $requestType['tableName'],
+                'name'        => $requestDataItem->name,
+                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+            ];
         }
     }
 }
+
 
 // print_r($allRequestResult);
 
@@ -266,8 +263,21 @@ if ($pagination->status == 1) {
 
     </div>
     <!-- End of Page Wrapper -->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
+        <!-- Bootstrap core JavaScript-->
+        <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+        <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+        <!-- <script src="<?= JS_PATH ?>sweetAlert.min.js"></script> -->
+        <!-- Core plugin JavaScript-->
+        <!-- <script src="../assets/jquery-easing/jquery.easing.min.js"></script> -->
 
+        <!-- Custom scripts for all pages-->
+        <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+        <!-- <script src="../js/ajax.custom-lib.js"></script> -->
+        <!-- <script src="../js/sweetAlert.min.js"></script> -->
 </body>
-
+        
 </html>
