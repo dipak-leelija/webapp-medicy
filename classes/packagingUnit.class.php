@@ -252,9 +252,14 @@ class PackagingUnits extends DatabaseConnection
         }
     }
 
-    function showPackagingRequest()
+    function showPackagingRequest($packagingUnitId = '')
     {
         try {
+            if(!empty($packagingUnitId)){
+                $result = "SELECT * FROM `packtype_request` WHERE `pack_id` = $packagingUnitId";
+            }else{
+                $result = "SELECT * FROM `packtype_request`";
+            }
             $result = "SELECT * FROM `packtype_request`";
             $stmt = $this->conn->prepare($result);
             if ($stmt) {

@@ -82,7 +82,7 @@ $showManufacturer = $Manufacturer->showRequestManufacturer();
                                         $showManufacturer = json_decode($showManufacturer);
                                         if (is_array($showManufacturer)) {
                                             foreach ($showManufacturer as $rowManufacturer) {
-
+                                                // print_r($rowManufacturer);
                                                 $manufacturerId          = $rowManufacturer->manu_id;
                                                 $manufacturerName        = $rowManufacturer->name;
                                                 // $distributorId       = $rowManufacturer['distributor_id'];
