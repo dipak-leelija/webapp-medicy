@@ -167,7 +167,7 @@ if (isset($_POST['update-product'])) {
         } else {
            
             $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
-            print_r($selectFromProdReqTable);
+            // print_r($selectFromProdReqTable);
             if ($selectFromProdReqTable->status) {
 
                 $modifiedProdId = $selectFromProdReqTable->data[0]->$product_id;
