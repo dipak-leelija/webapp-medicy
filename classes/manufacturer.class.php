@@ -372,11 +372,15 @@ class Manufacturer extends DatabaseConnection
         }
     }
 
-    function showRequestManufacturer()
+    function showRequestManufacturer($manufacturerId = '')
     {
         try {
             $data = array();
-            $select = "SELECT * FROM `manufacturer_request`";
+            if(!empty($manufacturerId)){
+                $select = "SELECT * FROM `manufacturer_request` WHERE `manu_id` = $manufacturerId";
+            }else{
+                $select = "SELECT * FROM `manufacturer_request`";
+            }
 
             // $select = "SELECT * FROM `manufacturer`";
             $selectQuery = $this->conn->prepare($select);
