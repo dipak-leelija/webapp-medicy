@@ -5,8 +5,8 @@
     $updatedUrl = $parts[0];
     $page = $updatedUrl;
     ?>
-    <!-- Sidebar -->
 
+    <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
@@ -21,7 +21,6 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item For Healthcare -->
-
         <li class="nav-item <?php if ($currentURL  ==  LOCAL_DIR) {
                                 echo "active";
                             } ?>">
@@ -169,28 +168,18 @@
 
 
             <!-- Purchase Management  -->
-            <li class="nav-item <?php if ($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item") {
-                                    echo "active";
-                                } ?>">
-                <a active class="nav-link <?php if ($page !=  "stock-in") {
-                                                echo "collapsed";
-                                            } ?>" href="#" data-toggle="collapse" data-target="#collapsePurchaseManagement" aria-expanded="<?php if ($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item") {
-                                                                                                                                                                                                echo "true";
-                                                                                                                                                                                            } ?>" aria-controls="collapsePurchaseManagement">
+            <li class="nav-item <?php if ($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item") { echo "active"; } ?>">
+                <a active class="nav-link <?php if ($page !=  "stock-in") { echo "collapsed";} ?>" 
+                href="#" data-toggle="collapse" data-target="#collapsePurchaseManagement" aria-expanded="<?php if ($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item") {
+                echo "true";} ?>" aria-controls="collapsePurchaseManagement">
                     <i class="fas fa-store-alt"></i>
                     <span>Purchase Management</span>
                 </a>
-                <div id="collapsePurchaseManagement" class="collapse <?php if ($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item") {
-                                                                            echo "show";
-                                                                        } ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="collapsePurchaseManagement" class="collapse <?php if ($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item") { echo "show"; } ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Purchase Management:</h6>
-                        <a class="collapse-item <?php if ($page ==  "stock-in") {
-                                                    echo "active";
-                                                } ?>" href="stock-in.php ">Purchase </a>
-                        <a class="collapse-item <?php if ($page ==  "stock-return" || $page == "stock-return-item") {
-                                                    echo "active";
-                                                } ?>" href="
+                        <a class="collapse-item <?php if ($page ==  "stock-in") { echo "active"; } ?>" href="stock-in.php ">Purchase </a>
+                        <a class="collapse-item <?php if ($page ==  "stock-return" || $page == "stock-return-item") { echo "active"; } ?>" href="
                         stock-return.php">Purchase Return</a>
                     </div>
                 </div>
@@ -253,15 +242,14 @@
             
         <?php endif; ?>
 
-        <?php if ($userRole === 'ADMIN') : ?>
-         <!-- ticket details collapsed Menu  -->             
-         <li class="nav-item <?php if ($page ==  "editicketdetails") {
+        <?php if ($userRole == 'ADMIN') : ?>
+            <!-- Nav Item - ticket details -->
+            <li class="nav-item <?php if ($page ==  "editicketdetails") {
                                     echo "active";
                                 }  ?>">
                 <a class="nav-link" href="editicketdetails.php">
                     <i class="fas fa-hand-paper"></i>
-                    <span>All Request Details</span>
-                </a>
+                    <span>All Ticket</span></a>
             </li>
         <?php endif; ?>
 
