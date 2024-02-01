@@ -311,15 +311,26 @@ class Appointments extends DatabaseConnection
     function appointmentsDisplaybyId($appointmentId)
     {
         $data = [];
-        $selectById = "SELECT * FROM `appointments` WHERE `appointments`.`appointment_id` = '$appointmentId'";
-        $selectByIdQuery = $this->conn->query($selectById);
-        while ($result = $selectByIdQuery->fetch_array()) {
-            $data[]    = $result;
+        try {
+            $selectById = "SELECT * FROM `appointments` WHERE `appointments`.`appointment_id` = ?";
+            $stmt = $this->conn->prepare($selectById);
+            $stmt->bind_param("s", $appointmentId);
+            $stmt->execute();
+            
+            $result = $stmt->get_result();
+            
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+            
+            $stmt->close();
+        } catch (Exception $e) {
+            error_log("Error fetching appointment data: " . $e->getMessage());
+            return false; 
         }
-
         return $data;
-    } //end appointmentsDisplaybyId function
-
+    }
+    
 
 
 

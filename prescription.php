@@ -10,13 +10,16 @@ require_once CLASS_DIR. 'encrypt.inc.php';
 
 
 // Fetching Appointments Info
-$appointmentId = url_dec($_GET['prescription']);
+// $appointmentId = url_dec($_GET['prescription']);
+
+$appointmentId = $_GET['prescription'];
+// echo $appointmentId;
 $appointments   = new Appointments();
 $DoctorCategory = new DoctorCategory();
 
 
 $currentAppointments = $appointments->appointmentsDisplaybyId($appointmentId);
-//    print_r($currentAppointments); exit;
+// print_r($currentAppointments);
 
 foreach($currentAppointments as $currentAppointmentDetails){
     $appointmentDate     = $currentAppointmentDetails['appointment_date'];
@@ -91,13 +94,13 @@ if ($doctorCategory->status == 1) {
                 <div class="col-1 headerHospitalLogo">
                     <img class="mt-4" src="<?= $healthCareLogo ?>" alt="<?= $healthCareName ?>">
                 </div>
-                <div class="col-4 headerHospitalDetails">
+                <div class="col-5 headerHospitalDetails">
                     <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?= $healthCareName ?></h1>
                     <p class="text-start  me-3">
                         <small><?php echo $healthCareAddress1 . ', ' . $healthCareCity . ', ' . $patientDist . ',<br>' . $healthCareState . ', ' . $healthCarePin; ?></small>
                     </p>
                 </div>
-                <div class="col-2 header-doc-img"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
+                <div class="col-1 header-doc-img d-flex justify-content-left"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
                 <div class=" text-danger col-5 headerDoctorDetails">
                     <h2 class="text-end mt-3  mb-0"><?= $DoctorName ?></h2>
                     <p class="text-end  mb-0 ">
