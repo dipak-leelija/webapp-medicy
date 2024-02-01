@@ -87,7 +87,6 @@ $showManufacturer = $Manufacturer->showRequestManufacturer();
                                                 $manufacturerName        = $rowManufacturer->name;
                                                 // $distributorId       = $rowManufacturer['distributor_id'];
                                                 $manufacturerDsc         = $rowManufacturer->dsc;
-                                                print_r($manufacturerDsc );
                                                 $manufacturerStatus      = $rowManufacturer->status;
 
                                                 $statusLabel = '';
