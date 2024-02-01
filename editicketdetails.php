@@ -78,7 +78,7 @@ foreach ($requestTypes as $table => &$requestType) {
     // }
 
     foreach ($requestType['data'] as $requestDataItem) {
-        print_r($requestType);
+        // print_r($requestType);
         if ($requestType['tableName'] == 'Product Request') {
             $allRequestResult[] = [
                 'tableName'   => $requestType['tableName'],
