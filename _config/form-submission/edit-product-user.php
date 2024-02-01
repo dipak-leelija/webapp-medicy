@@ -77,7 +77,7 @@ if (isset($_POST['update-product'])) {
   
     // =========== product edit description section =========
     $productData = json_decode($Products->showProductsByIdOnTableNameAdminId($productId, $adminId, $tableName));
-    print_r($productData);
+    // print_r($productData);
     if ($productData->status) {
         $oldProdData = $productData->data;
         // print_r($oldProdData);
@@ -149,6 +149,9 @@ if (isset($_POST['update-product'])) {
             $randNum = rand(1, 999999999999);
             $newProductId = 'PR' . $randNum;
 
+
+            // echo $productId."-*-", $newProductId."-*-", $productName."-*-", $comp1."-*-", $comp2."-*-", $productCategory."-*-", $packagingIn."-*-",  $quantity."-*-", $unit."-*-", $medicinePower."-*-", $mrp."-*-", $gstPercent."-*-", $hsnoNumber."-*-", $description."-*-", $addedBy."-*-", NOW."-*-", $adminId."-*-", $prodReqStatus."-*-", $oldProdFlag."-*-";
+
             $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
             $addOldProdEditRequest = json_decode($addOldProdEditRequest);
@@ -199,11 +202,11 @@ if (isset($_POST['update-product'])) {
         }
 
     } else {
-       
+        echo 'check';
         $prodReqStatus = 0;
         $oldProdFlag = 1;
 
-        $description = 'Add new product Request. '.$description;
+        $description = 'Product Edit Request. '.$description;
 
         $editRequest = $Request->editUpdateProductRequest($productId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
