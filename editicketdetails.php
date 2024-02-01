@@ -16,7 +16,7 @@ $page = "editicketdetails";
 
 //Intitilizing Doctor class for fetching doctors
 $Products       = new Products();
-$Request            = new Request;
+$Request        = new Request;
 $Pagination     = new Pagination();
 $ProductImages  = new ProductImages();
 

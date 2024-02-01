@@ -242,8 +242,10 @@
             
         <?php endif; ?>
 
-        <?php if ($userRole == 'ADMIN') : ?>
-            <!-- Nav Item - ticket details -->
+        
+
+        <!-- <?php if ($userRole == 'ADMIN') : ?>
+    
             <li class="nav-item <?php if ($page ==  "editicketdetails") {
                                     echo "active";
                                 }  ?>">
@@ -251,7 +253,7 @@
                     <i class="fas fa-hand-paper"></i>
                     <span>All Ticket</span></a>
             </li>
-        <?php endif; ?>
+        <?php endif; ?> -->
 
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
