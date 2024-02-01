@@ -320,11 +320,14 @@ class Distributor extends DatabaseConnection
         }
     }
 
-    function showDistRequest()
+    function showDistRequest($DistributorId = '')
     {
         try {
-
-            $select = "SELECT * FROM distributor_request";
+            if(!empty($DistributorId)){
+                $select = "SELECT * FROM distributor_request WHERE `dist_id` = $DistributorId";
+            }else{
+                $select = "SELECT * FROM distributor_request";
+            }
             // $select = "SELECT * FROM distributor";
             $selectQuery = $this->conn->prepare($select);
 
