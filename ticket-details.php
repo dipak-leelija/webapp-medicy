@@ -263,22 +263,16 @@ if ($pagination->status == 1) {
 
     </div>
     <!-- End of Page Wrapper -->
-    
+
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
         </a>
 
-        <!-- Bootstrap core JavaScript-->
+        
         <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
         <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-        <!-- <script src="<?= JS_PATH ?>sweetAlert.min.js"></script> -->
-        <!-- Core plugin JavaScript-->
-        <!-- <script src="../assets/jquery-easing/jquery.easing.min.js"></script> -->
-
-        <!-- Custom scripts for all pages-->
         <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-        <!-- <script src="../js/ajax.custom-lib.js"></script> -->
-        <!-- <script src="../js/sweetAlert.min.js"></script> -->
+        
 </body>
         
 </html>
