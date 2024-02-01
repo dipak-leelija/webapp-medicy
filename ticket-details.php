@@ -263,6 +263,7 @@ if ($pagination->status == 1) {
 
     </div>
     <!-- End of Page Wrapper -->
+    
         <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
         </a>
