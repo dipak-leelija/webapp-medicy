@@ -41,9 +41,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item <?php if ($page ==  "appointments" || $page == "add-patient" || $page == "patient-selection") {
-                                    echo "active";
-                                } ?>">
+            <li class="nav-item <?php if ($page ==  "appointments" || $page == "add-patient" || $page == "patient-selection") { echo "active"; } ?>">
                 <a class="nav-link collapsed" href="appointments.php">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Appointments</span>
@@ -53,7 +51,7 @@
 
             <!-- Lab section  -->
 
-            <li class="nav-item <?= $page ==  "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports" || $page == "test-report-generate" ? "active" : ''; ?>">
+            <li class="nav-item <?= $page == "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports" || $page == "test-report-generate" ? "active" : ''; ?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTest" aria-expanded="<?= $page ==  "lab-tests" || $page ==  "test-appointments" || $page ==  "test-reports" ? "true" : ''; ?>" aria-controls="collapsePages">
                     <i class="fas fa-vial"></i>
                     <span>Lab Tests</span>
@@ -242,18 +240,17 @@
             
         <?php endif; ?>
 
-        
 
-        <!-- <?php if ($userRole == 'ADMIN') : ?>
-    
-            <li class="nav-item <?php if ($page ==  "editicketdetails") {
-                                    echo "active";
-                                }  ?>">
-                <a class="nav-link" href="editicketdetails.php">
+        <?php if ($userRole == 'ADMIN') : ?>
+            <!-- TICKET MENUE -->
+            <li class="nav-item <?php if ($page ==  "editicketdetails" ) { echo "active"; } ?>">
+                <a class="nav-link collapsed" href="editicketdetails.php">
                     <i class="fas fa-hand-paper"></i>
-                    <span>All Ticket</span></a>
+                    <span>All Ticket</span>
+                </a>
             </li>
-        <?php endif; ?> -->
+        <?php endif; ?>
+
 
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
