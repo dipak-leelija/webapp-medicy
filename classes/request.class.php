@@ -260,7 +260,7 @@ class Request extends DatabaseConnection
                 $statusColumn = 'status';
             } elseif ($tableName == 'manufacturer_request') {
                 $name = 'name';
-                $description = 'dsc';
+                $description = '';
                 $statusColumn = 'status';
             } elseif ($tableName == 'packtype_request') {
                 $name = 'unit_name';
