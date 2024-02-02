@@ -31,6 +31,7 @@ $Gst                = new Gst;
 
 $gstData = json_decode($Gst->seletGst());
 $gstData = $gstData->data;
+// print_r($gstData);
 
 
 $showProducts          = $Products->showProducts();

@@ -94,6 +94,7 @@ if (isset($_POST['delItemId'])) {
         $StockInId = $sockInDetaislData['stokIn_id'];
         $DetailsItemQty = $sockInDetaislData['qty'];
         $DetailsItemGstAmount = $sockInDetaislData['gst_amount'];
+        // echo $DetailsItemGstAmount;
         $DetailsItemAmount = $sockInDetaislData['amount'];
         
         // echo "<br>$itemDetaislId<br>$itemQty<br>$itemGstAmount<br>$itemAmount<br>$StockInId<br><br>";
@@ -108,6 +109,7 @@ if (isset($_POST['delItemId'])) {
             $StockInItemCount = $stockIn['items'];
             $StockInTotalQty = $stockIn['total_qty'];
             $StockInGstAmount = $stockIn['gst'];
+            
             $StockInAmount = $stockIn['amount'];
 
             // echo "<br>$itemCount<br>$totalQty<br>$gstAmount<br>$amount<br>$StockInId<br><br>";
@@ -115,6 +117,7 @@ if (isset($_POST['delItemId'])) {
             $updatedStockInItemsCount = intval($StockInItemCount) - 1;
             $updatedStockInTotalQty = intval($StockInTotalQty) - intval($DetailsItemQty);
             $updatedStockInGstAmount = intval($StockInGstAmount) - intval($DetailsItemGstAmount);
+            // echo $updatedStockInGstAmount;
             $updatedStockInAmount = intval($StockInAmount) - intval($DetailsItemAmount);
 
             // echo "<br>$updatedItemsCount<br>$updatedTotalQty<br>$updatedGstAmount<br>$updatedAmount<br>$StockInId<br><br>";
