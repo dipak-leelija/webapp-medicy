@@ -16,7 +16,51 @@ $distributorDsc       = $_GET['dsc'];
 
 $Distributor = new Distributor();
 
-$updateDist = $Distributor->insertRequestDist($distributorId ,$distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc,  NOW, $adminId);
+
+$showDistributor    = $Distributor->showDistributorById($distributorId);
+$showDistributor    = json_decode($showDistributor);
+
+if (isset($showDistributor->status) && $showDistributor->status == 1) {
+    $data = $showDistributor->data;
+    if (!empty($data)) {
+
+        if( $data->name != $distributorName){
+            $distNameEdit = 'Name Edited. ';
+        }else{
+            $distNameEdit = '';
+        }
+        if($data->address != $distributorAddress){
+            $distAddrEdit = 'Address Edited.';
+        }else{
+            $distAddrEdit = '';
+        }
+        if($data->phno != $distributorAreaPIN){
+            $distPinEdit = 'AreaPin Edited. ';
+        }else{
+            $distPinEdit = '';
+        }
+        if($data->phno != $distributorPhno){
+            $distPhoneEdit = 'Phone Number Edited. ';
+        }else{
+            $distPhoneEdit = "";            
+        }
+        if($data->email != $distributorEmail){
+            $distEmailEdit = 'Email Edited. ';
+        }else{
+            $distEmailEdit = '';
+        }
+        if($data->dsc != $distributorDsc){
+            $distDscEdit = 'Description Edited. ';
+        }else{
+            $distDscEdit = '';
+        }
+        $reqDescription = $distNameEdit . $distAddrEdit . $distPinEdit . $distPhoneEdit . $distEmailEdit . $distDscEdit;
+    }
+}
+
+
+
+$updateDist = $Distributor->insertRequestDist($distributorId ,$distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $reqDescription,  NOW, $adminId);
 
 //check if the data has been updated or not
 if($updateDist){

@@ -292,18 +292,18 @@ class Distributor extends DatabaseConnection
 
     ///================distributor request============////
 
-    function insertRequestDist($distributorId, $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedOn, $adminId)
+    function insertRequestDist($distributorId, $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $reqDescription, $addedOn, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO distributor_request (`dist_id`, `name`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO distributor_request (`dist_id`, `name`, `address`, `area_pin_code`, `phno`, `email`, `dsc`,`req_dsc`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("issiissss", $distributorId, $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedOn, $adminId);
+                $stmt->bind_param("issiisssss", $distributorId, $distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $reqDescription, $addedOn, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();

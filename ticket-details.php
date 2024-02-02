@@ -47,33 +47,6 @@ foreach ($requestTypes as $table => &$requestType) {
         $requestType['data'] = [];
     }
 
-    // foreach ($requestType['data'] as $requestDataItem) {
-    //     // print_r($requestType);
-    //     if ($requestType['tableName'] != 'Product Request') {
-    //         if ($requestType['tableName'] == 'packaging_type') {
-    //             $allRequestResult[] = [
-    //                 'tableName' => $requestType['tableName'],
-    //                 'name' => $requestDataItem->unit_name,
-    //                 // 'description' => $requestDataItem->req_dsc
-    //                 // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-    //             ];
-    //         } else {
-    //             $allRequestResult[] = [
-    //                 'tableName' => $requestType['tableName'],
-    //                 'name' => $requestDataItem->name,
-    //                 // 'description' => $requestDataItem->dsc
-    //                 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-    //             ];
-    //         }
-    //     } elseif ($requestType['tableName'] == 'Product Request') {
-    //         $allRequestResult[] = [
-    //             'tableName' => $requestType['tableName'],
-    //             'name' => $requestDataItem->name,
-    //             'description' => $requestDataItem->req_dsc
-    //             // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-    //         ];
-    //     }
-    // }
 
     foreach ($requestType['data'] as $requestDataItem) {
         // print_r($requestType);
@@ -82,6 +55,12 @@ foreach ($requestTypes as $table => &$requestType) {
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
                 'description' => $requestDataItem->req_dsc
+            ];
+        } elseif ($requestType['tableName'] == 'Distributor Request') {
+            $allRequestResult[] = [
+                'tableName'   => $requestType['tableName'],
+                'name'        => $requestDataItem->name,
+                'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
         } elseif ($requestType['tableName'] == 'Packtype Request') {
             $allRequestResult[] = [
@@ -264,15 +243,15 @@ if ($pagination->status == 1) {
     </div>
     <!-- End of Page Wrapper -->
 
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-        
-        <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-        <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-        <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-        
+
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+
 </body>
-        
+
 </html>

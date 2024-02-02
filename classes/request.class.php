@@ -256,7 +256,7 @@ class Request extends DatabaseConnection
                 $statusColumn = 'prod_req_status';
             } elseif ($tableName == 'distributor_request') {
                 $name = 'name';
-                $description = 'dsc';
+                $description = 'req_dsc';
                 $statusColumn = 'status';
             } elseif ($tableName == 'manufacturer_request') {
                 $name = 'name';
