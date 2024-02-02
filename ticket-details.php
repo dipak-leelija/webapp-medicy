@@ -72,7 +72,7 @@ foreach ($requestTypes as $table => &$requestType) {
             $allRequestResult[] = [
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->unit_name,
-                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
         } elseif ($requestType['tableName'] == 'packaging Add') {
             $allRequestResult[] = [

@@ -264,7 +264,7 @@ class Request extends DatabaseConnection
                 $statusColumn = 'status';
             } elseif ($tableName == 'packtype_request') {
                 $name = 'unit_name';
-                $description = '';
+                $description = 'req_dsc';
                 $statusColumn = 'status';
             } elseif ($tableName == 'distributor') {
                 $name = 'name';

@@ -224,18 +224,18 @@ class PackagingUnits extends DatabaseConnection
     }
 
 
-    function insertPackagingRequest($unitId, $unitName, $addedOn, $adminId)
+    function insertPackagingRequest($unitId, $unitName,$reqDescription, $addedOn, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO packtype_request (`pack_id`,`unit_name`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?)";
+            $insert = "INSERT INTO packtype_request (`pack_id`,`unit_name`,`req_dsc`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("isss", $unitId, $unitName, $addedOn, $adminId);
+                $stmt->bind_param("issss", $unitId, $unitName,$reqDescription, $addedOn, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
