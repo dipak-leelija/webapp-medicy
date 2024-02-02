@@ -50,15 +50,6 @@ $SuperAdmin = new SuperAdmin;
             // $cnfPass = $_POST['cpassword'];
             $address = $_POST['address'];
 
-            // echo "<br>$fname";
-            // echo "<br>$lname";
-            // echo "<br>$imageName";
-            // echo "<br>$email";
-            // echo "<br>$phNo";
-            // echo "<br>$address";
-            // echo "<br>$employeeId";
-            // echo "<br>$adminId";
-
             $flag = 0;
 
             if (!empty($_FILES['profile-image']['name'])) {
@@ -79,24 +70,6 @@ $SuperAdmin = new SuperAdmin;
                     }
                 } 
             
-            
-                // else {
-
-                //     $prevImage = $_SESSION['EMP_IMG']; 
-                //     if(!empty($prevImage) && file_exists(EMP_IMG_DIR . $prevImage)){
-                //         unlink(EMP_IMG_DIR . $prevImage);
-                //     }
-                    
-                //     $updateEmployeeData = $Employees->updateEmpData($fname . ' ' . $lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
-
-                //     if ($updateEmployeeData['result']) {
-
-                //         $imgFolder = EMP_IMG_DIR . $imageName;
-                //         move_uploaded_file($tempImgName, $imgFolder);
-                //         $_SESSION['EMP_IMG'] = $imageName;
-                //         $flag = 1;
-                //     }
-                // }
             } else {
                 if ($_SESSION['SUPER_ADMIN']) {
                     $imageName = $_SESSION['SUPER_ADMIN_IMG'];
@@ -105,13 +78,7 @@ $SuperAdmin = new SuperAdmin;
                         $flag = 1;
                     }
                 } 
-                // else {
-                //     $imageName = $_SESSION['EMP_IMG'];
-                //     $updateEmployeeData = $Employees->updateEmpData($fname . ' ' . $lname, $imageName, $email, $phNo, $address, NOW, $employeeId, $adminId);
-                //     if ($updateEmployeeData['result']) {
-                //         $flag = 1;
-                //     }
-                // }
+                
             }
 
             if ($flag == 1) {

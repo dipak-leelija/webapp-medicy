@@ -36,7 +36,12 @@ if ($_SESSION['SUPER_ADMIN']) {
             $firstName = $adminData->fname;
             $lastName  = $adminData->lname;
             $image     = $adminData->adm_img;
-            $imagePath = SUP_ADM_IMG_PATH . $image;
+            if($image != null){
+                $imagePath = SUP_ADM_IMG_PATH . $image;
+            }else{
+                $imagePath = SUP_ADM_IMG_PATH . 'default-human.png';
+            }
+            
             $userName  = $adminData->username;
             $email     = $adminData->email;
             $phone     = $adminData->mobile_no;
@@ -45,38 +50,6 @@ if ($_SESSION['SUPER_ADMIN']) {
         }
     }
 } 
-// else {
-
-//     $employeeDetails = $employees->employeeDetails($employeeId, $adminId);
-//     $employeeDetails = json_decode($employeeDetails);
-
-//     if ($employeeDetails->status) {
-//         $employeeData = $employeeDetails->data;
-
-//         foreach ($employeeData as $employeeData) {
-
-//             $empName = $employeeData->emp_name;
-
-//             $lastSpacePos = strrpos($empName, ' ');
-
-//             if ($lastSpacePos !== false) {
-
-//                 $firstName = substr($empName, 0, $lastSpacePos);
-//                 $lastName = substr($empName, $lastSpacePos + 1);
-//             }
-//             $firstName = $firstName;
-//             $lastName = $lastName;
-//             $image = $employeeData->emp_img;
-//             $imagePath = EMPLOYEE_IMG_PATH . $image;
-//             $userName = $employeeData->emp_username;
-//             $email = $employeeData->emp_email;
-//             $phone = $employeeData->emp_contact_no;
-//             $password = $employeeData->emp_password;
-//             $address = $employeeData->emp_address;
-//         }
-//     }
-// }
-
 
 ?>
 
