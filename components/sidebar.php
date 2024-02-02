@@ -43,7 +43,7 @@
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item <?php if ($page ==  "appointments" || $page == "add-patient" || $page == "patient-selection") { echo "active"; } ?>">
                 <a class="nav-link collapsed" href="appointments.php">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-calendar"></i>
                     <span>Appointments</span>
                 </a>
             </li>
