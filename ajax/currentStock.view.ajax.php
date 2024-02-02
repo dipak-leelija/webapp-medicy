@@ -31,6 +31,7 @@ $packagUnit     =   new PackagingUnits();
 
 if (isset($_GET['currentStockId'])) {
     $productId =  $_GET['currentStockId'];
+    // echo $productId;
     $editReqFlag = $_GET['editReqFlag'];
 
 
@@ -222,6 +223,8 @@ if (isset($_GET['currentStockId'])) {
                 $stockInData = $StockInDetail->showStockInDetailsByTable($stokInDetailsCol1, $stokInDetailsCol2, $productId,  $batchNo);
 
                 foreach ($stockInData as $stockData) {
+                    // print_r($stockData);
+
                     $stockInId = $stockData['stokIn_id'];
                     $stockInDate = $StockIn->stockInByAttributeByTable('id', $stockInId);
                     $purchaseDate = $stockInDate[0]['added_on'];
@@ -240,8 +243,8 @@ if (isset($_GET['currentStockId'])) {
                     $discountParcent = $stockData['discount'];
                     $discountAmount = ($PTR * $discountParcent) / 100;
                     $discount = $discountAmount . $customString1 . $discountParcent . $customString2;
-                    $basePrice = $stockData['base'];
-                    $purchaseAmount = $basePrice * $stockData['qty'];
+                    $rate = round(floatval($stockData['base'])+(floatval($stockData['base'])*intval($gstParecent)/100),2);
+                    $purchaseAmount = floatval($rate) * intval($stockData['qty']);
 
                     $ProductWeightage = $stockData['weightage'];
                     $productUnit = $stockData['unit'];
@@ -250,9 +253,7 @@ if (isset($_GET['currentStockId'])) {
 
                     $totalStockinQty = intval($purchaseQTY) + intval($freeQTY);
 
-                    $perItemGst = floatval($GST) / intval($purchaseQTY);
-                    $perItemGst = floatval($perItemGst);
-                    $perItemGst = number_format($perItemGst, 2);
+                    
                     // $overallQTY = 0;
                 }
 
@@ -278,7 +279,7 @@ if (isset($_GET['currentStockId'])) {
                                 <strong>Distributor Name: </strong><span><?php echo $distName ?></span><br>
                                 <strong>Batch No: </strong><span><?php echo $batchNo ?></span><br>
                                 <strong>Purchase Date: </strong><span><?php echo $purchaseDate ?></span><br>
-                                <strong>MFD: </strong><span><?php echo $mfd ?></span><br>
+                                
                                 <strong>Exp Date: </strong><span><?php echo $expDate ?></span><br>
                                 <strong>Packaging Details : </strong><span><?php echo $packagingDetail . $pacakagingUnitName ?></span><br>
                                 <strong>Purchase Quantity: </strong><?php echo $purchaseQTY . " " . $pacakagingUnitName ?></span><br>
@@ -289,10 +290,13 @@ if (isset($_GET['currentStockId'])) {
                             <div class="col-5">
 
                                 <strong>MRP: </strong><span><?php echo $MRP ?></span><br>
-                                <strong>PTR: </strong><span><?php echo $PTR ?></span><br>
-                                <strong>GST Amount/</strong><strong><?php echo $pacakagingUnitName ?> : </strong><span><?php echo $perItemGst ?></span><br>
                                 <strong>Discount: </strong><span><?php echo $discount ?></span><br>
-                                <strong>Base Price: </strong><span><?php echo $basePrice ?></span><br>
+                                <strong>PTR: </strong><span><?php echo $PTR ?></span><br>
+                                <!-- <strong>GST Amount/</strong><strong><?php echo $pacakagingUnitName ?> : </strong> -->
+                                <!-- <span><?php echo $perItemGst ?></span> -->
+                                <!-- <br> -->
+                                
+                                <strong>Rate : </strong><span><?php echo $rate ?></span><br>
                                 <strong>Purchase Amount: </strong><span><?php echo $purchaseAmount ?></span><br>
                                 <strong>TOTAL GST: </strong><span><?php echo $GST ?></span><br>
                                 <strong>Current Stock: </strong><span><?php echo $currentStock ?></span><br>
@@ -350,8 +354,7 @@ if (isset($_GET['currentStockId'])) {
                                 delID: id
                             },
                             success: function(response) {
-                                alert(response);
-
+                                // alert(response);
                                 if (response == true) {
                                     swal(
                                         "Deleted",

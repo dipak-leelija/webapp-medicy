@@ -92,16 +92,18 @@ $Products       = new Products();
                             <th>Item Name</th>
                             <th>Batch</th>
                             <th>Exp.</th>
-                            <th>Weatage</th>
-                            <th>Unit</th>
+                            <th>Pack Of</th>
                             <th>Qty.</th>
                             <th>F.Qty</th>
+                            <th>MRP</th>
                             <th>Disc.</th>
                             <th>Base</th>
                             <th>GST</th>
-                            <th>PTR</th>
                             <th>Margin</th>
-                            <th>MRP</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+
+
                         </tr>
                     </thead>
                     <tbody>
@@ -118,6 +120,8 @@ $Products       = new Products();
                             $qty    += $item['qty'];
                             $gst    += $item['gst'];
                             $amount += $item['ptr'];
+
+                            $rate = round(floatval($item['ptr']) + (floatval($item['ptr']) * (intval($item['gst']) / 100)),2);
 
 
                             // =========== edit req flag key check ==========
@@ -140,16 +144,22 @@ $Products       = new Products();
                             <td>" . $pName . "</td>
                             <td>" . $item['batch_no'] . "</td>
                             <td>" . $item['exp_date'] . "</td>
-                            <td>" . $item['weightage'] . "</td>
-                            <td>" . $item['unit'] . "</td>
+                            <td>" . $item['weightage'] . $item['unit'] . "</td>
+                            
                             <td>" . $item['qty'] . "</td>
                             <td>" . $item['free_qty'] . "</td>
-                            <td>" . $item['discount'] . "%</td>
-                            <td>" . $item['base'] . "</td>
-                            <td>" . $item['gst'] . "</td>
-                            <td>" . $item['ptr'] . "</td>
-                            <td>" . $item['margin'] . "</td>
+
                             <td>" . $item['mrp'] . "</td>
+                            <td>" . $item['discount'] . "%</td>
+                            <td>" . $item['ptr'] . "</td>
+                            <td>" . $item['gst'] . "</td>
+                           
+                            <td>" . $item['margin'] . "</td>
+                            <td>" .  $rate . "</td>
+                            <td>" .  floatval($rate)*intval($item['qty']). "</td>
+                           
+                            
+                            
                           </tr>";
                         }
                         ?>
@@ -161,7 +171,7 @@ $Products       = new Products();
                 <div class="col-6 col-sm-3">Items: <?php echo count($items); ?></div>
                 <div class="col-6 col-sm-3">Quantity: <?php echo $qty; ?></div>
                 <div class="col-6 col-sm-3">GST: <?php echo $StockIn[0]['gst']; ?></div>
-                <div class="col-6 col-sm-3">Amount: <?php echo $StockIn[0]['amount']; ?></div>
+                <div class="col-6 col-sm-3">Sub Total: <?php echo $StockIn[0]['amount']; ?></div>
 
             </div>
 

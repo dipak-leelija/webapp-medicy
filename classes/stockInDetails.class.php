@@ -258,24 +258,32 @@ class StockInDetails extends DatabaseConnection
     }
     
 
-    // ==================================================================================
 
 
 
 
-    function showStockInDetailsByTable($table1, $table2, $data1, $data2)
-    {
-        $data   = array();
-        $select = "SELECT * FROM `stock_in_details` WHERE `$table1`= '$data1' AND `$table2`= '$data2'";
-        $selectQuery = $this->conn->query($select);
-        while ($result = $selectQuery->fetch_array()) {
-            $data[] = $result;
+    function showStockInDetailsByTable($table1, $table2, $data1, $data2){
+        try {
+            $data   = array();
+            $select = "SELECT * FROM `stock_in_details` WHERE `$table1`= '$data1' AND `$table2`= '$data2'";
+            $selectQuery = $this->conn->query($select);
+
+            if ($selectQuery === false) {
+                throw new Exception("Error executing the query: " . $this->conn->error);
+            }
+
+            while ($result = $selectQuery->fetch_array()) {
+                $data[] = $result;
+            }
+
+            return $data;
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+
         }
-        return $data;
-    } //eof showStockInByTable function
+    }
 
-
-
+    // ==================================================================================
 
 
     function showStockInDetailsById($DistBill)

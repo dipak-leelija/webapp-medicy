@@ -753,12 +753,13 @@ const addData = () => {
     netAmount = parseFloat(net) + parseFloat(addAmount);
 
 
-    // total gst amount calculation
-    // let total = qty.value * ptr.value;
+    //////////////// GST AMOUNT CALCULATION \\\\\\\\\\\\\\\\\\
+
     let baseAmt = base.value;
     let gstPerItem = ((parseFloat(baseAmt)*parseInt(gst.value))/100);
-    // console.log("gst per item : "+gstPerItem);
     let totalItemGstAmt = parseFloat(gstPerItem) * parseInt(qty.value);
+    gstPerItem = totalItemGstAmt.toFixed(2);
+    // console.log("gst amount : "+totalItemGstAmt);
     // let gstVal = document.getElementById("gst-val").value;
 
     let onlyGst = totalItemGstAmt.toFixed(2);
@@ -784,7 +785,7 @@ const addData = () => {
 
             <td class="p-0 pt-3" id="row-${slControl}-col-3">
                 <input class="col table-data w-.65r" type="text" name="productNm[]" value="${productName.value}" readonly style="text-align: start; font-size:0.65rem;">
-                <input class="d-none col table-data w-.75r" type="text" name="productId[]" value="${productId.value}"  >
+                <input class="d-none col table-data w-.75r" type="text" name="productId[]" value="${productId.value}">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-4">
