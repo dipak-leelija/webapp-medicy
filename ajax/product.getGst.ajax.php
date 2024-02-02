@@ -14,7 +14,15 @@ $Gst = new Gst;
 
 
 if (isset($_GET["id"])) {
-    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId, $_GET["edtiRequestFlag"]));
+
+    $prodData = json_decode($Products->showProductsById($_GET["id"]));
+    if($prodData->status){
+        $editReqFlag = 'not null';
+    }else{
+        $editReqFlag = '';
+    }
+
+    $showProducts = json_decode($Products->showProductsByIdOnUser($_GET["id"], $adminId, $editReqFlag));
     $showProducts = $showProducts->data;
     $gstId = $showProducts[0]->gst;
 
