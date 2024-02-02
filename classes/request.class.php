@@ -251,48 +251,48 @@ class Request extends DatabaseConnection
     {
         try {
             if ($tableName == 'product_request') {
-                $name = 'name';
-                $description = 'req_dsc';
+                $name         = 'name';
+                $description  = 'req_dsc';
                 $statusColumn = 'prod_req_status';
             } elseif ($tableName == 'distributor_request') {
-                $name = 'name';
-                $description = 'req_dsc';
+                $name         = 'name';
+                $description  = 'req_dsc';
                 $statusColumn = 'status';
             } elseif ($tableName == 'manufacturer_request') {
-                $name = 'name';
-                $description = 'req_dsc';
+                $name         = 'name';
+                $description  = 'req_dsc';
                 $statusColumn = 'status';
             } elseif ($tableName == 'packtype_request') {
-                $name = 'unit_name';
-                $description = 'req_dsc';
+                $name         = 'unit_name';
+                $description  = 'req_dsc';
                 $statusColumn = 'status';
             } elseif ($tableName == 'distributor') {
-                $name = 'name';
-                $description = 'dsc';
-                $statusColumn = 'status';
+                $name           = 'name';
+                $description    = 'dsc';
+                $statusColumn   = 'status';
                 $newDistributer = 'new';
             } elseif ($tableName == 'manufacturer') {
-                $name = 'name';
-                $description = 'dsc';
-                $statusColumn = 'status';
+                $name           = 'name';
+                $description    = 'dsc';
+                $statusColumn   = 'status';
                 $newDistributer = 'new';
             } elseif ($tableName == 'packaging_type') {
-                $name = 'unit_name';
-                $description = '';
-                $statusColumn = 'status';
+                $name           = 'unit_name';
+                $description    = 'Add New Packaging Unit';
+                $statusColumn   = 'status';
                 $newDistributer = 'new';
             } elseif ($tableName == 'quantity_unit') {
-                $name = 'short_name';
+                $name           = 'short_name';
                 $newDistributer = 'new';
             }
 
             if ($newDistributer) {
                 if ($tableName == 'quantity_unit') {
-                    $requestQuery = "SELECT $name,$newDistributer FROM $tableName WHERE admin_id = ?";
+                    $requestQuery = "SELECT $name,$newDistributer FROM $tableName WHERE admin_id = ? AND new = 1";
                 } elseif ($tableName == 'packaging_type') {
-                    $requestQuery = "SELECT $name, $statusColumn, $newDistributer FROM $tableName WHERE admin_id = ?";
+                    $requestQuery = "SELECT $name, $statusColumn, $newDistributer FROM $tableName WHERE admin_id = ? AND new = 1";
                 } else {
-                    $requestQuery = "SELECT $name, $description, $statusColumn, $newDistributer FROM $tableName WHERE admin_id = ?";
+                    $requestQuery = "SELECT $name, $description, $statusColumn, $newDistributer FROM $tableName WHERE admin_id = ? AND new = 1";
                 }
             } else {
                 $requestQuery = "SELECT $name, $description, $statusColumn FROM $tableName WHERE admin_id = ?";
