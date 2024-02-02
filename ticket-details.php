@@ -24,14 +24,14 @@ $ProductImages  = new ProductImages();
 $allRequestResult = [];
 
 $requestTypes = [
-    'product_request' => ['tableName' => 'Product Request', 'data' => []],
-    'distributor_request' => ['tableName' => 'Distributor Request', 'data' => []],
+    'product_request'      => ['tableName' => 'Product Request', 'data'      => []],
+    'distributor_request'  => ['tableName' => 'Distributor Request', 'data'  => []],
     'manufacturer_request' => ['tableName' => 'Manufacturer Request', 'data' => []],
-    'packtype_request' => ['tableName' => 'Packtype Request', 'data' => []],
-    'distributor' => ['tableName' => 'Distributer Add', 'data' => []],
-    'manufacturer' => ['tableName' => 'manufacturer Add', 'data' => []],
-    'packaging_type' => ['tableName' => 'packaging Add', 'data' => []],
-    'quantity_unit' => ['tableName' => 'quantity add', 'data' => []]
+    'packtype_request'     => ['tableName' => 'Packtype Request', 'data'     => []],
+    'distributor'          => ['tableName' => 'Distributer Add', 'data'      => []],
+    'manufacturer'         => ['tableName' => 'manufacturer Add', 'data'     => []],
+    'packaging_type'       => ['tableName' => 'packaging Add', 'data'        => []],
+    'quantity_unit'        => ['tableName' => 'quantity add', 'data'         => []]
 ];
 
 foreach ($requestTypes as $table => &$requestType) {
@@ -47,33 +47,6 @@ foreach ($requestTypes as $table => &$requestType) {
         $requestType['data'] = [];
     }
 
-    // foreach ($requestType['data'] as $requestDataItem) {
-    //     // print_r($requestType);
-    //     if ($requestType['tableName'] != 'Product Request') {
-    //         if ($requestType['tableName'] == 'packaging_type') {
-    //             $allRequestResult[] = [
-    //                 'tableName' => $requestType['tableName'],
-    //                 'name' => $requestDataItem->unit_name,
-    //                 // 'description' => $requestDataItem->req_dsc
-    //                 // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-    //             ];
-    //         } else {
-    //             $allRequestResult[] = [
-    //                 'tableName' => $requestType['tableName'],
-    //                 'name' => $requestDataItem->name,
-    //                 // 'description' => $requestDataItem->dsc
-    //                 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-    //             ];
-    //         }
-    //     } elseif ($requestType['tableName'] == 'Product Request') {
-    //         $allRequestResult[] = [
-    //             'tableName' => $requestType['tableName'],
-    //             'name' => $requestDataItem->name,
-    //             'description' => $requestDataItem->req_dsc
-    //             // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
-    //         ];
-    //     }
-    // }
 
     foreach ($requestType['data'] as $requestDataItem) {
         // print_r($requestType);
@@ -83,29 +56,42 @@ foreach ($requestTypes as $table => &$requestType) {
                 'name'        => $requestDataItem->name,
                 'description' => $requestDataItem->req_dsc
             ];
+        } elseif ($requestType['tableName'] == 'Distributor Request') {
+            $allRequestResult[] = [
+                'tableName'   => $requestType['tableName'],
+                'name'        => $requestDataItem->name,
+                'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
+            ];
+        } elseif ($requestType['tableName'] == 'Manufacturer Request') {
+            $allRequestResult[] = [
+                'tableName'   => $requestType['tableName'],
+                'name'        => $requestDataItem->name,
+                'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
+            ];
         } elseif ($requestType['tableName'] == 'Packtype Request') {
             $allRequestResult[] = [
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->unit_name,
-                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
         } elseif ($requestType['tableName'] == 'packaging Add') {
             $allRequestResult[] = [
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->unit_name,
-                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                'description' => 'New Packaging Unit Add'
             ];
         } elseif ($requestType['tableName'] == 'quantity add') {
             $allRequestResult[] = [
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->short_name,
-                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                'description' => 'New Quantity Unit Add'
             ];
         } else {
             $allRequestResult[] = [
                 'tableName'   => $requestType['tableName'],
                 'name'        => $requestDataItem->name,
-                'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                // 'description' => property_exists($requestDataItem, 'dsc') ? $requestDataItem->dsc : ''
+                'description' => 'New' . ' ' . $requestType['tableName']
             ];
         }
     }
@@ -185,8 +171,12 @@ if ($pagination->status == 1) {
                 <!-- Begin container-fluid -->
                 <div class="container-fluid">
 
-                    <div class="card-body">
-                        <div class="card-header py-3 justify-content-between">
+                    <div class="card-body shadow">
+                        <div class="card-header w-50 py-3 justify-content-between">
+                            <!-- <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
+                                <button class="btn btn-primary" type="button" id="button-addon2">Search</button>
+                            </div> -->
 
                         </div>
 
@@ -264,15 +254,15 @@ if ($pagination->status == 1) {
     </div>
     <!-- End of Page Wrapper -->
 
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-        
-        <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-        <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-        <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
-        
+
+    <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
+    <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
+
 </body>
-        
+
 </html>
