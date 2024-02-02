@@ -344,18 +344,18 @@ class Manufacturer extends DatabaseConnection
 
     /// =================manufacture request============ ///
 
-    function insertRequestManufacturer($manufacturerId, $manufacturerName, $manufShortName, $manufacturerDsc, $addedOn, $adminId)
+    function insertRequestManufacturer($manufacturerId, $manufacturerName, $manufShortName, $manufacturerDsc,$reqDescription, $addedOn, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO manufacturer_request (`manu_id`,`name`, `short_name`, `dsc`, `added_on`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO manufacturer_request (`manu_id`,`name`, `short_name`, `dsc`,`req_dsc`, `added_on`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("isssss", $manufacturerId, $manufacturerName, $manufShortName, $manufacturerDsc, $addedOn, $adminId);
+                $stmt->bind_param("issssss", $manufacturerId, $manufacturerName, $manufShortName, $manufacturerDsc,$reqDescription, $addedOn, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();

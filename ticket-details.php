@@ -62,6 +62,12 @@ foreach ($requestTypes as $table => &$requestType) {
                 'name'        => $requestDataItem->name,
                 'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
             ];
+        } elseif ($requestType['tableName'] == 'Manufacturer Request') {
+            $allRequestResult[] = [
+                'tableName'   => $requestType['tableName'],
+                'name'        => $requestDataItem->name,
+                'description' => property_exists($requestDataItem, 'req_dsc') ? $requestDataItem->req_dsc : ''
+            ];
         } elseif ($requestType['tableName'] == 'Packtype Request') {
             $allRequestResult[] = [
                 'tableName'   => $requestType['tableName'],
