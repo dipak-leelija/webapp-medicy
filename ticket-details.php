@@ -192,7 +192,7 @@ if ($pagination->status == 1) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    if (!empty($result)) {
+                                    if (!empty($result) && isset($result->items) && is_array($result->items)) {
                                         $resultItems = $result->items;
                                         $count = 0;
                                         foreach ($resultItems as $resItems) {
@@ -226,6 +226,10 @@ if ($pagination->status == 1) {
                                                         <td style="color: red;">' . $status . '</td>
                                                     </tr>';
                                         }
+                                    } else {
+                                        echo '<tr class="odd">
+                                                 <td valign="top" colspan="6" class="dataTables_empty" style="text-align: center;">Request Not Found</td>
+                                              </tr>';
                                     }
                                     // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"
                                     ?>
