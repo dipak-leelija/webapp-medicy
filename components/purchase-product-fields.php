@@ -59,7 +59,7 @@
 
                     <div class="col-sm-6 col-md-6 mt-2">
                         <label class="mb-0" for="gst">GST%</label>
-
+                        <span class="text-danger">*</span>
                         <input type="number" class="upr-inp" name="gst-check" id="gst-check" hidden>
 
                         <select class="upr-inp" name="gst" id="gst" onchange="getBillAmount(this)">
@@ -79,6 +79,7 @@
 
                     <div class="col-sm-6  mt-2">
                         <label class="mb-0" for="batch-no">Batch No.</label>
+                        <span class="text-danger">*</span>
                         <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                     </div>
                     <!-- <div class="col-sm-4  mt-2">
@@ -93,6 +94,7 @@
                     </div> -->
                     <div class="col-sm-4 mt-2">
                         <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
+                        <span class="text-danger">*</span>
                         <div class="d-flex date-field">
                             <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                             <span class="date-divider">&#47;</span>
@@ -118,15 +120,18 @@
 
                     <div class="col-sm-4 col-md-4 mt-2">
                         <label class="mb-0" for="purchase-price">PTR/Package</label>
+                        <span class="text-danger">*</span>
                         <input type="number" class="upr-inp" name="ptr" id="ptr" onfocusout="getBillAmount()">
                     </div>
 
                     <div class="col-sm-4 col-md-4 mt-2">
                         <label class="mb-0" for="qty">Quantity</label>
+                        <span class="text-danger">*</span>
                         <input type="number" class="upr-inp" name="qty" id="qty" onfocusout="getBillAmount()">
                     </div>
                     <div class="col-sm-4 col-md-4 mt-2">
                         <label class="mb-0" for="free-qty">Free</label>
+                        <span class="text-danger">*</span>
                         <input type="number" class="upr-inp" name="free-qty" id="free-qty">
                     </div>
 
@@ -151,6 +156,7 @@
 
                     <div class="col-sm-4 col-md-4 mt-2">
                         <label class="mb-0" for="discount">Discount%</label>
+                        <span class="text-danger">*</span>
                         <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount %" onfocusout="getBillAmount()">
                     </div>
 
