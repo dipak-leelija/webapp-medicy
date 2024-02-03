@@ -110,15 +110,15 @@ if (!empty($showDistRequest->data)) {
                                                         $statusLabel = '';
                                                         $statusColor = '';
                                                         switch ($distributorStatus) {
-                                                            case 0:
+                                                            case 2:
                                                                 $statusLabel = 'Disabled';
                                                                 $statusColor = 'red';
                                                                 break;
-                                                            case 1:
+                                                            case 0:
                                                                 $statusLabel = 'Pending';
                                                                 $statusColor = '#4e73df';
                                                                 break;
-                                                            case 2:
+                                                            case 1:
                                                                 $statusLabel = 'Active';
                                                                 $statusColor = 'green';
                                                                 break;
@@ -139,9 +139,9 @@ if (!empty($showDistRequest->data)) {
                                                                             ' . $statusLabel . '
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="statusDropdown' . $distributorId . '">
-                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $distributorId . ', 0, this)">Disabled</a>
-                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $distributorId . ', 1, this)">Pending</a>
-                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $distributorId . ', 2, this)">Active</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $distributorId . ', 2, this)">Disabled</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $distributorId . ', 0, this)">Pending</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $distributorId . ', 1, this)">Active</a>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -328,7 +328,7 @@ if (!empty($showDistRequest->data)) {
                     },
                     success: function(response) {
                         console.log(response);
-                        // location.reload();
+                        location.reload();
                     },
                     error: function(error) {
                         console.error('Error updating status:', error);
