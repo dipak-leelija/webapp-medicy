@@ -32,7 +32,7 @@ $Distributor = new Distributor();
         $distributorAreaPIN     = $_POST['distributor-area-pin'];
         $distributorDsc         = $_POST['distributor-dsc'];
         $parentUrl              = $_POST['parent-window-location'];
-        $distributorStatus      = 1;
+        $distributorStatus      = 0;
         $newData                = 1;
 
 
