@@ -74,7 +74,9 @@ $showDistributor = $showDistributor->data;
                                 <div class="col-md-2 col-12 ">
 
                                     <label class="mb-1 mt-3" for="distributor-name">Distributor :</label>
-                                    <input type="text" name="" id="distributor-name" class="upr-inp" placeholder="Select Distributor">
+                                    <span class="text-danger">*</span>
+                                    <input type="text" name="" id="distributor-name" class="upr-inp" placeholder="Select Distributor" autocomplete="off">
+                                    
 
 
                                     <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
@@ -103,6 +105,7 @@ $showDistributor = $showDistributor->data;
 
                                 <div class="col-md-8 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
+                                    <span class="text-danger">*</span>
                                     <input class="upr-inp mb-1" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
                                     <!-- onchange="getDtls(this);" -->
                                     <div class="p-2 bg-light " id="product-select">
@@ -115,6 +118,7 @@ $showDistributor = $showDistributor->data;
 
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
                                     <label class="mb-1 mt-3" for="return-mode">Return Mode :</label>
+                                    <span class="text-danger">*</span>
                                     <select class="upr-inp" name="return-mode" id="return-mode" onchange="setMode(this.value)">
                                         <option value="" selected disabled>Select</option>
                                         <option value="Credit">Credit</option>
@@ -298,11 +302,13 @@ $showDistributor = $showDistributor->data;
                                         <div class="row mt-md-2">
                                             <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="return-qty">Return Qty:</label>
+                                                <span class="text-danger">*</span>
                                                 <input type="text" class="upr-inp focus-border" id="return-qty" value="" name="return-qty" onkeyup="getRefund(this.value);">
                                             </div>
 
                                             <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="return-free-qty">Return F.Qty:</label>
+                                                <span class="text-danger">*</span>
                                                 <input type="text" class="upr-inp focus-border" name="return-free-qty" id="return-free-qty" value="" onkeyup="checkFQty(this.value);">
                                             </div>
 

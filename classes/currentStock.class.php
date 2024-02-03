@@ -108,6 +108,47 @@ class CurrentStock extends DatabaseConnection
     }
 
 
+
+
+
+    ///// ================ SELECT MRP FROM CURRENT STOCK =========================
+    function selectColumOnStockByAdmin($col, $adminId){
+        try {
+            $resultData = array();
+
+            $selectSql = "SELECT $col FROM `current_stock` WHERE (`qty` > 0 OR `loosely_count` > 0) AND `admin_id` = ?";
+
+            $stmt = $this->conn->prepare($selectSql);
+
+            if ($stmt) {
+                $stmt->bind_param("s", $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result) {
+                    while ($row = $result->fetch_array()) {
+                        $resultData[] = $row;
+                    }
+                } else {
+                    echo "Query failed: " . $this->conn->error;
+                }
+
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+
+            return $resultData;
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+    }
+
+
+
+
+
+
     /// ================ select from current stock by col and data =================
 
     function selectByColAndData($column, $data)
@@ -151,6 +192,7 @@ class CurrentStock extends DatabaseConnection
     // ================== SHOW CURRENT STOCK BY ADMIN ID ========================
     function showCurrentStockbyAdminId($adminId='')
     {
+        // echo $adminId;
         try {
             $data = array();
             if(!empty($adminId)){

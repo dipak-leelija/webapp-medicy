@@ -85,25 +85,6 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
     <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
 
 
-    <style>
-        /* div.row {
-            display: flex;
-            flex-direction: column;
-        }
-
-        [id$='-row'] {
-            order: 2;
-        }
-
-        #first-div {
-            order: 2;
-        }
-
-        #second-div {
-            order: 1;
-        } */
-    </style>
-
 </head>
 
 <body id="page-top">
@@ -140,6 +121,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                         <!-- product name row -->
                                         <div class="col-sm-12">
                                             <label for="product-name">Product Name</label>
+                                            <span class="text-danger">*</span>
                                             <input class="c-inp w-100 p-1" id="product-name" name="product-name" required>
                                         </div>
 
@@ -147,6 +129,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                         <div class="d-flex flex-wrap col-md-12 mt-2">
                                             <div class="col-sm-6">
                                                 <label for="product-catagory">Prodcut Catagory</label>
+                                                <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100  " name="product-catagory" id="product-catagory" required>
                                                     <option value="" disabled selected>Select</option>
                                                     <?php
@@ -163,6 +146,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
 
                                             <div class="col-sm-6">
                                                 <label for="product-catagory">Packeging In</label>
+                                                <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100  " name="packeging-type" id="packeging-type" required>
                                                     <option value="" disabled selected>Select</option>
                                                     <?php
@@ -183,6 +167,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                         <div class="d-flex flex-wrap col-md-12 mt-2">
                                             <div class="col-sm-6">
                                                 <label for="qantity">Qantity</label>
+                                                <span class="text-danger">*</span>
                                                 <input class="c-inp w-100 p-1  " id="qantity" name="qantity" placeholder="e.g. 10,20,200">
 
                                             </div>
@@ -190,6 +175,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
 
                                             <div class="col-sm-6">
                                                 <label for="unit">Unit</label>
+                                                <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100" id="unit" name="unit" required>
                                                     <option value='' disabled selected>Select</option>
                                                     <?php
@@ -208,12 +194,14 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                         <div class="d-flex flex-wrap col-md-12 mt-2">
                                             <div class="col-sm-6">
                                                 <label for="medicine-power">Medicine Power</label>
+                                                <span class="text-danger">*</span>
                                                 <input class="c-inp w-100 p-1  " id="medicine-power" name="medicine-power" required>
                                             </div>
 
 
                                             <div class="col-sm-6">
                                                 <label for="mrp">Enter MRP</label>
+                                                <span class="text-danger">*</span>
                                                 <input class="c-inp w-100 p-1  " id="mrp" name="mrp" required>
                                             </div>
                                         </div>
@@ -222,6 +210,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                         <div class="col-md-12 d-flex flex-wrap mt-2">
                                             <div class="col-sm-6">
                                                 <label for="mrp">Enter GST</label>
+                                                <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100" name="gst" id="gst" required>
                                                     <option value="" disabled selected>Select</option>
                                                     <?php
@@ -236,6 +225,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
 
                                             <div class="col-sm-6">
                                                 <label for="hsno-number">HSNO Number</label>
+                                                <span class="text-danger">*</span>
                                                 <input class="c-inp w-100 p-1  " id="hsno-number" name="hsno-number" required>
                                             </div>
                                         </div>
