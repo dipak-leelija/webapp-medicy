@@ -295,14 +295,14 @@ class StockReturn extends DatabaseConnection
     #                                                                                                                                 #
     ###################################################################################################################################
 
-    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount)
+    function addStockReturnDetails($stockReturnId, $stockInDetailsId, $productId, $billNo, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount)
     {
         try {
-            $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`,     `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`,    `return_qty`, `return_free_qty`, `refund_amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            $sql = "INSERT INTO stock_return_details (`stock_return_id`, `stokIn_details_id`, `product_id`, `dist_bill_no`, `batch_no`, `exp_date`, `unit`, `purchase_qty`, `free_qty`, `mrp`, `ptr`, `gst`, `disc`, `return_qty`, `return_free_qty`, `refund_amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
             $stmt = $this->conn->prepare($sql);
 
             if ($stmt) {
-                $stmt->bind_param("iissssiiddiiiid", $stockReturnId, $stockInDetailsId, $productId, $batchNo,   $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty,    $refundAmount);
+                $stmt->bind_param("iisssssiiddiiiid", $stockReturnId, $stockInDetailsId, $productId, $billNo, $batchNo, $expDate, $unit, $purchaseQty, $freeQty, $mrp, $ptr, $gst, $disc, $returnQty, $returnFQty, $refundAmount);
                 $res = $stmt->execute();
                 $stmt->close();
                 return $res;

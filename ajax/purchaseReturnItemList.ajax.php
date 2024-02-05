@@ -83,6 +83,7 @@ if (isset($_GET['return-id'])) {
                             <tr>
                                 <th>SL.</th>
                                 <th>Item Name</th>
+                                <th>Bill No</th>
                                 <th>Batch</th>
                                 <th>Exp.</th>
                                 <th>Weatage</th>
@@ -115,7 +116,7 @@ if (isset($_GET['return-id'])) {
 
 
                                 // =========== edit req flag key check ==========
-                                $prodCheck = json_decode($Products->productExistanceCheck($item['product_id']));
+                                $prodCheck = json_decode($Product->productExistanceCheck($item['product_id']));
                                 if ($prodCheck->status == 1) {
                                     $editReqFlag = 0;
                                 } else {
@@ -132,21 +133,17 @@ if (isset($_GET['return-id'])) {
                                 foreach ($productData as $pData) {
 
                                     $name = $pData->name;
-                                    // $itemReturnQty = $item->return_qty;
-                                    // $itemReturnFreeQty = $item->return_free_qty;
+                                    
                                     $string1 = '(';
                                     $string2 = 'F';
                                     $string3 = ')';
-                                    // if ($itemReturnFreeQty == 0) {
-                                    //     $returnQty = $itemReturnQty;
-                                    // } else {
-                                    //     $returnQty = $itemReturnQty . $string1 . $itemReturnFreeQty . $string2 . $string3;
-                                    // }
+                                    
                                 }
 
                                 echo "<tr>
                             <th scope='row'>" . $sl . "</th>
                             <td>" . $name . "</td>
+                            <td>" . $item['dist_bill_no'] . "</td>
                             <td>" . $item['batch_no'] . "</td>
                             <td>" . $item['exp_date'] . "</td>
                             <td>" . $item['unit'] . "</td>

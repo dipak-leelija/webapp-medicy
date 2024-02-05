@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $stockInDetailsId = $_POST['stok-in-details-id'];
         $distributorId   = $_POST['dist-id'];
         $distributorName = $_POST['dist-name'];
-        $distBillNo = $_POST['dist-bill-no'];
         
         $returnDate      = $_POST['return-date'];
         $returnDate      = date("Y-m-d", strtotime($returnDate));
@@ -79,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $ids            = count($productId);
         
             $batchNo        = $_POST['batchNo'];
+            $distBillNo     = $_POST['distBillNo'];
             $expDate        = $_POST['expDate'];
 
             $setof          = $_POST['setof'];
@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 // exit;
                 // echo "set of : $setof[$i]<br>";
                 // ====== add stock return function =============
-                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, intval($stokInDetailsId[$i]), $productId[$i], $batchNo[$i], $expDate[$i], $setof[$i], intval($purchasedQty[$i]), intval($freeQty[$i]), floatval($mrp[$i]), floatval($ptr[$i]), intval($gstPercent[$i]), intval($discParcent[$i]), intval($returnQty[$i]), intval($returnFQty[$i]), floatval($refundAmount[$i]));
+                $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, intval($stokInDetailsId[$i]), $productId[$i], $distBillNo[$i], $batchNo[$i], $expDate[$i], $setof[$i], intval($purchasedQty[$i]), intval($freeQty[$i]), floatval($mrp[$i]), floatval($ptr[$i]), intval($gstPercent[$i]), intval($discParcent[$i]), intval($returnQty[$i]), intval($returnFQty[$i]), floatval($refundAmount[$i]));
 
                 // echo $productId[$i].'<br>';
                 // echo $batchNo[$i].'<br>';
