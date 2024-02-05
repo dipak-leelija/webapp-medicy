@@ -38,10 +38,9 @@
                             <table class="table table-sm">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Stock</th>
-                                        <th scope="col">Pack</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Date</th>
                                         <th scope="col">MRP</th>
-                                        <th scope="col">Margin</th>
                                     </tr>
                                 </thead>
                                 <tbody>

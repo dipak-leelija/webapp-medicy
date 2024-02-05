@@ -365,6 +365,9 @@ const checkFQty = (returnFqty) => {
     }
 }
 
+
+
+//==== refund calculation area =============
 const getRefund = (returnQty) => {
     // console.log("check return qty : "+returnQty);
     returnQty = parseInt(returnQty);
@@ -432,10 +435,13 @@ function addData() {
     var ptr = document.getElementById("ptr");
     var discount = document.getElementById("discount");
     var gst = document.getElementById("gst");
+    var gstAmntPrQty = document.getElementById('gstAmountPerQty');
     var RtrnGstAmount = document.getElementById("return-gst-amount");
+
     var mrp = document.getElementById("mrp");
     var amount = document.getElementById("amount");
     var purchasedQty = document.getElementById("purchased-qty");
+    var netBuyQty = document.getElementById("net-buy-qty");
     var freeQty = document.getElementById("free-qty");
     var currentQty = document.getElementById("current-qty");
     var returnQty = document.getElementById("return-qty");
@@ -698,6 +704,7 @@ function addData() {
             ptr: ptr.value,
             discount: discount.value,
             gst: gst.value,
+            gstAmountPerQty: gstAmntPrQty.value,
 
             basePrice: basePrice.value,
             taxableOnPurchase: taxableOnPurchase.value,
@@ -707,6 +714,7 @@ function addData() {
 
             amount: amount.value,
             purchasedQty: purchasedQty.value,
+            ntByQty: netBuyQty.value,
             freeQty: freeQty.value,
             currentQty: currentQty.value,
             returnQty: returnQty.value,
@@ -869,7 +877,7 @@ const editItem = (tData) => {
         var tData = JSON.parse(tData);
         console.log(tData);
 
-        document.getElementById("select-item-div").value = tData.divId;
+        document.getElementById("select-item-div").value = tData.seletedItemDiv;
 
         document.getElementById("stokInDetailsId").value = tData.stokInDetailsId;
         document.getElementById("bill-number").value = tData.billNumber;
@@ -886,6 +894,7 @@ const editItem = (tData) => {
         document.getElementById("ptr").value = tData.ptr;
         document.getElementById("discount").value = tData.discount;
         document.getElementById("gst").value = tData.gst;
+        document.getElementById("gstAmountPerQty").value = tData.gstAmountPerQty;
 
         document.getElementById("return-gst-amount").value = tData.RtrnGstAmount;
         document.getElementById("base").value = tData.basePrice;
@@ -895,6 +904,7 @@ const editItem = (tData) => {
 
         document.getElementById("amount").value = tData.amount;
         document.getElementById("purchased-qty").value = tData.purchasedQty;
+        document.getElementById("net-buy-qty").value = tData.ntByQty;
         document.getElementById("free-qty").value = tData.freeQty;
         document.getElementById("current-qty").value = tData.currentQty;
         document.getElementById("return-qty").value = tData.returnQty;

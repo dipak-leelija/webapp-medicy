@@ -100,10 +100,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // ===================== STOCK OUT AND SALES ITEM BILL GENERATION AREA =========================
     if (isset($_POST['submit'])) {
         $invoiceId = $IdsGeneration->pharmecyInvoiceId();
+        // print_r($invoiceId);
+        // echo "<br>";
+        
+        $stockOut = $StockOut->addStockOut($patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $status, $billdate, $addedBy, NOW, $adminId);
 
-        $stockOut = $StockOut->addStockOut($invoiceId, $patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $status, $billdate, $addedBy, NOW, $adminId);
+        // print_r($stockOut['success']);
+        // exit;
 
-        if ($stockOut) {
+        if ($stockOut['success']) {
+
+            $invoiceId = $stockOut['insert_id'];
+
             for ($i = 0; $i < count($prductId); $i++) {
                 // echo "<br>qantity types : $qtyTypes[$i]";
                 $ItemUnit = preg_replace("/[^a-z-A-Z]/", '', $weightage[$i]);

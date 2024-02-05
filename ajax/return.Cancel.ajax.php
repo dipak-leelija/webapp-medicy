@@ -42,7 +42,11 @@ if (isset($_POST["id"])) {
                 $currentStockUnit = $stockCheck->unit;
             // }
 
-            if($currentStockUnit == 'tablets' || $currentStockUnit == 'capsules'){
+            $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
+            // if($currentStockUnit == 'tablets' || $currentStockUnit == 'capsules')
+            
+            if (in_array(strtolower($currentStockUnit), $allowedUnits)){
                 $updatedLQTY = intval($currentStockLQTY) + (intval($totalReturnQTY) * intval($currentStockWeightage));
 
                 $updatedQTY = intdiv(intval($updatedLQTY), intval($currentStockWeightage));

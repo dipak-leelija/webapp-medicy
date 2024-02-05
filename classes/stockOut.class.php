@@ -3,28 +3,23 @@
 class StockOut extends DatabaseConnection
 {
 
-    function addStockOut($invoiceId, $customerId, $reffBy, $items, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $status, $billDate, $addedBy, $addedOn, $adminId)
+    function addStockOut($customerId, $reffBy, $items, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $status, $billDate, $addedBy, $addedOn, $adminId)
     {
         try {
-            // Prepare the SQL statement with placeholders
-            $insertBill = "INSERT INTO stock_out (`invoice_id`, `customer_id`, `reff_by`, `items`, `qty`, `mrp`, `disc`, `gst`, `amount`, `payment_mode`, `status`, `bill_date`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertBill = "INSERT INTO stock_out (`customer_id`, `reff_by`, `items`, `qty`, `mrp`, `disc`, `gst`, `amount`, `payment_mode`, `status`, `bill_date`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            // Prepare and bind the parameters
             $stmt = $this->conn->prepare($insertBill);
-            $stmt->bind_param("issiidsddssssss", $invoiceId, $customerId, $reffBy, $items, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $status, $billDate, $addedBy, $addedOn, $adminId);
+            $stmt->bind_param("ssiidsddssssss", $customerId, $reffBy, $items, $qty, $mrp, $disc, $gst, $amount, $paymentMode, $status, $billDate, $addedBy, $addedOn, $adminId);
 
-            // Execute the statement
             if ($stmt->execute()) {
-                // Insert successful, return the inserted ID
                 $insertedId = $stmt->insert_id;
                 $stmt->close();
                 return array("success" => true, "insert_id" => $insertedId);
             } else {
-                // Insert failed
+                
                 throw new Exception("Error inserting data into the database: " . $stmt->error);
             }
         } catch (Exception $e) {
-            // Handle the exception, log the error, or return an error message as needed
             return array("success" => false, "error" => "Error: " . $e->getMessage());
         }
     }

@@ -488,11 +488,6 @@ const onQty = (qty) => {
     let unitType = document.getElementById("item-unit-type").value;
     let loosePrice = "";
 
-    // if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
-    //     loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
-    // } else {
-    //     loosePrice = '';
-    // }
 
     if (allowedUnits.map(unit => unit.toLowerCase()).includes(unitType.toLowerCase())) {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
@@ -536,7 +531,7 @@ const onQty = (qty) => {
 
     document.getElementById("type-check").value = itemPackType;
 
-    console.log("item pack type : "+document.getElementById("type-check").value);
+    // console.log("item pack type : "+document.getElementById("type-check").value);
     // =========================== ========================== ====================
 
     var pid = document.getElementById("product-id").value;
@@ -565,9 +560,9 @@ const onQty = (qty) => {
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
             taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
-            console.log("disc price : "+discPrice);
-            console.log("taxable : "+taxableAmount);
-            console.log("amount : "+netPayble);
+            // console.log("disc price : "+discPrice);
+            // console.log("taxable : "+taxableAmount);
+            // console.log("amount : "+netPayble);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -582,9 +577,9 @@ const onQty = (qty) => {
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
             taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
-            console.log("disc price loose or pack on qty : "+discPrice);
-            console.log("taxable loose or pack on qty : "+taxableAmount);
-            console.log("amount loose or pack on qty : "+netPayble);
+            // console.log("disc price loose or pack on qty : "+discPrice);
+            // console.log("taxable loose or pack on qty : "+taxableAmount);
+            // console.log("amount loose or pack on qty : "+netPayble);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -630,15 +625,15 @@ const onDisc = (disc) => {
     let discPrice = document.getElementById('dPrice').value;
 
     let itemTypeCheck = document.getElementById("type-check").value;
-    console.log("on disc item type check : "+itemTypeCheck);
+    // console.log("on disc item type check : "+itemTypeCheck);
 
     let qty = document.getElementById('qty').value;
 
-    console.log("on disc qty : "+qty);
+    // console.log("on disc qty : "+qty);
     if(qty == ''){
         qty = 0;
     }
-    console.log("on disc qty : "+qty);
+    // console.log("on disc qty : "+qty);
 
     let availibility = document.getElementById('aqty').value;
     availibility = parseInt(availibility);
@@ -669,9 +664,9 @@ const onDisc = (disc) => {
             taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
 
-            console.log("disc price on disc  : "+discPrice);
-            console.log("taxable on disc  : "+taxableAmount);
-            console.log("amount on disc  : "+netPayble);
+            // console.log("disc price on disc  : "+discPrice);
+            // console.log("taxable on disc  : "+taxableAmount);
+            // console.log("amount on disc  : "+netPayble);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -685,9 +680,9 @@ const onDisc = (disc) => {
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
             taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
-            console.log("disc price on disc loose or pack on disc : "+discPrice);
-            console.log("taxable on disc loose or pack on disc : "+taxableAmount);
-            console.log("amount on disc loose or pack on disc : "+netPayble);
+            // console.log("disc price on disc loose or pack on disc : "+discPrice);
+            // console.log("taxable on disc loose or pack on disc : "+taxableAmount);
+            // console.log("amount on disc loose or pack on disc : "+netPayble);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -1093,7 +1088,7 @@ const deleteItem = (slno, itemQty, gstPerItem, totalMrp, itemAmount) => {
     rowAdjustment(delRow);
 
     let tBody = document.getElementById('item-body');
-        console.log(tBody.getElementsByTagName('tr').length);
+        // console.log(tBody.getElementsByTagName('tr').length);
         if(tBody.getElementsByTagName('tr').length == 0){
             newSellGenerateBill.setAttribute("disabled", "true");
         }
@@ -1120,13 +1115,12 @@ function rowAdjustment(delRow) {
 
 const editItem = (tuple) => {
     
-    // console.log(tuple);
-
     let checkEditOption = document.getElementById("product-id").value;
 
     if (checkEditOption == '') {
 
         Tupledata = JSON.parse(tuple);
+        console.log(Tupledata);
 
         document.getElementById("product-id").value = Tupledata.productId;
         document.getElementById("product-name").value = Tupledata.productName;
@@ -1161,7 +1155,9 @@ const editItem = (tuple) => {
         document.getElementById("productComposition").value = Tupledata.itemComposition;
 
         let netMRP = '';
-        if(Tupledata.unitType == 'tab' || Tupledata.unitType == 'cap'){
+        
+        if (allowedUnits.map(unit => unit.toLowerCase()).includes(Tupledata.unitType.toLowerCase())){
+        // if(Tupledata.unitType == 'tab' || Tupledata.unitType == 'cap'){
             netMRP = parseFloat(Tupledata.loosePrice) * parseInt(Tupledata.qty);
             netMRP = parseFloat(netMRP).toFixed(2);
         }else{
