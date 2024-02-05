@@ -127,7 +127,7 @@ $showManufacturer = $Manufacturer->showRequestManufacturer();
                                                                  </td>   
                                                                 <td>
 
-                                                                    <a class="ms-2" id="delete-btn" data-id=' . $manufacturerId . ' onclick="customDel(' . $manufacturerId . ',this.id)"><i class="far fa-trash-alt"></i></a>
+                                                                    <a class="ms-2" href="#" onclick="deleteReq(' . $manufacturerId . ')"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                             </tr>';
                                             }
@@ -210,27 +210,6 @@ $showManufacturer = $Manufacturer->showRequestManufacturer();
                 '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of viewAndEdit function
-
-        // function updateReqStatus(manufacturerId, newStatus) {
-
-        //     if (confirm('Are you sure you want to change the status?')) {
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: '/medicy.in/admin/ajax/manufactureReqStatus.update.ajax.php',
-        //             data: {
-        //                 manufacturerId: manufacturerId,
-        //                 newStatus: newStatus
-        //             },
-        //             success: function(response) {
-        //                 console.log(response);
-        //                 // location.reload();
-        //             },
-        //             error: function(error) {
-        //                 console.error('Error updating status:', error);
-        //             }
-        //         });
-        //     }
-        // } // end distributor status //
 
         //delete manufacturer
         const customDel = (id) => {
