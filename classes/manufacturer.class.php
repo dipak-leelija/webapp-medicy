@@ -274,7 +274,7 @@ class Manufacturer extends DatabaseConnection
         try {
             if ($match == 'all') {
 
-                $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = ? OR `status` = '2' LIMIT 6";
+                $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = ? OR `status` = '1' LIMIT 6";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("s", $adminId);
             } else {
@@ -282,7 +282,7 @@ class Manufacturer extends DatabaseConnection
                 $select = "SELECT * FROM `manufacturer` WHERE 
                        (`name` LIKE CONCAT('%', ?, '%') OR 
                        `id` LIKE CONCAT('%', ?, '%') OR 
-                       `short_name` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ? OR `status` = '2') LIMIT 6";
+                       `short_name` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ? OR `status` = '1') LIMIT 6";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("ssss", $match, $match, $match, $adminId);
             }

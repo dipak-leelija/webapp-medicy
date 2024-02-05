@@ -425,6 +425,42 @@ if (isset($_GET['return'])) {
                 });
         }
 
+        const deleteReq = (t)=>{
+            let btn = this;
+            let id = t;
+            swal({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Manufacturer?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        $.ajax({
+                            url: "ajax/manufacturerReq.Delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                id: id
+                            },
+                            success: function(response) {
+                                // alert(response);
+                                // alert(id);
+                                if (response.includes('1')) {
+                                    $(btn).closest("tr").fadeOut()
+                                    swal("Deleted", "Manufacturer Has Been Deleted", "success");
+                                    location.reload();
+                                } else {
+                                    swal("Delete Not Possible", response, "warning");
+                                }
+                            }
+                        });
+
+                    }
+                    return false;
+                });
+        }
 
 
         //========edit modal on close parent location reload==============

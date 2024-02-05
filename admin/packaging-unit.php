@@ -122,7 +122,7 @@ if (is_object($showPackagingRequest) && property_exists($showPackagingRequest, '
                                                         $newBadge = ($isNew == 1) ? '<span class="badge badge-pill badge-info position-absolute ml-2 top-0 start-50 translate-middle-x">New</span>' : '';
                                                         echo '<tr>
                                                                 <td>' . $unitId . '</td>
-                                                                <td>' . $unitName . ''. $newBadge .'</td>
+                                                                <td>' . $unitName . '' . $newBadge . '</td>
                                                                 <td>
                                                                     <div class="dropdown">
                                                                         <button class="btn btn-secondary dropdown-toggle bg-white border-0 " type="button" id="statusDropdown' . $unitId . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: ' . $statusColor . ';">
@@ -368,6 +368,42 @@ if (is_object($showPackagingRequest) && property_exists($showPackagingRequest, '
             });
 
         });
+
+        // ..............delete Request pack Unit........... 
+        const deleteReq = (t) => {
+            let unitid = t;
+            btn = this;
+            swal({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Manufacturer?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "ajax/packagingUnitReq.Delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                id: unitid
+                            },
+                            success: function(response) {
+                                if (response.includes("1")) {
+                                    $(btn).closest("tr").fadeOut()
+                                    location.reload();
+                                } else {
+                                    $("#error-message").html("Deletion Field !!!").slideDown();
+                                    $("success-message").slideUp();
+                                }
+
+                            }
+                        });
+
+                    }
+                    return false;
+                })
+        }
 
 
         //========================== on edit modal cloase page reload ======================

@@ -107,7 +107,7 @@ $showPackagingRequest = json_decode($PackagingUnits->showPackagingRequest());
                                                                 </td>
                                                                 <td>
     
-                                                                    <a class="mx-1" id="delete-btn" data-id="' . $unitId . '"><i class="far fa-trash-alt"></i></a>
+                                                                    <a class="mx-1" onclick = "deleteReq(' . $unitId . ')" ><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                             </tr>';
                                     }
@@ -204,69 +204,6 @@ $showPackagingRequest = json_decode($PackagingUnits->showPackagingRequest());
                 '<iframe width="99%" height="120rem" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of viewAndEdit function
-
-        
-        // //update Packaging Unit Request status//
-        // function updatePackReqStatus(unitId, newStatus) {
-
-        //     if (confirm('Are you sure you want to change the status?')) {
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: '/medicy.in/admin/ajax/packUnitReqStatus.update.ajax.php',
-        //             data: {
-        //                 unitId: unitId,
-        //                 newStatus: newStatus
-        //             },
-        //             success: function(response) {
-        //                 console.log(response);
-        //                 location.reload();
-        //             },
-        //             error: function(error) {
-        //                 console.error('Error updating status:', error);
-        //             }
-        //         });
-        //     }
-        // } // end Packaging Unit status //
-
-        //delete unit
-
-        $(document).ready(function() {
-            $(document).on("click", "#delete-btn", function() {
-                //if (confirm("Are You Sure want to delete?"))
-                unitid = $(this).data("id");
-                btn = this;
-                swal({
-                        title: "Are you sure?",
-                        text: "Want to Delete This Manufacturer?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            $.ajax({
-                                url: "ajax/packagingUnit.Delete.ajax.php",
-                                type: "POST",
-                                data: {
-                                    id: unitid
-                                },
-                                success: function(response) {
-                                    if (response.includes("1")) {
-                                        $(btn).closest("tr").fadeOut()
-                                    } else {
-                                        $("#error-message").html("Deletion Field !!!").slideDown();
-                                        $("success-message").slideUp();
-                                    }
-
-                                }
-                            });
-
-                        }
-                        return false;
-                    })
-            });
-
-        });
 
 
         //========================== on edit modal cloase page reload ======================
