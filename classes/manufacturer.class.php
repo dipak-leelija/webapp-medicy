@@ -96,7 +96,7 @@ class Manufacturer extends DatabaseConnection
         try {
             $data = array();
             if (!empty($adminId)) {
-                $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = '$adminId' OR `status` = '2'";
+                $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = '$adminId' OR `status` = '1'";
             } else {
                 $select = "SELECT * FROM `manufacturer`";
             }

@@ -54,15 +54,15 @@ if ($showmanufacturer->status) {
                     $statusLabel = '';
                     $statusColor = '';
                     switch ($manufacturerStatus) {
-                        case 0:
+                        case 2:
                             $statusLabel = 'Disabled';
                             $statusColor = 'red';
                             break;
-                        case 1:
+                        case 0:
                             $statusLabel = 'Pending';
                             $statusColor = '#4e73df';
                             break;
-                        case 2:
+                        case 1:
                             $statusLabel = 'Active';
                             $statusColor = 'green';
                             break;
