@@ -219,12 +219,27 @@ class SalesReturn extends DatabaseConnection
 
     
 
-    function updateStatus($id, $status, $addedBy)
-    {
-        $updateSalesReturn = "UPDATE `sales_return` SET `status` = '$status', `added_by`='$addedBy' WHERE `id`='$id'";
-        $update = $this->conn->query($updateSalesReturn);
-        return $update;
+    function updateStatus($id, $status, $addedBy, $updateTime){
+        try {
+            $updateSalesReturn = "UPDATE `sales_return` SET `status` = ?, `updated_by` = ?, `updated_on` = ? WHERE `id` = ?";
+            $stmt = $this->conn->prepare($updateSalesReturn);
+
+            $stmt->bind_param("issi", $status, $addedBy, $updateTime, $id);
+
+            $stmt->execute();
+
+            // $success = $stmt->affected_rows > 0;
+            if($stmt->affected_rows > 0){
+                return array('status'=>'1', 'message'=>'success');
+            }else{
+                return array('status'=>'0', 'message'=>throw new Exception()); 
+            }
+            $stmt->close();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
+
     //end of sales return table update-----------------------------------------------------------
 
 
