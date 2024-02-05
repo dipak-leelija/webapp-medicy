@@ -195,8 +195,8 @@ $empLists              = $Employees->employeesDisplay($adminId);
                                                 $entryDate  = date("d-m-Y", strtotime($row->added_on));
 
                                                 $check = '';
-                                                if ($row->status == "cancelled") {
-                                                    $check  = 'style="background-color:#ff0000; color:#fff"';
+                                                if ($row->status == '0') {
+                                                    $check  = 'style="background-color:#ff0000; color:#ffffff"';
                                                 }
                                                 echo '<tr ' . $check . '>
                                                         <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItems(' . $row->id . ')" >'. $row->id . '</td>
@@ -256,7 +256,7 @@ $empLists              = $Employees->employeesDisplay($adminId);
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                         </div>
                     </div>
                 </div>
