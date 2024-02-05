@@ -15,7 +15,7 @@ $showDistributor = json_decode($Distributor->showDistributor());
 $showDistributor = $showDistributor->data;
 
 $showDistRequest  = json_decode($Distributor->showDistRequest());
-$countDistRequest = 0; 
+$countDistRequest = 0;
 if (!empty($showDistRequest->data)) {
     $countDistRequest = count($showDistRequest->data);
 }
@@ -312,7 +312,7 @@ if (!empty($showDistRequest->data)) {
                 url + '"></iframe>');
 
 
-                $("#distributorModal").modal("hide");
+            $("#distributorModal").modal("hide");
         } // end of viewAndEdit function
 
         //update distributor status//
@@ -401,6 +401,43 @@ if (!empty($showDistRequest->data)) {
             })
 
         })
+
+        const deleteReq = (t) => {
+                let distributorId = t;
+                swal({
+                        title: "Are you sure?",
+                        text: "Want to Delete This Distributor?",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                            if (willDelete) {
+
+                                distributorId = t;
+                                btn = this;
+
+                                $.ajax({
+                                    url: "ajax/distributorReq.Delete.ajax.php",
+                                    type: "POST",
+                                    data: {
+                                        id: distributorId
+                                    },
+                                    success: function(data) {
+                                        if (data == 1) {
+                                            $(btn).closest("tr").fadeOut()
+                                            swal("Deleted", "Distributor Has Been Deleted",
+                                                "success");
+                                            location.reload();
+                                        } else {
+                                            swal("Failed", data, "error");
+                                        }
+                                    }
+                                });
+
+                            }
+                        })
+                    }
     </script>
 
 

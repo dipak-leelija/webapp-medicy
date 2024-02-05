@@ -121,12 +121,14 @@ $showDistRequest  = $showDistRequest->data;
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <a class="mx-1" id="delete-btn" data-id="' . $distributorId . '"><i class="far fa-trash-alt"></i></a>
+                                                                    <a class="mx-1" href="#" onclick="deleteReq(' . $distributorId . ')" ><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                                </tr>';
                                             }
-                                        }else{
-                                            echo "<tr><td>Distributor Request Not Found</td></tr>";
+                                        } else {
+                                            echo '<tr class="odd">
+                                            <td valign="top" colspan="6" class="dataTables_empty" style="text-align: center;">Distributor Request Not Found</td>
+                                         </tr>';
                                         }
                                         ?>
                                     </tbody>
@@ -203,48 +205,6 @@ $showDistRequest  = $showDistRequest->data;
                 '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of viewAndEdit function
-
-        //delete distributor
-        $(document).ready(function() {
-            $(document).on("click", "#delete-btn", function() {
-
-                swal({
-                        title: "Are you sure?",
-                        text: "Want to Delete This Distributor?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-
-                            distributorId = $(this).data("id");
-                            btn = this;
-
-                            $.ajax({
-                                url: "ajax/distributor.Delete.ajax.php",
-                                type: "POST",
-                                data: {
-                                    id: distributorId
-                                },
-                                success: function(data) {
-                                    if (data == 1) {
-                                        $(btn).closest("tr").fadeOut()
-                                        swal("Deleted", "Distributor Has Been Deleted",
-                                            "success");
-                                    } else {
-                                        swal("Failed", data, "error");
-                                    }
-                                }
-                            });
-
-                        }
-                        return false;
-                    });
-
-            })
-
-        })
     </script>
 
 
