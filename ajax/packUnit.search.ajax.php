@@ -22,7 +22,7 @@ if ($match == 'all') {
 if ($showPackUnit->status) {
     $showPackUnit = $showPackUnit->data;
 } else {
-    echo "<p class='text-center font-weight-bold'>manufacturer Not Found!</p>";
+    echo "<p class='text-center font-weight-bold'>Packaging Unit Not Found!</p>";
     // echo "<div class='p-1 border-bottom list'> $match </div>";
 }
 ?>
@@ -47,15 +47,15 @@ if ($showPackUnit->status) {
                 $statusLabel = '';
                 $statusColor = '';
                 switch ($packUnitStatus) {
-                    case 0:
+                    case 2:
                         $statusLabel = 'Disabled';
                         $statusColor = 'red';
                         break;
-                    case 1:
+                    case 0:
                         $statusLabel = 'Pending';
                         $statusColor = '#4e73df';
                         break;
-                    case 2:
+                    case 1:
                         $statusLabel = 'Active';
                         $statusColor = 'green';
                         break;

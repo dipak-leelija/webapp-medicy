@@ -152,15 +152,15 @@ if (isset($_GET['return'])) {
                                                         $statusLabel = '';
                                                         $statusColor = '';
                                                         switch ($manufacturerStatus) {
-                                                            case 0:
+                                                            case 2:
                                                                 $statusLabel = 'Disabled';
                                                                 $statusColor = 'red';
                                                                 break;
-                                                            case 1:
+                                                            case 0:
                                                                 $statusLabel = 'Pending';
                                                                 $statusColor = '#4e73df';
                                                                 break;
-                                                            case 2:
+                                                            case 1:
                                                                 $statusLabel = 'Active';
                                                                 $statusColor = 'green';
                                                                 break;
@@ -179,9 +179,9 @@ if (isset($_GET['return'])) {
                                                                             ' . $statusLabel . '
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="statusDropdown' . $manufacturerId . '">
-                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $manufacturerId . ', 0, this)">Disabled</a>
-                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $manufacturerId . ', 1, this)">Pending</a>
-                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $manufacturerId . ', 2, this)">Active</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $manufacturerId . ', 2, this)">Disabled</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $manufacturerId . ', 0, this)">Pending</a>
+                                                                            <a class="dropdown-item" href="#" onclick="updateStatus(' . $manufacturerId . ', 1, this)">Active</a>
                                                                         </div>
                                                                     </div>
                                                                  </td>   

@@ -85,7 +85,7 @@ class PackagingUnits extends DatabaseConnection
     {
         $data = [];
         if (!empty($adminId)) {
-            $select         = " SELECT * FROM `packaging_type` WHERE `admin_id` = '$adminId' OR `status` = '2'";
+            $select         = " SELECT * FROM `packaging_type` WHERE `admin_id` = '$adminId' OR `status` = '1'";
         } else {
             $select         = " SELECT * FROM `packaging_type` ";
         }
@@ -183,14 +183,14 @@ class PackagingUnits extends DatabaseConnection
         try {
             if ($match == 'all') {
 
-                $select = "SELECT * FROM `packaging_type` WHERE `admin_id` = ? OR `status` = '2' LIMIT 6";
+                $select = "SELECT * FROM `packaging_type` WHERE `admin_id` = ? OR `status` = '1' LIMIT 6";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("s", $adminId);
             } else {
 
                 $select = "SELECT * FROM `packaging_type` WHERE 
                        (`unit_name` LIKE CONCAT('%', ?, '%') OR 
-                       `id` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ?  OR `status` = '2') LIMIT 6";
+                       `id` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ?  OR `status` = '1') LIMIT 6";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("sss", $match, $match, $adminId);
             }

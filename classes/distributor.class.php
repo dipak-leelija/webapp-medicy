@@ -124,7 +124,7 @@ class Distributor extends DatabaseConnection
     {
         try {
             if (!empty($adminId)) {
-                $select = "SELECT * FROM distributor WHERE `admin_id` = '$adminId' OR `status` = '2'";
+                $select = "SELECT * FROM distributor WHERE `admin_id` = '$adminId' OR `status` = '1'";
             } else {
                 $select = "SELECT * FROM distributor";
             }
@@ -237,7 +237,7 @@ class Distributor extends DatabaseConnection
     {
         try {
             if ($match == 'all') {
-                $select = "SELECT * FROM `distributor` WHERE `admin_id` = ? OR `status` = '2' LIMIT 6";
+                $select = "SELECT * FROM `distributor` WHERE `admin_id` = ? OR `status` = '1' LIMIT 6";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("s", $adminId);
             } else {
@@ -245,7 +245,7 @@ class Distributor extends DatabaseConnection
                 $select = "SELECT * FROM `distributor` WHERE 
                        (`name` LIKE CONCAT('%', ?, '%') OR 
                        `id` LIKE CONCAT('%', ?, '%') OR 
-                       `address` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ? OR `status` = '2') LIMIT 6";
+                       `address` LIKE CONCAT('%', ?, '%')) AND (`admin_id` = ? OR `status` = '1') LIMIT 6";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("ssss", $match, $match, $match, $adminId);
             }

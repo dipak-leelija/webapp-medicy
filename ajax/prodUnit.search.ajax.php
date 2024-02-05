@@ -23,7 +23,7 @@ if ($match == 'all') {
 if ($showProdUnit->status) {
     $showProdUnit = $showProdUnit->data;
 } else {
-    echo "<p class='text-center font-weight-bold'>Manufacturer Not Found!</p>";
+    echo "<p class='text-center font-weight-bold'>Product Unit Not Found!</p>";
     // echo "<div class='p-1 border-bottom list'> $match </div>";
 }
 ?>
