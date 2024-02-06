@@ -280,6 +280,7 @@ $currentStock  = new CurrentStock();
                             id: cancelId
                         },
                         success: function(response) {
+                            alert(response);
                             if (response.includes('1')) {
                                 swal(
                                     "Canceled",

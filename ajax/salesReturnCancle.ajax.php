@@ -17,19 +17,28 @@ $products       = new Products();
 $stockOut       = new StockOut();
 $currentStock   = new CurrentStock();
 
+$allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
+if($_SESSION['ADMIN']){
+    $addedBy = $adminId;
+}else{
+    $addedBy = $employeeId;
+}
+
 if (isset($_POST['id'])) {
 
-    $added_by = $_SESSION['employee_username'];
     $SalesReturnId = $_POST['id'];
     $status = "0";
 
     $salesRetunTableData = $SalesReturn->salesReturnByID($SalesReturnId);
     $invoiceId = $salesRetunTableData[0]['invoice_id'];
 
-    $updateStatus = $SalesReturn->updateStatus($SalesReturnId, $status, $added_by);
-    $updateStatus = true;
+    $updateStatus = $SalesReturn->updateStatus($SalesReturnId, $status, $addedBy, NOW); //*******
+    // print_r($updateStatus);
 
-    if ($updateStatus == true) {
+    // $updateStatus['status'] = true;
+
+    if ($updateStatus['status']) {
 
         $attribute = "sales_return_id";
         $data = $SalesReturnId;
@@ -57,40 +66,43 @@ if (isset($_POST['id'])) {
             foreach ($salesReturnDetailsData as $salesReturnDetailsData) {
                 $itemSetOf = $salesReturnDetailsData['weatage'];
                 $itemUnit = preg_replace("/[0-9]/", "", $itemSetOf);
-                $itemWeatage = preg_replace("/[a-z]/", "", $itemSetOf);
+                $itemWeatage = preg_replace("/[a-z-A-Z]/", "", $itemSetOf);
                 $returnsQty = $salesReturnDetailsData['return_qty'];
 
-                if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
+                
+                if (in_array(strtolower($itemUnit), $allowedUnits)) {
                     $looselyCount = $returnsQty;
                 } else {
                     $wholeCount = $returnsQty;
                 }
 
-                if ($itemUnit == 'tablets' || $itemUnit == 'capsules') {
+                if (in_array(strtolower($itemUnit), $allowedUnits)) {
                     $updatedLooselyCount = intval($currentStockLooselyCount) - intval($looselyCount);
                     $updatedQty = intdiv($updatedLooselyCount, $itemWeatage);
                 }else{
                     $updatedQty = intval($currentStockQty) - intval($wholeCount);
                     $updatedLooselyCount = 0;
                 }
-                
 
-                $stockUpdate = $currentStock->updateStockOnSell($curretnStockItemId, $updatedQty, $updatedLooselyCount);
+
+
+                $stockUpdate = $currentStock->updateStockOnSell($curretnStockItemId, $updatedQty, $updatedLooselyCount); //*************
 
                 // sales return update. set return qty  0 and refund amount 0;
-                // $setReturnQty = 0;
-                // $setRefundAmount = 0;
-                // $updateSalesRetunDetails = $SalesReturn->updateSalesReturnOnReturnCancel($salesReturnDetailsId, $setReturnQty, $setRefundAmount);
+                $setReturnQty = 0;
+                $setRefundAmount = 0;
+                $updateSalesRetunDetails = $SalesReturn->updateSalesReturnOnReturnCancel($salesReturnDetailsId, $setReturnQty, $setRefundAmount);
 
-                $deleteReturnDetails = $SalesReturn->deleteSalesReturnDetaislById($salesReturnDetailsId);
+                $deleteReturnDetails = $SalesReturn->deleteSalesReturnDetaislById($salesReturnDetailsId); //*********** 
             }
         }
     }
-
+    
     //==========================================
     if ($stockUpdate == true) {
         echo 1;
     }else{
         echo 0;
     }
+
 }
