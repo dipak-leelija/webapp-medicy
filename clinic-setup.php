@@ -284,7 +284,6 @@ if ($bills->status) {
     <script>
         function validateFileType() {
             var fileName = document.getElementById("img-uv-input").value;
-            console.log(fileName);
             var idxDot = fileName.lastIndexOf(".") + 1;
             var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
             if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {} else {

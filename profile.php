@@ -391,7 +391,7 @@ if ($_SESSION['ADMIN']) {
             var button = document.getElementById("passwordChangeBtn");
 
             if (window.innerWidth < 784) {
-                button.innerHTML = '<span><i class="fas fa-key"></span>';
+                button.innerHTML = '<span title="Change Password"><i class="fas fa-key"></span>';
                 button.onclick = passwordUpdate();
             } else {
                 button.innerHTML = 'Password Change';
