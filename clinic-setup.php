@@ -126,7 +126,7 @@ if ($bills->status) {
                                                 Only jpg/jpeg and png files are allowed!
                                             </div>
                                             <div class="d-flex justify-content-around align-items-center">
-                                                <img class="mb-0 mt-3 rounded img-uv-view" src="<?= isset($healthCareLogo) ? $healthCareLogo : IMG_PATH .'clinick.png' ?>" width="100%" height="180" alt="">
+                                                <img class="mb-0 mt-3 rounded img-uv-view" src="<?= $healthCareLogo; ?>" width="100%" height="180" alt="">
                                                 <div class="">
                                                     <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="site-logo" onchange="validateFileType()">
                                                     <label for="img-uv-input" class="btn btn-primary">Change
@@ -137,18 +137,18 @@ if ($bills->status) {
 
                                             <div class="col-md-12 mt-md-5">
                                                 <label class="mb-0 mt-1" for="helthcare-name">Organization/Helth Care
-                                                    Name</label>
+                                                    Name <span class="text-danger font-weight-bold">*</span></label>
                                                 <input class="form-control" type="text" name="helthcare-name" id="helthcare-name" value="<?= $healthCareName; ?>" required>
                                             </div>
 
                                             <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="helpline-no">Help Line Number</Address>
+                                                <label class="mb-0 mt-1" for="helpline-no">Help Line Number <span class="text-danger font-weight-bold">*</span></Address>
                                                 </label>
                                                 <input class="form-control" type="text" name="helpline-no" id="helpline-no" value="<?php echo $healthCarePhno; ?>" required>
                                             </div>
                                             <div class="col-md-12">
                                                 <label class="mb-0 mt-1" for="apnt-booking-no">Appointment Help
-                                                    Line</label>
+                                                    Line <span class="text-danger font-weight-bold">*</span></label>
                                                 <input class="form-control" type="text" name="apnt-booking-no" id="apnt-booking-no" value="<?php echo $healthCareApntbkNo; ?>" required>
                                             </div>
 
@@ -161,7 +161,7 @@ if ($bills->status) {
 
                                         <div class="col-md-6">
                                             <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="address-1">Address 1</label>
+                                                <label class="mb-0 mt-1" for="address-1">Address 1 <span class="text-danger font-weight-bold">*</span></label>
                                                 <textarea class="form-control" maxlength="50" name="address-1" id="address-1" rows="2" required><?= $healthCareAddress1; ?></textarea>
                                             </div>
 
@@ -170,15 +170,15 @@ if ($bills->status) {
                                                 <textarea class="form-control" type="text" maxlength="50" name="address-2" id="address-2" rows="2"><?= $healthCareAddress2; ?></textarea>
                                             </div>
                                             <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="city">City</label>
+                                                <label class="mb-0 mt-1" for="city">City <span class="text-danger font-weight-bold">*</span></label>
                                                 <input class="form-control" type="text" maxlength="50" name="city" id="city" value="<?php echo $healthCareCity; ?>" required>
                                             </div>
                                             <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="dist">Dist</label>
+                                                <label class="mb-0 mt-1" for="dist">Dist <span class="text-danger font-weight-bold">*</span></label>
                                                 <input class="form-control" type="text" maxlength="50" name="dist" id="dist" value="<?php echo $healthCareDist; ?>" required>
                                             </div>
                                             <div class="col-md-12">
-                                                <label class="mb-0 mt-1" for="state">Select State</label>
+                                                <label class="mb-0 mt-1" for="state">Select State <span class="text-danger font-weight-bold">*</span></label>
                                                 <select class="form-control" name="state" id="state" required>
                                                     <?php echo '<option value="' . $healthCareState . '">' . $healthCareState . '</option>'; ?>
                                                     <option value="West Bengal">West Bengal</option>
@@ -186,12 +186,12 @@ if ($bills->status) {
                                                 </select>
                                             </div>
                                             <div class="col-md-12">
-                                                <label class="mb-0 mt-1 ps-1" for="pin">PIN</label>
+                                                <label class="mb-0 mt-1 ps-1" for="pin">PIN <span class="text-danger font-weight-bold">*</span></label>
                                                 <input class="form-control" type="number" maxlength="7" minlength="7" name="pin" id="pin" value="<?php echo $healthCarePin; ?>" required>
                                             </div>
 
                                             <div class="col-md-12">
-                                                <label class="mb-0 mt-1 ps-1" for="country">Country</label>
+                                                <label class="mb-0 mt-1 ps-1" for="country">Country <span class="text-danger font-weight-bold">*</span></label>
                                                 <select class="form-control" name="country" id="country" required>
                                                     <option value="India">India</option>
                                                     <option value="Others">Others</option>
@@ -267,6 +267,21 @@ if ($bills->status) {
         <i class="fas fa-angle-up"></i>
     </a>
 
+
+    <script>
+        function validateFileType() {
+            var fileName = document.getElementById("img-uv-input").value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                document.getElementById("err-show").classList.add("d-none");
+            } else {
+                document.getElementById("err-show").classList.remove("d-none");
+                // Show current image when error occurs
+                document.querySelector('.img-uv-view').src = "<?= $healthCareLogo; ?>";
+            }
+        }
+    </script>
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
@@ -281,17 +296,6 @@ if ($bills->status) {
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
-    <script>
-        function validateFileType() {
-            var fileName = document.getElementById("img-uv-input").value;
-            var idxDot = fileName.lastIndexOf(".") + 1;
-            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {} else {
-                // alert("Only jpg/jpeg and png files are allowed!");
-                document.getElementById("err-show").classList.remove("d-none");
-            }
-        }
-    </script>
 
 </body>
 
