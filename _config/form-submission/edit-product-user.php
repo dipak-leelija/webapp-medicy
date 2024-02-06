@@ -71,9 +71,9 @@ if (isset($_POST['update-product'])) {
     // ==================== for img ===================== //
     $imageName        = $_FILES['img-files']['name'];
     $tempImgName       = $_FILES['img-files']['tmp_name'];
-
-    $imageArrayCaount = count($imageName);
-    $tempImageNameArrayCaount = count($tempImgName);
+    // print_r($imageName);
+    $imageArrayCount = count($imageName);
+    $tempImageNameArrayCount = count($tempImgName);
   
     // =========== product edit description section =========
     $productData = json_decode($Products->showProductsByIdOnTableNameAdminId($productId, $adminId, $tableName));
@@ -135,8 +135,28 @@ if (isset($_POST['update-product'])) {
             $hsnEdit = '';
         }
 
-        $description = $nameEdit . $categoryEdit . $packegeEdit . $medQtyEdit . $unitEdit . $medPowerEdit . $mrpEdit . $gstEdit . $hsnEdit;
+
+        // Check if images exist for the product
+        $images = json_decode($ProductImages->showImageById($productId));
+        if (!$images->status) {
+            $images = json_decode($ProductImages->showImageByPrimay($productId, $adminId));
+        }
+
+        // Determine if the images are edited
+        if (empty($imageName[0])) {
+            $imgEdit = (!$images->status) ? '' : 'Image Edited.';
+        } else {
+            if ($images->status) {
+                $imgEdit = (count($images->data) == $imageArrayCount) ? '' : 'Image Edited-2.';
+            } else {
+                $imgEdit = 'Image Edited.';
+            }
+        }
+
+        $description = $nameEdit . $categoryEdit . $packegeEdit . $medQtyEdit . $unitEdit . $medPowerEdit . $mrpEdit . $gstEdit . $hsnEdit . $imgEdit;
     }
+
+
 
     $prodDataFromProducts = json_decode($Products->showProductsById($productId));
     // print_r($prodDataFromProducts);
@@ -256,7 +276,7 @@ if (isset($_POST['update-product'])) {
 
         if ($editRequest) {
 
-            for ($i = 0, $j = 0; $i < $imageArrayCaount && $j < $tempImageNameArrayCaount; $i++, $j++) {
+            for ($i = 0, $j = 0; $i < $imageArrayCount && $j < $tempImageNameArrayCount; $i++, $j++) {
                 ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
                 $imgStatus = 0;
 
