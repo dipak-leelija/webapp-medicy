@@ -170,7 +170,7 @@ $showDoctors = json_decode($showDoctors, true);
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docName">Doctor Name</label>
+                                            <label class="mb-0 mt-1" for="docName">Doctor Name <span class="text-danger font-weight-bold">*</span></label>
                                             <input class="form-control" type="text" name="docName" id="docName"
                                                 required>
                                         </div>
@@ -178,7 +178,7 @@ $showDoctors = json_decode($showDoctors, true);
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docSpecialization">Doctor
-                                                Specialization</label>
+                                                Specialization <span class="text-danger font-weight-bold">*</span></label>
                                             <select class="form-control" name="docSpecialization" id="docSpecialization" required>
                                                 <option value="" disabled selected>Select Doctor Specialization</option>
                                                 <?php
@@ -195,17 +195,17 @@ $showDoctors = json_decode($showDoctors, true);
                                         </div>
 
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docAlsoWith">Also With</label>
+                                            <label class="mb-0 mt-1" for="docAlsoWith">Also With <span class="text-danger font-weight-bold">*</span></label>
                                             <input class="form-control" type="text" name="docAlsoWith" id="docAlsoWith"
                                                 >
                                         </div>
 
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docEmail">Doctor Email</label>
+                                            <label class="mb-0 mt-1" for="docEmail">Doctor Email <span class="text-danger font-weight-bold">*</span></label>
                                             <input class="form-control" type="text" name="docEmail" id="docEmail">
                                         </div>
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docMob">Doctor Mob No</label>
+                                            <label class="mb-0 mt-1" for="docMob">Doctor Mob No <span class="text-danger font-weight-bold">*</span></label>
                                             <input class="form-control" type="text" name="docMob" id="docMob"
                                                 maxlength="10" minlength="10" >
                                         </div>
@@ -213,19 +213,19 @@ $showDoctors = json_decode($showDoctors, true);
 
                                     <div class="col-md-6">
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docRegNo">Doctor Reg No</label>
+                                            <label class="mb-0 mt-1" for="docRegNo">Doctor Reg No <span class="text-danger font-weight-bold">*</span></label>
                                             <input class="form-control" type="text" name="docRegNo" id="docRegNo"
                                             maxlength="10" >
                                         </div>
 
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docDegree">Doctor Degree</label>
+                                            <label class="mb-0 mt-1" for="docDegree">Doctor Degree <span class="text-danger font-weight-bold">*</span></label>
                                             <input class="form-control" type="text" name="docDegree" id="docDegree"
                                                 >
                                         </div>
 
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docAddress">Full Address</label>
+                                            <label class="mb-0 mt-1" for="docAddress">Full Address <span class="text-danger font-weight-bold">*</span></label>
                                             <textarea class="form-control" name="docAddress" id="docAddress" cols="30"
                                                 rows="6" ></textarea>
                                         </div>

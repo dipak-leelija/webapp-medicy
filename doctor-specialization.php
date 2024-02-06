@@ -89,7 +89,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                                     <form method="post">
 
                                         <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="splz-name">Specialization</Address></label>
+                                            <label class="mb-0 mt-1" for="splz-name">Specialization<span class="text-danger font-weight-bold">*</span></Address></label>
                                             <input class="form-control" id="splz-name" name="splz-name" placeholder="Doctor Specialization Name" required>
                                         </div>
 

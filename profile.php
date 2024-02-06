@@ -169,8 +169,11 @@ if ($_SESSION['ADMIN']) {
                                         <div class="ml-3">
                                             <img class="img-uv-view shadow-lg " src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle ml-5">
-                                                <input type="file" style="display:none;" id="img-uv-input" accept="image/*" name="profile-image">
-                                                <label for="img-uv-input" class="btn btn-sm btn-success ml-5 mt-n5"><i class="fas fa-camera"></i></label>
+                                                <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="profile-image" onchange="validateFileType()">
+                                                <label for="img-uv-input" class="btn btn-sm btn-success ml-5 mt-n5 rounded-circle border-white"><i class="fas fa-camera"></i></label>
+                                                <div class="alert alert-danger d-none" id="err-show" role="alert" >
+                                                    Only jpg/jpeg and png files are allowed!
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="p-name">
@@ -284,6 +287,17 @@ if ($_SESSION['ADMIN']) {
 
 
     <script>
+        function validateFileType() {
+            var fileName = document.getElementById("img-uv-input").value;
+            console.log(fileName);
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {} else {
+                // alert("Only jpg/jpeg and png files are allowed!");
+                document.getElementById("err-show").classList.remove("d-none");
+            }
+        }
+
         $(document).ready(function() {
             $(document).on("click", ".delete-btn", function() {
 
@@ -360,7 +374,6 @@ if ($_SESSION['ADMIN']) {
                 // toggle.classList.remove('hide');
             }
         }
-
     </script>
 
 
@@ -378,11 +391,11 @@ if ($_SESSION['ADMIN']) {
             var button = document.getElementById("passwordChangeBtn");
 
             if (window.innerWidth < 784) {
-                button.innerHTML = '<span><i class="fas fa-key"></span>'; 
-                button.onclick = passwordUpdate(); 
+                button.innerHTML = '<span title="Change Password"><i class="fas fa-key"></span>';
+                button.onclick = passwordUpdate();
             } else {
                 button.innerHTML = 'Password Change';
-                button.onclick = passwordUpdate(); 
+                button.onclick = passwordUpdate();
             }
         }
         updateButtonContent();
