@@ -75,10 +75,10 @@ $QuantityUnit   = new QuantityUnit;
     <?php
     if (isset($_GET['id'])) {
         $productId = $_GET['id'];
+
         $product        = json_decode($Products->showProductsByIdOnTableName($_GET['id'], $_GET['table']));
         $product        = $product->data;
         // print_r($product);
-        // echo "<br>";
         // ====== manuf data area =====
         if (isset($product->manufacturer_id)) {
             $manuf          = json_decode($Manufacturer->showManufacturerById($product->manufacturer_id));
@@ -95,7 +95,7 @@ $QuantityUnit   = new QuantityUnit;
 
         $itemstock      = $CurrentStock->showCurrentStocByPId($_GET['id']);
 
-        $image          = json_decode($ProductImages->showImageById($_GET['id']));
+        $image          = json_decode($ProductImages->showImagesByProduct($_GET['id']));
         // print_r($image );
 
         if ($image->status) {
@@ -120,16 +120,16 @@ $QuantityUnit   = new QuantityUnit;
             $itemQuantityUnit = json_decode($QuantityUnit->quantityUnitName($product->unit_id));
             // print_r($itemQuantityUnit);
 
-            if($itemQuantityUnit->status){
-                if(isset($itemQuantityUnit->data->short_name)){
+            if ($itemQuantityUnit->status) {
+                if (isset($itemQuantityUnit->data->short_name)) {
                     $qantityName = $itemQuantityUnit->data->short_name;
-                }else{
+                } else {
                     $qantityName = '';
                 }
-            }else{
+            } else {
                 $qantityName = '';
             }
-        }else{
+        } else {
             $qantityName = '';
         }
 
@@ -267,22 +267,7 @@ $QuantityUnit   = new QuantityUnit;
     }
 
 
-
-
     ?>
-
-    <!-- <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            if (window.innerWidth >= 800) {
-            document.getElementById('btn-ctrl-1').style.display = 'block';
-            document.getElementById('btn-ctrl-2').style.display = 'none';
-        } else {
-            document.getElementById('btn-ctrl-1').style.display = 'none';
-            document.getElementById('btn-ctrl-2').style.display = 'block';
-        }
-        });
-    </script> -->
-
 
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
     <script>
@@ -295,69 +280,55 @@ $QuantityUnit   = new QuantityUnit;
 
         const del = (e) => {
             btnID = e.id;
-            // btnVal = e.value;
+
             btn = this;
-            // alert(btnVal);
-            // alert(btnID);
 
-            // if (btnVal > 0) {
-            //     Swal.fire({
-            //         icon: 'error',
-            //         title: 'Oops...',
-            //         text: 'Current Stock have this product.'
-            //     })
-            // }
+            swal.fire({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Data?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        var productId = window.productId;
+                        // console.log("product ID-"+productId);
+                        $.ajax({
+                            url: "product.Delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                productId: productId,
+                                id: btnID,
+                            },
+                            success: function(data) {
+                                if (data == 1) {
+                                    Swal.fire(
+                                        "Deleted",
+                                        "Data Has Been Deleted",
+                                        "success"
+                                    ).then(function() {
+                                        parent.location.reload();
+                                    });
 
-            
-            // if (btnVal == 0) {
-                swal.fire({
-                        title: "Are you sure?",
-                        text: "Want to Delete This Data?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            var productId = window.productId;
-                            // console.log("product ID-"+productId);
-                            $.ajax({
-                                url: "product.Delete.ajax.php",
-                                type: "POST",
-                                data: {
-                                    productId: productId,
-                                    id: btnID,
-                                },
-                                success: function(data) {
-                                    if (data == 1) {
-                                        Swal.fire(
-                                            "Deleted",
-                                            "Data Has Been Deleted",
-                                            "success"
-                                        ).then(function() {
-                                            parent.location.reload();
-                                        });
-
-                                    } else {
-                                        Swal.fire("Failed", "Product Deletion Failed!",
-                                            "error");
-                                        $("#error-message").html("Deletion Field !!!")
-                                            .slideDown();
-                                        $("success-message").slideUp();
-                                    }
+                                } else {
+                                    Swal.fire("Failed", "Product Deletion Failed!",
+                                        "error");
+                                    $("#error-message").html("Deletion Field !!!")
+                                        .slideDown();
+                                    $("success-message").slideUp();
                                 }
-                            });
-                        }
-                        return false;
-                    });
-            // }
+                            }
+                        });
+                    }
+                    return false;
+                });
         }
     </script>
 
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.min.js"></script>
 
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 </body>
 

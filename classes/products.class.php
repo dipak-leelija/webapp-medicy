@@ -189,17 +189,27 @@ class Products extends DatabaseConnection
 
 
 
-    function showProducts()
-    {
-        $slectProduct        = "SELECT * FROM products";
-        $slectProductQuery   = $this->conn->query($slectProduct);
-        $rows                = $slectProductQuery->num_rows;
-        if ($rows == 0) {
-            return 0;
-        } else {
-            return $slectProductQuery;
+    function showProducts(){
+        try {
+            $selectProduct = "SELECT * FROM products";
+            $selectProductQuery = $this->conn->query($selectProduct);
+
+            if (!$selectProductQuery) {
+                throw new Exception("Query execution failed.");
+            }
+
+            $rows = $selectProductQuery->num_rows;
+            if ($rows == 0) {
+                return 0;
+            } else {
+                return $selectProductQuery;
+            }
+        } catch (Exception $e) {
+            return error_log("Error in showProducts function: " . $e->getMessage());
         }
-    } //eof showProducts function
+    } 
+
+
 
 
 
@@ -444,8 +454,7 @@ class Products extends DatabaseConnection
                 return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
             }
         } catch (Exception $e) {
-
-            error_log("Error in showProductsById: " . $e->getMessage());
+            // error_log("Error in showProductsById: " . $e->getMessage());
             return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
         }
         return 0;
