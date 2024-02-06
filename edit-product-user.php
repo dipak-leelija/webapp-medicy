@@ -76,7 +76,7 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
     <!--Custom CSS -->
-    <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>add-new-product.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
     <!-- <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" /> -->
