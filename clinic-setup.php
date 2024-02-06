@@ -126,7 +126,7 @@ if ($bills->status) {
                                                 Only jpg/jpeg and png files are allowed!
                                             </div>
                                             <div class="d-flex justify-content-around align-items-center">
-                                                <img class="mb-0 mt-3 rounded img-uv-view" src="<?= $healthCareLogo; ?>" width="100%" height="180" alt="">
+                                                <img class="mb-0 mt-3 rounded img-uv-view" src="<?= isset($healthCareLogo) ? $healthCareLogo : IMG_PATH .'clinick.png' ?>" width="100%" height="180" alt="">
                                                 <div class="">
                                                     <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="site-logo" onchange="validateFileType()">
                                                     <label for="img-uv-input" class="btn btn-primary">Change

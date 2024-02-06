@@ -170,7 +170,7 @@ if ($_SESSION['ADMIN']) {
                                             <img class="img-uv-view shadow-lg " src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
                                             <div class="position-absolute translate-middle ml-5">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="profile-image" onchange="validateFileType()">
-                                                <label for="img-uv-input" class="btn btn-sm btn-success ml-5 mt-n5"><i class="fas fa-camera"></i></label>
+                                                <label for="img-uv-input" class="btn btn-sm btn-success ml-5 mt-n5 rounded-circle border-white"><i class="fas fa-camera"></i></label>
                                                 <div class="alert alert-danger d-none" id="err-show" role="alert" >
                                                     Only jpg/jpeg and png files are allowed!
                                                 </div>
