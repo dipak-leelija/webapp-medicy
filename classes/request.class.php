@@ -104,6 +104,7 @@ class Request extends DatabaseConnection
 
 
 
+
     function selectProductById($prodId, $adminId)
     {
         $resultData = array();
@@ -140,6 +141,99 @@ class Request extends DatabaseConnection
 
         return 0;
     }
+
+
+
+
+
+
+
+
+    function selectProductData($prodId){
+        $resultData = array();
+
+        try {
+            $searchSql = "SELECT * FROM `product_request` WHERE `product_id` = ?";
+            $stmt = $this->conn->prepare($searchSql);
+
+            if ($stmt) {
+                $stmt->bind_param("s", $prodId);
+                $stmt->execute();
+
+                // Get the results
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $resultData = $row;
+                    }
+                    return json_encode(['status' => '1', 'message' => 'data found', 'data' => $resultData]);
+                } else {
+                    return json_encode(['status' => '0', 'message' => 'no data found', 'data' => []]);
+                }
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        } finally {
+            if (isset($stmt)) {
+                $stmt->close();
+            }
+        }
+
+        return 0;
+    }
+
+
+
+
+
+
+
+
+    function selectProductReqData($prodId, $adminId)
+    {
+        $resultData = array();
+
+        try {
+            $searchSql = "SELECT * FROM `product_request` WHERE `product_id` = ? AND `admin_id` = ?";
+            $stmt = $this->conn->prepare($searchSql);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $prodId, $adminId);
+                $stmt->execute();
+
+                // Get the results
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $resultData[] = $row;
+                    }
+                    return json_encode(['status' => '1', 'message' => 'data found', 'data' => $resultData]);
+                } else {
+                    return json_encode(['status' => '0', 'message' => 'no data found', 'data' => []]);
+                }
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        } finally {
+            if (isset($stmt)) {
+                $stmt->close();
+            }
+        }
+
+        return 0;
+    }
+
+
+
+
+
+
 
 
 
