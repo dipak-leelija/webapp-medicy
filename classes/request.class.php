@@ -122,7 +122,7 @@ class Request extends DatabaseConnection
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        $resultData[] = $row;
+                        $resultData = $row;
                     }
                     return json_encode(['status' => '1', 'message' => 'data found', 'data' => $resultData]);
                 } else {

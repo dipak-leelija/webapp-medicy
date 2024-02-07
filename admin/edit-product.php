@@ -153,33 +153,40 @@ $Category = $Category->data;
             $type           = $product->type;
             $power          = $product->power;
 
+            // product description
             if (isset($product->dsc)) {
                 $dsc            = $product->dsc;
             } else {
                 $dsc  = '';
             }
 
+            //product edit request description
+            if (isset($product->req_dsc)) {
+                $requestDsc            = $product->req_dsc;
+            } else {
+                $requestDsc  = '';
+            }
+            // echo $requestDsc;
+
             $mrp            = $product->mrp;
             $gst            = $product->gst;
 
 
-            if(isset($product->prod_req_status)){
-                $prodReqStatus = $product->prod_req_status;
+            $prodReqStatus = $product->prod_req_status ?? '';
+            $oldProdFlag = $product->old_prod_flag ?? '';
+            $oldProdId = $oldProdFlag ? ($product->old_prod_id ?? '') : '';
+
+            if(!empty($oldProdId)){
+                $col = 'product_id';
+                $data = $oldProdId;
+                $productDataFromProductsTable = json_decode($Products->showProductsByTable($col, $data));
+                // print_r($productDataFromProductsTable);
+                $editReqFlagData = $productDataFromProductsTable->data[0]->edit_request_flag;
             }else{
-                $prodReqStatus = '';
+                $editReqFlagData = 0;
             }
 
-            if(isset($product->old_prod_flag)){
-                $oldProdFlag = $product->old_prod_flag;
-            }else{
-                $oldProdFlag = '';
-            }
-            
-
-            // $added_by       = $product[0]->added_by;
-            // $added_on       = $product[0]->added_on;
-            // $updated_by     = $product[0]->updated_by;
-            // $updated_on     = $product[0]->updated_on;
+           
             $admin_id       = $product->admin_id;
 
             $images = json_decode($ProductImages->showImagesByProduct($productId));
@@ -198,7 +205,7 @@ $Category = $Category->data;
             }
         }
 
-        ?>
+    ?>
 
         <!-- Page Wrapper -->
         <div id="wrapper">
@@ -263,6 +270,7 @@ $Category = $Category->data;
                                             <div class="col-md-12">
                                                 <lebel>Prodcut Name:</lebel>
                                                 <input class="c-inp w-100 p-1" id="product-id" name="product-id" placeholder="Product Id" value="<?= $productId ?>" required hidden>
+                                                <input class="c-inp w-100 p-1" id="old-product-id" name="old-product-id" value="<?= $oldProdId ?>" hidden>
                                                 <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?= $productName ?>" required>
                                             </div>
                                         </div>
@@ -418,7 +426,7 @@ $Category = $Category->data;
 
                                             <div class="col-md-6">
                                                 <lebel>GST%</lebel>
-                                                <select class="c-inp w-100 p-1" name="gst" id="gst" onchange="getMarginGst(this.value)">
+                                                <select class="c-inp w-100 p-1" name="gst" id="gst" onchange="getMarginGst(this.value)" required>
                                                     <option value="" disabled selected>GST</option>
                                                     <?php
                                                     foreach ($gstData as $gstData) {
@@ -437,18 +445,27 @@ $Category = $Category->data;
                                             <div class="col-md-12">
                                                 <textarea class="c-inp w-100 p-1" name="product-description" id="product-description" placeholder="Product Description" cols="30" rows="2" required><?= $dsc ?></textarea>
                                             </div>
+                                            <br>
+                                            <div class="col-md-12 d-none">
+                                                <textarea class="c-inp w-100 p-1" name="product-req-description" id="product-req-description" placeholder="Product Description" cols="30" rows="2" required><?= $requestDsc ?></textarea>
+                                            </div>
                                         </div>
 
                                         <div class="row mt-1 d-none">
-                                            <div class="col-md-4">
+
+                                            <div class="col-md-3">
+                                                <input type="text" name="edit-req-flag-data" id="edit-req-flag-data" value="<?php echo  $editReqFlagData; ?>">
+                                            </div>
+
+                                            <div class="col-md-3">
                                                 <input type="text" name="prod-req-status" id="prod-req-status" value="<?php echo  $prodReqStatus; ?>">
                                             </div>
 
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <input type="text" name="old-prod-flag" id="old-prod-flag" value="<?php echo $oldProdFlag; ?>">
                                             </div>
 
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <input type="text" name="table-info" id="table-info" value="<?php echo $tableName; ?>">
                                             </div>
                                         </div>
