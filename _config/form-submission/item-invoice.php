@@ -167,8 +167,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// header("Location: item-invoice-reprint.php?id=".url_enc($invoiceId));
-// exit;
+header("Location: item-invoice-reprint.php?id=".url_enc($invoiceId));
+exit;
 
 ?>
 
