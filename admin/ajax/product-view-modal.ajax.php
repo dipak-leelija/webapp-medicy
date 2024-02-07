@@ -113,7 +113,12 @@ $QuantityUnit   = new QuantityUnit;
         echo 'var productId = ' . json_encode($productId) . '; ';
         echo '</script>';
 
-        $pack = $PackagingUnits->showPackagingUnitById($product->packaging_type);
+        $pack = json_decode($PackagingUnits->showPackagingUnitById($product->packaging_type));
+        if($pack->status){
+            $packUnit = $pack->data->unit_name;
+        }else{
+            $packUnit = '';
+        }
 
         //======== item unit data fetch =======
         if (isset($product->unit_id)) {
@@ -183,7 +188,7 @@ $QuantityUnit   = new QuantityUnit;
                                 <h7><?php echo $manufName; ?></h7>
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
                                 <p class="fst-normal"><?php echo $product->unit_quantity; ?>
-                                    <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
+                                    <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $packUnit; ?></p>
                                 <p>
                                     <small>
                                         <mark>
