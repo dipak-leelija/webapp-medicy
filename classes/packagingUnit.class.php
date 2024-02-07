@@ -99,17 +99,32 @@ class PackagingUnits extends DatabaseConnection
 
 
 
-    function showPackagingUnitById($unitId)
-    {
-        $select        = " SELECT * FROM packaging_type WHERE `id` = '$unitId'";
-        $selectQuery   = $this->conn->query($select);
-        if ($selectQuery->num_rows > 0) {
-            while ($result = $selectQuery->fetch_array()) {
-                $data[] = $result;
+    function showPackagingUnitById($unitId){
+        try {
+            $select = "SELECT * FROM packaging_type WHERE `id` = ?";
+            $stmt = $this->conn->prepare($select);
+            $stmt->bind_param("i", $unitId);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if($result->num_rows > 0){
+                $data = $result->fetch_assoc();
+                return json_encode(['status'=>'1', 'data'=>$data]);
+            }else{
+                return json_encode(['status'=>'0', 'data'=>'']);
             }
-            return $data;
+            
+            $stmt->close();
+        } catch (Exception $e) {
+            return error_log("Error in showPackagingUnitById: " . $e->getMessage());;
         }
-    } //eof showMeasureOfUnits
+    }
+
+
+
+
+    
 
     function packagingTypeName($unitId)
     {

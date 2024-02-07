@@ -130,7 +130,13 @@ $QuantityUnit   = new QuantityUnit;
         echo 'var productId = ' . json_encode($productId) . '; ';
         echo '</script>';
 
-        $pack = $PackagingUnits->showPackagingUnitById($product[0]->packaging_type);
+        $pack = json_decode($PackagingUnits->showPackagingUnitById($product[0]->packaging_type));
+        if($pack->status){
+            $unitName = $pack->data->unit_name;
+        }else{
+            $unitName = '';
+        }
+
 
         if (property_exists($product[0], 'unit_id')) {
             $itemQuantityUnit = json_decode($QuantityUnit->quantityUnitName($product[0]->unit_id));
@@ -145,9 +151,18 @@ $QuantityUnit   = new QuantityUnit;
             $qantityName = '';
         }
 
-        $itemUnitName = $ItemUnit->itemUnitName($product[0]->unit);
-
-
+        if(property_exists($product[0], 'unit')){
+            $itemUnitName = $ItemUnit->itemUnitName($product[0]->unit);
+            if(!empty($itemUnitName)){
+                $itemUnitName = $itemUnitName;
+            }else{
+                $itemUnitName = '';
+            }
+        }else{
+            $itemUnitName = '';
+        }
+        
+    
         if(property_exists($product[0], 'comp_1')){
             $comp1 = $product[0]->comp_1;
         }else{
@@ -190,9 +205,11 @@ $QuantityUnit   = new QuantityUnit;
                                 <h4><?php echo $product[0]->name; ?></h4>
                                 <h7><?php echo ($manuf->status) ? $manuf->data->name : "Manufacturer data not found"; ?></h7>
                                 <h5 class="fs-5 fst-normal">₹ <?php echo $product[0]->mrp; ?><span class="fs-6 fw-light"><small> MRP</small></span></h5>
+
                                 <p class="fst-normal"><?php echo $product[0]->unit_quantity; ?>
-                                    <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $pack[0]['unit_name']; ?></p>
+                                    <?= $qantityName . ' ' . $itemUnitName ?>/<?php echo $unitName; ?></p>
                                 <p>
+
                                     <small>
                                         <mark>
                                             Current Stock have :
