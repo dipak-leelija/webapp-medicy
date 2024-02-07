@@ -76,7 +76,7 @@ if ($showmanufacturer->status) {
                         <td>' . $manufacturerDsc . '</td>
                         <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                         <td>
-                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#manufacturerModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="manufacturerRequest(' . $manufacturerId . ')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#manufacturerModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="manufactViewRequest(' . $manufacturerId . ')"><i class="fas fa-edit"></i></button>
                         </td>
                        </tr>';
                 }
@@ -87,16 +87,3 @@ if ($showmanufacturer->status) {
 </div>
 
 
-<script>
-    const manufacturerRequest = (manufacturerId) => {
-        let ViewAndEdit = manufacturerId;
-        let url = "ajax/manufacturer.request.ajax.php?Id=" + ViewAndEdit;
-        $(".manufacturerModal").html(
-            '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
-            url + '"></iframe>');
-    }
-
-    // function closeModal() {
-    //     $('#manufacturerModal').modal('hide');
-    // }
-</script>
