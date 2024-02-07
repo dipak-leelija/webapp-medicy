@@ -51,52 +51,51 @@ if (isset($_GET['match'])) {
         echo "<p class='text-center font-weight-bold'>Distributor Not Found!</p>";
         // echo "<div class='p-1 border-bottom list'> $match </div>";
     }
- 
+
 ?>
 
-<div class="table-responsive">
-    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-        <thead>
-            <tr>
-                <th>SL.</th>
-                <th>Name</th>
-                <th>Contact</th>
-                <th>Area PIN</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if (is_array($showDistributor)) {
-                $rowCount = 0;
-                foreach ($showDistributor as $rowDistributor) {
-                    $distributorId      = $rowDistributor->id;
-                    $distributorName    = $rowDistributor->name;
-                    $distributorPhno    = $rowDistributor->phno;
-                    $distributorPin     = $rowDistributor->area_pin_code;
-                    $distributorStatus  = $rowDistributor->status;
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>SL.</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Area PIN</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if (is_array($showDistributor)) {
+                    foreach ($showDistributor as $rowDistributor) {
+                        $distributorId      = $rowDistributor->id;
+                        $distributorName    = $rowDistributor->name;
+                        $distributorPhno    = $rowDistributor->phno;
+                        $distributorPin     = $rowDistributor->area_pin_code;
+                        $distributorStatus  = $rowDistributor->status;
 
-                    $statusLabel = '';
-                    $statusColor = '';
-                    switch ($distributorStatus) {
-                        case 2:
-                            $statusLabel = 'Disabled';
-                            $statusColor = 'red';
-                            break;
-                        case 0:
-                            $statusLabel = 'Pending';
-                            $statusColor = '#4e73df';
-                            break;
-                        case 1:
-                            $statusLabel = 'Active';
-                            $statusColor = 'green';
-                            break;
-                        default:
-                            $statusLabel = 'Disabled';
-                            break;
-                    }
-                    echo '<tr>
+                        $statusLabel = '';
+                        $statusColor = '';
+                        switch ($distributorStatus) {
+                            case 2:
+                                $statusLabel = 'Disabled';
+                                $statusColor = 'red';
+                                break;
+                            case 0:
+                                $statusLabel = 'Pending';
+                                $statusColor = '#4e73df';
+                                break;
+                            case 1:
+                                $statusLabel = 'Active';
+                                $statusColor = 'green';
+                                break;
+                            default:
+                                $statusLabel = 'Disabled';
+                                break;
+                        }
+                        echo '<tr>
                     <td>' . $distributorId . '</td>
                     <td>' . $distributorName . '</td>
                     <td>' . $distributorPhno . '</td>
@@ -106,35 +105,15 @@ if (isset($_GET['match'])) {
                         <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#distRequestModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></button>
                     </td>
                    </tr>';
-                    $rowCount++;
-                    // if ($rowCount == 5) {
-                    //     break;
-                    // }
+                      
+                    }
+                    // echo $rowCount;
                 }
-                // echo $rowCount;
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
-    <!-- <a class="mx-1" data-toggle="modal" data-target="#distRequestModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a> -->
-    <!-- Manufacturer View and Edit Modal
-    <div class="modal fade" id="distRequestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Distributor Request</h5>
-                    <button type="button" class="btn btn-lg bg-transparent text-danger p-0 font-weight-bold " onclick="closeModal()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body distRequestModal">
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-    <script>
+                ?>
+            </tbody>
+        </table>
+    </div>
+    <!-- <script>
         //View and Edit Manufacturer function
         distViewAndEdit = (distributorId) => {
             let ViewAndEdit = distributorId;
@@ -143,11 +122,7 @@ if (isset($_GET['match'])) {
                 '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of viewAndEdit function
-
-        function closeModal() {
-            $('#distRequestModal').modal('hide');
-        }
-    </script>
+    </script> -->
 
 <?php
 

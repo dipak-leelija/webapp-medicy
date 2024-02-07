@@ -250,7 +250,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
 
 
         <!-- Manufacture search modal -->
-       
+
         <div class="modal fade" id="ManufacturModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
@@ -339,8 +339,8 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                     </div>
                 </div>
             </div>
-        </div>   <!-- end Packaging search modal  -->
-        
+        </div> <!-- end Packaging search modal  -->
+
         <!-- add packaging unit -->
         <div class="modal fade" id="add-packagingUnit" tabindex="-1" role="dialog" aria-labelledby="packUnitModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -407,7 +407,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                 </div>
             </div>
         </div>
-         <!-- end Prod Unit search modal  -->
+        <!-- end Prod Unit search modal  -->
 
         <!-- add product unit modal -->
         <div class="modal fade" id="add-ProdUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
@@ -470,6 +470,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <!-- <script src="<?= JS_PATH ?>filter.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     <script>
         const addDistributor = () => {
@@ -636,7 +637,25 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
             });
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        //View and Edit Manufacturer function
+        distViewAndEdit = (distributorId) => {
+            let ViewAndEdit = distributorId;
+            let url = "ajax/distributor.request.ajax.php?Id=" + ViewAndEdit;
+            $(".distRequestModal").html(
+                '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+        } // end of viewAndEdit function
+    </script>
+    <script>
+        const manufactViewRequest = (manufacturerId) => {
+            let ViewAndEdit = manufacturerId;
+            let url = "ajax/manufacturer.request.ajax.php?Id=" + ViewAndEdit;
+            $(".manufacturerModal").html(
+                '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
+        }
+    </script>
 
 </body>
 
