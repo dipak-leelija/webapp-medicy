@@ -78,7 +78,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
         $verifyStatus       = 1;
 
 
-        echo "product request description : $productReqDsc<br>";
+        // echo "product request description : $productReqDsc<br>";
 
         if ($table == 'products') {
             // $updateProduct = json_decode($Products->updateProductBySuperAdmin($productid, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, NOW, $verifyStatus));
@@ -125,7 +125,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
                     $updateOnProdRequest = $Products->updateProductBySuperAdmin($oldProductId, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, NOW, $verifyStatus);
 
                     $updateOnProdRequest = json_decode($updateOnProdRequest);
-                    if ($addProductOnRequest->status) {
+                    if ($updateOnProdRequest->status) {
                         // CHECK PRODUCTID IN IMAGE TABLE AND UPDATE WITH OLD PRODUCT ID
                         $checkImage = json_decode($ProductImages->showImagesByProduct($productid));
                         if ($checkImage->status) {
