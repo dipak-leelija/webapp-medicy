@@ -295,7 +295,7 @@ if ($allAppointments->status) {
 
                             </div>
 
-                            <div class="dropdown-menu  p-2 row ml-4" id="dtPickerDiv" style="display: none; margin-top: -280px; background-color: rgba(255, 255, 255, 0.8);">
+                            <div class="dropdown-menu  p-2 row ml-4" id="dtPickerDiv" style="display: none; position: relative; background-color: rgba(255, 255, 255, 0.8);">
                                 <div class=" col-md-12">
                                     <div class="d-flex">
                                         <div class="dtPicker" style="margin-right: 1rem;">

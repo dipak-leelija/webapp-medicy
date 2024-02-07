@@ -228,7 +228,7 @@ if ($pagination->status == 1) {
                                         }
                                     } else {
                                         echo '<tr class="odd">
-                                                 <td valign="top" colspan="6" class="dataTables_empty" style="text-align: center;">Request Not Found</td>
+                                                 <td valign="top" colspan="6" class="dataTables_empty" style="text-align: center;">Ticket Not Found</td>
                                               </tr>';
                                     }
                                     // href="ajax/appointment.delete.ajax.php?appointmentId='.$appointmentID.'"

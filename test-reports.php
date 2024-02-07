@@ -93,7 +93,7 @@ $LabReport  = new LabReport ;
                                     </thead>
                                     <tbody>
                                     <?php
-                                           $labreportfetch = $LabReport->labreportfetch();
+                                           $labreportfetch = $LabReport->labreportfetch($adminId);
                                            $labreportfetch = json_decode($labreportfetch, true);
                                             if ($labreportfetch) {
                                                 foreach ($labreportfetch as $entry) {
