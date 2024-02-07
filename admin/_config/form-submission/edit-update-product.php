@@ -133,7 +133,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
                             $col2 = 'status';
                             $data2 = intval(1);
                             
-                            $updateProdImageData = $ProductImages->updateImage($productid, $updatedOn, $updatedBy, $col, $oldProductId, $col2, $data2);
+                            $updateProdImageData = $ProductImages->updateImage($productid, NOW, $supAdminId, $col1, $oldProductId, $col2, $data2);
 
                             $imageFlag = 1;
                             $addImages = true;
@@ -146,10 +146,9 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
                         }
 
                         $productsCol = 'edit_request_flag';
-                        $updateProduct = $Products->updateProductValuebyCol($oldProdId, $productsCol, $editReqFlagData, $supAdminId, NOW, $supAdminId);
+                        $updateProduct = $Products->updateProductValuebyCol($oldProductId, $productsCol, $editReqFlagData, $supAdminId, NOW, $supAdminId);
                         $updateProduct = true;
                     } else {
-
                         $updateProduct = false;
                     }
                 }
