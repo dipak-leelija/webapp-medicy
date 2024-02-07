@@ -3,7 +3,8 @@
 class ProductImages extends DatabaseConnection
 {
 
-    function addImagesBySupAdmin($productId, $productImage, $status, $addedBy, $addedOn, $adminId){
+    function addImagesBySupAdmin($productId, $productImage, $status, $addedBy, $addedOn, $adminId)
+    {
         try {
             if (!empty($adminId)) {
                 $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `status`, `added_by`,  `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?)";
@@ -35,11 +36,11 @@ class ProductImages extends DatabaseConnection
     function addImages($productId, $productImage, $addedBy, $addedOn, $adminId)
     {
         try {
-            if(!empty($adminId)){
+            if (!empty($adminId)) {
                 $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($insertImage);
                 $stmt->bind_param("sssss", $productId, $productImage, $addedBy, $addedOn, $adminId);
-            }else{
+            } else {
                 $insertImage = "INSERT INTO `product_images` (`product_id`, `image`, `added_by`, `added_on`) VALUES (?, ?, ?, ?)";
                 $stmt = $this->conn->prepare($insertImage);
                 $stmt->bind_param("ssss", $productId, $productImage, $addedBy, $addedOn);
@@ -77,7 +78,8 @@ class ProductImages extends DatabaseConnection
 
 
 
-    function showImagesByProduct($productId){
+    function showImagesByProduct($productId)
+    {
         try {
             $selectImage = "SELECT * FROM product_images WHERE product_id = ? ";
             $stmt = $this->conn->prepare($selectImage);
@@ -108,7 +110,7 @@ class ProductImages extends DatabaseConnection
 
 
 
-    
+
 
     function showImageById($productId)
     {
@@ -204,10 +206,39 @@ class ProductImages extends DatabaseConnection
 
             return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
         }
+    } //eof showProductsById function
+
+
+
+
+
+
+
+
+    function updateImage($productId, $updatedOn, $updatedBy, $col1 = '', $data1 = '', $col2 = '', $data2 = '') {
+        try {
+            if (!empty($col2)) {
+                $updateImage = "UPDATE `product_images` SET `$col1`=?, `updated_on`=?, `updated_by`=? WHERE `product_id`=?";
+                $stmt = $this->conn->prepare($updateImage);
+                $stmt->bind_param("ssss", $data1, $updatedOn, $updatedBy, $productId);
+            } else {
+                $updateImage = "UPDATE `product_images` SET `$col1`=?, `$col2`=?, `updated_on`=?, `updated_by`=? WHERE `product_id`=?";
+                $bindparms = (is_numeric($data2)) ? "sissi" : "ssssi";
+                $stmt = $this->conn->prepare($updateImage);
+                $stmt->bind_param($bindparms, $data1, $data2, $updatedOn, $updatedBy, $productId);
+            }
+            
+            $result = $stmt->execute();
+
+            return $result;
+        } catch (Exception $e) {
+            return error_log("Error updating image: " . $e->getMessage());
+        }
     }
+    
 
 
-    //eof showProductsById function
+
 
 
     // function showProductsByTId($productTId){
@@ -238,16 +269,8 @@ class ProductImages extends DatabaseConnection
     // }
 
 
-    function updateImage($productId, $image, $updatedOn, $updatedBy)
-    {
-
-        $updateImage = "UPDATE `product_images` SET `image`='$image', `updated_on`='$updatedOn', `updated_by`='$updatedBy' WHERE `product_images`.`product_id`='$productId'";
 
 
-        $updateQuery = $this->conn->query($updateImage);
-
-        return $updateQuery;
-    }
 
     function updatePriority($image, $setPriority, $productId)
     {

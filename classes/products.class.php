@@ -786,25 +786,29 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByTable($table, $data)
-    {
+    function showProductsByTable($table, $data){
         try {
-            //echo $productId;
-            $slectProduct        = "SELECT * FROM products WHERE `$table` = '$data'";
-            $slectProductQuery   = $this->conn->query($slectProduct);
-            $rows                = $slectProductQuery->num_rows;
-            if ($rows > 0) {
-                while ($result  = $slectProductQuery->fetch_array()) {
-                    $data[] = $result;
+            $slectProduct        = "SELECT * FROM products WHERE `$table` = ?";
+            $stmt = $this->conn->prepare($slectProduct);
+            $stmt->bind_param("s", $data);
+            $stmt->execute();
+            $slectProductQuery = $stmt->get_result();
+
+            $resultData = []; 
+
+            if ($slectProductQuery->num_rows > 0) {
+                while ($result = $slectProductQuery->fetch_assoc()) {
+                    $resultData[] = $result;
                 }
-                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $data]);
+                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $resultData]);
             } else {
                 return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
             }
         } catch (Exception $e) {
-            return $e->errorMessage();
+            return json_encode(['status' => '0', 'message' => 'error', 'details' => $e->getMessage()]);
         }
-    } //eof showProductsById function
+    }
+
 
 
 
@@ -825,6 +829,46 @@ class Products extends DatabaseConnection
             return $data;
         }
     } //eof showProductsById function
+
+
+
+
+
+
+    function modifyProductByColData($prodId, $col1, $data1, $updatedBy, $updatedOn, $col2 = null, $data2 = null, $col3 = null, $data3 = null){
+        try {
+            $updateProduct = "UPDATE `products` SET `$col1`=?, `updated_by`=?, `updated_on`=?, `admin_id`=?";
+    
+            // Append additional columns and parameters if provided
+            $bindTypes = "ssss";
+            $bindParams = array($data1, $updatedBy, $updatedOn, $prodId);
+            if ($col2 !== null) {
+                $updateProduct .= ", `$col2`=?";
+                $bindTypes .= "s";
+                $bindParams[] = $data2;
+            }
+            if ($col3 !== null) {
+                $updateProduct .= ", `$col3`=?";
+                $bindTypes .= "s";
+                $bindParams[] = $data3;
+            }
+            $updateProduct .= " WHERE `product_id`=?";
+    
+            // Prepare and execute the statement
+            $stmt = $this->conn->prepare($updateProduct);
+            $stmt->bind_param($bindTypes, ...$bindParams);
+    
+            if ($stmt->execute()) {
+                $stmt->close();
+                return json_encode(['status' => '1', 'message' => 'success']);
+            } else {
+                return json_encode(['status' => '0', 'message' => 'fail']);
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => '0', 'message' => 'error', 'details' => $e->getMessage()]);
+        }
+    }
+    
 
 
 

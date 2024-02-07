@@ -82,7 +82,7 @@ if (isset($_POST['update-product'])) {
         $oldProdData = $productData->data;
         // print_r($oldProdData);
         if ($productName != $oldProdData->name) {
-            $nameEdit = 'name edited. ';
+            $nameEdit = 'Name edited. ';
         } else {
             $nameEdit = '';
         }
@@ -142,14 +142,17 @@ if (isset($_POST['update-product'])) {
             $images = json_decode($ProductImages->showImageByPrimay($productId, $adminId));
         }
 
-        // Determine if the images are edited
+        // check if the images are edited
         if (empty($imageName[0])) {
             $imgEdit = (!$images->status) ? '' : 'Image Edited.';
+            // echo "img 1";
         } else {
             if ($images->status) {
-                $imgEdit = (count($images->data) == $imageArrayCount) ? '' : 'Image Edited-2.';
+                $imgEdit = (count($images->data) == $imageArrayCount) ? 'Image Edited' : 'Image Edited';
+                // echo "img 2";
             } else {
                 $imgEdit = 'Image Edited.';
+                // echo "img 3";
             }
         }
 
@@ -190,10 +193,11 @@ if (isset($_POST['update-product'])) {
         } else {
            
             $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
-            // print_r($selectFromProdReqTable);
             if ($selectFromProdReqTable->status) {
 
-                $modifiedProdId = $selectFromProdReqTable->data[0]->$product_id;
+                $selectFromProdReqTable = $selectFromProdReqTable->data;
+                // print_r($selectFromProdReqTable);
+                $modifiedProdId = $selectFromProdReqTable->product_id;
                 $prodReqStatus = 0;
                 $oldProdFlag = 1;
 
@@ -207,7 +211,7 @@ if (isset($_POST['update-product'])) {
                 $randNum = rand(1, 999999999999);
                 $newProductId = 'PR' . $randNum;
 
-                $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $description, $gstPercent, $hsnoNumber, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+                $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
                 $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
                 if ($addOldProdEditRequest) {
@@ -222,11 +226,8 @@ if (isset($_POST['update-product'])) {
         }
 
     } else {
-        echo 'check';
         $prodReqStatus = 0;
         $oldProdFlag = 1;
-
-        $description = 'Product Edit Request. '.$description;
 
         $editRequest = $Request->editUpdateProductRequest($productId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
