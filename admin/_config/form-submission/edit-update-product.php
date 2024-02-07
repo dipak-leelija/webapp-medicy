@@ -81,9 +81,10 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
         // echo "product request description : $productReqDsc<br>";
 
         if ($table == 'products') {
-            // $updateProduct = json_decode($Products->updateProductBySuperAdmin($productid, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, NOW, $verifyStatus));
+            $updateProduct = json_decode($Products->updateProductBySuperAdmin($productid, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, NOW, $verifyStatus));
             if ($updateProduct->status) {
                 $updateProduct = true;
+                $imageFlag = 0;
             } else {
                 $updateProduct = false;
             }
@@ -103,6 +104,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
             } elseif ($prodReqStatus == 0 && $oldProdFlag == 1) {
 
                 if (preg_match("/Name edited. /", $productReqDsc) || preg_match("/Medicine Qantity Edited. /", $productReqDsc)) {
+                    echo "check 1";
                     $addProductOnRequest = $Products->addProductBySuperAdmin($productid, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, $verifyStatus, NOW);
                     $addProductOnRequest = json_decode($addProductOnRequest);
                     if ($addProductOnRequest->status) {
@@ -121,22 +123,19 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
                 } else {
                     //update product // update image product id with old product id
                     $imageFlag = 0;
-
+                    echo "check 2";
                     $updateOnProdRequest = $Products->updateProductBySuperAdmin($oldProductId, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, NOW, $verifyStatus);
 
                     $updateOnProdRequest = json_decode($updateOnProdRequest);
                     if ($updateOnProdRequest->status) {
                         // CHECK PRODUCTID IN IMAGE TABLE AND UPDATE WITH OLD PRODUCT ID
                         $checkImage = json_decode($ProductImages->showImagesByProduct($productid));
-                        if ($checkImage->status) {
-                            $col1 = 'product_id';
-                            $col2 = 'status';
-                            $data2 = intval(1);
-                            
-                            $updateProdImageData = $ProductImages->updateImage($productid, NOW, $supAdminId, $col1, $oldProductId, $col2, $data2);
-
-                            $imageFlag = 1;
+                        if ($checkImage->status) {                          
+                            $delProdImgData = $ProductImages->deleteImageByPID($productid);
+                            $imageFlag = 2;
                             $addImages = true;
+                        }else{
+                            $imageFlag = 0;
                         }
 
                         if ($editReqFlagData > 0) {
@@ -157,7 +156,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
 
 
         // Image Upload
-        if ($imageFlag == 0) {
+        if ($imageFlag == 0 || $imageFlag == 2) {
             if (isset($updateProduct) && $updateProduct) {
                 for ($i = 0, $j = 0; $i < count($imageName) && $j < count($tempImgName); $i++, $j++) {
                     $imgStatus = 0;
@@ -172,7 +171,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
                     $imageFileName  = substr($image, 0, -4);
                     if ($imageFileName != null) {
                         $imageFile  =   $imageFileName . '-' . $randomString . $extention;
-                        $imgFolder  = PROD_IMG . $imageFile;
+                        $imgFolder  = PROD_IMG_DIR . $imageFile;
                         move_uploaded_file($tempImage, $imgFolder);
                         $image      = addslashes($imageFile);
                     } else {
@@ -180,6 +179,11 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
                     }
                     if ($image != null) {
                         $status = 1;
+
+                        if($imageFlag == 2){
+                            $productid = $oldProductId;
+                        }
+
                         $addImages = $ProductImages->addImagesBySupAdmin($productid, $image, $status, $supAdminId, NOW, $supAdminId);
                     } else {
                         $addImages = true;
@@ -187,6 +191,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
                 }
             }
         }
+
 
         if ($updateProduct) {
             if ($addImages === true) {

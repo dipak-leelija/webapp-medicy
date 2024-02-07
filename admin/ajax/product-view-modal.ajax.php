@@ -120,6 +120,7 @@ $QuantityUnit   = new QuantityUnit;
             $packUnit = '';
         }
 
+        
         //======== item unit data fetch =======
         if (isset($product->unit_id)) {
             $itemQuantityUnit = json_decode($QuantityUnit->quantityUnitName($product->unit_id));

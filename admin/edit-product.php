@@ -447,7 +447,7 @@ $Category = $Category->data;
                                             </div>
                                             <br>
                                             <div class="col-md-12 d-none">
-                                                <textarea class="c-inp w-100 p-1" name="product-req-description" id="product-req-description" placeholder="Product Description" cols="30" rows="2" required><?= $requestDsc ?></textarea>
+                                                <textarea class="c-inp w-100 p-1" name="product-req-description" id="product-req-description" placeholder="Product Description" cols="30" rows="2"><?= $requestDsc ?></textarea>
                                             </div>
                                         </div>
 
