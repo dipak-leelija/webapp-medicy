@@ -232,7 +232,6 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                         echo "$productQty";
                                                         ?>
                                                     </td>
-                                                    <!-- <td class='align-middle'><?php echo "$productMRP" ?></td> -->
                                                     <td class='align-middle'>
                                                         <?php
                                                         if ($productData != null) {
@@ -254,14 +253,10 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                         echo "$looselyCount"
                                                         ?>
                                                     </td>
-                                                    <!-- <td class='align-middle'><?php echo "$looselyPrice" ?></td> -->
 
 
                                                     <td class='align-middle'>
                                                         <a class='text-primary mr-2' onclick='currentStockView("<?php echo $productId ?>", "<?php echo $editReqFlag ?>")' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-eye'></i></a>
-
-                                                        <!-- <a class='text-danger' id='".$productId."' onclick='customDelete(this.id)' data-toggle='modal' data-target='#DeleteCurrentStockModal'><i class='fas fa-trash'></i>
-                                                                        </a> -->
                                                     </td>
                                                 </tr>
                                         <?php

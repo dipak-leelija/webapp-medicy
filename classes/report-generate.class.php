@@ -36,21 +36,23 @@ class LabReport extends DatabaseConnection
     }
 
 
-    function labReportAdd($billId,$patientId,$dateTime,$adminId){
-        try{
+    function labReportAdd($billId, $patientId, $dateTime, $adminId)
+    {
+        try {
             $sql = "INSERT INTO `lab_report` (`bill_id`,`patient_id`,`added_on`,`admin_id`) VALUES ('$billId','$patientId','$dateTime','$adminId')";
             $query = $this->conn->query($sql);
             $labreportId = $this->conn->insert_id;
             // $insertedId = $this->conn->lastInsertId(); // Retrieve the inserted ID
-            return ["result" => true,"insert_id" =>  $labreportId];
-        }catch(Exception $e){
+            return ["result" => true, "insert_id" =>  $labreportId];
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
-        /// LabReport data fetch by id///
-    function labReportShow($billId){
+    /// LabReport data fetch by id///
+    function labReportShow($billId)
+    {
 
-        try{
+        try {
             $datas = null;
             $sql = "SELECT * FROM `lab_report` where `bill_id`='$billId'";
             $query = $this->conn->query($sql);
@@ -59,13 +61,14 @@ class LabReport extends DatabaseConnection
             }
             $dataset = json_encode($datas);
             return $dataset;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
     /// labReport fetch by reportId ///
-    function labReportbyReportId($reportId){
-        try{
+    function labReportbyReportId($reportId)
+    {
+        try {
             $datas = null;
             $sql = "SELECT * FROM `lab_report` where `id`='$reportId'";
             $query = $this->conn->query($sql);
@@ -74,36 +77,41 @@ class LabReport extends DatabaseConnection
             }
             $dataset = json_encode($datas);
             return $dataset;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
     // LabReport fetch //
-    function labreportfetch(){
-        try{
+    function labreportfetch($adminId = "")
+    {
+        try {
             $datas = array();
-            $sql = "SELECT * FROM `lab_report` ";
+            if (!empty($adminId)) {
+                $sql = "SELECT * FROM `lab_report` WHERE `admin_id` = '$adminId'";
+            } else {
+                $sql = "SELECT * FROM `lab_report`";
+            }
             $query = $this->conn->query($sql);
             while ($result = $query->fetch_object()) {
                 $datas[] = $result;
             }
             $dataset = json_encode($datas);
             return $dataset;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
     ///insert lab report details ///
-    function labReportDetailsAdd($testValue, $unitValue, $testId,$reportId)
+    function labReportDetailsAdd($testValue, $unitValue, $testId, $reportId)
     {
         try {
             $testValue = $testValue . ' - ' . $unitValue;
             $stmt = $this->conn->prepare("INSERT INTO `lab_report_detail` (`report_id`,`test_value`,`test_id`) VALUES (?,?,?)");
 
             if ($stmt) {
-                $stmt->bind_param("iss", $reportId,$testValue, $testId);
+                $stmt->bind_param("iss", $reportId, $testValue, $testId);
 
                 if ($stmt->execute()) {
                     $stmt->close();
@@ -121,8 +129,9 @@ class LabReport extends DatabaseConnection
     }
 
     ///lab report data fetch by Id ///
-    function labReportDetailbyId($reportId){
-        try{
+    function labReportDetailbyId($reportId)
+    {
+        try {
             $datas = array();
             $sql = "SELECT * FROM `lab_report_detail` where `report_id`= '$reportId'";
             $query = $this->conn->query($sql);
@@ -131,14 +140,15 @@ class LabReport extends DatabaseConnection
             }
             $dataset = json_encode($datas);
             return $dataset;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
     ///lab report data fetch///
-    function labReportDetail(){
-        try{
+    function labReportDetail()
+    {
+        try {
             $datas = array();
             $sql = "SELECT * FROM `lab_report_detail`";
             $query = $this->conn->query($sql);
@@ -147,9 +157,8 @@ class LabReport extends DatabaseConnection
             }
             $dataset = json_encode($datas);
             return $dataset;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
-    
 }
