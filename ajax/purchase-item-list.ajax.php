@@ -94,10 +94,13 @@ if ($resultData["status"]) {
         $unitDetials    = $ItemUnit->itemUnitName($unit);
         // echo $unitDetials;
         $packagingType  = $resultRow['packaging_type'];
-        $packDetails    = $PackagingUnits->showPackagingUnitById($packagingType);
-        foreach ($packDetails as $packData) {
-            $packageType = $packData['unit_name'];
+        $packDetails    = json_decode($PackagingUnits->showPackagingUnitById($packagingType));
+        if($packDetails->status){   
+            $packageType = $packDetails->data->unit_name;
+        }else{
+            $packageType = '';
         }
+        
         $packOf      = $weightage . $unitDetials . '/' . $packageType;
 
         if (isset($resultRow['manufacturer_id'])) {
