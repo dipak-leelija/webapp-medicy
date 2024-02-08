@@ -294,7 +294,7 @@ $Category = $Category->data;
                                             </div>
 
                                             <div class="col-4">
-                                                <lebel>Product Category:</lebel>
+                                                <lebel>Item Type:</lebel>
                                                 <select class="c-inp p-1 w-100" name="product-category" id="product-category">
                                                     <option value="" disabled selected>Prodcut Category</option>
                                                     <?php
@@ -310,7 +310,7 @@ $Category = $Category->data;
                                             </div>
 
                                             <div class="col-4">
-                                                <lebel>Packaging Type:</lebel>
+                                                <lebel>Pack Type:</lebel>
                                                 <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type">
                                                     <option value="" disabled selected>Packaging Type</option>
                                                     <?php
@@ -339,7 +339,7 @@ $Category = $Category->data;
                                             </div>
 
                                             <div class="col-md-3">
-                                                <lebel>Unit</lebel>
+                                                <lebel>Item Unit</lebel>
                                                 <select class="c-inp p-1 w-100" name="qty-unit" id="qty-unit" required>
                                                     <option value="" disabled selected>Select Unit</option>
                                                     <?php
@@ -354,7 +354,7 @@ $Category = $Category->data;
                                             </div>
 
                                             <div class="col-md-3">
-                                                <lebel>Packaging Unit</lebel>
+                                                <lebel>Pack Unit</lebel>
                                                 <select class="c-inp p-1 w-100" name="item-unit" id="item-unit" required>
                                                     <option value="" disabled selected>Packaging Unit</option>
                                                     <?php
