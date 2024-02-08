@@ -104,7 +104,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
             } elseif ($prodReqStatus == 0 && $oldProdFlag == 1) {
 
                 if (preg_match("/Name edited. /", $productReqDsc) || preg_match("/Medicine Qantity Edited. /", $productReqDsc)) {
-                    echo "check 1";
+                    // echo "check 1";
                     $addProductOnRequest = $Products->addProductBySuperAdmin($productid, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, $verifyStatus, NOW);
                     $addProductOnRequest = json_decode($addProductOnRequest);
                     if ($addProductOnRequest->status) {
@@ -114,7 +114,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
                             $editReqFlagData = 0;
                         }
                         $productsCol = 'edit_request_flag';
-                        $updateProduct = $Products->updateProductValuebyCol($oldProdId, $productsCol, $editReqFlagData, $supAdminId, NOW, $supAdminId);
+                        $updateProduct = $Products->updateProductValuebyCol($oldProductId, $productsCol, $editReqFlagData, $supAdminId, NOW, $supAdminId);
                         $updateProduct = true;
                         $imageFlag = 0;
                     } else {
@@ -123,7 +123,7 @@ $Category           = json_decode($ProductCategory->selectAllProdCategory())->da
                 } else {
                     //update product // update image product id with old product id
                     $imageFlag = 0;
-                    echo "check 2";
+                    // echo "check 2";
                     $updateOnProdRequest = $Products->updateProductBySuperAdmin($oldProductId, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, NOW, $verifyStatus);
 
                     $updateOnProdRequest = json_decode($updateOnProdRequest);
