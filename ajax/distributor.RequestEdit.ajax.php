@@ -34,7 +34,7 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
         }else{
             $distAddrEdit = '';
         }
-        if($data->phno != $distributorAreaPIN){
+        if($data->area_pin_code != $distributorAreaPIN){
             $distPinEdit = 'AreaPin Edited. ';
         }else{
             $distPinEdit = '';

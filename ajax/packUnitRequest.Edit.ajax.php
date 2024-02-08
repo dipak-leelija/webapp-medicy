@@ -12,21 +12,46 @@ $unitName   = $_GET['unit-name'];
 
 $PackagingUnits = new PackagingUnits();
 
+// $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
+// $data = json_decode($showPackagingUnit, true);
+// foreach ($data as $rowPackagingUnit) {
+//     // $unitId      = $rowPackagingUnit['id'];
+//     // $unitName    = $rowPackagingUnit['unit_name'];
+//     if(!empty($rowPackagingUnit)){
+//         if($rowPackagingUnit['unit_name'] != $unitName){
+//             $packUnitNameEdit = 'Edited Packaging Unit Name .';
+//         }else{
+//             $packUnitNameEdit = ''; 
+//         }
+//         $reqDescription = $packUnitNameEdit;
+//     }
+// }
 $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
-foreach ($showPackagingUnit as $rowPackagingUnit) {
-    // $unitId      = $rowPackagingUnit['id'];
-    // $unitName    = $rowPackagingUnit['unit_name'];
-    if(!empty($rowPackagingUnit)){
-        if($rowPackagingUnit['unit_name'] != $unitName){
-            $packUnitNameEdit = 'Edited Packaging Unit Name .';
-        }else{
-            $packUnitNameEdit = ''; 
+
+if ($showPackagingUnit === false) {
+    echo "Error: Unable to retrieve packaging unit data.";
+} else {
+    $data = json_decode($showPackagingUnit, true);
+    if ($data === null) {
+        echo "Error: Invalid JSON data.";
+    } else {
+        if ($data['status'] == 1) {
+            $rowPackagingUnit = $data['data']; 
+            if (!empty($rowPackagingUnit)) {
+                if ($rowPackagingUnit['unit_name'] != $unitName) {
+                    $packUnitNameEdit = 'Edited Packaging Unit Name .';
+                } else {
+                    $packUnitNameEdit = '';
+                }
+                $reqDescription = $packUnitNameEdit;
+            }
+        } else {
+            echo "Error: Status is not 1.";
         }
-        $reqDescription = $packUnitNameEdit;
     }
 }
 
-$insertUnitRequest = $PackagingUnits->insertPackagingRequest($unitId, $unitName,$reqDescription, NOW, $adminId);
+$insertUnitRequest = $PackagingUnits->insertPackagingRequest($unitId, $unitName, $reqDescription, NOW, $adminId);
 
 //check if the data has been updated or not
 if ($insertUnitRequest) {
