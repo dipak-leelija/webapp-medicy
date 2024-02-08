@@ -21,6 +21,9 @@ class Distributor extends DatabaseConnection
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
+                if (!$stmt->execute()) {
+                    throw new Exception("Error in query execution: " . $stmt->error);
+                }
                 $stmt->close();
                 return $insertQuery;
             } else {
