@@ -162,7 +162,7 @@ if (isset($_POST['update-product'])) {
 
 
     $prodDataFromProducts = json_decode($Products->showProductsById($productId));
-    // print_r($prodDataFromProducts);
+    print_r($prodDataFromProducts);
     if ($prodDataFromProducts->status) {
         if ($prodDataFromProducts->data->edit_request_flag == 0) {
 
@@ -177,7 +177,7 @@ if (isset($_POST['update-product'])) {
             $addOldProdEditRequest = json_decode($addOldProdEditRequest);
 
             print_r($addOldProdEditRequest);
-
+            echo "check 1";
             $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
             if ($addOldProdEditRequest->status) {
                 $col = 'edit_request_flag';
