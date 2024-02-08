@@ -15,6 +15,10 @@ class Distributor extends DatabaseConnection
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
+            if (!$stmt->execute()) {
+                throw new Exception("Error in query execution: " . $stmt->error);
+            }
+
             if ($stmt) {
                 // Bind the parameters
                 $stmt->bind_param("sssisssssiis", $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus,$newData, $adminId);
