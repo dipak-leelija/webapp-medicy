@@ -172,14 +172,11 @@ if (isset($_POST['update-product'])) {
             $randNum = rand(1, 999999999999);
             $newProductId = 'PR' . $randNum;
 
-
-            // echo $productId."-*-", $newProductId."-*-", $productName."-*-", $comp1."-*-", $comp2."-*-", $productCategory."-*-", $packagingIn."-*-",  $quantity."-*-", $unit."-*-", $medicinePower."-*-", $mrp."-*-", $gstPercent."-*-", $hsnoNumber."-*-", $description."-*-", $addedBy."-*-", NOW."-*-", $adminId."-*-", $prodReqStatus."-*-", $oldProdFlag."-*-";
-
             $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
             $addOldProdEditRequest = json_decode($addOldProdEditRequest);
 
-            // print_r($addOldProdEditRequest);
+            print_r($addOldProdEditRequest);
 
             $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
             if ($addOldProdEditRequest->status) {
