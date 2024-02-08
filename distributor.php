@@ -10,7 +10,7 @@ require_once CLASS_DIR . 'distributor.class.php';
 //Class Initilizing
 $Distributor = new Distributor();
 
-$showDistributor = json_decode($Distributor->showDistributor());
+$showDistributor = json_decode($Distributor->showDistributor($adminId));
 $showDistributor = $showDistributor->data;
 
 ?>
@@ -98,15 +98,15 @@ $showDistributor = $showDistributor->data;
                                                         $statusLabel = '';
                                                         $statusColor = '';
                                                         switch ($distributorStatus) {
-                                                            case 0:
+                                                            case 2:
                                                                 $statusLabel = 'Disabled';
                                                                 $statusColor = 'red';
                                                                 break;
-                                                            case 1:
+                                                            case 0:
                                                                 $statusLabel = 'Pending';
                                                                 $statusColor = '#4e73df';
                                                                 break;
-                                                            case 2:
+                                                            case 1:
                                                                 $statusLabel = 'Active';
                                                                 $statusColor = 'green';
                                                                 break;
