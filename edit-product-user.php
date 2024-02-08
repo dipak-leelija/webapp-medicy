@@ -154,72 +154,58 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                 <div id="content">
                     <!-- Add Product -->
                     <div class="card shadow mb-4 h-100">
-                        <div class="card-body">
+                        <div class="card-body shadow mb-4 col-12 d-flex flex-wrap">
                             <form action="_config\form-submission\edit-product-user.php" method="post" enctype="multipart/form-data">
                                 <div class="d-flex flex-wrap">
-                                    <div class="col-md-5">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="border p-1 rounded">
-                                                    <div class="row h-75 mt-2 justify-content-center">
-                                                        <?php foreach ($allImg as $index => $imagePath) : ?>
-                                                            <div class="col-2 border m-1 p-0">
-                                                                <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class=" ob-cover h-100" alt="...">
+                                    <!-- <div class="col-md-5"> -->
+                                    <div class="row">
+                                        <div class="col-6" id="first-div">
+                                            <div class="border p-1 rounded">
+                                                <div class="row h-50 mt-2 justify-content-center">
+                                                    <?php foreach ($allImg as $index => $imagePath) : ?>
+                                                        <div class="col-2 border m-1 p-0">
+                                                            <img src="<?= PROD_IMG_PATH ?><?php echo $imagePath; ?>" id="img-<?php echo $index; ?>" onclick="setImg(this.id)" class=" ob-cover h-100" alt="...">
 
-                                                                <?php foreach ($allImgId as $idIndex => $imageID) : ?>
-                                                                    <?php if ($idIndex === $index) : ?>
-                                                                        <input class="form-check-input mt-5 ml-n5" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                                                        <button type="button" class="btn-close position-absolute rounded border bg-danger text-white mt-n3 ml-n3" aria-label="Close" onclick="closeImage('<?php echo $imageID; ?>', '<?php echo $imagePath; ?>', <?php echo $index; ?>)">x</button>
-                                                                    <?php endif; ?>
-                                                                <?php endforeach; ?>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                    </div>
+                                                            <?php foreach ($allImgId as $idIndex => $imageID) : ?>
+                                                                <?php if ($idIndex === $index) : ?>
+                                                                    <input class="form-check-input mt-5 ml-n5" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                                                    <button type="button" class="btn-close position-absolute rounded border bg-danger text-white mt-n3 ml-n3" aria-label="Close" onclick="closeImage('<?php echo $imageID; ?>', '<?php echo $imagePath; ?>', <?php echo $index; ?>)">x</button>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    <?php endforeach; ?>
                                                 </div>
-                                                <div id="img-div">
-                                                    <div class="container-fluid" id="img-container">
-                                                        <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
-                                                        <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
-                                                        <p id="num-of-files">No files chosen</p>
-                                                        <div>
-                                                            <div id="images">
+                                            </div>
+                                            <div id="img-div">
+                                                <div class="container-fluid" id="img-container">
+                                                    <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
+                                                    <label for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
+                                                    <p id="num-of-files">No files chosen</p>
+                                                    <div>
+                                                        <div id="images">
 
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <!--/End Product Image Row  -->
-                                        <br>
-                                        <!-- <div class="row"> -->
-                                        <div class="col-md-12 d-flex justify-content-end">
-                                            <!-- <button class="btn btn-danger mr-3" id="reset" type="button">Reset</button> -->
-                                            <button class="btn btn-primary" name="update-product" id="update-btn" type="submit">Update</button>
-                                        </div>
 
-                                        <!-- </div> -->
-                                    </div>
-                                    <div class="col-md-7">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="col-md-12">
-                                                    <b>Prodcut Name</b>
+                                        <div class="col-6" id="second-div">
 
-                                                    <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?= $productName ?>" required>
+                                            <div class="col-sm-12">
+                                                <label>Prodcut Name</label>
+                                                <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" value="<?= $productName ?>" required>
 
-                                                    <input class="d-none c-inp w-100 p-1" id="product-id" name="product-id" value="<?= $productId ?>" required>
+                                                <input class="d-none c-inp w-100 p-1" id="product-id" name="product-id" value="<?= $productId ?>" required>
 
-                                                    <input class="d-none c-inp w-100 p-1" id="table-name" name="table-name" value="<?= $table ?>" required>
-                                                </div>
-
+                                                <input class="d-none c-inp w-100 p-1" id="table-name" name="table-name" value="<?= $table ?>" required>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="d-flex col-12">
-                                                <div class="col-md-6 mt-3">
-                                                    Prodcut Catagory
+
+                                            <div class="d-flex flex-wrap col-md-12 mt-2">
+                                                <div class="col-sm-6 mt-3">
+                                                    <label>Prodcut Catagory</label>
                                                     <select class="c-inp p-1 w-100" name="product-category" id="product-category" required>
                                                         <option value="" disabled selected>Product Category</option>
                                                         <?php
@@ -236,7 +222,7 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                                                     </select>
                                                 </div>
 
-                                                <div class="col-md-6 mt-3">
+                                                <div class="col-sm-6 mt-3">
                                                     Packeging In
                                                     <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
                                                         <option value="" disabled selected>Packeging In</option>
@@ -257,17 +243,15 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                                                 </div>
 
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="d-flex col-12 mt-3">
-                                                <div class="col-md-6">
-                                                    Qantity
+                                            <div class="d-flex flex-wrap col-md-12 mt-2">
+                                                <div class="col-sm-6">
+                                                    <label>Qantity</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="qantity" name="qantity" value="<?php echo $qty; ?>" placeholder="e.g. 10,20,200" required>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    Unit
+                                                <div class="col-sm-6">
+                                                    <label>Unit</label>
                                                     <select class="c-inp p-1 w-100 mt-1" id="unit" name="unit" required>
                                                         <option value="" disabled selected>Select</option>
                                                         <?php
@@ -287,28 +271,22 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!--/End Price Row -->
 
-
-                                        <div class="row">
-                                            <div class="d-flex col-12 mt-3">
-                                                <div class="col-md-6">
-                                                    Medicine Power
+                                            <div class="d-flex flex-wrap col-md-12 mt-2">
+                                                <div class="col-sm-6">
+                                                    <label>Medicine Power</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="medicine-power" name="medicine-power" value="<?php echo $power; ?>" required>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    Enter MRP
+                                                <div class="col-sm-6">
+                                                    <label>Enter MRP</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="mrp" name="mrp" value="<?php echo $mrp; ?>" required>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-md-12 d-flex mt-3">
+                                            <div class="d-flex flex-wrap col-md-12 mt-2">
                                                 <div class="col-sm-6">
-                                                    Enter GST
+                                                    <label>Enter GST</label>
                                                     <select class="c-inp p-1 w-100 mt-1" name="gst" id="gst" required>
                                                         <option value="" disabled selected>GST</option>
                                                         <?php
@@ -325,21 +303,28 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    HSNO Number
+                                                    <label>HSNO Number</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="hsno-number" name="hsno-number" value="<?php echo $product[0]->hsno_number; ?>" required>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row d-none">
-                                            <div class="col-md-12 d-flex mt-3">
-                                                <div class="col-sm-6">
+
+                                            <div class="d-none col-md-12 d-flex mt-3">
+                                                <div class="d-none col-sm-6">
                                                     Composition 1
                                                     <input class="c-inp w-100 p-1 mt-1" id="comp-1" name="comp-1" value="<?php echo $product[0]->comp_1; ?>">
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="d-none col-sm-6">
                                                     Composition 2
                                                     <input class="c-inp w-100 p-1 mt-1" id="comp-2" name="comp-2" value="<?php echo $product[0]->comp_2; ?>">
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-end">
+                                                <button class="btn btn-primary btn-lg d-flex justify-content-end" name="update-product" id="update-btn" type="submit">Update</button>
                                             </div>
                                         </div>
                                     </div>

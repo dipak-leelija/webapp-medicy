@@ -94,11 +94,12 @@ if (isset($_POST['blNo'])) {
     // $manufName = str_replace()
 
 
-    $packagingDetails = $Packaging->showPackagingUnitById($packagingTyp);
-    foreach ($packagingDetails as $packageType) {
-        $packType = $packageType['unit_name'];
+    $packagingDetails = json_decode($Packaging->showPackagingUnitById($packagingTyp));
+    if($packagingDetails->status){
+        $packType = $packagingDetails->data->unit_name;
+    }else{
+        $packType = '';
     }
-
 
     $purchaseDetialArray = array(
         "purchaseId"    => $purchaseId,
