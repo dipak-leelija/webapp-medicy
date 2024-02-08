@@ -58,7 +58,7 @@ class DoctorCategory extends DatabaseConnection
     function showDoctorCategoryByAdmin($adminId=''){
         try {
             if (!empty($adminId)) {
-            $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `admin_id` = ? OR `admin_id` = ''";
+            $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `admin_id` = ? ";
             $stmt = $this->conn->prepare($selectDoctorCategory);
             $stmt->bind_param("s", $adminId);
             }else{
