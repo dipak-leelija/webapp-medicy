@@ -302,8 +302,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <input type="number" class="upr-inp" name="mrp" id="mrp" readonly>
                                                 </div>
 
-
-
                                                 <div class="col-sm-6 col-md-6 mt-2">
                                                     <label class="mb-0" for="gst">GST%</label>
 
