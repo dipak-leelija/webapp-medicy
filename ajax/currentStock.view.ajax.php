@@ -259,8 +259,8 @@ if (isset($_GET['currentStockId'])) {
 
                 //=================== Packaging Detials ===================
                 $packagingType = $prodcutDetails[0]->packaging_type;
-                $packagignData = $packagUnit->showPackagingUnitById($packagingType);
-                $pacakagingUnitName = $packagignData[0]['unit_name'];
+                $packagignData = json_decode($packagUnit->showPackagingUnitById($packagingType));
+                $pacakagingUnitName = $packagignData->data->unit_name;
 
                 // ================== product details ======================
 
