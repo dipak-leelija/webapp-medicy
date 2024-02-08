@@ -190,7 +190,7 @@ if (isset($_GET['search'])) {
                                                         } else {
 
                                                             $image = json_decode($ProductImages->showImageByPrimay($item->product_id, $adminId));
-
+                                                            // print_r($image);
                                                             if ($image->status) {
                                                                 $imgData = $image->data;
                                                                 // print_r($imgData);
