@@ -1,6 +1,6 @@
 <?php
 require_once realpath(dirname(dirname(__DIR__)) . '/config/constant.php');
-
+require_once SUP_ADM_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
 $PackagingUnits = new PackagingUnits();
