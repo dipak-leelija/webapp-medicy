@@ -204,7 +204,7 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
 
 
                                             <div class="d-flex flex-wrap col-md-12 mt-2">
-                                                <div class="col-sm-6 mt-3">
+                                                <div class="col-sm-6">
                                                     <label>Prodcut Catagory</label>
                                                     <select class="c-inp p-1 w-100" name="product-category" id="product-category" required>
                                                         <option value="" disabled selected>Product Category</option>
@@ -222,8 +222,8 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                                                     </select>
                                                 </div>
 
-                                                <div class="col-sm-6 mt-3">
-                                                    Packeging In
+                                                <div class="col-sm-6">
+                                                    <label>Packeging In</label>
                                                     <select class="c-inp p-1 w-100" name="packeging-type" id="packeging-type" required>
                                                         <option value="" disabled selected>Packeging In</option>
 

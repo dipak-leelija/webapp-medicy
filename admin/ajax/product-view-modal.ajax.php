@@ -286,7 +286,7 @@ $QuantityUnit   = new QuantityUnit;
 
         const del = (e) => {
             btnID = e.id;
-
+            alert(btnID);
             btn = this;
 
             swal.fire({

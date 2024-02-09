@@ -77,7 +77,7 @@ $Request = new Request;
         $addProductRequest = $Request->addNewProductRequest($productId, $prodName, $prodCategory, $packegingType,  $qantity, $packegingUnit, $medicinePower, $mrp, $gst, $hsnoNumber, $description, $employeeId, NOW, $adminId, $status);
 
 
-        print_r($addProductRequest);
+        // print_r($addProductRequest);
 
 
 
@@ -124,7 +124,7 @@ $Request = new Request;
 
     ?>
             <script>
-                swal("Success", "Product Added!", "success")
+                swal("Success", "New Prodcut Add request sent successfully!", "success")
                     .then((value) => {
                         window.location = '<?php echo LOCAL_DIR ?>add-new-product.php';
                     });
@@ -133,7 +133,7 @@ $Request = new Request;
         } else {
         ?>
             <script>
-                swal("Error", "Product Not Added!", "error")
+                swal("Error", "Product request unable to send!", "error")
                     .then((value) => {
                         window.location = '<?php echo LOCAL_DIR ?>add-new-product.php';
                     });

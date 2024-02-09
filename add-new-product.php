@@ -36,6 +36,7 @@ $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $packagingUnits     = $PackagingUnits->showPackagingUnits();
 $prodCategory       = json_decode($Products->productCategory());
 $itemUnists         = $ItemUnit->showItemUnits();
+// print_r($itemUnists);
 $gstData            = json_decode($Gst->seletGst());
 $gstData            = $gstData->data;
 $packagingUnitData  = $PackagingUnits->showPackagingUnits();
