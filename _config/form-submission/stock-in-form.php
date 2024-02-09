@@ -288,12 +288,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $pUnitName = $ItemUnit->itemUnitName($pUnit);
                         }
 
-                        $packagingData = $PackagingUnits->showPackagingUnitById($pType);
-                        foreach ($packagingData as $packData) {
-                            $unitNm = $packData['unit_name'];
+                        $packagingData = json_decode($PackagingUnits->showPackagingUnitById($pType));
+                        if($packagingData->status){
+                            $unitNm = $packagingData->data->unit_name;
+                        }else{
+                            $unitNm = '';
                         }
-
-
+                       
                         $manufDetails = json_decode($Manufacturer->showManufacturerById($pManfId));
                         if($manufDetails->status){
                             $manufDetails = $manufDetails->data;

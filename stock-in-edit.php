@@ -279,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="col-md-12 ">
                                                     <!-- <label for="product-name" class="mb-0">Product Name</label> -->
-                                                    <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" onkeydown="chekForm()">
+                                                    <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" onkeydown="chekForm()" autocomplete="off">
                                                     <!-- <datalist id="datalistOptions">
                                                         <?php
                                                         foreach ($showProducts as $rowProducts) {
@@ -301,8 +301,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <label class="mb-0" for="mrp">MRP/Package</label>
                                                     <input type="number" class="upr-inp" name="mrp" id="mrp" readonly>
                                                 </div>
-
-
 
                                                 <div class="col-sm-6 col-md-6 mt-2">
                                                     <label class="mb-0" for="gst">GST%</label>

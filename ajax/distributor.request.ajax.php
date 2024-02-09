@@ -89,11 +89,11 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
-    <!-- <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script> -->
+    <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
 
     <!-- Bootstrap Js -->
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
-    <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
+    <!-- <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script> -->
 
     <script>
         // function editDist() 

@@ -8,6 +8,8 @@ $PackagingUnits = new PackagingUnits();
 $unitId = $_GET['Id'];
 
 $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
+// print_r($showPackagingUnit);
+$data = json_decode($showPackagingUnit, true); 
 
 ?>
 
@@ -29,10 +31,16 @@ $showPackagingUnit = $PackagingUnits->showPackagingUnitById($unitId);
 <body class="mx-2">
 
     <?php
-        foreach ($showPackagingUnit as $rowPackagingUnit) {
-            $unitId      = $rowPackagingUnit['id'];
-            $unitName    = $rowPackagingUnit['unit_name'];
-        }
+    // if(is_array($showPackagingUnit))
+        // foreach ($showPackagingUnit as $rowPackagingUnit) {
+        //     $unitId      = $rowPackagingUnit['id'];
+        //     $unitName    = $rowPackagingUnit['unit_name'];
+        // }
+        if ($data && isset($data['status']) && $data['status'] == 1 && isset($data['data'])) {
+            $packagingUnitData = $data['data'];
+            $unitId      = $packagingUnitData['id'];
+            $unitName    = $packagingUnitData['unit_name'];
+        }        
     ?>
 
     <form>

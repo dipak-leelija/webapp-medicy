@@ -18,7 +18,7 @@ $Pagination = new Pagination;
 $showManufacturer = $Manufacturer->showRequestManufacturer();
 $countManufacturer = 0;
 if ($showManufacturer !== null) {
-    $manufacturerData = json_decode($showManufacturer, true); 
+    $manufacturerData = json_decode($showManufacturer, true);
     if (!empty($manufacturerData) && is_array($manufacturerData)) {
         $countManufacturer = count($manufacturerData);
     }
@@ -27,12 +27,14 @@ if ($showManufacturer !== null) {
 
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
+// print_r($showManufacturer);
+$slicedManuf = '';
 if (!empty($showManufacturer)) {
     // print_r($showManufacturer);
 
     if (is_array($showManufacturer)) {
         $response = json_decode($Pagination->arrayPagination($showManufacturer));
-        $slicedManuf = '';
+        // $slicedManuf = '';
         $paginationHTML = '';
         $totalItem = $slicedManuf = $response->totalitem;
 
@@ -138,7 +140,6 @@ if (isset($_GET['return'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-
                                                 if (is_array($slicedManuf)) {
                                                     foreach ($slicedManuf as $rowManufacturer) {
 
@@ -171,7 +172,7 @@ if (isset($_GET['return'])) {
                                                         $newBadge = ($isNew == 1) ? '<span class="badge badge-pill badge-info position-absolute ml-2 top-0 start-50 translate-middle-x">New</span>' : '';
                                                         echo  '<tr>
                                                                 <td>' . $manufacturerId . '</td>
-                                                                <td>' . $manufacturerName . ' '. $newBadge .'</td>
+                                                                <td>' . $manufacturerName . ' ' . $newBadge . '</td>
                                                                 <td>' . $manufacturerDsc . '</td>
                                                                 <td> 
                                                                     <div class="dropdown">
@@ -350,7 +351,7 @@ if (isset($_GET['return'])) {
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/manufactureStatus.update.ajax.php',
+                    url: 'ajax/manufactureStatus.update.ajax.php',
                     data: {
                         manufacturerId: manufacturerId,
                         newStatus: newStatus
@@ -372,7 +373,7 @@ if (isset($_GET['return'])) {
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/manufactureReqStatus.update.ajax.php',
+                    url: 'ajax/manufactureReqStatus.update.ajax.php',
                     data: {
                         manufacturerId: manufacturerId,
                         newStatus: newStatus
@@ -425,7 +426,7 @@ if (isset($_GET['return'])) {
                 });
         }
 
-        const deleteReq = (t)=>{
+        const deleteReq = (t) => {
             let btn = this;
             let id = t;
             swal({

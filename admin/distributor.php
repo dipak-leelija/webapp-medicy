@@ -1,7 +1,6 @@
 <?php
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once SUP_ADM_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
@@ -310,9 +309,6 @@ if (!empty($showDistRequest->data)) {
             $(".distributorModal").html(
                 '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
-
-
-            $("#distributorModal").modal("hide");
         } // end of viewAndEdit function
 
         //update distributor status//
@@ -321,7 +317,7 @@ if (!empty($showDistRequest->data)) {
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/distributorStatus.update.ajax.php',
+                    url: 'ajax/distributorStatus.update.ajax.php',
                     data: {
                         distributorId: distributorId,
                         newStatus: newStatus
@@ -343,7 +339,7 @@ if (!empty($showDistRequest->data)) {
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/distributorReqStatus.update.ajax.php',
+                    url: 'ajax/distributorReqStatus.update.ajax.php',
                     data: {
                         distributorId: distributorId,
                         newStatus: newStatus
@@ -357,7 +353,7 @@ if (!empty($showDistRequest->data)) {
                     }
                 });
             }
-            location.reload();
+            // location.reload();
         } // end distributor Request status //
 
         //delete distributor

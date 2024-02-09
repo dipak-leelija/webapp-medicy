@@ -20,6 +20,9 @@ $Manufacturer   = new Manufacturer();
 $CurrentStock   = new CurrentStock();
 $QuantityUnit   = new QuantityUnit;
 
+
+$redirectPage = SUP_ADM_DIR.'prodcuts.php'; // after delete from product tabel redirection page url
+// echo $redirectPage;
 ?>
 
 <!DOCTYPE html>
@@ -79,6 +82,10 @@ $QuantityUnit   = new QuantityUnit;
         $product        = json_decode($Products->showProductsByIdOnTableName($_GET['id'], $_GET['table']));
         $product        = $product->data;
         // print_r($product);
+
+        //old-prod-id fetch area ------------
+        $oldProductId = ($_GET['table'] == 'product_request') ? $product->old_prod_id : '';
+
         // ====== manuf data area =====
         if (isset($product->manufacturer_id)) {
             $manuf          = json_decode($Manufacturer->showManufacturerById($product->manufacturer_id));
@@ -109,9 +116,9 @@ $QuantityUnit   = new QuantityUnit;
         }
 
 
-        echo '<script>';
-        echo 'var productId = ' . json_encode($productId) . '; ';
-        echo '</script>';
+        // echo '<script>';
+        // echo 'var productId = ' . json_encode($productId) . '; ';
+        // echo '</script>';
 
         $pack = json_decode($PackagingUnits->showPackagingUnitById($product->packaging_type));
         if($pack->status){
@@ -247,7 +254,7 @@ $QuantityUnit   = new QuantityUnit;
                             </div>
 
                             <div class="col-sm-6 m-2">
-                                <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Reject</button>
+                                <button class="button1 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>', '<?php echo $redirectPage; ?>')">Reject</button>
                             </div>
                         </div>
                     </div>
@@ -262,7 +269,7 @@ $QuantityUnit   = new QuantityUnit;
                         </div>
                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         <div class="col-md-6 d-flex justify-content-end">
-                            <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Reject</button>
+                            <button class="button2 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>', '<?php echo $redirectPage; ?>')">Reject</button>
                         </div>
                     </div>
                 </div>
@@ -284,11 +291,11 @@ $QuantityUnit   = new QuantityUnit;
 
         //========================= Delete Product =========================
 
-        const del = (e) => {
-            btnID = e.id;
-
-            btn = this;
-
+        const del = (prodId, table, oldProdId, direction) => {
+            btnID = prodId;
+            tblNm = table; 
+            oldProdId = oldProdId;           
+            // alert(direction);
             swal.fire({
                     title: "Are you sure?",
                     text: "Want to Delete This Data?",
@@ -298,23 +305,30 @@ $QuantityUnit   = new QuantityUnit;
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        var productId = window.productId;
+                        // var productId = window.productId;
                         // console.log("product ID-"+productId);
                         $.ajax({
                             url: "product.Delete.ajax.php",
                             type: "POST",
                             data: {
-                                productId: productId,
+                                productId: btnID,
                                 id: btnID,
+                                table: tblNm,
+                                oldProdId: oldProdId,
                             },
                             success: function(data) {
+                                // alert(data);
                                 if (data == 1) {
                                     Swal.fire(
                                         "Deleted",
                                         "Data Has Been Deleted",
                                         "success"
                                     ).then(function() {
-                                        parent.location.reload();
+                                        if(tblNm == 'products'){
+                                            parent.location.href = direction;
+                                        }else{
+                                            parent.location.reload();
+                                        }  
                                     });
 
                                 } else {

@@ -191,7 +191,7 @@ class Products extends DatabaseConnection
 
     function showProducts(){
         try {
-            $selectProduct = "SELECT * FROM products";
+            $selectProduct = "SELECT * FROM products LIMIT 20";
             $selectProductQuery = $this->conn->query($selectProduct);
 
             if (!$selectProductQuery) {

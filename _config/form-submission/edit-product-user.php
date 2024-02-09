@@ -74,7 +74,7 @@ if (isset($_POST['update-product'])) {
     // print_r($imageName);
     $imageArrayCount = count($imageName);
     $tempImageNameArrayCount = count($tempImgName);
-  
+
     // =========== product edit description section =========
     $productData = json_decode($Products->showProductsByIdOnTableNameAdminId($productId, $adminId, $tableName));
     // print_r($productData);
@@ -159,10 +159,7 @@ if (isset($_POST['update-product'])) {
         $description = $nameEdit . $categoryEdit . $packegeEdit . $medQtyEdit . $unitEdit . $medPowerEdit . $mrpEdit . $gstEdit . $hsnEdit . $imgEdit;
     }
 
-
-
     $prodDataFromProducts = json_decode($Products->showProductsById($productId));
-    // print_r($prodDataFromProducts);
     if ($prodDataFromProducts->status) {
         if ($prodDataFromProducts->data->edit_request_flag == 0) {
 
@@ -172,16 +169,14 @@ if (isset($_POST['update-product'])) {
             $randNum = rand(1, 999999999999);
             $newProductId = 'PR' . $randNum;
 
-
-            // echo $productId."-*-", $newProductId."-*-", $productName."-*-", $comp1."-*-", $comp2."-*-", $productCategory."-*-", $packagingIn."-*-",  $quantity."-*-", $unit."-*-", $medicinePower."-*-", $mrp."-*-", $gstPercent."-*-", $hsnoNumber."-*-", $description."-*-", $addedBy."-*-", NOW."-*-", $adminId."-*-", $prodReqStatus."-*-", $oldProdFlag."-*-";
-
             $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
             $addOldProdEditRequest = json_decode($addOldProdEditRequest);
 
-            // print_r($addOldProdEditRequest);
-
+            print_r($addOldProdEditRequest);
+            echo "check 1";
             $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
+            echo "<br>check edit request flag data : $editRqstFlgData";
             if ($addOldProdEditRequest->status) {
                 $col = 'edit_request_flag';
                 $editRqstFlgData += 1;
@@ -191,11 +186,13 @@ if (isset($_POST['update-product'])) {
                 $productId = $newProductId;
             }
         } else {
-           
+
             $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
+
             if ($selectFromProdReqTable->status) {
 
                 $selectFromProdReqTable = $selectFromProdReqTable->data;
+                echo "check 2";
                 // print_r($selectFromProdReqTable);
                 $modifiedProdId = $selectFromProdReqTable->product_id;
                 $prodReqStatus = 0;
@@ -203,8 +200,18 @@ if (isset($_POST['update-product'])) {
 
                 $editRequest = $Request->editUpdateProductRequest($modifiedProdId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
+                $editRequest = json_decode($editRequest);
+
+                if ($editRequest->status) {
+                    // echo "check 2";
+                    $editRequest = true;
+                } else {
+                    $editRequest = false;
+                }
+
                 $productId = $modifiedProdId;
             } else {
+                echo "check 3";
                 $oldProdFlag = 1;
                 $prodReqStatus = 0;
 
@@ -224,55 +231,61 @@ if (isset($_POST['update-product'])) {
                 }
             }
         }
-
     } else {
+        echo "check 4";
+        $checkProdRqst = json_decode($Request->selectProductData($productId));
+        // print_r($checkProdRqst->data);
         $prodReqStatus = 0;
-        $oldProdFlag = 1;
+        $oldProdFlag = $checkProdRqst->data->old_prod_flag;
 
         $editRequest = $Request->editUpdateProductRequest($productId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
+        $editRequest = json_decode($editRequest);
+        print_r($editRequest);
+        $editRequest = $editRequest->status;
+        
     }
 ?>
 
 
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <title>Add Items</title>
+        <title>Add Items</title>
 
-    <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <!-- Custom fonts for this template -->
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- Fontawsome Link -->
-    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="<?= CSS_PATH ?>font-awesome.css" rel="stylesheet">
+        <!-- Fontawsome Link -->
+        <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="<?= CSS_PATH ?>font-awesome.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
-    <!--Custom CSS -->
-    <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
+        <!--Custom CSS -->
+        <link href="<?php echo CSS_PATH ?>custom/add-products.css" rel="stylesheet">
+        <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
-    <!-- <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" /> -->
+        <!-- <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" /> -->
 
-    <!-- sweetAlert link -->
-    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+        <!-- sweetAlert link -->
+        <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
 
-</head>
+    </head>
 
-<body id="page-top">
+    <body id="page-top">
 
-    <?php
+        <?php
 
 
         if ($editRequest) {
@@ -315,30 +328,30 @@ if (isset($_POST['update-product'])) {
                     $addImagesRequest = true;
                 }
             }
-        // }
+        }
 
-        // if ($editRequest === true) {
-            // if ($updateImage === true) {
-    ?>
-            <script>
-                swal("Success", "Product updated successfully!", "success").then((value) => {
-                    parent.location.reload();
-                });
-            </script>
-        <?php
-        } else {
+        if ($editRequest === true) {
+            if ($addImagesRequest === true) {
         ?>
-            <script>
-                swal("Error", "Product(image) updatation fail!", "error").then((value) => {
-                    parent.location.reload();
-                });
-            </script>
+                <script>
+                    swal("Success", "Product updated successfully!", "success").then((value) => {
+                        parent.location.reload();
+                    });
+                </script>
+            <?php
+            } else {
+            ?>
+                <script>
+                    swal("Error", "Product(image) updatation fail!", "error").then((value) => {
+                        parent.location.reload();
+                    });
+                </script>
     <?php
+            }
         }
     }
-
     ?>
 
-</body>
+    </body>
 
-</html>
+    </html>

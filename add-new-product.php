@@ -36,6 +36,7 @@ $showMeasureOfUnits = $MeasureOfUnits->showMeasureOfUnits();
 $packagingUnits     = $PackagingUnits->showPackagingUnits();
 $prodCategory       = json_decode($Products->productCategory());
 $itemUnists         = $ItemUnit->showItemUnits();
+// print_r($itemUnists);
 $gstData            = json_decode($Gst->seletGst());
 $gstData            = $gstData->data;
 $packagingUnitData  = $PackagingUnits->showPackagingUnits();
@@ -116,7 +117,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                     <h4 class="h4 mt-4"> Add New Product</h4>
                                 </div>
 
-                                <div class="row">
+                                <div class="row flex-wrap-reverse">
                                     <div class="col-md-6" id="first-div">
                                         <!-- product name row -->
                                         <div class="col-sm-12">
