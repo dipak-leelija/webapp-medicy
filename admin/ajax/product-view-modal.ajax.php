@@ -247,7 +247,7 @@ $QuantityUnit   = new QuantityUnit;
                             </div>
 
                             <div class="col-sm-6 m-2">
-                                <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Reject</button>
+                                <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $_GET['table']; ?>">Reject</button>
                             </div>
                         </div>
                     </div>
@@ -262,7 +262,7 @@ $QuantityUnit   = new QuantityUnit;
                         </div>
                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         <div class="col-md-6 d-flex justify-content-end">
-                            <button class="button2 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $qty ?>">Reject</button>
+                            <button class="button2 btn-danger" onclick="del(this)" id="<?php echo $_GET['id']; ?>" value="<?php echo $_GET['table']; ?>">Reject</button>
                         </div>
                     </div>
                 </div>
@@ -286,9 +286,10 @@ $QuantityUnit   = new QuantityUnit;
 
         const del = (e) => {
             btnID = e.id;
-            alert(btnID);
-            btn = this;
+            btnVal = e.value            
 
+            alert(e);
+            console.log(e);
             swal.fire({
                     title: "Are you sure?",
                     text: "Want to Delete This Data?",
@@ -306,6 +307,7 @@ $QuantityUnit   = new QuantityUnit;
                             data: {
                                 productId: productId,
                                 id: btnID,
+                                table: btnVal,
                             },
                             success: function(data) {
                                 alert(data);

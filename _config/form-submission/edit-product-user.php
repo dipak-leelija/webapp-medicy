@@ -232,6 +232,7 @@ if (isset($_POST['update-product'])) {
     } else {
         echo "check 4";
         $checkProdRqst = json_decode($Request->selectProductData($productId));
+        print_r($checkProdRqst->data);
         $prodReqStatus = 0;
         $oldProdFlag = $checkProdRqst->data->old_prod_flag;
 
