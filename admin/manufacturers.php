@@ -18,7 +18,7 @@ $Pagination = new Pagination;
 $showManufacturer = $Manufacturer->showRequestManufacturer();
 $countManufacturer = 0;
 if ($showManufacturer !== null) {
-    $manufacturerData = json_decode($showManufacturer, true); 
+    $manufacturerData = json_decode($showManufacturer, true);
     if (!empty($manufacturerData) && is_array($manufacturerData)) {
         $countManufacturer = count($manufacturerData);
     }
@@ -27,6 +27,7 @@ if ($showManufacturer !== null) {
 
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
+$slicedManuf = [];
 if (!empty($showManufacturer)) {
     // print_r($showManufacturer);
 
@@ -138,7 +139,6 @@ if (isset($_GET['return'])) {
                                             </thead>
                                             <tbody>
                                                 <?php
-
                                                 if (is_array($slicedManuf)) {
                                                     foreach ($slicedManuf as $rowManufacturer) {
 
@@ -171,7 +171,7 @@ if (isset($_GET['return'])) {
                                                         $newBadge = ($isNew == 1) ? '<span class="badge badge-pill badge-info position-absolute ml-2 top-0 start-50 translate-middle-x">New</span>' : '';
                                                         echo  '<tr>
                                                                 <td>' . $manufacturerId . '</td>
-                                                                <td>' . $manufacturerName . ' '. $newBadge .'</td>
+                                                                <td>' . $manufacturerName . ' ' . $newBadge . '</td>
                                                                 <td>' . $manufacturerDsc . '</td>
                                                                 <td> 
                                                                     <div class="dropdown">
@@ -322,7 +322,7 @@ if (isset($_GET['return'])) {
             let url = "ajax/manufacturer.View.ajax.php?Id=" + ViewAndEdit;
             $(".manufacturerModal").html(
                 '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
+                ADM_URL + '"></iframe>');
         } // end of viewAndEdit function
 
         const manufRequest = () => {
@@ -425,7 +425,7 @@ if (isset($_GET['return'])) {
                 });
         }
 
-        const deleteReq = (t)=>{
+        const deleteReq = (t) => {
             let btn = this;
             let id = t;
             swal({

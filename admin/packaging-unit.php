@@ -263,7 +263,7 @@ if (is_object($showPackagingRequest) && property_exists($showPackagingRequest, '
             let url = "ajax/packagingUnit.View.ajax.php?Id=" + ViewAndEdit;
             $(".unitModal").html(
                 '<iframe width="99%" height="120rem" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
+                ADM_URL + '"></iframe>');
         } // end of viewAndEdit function
 
         const packRequest = () => {
