@@ -291,7 +291,7 @@ $QuantityUnit   = new QuantityUnit;
         const del = (prodId, table, oldProdId) => {
             btnID = prodId;
             btnVal = table; 
-            alert(btnVal);
+            // alert(btnVal);
             oldProdId = oldProdId;           
 
             swal.fire({
@@ -323,8 +323,8 @@ $QuantityUnit   = new QuantityUnit;
                                         "success"
                                     ).then(function() {
                                         if(btnVal == 'products'){
+                                            alert("check 1");
                                             parent.location.href = '<?php echo SUP_ADM_DIR ?>products.phhp';
-                                            parent.location.reload();
                                         }else{
                                             parent.location.reload();
                                         }  
