@@ -20,6 +20,9 @@ $Manufacturer   = new Manufacturer();
 $CurrentStock   = new CurrentStock();
 $QuantityUnit   = new QuantityUnit;
 
+
+$redirectPage = SUP_ADM_DIR.'prodcuts.php'; // after delete from product tabel redirection page url
+// echo $redirectPage;
 ?>
 
 <!DOCTYPE html>
@@ -251,7 +254,7 @@ $QuantityUnit   = new QuantityUnit;
                             </div>
 
                             <div class="col-sm-6 m-2">
-                                <button class="button1 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>')">Reject</button>
+                                <button class="button1 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>', '<?php echo $redirectPage; ?>')">Reject</button>
                             </div>
                         </div>
                     </div>
@@ -266,7 +269,7 @@ $QuantityUnit   = new QuantityUnit;
                         </div>
                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         <div class="col-md-6 d-flex justify-content-end">
-                            <button class="button2 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>')">Reject</button>
+                            <button class="button2 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>', '<?php echo $redirectPage; ?>')">Reject</button>
                         </div>
                     </div>
                 </div>
@@ -288,11 +291,11 @@ $QuantityUnit   = new QuantityUnit;
 
         //========================= Delete Product =========================
 
-        const del = (prodId, table, oldProdId) => {
+        const del = (prodId, table, oldProdId, direction) => {
             btnID = prodId;
             tblNm = table; 
             oldProdId = oldProdId;           
-
+            // alert(direction);
             swal.fire({
                     title: "Are you sure?",
                     text: "Want to Delete This Data?",
@@ -322,7 +325,7 @@ $QuantityUnit   = new QuantityUnit;
                                         "success"
                                     ).then(function() {
                                         if(tblNm == 'products'){
-                                            parent.location.href = <?php echo SUP_ADM_DIR; ?>.'products.php';
+                                            parent.location.href = direction;
                                         }else{
                                             parent.location.reload();
                                         }  
