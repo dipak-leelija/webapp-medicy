@@ -77,7 +77,7 @@ if (isset($_POST['update-product'])) {
   
     // =========== product edit description section =========
     $productData = json_decode($Products->showProductsByIdOnTableNameAdminId($productId, $adminId, $tableName));
-    // print_r($productData);
+    print_r($productData);
     if ($productData->status) {
         $oldProdData = $productData->data;
         // print_r($oldProdData);
@@ -159,10 +159,8 @@ if (isset($_POST['update-product'])) {
         $description = $nameEdit . $categoryEdit . $packegeEdit . $medQtyEdit . $unitEdit . $medPowerEdit . $mrpEdit . $gstEdit . $hsnEdit . $imgEdit;
     }
 
-
-
     $prodDataFromProducts = json_decode($Products->showProductsById($productId));
-    print_r($prodDataFromProducts);
+    // print_r($prodDataFromProducts);
     if ($prodDataFromProducts->status) {
         if ($prodDataFromProducts->data->edit_request_flag == 0) {
 
@@ -179,6 +177,7 @@ if (isset($_POST['update-product'])) {
             print_r($addOldProdEditRequest);
             echo "check 1";
             $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
+            echo "<br>check edit request flag data : $editRqstFlgData";
             if ($addOldProdEditRequest->status) {
                 $col = 'edit_request_flag';
                 $editRqstFlgData += 1;
@@ -190,18 +189,28 @@ if (isset($_POST['update-product'])) {
         } else {
            
             $selectFromProdReqTable = json_decode($Request->selectProductById($productId, $adminId));
+
             if ($selectFromProdReqTable->status) {
 
                 $selectFromProdReqTable = $selectFromProdReqTable->data;
-                // print_r($selectFromProdReqTable);
+                echo "check 2";
+                print_r($selectFromProdReqTable);
                 $modifiedProdId = $selectFromProdReqTable->product_id;
                 $prodReqStatus = 0;
                 $oldProdFlag = 1;
 
                 $editRequest = $Request->editUpdateProductRequest($modifiedProdId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
+                if($editRequest){
+                    // echo "check 2";
+                    $editRequest = true;
+                }else{
+                    $editRequest = false;
+                }
+
                 $productId = $modifiedProdId;
             } else {
+                echo "check 3";
                 $oldProdFlag = 1;
                 $prodReqStatus = 0;
 
