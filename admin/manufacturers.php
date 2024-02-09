@@ -28,13 +28,13 @@ if ($showManufacturer !== null) {
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
 print_r($showManufacturer);
-// $slicedManuf = [];
+$slicedManuf = '';
 if (!empty($showManufacturer)) {
     // print_r($showManufacturer);
 
     if (is_array($showManufacturer)) {
         $response = json_decode($Pagination->arrayPagination($showManufacturer));
-        $slicedManuf = '';
+        // $slicedManuf = '';
         $paginationHTML = '';
         $totalItem = $slicedManuf = $response->totalitem;
 
