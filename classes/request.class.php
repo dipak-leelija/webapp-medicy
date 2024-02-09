@@ -296,8 +296,15 @@ class Request extends DatabaseConnection
                 throw new Exception("Error updating product request: " . $stmt->error);
             }
 
+            $res = $stmt->execute();
+            if($res->affected_rows > 0){
+                return json_encode(['status'=>'1', 'data'=>'success']);
+            }else{
+                return json_encode(['status'=>'0', 'data'=>'fail']);
+            }
+            
             $stmt->close();
-            return true;
+            
         } catch (Exception $e) {
             return $e->getMessage();
         }

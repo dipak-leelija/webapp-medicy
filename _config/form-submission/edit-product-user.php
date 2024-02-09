@@ -200,7 +200,9 @@ if (isset($_POST['update-product'])) {
 
                 $editRequest = $Request->editUpdateProductRequest($modifiedProdId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
-                if ($editRequest) {
+                $editRequest = json_decode($editRequest);
+
+                if ($editRequest->status) {
                     // echo "check 2";
                     $editRequest = true;
                 } else {
@@ -232,11 +234,16 @@ if (isset($_POST['update-product'])) {
     } else {
         echo "check 4";
         $checkProdRqst = json_decode($Request->selectProductData($productId));
-        print_r($checkProdRqst->data);
+        // print_r($checkProdRqst->data);
         $prodReqStatus = 0;
         $oldProdFlag = $checkProdRqst->data->old_prod_flag;
 
         $editRequest = $Request->editUpdateProductRequest($productId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+
+        $editRequest = json_decode($editRequest);
+        print_r($editRequest);
+        $editRequest = $editRequest->status;
+        
     }
 ?>
 

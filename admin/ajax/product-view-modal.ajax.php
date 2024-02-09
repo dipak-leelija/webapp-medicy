@@ -113,9 +113,9 @@ $QuantityUnit   = new QuantityUnit;
         }
 
 
-        echo '<script>';
-        echo 'var productId = ' . json_encode($productId) . '; ';
-        echo '</script>';
+        // echo '<script>';
+        // echo 'var productId = ' . json_encode($productId) . '; ';
+        // echo '</script>';
 
         $pack = json_decode($PackagingUnits->showPackagingUnitById($product->packaging_type));
         if($pack->status){
@@ -291,7 +291,6 @@ $QuantityUnit   = new QuantityUnit;
         const del = (prodId, table, oldProdId) => {
             btnID = prodId;
             btnVal = table; 
-            // alert(btnVal);
             oldProdId = oldProdId;           
 
             swal.fire({
@@ -303,13 +302,13 @@ $QuantityUnit   = new QuantityUnit;
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        var productId = window.productId;
+                        // var productId = window.productId;
                         // console.log("product ID-"+productId);
                         $.ajax({
                             url: "product.Delete.ajax.php",
                             type: "POST",
                             data: {
-                                productId: productId,
+                                productId: btnID,
                                 id: btnID,
                                 table: btnVal,
                                 oldProdId: oldProdId,
@@ -323,8 +322,8 @@ $QuantityUnit   = new QuantityUnit;
                                         "success"
                                     ).then(function() {
                                         if(btnVal == 'products'){
-                                            alert("check 1");
-                                            parent.location.href = '<?php echo SUP_ADM_DIR ?>products.phhp';
+                                            // alert(<?php echo LOCAL_DIR ?>);
+                                            parent.location.href = '<?php echo LOCAL_DIR ?>app.medicy.in/admin/products.php';
                                         }else{
                                             parent.location.reload();
                                         }  
