@@ -310,9 +310,6 @@ if (!empty($showDistRequest->data)) {
             $(".distributorModal").html(
                 '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
-
-
-            $("#distributorModal").modal("hide");
         } // end of viewAndEdit function
 
         //update distributor status//

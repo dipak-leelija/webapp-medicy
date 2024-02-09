@@ -322,7 +322,7 @@ if (isset($_GET['return'])) {
             let url = "ajax/manufacturer.View.ajax.php?Id=" + ViewAndEdit;
             $(".manufacturerModal").html(
                 '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
-                ADM_URL + '"></iframe>');
+                url + '"></iframe>');
         } // end of viewAndEdit function
 
         const manufRequest = () => {
