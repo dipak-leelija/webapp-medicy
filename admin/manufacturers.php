@@ -37,7 +37,7 @@ if (!empty($showManufacturer)) {
         // $slicedManuf = '';
         $paginationHTML = '';
         $totalItem = $slicedManuf = $response->totalitem;
-
+        print_r($totalItem);
         if ($response->status == 1) {
             $slicedManuf = $response->items;
             $paginationHTML = $response->paginationHTML;
