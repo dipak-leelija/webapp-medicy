@@ -256,16 +256,25 @@ if (is_object($showPackagingRequest) && property_exists($showPackagingRequest, '
 
     <!-- Page level custom scripts -->
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
+    
     <script>
-        //View and Edit Manufacturer function
-        unitViewAndEdit = (unitId) => {
+        //View and Edit Packaging Unit function
+        // unitViewAndEdit = (unitId) => {
+        //     let ViewAndEdit = unitId;
+        //     console.log(ViewAndEdit);
+        //     let url = "ajax/packagingUnit.view.ajax.php?Id=" + ViewAndEdit;
+        //     $(".unitModal").html(
+        //         '<iframe width="99%" height="120rem" frameborder="0" allowtransparency="true" src="' +
+        //         url + '"></iframe>');
+        // } // end of viewAndEdit function
+
+        const unitViewAndEdit = (unitId) => {
             let ViewAndEdit = unitId;
-            console.log(ViewAndEdit);
-            let url = "ajax/packagingUnit.View.ajax.php?Id=" + ViewAndEdit;
+            let url = "ajax/packagingUnit.view.ajax.php?Id=" + ViewAndEdit;
             $(".unitModal").html(
-                '<iframe width="99%" height="120rem" frameborder="0" allowtransparency="true" src="' +
+                '<iframe width="99%" height="130px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
-        } // end of viewAndEdit function
+        } 
 
         const packRequest = () => {
             var parentLocation = window.location.origin + window.location.pathname;
