@@ -322,8 +322,8 @@ $QuantityUnit   = new QuantityUnit;
                                         "success"
                                     ).then(function() {
                                         if(btnVal == 'products'){
-                                            alert(<?php echo ROOT_DIR ?>);
-                                            parent.location.href = '<?php echo ROOT_DIR ?>/admin/products.php';
+                                            alert(<?php echo LOCAL_DIR ?>);
+                                            parent.location.href = '<?php echo LOCAL_DIR ?>admin/products.php';
                                         }else{
                                             parent.location.reload();
                                         }  
