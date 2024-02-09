@@ -27,7 +27,8 @@ if ($showManufacturer !== null) {
 
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
-$slicedManuf = [];
+print_r($showManufacturer);
+// $slicedManuf = [];
 if (!empty($showManufacturer)) {
     // print_r($showManufacturer);
 
@@ -357,7 +358,7 @@ if (isset($_GET['return'])) {
                     },
                     success: function(response) {
                         console.log(response);
-                        location.reload();
+                        // location.reload();
                     },
                     error: function(error) {
                         console.error('Error updating status:', error);
@@ -379,7 +380,7 @@ if (isset($_GET['return'])) {
                     },
                     success: function(response) {
                         console.log(response);
-                        location.reload();
+                        // location.reload();
                     },
                     error: function(error) {
                         console.error('Error updating status:', error);
