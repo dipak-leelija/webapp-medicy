@@ -27,7 +27,6 @@ if ($showManufacturer !== null) {
 
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
-// print_r($showManufacturer);
 $slicedManuf = '';
 if (!empty($showManufacturer)) {
     // print_r($showManufacturer);
@@ -37,7 +36,7 @@ if (!empty($showManufacturer)) {
         // $slicedManuf = '';
         $paginationHTML = '';
         $totalItem = $slicedManuf = $response->totalitem;
-
+        print_r($totalItem);
         if ($response->status == 1) {
             $slicedManuf = $response->items;
             $paginationHTML = $response->paginationHTML;

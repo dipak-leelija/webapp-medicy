@@ -91,41 +91,78 @@ class Manufacturer extends DatabaseConnection
         }
     } ///====== End Uodate Manufacture Status=======///
 
-    function showManufacturer($adminId = '')
-    {
+    // function showManufacturer($adminId = '')
+    // {
+    //     try {
+    //         $data = array();
+    //         if (!empty($adminId)) {
+    //             $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = '$adminId' OR `status` = '1'";
+    //         } else {
+    //             $select = "SELECT * FROM `manufacturer`";
+    //         }
+    //         // $select = "SELECT * FROM `manufacturer`";
+    //         $selectQuery = $this->conn->prepare($select);
+
+    //         if (!$selectQuery) {
+    //             throw new Exception("Query preparation failed.");
+    //         }
+
+    //         $selectQuery->execute();
+
+    //         $result = $selectQuery->get_result();
+
+    //         if ($result->num_rows > 0) {
+    //             while ($row = $result->fetch_object()) {
+    //                 $data[] = $row;
+    //             }
+    //             return json_encode($data);
+    //         } else {
+    //             return null;
+    //         }
+    //     } catch (Exception $e) {
+    //         echo "Error in showManufacturer: " . $e->getMessage();
+    //     }
+    //     return 0;
+    // }
+
+
+    function showManufacturer($adminId = '') {
         try {
             $data = array();
+            // Prepare the SQL query
             if (!empty($adminId)) {
-                $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = '$adminId' OR `status` = '1'";
+                $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = ? OR `status` = '1'";
+                $selectQuery = $this->conn->prepare($select);
+                $selectQuery->bind_param("s", $adminId); // Bind parameter to the query
             } else {
                 $select = "SELECT * FROM `manufacturer`";
+                $selectQuery = $this->conn->prepare($select);
             }
-            // $select = "SELECT * FROM `manufacturer`";
-            $selectQuery = $this->conn->prepare($select);
-
-            if (!$selectQuery) {
-                throw new Exception("Query preparation failed.");
-            }
-
+            
+            // Execute the query
             $selectQuery->execute();
-
+    
+            // Get the result
             $result = $selectQuery->get_result();
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_object()) {
-                    $data[] = $row;
-                }
+    
+            // Fetch data and store in an array
+            while ($row = $result->fetch_object()) {
+                $data[] = $row;
+            }
+    
+            // Check if data is fetched
+            if (!empty($data)) {
                 return json_encode($data);
             } else {
                 return null;
             }
         } catch (Exception $e) {
+            // Handle any errors
             echo "Error in showManufacturer: " . $e->getMessage();
+            return null;
         }
-        return 0;
     }
-
-
+    
 
 
 

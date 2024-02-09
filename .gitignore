@@ -9,3 +9,5 @@ images/employee-images/*
 temp/
 
 _config/accessPermission.php
+
+.CREDENTIALS
