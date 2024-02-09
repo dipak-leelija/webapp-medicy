@@ -9,7 +9,8 @@ $Distributor = new Distributor();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['distributorId']) && isset($_POST['newStatus'])) {
     $distributorId = $_POST['distributorId'];
     $newStatus = $_POST['newStatus'];
-    
+    print_r("distId"+$distributorId);
+    print_r("distStatus"+$newStatus);
     $updateDistStatus = $Distributor->updateDistStatus($newStatus,$distributorId);
     if($updateDistStatus){
         $updateNewBadges = $Distributor->updateNewBadges($distributorId);
