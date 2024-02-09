@@ -79,6 +79,10 @@ $QuantityUnit   = new QuantityUnit;
         $product        = json_decode($Products->showProductsByIdOnTableName($_GET['id'], $_GET['table']));
         $product        = $product->data;
         // print_r($product);
+
+        //old-prod-id fetch area ------------
+        $oldProductId = ($_GET['table'] == 'product_request') ? $product->old_prod_id : '';
+
         // ====== manuf data area =====
         if (isset($product->manufacturer_id)) {
             $manuf          = json_decode($Manufacturer->showManufacturerById($product->manufacturer_id));
@@ -247,7 +251,7 @@ $QuantityUnit   = new QuantityUnit;
                             </div>
 
                             <div class="col-sm-6 m-2">
-                                <button class="button1 btn-danger" onclick="del(this)" id=<?php echo $_GET['id']; ?> value="<?php echo $_GET['table']; ?>">Reject</button>
+                                <button class="button1 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>')">Reject</button>
                             </div>
                         </div>
                     </div>
@@ -262,7 +266,7 @@ $QuantityUnit   = new QuantityUnit;
                         </div>
                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         <div class="col-md-6 d-flex justify-content-end">
-                            <button class="button2 btn-danger" onclick="del(this)" id="<?php echo $_GET['id']; ?>" value="<?php echo $_GET['table']; ?>">Reject</button>
+                            <button class="button2 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>')">Reject</button>
                         </div>
                     </div>
                 </div>
@@ -284,12 +288,11 @@ $QuantityUnit   = new QuantityUnit;
 
         //========================= Delete Product =========================
 
-        const del = (e) => {
-            btnID = e.id;
-            btnVal = e.value            
+        const del = (prodId, table, oldProdId) => {
+            btnID = prodId;
+            btnVal = table; 
+            oldProdId = oldProdId;           
 
-            alert(e);
-            console.log(e);
             swal.fire({
                     title: "Are you sure?",
                     text: "Want to Delete This Data?",
@@ -308,9 +311,10 @@ $QuantityUnit   = new QuantityUnit;
                                 productId: productId,
                                 id: btnID,
                                 table: btnVal,
+                                oldProdId: oldProdId,
                             },
                             success: function(data) {
-                                alert(data);
+                                // alert(data);
                                 if (data == 1) {
                                     Swal.fire(
                                         "Deleted",

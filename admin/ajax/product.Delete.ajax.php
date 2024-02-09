@@ -22,8 +22,21 @@ $ProductImages = new ProductImages;
 // $productTableId = $_POST['id'];
 $productId      = $_POST['productId'];
 $table          = $_POST['table'];
+$oldProductId   = $_POST['oldProdId'];
 // echo $productId;
 $deleteProduct  = $Request->deleteProductOnTable($productId, $table);
+if($table == 'product_request' && !empty($oldProductId)){
+    $prductData = json_decode($Products->showProductsById($oldProductId));
+    $editReqFlag = $prductData->data->edit_request_flag;
+
+    if(intval($editReqFlag) > 0){
+        $editReqFlag --;
+    }else{
+        $editReqFlag = 0;
+    }
+    $col = 'edit_request_flag';
+    $updateProduct = $Products->updateOnColData($col, $editReqFlag, $oldProductId);
+}
 
 
 $checkImg = json_decode($ProductImages->showImagesByProduct($productId));
