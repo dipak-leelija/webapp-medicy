@@ -27,7 +27,7 @@ if ($showManufacturer !== null) {
 
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
-print_r($showManufacturer);
+// print_r($showManufacturer);
 $slicedManuf = '';
 if (!empty($showManufacturer)) {
     // print_r($showManufacturer);
@@ -351,14 +351,14 @@ if (isset($_GET['return'])) {
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/manufactureStatus.update.ajax.php',
+                    url: 'ajax/manufactureStatus.update.ajax.php',
                     data: {
                         manufacturerId: manufacturerId,
                         newStatus: newStatus
                     },
                     success: function(response) {
                         console.log(response);
-                        // location.reload();
+                        location.reload();
                     },
                     error: function(error) {
                         console.error('Error updating status:', error);
@@ -373,14 +373,14 @@ if (isset($_GET['return'])) {
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/manufactureReqStatus.update.ajax.php',
+                    url: 'ajax/manufactureReqStatus.update.ajax.php',
                     data: {
                         manufacturerId: manufacturerId,
                         newStatus: newStatus
                     },
                     success: function(response) {
                         console.log(response);
-                        // location.reload();
+                        location.reload();
                     },
                     error: function(error) {
                         console.error('Error updating status:', error);

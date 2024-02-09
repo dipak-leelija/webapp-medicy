@@ -291,7 +291,7 @@ if (is_object($showPackagingRequest) && property_exists($showPackagingRequest, '
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/packagingUnitStatus.update.ajax.php',
+                    url: 'ajax/packagingUnitStatus.update.ajax.php',
                     data: {
                         unitId: unitId,
                         newStatus: newStatus
@@ -313,7 +313,7 @@ if (is_object($showPackagingRequest) && property_exists($showPackagingRequest, '
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/packUnitReqStatus.update.ajax.php',
+                    url: 'ajax/packUnitReqStatus.update.ajax.php',
                     data: {
                         unitId: unitId,
                         newStatus: newStatus

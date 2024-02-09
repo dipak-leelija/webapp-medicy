@@ -324,7 +324,7 @@ if (!empty($showDistRequest->data)) {
                     },
                     success: function(response) {
                         console.log(response);
-                        // location.reload();
+                        location.reload();
                     },
                     error: function(error) {
                         console.error('Error updating status:', error);
@@ -346,7 +346,7 @@ if (!empty($showDistRequest->data)) {
                     },
                     success: function(response) {
                         console.log(response);
-                        // location.reload();
+                        location.reload();
                     },
                     error: function(error) {
                         console.error('Error updating status:', error);
