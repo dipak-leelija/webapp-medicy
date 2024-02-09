@@ -21,9 +21,18 @@ $ProductImages = new ProductImages;
 
 // $productTableId = $_POST['id'];
 $productId      = $_POST['productId'];
-
+echo $productId;
 $deleteProduct  = $Request->deleteRequest($productId);
-$deleteProductImg = $ProductImages->deleteImageByPID($productId);
+
+
+$checkImg = json_decode($ProductImages->showImagesByProduct($productId));
+if($checkImg->status){
+    $deleteProductImg = $ProductImages->deleteImageByPID($productId);
+}else{
+    $deleteProductImg = 1;
+}
+
+
 
 
 if ($deleteProduct && $deleteProductImg) {
