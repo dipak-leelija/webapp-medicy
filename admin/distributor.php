@@ -317,7 +317,7 @@ if (!empty($showDistRequest->data)) {
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/distributorStatus.update.ajax.php',
+                    url: 'ajax/distributorStatus.update.ajax.php',
                     data: {
                         distributorId: distributorId,
                         newStatus: newStatus
@@ -339,7 +339,7 @@ if (!empty($showDistRequest->data)) {
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/ajax/distributorReqStatus.update.ajax.php',
+                    url: 'ajax/distributorReqStatus.update.ajax.php',
                     data: {
                         distributorId: distributorId,
                         newStatus: newStatus
