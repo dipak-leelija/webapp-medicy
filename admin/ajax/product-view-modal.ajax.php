@@ -322,7 +322,7 @@ $QuantityUnit   = new QuantityUnit;
                                         "success"
                                     ).then(function() {
                                         if(btnVal == 'products'){
-                                            parent.location.href = '<?php echo LOCAL_DIR ?>app.medicy.in/admin/products.php';
+                                            parent.location.href = '<?php echo SUP_ADM_DIR ?>products.php';
                                         }else{
                                             parent.location.reload();
                                         }  
