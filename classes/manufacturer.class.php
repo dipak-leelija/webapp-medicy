@@ -135,7 +135,7 @@ class Manufacturer extends DatabaseConnection
                 $selectQuery = $this->conn->prepare($select);
                 $selectQuery->bind_param("s", $adminId); // Bind parameter to the query
             } else {
-                $select = "SELECT * FROM `manufacturer`";
+                $select = "SELECT * FROM manufacturer";
                 $selectQuery = $this->conn->prepare($select);
             }
             
