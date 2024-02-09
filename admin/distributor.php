@@ -309,10 +309,7 @@ if (!empty($showDistRequest->data)) {
             let url = "ajax/distributor.View.ajax.php?Id=" + ViewAndEdit;
             $(".distributorModal").html(
                 '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
-                ADM_URL + '"></iframe>');
-
-
-            $("#distributorModal").modal("hide");
+                url + '"></iframe>');
         } // end of viewAndEdit function
 
         //update distributor status//
