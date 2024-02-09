@@ -322,7 +322,7 @@ $QuantityUnit   = new QuantityUnit;
                                         "success"
                                     ).then(function() {
                                         if(btnVal == 'products'){
-                                            // alert("check 1");
+                                            alert(<?php echo SUP_ADM_DIR ?>);
                                             parent.location.href = '<?php echo SUP_ADM_DIR ?>products.php';
                                         }else{
                                             parent.location.reload();
