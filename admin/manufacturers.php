@@ -27,7 +27,6 @@ if ($showManufacturer !== null) {
 
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
-// print_r($showManufacturer);
 $slicedManuf = '';
 if (!empty($showManufacturer)) {
     // print_r($showManufacturer);
