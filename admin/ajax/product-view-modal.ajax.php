@@ -290,7 +290,7 @@ $QuantityUnit   = new QuantityUnit;
 
         const del = (prodId, table, oldProdId) => {
             btnID = prodId;
-            btnVal = table; 
+            tblNm = table; 
             oldProdId = oldProdId;           
 
             swal.fire({
@@ -310,7 +310,7 @@ $QuantityUnit   = new QuantityUnit;
                             data: {
                                 productId: btnID,
                                 id: btnID,
-                                table: btnVal,
+                                table: tblNm,
                                 oldProdId: oldProdId,
                             },
                             success: function(data) {
@@ -321,8 +321,8 @@ $QuantityUnit   = new QuantityUnit;
                                         "Data Has Been Deleted",
                                         "success"
                                     ).then(function() {
-                                        if(btnVal == 'products'){
-                                            parent.location.href = '<?php echo SUP_ADM_DIR ?>admin/products.php';
+                                        if(tblNm == 'products'){
+                                            parent.location.href = <?php echo SUP_ADM_DIR; ?>.'products.php';
                                         }else{
                                             parent.location.reload();
                                         }  
