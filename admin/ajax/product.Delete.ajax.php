@@ -21,15 +21,16 @@ $ProductImages = new ProductImages;
 
 // $productTableId = $_POST['id'];
 $productId      = $_POST['productId'];
-echo $productId;
-$deleteProduct  = $Request->deleteRequest($productId);
+$table          = $_POST['table'];
+// echo $productId;
+$deleteProduct  = $Request->deleteProductOnTable($productId, $table);
 
 
 $checkImg = json_decode($ProductImages->showImagesByProduct($productId));
 if($checkImg->status){
     $deleteProductImg = $ProductImages->deleteImageByPID($productId);
 }else{
-    $deleteProductImg = 1;
+    $deleteProductImg = true;
 }
 
 
