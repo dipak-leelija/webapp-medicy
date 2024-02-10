@@ -178,6 +178,9 @@ class ProductImages extends DatabaseConnection
     }
 
 
+
+
+    
     function showImageByImgId($productId)
     {
         try {
