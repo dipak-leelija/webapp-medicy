@@ -75,9 +75,7 @@ if ($adminDetails->status) {
 
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
@@ -122,14 +120,10 @@ if ($adminDetails->status) {
 
                             <div class="col-12 mt-2 col-sm-6 mt-sm-0 ">
                                 <div class="input-group">
-                                    <input class="cvx-inp" type="text" placeholder="Customer ID / Customer Name ..."
-                                        name="appointment-search" id="appointment_search" style="outline: none;"
-                                        value="<?= isset($match) ? $match : ''; ?>">
+                                    <input class="cvx-inp" type="text" placeholder="Customer ID / Customer Name ..." name="appointment-search" id="appointment_search" style="outline: none;" value="<?= isset($match) ? $match : ''; ?>">
 
                                     <div class="input-group-append">
-                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button"
-                                            id="button-addon" onclick="filterAppointment()"><i
-                                                class="fas fa-search"></i></button>
+                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="filterAppointment()"><i class="fas fa-search"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -139,8 +133,7 @@ if ($adminDetails->status) {
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-sm table-bordered sortable-table" id="appointments-dataTable"
-                                    width="100%" cellspacing="0">
+                                <table class="table table-sm table-bordered sortable-table" id="appointments-dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Customer ID</th>
@@ -197,7 +190,9 @@ if ($adminDetails->status) {
                                                           <td>
                                                               <a href="prescription.php?prescription=' . url_enc($customerId) . '" class="text-primary" data-toggle="tooltip" data-placement="left" title="View and Print"><i class="fas fa-print"></i></a>
                                                               <a href="customer-report.php?report=' . url_enc($customerId) . '" class="text-success" data-toggle="tooltip" data-placement="left" title="Live Report"><i class="fas fa-chart-pie"></i></a>
-                                                              <a href="ajax/appointment.delete.ajax.php?appointmentId=' . $customerId . '" class="text-danger" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a>
+                                                             
+                                                              <a href="#" class="delete-btn text-danger" data-id="<?php echo $customerId; ?>" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a>
+
                                                           </td>
                                                      </tr>';
                                             }
@@ -225,7 +220,7 @@ if ($adminDetails->status) {
 
         </div>
         <!-- End of Content Wrapper -->
-
+        <!-- <a href="ajax/appointment.delete.ajax.php?appointmentId=' . $customerId . '" class="text-danger" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a> -->
     </div>
     <!-- End of Page Wrapper -->
 
@@ -234,8 +229,7 @@ if ($adminDetails->status) {
         <i class="fas fa-angle-up"></i>
     </a>
     <!-- Select Appointment Type Modal  -->
-    <div class="modal fade" id="appointmentSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="appointmentSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog centered" role="document">
             <div class="modal-content">
                 <div class="modal-body d-flex justify-content-around align-items-center py-4">
@@ -252,8 +246,7 @@ if ($adminDetails->status) {
     <!--/end Select Appointment Type Modal  -->
 
     <!-- View & Edit Appointment Modal -->
-    <div class="modal fade AppointmntViewAndEdit" tabindex="-1" role="dialog"
-        aria-labelledby="AppointmntViewAndEditLabel" aria-hidden="true">
+    <div class="modal fade AppointmntViewAndEdit" tabindex="-1" role="dialog" aria-labelledby="AppointmntViewAndEditLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -283,18 +276,45 @@ if ($adminDetails->status) {
     <script src="<?php echo JS_PATH ?>custom-js.js"></script>
     <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
     <script>
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
 
     <script>
-    $(document).ready(function() {
-        $(document).on("click", ".delete-btn", function() {
+        // $(document).ready(function() {
+        //     $(document).on("click", ".delete-btn", function() {
 
+        //         if (confirm("Are You Sure?")) {
+        //             apntID = $(this).data("id");
+        //             btn = this;
+
+        //             $.ajax({
+        //                 url: "ajax/appointment.delete.ajax.php",
+        //                 type: "POST",
+        //                 data: {
+        //                     id: apntID
+        //                 },
+        //                 success: function(data) {
+        //                     if (data == 1) {
+        //                         $(btn).closest("tr").fadeOut()
+        //                     } else {
+        //                         $("#error-message").html("Deletion Field !!!").slideDown();
+        //                         $("success-message").slideUp();
+        //                     }
+
+        //                 }
+        //             });
+        //         }
+        //         return false;
+        //     })
+
+        // })
+
+        $(document).on("click", ".delete-btn", function() {
             if (confirm("Are You Sure?")) {
-                apntID = $(this).data("id");
-                btn = this;
+                var apntID = $(this).data("id"); // Corrected this line
+                var btn = this;
 
                 $.ajax({
                     url: "ajax/appointment.delete.ajax.php",
@@ -304,29 +324,26 @@ if ($adminDetails->status) {
                     },
                     success: function(data) {
                         if (data == 1) {
-                            $(btn).closest("tr").fadeOut()
+                            $(btn).closest("tr").fadeOut();
                         } else {
                             $("#error-message").html("Deletion Field !!!").slideDown();
-                            $("success-message").slideUp();
+                            $("#success-message").slideUp(); // Corrected this line
                         }
-
                     }
                 });
             }
             return false;
-        })
-
-    })
+        });
     </script>
     <script>
-    appointmentViewAndEditModal = (appointmentTableID) => {
+        appointmentViewAndEditModal = (appointmentTableID) => {
 
-        let url = "ajax/appointment.view.ajax.php?appointmentTableID=" + appointmentTableID;
-        $(".view-and-edit-appointments").html(
-            '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
-            url + '"></iframe>');
+            let url = "ajax/appointment.view.ajax.php?appointmentTableID=" + appointmentTableID;
+            $(".view-and-edit-appointments").html(
+                '<iframe width="99%" height="440px" frameborder="0" allowtransparency="true" src="' +
+                url + '"></iframe>');
 
-    } // end of LabCategoryEditModal function
+        } // end of LabCategoryEditModal function
     </script>
 
     <!-- Core plugin JavaScript-->
@@ -338,61 +355,61 @@ if ($adminDetails->status) {
 
 
     <script>
-    const filterAppointmentByValue = (t) => {
+        const filterAppointmentByValue = (t) => {
 
-        document.getElementById('dtPickerDiv').style.display = 'none';
+            document.getElementById('dtPickerDiv').style.display = 'none';
 
-        key = t.id;
-        val = t.value;
-        print_r(key);
+            key = t.id;
+            val = t.value;
+            print_r(key);
 
-        if (val != 'CR') {
-            var currentURL = window.location.href;
+            if (val != 'CR') {
+                var currentURL = window.location.href;
 
-            // Get the current URL without the query string
+                // Get the current URL without the query string
+                var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+
+                var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
+
+                window.location.replace(newURL);
+            }
+
+            if (val == 'CR') {
+                document.getElementById('dtPickerDiv').style.display = 'block';
+            }
+        }
+
+
+        const customDate = () => {
+            let fromDate = document.getElementById('from-date').value;
+            let toDate = document.getElementById('to-date').value;
+
+            //fetch current url and pathname
             var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-
-            var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
-
-            window.location.replace(newURL);
+            // create new url with added value to previous url
+            var newUrl =
+                `${currentURLWithoutQuery}?search=${'added_on'}&searchKey=${'CR'}&fromDt=${fromDate}&toDt=${toDate}`;
+            // replace previous url with new url
+            window.location.replace(newUrl);
         }
 
-        if (val == 'CR') {
-            document.getElementById('dtPickerDiv').style.display = 'block';
+
+        const filterAppointment = () => {
+
+            // document.getElementById('dtPickerDiv').style.display = 'none';
+
+            var key = document.getElementById("appointment_search").id;
+            var val = document.getElementById("appointment_search").value;
+            console.log(key);
+            console.log(val);
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            if (val.length > 2) {
+                var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
+                window.location.replace(newURL);
+            } else {
+                console.log("min 3 char");;
+            }
         }
-    }
-
-
-    const customDate = () => {
-        let fromDate = document.getElementById('from-date').value;
-        let toDate = document.getElementById('to-date').value;
-
-        //fetch current url and pathname
-        var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-        // create new url with added value to previous url
-        var newUrl =
-            `${currentURLWithoutQuery}?search=${'added_on'}&searchKey=${'CR'}&fromDt=${fromDate}&toDt=${toDate}`;
-        // replace previous url with new url
-        window.location.replace(newUrl);
-    }
-
-
-    const filterAppointment = () => {
-
-        // document.getElementById('dtPickerDiv').style.display = 'none';
-
-        var key = document.getElementById("appointment_search").id;
-        var val = document.getElementById("appointment_search").value;
-        console.log(key);
-        console.log(val);
-        var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-        if (val.length > 2) {
-            var newURL = `${currentURLWithoutQuery}?search=${key}&searchKey=${val}`;
-            window.location.replace(newURL);
-        } else {
-            console.log("min 3 char");;
-        }
-    }
     </script>
 
 </body>
