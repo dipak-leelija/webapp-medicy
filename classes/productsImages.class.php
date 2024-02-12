@@ -178,6 +178,9 @@ class ProductImages extends DatabaseConnection
     }
 
 
+
+
+    
     function showImageByImgId($productId)
     {
         try {
@@ -298,7 +301,7 @@ class ProductImages extends DatabaseConnection
     function deleteImage($imageId)
     {
         try {
-            $delImage = "DELETE * FROM `product_images` WHERE `id`='$imageId'";
+            $delImage = "DELETE FROM `product_images` WHERE `id`='$imageId'";
 
             $delQry = $this->conn->query($delImage);
 
@@ -310,7 +313,7 @@ class ProductImages extends DatabaseConnection
 
     function deleteImageByPID($productId)
     {
-        $delImage = "DELETE * FROM `product_images` WHERE `product_id`='$productId'";
+        $delImage = "DELETE FROM `product_images` WHERE `product_id`='$productId'";
 
         $delQry = $this->conn->query($delImage);
 
