@@ -8,14 +8,13 @@ require_once CLASS_DIR . 'measureOfUnit.class.php';
 
 
 // $match = $_POST['search'];
-echo $adminId;
 $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
-echo $match;
+// echo $match;
 $prodUnit       = new MeasureOfUnits();
 
 if ($match == 'all') {
     $showProdUnit = json_decode($prodUnit->prodUnitCardSearch($match, $adminId));
-    print_r($showProdUnit);
+    // print_r($showProdUnit);
 } else {
     $showProdUnit    = json_decode($prodUnit->prodUnitCardSearch($match, $adminId));
 }
