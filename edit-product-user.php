@@ -15,7 +15,6 @@ require_once CLASS_DIR . 'gst.class.php';
 
 
 
-
 //objects Initilization
 $Products           = new Products();
 $Request            = new Request;
@@ -116,10 +115,7 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
 
         $mrp            = $product[0]->mrp;
         $gst            = $product[0]->gst;
-        // $added_by       = $product[0]->added_by;
-        // $added_on       = $product[0]->added_on;
-        // $updated_by     = $product[0]->updated_by;
-        // $updated_on     = $product[0]->updated_on;
+        
         $admin_id       = $product[0]->admin_id;
 
         $images = json_decode($ProductImages->showImageById($productId));
@@ -138,9 +134,7 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
             $allImg[] = "default-product-image/medicy-default-product-image.jpg";
         }
 
-        // foreach ($allImgId as $index => $imageID) {
-        //     print_r($imageID);
-        // }
+        
 
     ?>
 
