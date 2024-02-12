@@ -46,7 +46,7 @@ if (isset($_POST['update-product'])) {
 
     $productId  =   $_POST['product-id'];
 
-    // $oldProdId = $productId;
+    $oldProdId = $productId;
 
     $tableName = $_POST['table-name'];
 
@@ -106,7 +106,7 @@ if (isset($_POST['update-product'])) {
         }
 
         if ($unit != $oldProdData->unit) {
-            $unitEdit = 'Unit Edited. ';
+            $unitEdit = 'Unit Edited.';
         } else {
             $unitEdit = '';
         }
@@ -155,7 +155,8 @@ if (isset($_POST['update-product'])) {
 
 
     // ------------- image update function ----------------------
-    function imageUpdate($imageDataTuple, $productId, $Request){
+    function imageUpdate($imageDataTuple, $productId, $Request)
+    {
         try {
             $imageDataTuple = json_decode($imageDataTuple);
 
@@ -217,23 +218,25 @@ if (isset($_POST['update-product'])) {
             $randNum = rand(1, 999999999999);
             $newProductId = 'PR' . $randNum;
 
-            $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+            if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
+                $productId = $newProductId;
+            } else {
+                $productId = $oldProdId;
+            }
+
+            $addOldProdEditRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
             $addOldProdEditRequest = json_decode($addOldProdEditRequest);
-
-            // print_r($addOldProdEditRequest);
-            // echo "check 1";
 
             $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
 
             if ($addOldProdEditRequest->status) {
-                echo "$description";
+                // echo "$description";
                 $col = 'edit_request_flag';
                 $editRqstFlgData += 1;
                 $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
 
                 $editRequest = true;
-                $productId = $newProductId;
 
                 if (preg_match("/Image Edited./", $description)) {
                     $imageUpdate = imageUpdate($imageDataTuple, $productId, $Request);
@@ -252,20 +255,32 @@ if (isset($_POST['update-product'])) {
             if ($selectFromProdReqTable->status) {
 
                 $selectFromProdReqTable = $selectFromProdReqTable->data;
-                echo "check 2";
+                // echo "check 2";
                 // print_r($selectFromProdReqTable);
-                $modifiedProdId = $selectFromProdReqTable->product_id;
+                $productId = $selectFromProdReqTable->product_id;
                 $prodReqStatus = 0;
                 $oldProdFlag = 1;
 
-                $editRequest = $Request->editUpdateProductRequest($modifiedProdId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+                $randNum = rand(1, 999999999999);
+                $newProductId = 'PR' . $randNum;
 
-                $editRequest = json_decode($editRequest);
+                if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
+                    $productId = $newProductId;
+
+                    $editRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+
+                    $editRequest = json_decode($editRequest);
+                } else {
+                    $productId = $oldProdId;
+
+                    $editRequest = $Request->editUpdateProductRequest($modifiedProdId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+
+                    $editRequest = json_decode($editRequest);
+                }
 
                 if ($editRequest->status) {
                     // echo "check 2";
                     $editRequest = true;
-                    $productId = $modifiedProdId;
 
                     if (preg_match("/Image Edited./", $description)) {
                         $imageUpdate = imageUpdate($imageDataTuple, $productId, $Request);
@@ -280,23 +295,32 @@ if (isset($_POST['update-product'])) {
                     $editRequest = false;
                 }
             } else {
-                echo "check 3";
+
+                // echo "check 3";
                 $oldProdFlag = 1;
                 $prodReqStatus = 0;
 
                 $randNum = rand(1, 999999999999);
                 $newProductId = 'PR' . $randNum;
 
-                $addOldProdEditRequest = $Request->addOldProductRequest($productId, $newProductId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+                if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
+                    $productId = $newProductId;
+                } else {
+                    $productId = $oldProdId;
+                }
+
+                $addOldProdEditRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+
+                $addOldProdEditRequest = json_decode($addOldProdEditRequest);
 
                 $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
+
                 if ($addOldProdEditRequest) {
                     $col = 'edit_request_flag';
                     $editRqstFlgData += 1;
-                    $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
+                    $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $oldProdId);
 
                     $editRequest = true;
-                    $productId = $newProductId;
 
                     if (preg_match("/Image Edited./", $description)) {
                         $imageUpdate = imageUpdate($imageDataTuple, $productId, $Request);
@@ -313,21 +337,38 @@ if (isset($_POST['update-product'])) {
             }
         }
     } else {
-        echo "check 4";
+
+        // echo "check 4";
         $checkProdRqst = json_decode($Request->selectProductData($productId));
         // print_r($checkProdRqst->data);
         $prodReqStatus = 0;
         $oldProdFlag = $checkProdRqst->data->old_prod_flag;
 
-        $editRequest = $Request->editUpdateProductRequest($productId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+        $randNum = rand(1, 999999999999);
+        $newProductId = 'PR' . $randNum;
 
-        $editRequest = json_decode($editRequest);
-        // print_r($editRequest);
-        $editRequest = $editRequest->status;
+        if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
+            $productId = $newProductId;
+
+            $addNewProduct = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+
+            $addNewProduct = json_decode($addNewProduct);
+            $editRequest = $addNewProduct->status;
+
+        } else {
+
+            $productId = $oldProdId;
+
+            $editRequest = $Request->editUpdateProductRequest($productId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+
+            $editRequest = json_decode($editRequest);
+            // print_r($editRequest);
+            $editRequest = $editRequest->status;
+        }
 
         if (preg_match("/Image Edited./", $description)) {
             $imageUpdate = imageUpdate($imageDataTuple, $productId, $Request);
-            // print_r($imageUpdate);
+
             if ($imageUpdate) {
                 $addImagesRequest = true;
             }
@@ -337,7 +378,6 @@ if (isset($_POST['update-product'])) {
     }
 
 ?>
-
 
     <!DOCTYPE html>
     <html lang="en">
@@ -378,11 +418,14 @@ if (isset($_POST['update-product'])) {
 
         <?php
 
-        if ($editRequest === true) {
-            if ($addImagesRequest === true) {
+        if ($editRequest) {
+            if ($addImagesRequest) {
+                // echo "description : $description<br>";
+                // echo "edit request: $editRequest<br>";
+                // echo "<br>add image request : $addImagesRequest";
         ?>
                 <script>
-                    swal("Success", "Product updated successfully!", "success").then((value) => {
+                    swal("Success", "Product updated request sent successfully!", "success").then((value) => {
                         parent.location.reload();
                     });
                 </script>
@@ -390,7 +433,7 @@ if (isset($_POST['update-product'])) {
             } else {
             ?>
                 <script>
-                    swal("Error", "Product(image) updatation fail!", "error").then((value) => {
+                    swal("Error", "Product updatation fail!", "error").then((value) => {
                         parent.location.reload();
                     });
                 </script>
@@ -401,6 +444,6 @@ if (isset($_POST['update-product'])) {
 
     ?>
 
-    <!-- </body>
+    </body>
 
-    </html> -->
+    </html>
