@@ -71,7 +71,7 @@ if (isset($_POST['update-product'])) {
     // ==================== for img ===================== //
     $imageName        = $_FILES['img-files']['name'];
     $tempImgName       = $_FILES['img-files']['tmp_name'];
-    // print_r($imageName);
+
     $imageArrayCount = count($imageName);
     $tempImageNameArrayCount = count($tempImgName);
 
@@ -142,23 +142,71 @@ if (isset($_POST['update-product'])) {
             $images = json_decode($ProductImages->showImageByPrimay($productId, $adminId));
         }
 
-        // check if the images are edited
-        if (empty($imageName[0])) {
-            $imgEdit = (!$images->status) ? '' : 'Image Edited.';
-            // echo "img 1";
-        } else {
-            if ($images->status) {
-                $imgEdit = (count($images->data) == $imageArrayCount) ? 'Image Edited' : 'Image Edited';
-                // echo "img 2";
-            } else {
-                $imgEdit = 'Image Edited.';
-                // echo "img 3";
-            }
-        }
+        // print_r($images);
+        // print_r($imageName);
+
+        $imgEdit = (!empty($imageName[0])) ? (($images->status) ? 'Image Edited.' : 'Image Edited.') : (($images->status) ? '' : '');
 
         $description = $nameEdit . $categoryEdit . $packegeEdit . $medQtyEdit . $unitEdit . $medPowerEdit . $mrpEdit . $gstEdit . $hsnEdit . $imgEdit;
     }
 
+
+    $imageDataTuple = json_encode(['imageNmArray' => $imageName, 'tempImageNmArray' => $tempImgName, 'imgArrayCount' => $imageArrayCount, 'tempImgArrayCount' => $tempImageNameArrayCount, 'addedBy' => $addedBy, 'adminId' => $adminId]); // createing image data tupel ------
+
+
+    // ------------- image update function ----------------------
+    function imageUpdate($imageDataTuple, $productId, $Request){
+        try {
+            $imageDataTuple = json_decode($imageDataTuple);
+
+            $imageName = $imageDataTuple->imageNmArray;
+            $tempImgName = $imageDataTuple->tempImageNmArray;
+
+            $imageArrayCount = $imageDataTuple->imgArrayCount;
+            $tempImageNameArrayCount = $imageDataTuple->tempImgArrayCount;
+
+            $addedBy = $imageDataTuple->addedBy;
+            $adminId = $imageDataTuple->adminId;
+
+            for ($i = 0, $j = 0; $i < $imageArrayCount && $j < $tempImageNameArrayCount; $i++, $j++) {
+                ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
+                $imgStatus = 0;
+
+                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $randomString = '';
+
+                for ($k = 0; $k < 9; $k++) {
+                    $randomString .= $characters[rand(0, strlen($characters) - 1)];
+                }
+
+                ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+                //===== Main Image 
+                $image          = $imageName[$i];
+                $tempImage        = $tempImgName[$j];
+
+                $extention = substr($image, -4);
+                $imageFileName = substr($image, 0, -4);
+
+                $imageFile  =   $imageFileName . '-' . $randomString . $extention;
+                $imgFolder     = PROD_IMG . $imageFile;
+
+                move_uploaded_file($tempImage, $imgFolder);
+                $image         = addslashes($imageFile);
+
+                $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
+
+                if (!$addImagesRequest) {
+                    throw new Exception("Failed to add image for product ID: $productId");
+                }
+            }
+            return true;
+        } catch (Exception $e) {
+            return error_log("Error in imageUpadate function: " . $e->getMessage());
+        }
+    } // image function bracket end 
+
+
+    // --------------- product edit request code gose hear --------------------
     $prodDataFromProducts = json_decode($Products->showProductsById($productId));
     if ($prodDataFromProducts->status) {
         if ($prodDataFromProducts->data->edit_request_flag == 0) {
@@ -173,17 +221,29 @@ if (isset($_POST['update-product'])) {
 
             $addOldProdEditRequest = json_decode($addOldProdEditRequest);
 
-            print_r($addOldProdEditRequest);
-            echo "check 1";
+            // print_r($addOldProdEditRequest);
+            // echo "check 1";
+
             $editRqstFlgData = intval($prodDataFromProducts->data->edit_request_flag);
-            echo "<br>check edit request flag data : $editRqstFlgData";
+
             if ($addOldProdEditRequest->status) {
+                echo "$description";
                 $col = 'edit_request_flag';
                 $editRqstFlgData += 1;
                 $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
 
                 $editRequest = true;
                 $productId = $newProductId;
+
+                if (preg_match("/Image Edited./", $description)) {
+                    $imageUpdate = imageUpdate($imageDataTuple, $productId, $Request);
+                    // print_r($imageUpdate);
+                    if ($imageUpdate) {
+                        $addImagesRequest = true;
+                    }
+                } else {
+                    $addImagesRequest = true;
+                }
             }
         } else {
 
@@ -205,11 +265,20 @@ if (isset($_POST['update-product'])) {
                 if ($editRequest->status) {
                     // echo "check 2";
                     $editRequest = true;
+                    $productId = $modifiedProdId;
+
+                    if (preg_match("/Image Edited./", $description)) {
+                        $imageUpdate = imageUpdate($imageDataTuple, $productId, $Request);
+                        // print_r($imageUpdate);
+                        if ($imageUpdate) {
+                            $addImagesRequest = true;
+                        }
+                    } else {
+                        $addImagesRequest = true;
+                    }
                 } else {
                     $editRequest = false;
                 }
-
-                $productId = $modifiedProdId;
             } else {
                 echo "check 3";
                 $oldProdFlag = 1;
@@ -228,6 +297,18 @@ if (isset($_POST['update-product'])) {
 
                     $editRequest = true;
                     $productId = $newProductId;
+
+                    if (preg_match("/Image Edited./", $description)) {
+                        $imageUpdate = imageUpdate($imageDataTuple, $productId, $Request);
+                        // print_r($imageUpdate);
+                        if ($imageUpdate) {
+                            $addImagesRequest = true;
+                        }
+                    } else {
+                        $addImagesRequest = true;
+                    }
+                } else {
+                    $editRequest = false;
                 }
             }
         }
@@ -241,10 +322,20 @@ if (isset($_POST['update-product'])) {
         $editRequest = $Request->editUpdateProductRequest($productId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
         $editRequest = json_decode($editRequest);
-        print_r($editRequest);
+        // print_r($editRequest);
         $editRequest = $editRequest->status;
-        
+
+        if (preg_match("/Image Edited./", $description)) {
+            $imageUpdate = imageUpdate($imageDataTuple, $productId, $Request);
+            // print_r($imageUpdate);
+            if ($imageUpdate) {
+                $addImagesRequest = true;
+            }
+        } else {
+            $addImagesRequest = true;
+        }
     }
+
 ?>
 
 
@@ -287,49 +378,6 @@ if (isset($_POST['update-product'])) {
 
         <?php
 
-
-        if ($editRequest) {
-
-            for ($i = 0, $j = 0; $i < $imageArrayCount && $j < $tempImageNameArrayCount; $i++, $j++) {
-                ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
-                $imgStatus = 0;
-
-                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $randomString = '';
-
-                for ($k = 0; $k < 9; $k++) {
-                    $randomString .= $characters[rand(0, strlen($characters) - 1)];
-                }
-
-                ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-                //===== Main Image 
-                $image          = $imageName[$i];
-                $tempImage        = $tempImgName[$j];
-
-
-                $extention = substr($image, -4);
-                $imageFileName = substr($image, 0, -4);
-
-
-                if ($imageFileName != null) {
-
-                    $imageFile  =   $imageFileName . '-' . $randomString . $extention;
-                    $imgFolder     = PROD_IMG . $imageFile;
-
-                    move_uploaded_file($tempImage, $imgFolder);
-                    $image         = addslashes($imageFile);
-                } else {
-                    $image = null;
-                }
-
-                if ($image != null) {
-                    $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $adminId, $imgStatus);
-                } else {
-                    $addImagesRequest = true;
-                }
-            }
-        }
-
         if ($editRequest === true) {
             if ($addImagesRequest === true) {
         ?>
@@ -350,8 +398,9 @@ if (isset($_POST['update-product'])) {
             }
         }
     }
+
     ?>
 
-    </body>
+    <!-- </body>
 
-    </html>
+    </html> -->
