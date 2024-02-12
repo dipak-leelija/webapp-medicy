@@ -27,30 +27,31 @@ if ($showManufacturer !== null) {
 
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
-$slicedManuf = '';
-$paginationHTML = '';
-$totalItem = 0;
-if (!empty($showManufacturer)) {
-    // print_r($showManufacturer);
+print_r($showManufacturer);
+// $slicedManuf = '';
+// $paginationHTML = '';
+// $totalItem = 0;
+// if (!empty($showManufacturer)) {
+//     // print_r($showManufacturer);
 
-    if (is_array($showManufacturer)) {
-        $response = json_decode($Pagination->arrayPagination($showManufacturer));
-        // $slicedManuf = '';
-        // $paginationHTML = '';
-        $totalItem = $slicedManuf = $response->totalitem;
-        print_r($totalItem);
-        if ($response->status == 1) {
-            $slicedManuf = $response->items;
-            $paginationHTML = $response->paginationHTML;
-        }
-    } else {
-        $totalItem = 0;
-        $paginationHTML = '';
-    }
-} else {
-    $totalItem = 0;
-    $paginationHTML = '';
-}
+//     if (is_array($showManufacturer)) {
+//         $response = json_decode($Pagination->arrayPagination($showManufacturer));
+//         // $slicedManuf = '';
+//         // $paginationHTML = '';
+//         $totalItem = $slicedManuf = $response->totalitem;
+//         print_r($totalItem);
+//         if ($response->status == 1) {
+//             $slicedManuf = $response->items;
+//             $paginationHTML = $response->paginationHTML;
+//         }
+//     } else {
+//         $totalItem = 0;
+//         $paginationHTML = '';
+//     }
+// } else {
+//     $totalItem = 0;
+//     $paginationHTML = '';
+// }
 
 
 //alert for form data inserted or failed
@@ -118,7 +119,7 @@ if (isset($_GET['return'])) {
                             <div class="card shadow mb-4">
                                 <div class="d-flex justify-content-around">
                                     <div class="col-10">
-                                        <h6 class=" col-6 mt-4 m-0 font-weight-bold text-primary">List of Manufacturers : <?= $totalItem ?></h6>
+                                        <!-- <h6 class=" col-6 mt-4 m-0 font-weight-bold text-primary">List of Manufacturers : <?= $totalItem ?></h6> -->
                                     </div>
                                     <div class="card-header d-flex justify-content-end bg-transparent top-1">
                                         <button type="button" class="btn btn-sm p-1 btn-primary" data-toggle="modal" data-target="#req-manufacture" onclick="manufRequest()">
@@ -140,7 +141,7 @@ if (isset($_GET['return'])) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php
+                                                <!-- <?php
                                                 if (is_array($slicedManuf)) {
                                                     foreach ($slicedManuf as $rowManufacturer) {
 
@@ -195,13 +196,13 @@ if (isset($_GET['return'])) {
                                                             </tr>';
                                                     }
                                                 }
-                                                ?>
+                                                ?> -->
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="d-flex justify-content-center">
+                                    <!-- <div class="d-flex justify-content-center">
                                         <?= $paginationHTML ?>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
