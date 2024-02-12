@@ -1,14 +1,13 @@
 <?php
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once SUP_ADM_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
 
-$page = "manufacturer";
+// $page = "manufacturer";
 
 //Class Initilizing
 // $Distributor = new Distributor();
@@ -26,7 +25,7 @@ if ($showManufacturer !== null) {
 
 
 $showManufacturer = $Manufacturer->showManufacturer();
-$showManufacturer = json_decode($showManufacturer);
+// $showManufacturer = json_decode($showManufacturer);
 print_r($showManufacturer);
 // $slicedManuf = '';
 // $paginationHTML = '';
