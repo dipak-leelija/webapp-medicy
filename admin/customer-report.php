@@ -7,7 +7,7 @@ require_once CLASS_DIR        . 'employee.class.php';
 require_once CLASS_DIR        . 'admin.class.php';
 require_once CLASS_DIR        . "stockOut.class.php";
 require_once CLASS_DIR        . "salesReturn.class.php";
-require_once CLASS_DIR        . "stockin.class.php";
+require_once CLASS_DIR        . "stockIn.class.php";
 require_once CLASS_DIR        . "stockReturn.class.php";
 
 

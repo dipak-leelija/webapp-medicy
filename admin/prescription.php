@@ -35,6 +35,7 @@ foreach($currentAppointments as $currentAppointmentDetails){
     $patientPin          = $currentAppointmentDetails['patient_pin'];
     $patientState        = $currentAppointmentDetails['patient_state'];
     $getDoctorForPatient = $currentAppointmentDetails['doctor_id'];
+    print_r($getDoctorForPatient);
  //    echo var_dump($getDoctorForPatient); exit;
 
 }
