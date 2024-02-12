@@ -38,6 +38,7 @@ $showEmployee = $employees->empDisplayById($empId);
         $empRole = $showEmployee->emp_role;
         $empEmail = $showEmployee->emp_email;
         $empAddress = $showEmployee->emp_address;
+        $empContact = $showEmployee->contact;
     }
     // print_r($showEmployee);
     // foreach ($showEmployee as $Employee) {
@@ -70,6 +71,10 @@ $showEmployee = $employees->empDisplayById($empId);
             <input type="text" class="form-control" id="empEmail" value="<?php echo $empEmail; ?>">
         </div>
         <div class="form-group">
+            <label for="" class="col-form-label">Contact:</label>
+            <input type="text" class="form-control" id="contact" value="<?php echo $empContact; ?>" minlength="10" maxlength="10">
+        </div>
+        <div class="form-group">
             <label for="empAddress" class="col-form-label">Employee Address:</label>
             <textarea class="form-control" name="empAddress" id="empAddress" rows="4"><?php echo $empAddress; ?></textarea>
         </div>
@@ -88,8 +93,9 @@ $showEmployee = $employees->empDisplayById($empId);
             let empName = document.getElementById("empName").value;
             let empRole = document.getElementById("empRole").value;
             let empEmail = document.getElementById("empEmail").value;
+            let empContact = document.getElementById("contact").value;
             // console.log(editTestCategoryDsc);
-            let url = "emp.edit.ajax.php?empId=" + escape(empId) + "&empUsername=" + escape(empUsername) + "&empName=" + escape(empName) + "&empRole=" + escape(empRole) + "&empEmail=" + escape(empEmail);
+            let url = "emp.edit.ajax.php?empId=" + escape(empId) + "&empUsername=" + escape(empUsername) + "&empName=" + escape(empName) + "&empRole=" + escape(empRole) + "&empContact=" + escape(empContact) + "&empEmail=" + escape(empEmail);
             // console.log(url);
             // alert('Working');
             // $("#reportUpdate").html('<iframe width="99%" height="40px" frameborder="0" allowtransparency="true" src="'+url+'"></iframe>');

@@ -1,32 +1,23 @@
 <?php
 require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-require_once SUP_ADM_DIR . '_config/accessPermission.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once SUP_ADM_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'pagination.class.php';
 
-$page = "manufacturer";
+// $page = "manufacturer";
 
 //Class Initilizing
 // $Distributor = new Distributor();
 $Manufacturer = new Manufacturer();
 $Pagination = new Pagination;
 
-$showManufacturer = $Manufacturer->showRequestManufacturer();
-$countManufacturer = 0;
-if ($showManufacturer !== null) {
-    $manufacturerData = json_decode($showManufacturer, true);
-    if (!empty($manufacturerData) && is_array($manufacturerData)) {
-        $countManufacturer = count($manufacturerData);
-    }
-}
-
 
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
+// print_r($showManufacturer);
 $slicedManuf = '';
 $paginationHTML = '';
 $totalItem = 0;
@@ -38,7 +29,7 @@ if (!empty($showManufacturer)) {
         // $slicedManuf = '';
         // $paginationHTML = '';
         $totalItem = $slicedManuf = $response->totalitem;
-        print_r($totalItem);
+        // print_r($totalItem);
         if ($response->status == 1) {
             $slicedManuf = $response->items;
             $paginationHTML = $response->paginationHTML;
@@ -59,6 +50,15 @@ if (isset($_GET['return'])) {
         echo "<script>alert('Manufacturer Added!');</script>";
     } else {
         echo "<script>alert('Manufacturer Insertion Failed!');</script>";
+    }
+}
+
+$showManufacturer = $Manufacturer->showRequestManufacturer();
+$countManufacturer = 0;
+if ($showManufacturer !== null) {
+    $manufacturerData = json_decode($showManufacturer, true);
+    if (!empty($manufacturerData) && is_array($manufacturerData)) {
+        $countManufacturer = count($manufacturerData);
     }
 }
 

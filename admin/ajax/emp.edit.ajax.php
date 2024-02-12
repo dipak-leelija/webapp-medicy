@@ -9,10 +9,11 @@ $empUsername = $_GET['empUsername'];
 $empName = $_GET['empName'];
 $empRole = $_GET['empRole'];
 $empEmail = $_GET['empEmail'];
+$empContact = $_GET['empContact'];
 
 
 $employees = new Employees();
-$EditEmp = $employees->updateEmp($empUsername, $empName, $empRole, $empEmail,/*Last Variable for id which one you want to update */ $empId);
+$EditEmp = $employees->updateEmp($empUsername, $empName, $empRole, $empEmail,$empContact, $empId);
 
 if($EditEmp){
     echo "<div class='alert alert-primary alert-dismissible fade show' role='alert'>

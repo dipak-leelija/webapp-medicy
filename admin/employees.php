@@ -37,6 +37,7 @@ if (isset($_POST['add-emp']) == true) {
     $empName      = $_POST['emp-name'];
     $empUsername  = $_POST['emp-username'];
     $empMail      = $_POST['emp-mail'];
+    $empContact   = $_POST['contact'];
     $empRole      = $_POST['emp-role'];
     $empPass      = $_POST['emp-pass'];
     $empCPass     = $_POST['emp-cpass'];
@@ -45,7 +46,7 @@ if (isset($_POST['add-emp']) == true) {
 
     if ($empPass == $empCPass) {
         $wrongPasword = false;
-        $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail, $empAddress, $empPass);
+        $addEmployee = $employees->addEmp($adminId, $empUsername, $empName, $empRole, $empMail,$empContact, $empAddress, $empPass);
         if ($addEmployee) {
             $Utility->redirectURL($currentUrl, 'SUCCESS', 'Employee Added Successfuly!');
         } else {
@@ -217,7 +218,7 @@ if (isset($_POST['add-emp']) == true) {
                                                     $empRole = '';
                                                     if ($empRolDatas['status'] == '1')
                                                         $designationData = $empRolDatas['data'];
-                                                        $empRole    = $designationData['desig_name'];
+                                                    $empRole    = $designationData['desig_name'];
 
                                                     $empMail = $showEmployees['emp_email'];
                                                     // $emp['employee_password'];
@@ -280,6 +281,11 @@ if (isset($_POST['add-emp']) == true) {
                                                 <div class="col-md-12">
                                                     <label class="mb-0 mt-1" for="emp-mail">Employee Mail:</label>
                                                     <input class="form-control" type="email" name="emp-mail" id="emp-mail" maxlength="100" required>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <label for="contact" class="mb-0 mt-1">Contact:</label>
+                                                    <input type="text" class="form-control" name='contact' id="contact" minlength="10" maxlength="10">
                                                 </div>
 
                                                 <div class="col-md-12">
