@@ -295,7 +295,7 @@ $Category = $Category->data;
 
                                             <div class="col-4">
                                                 <lebel>Item Type:</lebel>
-                                                <select class="c-inp p-1 w-100" name="product-category" id="product-category">
+                                                <select class="c-inp p-1 w-100" name="product-category" id="product-category" required>
                                                     <option value="" disabled selected>Prodcut Category</option>
                                                     <?php
                                                     foreach ($Category as $category) {
