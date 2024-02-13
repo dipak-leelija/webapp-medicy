@@ -24,7 +24,7 @@ $deleteImg = $ProductImages->deleteImage($imageId) ;
 
 if($deleteImg){
 
-    $filePath = SUP_ADM_DIR . '/images/product-image/' . $imageName;
+    $filePath = ROOT_DIR . '/images/product-image/' . $imageName;
     
     if (file_exists($filePath)) {
         unlink($filePath);
