@@ -224,8 +224,11 @@ if (isset($_POST['update-product'])) {
         if ($updateProduct->status) {
             echo "check 11";
             if (preg_match("/Image Edited./", $editDescription)) {
-                // echo "check function call 1";
-                $updateProduct = imageUpdate($productid, $imageData, $supAdminId, $ProductImages);
+                if (!empty($imageName[0])) {
+                    $updateProduct = imageUpdate($productid, $imageData, $supAdminId, $ProductImages);
+                } else {
+                    $updateProduct = $updateProduct->status;
+                }
             } else {
                 $updateProduct = $updateProduct->status;
             }
@@ -244,7 +247,12 @@ if (isset($_POST['update-product'])) {
             if ($addProductOnRequest->status) {
                 if (preg_match("/Image Edited./", $productReqDsc)) {
                     echo "check 21";
-                    $updateProduct = imageUpdate($productid, $imageData, $supAdminId, $ProductImages);
+                    if (!empty($imageName[0])) {
+                        echo "check 22";
+                        $updateProduct = imageUpdate($productid, $imageData, $supAdminId, $ProductImages);
+                    } else {
+                        $updateProduct = $addProductOnRequest->status;
+                    }
                 } else {
                     $updateProduct = $addProductOnRequest->status;
                 }
@@ -259,9 +267,14 @@ if (isset($_POST['update-product'])) {
                 $addProductOnRequest = json_decode($addProductOnRequest);
 
                 if ($addProductOnRequest->status) {
-                    echo "check 31";
                     if (preg_match("/Image Edited./", $productReqDsc)) {
-                        $updateProduct = imageUpdate($productid, $imageData, $supAdminId, $ProductImages);
+                        echo "check 31";
+                        if (!empty($imageName[0])) {
+                            echo "check 32";
+                            $updateProduct = imageUpdate($productid, $imageData, $supAdminId, $ProductImages);
+                        } else {
+                            $updateProduct = $addProductOnRequest->status;
+                        }
                     } else {
                         $updateProduct = $addProductOnRequest->status;
                     }
@@ -278,7 +291,10 @@ if (isset($_POST['update-product'])) {
                     echo "check 41";
                     if (preg_match("/Image Edited./", $productReqDsc)) {
                         if (!empty($imageName[0])) {
+                            echo "check 42";
                             $updateProduct = imageUpdate($oldProductId, $imageData, $supAdminId, $ProductImages);
+                        } else {
+                            $updateProduct = $updateOnProdRequest->status;
                         }
                     } else {
                         $updateProduct = $updateOnProdRequest->status;
@@ -304,20 +320,20 @@ if (isset($_POST['update-product'])) {
     </head>
 
     <body>
-    <?php
-    
+        <?php
+
         if ($updateProduct) {
-                $deleteRequest = $Request->deleteRequest($productid);
-    ?>
-                <script>
-                    swal("Success", "Product updated successfully!", "success").then((value) => {
-                        parent.location.reload();
-                    });
-                </script>
-            <?php
-            
+            $deleteRequest = $Request->deleteRequest($productid);
+        ?>
+            <script>
+                swal("Success", "Product updated successfully!", "success").then((value) => {
+                    parent.location.reload();
+                });
+            </script>
+        <?php
+
         } else {
-            ?>
+        ?>
             <script>
                 swal("Error", "Product updated Fails!", "error").then((value) => {
                     parent.location.reload();
@@ -325,8 +341,7 @@ if (isset($_POST['update-product'])) {
             </script>
     <?php
         }
-        
-}
+    }
 
     ?>
     </body>
