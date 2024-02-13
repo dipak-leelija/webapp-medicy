@@ -6,6 +6,7 @@ require_once CLASS_DIR.'appoinments.class.php';
 
 
 $appointmentId = $_POST['id'];
+print_r($appointmentId);
 
 $appointments = new Appointments();
 
