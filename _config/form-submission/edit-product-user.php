@@ -142,8 +142,6 @@ if (isset($_POST['update-product'])) {
             $images = json_decode($ProductImages->showImageByPrimay($productId, $adminId));
         }
 
-        // print_r($images);
-        // print_r($imageName);
 
         $imgEdit = (!empty($imageName[0])) ? (($images->status) ? 'Image Edited.' : 'Image Edited.') : (($images->status) ? '' : '');
 
@@ -270,10 +268,10 @@ if (isset($_POST['update-product'])) {
                     $editRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
                     $editRequest = json_decode($editRequest);
-                } else {
-                    $productId = $oldProdId;
 
-                    $editRequest = $Request->editUpdateProductRequest($modifiedProdId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
+                } else {
+
+                    $editRequest = $Request->editUpdateProductRequest($productId, $productName, $comp1, $comp2, $productCategory, $packagingIn, $quantity, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $prodReqStatus, $oldProdFlag, $adminId);
 
                     $editRequest = json_decode($editRequest);
                 }
