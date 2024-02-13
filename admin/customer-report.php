@@ -193,26 +193,26 @@ $EmployeeCount = count($Employees->employeesDisplay($CustomerId));
                         <div class="card-header py-3 justify-content-between">
                             <div class="row mb-4">
                                 <div class="col-sm-4 border-0">
-                                    <div class="card">
+                                    <div class="card border-left-primary shadow">
                                         <div class="card-body">
                                             <h5 class="card-title">Total Doctors:</h5>
-                                            <p class="text-center"><?= $totalDoct; ?></p>
+                                            <p class="text-center font-weight-bold"><?= $totalDoct; ?></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="card">
+                                    <div class="card border-left-info shadow">
                                         <div class="card-body">
                                             <h5 class="card-title">Total Appointment:</h5>
-                                            <p class="text-center"><?= $totalAppoint ?></p>
+                                            <p class="text-center font-weight-bold"><?= $totalAppoint ?></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="card">
+                                    <div class="card border-left-success shadow">
                                         <div class="card-body">
                                             <h5 class="card-title">Total Employee:</h5>
-                                            <p class="text-center"><?= $EmployeeCount ?></p>
+                                            <p class="text-center font-weight-bold"><?= $EmployeeCount ?></p>
                                         </div>
                                     </div>
                                 </div>
