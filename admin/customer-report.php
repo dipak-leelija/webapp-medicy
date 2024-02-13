@@ -9,6 +9,8 @@ require_once CLASS_DIR        . "stockOut.class.php";
 require_once CLASS_DIR        . "salesReturn.class.php";
 require_once CLASS_DIR        . "stockIn.class.php";
 require_once CLASS_DIR        . "stockReturn.class.php";
+require_once CLASS_DIR        . 'doctors.class.php';
+require_once CLASS_DIR        . 'appoinments.class.php';
 
 
 $CustomerId = url_dec($_GET['report']);
@@ -19,6 +21,8 @@ $SalesReturn = new SalesReturn();
 $StockIn     = new StockIn();
 $StockReturn = new StockReturn();
 $Admin       = new Admin();
+$doctors     = new Doctors();
+$Appointments= new Appointments();
 
 ///=================salse amount========================///
 $CountSoldItems = count($StockOut->stockOutDisplay($CustomerId));
@@ -105,6 +109,30 @@ $purchaeTodayDataLst7dys = $StockIn->customerPurchDayRange($podLst7, $podStrtDt,
 $purchaeTodayDataLst30dys = $StockIn->customerPurchDayRange($podLst30, $podStrtDt, $CustomerId);
 // print_r($purchaeTodayDataLst30dys);
 
+// find total doctor
+$showDoctorByid = $doctors->showDoctors($CustomerId);
+$showDoctor     = json_decode($showDoctorByid,true);
+$totalDoct = 0;
+if ($showDoctor && isset($showDoctor['data']) && is_array($showDoctor['data'])) {
+    $doctorData = $showDoctor['data'];
+    foreach ($doctorData as $doctor) {
+        $totalDoct++;
+    }
+} 
+
+// find total appointment
+$showAppointment   = $Appointments->allAppointmentByAdmin($CustomerId);
+$showAppointment   = json_decode($showAppointment,true);
+$totalAppoint = 0;
+if ($showAppointment && isset($showAppointment['data']) && is_array($showAppointment['data'])) {
+    $appointData = $showAppointment['data'];
+    foreach ($appointData as $appData) {
+        $totalAppoint++;
+    }
+} 
+// find employee count 
+$EmployeeCount = count($Employees->employeesDisplay($CustomerId));
+// print_r($EmployeeCount);
 ?>
 
 <!DOCTYPE html>
@@ -163,13 +191,31 @@ $purchaeTodayDataLst30dys = $StockIn->customerPurchDayRange($podLst30, $podStrtD
                     </div>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 justify-content-between">
-                            <div class="d-flex justify-content-around w-100">
-                                <!-- <div class="d-flex justify-content-start">
-                                    <h6 class="font-weight-bold text-secondary"><b>Total Sold Item :</b> <?= $CountSoldItems ?></h6>
-                                </div> -->
-                                <!-- <div class="d-flex justify-content-start">
-                                    <h6 class="font-weight-bold text-secondary"><b>Total Purches item :</b><?= $CountPurchesItems ?> </h6>
-                                </div> -->
+                            <div class="row mb-4">
+                                <div class="col-sm-4 border-0">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Total Doctors:</h5>
+                                            <p class="text-center"><?= $totalDoct; ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Total Appointment:</h5>
+                                            <p class="text-center"><?= $totalAppoint ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Total Employee:</h5>
+                                            <p class="text-center"><?= $EmployeeCount ?></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="card-body pt-1">

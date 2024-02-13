@@ -15,7 +15,7 @@ $customerId = url_dec($_GET['prescription']);
 // print_r($customerId);
 $adminDetails   = new Admin();
 $Appointments   = new Appointments();
-$DoctorCategory = new DoctorCategory();
+$doctors        = new Doctors();
 
 $showCustomer   = $adminDetails->adminDetails($customerId);
 $showCustomer   = json_decode($showCustomer,true);
@@ -34,33 +34,19 @@ $showAppointment   = json_decode($showAppointment,true);
 
 
 // Fetching Doctor Info
-// $doctors = new Doctors(); //Doctor Class 
-// $selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
+$showDoctorByid = $doctors->showDoctors($customerId);
+$showDoctor     = json_decode($showDoctorByid,true);
+$totalDoct = 0;
+if ($showDoctor && isset($showDoctor['data']) && is_array($showDoctor['data'])) {
+    $doctorData = $showDoctor['data'];
+    foreach ($doctorData as $doctor) {
+        $totalDoct++;
+    }
+} 
+// print_r("count-".$totalDoct);
 
-// if ($selectDoctorByid != '') {
-//     foreach($selectDoctorByid as $DoctorByidDetails){
-//         $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
-//         $DoctorName         = $DoctorByidDetails['doctor_name'];
-//         $docSpecialization  = $DoctorByidDetails['doctor_specialization'];
-//         $DoctorDegree       = $DoctorByidDetails['doctor_degree'];
-//         $DoctorAlsoWith     = $DoctorByidDetails['also_with'];
-//     }
-// }else {
-//     $DoctorReg  = '';
-//     $DoctorName = '';
-//     $docSpecialization  = '';
-//     $DoctorDegree   = '';
-//     $DoctorAlsoWith = '';
-// }
-
-// $doctorCategory = json_decode($DoctorCategory->showDoctorCategoryById($docSpecialization));
-// if ($doctorCategory->status == 1) {
-//     $doctorCategories = $doctorCategory->data;
-//     foreach ($doctorCategories as $rowDocCatName) {
-//             $doccategoryName = $rowDocCatName->category_name;
-//         }
-// }else {
-//     $doccategoryName = '';
+// for($showDoctor['data'] as $docts){
+//     $doctorId  = $docts['doctor_id'];
 // }
 
 ?>
@@ -110,6 +96,7 @@ $showAppointment   = json_decode($showAppointment,true);
         <hr class="mb-0 mt-0" style="color: #00f;">
         <div>
             <div class="row justify-content-between text-left mt-0">
+
             </div>
         </div>
         <!-- <hr> -->
