@@ -3,73 +3,65 @@ require_once dirname(__DIR__) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR.'dbconnect.php';
 require_once SUP_ADM_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'appoinments.class.php';
+require_once CLASS_DIR. 'appoinments.class.php';
 require_once CLASS_DIR.'doctors.class.php';
 require_once CLASS_DIR.'doctor.category.class.php';
 require_once CLASS_DIR. 'encrypt.inc.php';
+require_once CLASS_DIR. 'admin.class.php';
 
 
 // Fetching Appointments Info
-$appointmentId = url_dec($_GET['prescription']);
-$appointments   = new Appointments();
+$customerId = url_dec($_GET['prescription']);
+// print_r($customerId);
+$adminDetails   = new Admin();
+$Appointments   = new Appointments();
 $DoctorCategory = new DoctorCategory();
 
-
-$currentAppointments = $appointments->appointmentsDisplaybyId($appointmentId);
-//    print_r($currentAppointments); exit;
-
-foreach($currentAppointments as $currentAppointmentDetails){
-    $appointmentDate     = $currentAppointmentDetails['appointment_date'];
-    $apntId              = $currentAppointmentDetails['appointment_id'];
-    $patientId           = $currentAppointmentDetails['patient_id'];
-    $patientName         = $currentAppointmentDetails['patient_name'];
-    $patientGurdianName  = $currentAppointmentDetails['patient_gurdian_name'];
-    $patientEmail        = $currentAppointmentDetails['patient_email'];
-    $patientPhno         = $currentAppointmentDetails['patient_phno'];
-    $patientDob          = $currentAppointmentDetails['patient_age'];
-    $patientGender       = $currentAppointmentDetails['patient_gender'];
-    $patientAddress1     = $currentAppointmentDetails['patient_addres1'];
-    $patientAddress2     = $currentAppointmentDetails['patient_addres2'];
-    $patientPs           = $currentAppointmentDetails['patient_ps'];
-    $patientDist         = $currentAppointmentDetails['patient_dist'];
-    $patientPin          = $currentAppointmentDetails['patient_pin'];
-    $patientState        = $currentAppointmentDetails['patient_state'];
-    $getDoctorForPatient = $currentAppointmentDetails['doctor_id'];
-    print_r($getDoctorForPatient);
- //    echo var_dump($getDoctorForPatient); exit;
-
+$showCustomer   = $adminDetails->adminDetails($customerId);
+$showCustomer   = json_decode($showCustomer,true);
+// print_r($showCustomer);
+foreach ($showCustomer['data'] as $customer) {
+    $customerId    = $customer['admin_id'];
+    $customerName  = $customer['username'];
+    $customerEmail = $customer['email'];
+    $customerCont  = $customer['mobile_no'];
+    $customerAddr  = $customer['address'];
 }
+
+$showAppointment   = $Appointments->allAppointmentByAdmin($customerId);
+$showAppointment   = json_decode($showAppointment,true);
+// print_r($showAppointment);
 
 
 // Fetching Doctor Info
-$doctors = new Doctors(); //Doctor Class 
-$selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
+// $doctors = new Doctors(); //Doctor Class 
+// $selectDoctorByid = $doctors->showDoctorsForPatient($getDoctorForPatient);
 
-if ($selectDoctorByid != '') {
-    foreach($selectDoctorByid as $DoctorByidDetails){
-        $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
-        $DoctorName         = $DoctorByidDetails['doctor_name'];
-        $docSpecialization  = $DoctorByidDetails['doctor_specialization'];
-        $DoctorDegree       = $DoctorByidDetails['doctor_degree'];
-        $DoctorAlsoWith     = $DoctorByidDetails['also_with'];
-    }
-}else {
-    $DoctorReg  = '';
-    $DoctorName = '';
-    $docSpecialization  = '';
-    $DoctorDegree   = '';
-    $DoctorAlsoWith = '';
-}
+// if ($selectDoctorByid != '') {
+//     foreach($selectDoctorByid as $DoctorByidDetails){
+//         $DoctorReg          = $DoctorByidDetails['doctor_reg_no'];
+//         $DoctorName         = $DoctorByidDetails['doctor_name'];
+//         $docSpecialization  = $DoctorByidDetails['doctor_specialization'];
+//         $DoctorDegree       = $DoctorByidDetails['doctor_degree'];
+//         $DoctorAlsoWith     = $DoctorByidDetails['also_with'];
+//     }
+// }else {
+//     $DoctorReg  = '';
+//     $DoctorName = '';
+//     $docSpecialization  = '';
+//     $DoctorDegree   = '';
+//     $DoctorAlsoWith = '';
+// }
 
-$doctorCategory = json_decode($DoctorCategory->showDoctorCategoryById($docSpecialization));
-if ($doctorCategory->status == 1) {
-    $doctorCategories = $doctorCategory->data;
-    foreach ($doctorCategories as $rowDocCatName) {
-            $doccategoryName = $rowDocCatName->category_name;
-        }
-}else {
-    $doccategoryName = '';
-}
+// $doctorCategory = json_decode($DoctorCategory->showDoctorCategoryById($docSpecialization));
+// if ($doctorCategory->status == 1) {
+//     $doctorCategories = $doctorCategory->data;
+//     foreach ($doctorCategories as $rowDocCatName) {
+//             $doccategoryName = $rowDocCatName->category_name;
+//         }
+// }else {
+//     $doccategoryName = '';
+// }
 
 ?>
 
@@ -82,35 +74,34 @@ if ($doctorCategory->status == 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>prescription.css">
-    <title>Prescription - <?= url_enc($patientId) ?></title>
+    <title>Prescription - <?= url_enc($customerId) ?></title>
 </head>
 
 <body>
     <div style="box-shadow:none" class="card">
         <div class="hospitslDetails mb-0">
             <div class="row">
-                <div class="col-1 headerHospitalLogo">
+                <!-- <div class="col-1 headerHospitalLogo">
                     <img class="mt-4" src="<?= $healthCareLogo ?>" alt="<?= $healthCareName ?>">
-                </div>
-                <div class="col-4 headerHospitalDetails">
+                </div> -->
+                <div class="col-5 headerHospitalDetails">
                     <h1 class="text-primary text-start fw-bold mb-2 mt-4 me-3"><?= $healthCareName ?></h1>
                     <p class="text-start  me-3">
-                        <small><?php echo $healthCareAddress1 . ', ' . $healthCareCity . ', ' . $patientDist . ',<br>' . $healthCareState . ', ' . $healthCarePin; ?></small>
+                        <small><?php echo $healthCareAddress1 . ', ' . $healthCareCity . ', <br>' . $healthCareState . ', ' . $healthCarePin; ?></small>
                     </p>
                 </div>
-                <div class="col-2 header-doc-img"> <img src="<?= IMG_PATH ?>medicy-doctor-logo.png" alt=""> </div>
-                <div class=" text-danger col-5 headerDoctorDetails">
-                    <h2 class="text-end mt-3  mb-0"><?= $DoctorName ?></h2>
+                <div class="col-2 header-doc-img"> <img src="<?=$healthCareLogo ?>" alt="<?= $healthCareName?>"> </div>
+                <div class="text-danger  col-5">
+                    <h2 class="text-end mt-3  mb-0"><?= $customerName ?></h2>
                     <p class="text-end  mb-0 ">
-                        <small><?= $DoctorReg != NULL ? 'REG NO : ' . $DoctorReg : ''; ?></small>
+                        <small> <?= $customerId; ?></small>
                     </p>
-
                     <p class="text-end  mb-0 ">
-                        <small><?= $DoctorDegree.', '.$doccategoryName ?></small>
+                        <small><?= $customerEmail ?></small>
                     </p>
-                    <p class="text-end  mb-0"> <?php echo $DoctorAlsoWith ?></p>
+                    <p class="text-end  mb-0"> <?= $customerAddr ?></p>
                     <h6 class="text-end text-primary">
-                        <strong>Call for Appointment: <?= $healthCareApntbkNo ?></strong>
+                        <strong>Phone No: <?= $customerCont ?></strong>
                     </h6>
 
                 </div>
@@ -119,33 +110,12 @@ if ($doctorCategory->status == 1) {
         <hr class="mb-0 mt-0" style="color: #00f;">
         <div>
             <div class="row justify-content-between text-left mt-0">
-                <!-- <div class="form-group col-sm-6 flex-column d-flex mt-0">
-                    <p class="text-start">Appointment ID: <?php echo $apntId ?></p>
-                </div>
-                <div class="form-group col-sm-6 flex-column d-flex mt-0">
-                    <p class="text-end">Appointment Date: <?php echo $appointmentDate ?></p>
-                </div> -->
-                <!-- <div class="form-group col-sm-6 flex-column d-flex">
-                    <h5 class="text-start">Patient</h5>
-                    <h6 class="text-start ms-2 mb-0">Name: <b><?php echo $patientName; ?></b></h6>
-                    <p class="text-start ms-2 mb-0">Gurdian Name: <?php echo $patientGurdianName; ?></p>
-                    <p class="text-start ms-2 mb-0">Age: <?php echo $patientDob; ?>, Sex: <?php echo $patientGender; ?>
-                    </p>
-                    <p class="text-start ms-2 mb-0">Patient ID: <?php echo $patientId; ?></p>
-                    <p class="text-start ms-2 mb-0">Mobile: <?php echo $patientPhno; ?></p>
-                </div>
-                <div class="form-group col-sm-6 flex-column d-flex">
-                    <h5 class="text-start">Address</h5>
-                    <p class="text-start ms-2 mb-0"><?php echo $patientAddress1 ?></p>
-                    <p class="text-start ms-2 mb-0"><?php echo $patientPs . ', ' . $patientDist . ', ' . $patientPin ?></p>
-                    <p class="text-start ms-2 mb-0"><?php echo $patientState ?></p>
-                </div> -->
             </div>
         </div>
         <!-- <hr> -->
         <!-- <div class="space">
         </div> -->
-        <div class="row space mt-1">
+        <!-- <div class="row space mt-1">
             <div class="col-3 border-end " style="border-color: #0000ff59 !important;">
                 <small>
                     A-ID: <?php echo $apntId ?>
@@ -199,12 +169,12 @@ if ($doctorCategory->status == 1) {
                     <br>
                     USG-W/A-L/A,FPP
 
-                </div>
+                </div> -->
             </div>
             <div class="col-9">
                 <div class="row mt-1">
                     <div class="col-12 d-flex justify-content-between">
-                        <p class="mb-0 mt-0">
+                        <!-- <p class="mb-0 mt-0">
                             Name: <?php echo $patientName; ?>
                             <span class="ms-3"> Age: <?php echo $patientDob; ?> </span>
                             <span class="ms-3"> Sex: <?php echo $patientGender; ?> </span>
@@ -216,7 +186,7 @@ if ($doctorCategory->status == 1) {
                             $date = date_create($appointmentDate);
                             echo date_format($date, "d-m-Y");
                             ?>
-                        </p>
+                        </p> -->
                     </div>
                 </div>
                 <hr class="row mt-2 m-auto" style="color: #00f;">

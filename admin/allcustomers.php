@@ -190,8 +190,7 @@ if ($adminDetails->status) {
                                                           <td>
                                                               <a href="prescription.php?prescription=' . url_enc($customerId) . '" class="text-primary" data-toggle="tooltip" data-placement="left" title="View and Print"><i class="fas fa-print"></i></a>
                                                               <a href="customer-report.php?report=' . url_enc($customerId) . '" class="text-success" data-toggle="tooltip" data-placement="left" title="Live Report"><i class="fas fa-chart-pie"></i></a>
-                                                             
-                                                              <a href="#" class="delete-btn text-danger" data-id="<?php echo $customerId; ?>" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a>
+                                                              <a href="ajax/appointment.delete.ajax.php?appointmentId=' . $customerId . '" class="text-danger" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a> 
 
                                                           </td>
                                                      </tr>';
@@ -210,7 +209,6 @@ if ($adminDetails->status) {
 
                 </div>
                 <!-- /.container-fluid -->
-
             </div>
             <!-- End of Main Content -->
 
@@ -220,7 +218,7 @@ if ($adminDetails->status) {
 
         </div>
         <!-- End of Content Wrapper -->
-        <!-- <a href="ajax/appointment.delete.ajax.php?appointmentId=' . $customerId . '" class="text-danger" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a> -->
+        
     </div>
     <!-- End of Page Wrapper -->
 
@@ -282,58 +280,58 @@ if ($adminDetails->status) {
     </script>
 
     <script>
-        // $(document).ready(function() {
-        //     $(document).on("click", ".delete-btn", function() {
+        $(document).ready(function() {
+            $(document).on("click", ".delete-btn", function() {
 
-        //         if (confirm("Are You Sure?")) {
-        //             apntID = $(this).data("id");
-        //             btn = this;
+                if (confirm("Are You Sure?")) {
+                    apntID = $(this).data("id");
+                    btn = this;
 
-        //             $.ajax({
-        //                 url: "ajax/appointment.delete.ajax.php",
-        //                 type: "POST",
-        //                 data: {
-        //                     id: apntID
-        //                 },
-        //                 success: function(data) {
-        //                     if (data == 1) {
-        //                         $(btn).closest("tr").fadeOut()
-        //                     } else {
-        //                         $("#error-message").html("Deletion Field !!!").slideDown();
-        //                         $("success-message").slideUp();
-        //                     }
+                    $.ajax({
+                        url: "ajax/appointment.delete.ajax.php",
+                        type: "POST",
+                        data: {
+                            id: apntID
+                        },
+                        success: function(data) {
+                            if (data == 1) {
+                                $(btn).closest("tr").fadeOut()
+                            } else {
+                                $("#error-message").html("Deletion Field !!!").slideDown();
+                                $("success-message").slideUp();
+                            }
 
-        //                 }
-        //             });
-        //         }
-        //         return false;
-        //     })
-
-        // })
-
-        $(document).on("click", ".delete-btn", function() {
-            if (confirm("Are You Sure?")) {
-                var apntID = $(this).data("id"); // Corrected this line
-                var btn = this;
-
-                $.ajax({
-                    url: "ajax/appointment.delete.ajax.php",
-                    type: "POST",
-                    data: {
-                        id: apntID
-                    },
-                    success: function(data) {
-                        if (data == 1) {
-                            $(btn).closest("tr").fadeOut();
-                        } else {
-                            $("#error-message").html("Deletion Field !!!").slideDown();
-                            $("#success-message").slideUp(); // Corrected this line
                         }
-                    }
-                });
-            }
-            return false;
-        });
+                    });
+                }
+                return false;
+            })
+
+        })
+
+        // $(document).on("click", ".delete-btn", function() {
+        //     if (confirm("Are You Sure?")) {
+        //         var apntID = $(this).data("id"); // Corrected this line
+        //         var btn = this;
+
+        //         $.ajax({
+        //             url: "ajax/appointment.delete.ajax.php",
+        //             type: "POST",
+        //             data: {
+        //                 id: apntID
+        //             },
+        //             success: function(data) {
+        //                 if (data == 1) {
+        //                     $(btn).closest("tr").fadeOut();
+        //                 } else {
+        //                     $("#error-message").html("Deletion Field !!!").slideDown();
+        //                     $("#success-message").slideUp(); // Corrected this line
+        //                 }
+        //             }
+        //         });
+        //     }
+        //     return false;
+        // });
     </script>
     <script>
         appointmentViewAndEditModal = (appointmentTableID) => {
