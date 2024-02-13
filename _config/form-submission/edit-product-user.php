@@ -418,9 +418,7 @@ if (isset($_POST['update-product'])) {
 
         if ($editRequest) {
             if ($addImagesRequest) {
-                // echo "description : $description<br>";
-                // echo "edit request: $editRequest<br>";
-                // echo "<br>add image request : $addImagesRequest";
+                
         ?>
                 <script>
                     swal("Success", "Product updated request sent successfully!", "success").then((value) => {

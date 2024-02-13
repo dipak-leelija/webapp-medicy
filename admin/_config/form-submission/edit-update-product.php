@@ -63,8 +63,8 @@ if (isset($_POST['update-product'])) {
     $oldProdFlag        = $_POST['old-prod-flag'];
     $editReqFlagData    = $_POST['edit-req-flag-data'];
     $imageName          = $_FILES['img-files']['name'];
-    echo "image name array : ";
-    print_r($imageName);
+    // echo "image name array : ";
+    // print_r($imageName);
     $tempImgName        = $_FILES['img-files']['tmp_name'];
     $verifyStatus       = 1;
 
@@ -218,11 +218,11 @@ if (isset($_POST['update-product'])) {
         }
 
         // update product in products table ----------------
-        echo "check 1";
+        // echo "check 1";
         $updateProduct = json_decode($Products->updateProductBySuperAdmin($productid, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, NOW, $verifyStatus));
 
         if ($updateProduct->status) {
-            echo "check 11";
+            // echo "check 11";
             if (preg_match("/Image Edited./", $editDescription)) {
                 if (!empty($imageName[0])) {
                     $updateProduct = imageUpdate($productid, $imageData, $supAdminId, $ProductImages);
@@ -241,14 +241,14 @@ if (isset($_POST['update-product'])) {
     if ($table == 'product_request') {
         if ($prodReqStatus == 0 && $oldProdFlag == 0) { // new product add request
             // echo $productReqDsc;
-            echo "check 2";
+            // echo "check 2";
             $addProductOnRequest = $Products->addProductBySuperAdmin($productid, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, $verifyStatus, NOW);
             $addProductOnRequest = json_decode($addProductOnRequest);
             if ($addProductOnRequest->status) {
                 if (preg_match("/Image Edited./", $productReqDsc)) {
-                    echo "check 21";
+                    // echo "check 21";
                     if (!empty($imageName[0])) {
-                        echo "check 22";
+                        // echo "check 22";
                         $updateProduct = imageUpdate($productid, $imageData, $supAdminId, $ProductImages);
                     } else {
                         $updateProduct = $addProductOnRequest->status;
@@ -262,15 +262,15 @@ if (isset($_POST['update-product'])) {
         } elseif ($prodReqStatus == 0 && $oldProdFlag == 1) { // old product edit request
 
             if (preg_match("/Name edited. /", $productReqDsc) || preg_match("/Medicine Qantity Edited. /", $productReqDsc) || preg_match("/Unit Edited./", $productReqDsc)) {
-                echo "check 3";
+                // echo "check 3";
                 $addProductOnRequest = $Products->addProductBySuperAdmin($productid, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, $verifyStatus, NOW);
                 $addProductOnRequest = json_decode($addProductOnRequest);
 
                 if ($addProductOnRequest->status) {
                     if (preg_match("/Image Edited./", $productReqDsc)) {
-                        echo "check 31";
+                        // echo "check 31";
                         if (!empty($imageName[0])) {
-                            echo "check 32";
+                            // echo "check 32";
                             $updateProduct = imageUpdate($productid, $imageData, $supAdminId, $ProductImages);
                         } else {
                             $updateProduct = $addProductOnRequest->status;
@@ -282,16 +282,16 @@ if (isset($_POST['update-product'])) {
                     $updateProduct = false;
                 }
             } else {
-                echo "check 4";
+                // echo "check 4";
 
                 $updateOnProdRequest = $Products->updateProductBySuperAdmin($oldProductId, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, NOW, $verifyStatus);
 
                 $updateOnProdRequest = json_decode($updateOnProdRequest);
                 if ($updateOnProdRequest->status) {
-                    echo "check 41";
+                    // echo "check 41";
                     if (preg_match("/Image Edited./", $productReqDsc)) {
                         if (!empty($imageName[0])) {
-                            echo "check 42";
+                            // echo "check 42";
                             $updateProduct = imageUpdate($oldProductId, $imageData, $supAdminId, $ProductImages);
                         } else {
                             $updateProduct = $updateOnProdRequest->status;
