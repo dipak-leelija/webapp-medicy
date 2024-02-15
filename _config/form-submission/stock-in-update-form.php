@@ -507,10 +507,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $pUnit = $pData->unit;
                     }
 
-                    $packagingData = $PackagingUnits->showPackagingUnitById($pType);
-                    foreach ($packagingData as $packData) {
-                        $unitNm = $packData['unit_name'];
-                    }
+                    $packagingData = json_decode($PackagingUnits->showPackagingUnitById($pType));
+                    // foreach ($packagingData as $packData) {
+                        $unitNm = $packagingData->data->unit_name;
+                    // }
 
 
                     if ($pManfId != '') {
