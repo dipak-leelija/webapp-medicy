@@ -649,18 +649,6 @@ const addData = () => {
             });
         return;
     }
-    // if (medicinePower.value == "") {
-    //     medicinePower.focus();
-    //     return;
-    // }
-
-    // if (mfdMonth.value == "") {
-    //     swal("Blank Field", "Please Enter Manufacturing Date as MM/YY", "error")
-    //         .then((value) => {
-    //             mfdMonth.focus();
-    //         });
-    //     return;
-    // }
     
     if (expMonth.value == "") {
         swal("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
@@ -669,18 +657,7 @@ const addData = () => {
             });
         return;
     }
-    // if (weightage.value == "") {
-    //     weightage.focus();
-    //     return;
-    // }
-    // if (unit.value == "") {
-    //     unit.focus();
-    //     return;
-    // }
-    // if (packagingIn.value == "") {
-    //     packagingIn.focus();
-    //     return;
-    // }
+    
     if (mrp.value == "") {
         mrp.focus();
         return;
@@ -760,11 +737,13 @@ const addData = () => {
     let totalItemGstAmt = parseFloat(gstPerItem) * parseInt(qty.value);
     gstPerItem = totalItemGstAmt.toFixed(2);
     // console.log("gst amount : "+totalItemGstAmt);
-    // let gstVal = document.getElementById("gst-val").value;
+    let gstVal = document.getElementById("gst-val").value;
 
     let onlyGst = totalItemGstAmt.toFixed(2);
-    // console.log("nnly gst : "+onlyGst);
+    console.log("nnly gst : "+onlyGst);
     // onlyGst = onlyGst.toFixed(2);
+    gstVal = parseFloat(gstVal)+parseFloat(onlyGst);
+    onlyGst = gstVal.toFixed(2);
 
     ////////////////////// marging amount calculation
     // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
