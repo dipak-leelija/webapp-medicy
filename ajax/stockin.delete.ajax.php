@@ -12,6 +12,7 @@ $CurrentStock = new CurrentStock();
 
 $stockInId  = $_POST['DeleteId'];
 
+echo "<br>stock in id : $stockInId<br>";
 $selectStockInData = $Stockin->selectStockInById($stockInId);
 // print_r($selectStockInData);
 $purchaseQty = $selectStockInData[0]['total_qty'];
@@ -32,9 +33,10 @@ foreach ($selectStockInDetails as $stockInDetails) {
 if (intval($purchaseQty) == intval($totalCurrentQtyChk)) {
 
     $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
+    print_r($selectStockInDetails);
     foreach ($selectStockInDetails as $stockInDetails) {
         $stockInDetailsId = $stockInDetails['id'];
-        // echo "<br>$stockInDetailsId";
+        echo "<br>$stockInDetailsId";
 
         // delete form current stock
         $table = 'stock_in_details_id';
