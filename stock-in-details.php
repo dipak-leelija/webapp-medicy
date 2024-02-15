@@ -264,7 +264,7 @@ $showDistributor       = $Distributor->showDistributor();
                                 if (response) {
                                     swal(
                                         "Deleted",
-                                        "Manufacturer Has Been Deleted",
+                                        "Stcok In data has been deleted",
                                         "success"
                                     ).then(function() {
                                         parent.location.reload();

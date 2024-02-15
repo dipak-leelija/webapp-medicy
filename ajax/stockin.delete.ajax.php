@@ -53,8 +53,8 @@ if ($deleteFromCurrentStock == true && $deleteStockInDetails == true) {
 
 
 
-if ($deleteFromStockIn) {
-    echo true;
-} else {
-    echo false;
-}
+// if ($deleteFromStockIn) {
+//     echo true;
+// } else {
+//     echo false;
+// }
