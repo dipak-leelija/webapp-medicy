@@ -290,12 +290,7 @@ if ($adminDetails->status) {
                         id: apntID
                     },
                     success: function(data) {
-                        if (data == 1) {
-                            $(this).closest("tr").fadeOut()
-                        } else {
-                            $("#error-message").html("Deletion Failed !!!").slideDown();
-                            $("#success-message").slideUp();
-                        }
+                        location.reload();
                     }
                 });
             }

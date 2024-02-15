@@ -4,8 +4,6 @@ require_once realpath(dirname(dirname(__DIR__)).'/config/constant.php');
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'admin.class.php';
 
-$customerId = $_POST['id'];
-print_r($customerId);
 if(isset($_POST['id'])) { 
     $customerId = $_POST['id'];
     print_r($customerId);
