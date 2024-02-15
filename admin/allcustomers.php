@@ -188,10 +188,8 @@ if ($adminDetails->status) {
                                                           <td class="' . $StatusClass . '">' . $Status . '</td>
                                                           <td>' . $link . '</td>
                                                           <td>
-                                                             
                                                               <a href="customer-report.php?report=' . url_enc($customerId) . '" class="text-success" data-toggle="tooltip" data-placement="left" title="Live Report"><i class="fas fa-chart-pie"></i></a>
-                                                              <a href="ajax/appointment.delete.ajax.php?appointmentId=' . $customerId . '" class="text-danger" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a> 
-
+                                                              <a href="#" class="text-danger" onclick="deleteAppointment(\'' . $customerId . '\');" data-toggle="tooltip" data-placement="left" title="Delete"><i class="fas fa-trash"></i></a> 
                                                           </td>
                                                      </tr>';
                                             }
@@ -219,7 +217,7 @@ if ($adminDetails->status) {
 
         </div>
         <!-- End of Content Wrapper -->
-        
+
     </div>
     <!-- End of Page Wrapper -->
 
@@ -281,59 +279,25 @@ if ($adminDetails->status) {
     </script>
 
     <script>
-        $(document).ready(function() {
-            $(document).on("click", ".delete-btn", function() {
-
-                if (confirm("Are You Sure?")) {
-                    apntID = $(this).data("id");
-                    btn = this;
-
-                    $.ajax({
-                        url: "ajax/appointment.delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            id: apntID
-                        },
-                        success: function(data) {
-                            if (data == 1) {
-                                $(btn).closest("tr").fadeOut()
-                            } else {
-                                $("#error-message").html("Deletion Field !!!").slideDown();
-                                $("success-message").slideUp();
-                            }
-
-                        }
-                    });
-                }
-                return false;
-            })
-
-        })
-
-        // $(document).on("click", ".delete-btn", function() {
-        //     if (confirm("Are You Sure?")) {
-        //         var apntID = $(this).data("id"); // Corrected this line
-        //         var btn = this;
-
-        //         $.ajax({
-        //             url: "ajax/appointment.delete.ajax.php",
-        //             type: "POST",
-        //             data: {
-        //                 id: apntID
-        //             },
-        //             success: function(data) {
-        //                 if (data == 1) {
-        //                     $(btn).closest("tr").fadeOut();
-        //                 } else {
-        //                     $("#error-message").html("Deletion Field !!!").slideDown();
-        //                     $("#success-message").slideUp(); // Corrected this line
-        //                 }
-        //             }
-        //         });
-        //     }
-        //     return false;
-        // });
+        function deleteAppointment(apntID) {
+            var id = apntID;
+            console.log(id);
+            if (confirm("Are You Sure?")) {
+                $.ajax({
+                    url: "ajax/appointment.delete.ajax.php",
+                    type: "POST",
+                    data: {
+                        id: apntID
+                    },
+                    success: function(data) {
+                        location.reload();
+                    }
+                });
+            }
+            return false;
+        }
     </script>
+
     <script>
         appointmentViewAndEditModal = (appointmentTableID) => {
 
