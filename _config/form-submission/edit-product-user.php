@@ -169,7 +169,7 @@ if (isset($_POST['update-product'])) {
 
             for ($i = 0, $j = 0; $i < $imageArrayCount && $j < $tempImageNameArrayCount; $i++, $j++) {
                 ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
-                $imgStatus = 0;
+                $imgStatus = 1;
 
                 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $randomString = '';
@@ -418,9 +418,7 @@ if (isset($_POST['update-product'])) {
 
         if ($editRequest) {
             if ($addImagesRequest) {
-                // echo "description : $description<br>";
-                // echo "edit request: $editRequest<br>";
-                // echo "<br>add image request : $addImagesRequest";
+                
         ?>
                 <script>
                     swal("Success", "Product updated request sent successfully!", "success").then((value) => {

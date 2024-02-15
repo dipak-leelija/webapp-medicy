@@ -85,6 +85,7 @@ class Request extends DatabaseConnection
                 $stmt->bind_param("ssssi", $productId, $productImage, $addedBy, $addedOn, $status);
             }
 
+
             if ($stmt->execute()) {
                 // Insert successful
                 $stmt->close();
