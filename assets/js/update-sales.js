@@ -850,15 +850,14 @@ const addSummary = () => {
     let existsPrice = parseFloat(totalPrice);
     var itemMrp = parseFloat(mrp);
     itemQty = parseFloat(qty);
-    if (itemUnit == 'tab' || itemUnit == 'cap') {
+
+    if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
         itemMrp = itemQty * (itemMrp / parseFloat(itemPower));
     } else {
         itemMrp = itemQty * itemMrp;
     }
-    // console.log("item type : ",itemUnit);
-    // console.log("item mrp : ",itemMrp);
+
     let totalMrp = existsPrice + itemMrp;
-    // console.log(totalMrp);
     document.getElementById("total-price").value = totalMrp.toFixed(2);
 
 
