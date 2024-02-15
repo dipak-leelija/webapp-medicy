@@ -156,9 +156,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="custom-container">
         <div class="custom-body <?php if ($pMode != 'Credit') {
-                                    if ($dueDate == $crrntDt) {
+                                    // if ($dueDate == $crrntDt) {
                                         echo "paid-bg";
-                                    }
+                                    // }
                                 } ?>">
             <div class="card-body ">
                 <div class="row">
@@ -209,13 +209,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="col-sm-1" style="width: 8%;">
                     <small><b>Packing</b></small>
                 </div>
-                <div class="col-sm-1" style="width: 10%;">
+                <div class="col-sm-2" style="width: 10%;">
                     <small><b>Batch</b></small>
                 </div>
-                <div class="col-sm-1" style="width: 5%">
+                <div class="col-sm-1" style="width: 5%; margin-left:2rem;">
                     <small><b>Exp.</b></small>
                 </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
+                <div class="col-sm-1 text-end" style="width: 5%; margin-left:1rem;">
                     <small><b>QTY</b></small>
                 </div>
                 <div class="col-sm-1 text-end" style="width: 5%;">
@@ -230,7 +230,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="col-sm-1 text-end" style="width: 5%;">
                     <small><b>Disc(%)</b></small>
                 </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
+                <div class="col-sm-1 text-end" style="width: 5%; margin-left: 10px;">
                     <small><b>GST(%)</b></small>
                 </div>
                 <div class="col-sm-1b text-end" style="width: 10%;">
@@ -339,25 +339,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="col-sm-1 text-center" style="width: 3%;">
                         <small> <?php echo "$slno" ?></small>
                     </div>
-                    <div class="col-sm-1b " hidden>
+                    <div class="col-sm-1 " hidden>
                         <small><?php echo "$prodId" ?></small>
                     </div>
-                    <div class="col-sm-1b" style="width: 12%;">
+                    <div class="col-sm-1" style="width: 12%;">
                         <small><?php echo "$pname" ?></small>
                     </div>
-                    <div class="col-sm-1b" style="width: 12%;">
+                    <div class="col-sm-1" style="width: 12%;">
                         <small><?php echo "$manufName" ?></small>
                     </div>
-                    <div class="col-sm-1b" style="width: 8%;">
+                    <div class="col-sm-1" style="width: 8%;">
                         <small><?php echo $pQTY . $pUnitName, "/ ", $unitNm ?></small>
                     </div>
-                    <div class="col-sm-1b" style="width: 10%;">
+                    <div class="col-sm-2" style="width: 10%;">
                         <small><?php echo "$batchNo" ?></small>
                     </div>
-                    <div class="col-sm-1 text-center" style="width: 5%;">
+                    <div class="col-sm-1 text-center" style="width: 5%; margin-left:2rem;">
                         <small><?php echo "$ExpDate" ?></small>
                     </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
+                    <div class="col-sm-1 text-end" style="width: 5%; margin-left:1rem;">
                         <small><?php echo "$qty" ?></small>
                     </div>
                     <div class="col-sm-1 text-end" style="width: 5%;">
@@ -372,7 +372,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="col-sm-1 text-end" style="width: 5%;">
                         <small><?php echo "$discPercent%" ?></small>
                     </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
+                    <div class="col-sm-1 text-end" style="width: 5%; margin-left: 10px;">
                         <small><?php echo "$gstPercent%" ?></small>
                     </div>
                     <div class="col-sm-1b text-end" style="width: 10%;">
