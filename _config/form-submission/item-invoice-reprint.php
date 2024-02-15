@@ -143,7 +143,7 @@ if ($customerId != 'Cash Sales') {
                 <div class="col-sm-1">
                     <small>' . $weatage . '</small>
                 </div> -->
-                <div class="col-sm-1">
+                <div class="col-sm-1" style="margin-right: 3rem;">
                     <small><b>Batch</b></small>
                 </div>
                 <div class="col-sm-1">
@@ -241,7 +241,7 @@ if ($customerId != 'Cash Sales') {
                             <div class="col-sm-1">
                                 <small>'.$manufacturerName.'</small>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-sm-1" style="margin-right: 3rem;">
                                 <small>'.$detail['batch_no'].'</small>
                             </div>
                             <div class="col-sm-1">
