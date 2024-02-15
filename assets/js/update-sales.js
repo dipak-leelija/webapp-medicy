@@ -1086,7 +1086,7 @@ function rowAdjustment(delRow) {
 
 
 const itemEditOption = (tuple) => {
-    // console.log(tuple);
+    console.log(tuple);
 
     if (document.getElementById('product-id').value == '') {
         let tData = JSON.parse(tuple);
@@ -1127,11 +1127,13 @@ const itemEditOption = (tuple) => {
         //----------------------------------------------------
         let gstPerItem = parseFloat(tData.amount) - parseFloat(tData.taxable);
         let MRP = '';
-        if(tData.itemUnit == 'tab' || tData.itemUnit == 'cap'){
+
+        if(allowedUnits.map(unit => unit.toLowerCase()).includes(tData.itemUnit.toLowerCase())){
             MRP = tData.loosePrice;
         }else{
             MRP = tData.mrp;
         }
+
         let totalMrp = parseFloat(MRP) * parseInt(tData.qty);
         totalMrp = parseFloat(totalMrp).toFixed(2);
         deleteItem(tData.slno, tData.qty, gstPerItem, totalMrp, tData.amount);
