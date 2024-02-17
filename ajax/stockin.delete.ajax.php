@@ -12,7 +12,7 @@ $CurrentStock = new CurrentStock();
 
 $stockInId  = $_POST['DeleteId'];
 
-echo "<br>stock in id : $stockInId<br>";
+// echo "<br>stock in id : $stockInId<br>";
 $selectStockInData = $Stockin->selectStockInById($stockInId);
 // print_r($selectStockInData);
 $purchaseQty = $selectStockInData[0]['total_qty'];
