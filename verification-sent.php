@@ -40,6 +40,30 @@ $Admin          = new Admin;
             text-align: center;
             margin: 3px;
         }
+
+
+        #single-input {
+            border: none;
+            border-bottom: 1px solid black;
+            width: 15rem;
+            font-family: monospace;
+            letter-spacing: 10px;
+            text-align: center;
+        }
+
+        .otp-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .otp-input {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            text-align: center;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+        }
     </style>
 
 
@@ -72,16 +96,15 @@ $Admin          = new Admin;
 
 
 
-                    <div class="otp-input mt-2">
-                        <div class="d-flex justify-content-center">
-                            <input class="input-group" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveNext(this)" required>
-                            <input class="input-group" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveNext(this)" required>
-                            <input class="input-group" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveNext(this)" required>
-                            <input class="input-group" type="text" maxlength="1" name="digit4" id="digit4" oninput="moveNext(this)" required>
-                            <input class="input-group" type="text" maxlength="1" name="digit5" id="digit5" oninput="moveNext(this)" required>
-                            <input class="input-group" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveNext(this)" required>
+                    <div class="otp-container mt-2">
+                            <div class="d-flex justify-content-center">
+                            <input class="otp-input" type="text" maxlength="1" name="digit1" id="digit1" oninput="moveToNext(this, 'digit2')" required>
+                            <input class="otp-input" type="text" maxlength="1" name="digit2" id="digit2" oninput="moveToNext(this, 'digit3')" required>
+                            <input class="otp-input" type="text" maxlength="1" name="digit3" id="digit3" oninput="moveToNext(this, 'digit4')" required>
+                            <input class="otp-input" type="text" maxlength="1" name="digit4" id="digit4" oninput="moveToNext(this, 'digit5')" required>
+                            <input class="otp-input" type="text" maxlength="1" name="digit5" id="digit5" oninput="moveToNext(this, 'digit6')" required>
+                            <input class="otp-input" type="text" maxlength="1" name="digit6" id="digit6" oninput="moveToNext(this, 'digit6')" required>
                         </div>
-
                     </div>
 
                     <div class="text-center m-0">
@@ -119,6 +142,11 @@ $Admin          = new Admin;
 
 
     <script>
+        // //============== otp input action ==================
+        // function formatInput(input) {
+        //     input.value = input.value.replace(/\D/g, '').slice(0, 6); // Remove non-digit characters and limit to 6 input
+        // }
+
         // ============ otp submit button action ===============
         const submitOtp = () => {
 
