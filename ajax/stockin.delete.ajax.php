@@ -46,7 +46,8 @@ if (intval($purchaseQty) == intval($totalCurrentQtyChk)) {
         $deleteStockInDetails = $StockInDetails->stockInDeletebyDetailsId($stockInDetailsId);
     }
 }else{
-    $deleteFromStockIn = false;
+    $deleteFromCurrentStock = false;
+    $deleteStockInDetails = false;
 }
 
 if ($deleteFromCurrentStock == true && $deleteStockInDetails == true) {
