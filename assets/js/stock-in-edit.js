@@ -723,7 +723,7 @@ const addData = () => {
     // item qantity
     var qtyVal = document.getElementById("qty-val").value;
     totalQty = parseInt(qty.value)+parseInt(freeQty.value) + parseInt(qtyVal);
-    console.log('total qty check : '+totalQty);
+    // console.log('total qty check : '+totalQty);
 
     // net amount calculation
     var net = document.getElementById("net-amount").value;
