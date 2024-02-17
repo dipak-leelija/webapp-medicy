@@ -16,6 +16,7 @@ $stockInId  = $_POST['DeleteId'];
 $selectStockInData = $Stockin->selectStockInById($stockInId);
 // print_r($selectStockInData);
 $purchaseQty = $selectStockInData[0]['total_qty'];
+// echo "total purchase qty : $purchaseQty<br>";
 
 $totalCurrentQtyChk = 0;
 $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
@@ -23,28 +24,30 @@ foreach ($selectStockInDetails as $stockInDetails) {
     $stockInDetailsId = $stockInDetails['id'];
     $table = 'stock_in_details_id';
     $selectCurrentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
-    print_r($selectCurrentStockData);
+    // print_r($selectCurrentStockData);
 
     $currentQty = $selectCurrentStockData->qty;
     $totalCurrentQtyChk = intval($totalCurrentQtyChk) + intval($currentQty);
 }
-
+echo "total purchase qty : $purchaseQty<br>";
+echo "total current qty : $totalCurrentQtyChk<br>";
 
 if (intval($purchaseQty) == intval($totalCurrentQtyChk)) {
-
     $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
-    print_r("stock in details data : ".$selectStockInDetails);
+    // print_r("stock in details data : ".$selectStockInDetails);
     foreach ($selectStockInDetails as $stockInDetails) {
         $stockInDetailsId = $stockInDetails['id'];
         echo "<br>$stockInDetailsId";
 
         // delete form current stock
         $table = 'stock_in_details_id';
-        $deleteFromCurrentStock = $CurrentStock->deleteCurrentStockbyStockIndetailsId($stockInDetailsId);
+        // $deleteFromCurrentStock = $CurrentStock->deleteCurrentStockbyStockIndetailsId($stockInDetailsId);
 
         // delete from stock in details
-        $deleteStockInDetails = $StockInDetails->stockInDeletebyDetailsId($stockInDetailsId);
+        // $deleteStockInDetails = $StockInDetails->stockInDeletebyDetailsId($stockInDetailsId);
     }
+}else{
+    return false;
 }
 
 if ($deleteFromCurrentStock == true && $deleteStockInDetails == true) {

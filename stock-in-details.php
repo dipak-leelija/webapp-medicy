@@ -262,7 +262,7 @@ $showDistributor       = $Distributor->showDistributor();
                             success: function(response) {
                                 alert(response);
                                 console.log("final response", response);
-                                if (response) {
+                                if (response == true) {
                                     swal(
                                         "Deleted",
                                         "Stcok In data has been deleted",
