@@ -33,7 +33,7 @@ foreach ($selectStockInDetails as $stockInDetails) {
 if (intval($purchaseQty) == intval($totalCurrentQtyChk)) {
 
     $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
-    print_r($selectStockInDetails);
+    // print_r($selectStockInDetails);
     foreach ($selectStockInDetails as $stockInDetails) {
         $stockInDetailsId = $stockInDetails['id'];
         echo "<br>$stockInDetailsId";
