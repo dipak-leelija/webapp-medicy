@@ -23,7 +23,7 @@ foreach ($selectStockInDetails as $stockInDetails) {
     $stockInDetailsId = $stockInDetails['id'];
     $table = 'stock_in_details_id';
     $selectCurrentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
-    // print_r($selectCurrentStockData);
+    print_r($selectCurrentStockData);
 
     $currentQty = $selectCurrentStockData->qty;
     $totalCurrentQtyChk = intval($totalCurrentQtyChk) + intval($currentQty);
