@@ -22,8 +22,8 @@ $Distributor = new Distributor();
 <body>
 
     <?php
-
-    if (isset($_POST['add-distributor'])) {
+    
+    if (isset($_POST['distributor-data-add'])) {
         $distributorName        = $_POST['distributor-name'];
         $distributorPhno        = $_POST['distributor-phno'];
         $distributorGSTID       = $_POST['distributor-gstid'];
@@ -37,10 +37,41 @@ $Distributor = new Distributor();
 
 
         //Insert Into Distributor DB
+        
         $addDistributor     = $Distributor->addDistributor(
             $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $employeeId, NOW,  $distributorStatus,$newData, $adminId
         );
-        
+        print_r($addDistributor);
+
+//*************************************************************************************** */
+        // // Function to count how many times another function is called
+        // function countFunctionCalls($addDistributor)
+        // {
+        //     static $callCount = 0;
+
+        //     if (function_exists($addDistributor)) {
+        //         $callCount++;
+        //         call_user_func($addDistributor);
+        //     } else {
+        //         echo "Function '$addDistributor' does not exist.";
+        //     }
+
+        //     return $callCount;
+        // }
+
+        // // Function to be monitored
+        // function myFunction()
+        // {
+        //     echo "This is myFunction().<br>";
+        // }
+
+        // // Call countFunctionCalls() to invoke myFunction()
+        // $count = countFunctionCalls('myFunction');
+        // echo "myFunction() has been called $count times.<br>";
+
+//******************************************************************************************** */
+       
+
         if ($addDistributor == true) {
     ?>
             <script>

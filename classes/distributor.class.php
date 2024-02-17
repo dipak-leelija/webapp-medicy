@@ -1,41 +1,42 @@
 <?php
-require_once 'dbconnect.php';
+
+class Distributor extends DatabaseConnection{
 
 
-class Distributor extends DatabaseConnection
-{
+    function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus, $newData, $adminId){
 
-
-    function addDistributor($distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus,$newData, $adminId)
-    {
         try {
-            // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`,`status`,`new`,`admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
-
-            // Prepare the SQL statement
+            $insert = "INSERT INTO distributor (`name`, `gst_id`, `address`, `area_pin_code`, `phno`, `email`, `dsc`, `added_by`, `added_on`,`status`,`new`,`admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
             $stmt = $this->conn->prepare($insert);
-
-            if ($stmt) {
-                // Bind the parameters
-                $stmt->bind_param("sssisssssiis", $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus,$newData, $adminId);
-
-                // Execute the query
-                $insertQuery = $stmt->execute();
-                if (!$stmt->execute()) {
-                    throw new Exception("Error in query execution: " . $stmt->error);
-                }
-                $stmt->close();
-                return $insertQuery;
-            } else {
+            
+            if (!$stmt) {
                 throw new Exception("Failed to prepare the statement.");
             }
+            
+            $bindResult = $stmt->bind_param("sssisssssiis", $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $addedBy, $addedOn, $distributorStatus, $newData, $adminId);
+    
+            if (!$bindResult) {
+                throw new Exception("Failed to bind parameters.");
+            }
+    
+            $executionResult = $stmt->execute();
+            
+            if (!$executionResult) {
+                throw new Exception("Error in query execution: " . $stmt->error);
+            }
+            
+            $stmt->close();
+            
+            return $executionResult;
+    
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // Customize this part to suit your needs
-            echo "Error: " . $e->getMessage();
-            return false;
+            return $e->getMessage();
         }
     }
+    
+
+
 
 
     function updateDist($distributorName, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $updatedBy, $updatedOn, $distributorId)
