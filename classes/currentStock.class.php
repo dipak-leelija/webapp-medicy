@@ -740,10 +740,10 @@ class CurrentStock extends DatabaseConnection
 
             $stmt->close();
 
-            if ($result->num_rows > 0) {
-                return json_encode(['status'=>'1', 'message'=>'success']);
+            if ($result > 0) {
+                return true;
             } else {
-                return json_encode(['status'=>'0', 'message'=>'fail']);
+                return $result;
             }
         } catch (Exception $e) {
             if ($e) {
