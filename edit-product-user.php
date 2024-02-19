@@ -113,6 +113,12 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
 
         $power          = $product[0]->power;
 
+        if(isset($product[0]->unit_id)){
+            $unitType = $product[0]->unit_id;
+        }else{
+            $unitType = "";
+        }
+
         $mrp            = $product[0]->mrp;
         $gst            = $product[0]->gst;
         
@@ -303,13 +309,17 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                                             </div>
 
                                             <div class="d-none col-md-12 d-flex mt-3">
-                                                <div class="d-none col-sm-6">
-                                                    Composition 1
+                                                <div class="d-none col-sm-4">
+                                                    <label>Composition 1</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="comp-1" name="comp-1" value="<?php echo $product[0]->comp_1; ?>">
                                                 </div>
-                                                <div class="d-none col-sm-6">
-                                                    Composition 2
+                                                <div class="d-none col-sm-4">
+                                                    <label>Composition 2</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="comp-2" name="comp-2" value="<?php echo $product[0]->comp_2; ?>">
+                                                </div>
+                                                <div class="d-none col-sm-4">
+                                                    <label>Unit Type</label>
+                                                    <input class="c-inp w-100 p-1 mt-1" id="unitType" name="unitType" value="<?php echo $product[0]->unit_id; ?>">
                                                 </div>
                                             </div>
                                         </div>
