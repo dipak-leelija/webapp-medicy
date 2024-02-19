@@ -210,6 +210,7 @@ if (isset($_POST['update-product'])) {
 
     // --------------- product edit request code gose hear --------------------
     $prodDataFromProducts = json_decode($Products->showProductsById($productId));
+    print_r($prodDataFromProducts);
     if ($prodDataFromProducts->status) {
         if ($prodDataFromProducts->data->edit_request_flag == 0) {
 
@@ -237,13 +238,13 @@ if (isset($_POST['update-product'])) {
                 $editRqstFlgData += 1;
                 $updateProduct = $Products->updateOnColData($col, $editRqstFlgData, $productId);
 
-                $editRequest = true;
+                $editRequest = $addOldProdEditRequest->status;
 
                 if (preg_match("/Image Edited./", $description)) {
                     $imageUpdate = imageUpdate($imageDataTuple, $productId, $Request);
                     // print_r($imageUpdate);
                     if ($imageUpdate) {
-                        $addImagesRequest = true;
+                        $addImagesRequest = $imageUpdate;
                     }
                 } else {
                     $addImagesRequest = true;
