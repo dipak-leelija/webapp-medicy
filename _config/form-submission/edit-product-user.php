@@ -68,7 +68,9 @@ if (isset($_POST['update-product'])) {
     $comp1 = $_POST['comp-1'];
     $comp2 = $_POST['comp-2'];
     $unitId = $_POST['unitType'];
+    $manufId = $_POST['manufId'];
 
+    echo $manufId;
     // ==================== for img ===================== //
     $imageName        = $_FILES['img-files']['name'];
     $tempImgName       = $_FILES['img-files']['tmp_name'];
@@ -223,7 +225,7 @@ if (isset($_POST['update-product'])) {
                 $productId = $oldProdId;
             }
 
-            $addOldProdEditRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+            $addOldProdEditRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $manufId, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
             $addOldProdEditRequest = json_decode($addOldProdEditRequest);
 
@@ -266,7 +268,7 @@ if (isset($_POST['update-product'])) {
                 if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
                     $productId = $newProductId;
 
-                    $editRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+                    $editRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $manufId, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
                     $editRequest = json_decode($editRequest);
 
@@ -308,7 +310,7 @@ if (isset($_POST['update-product'])) {
                     $productId = $oldProdId;
                 }
 
-                $addOldProdEditRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+                $addOldProdEditRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $manufId, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
                 $addOldProdEditRequest = json_decode($addOldProdEditRequest);
 
@@ -349,7 +351,7 @@ if (isset($_POST['update-product'])) {
         if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
             $productId = $newProductId;
 
-            $addNewProduct = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
+            $addNewProduct = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $manufId, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
 
             $addNewProduct = json_decode($addNewProduct);
             $editRequest = $addNewProduct->status;
