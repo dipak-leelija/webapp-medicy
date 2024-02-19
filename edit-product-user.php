@@ -329,7 +329,7 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                                                     <label>Unit Type</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="unitType" name="unitType" value="<?php echo $unitType; ?>">
                                                 </div>
-                                                <div class="col-sm-3">
+                                                <div class="d-none col-sm-3">
                                                     <label>Manuf Id</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="manufId" name="manufId" value="<?php echo $manufId; ?>">
                                                 </div>

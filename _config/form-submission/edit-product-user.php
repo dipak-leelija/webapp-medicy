@@ -210,7 +210,7 @@ if (isset($_POST['update-product'])) {
 
     // --------------- product edit request code gose hear --------------------
     $prodDataFromProducts = json_decode($Products->showProductsById($productId));
-    print_r($prodDataFromProducts);
+    // print_r($prodDataFromProducts);
     if ($prodDataFromProducts->status) {
         if ($prodDataFromProducts->data->edit_request_flag == 0) {
 
@@ -219,6 +219,8 @@ if (isset($_POST['update-product'])) {
 
             $randNum = rand(1, 999999999999);
             $newProductId = 'PR' . $randNum;
+
+            echo $description;
 
             if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
                 $productId = $newProductId;
