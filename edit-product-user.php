@@ -125,7 +125,7 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
             $manufId = " ";
         }
 
-        echo $manufId;
+        // echo $manufId;
 
         $mrp            = $product[0]->mrp;
         $gst            = $product[0]->gst;

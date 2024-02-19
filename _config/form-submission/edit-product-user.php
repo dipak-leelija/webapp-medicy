@@ -70,7 +70,7 @@ if (isset($_POST['update-product'])) {
     $unitId = $_POST['unitType'];
     $manufId = $_POST['manufId'];
 
-    echo $manufId;
+    // echo $manufId;
     // ==================== for img ===================== //
     $imageName        = $_FILES['img-files']['name'];
     $tempImgName       = $_FILES['img-files']['tmp_name'];
