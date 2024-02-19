@@ -222,7 +222,7 @@ if (isset($_POST['update-product'])) {
 
             echo $description;
 
-            if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
+            if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) /*|| preg_match("/Unit Edited./", $description)*/) {
                 $productId = $newProductId;
             } else {
                 $productId = $oldProdId;
@@ -268,7 +268,7 @@ if (isset($_POST['update-product'])) {
                 $randNum = rand(1, 999999999999);
                 $newProductId = 'PR' . $randNum;
 
-                if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
+                if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) /*|| preg_match("/Unit Edited./", $description)*/) {
                     $productId = $newProductId;
 
                     $editRequest = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $manufId, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
@@ -307,7 +307,7 @@ if (isset($_POST['update-product'])) {
                 $randNum = rand(1, 999999999999);
                 $newProductId = 'PR' . $randNum;
 
-                if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
+                if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) /*|| preg_match("/Unit Edited./", $description)*/) {
                     $productId = $newProductId;
                 } else {
                     $productId = $oldProdId;
@@ -351,7 +351,7 @@ if (isset($_POST['update-product'])) {
         $randNum = rand(1, 999999999999);
         $newProductId = 'PR' . $randNum;
 
-        if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) || preg_match("/Unit Edited./", $description)) {
+        if (preg_match("/Name edited. /", $description) || preg_match("/Medicine Qantity Edited. /", $description) /*|| preg_match("/Unit Edited./", $description)*/) {
             $productId = $newProductId;
 
             $addNewProduct = $Request->addOldProductRequest($oldProdId, $productId, $productName, $comp1, $comp2, $productCategory, $packagingIn,  $quantity, $unitId, $unit, $manufId, $medicinePower, $mrp, $gstPercent, $hsnoNumber, $description, $addedBy, NOW, $adminId, $prodReqStatus, $oldProdFlag);
