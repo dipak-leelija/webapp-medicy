@@ -6,7 +6,7 @@ class Manufacturer extends DatabaseConnection
 {
 
 
-    function addManufacturer($id, $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId)
+    function addManufacturer($id, $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $newData, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
@@ -17,7 +17,7 @@ class Manufacturer extends DatabaseConnection
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("isssssiis", $id, $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId);
+                $stmt->bind_param("isssssiis", $id, $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $newData, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();

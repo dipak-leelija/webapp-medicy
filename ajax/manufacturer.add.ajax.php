@@ -57,7 +57,7 @@ if(isset($_POST['add-manufacturer'])){
     }
 
 
-    $addManufacturer = $Manufacturer->addManufacturer($manufId, $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $adminId);
+    $addManufacturer = $Manufacturer->addManufacturer($manufId, $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus, $newData, $adminId);
         if ($addManufacturer) {
             ?> 
              <script>
@@ -114,7 +114,7 @@ if(isset($_POST['add-new-manuf'])){
     }
     
     //Inserting Manufacturer Into Database
-    $addManufacturer = $Manufacturer->addManufacturer($manufId, $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $adminId);
+    $addManufacturer = $Manufacturer->addManufacturer($manufId, $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus, $newData, $adminId);
         if ($addManufacturer) {
             ?> 
              <script>
