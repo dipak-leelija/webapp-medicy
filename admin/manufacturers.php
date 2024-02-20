@@ -16,7 +16,7 @@ $Pagination = new Pagination;
 
 
 $showManufacturer = $Manufacturer->showManufacturer();
-print_r($showManufacturer);
+// print_r($showManufacturer);
 $showManufacturer = json_decode($showManufacturer);
 // print_r($showManufacturer);
 $slicedManuf = '';
@@ -24,7 +24,7 @@ $paginationHTML = '';
 $totalItem = 0;
 
 if (!empty($showManufacturer)) {
-    // print_r($showManufacturer);
+    print_r($showManufacturer);
 
     if (is_array($showManufacturer)) {
         $response = json_decode($Pagination->arrayPagination($showManufacturer));
