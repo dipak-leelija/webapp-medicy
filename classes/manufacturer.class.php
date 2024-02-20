@@ -107,7 +107,7 @@ class Manufacturer extends DatabaseConnection
             } else {
                 $select = "SELECT * FROM manufacturer";
                 $selectQuery = $this->conn->prepare($select);
-                echo "2";
+                echo "$selectQuery";
             }
             
             // Execute the query
