@@ -253,10 +253,6 @@ if (!empty($showDistRequest->data)) {
                 <div class="modal-body deleteRequest">
 
                 </div>
-                <!-- <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div> -->
             </div>
         </div>
     </div>
@@ -453,6 +449,7 @@ if (!empty($showDistRequest->data)) {
                                         $(btn).closest("tr").fadeOut()
                                         swal("Deleted", "Distributor Has Been Deleted",
                                             "success");
+                                            location.reload();
                                     } else {
                                         swal("Failed", data, "error");
                                     }
