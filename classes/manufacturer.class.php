@@ -368,8 +368,7 @@ class Manufacturer extends DatabaseConnection
                 throw new Exception("Failed to prepare the statement.");
             }
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-            return false;
+            return "Error: " . $e->getMessage();;
         }
     }
 

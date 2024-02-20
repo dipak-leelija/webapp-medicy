@@ -413,9 +413,7 @@ if ($showManufacturer !== null) {
                                 id: id
                             },
                             success: function(response) {
-                                // alert(response);
-                                // alert(id);
-                                if (response.includes('1')) {
+                                if (response) {
                                     $(btn).closest("tr").fadeOut()
                                     swal("Deleted", "Manufacturer Has Been Deleted", "success");
                                 } else {
