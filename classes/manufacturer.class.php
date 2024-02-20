@@ -103,11 +103,11 @@ class Manufacturer extends DatabaseConnection
                 $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = ? OR `status` = '1'";
                 $selectQuery = $this->conn->prepare($select);
                 $selectQuery->bind_param("s", $adminId); // Bind parameter to the query
-                echo "1";
             } else {
                 $select = "SELECT * FROM manufacturer";
                 $selectQuery = $this->conn->prepare($select);
-                echo "$selectQuery";
+                echo '2';
+                print_r($selectQuery);
             }
             
             // Execute the query
