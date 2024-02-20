@@ -91,39 +91,8 @@ class Manufacturer extends DatabaseConnection
         }
     } ///====== End Uodate Manufacture Status=======///
 
-    // function showManufacturer($adminId = '')
-    // {
-    //     try {
-    //         $data = array();
-    //         if (!empty($adminId)) {
-    //             $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = '$adminId' OR `status` = '1'";
-    //         } else {
-    //             $select = "SELECT * FROM `manufacturer`";
-    //         }
-    //         // $select = "SELECT * FROM `manufacturer`";
-    //         $selectQuery = $this->conn->prepare($select);
 
-    //         if (!$selectQuery) {
-    //             throw new Exception("Query preparation failed.");
-    //         }
 
-    //         $selectQuery->execute();
-
-    //         $result = $selectQuery->get_result();
-
-    //         if ($result->num_rows > 0) {
-    //             while ($row = $result->fetch_object()) {
-    //                 $data[] = $row;
-    //             }
-    //             return json_encode($data);
-    //         } else {
-    //             return null;
-    //         }
-    //     } catch (Exception $e) {
-    //         echo "Error in showManufacturer: " . $e->getMessage();
-    //     }
-    //     return 0;
-    // }
 
 
     function showManufacturer($adminId = '') {
@@ -134,9 +103,11 @@ class Manufacturer extends DatabaseConnection
                 $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = ? OR `status` = '1'";
                 $selectQuery = $this->conn->prepare($select);
                 $selectQuery->bind_param("s", $adminId); // Bind parameter to the query
+                echo "1";
             } else {
                 $select = "SELECT * FROM manufacturer";
                 $selectQuery = $this->conn->prepare($select);
+                echo "2";
             }
             
             // Execute the query
