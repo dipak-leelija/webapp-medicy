@@ -116,7 +116,7 @@ class Manufacturer extends DatabaseConnection
                 while ($row = $result->fetch_object()) {
                     $data[] = $row;
                 }
-                return json_encode($data);
+                return $data;
             }else{
                 echo "if not satisfied.";
                 return null;
