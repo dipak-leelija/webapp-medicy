@@ -17,7 +17,7 @@ class Manufacturer extends DatabaseConnection
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("isssssiis", $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId);
+                $stmt->bind_param("isssssiis", $id, $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
