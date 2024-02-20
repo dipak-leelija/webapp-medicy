@@ -17,10 +17,11 @@ $Pagination = new Pagination;
 
 $showManufacturer = $Manufacturer->showManufacturer();
 $showManufacturer = json_decode($showManufacturer);
-// print_r($showManufacturer);
+print_r($showManufacturer);
 $slicedManuf = '';
 $paginationHTML = '';
 $totalItem = 0;
+
 if (!empty($showManufacturer)) {
     // print_r($showManufacturer);
 
