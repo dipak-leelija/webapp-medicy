@@ -106,32 +106,23 @@ class Manufacturer extends DatabaseConnection
             } else {
                 $select = "SELECT * FROM manufacturer";
                 $selectQuery = $this->conn->prepare($select);
-                echo '2';
-                print_r($selectQuery);
             }
             
-            // Execute the query
             $selectQuery->execute();
             
-            // Get the result
             $result = $selectQuery->get_result();
-            print_r($result);
-            
-            // Fetch data and store in an array
-            while ($row = $result->fetch_object()) {
-                $data[] = $row;
-            }
-    
-            // Check if data is fetched
-            if (!empty($data)) {
+           
+            if($result->num_rows > 0){
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                print_r($data);
                 return json_encode($data);
-            } else {
+            }else{
                 return null;
             }
         } catch (Exception $e) {
-            // Handle any errors
-            echo "Error in showManufacturer: " . $e->getMessage();
-            return null;
+            return "Error in showManufacturer: " . $e->getMessage();
         }
     }
     
