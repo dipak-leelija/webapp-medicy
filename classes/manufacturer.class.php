@@ -112,10 +112,11 @@ class Manufacturer extends DatabaseConnection
             
             // Execute the query
             $selectQuery->execute();
-    
+            
             // Get the result
             $result = $selectQuery->get_result();
-    
+            print_r($result);
+            
             // Fetch data and store in an array
             while ($row = $result->fetch_object()) {
                 $data[] = $row;
