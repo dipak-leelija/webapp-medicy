@@ -95,17 +95,14 @@ const verifyUsername = (t) => {
 
 // === otp submit move next ===
 
-const moveNext = (input) => {
-    let inputedValue = input.value;
-    let inputLength = input.value.length;
+function moveToNext(current, nextId) {
+    const maxLength = parseInt(current.getAttribute('maxlength'));
+    const currentLength = current.value.length;
 
-    if (inputedValue == ' ') {
-        inputLength = 0;
-        inputedValue = null;
-    }
-
-    if (inputLength === parseInt(input.getAttribute('maxlength')) && input.nextElementSibling) {
-        input.nextElementSibling.focus();
+    if (currentLength >= maxLength) {
+        const nextInput = document.getElementById(nextId);
+        if (nextInput) {
+            nextInput.focus();
+        }
     }
 }
-

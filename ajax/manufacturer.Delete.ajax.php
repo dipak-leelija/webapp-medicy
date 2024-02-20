@@ -13,7 +13,7 @@ $deleteManufacturer = $Manufacturer->deleteManufacturer($manufacturerId);
 if ($deleteManufacturer) {
    echo $deleteManufacturer;
 }else {
-    echo 0;
+    echo $deleteManufacturer;
 }
 
 

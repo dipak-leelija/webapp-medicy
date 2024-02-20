@@ -213,7 +213,7 @@ $todayYr = date("y");
     <div class="modal fade" id="add-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header" onload="captureCurrentLocation()">
+                <div class="modal-header" /*onload="captureCurrentLocation()"*/>
                     <h5 class="modal-title" id="exampleModalLabel">Add Distributor</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -243,99 +243,6 @@ $todayYr = date("y");
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
     <script src="<?= JS_PATH ?>stock-in.js"></script>
 
-    <!-- <script>
-        const getBillAmount = () => {
-
-            let mrp = document.getElementById('mrp').value;
-
-            let ptr = document.getElementById('ptr').value;
-
-            console.log(ptr);
-
-            let gst = document.getElementById('gst').value;
-            // console.log("change gst : "+gst);
-
-            let prevGst = document.getElementById("gst-check").value;
-            // console.log("prev gst : "+prevGst);
-
-            let qty = document.getElementById('qty').value;
-            if (qty == '') {
-                qty = 0;
-            }
-
-            let disc = document.getElementById('discount').value;
-            if (disc == '') {
-                disc = 0;
-            }
-
-
-            let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
-            maxPtr = maxPtr.toFixed(2);
-
-            // console.log("max ptr "+ maxPtr);
-            // console.log("change ptr "+ ptr);
-
-            if (gst != prevGst) {
-                document.getElementById('ptr').value = maxPtr;
-                document.getElementById("gst-check").value = gst;
-            }
-
-            console.log(ptr);
-            console.log(maxPtr);
-
-            if (ptr > maxPtr) {
-                swal({
-                    title: "Error Input",
-                    text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
-                    icon: "error",
-                    button: false, // Hide the "OK" button
-                    timer: 1000 // Auto-close the alert after 2 seconds
-                });
-
-                document.getElementById("ptr").value = maxPtr;
-
-                maxPtr = maxPtr;
-
-                document.getElementById("bill-amount").value = " ";
-
-                document.getElementById("ptr").focus();
-            }
-
-            let modifiedPtr = document.getElementById("ptr").value;
-            // console.log(modifiedPtr);
-
-            let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
-            base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
-            base = base.toFixed(2);
-
-            let totalAmount = parseFloat(base) * parseInt(qty);
-            totalAmount = totalAmount.toFixed(2);
-
-
-            document.getElementById("base").value = base;
-            document.getElementById("bill-amount").value = totalAmount;
-
-
-            //=============================================
-            //======= UPDATE GST ON PRODUCT SECTION =======
-            let prodId = document.getElementById("product-id").value;
-
-            $.ajax({
-                url: 'ajax/update-product-gst.ajax.php',
-                type: 'POST',
-                data: {
-                    gstPercetn: gst,
-                    prodId: prodId
-                },
-                success: function(response) {
-                    // console.log(response);
-                },
-                error: function(error) {
-                    // console.error('Error removing image:', error);
-                }
-            });
-        } //eof getBillAmount function
-    </script> -->
 </body>
 
 </html>

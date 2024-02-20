@@ -106,12 +106,26 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
         $type           = $product[0]->type;
 
         $qty            = $product[0]->unit_quantity;
-        // $qtyUnit        = $product[0]->unit_id;
+        
         $prevItemUnit       = $product[0]->unit;
 
         $packagingType  = $product[0]->packaging_type;
 
         $power          = $product[0]->power;
+
+        if(isset($product[0]->unit_id)){
+            $unitType = $product[0]->unit_id;
+        }else{
+            $unitType = "";
+        }
+
+        if(isset($product[0]->manufacturer_id)){
+            $manufId = $product[0]->manufacturer_id;
+        }else{
+            $manufId = " ";
+        }
+
+        // echo $manufId;
 
         $mrp            = $product[0]->mrp;
         $gst            = $product[0]->gst;
@@ -303,13 +317,21 @@ $addedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
                                             </div>
 
                                             <div class="d-none col-md-12 d-flex mt-3">
-                                                <div class="d-none col-sm-6">
-                                                    Composition 1
+                                                <div class="d-none col-sm-3">
+                                                    <label>Composition 1</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="comp-1" name="comp-1" value="<?php echo $product[0]->comp_1; ?>">
                                                 </div>
-                                                <div class="d-none col-sm-6">
-                                                    Composition 2
+                                                <div class="d-none col-sm-3">
+                                                    <label>Composition 2</label>
                                                     <input class="c-inp w-100 p-1 mt-1" id="comp-2" name="comp-2" value="<?php echo $product[0]->comp_2; ?>">
+                                                </div>
+                                                <div class="d-none col-sm-3">
+                                                    <label>Unit Type</label>
+                                                    <input class="c-inp w-100 p-1 mt-1" id="unitType" name="unitType" value="<?php echo $unitType; ?>">
+                                                </div>
+                                                <div class="d-none col-sm-3">
+                                                    <label>Manuf Id</label>
+                                                    <input class="c-inp w-100 p-1 mt-1" id="manufId" name="manufId" value="<?php echo $manufId; ?>">
                                                 </div>
                                             </div>
                                         </div>

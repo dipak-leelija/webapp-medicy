@@ -619,7 +619,7 @@ function addData() {
                     </td>
                     <td class="p-0 pt-3" id="row-${slControl}-col-5">
                         <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
-                        <input class="col table-data w-6r" type="text" name="distBillNo[]" value="${billNumber.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
+                        <input class="d-none col table-data w-6r" type="text" name="distBillNo[]" value="${billNumber.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3" id="row-${slControl}-col-6">
                         <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">

@@ -12,9 +12,11 @@ $CurrentStock = new CurrentStock();
 
 $stockInId  = $_POST['DeleteId'];
 
+// echo "<br>stock in id : $stockInId<br>";
 $selectStockInData = $Stockin->selectStockInById($stockInId);
 // print_r($selectStockInData);
 $purchaseQty = $selectStockInData[0]['total_qty'];
+// echo "total purchase qty : $purchaseQty<br>";
 
 $totalCurrentQtyChk = 0;
 $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
@@ -30,8 +32,8 @@ foreach ($selectStockInDetails as $stockInDetails) {
 
 
 if (intval($purchaseQty) == intval($totalCurrentQtyChk)) {
-
     $selectStockInDetails = $StockInDetails->showStockInDetailsByStokId($stockInId);
+    // print_r("stock in details data : ".$selectStockInDetails);
     foreach ($selectStockInDetails as $stockInDetails) {
         $stockInDetailsId = $stockInDetails['id'];
         // echo "<br>$stockInDetailsId";
@@ -43,13 +45,16 @@ if (intval($purchaseQty) == intval($totalCurrentQtyChk)) {
         // delete from stock in details
         $deleteStockInDetails = $StockInDetails->stockInDeletebyDetailsId($stockInDetailsId);
     }
+}else{
+    $deleteFromCurrentStock = false;
+    $deleteStockInDetails = false;
 }
 
 if ($deleteFromCurrentStock == true && $deleteStockInDetails == true) {
     $deleteFromStockIn = $Stockin->deleteStock($stockInId);
+}else{
+    $deleteFromStockIn = false;
 }
-
-
 
 if ($deleteFromStockIn) {
     echo true;

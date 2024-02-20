@@ -22,8 +22,8 @@ $Distributor = new Distributor();
 <body>
 
     <?php
-
-    if (isset($_POST['add-distributor'])) {
+    
+    if (isset($_POST['distributor-data-add'])) {
         $distributorName        = $_POST['distributor-name'];
         $distributorPhno        = $_POST['distributor-phno'];
         $distributorGSTID       = $_POST['distributor-gstid'];
@@ -37,10 +37,12 @@ $Distributor = new Distributor();
 
 
         //Insert Into Distributor DB
+        
         $addDistributor     = $Distributor->addDistributor(
             $distributorName, $distributorGSTID, $distributorAddress, $distributorAreaPIN, $distributorPhno, $distributorEmail, $distributorDsc, $employeeId, NOW,  $distributorStatus,$newData, $adminId
         );
-        
+       
+
         if ($addDistributor == true) {
     ?>
             <script>

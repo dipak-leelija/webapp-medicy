@@ -260,11 +260,12 @@ $showDistributor       = $Distributor->showDistributor();
                                 DeleteId: id,
                             },
                             success: function(response) {
-                                console.log("final response", response);
-                                if (response) {
+                                // alert(response);
+                                // console.log("final response", response);
+                                if (response == true) {
                                     swal(
                                         "Deleted",
-                                        "Manufacturer Has Been Deleted",
+                                        "Stcok In data has been deleted",
                                         "success"
                                     ).then(function() {
                                         parent.location.reload();

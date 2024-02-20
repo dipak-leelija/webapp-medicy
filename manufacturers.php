@@ -16,7 +16,7 @@ $Manufacturer = new Manufacturer();
 $Pagination = new Pagination;
 
 $showManufacturer = $Manufacturer->showManufacturer();
-$showManufacturer = json_decode($showManufacturer);
+// $showManufacturer = json_decode($showManufacturer);
 if (!empty($showManufacturer)) {
     // print_r($showManufacturer);
 

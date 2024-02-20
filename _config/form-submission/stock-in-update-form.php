@@ -507,19 +507,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $pUnit = $pData->unit;
                     }
 
-                    $packagingData = $PackagingUnits->showPackagingUnitById($pType);
-                    foreach ($packagingData as $packData) {
-                        $unitNm = $packData['unit_name'];
-                    }
+                    $packagingData = json_decode($PackagingUnits->showPackagingUnitById($pType));
+                    // foreach ($packagingData as $packData) {
+                        $unitNm = $packagingData->data->unit_name;
+                    // }
 
 
                     if ($pManfId != '') {
                         $manufDetails = json_decode($Manufacturer->showManufacturerById($pManfId));
                         $manufDetails = $manufDetails->data;
                         // print_r($manufDetails);
-                        // foreach ($manufDetails as $manufData) {
-                        $manufName = $manufDetails->short_name;
-                        // }
+                        if(isset($manufDetails->short_name)){
+                            $manufName = $manufDetails->short_name;
+                        }else{
+                            $manufName = '';
+                        }
                     } else {
                         $manufName = '';
                     }

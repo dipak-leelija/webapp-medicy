@@ -24,7 +24,7 @@ $countDistributor   = $decodedDistributor !== null ? count($decodedDistributor) 
 
 // Count Manufacturer Data
 $showManufacturer    = $Manufacturer->showManufacturer($adminId);
-$decodedManufacturer = ($showManufacturer !== null) ? json_decode($showManufacturer) : null;
+$decodedManufacturer = ($showManufacturer !== null) ? $showManufacturer : null;
 $countManufacturer   = ($decodedManufacturer !== null) ? count($decodedManufacturer) : 0;
 
 // Count Packaging Data

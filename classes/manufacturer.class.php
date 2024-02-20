@@ -6,18 +6,18 @@ class Manufacturer extends DatabaseConnection
 {
 
 
-    function addManufacturer($manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId)
+    function addManufacturer($id, $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $newData, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`, `added_by`, `added_on`, `status`,`new`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+            $insert = "INSERT INTO manufacturer (`id`, `name`, `short_name`, `dsc`, `added_by`, `added_on`, `status`,`new`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("sssssiis", $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId);
+                $stmt->bind_param("isssssiis", $id, $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus, $newData, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
@@ -33,6 +33,38 @@ class Manufacturer extends DatabaseConnection
             return false;
         }
     }
+
+
+
+
+
+
+    function lastManufDataFetch(){
+        try {
+            $select = "SELECT * FROM `manufacturer` ORDER BY `id` DESC LIMIT 1";
+    
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($select);
+    
+            if (!$stmt) {
+                throw new Exception("Failed to prepare the statement.");
+            } else {
+                $stmt->execute();
+    
+                $result = $stmt->get_result();
+    
+                if($result->num_rows > 0){
+                    $data = $result->fetch_assoc(); // Fetch associative array directly
+                    return json_encode($data);
+                } else {
+                    return null;
+                }
+            }
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+    }
+    
 
 
 
@@ -91,39 +123,8 @@ class Manufacturer extends DatabaseConnection
         }
     } ///====== End Uodate Manufacture Status=======///
 
-    // function showManufacturer($adminId = '')
-    // {
-    //     try {
-    //         $data = array();
-    //         if (!empty($adminId)) {
-    //             $select = "SELECT * FROM `manufacturer` WHERE `admin_id` = '$adminId' OR `status` = '1'";
-    //         } else {
-    //             $select = "SELECT * FROM `manufacturer`";
-    //         }
-    //         // $select = "SELECT * FROM `manufacturer`";
-    //         $selectQuery = $this->conn->prepare($select);
 
-    //         if (!$selectQuery) {
-    //             throw new Exception("Query preparation failed.");
-    //         }
 
-    //         $selectQuery->execute();
-
-    //         $result = $selectQuery->get_result();
-
-    //         if ($result->num_rows > 0) {
-    //             while ($row = $result->fetch_object()) {
-    //                 $data[] = $row;
-    //             }
-    //             return json_encode($data);
-    //         } else {
-    //             return null;
-    //         }
-    //     } catch (Exception $e) {
-    //         echo "Error in showManufacturer: " . $e->getMessage();
-    //     }
-    //     return 0;
-    // }
 
 
     function showManufacturer($adminId = '') {
@@ -139,27 +140,21 @@ class Manufacturer extends DatabaseConnection
                 $selectQuery = $this->conn->prepare($select);
             }
             
-            // Execute the query
             $selectQuery->execute();
-    
-            // Get the result
+            
             $result = $selectQuery->get_result();
-    
-            // Fetch data and store in an array
-            while ($row = $result->fetch_object()) {
-                $data[] = $row;
-            }
-    
-            // Check if data is fetched
-            if (!empty($data)) {
-                return json_encode($data);
-            } else {
+           
+            if($result->num_rows > 0){
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                return $data;
+            }else{
+                echo "if not satisfied.";
                 return null;
             }
         } catch (Exception $e) {
-            // Handle any errors
-            echo "Error in showManufacturer: " . $e->getMessage();
-            return null;
+            return "Error in showManufacturer: " . $e->getMessage();
         }
     }
     
@@ -373,8 +368,7 @@ class Manufacturer extends DatabaseConnection
                 throw new Exception("Failed to prepare the statement.");
             }
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-            return false;
+            return "Error: " . $e->getMessage();;
         }
     }
 
