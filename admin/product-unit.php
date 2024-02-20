@@ -256,7 +256,7 @@ $MeasureOfUnits = new MeasureOfUnits();
                 // alert("not checked switch is checkes");
                 $.ajax({
                     type: 'POST',
-                    url: '/medicy.in/admin/_config/form-submission/prodUnit-updateStatus.php',
+                    url: '_config/form-submission/prodUnit-updateStatus.php',
                     data: {
                         unitId: unitId
                     },
