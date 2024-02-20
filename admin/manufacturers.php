@@ -16,9 +16,14 @@ $Pagination = new Pagination;
 
 
 $showManufacturer = $Manufacturer->showManufacturer();
+<<<<<<< HEAD
+$showManufacturer = json_decode($showManufacturer);
+print_r($showManufacturer);
+=======
 // print_r($showManufacturer);
 // $showManufacturer = json_decode($showManufacturer);
 // print_r($showManufacturer);
+>>>>>>> bd6be7738d51fd1c4ab0f8c27ff041a4b2062df1
 $slicedManuf = '';
 $paginationHTML = '';
 $totalItem = 0;

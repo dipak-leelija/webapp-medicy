@@ -391,4 +391,46 @@ class Distributor extends DatabaseConnection{
         }
     }
 
+    function updateDeleteReq($distributorId){
+        try {
+            $update =  "UPDATE `distributor` SET `del_req`= '1' WHERE `id`=?";
+            $stmt = $this->conn->prepare($update);
+
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("i", $distributorId);
+
+                // Execute the query
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    function cancelDeleteReq($distributorId){
+        try {
+            $update =  "UPDATE `distributor` SET `del_req`= '0' WHERE `id`=?";
+            $stmt = $this->conn->prepare($update);
+
+            if ($stmt) {
+                // Bind the parameters
+                $stmt->bind_param("i", $distributorId);
+
+                // Execute the query
+                $updatedQuery = $stmt->execute();
+                $stmt->close();
+                return $updatedQuery;
+            } else {
+                throw new Exception("Failed to prepare the statement.");
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 } //end of LabTypes Class

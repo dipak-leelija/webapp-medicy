@@ -251,7 +251,7 @@ $showDistributor = $showDistributor->data;
 
 
 
-        //delete distributor
+        // delete request distributor
         $(document).ready(function() {
             $(document).on("click", "#delete-btn", function() {
 
@@ -269,15 +269,15 @@ $showDistributor = $showDistributor->data;
                             btn = this;
 
                             $.ajax({
-                                url: "ajax/distributor.Delete.ajax.php",
+                                url: "ajax/distributor.deleteRequest.ajax.php",
                                 type: "POST",
                                 data: {
                                     id: distributorId
                                 },
                                 success: function(data) {
                                     if (data == 1) {
-                                        $(btn).closest("tr").fadeOut()
-                                        swal("Deleted", "Distributor Has Been Deleted",
+                                        // $(btn).closest("tr").fadeOut()
+                                        swal("Requested", "Distributor Has Been Requested For Delete",
                                             "success");
                                     } else {
                                         swal("Failed", data, "error");
