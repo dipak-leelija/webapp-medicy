@@ -517,9 +517,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $manufDetails = json_decode($Manufacturer->showManufacturerById($pManfId));
                         $manufDetails = $manufDetails->data;
                         // print_r($manufDetails);
-                        // foreach ($manufDetails as $manufData) {
-                        $manufName = $manufDetails->short_name;
-                        // }
+                        if(isset($manufDetails->short_name)){
+                            $manufName = $manufDetails->short_name;
+                        }else{
+                            $manufName = '';
+                        }
                     } else {
                         $manufName = '';
                     }
