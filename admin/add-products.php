@@ -130,7 +130,7 @@ $gstData            = $gstData->data;
                                             <div class="col-md-12">
                                                 <lebel>Product Name</leble>
                                                     <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
-                                            </div><br>
+                                            </div>
 
                                             <div class="row mt-2">
                                                 <div class="col-md-6">
@@ -218,8 +218,6 @@ $gstData            = $gstData->data;
                                                     </select>
                                                 </div>
                                             </div>
-
-
 
                                             <div class="col-md-12 mt-2">
                                                 <lebel>Select Manufacturer</leble>
