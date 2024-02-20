@@ -192,7 +192,7 @@ if ($showManufacturer !== null) {
                                                                 <td>
                                                                     <a class="" data-toggle="modal" data-target="#manufacturerModal" onclick="manufViewAndEdit(' . $manufacturerId . ')"><i class="fas fa-edit"></i></a>
 
-                                                                    <a class="ms-2" id="delete-btn" data-id=' . $manufacturerId . ' onclick="customDel(' . $manufacturerId . ',this.id)"><i class="far fa-trash-alt"></i></a>
+                                                                    <a class="ms-2" id="delete-btn" data-id=' . $manufacturerId . ' onclick="customDel(this)"><i class="far fa-trash-alt"></i></a>
                                                                 </td>
                                                             </tr>';
                                                     }
@@ -393,7 +393,8 @@ if ($showManufacturer !== null) {
         } // end manufacturer request status update //
 
         //delete manufacturer
-        const customDel = (id) => {
+        const customDel = (t) => {
+            id = t.id;
             alert(id);
             let btn = this;
             console.log(btn);
@@ -416,7 +417,7 @@ if ($showManufacturer !== null) {
                             success: function(response) {
                                 alert(response);
                                 if (response) {
-                                    $(id).closest("tr").fadeOut()
+                                    $(btn).closest("tr").fadeOut()
                                     swal("Deleted", "Manufacturer Has Been Deleted", "success");
                                 } else {
                                     swal("Delete Not Possible", response, "warning");
