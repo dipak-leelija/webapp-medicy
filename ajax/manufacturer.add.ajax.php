@@ -48,11 +48,16 @@ if(isset($_POST['add-manufacturer'])){
     $newData           = 1;
 
 
-    // $lastManufId = ;
+    // last inserted manufacturer data fetch ---------
+    $manufData = json_decode($Manufacturer->lastManufDataFetch());
+    if($manufData != null){
+        $manufId = intval($manufData->id) + 1;
+    }else{
+        $manufId = 1;
+    }
 
-  
 
-    // $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $adminId);
+    $addManufacturer = $Manufacturer->addManufacturer($manufId, $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $adminId);
         if ($addManufacturer) {
             ?> 
              <script>
@@ -100,6 +105,7 @@ if(isset($_POST['add-new-manuf'])){
     $newData           = 1;
     
 
+    // last inserted manufacturer data fetch ---------
     $manufData = json_decode($Manufacturer->lastManufDataFetch());
     if($manufData != null){
         $manufId = intval($manufData->id) + 1;
