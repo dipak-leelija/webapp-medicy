@@ -115,8 +115,11 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
 
                                         </div>
                                     </div>
+
+                                    <!-- product data input start hear -->
                                     <div class="col-md-7 mt-5">
                                         <div class="col-12">
+                                            <lebel>Product Name</leble>
                                             <div class="col-md-12">
                                                 <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
                                             </div><br>
@@ -131,6 +134,10 @@ $showPackagingUnits = $PackagingUnits->showPackagingUnits();
                                                 </div>
 
                                             </div>
+
+                                            <div class="col-md-4">
+                                                    <input class="c-inp w-100 p-1" id="hsn-number" name="hsn-number" placeholder="Enter HSN Code" required>
+                                                </div>
 
                                             <div class="col-md-12 mt-2">
 
