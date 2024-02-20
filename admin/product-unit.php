@@ -261,7 +261,7 @@ $MeasureOfUnits = new MeasureOfUnits();
                         unitId: unitId
                     },
                     success: function(response) {
-                        console.log(response);
+                        // console.log(response);
                     },
                     error: function(error) {
                         console.error('Error toggling switch:', error);
