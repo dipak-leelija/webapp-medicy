@@ -394,8 +394,9 @@ if ($showManufacturer !== null) {
 
         //delete manufacturer
         const customDel = (id) => {
-            // alert(id);
+            alert(id);
             let btn = this;
+            alert(btn);
             swal({
                     title: "Are you sure?",
                     text: "Want to Delete This Manufacturer?",
