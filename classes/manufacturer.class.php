@@ -6,18 +6,18 @@ class Manufacturer extends DatabaseConnection
 {
 
 
-    function addManufacturer($manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId)
+    function addManufacturer($id, $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId)
     {
         try {
             // Define the SQL query using a prepared statement
-            $insert = "INSERT INTO manufacturer (`name`, `short_name`, `dsc`, `added_by`, `added_on`, `status`,`new`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+            $insert = "INSERT INTO manufacturer (`id`, `name`, `short_name`, `dsc`, `added_by`, `added_on`, `status`,`new`, `admin_id`)   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
                 // Bind the parameters
-                $stmt->bind_param("sssssiis", $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId);
+                $stmt->bind_param("isssssiis", $manufacturerName, $shortName, $manufacturerDsc, $addedBy, $addedOn, $manufactureStatus,$newData, $adminId);
 
                 // Execute the query
                 $insertQuery = $stmt->execute();
@@ -33,6 +33,38 @@ class Manufacturer extends DatabaseConnection
             return false;
         }
     }
+
+
+
+
+
+
+    function lastManufDataFetch(){
+        try {
+            $select = "SELECT * FROM `manufacturer` ORDER BY `id` DESC LIMIT 1";
+    
+            // Prepare the SQL statement
+            $stmt = $this->conn->prepare($select);
+    
+            if (!$stmt) {
+                throw new Exception("Failed to prepare the statement.");
+            } else {
+                $stmt->execute();
+    
+                $result = $stmt->get_result();
+    
+                if($result->num_rows > 0){
+                    $data = $result->fetch_assoc(); // Fetch associative array directly
+                    return json_encode($data);
+                } else {
+                    return null;
+                }
+            }
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage();
+        }
+    }
+    
 
 
 
