@@ -48,8 +48,6 @@ if(isset($_POST['add-manufacturer'])){
     $newData           = 1;
 
 
-    $manufData = json_decode($Manufacturer->lastManufDataFetch());
-    print_r($manufData);
     // $lastManufId = ;
 
   
@@ -102,6 +100,9 @@ if(isset($_POST['add-new-manuf'])){
     $newData           = 1;
     
 
+    $manufData = json_decode($Manufacturer->lastManufDataFetch());
+    print_r($manufData);
+    
     //Inserting Manufacturer Into Database
     // $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $adminId);
         if ($addManufacturer) {
