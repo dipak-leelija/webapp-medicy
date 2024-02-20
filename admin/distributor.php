@@ -105,6 +105,7 @@ if (!empty($showDistRequest->data)) {
                                                         $distributorPin     = $rowDistributor->area_pin_code;
                                                         $distributorStatus  = $rowDistributor->status;
                                                         $isNew              = $rowDistributor->new;
+                                                        $isDelete           = $rowDistributor->del_req;
 
                                                         $statusLabel = '';
                                                         $statusColor = '';
@@ -127,6 +128,7 @@ if (!empty($showDistRequest->data)) {
                                                         }
 
                                                         $newBadge = ($isNew == 1) ? '<span class="badge badge-pill badge-info position-absolute ml-2 top-0 start-50 translate-middle-x">New</span>' : '';
+                                                        $delReq   = ($isDelete == 1) ? '<span class="badge badge-pill badge-danger position-absolute top-0 start-50 translate-middle-x">Delete</span>' : '';
                                                         echo '<tr>
                                                                 <td>' . $distributorId . '</td>
                                                                 <td>' . $distributorName . ' ' . $newBadge . '</td>
@@ -146,9 +148,13 @@ if (!empty($showDistRequest->data)) {
                                                                 </td>
                                                                 <td>
                                                                     <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a>
-
-                                                                    <a class="mx-1" id="delete-btn" data-id="' . $distributorId . '"><i class="far fa-trash-alt"></i></a>
-                                                                </td>
+                                                                    ';
+                                                        if ($delReq) {
+                                                            echo '<a class="mx-1" data-toggle="modal" data-target="#deleteRequest" onclick=deleteRequestEmp(' . $distributorId . ')><i class="far fa-trash-alt"></i>' . $delReq . '</a>';
+                                                        } else {
+                                                            echo '<a class="mx-1" id="delete-btn" data-id="' . $distributorId . '"><i class="far fa-trash-alt"></i>' . $delReq . '</a>';
+                                                        }
+                                                        echo '</td>
                                                                </tr>';
                                                     }
                                                 }
@@ -160,7 +166,7 @@ if (!empty($showDistRequest->data)) {
                             </div>
                         </div>
                         <!-- /end Show Distributor -->
-
+                        <!-- id="delete-btn" data-id="' . $distributorId . '" -->
                     </div>
 
                 </div>
@@ -234,6 +240,27 @@ if (!empty($showDistRequest->data)) {
     </div>
     <!-- end distributor request data  -->
 
+    <!-- for delete request  -->
+    <div class="modal fade" id="deleteRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Request Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body deleteRequest">
+
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- end for delete request -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -302,6 +329,48 @@ if (!empty($showDistRequest->data)) {
             // location.reload();
         }
 
+        const deleteRequestEmp = (distId) => {
+            var parentLocation = window.location.origin + window.location.pathname;
+            $.ajax({
+                url: "components/distributor-DeleteReq.php",
+                type: "POST",
+                data: {
+                    urlData: parentLocation,
+                    distId: distId
+                },
+                success: function(response) {
+                    let body = document.querySelector('.deleteRequest');
+                    body.innerHTML = response;
+                },
+                error: function(error) {
+                    console.log('error:', error);
+                }
+            })
+        }
+
+        // for cancel distributer delete request 
+        const cancelDeleteReqEmp = (DistId) => {
+            console.log(DistId);
+            var parentLocation = window.location.origin + window.location.pathname;
+            $.ajax({
+                url: "ajax/distributor.DelReqCancel.ajax.php",
+                type: "POST",
+                data: {
+                    urlData: parentLocation,
+                    distId: DistId
+                },
+                success: function(response) {
+                    if (response) {
+                        location.reload();
+                    } else {
+                        console.log('not canceled');
+                    }
+                },
+                error: function(error) {
+                    console.log('error:', error);
+                }
+            })
+        }
         //View and Edit Manufacturer function
         distViewAndEdit = (distributorId) => {
             let ViewAndEdit = distributorId;
@@ -399,41 +468,41 @@ if (!empty($showDistRequest->data)) {
         })
 
         const deleteReq = (t) => {
-                let distributorId = t;
-                swal({
-                        title: "Are you sure?",
-                        text: "Want to Delete This Distributor?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true,
-                    })
-                    .then((willDelete) => {
-                            if (willDelete) {
+            let distributorId = t;
+            swal({
+                    title: "Are you sure?",
+                    text: "Want to Delete This Distributor?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
 
-                                distributorId = t;
-                                btn = this;
+                        distributorId = t;
+                        btn = this;
 
-                                $.ajax({
-                                    url: "ajax/distributorReq.Delete.ajax.php",
-                                    type: "POST",
-                                    data: {
-                                        id: distributorId
-                                    },
-                                    success: function(data) {
-                                        if (data == 1) {
-                                            $(btn).closest("tr").fadeOut()
-                                            swal("Deleted", "Distributor Has Been Deleted",
-                                                "success");
-                                            location.reload();
-                                        } else {
-                                            swal("Failed", data, "error");
-                                        }
-                                    }
-                                });
-
+                        $.ajax({
+                            url: "ajax/distributorReq.Delete.ajax.php",
+                            type: "POST",
+                            data: {
+                                id: distributorId
+                            },
+                            success: function(data) {
+                                if (data == 1) {
+                                    $(btn).closest("tr").fadeOut()
+                                    swal("Deleted", "Distributor Has Been Deleted",
+                                        "success");
+                                    location.reload();
+                                } else {
+                                    swal("Failed", data, "error");
+                                }
                             }
-                        })
+                        });
+
                     }
+                })
+        }
     </script>
 
 
