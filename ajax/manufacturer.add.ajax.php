@@ -101,10 +101,14 @@ if(isset($_POST['add-new-manuf'])){
     
 
     $manufData = json_decode($Manufacturer->lastManufDataFetch());
-    print_r($manufData);
+    if($manufData != null){
+        $manufId = intval($manufData->id) + 1;
+    }else{
+        $manufId = 1;
+    }
     
     //Inserting Manufacturer Into Database
-    // $addManufacturer = $Manufacturer->addManufacturer( $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $adminId);
+    $addManufacturer = $Manufacturer->addManufacturer($manufId, $manufacturerName, $shortName, $manufacturerDsc, $employeeId, NOW, $manufactureStatus,$newData, $adminId);
         if ($addManufacturer) {
             ?> 
              <script>
@@ -119,7 +123,7 @@ if(isset($_POST['add-new-manuf'])){
             <script>
             swal("Error", "Manufacturer Addition Failed!", "error")
                 .then((value) => {
-                    window.location = '<?= URL ?>add-products.php';
+                    window.location = '<?= URL ?>purchesmaster.php';
                 });
             </script>
             <?php
