@@ -45,7 +45,7 @@ if (isset($showDistributor->status) && $showDistributor->status == 1) {
             <td><?= $DistributorPhno ?></td>
             <td>
                 <a class="mx-1" id="delete-btn" data-id="<?= $distributorId ?>" title="Delete"><i class="far fa-trash-alt"></i></a>
-                <a class="mx-1" onclick="cancelDeleteReqEmp(<?= $distributorId ?>)" title="Cancel Request"><i class="fas fa-times-circle"></i></a>
+                <a class="mx-1" onclick="cancelDeleteReqEmp(<?= $distributorId ?>)" title="Cancel Request"><i class="fas fa-times-circle" style="color: red;"></i></a>
             </td>
         </tr>
     </tbody>
