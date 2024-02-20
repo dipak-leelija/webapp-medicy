@@ -396,7 +396,7 @@ if ($showManufacturer !== null) {
         const customDel = (id) => {
             alert(id);
             let btn = this;
-            alert(btn);
+            console.log(btn);
             swal({
                     title: "Are you sure?",
                     text: "Want to Delete This Manufacturer?",
@@ -416,7 +416,7 @@ if ($showManufacturer !== null) {
                             success: function(response) {
                                 alert(response);
                                 if (response) {
-                                    $(btn).closest("tr").fadeOut()
+                                    $(id).closest("tr").fadeOut()
                                     swal("Deleted", "Manufacturer Has Been Deleted", "success");
                                 } else {
                                     swal("Delete Not Possible", response, "warning");
