@@ -238,7 +238,7 @@ $MeasureOfUnits = new MeasureOfUnits();
                 if (confirmation) {
                     $.ajax({
                         type: 'POST',
-                        url: '/medicy.in/admin/ajax/prodUnitLooseactiv.ajax.php',
+                        url: 'ajax/prodUnitLooseactiv.ajax.php',
                         data: {
                             unitId: unitId
                         },
