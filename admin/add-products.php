@@ -100,16 +100,6 @@ $gstData            = $gstData->data;
                         <div class="card-body">
                             <form action="_config\form-submission\add-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
 
-                                <!-- <div class="col-12 d-flex">
-                                <div class="col-5">
-                                    hello
-                                </div>
-                                <div class="col-7">
-                                    hi
-                                </div>
-                                </div> -->
-
-
                                 <div class="row">
                                     <div class="col-md-5">
                                         <div class="row">
@@ -128,15 +118,16 @@ $gstData            = $gstData->data;
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 d-flex justify-content-around">
+                                        
+                                        <div class="col-12 d-flex justify-content-around mt-4">
                                             <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
                                             <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add Product</button>
                                         </div>
                                     </div>
-
+                                    
                                     <!-- product data input start hear -->
 
-                                    <div class="col-md-7">
+                                    <div class="col-md-7 mt-2">
 
                                         <div class="row">
                                             <lebel>Product Name</leble>
