@@ -99,8 +99,8 @@ $gstData            = $gstData->data;
                     <div class="card shadow mb-4" style="min-height: 90vh;">
                         <div class="card-body">
                             <form action="_config\form-submission\add-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
-                                <div class="row">
-                                    <div class="col-md-5">
+                                <div class="col-md-5">
+                                    <div class="row">
                                         <div class="col-12">
                                             <div id="img-div">
                                                 <div class="container-fluid" id="img-container">
@@ -115,19 +115,22 @@ $gstData            = $gstData->data;
                                                 </div>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div class="col-12 d-flex justify-content-around">
-                                            <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
-                                            <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add
-                                                Product</button>
+                                    </div>
+                                    <br>
 
-                                        </div>
+                                    <div class="col-12 d-flex justify-content-around">
+                                        <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
+                                        <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add
+                                            Product</button>
+
                                     </div>
 
+
                                     <!-- product data input start hear -->
+
                                     <div class="col-md-7 mt-2">
-                                        <div class="col-12">
-                                            <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="row">
                                                 <lebel>Product Name</leble>
                                                     <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
                                             </div>
@@ -292,6 +295,7 @@ $gstData            = $gstData->data;
                                             <div class="col-md-12 mt-3">
                                                 <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3" placeholder="Product Description" required></textarea>
                                             </div>
+
                                         </div>
                                     </div>
 
