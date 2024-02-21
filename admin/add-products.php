@@ -117,15 +117,14 @@ $gstData            = $gstData->data;
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-12 d-flex justify-content-around">
+                                        <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
+                                        <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add Product</button>
+                                    </div>
                                 </div>
                                 <br>
 
-                                <div class="col-12 d-flex justify-content-around">
-                                    <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
-                                    <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add
-                                        Product</button>
 
-                                </div>
 
 
                                 <!-- product data input start hear -->
