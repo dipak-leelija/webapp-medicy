@@ -100,202 +100,213 @@ $gstData            = $gstData->data;
                         <div class="card-body">
                             <form action="_config\form-submission\add-product.php" enctype="multipart/form-data" method="post" id="add-new-product-details">
 
-                                <div class="col-md-5">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div id="img-div">
-                                                <div class="container-fluid" id="img-container">
-                                                    <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
-                                                    <label class="d-flex justify-content-center" for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
-                                                    <p id="num-of-files">No files chosen</p>
-                                                    <div>
-                                                        <div id="images">
+                                <!-- <div class="col-12 d-flex">
+                                <div class="col-5">
+                                    hello
+                                </div>
+                                <div class="col-7">
+                                    hi
+                                </div>
+                                </div> -->
 
+
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div id="img-div">
+                                                    <div class="container-fluid" id="img-container">
+                                                        <input type="file" name="img-files[]" id="img-file-input" accept=".jpg,.png" onchange="preview()" multiple>
+                                                        <label class="d-flex justify-content-center" for="img-file-input" id="img-container-label">Choose Images &nbsp;<i class="fas fa-upload"></i></label>
+                                                        <p id="num-of-files">No files chosen</p>
+                                                        <div>
+                                                            <div id="images">
+
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-around">
-                                        <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
-                                        <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add Product</button>
-                                    </div>
-                                </div>
-                                
-                                <!-- product data input start hear -->
-
-                                <div class="col-md-7">
-
-                                    <div class="row">
-                                        <lebel>Product Name</leble>
-                                            <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
-                                    </div>
-
-                                    <div class="row mt-2">
-                                        <div class="col-md-6">
-                                            <lebel>Product Composition 1</leble>
-                                                <input class="c-inp w-100 p-1" id="product-composition-1" name="product-composition-1" placeholder="Product Composition 1" required>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <lebel>Product Composition 2</leble>
-                                                <input class="c-inp w-100 p-1" id="product-composition-2" name="product-composition-2" placeholder="Product Composition 2" required>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row mt-2">
-                                        <div class="col-md-4">
-                                            <lebel>HSN Code</leble>
-                                                <input class="c-inp w-100 p-1" id="hsn-number" name="hsn-number" placeholder="Enter HSN Code" required>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <lebel>Item Category</leble>
-                                                <select class="c-inp p-1 w-100" name="item-category" id="item-category" required>
-                                                    <option value="" disabled selected>Select</option>
-                                                    <?php
-                                                    if ($prodCategory->status == 1 && is_array($prodCategory->data)) {
-                                                        $prodCategory = $prodCategory->data;
-
-                                                        foreach ($prodCategory as $category) {
-                                                            echo '<option value="' . $category->id . '">' . $category->name . '</option>';
-                                                        }
-                                                    }
-                                                    ?>
-                                                </select>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <lebel>Pack Type</leble>
-                                                <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type" required>
-                                                    <option value="" disabled selected>Pack Type</option>
-                                                    <?php
-                                                    foreach ($showPackagingUnits as $rowPackagingUnits) {
-                                                        echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
+                                        <div class="col-12 d-flex justify-content-around">
+                                            <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
+                                            <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add Product</button>
                                         </div>
                                     </div>
 
+                                    <!-- product data input start hear -->
 
-                                    <div class="row mt-2">
+                                    <div class="col-md-7">
 
-                                        <div class="col-md-3">
-                                            <lebel>Power</leble>
-                                                <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter med Power" required>
+                                        <div class="row">
+                                            <lebel>Product Name</leble>
+                                                <input class="c-inp w-100 p-1" id="product-name" name="product-name" placeholder="Product Name" required>
                                         </div>
 
-                                        <div class="col-md-3">
-                                            <lebel>Quantity</leble>
-                                                <input class="c-inp w-100 p-1" type="text" name="quantity" id="quantity" placeholder="Enter Quantity" required>
+                                        <div class="row mt-2">
+                                            <div class="col-md-6">
+                                                <lebel>Product Composition 1</leble>
+                                                    <input class="c-inp w-100 p-1" id="product-composition-1" name="product-composition-1" placeholder="Product Composition 1" required>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <lebel>Product Composition 2</leble>
+                                                    <input class="c-inp w-100 p-1" id="product-composition-2" name="product-composition-2" placeholder="Product Composition 2" required>
+                                            </div>
+
                                         </div>
 
-                                        <div class="col-md-3">
-                                            <lebel>Item Unit</leble>
-                                                <select class="c-inp p-1 w-100" name="unit" id="unit" required>
-                                                    <option value="" disabled selected>Select Unit</option>
-                                                    <?php
-                                                    foreach ($showMeasureOfUnits as $rowUnit) {
+                                        <div class="row mt-2">
+                                            <div class="col-md-4">
+                                                <lebel>HSN Code</leble>
+                                                    <input class="c-inp w-100 p-1" id="hsn-number" name="hsn-number" placeholder="Enter HSN Code" required>
+                                            </div>
 
-                                                        echo '<option value="' . $rowUnit['id'] . '">' . $rowUnit['short_name'] . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <lebel>Pack Unit</lebel>
-                                            <select class="c-inp p-1 w-100" name="item-unit" id="item-unit" required>
-                                                <option value="" disabled selected>Item Unit</option>
-                                                <?php
-                                                foreach ($itemUnits as $eachUnit) {
-                                                    echo '<option value="' . $eachUnit['id'] . '">' . $eachUnit['name'] . '</option>';
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <lebel>Select Manufacturer</leble>
-                                            <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1" disable hidden>
-
-                                            <input type="text" name="manufacturer-id" id="manufacturer-id" class="c-inp w-100 p-1">
-
-                                            <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list">
-                                                <div class="lists" id="lists">
-                                                    <?php
-                                                    if (!empty($showManufacturer)) {
-                                                        foreach ($showManufacturer as $eachManuf) {
-                                                            // print_r($eachManuf);
-                                                    ?>
-                                                            <div class="p-1 border-bottom list" id="<?= $eachManuf->id ?>" onclick="setManufacturer(this)">
-                                                                <?= $eachManuf->name ?>
-                                                            </div>
+                                            <div class="col-md-4">
+                                                <lebel>Item Category</leble>
+                                                    <select class="c-inp p-1 w-100" name="item-category" id="item-category" required>
+                                                        <option value="" disabled selected>Select</option>
                                                         <?php
+                                                        if ($prodCategory->status == 1 && is_array($prodCategory->data)) {
+                                                            $prodCategory = $prodCategory->data;
+
+                                                            foreach ($prodCategory as $category) {
+                                                                echo '<option value="' . $category->id . '">' . $category->name . '</option>';
+                                                            }
                                                         }
                                                         ?>
-                                                </div>
-
-                                                <div class="d-flex flex-column justify-content-center mt-1" data-toggle="modal" data-target="#add-manufacturer" onclick="addManufacturer()">
-                                                    <button type="button" id="add-manuf-btn" class="text-primary border-0">
-                                                        <i class="fas fa-plus-circle"></i>
-                                                        Add Now
-                                                    </button>
-                                                </div>
-
-                                            <?php
-                                                    } else {
-                                            ?>
-                                                <p class="text-center font-weight-bold">Manufacturer Not Found!</p>
-                                                <div class="d-flex flex-column justify-content-center" data-toggle="modal" data-target="#add-manufacturer" onclick="addManufacturer()">
-                                                    <button type="button" id="add-manuf-btn" class="text-primary border-0 mt-2"><i class="fas fa-plus-circle"></i>
-                                                        Add Now</button>
-                                                </div>
-                                            <?php
-                                                    }
-                                            ?>
+                                                    </select>
                                             </div>
-                                    </div>
 
-
-
-                                    <!-- Price Row -->
-
-                                    <div class="row mt-2">
-                                        <div class="col-md-6">
-                                            <lebel>Enter MRP</leble>
-                                                <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" step="0.01" required>
+                                            <div class="col-md-4">
+                                                <lebel>Pack Type</leble>
+                                                    <select class="c-inp p-1 w-100" name="packaging-type" id="packaging-type" required>
+                                                        <option value="" disabled selected>Pack Type</option>
+                                                        <?php
+                                                        foreach ($showPackagingUnits as $rowPackagingUnits) {
+                                                            echo '<option value="' . $rowPackagingUnits['id'] . '">' . $rowPackagingUnits['unit_name'] . '</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                            </div>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <lebel>Select GST</leble>
-                                                <select class="c-inp w-100 p-1" name="gst" id="gst" required>
 
-                                                    <option value="" disabled selected>GST%</option>
+                                        <div class="row mt-2">
+
+                                            <div class="col-md-3">
+                                                <lebel>Power</leble>
+                                                    <input class="c-inp w-100 p-1" type="text" name="medicine-power" id="medicine-power" placeholder="Enter med Power" required>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <lebel>Quantity</leble>
+                                                    <input class="c-inp w-100 p-1" type="text" name="quantity" id="quantity" placeholder="Enter Quantity" required>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <lebel>Item Unit</leble>
+                                                    <select class="c-inp p-1 w-100" name="unit" id="unit" required>
+                                                        <option value="" disabled selected>Select Unit</option>
+                                                        <?php
+                                                        foreach ($showMeasureOfUnits as $rowUnit) {
+
+                                                            echo '<option value="' . $rowUnit['id'] . '">' . $rowUnit['short_name'] . '</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <lebel>Pack Unit</lebel>
+                                                <select class="c-inp p-1 w-100" name="item-unit" id="item-unit" required>
+                                                    <option value="" disabled selected>Item Unit</option>
                                                     <?php
-                                                    foreach ($gstData as $gstData) {
-
-                                                        echo '<option value="' . $gstData->id . '" >' . $gstData->percentage . '</option>';
+                                                    foreach ($itemUnits as $eachUnit) {
+                                                        echo '<option value="' . $eachUnit['id'] . '">' . $eachUnit['name'] . '</option>';
                                                     }
                                                     ?>
                                                 </select>
+                                            </div>
                                         </div>
+
+                                        <div class="row">
+                                            <lebel>Select Manufacturer</leble>
+                                                <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1" disable hidden>
+
+                                                <input type="text" name="manufacturer-id" id="manufacturer-id" class="c-inp w-100 p-1">
+
+                                                <div class="p-2 bg-light col-md-12 c-dropdown" id="manuf-list">
+                                                    <div class="lists" id="lists">
+                                                        <?php
+                                                        if (!empty($showManufacturer)) {
+                                                            foreach ($showManufacturer as $eachManuf) {
+                                                                // print_r($eachManuf);
+                                                        ?>
+                                                                <div class="p-1 border-bottom list" id="<?= $eachManuf->id ?>" onclick="setManufacturer(this)">
+                                                                    <?= $eachManuf->name ?>
+                                                                </div>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                    </div>
+
+                                                    <div class="d-flex flex-column justify-content-center mt-1" data-toggle="modal" data-target="#add-manufacturer" onclick="addManufacturer()">
+                                                        <button type="button" id="add-manuf-btn" class="text-primary border-0">
+                                                            <i class="fas fa-plus-circle"></i>
+                                                            Add Now
+                                                        </button>
+                                                    </div>
+
+                                                <?php
+                                                        } else {
+                                                ?>
+                                                    <p class="text-center font-weight-bold">Manufacturer Not Found!</p>
+                                                    <div class="d-flex flex-column justify-content-center" data-toggle="modal" data-target="#add-manufacturer" onclick="addManufacturer()">
+                                                        <button type="button" id="add-manuf-btn" class="text-primary border-0 mt-2"><i class="fas fa-plus-circle"></i>
+                                                            Add Now</button>
+                                                    </div>
+                                                <?php
+                                                        }
+                                                ?>
+                                                </div>
+                                        </div>
+
+
+
+                                        <!-- Price Row -->
+
+                                        <div class="row mt-2">
+                                            <div class="col-md-6">
+                                                <lebel>Enter MRP</leble>
+                                                    <input type="number" class="c-inp w-100 p-1" name="mrp" id="mrp" placeholder="Enter MRP" step="0.01" required>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <lebel>Select GST</leble>
+                                                    <select class="c-inp w-100 p-1" name="gst" id="gst" required>
+
+                                                        <option value="" disabled selected>GST%</option>
+                                                        <?php
+                                                        foreach ($gstData as $gstData) {
+
+                                                            echo '<option value="' . $gstData->id . '" >' . $gstData->percentage . '</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                            </div>
+                                        </div>
+
+
+                                        <!--/End Price Row -->
+
+                                        <div class="col-md-12 mt-3">
+                                            <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3" placeholder="Product Description" required></textarea>
+                                        </div>
+
+
                                     </div>
-
-
-                                    <!--/End Price Row -->
-
-                                    <div class="col-md-12 mt-3">
-                                        <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3" placeholder="Product Description" required></textarea>
-                                    </div>
-
-
                                 </div>
-
 
                             </form>
                         </div>
