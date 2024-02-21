@@ -113,7 +113,7 @@ $Request        = new Request;
                     $image = '';
                 }
 
-
+                $productId = $newProductId;
                 $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $supAdminId, $imgStatus);
 
                 print_r($addImagesRequest);
