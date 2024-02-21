@@ -118,13 +118,10 @@ $gstData            = $gstData->data;
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        <div class="col-12 d-flex justify-content-around mt-4">
-                                            <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
-                                            <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add Product</button>
-                                        </div>
+
+
                                     </div>
-                                    
+
                                     <!-- product data input start hear -->
 
                                     <div class="col-md-7 mt-2">
@@ -294,11 +291,20 @@ $gstData            = $gstData->data;
                                         <div class="col-md-12 mt-3">
                                             <textarea class="form-control" name="product-descreption" id="product-descreption" cols="30" rows="3" placeholder="Product Description" required></textarea>
                                         </div>
-
-
                                     </div>
                                 </div>
+                                
+                                <div class="row mt-4">
+                                    <div class="col-12 d-flex">
+                                        <div class="col-md-6 d-flex justify-content-end">
+                                            <button class="btn btn-danger mr-3" id="reset" type="reset" onclick="resetImg()"> Reset</button>
+                                        </div>
 
+                                        <div class="col-md-6">
+                                            <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add Product</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

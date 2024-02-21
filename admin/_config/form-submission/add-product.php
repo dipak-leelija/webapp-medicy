@@ -34,11 +34,22 @@ $Request        = new Request;
 
     if (isset($_POST['add-product'])) {
 
-        $imagesName           = $_FILES['img-files']['name'];
+        $imagesName         = $_FILES['img-files']['name'];
         $tempImgsName       = $_FILES['img-files']['tmp_name'];
-        // print_r($tempImgsName);
+
         $imageArrayCaount = count($imagesName);
         $tempImageArrayCaount = count($tempImgsName);
+
+        if ($imageArrayCaount >= 1) {
+            if ($imagesName[0] != '') {
+                $imageAdded = true;
+            } else {
+                $imageAdded = false;
+            }
+        } else {
+            $imageAdded = false;
+        }
+
 
         $productName = $_POST['product-name'];
         // print_r($prodName);
@@ -55,7 +66,7 @@ $Request        = new Request;
         $itemUnit = $_POST['item-unit'];
 
         $manufacturerId  = $_POST['manufacturer'];
-        
+
         $mrp           = $_POST['mrp'];
         $gst           = $_POST['gst'];
         $productDesc   = $_POST['product-descreption'];
@@ -67,100 +78,100 @@ $Request        = new Request;
         $randNum = rand(1, 999999999999);
         $newProductId = 'PR' . $randNum;
 
+
+        $imageDataTuple = json_encode(['imageNmArray' => $imagesName, 'tempImageNmArray' => $tempImgsName, 'imgArrayCount' => $imageArrayCaount, 'tempImgArrayCount' => $tempImageArrayCaount, 'addedBy' => $addedBy, 'adminId' => $addedBy, 'productId' => $newProductId]); // createing image data tupel ------
+
+
+        function addImage($imageDataTuple, $ProductImages)
+        {
+            try {
+                $imageDataTuple = json_decode($imageDataTuple);
+
+                $imagesName = $imageDataTuple->imageNmArray;
+                $tempImgsName = $imageDataTuple->tempImageNmArray;
+
+                $imageArrayCount = $imageDataTuple->imgArrayCount;
+                $tempImageArrayCount = $imageDataTuple->tempImgArrayCount;
+
+                for ($j = 0; $j < $imageArrayCount && $j < $tempImageArrayCount; $j++) {
+                    ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PREFIX \\\\\\\\\\\\\
+
+                    $imgStatus = 1;
+
+                    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    $randomString = '';
+                    for ($i = 0; $i < 9; $i++) {
+                        $randomString .= $characters[rand(0, strlen($characters) - 1)];
+                    }
+
+                    $randomString = $randomString;
+
+                    ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
+                    //===== Main Image 
+                    $imageName        = $imagesName[$j];
+                    $tempImageName   = $tempImgsName[$j];
+
+                    $extension = substr($imageName, -4);
+                    $imageNameWithoutExtension = substr($imageName, 0, -4);
+
+                    $image         = $imageNameWithoutExtension . '-' . $randomString . $extension;
+                    $imgFolder     = PROD_IMG . $image;
+
+                    move_uploaded_file($tempImageName, $imgFolder);
+                    $image         = addslashes($image);
+
+                    $addImages = $ProductImages->addImagesBySupAdmin($imageDataTuple->productId, $image, $imgStatus, $imageDataTuple->addedBy, NOW, $imageDataTuple->adminId);
+                }
+
+                return $addImages;
+            } catch (Exception $e) {
+                return "Error: " . $e->getMessage();
+            }
+        }
+
+
+
         //Insert into products table 
         $addProducts = $Products->addProductBySuperAdmin($newProductId, $productName, $productComp1, $productComp2, $hsnNumber, $category, $packagingType, $medicinePower, $unitQuantity, $unit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $supAdminId, $verifyStatus, NOW);
 
-        // 
+        $addProducts = json_decode($addProducts);
+        if ($addProducts->status) {
+            if ($imageAdded) {
+                $imageAdd = addImage($imageDataTuple, $ProductImages);
 
-        // print_r($addProducts);
-
-
-        $addProducts = true;
-
-        if ($addProducts === true) {
-
-            for ($j = 0; $j < $imageArrayCaount && $j < $tempImageArrayCaount; $j++) {
-                ////////// RANDOM 12DIGIT STRING GENERATOR FOR IMAGE NAME PRIFIX \\\\\\\\\\\\\
-
-                $imgStatus = 0;
-
-                $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                $randomString = '';
-                for ($i = 0; $i < 9; $i++) {
-                    $randomString .= $characters[rand(0, strlen($characters) - 1)];
+                if($imageAdd){
+                    $addProduct = true;
+                }else{
+                    $addProduct = false;
                 }
-
-                $randomString = $randomString;
-
-                ////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\
-                //===== Main Image 
-                $imageNmame        = $imagesName[$j];
-                $tempImgname   = $tempImgsName[$j];
-
-                $extention = substr($imageNmame, -4);
-                $imageNm = substr($imageNmame, 0, -4);
-
-                if ($imageNmame != null) {
-
-                    $image         = $imageNm . '-' . $randomString . $extention;
-                    $imgFolder     = PROD_IMG . $image;
-
-                    // echo $image."<br>";
-
-                    move_uploaded_file($tempImgname, $imgFolder);
-                    $image         = addslashes($image);
-                } else {
-                    $image = '';
-                }
-
-                $productId = $newProductId;
-                $addImagesRequest = $Request->addImageRequest($productId, $image, $addedBy, NOW, $supAdminId, $imgStatus);
-
-                print_r($addImagesRequest);
-                exit;
+            } else {
+                $addProduct = true;
             }
-  
+        }else{
+            $addProduct = false;
+        }
+
+   
+        if ($addProduct) {
     ?>
             <script>
                 swal("Success", "Product Added!", "success")
                     .then((value) => {
-                        window.location = '<?php echo SUP_ADM_DIR ?>add-products.php';
+                        window.location = '<?php echo SUP_ADM_DIR ?>add-new-product.php';
                     });
             </script>
         <?php
         } else {
         ?>
             <script>
-                swal("Error", "Product Not Added!", "error")
+                swal("Error", "Product Not Added Properly!", "error")
                     .then((value) => {
-                        window.location = '<?php echo SUP_ADM_DIR ?>add-products.php';
+                        window.location = '<?php echo SUP_ADM_DIR ?>add-new-product.php';
                     });
             </script>
-        <?php
+    <?php
         }
-
-
-    //     if ($addProducts === true) {
-    //     ?>
-    //         <script>
-    //             swal("Success", "Product Added!", "success")
-    //                 .then((value) => {
-    //                     window.location = '<?php echo SUP_ADM_DIR ?>_config/form-submission/add-new-product.php';
-    //                 });
-    //         </script>
-    //     <?php
-    //     } else {
-    //     ?>
-    //         <script>
-    //             swal("Error", "Product Not Added!", "error")
-    //                 .then((value) => {
-    //                     window.location = '<?php echo SUP_ADM_DIR ?>_config/form-submission/add-new-product.php';
-    //                 });
-    //         </script>
-    // <?php
-    //     }
     }
-
     ?>
 
 </body>

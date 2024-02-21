@@ -146,11 +146,11 @@ img {
 #img-div {
     padding: 1rem;
     margin: 0;
-    height: 20rem;
+    height: 30rem;
     box-sizing: border-box;
     background-color: #f5f8ff;
     font-family: "Rubik", sans-serif;
-    max-height: 20rem;
+    max-height: 30rem;
     overflow: auto;
 }
 
