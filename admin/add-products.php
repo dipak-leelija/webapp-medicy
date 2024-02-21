@@ -122,11 +122,7 @@ $gstData            = $gstData->data;
                                         <button class="btn btn-primary" name="add-product" id="add-btn" type="submit">Add Product</button>
                                     </div>
                                 </div>
-                                <br>
-
-
-
-
+                                
                                 <!-- product data input start hear -->
 
                                 <div class="col-md-7">
@@ -223,7 +219,7 @@ $gstData            = $gstData->data;
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12 mt-2">
+                                    <div class="row">
                                         <lebel>Select Manufacturer</leble>
                                             <input type="text" name="manufacturer" id="manufacturer" class="c-inp w-100 p-1" disable hidden>
 
