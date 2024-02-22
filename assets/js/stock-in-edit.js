@@ -499,12 +499,12 @@ const getBillAmount = () => {
 
     let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
     // base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
-    base = base.toFixed(2);
-
+   
     let totalAmount = (parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100))) * parseInt(qty);
     totalAmount = totalAmount.toFixed(2);
 
-
+    base = base.toFixed(2);
+    
     document.getElementById("base").value = base;
     document.getElementById("bill-amount").value = totalAmount;
 
