@@ -222,16 +222,16 @@
 
         <!-- Purchase Master collapsed Menu  -->
         <li
-            class="nav-item <?php if($page ==  "distributor" || $page ==  "manufacturer" || $page ==  "pack-unit" || $page ==  "product-unit"){ echo "active";} ?>">
+            class="nav-item <?php if($page ==  "distributor" || $page ==  "manufacturer" || $page ==  "pack-unit" || $page ==  "product-unit" || $page ==  "item-unit"){ echo "active";} ?>">
             <a class="nav-link <?php if($page !=  "distributor"){ echo "collapsed";} ?>" href="#" data-toggle="collapse"
                 data-target="#collapseUtilities"
-                aria-expanded="<?php if($page ==  "distributor" || $page ==  "manufacturer" || $page ==  "pack-unit" || $page ==  "product-unit"){ echo "true";} ?>"
+                aria-expanded="<?php if($page ==  "distributor" || $page ==  "manufacturer" || $page ==  "pack-unit" || $page ==  "product-unit" || $page ==  "item-unit"){ echo "true";} ?>"
                 aria-controls="collapseUtilities">
                 <i class="fas fa-shopping-basket"></i>
                 <span>Purchase Master</span>
             </a>
             <div id="collapseUtilities"
-                class="collapse <?php if($page ==  "distributor" || $page ==  "manufacturers" || $page ==  "packaging-unit" || $page ==  "product-unit"){ echo "show";} ?>"
+                class="collapse <?php if($page ==  "distributor" || $page ==  "manufacturers" || $page ==  "packaging-unit" || $page ==  "product-unit" || $page ==  "item-unit"){ echo "show";} ?>"
                 aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Purchase Master:</h6>
@@ -241,8 +241,10 @@
                         href="manufacturers.php">Manufacturer </a>
                     <a class="collapse-item <?php if($page ==  "packaging-unit"){ echo "active";} ?>"
                         href="packaging-unit.php">Packageing Unit </a>
-                    <a class="collapse-item <?php if($page ==  "product-unit"){ echo "active";} ?>"
+                    <a class="collapse-item <?php if($page ==  "product-unit" ){ echo "active";} ?>"
                         href="product-unit.php">Product Unit </a>
+                    <a class="collapse-item <?php if($page ==  "item-unit" ){ echo "active";} ?>"
+                        href="item-unit.php">Item Unit </a>
                 </div>
             </div>
         </li>
