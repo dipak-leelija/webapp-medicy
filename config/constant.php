@@ -130,6 +130,7 @@ session_start();
 	const ADM_IMG_PATH						=	URL.'images/admin-images/';
 	const SUP_ADM_IMG_PATH					=	URL.'admin/images/admin-images/';
 	const EMPLOYEE_IMG_PATH					=	URL.'images/employee-images/';
+	const DEFAULT_USER_IMG_PATH				=	URL.'images/user-default-image/defaultAvtar.png';
 	const EMP_PATH							=	URL.'employee/';
 	const EMP_ASSETS						=	URL.'employee/assets/';
 	const EMP_CSS							=	URL.'employee/assets/css/';
