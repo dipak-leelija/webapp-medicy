@@ -10,6 +10,8 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+ @import './main.css';
+
 :root {
   --blue: #4e73df;
   --indigo: #6610f2;
@@ -10322,7 +10324,10 @@ a:focus {
 
 .sidebar {
   width: 6.5rem;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  height: fit-content;
+  position: sticky;
+  top: 0;
 }
 
 .sidebar .nav-item {

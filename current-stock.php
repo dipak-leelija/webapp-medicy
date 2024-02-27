@@ -110,18 +110,14 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table " id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
                                     <thead class="bg-primary text-light">
                                         <tr>
                                             <th hidden>ID</th>
-                                            <th>Image</th>
+                                            <th></th>
                                             <th>Product Name</th>
-                                            <!-- <th hidden>Batch No</th>
-                                            <th>Exp Date</th> -->
-                                            <th>Qty.</th>
-                                            <!-- <th hidden>MRP</th> -->
-                                            <th>L. Qty.</th>
-                                            <!-- <th hidden>L. MRP</th> -->
+                                            <th>Stock Qty</th>
+                                            <th>Loose Qty</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -132,9 +128,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                             foreach ($currentStockGroup as $rowStock) {
 
                                                 $currentStockId      = $rowStock['id'];
-
                                                 $productId           = $rowStock['product_id']; // fetch 
-
                                                 $image               = json_decode($ProductImages->showImageById($productId));
 
                                                 if ($image->status) {
@@ -256,7 +250,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
 
                                                     <td class='align-middle'>
-                                                        <a class='text-primary mr-2' onclick='currentStockView("<?php echo $productId ?>", "<?php echo $editReqFlag ?>")' data-toggle='modal' data-target='#currentStockModal'><i class='fas fa-eye'></i></a>
+                                                        <span class="badge badge-primary cursor-pointer p-1" onclick='currentStockView("<?php echo $productId ?>", "<?php echo $editReqFlag ?>")' data-toggle='modal' data-target='#currentStockModal'>View <i class='fas fa-eye'></i></span>
                                                     </td>
                                                 </tr>
                                         <?php
@@ -298,7 +292,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
     <!-- View currentStockModal Modal -->
     <div class="modal fade" id="currentStockModal" tabindex="-1" role="dialog" aria-labelledby="currentStockModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="currentStockModalTitle">Product Details</h5>
