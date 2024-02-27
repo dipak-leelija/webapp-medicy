@@ -597,7 +597,7 @@ function addData() {
     //////////////////// onclik handler data \\\\\\\\\\\\\\\\\\\
     var divElement = document.getElementById(seletedItemDiv);
     originalClickHandler = divElement.onclick;
-
+   
     let flag = 0;
     // =========================================================
 
@@ -681,12 +681,13 @@ function addData() {
 
 
         ///////////////////////////////////////////////////////////////////////////////////
-
+        
         const dataTuple = {
 
             seletedItemDiv: seletedItemDiv,
             originalClickHandler: originalClickHandler,
 
+            onclickHandelerData : originalClickHandler,
 
             slno: slControl,
             stokInDetailsId: stokInDetailsId.value,
@@ -721,6 +722,8 @@ function addData() {
             returnFreeQty: returnFreeQty.value,
             refundAmount: refundAmount.value,
         };
+
+        console.log(dataTuple.originalClickHandler);
 
         let tupleData = JSON.stringify(dataTuple);
 
@@ -779,8 +782,9 @@ function addData() {
 
 
         /// ============ row modify function ===============
-
+        
         disableOnClickFunction(seletedItemDiv);
+
     }
 
 } //eof addData  
@@ -788,19 +792,14 @@ function addData() {
 
 // ======= item onclick disable and enablel function ========
 const disableOnClickFunction = (divId) => {
-
     let divElement = document.getElementById(divId);
 
     if (divElement) {
-        divElement.onclick = null; // or divElement.onclick = function() {};
+        divElement.onclick = null; // divElement.onclick = function() {};
     }
-
 } // eof item onclik disable 
 
 const divOnclikActive = (divId, handelerData) => {
-
-    // console.log(divId.id);
-    // console.log(handelerData);
 
     let divElement = document.getElementById(divId.id);
 
@@ -809,6 +808,7 @@ const divOnclikActive = (divId, handelerData) => {
         divElement.onclick = handelerData;
     }
 }
+
 // ================================ Delet Data ================================
 
 const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerData, flag) => {
@@ -848,6 +848,8 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerDat
     rowAdjustment(delRow);
     // console.log(divId);
 
+
+    // console.log(handelerData);
     if(flag == 0){
         divOnclikActive(divId, handelerData);
     }
@@ -873,9 +875,10 @@ function rowAdjustment(delRow) {
 
 const editItem = (tData) => {
 
+    console.log(tData);
     if (document.getElementById('product-id').value == '') {
         var tData = JSON.parse(tData);
-        console.log(tData);
+        // console.log(tData.handelerData);
 
         document.getElementById("select-item-div").value = tData.seletedItemDiv;
 
