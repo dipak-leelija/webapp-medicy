@@ -53,7 +53,7 @@ if ($_SESSION['ADMIN']) {
 
     if ($employeeDetails->status) {
         $employeeData = $employeeDetails->data;
-
+        // print_r($employeeData);
         foreach ($employeeData as $employeeData) {
 
             $empName = $employeeData->emp_name;
@@ -61,15 +61,27 @@ if ($_SESSION['ADMIN']) {
             $lastSpacePos = strrpos($empName, ' ');
 
             if ($lastSpacePos !== false) {
-
                 $firstName = substr($empName, 0, $lastSpacePos);
                 $lastName = substr($empName, $lastSpacePos + 1);
             }
+
             $image      = $employeeData->emp_img;
-            $profileImg = EMPLOYEE_IMG_PATH . $image;
+
+            if(empty($image)){
+                $profileImg = DEFAULT_USER_IMG_PATH;
+            }else{
+                $profileImg = EMPLOYEE_IMG_PATH . $image;
+            }
+
             $userName   = $employeeData->emp_username;
             $email      = $employeeData->emp_email;
-            $phone      = $employeeData->contact;
+
+            if(isset($employeeData->contact)){
+                $phone      = $employeeData->contact;
+            }else{
+                $phone      = "";
+            }
+            
             $password   = $employeeData->emp_password;
             $address    = $employeeData->emp_address;
         }
