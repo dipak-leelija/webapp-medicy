@@ -95,9 +95,9 @@ $productList = json_decode($Products->showProductsByLimit());
                                         <?= $totalPtoducts ?>
                                     </h6>
                                 </div>
-                                <div class="col-md-6 d-flex justify-content-end">
+                                <!-- <div class="col-md-6 d-flex justify-content-end">
                                     <a class="btn btn-sm btn-primary" href="add-products.php" style="margin-left: 4rem;"><i class="fas fa-plus"></i> Add</a>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="card-body">
 

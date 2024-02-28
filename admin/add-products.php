@@ -147,7 +147,7 @@ $gstData            = $gstData->data;
                                         <div class="row mt-2">
                                             <div class="col-md-4">
                                                 <lebel>HSN Code</leble>
-                                                    <input class="c-inp w-100 p-1" id="hsn-number" name="hsn-number" placeholder="Enter HSN Code" required>
+                                                    <input class="c-inp w-100 p-1" id="hsn-number" name="hsn-number" placeholder="Enter HSN Code" minlength="6"  maxlength="8" required>
                                             </div>
 
                                             <div class="col-md-4">

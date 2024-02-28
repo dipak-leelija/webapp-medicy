@@ -138,7 +138,7 @@ $Request        = new Request;
         if ($addProducts->status) {
             if ($imageAdded) {
                 $imageAdd = addImage($imageDataTuple, $ProductImages);
-
+                echo "<br>add image : $imageAdd<br>";
                 if($imageAdd){
                     $addProduct = true;
                 }else{
@@ -151,13 +151,13 @@ $Request        = new Request;
             $addProduct = false;
         }
 
-   
+       
         if ($addProduct) {
     ?>
             <script>
                 swal("Success", "Product Added!", "success")
                     .then((value) => {
-                        window.location = '<?php echo SUP_ADM_DIR ?>add-new-product.php';
+                        window.location = '<?php echo ADM_URL ?>add-products.php';
                     });
             </script>
         <?php
@@ -166,7 +166,7 @@ $Request        = new Request;
             <script>
                 swal("Error", "Product Not Added Properly!", "error")
                     .then((value) => {
-                        window.location = '<?php echo SUP_ADM_DIR ?>add-new-product.php';
+                        window.location = '<?php echo ADM_URL ?>add-products.php';
                     });
             </script>
     <?php
