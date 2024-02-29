@@ -120,13 +120,13 @@ $QuantityUnit   = new QuantityUnit;
         // echo '</script>';
 
         $pack = json_decode($PackagingUnits->showPackagingUnitById($product->packaging_type));
-        if($pack->status){
+        if ($pack->status) {
             $packUnit = $pack->data->unit_name;
-        }else{
+        } else {
             $packUnit = '';
         }
 
-        
+
         //======== item unit data fetch =======
         if (isset($product->unit_id)) {
             $itemQuantityUnit = json_decode($QuantityUnit->quantityUnitName($product->unit_id));
@@ -291,59 +291,54 @@ $QuantityUnit   = new QuantityUnit;
         //========================= Delete Product =========================
 
         const del = (prodId, table, oldProdId) => {
-            btnID = prodId;
-            tblNm = table; 
-            // alert(tblNm);
-            oldProdId = oldProdId;           
-         
-            swal.fire({
-                    title: "Are you sure?",
-                    text: "Want to Delete This Data?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        // var productId = window.productId;
-                        // console.log("product ID-"+productId);
-                        $.ajax({
-                            url: "product.Delete.ajax.php",
-                            type: "POST",
-                            data: {
-                                productId: btnID,
-                                id: btnID,
-                                table: tblNm,
-                                oldProdId: oldProdId,
-                            },
-                            success: function(data) {
-                                // alert(data);
-                                if (data == 1) {
-                                    Swal.fire(
-                                        "Deleted",
-                                        "Data Has Been Deleted",
-                                        "success"
-                                    ).then(function() {
-                                        if(tblNm == 'products'){
-                                            parent.location.href = "<?php echo ADM_URL.'prodcuts.php'; ?>";
-                                        }else{
-                                            parent.location.href = "<?php echo ADM_URL.'product-request-lsit.php'; ?>";
-                                        }  
-                                    });
 
-                                } else {
-                                    Swal.fire("Failed", "Product Deletion Failed!",
-                                        "error");
-                                    $("#error-message").html("Deletion Field !!!")
-                                        .slideDown();
-                                    $("success-message").slideUp();
-                                }
+            const btnID = prodId;
+            const tblNm = table;
+            const oldProductId = oldProdId;
+
+            swal.fire({
+                title: "Are you sure?",
+                text: "Want to Delete This Data?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+
+                    $.ajax({
+                        url: "product.Delete.ajax.php",
+                        type: "POST",
+                        data: {
+                            productId: btnID,
+                            id: btnID,
+                            table: tblNm,
+                            oldProdId: oldProductId,
+                        },
+                        success: function(data) {
+                            alert(data);
+                            if (data) {
+                                Swal.fire(
+                                    "Deleted",
+                                    "Data Has Been Deleted",
+                                    "success"
+                                ).then(function() {
+                                    const redirectUrl = tblNm === 'products' ? "<?php echo ADM_URL . 'prodcuts.php'; ?>" : "<?php echo ADM_URL . 'product-request-list.php'; ?>";
+                                    parent.location = redirectUrl;
+                                });
+                            } else {
+                                Swal.fire("Failed", "Product Deletion Failed!", "error");
+                                $("#error-message").html("Deletion Field !!!").slideDown();
+                                $("success-message").slideUp();
                             }
-                        });
-                    }
-                    return false;
-                });
-        }
+                        },
+                        error: function(xhr, textStatus, errorThrown) {
+                            console.error("Error:", errorThrown);
+                            Swal.fire("Error", "An error occurred while processing your request.", "error");
+                        }
+                    });
+                }
+            });
+        };
     </script>
 
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>

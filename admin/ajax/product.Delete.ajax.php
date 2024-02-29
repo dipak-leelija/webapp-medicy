@@ -50,9 +50,9 @@ if($checkImg->status){
 
 
 if ($deleteProduct && $deleteProductImg) {
-    echo 1;
+    echo true;
 }else {
-    echo 0;
+    echo false;
 }
 
 
