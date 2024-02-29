@@ -196,46 +196,41 @@ $showDoctors = json_decode($showDoctors, true);
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docAlsoWith">Also With <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docAlsoWith" id="docAlsoWith"
-                                                >
+                                            <input class="form-control" type="text" name="docAlsoWith" id="docAlsoWith" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docEmail">Doctor Email <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docEmail" id="docEmail">
+                                            <input class="form-control" type="email" name="docEmail" id="docEmail" required>
                                         </div>
+
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docMob">Doctor Mob No <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docMob" id="docMob"
-                                                maxlength="10" minlength="10" >
+                                            <input class="form-control" type="text" name="docMob" id="docMob" maxlength="10" minlength="10" required>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docRegNo">Doctor Reg No <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docRegNo" id="docRegNo"
-                                            maxlength="10" >
+                                            <input class="form-control" type="text" name="docRegNo" id="docRegNo" maxlength="10" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docDegree">Doctor Degree <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docDegree" id="docDegree"
-                                                >
+                                            <input class="form-control" type="text" name="docDegree" id="docDegree" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docAddress">Full Address <span class="text-danger font-weight-bold">*</span></label>
-                                            <textarea class="form-control" name="docAddress" id="docAddress" cols="30"
-                                                rows="6" ></textarea>
+                                            <textarea class="form-control" name="docAddress" id="docAddress" cols="30" rows="6" required></textarea>
                                         </div>
 
                                     </div>
                                 </div>
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                                    <button class="btn btn-success me-md-2" type="submit" name="add-doc">Add
-                                        Now</button>
+                                    <button class="btn btn-success me-md-2" type="submit" name="add-doc">Add Now</button>
                                 </div>
                             </form>
                         </div>
