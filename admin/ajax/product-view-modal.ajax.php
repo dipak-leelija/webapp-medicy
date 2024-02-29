@@ -21,8 +21,7 @@ $CurrentStock   = new CurrentStock();
 $QuantityUnit   = new QuantityUnit;
 
 
-$redirectPage = SUP_ADM_DIR.'prodcuts.php'; // after delete from product tabel redirection page url
-// echo $redirectPage;
+
 ?>
 
 <!DOCTYPE html>
@@ -254,7 +253,7 @@ $redirectPage = SUP_ADM_DIR.'prodcuts.php'; // after delete from product tabel r
                             </div>
 
                             <div class="col-sm-6 m-2">
-                                <button class="button1 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>', '<?php echo $redirectPage; ?>')">Reject</button>
+                                <button class="button1 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>')">Reject</button>
                             </div>
                         </div>
                     </div>
@@ -269,7 +268,7 @@ $redirectPage = SUP_ADM_DIR.'prodcuts.php'; // after delete from product tabel r
                         </div>
                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         <div class="col-md-6 d-flex justify-content-end">
-                            <button class="button2 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>', '<?php echo $redirectPage; ?>')">Reject</button>
+                            <button class="button2 btn-danger" onclick="del('<?php echo $_GET['id']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo $oldProductId; ?>')">Reject</button>
                         </div>
                     </div>
                 </div>
@@ -291,11 +290,12 @@ $redirectPage = SUP_ADM_DIR.'prodcuts.php'; // after delete from product tabel r
 
         //========================= Delete Product =========================
 
-        const del = (prodId, table, oldProdId, direction) => {
+        const del = (prodId, table, oldProdId) => {
             btnID = prodId;
             tblNm = table; 
+            // alert(tblNm);
             oldProdId = oldProdId;           
-            // alert(direction);
+         
             swal.fire({
                     title: "Are you sure?",
                     text: "Want to Delete This Data?",
@@ -325,9 +325,9 @@ $redirectPage = SUP_ADM_DIR.'prodcuts.php'; // after delete from product tabel r
                                         "success"
                                     ).then(function() {
                                         if(tblNm == 'products'){
-                                            parent.location.href = direction;
+                                            parent.location.href = "<?php echo ADM_URL.'prodcuts.php'; ?>";
                                         }else{
-                                            parent.location.reload();
+                                            parent.location.href = "<?php echo ADM_URL.'product-request-lsit.php'; ?>";
                                         }  
                                     });
 

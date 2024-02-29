@@ -138,7 +138,7 @@ $Request        = new Request;
         if ($addProducts->status) {
             if ($imageAdded) {
                 $imageAdd = addImage($imageDataTuple, $ProductImages);
-                echo "<br>add image : $imageAdd<br>";
+                // echo "<br>add image : $imageAdd<br>";
                 if($imageAdd){
                     $addProduct = true;
                 }else{
