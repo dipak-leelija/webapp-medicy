@@ -63,7 +63,7 @@ class Request extends DatabaseConnection
                 return json_encode(['status' => '0', 'data' => "No rows affected. Insertion failed."]);
             }
         } catch (Exception $e) {
-            return "Error: " . $e->getMessage();
+            return json_encode(['status' => '0', "Error: " . $e->getMessage()]);
         }
     }
 
