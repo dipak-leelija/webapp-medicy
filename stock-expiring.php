@@ -113,8 +113,8 @@ $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
                                             <th>Batch</th>
                                             <th>Exp. Date</th>
                                             <th>Qty.</th>
-                                            <th>L. Qty.</th>
-                                            <th>Action</th>
+                                            <th>Loose Qty.</th>
+                                            <!-- <th>Action</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -122,8 +122,16 @@ $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
                                         <?php
                                         foreach ($showExpiry as $item) {
                                             $productId    = $item['product_id'];
-                                            $productDetails = $Products->showProductsById($productId);
-                                            $prodName = $productDetails[0]['name'];
+
+                                            $productDetails = json_decode($Products->showProductsById($productId));
+                                            if(!$productDetails->status ){
+                                                $tableName = 'product_request';
+                                                $productDetails = json_decode($Products->showProductsByIdOnTableNameAdminId($productId, $adminId, $tableName));
+                                            }
+
+                                            // print_r($productDetails);
+
+                                            $prodName = $productDetails->data->name;
                                             $batch        = $item['batch_no'];
                                             $expDate      = $item['exp_date'];
                                             $qty          = $item['qty'];
@@ -135,16 +143,14 @@ $showExpiry = $CurrentStock->showStockExpiry(NOW, $adminId);
                                                     <td>".$expDate."</td>
                                                     <td>".$qty."</td>
                                                     <td>".$lCount."</td>
-                                                    <td>
-                                                    <a class='' data-toggle='modal' data-target='#manufacturerModal' onclick='viewSoldList(".$productId.")'><i class='fas fa-edit'></i></a>
-
-                                                    <a class='ms-2' id='delete-btn' data-id=".$productId."><i class='far fa-trash-alt'></i></a>
-                                                </td>
-                                                </tr>";
-
-                                        }
-                                        
+                                                </tr>";                                             
+                                        }                
                                        ?>
+                                                    <!-- <td>
+                                                        <a class='' data-toggle='modal' data-target='#manufacturerModal' onclick='viewSoldList(".$productId.")'><i class='fas fa-edit'></i></a>
+
+                                                        <a class='ms-2' id='delete-btn' data-id=".$productId."><i class='far fa-trash-alt'></i></a>
+                                                    </td> -->
                                     </tbody>
                                 </table>
                             </div>
