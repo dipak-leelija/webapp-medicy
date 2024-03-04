@@ -362,11 +362,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 
     <!-- Include SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
     <!-- Include SweetAlert2 JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 </head>
 
