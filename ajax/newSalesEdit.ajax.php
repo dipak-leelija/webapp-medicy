@@ -87,12 +87,13 @@ foreach ($currentStockData as $currenStock) {
 
     if (isset($prodDetails[0]->manufacturer_id)) {
         $manufData = json_decode($Manufacturer->showManufacturerById($prodDetails[0]->manufacturer_id));
-        // $manufData = $manufData->data;
-        // print_r($manufData);
-        // foreach ($manufData as $manufData) {
+        if($manufData->status){
             $manufId = $manufData->data->id;
             $manufName = $manufData->data->name;
-        // }
+        }else{
+            $manufId = '';
+            $manufName = '';
+        }
     } else {
         $manufId = '';
         $manufName = '';
