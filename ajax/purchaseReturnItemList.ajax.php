@@ -105,7 +105,7 @@ if (isset($_GET['return-id'])) {
                             $amount = 0;
 
                             $items = $PurchaseReturn->showStockReturnDetails($returnId);
-                            // print_r($items);
+                            print_r($items);
                             // echo "<br><br>";
                             foreach ($items as $item) {
 
@@ -140,22 +140,28 @@ if (isset($_GET['return-id'])) {
                                     
                                 }
 
-                                echo "<tr>
-                            <th scope='row'>" . $sl . "</th>
-                            <td>" . $name . "</td>
-                            <td>" . $item['dist_bill_no'] . "</td>
-                            <td>" . $item['batch_no'] . "</td>
-                            <td>" . $item['exp_date'] . "</td>
-                            <td>" . $item['unit'] . "</td>
-                            <td>" . $item['purchase_qty'] . "</td>
-                            <td>" . $item['free_qty'] . "</td>
-                            <td>" . $item['ptr'] . "</td>
-                            <td>" . $item['mrp'] . "</td>
-                            <td>" . $item['gst'] . "%</td>
-                            <td>" . $item['disc'] . "%</td>
-                            <td>" . $rtnqty . "</td>
-                            <td>" . $item['refund_amount'] . "</td>
-                          </tr>";
+                            if(empty($item['return_free_qty'])){
+                                $rtnFreeQty = '';
+                            }else{
+                                $rtnFreeQty = ' ('.$item['return_free_qty'].'F)';
+                            }
+                            
+                            echo "<tr>
+                                <th scope='row'>" . $sl . "</th>
+                                <td>" . $name . "</td>
+                                <td>" . $item['dist_bill_no'] . "</td>
+                                <td>" . $item['batch_no'] . "</td>
+                                <td>" . $item['exp_date'] . "</td>
+                                <td>" . $item['unit'] . "</td>
+                                <td>" . $item['purchase_qty'] . "</td>
+                                <td>" . $item['free_qty'] . "</td>
+                                <td>" . $item['ptr'] . "</td>
+                                <td>" . $item['mrp'] . "</td>
+                                <td>" . $item['gst'] . "%</td>
+                                <td>" . $item['disc'] . "%</td>
+                                <td>" . $rtnqty . $rtnFreeQty. "</td>
+                                <td>" . $item['refund_amount'] . "</td>
+                            </tr>";
                             }
                             ?>
                         </tbody>
