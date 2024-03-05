@@ -115,7 +115,7 @@ session_start();
 
 	define("PROD_IMG", 							ROOT_DIR.'images/product-image/');
 
-	// define("ADM_PROD_IMG", 						ROOT_DIR.'images/product-image/');
+	// define("USR_ORGS_IMG_PATH", 				ROOT_DIR.'assets/images/orgs/');
 	
 
 	const ASSETS_PATH						=	URL.'assets/';
@@ -124,6 +124,7 @@ session_start();
 	const IMG_PATH							=	URL.'assets/img/';
 	const PLUGIN_PATH						=	URL.'assets/plugins/';
 	const SITE_IMG_PATH						=	IMG_PATH.'site-imgs/';
+	// const ORGS_IMG_PATH						= 	ASSETS_PATH.'images/orgs/';
 
 	const LABTEST_IMG_PATH					= 	URL.'img/lab-tests/';
 	const PROD_IMG_PATH						=	URL.'images/product-image/';

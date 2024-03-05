@@ -296,7 +296,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="currentStockModalTitle">Product Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="originReload()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -374,6 +374,12 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                 '<iframe width="99%" height="520px" frameborder="0" allowtransparency="true" src="' +
                 url + '"></iframe>');
         } // end of currentStockView function
+
+
+        const originReload = () => {
+            parent.location.reload();
+        }
+
     </script>
 </body>
 

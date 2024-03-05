@@ -12,6 +12,7 @@ $Distributor = new Distributor();
 
 $showDistributor = json_decode($Distributor->showDistributor($adminId));
 $showDistributor = $showDistributor->data;
+// print_r($showDistributor);
 
 ?>
 
@@ -94,6 +95,7 @@ $showDistributor = $showDistributor->data;
                                                         $distributorPhno    = $rowDistributor->phno;
                                                         $distributorPin     = $rowDistributor->area_pin_code;
                                                         $distributorStatus  = $rowDistributor->status;
+                                                        $AdminId = $rowDistributor->admin_id;
 
                                                         $statusLabel = '';
                                                         $statusColor = '';
@@ -121,10 +123,13 @@ $showDistributor = $showDistributor->data;
                                                                 <td>' . $distributorPin . '</td>
                                                                 <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
                                                                 <td>
-                                                                    <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a>
+                                                                    <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a>';
 
-                                                                    <a class="mx-1" id="delete-btn" data-id="' . $distributorId . '"><i class="far fa-trash-alt"></i></a>
-                                                                </td>
+                                                                    if($AdminId == $adminId){
+                                                                        echo '<a class="mx-1" id="delete-btn" data-id="' . $distributorId . '"><i class="far fa-trash-alt"></i></a>';
+                                                                    }
+                                                                    
+                                                                echo '</td>
                                                                </tr>';
                                                     }
                                                 }

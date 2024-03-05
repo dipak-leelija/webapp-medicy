@@ -324,6 +324,8 @@ class Distributor extends DatabaseConnection{
         }
     }
 
+    
+
     function showDistRequest($DistributorId = '')
     {
         try {
@@ -361,6 +363,8 @@ class Distributor extends DatabaseConnection{
         }
     }
 
+
+
     function deleteDistRequest($distributorId)
     {
 
@@ -368,6 +372,8 @@ class Distributor extends DatabaseConnection{
         $DeleteQuey = $this->conn->query($Delete);
         return $DeleteQuey;
     } //end deleteDistRequest function
+
+
 
     function updateNewBadges($distributorId){
         try {
@@ -391,6 +397,8 @@ class Distributor extends DatabaseConnection{
         }
     }
 
+
+
     function updateDeleteReq($distributorId){
         try {
             $update =  "UPDATE `distributor` SET `del_req`= '1' WHERE `id`=?";
@@ -412,6 +420,9 @@ class Distributor extends DatabaseConnection{
             return false;
         }
     }
+
+
+
     function cancelDeleteReq($distributorId){
         try {
             $update =  "UPDATE `distributor` SET `del_req`= '0' WHERE `id`=?";
