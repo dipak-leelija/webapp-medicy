@@ -24,6 +24,7 @@ $SalesReturn     = new SalesReturn();
 $CurrentStock    = new CurrentStock();
 $StockInDetails  = new StockInDetails();
 
+
 // $IdGeneration    = new IdGeneration();
 
 
@@ -168,8 +169,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
-
 }
+
+
+$selectClinicInfo = json_decode($ClinicInfo->showHealthCare($adminId));
+// print_r($selectClinicInfo->data);
+$pharmacyLogo = $selectClinicInfo->data->logo;
+$pharmacyName = $selectClinicInfo->data->hospital_name;
+
 ?>
 
 <!DOCTYPE html>
@@ -197,7 +204,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="card-body border-bottom border-dark">
                     <div class="row">
                         <div class="col-sm-1">
-                            <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo?>" alt="Medicy">
+                            <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR.$pharmacyLogo ?>" alt="Medicy">
+                            <div><?php echo $pharmacyName ?></div>
                         </div>
                         <div class="col-sm-8">
                             <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
