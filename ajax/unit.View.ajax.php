@@ -3,14 +3,15 @@ require_once dirname(__DIR__).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'measureOfUnit.class.php';
+// require_once CLASS_DIR.'measureOfUnit.class.php';
+require_once CLASS_DIR.'itemUnit.class.php';
 
-$MeasureOfUnits = new MeasureOfUnits();
+
+$ItemUnit = new ItemUnit();
 
 $unitId = $_GET['Id'];
 
-
-$showMeasureOfUnit = $MeasureOfUnits->showMeasureOfUnitsById($unitId);
+$itemUnitName = $ItemUnit->itemUnitName($unitId);
 
 ?>
 
@@ -30,22 +31,14 @@ $showMeasureOfUnit = $MeasureOfUnits->showMeasureOfUnitsById($unitId);
 <body class="mx-2">
 
     <?php
-        // foreach ($showMeasureOfUnit as $rowMeasureOfUnits) {
-            $unitId        = $showMeasureOfUnit['id'];
-            $unitSrtName   = $showMeasureOfUnit['short_name'];
-            $unitFullName  = $showMeasureOfUnit['full_name'];
-        // }
     ?>
 
     <form>
-        <input type="hidden" id="unitId" value="<?php echo $unitId;?>">
+        <!-- <input type="hidden" id="unitId" value=""> -->
       
-            <label for="unit-srt-name" class="form-label mb-0">Unit Short Name:</label>
-            <input type="text" class="form-control" id="unit-srt-name" value="<?php echo $unitSrtName; ?>">
+            <label for="unit-srt-name" class="form-label mb-0">Unit Name:</label>
+            <input type="text" class="form-control" id="item-unit-name" value="<?= $itemUnitName ?>">
     
-            <label for="unit" class="form-label mb-0 mt-2">Unit Full Name:</label>
-            <input type="text" class="form-control" id="unit" value="<?php echo $unitFullName; ?>">
-
         <div class="mt-2 reportUpdate" id="reportUpdate">
             <!-- Ajax Update Reporet Goes Here -->
         </div>
@@ -58,17 +51,29 @@ $showMeasureOfUnit = $MeasureOfUnits->showMeasureOfUnitsById($unitId);
 
     <script>
     function editUnit() {
-        let unitId    = document.getElementById("unitId").value;
-        let srtName   = document.getElementById("unit-srt-name").value;
-        let fullName  = document.getElementById("unit").value;
+        let unitName = document.getElementById("item-unit-name").value;
+        let url = "unit.Edit.ajax.php";
 
-        let url = "unit.Edit.ajax.php?id=" + escape(unitId) + "&unit-srt-name=" + escape(srtName) + "&unit=" + escape(fullName);
+        // Set up the request
+        request.open('POST', url, true);
         
-        request.open('GET', url, true);
- 
-        request.onreadystatechange = getEditUpdates;
+        // Set the Content-Type header
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-        request.send(null);
+        // Define what happens on successful data submission
+        request.onload = function () {
+            // Handle response here
+            getEditUpdates();
+        };
+
+        // Define what happens in case of an error
+        request.onerror = function () {
+            // Handle error here
+            alert('Error occurred while sending request.');
+        };
+
+        // Send the request with the data
+        request.send('id=' + encodeURIComponent(<?= $unitId;?>) + '&item-unit-name=' + encodeURIComponent(unitName));
     }
 
     function getEditUpdates() {

@@ -3,61 +3,66 @@ require_once dirname(__DIR__) . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
-// require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR . 'measureOfUnit.class.php';
+require_once CLASS_DIR . 'itemUnit.class.php';
+
+$itemUnit       = new ItemUnit;
 
 
-// $match = $_POST['search'];
-$match = isset($_POST['search']) ? $_POST['search'] : $adminId;
-// echo $match;
-$prodUnit       = new MeasureOfUnits();
+if (isset($_POST['search'])) {
 
-if ($match == 'all') {
-    $showProdUnit = json_decode($prodUnit->prodUnitCardSearch($match, $adminId));
-    // print_r($showProdUnit);
-} else {
-    $showProdUnit    = json_decode($prodUnit->prodUnitCardSearch($match, $adminId));
-}
+    $match        = $_POST['search'];
 
+    $showItemUnit = json_decode($itemUnit->itemUnitCardSearch($match, $adminId));
+    
+    // print_r($showItemUnit);
+    
+    if ($showItemUnit->status) {
+        $showItemUnit = $showItemUnit->data;
+        $addedUser = $showItemUnit[0]->admin_id;
 
-if ($showProdUnit->status) {
-    $showProdUnit = $showProdUnit->data;
-} else {
-    echo "<p class='text-center font-weight-bold'>Product Unit Not Found!</p>";
-    // echo "<div class='p-1 border-bottom list'> $match </div>";
-}
-?>
+    ?>
+    <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Unit ID</th>
+                <th>Unit Name</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if (is_array($showItemUnit)) {
+                foreach ($showItemUnit as $eachItemUnit) {
+                    $unitId       = $eachItemUnit->id;
+                    $unitName    = $eachItemUnit->name;
 
-<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-    <thead>
-        <tr>
-            <th>SL.</th>
-            <th>Short Name</th>
-            <th>Full Name</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if (is_array($showProdUnit)) {
-            foreach ($showProdUnit as $rowProdUnit) {
-                $prodUnitId       = $rowProdUnit->id;
-                $prodUnitSName    = $rowProdUnit->short_name;
-                $prodUnitFName    = $rowProdUnit->full_name;
+                    echo '<tr>
+                            <td>' . $unitId   . '</td>
+                            <td>' . $unitName . '</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#prodUnitReqModal" data-bs-toggle="modal" data-bs-dismiss="modal"';
+                                // $addedUser != $adminId ? echo 'disabled' : echo 'onclick="unitViewAndEdit(' . $unitId . ')"';
+                                echo $addedUser != $adminId ? 'disabled' : 'onclick="unitViewAndEdit(' . $unitId . ')"';
 
-                echo '<tr>
-                        <td>' . $prodUnitId   . '</td>
-                        <td>' . $prodUnitSName . '</td>
-                        <td>' . $prodUnitFName . '</td>
-                        <td>
-                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#prodUnitReqModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="unitViewAndEdit(' . $prodUnitId . ')"><i class="fas fa-edit"></i></button>
-                        </td>
-                       </tr>';
+                                echo '>
+                                <i class="fas fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>';
+                }
             }
-        }
-        ?>
-    </tbody>
-</table>
+            ?>
+        </tbody>
+    </table>
+    <?php
+    } else {
+        echo "
+        <div class='p-3 border border-dashed border-dark' >
+            <p class='text-center pb-0 mb-1'>Unit/s Not Found!</p>
+            <p class='text-center text-danger small pb-0 mb-0 '>However You Can Search Unit.</p>
+        </div>";
+    }
+    ?>
 
 
 <script>
@@ -69,8 +74,10 @@ if ($showProdUnit->status) {
             '<iframe width="99%" height="250px" frameborder="0" allowtransparency="true" src="' +
             url + '"></iframe>');
     }
-
-    // function closeModal() {
-    //     $('#unitModal').modal('hide');
-    // }
 </script>
+
+<?php
+}else {
+    echo 'Http Request Failed!';
+}
+?>

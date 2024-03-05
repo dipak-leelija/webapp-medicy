@@ -2,17 +2,15 @@
 
 class ItemUnit extends DatabaseConnection{
 
-    // function addPackagingUnit($unitName, $addedby, $addedOn, $adminId) {
+    // function addItemUnit($unitName, $status, $new, $addedby, $addedOn, $adminId) {
     //     try {
-    //         // Define the SQL query using a prepared statement
-    //         $insert = "INSERT INTO packaging_type (`unit_name`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?)";
+    //         $insert = "INSERT INTO item_unit (`name`, `status`, `new`, `added_by`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?)";
             
-    //         // Prepare the SQL statement
     //         $stmt = $this->conn->prepare($insert);
     
     //         if ($stmt) {
     //             // Bind the parameters
-    //             $stmt->bind_param("ssss", $unitName, $addedby, $addedOn, $adminId);
+    //             $stmt->bind_param("ssssss", $unitName, $status, $new, $addedby, $addedOn, $adminId);
     
     //             // Execute the query
     //             $insertQuery = $stmt->execute();
@@ -22,8 +20,6 @@ class ItemUnit extends DatabaseConnection{
     //             throw new Exception("Failed to prepare the statement.");
     //         }
     //     } catch (Exception $e) {
-    //         // Handle any exceptions that occur
-    //         // Customize this part to suit your needs
     //         echo "Error: " . $e->getMessage();
     //         return false;
     //     }
@@ -80,6 +76,46 @@ class ItemUnit extends DatabaseConnection{
     }//eof showMeasureOfUnits
 
 
+    function itemUnitCardSearch($match, $adminId) {
+        try {
+            if ($match == 'all') {
+                
+                $select = "SELECT * FROM `item_unit` WHERE `admin_id` = ?  LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("s", $adminId);
+            }else {
+                
+                $select = "SELECT * FROM `item_unit` WHERE `name` LIKE CONCAT('%', ?, '%') LIMIT 6";
+                $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("s", $match);
+            }
+                       
+
+            if ($stmt) {
+                
+                $stmt->execute();
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+    
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+    
+                    return json_encode(['status' => 1, 'message' => 'success', 'data'=> $data]);
+                } else {
+                    return json_encode(['status' => 0, 'message' => 'empty', 'data'=> '']);
+                }
+                $stmt->close();
+            } else {
+                return json_encode(['status' => 0, 'message' => "Statement preparation failed: ".$this->conn->error, 'data'=> '']);
+            }
+
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => "Error: " . $e->getMessage(), 'data'=> '']);
+
+        }
+    }
 
 
     // function deleteUnit($unitId){
