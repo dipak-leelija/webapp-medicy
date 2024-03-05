@@ -105,7 +105,7 @@ if (isset($_GET['return-id'])) {
                             $amount = 0;
 
                             $items = $PurchaseReturn->showStockReturnDetails($returnId);
-                            print_r($items);
+                            // print_r($items);
                             // echo "<br><br>";
                             foreach ($items as $item) {
 
