@@ -9,6 +9,7 @@ require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockReturn.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
 require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'distributor.class.php';
 
 
 //  INSTANTIATING CLASS
@@ -16,6 +17,8 @@ $HelthCare       = new HealthCare();
 $StockReturn     = new StockReturn();
 $IdsGeneration    = new IdsGeneration();
 $CurrentStock    =  new CurrentStock();
+$Distributor    = new Distributor;
+
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['stock-return'])) {
@@ -26,6 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $stockInDetailsId = $_POST['stok-in-details-id'];
         $distributorId   = $_POST['dist-id'];
         $distributorName = $_POST['dist-name'];
+        $distData = json_decode($Distributor->showDistributorById($distributorId));
+        // print_r($distData);
+        $distAddress = $distData->data->address;
+        $distPin = $distData->data->area_pin_code;
+        $distContact = $distData->data->phno;
         
         $returnDate      = $_POST['return-date'];
         $returnDate      = date("Y-m-d", strtotime($returnDate));
@@ -191,6 +199,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 
+
+$selectClinicInfo = json_decode($HelthCare->showHealthCare($adminId));
+// print_r($selectClinicInfo->data);
+$pharmacyLogo = $selectClinicInfo->data->logo;
+$pharmacyName = $selectClinicInfo->data->hospital_name;
+
 ?>
 
 <!DOCTYPE html>
@@ -213,15 +227,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= SITE_IMG_PATH ?>logo-p.jpg" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR.$pharmacyLogo ?>" alt="Medicy">
+                        <div><?php echo $pharmacyName ?></div>
                     </div>
+                    
                     <div class="col-sm-8">
-                        <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
+                        <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePin; ?></small>
+                            <small><?php echo $distAddress .', '. $distPin; ?></small>
                         </p>
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
-                            <small><?php echo 'M: '.$healthCarePhno.', '.$healthCareApntbkNo; ?></small>
+                            <small><?php echo 'M: '.$distContact; ?></small>
                         </p>
 
                     </div>
