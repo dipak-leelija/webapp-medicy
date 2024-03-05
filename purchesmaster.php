@@ -166,7 +166,7 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                                     <div class="card bg-gradient-success card-hover">
                                         <div class="card-body mb-0 p-4">
                                             <div class="d-flex justify-content-between">
-                                                <h5 class="card-title text-white">Product Unit</h5>
+                                                <h5 class="card-title text-white">Item Unit</h5>
                                                 <a class="btn btn-sm text-white bg-transparent" data-bs-toggle="modal" href="#ProdUnitModal" role="button" onclick="findProdUnit('all')"> Find</a>
                                             </div>
                                             <div class="d-flex justify-content-between">
