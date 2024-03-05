@@ -435,9 +435,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 for ($i = 0; $i < $count; $i++) {
                     $slno++;
 
+                    
                     if ($manufId[$i] != '') {
                         $manufDetail = json_decode($Manufacturur->showManufacturerById($manufId[$i]));
-                        $manufSName = $manufDetail->data->short_name;
+            
+                        if ($manufDetail->status) {
+                            $manufData = $manufDetail->data;
+                            if(isset($manufData->short_name)){
+                                $manufSName = $manufData->short_name;
+                            }else{
+                                $manufSName = '';
+                            }
+                        } else {
+                            $manufSName = '*New Iitem';
+                        }
                     } else {
                         $manufSName = '';
                     }
@@ -449,6 +460,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     } else {
                         $unitStamp = '';
                     }
+
 
 
                     if ($slno > 1) {
