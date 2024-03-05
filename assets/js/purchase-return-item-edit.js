@@ -14,12 +14,32 @@ rtnFreeQtyInputField.addEventListener('input', function () {
     rtnFreeQtyInputField.value = sanitizedValue2;
 });
 
+
+//=============== stock return edit save button control ==============
+const stockReturnEditSave = document.getElementById('stock-return-edit-save');
+
+const chekForm = () => {
+    var tableBody = document.getElementById('dataBody');
+
+    if (document.getElementById('product_name').value == '' && tableBody.getElementsByTagName('tr').length > 0) {
+        stockReturnEditSave.removeAttribute("disabled");
+    } else {
+        stockReturnEditSave.setAttribute("disabled", "true");
+    }
+}
+
+
+//==========================================================
+const getName = () =>{
+    swal("Warning","Want to edit return data. Select from return list.","info");
+}
+
 //===================================== ON SELECT EDIT DATA ============================RD==============
 
 const customEdit = (id, value) => {
 
-    console.log(id);
-    console.log(value);
+    // console.log(id);
+    // console.log(value);
 
     var value;
     var row = document.getElementById(id);
@@ -91,6 +111,9 @@ const customEdit = (id, value) => {
                 document.getElementById("gst-amount").value = gstAmount.toFixed(2);
 
                 delData(slno, gstAmount.toFixed(2), totalReturnQty, perItemRefundAmount.toFixed(2));
+
+
+                stockReturnEditSave.setAttribute("disabled", "true");
             }
         })
     } else {
@@ -414,6 +437,9 @@ const addData = async () => {
 
             document.getElementById("stock-return-edit").reset();
             event.preventDefault();
+
+
+            stockReturnEditSave.removeAttribute("disabled");
         }
     }
 }
@@ -450,6 +476,8 @@ const delData = (slno, gstPerItem, ReturnQty, refund) => {
     net.value = finalAmount.toFixed(2);
 
     rowAdjustment(delRow);
+
+    chekForm();
 }
 
 ////////////////// ROW ADJUSTMENT ///////////////////
@@ -510,6 +538,8 @@ const editItem = (tupleData) => {
 
         let ReturnQty = parseInt(tData.returnQty) + parseInt(tData.returnFreeQty);
         delData(tData.slno, tData.GSTAmount, ReturnQty, tData.refundAmount);
+
+        stockReturnEditSave.setAttribute("disabled", "true");
     } else {
         swal("Error", "Pleas add previous data first.", "error");
     }

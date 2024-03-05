@@ -131,7 +131,7 @@ if (isset($_GET["returnId"])) {
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
 
                                     <input class="d-none" type="text" id="product-id">
-                                    <input class="upr-inp mb-1" id="product_name" value="" readonly>
+                                    <input class="upr-inp mb-1" id="product_name" value="" readonly onclick="getName()">
                                 </div>
 
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
@@ -515,7 +515,7 @@ if (isset($_GET["returnId"])) {
                                         <p>Net : <input class="summary-inp w-65" name="NetRefund" id="NetRefund" type="text" value="<?php echo $NetRefundAmount ?>" readonly> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 text-right">
-                                        <button class="btn btn-sm btn-primary" style="width: 50%;" type="submit" name="stock-return-edit">Save</button>
+                                        <button class="btn btn-sm btn-primary" style="width: 50%;" type="submit" name="stock-return-edit" id="stock-return-edit-save">Save</button>
                                     </div>
                                 </div>
                             </div>

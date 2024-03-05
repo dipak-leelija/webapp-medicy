@@ -155,6 +155,8 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
     document.getElementById('product-name').value = productName;
     document.getElementById('bill-date').value = billdate;
 
+    chekForm();
+    
     var xmlhttp = new XMLHttpRequest();
     if (productId != "") {
 
