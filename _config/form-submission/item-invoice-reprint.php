@@ -13,7 +13,6 @@ require_once CLASS_DIR.'packagingUnit.class.php';
 require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR.'patients.class.php';
 
-
 require_once CLASS_DIR.'encrypt.inc.php';
 
 
@@ -26,6 +25,8 @@ $ItemUnit        = new ItemUnit();
 $PackagingUnits  = new PackagingUnits();
 $Manufacturer    = new Manufacturer();
 $Patients        = new Patients;
+$ClinicInfo  = new HealthCare;
+// echo $healthCareLogo;
 
 if (isset($_GET['id'])) {
 
@@ -66,6 +67,11 @@ if ($customerId != 'Cash Sales') {
 }
 
 
+
+$selectClinicInfo = json_decode($ClinicInfo->showHealthCare($adminId));
+// print_r($selectClinicInfo->data);
+$pharmacyLogo = $selectClinicInfo->data->logo;
+// echo $pharmacyLogo;
 ?>
 
 <!DOCTYPE html>
@@ -88,8 +94,7 @@ if ($customerId != 'Cash Sales') {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= $healthCareLogo?>"
-                            alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR.$pharmacyLogo?>" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
