@@ -9,6 +9,22 @@ rtnFreeQty.addEventListener('input', function (event) {
     this.value = this.value.replace('.', '');
 });
 ///////////////////////////////////////////////////////////////////
+//=============== stock in save button control ================
+const purchaseReturnSave = document.getElementById('stock-return-save');
+purchaseReturnSave.setAttribute("disabled", "true");
+
+const chekForm = () => {
+    var tableBody = document.getElementById('dataBody');
+
+    if (document.getElementById('product-name').value == '' && tableBody.getElementsByTagName('tr').length > 0) {
+        purchaseReturnSave.removeAttribute("disabled");
+    } else {
+        purchaseReturnSave.setAttribute("disabled", "true");
+    }
+}
+
+chekForm();
+//===============================================================
 
 
 //////////////////// set distributor name /////////////////////
@@ -77,38 +93,9 @@ const setDistributor = (t) => {
 
     document.getElementsByClassName("c-dropdown")[0].style.display = "none";
 
-    // console.log(distributirId);
-
-    // if (document.getElementById("dist-id-check").value != '') {
-    //     if (document.getElementById("dist-id-check").value != document.getElementById("dist-id").value) {
-    //         alert('you have change distributor');
-    //         window.location.reload();
-    //     } else {
-    //         getItemList(distributirId);
-    //     }
-    // }
-
     getItemList(distributirId);
 }
 
-
-
-
-// ===================== get distributor bill number ======================
-// const getBillList = (distributirId) => {
-//     let id = distributirId;
-//     // console.log("DIST ID FOR BILL LIST : " + id);
-
-//     var xmlhttp = new XMLHttpRequest();
-//     let distIdUrl = `ajax/return-distributor-bill-list.ajax.php?dist-id=${id}`;
-//     xmlhttp.open("GET", distIdUrl, false);
-//     xmlhttp.send(null);
-//     document.getElementById("select-bill").innerHTML = xmlhttp.responseText;
-//     // console.log(xmlhttp.responseText);
-//     document.getElementById("dist-id").value = id;
-//     // document.getElementById("dist-name").value = distributirName;
-//     document.getElementById("select-bill").style.display = "block";
-// }
 
 
 
@@ -785,6 +772,7 @@ function addData() {
         
         disableOnClickFunction(seletedItemDiv);
 
+        purchaseReturnSave.removeAttribute('disabled');
     }
 
 } //eof addData  
@@ -853,6 +841,8 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerDat
     if(flag == 0){
         divOnclikActive(divId, handelerData);
     }
+
+    chekForm();
 }
 
 
@@ -917,6 +907,8 @@ const editItem = (tData) => {
         let flag = 1;
         let itemQty = parseInt(tData.returnQty) + parseInt(tData.returnFreeQty);
         deleteData(tData.slno, itemQty, tData.RtrnGstAmount, tData.refundAmount, tData.divId, tData.handelerData, flag);
+
+        chekForm();
     } else {
         swal("Error", "Add or remove Previous data first.", "error");
     }

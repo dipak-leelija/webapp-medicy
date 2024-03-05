@@ -410,7 +410,7 @@ $showDistributor = $showDistributor->data;
                                         <p>Net : <input class="summary-inp w-65" name="refund" id="refund" type="text" value="0" readonly> </p>
                                     </div>
                                     <div class="col-md-3 mb-2 col-6 text-right">
-                                        <button class="btn btn-sm btn-primary" style="width: 50%;" type="submit" name="stock-return">Save</button>
+                                        <button class="btn btn-sm btn-primary" style="width: 50%;" type="submit" id="stock-return-save" name="stock-return">Save</button>
                                     </div>
 
                                     <div class="col-md-3 col-6 mb-2 d-flex justify-content-start" hidden>
