@@ -71,7 +71,7 @@ if ($customerId != 'Cash Sales') {
 $selectClinicInfo = json_decode($ClinicInfo->showHealthCare($adminId));
 // print_r($selectClinicInfo->data);
 $pharmacyLogo = $selectClinicInfo->data->logo;
-// echo $pharmacyLogo;
+$pharmacyName = $selectClinicInfo->data->hospital_name;
 ?>
 
 <!DOCTYPE html>
