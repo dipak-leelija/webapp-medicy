@@ -6541,6 +6541,10 @@ button.bg-dark:focus {
   border-left: 0 !important;
 }
 
+.border-dashed{
+  border-style: dashed !important;
+}
+
 .border-primary {
   border-color: #4e73df !important;
 }
