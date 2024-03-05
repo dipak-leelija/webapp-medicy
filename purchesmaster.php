@@ -9,12 +9,15 @@ require_once ROOT_DIR  . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
-require_once CLASS_DIR . 'measureOfUnit.class.php';
+// require_once CLASS_DIR . 'measureOfUnit.class.php';
+require_once CLASS_DIR . 'itemUnit.class.php';
+
 
 $Distributor    = new Distributor();
 $Manufacturer   = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
-$MeasureOfUnits = new MeasureOfUnits();
+// $MeasureOfUnits = new MeasureOfUnits();
+$ItemUnit       = new ItemUnit();
 
 // Count Distributor Data
 $showDistributor = $Distributor->showDistributor($adminId);
@@ -30,7 +33,10 @@ $countManufacturer   = ($decodedManufacturer !== null) ? count($decodedManufactu
 // Count Packaging Data
 $countPackagingUnits = count($PackagingUnits->showPackagingUnits($adminId));
 // Count Product Data
-$countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
+// showItemUnits()
+
+$totalItemUnit       = count($ItemUnit->showItemUnits());
+// $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
 
 ?>
 
@@ -47,13 +53,12 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
 
     <title>Purchase Master - <?= $healthCareName ?> | <?= SITE_NAME ?></title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Custom fonts for this template -->
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/appointment.css">
@@ -159,20 +164,15 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                                 </div>
                                 <div class="col-sm-6 mt-2">
                                     <div class="card bg-gradient-success card-hover">
-                                        <div class="card-body mb-0 pb-0">
+                                        <div class="card-body mb-0 p-4">
                                             <div class="d-flex justify-content-between">
                                                 <h5 class="card-title text-white">Product Unit</h5>
                                                 <a class="btn btn-sm text-white bg-transparent" data-bs-toggle="modal" href="#ProdUnitModal" role="button" onclick="findProdUnit('all')"> Find</a>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <img src="<?= IMG_PATH . 'prodUnit.png' ?>" class="ml-0" style="width: 80px; height: 60px; opacity: 0.5;" alt="">
-                                                <h4 class=" text-white" style="margin-right: 50%;"><?= $countMeasureOfUnits ?></h4>
+                                                <h4 class=" text-white" style="margin-right: 50%;"><?= $totalItemUnit ?></h4>
                                             </div>
-                                        </div>
-                                        <div class="d-flex justify-content-end">
-                                            <button class="btn btn-sm text-white bg-transparent mt-n2 mr-3 mb-2" data-toggle="modal" data-target="#add-ProdUnit">
-                                                Add new
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -383,7 +383,10 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                                 <button type="button" class="btn btn-sm btn-success" onclick="prodSearch('all')"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        
+                        <button type="button" class="btn btn-transparent p-1" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body ProdUnitModal">
 
@@ -396,7 +399,7 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
                 <div class="modal-content ">
                     <div class="modal-header">
                         <div class="d-flex justify-content-between w-75">
-                            <h5 class="modal-title" id="exampleModalToggleLabel2">Product Update</h5>
+                            <h5 class="modal-title" id="exampleModalToggleLabel2">Update Item Unit</h5>
                             <!-- <button class="btn btn-primary btn-sm" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Distributor</button> -->
                         </div>
                         <button type="button" class="btn btn-transparent fs-2 p-0" data-bs-target="#ProdUnitModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -408,36 +411,6 @@ $countMeasureOfUnits = count($MeasureOfUnits->showMeasureOfUnits($adminId));
             </div>
         </div>
         <!-- end Prod Unit search modal  -->
-
-        <!-- add product unit modal -->
-        <div class="modal fade" id="add-ProdUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Product Unit</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body add-ProdUnit">
-                        <form method="post" action="ajax/unit.add.ajax.php">
-                            <div class="col-md-12">
-                                <label class="mb-0 mt-1" for="unit-srt-name">Short Name</Address></label>
-                                <input class="form-control" id="unit-srt-name" name="unit-srt-name" placeholder="Short Name of Unit" required>
-                            </div>
-                            <div class="col-md-12 mt-3">
-                                <label class="mb-0 mt-1" for="unit-full-name">Full Name</Address></label>
-                                <input type="text" class="form-control" id="unit-full-name" name="unit-full-name" placeholder="Full Name of Unit" required>
-                            </div>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                <button class="btn btn-primary me-md-2" name="add-unit" type="submit">Add
-                                    Unit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div><!-- end add product unit modal -->
 
     </div>
     <!-- End of Page Wrapper -->
