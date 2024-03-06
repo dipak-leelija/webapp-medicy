@@ -316,11 +316,8 @@ $doctor = json_decode($doctor , true);
                                                         <input class="sale-inp" type="any" id="loose-price" style="border-width: 0px;" readonly>
                                                     </div>
                                                 </div>
-                                    
                                             </div>
-
                                         </div>
-
                                     </div>
                                 </div>
                             </form>
