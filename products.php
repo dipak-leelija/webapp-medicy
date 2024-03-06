@@ -173,8 +173,7 @@ if (isset($_GET['search'])) {
                                     <div class="row card-div">
 
                                         <section>
-                                            <div class="row ">
-
+                                            <div class="row py-4 px-5">
                                                 <?php
                                                 // print_r($allProducts);
                                                 // echo count($allProducts);
@@ -245,17 +244,17 @@ if (isset($_GET['search'])) {
 
 
                                                         //====== check new product request =======
-                                                        if(isset($item->product_id) && isset($item->old_prod_flag)){
-                                                            if($item->old_prod_flag == 0){
+                                                        if (isset($item->product_id) && isset($item->old_prod_flag)) {
+                                                            if ($item->old_prod_flag == 0) {
                                                                 $editRequestToken = 0;
                                                                 $newProdRequestToken = 1;
                                                             }
                                                         }
 
                                                 ?>
-                                                        <div class="item col-12 col-sm-6 col-md-4 col-lg-3 ">
+                                                        <div class="item col-12 col-md-6 col-lg-4 col-xl-3 ">
 
-                                                            <div class="card  mb-3 p-3" style="min-width: 14rem; min-height: 11rem; max-width: 14rem; max-height: 21rem;">
+                                                            <div class="card mb-3 p-3" style="height: 95%;">
 
                                                                 <?php
                                                                 if ($editRequestToken) {
@@ -272,7 +271,7 @@ if (isset($_GET['search'])) {
                                                                 }
                                                                 ?>
 
-                                                                <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="..." style="max-height: 9rem;">
+                                                                <img src="<?php echo PROD_IMG_PATH ?><?php echo $productImage ?>" class="card-img-top" alt="...">
 
                                                                 <div class="card-body">
                                                                     <label><b><?php echo $item->name; ?></b></label>
