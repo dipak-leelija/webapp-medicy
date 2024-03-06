@@ -205,7 +205,9 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                                 <button type="button" class="btn btn-sm btn-success" onclick="distSearch('all')"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body DistributorModal">
 
@@ -219,9 +221,10 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                     <div class="modal-header">
                         <div class="d-flex justify-content-between w-75">
                             <h5 class="modal-title" id="exampleModalToggleLabel2">Distributor Request</h5>
-                            <!-- <button class="btn btn-primary btn-sm" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Distributor</button> -->
                         </div>
-                        <button type="button" class="btn btn-transparent fs-2 p-0" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body distRequestModal">
 
@@ -262,7 +265,12 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                                 <button type="button" class="btn btn-sm btn-success" onclick="manuSearch('all')"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
                     </div>
                     <div class="modal-body ManufacturModal">
 
@@ -316,7 +324,9 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                                 <button type="button" class="btn btn-sm btn-success" onclick="packSearch('all')"><i class="fas fa-search"></i></button>
                             </div>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body PackUnitModal">
 
@@ -384,7 +394,7 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                             </div>
                         </div>
                         
-                        <button type="button" class="btn btn-transparent p-1" data-bs-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -402,7 +412,9 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                             <h5 class="modal-title" id="exampleModalToggleLabel2">Update Item Unit</h5>
                             <!-- <button class="btn btn-primary btn-sm" data-bs-target="#DistributorModal" data-bs-toggle="modal" data-bs-dismiss="modal">Back to Distributor</button> -->
                         </div>
-                        <button type="button" class="btn btn-transparent fs-2 p-0" data-bs-target="#ProdUnitModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-bs-target="#ProdUnitModal" data-bs-toggle="modal" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body prodUnitReqModal">
 
