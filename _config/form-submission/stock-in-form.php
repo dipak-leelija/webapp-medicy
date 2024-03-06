@@ -12,6 +12,8 @@ require_once CLASS_DIR.'manufacturer.class.php';
 require_once CLASS_DIR.'packagingUnit.class.php';
 require_once CLASS_DIR.'stockReturn.class.php';
 require_once CLASS_DIR."itemUnit.class.php";
+require_once CLASS_DIR.'hospital.class.php';
+
 
 $StockIn = new StockIn();
 $StockInDetails = new StockInDetails();
@@ -23,6 +25,8 @@ $Manufacturer = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
 $StcokReturn = new StockReturn();
 $ItemUnit       = new ItemUnit;
+$ClinicInfo  = new HealthCare;
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['stock-in'])) {
@@ -132,6 +136,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } // post request method entered
 
+
+$selectClinicInfo = json_decode($ClinicInfo->showHealthCare($adminId));
+// print_r($selectClinicInfo->data);
+$pharmacyLogo = $selectClinicInfo->data->logo;
+$pharmacyName = $selectClinicInfo->data->hospital_name;
+
 ?>
 
 <!DOCTYPE html>
@@ -163,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= SITE_IMG_PATH ?>logo-p.jpg" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR.$pharmacyLogo ?>" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
