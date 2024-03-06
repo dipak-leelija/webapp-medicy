@@ -174,6 +174,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 <div class="row">
                     <div class="col-sm-1">
                         <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR.$pharmacyLogo ?>" alt="Medicy">
+                        <div class=""><?php echo $pharmacyName; ?></div>
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
