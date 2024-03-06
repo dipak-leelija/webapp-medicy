@@ -4,8 +4,8 @@
             <div class="col-md-7">
                 <div class="row mt-4 mb-2">
                     <div class="col-md-12 ">
-                        <!-- <label for="product-name" class="mb-0">Product Name</label> -->
-                        <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" autocomplete="off" value="" onkeydown="chekForm()">
+                        <label for="product-name" class="mb-0">Item Name</label>
+                        <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product *" onkeyup="searchItem(this.value);" autocomplete="off" value="" onkeydown="chekForm()">
 
                         <div class="p-2 bg-light" id="product-select" style="max-height: 25rem; max-width: 100%;">
                         </div>
@@ -13,19 +13,19 @@
                 </div>
 
                 <div class="row">
-                    <div  class="d-none col-md-12 mt-2">
+                    <div class="d-none col-md-12 mt-2">
                         <label class="mb-0" for="manufacturer-id">Manufacturer</label>
                         <!-- <select class="upr-inp" id="manufacturer-id" name="manufacturer-id"
                                                 required>
                                                 <option value="" disabled selected>Select </option>
 
                                             </select> -->
-                        <input  class="d-none upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
+                        <input class="d-none upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
                         <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
                     </div>
                 </div>
 
-                <div  class="d-none row">
+                <div class="d-none row">
                     <div class="col-md-12 ">
                         <div class="">
 
@@ -92,21 +92,21 @@
                                 onkeyup="setMfdYEAR(this)">
                         </div>
                     </div> -->
-                    <div class="col-sm-4 mt-2">
+                    <div class="col-sm-6 mt-2">
                         <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                         <span class="text-danger">*</span>
-                        <div class="d-flex date-field">
+                        <div class="d-flex data-field">
                             <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                             <span class="date-divider">&#47;</span>
-                            <input class="year " type="number" id="exp-year" /*onkeyup="setExpyear(this)"*/ onfocusout="setExpYEAR(this)">
+                            <input class="year " type="number" id="exp-year" /*onkeyup="setExpyear(this)" */ onfocusout="setExpYEAR(this)">
                         </div>
                     </div>
-                    <div  class="d-none col-md-4 mt-2">
+                    <div class="d-none col-md-4 mt-2">
                         <label class="mb-0" for="product-id">Product Id</label>
                         <input class="upr-inp" id="product-id" name="product-id" readonly>
                     </div>
 
-                    <div  class="d-none col-md-4 mt-2">
+                    <div class="d-none col-md-4 mt-2">
                         <label class="mb-0" for="edit-request-flag">Edit Request Flag</label>
                         <input class="upr-inp" id="edit-request-flag" name="edit-request-flag" readonly>
                     </div>
@@ -138,7 +138,7 @@
                 </div>
                 <!--/End Price Row -->
 
-                <div  class="d-none col-sm-6 col-md-6 mt-2">
+                <div class="d-none col-sm-6 col-md-6 mt-2">
                     <label class="mb-0" for="packaging-type">Packaging Type</label>
                     <select class="upr-inp" name="packaging-type" id="packaging-type">
                         <option value="" disabled selected>Select Packaging Type </option>
