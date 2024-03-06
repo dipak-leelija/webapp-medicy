@@ -10,7 +10,7 @@ $Search = new Search();
 
 // echo "Data id: ".$_GET['data'];
 
-$result = $Search->searchCustomer($_GET['data']);
+$result = $Search->searchCustomerByAdmin($_GET['data'], $adminId);
 // print_r($result);
 
 if (count($result) > 0) {
