@@ -105,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     <!-- Custom styles for this template -->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= CSS_PATH ?>custom/stock-in.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
 </head>
@@ -362,7 +363,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-sm-6 col-md-4 mt-2">
+                                                <div class="col-sm-6 mt-2">
                                                     <label class="mb-0" for="batch-no">Batch No.</label>
                                                     <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                                                 </div>
@@ -374,12 +375,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);" onkeyup="setMfdYEAR(this)">
                                                     </div>
                                                 </div> -->
-                                                <div class="col-sm-6 col-md-4 mt-2">
+                                                <div class="col-sm-6 mt-2">
                                                     <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                                                     <div class="d-flex date-field">
                                                         <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                                                         <span class="date-divider">&#47;</span>
-                                                        <input class="year " type="number" id="exp-year" onfocusout="setExpYear(this);" onkeyup="setExpYEAR(this)">
+                                                        <input class="year" type="number" id="exp-year" /*onkeyup="setExpYear(this)"*/ onfocusout="setExpYEAR(this);">
                                                     </div>
                                                 </div>
                                             </div>
@@ -458,7 +459,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <!-- <div class="row"> -->
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
-                                                    <label class="mb-0" for="discount">Discount % / Unit</label>
+                                                    <label class="mb-0" for="discount">Discount %</label>
                                                     <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount Percentage" value="0" onkeyup="getBillAmount()">
                                                 </div>
 
@@ -818,7 +819,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
 
     <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
-    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
 
 </body>
