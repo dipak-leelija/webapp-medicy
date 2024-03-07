@@ -132,7 +132,6 @@ class Distributor extends DatabaseConnection{
             } else {
                 $select = "SELECT * FROM distributor";
             }
-            // $select = "SELECT * FROM distributor";
             $selectQuery = $this->conn->prepare($select);
 
             if (!$selectQuery) {
@@ -258,9 +257,6 @@ class Distributor extends DatabaseConnection{
 
 
             if ($stmt) {
-                // if ($match != 'all') {
-                //     $stmt->bind_param("sss", $match, $match, $match);
-                // }
 
                 $stmt->execute();
                 $result = $stmt->get_result();
@@ -365,6 +361,37 @@ class Distributor extends DatabaseConnection{
         }
     }
 
+
+    function showDistRequestById($id){
+        try {
+            $select = "SELECT * FROM distributor_request WHERE `id` = $id";
+            $selectQuery = $this->conn->prepare($select);
+
+            if (!$selectQuery) {
+                throw new Exception("Error preparing the query: " . $this->conn->error);
+            }
+
+            $selectQuery->execute();
+
+            if ($selectQuery->error) {
+                throw new Exception("Error executing the query: " . $selectQuery->error);
+            }
+
+            $result = $selectQuery->get_result();
+
+            while ($row = $result->fetch_assoc()) {
+                $data = $row;
+            }
+
+            if (empty($data)) {
+                return json_encode(['status' => 0, 'message' => 'empty', 'data' => '']);
+            }
+
+            return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => 'Error: ' . $e->getMessage(), 'data' => '']);
+        }
+    }
 
 
     function deleteDistRequest($distributorId)

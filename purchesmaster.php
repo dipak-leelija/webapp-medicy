@@ -20,9 +20,8 @@ $PackagingUnits = new PackagingUnits();
 $ItemUnit       = new ItemUnit();
 
 // Count Distributor Data
-$showDistributor = $Distributor->showDistributor($adminId);
-$response        = json_decode($showDistributor, true);
-$decodedDistributor = !empty($response['data']) ? $response['data'] : null;
+$response = json_decode($Distributor->showDistributor());
+$decodedDistributor = !empty($response->data) ? $response->data : null;
 $countDistributor   = $decodedDistributor !== null ? count($decodedDistributor) : 0;
 
 // Count Manufacturer Data
@@ -569,7 +568,7 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                     $('.DistributorModal').html(data);
                 },
                 error: function(error) {
-                    console.error('Error loading distributor modal:', error);
+                    alert('Error loading distributor modal:', error);
                 }
             });
         }
