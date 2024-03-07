@@ -217,7 +217,7 @@ const customClick = (id, value1, value2, value3) => {
             }
         })
     } else {
-        swal("Error", "Add previous data first!", "error");
+        Swal.fire.fire("Error", "Add previous data first!", "error");
     }
 
     return false;
@@ -478,7 +478,7 @@ const getBillAmount = () => {
     }
 
     if (ptr > maxPtr) {
-        swal({
+        Swal.fire.fire({
             title: "Error Input",
             text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
             icon: "error",
@@ -589,7 +589,7 @@ const addData = () => {
 
 
     if (distId.value == "") {
-        swal("Blank Field", "Please Selet Distributor First!", "error")
+        Swal.fire.fire("Blank Field", "Please Selet Distributor First!", "error")
             .then((value) => {
                 distId.focus();
             });
@@ -598,7 +598,7 @@ const addData = () => {
 
 
     if (distBillid.value == "") {
-        swal("Blank Field", "Please Enter Distributor Bill Number!", "error")
+        Swal.fire.fire("Blank Field", "Please Enter Distributor Bill Number!", "error")
             .then((value) => {
                 distBillid.focus();
             });
@@ -606,7 +606,7 @@ const addData = () => {
     }
 
     if (prevdisbillNo.value == "") {
-        swal("Blank Field", "Please Enter Distributor Bill Number!", "error")
+        Swal.fire.fire("Blank Field", "Please Enter Distributor Bill Number!", "error")
             .then((value) => {
                 prevdisbillNo.focus();
             });
@@ -614,28 +614,28 @@ const addData = () => {
     }
 
     if (billDate.value == "") {
-        swal("Blank Field", "Please Select Bill Date!", "error")
+        Swal.fire.fire("Blank Field", "Please Select Bill Date!", "error")
             .then((value) => {
                 billDate.focus();
             });
         return;
     }
     if (dueDate.value == "") {
-        swal("Blank Field", "Please Select Bill Payment Date!", "error")
+        Swal.fire.fire("Blank Field", "Please Select Bill Payment Date!", "error")
             .then((value) => {
                 dueDate.focus();
             });
         return;
     }
     if (paymentMode.value == "") {
-        swal("Blank Field", "Please Select Payment Mode!", "error")
+        Swal.fire.fire("Blank Field", "Please Select Payment Mode!", "error")
             .then((value) => {
                 paymentMode.focus();
             });
         return;
     }
     if (productName.value == "") {
-        swal("Blank Field", "Please Search & Select Product!", "error")
+        Swal.fire.fire("Blank Field", "Please Search & Select Product!", "error")
             .then((value) => {
                 productName.focus();
             });
@@ -643,7 +643,7 @@ const addData = () => {
     }
     if (batch.value == "") {
 
-        swal("Blank Field", "Please Enter Product Batch Number!", "error")
+        Swal.fire.fire("Blank Field", "Please Enter Product Batch Number!", "error")
             .then((value) => {
                 batch.focus();
             });
@@ -651,7 +651,7 @@ const addData = () => {
     }
     
     if (expMonth.value == "") {
-        swal("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
+        Swal.fire.fire("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
             .then((value) => {
                 expMonth.focus();
             });
@@ -663,7 +663,7 @@ const addData = () => {
         return;
     }
     if (ptr.value == "") {
-        swal("Blank Field", "Please enter PTR value", "error")
+        Swal.fire.fire("Blank Field", "Please enter PTR value", "error")
             .then((value) => {
                 ptr.focus();
             });
@@ -672,28 +672,28 @@ const addData = () => {
     var Ptr = parseFloat(ptr.value);
     var Mrp = parseFloat(mrp.value);
     if (Ptr > Mrp) {
-        swal("Blank Field", "Please check PTR value", "error")
+        Swal.fire.fire("Blank Field", "Please check PTR value", "error")
             .then((value) => {
                 ptr.focus();
             });
         return;
     }
     if (qty.value == "") {
-        swal("Blank Field", "Please Enter Quantity", "error")
+        Swal.fire.fire("Blank Field", "Please Enter Quantity", "error")
             .then((value) => {
                 qty.focus();
             });
         return;
     }
     if (freeQty.value == "") {
-        swal("Blank Field", "Please Enter Free Quantity", "error")
+        Swal.fire.fire("Blank Field", "Please Enter Free Quantity", "error")
             .then((value) => {
                 freeQty.focus();
             });
         return;
     }
     if (discount.value == "") {
-        swal("Blank Field", "Please Enter Discount at least 0", "error")
+        Swal.fire.fire("Blank Field", "Please Enter Discount at least 0", "error")
             .then((value) => {
                 discount.focus();
             });
@@ -962,7 +962,7 @@ const editItem = (tData) => {
         gstPerItem = gstPerItem.toFixed(2);
         deleteData(tuple.slno, tuple.itemQty, gstPerItem, tuple.billAMNT);
     } else {
-        swal("Can't Edit", "Please add/edit previous item first.", "error");
+        Swal.fire.fire("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("ptr").focus();
     }
 }
@@ -1022,8 +1022,12 @@ function rowAdjustment(delRow) {
 }
 
 // ======================= Manufacturing date setting ===================
-
 let expMonthInput = document.getElementById('exp-month');
+let expYearInput = document.getElementById('exp-year');
+let today = new Date();
+let currentMonth = today.getMonth();
+let currentYear = today.getFullYear();
+
 expMonthInput.addEventListener('keydown', function (event) {
     if (event.keyCode === 9) {
         if (expMonthInput.value.trim() === '') {
@@ -1031,7 +1035,21 @@ expMonthInput.addEventListener('keydown', function (event) {
         }
     }
 });
+
 expMonthInput.addEventListener('input', function (event) {
+    // Remove dots from the input value
+    this.value = this.value.replace('.', '');
+});
+
+expYearInput.addEventListener('keydown', function (event) {
+    if (event.keyCode === 9) {
+        if (expMonthInput.value.trim() === '') {
+            event.preventDefault();
+        }
+    }
+});
+
+expYearInput.addEventListener('input', function (event) {
     // Remove dots from the input value
     this.value = this.value.replace('.', '');
 });
@@ -1043,6 +1061,7 @@ const setexpMonth = (mnth) => {
     if (mnth.value.length != 2) {
         mnth.value = '';
         mnth.focus();
+        Swal.fire('Alert','Month must be two digit.','info');
     }
 }
 
@@ -1067,6 +1086,7 @@ const setExpMonth = (month) => {
         }
     } else if (month.value == '') {
         month.focus();
+        Swal.fire('Alert','Month must be less or equal 12.','info');
     } else {
         month.value = '';
         month.focus();
@@ -1075,23 +1095,29 @@ const setExpMonth = (month) => {
 
 
 
-
-function setExpYEAR(year) {
-    if (year.value.length == 4) {
-        document.getElementById('ptr').focus();
-    } else if (year.value.length > 4) {
-        year.value = '';
-        year.focus();
-    }
-}
-
-const setExpYear = (year) => {
+const setExpYEAR = (year) => {
+    expMnth = document.getElementById("exp-month").value;
     
-    var currentDate = new Date();
-    var currentYear = currentDate.getFullYear();
+    let today = new Date();
+    let currentMnth = today.getMonth();
+    let curretnYr = today.getFullYear();
 
-    if(year.value <= currentYear){
-        year.value = '';
-        year.focus();
+    if(year.value.length == 4){
+        if (year.value < curretnYr) {
+            document.getElementById('exp-year').value = '';
+            document.getElementById('exp-year').focus();
+        }else if(year.value == curretnYr){
+            if(expMnth < currentMnth){
+                document.getElementById('exp-month').value = '';
+                document.getElementById('exp-year').value = '';
+                document.getElementById('exp-month').focus();
+            }
+        }else{
+            document.getElementById('ptr').focus();
+        }
+    }else{
+        document.getElementById('exp-year').value = '';
+        document.getElementById('exp-year').focus();
     }
+    
 }

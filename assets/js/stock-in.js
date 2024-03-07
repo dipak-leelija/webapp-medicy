@@ -1198,12 +1198,21 @@ const setExpMonth = (month) => {
 // }
 
 
-// function setExpYEAR(year) {
-//     if (year.value.length > 4) {
-//         document.getElementById('ptr').focus();
-//     } else {
-//         document.getElementById('exp-year').focus();
-//     }
+
+// function setExpYear(year) {
+//     let inputedMonth = document.getElementById('exp-month').value;
+//     let today = new Date();
+//     let curretnMonth = today.getMonth();
+
+//     console.log("inputed month : "+inputedMonth);
+//     console.log("current month : "+curretnMonth);
+
+//     if (parseInt(inputedMonth) < parseInt(curretnMonth)) {
+//         console.log('hello');
+//         document.getElementById('exp-month').value = '';
+//         document.getElementById('exp-month').focus();
+//         Swal.fire('Alert','Expiary must be greater than current month.','error');
+//     } 
 // }
 
 const setExpYEAR = (year) => {

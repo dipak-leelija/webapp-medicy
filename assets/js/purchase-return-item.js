@@ -134,8 +134,12 @@ function searchItem(input) {
                 x[i].style.display = "flex";
             }
         }
+
+        console.log("hello check");
     } else {
         document.getElementById("product-select").style.display = "none";
+        document.getElementById('stock-return-item-data').reset();
+        event.preventDefault();
     }
 }
 
@@ -586,8 +590,8 @@ function addData() {
     //////////////////// onclik handler data \\\\\\\\\\\\\\\\\\\
     var divElement = document.getElementById(seletedItemDiv);
     originalClickHandler = divElement.onclick;
-   
-    let flag = 0;
+    // console.log("original click handeler : "+`${originalClickHandler}`);
+    
     // =========================================================
 
 
@@ -596,7 +600,7 @@ function addData() {
         jQuery("#dataBody")
             .append(`<tr id="table-row-${slControl}">
                     <td  style="color: red;">
-                        <i class="fas fa-trash pt-3" onclick='deleteData(${slControl}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value}, ${seletedItemDiv}, ${originalClickHandler}, ${flag})'></i>
+                        <i class="fas fa-trash pt-3" onclick='deleteData(${slControl}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value}, ${seletedItemDiv}, ${originalClickHandler})'></i>
                     </td>
                     <td id="row-${slControl}-col-2" style="font-size:.8rem ; padding-top:1.5rem"scope="row">${slno}</td>
                     <td class="d-none p-0 pt-3">
@@ -674,9 +678,6 @@ function addData() {
         const dataTuple = {
 
             seletedItemDiv: seletedItemDiv,
-            originalClickHandler: originalClickHandler,
-
-            onclickHandelerData : originalClickHandler,
 
             slno: slControl,
             stokInDetailsId: stokInDetailsId.value,
@@ -712,51 +713,49 @@ function addData() {
             refundAmount: refundAmount.value,
         };
 
-        console.log(dataTuple.originalClickHandler);
-
         let tupleData = JSON.stringify(dataTuple);
 
         document.getElementById(`row-${slControl}-col-2`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-4`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-5`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-6`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-7`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-8`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-9`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-10`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-11`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-12`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-13`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-14`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-15`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
         document.getElementById(`row-${slControl}-col-16`).onclick = function () {
-            editItem(tupleData);
+            editItem(tupleData, originalClickHandler);
         };
 
         //////// document.getElementById("demo").innerHTML = await myPromise;/////////////
@@ -791,17 +790,17 @@ const disableOnClickFunction = (divId) => {
 
 const divOnclikActive = (divId, handelerData) => {
 
-    let divElement = document.getElementById(divId.id);
-
-    if (divElement) {
-        // Restore the original onclick handler
+    let divElement = document.getElementById(divId);
+    
+    if (divElement != null) {
+        // restore onclick handeler data
         divElement.onclick = handelerData;
     }
 }
 
 // ================================ Delet Data ================================
 
-const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerData, flag) => {
+const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerData) => {
 
     let delRow = slno;
 
@@ -838,11 +837,9 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerDat
     rowAdjustment(delRow);
     // console.log(divId);
 
+    console.log("on del call : "+handelerData);
 
-    // console.log(handelerData);
-    if(flag == 0){
-        divOnclikActive(divId, handelerData);
-    }
+    divOnclikActive(divId, handelerData);
 
     chekForm();
 }
@@ -865,9 +862,10 @@ function rowAdjustment(delRow) {
 
 ///////////////////////// item edit funtion /////////////////////////
 
-const editItem = (tData) => {
+const editItem = (tData, onClickData) => {
 
-    console.log(tData);
+    // console.log(onClickData);
+
     if (document.getElementById('product-id').value == '') {
         var tData = JSON.parse(tData);
         // console.log(tData.handelerData);
@@ -908,7 +906,7 @@ const editItem = (tData) => {
 
         let flag = 1;
         let itemQty = parseInt(tData.returnQty) + parseInt(tData.returnFreeQty);
-        deleteData(tData.slno, itemQty, tData.RtrnGstAmount, tData.refundAmount, tData.divId, tData.handelerData, flag);
+        deleteData(tData.slno, itemQty, tData.RtrnGstAmount, tData.refundAmount, tData.seletedItemDiv, onClickData);
 
         chekForm();
     } else {

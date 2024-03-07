@@ -106,8 +106,7 @@ $showDistributor = $showDistributor->data;
                                 <div class="col-md-8 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
                                     <span class="text-danger">*</span>
-                                    <input class="upr-inp mb-1" id="
-                                    " name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
+                                    <input class="upr-inp mb-1" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
                                     <!-- onchange="getDtls(this);" -->
                                     <div class="p-2 bg-light " id="product-select">
                                         <div class="m-0 text-danger text-center">
@@ -184,11 +183,7 @@ $showDistributor = $showDistributor->data;
                                     <div class="col-md-6 col-12 mt-3">
                                         <!-- first row  -->
                                         <div class="row">
-                                            <!-- <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="exp-date">Expiry</label>
-                                            <input class="upr-inp" type="text" id="exp-date" readonly>
-                                        </div> -->
-
+                                            
                                             <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="scheme">Weatage</label>
                                                 <input type="any" class="upr-inp" name="weatage" id="weatage" readonly>
@@ -211,7 +206,7 @@ $showDistributor = $showDistributor->data;
                                         </div>
                                         <!-- first row end  -->
                                         <!-- second row  -->
-                                        <div class="row mt-md-2">
+                                        <div class="row mt-3">
                                             <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="discount">Disc% </label>
                                                 <input type="text" class="upr-inp" name="discount" id="discount" value="" readonly>

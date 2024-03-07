@@ -232,8 +232,10 @@ $healthCareDetailsByAdminId = $healthCareDetailsByAdminId->data;
     $healthCarePIN      = $healthCareDetailsByAdminId->pin;
     $healthCarePhno     = $healthCareDetailsByAdminId->hospital_phno;
     $healthCareApntbkNo = $healthCareDetailsByAdminId->appointment_help_line;
+    $pharmacyLogo       = $healthCareDetailsByAdminId->logo;
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -256,7 +258,7 @@ $healthCareDetailsByAdminId = $healthCareDetailsByAdminId->data;
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= SITE_IMG_PATH ?>logo-p.jpg" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR.$pharmacyLogo ?>" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
@@ -283,7 +285,7 @@ $healthCareDetailsByAdminId = $healthCareDetailsByAdminId->data;
             <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
             <div class="row my-0">
                 <div class="col-sm-6 my-0">
-                    <p><small><b>Patient: </b>
+                    <p><small><b>Distributo Name: </b>
                             <?php echo $distributorName; ?></small></p>
                     <!-- <p style="margin-top: -5px; margin-bottom: 0px;"><small>M:
                             <?php //echo 7699753019; echo ', Test date: 241544';
