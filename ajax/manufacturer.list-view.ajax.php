@@ -18,72 +18,73 @@ if ($match == 'all') {
 }
 
 
-if ($showmanufacturer->status) {
+if ($showmanufacturer->status !== 1) :
+    echo "<div class='p-3 border border-dashed border-dark' >
+            <p class='text-center pb-0 mb-1'>Distributor/s Not Found!</p>
+            <p class='text-center text-danger small pb-0 mb-0 '>However, You Can Search Other Distributors.</p>
+        </div>";
+else :
     $showmanufacturer = $showmanufacturer->data;
-    // print_r($showmanufacturer);
-    // foreach ($showmanufacturer as $eachManufacturer) {
-    //     echo "<div class='p-1 border-bottom list' id='$eachManufacturer->id' onclick='setManufacturer(this)'>
-    //     $eachManufacturer->name
-    //     </div>";
-    // }
-} else {
-    echo "<p class='text-center font-weight-bold'>Manufacturer Not Found!</p>";
-    // echo "<div class='p-1 border-bottom list'> $match </div>";
-}
 ?>
-<div class="table-responsive">
-    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-        <thead>
-            <tr>
-                <th>SL.</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if (is_array($showmanufacturer)) {
-                foreach ($showmanufacturer as $rowmanufacturer) {
-                    $manufacturerId      = $rowmanufacturer->id;
-                    $manufacturerName    = $rowmanufacturer->name;
-                    $manufacturerDsc     = $rowmanufacturer->dsc;
-                    $manufacturerStatus  = $rowmanufacturer->status;
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>SL.</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if (is_array($showmanufacturer)) {
+                    foreach ($showmanufacturer as $rowmanufacturer) {
+                        $manufacturerId      = $rowmanufacturer->id;
+                        $manufacturerName    = $rowmanufacturer->name;
+                        $manufacturerDsc     = $rowmanufacturer->dsc;
+                        $manufacturerStatus  = $rowmanufacturer->status;
+                        $addedAdmin          = $rowmanufacturer->admin_id;
 
-                    $statusLabel = '';
-                    $statusColor = '';
-                    switch ($manufacturerStatus) {
-                        case 2:
-                            $statusLabel = 'Disabled';
-                            $statusColor = 'red';
-                            break;
-                        case 0:
-                            $statusLabel = 'Pending';
-                            $statusColor = '#4e73df';
-                            break;
-                        case 1:
-                            $statusLabel = 'Active';
-                            $statusColor = 'green';
-                            break;
-                        default:
-                            $statusLabel = 'Disabled';
-                            break;
+                        $statusLabel = '';
+                        $statusColor = '';
+                        switch ($manufacturerStatus) {
+                            case 2:
+                                $statusLabel = 'Disabled';
+                                $statusColor = 'danger';
+                                break;
+                            case 0:
+                                $statusLabel = 'Pending';
+                                $statusColor = 'warning';
+                                break;
+                            case 1:
+                                $statusLabel = 'Active';
+                                $statusColor = 'success';
+                                break;
+                            default:
+                                $statusLabel = 'Disabled';
+                                break;
+                        }
+                        echo '<tr>
+                                <td>' . $manufacturerId  . '</td>
+                                <td>' . $manufacturerName . '</td>
+                                <td>' . $manufacturerDsc . '</td>
+                                <td><span class="badge badge-pill badge-' . $statusColor . '">' . $statusLabel . '</span></td>
+
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-transparent text-primary p-0" data-bs-target="#manufacturerModal" data-bs-toggle="modal" data-bs-dismiss="modal"';
+                        echo $addedAdmin != $adminId ? 'disabled' : 'onclick="manufactViewRequest(' . $manufacturerId . ')"';
+                        echo '><i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>';
                     }
-                    echo '<tr>
-                        <td>' . $manufacturerId  . '</td>
-                        <td>' . $manufacturerName . '</td>
-                        <td>' . $manufacturerDsc . '</td>
-                        <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
-                        <td>
-                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#manufacturerModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="manufactViewRequest(' . $manufacturerId . ')"><i class="fas fa-edit"></i></button>
-                        </td>
-                       </tr>';
                 }
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
-
-
+                ?>
+            </tbody>
+        </table>
+    </div>
+<?php
+endif;
+?>

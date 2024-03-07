@@ -1,21 +1,21 @@
-<?php 
-require_once dirname(__DIR__).'/config/constant.php';
+<?php
+require_once dirname(__DIR__) . '/config/constant.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'manufacturer.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
 $Manufacturer = new Manufacturer();
 
 $manufacturerId = $_GET['Id'];
 
 $showManufacturer = $Manufacturer->showManufacturerById($manufacturerId);
-$showManufacturer = json_decode($showManufacturer,true);
+$showManufacturer = json_decode($showManufacturer, true);
 
-if(isset($showManufacturer['status']) && $showManufacturer['status'] == '1'){
+if (isset($showManufacturer['status']) && $showManufacturer['status'] == '1') {
     $data = $showManufacturer['data'];
-    if(!empty($data)){
+    if (!empty($data)) {
         $manufacturerName = $data['name'];
         $shortName        = $data['short_name'];
-        $manufacturerDsc  = $data['dsc']; 
+        $manufacturerDsc  = $data['dsc'];
     }
 }
 ?>
@@ -36,18 +36,18 @@ if(isset($showManufacturer['status']) && $showManufacturer['status'] == '1'){
 <body class="mx-2">
 
     <form>
-        <input type="hidden" id="manufacturerId" name="" value="<?php echo $manufacturerId;?>">
+        <input type="hidden" id="manufacturerId" name="" value="<?php echo $manufacturerId; ?>">
         <!-- <div class="form-group"> -->
-            <label for="manufacturer" class="form-label mb-0">Manufacturer Name:</label>
-            <input type="text" class="form-control" id="manufacturer" value="<?php echo $manufacturerName; ?>">
+        <label for="manufacturer" class="form-label mb-0">Manufacturer Name:</label>
+        <input type="text" class="form-control" id="manufacturer" value="<?php echo $manufacturerName; ?>">
         <!-- </div> -->
 
-            <label for="manufacturer" class="form-label mb-0">Manufacturer Mark:</label>
-            <input type="text" class="form-control" id="manufShortName" value="<?php echo $shortName; ?>">
+        <label for="manufacturer" class="form-label mb-0">Manufacturer Mark:</label>
+        <input type="text" class="form-control" id="manufShortName" value="<?php echo $shortName; ?>">
 
         <!-- <div class="form-group"> -->
-            <label for="description" class="form-label mb-0 mt-2">Description:</label>
-            <textarea class="form-control" id="description" rows="4"><?php echo $manufacturerDsc; ?></textarea>
+        <label for="description" class="form-label mb-0 mt-2">Description:</label>
+        <textarea class="form-control" id="description" rows="4"><?php echo $manufacturerDsc; ?></textarea>
         <!-- </div> -->
 
 
@@ -58,10 +58,10 @@ if(isset($showManufacturer['status']) && $showManufacturer['status'] == '1'){
         <div class="mt-2 d-flex justify-content-end">
             <button type="button" class="btn btn-sm btn-primary" onclick="editManufacturer()">Send Request</button>
         </div>
-        
+
     </form>
 
-    
+
 
 
     <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
@@ -74,35 +74,41 @@ if(isset($showManufacturer['status']) && $showManufacturer['status'] == '1'){
     <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.min.js"></script>
 
     <script>
-    function editManufacturer() {
-        let manufacturerId  = document.getElementById("manufacturerId").value;
-        let manufacturer    = document.getElementById("manufacturer").value;
-        let manufShortName = document.getElementById("manufShortName").value;
-        let description     = document.getElementById("description").value;
+        function editManufacturer() {
+            let manufacturerId = document.getElementById("manufacturerId").value;
+            let manufacturer = document.getElementById("manufacturer").value;
+            let manufShortName = document.getElementById("manufShortName").value;
+            let description = document.getElementById("description").value;
 
-        let url = `manufacturer.RequestEdit.ajax.php?id=${manufacturerId}&name=${manufacturer}&sname=${manufShortName}&dsc=${description}`;
-        
-        request.open('GET', url, true);
- 
-        request.onreadystatechange = getEditUpdates;
+            let url = "manufacturer.RequestEdit.ajax.php";
+            let params = `id=${manufacturerId}&name=${manufacturer}&sname=${manufShortName}&dsc=${description}`;
 
-        request.send(null);
-    }
+            request.open('POST', url, true);
 
-    function getEditUpdates() {
-        if (request.readyState == 4) {
-            if (request.status == 200) {
-                var xmlResponse = request.responseText;
-                document.getElementById('reportUpdate').innerHTML = xmlResponse;
-            } else if (request.status == 404) {
-                alert("Request page doesn't exist");
-            } else if (request.status == 403) {
-                alert("Request page doesn't exist");
-            } else {
-                alert("Error: Status Code is " + request.statusText);
-            }
+            // Set the Content-Type header for the POST request
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            // Define a function to handle the response
+            request.onreadystatechange = getEditUpdates;
+
+            // Send the POST request with the parameters in the body
+            request.send(params);
         }
-    } //eof getEditUpdates
+
+        function getEditUpdates() {
+            if (request.readyState == 4) {
+                if (request.status == 200) {
+                    var xmlResponse = request.responseText;
+                    document.getElementById('reportUpdate').innerHTML = xmlResponse;
+                } else if (request.status == 404) {
+                    alert("Request page doesn't exist");
+                } else if (request.status == 403) {
+                    alert("Request page doesn't exist");
+                } else {
+                    alert("Error: Status Code is " + request.statusText);
+                }
+            }
+        } //eof getEditUpdates
     </script>
 
 </body>
