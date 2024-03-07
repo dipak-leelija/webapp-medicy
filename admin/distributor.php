@@ -84,7 +84,7 @@ if (!empty($showDistRequest->data)) {
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr>
                                                     <th>SL.</th>
@@ -92,7 +92,7 @@ if (!empty($showDistRequest->data)) {
                                                     <th>Contact</th>
                                                     <th>Area PIN</th>
                                                     <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -136,7 +136,7 @@ if (!empty($showDistRequest->data)) {
                                                                 <td>' . $distributorPin . '</td>
                                                                 <td>
                                                                     <div class="dropdown">
-                                                                        <button class="btn btn-secondary dropdown-toggle bg-white border-0 " type="button" id="statusDropdown' . $distributorId . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: ' . $statusColor . ';">
+                                                                        <button class="btn btn-sm btn-secondary dropdown-toggle bg-white border-0 " type="button" id="statusDropdown' . $distributorId . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: ' . $statusColor . ';">
                                                                             ' . $statusLabel . '
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="statusDropdown' . $distributorId . '">
@@ -146,7 +146,7 @@ if (!empty($showDistRequest->data)) {
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                <td>
+                                                                <td class="text-center">
                                                                     <a class="mx-1" data-toggle="modal" data-target="#distributorModal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></a>
                                                                     ';
                                                         if ($delReq) {
@@ -224,7 +224,7 @@ if (!empty($showDistRequest->data)) {
 
     <!-- show distributor request data  -->
     <div class="modal fade" id="req-distributor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Distributor Request Data</h5>
@@ -257,6 +257,24 @@ if (!empty($showDistRequest->data)) {
         </div>
     </div>
     <!-- end for delete request -->
+
+    <!-- Requested Distributor View Modal -->
+    <div class="modal fade" id="reqDistributorModal" tabindex="-1" role="dialog" aria-labelledby="reqDistributorModalLabel" data-toggle="modal" data-target="#req-distributor">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reqDistributorModalLabel">Distributor Request Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body reqDistributorModal">
+                    <!-- Details Appeare Here by Ajax  -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Requested Distributor View Modal -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -449,7 +467,7 @@ if (!empty($showDistRequest->data)) {
                                         $(btn).closest("tr").fadeOut()
                                         swal("Deleted", "Distributor Has Been Deleted",
                                             "success");
-                                            location.reload();
+                                        location.reload();
                                     } else {
                                         swal("Failed", data, "error");
                                     }
@@ -499,6 +517,33 @@ if (!empty($showDistRequest->data)) {
 
                     }
                 })
+        }
+
+        function getRequestedData(requestId) {
+            $('#req-distributor').modal('toggle')
+            $('#reqDistributorModal').modal('toggle')
+
+            // alert(requestId);
+            $.ajax({
+                url: "ajax/distributor-request.view.ajax .php",
+                type: "POST",
+                data: {
+                    requestId: requestId
+                },
+                success: function(response) {
+                    let body = document.querySelector('.reqDistributorModal');
+                    body.innerHTML = response;
+                },
+                error: function(error) {
+                    alert('error:', error);
+                }
+            })
+
+            // Close the current active modal
+            // $('#req-distributor').modal('hide');
+
+            // Open the new modal
+            // $('#reqDistributorModal').modal('show');
         }
     </script>
 

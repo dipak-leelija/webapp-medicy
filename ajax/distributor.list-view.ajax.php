@@ -7,19 +7,14 @@ require_once CLASS_DIR . 'distributor.class.php';
 
 $Distributor        = new Distributor();
 
-if (isset($_GET['match'])) {
+if (isset($_GET['match'])) :
 
     $match = $_GET['match'];
-    // echo $match;
-    if ($match == 'all') {
-        $showDistributor    = json_decode($Distributor->distributorSearch($match));
-    } else {
-        $showDistributor    = json_decode($Distributor->distributorSearch($match));
-    }
+    $showDistributor    = json_decode($Distributor->distributorSearch($match));
 
     if ($showDistributor->status == 1) {
         $showDistributor = $showDistributor->data;
-        // print_r($showmanufacturer);
+
         foreach ($showDistributor as $eachDistributor) {
             echo "<div class='p-1 border-bottom list' id='$eachDistributor->id' onclick='setDistributor(this)'>
             $eachDistributor->name
@@ -27,43 +22,40 @@ if (isset($_GET['match'])) {
         }
     } else {
         echo "<p class='text-center font-weight-bold'>Distributor Not Found!</p>";
-        // echo "<div class='p-1 border-bottom list'> $match </div>";
     }
-} elseif (isset($_POST['search'])) {
+
+
+elseif (isset($_POST['search'])) :
+
     $match = isset($_POST['search']) ? $_POST['search'] : $adminId;
 
-    if ($match == 'all') {
-        $showDistributor    = json_decode($Distributor->distCardSearch($match, $adminId));
-    } else {
-        $showDistributor    = json_decode($Distributor->distCardSearch($match, $adminId));
-    }
-
+    $showDistributor    = json_decode($Distributor->distCardSearch($match, $adminId));
 
     if ($showDistributor->status == 1) {
         $showDistributor = $showDistributor->data;
-        // print_r($showmanufacturer);
-        // foreach (showDistributor as $eachDistributor) {
-        //     echo "<div class='p-1 border-bottom list' id='$eachDistributor->id' onclick='setManufacturer(this)'>
-        //     $eachManufacturer->name
-        //     </div>";
-        // }
+        $found = true;
     } else {
-        echo "<p class='text-center font-weight-bold'>Distributor Not Found!</p>";
-        // echo "<div class='p-1 border-bottom list'> $match </div>";
+        $found = false;
+        $msgElement = "<div class='p-3 border border-dashed border-dark' >
+                            <p class='text-center pb-0 mb-1'>Distributor/s Not Found!</p>
+                            <p class='text-center text-danger small pb-0 mb-0 '>However, You Can Search Other Distributors.</p>
+                    </div>";
+        // echo "<p class='text-center font-weight-bold'>Distributor Not Found!</p>";
     }
 
-?>
-
+    
+    if ($found){
+?>    
     <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
+        <table class="table table-sm table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead class="thead-light">
                 <tr>
                     <th>SL.</th>
                     <th>Name</th>
                     <th>Contact</th>
                     <th>Area PIN</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,37 +67,42 @@ if (isset($_GET['match'])) {
                         $distributorPhno    = $rowDistributor->phno;
                         $distributorPin     = $rowDistributor->area_pin_code;
                         $distributorStatus  = $rowDistributor->status;
-
+                        $addedAdmin         = $rowDistributor->admin_id;
+    
                         $statusLabel = '';
                         $statusColor = '';
                         switch ($distributorStatus) {
                             case 2:
                                 $statusLabel = 'Disabled';
-                                $statusColor = 'red';
+                                $statusColor = 'danger';
                                 break;
                             case 0:
                                 $statusLabel = 'Pending';
-                                $statusColor = '#4e73df';
+                                $statusColor = 'warning';
                                 break;
                             case 1:
                                 $statusLabel = 'Active';
-                                $statusColor = 'green';
+                                $statusColor = 'success';
                                 break;
                             default:
                                 $statusLabel = 'Disabled';
                                 break;
                         }
                         echo '<tr>
-                    <td>' . $distributorId . '</td>
-                    <td>' . $distributorName . '</td>
-                    <td>' . $distributorPhno . '</td>
-                    <td>' . $distributorPin . '</td>
-                    <td style="color: ' . $statusColor . ';">' . $statusLabel . '</td>
-                    <td>
-                        <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#distRequestModal" data-bs-toggle="modal" data-bs-dismiss="modal" onclick="distViewAndEdit(' . $distributorId . ')"><i class="fas fa-edit"></i></button>
-                    </td>
-                   </tr>';
-                      
+                        <td>' . $distributorId . '</td>
+                        <td>' . $distributorName . '</td>
+                        <td>' . $distributorPhno . '</td>
+                        <td>' . $distributorPin . '</td>
+                        <td><span class="badge badge-pill badge-' . $statusColor . '">' . $statusLabel . '</span></td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-transparent text-primary" data-bs-target="#distRequestModal" data-bs-toggle="modal" data-bs-dismiss="modal"';
+                            
+                            echo $addedAdmin != $adminId ? 'disabled' : 'onclick="distViewAndEdit(' . $distributorId . ')"';
+
+                            echo '><i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                       </tr>';
                     }
                     // echo $rowCount;
                 }
@@ -113,19 +110,12 @@ if (isset($_GET['match'])) {
             </tbody>
         </table>
     </div>
-    <!-- <script>
-        //View and Edit Manufacturer function
-        distViewAndEdit = (distributorId) => {
-            let ViewAndEdit = distributorId;
-            let url = "ajax/distributor.request.ajax.php?Id=" + ViewAndEdit;
-            $(".distRequestModal").html(
-                '<iframe width="99%" height="530px" frameborder="0" allowtransparency="true" src="' +
-                url + '"></iframe>');
-        } // end of viewAndEdit function
-    </script> -->
+    <?php
+    }else{
+        echo $msgElement;
+    }
 
-<?php
-
-}
+endif;
 
 ?>
+
