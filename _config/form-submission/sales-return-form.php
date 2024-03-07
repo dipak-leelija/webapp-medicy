@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 
-$selectClinicInfo = json_decode($ClinicInfo->showHealthCare($adminId));
+$selectClinicInfo = json_decode($HelthCare->showHealthCare($adminId));
 // print_r($selectClinicInfo->data);
 $pharmacyLogo = $selectClinicInfo->data->logo;
 $pharmacyName = $selectClinicInfo->data->hospital_name;
