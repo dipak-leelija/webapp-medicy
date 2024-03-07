@@ -136,7 +136,7 @@ if (isset($_GET['search'])) {
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div class="col-md-7">
-                                        <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)">
+                                        <input type="text" name="prodcut-search" id="prodcut-search" class="form-control w-100" style="justify-content: center;" placeholder="Search Products (Product Name / Product Composition)" autocomplete="off">
 
                                         <div class="p-2 bg-light col-md-10 c-dropdown" id="product-list" style="z-index: 9999;">
                                             <div class="lists" id="lists">

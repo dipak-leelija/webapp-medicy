@@ -2,11 +2,11 @@
     <form id="stock-in-data">
         <div class="row">
             <div class="col-md-7">
-                <div class="row mt-4 mb-2">
-                    <div class="col-md-12 ">
+                <div class="row mb-2">
+                    <div class="col-md-12">
                         <label for="product-name" class="mb-0">Item Name</label>
-                        <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product *" onkeyup="searchItem(this.value);" autocomplete="off" value="" onkeydown="chekForm()">
-
+                        <span class="text-danger">*</span>
+                        <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" autocomplete="off" value="" onkeydown="chekForm()">
                         <div class="p-2 bg-light" id="product-select" style="max-height: 25rem; max-width: 100%;">
                         </div>
                     </div>

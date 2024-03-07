@@ -53,7 +53,6 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -78,14 +77,11 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
 
-
     <!-- css path for bootstrap 5-->
     <!-- <link rel="stylesheet" href="<?php echo CSS_PATH ?>bootstrap 5/bootstrap.min.css"> -->
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>choices.min.css">
 
     <link href="<?= PLUGIN_PATH ?>choices/assets/styles/choices.min.css" rel="stylesheet" />
-
-
 </head>
 
 <body id="page-top">
@@ -119,16 +115,17 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
 
                                 <div class="row flex-wrap-reverse">
                                     <div class="col-md-6" id="first-div">
-                                        <!-- product name row -->
-                                        <div class="col-sm-12">
-                                            <label for="product-name">Product Name</label>
-                                            <span class="text-danger">*</span>
-                                            <input class="c-inp w-100 p-1" id="product-name" name="product-name" required>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label for="product-name">Product Name</label>
+                                                <span class="text-danger">*</span>
+                                                <input class="c-inp w-100 p-1" id="product-name" name="product-name" required>
+                                            </div>
                                         </div>
 
                                         <!-- product category row -->
-                                        <div class="d-flex flex-wrap col-md-12 mt-2">
-                                            <div class="col-sm-6">
+                                        <div class="row mt-2">
+                                            <div class="col-sm-6 mt-2">
                                                 <label for="product-catagory">Prodcut Catagory</label>
                                                 <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100  " name="product-catagory" id="product-catagory" required>
@@ -145,7 +142,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                                 </select>
                                             </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6 mt-2">
                                                 <label for="product-catagory">Packeging In</label>
                                                 <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100  " name="packeging-type" id="packeging-type" required>
@@ -165,16 +162,15 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
 
 
                                         <!-- catagory - packging - power and unit row  -->
-                                        <div class="d-flex flex-wrap col-md-12 mt-2">
-                                            <div class="col-sm-6">
+                                        <div class="row mt-2">
+                                            <div class="col-sm-6 mt-2">
                                                 <label for="qantity">Qantity</label>
                                                 <span class="text-danger">*</span>
-                                                <input class="c-inp w-100 p-1  " id="qantity" name="qantity" placeholder="e.g. 10,20,200">
-
+                                                <input class="c-inp w-100 p-1" type="number" id="qantity" name="qantity" placeholder="e.g. 10,20,200">
                                             </div>
 
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6 mt-2">
                                                 <label for="unit">Unit</label>
                                                 <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100" id="unit" name="unit" required>
@@ -192,24 +188,24 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                         </div>
 
                                         <!-- catagory - packging - power and unit row  -->
-                                        <div class="d-flex flex-wrap col-md-12 mt-2">
-                                            <div class="col-sm-6">
+                                        <div class="row mt-2">
+                                            <div class="col-sm-6 mt-2">
                                                 <label for="medicine-power">Medicine Power</label>
                                                 <span class="text-danger">*</span>
-                                                <input class="c-inp w-100 p-1  " id="medicine-power" name="medicine-power" required>
+                                                <input class="c-inp w-100 p-1" type="number" id="medicine-power" name="medicine-power" required>
                                             </div>
 
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6 mt-2">
                                                 <label for="mrp">Enter MRP</label>
                                                 <span class="text-danger">*</span>
-                                                <input class="c-inp w-100 p-1  " id="mrp" name="mrp" required>
+                                                <input class="c-inp w-100 p-1" type="number" id="mrp" name="mrp" required>
                                             </div>
                                         </div>
 
-                                        <!-- mrp, gst and hsno number row  -->
-                                        <div class="col-md-12 d-flex flex-wrap mt-2">
-                                            <div class="col-sm-6">
+                                        <!-- gst and hsno number row  -->
+                                        <div class="row mt-2">
+                                            <div class="col-sm-6 mt-2">
                                                 <label for="mrp">Enter GST</label>
                                                 <span class="text-danger">*</span>
                                                 <select class="c-inp p-1 w-100" name="gst" id="gst" required>
@@ -224,10 +220,10 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                                 </select>
                                             </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6 mt-2">
                                                 <label for="hsno-number">HSNO Number</label>
                                                 <span class="text-danger">*</span>
-                                                <input class="c-inp w-100 p-1  " id="hsno-number" name="hsno-number" required>
+                                                <input class="c-inp w-100 p-1" type="number" id="hsno-number" name="hsno-number" minlength="4" maxlength="6" required>
                                             </div>
                                         </div>
                                     </div>
@@ -250,7 +246,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
 
                                     </div>
                                 </div>
-                                
+
                                 <div class="row mt-3">
                                     <div class="col-6"></div>
                                     <div class="col-6 d-flex justify-content-around">

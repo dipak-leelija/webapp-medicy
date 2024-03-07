@@ -106,7 +106,8 @@ $showDistributor = $showDistributor->data;
                                 <div class="col-md-8 col-12 ">
                                     <label for="product-name" class="mb-1 mt-3">Product Name</label>
                                     <span class="text-danger">*</span>
-                                    <input class="upr-inp mb-1" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
+                                    <input class="upr-inp mb-1" id="
+                                    " name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value)" autocomplete="off">
                                     <!-- onchange="getDtls(this);" -->
                                     <div class="p-2 bg-light " id="product-select">
                                         <div class="m-0 text-danger text-center">
