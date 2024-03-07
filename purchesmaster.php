@@ -25,7 +25,7 @@ $decodedDistributor = !empty($response->data) ? $response->data : null;
 $countDistributor   = $decodedDistributor !== null ? count($decodedDistributor) : 0;
 
 // Count Manufacturer Data
-$showManufacturer    = $Manufacturer->showManufacturer($adminId);
+$showManufacturer    = $Manufacturer->showManufacturer();
 $decodedManufacturer = ($showManufacturer !== null) ? $showManufacturer : null;
 $countManufacturer   = ($decodedManufacturer !== null) ? count($decodedManufacturer) : 0;
 
@@ -304,7 +304,7 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body add-manufacturer">
+                    <div class="modal-body add-manufacturer pt-0">
                         <!-- Details Appeare Here by Ajax  -->
                     </div>
                 </div>
@@ -584,7 +584,7 @@ $totalItemUnit       = count($ItemUnit->showItemUnits());
                     $('.ManufacturModal').html(data);
                 },
                 error: function(error) {
-                    console.error('Error loading distributor modal:', error);
+                    alert('Error loading distributor modal:', error);
                 }
             });
         }

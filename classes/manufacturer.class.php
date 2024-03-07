@@ -150,7 +150,6 @@ class Manufacturer extends DatabaseConnection
                 }
                 return $data;
             }else{
-                echo "if not satisfied.";
                 return null;
             }
         } catch (Exception $e) {

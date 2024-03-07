@@ -3,7 +3,7 @@ require_once dirname(__DIR__) . '/config/constant.php';
 ?>
 
 
-<div class="card-body pt-0">
+<div class="card-body pt-0 px-0">
     <form method="post" action="<?= URL ?>ajax/manufacturer.add.ajax.php">
 
         <div class="col-md-12 mt-4 floating-form-group">

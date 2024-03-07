@@ -27,25 +27,11 @@ $Manufacturer = new Manufacturer();
 $Manufacturer = new Manufacturer();
 
 if(isset($_POST['add-manufacturer'])){
-    $manufacturerName = $_POST['manufacturer-name'];
-    $manufacturerName = str_replace("<", "&lt", $manufacturerName);
-    $manufacturerName = str_replace(">", "&gt", $manufacturerName);
-    $manufacturerName = str_replace("'", "&#39", $manufacturerName);
-
-
-
-    $manufacturerDsc = $_POST['manufacturer-dsc'];
-    $manufacturerDsc = str_replace("<", "&lt", $manufacturerDsc);
-    $manufacturerDsc = str_replace(">", "&gt", $manufacturerDsc);
-    $manufacturerDsc = str_replace("'", "&#39", $manufacturerDsc);
-    // echo $manufacturerDsc;
-
-    $shortName = $_POST['manufacturer-short-name'];
-    $shortName = str_replace("<", "&lt", $shortName);
-    $shortName = str_replace(">", "&gt", $shortName);
-    $shortName = str_replace("'", "&#39", $shortName);
-    $manufactureStatus = 0;
-    $newData           = 1;
+    $manufacturerName   = $_POST['manufacturer-name'];
+    $manufacturerDsc    = $_POST['manufacturer-dsc'];
+    $shortName          = $_POST['manufacturer-short-name'];
+    $manufactureStatus  = 0;
+    $newData            = 1;
 
 
     // last inserted manufacturer data fetch ---------
@@ -84,26 +70,11 @@ if(isset($_POST['add-manufacturer'])){
 
 
 if(isset($_POST['add-new-manuf'])){
-    $manufacturerName = $_POST['manuf-name'];
-    $manufacturerName = str_replace("<", "&lt", $manufacturerName);
-    $manufacturerName = str_replace(">", "&gt", $manufacturerName);
-    $manufacturerName = str_replace("'", "&#39", $manufacturerName);
-
-
-    $shortName = $_POST['manuf-mark'];
-    $shortName = str_replace("<", "&lt", $shortName);
-    $shortName = str_replace(">", "&gt", $shortName);
-    $shortName = str_replace("'", "&#39", $shortName);
-
-
-    $manufacturerDsc = $_POST['manuf-dsc'];
-    $manufacturerDsc = str_replace("<", "&lt", $manufacturerDsc);
-    $manufacturerDsc = str_replace(">", "&gt", $manufacturerDsc);
-    $manufacturerDsc = str_replace("'", "&#39", $manufacturerDsc);
-    // echo $manufacturerDsc;
-    $manufactureStatus = 0;
-    $newData           = 1;
-    
+    $manufacturerName   = $_POST['manuf-name'];
+    $shortName          = $_POST['manuf-mark'];
+    $manufacturerDsc    = $_POST['manuf-dsc'];
+    $manufactureStatus  = 0;
+    $newData            = 1;
 
     // last inserted manufacturer data fetch ---------
     $manufData = json_decode($Manufacturer->lastManufDataFetch());
@@ -118,7 +89,7 @@ if(isset($_POST['add-new-manuf'])){
         if ($addManufacturer) {
             ?> 
              <script>
-            swal("Success", "Manufacturer Added!", "success")
+            swal("Success", "Manufacturer Adding Request Sent!", "success")
                 .then((value) => {
                     window.location = '<?= URL ?>purchesmaster.php';
                 });
