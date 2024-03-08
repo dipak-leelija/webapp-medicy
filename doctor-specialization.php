@@ -251,6 +251,8 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                             }
                         });
 
+                }else{
+                    Swal.fire('Check','Fill both Doctor specialization and Description field.','info');
                 }
                 
                 document.getElementById('splz-name').value = '';
