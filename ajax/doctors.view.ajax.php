@@ -103,7 +103,7 @@ $showDoctor = json_decode($Doctors->showDoctorNameById($docId));
                 </div>
 
                 <!-- second column -->
-                <div class="col-md-5 ml-4 mb-2">
+                <div class="col-md-5 ml-5 mb-2">
                     <div class="row">
                         <label for="doc-with" class="col-form-label">Doctor Also With:</label>
                         <input type="text" class="form-control" id="doc-with" value="<?php echo $docAlsoWith; ?>">

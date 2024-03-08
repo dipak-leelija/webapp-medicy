@@ -256,7 +256,7 @@ $showDoctors = json_decode($showDoctors, true);
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Doctor Information</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="refreshPage()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -264,8 +264,8 @@ $showDoctors = json_decode($showDoctors, true);
                         <!-- Doctors Details Will Appeare Here By AJAX -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="refreshPage()">Ok</button>
-                        <button type="button" class="btn btn-primary" onclick="refreshPage()">Update</button>
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="refreshPage()">Ok</button>
+                        <button type="button" class="btn btn-primary" onclick="refreshPage()">Update</button> -->
                     </div>
                 </div>
             </div>
