@@ -171,20 +171,20 @@ foreach ($showDoctorCategoryById['data'] as $rowDocCatName) {
 
                 <div class="col-md-4 custom-width-name mb-0">
                     <ul style="margin-bottom: 8px">
-                        <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/hospital.png" alt="Healt Care" style="width:28px; height:20px;" /><?php echo $healthCareName ?></li>
+                        <li class=" list-unstyled"><img id="healthcare-name-box" class="pe-2" src="<?php echo LOCAL_DIR ?>assets/images/icons/hospital.png" alt="Healt Care" style="width:28px; height:20px;" /><?php echo $healthCareName ?></li>
                     </ul>
                 </div>
 
                 <div class="col-md-4 custom-width-email mb-0">
                     <ul style="margin-bottom: 8px">
-                        <li class="list-unstyled"><img id="email-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/email-logo.png" alt="Email" style="width:28px; height:20px;" /><?php echo $healthCareEmail ?></li>
+                        <li class="list-unstyled"><img id="email-box" class="pe-2" src="<?php echo LOCAL_DIR ?>assets/images/icons/email-logo.png" alt="Email" style="width:28px; height:20px;" /><?php echo $healthCareEmail ?></li>
 
                     </ul>
                 </div>
 
                 <div class="col-md-4 custom-width-number mb-0">
                     <ul style="margin-bottom: 8px">
-                        <li class="list-unstyled"><img id="number-box" class="pe-2" src="<?php echo LOCAL_DIR ?>employee/partials/call-logo.png" alt="Contact" style="width:28px; height:20px;" /><span>
+                        <li class="list-unstyled"><img id="number-box" class="pe-2" src="<?php echo LOCAL_DIR ?>assets/images/icons/call-logo.png" alt="Contact" style="width:28px; height:20px;" /><span>
                                 <?php
                                 $separetor = ',';
                                 if ($healthCarePhno == null) {
