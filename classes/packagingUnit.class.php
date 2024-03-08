@@ -212,10 +212,6 @@ class PackagingUnits extends DatabaseConnection
 
 
             if ($stmt) {
-                // if ($match != 'all') {
-                //     $stmt->bind_param("ss", $match, $match);
-                // }
-
                 $stmt->execute();
                 $result = $stmt->get_result();
 
