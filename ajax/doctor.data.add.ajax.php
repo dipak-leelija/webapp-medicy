@@ -7,17 +7,12 @@ require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'doctor.category.class.php';
 
 
-$docId = $_GET['docId'];
 
-$Doctors = new Doctors();
-$doctorCategory = new DoctorCategory();
+$DoctorCategory = new DoctorCategory;
 
 
-$showDoctor = json_decode($Doctors->showDoctorNameById($docId));
-// print_r($showDoctor);
+$docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
 
-$docSplzList = $doctorCategory->showDoctorCategoryByAdmin($adminId);
-// print_r($docSplzList);
 ?>
 
 <!DOCTYPE html>
@@ -31,28 +26,12 @@ $docSplzList = $doctorCategory->showDoctorCategoryByAdmin($adminId);
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>lab-test.css">
+    <!-- css for sweetalert2 -->
+    <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
 </head>
 
 <body class="mx-2">
-
-    <?php
-    $showDoctor = $showDoctor->data;
-
-    foreach ($showDoctor as $doctor) {
-        $docId = $doctor->doctor_id;
-        $docRegNo = $doctor->doctor_reg_no;
-        $docName = $doctor->doctor_name;
-        $docSplz = $doctor->doctor_specialization;
-        $docDegree = $doctor->doctor_degree;
-        $docAlsoWith = $doctor->also_with;
-        $docAddress = $doctor->doctor_address;
-        $docEmail = $doctor->doctor_email;
-        $docPhno = $doctor->doctor_phno;
-
-        // echo $docSplz;
-    }
-    ?>
 
     <div class="container-fluid px-1  mx-auto">
         <div class="row d-flex justify-content-center">
@@ -61,12 +40,11 @@ $docSplzList = $doctorCategory->showDoctorCategoryByAdmin($adminId);
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
                             <label for="doc-name" class="col-form-label">Doctor Name:</label>
-                            <input type="text" class="form-control" id="doc-name" value="<?php echo $docName; ?>" autocomplete="off">
-                            <input type="text" class="form-control" id="doc-id" value="<?php echo $docId; ?>" readonly hidden>
+                            <input type="text" class="form-control" id="doc-name" autocomplete="off">
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-with" class="col-form-label">Doctor Also With:</label>
-                            <input type="text" class="form-control" id="doc-with" value="<?php echo $docAlsoWith; ?>" autocomplete="off">
+                            <label for="doc-reg-no" class="col-form-label">Doctor Reg. No:</label>
+                            <input type="text" class="form-control" id="doc-reg-no" autocomplete="off">
                         </div>
                     </div>
 
@@ -79,7 +57,7 @@ $docSplzList = $doctorCategory->showDoctorCategoryByAdmin($adminId);
                                 foreach ($docSplzList as $splzList) {
 
                                 ?>
-                                    <option <?= $docSplz == $splzList['doctor_category_id'] ? 'selected' : ''; ?> value="<?php echo $splzList['doctor_category_id'] ?>">
+                                    <option value="<?php echo $splzList['doctor_category_id'] ?>">
                                         <?php echo $splzList['category_name'] ?>
                                     </option>';
 
@@ -90,52 +68,47 @@ $docSplzList = $doctorCategory->showDoctorCategoryByAdmin($adminId);
                             </select>
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-email" class="col-form-label">Doctor Email:</label>
-                            <input type="text" class="form-control" id="doc-email" value="<?php echo $docEmail; ?>" autocomplete="off">
+                            <label for="doc-degree" class="col-form-label">Doctor Degree:</label>
+                            <input type="text" class="form-control" id="doc-degree" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-reg-no" class="col-form-label">Doctor Reg. No:</label>
-                            <input type="text" class="form-control" id="doc-reg-no" value="<?php echo $docRegNo; ?>">
+                            <label for="doc-email" class="col-form-label">Doctor Email:</label>
+                            <input type="email" class="form-control" id="doc-email" autocomplete="off" onfocusout="checkMail(this)">
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex">
                             <label for="doc-phno" class="col-form-label">Doctor Contact Number:</label>
-                            <input type="text" class="form-control" id="doc-phno" value="<?php echo $docPhno; ?>" autocomplete="off">
+                            <input type="number" class="form-control" id="doc-phno" autocomplete="off" onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)">
+                        </div>
+                    </div>
+
+                
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-12 flex-column d-flex">
+                            <label for="doc-address" class="col-form-label">Doctor Address:</label>
+                            <textarea class="form-control" id="doc-address" rows="1"></textarea autocomplete="off">
                         </div>
                     </div>
 
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-degree" class="col-form-label">Doctor Degree:</label>
-                            <input type="text" class="form-control" id="doc-degree" value="<?php echo $docDegree; ?>" autocomplete="off">
+                            <label for="doc-with" class="col-form-label">Doctor Also With:</label>
+                            <input type="text" class="form-control" id="doc-with" autocomplete="off">
                         </div>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label for="doc-address" class="col-form-label">Doctor Address:</label>
-                            <textarea class="form-control" id="doc-address" rows="3"><?php echo $docAddress; ?></textarea autocomplete="off">
+                        <div class="form-group col-sm-6 flex-column d-flex justify-content-center mt-4">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="addDocDetails()">Add New Doctor</button>
                         </div>
                     </div>
-
-                    <div class="alert alert-success" role="alert" id="reportUpdateSuccess" style="display: none;">
-                        
-                    </div>
-
-                    <div class="alert alert-danger" role="alert" id="reportUpdateFail" style="display: none;">
                        
                     </div>
-
-                    <div class="d-md-flex justify-content-md-end">
-                        <button type="button" class="btn btn-sm btn-primary" onclick="editDoc()">Save changes</button>
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
 
 
-    
 
     <script src="<?php echo JS_PATH ?>ajax.custom-lib.js"></script>
 
@@ -155,6 +128,10 @@ $docSplzList = $doctorCategory->showDoctorCategoryByAdmin($adminId);
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
 
+    <!-- sweetalert2 js link  -->
+    <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+
+    <!-- custom javascript for action -->
     <script src="<?php echo JS_PATH ?>doctors.js"></script>
 </body>
 

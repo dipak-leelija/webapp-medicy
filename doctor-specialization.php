@@ -52,8 +52,6 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
 
     <!-- Custom styles for this template-->
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
-    <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
-
     <!-- <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
 
 
@@ -251,6 +249,8 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                             }
                         });
 
+                }else{
+                    Swal.fire('Check','Fill both Doctor specialization and Description field.','info');
                 }
                 
                 document.getElementById('splz-name').value = '';
@@ -306,9 +306,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                         });
                     }
                 });
-
             })
-
         })
     </script>
 
