@@ -15,22 +15,6 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 $doctors        = new Doctors();
 $DoctorCategory = new DoctorCategory;
 
-
-if (isset($_POST['add-doc']) == true) {
-
-    $docName            = $_POST['docName'];
-    $docName            = 'Dr. ' . $docName;
-    $docSpecialization  = $_POST['docSpecialization'];
-    $alsoWith           = $_POST['docAlsoWith'];
-    $docEmail           = $_POST['docEmail'];
-    $docRegNo           = $_POST['docRegNo'];
-    $docDegree          = $_POST['docDegree'];
-    $docPhno            = $_POST['docMob'];
-    $docAddress         = $_POST['docAddress'];
-
-    $addDoctors = $doctors->addDoctor($docRegNo, $docName, $docSpecialization, $docDegree, $alsoWith, $docAddress, $docEmail, $docPhno, $adminId);
-}
-
 $showDoctors = $doctors->showDoctors($adminId);
 $showDoctors = json_decode($showDoctors, true);
 // print_r($showDoctors);
@@ -90,8 +74,15 @@ $showDoctors = json_decode($showDoctors, true);
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Doctors</h6>
+                        <div class="d-flex">
+                            <div class="card-header py-3 col-md-6">
+                                <h6 class="m-0 font-weight-bold text-primary">Doctors</h6>
+                            </div>
+                            <div class="card-header py-3 col-md-6 d-flex justify-content-end">
+                                <div class="d-md-flex justify-content-md-end">
+                                    <button class="btn btn-success" name="add-new-doc-data" id="add-new-doc-data" data-toggle="modal" data-target="#addDoctorDataModal" onclick="addDoctor()">Add New</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -157,19 +148,19 @@ $showDoctors = json_decode($showDoctors, true);
 
                 </div>
                 <!-- /.container-fluid -->
-                <!--New Doctor Entry Section-->
-                <div class="col" style="margin: 0 auto; width:98%;">
+                <!-- New Doctor Entry Section-->
+                <!-- <div class="col" style="margin: 0 auto; width:98%;">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Add New Doctor</h6>
                         </div>
                         <div class="card-body">
-                            <form action="doctors.php" method="post">
+                            <form>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docName">Doctor Name <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docName" id="docName" required>
+                                            <input class="form-control" type="text" name="docName" id="docName" autocomplete="off" required>
                                         </div>
 
 
@@ -192,47 +183,47 @@ $showDoctors = json_decode($showDoctors, true);
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docAlsoWith">Also With <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docAlsoWith" id="docAlsoWith" required>
+                                            <input class="form-control" type="text" name="docAlsoWith" id="docAlsoWith" autocomplete="off" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docEmail">Doctor Email <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="email" name="docEmail" id="docEmail" required>
+                                            <input class="form-control" type="email" name="docEmail" id="docEmail" autocomplete="off" onfocusout="checkMail(this)" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docMob">Doctor Mob No <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docMob" id="docMob" maxlength="10" minlength="10" required>
+                                            <input class="form-control" type="number" name="docMob" id="docMob" maxlength="10" minlength="10" autocomplete="off" onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)" required>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docRegNo">Doctor Reg No <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docRegNo" id="docRegNo" maxlength="10" required>
+                                            <input class="form-control" type="text" name="docRegNo" id="docRegNo" maxlength="10" autocomplete="off" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docDegree">Doctor Degree <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docDegree" id="docDegree" required>
+                                            <input class="form-control" type="text" name="docDegree" id="docDegree" autocomplete="off" required>
                                         </div>
 
                                         <div class="col-md-12">
                                             <label class="mb-0 mt-1" for="docAddress">Full Address <span class="text-danger font-weight-bold">*</span></label>
-                                            <textarea class="form-control" name="docAddress" id="docAddress" cols="30" rows="6" required></textarea>
+                                            <textarea class="form-control" name="docAddress" id="docAddress" cols="30" rows="6" autocomplete="off" required></textarea>
                                         </div>
 
                                     </div>
                                 </div>
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                                    <button class="btn btn-success me-md-2" type="submit" name="add-doc">Add Now</button>
+                                    <button class="btn btn-success me-md-2" type="submit" name="add-doc" onclick="addDocDetails()">Add Now</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <!--End New Doctor Entry Section-->
+                End New Doctor Entry Section -->
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
@@ -250,9 +241,31 @@ $showDoctors = json_decode($showDoctors, true);
             <i class="fas fa-angle-up"></i>
         </a>
 
+        <!-- add doctor Modal -->
+        <div class="modal fade" id="addDoctorDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Doctor Information</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="refreshPage()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body addDoctorDataModal">
+                        <!-- Doctors Details Will Appeare Here By AJAX -->
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="refreshPage()">Ok</button>
+                        <button type="button" class="btn btn-primary" onclick="refreshPage()">Update</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of add Doctor Modal -->
+
         <!-- Doctor View and Edit Modal -->
         <div class="modal fade" id="docViewAndEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Doctor Information</h5>
@@ -293,65 +306,10 @@ $showDoctors = json_decode($showDoctors, true);
         <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
         <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
 
+        <!-- custom js for custom script -->
+        <script src="<?php echo JS_PATH ?>doctors.js"></script>
 
 
-        <script>
-            // doctor data edit -------
-            const docViewAndEdit = (docId) => {
-                let ViewAndEditdocId = docId;
-                // alert(ViewAndEditdocId);
-                let url = "ajax/doctors.view.ajax.php?docId=" + ViewAndEditdocId;
-
-                $(".docViewAndEditModal").html('<iframe width="100%" height="400px" frameborder="0" allowtransparency="true"  src="' + url + '"></iframe>');
-            } // end of viewAndEdit function
-
-            // onload="resizeIframe(this)"
-            // function resizeIframe(obj) {
-            //     obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-            // } scrolling="no"
-            
-
-            // delete doctor data ----------
-            $(document).ready(function() {
-                $(document).on("click", ".delete-btn", function() {
-
-                    Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!"
-
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-
-                            docId = $(this).data("id");
-                            btn = this;
-                            // alert(btn);
-
-                            $.ajax({
-                                url: "ajax/doctors.delete.ajax.php",
-                                type: "POST",
-                                data: {
-                                    id: docId
-                                },
-                                success: function(data) {
-                                    if (data == 1) {
-                                        $(btn).closest("tr").fadeOut()
-                                    } else {
-                                        $("#error-message").html("Deletion Field !!!").slideDown();
-                                        $("success-message").slideUp();
-                                    }
-                                }
-                            });
-                        }
-                    });
-                })
-            })
-
-        </script>
 </body>
 
 </html>
