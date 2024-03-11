@@ -9,7 +9,7 @@ const addDoctor = (docId) => {
 
 // doctor data add --------
 const addDocDetails = () => {
-    alert('add details');
+    // alert('add details');
     let docName = document.getElementById('doc-name').value;
     let docRegNo = document.getElementById('doc-reg-no').value;
     let docSpecialization = document.getElementById('doc-splz').value;

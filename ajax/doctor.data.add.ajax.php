@@ -101,12 +101,6 @@ $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                             <button type="button" class="btn btn-sm btn-primary" onclick="addDocDetails()">Add New Doctor</button>
                         </div>
                     </div>
-
-                    <div class="alert alert-success" role="alert" id="reportUpdateSuccess" style="display: none;">
-                        
-                    </div>
-
-                    <div class="alert alert-danger" role="alert" id="reportUpdateFail" style="display: none;">
                        
                     </div>
                 </div>
