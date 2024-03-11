@@ -20,8 +20,7 @@ $Employees   = new Employees;
 
 // ================ EMPLOYEES DATA ==================
 $col = 'admin_id';
-$employeeDetails = $Employees->selectEmpByCol($col, $adminId);
-$employeeDetails = json_decode($employeeDetails);
+$employeeDetails = json_decode($Employees->selectEmpByCol($col, $adminId));
 
 if ($employeeDetails->status) {
     $employeeDetails = $employeeDetails->data;
@@ -430,7 +429,7 @@ if ($allAppointments->status) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="window.location.reload()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -438,9 +437,8 @@ if ($allAppointments->status) {
                     <!-- Appointments Details Goes Here By Ajax -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-sm btn-primary" onclick="window.location.reload()">Save
-                        changes</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" onclick="window.location.reload()">Close</button>
+                    <!-- <button type="button" class="btn btn-sm btn-primary">Save Changes</button> -->
                 </div>
             </div>
         </div>
