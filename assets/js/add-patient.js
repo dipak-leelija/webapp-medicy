@@ -10,6 +10,7 @@ const checkMail = (t) =>{
     }else{
         t.value = '';
         Swal.fire('Alert','Enter valid email id.','info');
+        t.focus();
     }
 }
 
