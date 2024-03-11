@@ -3,6 +3,7 @@ require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'currentStock.class.php';
@@ -16,18 +17,18 @@ require_once CLASS_DIR . 'salesReturn.class.php';
 require_once CLASS_DIR . 'hospital.class.php';
 
 
-$StockIn = new StockIn();
+$StockIn        = new StockIn();
 $StockInDetails = new StockInDetails();
-$CurrentStock = new CurrentStock();
-$distributor = new Distributor();
-$Session = new SessionHandler();
-$Products = new Products();
-$Manufacturer = new Manufacturer();
+$CurrentStock   = new CurrentStock();
+$distributor    = new Distributor();
+$Session        = new SessionHandler();
+$Products       = new Products();
+$Manufacturer   = new Manufacturer();
 $PackagingUnits = new PackagingUnits();
-$StockOut = new StockOut();
-$StcokReturn = new StockReturn();
-$SalesReturn = new SalesReturn();
-$ClinicInfo  = new HealthCare;
+$StockOut       = new StockOut();
+$StcokReturn    = new StockReturn();
+$SalesReturn    = new SalesReturn();
+$ClinicInfo     = new HealthCare;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -72,23 +73,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $crrntDt = date("d-m-Y");
 
         // =========== array data ===============
-        $product_ids = $_POST['productId'];
-        $batch_no = $_POST['batchNo'];
+        $product_ids            = $_POST['productId'];
+        $batch_no               = $_POST['batchNo'];
         // $mfd_date = $_POST['mfdDate'];
-        $exp_date = $_POST['expDate'];
-        $set_of = $_POST['setof'];
-        $item_weightage = $_POST['weightage'];
-        $item_unit = $_POST['unit'];
-        $item_qty = $_POST['qty'];
-        $item_free_qty = $_POST['freeQty'];
-        $item_mrp = $_POST['mrp'];
-        $item_ptr = $_POST['ptr'];
-        $item_gst = $_POST['gst'];
-        $gstAmount_perItem = $_POST['gstPerItem'];
-        $baseAmount_perItem = $_POST['base'];
-        $discountPercent = $_POST['discount'];
-        $marginAmount_perItem = $_POST['margin'];
-        $billAmount_perItem = $_POST['billAmount'];
+        $exp_date               = $_POST['expDate'];
+        $set_of                 = $_POST['setof'];
+        $item_weightage         = $_POST['weightage'];
+        $item_unit              = $_POST['unit'];
+        $item_qty               = $_POST['qty'];
+        $item_free_qty          = $_POST['freeQty'];
+        $item_mrp               = $_POST['mrp'];
+        $item_ptr               = $_POST['ptr'];
+        $item_gst               = $_POST['gst'];
+        $gstAmount_perItem      = $_POST['gstPerItem'];
+        $baseAmount_perItem     = $_POST['base'];
+        $discountPercent        = $_POST['discount'];
+        $marginAmount_perItem   = $_POST['margin'];
+        $billAmount_perItem     = $_POST['billAmount'];
 
 
         $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
@@ -177,21 +178,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
 
-           
+
             // update stock in data according item details.
             $stockInAttribute = 'id';
             $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttribute, $stockIn_Id);
             foreach ($seleteStockinData as $stockInData) {
-                $itemsCount = $stockInData['items'];
-                $totalQty = $stockInData['total_qty'];
-                $gstAmount = $stockInData['gst'];
-                $wholeAmount = $stockInData['amount'];
+                $itemsCount     = $stockInData['items'];
+                $totalQty       = $stockInData['total_qty'];
+                $gstAmount      = $stockInData['gst'];
+                $wholeAmount    = $stockInData['amount'];
             }
 
-            $updatedItemsCount = intval($itemsCount) + intval($ItemNotDeleteCount);
-            $updatedTotalQty = intval($totalQty) + intval($WholeNotDeletedQty);
-            $updatedGstAmt = floatval($gstAmount) + floatval($WholeNotDeletedGstAmount);
-            $updatedAmt = floatval($wholeAmount) + floatval($WholeNotDeletedPrice);
+            $updatedItemsCount  = intval($itemsCount) + intval($ItemNotDeleteCount);
+            $updatedTotalQty    = intval($totalQty) + intval($WholeNotDeletedQty);
+            $updatedGstAmt      = floatval($gstAmount) + floatval($WholeNotDeletedGstAmount);
+            $updatedAmt         = floatval($wholeAmount) + floatval($WholeNotDeletedPrice);
 
 
             /* update stock in data */
@@ -211,7 +212,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo "<br>item total qty check : $item_total_qty";
 
                 // if ($item_unit[$i] == 'Tablets' || $item_unit[$i] == 'Capsules')
-                if (in_array(strtolower($item_unit[$i]), $allowedUnits)){
+                if (in_array(strtolower($item_unit[$i]), $allowedUnits)) {
                     $item_loose_qty = intval($item_total_qty) * intval($item_weightage[$i]);
                     $item_loose_price = floatval($item_mrp[$i]) / intval($item_weightage[$i]);
                 } else {
@@ -248,11 +249,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updatedStockInLooseQty = 0;
                 }
 
-                // echo "<br><br><br>prev stock in item qty : $prevStockInItemQty";
-                // echo "<br>prem item qty : $prevStockInItemQty";
-                // echo "<br>updated item qty : $updatedQty";
-                // echo "<br>updated item loose qty : $updatedStockInLooseQty";
-
                 // update to current stock data
                 $currentStockItmeDetails = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($updatedItemIdsArray[$i]));
 
@@ -270,10 +266,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updated_Loose_Qty = 0;
                     $updated_item_qty = intval($item_Qty) + intval($updatedQty);
                 }
-
-                // echo "<br>current stock item id : $itemId";
-                // echo "<br>updated current item qty : $updated_item_qty";
-                // echo "<br>updated current item loose qty : $updated_Loose_Qty";
 
 
                 /* update to current stock */
@@ -345,383 +337,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$selectClinicInfo = json_decode($ClinicInfo->showHealthCare($adminId));
-// print_r($selectClinicInfo->data);
-$pharmacyLogo = $selectClinicInfo->data->logo;
-$pharmacyName = $selectClinicInfo->data->hospital_name;
-// echo $pharmacyLogo;
+
+$preparedData = url_enc(json_encode(['stockIn_Id' => $stockIn_Id]));
+header('Location: '.URL.'purchase-invoice.php?data='.$preparedData);
+exit;
+
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicy Health Care Medicine Purchase Bill</title>
-    <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap-purchaseItem.css">
-    <link rel="stylesheet" href="<?= CSS_PATH ?>custom/purchase-bill.css">
-
-    <style type="text/css">
-        @page {
-            size: landscape;
-        }
-    </style>
-
-    <!-- Include SweetAlert2 CSS -->
-    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
-
-    <!-- Include SweetAlert2 JavaScript -->
-    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
-</head>
-
-
-<body>
-    <div class="custom-container">
-        <div class="custom-body <?php if ($pMode != 'Credit') {
-                                    if ($dueDate == $crrntDt) {
-                                        echo "paid-bg";
-                                    }
-                                } ?>">
-            <div class="card-body ">
-                <div class="row">
-                    <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR.$pharmacyLogo ?>" alt="Medicy">
-                        <div><?php echo $pharmacyName ?></div>
-                    </div>
-                    <div class="col-sm-8">
-                        <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
-                        <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $distAddress . ', PIN - ' . $distPIN; ?></small>
-                        </p>
-                        <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
-                            <small><?php echo 'Contact No : ' . $distContact  ?></small>
-                        </p>
-
-                    </div>
-                    <div class="col-sm-3 border-start border-dark">
-                        <p class="my-0"><b>Stock In Invoice</b></p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id:
-                                <?php echo $distributorBill; ?></small></p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Payment Mode: <?php echo $pMode; ?></small>
-                        </p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill Date: <?php echo $billDate; ?></small>
-                        </p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Due Date: <?php echo $dueDate; ?></small>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
-
-            <hr class="my-0" style="height:1px;">
-
-            <div class="row">
-                <!-- table heading -->
-                <div class="col-sm-1 text-center" style="width: 3%;">
-                    <small><b>SL.</b></small>
-                </div>
-                <div class="col-sm-1" hidden>
-                    <small><b>P Id</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 12%;">
-                    <small><b>P Name</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 12%;">
-                    <small><b>Manuf.</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 8%;">
-                    <small><b>Packing</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 10%;">
-                    <small><b>Batch</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 5%;">
-                    <small><b>MFD.</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 5%">
-                    <small><b>Exp.</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>QTY</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>F.QTY</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 7%;">
-                    <small><b>MRP</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 7%;">
-                    <small><b>PTR</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>Disc(%)</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>GST(%)</b></small>
-                </div>
-                <div class="col-sm-1b text-end" style="width: 10%;">
-                    <small><b>Amount</b></small>
-                </div>
-                <!--/end table heading -->
-            </div>
-
-            <hr class="my-0" style="height:1px;">
-
-            <div class="row">
-                <?php
-                $slno = 0;
-                $itemIds    = $_POST['productId'];
-                $itemBillNo    = $_POST['distributor-bill'];
-                $distributorId = $distributorId;
-                $totalGst = 0;
-                $totalMrp = 0;
-                $billAmnt = 0;
-                // $stokInId = $stokInid;
-
-                $count = count($itemIds);
-
-                $itemDetials = $StockInDetails->showStockInDetailsByStokId($_POST['stok-in-id']);
-                // print_r($itemDetials);
-
-                foreach ($itemDetials as $itemsData) {
-                    $slno++;
-
-                    $prodId = $itemsData['product_id'];
-
-                    $chkExistance = json_decode($Products->productExistanceCheck($prodId));
-                    if($chkExistance->status){
-                        $edtRqstFlg = 1;
-                    }else{
-                        $edtRqstFlg = '';
-                    }
-
-                    $productDetails = json_decode($Products->showProductsByIdOnUser($prodId, $adminId, $edtRqstFlg));
-                    // print_r($productDetails);
-                    $productDetails = $productDetails->data;
-                    
-                    foreach ($productDetails as $pData) {
-                        // print_r($pData);
-                        $pname = $pData->name;
-                        if (isset($pData->manufacturer_id)) {
-                            $pManfId = $pData->manufacturer_id;
-                        } else {
-                            $pManfId = '';
-                        }
-                        $pType  = $pData->packaging_type;
-                        $pQTY = $pData->unit_quantity;
-                        $pUnit = $pData->unit;
-                    }
-
-                    $packagingData = json_decode($PackagingUnits->showPackagingUnitById($pType));
-                    // foreach ($packagingData as $packData) {
-                        $unitNm = $packagingData->data->unit_name;
-                    // }
-
-
-                    if ($pManfId != '') {
-                        $manufDetails = json_decode($Manufacturer->showManufacturerById($pManfId));
-                        $manufDetails = $manufDetails->data;
-                        // print_r($manufDetails);
-                        if(isset($manufDetails->short_name)){
-                            $manufName = $manufDetails->short_name;
-                        }else{
-                            $manufName = '';
-                        }
-                    } else {
-                        $manufName = '';
-                    }
-
-
-                    $batchNo = $itemsData['batch_no'];
-                    // $MfdDate = $itemsData['mfd_date'];
-                    $ExpDate = $itemsData['exp_date'];
-                    $qty = $itemsData['qty'];
-                    $FreeQty = $itemsData['free_qty'];
-                    $Mrp = $itemsData['mrp'];
-                    $Ptr = $itemsData['ptr'];
-                    $discPercent = $itemsData['discount'];
-                    $gstPercent = $itemsData['gst'];
-                    $Amount = $itemsData['amount'];
-
-                    $gstAmnt =  $itemsData['gst_amount'];
-
-                    $totalGst = $totalGst + $gstAmnt;
-
-                    $totalMrp = $totalMrp + ($Mrp * $qty);
-                    $billAmnt = $billAmnt + $Amount;
-
-                    $cGst = $sGst = number_format($totalGst / 2, 2);
-
-                    // $sGst = ;
-                    // $itemQty  = $qty[$i];
-                    // $mrpOnQty = $mrp[$i];
-                    // $mrpOnQty = $mrpOnQty * $itemQty;
-
-                    if ($slno > 1) {
-                        echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
-                    }
-                ?>
-                    <div class="col-sm-1 text-center" style="width: 3%;">
-                        <small> <?php echo "$slno" ?></small>
-                    </div>
-                    <div class="col-sm-1b " hidden>
-                        <small><?php echo "$prodId" ?></small>
-                    </div>
-                    <div class="col-sm-1b" style="width: 12%;">
-                        <small><?php echo "$pname" ?></small>
-                    </div>
-                    <div class="col-sm-1b" style="width: 12%;">
-                        <small><?php echo "$manufName" ?></small>
-                    </div>
-                    <div class="col-sm-1b" style="width: 8%;">
-                        <small><?php echo $pQTY . $pUnit, "/", $unitNm ?></small>
-                    </div>
-                    <div class="col-sm-1b" style="width: 10%;">
-                        <small><?php echo "$batchNo" ?></small>
-                    </div>
-                    <!-- <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$MfdDate" ?></small>
-                    </div> -->
-                    <div class="col-sm-1 text-center" style="width: 5%;">
-                        <small><?php echo "$ExpDate" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$qty" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$FreeQty" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small><?php echo "$Mrp" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small><?php echo "$Ptr" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$discPercent%" ?></small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small><?php echo "$gstPercent%" ?></small>
-                    </div>
-                    <div class="col-sm-1b text-end" style="width: 10%;">
-                        <small><?php echo "$Amount" ?></small>
-                    </div>
-                <?php
-                }
-                ?>
-
-            </div>
-            <!-- </div> -->
-
-            <!-- </div> -->
-            <div class="footer">
-                <hr calss="my-0" style="height: 1px;">
-
-                <!-- table total calculation -->
-                <div class="row my-0">
-                    <div class="col-4"></div>
-                    <div class="col-4">
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <!-- <small>₹<?php echo $totalGSt / 2; ?></small> -->
-                                    <small>₹<?php echo "$cGst" ?></small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>SGST:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <!-- <small>₹<?php echo $totalGst / 2; ?></small> -->
-                                    <small>₹<?php echo "$cGst" ?></small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total GST:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <!-- <small>₹<?php echo floatval($totalGSt); ?></small> -->
-                                    <small>₹<?php echo "$totalGst" ?></small>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total MRP:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <!-- <small><b>₹<?php echo floatval($totalMrp); ?></b></small> -->
-                                    <small>₹<?php echo "$totalMrp" ?></small>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>You Saved:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <!-- <small>₹<?php echo $totalMrp - $billAmnt; ?></small> -->
-                                    <small>₹<?php echo $totalMrp - $billAmnt ?></small>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>Net Amount:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <!-- <small><b>₹<?php echo floatval($billAmout); ?></b></small> -->
-                                    <small><b>₹<?php echo "$billAmnt" ?></b></small>
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-            <hr style="height: 1px; margin-top: 2px;">
-        </div>
-    </div>
-    <div class="justify-content-center print-sec d-flex my-5">
-        <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
-        <button class="btn btn-primary shadow mx-2" onclick="back()">Add New</button>
-        <button class="btn btn-secondary shadow mx-2" style="background-color: #e7e7e7; color: black;" onclick="goBack('<?php echo $stockIn_Id ?>','<?php echo $itemBillNo ?>')">Go Back</button>
-        <button class="btn btn-primary shadow mx-2" style="background-color: #4CAF50;" onclick="window.print()">Print Bill</button>
-    </div>
-    </div>
-
-</body>
-<script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
-<script>
-    const back = () => {
-        window.location.replace("<?= URL ?>stock-in.php")
-    }
-
-    const goBack = (id, value) => {
-        console.log(id);
-        console.log(value);
-        location.href = `<?= URL ?>stock-in-edit.php?edit=${value}&editId=${id}`;
-    }
-</script>
-
-</html>
