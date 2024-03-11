@@ -56,6 +56,9 @@ $allDoctors  = $showDoctors->data;
     <link href="<?= CSS_PATH ?>custom/appointment.css" rel="stylesheet" type="text/css" />
     <link href="<?= CSS_PATH ?>patient-style.css" rel="stylesheet" type="text/css" />
 
+    <!-- css for sweetalert2 -->
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
 </head>
 
 <body>
@@ -170,13 +173,14 @@ $allDoctors  = $showDoctors->data;
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientEmail">Patient
                                                 Email</label>
-                                            <input type="text" id="patientEmail" name="patientEmail" placeholder="Patient Email">
+                                            <input type="email" id="patientEmail" name="patientEmail" placeholder="Patient Email" onfocusout="checkMail(this)">
                                         </div>
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientPhoneNumber">Phone
                                                 number<span class="text-danger"> *</span></label>
-                                            <input type="text" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" maxlength="10" minlength="10" required>
+                                            <input type="number" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" required
+                                            onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)">
                                         </div>
 
                                     </div>
@@ -192,7 +196,7 @@ $allDoctors  = $showDoctors->data;
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientWeight">Weight <small>(in
                                                     kg)</small><span class="text-danger"> *</span></label>
-                                            <input type="text" id="patientWeight" name="patientWeight" placeholder="Weight in kg" maxlength="3" required>
+                                            <input type="number" id="patientWeight" name="patientWeight" placeholder="Weight in kg" onfocusout="checkWeight(this)" required>
                                         </div>
 
                                     </div>
@@ -202,7 +206,7 @@ $allDoctors  = $showDoctors->data;
                                     <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientAge">Age<span class="text-danger"> *</span></label>
-                                            <input type="text" id="patientAge" name="patientAge" placeholder="Age" maxlength="3" minlength="1" required>
+                                            <input type="number" id="patientAge" name="patientAge" placeholder="Age" onfocusout="checkAge(this)" required>
                                         </div>
 
                                         <div class="col-sm-6 mt-4">
@@ -283,7 +287,7 @@ $allDoctors  = $showDoctors->data;
 
                                             <label class="form-control-label px-3" for="patientPIN">PIN Code<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientPIN" name="patientPIN" placeholder="Pin Code" maxlength="7" required>
+                                            <input type="number" id="patientPIN" name="patientPIN" placeholder="Pin Code" onfocusout="checkPin(this)" required>
 
                                         </div>
 
@@ -387,6 +391,13 @@ $allDoctors  = $showDoctors->data;
 
                 <!-- Custom scripts for all pages-->
                 <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+
+                <!-- script for sweetalert2 -->
+                <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+
+                <!-- custom script for add patient -->
+                <script src="<?php echo JS_PATH ?>add-patient.js"></script>
+
 
                 <script type="text/javascript">
                     var todayDate = new Date();
