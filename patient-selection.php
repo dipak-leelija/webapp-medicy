@@ -1,13 +1,17 @@
 <?php
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or no
-require_once CLASS_DIR.'dbconnect.php';
+
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or no
+require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
-require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR . 'patients.class.php';
 
 $Patients = new Patients();
-$showPatients = $Patients->allPatients($adminId);
-$showPatients = json_decode($showPatients,true);
+
+
+$showPatients = json_decode($Patients->allPatients($adminId));
+// print_r($showPatients);
+
 ?>
 
 <!doctype html>
@@ -26,9 +30,7 @@ $showPatients = json_decode($showPatients,true);
 
 
 
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="<?php echo PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template -->
@@ -51,7 +53,7 @@ $showPatients = json_decode($showPatients,true);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -61,32 +63,35 @@ $showPatients = json_decode($showPatients,true);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of top bar -->
 
 
                 <div class="container-fluid">
                     <div class="card p-0">
                         <div class="card-header">
-
+                            <h5><b><p class="text-primary">Select Patient</p></b></h5>
                         </div>
                         <div class="card-body my-5 my-md-1 p-md-5">
-                            <form class="row flex-column align-items-center" action="returning-appointment-entry.php"
-                                method="post">
+                            <form class="row flex-column align-items-center" action="returning-appointment-entry.php" method="post">
 
                                 <div class="section col-12 col-md-6">
                                     <div class="data-test-hook=" remove-button>
-                                        <select class="form-control " id="choices-remove-button" name="patientName"
-                                            required>
+                                        <select class="form-control " id="choices-remove-button" name="patientName" required>
                                             <option value="" selected disabled> Search Patient Name
                                             </option>
                                             <?php
+                                                if ($showPatients->status) {
+                                                    $showPatients = $showPatients->data;
+
                                                     foreach ($showPatients as $patientsRow) {
                                                         // $data[] = $patientsRow;
-                                                        echo "<option value='".$patientsRow['patient_id']."'>".$patientsRow['patient_id']." - ".$patientsRow['name']."</option>";
+                                                        echo "<option value='" . $patientsRow->patient_id . "'>" . $patientsRow->patient_id . " - " . $patientsRow->name . "</option>";
                                                     }
-                                                    ?>
-
+                                                } else {
+                                                    echo "<option value=''>No data found!</option>";
+                                                }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
@@ -106,7 +111,7 @@ $showPatients = json_decode($showPatients,true);
 
 
     <!-- Footer -->
-    <?php include ROOT_COMPONENT.'footer-text.php'; ?>
+    <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
     <!-- End of Footer -->
 
     <!-- Bootstrap core JavaScript-->
@@ -139,17 +144,17 @@ $showPatients = json_decode($showPatients,true);
 
 
     <script>
-    //patient selection js
-    // $(document).ready(function() {
-    //     $('.patient-select').selectpicker();
+        //patient selection js
+        // $(document).ready(function() {
+        //     $('.patient-select').selectpicker();
 
-    // })
-    document.addEventListener('DOMContentLoaded', function() {
-        new Choices('#choices-remove-button', {
-            allowHTML: true,
-            removeItemButton: true,
+        // })
+        document.addEventListener('DOMContentLoaded', function() {
+            new Choices('#choices-remove-button', {
+                allowHTML: true,
+                removeItemButton: true,
+            });
         });
-    });
     </script>
 
 
