@@ -3,6 +3,7 @@ require_once dirname(dirname(__DIR__)).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
+require_once CLASS_DIR .'encrypt.inc.php';
 require_once CLASS_DIR.'stockIn.class.php';
 require_once CLASS_DIR.'stockInDetails.class.php';
 require_once CLASS_DIR.'currentStock.class.php';
@@ -135,6 +136,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 } // post request method entered
+
+$preparedData = url_enc(json_encode(['stockIn_Id' => $addStockIn['stockIn_id']]));
+header('Location: '.URL.'purchase-invoice.php?data='.$preparedData);
+exit;
 
 
 $selectClinicInfo = json_decode($ClinicInfo->showHealthCare($adminId));

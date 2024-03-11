@@ -3,6 +3,7 @@ require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'currentStock.class.php';
@@ -182,16 +183,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stockInAttribute = 'id';
             $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttribute, $stockIn_Id);
             foreach ($seleteStockinData as $stockInData) {
-                $itemsCount = $stockInData['items'];
-                $totalQty = $stockInData['total_qty'];
-                $gstAmount = $stockInData['gst'];
-                $wholeAmount = $stockInData['amount'];
+                $itemsCount     = $stockInData['items'];
+                $totalQty       = $stockInData['total_qty'];
+                $gstAmount      = $stockInData['gst'];
+                $wholeAmount    = $stockInData['amount'];
             }
 
-            $updatedItemsCount = intval($itemsCount) + intval($ItemNotDeleteCount);
-            $updatedTotalQty = intval($totalQty) + intval($WholeNotDeletedQty);
-            $updatedGstAmt = floatval($gstAmount) + floatval($WholeNotDeletedGstAmount);
-            $updatedAmt = floatval($wholeAmount) + floatval($WholeNotDeletedPrice);
+            $updatedItemsCount  = intval($itemsCount) + intval($ItemNotDeleteCount);
+            $updatedTotalQty    = intval($totalQty) + intval($WholeNotDeletedQty);
+            $updatedGstAmt      = floatval($gstAmount) + floatval($WholeNotDeletedGstAmount);
+            $updatedAmt         = floatval($wholeAmount) + floatval($WholeNotDeletedPrice);
 
 
             /* update stock in data */
@@ -248,11 +249,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updatedStockInLooseQty = 0;
                 }
 
-                // echo "<br><br><br>prev stock in item qty : $prevStockInItemQty";
-                // echo "<br>prem item qty : $prevStockInItemQty";
-                // echo "<br>updated item qty : $updatedQty";
-                // echo "<br>updated item loose qty : $updatedStockInLooseQty";
-
                 // update to current stock data
                 $currentStockItmeDetails = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($updatedItemIdsArray[$i]));
 
@@ -270,10 +266,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updated_Loose_Qty = 0;
                     $updated_item_qty = intval($item_Qty) + intval($updatedQty);
                 }
-
-                // echo "<br>current stock item id : $itemId";
-                // echo "<br>updated current item qty : $updated_item_qty";
-                // echo "<br>updated current item loose qty : $updated_Loose_Qty";
 
 
                 /* update to current stock */
@@ -345,12 +337,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+
+$preparedData = url_enc(json_encode(['stockIn_Id' => $stockIn_Id]));
+header('Location: '.URL.'purchase-invoice.php?data='.$preparedData);
+exit;
+
+
 $selectClinicInfo = json_decode($ClinicInfo->showHealthCare($adminId));
 // print_r($selectClinicInfo->data);
-$pharmacyLogo = $selectClinicInfo->data->logo;
-$pharmacyName = $selectClinicInfo->data->hospital_name;
-$pharmacyContact = $selectClinicInfo->data->hospital_phno;
-// echo $pharmacyLogo;
+$pharmacyLogo       = $selectClinicInfo->data->logo;
+$pharmacyName       = $selectClinicInfo->data->hospital_name;
+$pharmacyContact    = $selectClinicInfo->data->hospital_phno;
+
+
 ?>
 
 <!DOCTYPE html>
