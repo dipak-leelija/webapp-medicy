@@ -145,87 +145,8 @@ $showDoctors = json_decode($showDoctors, true);
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <!-- /.container-fluid -->
-                <!-- New Doctor Entry Section-->
-                <!-- <div class="col" style="margin: 0 auto; width:98%;">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Add New Doctor</h6>
-                        </div>
-                        <div class="card-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docName">Doctor Name <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docName" id="docName" autocomplete="off" required>
-                                        </div>
-
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docSpecialization">Doctor
-                                                Specialization <span class="text-danger font-weight-bold">*</span></label>
-                                            <select class="form-control" name="docSpecialization" id="docSpecialization" required>
-                                                <option value="" disabled selected>Select Doctor Specialization</option>
-                                                <?php
-                                                $showDocSplz = $DoctorCategory->showDoctorCategory();
-                                                foreach ($showDocSplz as $docSplzShow) {
-                                                    $docSpecializnID    = $docSplzShow['doctor_category_id'];
-                                                    $docSpecializn      = $docSplzShow['category_name'];
-
-                                                    echo '<option value="' . $docSpecializnID . '">' . $docSpecializn . '</option>';
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docAlsoWith">Also With <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docAlsoWith" id="docAlsoWith" autocomplete="off" required>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docEmail">Doctor Email <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="email" name="docEmail" id="docEmail" autocomplete="off" onfocusout="checkMail(this)" required>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docMob">Doctor Mob No <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="number" name="docMob" id="docMob" maxlength="10" minlength="10" autocomplete="off" onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docRegNo">Doctor Reg No <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docRegNo" id="docRegNo" maxlength="10" autocomplete="off" required>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docDegree">Doctor Degree <span class="text-danger font-weight-bold">*</span></label>
-                                            <input class="form-control" type="text" name="docDegree" id="docDegree" autocomplete="off" required>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <label class="mb-0 mt-1" for="docAddress">Full Address <span class="text-danger font-weight-bold">*</span></label>
-                                            <textarea class="form-control" name="docAddress" id="docAddress" cols="30" rows="6" autocomplete="off" required></textarea>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2 me-md-2">
-                                    <button class="btn btn-success me-md-2" type="submit" name="add-doc" onclick="addDocDetails()">Add Now</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                End New Doctor Entry Section -->
-                <!-- End of Main Content -->
-
+                
                 <!-- Footer -->
                 <?php include ROOT_COMPONENT . 'footer-text.php'; ?>
                 <!-- End of Footer -->
