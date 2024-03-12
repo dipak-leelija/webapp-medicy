@@ -32,7 +32,8 @@ if(isset($_POST['update'])){
     $patientPIN          = $_POST['patientPIN'];
     $patientState        = $_POST['patientState'];
     $patientDoctor       = $_POST['patientDoctor'];
-    $patientDoctorTiming = $_POST['doctorTiming'];
+    // $patientDoctorTiming = $_POST['doctorTiming'];
+    $patientDoctorTiming = '';
     
     $updateAppointment = $appointments->updateAppointmentsbyTableId($appointmentDate,$patientName,$patientGurdianName,$patientEmail,      $patientPhoneNumber,$patientDOB,$patientWeight,$gender,$patientAddress1,$patientAddress2,$patientPS,$patientDist,$patientPIN,$patientState,$patientDoctor,$patientDoctorTiming, /*Last Parameter For Appointment Id Which Details You Want to Update*/$appointmentTableId);
 
@@ -80,6 +81,9 @@ foreach ($showAppointments as $appointment) {
     <link href="<?php echo CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="../css/lab-test.css"> -->
 
+    <!-- css for sweetalert2 -->
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
 </head>
 
 <body>
@@ -101,11 +105,11 @@ foreach ($showAppointments as $appointment) {
             <div class="row justify-content-between text-left">
                 <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="patientEmail">Patient Email</label>
-                    <input class="form-control" type="text" id="patientEmail" name="patientEmail" placeholder="yourname@email.com" value="<?php echo $PatientEmail; ?>">
+                    <input class="form-control" type="email" id="patientEmail" name="patientEmail" value="<?php echo $PatientEmail; ?>" onfocusout="checkMail(this)">
                 </div>
                 <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="patientPhoneNumber">Phone number<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="0123456789" value="<?php echo $PatientPhno; ?>">
+                    <input class="form-control" type="number" id="patientPhoneNumber" name="patientPhoneNumber" value="<?php echo $PatientPhno; ?>" onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)">
                 </div>
             </div>
 
@@ -116,14 +120,14 @@ foreach ($showAppointments as $appointment) {
                 </div>
                 <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="patientWeight">Weight <small>(in kg)</small><span class="text-danger"> *</span></label>
-                    <input class="form-control" type="text" id="patientWeight" name="patientWeight" placeholder="Patient's Weight" maxlength="3" value="<?php echo $PatientWeight; ?>">
+                    <input class="form-control" type="number" id="patientWeight" name="patientWeight" placeholder="Patient's Weight" value="<?php echo $PatientWeight; ?>" onfocusout="checkWeight(this)">
                 </div>
             </div>
 
             <div class="row justify-content-between text-left">
                 <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="patientDOB">Age<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" id="patientDOB" name="patientDOB" placeholder="Patient's Date of birth" maxlength="3" minlength="1" value="<?php echo $PatientAge; ?>">
+                    <input class="form-control" type="number" id="patientDOB" name="patientDOB" placeholder="Patient's Date of birth" maxlength="3" minlength="1" value="<?php echo $PatientAge; ?>" onfocusout="checkAge(this)">
                 </div>
 
                 <div class="col-sm-6 mt-4">
@@ -174,7 +178,7 @@ foreach ($showAppointments as $appointment) {
             <div class="row justify-content-between text-left">
                 <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="patientPIN">PIN Code<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" id="patientPIN" name="patientPIN" placeholder="Enter PIN Code" maxlength="7" value="<?php echo $PatientPin; ?>">
+                    <input class="form-control" type="text" id="patientPIN" name="patientPIN" placeholder="Enter PIN Code" maxlength="7" value="<?php echo $PatientPin; ?>" onfocusout="checkPin(this)">
                 </div>
 
                 <div class="form-group col-sm-6 flex-column d-flex">
@@ -200,7 +204,7 @@ foreach ($showAppointments as $appointment) {
             <h5 class="text-center mb-4 mt-5">Select Doctor</h5>
 
             <div class="row justify-content-between text-left">
-                <div class="form-group col-sm-6 flex-column d-flex">
+                <div class="form-group col-sm-12 flex-column d-flex">
                     <label class="form-label px-3" for="patientDoctor">Doctor Name<span class="text-danger">*</span></label>
                     <select id="docList" class="browser-default custom-select" name="patientDoctor" onChange="getShift()" required>
 
@@ -229,14 +233,14 @@ foreach ($showAppointments as $appointment) {
 
                     </select>
                 </div>
-                <div class="form-group col-sm-6 flex-column d-flex">
+                <!-- <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="doctorTiming">Time Slot<span class="text-danger">*</span></label>
                     <select id="shiftList" class="browser-default custom-select" name="doctorTiming">
                         <option value="" id="shiftList" onChange="getShiftValues()"><?php echo $PatientDocShift; ?></option>
 
-                        <!-- Option goes here by ajax -->
+                        -- Option goes here by ajax --
                     </select>
-                </div>
+                </div> -->
             </div>
 
             <?php
@@ -324,6 +328,12 @@ foreach ($showAppointments as $appointment) {
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+
+    <!-- script for sweetalert2 -->
+    <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+
+    <!-- custom script for input check -->
+    <script src="<?php echo JS_PATH ?>add-patient.js"></script>
 
 
 </body>
