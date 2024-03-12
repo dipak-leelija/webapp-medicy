@@ -11,6 +11,7 @@ require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
 require_once CLASS_DIR . 'manufacturer.class.php';
 require_once CLASS_DIR . 'stockIn.class.php';
+require_once CLASS_DIR . 'itemUnit.class.php';
 
 
 $ClinicInfo     = new HealthCare;
@@ -20,6 +21,7 @@ $Products       = new Products();
 $PackagingUnits = new PackagingUnits();
 $Manufacturer   = new Manufacturer();
 $StockIn        = new StockIn();
+$ItemUnit       = new ItemUnit;
 
 
 if (isset($_GET['data'])) {
@@ -142,7 +144,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                     <small><b>P Id</b></small>
                 </div>
                 <div class="col-sm-1" style="width: 17%;">
-                    <small><b>P Name</b></small>
+                    <small><b>Product Name</b></small>
                 </div>
                 <div class="col-sm-1" style="width: 12%;">
                     <small><b>Manuf.</b></small>
@@ -221,6 +223,10 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                         $pType  = $pData->packaging_type;
                         $pQTY = $pData->unit_quantity;
                         $pUnit = $pData->unit;
+
+                        // echo $pUnit;
+                        $itemUnitName = $ItemUnit->itemUnitName($pUnit);
+                        // echo $itemUnitName;
                     }
 
                     $packagingData = json_decode($PackagingUnits->showPackagingUnitById($pType));
@@ -279,7 +285,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                         <small><?php echo "$manufName" ?></small>
                     </div>
                     <div class="col-sm-1b" style="width: 8%;">
-                        <small><?php echo $pQTY . $pUnit, "/", $unitNm ?></small>
+                        <small><?php echo $pQTY .' '. $itemUnitName, " / ", $unitNm ?></small>
                     </div>
                     <div class="col-sm-1b" style="width: 10%;">
                         <small><?php echo "$batchNo" ?></small>
