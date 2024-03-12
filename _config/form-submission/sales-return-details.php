@@ -16,7 +16,8 @@ require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
 
-$invoiceId = $_GET['id'];
+// $invoiceId = $_GET['id'];
+// echo $invoiceId;
 
 //  INSTANTIATING CLASS
 $StockOut        = new StockOut();

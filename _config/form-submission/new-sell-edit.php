@@ -1,7 +1,7 @@
 <?php
 require_once dirname(dirname(__DIR__)) . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
-
+require_once CLASS_DIR.'encrypt.inc.php';
 
 require_once CLASS_DIR . "dbconnect.php";
 require_once ROOT_DIR . '_config/healthcare.inc.php';
@@ -319,9 +319,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+
+header("Location: item-invoice-reprint.php?id=".url_enc($invoiceNo));
+exit;
 ?>
 
-<!DOCTYPE html>
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -387,7 +391,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <hr class="my-0" style="height:1px;">
 
             <div class="row">
-                <!-- table heading -->
+              table heading -
                 <div class="col-sm-1 text-center">
                     <small><b>SL.</b></small>
                 </div>
@@ -426,8 +430,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <hr class="my-0" style="height:1px;">
 
-            <div class="row">
-                <?php
+            <div class="row"> -->
+                <?php /*
                 $slno = 0;
                 $subTotal = floatval(00.00);
                 $itemIds    = $_POST['product-id'];
@@ -502,18 +506,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>';
 
                     // $subTotal = floatval($subTotal + $amount);
-                }
+                } */
                 ?>
 
-            </div>
-            <!-- </div> -->
+             <!-- </div>
+            </div> -->
 
-            <!-- </div> -->
+            <!-- </div> 
             <div class="footer">
                 <hr calss="my-0" style="height: 1px;">
 
-                <!-- table total calculation -->
-                <div class="row my-0">
+                table total calculation -->
+                <!-- <div class="row my-0">
                     <div class="col-4"></div>
                     <div class="col-4">
                         <div class="row">
@@ -588,10 +592,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <hr style="height: 1px; margin-top: 2px;">
         </div>
-    </div>
+    </div> -->
     <div class="justify-content-center print-sec d-flex my-5">
         <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
-        <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button>
+        <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button>
         <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
     </div>
     </div>
@@ -603,4 +607,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
-</html>
+</html> -->

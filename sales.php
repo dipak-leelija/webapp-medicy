@@ -16,8 +16,6 @@ $StockOut = new StockOut();
 $Patients = new Patients();
 
 
-
-
 if (isset($_GET['searchKey'])) {
     $id = $_GET['searchKey'];
     $table1 = 'id';
@@ -27,6 +25,7 @@ if (isset($_GET['searchKey'])) {
     $soldItems = $StockOut->stockOutDisplay(strval($adminId));
 }
 
+// print_r($soldItems);
 ?>
 
 <!DOCTYPE html>

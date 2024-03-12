@@ -59,7 +59,11 @@ const counterBill = () => {
     document.getElementById("customer").value = "Cash Sales";
     document.getElementById("customer-id").value = "Cash Sales";
     document.getElementById("customer-name").value = "Cash Sales";
+
+    let selectElement = document.getElementById("doctor-select");
+    selectElement.value = 'Cash Sales';
 }
+
 
 const getPaymentMode = (mode) => {
     document.getElementById("final-payment").value = mode;

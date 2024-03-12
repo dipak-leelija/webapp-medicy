@@ -11,6 +11,7 @@ require_once  CLASS_DIR . 'doctors.class.php';
 require_once  CLASS_DIR . 'salesReturn.class.php';
 require_once  CLASS_DIR . 'currentStock.class.php';
 require_once  CLASS_DIR . 'stockInDetails.class.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 
 
 //  INSTANTIATING CLASS
@@ -214,8 +215,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($successUpdateReturn) {
                     $CurrentStock->updateStockOnSell($itemId, $updatedQty, $updatedLooseQty);
-                    header("Location: ".URL."sales-return-invoice.php?data=$invoiceId");exit;
-
                 }
             }
             $totalRefundAmount = $totalRefundAmount;
@@ -224,7 +223,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+
+header("Location: sales-return-details.php?id=".url_enc($returnId));
+exit;
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">

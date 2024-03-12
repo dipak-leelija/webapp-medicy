@@ -113,10 +113,9 @@ $doctor = json_decode($doctor , true);
                                             <div class="col-md-9 col-10">
                                                 <label for="">Doctor</label><br>
 
-                                                <!-- <input class="customer-search" list="datalistOptions" id="doctor-name" placeholder="Doctor Name" onclick="getDoctor(this.value)"> -->
-
                                                 <select class="doctor-select" id="doctor-select">
                                                     <option value="" selected disabled>Select Doctor</option>
+                                                    <option value="Cash Sales" style="color: black;">Cash Sales</option>
                                                     <?php
                                                     if($doctor && $doctor['status'] == 1 && !empty($doctor))
                                                     foreach ($doctor['data'] as $doc) {
@@ -126,17 +125,6 @@ $doctor = json_decode($doctor , true);
                                                     }
                                                     ?>
                                                 </select>
-
-                                                <!-- <div class="p-2 bg-light" id="select-doctor" style="max-height: 20rem; max-width: 98%; background: #8584e9;" >
-                                                <datalist id="datalistOptions">
-                                                    <?php
-                                                    if($doctor && $doctor['status'] == 1 && !empty($doctor))
-                                                    foreach ($doctor['data'] as $row) {
-                                                        echo '<option value="' . $row['doctor_name'] . '">';
-                                                    }
-                                                    ?>
-                                                </datalist> --
-                                                </div> -->
 
                                             </div>
                                         </div>
@@ -236,11 +224,6 @@ $doctor = json_decode($doctor , true);
                                             <input class="sale-inp" type="text" id="gst" readonly>
                                         </div>
 
-                                        <!-- <div class=" col-md-1 mt-3 col-6">
-                                            <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable Calculate</label><br>
-                                            <input class="sale-inp" type="text" id="taxableAmnt" readonly>
-                                        </div> -->
-
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable</label><br>
                                             <input class="sale-inp" type="text" id="taxable" readonly>
@@ -298,15 +281,6 @@ $doctor = json_decode($doctor , true);
                                                 </div>
 
                                                 <div class="d-none row mt-3">
-                                                    <!-- <div class="col-md-4  col-6 mb-4 d-flex">
-                                                        <label for="" style="margin-top: 9px;">Qty.Type:</label>
-                                                        -- <input class="sale-inp" type="any" id="qty-type" style="border-width: 0px;" readonly> --
-                                                        <select class="sale-inp qty-type" id="qty-type" onchange="mrpUpdate(this.value);" disabled>
-                                                            <option value="" selected disabled>Select</option>
-                                                            <option value="Pack">Pack</option>
-                                                            <option value="Loose">Loose</option>
-                                                        </select>
-                                                    </div> -->
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
                                                         <label for="">Loose Stock:</label>
                                                         <input class="sale-inp" type="any" id="loose-stock" style="border-width: 0px;" readonly>

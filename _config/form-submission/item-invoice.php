@@ -172,6 +172,8 @@ exit;
 
 ?>
 
+
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -234,7 +236,7 @@ exit;
             <hr class="my-0" style="height:1px;">
 
             <div class="row">
-                <!-- table heading -->
+                <-- table heading --
                 <div class="col-sm-1 text-center">
                     <small><b>SL.</b></small>
                 </div>
@@ -268,13 +270,13 @@ exit;
                 <div class="col-sm-1 text-end">
                     <small><b>Amount</b></small>
                 </div>
-                <!--/end table heading -->
+                <--/end table heading --
             </div>
 
             <hr class="my-0" style="height:1px;">
 
             <div class="row">
-                <?php
+                <?php /*
                 $slno = 0;
                 $subTotal = floatval(00.00);
                 $itemIds    = $_POST['product-id'];
@@ -357,7 +359,7 @@ exit;
                             </div>';
 
                     // $subTotal = floatval($subTotal + $amount);
-                }
+                }*/
                 ?>
 
             </div>
@@ -365,7 +367,7 @@ exit;
             <div class="footer">
                 <hr calss="my-0" style="height: 1px;">
 
-                <!-- table total calculation -->
+                <-- table total calculation --
                 <div class="row my-0">
                     <div class="col-4"></div>
                     <div class="col-4">
@@ -443,7 +445,7 @@ exit;
         </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
-        <!-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> -->
+        <-- <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button> --
         <button class="btn btn-primary shadow mx-2" onclick="goBack()">Go Back</button>
         <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
     </div>
@@ -464,4 +466,4 @@ exit;
     }
 </script>
 
-</html>
+</html> -->
