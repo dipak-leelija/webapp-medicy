@@ -12,6 +12,8 @@ require_once CLASS_DIR . 'salesReturn.class.php';
 require_once CLASS_DIR . 'currentStock.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
 
+require_once CLASS_DIR . 'encrypt.inc.php';
+
 // require_once '../../../php_control/idsgeneration.class.php';
 
 //  INSTANTIATING CLASS
@@ -35,6 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $invoice        = $_POST['invoice'];
         $invoiceId = str_replace("#", '', $invoice);
         
+        // echo $invoice;
+        // echo $invoiceId;
+
+
         $patientData = $StockOut->stockOutDisplayById($invoice);
         // print_r($patientData);
         if ($patientData[0]['customer_id'] == 'Cash Sales') {
@@ -165,7 +171,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo $itemID[$i];
                 $updateCurrentStock = $CurrentStock->updateStockOnSell($itemID[$i], $UpdatedQty, $UpdatedLooseQty);
 
-                // header("Location: ".URL."sales-return-invoice.php?data=$invoiceId");exit;
             }
         }
     }
@@ -177,7 +182,13 @@ $selectClinicInfo = json_decode($HelthCare->showHealthCare($adminId));
 $pharmacyLogo = $selectClinicInfo->data->logo;
 $pharmacyName = $selectClinicInfo->data->hospital_name;
 
+
+header("Location: sales-return-details.php?id=".url_enc($invoiceId));
+exit;
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
