@@ -3,6 +3,7 @@ require_once dirname(dirname(__DIR__)). '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR .'dbconnect.php';
+require_once CLASS_DIR .'encrypt.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockReturn.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
@@ -44,16 +45,6 @@ if (isset($_POST['stock-return-edit'])) {
 
     $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
     // ========================== end of array data ==============================
-
-    // echo "<br>Stock return Id : $stockReturnId<br>";
-    // echo "<br>Refund Mode : $refundMode<br>";
-    // echo "<br>Item qty : $itemsCount";
-    // echo "<br>Total return Item Qty (FREE + PAID) : $totalReturnQty<br>";
-    // echo "<br>Return Gst : $returnGst";
-    // echo "<br>NET Refund Amount: $refund";
-    // echo "<br>Updated By : $updatedBy";
-    // echo "<br><br>";
-
 
     // ================ STOCK RETURN DATA UPDATE  BLOCK ==================
     $stockReturnEditUpdate = $StockReturn->stockReturnEditUpdate(intval($stockReturnId), intval($itemsCount), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $updatedBy, $updatedOn);
@@ -127,18 +118,12 @@ if (isset($_POST['stock-return-edit'])) {
             // }
         }
     }
-
-    // =============================== eof diff data block ===================================
-    // echo "<br><br><br>////////// ====== edit start area ====== \\\\\\\\\\\\\\";
     
     // ============================== update data block start ============================
     
     if ($editReturnItemsIds != null) {
         $stockInDetailsItemId = $_POST['stock-in-details-item-id'];
         for ($i = 0; $i < count($editReturnItemsIds) && $i < count($stockInDetailsItemId); $i++) {
-
-            // echo "edit return item id : "; print_r($editReturnItemsIds);
-            // echo "stock in details item id : "; print_r($stockInDetailsItemId);
 
             $stockReturnDetailsItemId = $editReturnItemsIds[$i];
             // $stockInDetailsItemId = $_POST['stock-in-details-item-id'];
@@ -181,16 +166,9 @@ if (isset($_POST['stock-return-edit'])) {
                 //===================== update calculation area ===============================
 
                 $CurrentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsItemId[$i])); //
-                // ech"<br><br>current stock data on stock in edit id => ";
-                // print_r($CurrentStockData);
 
                 $currentQty = $CurrentStockData->qty;
                 $currentLooseQty = $CurrentStockData->loosely_count;
-                // echo "current qty : $currentQty<br>";
-                // echo "current l qty : $currentLooseQty<br>";
-
-                // echo "$updatedItemUnit<br>";
-                // echo "$updatedItemWeightage<br>";
 
                 // if ($updatedItemUnit == 'Tablets' || $updatedItemUnit == 'Capsules') 
                 if (in_array(strtolower($updatedItemUnit), $allowedUnits)){
@@ -201,9 +179,6 @@ if (isset($_POST['stock-return-edit'])) {
                     $updatedLooseQty = 0;
                     $updatedQty = intval($currentQty) + (intval($itemRetundQtyDiff));
                 }
-
-                // echo "on cap tap updated l qty : $updatedLooseQty<br>";
-                // echo "on cap tap updated qty : $updatedQty";
 
                 //========= current stock update function call ============
                 $CurrentStockUpdate = $CurrentStock->updateStockByReturnEdit(intval($stockInDetailsItemId[$i]), intval($updatedQty), intval($updatedLooseQty), $updatedBy, $updatedOn);  //updating current stock after edit purchase return
@@ -219,6 +194,9 @@ if (isset($_POST['stock-return-edit'])) {
     }
 }
 
+$response = url_enc(json_encode(['stock_return_id' => $stockReturnId]));
+header("Location: ".URL."stock-return-invoice.php?data=".$response);
+exit;
 
 
 $healthCareDetailsByAdminId = json_decode($HelthCare->showhealthCare($adminId));
