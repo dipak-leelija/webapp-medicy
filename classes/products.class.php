@@ -460,7 +460,39 @@ class Products extends DatabaseConnection
         return 0;
     }
 
+    function showProductNameById($productId)
+    {
+        try {
+            $selectProduct = "SELECT name FROM products WHERE product_id = ?";
+            $stmt = $this->conn->prepare($selectProduct);
 
+            if (!$stmt) {
+                throw new Exception("Statement preparation failed: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("s", $productId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows == 0) {
+                $stmt->close();
+                return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => null]);
+            } else {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data = $row;
+                }
+
+                $stmt->close();
+
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
+            }
+        } catch (Exception $e) {
+            // error_log("Error in showProductsById: " . $e->getMessage());
+            return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
+        }
+        return 0;
+    }
 
 
 

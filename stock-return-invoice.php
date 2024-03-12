@@ -9,6 +9,7 @@ require_once CLASS_DIR .'encrypt.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockReturn.class.php';
 require_once CLASS_DIR.'distributor.class.php';
+require_once CLASS_DIR.'products.class.php';
 
 
 //  INSTANTIATING CLASS
@@ -16,6 +17,7 @@ $HelthCare       = new HealthCare();
 $StockReturn     = new StockReturn();
 $Distributor     = new Distributor;
 $StockReturn     = new StockReturn;
+$Products        = new Products;
 
 if (isset($_GET['data'])) {
 
@@ -172,7 +174,13 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 <?php
                 foreach ($returnDetails as $eachDetail) {
 
-                    $productName    = $eachDetail['product_id'];
+                    $productNameResponse = json_decode($Products->showProductNameById($eachDetail['product_id']));
+                    if($productNameResponse->status){
+                        $productName = $productNameResponse->data->name;
+                    }
+
+
+
                     $batchNo        = $eachDetail['batch_no'];
                     $expDate        = $eachDetail['exp_date'];
                     $setof          = $eachDetail['unit'];
