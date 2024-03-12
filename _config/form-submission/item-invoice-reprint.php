@@ -57,12 +57,12 @@ if ($customerId != 'Cash Sales') {
     $patientPhno = $patient->phno;
     $patientAge  = $patient->age;
 
-    $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'>
-                        <small><b>Patient: </b>  $patientName, <b>Age:</b> $patientAge </small></p>
-                    <p style='margin-top: -5px; margin-bottom: 0px;'><small><b>M:</b> $patientPhno </small></p>";
+    // $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'><small><b>Patient: </b>  $patientName, <b>Age:</b> $patientAge </small></p><p style='margin-top: -5px; margin-bottom: 0px;'><small><b>M:</b> $patientPhno </small></p>"";
 } else {
-    $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'>
-                        <small><b>Patient: </b>  $customerId</small></p>";
+    // $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'><small><b>Patient: </b>  $customerId</small></p>"";
+    $patientName = 'Cash Sales';
+    $patientPhno = '';
+    $patientAge = '';
 }
 
 
@@ -118,18 +118,14 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     </div>
                 </div>
             </div>
-            <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
+            <hr class="my-0" style="height:0px; background: #000000; border: #000000;">
             <div class="row my-0">
-                <div class="col-sm-6 my-0">
-                    <?= $patientElement ?>
-                </div>
-                <div class="col-sm-6 my-0">
-                    <p class="text-end" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered By:</b>
+                <div class="col-sm-6 ms-4 my-0">
+                    <p class="text-start" style="margin-top: -3px; margin-bottom: 0px;"><small><b>Refered By:</b>
                             <?php echo $reffby; ?></small></p>
                 </div>
-
             </div>
-            <hr class="my-0" style="height:1px;">
+            <hr class="my-0" style="height:3px;">
 
             <div class="row">
                 <!-- table heading -->
@@ -224,18 +220,6 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
                     // ===================================================
 
-                    // if (is_float($itemQty)) {
-                    //     // If the result is a decimal
-                    //     $integerPart = floor($itemQty);
-                    //     $decimalPart = ($itemQty - $integerPart) * 10; // Assuming a single-digit decimal
-
-                    //     if ($integerPart == 0) {
-                    //         $itemQty = $decimalPart.'(L)';
-                    //     }else {
-                    //         $itemQty = $integerPart . '(' . $decimalPart . 'L)';
-                    //     }
-                    // }
-
                     if ($detail['loosely_count'] != 0) {
                         $itemSellQty = $detail['loosely_count'] . ' ' . $detail['unit'];
                     } else {
@@ -281,9 +265,65 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             </div>
 
             <div class="footer">
-                <hr calss="my-0" style="height: 1px;">
+                <hr calss="my-0" style="height: 3px;">
                 <!-- table total calculation -->
+
                 <div class="row my-0">
+                    <div class="col-5">
+                        <div class="row">
+                            <div class="col-2 ms-4">
+                                <b><small>Patient </small></b><br>
+                                <b><small>Age</small></b><br>
+                                <b><small>Contact</small></b>
+                            </div>
+                            <div class="col-9">
+                                <p class="text-start mb-0"><small><?= ' :   ' . $patientName; ?></small></p>
+                                <p class="text-start mb-0"><small><?= ' :   ' . $patientAge; ?></small></p>
+                                <p class="text-start"><small><?= ' :   ' . $patientPhno; ?></small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-7 border-start border-dark">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <p class="m-0"><small>CGST</small></p>
+                                    <p class="m-0"><small>SGST</small></p>
+                                    <p><small>Total GST:</small></p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="m-0">
+                                        <small>: ₹<?php echo $totalGSt / 2; ?></small>
+                                    </p>
+                                    <p class="m-0">
+                                        <small>: ₹<?php echo $totalGSt / 2; ?></small>
+                                    </p>
+                                    <p class="m-0">
+                                        <small>: ₹<?php echo floatval($totalGSt); ?></small>
+                                    </p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p class="m-0"><small>MRP</small></p>
+                                    <b><p class="m-0"><small>Payble</small></p></b>
+                                    <p><small>You Saved</small></p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="m-0">
+                                        <small>: ₹<?php echo floatval($totalMrp); ?></small>
+                                    </p>
+                                    <p class="m-0">
+                                        <b><small>: ₹<?php echo floatval($billAmout); ?></small></b>
+                                    </p>
+                                    <p class="m-0">
+                                        <small>: ₹<?php echo $totalMrp - $billAmout; ?></small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div class="row my-0">
                     <div class="col-6 border-start border-dark">
                         <div class="col-4">
                             <div class="row">
@@ -351,12 +391,10 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                             </div>
                         </div>
                     </div>
-                </div>
-
-
+                </div> -->
 
             </div>
-            <hr style="height: 1px; margin-top: 2px;">
+            <hr style="height: 1px; margin-top: 0px;">
         </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
