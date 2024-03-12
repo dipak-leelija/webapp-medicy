@@ -1,141 +1,62 @@
 <?php
 
-require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once './config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR .'encrypt.inc.php';
 require_once ROOT_DIR.'_config/healthcare.inc.php';
+require_once CLASS_DIR .'encrypt.inc.php';
 require_once CLASS_DIR.'hospital.class.php';
 require_once CLASS_DIR.'stockReturn.class.php';
-require_once CLASS_DIR.'idsgeneration.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
 require_once CLASS_DIR.'distributor.class.php';
 
 
 //  INSTANTIATING CLASS
 $HelthCare       = new HealthCare();
 $StockReturn     = new StockReturn();
-$IdsGeneration   = new IdsGeneration();
-$CurrentStock    = new CurrentStock();
 $Distributor     = new Distributor;
+$StockReturn     = new StockReturn;
 
+if (isset($_GET['data'])) {
 
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    if (isset($_POST['stock-return'])) {
-        
-        $stockReturnId      = $IdsGeneration->stockReturnId();
-
-        $stockInId          = $_POST['stockInId'];
-        $stockInDetailsId   = $_POST['stok-in-details-id'];
-        $distributorId      = $_POST['dist-id'];
-        $distributorName    = $_POST['dist-name'];
-        $distData = json_decode($Distributor->showDistributorById($distributorId));
-        // print_r($distData);
-        $distAddress    = $distData->data->address;
-        $distPin        = $distData->data->area_pin_code;
-        $distContact    = $distData->data->phno;
-        
-        $returnDate      = $_POST['return-date'];
-        $returnDate      = date("Y-m-d", strtotime($returnDate));
-
-        $itemQty         = $_POST['items-qty'];
-        $totalReturnQty  = $_POST['total-return-qty'];
-        
-        $returnGst       = $_POST['return-gst-val'];
-
-        $refundMode      = $_POST['refund-mode'];
-        // $billNo          = $_POST['bill-no'];
-        $refund          = $_POST['refund'];
-
-        $addedBy         = $employeeId;
-        $addedOn         = NOW;
-        $Admin           = $adminId;
-        $status          = 1;
-
-        $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
-
+   $reponse = json_decode(url_dec($_GET['data']));
     
-        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $addedBy, $addedOn, $Admin);
-        
-        $returnResult = $returned['result'];
+   $stockReturnId   = $reponse->stock_return_id;
+    if($stockReturnId) {
+        $returnResponse = json_decode($StockReturn->showStockReturnById($stockReturnId));
 
-        // $returnResult = true;
-        if($returnResult == 'true'){
+        if ($returnResponse->status == 1) {
 
-            //arrays
-            $stokInDetailsId = $_POST['stok-in-details-id'];
-            $productId      = $_POST['productId'];
-            
-            $productName    = $_POST['productName'];
-            $ids            = count($productId);
-        
-            $batchNo        = $_POST['batchNo'];
-            $distBillNo     = $_POST['distBillNo'];
-            $expDate        = $_POST['expDate'];
+            $returnData     = $returnResponse->data[0];
+            $returnDate     = $returnData->return_date;
+            $totalReturnQty = $returnData->total_qty;
+            $returnGst      = $returnData->gst_amount;
+            $refundMode     = $returnData->refund_mode;
+            $refund         = $returnData->refund_amount;
+            $itemQty        = $returnData->items;
+            $distributorId  = $returnData->distributor_id;
+            $returnData->bill_no;
 
-            $setof          = $_POST['setof'];
-            // print_r($setof);
-            $unit           = preg_replace('/[0-9]/','',$setof);
-            $weightage      = preg_replace('/[a-z-A-Z]/','',$setof);
+            $distributorResponse = json_decode($Distributor->showDistributorById($distributorId));
 
-            $purchasedQty   = $_POST['purchasedQty'];
-            $freeQty        = $_POST['freeQty'];
-            $mrp            = $_POST['mrp'];
-            $ptr            = $_POST['ptr'];
-            
-            $gstPercent     = $_POST['gst'];
-            $gstPercent     = preg_replace('/[%]/','',$gstPercent);
+            if ($distributorResponse->status) {
+                $distributorData = $distributorResponse->data;
 
-            $discParcent    = $_POST['disc-percent'];
-            $discParcent    = preg_replace('/[%]/','',$discParcent);
+                $distributorName = $distributorData->name;
+                $distContact = $distributorData->phno;
+                $distAddress = $distributorData->address;
+                $distPIN = $distributorData->area_pin_code;
 
-            $returnQty      = $_POST['return-qty'];
-            $returnFQty     = $_POST['return-free-qty'];
-            $refundAmount   = $_POST['refund-amount'];
-
-            
-
-
-        
-            for ($i=0; $i < $ids; $i++) { 
-                $currentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]));
-                $wholeQty = $currentStockData->qty;
-                $looseQty = $currentStockData->loosely_count;
-
-                if ($wholeQty >= $totalReturnQty) {
-                
-                    if (in_array(strtolower($unit[$i]), $allowedUnits)){
-                        $updatedLooseQty = intval($looseQty) - ($totalReturnQty * $weightage[$i]);
-                        $updatedQty = intdiv($updatedLooseQty, $weightage[$i]);
-                    }else{
-                        $updatedLooseQty = 0;
-                        $updatedQty = intval($wholeQty) - $totalReturnQty;
-                    }
-                
-                    if($_SESSION['ADMIN']){
-                        $updatedBy = $adminId;
-                    }else{
-                        $updatedBy = $employeeId;
-                    }
-
-                    // ============== update current stock function =================
-                    $updateCurrentStock = $CurrentStock->updateStockByReturnEdit(intval($stokInDetailsId[$i]), intval($updatedQty), intval($updatedLooseQty), $updatedBy, NOW);
-
-                    // ====== add stock return function =============
-                    $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, intval($stokInDetailsId[$i]), $productId[$i], $distBillNo[$i], $batchNo[$i], $expDate[$i], $setof[$i], intval($purchasedQty[$i]), intval($freeQty[$i]), floatval($mrp[$i]), floatval($ptr[$i]), intval($gstPercent[$i]), intval($discParcent[$i]), intval($returnQty[$i]), intval($returnFQty[$i]), floatval($refundAmount[$i]));
-                }else {
-                    echo 'Return quantity is more then current stock quantity of this item!';
-                    exit;
-                }
             }
+
+            $returnDetails = $StockReturn->showStockReturnDetails($stockReturnId);
+
         }
+
+
     }
 }
 
-$response = url_enc(json_encode(['stock_return_id' => $stockReturnId]));
-header("Location: ".URL."stock-return-invoice.php?data=".$response);
-exit;
 
 $selectClinicInfo = json_decode($HelthCare->showHealthCare($adminId));
 // print_r($selectClinicInfo->data);
@@ -170,7 +91,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $distAddress .', '. $distPin; ?></small>
+                            <small><?php echo $distAddress .', '. $distPIN; ?></small>
                         </p>
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
                             <small><?php echo 'M: '.$distContact; ?></small>
@@ -249,50 +170,63 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
             <div class="row">
                 <?php
+                foreach ($returnDetails as $eachDetail) {
 
-                    for ($i=0; $i < $ids; $i++) { 
-                $slno = $i+1;
+                    $productName    = $eachDetail['product_id'];
+                    $batchNo        = $eachDetail['batch_no'];
+                    $expDate        = $eachDetail['exp_date'];
+                    $setof          = $eachDetail['unit'];
+                    $purchasedQty   = $eachDetail['purchase_qty'];
+                    $freeQty        = $eachDetail['free_qty'];
+                    $mrp            = $eachDetail['mrp'];
+                    $ptr            = $eachDetail['ptr'];
+                    $gstPercent     = $eachDetail['gst'];
+                    $discParcent    = $eachDetail['disc'];
+                    $returnQty      = $eachDetail['return_qty'];
+                    $returnFQty     = $eachDetail['return_free_qty'];
+                    $refundAmount   = $eachDetail['refund_amount'];
+                
 
-                        if ($slno >1) {
+                        if (count($returnDetails) >1) {
                             echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                         }
                         
                 echo '
                     <div class="col-sm-2 ">
-                        <small>'.substr($productName[$i], 0, 15).'</small>
+                        <small>'.substr($productName, 0, 15).'</small>
                     </div>
                     <div class="col-sm-1">
-                        <small>'.strtoupper($batchNo[$i]).'</small>
+                        <small>'.strtoupper($batchNo).'</small>
                     </div>
                     <div class="col-sm-1">
-                        <small>'.$setof[$i].'</small>
+                        <small>'.$setof.'</small>
                     </div>
                     <div class="col-sm-1">
-                        <small>'.$expDate[$i].'</small>
+                        <small>'.$expDate.'</small>
                     </div>
                     <div class="col-sm-1" style="width: 7%;">
-                        <small>'.$purchasedQty[$i].'</small>
+                        <small>'.$purchasedQty.'</small>
                     </div>
                     <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small>'.$freeQty[$i].'</small>
+                        <small>'.$freeQty.'</small>
                     </div>
                     <div class="col-sm-1 text-end">
-                        <small>'.$mrp[$i].'</small>
+                        <small>'.$mrp.'</small>
                     </div>
                     <div class="col-sm-1 text-end">
-                        <small>'.$ptr[$i].'</small>
+                        <small>'.$ptr.'</small>
                     </div>
                     <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small>'.$gstPercent[$i].'</small>
+                        <small>'.$gstPercent.'</small>
                     </div>
                     <div class="col-sm-1" style="width: 7%;">
-                        <small>'.$discParcent[$i].'</small>
+                        <small>'.$discParcent.'</small>
                     </div>
                     <div class="col-sm-1" style="width: 7%;">
-                        <small>'.$returnQty[$i].'('.$returnFQty[$i].'F'.')'.'</small>
+                        <small>'.$returnQty.'('.$returnFQty.'F'.')'.'</small>
                     </div>
                     <div class="col-sm-1 text-end">
-                        <small>'.$refundAmount[$i].'</small>
+                        <small>'.$refundAmount.'</small>
                     </div>';
             
                     }
