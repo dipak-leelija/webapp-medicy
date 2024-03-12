@@ -1,19 +1,19 @@
 <?php
-require_once dirname(dirname(__DIR__)).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
+require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/user-details.inc.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'hospital.class.php';
-require_once CLASS_DIR.'stockOut.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'itemUnit.class.php';
-require_once CLASS_DIR.'packagingUnit.class.php';
-require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR.'patients.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/user-details.inc.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'stockOut.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'itemUnit.class.php';
+require_once CLASS_DIR . 'packagingUnit.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
+require_once CLASS_DIR . 'patients.class.php';
 
-require_once CLASS_DIR.'encrypt.inc.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
 
 
 $invoiceId = $_GET['id'];
@@ -34,26 +34,25 @@ if (isset($_GET['id'])) {
     // echo $invoiceId;
     $stockOut  = $StockOut->stockOutDisplayById($invoiceId);
     // print_r($stockOut);
-    foreach($stockOut as $stockOut){
+    foreach ($stockOut as $stockOut) {
         $invoiceId      = $stockOut['invoice_id'];
         $customerId     = $stockOut['customer_id'];
-        $reffby         = $stockOut['reff_by'];	
-        $totalMrp       = $stockOut['mrp'];	
-        $totalGSt       = $stockOut['gst'];	
-        $billAmout      = $stockOut['amount'];	
-        $pMode          = $stockOut['payment_mode'];	
-        $billdate       = $stockOut['bill_date'];	
+        $reffby         = $stockOut['reff_by'];
+        $totalMrp       = $stockOut['mrp'];
+        $totalGSt       = $stockOut['gst'];
+        $billAmout      = $stockOut['amount'];
+        $pMode          = $stockOut['payment_mode'];
+        $billdate       = $stockOut['bill_date'];
 
         $details = $StockOut->stockOutDetailsBY1invoiveID($invoiceId);
         $details = json_decode($details, true);
         // print_r($details);
     }
-    
 }
 
 if ($customerId != 'Cash Sales') {
     $patient = json_decode($Patients->patientsDisplayByPId($customerId));
-    
+
     $patientName = $patient->name;
     $patientPhno = $patient->phno;
     $patientAge  = $patient->age;
@@ -61,7 +60,7 @@ if ($customerId != 'Cash Sales') {
     $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'>
                         <small><b>Patient: </b>  $patientName, <b>Age:</b> $patientAge </small></p>
                     <p style='margin-top: -5px; margin-bottom: 0px;'><small><b>M:</b> $patientPhno </small></p>";
-}else {
+} else {
     $patientElement = "<p style='margin-top: -3px; margin-bottom: 0px;'>
                         <small><b>Patient: </b>  $customerId</small></p>";
 }
@@ -90,19 +89,21 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
 <body>
     <div class="custom-container">
-        <div class="custom-body <?php if($pMode != 'Credit'){ echo "paid-bg";} ?>">
+        <div class="custom-body <?php if ($pMode != 'Credit') {
+                                    echo "paid-bg";
+                                } ?>">
             <div class="card-body ">
                 <div class="row">
                     <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR.$pharmacyLogo?>" alt="Medicy">
+                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy">
                     </div>
                     <div class="col-sm-8">
                         <h4 class="text-start my-0"><?php echo $healthCareName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $healthCareAddress1.', '.$healthCareAddress2.', '.$healthCareCity.', '.$healthCarePin; ?></small>
+                            <small><?php echo $healthCareAddress1 . ', ' . $healthCareAddress2 . ', ' . $healthCareCity . ', ' . $healthCarePin; ?></small>
                         </p>
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
-                            <small><?php echo 'M: '.$healthCarePhno.', '.$healthCareApntbkNo; ?></small>
+                            <small><?php echo 'M: ' . $healthCarePhno . ', ' . $healthCareApntbkNo; ?></small>
                         </p>
 
                     </div>
@@ -110,9 +111,9 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         <p class="my-0"><b>Invoice</b></p>
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id:
                                 #<?php echo $invoiceId; ?></small></p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Payment: <?php echo $pMode;?></small>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Payment: <?php echo $pMode; ?></small>
                         </p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Date: <?php echo $billdate;?></small>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Date: <?php echo $billdate; ?></small>
                         </p>
                     </div>
                 </div>
@@ -179,172 +180,177 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 <?php
                 $slno = 0;
                 $subTotal = floatval(00.00);
-                    foreach ($details as $detail) {
+                foreach ($details as $detail) {
+
+                    //=========================
+                    $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
+
+                    if ($checkTable->status) {
+                        $table = 'products';
+                    } else {
+                        $table = 'product_request';
+                    }
+                    //=========================
+
+                    $productResponse = json_decode($Products->showProductsByIdOnTableName($detail['product_id'], $table));
+
+                    $product = $productResponse->data;
+                    // print_r($product);
+
+                    $packQty = $product->unit_quantity;
+
+                    if (isset($product->manufacturer_id)) {
+                        $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
+
+                        $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
+                    } else {
+                        $manufacturerName = '';
+                    }
 
 
-                        //=========================
-                        $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
+                    $itemunit = $ItemUnit->itemUnitName($product->unit);
+                    $packUnit = $PackagingUnits->packagingTypeName($product->packaging_type);
 
-                        if($checkTable->status){
-                            $table = 'products';
-                        }else{
-                            $table = 'product_request';
-                        }
-                        //=========================
+                    $weatage = "$itemunit of $packUnit";
 
-                        $productResponse = json_decode($Products->showProductsByIdOnTableName($detail['product_id'], $table));
+                    $slno++;
+                    if ($slno > 1) {
+                        echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                    }
 
-                        $product = $productResponse->data;
-                        // print_r($product);
+                    // $itemQty = $detail['loosely_count']/$packQty;
 
-                        $packQty = $product->unit_quantity;
+                    $itemQty = intdiv($detail['loosely_count'], $packQty);
 
-                        if(isset($product->manufacturer_id)){
-                            $manuf = json_decode($Manufacturer->manufacturerShortName($product->manufacturer_id));
-                        
-                            $manufacturerName = $manuf->status == 1 ? $manuf->data : '';
-                        }else{
-                            $manufacturerName = '';
-                        }
-                        
+                    // ===================================================
 
-                        $itemunit = $ItemUnit->itemUnitName($product->unit);
-                        $packUnit = $PackagingUnits->packagingTypeName($product->packaging_type);
+                    // if (is_float($itemQty)) {
+                    //     // If the result is a decimal
+                    //     $integerPart = floor($itemQty);
+                    //     $decimalPart = ($itemQty - $integerPart) * 10; // Assuming a single-digit decimal
 
-                        $weatage = "$itemunit of $packUnit";
-                        
-                        $slno++;
-                        if ($slno >1) {
-                            echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
-                        }
-                        
-                        $itemQty = $detail['loosely_count']/$packQty;
+                    //     if ($integerPart == 0) {
+                    //         $itemQty = $decimalPart.'(L)';
+                    //     }else {
+                    //         $itemQty = $integerPart . '(' . $decimalPart . 'L)';
+                    //     }
+                    // }
 
-                        // ===================================================
+                    if ($detail['loosely_count'] != 0) {
+                        $itemSellQty = $detail['loosely_count'] . ' ' . $detail['unit'];
+                    } else {
+                        $itemSellQty = $detail['qty'];
+                    }
 
-                        if (is_float($itemQty)) {
-                            // If the result is a decimal
-                            $integerPart = floor($itemQty);
-                            $decimalPart = ($itemQty - $integerPart) * 10; // Assuming a single-digit decimal
+                    // ===================================================
 
-                            if ($integerPart == 0) {
-                                $itemQty = $decimalPart.'(L)';
-                            }else {
-                                $itemQty = $integerPart . '(' . $decimalPart . 'L)';
-                            }
-                        }
 
-                        // ===================================================
-
-                                
-                        echo '<div class="col-sm-1 text-center">
-                                <small>'.$slno.'</small>
+                    echo '<div class="col-sm-1 text-center">
+                                <small>' . $slno . '</small>
                             </div>
                             <div class="col-sm-2 ">
-                                <small>'.substr($detail['item_name'], 0, 15).'</small>
+                                <small>' . substr($detail['item_name'], 0, 15) . '</small>
                             </div>
                             <div class="col-sm-1">
-                                <small>'.$manufacturerName.'</small>
+                                <small>' . $manufacturerName . '</small>
                             </div>
                             <div class="col-sm-1" style="margin-right: 3rem;">
-                                <small>'.$detail['batch_no'].'</small>
+                                <small>' . $detail['batch_no'] . '</small>
                             </div>
                             <div class="col-sm-1">
-                                <small>'.$detail['exp_date'].'</small>
+                                <small>' . $detail['exp_date'] . '</small>
                             </div>
                             <div class="col-sm-1 text-end">
-                                <small>'.$itemQty.'</small>
+                                <small>' . $itemSellQty . '</small>
                             </div>
                             <div class="col-sm-1 text-end">
-                                <small>'.$detail['mrp'].'</small>
+                                <small>' . $detail['mrp'] . '</small>
                             </div>
                             <div class="col-sm-1 text-end">
                             <small>' . (isset($detail['discount']) ? $detail['discount'] : '') . '</small>
                             </div>
                             <div class="col-sm-1 text-end">
-                                <small>'.$detail['gst'].'</small>
+                                <small>' . $detail['gst'] . '</small>
                             </div>
                             <div class="col-sm-1 text-end">
-                                <small>'.$detail['amount'].'</small>
+                                <small>' . $detail['amount'] . '</small>
                             </div>';
-
-                    }
+                }
                 ?>
 
             </div>
 
             <div class="footer">
                 <hr calss="my-0" style="height: 1px;">
-
                 <!-- table total calculation -->
                 <div class="row my-0">
-                    <div class="col-4"></div>
-                    <div class="col-4">
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
+                    <div class="col-6 border-start border-dark">
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-8 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;">
+                                        <small>₹<?php echo $totalGSt / 2; ?></small>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <small>₹<?php echo $totalGSt / 2; ?></small>
-                                </p>
+                            <div class="row">
+                                <div class="col-8 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;"><small>SGST:</small></p>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;">
+                                        <small>₹<?php echo $totalGSt / 2; ?></small>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total GST:</small></p>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;">
+                                        <small>₹<?php echo floatval($totalGSt); ?></small>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>SGST:</small></p>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-8 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total MRP:</small></p>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;">
+                                        <small><b>₹<?php echo floatval($totalMrp); ?></b></small>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <small>₹<?php echo $totalGSt / 2; ?></small>
-                                </p>
+                            <div class="row">
+                                <div class="col-8 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;"><small>Net:</small></p>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;">
+                                        <small><b>₹<?php echo floatval($billAmout); ?></b></small>
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total GST:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <small>₹<?php echo floatval($totalGSt); ?></small>
-                                </p>
+
+                            <div class="row">
+                                <div class="col-8 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;"><small>You Saved:</small></p>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <p style="margin-top: -5px; margin-bottom: 0px;">
+                                        <small>₹<?php echo $totalMrp - $billAmout; ?></small>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>Total MRP:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <small><b>₹<?php echo floatval($totalMrp); ?></b></small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>Net:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <small><b>₹<?php echo floatval($billAmout); ?></b></small>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-8 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;"><small>You Saved:</small></p>
-                            </div>
-                            <div class="col-4 text-end">
-                                <p style="margin-top: -5px; margin-bottom: 0px;">
-                                    <small>₹<?php  echo $totalMrp - $billAmout; ?></small>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
 
