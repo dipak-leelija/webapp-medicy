@@ -183,7 +183,7 @@ $pharmacyLogo = $selectClinicInfo->data->logo;
 $pharmacyName = $selectClinicInfo->data->hospital_name;
 
 
-header("Location: sales-return-details.php?id=".url_enc($invoiceId));
+header("Location: sales-return-details.php?id=".url_enc($returned['sales_return_id']));
 exit;
 ?>
 

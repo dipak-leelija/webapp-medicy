@@ -367,21 +367,16 @@ class SalesReturn extends DatabaseConnection
                         $res[] = $row;
                     }
                 } else {
-                    // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
                 }
     
-                // Close the statement
                 $stmt->close();
             } else {
-                // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
     
             return $res;
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // Customize this part to suit your needs
             echo "Error: " . $e->getMessage();
             return array();
         }
