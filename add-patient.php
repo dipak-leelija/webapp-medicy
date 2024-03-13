@@ -32,7 +32,7 @@ if (isset($_GET['test'])) {
 
 
 $showDoctors = $doctors->showDoctors($adminId);
-$showDoctors = json_decode($showDoctors);    
+$showDoctors = json_decode($showDoctors);
 $allDoctors  = $showDoctors->data;
 
 ?>
@@ -48,7 +48,7 @@ $allDoctors  = $showDoctors->data;
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    
+
     <!-- Custom styles for this template -->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
 
@@ -115,7 +115,7 @@ $allDoctors  = $showDoctors->data;
                 'patientState' => $patientState,
                 'patientDoctor' => $patientDoctor
             );
-            
+
             if ($test) {
                 header("location: lab-billing.php");
             } else {
@@ -162,48 +162,16 @@ $allDoctors  = $showDoctors->data;
                                         </div>
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
-                                            <label class="form-control-label px-3" for="patientGurdianName">Patient's
-                                                Gurdian Name<span class="text-danger"> *</span></label>
-                                            <input type="text" id="patientGurdianName" name="patientGurdianName" placeholder="Enter Patient's Gurdian Name" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="row justify-content-between text-left">
-
-                                        <div class="form-group col-sm-6 flex-column d-flex">
-                                            <label class="form-control-label px-3" for="patientEmail">Patient
-                                                Email</label>
-                                            <input type="email" id="patientEmail" name="patientEmail" placeholder="Patient Email" onfocusout="checkMail(this)">
-                                        </div>
-
-                                        <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientPhoneNumber">Phone
                                                 number<span class="text-danger"> *</span></label>
-                                            <input type="number" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" required
-                                            onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)">
+                                            <input type="number" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" required /*onkeypress="checkMobNo(this)" */ onfocusout="checkContactNo(this)">
                                         </div>
+
 
                                     </div>
 
-
                                     <div class="row justify-content-between text-left">
-                                        <div class="form-group col-sm-6 flex-column d-flex">
-                                            <label class="form-control-label px-3" for="appointmentDate">Appointment
-                                                Date<span class="text-danger"> *</span></label>
-                                            <input type="date" id="appointmentDate" name="appointmentDate" required>
-                                        </div>
 
-                                        <div class="form-group col-sm-6 flex-column d-flex">
-                                            <label class="form-control-label px-3" for="patientWeight">Weight <small>(in
-                                                    kg)</small><span class="text-danger"> *</span></label>
-                                            <input type="number" id="patientWeight" name="patientWeight" placeholder="Weight in kg" onfocusout="checkWeight(this)" required>
-                                        </div>
-
-                                    </div>
-
-
-
-                                    <div class="row justify-content-between text-left">
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientAge">Age<span class="text-danger"> *</span></label>
                                             <input type="number" id="patientAge" name="patientAge" placeholder="Age" onfocusout="checkAge(this)" required>
@@ -230,6 +198,41 @@ $allDoctors  = $showDoctors->data;
                                     </div>
 
 
+                                    <div class="row justify-content-between text-left">
+
+                                    <div class="form-group col-sm-6 flex-column d-flex">
+                                            <label class="form-control-label px-3" for="patientWeight">Weight <small>(in
+                                                    kg)</small><span class="text-danger"> *</span></label>
+                                            <input type="number" id="patientWeight" name="patientWeight" placeholder="Weight in kg" onfocusout="checkWeight(this)" required>
+                                        </div>
+
+                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                            <label class="form-control-label px-3" for="appointmentDate">Appointment
+                                                Date<span class="text-danger"> *</span></label>
+                                            <input type="date" id="appointmentDate" name="appointmentDate" required>
+                                        </div>
+                                    
+                                    </div>
+
+
+
+                                    <div class="row justify-content-between text-left">
+
+                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                            <label class="form-control-label px-3" for="patientGurdianName">Patient's
+                                                Gurdian Name<span class="text-danger"> *</span></label>
+                                            <input type="text" id="patientGurdianName" name="patientGurdianName" placeholder="Enter Patient's Gurdian Name" required>
+                                        </div>
+
+                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                            <label class="form-control-label px-3" for="patientEmail">Patient
+                                                Email</label>
+                                            <input type="email" id="patientEmail" name="patientEmail" placeholder="Patient Email" onfocusout="checkMail(this)">
+                                        </div>
+
+                                    </div>
+
+
 
                                     <h5 class="text-center mb-4 mt-5">Patient Address</h5>
 
@@ -243,8 +246,6 @@ $allDoctors  = $showDoctors->data;
                                             <input type="text" id="patientAddress1" name="patientAddress1" placeholder="Address Line 1" required>
 
                                         </div>
-
-
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
 
@@ -267,8 +268,6 @@ $allDoctors  = $showDoctors->data;
 
                                         </div>
 
-
-
                                         <div class="form-group col-sm-6 flex-column d-flex">
 
                                             <label class="form-control-label px-3" for="patientDist">District<span class="text-danger"> *</span></label>
@@ -290,8 +289,6 @@ $allDoctors  = $showDoctors->data;
                                             <input type="number" id="patientPIN" name="patientPIN" placeholder="Pin Code" onfocusout="checkPin(this)" required>
 
                                         </div>
-
-
 
                                         <div class="form-group col-sm-6 flex-column d-flex">
 
@@ -362,20 +359,6 @@ $allDoctors  = $showDoctors->data;
                     </div>
 
                 </div>
-                <!-- <script type="text/javascript">
-                function getShift() {
-                    var xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open("GET", "ajax/appointment.getdoc.ajax.php?doctor_shift=" + document.getElementById(
-                        "docList").value, false);
-                    xmlhttp.send(null);
-                    document.getElementById("shiftList").innerHTML = xmlhttp.responseText;
-                }
-
-                function getShiftValues() {
-                    // document.getElementById('shiftValue').innerHTML= ("The Selected Dropdown value is: "+formid.doctorTiming[formid.doctorTiming.selectedIndex].text)
-                    var getShiftValues = document.getElementById("shiftList").value;
-                    console.log(getShiftValues);
-                } -->
 
                 </script>
                 <!-- Footer -->
