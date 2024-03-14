@@ -37,6 +37,7 @@ $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
         <div class="row d-flex justify-content-center">
             <div class="col-xl-9 col-lg-10 col-md-10 text-center">
                 <div class="col-xl-12 card shadow-sm p-4">
+
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
                             <label for="doc-name" class="col-form-label">Doctor Name:</label>
@@ -84,7 +85,6 @@ $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                         </div>
                     </div>
 
-                
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-12 flex-column d-flex">
                             <label for="doc-address" class="col-form-label">Doctor Address:</label>
@@ -101,12 +101,12 @@ $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                             <button type="button" class="btn btn-sm btn-primary" onclick="addDocDetails()">Add New Doctor</button>
                         </div>
                     </div>
-                       
-                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
+
 
 
 
