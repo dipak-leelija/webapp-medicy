@@ -147,7 +147,7 @@ if (isset($_POST['submit'])) {
                                         <div class="row justify-content-between text-left">
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label class="form-control-label" for="patientName">Patient Name<span class="text-danger"> *</span></label>
-                                                <input type="text" class="form-control" id="patientName" name="patientName" value="<?php echo $name; ?>">
+                                                <input type="text" class="form-control" id="patientName" name="patientName" value="<?php echo $name; ?>" autocomplete="off">
                                                 <input type="text" value="<?php echo $patientId; ?>" hidden name="patientId">
 
                                             </div>
@@ -156,7 +156,7 @@ if (isset($_POST['submit'])) {
                                                 <label class="form-control-label px-3" for="patientPhoneNumber">Phone
                                                     number<span class="text-danger"> *</span></label>
 
-                                                <input type="number" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" value="<?php echo $phno; ?>" maxlength="10" minlength="10" required onfocusout="checkContactNo(this)">
+                                                <input type="number" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" value="<?php echo $phno; ?>" maxlength="10" minlength="10" required onfocusout="checkContactNo(this)" autocomplete="off">
                                             </div>
 
                                         </div>
@@ -165,7 +165,7 @@ if (isset($_POST['submit'])) {
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label class="form-control-label px-3" for="patientAge">Age<span class="text-danger"> *</span></label>
 
-                                                <input type="number" id="patientAge" name="patientAge" placeholder="Age" maxlength="3" minlength="1" required onfocusout="checkAge(this)">
+                                                <input type="number" id="patientAge" name="patientAge" placeholder="Age" maxlength="3" minlength="1" required onfocusout="checkAge(this)" autocomplete="off">
 
                                             </div>
 
@@ -173,7 +173,7 @@ if (isset($_POST['submit'])) {
                                                 <label class="form-control-label px-3" for="patientWeight">Weight <small>(in
                                                         kg)</small><span class="text-danger"> *</span></label>
 
-                                                <input type="number" id="patientWeight" name="patientWeight" placeholder="Weight in kg" maxlength="3" required onfocusout="checkWeight(this)">
+                                                <input type="number" id="patientWeight" name="patientWeight" placeholder="Weight in kg" maxlength="3" required onfocusout="checkWeight(this)" autocomplete="off">
                                             </div>
                                         </div>
 
@@ -209,14 +209,14 @@ if (isset($_POST['submit'])) {
                                                 <label class="form-control-label px-3" for="patientGurdianName">Patient's
                                                     Gurdian Name<span class="text-danger"> *</span></label>
 
-                                                <input type="text" id="patientGurdianName" name="patientGurdianName" placeholder="Enter Patient's Gurdian Name" value="<?php echo $gurdianName; ?>" required>
+                                                <input type="text" id="patientGurdianName" name="patientGurdianName" placeholder="Enter Patient's Gurdian Name" value="<?php echo $gurdianName; ?>" required autocomplete="off">
                                             </div>
 
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label class="form-control-label px-3" for="patientEmail">Patient
                                                     Email</label>
 
-                                                <input type="email" id="email" name="patientEmail" placeholder="Patient Email" value="<?php echo $email; ?>" required onfocusout="checkMail(this)">
+                                                <input type="email" id="email" name="patientEmail" placeholder="Patient Email" value="<?php echo $email; ?>" required onfocusout="checkMail(this)" autocomplete="off">
                                             </div>
 
 
@@ -231,33 +231,33 @@ if (isset($_POST['submit'])) {
                                                 <label class="form-control-label px-3" for="patientAddress1">Address Line
                                                     1<span class="text-danger"> *</span></label>
 
-                                                <input type="text" id="patientAddress1" name="patientAddress1" placeholder="Address Line 1" value="<?php echo $addres1; ?>" required>
+                                                <input type="text" id="patientAddress1" name="patientAddress1" placeholder="Address Line 1" value="<?php echo $addres1; ?>" required autocomplete="off">
 
                                             </div>
 
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label class="form-control-label px-3" for="patientAddress2">Address Line
                                                     2<span class="text-danger"> *</span></label>
-                                                <input type="text" id="patientAddress2" name="patientAddress2" placeholder="Address Line 2" value="<?php echo $addres2; ?>">
+                                                <input type="text" id="patientAddress2" name="patientAddress2" placeholder="Address Line 2" value="<?php echo $addres2; ?>" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="row justify-content-between text-left">
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label class="form-control-label px-3" for="patientPS">Police Station<span class="text-danger"> *</span></label>
-                                                <input type="text" id="patientPS" name="patientPS" placeholder="Police Station" value="<?php echo $addres2; ?>" required>
+                                                <input type="text" id="patientPS" name="patientPS" placeholder="Police Station" value="<?php echo $addres2; ?>" required autocomplete="off">
                                             </div>
 
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label class="form-control-label px-3" for="patientDist">District<span class="text-danger"> *</span></label>
-                                                <input type="text" id="patientDist" name="patientDist" placeholder="District" value="<?php echo $patientDist; ?>" required>
+                                                <input type="text" id="patientDist" name="patientDist" placeholder="District" value="<?php echo $patientDist; ?>" required autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="row justify-content-between text-left">
                                             <div class="form-group col-sm-6 flex-column d-flex">
                                                 <label class="form-control-label px-3" for="patientPIN">PIN Code<span class="text-danger"> *</span></label>
-                                                <input type="number" id="patientPIN" name="patientPIN" placeholder="Pin Code" maxlength="7" value="<?php echo $patientPIN; ?>" required onfocusout="checkPin(this)">
+                                                <input type="number" id="patientPIN" name="patientPIN" placeholder="Pin Code" maxlength="7" value="<?php echo $patientPIN; ?>" required onfocusout="checkPin(this)" autocomplete="off">
                                             </div>
 
                                             <div class="form-group col-sm-6 flex-column d-flex">
@@ -285,7 +285,7 @@ if (isset($_POST['submit'])) {
                                                 <select id="docList" class="customDropSelection" name="patientDoctor" required>
                                                     <option disabled selected>Select Doctor</option>
                                                     <?php
-                                                    if ($check == 1) {
+                                                    if ($showDoctors->status == 1) {
                                                         $showDoctors = $showDoctors->data;
                                                         foreach ($showDoctors as $showDoctorDetails) {
                                                             $doctorId = $showDoctorDetails->doctor_id;
