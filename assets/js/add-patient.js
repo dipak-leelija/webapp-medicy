@@ -8,8 +8,18 @@ const checkMail = (t) =>{
     if(emailRegex.test(email)){
         checkMailExistance(email);
     }else{
-        t.value = '';
-        Swal.fire('Alert','Enter valid email id.','info');
+        Swal.fire({
+            title: "Alert",
+            text: "Enter valid email id.",
+            icon: "warning",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('patientEmail').value = '';
+                document.getElementById('patientEmail').focus();
+            }
+          });
     }
 }
 
@@ -24,12 +34,20 @@ const checkMailExistance = (email) =>{
         },
         success: function (data) {
             if (data == 1) {
-                // alert("email check"+data);
-                Swal.fire('Alert','Email exist.','error');
-                // document.getElementById('patientEmail').focus();
-                // document.getElementById('patientEmail').value = '';
+                Swal.fire({
+                    title: "Alert",
+                    text: "Email exist.",
+                    icon: "warning",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Ok"
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('patientEmail').value = '';
+                        document.getElementById('patientEmail').focus();
+                    }
+                  });
             } else {
-                document.getElementById('patientPhoneNumber').focus();
+                document.getElementById('patientAddress1').focus();
             }
         },
     });
@@ -38,10 +56,21 @@ const checkMailExistance = (email) =>{
 
 
 // mobile verification and validation =======
+
 const checkContactNo = (t) => {
     if (t.value.length != 10) {
-        Swal.fire('Alert', 'Mobile number must be 10 digits', 'error');
-        t.value = '';
+        Swal.fire({
+            title: "Alert",
+            text: "Mobile number must be 10 digits.",
+            icon: "warning",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                t.value='';
+                document.getElementById('patientPhoneNumber').focus();
+            }
+          });
     } else {
         let contactNo = t.value;
         $.ajax({
@@ -53,7 +82,18 @@ const checkContactNo = (t) => {
             success: function (data) {
                 // alert(data);
                 if (data == 1) {
-                    Swal.fire('Alert', 'Mobile number already exists.', 'error');
+                    Swal.fire({
+                        title: "Alert",
+                        text: "Mobile number exist.",
+                        icon: "warning",
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Ok"
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                            t.value='';
+                            document.getElementById('patientPhoneNumber').focus();
+                        }
+                      });
                 } else {
                     document.getElementById("appointmentDate").focus();
                 }
@@ -84,7 +124,7 @@ const checkAge = (t) =>{
 
 // pin validity check
 const checkPin = (t) =>{
-    if(t.value.length > 6){
+    if(t.value.length != 6){
         Swal.fire('Error','Enter valid PIN number(maximum 6 digit).','error');
         t.value = '';
     }
