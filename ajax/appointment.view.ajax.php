@@ -153,7 +153,7 @@ foreach ($showAppointments as $appointment) {
 
                 <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="patientEmail">Patient Email</label>
-                    <input class="form-control" type="email" id="patientEmail" name="patientEmail" value="<?php echo $PatientEmail; ?>" onfocusout="checkMail(this)">
+                    <input class="form-control" type="email" id="email" name="patientEmail" value="<?php echo $PatientEmail; ?>" onfocusout="checkMail(this)">
                 </div>
             </div>
 

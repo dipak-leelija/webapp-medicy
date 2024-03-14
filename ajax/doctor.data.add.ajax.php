@@ -76,7 +76,7 @@ $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
                             <label for="doc-email" class="col-form-label">Doctor Email:</label>
-                            <input type="email" class="form-control" id="doc-email" autocomplete="off" onfocusout="checkMail(this)">
+                            <input type="email" class="form-control" id="email" autocomplete="off" onfocusout="checkMail(this)">
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex">
                             <label for="doc-phno" class="col-form-label">Doctor Contact Number:</label>

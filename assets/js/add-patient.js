@@ -16,16 +16,17 @@ const checkMail = (t) =>{
             confirmButtonText: "Ok"
           }).then((result) => {
             if (result.isConfirmed) {
-                document.getElementById('patientEmail').value = '';
-                document.getElementById('patientEmail').focus();
+                t.value = '';
+                t.focus();
             }
           });
     }
 }
 
 // check mail existance
-const checkMailExistance = (email) =>{
-    let checkEmail = email;
+const checkMailExistance = (t) =>{
+    let checkEmail = t;
+    console.log(t);
     $.ajax({
         url: 'ajax/mobile-email-existance-check.ajax.php',
         type: 'POST',
@@ -42,13 +43,11 @@ const checkMailExistance = (email) =>{
                     confirmButtonText: "Ok"
                   }).then((result) => {
                     if (result.isConfirmed) {
-                        document.getElementById('patientEmail').value = '';
-                        document.getElementById('patientEmail').focus();
+                        document.getElementById('email').value = '';
+                        document.getElementById('email').focus();
                     }
                   });
-            } else {
-                document.getElementById('patientAddress1').focus();
-            }
+            } 
         },
     });
 }
@@ -68,7 +67,7 @@ const checkContactNo = (t) => {
           }).then((result) => {
             if (result.isConfirmed) {
                 t.value='';
-                document.getElementById('patientPhoneNumber').focus();
+                t.focus();
             }
           });
     } else {
@@ -91,12 +90,10 @@ const checkContactNo = (t) => {
                       }).then((result) => {
                         if (result.isConfirmed) {
                             t.value='';
-                            document.getElementById('patientPhoneNumber').focus();
+                            t.focus();
                         }
                       });
-                } else {
-                    document.getElementById("appointmentDate").focus();
-                }
+                } 
             },
         });
     }

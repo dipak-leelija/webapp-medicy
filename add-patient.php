@@ -227,7 +227,7 @@ $allDoctors  = $showDoctors->data;
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientEmail">Patient
                                                 Email</label>
-                                            <input type="email" id="patientEmail" name="patientEmail" placeholder="Patient Email" onfocusout="checkMail(this)">
+                                            <input type="email" id="email" name="patientEmail" placeholder="Patient Email" onfocusout="checkMail(this)">
                                         </div>
 
                                     </div>

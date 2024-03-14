@@ -14,7 +14,7 @@ const addDocDetails = () => {
     let docRegNo = document.getElementById('doc-reg-no').value;
     let docSpecialization = document.getElementById('doc-splz').value;
     let docDegree = document.getElementById('doc-degree').value;
-    let docEmail = document.getElementById('doc-email').value;
+    let docEmail = document.getElementById('email').value;
     let docMob = document.getElementById('doc-phno').value;
     let docAddress = document.getElementById('doc-address').value;
     let docAlsoWith = document.getElementById('doc-with').value;
@@ -62,7 +62,7 @@ const addDocDetails = () => {
                 document.getElementById('doc-reg-no').value = '';
                 document.getElementById('doc-splz').value = '';
                 document.getElementById('doc-degree').value = '';
-                document.getElementById('doc-email').value = '';
+                document.getElementById('email').value = '';
                 document.getElementById('doc-phno').value = '';
                 document.getElementById('doc-address').value = '';
                 document.getElementById('doc-with').value = '';
@@ -143,7 +143,7 @@ const checkMail = (t) =>{
     if(emailRegex.test(email)){
         document.getElementById('doc-phno').focus();
     }else{
-        document.getElementById('doc-email').value = '';
+        document.getElementById('email').value = '';
         Swal.fire('Alert','Enter valid email id.','info');
     }
 }
@@ -175,7 +175,7 @@ function editDoc() {
     let docSpecialization = document.getElementById('doc-splz').value;
     let docDegree = $("#doc-degree").val();
     let docAlsoWith = $("#doc-with").val();
-    let docEmail = $("#doc-email").val();
+    let docEmail = $("#email").val();
     let docPhno = $("#doc-phno").val();
     let docAddress = $("#doc-address").val();
 

@@ -91,7 +91,7 @@ $docSplzList = $doctorCategory->showDoctorCategoryByAdmin($adminId);
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex">
                             <label for="doc-email" class="col-form-label">Doctor Email:</label>
-                            <input type="text" class="form-control" id="doc-email" value="<?php echo $docEmail; ?>" autocomplete="off">
+                            <input type="text" class="form-control" id="email" value="<?php echo $docEmail; ?>" autocomplete="off">
                         </div>
                     </div>
 
