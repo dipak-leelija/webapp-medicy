@@ -164,7 +164,7 @@ $allDoctors  = $showDoctors->data;
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="patientPhoneNumber">Phone
                                                 number<span class="text-danger"> *</span></label>
-                                            <input type="number" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" required /*onkeypress="checkMobNo(this)" */ onfocusout="checkContactNo(this)">
+                                            <input type="number" id="patientPhoneNumber" name="patientPhoneNumber" placeholder="Phone Number" required /*onkeypress="checkMobNo(this)"*/  onfocusout="checkContactNo(this)">
                                         </div>
 
 
