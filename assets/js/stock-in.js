@@ -32,7 +32,6 @@ distributorInput.addEventListener("keyup", () => {
     let list = document.getElementsByClassName('lists')[0];
 
     if (distributorInput.value.length > 2) {
-
         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
         request.open("GET", distributorURL, false);
         request.send(null);
@@ -87,10 +86,6 @@ function captureCurrentLocation() {
     // Get the current URL
     var currentLocation = window.location.href;
 
-    // Log or use the current location as needed
-    // console.log("Current Location: " + currentLocation);
-
-    // Your additional logic here...
 }
 
 //////////////////// set distributor bill no /////////////////////
@@ -203,7 +198,6 @@ firstInput.addEventListener('input', function (event) {
 
     // Check if the first character is a space
     if (inputValue.length > 0 && inputValue[0] === ' ') {
-        // Remove the leading space
         this.value = inputValue.slice(1);
     }
 });
@@ -1150,70 +1144,6 @@ const setExpMonth = (month) => {
     }
 }
 
-
-// function setMfdYEAR(year) {
-//     let yr = new Date();
-//     let thisYear = yr.getFullYear();
-//     if (year.value.length == 4) {
-//         if (year.value > thisYear) {
-//             document.getElementById("mfd-month").focus();
-//         } else {
-//             document.getElementById("exp-month").focus();
-//         }
-//     } else if (year.value.length > 4) {
-//         year.value = '';
-//         year.focus();
-//     }
-// }
-
-// function setMfdYear(year) {
-//     let yr = new Date();
-//     let thisYear = yr.getFullYear();
-//     let thisMonth = yr.getMonth();
-//     let mfdMnth = document.getElementById("mfd-month").value;
-
-//     if (year.value.length < 4) {
-//         document.getElementById("mfd-year").value = '';
-//         document.getElementById("mfd-year").focus();
-//     }
-//     if (year.value.length == 4) {
-//         if (year.value > thisYear) {
-//             document.getElementById("mfd-year").value = '';
-//             document.getElementById("mfd-year").focus();
-//         }
-
-//         if (year.value < thisYear) {
-//             document.getElementById("exp-month").focus();
-//         }
-
-//         if (year.value == thisYear) {
-//             if (mfdMnth > thisMonth) {
-//                 document.getElementById("mfd-month").value = '';
-//                 document.getElementById("mfd-month").focus();
-//             } else if (mfdMnth <= thisMonth) {
-//                 document.getElementById("exp-month").focus();
-//             }
-//         }
-//     }
-// }
-
-
-
-// function setExpYear(year) {
-//     let inputedMonth = document.getElementById('exp-month').value;
-//     let today = new Date();
-//     let curretnMonth = today.getMonth();
-
-//     console.log("inputed month : "+inputedMonth);
-//     console.log("current month : "+curretnMonth);
-
-//     if (parseInt(inputedMonth) < parseInt(curretnMonth)) {
-//         console.log('hello');
-//         document.getElementById('exp-month').value = '';
-//         document.getElementById('exp-month').focus();
-//         Swal.fire('Alert','Expiary must be greater than current month.','error');
-//     } 
-// }
 
 const setExpYEAR = (year) => {
     expMnth = document.getElementById("exp-month").value;

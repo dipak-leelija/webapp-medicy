@@ -54,6 +54,42 @@ class DoctorCategory extends DatabaseConnection
 
 
 
+    function showDoctorCategoryByLikeWise($data, $adminId){
+        try {
+            if ($data != 'all') {
+            $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `category_name` LIKE  CONCAT('%', ?, '%') AND `admin_id` = ? ";
+            $stmt = $this->conn->prepare($selectDoctorCategory);
+            $stmt->bind_param("ss", $data, $adminId);
+            }else{
+            $selectDoctorCategory = "SELECT * FROM `doctor_category` WHERE `admin_id` = ?";
+            $stmt = $this->conn->prepare($selectDoctorCategory);
+            $stmt->bind_param("s", $adminId);
+            }
+
+            if (!$stmt->execute()) {
+                throw new Exception("Error in query execution: " . $stmt->error);
+            }
+
+            $result = $stmt->get_result();
+            $categoryData = [];
+
+            if($result->num_rows > 0){
+                while ($row = $result->fetch_assoc()) {
+                    $categoryData[] = $row;
+                }
+                return json_encode(['status'=>'1', 'data'=>$categoryData]);
+            }else{
+                return json_encode(['status'=>'0', 'data'=>'']);
+            }
+            $stmt->close();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }  
+
+
+
+
 
     function showDoctorCategoryByAdmin($adminId=''){
         try {
