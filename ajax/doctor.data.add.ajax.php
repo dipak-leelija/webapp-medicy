@@ -59,7 +59,7 @@ $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
 
                             <input type="text" name="doc-speclz" id="doc-speclz" class="form-control" autocomplete="off">
 
-                            <div class="p-2 bg-light col-md-6 c-dropdown" id="doc-specialization-list">
+                            <div class="p-2 bg-light col-md-6 c-dropdown" id="doc-specialization-list" style="margin-top: 5rem;">
                                 <?php if (!empty($docSplzList)) : ?>
                                     <div class="lists" id="lists">
                                         <?php foreach ($docSplzList as $docSplzList) { ?>
@@ -148,6 +148,7 @@ $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
 
     <!-- custom javascript for action -->
     <script src="<?php echo JS_PATH ?>doctors.js"></script>
+    <script src="<?php echo JS_PATH ?>doctors-speclz.js"></script>
 </body>
 
 </html>
