@@ -29,6 +29,7 @@ foreach($currentAppointments as $currentAppointmentDetails){
     $patientEmail        = $currentAppointmentDetails['patient_email'];
     $patientPhno         = $currentAppointmentDetails['patient_phno'];
     $patientDob          = $currentAppointmentDetails['patient_age'];
+    $patientWeight       = $currentAppointmentDetails['patient_weight'];
     $patientGender       = $currentAppointmentDetails['patient_gender'];
     $patientAddress1     = $currentAppointmentDetails['patient_addres1'];
     $patientAddress2     = $currentAppointmentDetails['patient_addres2'];
@@ -155,7 +156,7 @@ if ($doctorCategory->status == 1) {
                     <div class="mt-2">
                         BP:
                         <br>
-                        WT:
+                        WT: <?php echo $patientWeight ?>
                     </div>
                 </small>
                 <div class="mt-5">
