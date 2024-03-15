@@ -12,7 +12,8 @@ $DoctorCategory = new DoctorCategory;
 
 
 $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
-
+// print_r($docSplzList);
+// $docSplzList= 0;
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +29,7 @@ $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>lab-test.css">
     <!-- css for sweetalert2 -->
     <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
 
 </head>
 
@@ -52,22 +54,35 @@ $docSplzList = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
                             <label for="doc-splz" class="col-form-label">Doctor Specialization:</label>
-                            <select class="form-control" name="" id="doc-splz" autocomplete="off">
-                                <?php
 
-                                foreach ($docSplzList as $splzList) {
+                            <input type="text" name="doc-speclz-id" id="doc-speclz-id" class="form-control" autocomplete="off" hidden>
 
-                                ?>
-                                    <option value="<?php echo $splzList['doctor_category_id'] ?>">
-                                        <?php echo $splzList['category_name'] ?>
-                                    </option>';
+                            <input type="text" name="doc-speclz" id="doc-speclz" class="form-control" autocomplete="off">
 
-                                <?php
-                                }
+                            <div class="p-2 bg-light col-md-6 c-dropdown" id="doc-specialization-list">
+                                <?php if (!empty($docSplzList)) : ?>
+                                    <div class="lists" id="lists">
+                                        <?php foreach ($docSplzList as $docSplzList) { ?>
+                                            <div class="p-1 border-bottom list" id="<?= $docSplzList['doctor_category_id'] ?>" onclick="setDocSpecialization(this)">
+                                                <?= $docSplzList['category_name'] ?>
+                                            </div>
+                                        <?php } ?>
 
-                                ?>
-                            </select>
+                                        <div class="d-flex flex-column justify-content-center mt-1" onclick="addDocSpecialization()">
+                                            <button type="button" id="add-specialization" class="text-primary border-0">
+                                                <i class="fas fa-plus-circle"></i> Add Now</button>
+                                        </div>
+                                    <?php else : ?>
+                                        <p class="text-center font-weight-bold">Doctor Specialization Not Found!</p>
+                                        <div class="d-flex flex-column justify-content-center" onclick="addDocSpecialization()">
+                                            <button type="button" id="add-specialization" class="text-primary border-0">
+                                                <i class="fas fa-plus-circle"></i>Add Now</button>
+                                        </div>
+                                    <?php endif; ?>
+                                    </div>
+                            </div>
                         </div>
+
                         <div class="form-group col-sm-6 flex-column d-flex">
                             <label for="doc-degree" class="col-form-label">Doctor Degree:</label>
                             <input type="text" class="form-control" id="doc-degree" autocomplete="off">
