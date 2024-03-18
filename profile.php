@@ -1,9 +1,6 @@
 <?php
-$page = "profile-setup";
 require_once __DIR__ . '/config/constant.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
-// require_once ROOT_DIR . '_config/accessPermission.php';
-
 require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
@@ -67,21 +64,21 @@ if ($_SESSION['ADMIN']) {
 
             $image      = $employeeData->emp_img;
 
-            if(empty($image)){
+            if (empty($image)) {
                 $profileImg = DEFAULT_USER_IMG_PATH;
-            }else{
+            } else {
                 $profileImg = EMPLOYEE_IMG_PATH . $image;
             }
 
             $userName   = $employeeData->emp_username;
             $email      = $employeeData->emp_email;
 
-            if(isset($employeeData->contact)){
+            if (isset($employeeData->contact)) {
                 $phone      = $employeeData->contact;
-            }else{
+            } else {
                 $phone      = "";
             }
-            
+
             $password   = $employeeData->emp_password;
             $address    = $employeeData->emp_address;
         }
@@ -114,6 +111,9 @@ if ($_SESSION['ADMIN']) {
     <!-- Custom styles for this page -->
     <link href="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo CSS_PATH ?>custom/employees.css">
+    <link href="<?php echo CSS_PATH ?>/custom/password-show-hide.css" rel="stylesheet">
+    <link href="<?php echo CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
+
     <style>
         #toggle {
             /* position: absolutte;
@@ -161,84 +161,107 @@ if ($_SESSION['ADMIN']) {
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <!-- <h1 class="h3 mb-2 text-gray-800">Employees</h1> -->
-
-                    <!-- DataTales Example -->
-
-                    <!-- <div class="card shadow mb-4"> -->
                     <div class="card-body">
                         <div class=" d-flex justify-content-center align-items-center">
-                            <div class=" profile">
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <div class="w-100 shadow p-3 mb-3 bg-white rounded ">
-                                        <h2 class="h5 text-gray "><i class="fas fa-user"></i> <?= $userName ?></h2>
-                                    </div>
-                                </div>
-                                <form class="user shadow p-3 mb-5 bg-white rounded" action="_config/form-submission/profileSetup-form.php" method="post" enctype="multipart/form-data" id="edit-profile">
+                            <div class=" shadow bg-white rounded  profile">
 
-                                    <div class="p-main d-flex justify-content-start align-items-start flex-wrap ml-3 mt-3">
-                                        <div class="ml-3">
-                                            <img class="img-uv-view shadow-lg " src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
-                                            <div class="position-absolute translate-middle ml-5">
-                                                <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="profile-image" onchange="validateFileType()">
+
+                                <div class="p-main d-flex justify-content-start align-items-start flex-wrap ml-3 mt-3">
+                                    <div class="ml-3">
+                                        <img class="img-uv-view shadow-lg " src="<?= !empty($profileImg) ?  $profileImg : ASSETS_PATH . 'images/undraw_profile.svg' ?>" alt="">
+                                        <div class="position-absolute translate-middle ml-5">
+                                            <form method="POST" action="<?= URL ?>_config/form-submission/profileSetup-form.php" id="profileImageForm" enctype="multipart/form-data">
+                                                <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="profile-image" onchange="validateFileType(this)">
                                                 <label for="img-uv-input" class="btn btn-sm btn-success ml-5 mt-n5 rounded-circle border-white"><i class="fas fa-camera"></i></label>
-                                                <div class="alert alert-danger d-none" id="err-show" role="alert" >
+                                                <div class="alert alert-danger d-none" id="err-show" role="alert">
                                                     Only jpg/jpeg and png files are allowed!
                                                 </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="p-name">
+                                        <h2 class="mb-0"><?= $firstName . " " . $lastName ?></h2>
+                                        <p class="text-primary">Username: <?= $userName; ?></p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs row" role="tablist">
+                                        <li class="nav-item col-6">
+                                            <a class="nav-link active" data-toggle="tab" href="#home">Details</a>
+                                        </li>
+                                        <li class="nav-item col-6">
+                                            <a class="nav-link" data-toggle="tab" href="#menu1">Password</a>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+                                        <div id="home" class="tab-pane active">
+                                            <div class="user w-100 p-3 mb-2 ">
+                                                <form action="_config/form-submission/profileSetup-form.php" method="post" id="edit-profile">
+                                                    <div class="d-flex justify-content-between align-item-between flex-wrap">
+                                                        <div class="col-md-6">
+                                                            <input type="text" class="form-control mb-3" id="fname" name="fname" maxlength="20" placeholder="First Name" value="<?= $firstName; ?>">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <input type="text" class="form-control mb-3" id="lname" name="lname" maxlength="20" placeholder="Last Name" value="<?= $lastName; ?>">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between align-item-between flex-wrap">
+                                                        <div class="col-md-6">
+                                                            <div>
+                                                                <input type="email" class="form-control mb-3" id="email" name="email" maxlength="80" placeholder="Email Address" value="<?= $email; ?>">
+                                                            </div>
+                                                            <div>
+                                                                <input type="number" class="form-control mb-3 " id="mobile-number" name="mobile-number" placeholder="Contact Number" value="<?= $phone; ?>" maxlength="10" max="9999999999">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                                <textarea class="form-control mb-3" placeholder="Address" name="address" rows="3"><?= $address; ?></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-end">
+                                                        <button class="btn btn-sm btn-primary" type="submit" name="submit" id="updateBtn">Update</button>
+                                                    </div>
+                                                </form>
+
                                             </div>
                                         </div>
-                                        <div class="p-name">
-                                            <h2 class=""><?php echo $firstName . " " . $lastName ?></h2>
-                                            <p class="text-primary"><?php echo $email ?></p>
-                                        </div>
-                                    </div>
-                                    <h4>Account</h4>
-                                    <hr>
-                                    <div class="w-100 p-3 mb-2 ">
-                                        <div class="p-pass form-group mb-3 d-flex justify-content-end">
-                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter" onclick="passwordUpdate()" id="passwordChangeBtn">
-                                                Password Change
-                                            </button>
-                                        </div>
-                                        <!-- <div class="form-group row mb-3"> -->
-                                        <div class="d-flex justify-content-between align-item-between flex-wrap">
-                                            <label for="form-control">First Name</label>
-                                            <input type="text" class="form-control col-md-6 mb-3" id="fname" name="fname" maxlength="20" value="<?= $firstName; ?>">
-                                        </div>
-                                        <div class="d-flex justify-content-between align-item-between flex-wrap">
-                                            <label for="form-control">Last Name</label>
-                                            <input type="text" class="form-control col-md-6 mb-3" id="lname" name="lname" maxlength="20" value="<?= $lastName; ?>">
-                                        </div>
-                                        <!-- </div> -->
-                                        <div class="d-flex justify-content-between align-item-between flex-wrap">
-                                            <label for="form-control">Username</label>
-                                            <input type="text" class="form-control col-md-6 mb-3" id="user-name" name="user-name" maxlength="24" value="<?= $userName; ?>" disabled>
-                                        </div>
-                                        <!-- <div class="form-group row"> -->
-                                        <div class="d-flex justify-content-between align-item-between flex-wrap">
-                                            <label for="form-control">Email</label>
-                                            <input type="email" class="form-control col-md-6 mb-3" id="email" name="email" maxlength="80" value="<?= $email; ?>">
-                                        </div>
-                                        <div class="d-flex justify-content-between align-item-between flex-wrap ">
-                                            <label for="from-control">Contact</label>
-                                            <input type="number" class="form-control col-md-6 mb-3 " id="mobile-number" name="mobile-number" maxlength="10" value="<?= $phone; ?>" max="9999999999">
-                                        </div>
-                                        <!-- </div> -->
 
-                                        <div class="d-flex justify-content-between align-item-between flex-wrap ">
-                                            <label for="from-control">Address</label>
-                                            <textarea class="form-control col-md-6 mb-3" id="exampleFormControlTextarea1" name="address" rows="2"><?= $address; ?></textarea>
-                                        </div>
-                                        <hr>
-                                        <div class="d-flex justify-content-end">
-                                            <button class="btn btn-success" type="submit" name="submit" id="updateBtn">UPDATE</button>
+                                        <div id="menu1" class="tab-pane fade">
+                                            <form class="p-3" action="<?php echo htmlspecialchars(URL . 'ajax/updateProfile-password.ajax.php'); ?>" method="post">
+
+                                                <div class="form-group mb-3">
+                                                    <input type="password" class="form-control " id="old-password" name="old-password" maxlength="12" placeholder="Current Password" required oninput="showToggleBtn('old-password', 'toggleBtn1')">
+                                                    <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem" onclick="togglePassword('old-password', 'toggleBtn1')"></i>
+                                                </div>
+                                                <div class="form-group  mb-3">
+                                                    <input type="password" class="form-control " id="new-password" name="new-password" maxlength="12" placeholder="Enter New Password" required oninput="showToggleBtn('new-password', 'toggleBtn2')">
+                                                    <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem" onclick="togglePassword('new-password', 'toggleBtn2')"></i>
+                                                </div>
+                                                <div class="form-group mb-3 ">
+                                                    <input type="password" class="form-control " id="cnf-password" name="cnf-password" maxlength="12" placeholder="Confirm Password" required oninput="showToggleBtn('cnf-password', 'toggleBtn3')">
+                                                    <i class="fas fa-eye " id="toggleBtn3" style="display:none;font-size:1.2rem" onclick="togglePassword('cnf-password', 'toggleBtn3')"></i>
+                                                    <small>
+                                                        <p id="cpasserror" class="text-danger" style="display: none;"></p>
+                                                    </small>
+                                                </div>
+                                                <div class="mt-2 d-flex justify-content-end">
+                                                    <button type="submit" name="submit" id="change-password" class="btn btn-sm btn-primary">Save Changes</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <!-- End of Main Content -->
@@ -252,24 +275,6 @@ if ($_SESSION['ADMIN']) {
 
     </div>
     <!-- End of Page Wrapper -->
-
-    <!-- password change modal  -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Password Change</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body exampleModalCenter">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- password change modal end -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -285,63 +290,86 @@ if ($_SESSION['ADMIN']) {
 
     <!-- Core plugin JavaScript-->
     <script src="<?php echo PLUGIN_PATH ?>jquery-easing/jquery.easing.min.js"></script>
-    <script src="<?= PLUGIN_PATH ?>img-uv/img-uv.js"></script>
+    <script src="<?php echo JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
+
 
     <!-- Custom scripts for all pages-->
-    <script src="<?php echo JS_PATH ?>sb-admin-2.min.js"></script>
+    <script src="<?php echo JS_PATH ?>sb-admin-2.js"></script>
+    <script src="<?= JS_PATH ?>password-show-hide.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="<?php echo PLUGIN_PATH ?>datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo PLUGIN_PATH ?>datatables/dataTables.bootstrap4.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="<?php echo JS_PATH ?>demo/datatables-demo.js"></script>
 
 
     <script>
-        function validateFileType() {
-            var fileName = document.getElementById("img-uv-input").value;
-            console.log(fileName);
-            var idxDot = fileName.lastIndexOf(".") + 1;
-            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {} else {
-                // alert("Only jpg/jpeg and png files are allowed!");
-                document.getElementById("err-show").classList.remove("d-none");
-            }
+        function validateFileType(t) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Change Profile Photo?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#0047AB",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Change!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var fileName = document.getElementById("img-uv-input").value;
+                    var idxDot = fileName.lastIndexOf(".") + 1;
+                    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+                    if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                        readURL(t, fileName);
+                    } else {
+                        document.getElementById("err-show").classList.remove("d-none");
+                    }
+                }
+            });
         }
 
-        $(document).ready(function() {
-            $(document).on("click", ".delete-btn", function() {
 
-                if (confirm("Are you want delete data?")) {
-                    empId = $(this).data("id");
-                    //echo $empDelete.$this->conn->error;exit;
+        const readURL = (input, fileName) => {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
-                    btn = this;
-                    $.ajax({
-                        url: "ajax/employee.Delete.ajax.php",
-                        type: "POST",
-                        data: {
-                            id: empId
-                        },
-                        success: function(response) {
-
-                            if (response == 1) {
-                                $(btn).closest("tr").fadeOut()
-                            } else {
-                                // $("#error-message").html("Deletion Field !!!").slideDown();
-                                // $("success-message").slideUp();
-                                alert(response);
-                            }
-
-                        }
-                    });
+                reader.onload = (e) => {
+                    document.querySelector(".img-uv-view").src = e.target.result;
+                    console.log(fileName.split(/(\\|\/)/g).pop());
+                    $('#profileImageForm').submit();
                 }
-                return false;
 
-            })
+                reader.readAsDataURL(input.files[0]);
+                document.querySelector("#upload-btn").classList.remove("d-none");
+            }
+        };
 
-        })
+
+        // $(document).ready(function() {
+        //     $(document).on("click", ".delete-btn", function() {
+
+        //         if (confirm("Are you want delete data?")) {
+        //             empId = $(this).data("id");
+
+        //             btn = this;
+        //             $.ajax({
+        //                 url: "ajax/employee.Delete.ajax.php",
+        //                 type: "POST",
+        //                 data: {
+        //                     id: empId
+        //                 },
+        //                 success: function(response) {
+
+        //                     if (response == 1) {
+        //                         $(btn).closest("tr").fadeOut()
+        //                     } else {
+        //                         alert(response);
+        //                     }
+
+        //                 }
+        //             });
+        //         }
+        //         return false;
+
+        //     })
+
+        // })
 
         // $(document).ready(function () {
         //     $("#updateBtn").click(function () {
@@ -372,48 +400,20 @@ if ($_SESSION['ADMIN']) {
         //         });
         //     });
         // });
+
+        // function showHide(fieldId) {
+        //     const password = document.getElementById(fieldId);
+        //     const toggle = document.getElementById('toggle');
+
+        //     if (password.type === 'password') {
+        //         password.setAttribute('type', 'text');
+        //         // toggle.classList.add('hide');
+        //     } else {
+        //         password.setAttribute('type', 'password');
+        //         // toggle.classList.remove('hide');
+        //     }
+        // }
     </script>
-    <script>
-        function showHide(fieldId) {
-            const password = document.getElementById(fieldId);
-            const toggle = document.getElementById('toggle');
-
-            if (password.type === 'password') {
-                password.setAttribute('type', 'text');
-                // toggle.classList.add('hide');
-            } else {
-                password.setAttribute('type', 'password');
-                // toggle.classList.remove('hide');
-            }
-        }
-    </script>
-
-
-    <!-- password modal open -->
-    <script>
-        passwordUpdate = () => {
-            let url = "ajax/updateProfile-password.ajax.php";
-            $('.exampleModalCenter').html(
-                '<iframe width="100%" height="220px" frameborder="0" allowtransparency="true" src="' +
-                url + '" scrolling="no"></iframe>');
-        }
-
-
-        function updateButtonContent() {
-            var button = document.getElementById("passwordChangeBtn");
-
-            if (window.innerWidth < 784) {
-                button.innerHTML = '<span title="Change Password"><i class="fas fa-key"></span>';
-                button.onclick = passwordUpdate();
-            } else {
-                button.innerHTML = 'Password Change';
-                button.onclick = passwordUpdate();
-            }
-        }
-        updateButtonContent();
-        window.addEventListener("resize", updateButtonContent);
-    </script>
-
 </body>
 
 </html>
