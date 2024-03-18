@@ -185,6 +185,42 @@ class Patients extends DatabaseConnection
 
 
 
+    function chekPatientsDataOnColumn($column, $data, $adminId){
+        try {
+            $selectData = "SELECT * FROM `patient_details` WHERE $column = ? AND `admin_id` = ?";
+            $stmt = $this->conn->prepare($selectData);
+            
+            if(!$stmt){
+                throw new Exception('Error in preparing SQL statement');
+            }
+            
+            $stmt->bind_param("ss", $data, $adminId); 
+            
+            $stmt->execute();
+            
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
+            } else {
+                return json_encode(['status' => 0, 'message' => 'No data found', 'data' => '']);
+            }
+            
+            $stmt->close();
+            
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => $e->getMessage(), 'data' => '']);
+        }
+    }
+    
+    
+
+
+
 
     function patientFilterByColData($col='', $data='', $admin='')
     {
@@ -194,7 +230,7 @@ class Patients extends DatabaseConnection
             $stmt = $this->conn->prepare($selectById);
             $stmt->bind_param("si", $data, $admin);
             }else{
-            $selectById = "SELECT * FROM patient_details WHERE `$col` = ? ";
+            $selectById = "SELECT * FROM patient_details WHERE `$col` = ?";
             $stmt = $this->conn->prepare($selectById);
             }
 

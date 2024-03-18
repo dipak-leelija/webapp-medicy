@@ -6,29 +6,101 @@ const checkMail = (t) =>{
 
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(emailRegex.test(email)){
-        document.getElementById('patientPhoneNumber').focus();
+        checkMailExistance(email);
     }else{
-        t.value = '';
-        Swal.fire('Alert','Enter valid email id.','info');
-        t.focus();
+        Swal.fire({
+            title: "Alert",
+            text: "Enter valid email id.",
+            icon: "warning",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                t.value = '';
+                t.focus();
+            }
+          });
+    }
+}
+
+// check mail existance
+const checkMailExistance = (t) =>{
+    let checkEmail = t;
+    console.log(t);
+    $.ajax({
+        url: 'ajax/mobile-email-existance-check.ajax.php',
+        type: 'POST',
+        data: {
+            email: checkEmail,
+        },
+        success: function (data) {
+            if (data == 1) {
+                Swal.fire({
+                    title: "Alert",
+                    text: "Email exist.",
+                    icon: "warning",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Ok"
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('email').value = '';
+                        document.getElementById('email').focus();
+                    }
+                  });
+            } 
+        },
+    });
+}
+
+
+
+// mobile verification and validation =======
+
+const checkContactNo = (t) => {
+    if (t.value.length != 10) {
+        Swal.fire({
+            title: "Alert",
+            text: "Mobile number must be 10 digits.",
+            icon: "warning",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                t.value='';
+                t.focus();
+            }
+          });
+    } else {
+        let contactNo = t.value;
+        $.ajax({
+            url: 'ajax/mobile-email-existance-check.ajax.php',
+            type: 'POST',
+            data: {
+                checkMobNo: contactNo,
+            },
+            success: function (data) {
+                // alert(data);
+                if (data == 1) {
+                    Swal.fire({
+                        title: "Alert",
+                        text: "Mobile number exist.",
+                        icon: "warning",
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Ok"
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                            t.value='';
+                            t.focus();
+                        }
+                      });
+                } 
+            },
+        });
     }
 }
 
 
-//// check inputed mobile length validity
-const checkMobNo = (t) =>{
-    if(t.value.length > 9){
-        Swal.fire('Alert','Enter Maximum 10 digit','error');
-        t.value = '';
-    }
-}
 
-const checkContactNo = (t) =>{
-    if(t.value.length < 9){
-        Swal.fire('Error','Mobile number must be 10 digit','error');
-        t.value = '';
-    }
-}
 
 // patient weight validity
 const checkWeight = (t) =>{
@@ -49,7 +121,7 @@ const checkAge = (t) =>{
 
 // pin validity check
 const checkPin = (t) =>{
-    if(t.value.length > 6){
+    if(t.value.length != 6){
         Swal.fire('Error','Enter valid PIN number(maximum 6 digit).','error');
         t.value = '';
     }

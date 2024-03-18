@@ -199,7 +199,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                             <div class="col-sm-6 mt-2">
                                                 <label for="mrp">Enter MRP</label>
                                                 <span class="text-danger">*</span>
-                                                <input class="c-inp w-100 p-1" type="number" id="mrp" name="mrp" required>
+                                                <input class="c-inp w-100 p-1" type="number" id="mrp" name="mrp" step="0.01" required>
                                             </div>
                                         </div>
 

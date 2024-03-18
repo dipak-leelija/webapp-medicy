@@ -226,8 +226,6 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                 let docSpecializationDescription = document.getElementById('splz-dsc').value;
 
                 if(docSpecialization != '' && docSpecializationDescription != ''){
-                    console.log(docSpecialization);
-                    console.log(docSpecializationDescription);
 
                     // ajax/doc-specialization-add.ajax.php
                     $.ajax({
@@ -298,7 +296,7 @@ $showDoctorCategory = $DoctorCategory->showDoctorCategoryByAdmin($adminId);
                                 if (response == 1) {
                                     $(btn).closest("tr").fadeOut()
                                 } else {
-                                    alert("Deletion Failed!");
+                                    Swal.fire("Error","Deletion Failed!","Error");
                                     $("#error-message").html("Deletion Failed !!!").slideDown();
                                     $("success-message").slideUp();
                                 }

@@ -31,6 +31,39 @@ class Doctors extends DatabaseConnection
 
 
 
+    function chekDataOnColumn($column, $data, $adminId){
+        try {
+            $selectData = "SELECT * FROM `doctors` WHERE `$column`=? AND admin_id=?";
+            $stmt = $this->conn->prepare($selectData);
+    
+            if(!$stmt){
+                throw new Exception('Error in preparing SQL statement');
+            } else {
+                
+                $stmt->bind_param("si", $data, $adminId); 
+                
+                $stmt->execute();
+                
+                $result = $stmt->get_result();
+    
+                if ($result->num_rows > 0) {
+                    $data = array();
+                    while ($row = $result->fetch_object()) {
+                        $data[] = $row;
+                    }
+                    return json_encode(['status' => 1, 'message' => 'success', 'data' => $data]);
+                } else {
+                    return json_encode(['status' => 0, 'message' => 'No data found', 'data' => '']);
+                }
+                $stmt->close();
+            }
+        } catch (Exception $e) {
+            return json_encode(['status' => 0, 'message' => $e->getMessage(), 'data' => '']);
+        }
+    }
+
+    
+
 
     function showDoctors($adminId='')
     {

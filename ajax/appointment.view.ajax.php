@@ -96,36 +96,16 @@ foreach ($showAppointments as $appointment) {
                     <label class="form-label px-3" for="patientName">Patient Name<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="patientName" name="patientName" placeholder="Enter Patient Name" value="<?php echo $PatientName; ?>">
                 </div>
-                <div class="form-group col-sm-6 flex-column d-flex">
-                    <label class="form-label px-3" for="patientGurdianNAme">Patient's Gurdian Name<span class="text-danger"> *</span></label>
-                    <input class="form-control" type="text" id="patientGurdianName" name="patientGurdianName" placeholder="Enter Patient's Gurdian Name" value="<?php echo $PatientGurdianName; ?>">
-                </div>
-            </div>
 
-            <div class="row justify-content-between text-left">
-                <div class="form-group col-sm-6 flex-column d-flex">
-                    <label class="form-label px-3" for="patientEmail">Patient Email</label>
-                    <input class="form-control" type="email" id="patientEmail" name="patientEmail" value="<?php echo $PatientEmail; ?>" onfocusout="checkMail(this)">
-                </div>
                 <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="patientPhoneNumber">Phone number<span class="text-danger">*</span></label>
-                    <input class="form-control" type="number" id="patientPhoneNumber" name="patientPhoneNumber" value="<?php echo $PatientPhno; ?>" onkeypress="checkMobNo(this)" onfocusout="checkContactNo(this)">
+                    <input class="form-control" type="number" id="patientPhoneNumber" name="patientPhoneNumber" value="<?php echo $PatientPhno; ?>" onfocusout="checkContactNo(this)">
                 </div>
+                
             </div>
 
             <div class="row justify-content-between text-left">
-                <div class="form-group col-sm-6 flex-column d-flex">
-                    <label class="form-label px-3" for="appointmentDate">Appointment Date<span class="text-danger">*</span></label>
-                    <input class="form-control" type="date" id="appointmentDate" name="appointmentDate" placeholder="DD-MM-YYYY" value="<?php echo $appointmentDate; ?>">
-                </div>
-                <div class="form-group col-sm-6 flex-column d-flex">
-                    <label class="form-label px-3" for="patientWeight">Weight <small>(in kg)</small><span class="text-danger"> *</span></label>
-                    <input class="form-control" type="number" id="patientWeight" name="patientWeight" placeholder="Patient's Weight" value="<?php echo $PatientWeight; ?>" onfocusout="checkWeight(this)">
-                </div>
-            </div>
-
-            <div class="row justify-content-between text-left">
-                <div class="form-group col-sm-6 flex-column d-flex">
+            <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="patientDOB">Age<span class="text-danger">*</span></label>
                     <input class="form-control" type="number" id="patientDOB" name="patientDOB" placeholder="Patient's Date of birth" maxlength="3" minlength="1" value="<?php echo $PatientAge; ?>" onfocusout="checkAge(this)">
                 </div>
@@ -141,12 +121,39 @@ foreach ($showAppointments as $appointment) {
                     <?= $PatientGender == "Female" ? "checked" : ''; ?> required>
                     <label class="btn btn-sm btn-outline-secondary" for="female" value="Female">Female</label>
 
-                    <input type="radio" class="btn-check" name="gender" id="secret" value="Secret" autocomplete="off"
-                    <?= $PatientGender == "Secret" ? "checked" : '' ; ?> required>
+                    <input type="radio" class="btn-check" name="gender" id="Others" value="Others" autocomplete="off"
+                    <?= $PatientGender == "Others" ? "checked" : '' ; ?> required>
                     
-                    <label class="btn btn-sm btn-outline-secondary" for="secret" value="Secret">Secret</label>
+                    <label class="btn btn-sm btn-outline-secondary" for="secret" value="Secret">Others</label>
                     <div class="valid-feedback mv-up">You selected a gender!</div>
                     <div class="invalid-feedback mv-up">Please select a gender!</div>
+                </div>
+                
+            </div>
+
+            <div class="row justify-content-between text-left">
+                <div class="form-group col-sm-6 flex-column d-flex">
+                    <label class="form-label px-3" for="patientWeight">Weight <small>(in kg)</small><span class="text-danger"> *</span></label>
+                    <input class="form-control" type="number" id="patientWeight" name="patientWeight" placeholder="Patient's Weight" value="<?php echo $PatientWeight; ?>" onfocusout="checkWeight(this)">
+                </div>
+
+                <div class="form-group col-sm-6 flex-column d-flex">
+                    <label class="form-label px-3" for="appointmentDate">Appointment Date<span class="text-danger">*</span></label>
+                    <input class="form-control" type="date" id="appointmentDate" name="appointmentDate" placeholder="DD-MM-YYYY" value="<?php echo $appointmentDate; ?>">
+                </div>
+                
+            </div>
+
+            <div class="row justify-content-between text-left">
+
+                <div class="form-group col-sm-6 flex-column d-flex">
+                    <label class="form-label px-3" for="patientGurdianNAme">Patient's Gurdian Name<span class="text-danger"> *</span></label>
+                    <input class="form-control" type="text" id="patientGurdianName" name="patientGurdianName" placeholder="Enter Patient's Gurdian Name" value="<?php echo $PatientGurdianName; ?>">
+                </div>
+
+                <div class="form-group col-sm-6 flex-column d-flex">
+                    <label class="form-label px-3" for="patientEmail">Patient Email</label>
+                    <input class="form-control" type="email" id="email" name="patientEmail" value="<?php echo $PatientEmail; ?>" onfocusout="checkMail(this)">
                 </div>
             </div>
 
