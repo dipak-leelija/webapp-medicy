@@ -12,6 +12,8 @@ require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'measureOfUnit.class.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'productsImages.class.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
+require_once CLASS_DIR . 'pagination.class.php';
 
 $page = "current-stock";
 
@@ -19,9 +21,12 @@ $page = "current-stock";
 $CurrentStock   = new CurrentStock();
 $Products       = new Products();
 $Distributor    = new Distributor();
+$Pagination  = new Pagination;
 
 $ProductImages  = new ProductImages();
 $Manufacturer   = new Manufacturer();
+
+
 
 $showCurrentStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
 // print_r($showCurrentStock);
@@ -29,11 +34,68 @@ if ($showCurrentStock != null) {
     $countCurrentStock = count($showCurrentStock);
 }
 // echo "$countCurrentStock";
-$currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
-// print_r($currentStockGroup);
-// echo "<br><br>";
 
+
+
+if (isset($_GET['prod-search'])) {
+
+    $prodSearch = $_GET['prod-search']; // stored search data on a variable
+    
+    $prodSearchData = $CurrentStock->prdSearchBynameOrComposition($prodSearch); // fetched data on search value
+
+    $prodIdList = array(); // define blank array
+
+    foreach($prodSearchData as $prodSearchData){
+        $prodIdData = $prodSearchData['product_id'];
+        array_push($prodIdList, $prodIdData);
+    }
+
+    $prodIdList = array_unique($prodIdList);
+    $prodIdList = array_values($prodIdList); // filtering array data
+   
+    $currentStockGroup = array();
+
+    for($i=0; $i<count($prodIdList); $i++){
+        // fetching current data depending on product id
+        $currentStockData = $CurrentStock->showCurrentStockGroupByProductId($prodIdList[$i], $adminId); 
+        
+        if(!empty($currentStockData)){
+            $currentStockGroup = array_merge($currentStockGroup, $currentStockData);
+        }
+    }
+    
+} else {
+    $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
+}
+
+
+
+if (!empty($currentStockGroup)) {
+
+    $currentStockData = $currentStockGroup;
+
+    if (is_array($currentStockData)) {
+        // print_r($allAppointmentsData);
+        $response = json_decode($Pagination->arrayPagination($currentStockData));
+
+        $sliceCurrentStockData = '';
+        $paginationHTML = '';
+        $totalItem = $sliceCurrentStockData = $response->totalitem;
+
+        if ($response->status == 1) {
+            $sliceCurrentStockData = $response->items;
+            $paginationHTML = $response->paginationHTML;
+        }
+    } else {
+        $totalItem = 0;
+    }
+} else {
+    $totalItem = 0;
+    $paginationHTML = '';
+}
+
+// print_r($sliceCurrentStockData);
 ?>
 
 <!DOCTYPE html>
@@ -85,29 +147,38 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <!-- <h1 class="h3 mb-2 text-gray-800">Current Stock</h1> -->
-
-                    <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                        <!-- <div class="card-header py-3 booked_btn">
-                            <h6 class="m-0 font-weight-bold text-primary">Total Avilable Product is :
-                                <?php if ($showCurrentStock != NULL) {
-                                    echo count($showCurrentStock);
+                        <div class="col-12 d-flex">
+                            <div class="card-header col-md-6 py-3 booked_btn">
+                                <h6 class="m-0 font-weight-bold text-primary">Total Avilable Product is :
+                                    <?php if ($sliceCurrentStockData != null) {
+                                        echo count($sliceCurrentStockData);
+                                    } else {
+                                        echo "No Stock";
+                                    } ?>
+                                </h6>
+                            </div>
+
+                            <div class="card-header col-md-6 d-flex justify-content-end">
+
+                                <?php
+                                if ($showCurrentStock != null) {
+                                ?>
+                                    <input class="form-control w-75" type="text" placeholder="Search Product" name="product-search" id="product-search" style="outline: none;" autocomplete="off">
+
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="getProduct()"><i class="fas fa-search"></i></button>
+                                    </div>
+                                <?php
                                 } else {
-                                    echo "No Stock";
-                                } ?>
-                            </h6>
-                        </div> -->
-                        <div class="card-header py-3 booked_btn">
-                            <h6 class="m-0 font-weight-bold text-primary">Total Avilable Product is :
-                                <?php if ($showCurrentStock != NULL) {
-                                    echo count($currentStockGroup);
-                                } else {
-                                    echo "No Stock";
-                                } ?>
-                            </h6>
+                                    echo "";
+                                }
+                                ?>
+
+
+                            </div>
                         </div>
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
@@ -123,12 +194,12 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if ($showCurrentStock != NULL) {
-
-                                            foreach ($currentStockGroup as $rowStock) {
-
-                                                $currentStockId      = $rowStock['id'];
-                                                $productId           = $rowStock['product_id']; // fetch 
+                                        if (!empty($sliceCurrentStockData)) {
+                                            
+                                            foreach ($sliceCurrentStockData as $rowStock) {
+                                                
+                                                $currentStockId      = $rowStock->id;
+                                                $productId           = $rowStock->product_id; // fetch 
                                                 $image               = json_decode($ProductImages->showImageById($productId));
 
                                                 if ($image->status) {
@@ -141,7 +212,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                     if ($image->status) {
                                                         $image = $image->data;
                                                         $mainImage = $image[0]->image;
-                                                    }else{
+                                                    } else {
                                                         $mainImage = 'default-product-image/medicy-default-product-image.jpg';
                                                     }
                                                 }
@@ -159,17 +230,17 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
 
                                                 // =========== edit req flag key check ==========
                                                 $prodCheck = json_decode($Products->productExistanceCheck($productId));
-                                                if($prodCheck->status == 1){
+                                                if ($prodCheck->status == 1) {
                                                     $editReqFlag = 0;
-                                                }else{
+                                                } else {
                                                     $editReqFlag = '';
                                                 }
 
                                                 //=========================================
                                                 $checkProduct = json_decode($Products->productExistanceCheck($productId));
-                                                if($checkProduct->status){
+                                                if ($checkProduct->status) {
                                                     $flag = 1;
-                                                }else{
+                                                } else {
                                                     $flag = '';
                                                 }
 
@@ -177,8 +248,6 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                 $showProducts = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $flag));
                                                 // print_r($showProducts);
                                                 $showProducts = $showProducts->data;
-                                                // echo "<br>";
-                                                // print_r($showProducts);
 
                                                 if (isset($showProducts[0]->manufacturer_id)) {
                                                     $manufId = $showProducts[0]->manufacturer_id;
@@ -195,10 +264,7 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                     $manufName = '';
                                                 }
 
-
                                                 // ==== fetch product manufacturer details ====
-
-
                                                 $productName = $showProducts[0]->name;
                                                 // $manufName =  $ManufData->name;
 
@@ -254,16 +320,18 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
                                                     </td>
                                                 </tr>
                                         <?php
-                                            $mainImage = '';
-                                                
+                                                $mainImage = '';
                                             }
                                         }
 
-
-
                                         ?>
                                     </tbody>
+
                                 </table>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-center" id="pagination-control">
+                                <?= $paginationHTML ?>
                             </div>
                         </div>
                     </div>
@@ -380,6 +448,19 @@ $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
             parent.location.reload();
         }
 
+
+
+        // ===== search product =====
+        const getProduct = () => {
+            let prodSearch = document.getElementById('product-search').value;
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+
+            if (prodSearch.length > 2) {
+                var newURL = `${currentURLWithoutQuery}?prod-search=${prodSearch}`;
+                window.location.replace(newURL);
+                // console.log(t.value);
+            }
+        }
     </script>
 </body>
 
