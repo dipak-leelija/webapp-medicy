@@ -151,7 +151,7 @@ if (!empty($currentStockGroup)) {
                         <div class="col-12 d-flex">
                             <div class="card-header col-md-6 py-3 booked_btn">
                                 <h6 class="m-0 font-weight-bold text-primary">Total Avilable Product is :
-                                    <?php if ($sliceCurrentStockData != null) {
+                                    <?php if ($showCurrentStock != null) {
                                         echo count($sliceCurrentStockData);
                                     } else {
                                         echo "No Stock";
