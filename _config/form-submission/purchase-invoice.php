@@ -146,10 +146,10 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                 <div class="col-sm-1" style="width: 17%;">
                     <small><b>Product Name</b></small>
                 </div>
-                <div class="col-sm-1" style="width: 12%;">
+                <div class="col-sm-1">
                     <small><b>Manuf.</b></small>
                 </div>
-                <div class="col-sm-1" style="width: 8%;">
+                <div class="col-sm-1" style="width: 12%;">
                     <small><b>Packing</b></small>
                 </div>
                 <div class="col-sm-1" style="width: 10%;">
@@ -281,10 +281,10 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                     <div class="col-sm-1b" style="width: 17%;">
                         <small><?php echo "$pname" ?></small>
                     </div>
-                    <div class="col-sm-1b" style="width: 12%;">
+                    <div class="col-sm-1">
                         <small><?php echo "$manufName" ?></small>
                     </div>
-                    <div class="col-sm-1b" style="width: 8%;">
+                    <div class="col-sm-1b" style="width: 12%;">
                         <small><?php echo $pQTY .' '. $itemUnitName, " / ", $unitNm ?></small>
                     </div>
                     <div class="col-sm-1b" style="width: 10%;">
