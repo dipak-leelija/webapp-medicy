@@ -54,7 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $paymentMode = $_POST['payment-mode'];
     $billDAte = $_POST['bill-date'];
 
-
     $updatedBy        = $employeeId;
     $updatedOn        = NOW;
 
@@ -79,6 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $weightage          = $_POST['weightage'];
     $ItemUnit           = $_POST['ItemUnit'];
+    // print_r($ItemUnit);
     $itemWeightage      = $_POST['ItemPower'];
 
     $qty                = $_POST['qty'];
@@ -94,33 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $marginPerItem      = $_POST['margin'];
     $taxable            = $_POST['taxable'];
     $amount             = $_POST['amount'];
-
-
-
-
-    // echo "<br><br>================== data arrays check ====================== <br>";
-    // echo "<br>updated STOCK OUT id array : "; print_r($stockOutDataId);
-    // echo "<br>updated item id array : "; print_r($itemId);
-    // echo "<br>updated product id array : "; print_r($prductId);
-    // echo "<br>updated product name array : "; print_r($prodName);
-    // echo "<br>updated item batch number : "; print_r($batchNo);
-    // echo "<br>updated items exp date : "; print_r($expDate);
-    // echo "<br>updated items weightage : "; print_r($weightage);
-    // echo "<br>updated items unit : "; print_r($ItemUnit);
-    // echo "<br>updated items setof : "; print_r($itemWeightage);
-    // echo "<br>updated items qty : "; print_r($qty);
-    // echo "<br>updated items qty tpes : "; print_r($qtyType);
-    // echo "<br>updated items mrp : "; print_r($mrp);
-    // echo "<br>updated items ptr : "; print_r($ptrPerItem);
-    // echo "<br>updated discount percent per items : "; print_r($discParcent);
-    // echo "<br>updated discount amount per items : "; print_r($discPrice);
-    // echo "<br>updated items gst percent : "; print_r($gstparcent);
-    // echo "<br>updated items gst amount : "; print_r($gstAmountPerItem);
-    // echo "<br>updated items margin : "; print_r($marginPerItem);
-    // echo "<br>updated items taxable : "; print_r($taxable);
-    // echo "<br>updated items payble amount : "; print_r($amount);
-    // echo "<br>updated by : $updatedBy";
-    // echo "<br>updated on by : $updatedOn<br>";
 
 
     //========================== STOCK OUT AND SALES EDIT UPDATE AREA ==========================
@@ -153,20 +126,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 foreach ($selectFromStockOutDetails as $stockOutData) {
                     $currenStockItemId = $stockOutData['item_id'];
 
-                    if (in_array(strtolower($itemUnit), $allowedUnits))
-                
-                    // if ($stockOutData['unit'] == 'Tablets' || $stockOutData['unit'] == 'Capsules') 
-                    if (in_array(strtolower($stockOutData), $allowedUnits)){
+                    if (in_array(strtolower($stockOutData['unit']), $allowedUnits)){
                         $itemQantity = $stockOutData['loosely_count'];
                     } else {
                         $itemQantity = $stockOutData['qty'];
                     }
                 }
 
+
                 $currenStockData = $CurrentStock->showCurrentStocById($currenStockItemId);
                 foreach ($currenStockData as $currenStockData) {
-                    // if ($currenStockData['unit'] == 'Tablets' || $currenStockData['unit'] == 'Capsules') 
-                    if (in_array(strtolower($currenStockData), $allowedUnits)){
+                    // print_r($currenStockData);
+                    if (in_array(strtolower($currenStockData['unit']), $allowedUnits)){
                         $currentQty = $currenStockData['loosely_count'];
                         $updatedLooseQty = intval($currentQty) + intval($itemQantity);
                         $updatedQty = intdiv($updatedLooseQty, intval($currenStockData['weightage']));
@@ -176,10 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $updatedLooseQty = 0;
                     }
                 }
-                // echo "<br>Item updated qantity : $updatedQty";
-                // echo "<br>Item updated loose qantity : $updatedLooseQty";
-                // echo "<br>Item id : $currenStockItemId";
-
+                
                 // ****** UPDATE CURRENT STOCK AND DELTE FROM PHAMACY INVOCIE AND STOCK OUT DATA ******
                 $updateCurrenStock = $CurrentStock->updateStockOnSell(intval($currenStockItemId), intval($updatedQty), intval($updatedLooseQty));
 
@@ -319,6 +287,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// exit;
 
 header("Location: item-invoice-reprint.php?id=".url_enc($invoiceNo));
 exit;
