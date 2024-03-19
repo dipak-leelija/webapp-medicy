@@ -47,7 +47,7 @@ distributorInput.addEventListener("keyup", () => {
     } else {
         list.innerHTML = '';
     }
-// console.log("check return : "+request.responseText);
+    // console.log("check return : "+request.responseText);
 });
 
 const setDistributor = (t) => {
@@ -432,12 +432,14 @@ ptrInput.addEventListener('keydown', function (event) {
 //     
 // }
 
+
+
 const getBillAmount = () => {
 
     let mrp = parseFloat(document.getElementById('mrp').value);
 
     let ptr = parseFloat(document.getElementById('ptr').value);
-    
+
     // console.log('check 1 : '+ptr);
 
     let gst = parseInt(document.getElementById('gst').value);
@@ -452,77 +454,83 @@ const getBillAmount = () => {
     }
     // console.log(qty);
 
-    let disc = parseFloat(document.getElementById('discount').value);
-    if (isNaN(disc)) {
-        disc = 0;
-    }
-    // console.log(disc);
+    if (qty <= 0) {
+        document.getElementById('add-product-details').setAttribute('disabled','true');
+    } else {
+        document.getElementById('add-product-details').removeAttribute('disabled');
 
-    let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
-    maxPtr = maxPtr.toFixed(2);
-
-    // console.log("max ptr "+ maxPtr);
-    // console.log("change ptr "+ ptr);
-
-    if (gst != prevGst) {
-        document.getElementById('ptr').value = maxPtr;
-        document.getElementById("gst-check").value = gst;
-    }
-
-    // console.log(ptr);
-    // console.log(maxPtr);
-
-    if (ptr > maxPtr) {
-        swal({
-            title: "Error Input",
-            text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
-            icon: "error",
-            button: false, // Hide the "OK" button
-            timer: 1000 // Auto-close the alert after 2 seconds
-        });
-
-        document.getElementById("ptr").value = maxPtr;
-
-        maxPtr = maxPtr;
-
-        document.getElementById("bill-amount").value = " ";
-
-        document.getElementById("ptr").focus();
-    }
-
-    let modifiedPtr = document.getElementById("ptr").value;
-    // console.log(modifiedPtr);
-
-    let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
-    // base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
-    
-    let totalAmount = (parseFloat(base)+ (parseFloat(base) * (parseFloat(gst) / 100))) * parseInt(qty);
-    totalAmount = totalAmount.toFixed(2);
-
-    base = base.toFixed(2);
-
-    document.getElementById("base").value = base;
-    document.getElementById("bill-amount").value = totalAmount;
-
-
-    //=============================================
-    //======= UPDATE GST ON PRODUCT SECTION =======
-    let prodId = document.getElementById("product-id").value;
-
-    $.ajax({
-        url: 'ajax/update-product-gst.ajax.php',
-        type: 'POST',
-        data: {
-            gstPercetn: gst,
-            prodId: prodId
-        },
-        success: function (response) {
-            // console.log(response);
-        },
-        error: function (error) {
-            // console.error('Error removing image:', error);
+        let disc = parseFloat(document.getElementById('discount').value);
+        if (isNaN(disc)) {
+            disc = 0;
         }
-    });
+        // console.log(disc);
+
+        let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
+        maxPtr = maxPtr.toFixed(2);
+
+        // console.log("max ptr "+ maxPtr);
+        // console.log("change ptr "+ ptr);
+
+        if (gst != prevGst) {
+            document.getElementById('ptr').value = maxPtr;
+            document.getElementById("gst-check").value = gst;
+        }
+
+        // console.log(ptr);
+        // console.log(maxPtr);
+
+        if (ptr > maxPtr) {
+            swal({
+                title: "Error Input",
+                text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
+                icon: "error",
+                button: false, // Hide the "OK" button
+                timer: 1000 // Auto-close the alert after 2 seconds
+            });
+
+            document.getElementById("ptr").value = maxPtr;
+
+            maxPtr = maxPtr;
+
+            document.getElementById("bill-amount").value = " ";
+
+            document.getElementById("ptr").focus();
+        }
+
+        let modifiedPtr = document.getElementById("ptr").value;
+        // console.log(modifiedPtr);
+
+        let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
+        // base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
+
+        let totalAmount = (parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100))) * parseInt(qty);
+        totalAmount = totalAmount.toFixed(2);
+
+        base = base.toFixed(2);
+
+        document.getElementById("base").value = base;
+        document.getElementById("bill-amount").value = totalAmount;
+
+
+        //=============================================
+        //======= UPDATE GST ON PRODUCT SECTION =======
+        let prodId = document.getElementById("product-id").value;
+
+        $.ajax({
+            url: 'ajax/update-product-gst.ajax.php',
+            type: 'POST',
+            data: {
+                gstPercetn: gst,
+                prodId: prodId
+            },
+            success: function (response) {
+                // console.log(response);
+            },
+            error: function (error) {
+                // console.error('Error removing image:', error);
+            }
+        });
+    }
 } //eof getBillAmount function
 
 // ##################################################################################
@@ -758,7 +766,7 @@ const addData = () => {
 
     //////////////////////
     let totalMrp = parseFloat(mrp.value) * ((parseFloat(qty.value) + parseFloat(freeQty.value)));
-    let payble = (((parseFloat(base.value)) + (parseFloat(base.value) * (parseInt(gst.value)/100))) * parseInt(qty.value)).toFixed(2);
+    let payble = (((parseFloat(base.value)) + (parseFloat(base.value) * (parseInt(gst.value) / 100))) * parseInt(qty.value)).toFixed(2);
 
     // console.log("total mrp : "+totalMrp);
     // console.log("payble : "+payble);
@@ -1147,29 +1155,29 @@ const setExpMonth = (month) => {
 
 const setExpYEAR = (year) => {
     expMnth = document.getElementById("exp-month").value;
-    
+
     let today = new Date();
     let currentMnth = today.getMonth();
     let curretnYr = today.getFullYear();
 
-    if(year.value.length == 4){
+    if (year.value.length == 4) {
         if (year.value < curretnYr) {
             document.getElementById('exp-year').value = '';
             document.getElementById('exp-year').focus();
-        }else if(year.value == curretnYr){
-            if(expMnth < currentMnth){
+        } else if (year.value == curretnYr) {
+            if (expMnth < currentMnth) {
                 document.getElementById('exp-month').value = '';
                 document.getElementById('exp-year').value = '';
                 document.getElementById('exp-month').focus();
             }
-        }else{
+        } else {
             document.getElementById('ptr').focus();
         }
-    }else{
+    } else {
         document.getElementById('exp-year').value = '';
         document.getElementById('exp-year').focus();
     }
-    
+
 }
 
 ///////////////// ===== product select arrow key effect ===== \\\\\\\\\\\\\\\\\\\\\\\
