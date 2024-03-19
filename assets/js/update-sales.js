@@ -470,6 +470,17 @@ const stockDetails = (productId, batchNo, itemId) => {
 }
 
 
+// ============================================================
+const checkQty = (t) =>{
+    if(t.value <= 0){
+        document.getElementById('add-edit-data').setAttribute("disabled", "true");
+        swal('Alert','Enter valid qantity.','info');
+    }else{
+        document.getElementById('add-edit-data').removeAttribute("disabled");
+    }
+}
+
+
 const onQty = (qty) => {
     // console.log("item qty input check : "+qty);
     var xmlhttp = new XMLHttpRequest();

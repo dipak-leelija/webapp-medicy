@@ -259,7 +259,7 @@ if ($_GET['id']) {
 
                                         <div class="col-md-1 mt-3 col-6">
                                             <label for="">Qty.</label><br>
-                                            <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)">
+                                            <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)" onfocusout="checkQty(this)">
                                         </div>
 
                                         <div class="d-none col-md-1 mt-3 col-6">
@@ -347,7 +347,7 @@ if ($_GET['id']) {
                                                     </div>
 
                                                     <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
-                                                        <button type='button' class="btn btn-sm btn-primary w-100" onclick="addSummary()"><i class="fas fa-check-circle"></i>Add</button>
+                                                        <button type='button' class="btn btn-sm btn-primary w-100" id="add-edit-data" onclick="addSummary()"><i class="fas fa-check-circle"></i>Add</button>
                                                     </div>
                                                 </div>
                                             </div>

@@ -478,7 +478,7 @@ const stockDetails = (productId, batchNo, itemId) => {
 
 
 const checkQty = (t) =>{
-    if(t.value == 0){
+    if(t.value <= 0){
         document.getElementById('add-button').setAttribute("disabled", "true");
         swal('Alert','Enter valid qantity.','info');
     }else{
