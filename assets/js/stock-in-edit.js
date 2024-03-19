@@ -524,6 +524,7 @@ const qtyCheck = (t) =>{
     editQTY();
     if(t.value == 0){
         document.getElementById('add-button').setAttribute("disabled", "true");
+        Swal.fire('Alert','Enter valid qantity','info')
     }else{
         document.getElementById('add-button').removeAttribute("disabled");
     }
