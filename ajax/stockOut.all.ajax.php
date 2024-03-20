@@ -17,7 +17,7 @@ require_once CLASS_DIR.'salesReturn.class.php';
 $StockOut   = new StockOut();
 $Products   = new Products();
 $Patients   = new Patients();
-$salesReturn = new SalesReturn();
+$SalesReturn = new SalesReturn();
 
 $attribute1 = 'invoice_id';
 $attribute2 = 'item_id';
@@ -135,16 +135,20 @@ if (isset($_GET["p_qty"])) {
     $invoice = $_GET["p_qty"];
     $itemId = $_GET["p-id"];
 
-    $item = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $itemId);
-    foreach($item as $item){
+    $stockOutItem = $StockOut->stokOutDetailsDataByTwoCol($attribute1, $invoice, $attribute2, $itemId);
+    foreach($stockOutItem as $item){
         $itemUnitType = $item['unit'];
         // if($itemUnitType == 'Tablets' || $itemUnitType == 'Capsules')
         if (in_array(strtolower($itemUnitType), $allowedUnits)){
-            echo $item['loosely_count'];
+            $looseCount = $item['loosely_count'];
         }else{
-            echo $item['qty'];
+            $count = $item['qty'];
         }
     }
+
+    $salesReturnItem = $SalesReturn->selectReturnDetailsByColsAndTime($attribute1, $invoice, $attribute2, $itemId, NOW);
+    print_r($salesReturnItem);
+
 }
 
 // ======================== get product current qty =========================================
@@ -158,7 +162,7 @@ if (isset($_GET["qty"])) {
     $itemType = $item[0]['unit'];;
 
     $table = 'invoice_id';
-    $salesReturnData = $salesReturn->selectSalesReturn($table, $invoice);
+    $salesReturnData = $SalesReturn->selectSalesReturn($table, $invoice);
     if($salesReturnData != null){
         $id = $salesReturnData[0]['id'];
     }else{
@@ -167,7 +171,7 @@ if (isset($_GET["qty"])) {
 
     $tabel1 = 'invoice_id';
     $tabel2 = 'item_id';
-    $itemChek = $salesReturn->seletReturnDetailsBy($tabel1, $invoice, $tabel2, $itemId);
+    $itemChek = $SalesReturn->seletReturnDetailsBy($tabel1, $invoice, $tabel2, $itemId);
     // print_r($itemChek);
     $totalReturnQTY = 0;
     for($i = 0; $i<count($itemChek); $i++){

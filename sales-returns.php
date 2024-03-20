@@ -73,57 +73,7 @@ $currentStock  = new CurrentStock();
                     <!-- Showing Sell Items  -->
                     <div class="card shadow mb-2">
                         <div class="card-body">
-                            <!-- <div class="row mb-3 ">
-                                <div class="col-md-1 col-12">
-                                    <input class="cvx-inp" type="text" placeholder="Bill No. "
-                                        style="width: 5rem;height: 28px;outline: none;">
-                                </div>
-
-                                <div class="col-md-3 col-12">
-                                    <select class="cvx-inp1" name="payment-mode" id="payment-mode">
-                                        <option value="" selected disabled>01/04/2022-31/03/2022 </option>
-                                        <option value="Credit">Today</option>
-                                        <option value="Cash">yesterday</option>
-                                        <option value="UPI">Last 7 Days</option>
-                                        <option value="Paypal">Last 30 Days</option>
-                                        <option value="Bank Transfer">Last 90 Days</option>
-                                        <option value="Credit Card">Current Fiscal Year</option>
-                                        <option value="Debit Card">Previous Fiscal Year</option>
-                                        <option value="Net Banking">Custom Range </option>
-                                    </select>
-
-                                </div>
-                                <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" id="distributor-id">
-                                        <option value="" disabled selected>Select Staff
-                                        </option>
-                                        <option value="All">All</option>
-                                        <option value="Owner">Owner</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 col-6">
-                                    <input class="cvx-inp" type="text" placeholder="Name / Mobile No."
-                                        style="outline: none;">
-                                </div>
-                                <div class="col-md-2 col-6">
-                                    <select class="cvx-inp1" name="payment-mode" id="payment-mode">
-                                        <option value="" selected disabled>payment Mode</option>
-                                        <option value="Credit">Credit</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="UPI">UPI</option>
-                                        <option value="Paypal">Paypal</option>
-                                        <option value="Bank Transfer">Bank Transfer</option>
-                                        <option value="Credit Card">Credit Card</option>
-                                        <option value="Debit Card">Debit Card</option>
-                                        <option value="Net Banking">Net Banking</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 col-6">
-                                    <input class="cvx-inp" type="text" placeholder="Search By Notes"
-                                        style="outline: none;">
-                                </div>
-                            </div> -->
-
+                            
                             <div class="table-responsive">
                                 <table class="table item-table table-sm text-dark" id="dataTable" style="width: 100%;">
                                     <thead class="thead-white bg-primary text-light">
