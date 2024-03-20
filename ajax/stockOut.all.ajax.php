@@ -140,14 +140,21 @@ if (isset($_GET["p_qty"])) {
         $itemUnitType = $item['unit'];
         // if($itemUnitType == 'Tablets' || $itemUnitType == 'Capsules')
         if (in_array(strtolower($itemUnitType), $allowedUnits)){
-            $looseCount = $item['loosely_count'];
+            $count = $item['loosely_count'];
         }else{
             $count = $item['qty'];
         }
     }
 
-    $salesReturnItem = $SalesReturn->selectReturnDetailsByColsAndTime($attribute1, $invoice, $attribute2, $itemId, NOW);
-    print_r($salesReturnItem);
+    echo $count;
+
+    $salesReturnItem = json_decode($SalesReturn->selectReturnDetailsByColsAndTime($attribute1, $invoice, $attribute2, $itemId, NOW));
+
+    // if($salesReturnItem->status){
+
+    // }else{
+
+    // }
 
 }
 

@@ -407,8 +407,6 @@ class SalesReturn extends DatabaseConnection
                 throw new Exception("Failed to prepare the statement.");
             }
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // Customize this part to suit your needs
             echo "Error: " . $e->getMessage();
             return false;
         }
@@ -465,30 +463,23 @@ class SalesReturn extends DatabaseConnection
     function selectReturnDetailsByColsAndTime($col1, $data1, $col2, $data2, $dateTime) {
         try {
             $salesReturnDetailsData = "SELECT * FROM `sales_return_details` 
-                                        WHERE `invoice_id` = ? 
-                                        AND `item_id` = ? 
-                                        AND `updated_on` < ?";
+                                        WHERE `$col1` = '$data1' 
+                                        AND `$col2` = '$data2' 
+                                        AND `updated_on` < '$dateTime'";
 
-            $stmt = $this->conn->prepare($salesReturnDetailsData);
-
-            if (!$stmt) {
-                throw new Exception("Failed to prepare statement: " . $this->conn->error);
-            } else {
-                $stmt->bind_param("sss", $data1, $data2, $dateTime);
-                print_r($stmt);
+                $stmt = $this->conn->prepare($salesReturnDetailsData);
                 $stmt->execute();
-
-                $query = $stmt->get_result();
+                $result = $stmt->get_result();
 
                 $response = array();
-                while ($result = $query->fetch_array()) {
-                    $response[] = $result;
+                if($result->num_rows  > 0){
+                    while ($row = $result->fetch_array()) {
+                        $response[] = $row;
+                    }
+                    return json_encode(['status'=>'1', 'data'=>$response]);
+                }else{
+                    return json_encode(['status'=>'0', 'data'=>'']);
                 }
-
-                $stmt->close();
-
-                return $response;
-            }
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -503,25 +494,20 @@ class SalesReturn extends DatabaseConnection
     function updateSalesReturnOnStockInUpdate($itemid, $batchNo, $expDate, $addedBy, $addedOn)
     {
         try {
-            // Construct the SQL query
             $updateSalesReturnDetails = "UPDATE `sales_return_details` SET `batch_no`=?, `exp`=?, `updated_by`=?, `updated_on`=? WHERE `item_id`=?";
 
-            // Prepare the SQL statement
             $stmt = $this->conn->prepare($updateSalesReturnDetails);
 
             if (!$stmt) {
                 throw new Exception("Error preparing update statement: " . $this->conn->error);
             }
 
-            // Bind the parameters
             $stmt->bind_param("ssssi", $batchNo, $expDate, $addedBy, $addedOn, $itemid);
 
-            // Execute the prepared statement
             if ($stmt->execute()) {
-                // Check if any rows were affected by the update
+                
                 $affectedRows = $stmt->affected_rows;
 
-                // Return the result based on the affected rows
                 return ($affectedRows > 0);
             } else {
                 throw new Exception("Error executing update statement: " . $stmt->error);
