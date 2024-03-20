@@ -242,12 +242,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     </select>
                                 </div>
                             </div>
-                            <!-- End Distributor Details  -->
-
+                            
                             <div>
-                                <!-- <form name="product-detail" id="product-detail"> -->
-
-                                <!-- <div class="h-divider"></div> -->
+                                
                                 <hr class="sidebar-divider">
 
                                 <form id="data-details">
@@ -261,25 +258,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         Id</label>
                                                     <input type="text" class="upr-inp" name="purchase-id" id="purchase-id" value="" readonly>
                                                 </div>
-                                                <!-- <div class="   col-md-4 mt-2">
-                                                    <label class="mb-0" for="purchase-details-id">Stock In Id</label>
-                                                    <input type="text" class="upr-inp" name="stock-in-id" id="stock-in-id" value="" readonly>
-                                                </div> -->
+                                                
                                                 <div class="d-none col-md-4 mt-2">
                                                     <label class="mb-0" for="product-id">Product Id</label>
                                                     <input class="upr-inp" id="product-id" name="product-id" readonly>
                                                 </div>
-                                                <!-- <div class="col-md-6" >
-                                            <label class="mb-0" for="product-Id">Product Id</label>
-                                            <input type="text" class="upr-inp" id="product-Id" value="" readonly>
-                                        </div> -->
-                                                <!-- <div class="col-md-6" >
-                                            <label class="mb-0" for="DistributorBillNo">Bill No</label>
-                                            <input type="text" class="upr-inp" id="dist-bill-no" value="" readonly>
-                                        </div> -->
+                                                
 
                                                 <div class="col-md-12 ">
-                                                    <!-- <label for="product-name" class="mb-0">Product Name</label> -->
                                                     <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" onkeydown="chekForm()" autocomplete="off">
                                                     <!-- <datalist id="datalistOptions">
                                                         <?php
@@ -323,11 +309,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="d-none col-md-12 mt-2">
                                                     <label class="mb-0" for="manufacturer-id">Manufacturer</label>
-                                                    <!-- <select class="upr-inp" id="manufacturer-id" name="manufacturer-id"
-                                                required>
-                                                <option value="" disabled selected>Select </option>
-
-                                            </select> -->
+                                                    
                                                     <input class="upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
                                                     <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
 
@@ -367,14 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <label class="mb-0" for="batch-no">Batch No.</label>
                                                     <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                                                 </div>
-                                                <!-- <div class="col-sm-6 col-md-4 mt-2">
-                                                    <label class="mb-0 mt-1" for="exp-date">MFD</label>
-                                                    <div class="d-flex date-field">
-                                                        <input class="month " type="number" id="mfd-month" onkeyup="setMfdMonth(this);" onfocusout="setmfdMonth(this);">
-                                                        <span class="date-divider">&#47;</span>
-                                                        <input class="year " type="number" id="mfd-year" onfocusout="setMfdYear(this);" onkeyup="setMfdYEAR(this)">
-                                                    </div>
-                                                </div> -->
+                                                
                                                 <div class="col-sm-6 mt-2">
                                                     <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                                                     <div class="d-flex date-field">
@@ -391,11 +366,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <!-- Price Row -->
                                             <div class="row mb-2">
 
-                                                <!-- <div class="col-sm-6 col-md-6 mt-2">
-                                                <label class="mb-0" for="mrp">MRP/Package</label>
-                                                <input type="number" class="upr-inp" name="mrp" id="mrp">
-                                            </div> -->
-
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="purchase-price">PTR/Package</label>
                                                     <input type="text" class="upr-inp" name="ptr" id="ptr" onkeyup="getBillAmount()">
@@ -403,14 +373,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="qty">Quantity</label>
-                                                    <input type="number" class="upr-inp" name="qty" id="qty" onkeyup="getBillAmount()">
+                                                    <input type="number" class="upr-inp" name="qty" id="qty" onkeyup="getBillAmount()" onfocusout="qtyCheck(this)" required>
 
                                                 </div>
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="free-qty">Free</label>
                                                     <input type="number" class="upr-inp" name="free-qty" id="free-qty" onkeyup="editQTY()">
-
                                                 </div>
 
                                                 <div class="d-none col-sm-6 col-md-6 mt-2">
@@ -421,19 +390,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <!--/End Price Row -->
 
                                             <div class="row">
-
-                                                <!-- <div class="col-sm-6 col-md-3 mt-2">
-                                                <label class="mb-0" for="qty">Quantity</label>
-                                                <input type="number" class="upr-inp" name="qty" id="qty" onkeyup="getBillAmount()">
-
-                                            </div>
-
-                                            <div class="col-sm-6 col-md-3 mt-2">
-                                                <label class="mb-0" for="free-qty">Free</label>
-                                                <input type="number" class="upr-inp" name="free-qty" id="free-qty" onkeyup="editQTY()">
-
-                                            </div> -->
-
                                                 <div class="d-none col-sm-6 col-md-6 mt-2">
                                                     <label class="mb-0" for="packaging-type">Packaging Type</label>
                                                     <select class="upr-inp" name="packaging-type" id="packaging-type">
@@ -456,17 +412,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <!--/End Quantity Row  -->
 
                                                 <!-- Price Row -->
-                                                <!-- <div class="row"> -->
-
+                                                
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="discount">Discount %</label>
                                                     <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount Percentage" value="0" onkeyup="getBillAmount()">
                                                 </div>
-
-                                                <!-- <div class="col-sm-6 col-md-6 mt-2">
-                                                <label class="mb-0" for="gst">GST%</label>
-                                                <input type="number" class="upr-inp" name="gst" id="gst" readonly>
-                                            </div> -->
 
                                                 <div class="d-none col-md-4 mt-2">
                                                     <label class="mb-0" for="discount">Gst Amnt.</label>
@@ -497,7 +447,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <!--/End Quantity Row  -->
 
                                             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                                <button class="btn btn-primary me-md-2" onclick="addData()">Add
+                                                <button class="btn btn-primary me-md-2" id="add-button" onclick="addData()">Add
                                                     <i class="fas fa-plus"></i></button>
                                             </div>
 
@@ -757,9 +707,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 </div>
 
-                                <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($stockInDetailsIds) ?>" hidden>
+                                <!-- <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($stockInDetailsIds) ?>" hidden> -->
 
-                                <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" hidden>
+                                <!-- <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" hidden> -->
                             </div>
 
                         </form>

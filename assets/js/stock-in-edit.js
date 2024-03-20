@@ -8,16 +8,13 @@ distributorInput.addEventListener("focus", () => {
 });
 
 document.addEventListener("click", (event) => {
-    // Check if the clicked element is not the input field or the dropdown
     if (!distributorInput.contains(event.target) && !dropdown.contains(event.target)) {
         dropdown.style.display = "none";
     }
 });
 
 document.addEventListener("blur", (event) => {
-    // Check if the element losing focus is not the dropdown or its descendants
     if (!dropdown.contains(event.relatedTarget)) {
-        // Delay the hiding to allow the click event to be processed
         setTimeout(() => {
             dropdown.style.display = "none";
         }, 100);
@@ -27,7 +24,6 @@ document.addEventListener("blur", (event) => {
 
 
 distributorInput.addEventListener("keyup", () => {
-    // Delay the hiding to allow the click event to be processed
     let list = document.getElementsByClassName('lists')[0];
 
     if (distributorInput.value.length > 2) {
@@ -35,14 +31,12 @@ distributorInput.addEventListener("keyup", () => {
         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
         request.open("GET", distributorURL, false);
         request.send(null);
-        // console.log();
         list.innerHTML = request.responseText
     } else if (distributorInput.value == '') {
 
         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
         request.open("GET", distributorURL, false);
         request.send(null);
-        // console.log();
         list.innerHTML = request.responseText
     } else {
 
@@ -81,7 +75,7 @@ const addDistributor = () => {
 
 
 ///////////////// STOCK IN EDIT UPDATE BUTTON CONTROL \\\\\\\\\\
-var stockInSave = document.getElementById('stockInEdit-update-btn');
+const stockInSave = document.getElementById('stockInEdit-update-btn');
 
 const chekForm = () => {
     var tableBody = document.getElementById('dataBody');
@@ -146,10 +140,6 @@ const customClick = (id, value1, value2, value3) => {
                 gstPerItem = gstPerItem.toFixed(2);
                 var total = totalAmnt.toFixed(2);
 
-                // var purchaseDetailsMfdDate = dataObject.mfdDate;
-                // var mfdMonth = purchaseDetailsMfdDate.slice(0, 2);
-                // var mfdYear = purchaseDetailsMfdDate.slice(3, 7);
-
                 var purchaseDetailsExpDate = dataObject.expDate;
                 var expMonth = purchaseDetailsExpDate.slice(0, 2);
                 var expYear = purchaseDetailsExpDate.slice(3, 7);
@@ -170,7 +160,6 @@ const customClick = (id, value1, value2, value3) => {
 
                 document.getElementById("purchase-id").value = dataObject.purchaseId;
                 document.getElementById("product-id").value = dataObject.productId;
-                // document.getElementById("dist-bill-no").value = dataObject.billNo;
                 document.getElementById("batch-no").value = dataObject.batchNo;
 
                 document.getElementById("product-name").value = dataObject.productName;
@@ -181,14 +170,8 @@ const customClick = (id, value1, value2, value3) => {
                 document.getElementById("unit").value = dataObject.unit;
 
                 document.getElementById("packaging-in").value = dataObject.packageType;
-                // let check1 = document.getElementById("packaging-in").value;
-                // console.log("checking1");
-                // console.log(check1);
 
                 document.getElementById("medicine-power").value = dataObject.power;
-
-                // document.getElementById("mfd-month").value = mfdMonth;
-                // document.getElementById("mfd-year").value = mfdYear;
 
                 document.getElementById("exp-month").value = expMonth;
                 document.getElementById("exp-year").value = expYear;
@@ -217,7 +200,7 @@ const customClick = (id, value1, value2, value3) => {
             }
         })
     } else {
-        Swal.fire.fire("Error", "Add previous data first!", "error");
+        Swal.fire("Error", "Add previous data first!", "error");
     }
 
     return false;
@@ -231,12 +214,9 @@ window.addEventListener('load', function () {
 });
 
 firstInput.addEventListener('input', function (event) {
-    // Get the input value
     const inputValue = this.value;
 
-    // Check if the first character is a space
     if (inputValue.length > 0 && inputValue[0] === ' ') {
-        // Remove the leading space
         this.value = inputValue.slice(1);
     }
 });
@@ -469,16 +449,16 @@ const getBillAmount = () => {
     let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
     maxPtr = maxPtr.toFixed(2);
 
-    // console.log("max ptr "+ maxPtr);
-    // console.log("change ptr "+ ptr);
-
     if (gst != prevGst) {
         document.getElementById('ptr').value = maxPtr;
         document.getElementById("gst-check").value = gst;
     }
 
-    if (ptr > maxPtr) {
-        Swal.fire.fire({
+    if (parseFloat(ptr) > parseFloat(maxPtr)) {
+        console.log("max ptr "+ maxPtr);
+        console.log("change ptr "+ ptr);
+
+        Swal.fire({
             title: "Error Input",
             text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
             icon: "error",
@@ -535,9 +515,20 @@ const editQTY = () => {
     var crntQTY = document.getElementById("qty").value;
     var crntFreeQTY = document.getElementById("free-qty").value;
     document.getElementById("updtQTYS").value = Number(crntQTY) + Number(crntFreeQTY);
+    
 }
 // ##################################################################################
 
+// ====== qty check control ======
+const qtyCheck = (t) =>{
+    editQTY();
+    if(t.value == 0){
+        document.getElementById('add-button').setAttribute("disabled", "true");
+        Swal.fire('Alert','Enter valid qantity','info')
+    }else{
+        document.getElementById('add-button').removeAttribute("disabled");
+    }
+}
 // ##################################################################################
 
 //geeting bills by clicking on add button
@@ -589,7 +580,7 @@ const addData = () => {
 
 
     if (distId.value == "") {
-        Swal.fire.fire("Blank Field", "Please Selet Distributor First!", "error")
+        Swal.fire("Blank Field", "Please Selet Distributor First!", "error")
             .then((value) => {
                 distId.focus();
             });
@@ -598,7 +589,7 @@ const addData = () => {
 
 
     if (distBillid.value == "") {
-        Swal.fire.fire("Blank Field", "Please Enter Distributor Bill Number!", "error")
+        Swal.fire("Blank Field", "Please Enter Distributor Bill Number!", "error")
             .then((value) => {
                 distBillid.focus();
             });
@@ -606,7 +597,7 @@ const addData = () => {
     }
 
     if (prevdisbillNo.value == "") {
-        Swal.fire.fire("Blank Field", "Please Enter Distributor Bill Number!", "error")
+        Swal.fire("Blank Field", "Please Enter Distributor Bill Number!", "error")
             .then((value) => {
                 prevdisbillNo.focus();
             });
@@ -614,36 +605,40 @@ const addData = () => {
     }
 
     if (billDate.value == "") {
-        Swal.fire.fire("Blank Field", "Please Select Bill Date!", "error")
+        Swal.fire("Blank Field", "Please Select Bill Date!", "error")
             .then((value) => {
                 billDate.focus();
             });
         return;
     }
+
     if (dueDate.value == "") {
-        Swal.fire.fire("Blank Field", "Please Select Bill Payment Date!", "error")
+        Swal.fire("Blank Field", "Please Select Bill Payment Date!", "error")
             .then((value) => {
                 dueDate.focus();
             });
         return;
     }
+
     if (paymentMode.value == "") {
-        Swal.fire.fire("Blank Field", "Please Select Payment Mode!", "error")
+        Swal.fire("Blank Field", "Please Select Payment Mode!", "error")
             .then((value) => {
                 paymentMode.focus();
             });
         return;
     }
+
     if (productName.value == "") {
-        Swal.fire.fire("Blank Field", "Please Search & Select Product!", "error")
+        Swal.fire("Blank Field", "Please Search & Select Product!", "error")
             .then((value) => {
                 productName.focus();
             });
         return;
     }
+
     if (batch.value == "") {
 
-        Swal.fire.fire("Blank Field", "Please Enter Product Batch Number!", "error")
+        Swal.fire("Blank Field", "Please Enter Product Batch Number!", "error")
             .then((value) => {
                 batch.focus();
             });
@@ -651,7 +646,7 @@ const addData = () => {
     }
     
     if (expMonth.value == "") {
-        Swal.fire.fire("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
+        Swal.fire("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
             .then((value) => {
                 expMonth.focus();
             });
@@ -662,51 +657,75 @@ const addData = () => {
         mrp.focus();
         return;
     }
+
     if (ptr.value == "") {
-        Swal.fire.fire("Blank Field", "Please enter PTR value", "error")
+        Swal.fire("Blank Field", "Please enter PTR value", "error")
             .then((value) => {
                 ptr.focus();
             });
         return;
     }
+
     var Ptr = parseFloat(ptr.value);
     var Mrp = parseFloat(mrp.value);
     if (Ptr > Mrp) {
-        Swal.fire.fire("Blank Field", "Please check PTR value", "error")
+        Swal.fire("Blank Field", "Please check PTR value", "error")
             .then((value) => {
                 ptr.focus();
             });
         return;
     }
+
     if (qty.value == "") {
-        Swal.fire.fire("Blank Field", "Please Enter Quantity", "error")
+        Swal.fire("Blank Field", "Please Enter Valid Quantity", "error")
             .then((value) => {
                 qty.focus();
             });
         return;
     }
+
+    // if (qty.value == 0) {
+    //     Swal.fire({
+    //         title: "Wrong Input",
+    //         text: "Please Enter Valid Quantity",
+    //         icon: "warning",
+    //         showCancelButton: false,
+    //         confirmButtonColor: "#3085d6",
+    //         confirmButtonText: "Ok"
+    //       }).then((result) => {
+    //         if (result.isConfirmed) {
+    //           qty.focus();
+    //         }
+    //       });
+    //     return;
+    // }
+
     if (freeQty.value == "") {
-        Swal.fire.fire("Blank Field", "Please Enter Free Quantity", "error")
+        Swal.fire("Blank Field", "Please Enter Free Quantity", "error")
             .then((value) => {
                 freeQty.focus();
             });
         return;
     }
+
     if (discount.value == "") {
-        Swal.fire.fire("Blank Field", "Please Enter Discount at least 0", "error")
+        Swal.fire("Blank Field", "Please Enter Discount at least 0", "error")
             .then((value) => {
                 discount.focus();
             });
         return;
     }
+
     if (gst.value == "") {
         gst.focus();
         return;
     }
+
     if (base.value == "") {
         base.focus();
         return;
     }
+
     if (billAmount.value == "") {
         billAmount.focus();
         return;
@@ -723,7 +742,7 @@ const addData = () => {
     // item qantity
     var qtyVal = document.getElementById("qty-val").value;
     totalQty = parseInt(qty.value)+parseInt(freeQty.value) + parseInt(qtyVal);
-    // console.log('total qty check : '+totalQty);
+    console.log('total qty check : '+totalQty);
 
     // net amount calculation
     var net = document.getElementById("net-amount").value;
@@ -920,7 +939,7 @@ const addData = () => {
 
 //=============================== ADDED ITEM EDIT FUNCTION ==============================
 const editItem = (tData) => {
-    console.log(tData);
+    // console.log(tData);
     let checkFild = document.getElementById("product-id").value;
 
     if (checkFild == '') {
@@ -962,7 +981,7 @@ const editItem = (tData) => {
         gstPerItem = gstPerItem.toFixed(2);
         deleteData(tuple.slno, tuple.itemQty, gstPerItem, tuple.billAMNT);
     } else {
-        Swal.fire.fire("Can't Edit", "Please add/edit previous item first.", "error");
+        Swal.fire("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("ptr").focus();
     }
 }
@@ -986,7 +1005,7 @@ function deleteData(slno, itemQty, gstPerItem, total) {
 
     // minus quantity
     let qty = document.getElementById("qty-val");
-    let finalQty = qty.value - itemQty
+    let finalQty = qty.value - itemQty;
     qty.value = finalQty;
 
 

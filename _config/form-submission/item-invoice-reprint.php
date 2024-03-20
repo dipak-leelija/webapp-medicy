@@ -130,28 +130,22 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             <div class="row">
                 <!-- table heading -->
 
-                <div class="col-sm-1 text-center">
+                <div class="col-sm-1 text-center" style="width: 5rem;">
                     <small><b>SL.</b></small>
                 </div>
-                <div class="col-sm-2 ">
+                <div class="col-sm-2" style="width: 12rem;">
                     <small><b>Name</b></small>
                 </div>
                 <div class="col-sm-1">
                     <small><b>Manuf.</b></small>
                 </div>
-                <!-- <div class="col-sm-1">
-                    <small><b>Packing</b></small>
-                </div>
-                <div class="col-sm-1">
-                    <small>' . $weatage . '</small>
-                </div> -->
-                <div class="col-sm-1" style="margin-right: 3rem;">
+                <div class="col-sm-1" style="width: 7rem;">
                     <small><b>Batch</b></small>
                 </div>
                 <div class="col-sm-1">
                     <small><b>Exp.</b></small>
                 </div>
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-1 text-end" style="width: 7rem;">
                     <small><b>QTY</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
@@ -229,22 +223,22 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     // ===================================================
 
 
-                    echo '<div class="col-sm-1 text-center">
+                    echo '<div class="col-sm-1 text-center" style="width: 5rem;">
                                 <small>' . $slno . '</small>
                             </div>
-                            <div class="col-sm-2 ">
+                            <div class="col-sm-2" style="width: 12rem;">
                                 <small>' . substr($detail['item_name'], 0, 15) . '</small>
                             </div>
                             <div class="col-sm-1">
                                 <small>' . $manufacturerName . '</small>
                             </div>
-                            <div class="col-sm-1" style="margin-right: 3rem;">
+                            <div class="col-sm-1" style="width: 7rem;">
                                 <small>' . $detail['batch_no'] . '</small>
                             </div>
                             <div class="col-sm-1">
                                 <small>' . $detail['exp_date'] . '</small>
                             </div>
-                            <div class="col-sm-1 text-end">
+                            <div class="col-sm-1 text-end" style="width: 7rem;">
                                 <small>' . $itemSellQty . '</small>
                             </div>
                             <div class="col-sm-1 text-end">

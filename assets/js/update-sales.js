@@ -48,29 +48,6 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                     sellQty = dataObject.sellQty;
                 }
 
-                // if (itemUnit == 'Tablets' || itemUnit == 'Capsules') {
-                //     looseStock = dataObject.availableQty;
-                //     loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
-                //     if (sellQty % itemWeatage == 0) {
-                //         typeCheck = 'Pack';
-                //     } else {
-                //         typeCheck = 'Loose';
-                //     }
-                // } else {
-                //     looseStock = '';
-                //     loosePrice = '';
-                //     typeCheck = '';
-                // }
-
-                // var sellQty = 0;
-
-                // if (itemUnit == 'Tablets' || itemUnit == 'Capsules'){
-                //     sellQty = parseInt(dataObject.sellQty) * parseInt(dataObject.itemWeatage);
-                // }else{
-                //     sellQty = dataObject.sellQty;
-                // }
-                
-
                 var discPrice = parseFloat(mrp) - (parseFloat(mrp) * parseFloat(discPercent) / 100);
                 //==============================================================
                 document.getElementById('invoice-id').value = dataObject.invoiceId;
@@ -203,8 +180,8 @@ firstInput.addEventListener('input', function (event) {
     }
 });
 //==============================================================
-const searchItem = (searchFor) => {
 
+const searchItem = (searchFor) => {
     let searchReult = document.getElementById('searched-items');
     document.getElementById("searched-items").style.display = "block";
     document.getElementById("exta-details").style.display = "none";
@@ -359,16 +336,17 @@ const stockDetails = (productId, batchNo, itemId) => {
         // alert(xmlhttp.responseText);
 
         //==================== Weightage ====================
-        weightageUrl = `ajax/getProductDetails.ajax.php?weightage=${productId}`;
+        weightageUrl = `ajax/getProductDetails.ajax.php?itemWeightage=${productId}`;
         // alert(url);
         xmlhttp.open("GET", weightageUrl, false);
         xmlhttp.send(null);
         let packWeightage = xmlhttp.responseText;
+        console.log(packWeightage);
         document.getElementById("item-weightage").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
         //==================== Unit ====================
-        unitUrl = 'ajax/getProductDetails.ajax.php?unit=' + productId;
+        unitUrl = 'ajax/getProductDetails.ajax.php?itemUnit=' + productId;
         // alert(unitUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", unitUrl, false);
@@ -488,6 +466,17 @@ const stockDetails = (productId, batchNo, itemId) => {
         document.getElementById("loose-stock").value = 'None';
         document.getElementById("loose-price").value = 'None';
         document.getElementById("exta-details").style.display = "none";
+    }
+}
+
+
+// ============================================================
+const checkQty = (t) =>{
+    if(t.value <= 0){
+        document.getElementById('add-edit-data').setAttribute("disabled", "true");
+        swal('Alert','Enter valid qantity.','info');
+    }else{
+        document.getElementById('add-edit-data').removeAttribute("disabled");
     }
 }
 
