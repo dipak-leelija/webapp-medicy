@@ -129,12 +129,6 @@ if ($_SESSION['ADMIN']) {
             background-size: cover;
             cursor: pointer;
         }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
     </style>
 
 </head>
@@ -340,79 +334,6 @@ if ($_SESSION['ADMIN']) {
             }
         };
 
-
-        // $(document).ready(function() {
-        //     $(document).on("click", ".delete-btn", function() {
-
-        //         if (confirm("Are you want delete data?")) {
-        //             empId = $(this).data("id");
-
-        //             btn = this;
-        //             $.ajax({
-        //                 url: "ajax/employee.Delete.ajax.php",
-        //                 type: "POST",
-        //                 data: {
-        //                     id: empId
-        //                 },
-        //                 success: function(response) {
-
-        //                     if (response == 1) {
-        //                         $(btn).closest("tr").fadeOut()
-        //                     } else {
-        //                         alert(response);
-        //                     }
-
-        //                 }
-        //             });
-        //         }
-        //         return false;
-
-        //     })
-
-        // })
-
-        // $(document).ready(function () {
-        //     $("#updateBtn").click(function () {
-        //         var formData = new FormData($("#edit-profile")[0]);
-
-        //         $.ajax({
-        //             type: "POST",
-        //             url: "_config/form-submission/profileSetup-form.php",
-        //             data: formData,
-        //             contentType: false,
-        //             processData: false,
-        //             success: function (response) {
-        //                 if (response.result === '1') {
-        //                     swal("Success", "Data Updated!", "success")
-        //                         .then(function (value) {
-        //                             window.location = '<?php echo URL ?>profile.php';
-        //                         });
-        //                 } else {
-        //                     swal("Error", "Updation Fails!", "error")
-        //                         .then(function (value) {
-        //                             window.location = '<?php echo URL ?>profile.php';
-        //                         });
-        //                 }
-        //             },
-        //             error: function (xhr, status, error) {
-        //                 console.error(xhr.responseText);
-        //             }
-        //         });
-        //     });
-        // });
-
-        // function showHide(fieldId) {
-        //     const password = document.getElementById(fieldId);
-        //     const toggle = document.getElementById('toggle');
-
-        //     if (password.type === 'password') {
-        //         password.setAttribute('type', 'text');
-        //         // toggle.classList.add('hide');
-        //     } else {
-        //         password.setAttribute('type', 'password');
-        //         // toggle.classList.remove('hide');
-        //     }
-        // }
     </script>
 </body>
 
