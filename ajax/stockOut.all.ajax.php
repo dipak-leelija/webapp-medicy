@@ -146,15 +146,21 @@ if (isset($_GET["p_qty"])) {
         }
     }
 
-    echo $count;
 
     $salesReturnItem = json_decode($SalesReturn->selectReturnDetailsByColsAndTime($attribute1, $invoice, $attribute2, $itemId, NOW));
+    // print_r($salesReturnItem);
+    if($salesReturnItem->status){
 
-    // if($salesReturnItem->status){
+        $salesReturnItemDetails = $salesReturnItem->data;
+        $salesReturn = 0;
 
-    // }else{
-
-    // }
+        foreach ($salesReturnItemDetails as $salesReturnData) {
+            $salesReturn = intval($salesReturn) + intval($salesReturnData->return_qty);
+        }
+        echo (intval($count) - intval($salesReturn));
+    }else{
+        echo $count;
+    }
 
 }
 

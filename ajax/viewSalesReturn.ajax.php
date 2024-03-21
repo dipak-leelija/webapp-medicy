@@ -123,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         $returnqty = $returnData['return_qty'];
                         $taxable = $returnData['taxable'];
                         $refundAmount = $returnData['refund_amount'];
+                        $returnedAt = $returnData['updated_on'];
 
                         $col1 = 'invoice_id';
                         $col2 = 'item_id';
@@ -136,6 +137,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             }else{
                                 $purchaseQty = $invoiceData['loosely_count'];
                             }
+                        }
+
+                        $salesReturnData = json_decode($SalesReturn->selectReturnDetailsByColsAndTime($col1, $invoiceID, $col2, $itemId, $returnedAt));
+                        print_r($salesReturnData);
+                        if($salesReturnData->status == 1){
+                            $salesReturnItemDetails = $salesReturnData->data;
+                            $salesRtn = 0; 
+                    
+                            foreach ($salesReturnItemDetails as $slsRtn) {
+                                $salesRtn = intval($salesRtn) + intval($slsRtn->return_qty);
+                            }
+                            $purchaseQty =  (intval($purchaseQty) - intval($salesRtn));
+                        }
+
+
+                        if($invoiceData['loosely_count'] != 0){
+                            $purchaseQty = $purchaseQty.'(L)';
                         }
 
                     ?>
