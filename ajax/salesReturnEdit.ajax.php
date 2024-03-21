@@ -17,7 +17,7 @@ require_once CLASS_DIR."salesReturn.class.php";
 $StockOut   = new StockOut();
 $Products   = new Products();
 $Patients   = new Patients();
-$salesReturn = new SalesReturn();
+$SalesReturn = new SalesReturn();
 
 $tabel = 'id';
 $col1 = 'invoice_id';
@@ -61,7 +61,7 @@ if (isset($_GET["products"])) {
     // echo "$invoiceId<br>$salesRetundid";
 
     $table = 'sales_return_id';
-    $items = $salesReturn->selectSalesReturnList($table, $salesRetundid);
+    $items = $SalesReturn->selectSalesReturnList($table, $salesRetundid);
     echo '<option value="" selected disabled>Select item</option>';
     foreach ($items as $item) {
         // print_r($items);
@@ -83,20 +83,12 @@ if (isset($_GET["products"])) {
 }
 
 
-
-// CHECK DATA
-// if (isset($_GET["products"])) {
-//     $invoiceId = $_GET["products"];
-//     $salesRtnId = $_GET["salesreturnID"];
-//     $bill = $StockOut->stockOutDisplayById($invoiceId);
-//     echo "$invoiceId<br>$salesRtnId";
-// }
 // ===========================  Item Details   =========================== 
 
 // get product exp date
 if (isset($_GET["exp-date"])) {
     $exp = $_GET["exp-date"];
-    $item = $salesReturn->selectSalesReturnList($tabel, $exp);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $exp);
     // print_r($item);
     echo $item[0]['exp'];
 }
@@ -104,13 +96,13 @@ if (isset($_GET["exp-date"])) {
 
 ///////////////////////////// get product full unit////////////////////////
 if (isset($_GET["unit"])) {
-    $item = $salesReturn->selectSalesReturnList($tabel, $_GET["unit"]);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $_GET["unit"]);
     echo $item[0]['weatage'];
 }
 
 // get product full unit
 if (isset($_GET["unitType"])) {
-    $item = $salesReturn->selectSalesReturnList($tabel, $_GET["unitType"]);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $_GET["unitType"]);
     $unit = $item[0]['weatage'];
     $unitType = preg_replace('/[0-9]/','', $unit);
     echo $unitType;   
@@ -118,7 +110,7 @@ if (isset($_GET["unitType"])) {
 
 // get product full unit
 if (isset($_GET["itemWeatage"])) {
-    $item = $salesReturn->selectSalesReturnList($tabel, $_GET["itemWeatage"]);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $_GET["itemWeatage"]);
     $unit = $item[0]['weatage'];
     $itemWeatage = preg_replace('/[a-z-A-Z]/','', $unit);
     echo $itemWeatage;
@@ -126,7 +118,7 @@ if (isset($_GET["itemWeatage"])) {
 
 //batch number
 if (isset($_GET["batchNo"])) {
-    $item = $salesReturn->selectSalesReturnList($tabel, $_GET["batchNo"]);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $_GET["batchNo"]);
     $batch = $item[0]['batch_no'];
     echo $batch;
 }
@@ -161,6 +153,19 @@ if (isset($_GET["pqty"])) {
             $purchaseQty = $item['qty'];
         }
     }
+
+    $salesReturnData = json_decode($SalesReturn->selectReturnDetailsByColsAndTime($col1, $invoiceID, $col2, $itemId, $returnedAt));
+    // print_r($salesReturnData);
+    if ($salesReturnData->status == 1) {
+        $salesReturnItemDetails = $salesReturnData->data;
+        $salesRtn = 0;
+
+        foreach ($salesReturnItemDetails as $slsRtn) {
+            $salesRtn = intval($salesRtn) + intval($slsRtn->return_qty);
+        }
+        $purchaseQty =  (intval($purchaseQty) - intval($salesRtn));
+    }
+
     echo $purchaseQty;
 }
 
@@ -183,7 +188,7 @@ if (isset($_GET["cqty"])) {
 
     $table1 = 'invoice_id';
     $table2 = 'item_id';
-    $returnedItem = $salesReturn->seletReturnDetailsBy($table1, $invoice, $table2, $itemId);
+    $returnedItem = $SalesReturn->seletReturnDetailsBy($table1, $invoice, $table2, $itemId);
     // print_r($returnedItem);
     $returnQty = 0;
     if(empty($returnedItem) != true){
@@ -201,7 +206,7 @@ if (isset($_GET["cqty"])) {
 // get product return qty
 if (isset($_GET["rtnqty"])) {
     $invoice = $_GET["rtnqty"];
-    $item = $salesReturn->selectSalesReturnList($tabel, $_GET["rtnqty"]);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $_GET["rtnqty"]);
     //print_r($item);
     if(!empty($item)){
         echo $item[0]['return_qty'];
@@ -214,7 +219,7 @@ if (isset($_GET["rtnqty"])) {
 // get product discount
 if (isset($_GET["disc"])) {
     $invoice = $_GET["disc"];
-    $item = $salesReturn->selectSalesReturnList($tabel, $_GET["disc"]);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $_GET["disc"]);
     echo $item[0]['disc'];
 }
 
@@ -222,21 +227,21 @@ if (isset($_GET["disc"])) {
 if (isset($_GET["gst"])) {
     $invoice = $_GET["gst"];
 
-    $item = $salesReturn->selectSalesReturnList($tabel, $_GET["gst"]);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $_GET["gst"]);
     echo $item[0]['gst'];
 }
 
 // get product taxable
 if (isset($_GET["taxable"])) {
     $invoice = $_GET["taxable"];
-    $item = $salesReturn->selectSalesReturnList($tabel, $_GET["taxable"]);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $_GET["taxable"]);
     echo $item[0]['taxable'];
 }
 
 // get product amount
 if (isset($_GET["amount"])) {
     $invoice = $_GET["amount"];
-    $item = $salesReturn->selectSalesReturnList($tabel, $_GET["amount"]);
+    $item = $SalesReturn->selectSalesReturnList($tabel, $_GET["amount"]);
     echo $item[0]['refund_amount'];
 }
 

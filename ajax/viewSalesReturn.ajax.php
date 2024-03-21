@@ -140,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         }
 
                         $salesReturnData = json_decode($SalesReturn->selectReturnDetailsByColsAndTime($col1, $invoiceID, $col2, $itemId, $returnedAt));
-                        print_r($salesReturnData);
+                        // print_r($salesReturnData);
                         if($salesReturnData->status == 1){
                             $salesReturnItemDetails = $salesReturnData->data;
                             $salesRtn = 0; 
