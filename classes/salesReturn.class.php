@@ -311,19 +311,19 @@ class SalesReturn extends DatabaseConnection
 
     //     ################################################################################################################################
     //     #                                                                                                                              #
-    //     #                                    Sales Return Details                                            #
+    //     #                               Sales Return etails                                            #
     //     #                                                                                                                              #
     //     ################################################################################################################################
 
 
-    function addReturnDetails($invoiceId, $SalesReturnId, $itemId, $productId, $batchNo, $weatage, $expDate, $mrp, $ptr, $disc, $gst, $gstAmount, $taxable, $returnQty, $refund, $adminId)
+    function addReturnDetails($invoiceId, $SalesReturnId, $itemId, $productId, $batchNo, $weatage, $expDate, $mrp, $ptr, $disc, $gst, $gstAmount, $taxable, $returnQty, $refund, $addedBy, $addedOn, $adminId)
     {
         try {
-            $insert = "INSERT INTO sales_return_details (`invoice_id`, `sales_return_id`, `item_id`, `product_id`, `batch_no`, `weatage`, `exp`, `mrp`, `ptr`, `disc`, `gst`, `gst_amount`, `taxable`, `return_qty`, `refund_amount`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insert = "INSERT INTO sales_return_details (`invoice_id`, `sales_return_id`, `item_id`, `product_id`, `batch_no`, `weatage`, `exp`, `mrp`, `ptr`, `disc`, `gst`, `gst_amount`, `taxable`, `return_qty`, `refund_amount`, `updated_by`, `updated_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($insert);
 
             if ($stmt) {
-                $stmt->bind_param("iiissssddiiddids", $invoiceId, $SalesReturnId, $itemId, $productId, $batchNo, $weatage, $expDate, $mrp, $ptr, $disc, $gst, $gstAmount, $taxable, $returnQty, $refund, $adminId);
+                $stmt->bind_param("iiissssddiiddidsss", $invoiceId, $SalesReturnId, $itemId, $productId, $batchNo, $weatage, $expDate, $mrp, $ptr, $disc, $gst, $gstAmount, $taxable, $returnQty, $refund, $addedBy, $addedOn, $adminId);
                 $res = $stmt->execute();
                 $stmt->close();
                 return $res;
@@ -331,8 +331,6 @@ class SalesReturn extends DatabaseConnection
                 throw new Exception("Failed to prepare the statement.");
             }
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // Customize this part to suit your needs
             echo "Error: " . $e->getMessage();
             return false;
         }

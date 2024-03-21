@@ -64,8 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $refundAmount   = $_POST['refund-amount'];
         $refundMode     = $_POST['refund-mode'];
         $status = "1";
-        $addedBy = $employeeId;
-        $addedOn = NOW;
+
         $adminId;
 
         // echo "<br> Invoice No / id : $invoiceId & Data type : "; echo gettype($invoiceId);
@@ -127,8 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo "<br> Refund Amount : "; print_r($perItemRefund);
 
 // exit;
-        $returned = $SalesReturn->addSalesReturn(intval($invoiceId), $patientData[0]['customer_id'], $billDate, $returnDate, intval($items), intval($totalQtys), intval($gstAmount), intval($refundAmount), $refundMode, $status, $addedBy, $addedOn, $adminId);
+        $returned = $SalesReturn->addSalesReturn(intval($invoiceId), $patientData[0]['customer_id'], $billDate, $returnDate, intval($items), intval($totalQtys), intval($gstAmount), intval($refundAmount), $refundMode, $status, $addedBy, NOW, $adminId);
 
+        // print_r($returned);
         if ($returned['result']) {
             // echo "<br>empty add new return edit";
             for ($i = 0; $i < count($itemID); $i++) {
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
                 // ========================= ADD TO SALES RETURN DETAILS =============================
-                $addSalesReturndDetails = $SalesReturn->addReturnDetails($invoiceId, $returned['sales_return_id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $mrp[$i], $ptr[$i], $disc[$i], $gst[$i], $gstAmount, $taxableArray[$i], $returnQty[$i], $perItemRefund[$i], $adminId);
+                $addSalesReturndDetails = $SalesReturn->addReturnDetails($invoiceId, $returned['sales_return_id'], $itemID[$i], $procutId[$i], $batchNo[$i], $setOf[$i], $expdates[$i], $mrp[$i], $ptr[$i], $disc[$i], $gst[$i], $gstAmount, $taxableArray[$i], $returnQty[$i], $perItemRefund[$i], $addedBy, NOW, $adminId);
 
                 // ============= CURRENT STOCK UPDATE AREA ===========================
                 $currentStockDetaisl = $CurrentStock->showCurrentStocById($itemID[$i]);
@@ -182,6 +182,7 @@ $selectClinicInfo = json_decode($HelthCare->showHealthCare($adminId));
 $pharmacyLogo = $selectClinicInfo->data->logo;
 $pharmacyName = $selectClinicInfo->data->hospital_name;
 
+// exit;
 
 header("Location: sales-return-details.php?id=".url_enc($returned['sales_return_id']));
 exit;
