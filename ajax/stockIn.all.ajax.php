@@ -31,19 +31,19 @@ if (isset($_GET["weightage"])) {
     $id = $_GET["weightage"];
     $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
-        echo $stock[0]['weightage'];
+        echo $stock[0]['weightage'].' '.$stock[0]['unit'];
     }
 }
 
 
 //get unit
-if (isset($_GET["unit"])) {
-    $id = $_GET["unit"];
-    $stock = $StockInDetails->showStockInDetailsByStokinId($id);
-    if ($stock > 0) {
-        echo $stock[0]['unit'];
-    }
-}
+// if (isset($_GET["unit"])) {
+//     $id = $_GET["unit"];
+//     $stock = $StockInDetails->showStockInDetailsByStokinId($id);
+//     if ($stock > 0) {
+//         echo $stock[0]['unit'];
+//     }
+// }
 
 
 //get mrp
