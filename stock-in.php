@@ -79,6 +79,7 @@ $todayYr = date("y");
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="<?= CSS_PATH ?>pharmacist-sb-admin-2.min.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
+    <link rel="stylesheet" href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css">
 
 </head>
 
@@ -242,6 +243,7 @@ $todayYr = date("y");
 
     <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
     <script src="<?= JS_PATH ?>stock-in.js"></script>
 
 </body>
