@@ -8,18 +8,18 @@
                         Stock Quantity</div>
                     <div class="mb-0 font-weight-bold text-gray-800">
                         <?php
-                            $column = 'qty';
-                            $cStock = $CurrentStock->selectColumOnStockByAdmin($column, $adminId);
-                            // print_r($cStock);
-                            if($cStock != null){
-                                $currentQty = 0;
-                                foreach ($cStock as $data) {
-                                    $currentQty += $data['qty'];
-                                }
-                                    echo $currentQty; 
-                                }else {
-                                    echo '0';
-                                }
+                        $column = 'qty';
+                        $cStock = $CurrentStock->selectColumOnStockByAdmin($column, $adminId);
+                        // print_r($cStock);
+                        if ($cStock != null) {
+                            $currentQty = 0;
+                            foreach ($cStock as $data) {
+                                $currentQty += $data['qty'];
+                            }
+                            echo $currentQty;
+                        } else {
+                            echo '0';
+                        }
                         ?> Units
                     </div>
                 </div>
@@ -41,23 +41,20 @@
                         Total Stock MRP</div>
                     <div class="mb-0 font-weight-bold text-gray-800">
                         <?php
-                            $currentMRP = 0;
-                            $column = 'mrp';
-                            $cStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
-                            // print_r($cStock);
-                            if($cStock != null){
-                            for($i=0; $i<count($cStock); $i++){
-                                // print_r($cStock[$i]);
-                                    foreach ($cStock as $data) {
-                                        // print_r($data);
-                                        $currentMRP = floatval($currentMRP) + (floatval($data['mrp'])*intval($data['qty']));
-                                        // echo "<br>".$currentMRP;
-                                    }
-                                }
-                                echo '₹'.round($currentMRP,2); 
-                            }else{
-                                echo '₹'.'0';
+                        $currentMRP = 0;
+                        $column = 'mrp';
+                        $cStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
+                        // print_r($cStock);
+                        if ($cStock != null) {
+                            foreach ($cStock as $data) {
+                                // print_r($data);
+                                $currentMRP = floatval($currentMRP) + (floatval($data['mrp']) * intval($data['qty']));
+                                
                             }
+                            echo '₹' . round($currentMRP, 2);
+                        } else {
+                            echo '₹' . '0';
+                        }
                         ?>
                     </div>
                 </div>
