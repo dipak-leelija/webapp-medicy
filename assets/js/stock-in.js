@@ -454,10 +454,10 @@ const getBillAmount = () => {
     }
     // console.log(qty);
 
-    if (qty <= 0) {
-        document.getElementById('add-product-details').setAttribute('disabled','true');
-    } else {
-        document.getElementById('add-product-details').removeAttribute('disabled');
+    // if (qty <= 0) {
+    //     document.getElementById('add-product-details').setAttribute('disabled','true');
+    // } else {
+    //     document.getElementById('add-product-details').removeAttribute('disabled');
 
         let disc = parseFloat(document.getElementById('discount').value);
         if (isNaN(disc)) {
@@ -530,7 +530,7 @@ const getBillAmount = () => {
                 // console.error('Error removing image:', error);
             }
         });
-    }
+    // }
 } //eof getBillAmount function
 
 // ##################################################################################
