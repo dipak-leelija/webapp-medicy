@@ -1154,24 +1154,38 @@ const setExpMonth = (month) => {
 
 
 const setExpYEAR = (year) => {
-    expMnth = document.getElementById("exp-month").value;
-
+    let expMnth = document.getElementById("exp-month").value;
+    expMnth = Number(expMnth);
     let today = new Date();
-    let currentMnth = today.getMonth();
+    var currentDate = new Date();
+    let currentMnth = currentDate.getMonth();
+    currentMnth += 1;
+    // alert(currentMnth);
     let curretnYr = today.getFullYear();
 
     if (year.value.length == 4) {
         if (year.value < curretnYr) {
             document.getElementById('exp-year').value = '';
             document.getElementById('exp-year').focus();
-        } else if (year.value == curretnYr) {
-            if (expMnth < currentMnth) {
-                document.getElementById('exp-month').value = '';
-                document.getElementById('exp-year').value = '';
-                document.getElementById('exp-month').focus();
+        }
+
+        if (year.value == curretnYr) {
+            if (parseInt(expMnth) < parseInt(currentMnth)) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Enter valid expiry date",
+                    icon: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Ok"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('exp-month').value = '';
+                        document.getElementById('exp-year').value = '';
+                        document.getElementById('exp-month').focus();
+                    }
+                });
             }
-        } else {
-            document.getElementById('ptr').focus();
         }
     } else {
         document.getElementById('exp-year').value = '';
