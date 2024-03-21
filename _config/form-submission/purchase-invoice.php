@@ -171,10 +171,10 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
                     <small><b>PTR</b></small>
                 </div>
                 <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>Disc(%)</b></small>
+                    <small><b>Disc.</b></small>
                 </div>
                 <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>GST(%)</b></small>
+                    <small><b>GST</b></small>
                 </div>
                 <div class="col-sm-1b text-end" style="width: 10%;">
                     <small><b>Amount</b></small>
