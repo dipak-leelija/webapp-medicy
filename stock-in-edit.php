@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             foreach ($stockInDetails as $stockInData) {
                 array_push($stockInDetailsIds, $stockInData['id']); // store stok in details id for additional use
             }
-        }else{
+        } else {
             echo 'No Data Found';
         }
     }
@@ -173,25 +173,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="mb-1" for="distributor-bill">Distributor Bill No.</label>
-                                    <input type="text" class="upr-inp " name="distributor-bill" id="distributor-bill" value="<?php if ($edit == TRUE) {
-                                                                                                                                    echo $stockIn[0]['distributor_bill'];
-                                                                                                                                } ?>" style="text-transform: uppercase;" onkeyup="setDistBillNo(this)">
+                                    <input type="text" class="upr-inp" style="text-transform: uppercase;" name="distributor-bill" id="distributor-bill" value="<?= $edit == TRUE ? $stockIn[0]['distributor_bill'] : ''; ?>" onkeyup="setDistBillNo(this)">
                                 </div>
 
 
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="bill-date">Bill Date</label>
-                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date" value="<?php if ($edit == TRUE) {
-                                                                                                                    $billDate = date_create($stockIn[0]['bill_date']);
-                                                                                                                    echo date_format($billDate, "Y-m-d");
-                                                                                                                } ?>" onchange="getbillDate(this)">
+                                    <input type="date" class="upr-inp" name="bill-date" id="bill-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['bill_date']), "Y-m-d") : ''; ?>" onchange="getbillDate(this)">
                                 </div>
                                 <div class="col-sm-6 col-md-2">
                                     <label class="mb-1" for="due-date">Due Date</label>
-                                    <input type="date" class="upr-inp" name="due-date" id="due-date" value="<?php if ($edit == TRUE) {
-                                                                                                                $billDate = date_create($stockIn[0]['due_date']);
-                                                                                                                echo date_format($billDate, "Y-m-d");
-                                                                                                            } ?>" onchange="getDueDate(this)">
+                                    <input type="date" class="upr-inp" name="due-date" id="due-date" value="<?= $edit == TRUE ? date_format(date_create($stockIn[0]['due_date']), "Y-m-d") : ''; ?>" onchange="getDueDate(this)">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="mb-1" for="payment-mode">Payment Mode</label>
@@ -242,9 +234,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div>
-                                
+
                                 <hr class="sidebar-divider">
 
                                 <form id="data-details">
@@ -258,12 +250,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                         Id</label>
                                                     <input type="text" class="upr-inp" name="purchase-id" id="purchase-id" value="" readonly>
                                                 </div>
-                                                
+
                                                 <div class="d-none col-md-4 mt-2">
                                                     <label class="mb-0" for="product-id">Product Id</label>
                                                     <input class="upr-inp" id="product-id" name="product-id" readonly>
                                                 </div>
-                                                
+
 
                                                 <div class="col-md-12 ">
                                                     <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" onkeydown="chekForm()" autocomplete="off">
@@ -309,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="d-none col-md-12 mt-2">
                                                     <label class="mb-0" for="manufacturer-id">Manufacturer</label>
-                                                    
+
                                                     <input class="upr-inp" id="manufacturer-id" name="manufacturer-id" value="">
                                                     <input class="upr-inp" id="manufacturer-name" name="manufacturer-name" value="">
 
@@ -349,13 +341,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <label class="mb-0" for="batch-no">Batch No.</label>
                                                     <input type="text" class="upr-inp" name="batch-no" id="batch-no" style="text-transform: uppercase;">
                                                 </div>
-                                                
+
                                                 <div class="col-sm-6 mt-2">
                                                     <label class="mb-0 mt-1" for="exp-date">Expiry Date</label>
                                                     <div class="d-flex date-field">
                                                         <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                                                         <span class="date-divider">&#47;</span>
-                                                        <input class="year" type="number" id="exp-year" /*onkeyup="setExpYear(this)"*/ onfocusout="setExpYEAR(this);">
+                                                        <input class="year" type="number" id="exp-year" /*onkeyup="setExpYear(this)" */ onfocusout="setExpYEAR(this);">
                                                     </div>
                                                 </div>
                                             </div>
@@ -412,7 +404,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <!--/End Quantity Row  -->
 
                                                 <!-- Price Row -->
-                                                
+
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="discount">Discount %</label>
                                                     <input type="number" class="upr-inp" name="discount" id="discount" placeholder="Discount Percentage" value="0" onkeyup="getBillAmount()">
@@ -475,16 +467,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                     <table class="table item-table" id="item-table" style="width: 100%;">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th scope="col"><input class="d-none" type="number" value="<?php
-                                                            if ($edit == TRUE) {
-                                                                echo count($stockInDetails);
-                                                            } 
-                                                        ?>" id="dynamic-id" style="width:2rem;">
+                                                <th scope="col">
+                                                    <input class="d-none" id="dynamic-id" type="number" value="<?= $edit == TRUE ? count($stockInDetails) : ''; ?>">
                                                 </th>
-                                                <th scope="col"><input class="d-none" type="number" value="<?php
-                                                        if ($edit == TRUE) {
-                                                            echo count($stockInDetails);
-                                                        } ?>" id="serial-control" style="width:2rem;">
+                                                <th scope="col">
+                                                    <input class="d-none" type="number" id="serial-control" value="<?= $edit == TRUE ? count($stockInDetails) : ''; ?>">
                                                 </th>
                                                 <th scope="col" hidden>StockInDetaislId</th>
                                                 <!-- <th scope="col"></th> -->
@@ -516,9 +503,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     $slno += 1;
 
                                                     $prdCheck = json_decode($Products->productExistanceCheck($detail['product_id']));
-                                                    if($prdCheck->status){
+                                                    if ($prdCheck->status) {
                                                         $editReqFlag = 0;
-                                                    }else{
+                                                    } else {
                                                         $editReqFlag = '';
                                                     }
 
@@ -612,16 +599,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="row mb-3">
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Distributor :
-                                            <input class="d-none summary-inp" name="prev-distributor-id" id="prev-dist-id" type="text" value="<?php
-                                                                                                                                                if ($edit == TRUE) {
-                                                                                                                                                    echo $stockIn[0]['distributor_id'];
-                                                                                                                                                }
-                                                                                                                                                ?>" readonly>
-                                            <input class="d-none summary-inp" name="updated-distributor-id" id="updated-dist-id" type="text" value="<?php
-                                                                                                                                                    if ($edit == TRUE) {
-                                                                                                                                                        echo $stockIn[0]['distributor_id'];
-                                                                                                                                                    }
-                                                                                                                                                    ?>" readonly>
+                                            <input class="d-none summary-inp" name="prev-distributor-id" id="prev-dist-id" type="text" value="<?= $edit == TRUE ? $stockIn[0]['distributor_id'] : ''; ?>" readonly>
+                                            <input class="d-none summary-inp" name="updated-distributor-id" id="updated-dist-id" type="text" value="<?= $edit == TRUE ? $stockIn[0]['distributor_id'] : ''; ?>" readonly>
 
                                             <input class="summary-inp" name="distributor-name" id="distributor-name" type="text" value="<?= $distName ?>" readonly>
                                         </p>
@@ -629,28 +608,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                     <div class="col-md-3 d-flex justify-content-start">
                                         <p>Dist. Bill :
-                                            <input class="d-none summary-inp" name="prev-distributor-bill" id="prev-distributor-bill-no" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                                                                echo $stockIn[0]['distributor_bill'];
-                                                                                                                                                            } ?>" readonly>
+                                            <input class="d-none summary-inp" name="prev-distributor-bill" id="prev-distributor-bill-no" type="text" value="<?= $edit == TRUE ? $stockIn[0]['distributor_bill'] : ''; ?>" readonly>
 
-                                            <input class="summary-inp" name="distributor-bill" id="distributor-bill-no" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                                                echo $stockIn[0]['distributor_bill'];
-                                                                                                                                            } ?>" readonly>
+                                            <input class="summary-inp" name="distributor-bill" id="distributor-bill-no" type="text" value="<?= $edit == TRUE ? $stockIn[0]['distributor_bill'] : ''; ?>" readonly>
                                         </p>
                                     </div>
 
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Bill Date :
-                                            <input class="summary-inp" name="bill-date-val" id="bill-date-val" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                                        echo $stockIn[0]['bill_date'];
-                                                                                                                                    } ?>" readonly>
+                                            <input class="summary-inp" name="bill-date-val" id="bill-date-val" type="text" value="<?= $edit == TRUE ? $stockIn[0]['bill_date'] : ''; ?>" readonly>
                                         </p>
                                     </div>
                                     <div class="col-md-3  d-flex justify-content-start">
                                         <p>Due Date :
-                                            <input class="summary-inp" name="due-date-val" id="due-date-val" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                                    echo $stockIn[0]['due_date'];
-                                                                                                                                } ?>" readonly>
+                                            <input class="summary-inp" name="due-date-val" id="due-date-val" type="text" value="<?= $edit == TRUE ? $stockIn[0]['due_date'] : ''; ?>" readonly>
                                         </p>
                                     </div>
                                 </div>
@@ -658,39 +629,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3 d-flex justify-content-start">
                                         <span>Payment :
-                                            <input class="summary-inp" name="payment-mode-val" id="payment-mode-val" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                                            echo $stockIn[0]['payment_mode'];
-                                                                                                                                        } ?>" readonly>
+                                            <input class="summary-inp" name="payment-mode-val" id="payment-mode-val" type="text" value="<?= $edit == TRUE ? $stockIn[0]['payment_mode'] : ''; ?>" readonly>
                                         </span>
                                     </div>
 
                                     <div class="col-sm-6 col-md-2  d-flex justify-content-start">
                                         <p>Items :
-                                            <input class="summary-inp" name="items" id="items-val" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                            echo $stockIn[0]['items'];
-                                                                                                                        } ?>" readonly>
+                                            <input class="summary-inp" name="items" id="items-val" type="text" value="<?= $edit == TRUE ? $stockIn[0]['items'] : ''; ?>" readonly>
                                         </p>
                                     </div>
                                     <div class="col-sm-6 col-md-2 d-flex justify-content-start">
                                         <p>Qty :
-                                            <input class="summary-inp" name="total-qty" id="qty-val" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                            $tQty =  $stockIn[0]['total_qty'];
-                                                                                                                            echo $tQty;
-                                                                                                                        } ?>" readonly>
+                                            <input class="summary-inp" name="total-qty" id="qty-val" type="text" value="<?= $edit == TRUE ? $stockIn[0]['total_qty'] : ''; ?>" readonly>
                                         </p>
                                     </div>
                                     <div class="col-sm-6 col-md-2 d-flex justify-content-start">
                                         <p>GST :
-                                            <input class="summary-inp" name="totalGst" id="gst-val" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                            echo $stockIn[0]['gst'];
-                                                                                                                        } ?>" readonly>
+                                            <input class="summary-inp" name="totalGst" id="gst-val" type="text" value="<?= $edit == TRUE ? $stockIn[0]['gst'] : '' ?>" readonly>
                                         </p>
                                     </div>
                                     <div class="col-sm-6 col-md-3  d-flex justify-content-start">
                                         <p>Net :
-                                            <input class="summary-inp" name="netAmount" id="net-amount" type="text" value="<?php if ($edit == TRUE) {
-                                                                                                                                echo $stockIn[0]['amount'];
-                                                                                                                            } ?>" readonly>
+                                            <input class="summary-inp" name="netAmount" id="net-amount" type="text" value="<?= $edit == TRUE ? $stockIn[0]['amount'] : ''; ?>" readonly>
                                         </p>
                                     </div>
                                 </div>
@@ -707,9 +667,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                 </div>
 
-                                <!-- <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php print_r($stockInDetailsIds) ?>" hidden> -->
+                                <!-- <input class="summary-inp" name="stok-in-data-array" id="stok-in-data-array" type="text" value="<?php // print_r($stockInDetailsIds) ?>" hidden> -->
 
-                                <!-- <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" hidden> -->
+                                <input class="summary-inp" name="stok-in-id" id="stok-in-id" type="number" value="<?php echo $stockIn_id ?>" hidden>
                             </div>
 
                         </form>
