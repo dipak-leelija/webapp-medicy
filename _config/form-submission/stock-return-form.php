@@ -47,17 +47,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     
         $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $employeeId, NOW, $adminId);
         
-        $returnResult = $returned['result'];
+        // $returnResult = $returned['result'];
 
-        // $returnResult = true;
+        $returnResult = true;
         if($returnResult == true){
 
             //arrays
             $stokInDetailsId = $_POST['stok-in-details-id'];
             $productId      = $_POST['productId'];
+            $ids            = count($productId);
             
             $productName    = $_POST['productName'];
-            $ids            = count($productId);
         
             $batchNo        = $_POST['batchNo'];
             $distBillNo     = $_POST['distBillNo'];
@@ -78,14 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $discParcent    = preg_replace('/[%]/','',$_POST['disc-percent']);
 
             $returnQty      = $_POST['return-qty'];
-            // echo "<br>Return qty : ";
-            // print_r($returnQty);
             $returnFQty     = $_POST['return-free-qty'];
-            // echo "<br>Return free qty : ";
-            // print_r($returnFQty);
             $refundAmount   = $_POST['refund-amount'];
 
-            
+            // print_r($productId);
             for ($i=0; $i < $ids; $i++) { 
                 $currentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]));
 
@@ -93,7 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $looseQty = $currentStockData->loosely_count;
 
                 // peritem toral return qty (return qantity + free return qantity)
-                $perItemTotalReturnQty = intval($returnQty) + intval($returnFQty);
+                $perItemTotalReturnQty = intval($returnQty[$i]) + intval($returnFQty[$i]);
+                // echo "<br><br<br>totoal return qty : $perItemTotalReturnQty";
 
                 if ($wholeQty >= $perItemTotalReturnQty) {
                 
@@ -105,8 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         $updatedQty = intval($wholeQty) - $perItemTotalReturnQty;
                     }
                 
+                    // echo "<br>Updated qty : $updatedQty<br>";
+                    // echo "Updated Loose qty : $updatedLooseQty";
                     // echo "<br><br>";
-                    // echo $updatedQty;
 
                     $updatedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
 
@@ -124,7 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 
-exit;
+
+// exit;
 $response = url_enc(json_encode(['stock_return_id' => $stockReturnId]));
 header("Location: ".URL."stock-return-invoice.php?data=".$response);
 exit;
