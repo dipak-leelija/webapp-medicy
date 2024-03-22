@@ -1,13 +1,13 @@
 <?php
-require_once dirname(__DIR__).'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(__DIR__) . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR.'stockReturn.class.php';
-require_once CLASS_DIR.'stockInDetails.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . 'stockReturn.class.php';
+require_once CLASS_DIR . 'stockInDetails.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
 
-$StokReturnDetails = new StockReturn();
+$StokReturn = new StockReturn();
 $StokInDetails = new StockInDetails();
 $CurrentStock = new CurrentStock();
 
@@ -19,30 +19,37 @@ if (isset($_GET['current-stock-qty'])) {
     // echo $stockInDetailsId;
     $stokInDetails = $StokInDetails->showStockInDetailsByStokinId($stockInDetailsId);
     $purchaseQty = $stokInDetails[0]['qty'];
-    $freeQty = $stokInDetails[0]['free_qty'];
-    // echo $freeQty;
-    $stockReturnDetails = json_decode($StokReturnDetails->showStockReturnDataByStokinId($stockInDetailsId));
-    // print_r($stockReturnDetails);
+    
     $totalRtnQty = 0;
-    if($stockReturnDetails->status){
-        $stockReturnDetails = $stockReturnDetails->data;
-        foreach($stockReturnDetails as $stockReturnDetails){
-            $ReturnQty = $stockReturnDetails->return_qty;
-            // $ReturnFQty = $stockReturnDetails->return_free_qty;
-           
-            $totalRtnQty = intval($totalRtnQty) + intval($ReturnQty) ;
-            // echo $totalRtnQty; echo "<br>";
-        }
-        
-    }else{
-        $ReturnQty = 0;
-        $ReturnFQty = 0;
-    }
-
-    $currentData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
-    // print_r($currentData);
-    echo ($currentData->qty - $totalRtnQty);
+    $stockReturnDetails = json_decode($StokReturn->showStockReturnDataByStokinId($stockInDetailsId));
     // echo $stockInDetailsId;
+    if ($stockReturnDetails->status == 1) {
+        $stockReturnDetails = $stockReturnDetails->data;
+
+        foreach ($stockReturnDetails as $stockReturnDetails) {
+            $stockReturnId =  $stockReturnDetails->stock_return_id;
+
+            // check return availibility
+            $col1 = 'id';
+            $col2 = 'status';
+            $checkStockReturn = json_decode($StokReturn->stockReturnByTables($col1, $stockReturnId, $col2, 1));
+
+            if ($checkStockReturn->status) {
+
+                $returnQty = $stockReturnDetails->return_qty;
+            } else {
+                $returnQty = 0;
+            }
+
+            $totalRtnQty = intval($totalRtnQty) + intval($returnQty);
+        }
+
+        $currentData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
+        // print_r($currentData);
+        echo ($currentData->qty - $totalRtnQty);
+    } else {
+        echo $currentData->qty;
+    }
 }
 
 
@@ -54,21 +61,35 @@ if (isset($_GET['current-free-qty'])) {
     $stokInDetails = $StokInDetails->showStockInDetailsByStokinId($stockInDetailsId);
     $purchaseFQty = $stokInDetails[0]['free_qty'];
 
-    $stockReturnDetails = json_decode($StokReturnDetails->showStockReturnDataByStokinId($stockInDetailsId));
-    // print_r($stockReturnDetails);
-    // $currentData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId);
-
-    if($stockReturnDetails->status){
+    $totalFreeRtnQty = 0;
+    $stockReturnDetails = json_decode($StokReturn->showStockReturnDataByStokinId($stockInDetailsId));
+    // echo $stockInDetailsId;
+    if ($stockReturnDetails->status == 1) {
         $stockReturnDetails = $stockReturnDetails->data;
-        $ReturnFQty = 0;
-        foreach($stockReturnDetails as $stockReturnDetails){
-            $ReturnFQty = intval($ReturnFQty) + intval($stockReturnDetails->return_free_qty);
+
+        foreach ($stockReturnDetails as $stockReturnDetails) {
+            $stockReturnId =  $stockReturnDetails->stock_return_id;
+
+            // check return availibility
+            $col1 = 'id';
+            $col2 = 'status';
+            $checkStockReturn = json_decode($StokReturn->stockReturnByTables($col1, $stockReturnId, $col2, 1));
+
+            if ($checkStockReturn->status) {
+
+                $returnFreeQty = $stockReturnDetails->return_free_qty;
+            } else {
+                $returnFreeQty = 0;
+            }
+
+            $totalFreeRtnQty = intval($totalFreeRtnQty) + intval($returnFreeQty);
         }
-    }else{
-        $ReturnFQty = 0;
+
+        $currentData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
+        // print_r($currentData);
+        echo ($purchaseFQty - $totalFreeRtnQty);
+    } else {
+        echo $purchaseFQty;
     }
 
-    echo ($purchaseFQty - $ReturnFQty);
 }
-
-?>
