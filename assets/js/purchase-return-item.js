@@ -147,6 +147,14 @@ const setMode = (returnMode) => {
     document.getElementById("refund-mode").value = returnMode;
 }
 
+
+// ======= sweet alert call for item select =======
+const qantityAlert = (stockInQty, stockOutQty) =>{
+    console.log(stockInQty);
+    console.log(stockOutQty);
+}
+
+// =============== item details fetch ===============
 const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, billdate, billNumber, t) => {
 
     document.getElementById('return-mode').focus();
@@ -277,7 +285,7 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
         document.getElementById("amount").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
-        //==================== QTY ====================
+        //==================== PURCHES QTY ====================
         let qtyUrl = `ajax/stockIn.all.ajax.php?purchased-qty=${stokInDetialsId}`;
         // alert(unitUrl);
         // window.location.href = unitUrl;
@@ -331,7 +339,20 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
         document.getElementById("return-qty").focus();
         document.getElementById("product-select").style.display = "none";
 
+        // ===================== LIVE TRANSACTIONAL QTY DATA =====================
 
+        // let stockReturnDataUrl = `ajax/currentStock.liveQtyDetails.ajax.php?stockRtnData=${stokInDetialsId}`;
+        // xmlhttp.open("GET", stockReturnData, false);
+        // xmlhttp.send(null);
+        // let stockReturnQty = xmlhttp.responseText;
+
+        // let stockOutDataUrl = `ajax/currentStock.liveQtyDetails.ajax.php?stockOutData=${stokInDetialsId}`;
+        // xmlhttp.open("GET", stockOutDataUrl, false);
+        // xmlhttp.send(null);
+        // let stockOutQty = xmlhttp.responseText;
+
+        // qantityAlert(stockReturnQty, stockOutQty);
+        
     } else {
 
         document.getElementById("ptr").value = "";
@@ -394,6 +415,7 @@ const getRefund = (returnQty) => {
 
     let returnGstAmount = document.getElementById('gstAmountPerQty').value;
     returnGstAmount = returnGstAmount * returnQty;
+    returnGstAmount = returnGstAmount.toFixed(2);
     document.getElementById('return-gst-amount').value = returnGstAmount;
 }
 
@@ -436,6 +458,7 @@ function addData() {
     var freeQty = document.getElementById("free-qty");
     var currentQty = document.getElementById("current-qty");
     var returnQty = document.getElementById("return-qty");
+    console.log("return qty : "+returnQty.value);
     var returnFreeQty = document.getElementById("return-free-qty");
 
     var basePrice = document.getElementById("base");

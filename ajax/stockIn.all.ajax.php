@@ -142,11 +142,13 @@ if (isset($_GET["amount"])) {
 // get purchased qty
 if (isset($_GET["purchased-qty"])) {
     $id = $_GET["purchased-qty"];
+    // echo $id;
     $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['qty'];
     }
 }
+
 
 // get free-qty
 if (isset($_GET["free-qty"])) {

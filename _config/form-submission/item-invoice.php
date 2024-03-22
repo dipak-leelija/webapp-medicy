@@ -103,6 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $stockOut = $StockOut->addStockOut($patientId, $reffby, $totalItems, $totalQty, $totalMrp, $disc, $totalGSt, $billAmout, $pMode, $status, $billdate, $addedBy, NOW, $adminId);
 
+        // $stockOut['success'] = true;
+
         if ($stockOut['success']) {
 
             $invoiceId = $stockOut['insert_id'];
@@ -160,6 +162,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
 
+                // echo "<br>";
+                // echo $UpdatedNewQuantity;
+                // echo "<br>";
+                // echo $updatedLooseCount;
+                // echo "<br>";
+                // echo "<br>";
+
                 $updateCurrentStock = $CurrentStock->updateStockOnSell($itemId[$i], $UpdatedNewQuantity, $updatedLooseCount);
                 // print_r($updateCurrentStock);
             }
@@ -167,6 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// exit;
 header("Location: item-invoice-reprint.php?id=".url_enc($invoiceId));
 exit;
 

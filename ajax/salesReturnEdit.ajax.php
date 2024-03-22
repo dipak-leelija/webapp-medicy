@@ -154,17 +154,17 @@ if (isset($_GET["pqty"])) {
         }
     }
 
-    $salesReturnData = json_decode($SalesReturn->selectReturnDetailsByColsAndTime($col1, $invoiceID, $col2, $itemId, $returnedAt));
-    // print_r($salesReturnData);
-    if ($salesReturnData->status == 1) {
-        $salesReturnItemDetails = $salesReturnData->data;
-        $salesRtn = 0;
+    // $salesReturnData = json_decode($SalesReturn->selectReturnDetailsByColsAndTime($col1, $invoice, $col2, $_GET["p-id"], NOW));
+    // // print_r($salesReturnData);
+    // if ($salesReturnData->status == 1) {
+    //     $salesReturnItemDetails = $salesReturnData->data;
+    //     $salesRtn = 0;
 
-        foreach ($salesReturnItemDetails as $slsRtn) {
-            $salesRtn = intval($salesRtn) + intval($slsRtn->return_qty);
-        }
-        $purchaseQty =  (intval($purchaseQty) - intval($salesRtn));
-    }
+    //     foreach ($salesReturnItemDetails as $slsRtn) {
+    //         $salesRtn = intval($salesRtn) + intval($slsRtn->return_qty);
+    //     }
+    //     $purchaseQty =  (intval($purchaseQty) - intval($salesRtn));
+    // }
 
     echo $purchaseQty;
 }

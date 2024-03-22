@@ -467,6 +467,7 @@ const getBillAmount = () => {
 
         let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
         maxPtr = maxPtr.toFixed(2);
+        maxPtr = parseFloat(maxPtr);
 
         // console.log("max ptr "+ maxPtr);
         // console.log("change ptr "+ ptr);
@@ -476,15 +477,15 @@ const getBillAmount = () => {
             document.getElementById("gst-check").value = gst;
         }
 
-        // console.log(ptr);
-        // console.log(maxPtr);
+        // console.log(typeof(ptr) + " " + ptr);
+        // console.log(typeof(maxPtr)+ " " + maxPtr);
 
         if (ptr > maxPtr) {
-            swal({
+            Swal.fire({
                 title: "Error Input",
                 text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
                 icon: "error",
-                button: false, // Hide the "OK" button
+                // button: false, // Hide the "OK" button
                 timer: 1000 // Auto-close the alert after 2 seconds
             });
 

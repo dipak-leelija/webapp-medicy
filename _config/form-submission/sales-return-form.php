@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 // exit;
         $returned = $SalesReturn->addSalesReturn(intval($invoiceId), $patientData[0]['customer_id'], $billDate, $returnDate, intval($items), intval($totalQtys), intval($gstAmount), intval($refundAmount), $refundMode, $status, $addedBy, NOW, $adminId);
 
-        // print_r($returned);
+        // $returned['result'] = true;
         if ($returned['result']) {
             // echo "<br>empty add new return edit";
             for ($i = 0; $i < count($itemID); $i++) {
@@ -166,6 +166,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // echo "<br>Current Stock item quantity : $curretnStockQty";
                 // echo "<br>CURRENT STOCK UPDATED LOOSE QTY : $UpdatedLooseQty";
                 // echo "<br>CURRENT STOCK UPDATED QTY : $UpdatedQty";
+                // echo "<br>";
+                // echo "<br>";
 
                 // ========================= CURRENT STOCK UPDATE STRING ============================
                 // echo $itemID[$i];
@@ -182,8 +184,8 @@ $selectClinicInfo = json_decode($HelthCare->showHealthCare($adminId));
 $pharmacyLogo = $selectClinicInfo->data->logo;
 $pharmacyName = $selectClinicInfo->data->hospital_name;
 
-// exit;
 
+// exit;
 header("Location: sales-return-details.php?id=".url_enc($returned['sales_return_id']));
 exit;
 ?>

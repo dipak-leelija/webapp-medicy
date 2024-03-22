@@ -14,25 +14,34 @@ $CurrentStock = new CurrentStock();
 // ===================== CURRENT PURCHASE QTY ======================
 
 if (isset($_GET['current-stock-qty'])) {
+
     $stockInDetailsId = $_GET['current-stock-qty'];
     // echo $stockInDetailsId;
     $stokInDetails = $StokInDetails->showStockInDetailsByStokinId($stockInDetailsId);
     $purchaseQty = $stokInDetails[0]['qty'];
     $freeQty = $stokInDetails[0]['free_qty'];
     // echo $freeQty;
-    $stockReturnDetails = $StokReturnDetails->showStockReturnDataByStokinId($stockInDetailsId);
+    $stockReturnDetails = json_decode($StokReturnDetails->showStockReturnDataByStokinId($stockInDetailsId));
     // print_r($stockReturnDetails);
-    if($stockReturnDetails == null){
+    $totalRtnQty = 0;
+    if($stockReturnDetails->status){
+        $stockReturnDetails = $stockReturnDetails->data;
+        foreach($stockReturnDetails as $stockReturnDetails){
+            $ReturnQty = $stockReturnDetails->return_qty;
+            // $ReturnFQty = $stockReturnDetails->return_free_qty;
+           
+            $totalRtnQty = intval($totalRtnQty) + intval($ReturnQty) ;
+            // echo $totalRtnQty; echo "<br>";
+        }
+        
+    }else{
         $ReturnQty = 0;
         $ReturnFQty = 0;
-    }else{
-        $ReturnQty = $stockReturnDetails[0]['return_qty'];
-        $ReturnFQty = $stockReturnDetails[0]['return_free_qty'];
     }
 
     $currentData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
-
-    echo ($currentData->qty - ($freeQty - $ReturnFQty) );
+    // print_r($currentData);
+    echo ($currentData->qty - $totalRtnQty);
     // echo $stockInDetailsId;
 }
 
@@ -45,14 +54,18 @@ if (isset($_GET['current-free-qty'])) {
     $stokInDetails = $StokInDetails->showStockInDetailsByStokinId($stockInDetailsId);
     $purchaseFQty = $stokInDetails[0]['free_qty'];
 
-    $stockReturnDetails = $StokReturnDetails->showStockReturnDataByStokinId($stockInDetailsId);
+    $stockReturnDetails = json_decode($StokReturnDetails->showStockReturnDataByStokinId($stockInDetailsId));
     // print_r($stockReturnDetails);
     // $currentData = $CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId);
 
-    if($stockReturnDetails == null){
+    if($stockReturnDetails->status){
+        $stockReturnDetails = $stockReturnDetails->data;
         $ReturnFQty = 0;
+        foreach($stockReturnDetails as $stockReturnDetails){
+            $ReturnFQty = intval($ReturnFQty) + intval($stockReturnDetails->return_free_qty);
+        }
     }else{
-        $ReturnFQty = $stockReturnDetails[0]['return_free_qty'];
+        $ReturnFQty = 0;
     }
 
     echo ($purchaseFQty - $ReturnFQty);
