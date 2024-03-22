@@ -1177,44 +1177,31 @@ class StockOut extends DatabaseConnection
     {
         try {
             $stockOutSelect = array();
-
-            // Define the SQL query using a prepared statement
             $selectSql = "SELECT * FROM `stock_out_details` WHERE $table1 = ? AND $table2 = ?";
 
-            // Prepare the SQL statement
             $stmt = $this->conn->prepare($selectSql);
 
             if ($stmt) {
-                // Bind the parameters
+
                 $stmt->bind_param("ss", $data1, $data2);
-
-                // Execute the query
                 $stmt->execute();
-
-                // Get the result
                 $result = $stmt->get_result();
 
-                // Check if the query was successful
                 if ($result) {
                     while ($row = $result->fetch_array()) {
                         $stockOutSelect[] = $row;
                     }
                 } else {
-                    // Handle the case where the query failed
                     echo "Query failed: " . $this->conn->error;
                 }
 
-                // Close the statement
                 $stmt->close();
             } else {
-                // Handle the case where the statement preparation failed
                 echo "Statement preparation failed: " . $this->conn->error;
             }
 
             return $stockOutSelect;
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            // You can customize this part to suit your needs
             echo "Error: " . $e->getMessage();
             return array();
         }
