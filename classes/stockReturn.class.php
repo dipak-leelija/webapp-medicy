@@ -183,13 +183,22 @@ class StockReturn extends DatabaseConnection
 
     function stockReturnByTables($table1, $data1, $table2, $data2)
     {
-        $response = array();
-        $selectSalesReturn = "SELECT * FROM `stock_return` WHERE `$table1` = '$data1' AND `$table2` = '$data2'";
-        $query = $this->conn->query($selectSalesReturn);
-        while ($result = $query->fetch_array()) {
-            $response[] = $result;
+        try {
+            $response = array();
+            $selectSalesReturn = "SELECT * FROM `stock_return` WHERE `$table1` = '$data1' AND `$table2` = '$data2'";
+            $res = $this->conn->query($selectSalesReturn);
+            
+            if($res->num_rows > 0){
+                while ($result = $res->fetch_array()) {
+                    $response[] = $result;
+                }
+                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $response]);
+            }else{
+                return json_encode(['status' => '0', 'message' => 'data found', 'data' => '']);
+            }
+        } catch (Exception $e) {
+            return $e->errorMessage();
         }
-        return $response;
     }
 
 
@@ -361,20 +370,20 @@ class StockReturn extends DatabaseConnection
             $sql  = "SELECT * FROM stock_return_details WHERE `stokIn_details_id` = '$stockInDetailsId'";
             $stmt  = $this->conn->prepare($sql);
 
-            if(!$stmt){
+            if (!$stmt) {
                 throw new Exception("Failed to prepare the statement.");
             }
 
             $stmt->execute();
             $res = $stmt->get_result();
 
-            if($res->num_rows > 0){
+            if ($res->num_rows > 0) {
                 while ($result = $res->fetch_array()) {
                     $data[] = $result;
                 }
-                return json_encode(['status'=>'1', 'data'=>$data]);
-            }else{
-                return json_encode(['status'=>'0', 'data'=>'']);
+                return json_encode(['status' => '1', 'data' => $data]);
+            } else {
+                return json_encode(['status' => '0', 'data' => '']);
             }
             $stmt->close();
         } catch (Exception $e) {
