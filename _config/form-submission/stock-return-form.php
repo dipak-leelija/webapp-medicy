@@ -2,6 +2,7 @@
 
 require_once dirname(dirname(__DIR__)).'/config/constant.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once dirname(dirname(__DIR__)) . '/config/service.const.php';
 
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR .'encrypt.inc.php';
@@ -43,8 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $refundMode      = $_POST['refund-mode'];
         $refund          = $_POST['refund'];
         $status          = 1;
-
-        $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
     
         $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $employeeId, NOW, $adminId);
         
@@ -91,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                 if ($wholeQty >= $totalReturnQty) {
                 
-                    if (in_array(strtolower($unit[$i]), $allowedUnits)){
+                    if (in_array(strtolower(trim($unit[$i])), LOOSEUNITS)){
                         $updatedLooseQty = intval($looseQty) - ($totalReturnQty * $weightage[$i]);
                         $updatedQty = intdiv($updatedLooseQty, $weightage[$i]);
                     }else{

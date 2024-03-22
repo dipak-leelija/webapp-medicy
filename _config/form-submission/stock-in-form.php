@@ -1,5 +1,7 @@
 <?php
 require_once dirname(dirname(__DIR__)).'/config/constant.php';
+require_once dirname(dirname(__DIR__)).'/config/service.const.php';
+
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
@@ -102,9 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $looselyPrice = '';
 
-                $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
-
-                if (in_array(strtolower($unit), $allowedUnits)) {
+                if (in_array(strtolower(trim($unit)), LOOSEUNITS)) {
                     $looselyCount = $weightage * ($qty + $freeQty);
                     $looselyPrice = ($mrp * $qty) / ($weightage * $qty);
                 } else {
@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 
-                $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), $unit, intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
+                $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), trim($unit), intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
                 // stockIn_Details_id
 
                 if ($addStockInDetails["result"]) {
@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $totalQty = intval($qty) + intval($freeQty);   // buy qantity + free qty
 
                     // ============ ADD TO CURRENT STOCK ============ 
-                    $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, intval($looselyCount), floatval($looselyPrice), intval($weightage), $unit, intval($totalQty), floatval($mrp), floatval($ptr), intval($gst), $addedBy, $addedOn, $adminId);
+                    $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, intval($looselyCount), floatval($looselyPrice), intval($weightage), trim($unit), intval($totalQty), floatval($mrp), floatval($ptr), intval($gst), $addedBy, $addedOn, $adminId);
                 }
 
             } //eof foreach
