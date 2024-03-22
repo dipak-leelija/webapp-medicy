@@ -34,12 +34,14 @@ $showDistributor = $showDistributor->data;
     <!-- <link rel="stylesheet" href="../css/font-awesome-6.1.1-pro.css"> -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
+    <!-- css for sweetalert2 -->
+    <script src="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css"></script>
+
     <!-- Custom styles for this template -->
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-return-item.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
-
-
+    
 </head>
 
 <body id="page-top">
@@ -113,7 +115,7 @@ $showDistributor = $showDistributor->data;
                                             <b> Select Distributor First </b>
                                         </div>
                                     </div>
-                                    <input class=" " type="text" id="product-id">
+                                    <input class="d-none" type="text" id="product-id">
                                 </div>
 
                                 <div class="col-md-2 col-12 mt-2 mt-md-0 mx-auto">
@@ -136,29 +138,29 @@ $showDistributor = $showDistributor->data;
 
                             <form id='stock-return-item-data'>
                                 <div class="row">
-                                    <div class="col-md-6 col-12 ">
+                                    <div class="col-md-5 col-12 ">
                                         <div class="row">
-                                            <div class="  col-md-6 col-12">
+                                            <div class="d-none col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="select-item-div">Selected Item Div</label>
-                                                <input class="upr-inp mb-1" id="select-item-div" readonly>
+                                                <input class="upr-inp" id="select-item-div" readonly>
                                             </div>
 
-                                            <div class="  col-md-6 col-12">
+                                            <div class="d-none col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="stokInDetailsId">Stock In Detaisl Id :</label>
-                                                <input class="upr-inp mb-1" id="stokInDetailsId" readonly>
+                                                <input class="upr-inp" id="stokInDetailsId" readonly>
                                             </div>
                                            
                                             <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="bill-number">Bill Number :</label>
-                                                <input class="upr-inp mb-1" id="bill-number" readonly>
+                                                <input class="upr-inp" id="bill-number" readonly>
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="batch-number">Batch Number :</label>
-                                                <input class="upr-inp mb-1" id="batch-number" readonly>
+                                                <input class="upr-inp" id="batch-number" readonly>
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="bill-date">Purchase Date :</label>
-                                                <input class="upr-inp mb-1" id="bill-date" readonly>
+                                                <input class="upr-inp" id="bill-date" readonly>
                                             </div>
 
                                             <!-- <div class="col-md-4 col-12">
@@ -180,11 +182,11 @@ $showDistributor = $showDistributor->data;
 
                                     </div>
 
-                                    <div class="col-md-6 col-12 mt-3">
+                                    <div class="col-md-7 col-12 mt-3">
                                         <!-- first row  -->
                                         <div class="row">
                                             
-                                            <div class="col-md-6 col-12">
+                                            <div class="col-md-3 col-12">
                                                 <label class="mb-0 mt-1" for="scheme">Weatage</label>
                                                 <input type="any" class="upr-inp" name="weatage" id="weatage" readonly>
                                             </div>
@@ -197,6 +199,11 @@ $showDistributor = $showDistributor->data;
                                             <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="ptr">PTR</label>
                                                 <input type="text" class="upr-inp" name="ptr" id="ptr" onkeyup="getBillAmount()" readonly>
+                                            </div>
+
+                                            <div class="col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="amount">Amount</label>
+                                                <input type="any" class="upr-inp" name="amount" id="amount" readonly>
                                             </div>
                                         </div>
                                         <!-- first row end  -->
@@ -212,7 +219,7 @@ $showDistributor = $showDistributor->data;
                                                 <input type="text" class="upr-inp" name="gst" id="gst" readonly>
                                             </div>
 
-                                            <div class="  col-md-3 col-6">
+                                            <div class="d-none col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="gstAmountPerQty">GST Amount Per Quantity</label>
                                                 <input type="text" class="upr-inp" name="gstAmountPerQty" id="gstAmountPerQty" readonly>
                                             </div>
@@ -238,37 +245,36 @@ $showDistributor = $showDistributor->data;
 
                                         <!-- third row  -->
                                         <div class="row mt-md-2">
+                                            
                                             <div class="col-md-3 col-6">
-                                                <label class="mb-0 mt-1" for="amount">Amount</label>
-                                                <input type="any" class="upr-inp" name="amount" id="amount" readonly>
-                                            </div>
-                                            <div class="col-md-3 col-6">
-                                                <label class="mb-0 mt-1" for="purchased-qty">StcokIn Qty: </label>
+                                                <label class="mb-0 mt-1" for="purchased-qty">StockIn Qty: </label>
                                                 <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
                                             </div>
 
-                                            <div class="  col-md-3 col-6">
+                                            <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="free-qty">Free Qty:</label>
                                                 <input type="text" class="upr-inp" name="free-qty" id="free-qty">
-                                            </div>
-                                            <div class="  col-md-3 col-6">
-                                                <label class="mb-0 mt-1" for="net-buy-qty">Net Buy Qty:</label>
-                                                <input type="text" class="upr-inp" name="net-buy-qty" id="net-buy-qty">
-                                            </div>
-
-                                            <div class="  col-md-3 col-6">
-                                                <label class="mb-0 mt-1" for="current-purchase-qty">Curretn P Qty:</label>
-                                                <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
-                                            </div>
-                                            <div class="col-md-3 col-6">
-                                                <label class="mb-0 mt-1" for="current-free-qty">Free Qty:</label>
-                                                <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
                                             </div>
 
                                             <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="current-qty">Live Net Qty:</label>
                                                 <input type="text" class="upr-inp" name="current-qty" id="current-qty">
                                             </div>
+
+                                            <div class="d-none col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="net-buy-qty">Net Buy Qty:</label>
+                                                <input type="text" class="upr-inp" name="net-buy-qty" id="net-buy-qty">
+                                            </div>
+
+                                            <div class="d-none col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="current-purchase-qty">Current P Qty:</label>
+                                                <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
+                                            </div>
+                                            <div class="d-none col-md-3 col-6">
+                                                <label class="mb-0 mt-1" for="current-free-qty">Current Free Qty:</label>
+                                                <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
+                                            </div>
+
                                         </div>
                                         <!-- ent fo third row -->
 
@@ -303,9 +309,9 @@ $showDistributor = $showDistributor->data;
                                                 <input type="text" class="upr-inp focus-border" name="return-free-qty" id="return-free-qty" value="" onkeyup="checkFQty(this.value);">
                                             </div>
 
-                                            <div class="  col-md-3 col-6">
+                                            <div class="d-none col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="return-gst-amount">Return GST Amount </label>
-                                                <input type="text" class="upr-inp focus-border" name="return-gst-amount" id="return-gst-amount" value="">
+                                                <input type="text" class="upr-inp focus-border" name="return-gst-amount" id="return-gst-amount" value="" readonly>
                                             </div>
 
                                             <div class="col-md-3 col-6">
@@ -440,6 +446,7 @@ $showDistributor = $showDistributor->data;
         <!-- Custom scripts for all pages-->
         <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
         <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+        <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
         <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
         <script src="<?= JS_PATH ?>purchase-return-item.js"></script>
 
