@@ -19,4 +19,32 @@ if (isset($_GET['currentQTY'])) {
     echo $qty;
 }
 
+
+
+// if (isset($_GET['currentQTY'])) {
+//     $stockInDetailsId = $_GET['currentQTY'];
+
+//     $currentQty = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
+//     if($currentQty == null){
+//         $qty = 0;
+//     }else{
+//         $qty = $currentQty->qty;
+//     }
+//     echo $qty;
+// }
+
+
+
+// if (isset($_GET['currentQTY'])) {
+//     $stockInDetailsId = $_GET['currentQTY'];
+
+//     $currentQty = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
+//     if($currentQty == null){
+//         $qty = 0;
+//     }else{
+//         $qty = $currentQty->qty;
+//     }
+//     echo $qty;
+// }
+
 ?>

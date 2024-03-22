@@ -45,13 +45,13 @@ class StockReturn extends DatabaseConnection
 
 
 
-    function showStockReturn($adminId='')
+    function showStockReturn($adminId = '')
     {
         try {
             $data = array();
-            if(empty($adminId)){
+            if (empty($adminId)) {
                 $sql  = "SELECT * FROM stock_return";
-            }else{
+            } else {
                 $sql  = "SELECT * FROM stock_return WHERE `admin_id` = '$adminId' ";
             }
             // $sql  = "SELECT * FROM stock_return";
@@ -166,9 +166,9 @@ class StockReturn extends DatabaseConnection
                 while ($result = $res->fetch_array()) {
                     $data[] = $result;
                 }
-                return json_encode(['status'=>'1', 'message'=>'data found', 'data'=>$data]);
+                return json_encode(['status' => '1', 'message' => 'data found', 'data' => $data]);
             } else {
-                return json_encode(['status'=>'0', 'message'=>'no data found', 'data'=>'']);
+                return json_encode(['status' => '0', 'message' => 'no data found', 'data' => '']);
             }
         } catch (Exception $e) {
             if ($e) {
@@ -194,7 +194,8 @@ class StockReturn extends DatabaseConnection
 
 
 
-    function stockReturnStatus($returnId, $statusValue){
+    function stockReturnStatus($returnId, $statusValue)
+    {
         try {
 
             $sql  = "UPDATE stock_return SET `status` = ? WHERE `id` = ?";
@@ -212,7 +213,7 @@ class StockReturn extends DatabaseConnection
         } catch (Exception $e) {
             return false;
         }
-    } 
+    }
 
 
     //stockReturn Edit\update function...........
@@ -355,13 +356,30 @@ class StockReturn extends DatabaseConnection
 
     function showStockReturnDataByStokinId($stockInDetailsId)
     {
-        $data = array();
-        $sql  = "SELECT * FROM stock_return_details WHERE `stokIn_details_id` = '$stockInDetailsId'";
-        $res  = $this->conn->query($sql);
-        while ($result = $res->fetch_array()) {
-            $data[] = $result;
+        try {
+            $data = array();
+            $sql  = "SELECT * FROM stock_return_details WHERE `stokIn_details_id` = '$stockInDetailsId'";
+            $stmt  = $this->conn->prepare($sql);
+
+            if(!$stmt){
+                throw new Exception("Failed to prepare the statement.");
+            }
+
+            $stmt->execute();
+            $res = $stmt->get_result();
+
+            if($res->num_rows > 0){
+                while ($result = $res->fetch_array()) {
+                    $data[] = $result;
+                }
+                return json_encode(['status'=>'1', 'data'=>$data]);
+            }else{
+                return json_encode(['status'=>'0', 'data'=>'']);
+            }
+            $stmt->close();
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
-        return $data;
     }
 
 

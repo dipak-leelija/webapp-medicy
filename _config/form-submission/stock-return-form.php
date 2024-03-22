@@ -50,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         
         $returnResult = $returned['result'];
 
-        if($returnResult == 'true'){
+        // $returnResult = true;
+        if($returnResult == true){
 
             //arrays
             $stokInDetailsId = $_POST['stok-in-details-id'];
@@ -66,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $setof          = $_POST['setof'];
             
             $unit           = preg_replace('/[0-9]/','',$setof);
+            // print_r($unit);
             $weightage      = preg_replace('/[a-z-A-Z]/','',$setof);
 
             $purchasedQty   = $_POST['purchasedQty'];
@@ -77,7 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $discParcent    = preg_replace('/[%]/','',$_POST['disc-percent']);
 
             $returnQty      = $_POST['return-qty'];
+            // echo "<br>Return qty : ";
+            // print_r($returnQty);
             $returnFQty     = $_POST['return-free-qty'];
+            // echo "<br>Return free qty : ";
+            // print_r($returnFQty);
             $refundAmount   = $_POST['refund-amount'];
 
             
@@ -86,19 +92,29 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         
             for ($i=0; $i < $ids; $i++) { 
                 $currentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]));
+
+                // echo "<br>";
+                // print_r($currentStockData);
+
                 $wholeQty = $currentStockData->qty;
                 $looseQty = $currentStockData->loosely_count;
 
-                if ($wholeQty >= $totalReturnQty) {
+                // peritem toral return qty (return qantity + free return qantity)
+                $perItemTotalReturnQty = intval($returnQty) + intval($returnFQty);
+
+                if ($wholeQty >= $perItemTotalReturnQty) {
                 
                     if (in_array(strtolower($unit[$i]), $allowedUnits)){
-                        $updatedLooseQty = intval($looseQty) - ($totalReturnQty * $weightage[$i]);
+                        $updatedLooseQty = intval($looseQty) - ($perItemTotalReturnQty * $weightage[$i]);
                         $updatedQty = intdiv($updatedLooseQty, $weightage[$i]);
                     }else{
                         $updatedLooseQty = 0;
-                        $updatedQty = intval($wholeQty) - $totalReturnQty;
+                        $updatedQty = intval($wholeQty) - $perItemTotalReturnQty;
                     }
                 
+                    // echo "<br><br>";
+                    // echo $updatedQty;
+
                     $updatedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
 
                     // ============== update current stock function =================
@@ -115,6 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 
+// exit;
 $response = url_enc(json_encode(['stock_return_id' => $stockReturnId]));
 header("Location: ".URL."stock-return-invoice.php?data=".$response);
 exit;
