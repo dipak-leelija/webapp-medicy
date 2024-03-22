@@ -64,14 +64,12 @@ distributorInput.addEventListener("keyup", () => {
         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
         request.open("GET", distributorURL, false);
         request.send(null);
-        // console.log();
         list.innerHTML = request.responseText
     } else if (distributorInput.value == '') {
 
         let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
         request.open("GET", distributorURL, false);
         request.send(null);
-        // console.log();
         list.innerHTML = request.responseText
     } else {
 
@@ -135,7 +133,6 @@ function searchItem(input) {
             }
         }
 
-        console.log("hello check");
     } else {
         document.getElementById("product-select").style.display = "none";
         document.getElementById('stock-return-item-data').reset();
@@ -149,10 +146,10 @@ const setMode = (returnMode) => {
 
 
 // ======= sweet alert call for item select =======
-const qantityAlert = (stockInQty, stockOutQty) =>{
-    console.log(stockInQty);
-    console.log(stockOutQty);
-}
+// const qantityAlert = (stockInQty, stockOutQty) =>{
+//     console.log(stockInQty);
+//     console.log(stockOutQty);
+// }
 
 // =============== item details fetch ===============
 const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, billdate, billNumber, t) => {
@@ -372,7 +369,7 @@ const checkFQty = (returnFqty) => {
     var CurrentFQty = document.getElementById("current-free-qty").value;
 
     if (CurrentFQty < returnFqty) {
-        swal("Oops", "Return Quantity must be leser than Current Free Qantity!", "error")
+        Swal.fire("Oops", "Return Quantity must be leser than Current Free Qantity!", "error")
         document.getElementById("return-free-qty").value = 0;
     }
 }
@@ -381,42 +378,56 @@ const checkFQty = (returnFqty) => {
 
 //==== refund calculation area =============
 const getRefund = (returnQty) => {
-    // console.log("check return qty : "+returnQty);
-    returnQty = parseInt(returnQty);
-    let currentQTY = document.getElementById("current-purchase-qty").value;
 
-    if (parseInt(currentQTY) < parseInt(returnQty)) {
-
-        swal("Oops", "Return Quantity must be leser than Current Buy Qantity!", "error")
-        document.getElementById("return-qty").value = 0;
-    }
-
-    if (isNaN(returnQty)) {
-        document.getElementById("refund-amount").value = '';
-        return;
-    }
-    if (returnQty != ' ') {
-        let ptr = document.getElementById("ptr").value;
-        let gst = document.getElementById("gst").value;
-        let discParcent = document.getElementById("discount").value;
-        let subtotal = (parseFloat(ptr) - (parseFloat(ptr) * parseFloat(discParcent) / 100)) * returnQty;
-        let refund = subtotal + (subtotal * (parseFloat(gst) / 100));
-
-        document.getElementById("refund-amount").value = refund.toFixed(2);
-
-
-    } else if (parseInt(returnQty) == 0) {
-        document.getElementById("refund-amount").value = '0';
+    let currentPurchaseQty = document.getElementById('current-purchase-qty').value;
+    if (parseInt(returnQty) > parseInt(currentPurchaseQty)) {
+        Swal.fire({
+            title: "Alert",
+            text: "Return qantity cannot exceed current purchase stock qantity.",
+            icon: "error",
+            showDenyButton: false,
+            showCancelButton: false,
+            confirmButtonText: "Ok",
+        }).then((result) => {
+            document.getElementById('return-qty').value = '';
+        });
     } else {
-        document.getElementById("refund-amount").value = '';
+
+        returnQty = parseInt(returnQty);
+        let currentQTY = document.getElementById("current-purchase-qty").value;
+
+        if (parseInt(currentQTY) < parseInt(returnQty)) {
+
+            Swal.fire("Oops", "Return Quantity must be leser than Current Buy Qantity!", "error")
+            document.getElementById("return-qty").value = 0;
+        }
+
+        if (isNaN(returnQty)) {
+            document.getElementById("refund-amount").value = '';
+            return;
+        }
+        if (returnQty != ' ') {
+            let ptr = document.getElementById("ptr").value;
+            let gst = document.getElementById("gst").value;
+            let discParcent = document.getElementById("discount").value;
+            let subtotal = (parseFloat(ptr) - (parseFloat(ptr) * parseFloat(discParcent) / 100)) * returnQty;
+            let refund = subtotal + (subtotal * (parseFloat(gst) / 100));
+
+            document.getElementById("refund-amount").value = refund.toFixed(2);
+
+        } else if (parseInt(returnQty) == 0) {
+            document.getElementById("refund-amount").value = '0';
+        } else {
+            document.getElementById("refund-amount").value = '';
+        }
+
+        // let gstPercetn = document.getElementById("");
+
+        let returnGstAmount = document.getElementById('gstAmountPerQty').value;
+        returnGstAmount = returnGstAmount * returnQty;
+        returnGstAmount = returnGstAmount.toFixed(2);
+        document.getElementById('return-gst-amount').value = returnGstAmount;
     }
-
-    // let gstPercetn = document.getElementById("");
-
-    let returnGstAmount = document.getElementById('gstAmountPerQty').value;
-    returnGstAmount = returnGstAmount * returnQty;
-    returnGstAmount = returnGstAmount.toFixed(2);
-    document.getElementById('return-gst-amount').value = returnGstAmount;
 }
 
 
@@ -458,7 +469,6 @@ function addData() {
     var freeQty = document.getElementById("free-qty");
     var currentQty = document.getElementById("current-qty");
     var returnQty = document.getElementById("return-qty");
-    console.log("return qty : "+returnQty.value);
     var returnFreeQty = document.getElementById("return-free-qty");
 
     var basePrice = document.getElementById("base");
@@ -473,45 +483,45 @@ function addData() {
 
 
     if (distId.value == "") {
-        swal("Oops", "Please select Distributor!", "error");
+        Swal.fire("Oops", "Please select Distributor!", "error");
         distId.focus();
         return;
     }
 
     if (batchNumber.value == "") {
-        swal("Oops", "Please select Batch Number!", "error");
+        Swal.fire("Oops", "Please select Batch Number!", "error");
         batchNumber.focus();
         return;
     }
     if (billDate.value == "") {
-        swal("Oops", "Unable to Select Bill Date!", "error");
+        Swal.fire("Oops", "Unable to Select Bill Date!", "error");
         billDate.focus();
         return;
     }
     if (returnMode.value == "") {
-        swal("Oops", "Please select your refund mode!", "error");
+        Swal.fire("Oops", "Please select your refund mode!", "error");
         returnMode.focus();
         return;
     }
 
 
     if (productName == "") {
-        swal("Oops", "Product name can't find!", "error");
+        Swal.fire("Oops", "Product name can't find!", "error");
         return;
     }
     if (productId.value == "") {
-        swal("Oops", "Product name can't be empty!", "error");
+        Swal.fire("Oops", "Product name can't be empty!", "error");
         productId.focus();
         return;
     }
     if (expDate.value == "") {
-        swal("Oops", "Unable to get Expiry Date!", "error");
+        Swal.fire("Oops", "Unable to get Expiry Date!", "error");
         expDate.focus();
         return;
     }
     if (weatage.value == "") {
         weatage.focus();
-        swal("Oops", "Unable to get product weatage!", "error");
+        Swal.fire("Oops", "Unable to get product weatage!", "error");
         return;
     }
     // if (unit.value == "") {
@@ -521,63 +531,63 @@ function addData() {
     // }
     if (ptr.value == "") {
         ptr.focus();
-        swal("Oops", "Unable to get product ptr!", "error");
+        Swal.fire("Oops", "Unable to get product ptr!", "error");
         return;
     }
     if (discount.value == "") {
         discount.focus();
-        swal("Oops", "Unable to get product discount!", "error");
+        Swal.fire("Oops", "Unable to get product discount!", "error");
         return;
     }
     if (gst.value == "") {
         gst.focus();
-        swal("Oops", "Unable to get product GST!", "error");
+        Swal.fire("Oops", "Unable to get product GST!", "error");
         return;
     }
     if (taxable.value == "") {
         taxable.focus();
-        swal("Oops", "Unable to get product tax amount!", "error");
+        Swal.fire("Oops", "Unable to get product tax amount!", "error");
         return;
     }
     if (mrp.value == "") {
         mrp.focus();
-        swal("Oops", "Unable to get product MRP!", "error");
+        Swal.fire("Oops", "Unable to get product MRP!", "error");
         return;
     }
     if (amount.value == "") {
         amount.focus();
-        swal("Oops", "Unable to get product amount!", "error");
+        Swal.fire("Oops", "Unable to get product amount!", "error");
         return;
     }
     if (purchasedQty.value == "") {
         purchasedQty.focus();
-        swal("Oops", "Unable to get product purchased quantity!", "error");
+        Swal.fire("Oops", "Unable to get product purchased quantity!", "error");
         return;
     }
     if (freeQty.value == "") {
         freeQty.focus();
-        swal("Oops", "Unable to get product free quantity!", "error");
+        Swal.fire("Oops", "Unable to get product free quantity!", "error");
         return;
     }
     if (currentQty.value == "") {
         currentQty.focus();
-        swal("Oops", "Unable to get product current quantity!", "error");
+        Swal.fire("Oops", "Unable to get product current quantity!", "error");
         return;
     }
     if (returnQty.value == "") {
         returnQty.focus();
-        swal("Oops", "Please Enter How many Quantity You Want to Return!", "error");
+        Swal.fire("Oops", "Please Enter How many Quantity You Want to Return!", "error");
         return;
     }
     if (returnFreeQty.value == "") {
         returnQty.focus();
-        swal("Oops", "Free Quantity Field can not be blank!", "error");
+        Swal.fire("Oops", "Free Quantity Field can not be blank!", "error");
         return;
     }
 
     if (refundAmount.value == "") {
         refundAmount.focus();
-        swal("Oops", "Unable to get Refund Amount!", "error");
+        Swal.fire("Oops", "Unable to get Refund Amount!", "error");
         return;
     }
 
@@ -611,7 +621,6 @@ function addData() {
     //////////////////// onclik handler data \\\\\\\\\\\\\\\\\\\
     var divElement = document.getElementById(seletedItemDiv);
     originalClickHandler = divElement.onclick;
-    // console.log("original click handeler : "+`${originalClickHandler}`);
     
     // =========================================================
 
@@ -856,10 +865,7 @@ const deleteData = (slno, itemQty, gstPerItem, refundPerItem, divId, handelerDat
     }
 
     rowAdjustment(delRow);
-    // console.log(divId);
-
-    console.log("on del call : "+handelerData);
-
+    
     divOnclikActive(divId, handelerData);
 
     chekForm();
@@ -885,11 +891,8 @@ function rowAdjustment(delRow) {
 
 const editItem = (tData, onClickData) => {
 
-    // console.log(onClickData);
-
     if (document.getElementById('product-id').value == '') {
         var tData = JSON.parse(tData);
-        // console.log(tData.handelerData);
 
         document.getElementById("select-item-div").value = tData.seletedItemDiv;
 
@@ -931,6 +934,6 @@ const editItem = (tData, onClickData) => {
 
         chekForm();
     } else {
-        swal("Error", "Add or remove Previous data first.", "error");
+        Swal.fire("Error", "Add or remove Previous data first.", "error");
     }
 }
