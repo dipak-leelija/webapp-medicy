@@ -6,6 +6,7 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/user-details.inc.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'stockOut.class.php';
 require_once CLASS_DIR . 'salesReturn.class.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'itemUnit.class.php';
@@ -20,6 +21,7 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 
 //  INSTANTIATING CLASS
 $SalesReturn     = new SalesReturn;
+$StockOut        = new StockOut;
 $Products        = new Products();
 $ItemUnit        = new ItemUnit();
 $PackagingUnits  = new PackagingUnits();
@@ -189,7 +191,6 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 $totalMrp = 0;
                 $subTotal = floatval(00.00);
                 foreach ($salesReturnDetails as $detail) {
-
                     // print_r($detail);
                     //=========================
                     $checkTable = json_decode($Products->productExistanceCheck($detail['product_id']));
@@ -227,17 +228,16 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
                     }
 
-                    // $itemQty = $detail['loosely_count']/$packQty;
+                    $col1 = 'invoice_id';
+                    $col2 = 'item_id';
+                    $stockOutData = $StockOut->stokOutDetailsDataByTwoCol($col1, $detail['invoice_id'], $col2, $detail['item_id']);
+                    // print_r($stockOutData);
 
-                    // $itemQty = intdiv($detail['return_qty'], $packQty);
-
-                    // // ===================================================
-
-                    // if ($detail['return_qty'] != 0) {
-                    //     $itemSellQty = $detail['return_qty'] . ' ' . $detail['unit'];
-                    // } else {
-                    //     $itemSellQty = $detail['qty'];
-                    // }
+                    if($stockOutData[0]['loosely_count'] != 0){
+                        $purchasedQty = $stockOutData[0]['loosely_count'];
+                    }else{
+                        $purchasedQty = $stockOutData[0]['qty'];
+                    }
 
                     // ================== TOTAL MRP CALCULATION AREA =======================
                     $totalMrp = floatval($totalMrp) + floatval($detail['mrp']);
@@ -262,7 +262,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                                 <small>' . $detail['weatage'] . '</small>
                             </div>
                             <div class="col-sm-1 text-end">
-                                <small>' . $detail['return_qty'] . '</small>
+                                <small>' . $purchasedQty . '</small>
                             </div>
                             <div class="col-sm-1 text-end">
                                 <small>' . $detail['return_qty'] . '</small>

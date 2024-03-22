@@ -247,6 +247,7 @@ if (!empty($currentStockGroup)) {
                                                 // ==== fetch product details from product table ====
                                                 $showProducts = json_decode($Products->showProductsByIdOnUser($productId, $adminId, $flag));
                                                 // print_r($showProducts);
+                                                // echo "<br>";
                                                 $showProducts = $showProducts->data;
 
                                                 if (isset($showProducts[0]->manufacturer_id)) {
