@@ -28,7 +28,7 @@ $Patients        = new Patients;
 $ClinicInfo  = new HealthCare;
 // echo $healthCareLogo;
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) && !empty($_GET['id'])) {
 
     $invoiceId = url_dec($_GET['id']);
     // echo $invoiceId;
@@ -48,6 +48,10 @@ if (isset($_GET['id'])) {
         $details = json_decode($details, true);
         // print_r($details);
     }
+
+}else {
+    echo 'Invalid Request!'; 
+    die("404");
 }
 
 if ($customerId != 'Cash Sales') {
@@ -125,7 +129,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                             <?php echo $reffby; ?></small></p>
                 </div>
             </div>
-            <hr class="my-0" style="height:3px;">
+            <hr class="my-0" style="height:2px;">
 
             <div class="row">
                 <!-- table heading -->
@@ -259,7 +263,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             </div>
 
             <div class="footer">
-                <hr calss="my-0" style="height: 3px;">
+                <hr calss="my-0" style="height: 2px;">
                 <!-- table total calculation -->
 
                 <div class="row my-0">

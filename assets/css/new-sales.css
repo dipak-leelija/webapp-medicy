@@ -197,16 +197,45 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 #searched-items {
-    z-index: 9;
-    background: rgb(255, 255, 255);
-    /* margin: 0 auto; */
+    max-height: 15rem;
+    max-width: 100%;
+    overflow: auto;
+    transition: 30ms;
+    box-shadow: 0 5px 8px rgb(0 0 6 / 28%);
+    background: #FFFFFF;
     border-radius: 0 0 3px 3px;
     position: absolute;
     margin-top: 0.1rem;
     transition: 1.1s ease;
     width: 40rem;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    z-index: 999;
 }
+#searched-batchNo{
+    position: absolute;
+    max-height: 7rem;
+    max-width: 30rem;
+    margin-left: 19rem;
+    overflow: auto;
+    transition: 30ms;
+    box-shadow: 0 5px 8px rgb(0 0 6 / 28%);
+    z-index: 999;
+}
+.searched-list{
+    cursor: pointer;
+}
+/* #searched-batchNo:after{
+    content:'';
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-top: 25px solid #6A0136;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+} */
 
 #exta-details {
     z-index: 0;

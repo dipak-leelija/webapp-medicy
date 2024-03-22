@@ -16,7 +16,6 @@ $doctor = json_decode($doctor , true);
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -30,7 +29,7 @@ $doctor = json_decode($doctor , true);
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
     <!-- Custom CSS  -->
     <link href="<?= CSS_PATH ?>new-sales.css" rel="stylesheet">
 
@@ -235,10 +234,10 @@ $doctor = json_decode($doctor , true);
                                         </div>
 
                                         <div class="d-flex col-md-12">
-                                            <div class="p-2 bg-light col-md-6" id="searched-items" style="max-height: 15rem; max-width: 100%; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">
+                                            <div class="p-2 bg-light col-md-6" id="searched-items" style="display: none;">
                                             </div>
 
-                                            <div class="p-2 bg-light col-md-3" id="searched-batchNo" style="max-height: 7rem; max-width: 30rem; margin-left: 19rem; overflow: auto; display: none; transition: 30ms; box-shadow: 0 5px 8px rgb(0 0 6 / 28%);">
+                                            <div class="p-2 bg-light col-md-3" id="searched-batchNo" style="display: none;">
                                             </div>
                                         </div>
                                     </div>

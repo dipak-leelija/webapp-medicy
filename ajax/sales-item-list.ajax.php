@@ -83,15 +83,12 @@ if ($searchResult['status']) {
 
     ?>
         <div class="row mx-2 p-1 border-bottom searched-list" id="<?php echo $productId ?>" value1="<?php echo $productName ?>" value2="<?php echo $stockQty ?>" onclick="itemsBatchDetails('<?php echo $productId ?>','<?php echo $productName ?>','<?php echo $stockQty ?>');">
-            <div class="col-md-6"><?php echo $productName, $power ?><br>
-                <small><?php echo $manufacturerName ?></small>
+            <div class="col-md-6"><?= $productName, $power ?><br>
+                <small><?= $manufacturerName ?></small>
             </div>
-            <div class="col-md-3"><small><?php echo $packOf ?></small></div>
-            <div class="col-md-3"><small><?php echo $stockQty;
-                                            if ($looseQty > 0) {
-                                                echo "($looseQty)";
-                                            }
-                                            echo "" ?> </small></div>
+            <div class="col-md-3"><small><?= $packOf ?></small></div>
+            <div class="col-md-3"><small><?= $stockQty;
+                                            $looseQty > 0 ? "($looseQty)" : ''; ?> </small></div>
         </div>
 <?php
 
