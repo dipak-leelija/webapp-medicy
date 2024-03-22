@@ -69,28 +69,29 @@ class Products extends DatabaseConnection
 
 
     /// ===========product add by superAdmin=========///
-    function addProductBySuperAdmin($producid, $productName, $productComp1, $productComp2, $hsnNumber, $type, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $addedBy, $verifyStatus, $addedOn){
-    try {
-        $insertProducts = "INSERT INTO `products` (`product_id`, `name`, `comp_1`, `comp_2`, `hsno_number`, `type`, `packaging_type`, `power`, `unit_quantity`, `unit_id`, `unit`, `manufacturer_id`, `mrp`, `gst`, `dsc`, `added_by`, `verified`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    function addProductBySuperAdmin($producid, $productName, $productComp1, $productComp2, $hsnNumber, $type, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $addedBy, $verifyStatus, $addedOn)
+    {
+        try {
+            $insertProducts = "INSERT INTO `products` (`product_id`, `name`, `comp_1`, `comp_2`, `hsno_number`, `type`, `packaging_type`, `power`, `unit_quantity`, `unit_id`, `unit`, `manufacturer_id`, `mrp`, `gst`, `dsc`, `added_by`, `verified`, `added_on`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $stmt = $this->conn->prepare($insertProducts);
-        $stmt->bind_param("ssssssissisissssis", $producid, $productName, $productComp1, $productComp2, $hsnNumber, $type, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $addedBy, $verifyStatus, $addedOn);
+            $stmt = $this->conn->prepare($insertProducts);
+            $stmt->bind_param("ssssssissisissssis", $producid, $productName, $productComp1, $productComp2, $hsnNumber, $type, $packagingType, $medicinePower, $quantity, $qtyUnit, $itemUnit, $manufacturerId, $mrp, $gst, $productDesc, $addedBy, $verifyStatus, $addedOn);
 
-        if ($stmt->execute()) {
-            // Insert successful
-            $stmt->close();
-            
-            // Return additional information if needed
-            return json_encode(['status' => '1', 'message' => 'Product added successfully', 'productId' => $producid]);
-        } else {
-            // Insert failed
-            throw new Exception("Error inserting data into the database: " . $stmt->error);
+            if ($stmt->execute()) {
+                // Insert successful
+                $stmt->close();
+
+                // Return additional information if needed
+                return json_encode(['status' => '1', 'message' => 'Product added successfully', 'productId' => $producid]);
+            } else {
+                // Insert failed
+                throw new Exception("Error inserting data into the database: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            // Handle the exception, log the error, or return an error message as needed
+            return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(),]);
         }
-    } catch (Exception $e) {
-        // Handle the exception, log the error, or return an error message as needed
-        return json_encode(['status' => '0', 'message' => 'Error: ' . $e->getMessage(),]);
     }
-}
 
 
 
@@ -189,7 +190,8 @@ class Products extends DatabaseConnection
 
 
 
-    function showProducts(){
+    function showProducts()
+    {
         try {
             $selectProduct = "SELECT * FROM products LIMIT 20";
             $selectProductQuery = $this->conn->query($selectProduct);
@@ -207,7 +209,7 @@ class Products extends DatabaseConnection
         } catch (Exception $e) {
             return error_log("Error in showProducts function: " . $e->getMessage());
         }
-    } 
+    }
 
 
 
@@ -215,29 +217,30 @@ class Products extends DatabaseConnection
 
 
 
-    function productExistanceCheck($prodId){
+    function productExistanceCheck($prodId)
+    {
         try {
             $slectProduct = "SELECT `name` FROM products WHERE product_id = ?";
             $stmt = $this->conn->prepare($slectProduct);
-            
-            $stmt->bind_param("s", $prodId); 
-            
+
+            $stmt->bind_param("s", $prodId);
+
             $stmt->execute();
-    
+
             $result = $stmt->get_result();
-    
+
             if ($result->num_rows == 0) {
-                return json_encode(['status'=>'0', 'data'=>'']); 
+                return json_encode(['status' => '0', 'data' => '']);
             } else {
-                return json_encode(['status'=>'1', 'data'=>$result]); 
+                return json_encode(['status' => '1', 'data' => $result]);
             }
         } catch (Exception $e) {
-            return json_encode(['status'=>' ', 'data'=>$e->getMessage()]); 
+            return json_encode(['status' => ' ', 'data' => $e->getMessage()]);
         } finally {
             $stmt->close();
         }
     }
-    
+
 
 
 
@@ -460,6 +463,10 @@ class Products extends DatabaseConnection
         return 0;
     }
 
+
+
+
+
     function showProductNameById($productId)
     {
         try {
@@ -475,8 +482,29 @@ class Products extends DatabaseConnection
             $result = $stmt->get_result();
 
             if ($result->num_rows == 0) {
-                $stmt->close();
-                return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => null]);
+                $selectProductNameFromRequest = "SELECT name FROM product_request WHERE product_id = ?";
+                $stmt2 = $this->conn->prepare($selectProductNameFromRequest);
+
+                if (!$stmt2) {
+                    throw new Exception("Statement2 preparation failed: " . $this->conn->error);
+                }
+
+                $stmt2->bind_param("s", $productId);
+                $stmt2->execute();
+                $result = $stmt2->get_result();
+
+                if($result->num_rows == 0){
+                    $stmt->close();
+                    return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => null]);
+                } else {
+                    $data = array();
+                    while ($row = $result->fetch_assoc()) {
+                        $data = $row;
+                    }
+                    $stmt->close();
+                    return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
+                }
+
             } else {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
@@ -498,7 +526,8 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByIdOnUser($productId, $adminId, $editReqFlag, $prodReqStatus='', $oldProdFlag=''){
+    function showProductsByIdOnUser($productId, $adminId, $editReqFlag, $prodReqStatus = '', $oldProdFlag = '')
+    {
         $productData = array();
         $productReqData = array();
         try {
@@ -518,7 +547,6 @@ class Products extends DatabaseConnection
                     $productData[] = $row;
                 }
                 $prodStmt->close();
-
             } else {
 
                 $selectProductRequest = "SELECT * FROM product_request WHERE product_id = ? AND admin_id = ? AND (old_prod_flag = 1 OR prod_req_status = 0)";
@@ -818,7 +846,8 @@ class Products extends DatabaseConnection
 
 
 
-    function showProductsByTable($table, $data){
+    function showProductsByTable($table, $data)
+    {
         try {
             $slectProduct        = "SELECT * FROM products WHERE `$table` = ?";
             $stmt = $this->conn->prepare($slectProduct);
@@ -826,7 +855,7 @@ class Products extends DatabaseConnection
             $stmt->execute();
             $slectProductQuery = $stmt->get_result();
 
-            $resultData = []; 
+            $resultData = [];
 
             if ($slectProductQuery->num_rows > 0) {
                 while ($result = $slectProductQuery->fetch_assoc()) {
@@ -867,10 +896,11 @@ class Products extends DatabaseConnection
 
 
 
-    function modifyProductByColData($prodId, $col1, $data1, $updatedBy, $updatedOn, $col2 = null, $data2 = null, $col3 = null, $data3 = null){
+    function modifyProductByColData($prodId, $col1, $data1, $updatedBy, $updatedOn, $col2 = null, $data2 = null, $col3 = null, $data3 = null)
+    {
         try {
             $updateProduct = "UPDATE `products` SET `$col1`=?, `updated_by`=?, `updated_on`=?, `admin_id`=?";
-    
+
             // Append additional columns and parameters if provided
             $bindTypes = "ssss";
             $bindParams = array($data1, $updatedBy, $updatedOn, $prodId);
@@ -885,11 +915,11 @@ class Products extends DatabaseConnection
                 $bindParams[] = $data3;
             }
             $updateProduct .= " WHERE `product_id`=?";
-    
+
             // Prepare and execute the statement
             $stmt = $this->conn->prepare($updateProduct);
             $stmt->bind_param($bindTypes, ...$bindParams);
-    
+
             if ($stmt->execute()) {
                 $stmt->close();
                 return json_encode(['status' => '1', 'message' => 'success']);
@@ -900,7 +930,7 @@ class Products extends DatabaseConnection
             return json_encode(['status' => '0', 'message' => 'error', 'details' => $e->getMessage()]);
         }
     }
-    
+
 
 
 

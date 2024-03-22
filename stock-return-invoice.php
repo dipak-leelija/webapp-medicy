@@ -26,7 +26,7 @@ if (isset($_GET['data'])) {
    $stockReturnId   = $reponse->stock_return_id;
     if($stockReturnId) {
         $returnResponse = json_decode($StockReturn->showStockReturnById($stockReturnId));
-
+        // print_r($returnResponse);
         if ($returnResponse->status == 1) {
 
             $returnData     = $returnResponse->data[0];
@@ -37,7 +37,7 @@ if (isset($_GET['data'])) {
             $refund         = $returnData->refund_amount;
             $itemQty        = $returnData->items;
             $distributorId  = $returnData->distributor_id;
-            $returnData->bill_no;
+            // $billNo         = $returnData->bill_no;
 
             $distributorResponse = json_decode($Distributor->showDistributorById($distributorId));
 
