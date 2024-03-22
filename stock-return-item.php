@@ -184,14 +184,9 @@ $showDistributor = $showDistributor->data;
                                         <!-- first row  -->
                                         <div class="row">
                                             
-                                            <div class="col-md-3 col-6">
+                                            <div class="col-md-6 col-12">
                                                 <label class="mb-0 mt-1" for="scheme">Weatage</label>
                                                 <input type="any" class="upr-inp" name="weatage" id="weatage" readonly>
-                                            </div>
-
-                                            <div class="col-md-3 col-6">
-                                                <label class="mb-0 mt-1" for="unit"> Unit</label>
-                                                <input type="text" class="upr-inp" id="unit" value="" readonly>
                                             </div>
 
                                             <div class="col-md-3 col-6">

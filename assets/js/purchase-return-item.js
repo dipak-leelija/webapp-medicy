@@ -199,12 +199,10 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
         // alert(xmlhttp.responseText);
 
         //==================== Unit ====================
-        let unitUrl = `ajax/stockIn.all.ajax.php?unit=${stokInDetialsId}`;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
-        xmlhttp.open("GET", unitUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("unit").value = xmlhttp.responseText;
+        // let unitUrl = `ajax/stockIn.all.ajax.php?unit=${stokInDetialsId}`;
+        // xmlhttp.open("GET", unitUrl, false);
+        // xmlhttp.send(null);
+        // document.getElementById("unit").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
         //==================== PTR ====================
@@ -446,7 +444,7 @@ function addData() {
     // var mfdDate = document.getElementById("mfd-date");
     var expDate = document.getElementById("exp-date");
     var weatage = document.getElementById("weatage");
-    var unit = document.getElementById("unit");
+    // var unit = document.getElementById("unit");
     var ptr = document.getElementById("ptr");
     var discount = document.getElementById("discount");
     var gst = document.getElementById("gst");
@@ -516,11 +514,11 @@ function addData() {
         swal("Oops", "Unable to get product weatage!", "error");
         return;
     }
-    if (unit.value == "") {
-        unit.focus();
-        swal("Oops", "Unable to get product unit!", "error");
-        return;
-    }
+    // if (unit.value == "") {
+    //     unit.focus();
+    //     swal("Oops", "Unable to get product unit!", "error");
+    //     return;
+    // }
     if (ptr.value == "") {
         ptr.focus();
         swal("Oops", "Unable to get product ptr!", "error");
@@ -641,7 +639,7 @@ function addData() {
                         <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3" id="row-${slControl}-col-7">
-                        <input class="col table-data w-4r" type="text" name="setof[]" value="${weatage.value}${unit.value}" readonly  style="text-align: start; font-size:0.7rem;; padding-top: 0.7rem;">
+                        <input class="col table-data w-4r" type="text" name="setof[]" value="${weatage.value}" readonly  style="text-align: start; font-size:0.7rem;; padding-top: 0.7rem;">
                     </td>
                     <td class="p-0 pt-3" id="row-${slControl}-col-8">
                         <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
@@ -713,7 +711,7 @@ function addData() {
             // mfdDate: mfdDate.value,
             expDate: expDate.value,
             weatage: weatage.value,
-            unit: unit.value,
+            // unit: unit.value,
             mrp: mrp.value,
             ptr: ptr.value,
             discount: discount.value,
