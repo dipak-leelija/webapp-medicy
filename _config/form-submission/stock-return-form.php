@@ -87,14 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $refundAmount   = $_POST['refund-amount'];
 
             
-
-
-        
             for ($i=0; $i < $ids; $i++) { 
                 $currentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]));
-
-                // echo "<br>";
-                // print_r($currentStockData);
 
                 $wholeQty = $currentStockData->qty;
                 $looseQty = $currentStockData->loosely_count;
@@ -131,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 }
 
-// exit;
+exit;
 $response = url_enc(json_encode(['stock_return_id' => $stockReturnId]));
 header("Location: ".URL."stock-return-invoice.php?data=".$response);
 exit;
