@@ -369,7 +369,7 @@ const checkFQty = (returnFqty) => {
     var CurrentFQty = document.getElementById("current-free-qty").value;
 
     if (CurrentFQty < returnFqty) {
-        Swal.fire("Oops", "Return Quantity must be leser than Current Free Qantity!", "error")
+        Swal.fire("Oops", "Return Quantity must be leser than Current Free Qantity! Possible return free qutantity is "+CurrentFQty, "error")
         document.getElementById("return-free-qty").value = 0;
     }
 }
@@ -383,15 +383,14 @@ const getRefund = (returnQty) => {
     if (parseInt(returnQty) > parseInt(currentPurchaseQty)) {
         Swal.fire({
             title: "Alert",
-            text: "Return qantity cannot exceed current purchase stock qantity.",
+            text: "Return quantity cannot exceed current purchase stock quantity. Maximum possible return quantity is " + currentPurchaseQty,
             icon: "error",
-            showDenyButton: false,
-            showCancelButton: false,
             confirmButtonText: "Ok",
         }).then((result) => {
             document.getElementById('return-qty').value = '';
         });
-    } else {
+    }
+     else {
 
         returnQty = parseInt(returnQty);
         let currentQTY = document.getElementById("current-purchase-qty").value;
