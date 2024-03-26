@@ -393,6 +393,40 @@ class StockReturn extends DatabaseConnection
 
 
 
+
+
+    function showStockReturnDataByStokinIdasArray($stockInDetailsId)
+    {
+        try {
+            $data = array();
+            $sql  = "SELECT * FROM stock_return_details WHERE `stokIn_details_id` = '$stockInDetailsId'";
+            $stmt  = $this->conn->prepare($sql);
+
+            if (!$stmt) {
+                throw new Exception("Failed to prepare the statement.");
+            }
+
+            $stmt->execute();
+            $res = $stmt->get_result();
+
+            if ($res->num_rows > 0) {
+                while ($result = $res->fetch_array()) {
+                    $data[] = $result;
+                }
+                return $data;
+            } else {
+                return null;
+            }
+            $stmt->close();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+
+
+
     function showStockReturnDetailsById($Id)
     {
 
