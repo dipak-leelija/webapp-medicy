@@ -68,6 +68,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 document.getElementById('ptr').value = dataObject.Ptr;
                 document.getElementById('aqty').value = dataObject.availableQty;
                 document.getElementById('loose-stock').value = looseStock;
+                document.getElementById('crs-qty').value = sellQty;
                 document.getElementById('qty').value = sellQty;
                 document.getElementById('type-check').value = typeCheck;
                 document.getElementById('disc').value = dataObject.dicPercent;
@@ -500,14 +501,16 @@ const onQty = (qty) => {
 
     //=============================== AVAILIBILITY CHECK ================================
     let availibility = document.getElementById('aqty').value;
-    availibility = parseInt(availibility);
+    let crsQty = document.getElementById('crs-qty').value;
 
-    if (qty > availibility) {
+    let maxSellQty = parseInt(availibility) + parseInt(crsQty);
+
+    if (parseInt(qty) > parseInt(maxSellQty)) {
         qty = '';
         document.getElementById("qty").value = qty;
         document.getElementById('taxable').value = '';
         string_1 = "Please selet another batch or input ";
-        string_2 = availibility;
+        string_2 = maxSellQty;
         string_3 = " as qantity.";
         string_4 = string_1.concat(string_2).concat(string_3);
         window.alert(string_4);
