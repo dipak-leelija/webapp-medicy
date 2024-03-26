@@ -488,14 +488,10 @@ const checkQty = (t) =>{
 
 
 const onQty = (qty) => {
-
-    var xmlhttp = new XMLHttpRequest();
-
-    // console.log(qty);
+    
     if(qty == ''){
         qty = 0;
     }
-    // console.log(qty);
 
     let mrp = document.getElementById("mrp").value;
     let itemWeatage = document.getElementById('item-weightage').value;
@@ -524,6 +520,8 @@ const onQty = (qty) => {
         string_3 = " as qantity.";
         string_4 = string_1.concat(string_2).concat(string_3);
         window.alert(string_4);
+        // swal("Failed!", "Please Select Bill Date!", "error");
+        // return;
     }
 
     // =============================== Item pack type calculation ======================
@@ -574,10 +572,6 @@ const onQty = (qty) => {
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
             taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
-            // console.log("disc price : "+discPrice);
-            // console.log("taxable : "+taxableAmount);
-            // console.log("amount : "+netPayble);
-
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
             document.getElementById('amount').value = netPayble;
@@ -590,10 +584,6 @@ const onQty = (qty) => {
 
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
             taxableAmount = parseFloat(taxableAmount).toFixed(2);
-
-            // console.log("disc price loose or pack on qty : "+discPrice);
-            // console.log("taxable loose or pack on qty : "+taxableAmount);
-            // console.log("amount loose or pack on qty : "+netPayble);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -609,9 +599,9 @@ const onQty = (qty) => {
     /// console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
     //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
-    xmlhttp.open("GET", marginUrl, false);
-    xmlhttp.send(null);
-    document.getElementById("margin").value = xmlhttp.responseText;
+    request.open("GET", marginUrl, false);
+    request.send(null);
+    document.getElementById("margin").value = request.responseText;
 }
 
 
