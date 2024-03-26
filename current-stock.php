@@ -28,6 +28,7 @@ $Manufacturer   = new Manufacturer();
 
 
 
+
 $showCurrentStock = $CurrentStock->showCurrentStockbyAdminId($adminId);
 // print_r($showCurrentStock);
 if ($showCurrentStock != null) {
@@ -41,33 +42,34 @@ if ($showCurrentStock != null) {
 if (isset($_GET['prod-search'])) {
 
     $prodSearch = $_GET['prod-search']; // stored search data on a variable
-    
+
     $prodSearchData = $CurrentStock->prdSearchBynameOrComposition($prodSearch); // fetched data on search value
 
     $prodIdList = array(); // define blank array
 
-    foreach($prodSearchData as $prodSearchData){
+    foreach ($prodSearchData as $prodSearchData) {
         $prodIdData = $prodSearchData['product_id'];
         array_push($prodIdList, $prodIdData);
     }
 
     $prodIdList = array_unique($prodIdList);
     $prodIdList = array_values($prodIdList); // filtering array data
-   
+
     $currentStockGroup = array();
 
-    for($i=0; $i<count($prodIdList); $i++){
+    for ($i = 0; $i < count($prodIdList); $i++) {
         // fetching current data depending on product id
-        $currentStockData = $CurrentStock->showCurrentStockGroupByProductId($prodIdList[$i], $adminId); 
-        
-        if(!empty($currentStockData)){
+        $currentStockData = $CurrentStock->showCurrentStockGroupByProductId($prodIdList[$i], $adminId);
+
+        if (!empty($currentStockData)) {
             $currentStockGroup = array_merge($currentStockGroup, $currentStockData);
         }
     }
-    
 } else {
-    $currentStockGroup = $CurrentStock->currentStockGroupbyPidOnAdmin($adminId);
+    $currentStockGroup = $CurrentStock->showCurrentStockbyAdminId($adminId);
 }
+
+// print_r($currentStockGroup);
 
 
 
@@ -91,6 +93,7 @@ if (!empty($currentStockGroup)) {
         $totalItem = 0;
     }
 } else {
+    $showCurrentStock = null;
     $totalItem = 0;
     $paginationHTML = '';
 }
@@ -161,21 +164,12 @@ if (!empty($currentStockGroup)) {
 
                             <div class="card-header col-md-6 d-flex justify-content-end">
 
-                                <?php
-                                if ($showCurrentStock != null) {
-                                ?>
                                     <input class="form-control w-75" type="text" placeholder="Search Product" name="product-search" id="product-search" style="outline: none;" autocomplete="off">
 
                                     <div class="input-group-append">
                                         <button class="btn btn-sm btn-outline-primary shadow-none" type="button" id="button-addon" onclick="getProduct()"><i class="fas fa-search"></i></button>
                                     </div>
-                                <?php
-                                } else {
-                                    echo "";
-                                }
-                                ?>
-
-
+                                
                             </div>
                         </div>
 
@@ -195,11 +189,13 @@ if (!empty($currentStockGroup)) {
                                     <tbody>
                                         <?php
                                         if (!empty($sliceCurrentStockData)) {
-                                            
+
                                             foreach ($sliceCurrentStockData as $rowStock) {
-                                                
+
                                                 $currentStockId      = $rowStock->id;
                                                 $productId           = $rowStock->product_id; // fetch 
+                                                // echo "<br>$productId";
+
                                                 $image               = json_decode($ProductImages->showImageById($productId));
 
                                                 if ($image->status) {
@@ -220,13 +216,7 @@ if (!empty($currentStockGroup)) {
                                                 // =============== fetch each product data from current stock group by product id ========================
 
                                                 $productData = json_decode($CurrentStock->showCurrentStockByPIdAndAdmin($productId, $adminId));
-
-                                                if ($productData->status) {
-                                                    $productData = $productData->data;
-                                                    // echo "product data from current stock : "; print_r($productData); echo "<br><br>";
-                                                } else {
-                                                    echo "no product found!";
-                                                }
+                                                // print_r($productData);
 
                                                 // =========== edit req flag key check ==========
                                                 $prodCheck = json_decode($Products->productExistanceCheck($productId));
@@ -271,33 +261,41 @@ if (!empty($currentStockGroup)) {
 
                                         ?>
                                                 <tr>
-
                                                     <td class='align-middle d-dlex'>
                                                         <img class="p-img" src="<?= PROD_IMG_PATH ?><?php echo $mainImage; ?>" alt="">
                                                         <img class="p-img ml-n4 position-absolute" src="<?= PROD_IMG_PATH ?><?php echo $mainImage; ?>" alt="">
-
                                                     </td>
 
                                                     <td class='align-middle'><?php echo "$productName " ?> <br>
                                                         <small><?php echo " $manufName " ?></small>
                                                     </td>
 
-                                                    <td class='align-middle'>
+                                                    <td>
                                                         <?php
 
                                                         $productQty = 0;
 
-                                                        foreach ($productData as $pData) {
-                                                            $productQty = $productQty +     $pData->qty;
+                                                        if ($productData->status) {
+                                                            $prodData = $productData->data;
+
+
+                                                            foreach ($prodData as $pData) {
+                                                                $productQty = $productQty +     $pData->qty;
+                                                            }
+                                                            echo "$productQty";
+                                                        } else {
+                                                            echo "$productQty";
                                                         }
-                                                        echo "$productQty";
                                                         ?>
                                                     </td>
-                                                    <td class='align-middle'>
+
+                                                    <td>
                                                         <?php
-                                                        if ($productData != null) {
-                                                            $looselyCount = 0;
-                                                            foreach ($productData as $pData) {
+                                                        $looselyCount = 0;
+                                                        if ($productData->status) {
+                                                            $prodData = $productData->data;
+
+                                                            foreach ($prodData as $pData) {
 
                                                                 $loose_C = $pData->loosely_count;
                                                                 // print_r("hk".$loose_C);
@@ -309,15 +307,25 @@ if (!empty($currentStockGroup)) {
                                                                     $looselyCount = 0;
                                                                 }
                                                             }
+
+                                                            echo "$looselyCount";
+                                                        } else {
+                                                            echo "$looselyCount";
                                                         }
 
-                                                        echo "$looselyCount"
                                                         ?>
                                                     </td>
 
 
                                                     <td class='align-middle'>
-                                                        <span class="badge badge-primary cursor-pointer p-1" onclick='currentStockView("<?php echo $productId ?>", "<?php echo $editReqFlag ?>")' data-toggle='modal' data-target='#currentStockModal'>View <i class='fas fa-eye'></i></span>
+                                                        <?php
+                                                        if ($productData->status) { ?>
+
+                                                            <span class="badge badge-primary cursor-pointer p-1" onclick='currentStockView("<?php echo $productId ?>", "<?php echo $editReqFlag ?>")' data-toggle='modal' data-target='#currentStockModal'>View <i class='fas fa-eye'></i></span>
+
+                                                        <?php
+                                                        }
+                                                        ?>
                                                     </td>
                                                 </tr>
                                         <?php
