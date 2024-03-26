@@ -219,7 +219,12 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     // ===================================================
 
                     if ($detail['loosely_count'] != 0) {
-                        $itemSellQty = $detail['loosely_count'] . ' ' . $detail['unit'];
+                        $itemSellQty = $detail['loosely_count'] / $detail['weightage'];
+                        
+                        if(!is_int($itemSellQty)){
+                            $itemSellQty = $detail['loosely_count'] . ' ' . $detail['unit'];
+                        }
+
                     } else {
                         $itemSellQty = $detail['qty'];
                     }
