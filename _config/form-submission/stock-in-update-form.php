@@ -321,7 +321,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 // update stock return details table
-                $stockReturnDetailsData = $StcokReturn->showStockReturnDataByStokinId($updatedItemIdsArray[$i]);
+                $stockReturnDetailsData = $StcokReturn->showStockReturnDataByStokinIdasArray($updatedItemIdsArray[$i]);
 
                 if (!empty($stockReturnDetailsData)) {
                     for ($m = 0; $m < count($stockReturnDetailsData); $m++) {
