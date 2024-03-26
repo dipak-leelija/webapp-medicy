@@ -35,16 +35,16 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 var loosePrice = '';
                 var typeCheck = '';
 
-                // var sellQty = 0;
+                var sellQty = 0;
 
                 if (LOOSEUNITS.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
                     looseStock = dataObject.availableQty;
                     loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
-                    // if (sellQty % itemWeatage == 0) {
-                    //     typeCheck = 'Pack';
-                    // } else {
-                    //     typeCheck = 'Loose';
-                    // }
+                    if (sellQty % itemWeatage == 0) {
+                        typeCheck = 'Pack';
+                    } else {
+                        typeCheck = 'Loose';
+                    }
 
                     sellQty = parseInt(dataObject.qantity) * parseInt(dataObject.itemWeatage);
                 } else {
@@ -76,7 +76,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 document.getElementById('loose-stock').value = looseStock;
                 document.getElementById('crs-qty').value = sellQty;
                 document.getElementById('qty').value = sellQty;
-                // document.getElementById('type-check').value = typeCheck;
+                document.getElementById('type-check').value = typeCheck;
                 document.getElementById('disc').value = dataObject.dicPercent;
                 document.getElementById('dPrice').value = discPrice;
                 document.getElementById('gst').value = dataObject.gstPercent;
