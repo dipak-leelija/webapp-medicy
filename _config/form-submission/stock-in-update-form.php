@@ -126,9 +126,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         /* checking difference between two array to point deleted items */
         $ItemArrayIdsDiff = array_diff($prevStokInItemIdArray, $updatedItemIdsArray);
-
-
-        if ($ItemArrayIdsDiff != '') {
+        
+        if (!empty($ItemArrayIdsDiff)) {
             $ItemNotDeleteCount = 0;
             $WholeNotDeletedQty = 0;
             $WholeNotDeletedGstAmount = 0;
@@ -203,6 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // =========== add of updated stock in details and current stock data ==============
         $count = count($updatedItemIdsArray);
         for ($i = 0; $i < count($updatedItemIdsArray); $i++) {
+            // echo "<br>check : $updatedItemIdsArray[$i]";
             if ($updatedItemIdsArray[$i] == '') {
 
 
@@ -264,6 +264,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updated_item_qty = intval($item_Qty) + intval($updatedQty);
                 }
 
+                // echo "<br>updated loose qty : $updated_Loose_Qty";
+                // echo "<br>updated item qty : $updated_item_qty";
+                // exit;
 
                 /* update to current stock */
                 $updateCurrentStockItemData = $CurrentStock->updateCurrentStockByStockInId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $updated_Loose_Qty, $updated_item_qty, $item_ptr[$i], $addedBy);
@@ -275,8 +278,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 // ======= need to check this data ============
-
-                //===========
 
                 $updatedStockInDetails = $StockInDetails->updateStockInDetailsById(intval($updatedItemIdsArray[$i]), $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], intval($item_weightage[$i]), trim($item_unit[$i]), intval($item_qty[$i]), intval($item_free_qty[$i]), intval($stockInLooseCount), floatval($item_mrp[$i]), floatval($item_ptr[$i]), intval($discountPercent[$i]), floatval($baseAmount_perItem[$i]), intval($item_gst[$i]), floatval($gstAmount_perItem[$i]), floatval($marginAmount_perItem[$i]), floatval($billAmount_perItem[$i]), $addedBy, NOW);
 
@@ -335,6 +336,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
+
+// exit;
 $preparedData = url_enc(json_encode(['stockIn_Id' => $stockIn_Id]));
 header('Location: purchase-invoice.php?data='.$preparedData);
 exit;

@@ -154,7 +154,7 @@ if (isset($_GET["returnId"])) {
                             <hr>
                             <form id="stock-return-edit">
                                 <div class="row">
-                                    <div class="col-md-6 col-12 ">
+                                    <div class="col-md-4 col-12 ">
                                         <div class="row">
 
                                             <div class="col-md-6 col-12">
@@ -191,9 +191,13 @@ if (isset($_GET["returnId"])) {
 
                                     </div>
 
-                                    <div class="col-md-6 col-12 mt-3">
+                                    <div class="col-md-8 col-12 mt-3">
                                         <!-- first row  -->
                                         <div class="row">
+                                            <div class="col-md-2 col-6">
+                                                <label class="mb-0 mt-1" for="exp-date">Expiry</label>
+                                                <input class="upr-inp" type="text" id="exp-date" value="" readonly>
+                                            </div>
 
                                             <div class="col-md-2 col-6">
                                                 <label class="mb-0 mt-1" for="unit"> Unit</label>
@@ -205,12 +209,12 @@ if (isset($_GET["returnId"])) {
                                                 <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
                                             </div>
 
-                                            <div class="col-md-3 col-6">
+                                            <div class="col-md-2 col-6">
                                                 <label class="mb-0 mt-1" for="ptr">PTR</label>
                                                 <input type="text" class="upr-inp" name="ptr" id="ptr" readonly>
                                             </div>
 
-                                            <div class="col-md-3 col-6">
+                                            <div class="col-md-2 col-6">
                                                 <label class="mb-0 mt-1" for="discount">Disc% </label>
                                                 <input type="text" class="upr-inp" name="discount" id="discount" value="" readonly>
                                             </div>
@@ -230,11 +234,7 @@ if (isset($_GET["returnId"])) {
 
                                         <!-- third row  -->
                                         <div class="row mt-md-2">
-                                            <div class="col-md-3 col-6">
-                                                <label class="mb-0 mt-1" for="exp-date">Expiry</label>
-                                                <input class="upr-inp" type="text" id="exp-date" value="" readonly>
-                                            </div>
-
+                                            
                                             <div class="col-md-3 col-6">
                                                 <label class="mb-0 mt-1" for="current-qty">Live Qty: </label>
                                                 <input type="text" class="upr-inp" name="current-qty" id="current-qty" readonly>
