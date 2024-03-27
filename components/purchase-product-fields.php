@@ -172,7 +172,7 @@
 
                 </div>
 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 me-md-2">
                     <button type="button" class="btn btn-primary me-md-2" id="add-product-details" onclick="addData()">Add
                         <i class="fas fa-plus"></i></button>
                 </div>
