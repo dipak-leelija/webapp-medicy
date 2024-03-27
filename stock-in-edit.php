@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/config/constant.php';
+require_once __DIR__ . '/config/service.const.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -11,6 +12,7 @@ require_once CLASS_DIR . 'measureOfUnit.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
 require_once CLASS_DIR . 'stockIn.class.php';
 require_once CLASS_DIR . 'stockInDetails.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
 require_once CLASS_DIR . 'gst.class.php';
 
 
@@ -25,6 +27,7 @@ $PackagingUnits     = new PackagingUnits();
 $StockIn            = new StockIn();
 $StockInDetails     = new StockInDetails();
 $Gst                = new Gst;
+$CurrentStock       = new CurrentStock;
 
 
 //function's called
@@ -374,6 +377,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <input type="number" class="upr-inp" name="free-qty" id="free-qty" onkeyup="editQTY()">
                                                 </div>
 
+                                                <div class="col-sm-4 col-md-4 mt-2">
+                                                    <label class="mb-0" for="purchsed-qty">Buy Qty</label>
+                                                    <input type="number" class="upr-inp" name="purchsed-qty" id="purchsed-qty" readonly>
+                                                </div>
+
+                                                <div class="col-sm-4 col-md-4 mt-2">
+                                                    <label class="mb-0" for="current-qty">Current Qty</label>
+                                                    <input type="number" class="upr-inp" name="current-qty" id="current-qty" readonly>
+                                                </div>
+
+                                                <div class="col-sm-4 col-md-4 mt-2">
+                                                    <label class="mb-0" for="current-qty">Delete Flag</label>
+                                                    <input type="number" class="upr-inp" name="del-flag" id="del-flag" readonly>
+                                                </div>
+
                                                 <div class="d-none col-sm-6 col-md-6 mt-2">
                                                     <label class="mb-0" for="purchase-price">Check PTR</label>
                                                     <input type="text" class="upr-inp" name="chk-ptr" id="chk-ptr">
@@ -498,7 +516,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 // print_r($stockInDetails);
                                                 // echo sizeof($stockInDetails);
                                                 foreach ($stockInDetails as $detail) {
-                                                    // print_r($stockInDetails);
+                                                    // print_r($detail);
+                                                    // echo "<br>";
+                                                    $detailsId = $detail['id'];
 
                                                     $slno += 1;
 
@@ -513,10 +533,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                     $product = $product->data;
                                                     // print_r($product);
+
+
+                                                    // purchase data 
+                                                    if (in_array(strtolower(trim($detail['unit'])), LOOSEUNITS)) {
+                                                        $purchaeQty = (intval($detail['qty']) + intval($detail['free_qty'])) * intval($detail['weightage']);
+                                                    } else {
+                                                        $purchaeQty = intval($detail['qty']) + intval($detail['free_qty']);
+                                                    }
+
+                                                    // current stock data 
+                                                    $col = 'stock_in_details_id ';
+                                                    $currentStockData = $CurrentStock->selectByColAndData($col, $detailsId);
+
+                                                    foreach($currentStockData as $currentData){
+                                                        if (in_array(strtolower(trim($currentData['unit'])), LOOSEUNITS)) {
+                                                            $currentQty = $currentData['loosely_count'];
+                                                        } else {
+                                                            $currentQty = $currentData['qty'];
+                                                        }
+                                                    }
+
+                                                    $delFlag = 1;
                                             ?>
                                                     <tr id="<?php echo 'table-row-' . $slno; ?>">
 
-                                                        <td style="color: red; width:1rem"><i class="fas fa-trash " style="padding-top: .5rem;" onclick="deleteData(<?php echo $slno . ',' . intval($detail['qty']) + intval($detail['free_qty']) . ',' . $detail['gst_amount'] . ',' . $detail['amount'] ?>)">
+                                                        <td style="color: red; width:1rem"><i class="fas fa-trash " style="padding-top: .5rem;" onclick="deleteData(<?php echo $slno . ',' . intval($detail['qty']) + intval($detail['free_qty']) . ',' . $detail['gst_amount'] . ',' . $detail['amount'] .','. $purchaeQty .','. $currentQty .','. $delFlag ?>)">
                                                             </i>
                                                         </td>
 

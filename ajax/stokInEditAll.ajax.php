@@ -5,12 +5,14 @@
 #                                                                                                        #
 ##########################################################################################################
 require_once dirname(__DIR__) . '/config/constant.php';
+require_once dirname(__DIR__) . '/config/service.const.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . "stockInDetails.class.php";
 require_once CLASS_DIR . "stockIn.class.php";
 require_once CLASS_DIR . "products.class.php";
+require_once CLASS_DIR . "currentStock.class.php";
 require_once CLASS_DIR . "manufacturer.class.php";
 require_once CLASS_DIR . "packagingUnit.class.php";
 
@@ -19,6 +21,9 @@ $StockInDetails = new StockInDetails();
 $Products  = new Products();
 $Manufacturer = new Manufacturer();
 $Packaging = new PackagingUnits();
+$CurrentStock = new CurrentStock;
+
+
 
 if (isset($_POST['blNo'])) {
 
@@ -49,7 +54,30 @@ if (isset($_POST['blNo'])) {
         $gstAmount = $purchase['gst_amount'];
         $margin = $purchase['margin'];
         $amount = $purchase['amount'];
+
+        if (in_array(strtolower(trim($purchase['unit'])), LOOSEUNITS)) {
+            $purchasedQty = $purchase['loosely_count'];
+        } else {
+            $purchasedQty = $purchase['qty'];
+        }
     }
+
+
+
+    // current stock data fetch on stock in details id 
+    $col = 'stock_in_details_id';
+    $StockInDetailsId = $purchaseId;
+    $currentStockData = $CurrentStock->selectByColAndData($col, $StockInDetailsId);
+    foreach ($currentStockData as $currentStockData) {
+        // print_r($currentStockData);
+        if (in_array(strtolower(trim($currentStockData['unit'])), LOOSEUNITS)) {
+            $currentStockQty = $currentStockData['loosely_count'];
+        } else {
+            $currentStockQty = $currentStockData['qty'];
+        }
+
+    }
+
 
 
     // =========== edit req flag key check ==========
@@ -95,37 +123,44 @@ if (isset($_POST['blNo'])) {
 
 
     $packagingDetails = json_decode($Packaging->showPackagingUnitById($packagingTyp));
-    if($packagingDetails->status){
+    if ($packagingDetails->status) {
         $packType = $packagingDetails->data->unit_name;
-    }else{
+    } else {
         $packType = '';
     }
 
+
+    $delFlag = 1; // delete check flag
+    
+
     $purchaseDetialArray = array(
-        "purchaseId"    => $purchaseId,
-        "productId"     => $productId,
-        "productName"   => $prodName,
-        "manufId"       => $manufID,
-        "manufacturer"  => $manufName,
-        "billNo"        => $distBillNo,
-        "batchNo"       => $prodBatchNo,
-        "mfdDate"       => $prodMfdDate,
-        "expDate"       => $prodExpDate,
-        "weightage"     => $prodWeightage,
-        "unit"          => $prodUnit,
-        "power"         => $power,
-        "packageType"   => $packType,
-        "qty"           => $QTY,
-        "FreeQty"       => $freeQTY,
-        "looseQty"      => $looseCount,
-        "mrp"           => $MRP,
-        "ptr"           => $PTR,
-        "disc"          => $discunt,
-        "baseAmount"    => $base,
-        "gst"           => $GST,
-        "GstAmount"     => $gstAmount,
-        "mrgn"          => $margin,
-        "amnt"          => $amount
+        "purchaseId"        => $purchaseId,
+        "productId"         => $productId,
+        "productName"       => $prodName,
+        "manufId"           => $manufID,
+        "manufacturer"      => $manufName,
+        "billNo"            => $distBillNo,
+        "batchNo"           => $prodBatchNo,
+        "mfdDate"           => $prodMfdDate,
+        "expDate"           => $prodExpDate,
+        "weightage"         => $prodWeightage,
+        "unit"              => $prodUnit,
+        "power"             => $power,
+        "packageType"       => $packType,
+        "qty"               => $QTY,
+        "FreeQty"           => $freeQTY,
+        "looseQty"          => $looseCount,
+        "purchasedQty"      => $purchasedQty,
+        "currentStockQty"   => $currentStockQty,
+        "mrp"               => $MRP,
+        "ptr"               => $PTR,
+        "disc"              => $discunt,
+        "baseAmount"        => $base,
+        "gst"               => $GST,
+        "GstAmount"         => $gstAmount,
+        "mrgn"              => $margin,
+        "amnt"              => $amount,
+        "delflag"           => $delFlag
     );
 
 

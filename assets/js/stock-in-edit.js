@@ -106,13 +106,17 @@ batchNumber.addEventListener('input', function (event) {
     this.value = this.value.replace('*', '');
 });
 
-const customClick = (id, value1, value2, value3) => {
+
+
+
+
+const customClick = (rowNo, pId, billNo, btchNo) => {
 
     stockInSave.setAttribute("disabled", "true");
 
-    var prodId = value1;
-    var billNo = value2;
-    var batchNo = value3;
+    var prodId = pId;
+    var billNo = billNo;
+    var batchNo = btchNo;
 
     var checkFieldBlank = document.getElementById('product-id');
     // var row = document.getElementById(id);
@@ -127,14 +131,14 @@ const customClick = (id, value1, value2, value3) => {
                 bhNo: batchNo
             },
             success: function (data) {
-                // alert(data);
+                // console.log(data);
                 var dataObject = JSON.parse(data);
 
                 var totalItmQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
                 var gstPerItem = parseFloat(dataObject.GstAmount);
                 var totalAmnt = parseFloat(dataObject.amnt);
 
-                var slno = id;
+                var slno = rowNo;
                 slno = slno.replace(/\D/g, '');
                 var itemQty = totalItmQty;
                 gstPerItem = gstPerItem.toFixed(2);
@@ -183,6 +187,9 @@ const customClick = (id, value1, value2, value3) => {
                 document.getElementById("free-qty").value = dataObject.FreeQty;
                 document.getElementById("updtQTYS").value = totalQty;
 
+                document.getElementById("purchsed-qty").value = dataObject.purchasedQty;
+                document.getElementById("current-qty").value = dataObject.currentStockQty;
+
                 document.getElementById("packaging-type").value = dataObject.packageType;
                 document.getElementById("packaging-type-edit").value = dataObject.packageType;
 
@@ -194,9 +201,11 @@ const customClick = (id, value1, value2, value3) => {
                 document.getElementById("bill-amount").value = dataObject.amnt;
                 document.getElementById("temp-bill-amount").value = dataObject.amnt;
 
+                document.getElementById("del-flag").value = dataObject.delflag;
+
                 //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
 
-                deleteData(slno, itemQty, gstPerItem, total);
+                deleteData(slno, itemQty, gstPerItem, total, 0);
             }
         })
     } else {
@@ -455,8 +464,8 @@ const getBillAmount = () => {
     }
 
     if (parseFloat(ptr) > parseFloat(maxPtr)) {
-        console.log("max ptr "+ maxPtr);
-        console.log("change ptr "+ ptr);
+        // console.log("max ptr "+ maxPtr);
+        // console.log("change ptr "+ ptr);
 
         Swal.fire({
             title: "Error Input",
@@ -577,6 +586,16 @@ const addData = () => {
     var purchaseId = document.getElementById("purchase-id");
     var crntGstAmount = document.getElementById("crntGstAmnt");
     var itemQty = document.getElementById("updtQTYS").value;
+
+    var byuQty = document.getElementById("purchsed-qty").value;
+    if(byuQty == ''){
+        byuQty = 0;
+    }
+    var curQty = document.getElementById("current-qty").value;
+    if(curQty == ''){
+        curQty = 0;
+    }
+    var delflag = document.getElementById('del-flag').value;
 
 
     if (distId.value == "") {
@@ -742,7 +761,7 @@ const addData = () => {
     // item qantity
     var qtyVal = document.getElementById("qty-val").value;
     totalQty = parseInt(qty.value)+parseInt(freeQty.value) + parseInt(qtyVal);
-    console.log('total qty check : '+totalQty);
+    // console.log('total qty check : '+totalQty);
 
     // net amount calculation
     var net = document.getElementById("net-amount").value;
@@ -771,10 +790,17 @@ const addData = () => {
     let margin = totalMrp - billAmount.value;
     let marginP = (margin / totalMrp) * 100;
 
+    // del falg checking ===
+    if(delflag == ''){
+        delflag = 0;
+    }else{
+        delflag = delflag;
+    }
+    // console.log('del flag val check : '+delflag);
 
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slControl}" style="cursor: pointer;">
-            <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value})"></i></td>
+            <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value}, ${byuQty}, ${curQty}, ${delflag})"></i></td>
            
             <td class="p-0 pt-3" id="row-${slControl}-col-1" style="font-size:.75rem ; padding-top:1rem; width: .75rem">${slno}</td>
 
@@ -865,8 +891,7 @@ const addData = () => {
         batchNo: batchNo,
         ManufId: manufId.value,
         manufName: manufName.value,
-        // mfdMnth: mfdMonth.value,
-        // mfdYr: mfdYear.value,
+        
         expMnth: expMonth.value,
         expYr: expYear.value,
         weightage: weightage.value,
@@ -886,7 +911,11 @@ const addData = () => {
         prevAmount: prevAmount.value,
         purchaseId: purchaseId.value,
         crntGstAmount: crntGstAmount.value,
-        itemQty: itemQty
+        itemQty: itemQty,
+
+        byuQty : byuQty,    
+        curQty : curQty,        
+        delflag: delflag
     };
 
     let tupleData = JSON.stringify(dataTuple);
@@ -966,6 +995,9 @@ const editItem = (tData) => {
         document.getElementById("qty").value = tuple.qty;
         document.getElementById("free-qty").value = tuple.freeQty;
 
+        document.getElementById("purchsed-qty").value = tuple.byuQty;
+        document.getElementById("current-qty").value = tuple.curQty;
+
         document.getElementById("discount").value = tuple.discPercent;
         document.getElementById("gst").value = tuple.gst;
         document.getElementById("base").value = tuple.base;
@@ -976,10 +1008,12 @@ const editItem = (tData) => {
         document.getElementById("crntGstAmnt").value = tuple.crntGstAmount;
         document.getElementById("updtQTYS").value = tuple.itemQty;
 
+        document.getElementById("del-flag").value = tuple.delflag;
 
         let gstPerItem = (parseFloat(tuple.billAMNT)) - (parseFloat(tuple.base) * parseInt(tuple.qty));
         gstPerItem = gstPerItem.toFixed(2);
-        deleteData(tuple.slno, tuple.itemQty, gstPerItem, tuple.billAMNT);
+
+        deleteData(tuple.slno, tuple.itemQty, gstPerItem, tuple.billAMNT, tuple.delflag);
     } else {
         Swal.fire("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("ptr").focus();
@@ -989,40 +1023,87 @@ const editItem = (tData) => {
 
 // ================================ Delet Data ================================
 
-function deleteData(slno, itemQty, gstPerItem, total) {
+function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
 
-    let delRow = slno;
+    if (delflag == 1) {
+        // let purchaedQty = document.getElementById('purchsed-qty').value;
+        // let currentQty = document.getElementById('current-qty').value;
 
-    jQuery(`#table-row-${slno}`).remove();
-    let slVal = document.getElementById("dynamic-id").value;
-    document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
+        if (parseInt(pQty) == parseInt(cQty)) {
+            alert('hello');
+            let delRow = slno;
 
-
-    //minus item
-    let items = document.getElementById("items-val");
-    let finalItem = parseInt(items.value) - 1;
-    items.value = finalItem;
-
-    // minus quantity
-    let qty = document.getElementById("qty-val");
-    let finalQty = qty.value - itemQty;
-    qty.value = finalQty;
+            jQuery(`#table-row-${slno}`).remove();
+            let slVal = document.getElementById("dynamic-id").value;
+            document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
 
-    // minus gst
-    let gst = document.getElementById("gst-val");
-    let finalGst = gst.value - gstPerItem;
-    gst.value = finalGst.toFixed(2);
+            //minus item
+            let items = document.getElementById("items-val");
+            let finalItem = parseInt(items.value) - 1;
+            items.value = finalItem;
 
-    // minus netAmount
-    let net = document.getElementById("net-amount");
-    let finalAmount = net.value - total;
-    net.value = finalAmount.toFixed(2);
+            // minus quantity
+            let qty = document.getElementById("qty-val");
+            let finalQty = qty.value - itemQty;
+            qty.value = finalQty;
 
-    rowAdjustment(delRow);
 
-    if (document.getElementById('items-val').value == 0) {
-        stockInSave.setAttribute("disabled", "true");
+            // minus gst
+            let gst = document.getElementById("gst-val");
+            let finalGst = gst.value - gstPerItem;
+            gst.value = finalGst.toFixed(2);
+
+            // minus netAmount
+            let net = document.getElementById("net-amount");
+            let finalAmount = net.value - total;
+            net.value = finalAmount.toFixed(2);
+
+            rowAdjustment(delRow);
+
+            if (document.getElementById('items-val').value == 0) {
+                stockInSave.setAttribute("disabled", "true");
+            }
+
+        } else {
+            Swal.fire('error', 'not possible', 'error');
+        }
+
+    } else {
+
+        let delRow = slno;
+
+        jQuery(`#table-row-${slno}`).remove();
+        let slVal = document.getElementById("dynamic-id").value;
+        document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
+
+
+        //minus item
+        let items = document.getElementById("items-val");
+        let finalItem = parseInt(items.value) - 1;
+        items.value = finalItem;
+
+        // minus quantity
+        let qty = document.getElementById("qty-val");
+        let finalQty = qty.value - itemQty;
+        qty.value = finalQty;
+
+
+        // minus gst
+        let gst = document.getElementById("gst-val");
+        let finalGst = gst.value - gstPerItem;
+        gst.value = finalGst.toFixed(2);
+
+        // minus netAmount
+        let net = document.getElementById("net-amount");
+        let finalAmount = net.value - total;
+        net.value = finalAmount.toFixed(2);
+
+        rowAdjustment(delRow);
+
+        if (document.getElementById('items-val').value == 0) {
+            stockInSave.setAttribute("disabled", "true");
+        }
     }
 }
 
