@@ -112,26 +112,27 @@ if (isset($_GET['invoice'])) {
                             $details = $StockOut->stockOutDetailsDisplayById($_GET['invoice']);
                             // print_r($details);
                             foreach ($details as $detail) {
-                                $itemUnit = $detail['unit'];
-                                echo $itemUnit;
+                                // print_r($detail);
+                                $weightage = $detail['weightage'];
 
+                                if (in_array(strtolower(trim($detail['unit'])), LOOSEUNITS)) {
 
-                                if (in_array(strtolower(trim($itemUnit)), LOOSEUNITS)) {
-                                    $qty = $detail['loosely_count'];
-                                    $suffix = " (L)";
+                                    $LQty   = $detail['loosely_count'];
+                                    $result = $LQty / $weightage;
+                                    
+                                    if(is_int($result)){
+                                        $qty = $detail['qty'];
+                                        $suffix = "";
+                                    }else {
+                                        $qty = $detail['loosely_count'];
+                                        $suffix = " (L)";
+                                    }
+
                                 } else {
                                     $qty = $detail['qty'];
                                     $suffix = "";
                                 }
 
-                                // if($itemUnit == 'tab' || $itemUnit == 'cap'){
-                                //     $qty = $detail['loosely_count'];
-                                //     $suffix = " (L)";
-                                // }else{
-                                //     $qty = $detail['qty'];
-                                //     $suffix = "";
-                                // }
-                            
                                 echo'<tr>
                                         <td>'.$detail['item_name'].'</td>
                                         <td>'.$detail['weightage'].$detail['unit'].'</td>
