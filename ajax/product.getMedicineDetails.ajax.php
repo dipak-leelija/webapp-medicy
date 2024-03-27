@@ -76,7 +76,7 @@ if (isset($_GET["pType"])) {
     }
 
     $showProductsPType = $Products->showProductsByIdOnUser($_GET["pType"], $adminId, $editReqFlag, $prodReqStatus, $oldProdReqStatus);
-    $showPackType = $PackagingUnits->showPackagingUnitById($showProductsPType[0]['packaging_type']);
+    $showPackType = $PackagingUnits->showPackagingUnitByIdArray($showProductsPType[0]['packaging_type']);
     // print_r($showPackType);
     foreach ($showPackType as $row) {
         echo '<option value="' . $row["id"] . '">' . $row["unit_name"] . '</option>';
@@ -103,7 +103,7 @@ if (isset($_GET["packegeIn"])) {
         $showProductsPackegeIn = $showProductsPackegeIn->data;
         // print_r($showProductsPackegeIn);
 
-        $showPackType = $PackagingUnits->showPackagingUnitById($showProductsPackegeIn[0]->packaging_type);
+        $showPackType = $PackagingUnits->showPackagingUnitByIdArray($showProductsPackegeIn[0]->packaging_type);
         foreach ($showPackType as $row) {
             echo $row["unit_name"];
         }

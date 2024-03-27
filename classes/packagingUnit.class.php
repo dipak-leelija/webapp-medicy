@@ -124,6 +124,30 @@ class PackagingUnits extends DatabaseConnection
 
 
 
+
+    function showPackagingUnitByIdArray($unitId){
+        try {
+            $select = "SELECT * FROM packaging_type WHERE `id` = ?";
+            $stmt = $this->conn->prepare($select);
+            $stmt->bind_param("i", $unitId);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+            if($result->num_rows > 0){
+                $data[] = $result->fetch_assoc();
+            }
+            return $data;
+            
+            $stmt->close();
+        } catch (Exception $e) {
+            return error_log("Error in showPackagingUnitById: " . $e->getMessage());;
+        }
+    }
+
+
+
+
     
 
     function packagingTypeName($unitId)
