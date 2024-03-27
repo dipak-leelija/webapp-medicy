@@ -270,7 +270,7 @@ if ($_GET['id']) {
                                             <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)" onfocusout="checkQty(this)">
                                         </div>
 
-                                        <div class="col-md-1 mt-3 col-6">
+                                        <div class="d-none col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Typ Chk.</label><br>
                                             <input class="sale-inp" type="text" id="type-check" disabled>
                                         </div>
