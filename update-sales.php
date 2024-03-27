@@ -1,16 +1,18 @@
 <?php
 $page = "Product Management";
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';
+require_once __DIR__ . '/config/constant.php';
+require_once __DIR__ . '/config/service.const.php';
 
-require_once CLASS_DIR."dbconnect.php";
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR."encrypt.inc.php";
-require_once CLASS_DIR."doctors.class.php";
-require_once CLASS_DIR.'stockOut.class.php';
-require_once CLASS_DIR.'products.class.php';
-require_once CLASS_DIR.'manufacturer.class.php';
-require_once CLASS_DIR."patients.class.php";
+require_once ROOT_DIR . '_config/sessionCheck.php';
+
+require_once CLASS_DIR . "dbconnect.php";
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . "encrypt.inc.php";
+require_once CLASS_DIR . "doctors.class.php";
+require_once CLASS_DIR . 'stockOut.class.php';
+require_once CLASS_DIR . 'products.class.php';
+require_once CLASS_DIR . 'manufacturer.class.php';
+require_once CLASS_DIR . "patients.class.php";
 
 
 $Doctors        = new Doctors();
@@ -44,13 +46,13 @@ if ($_GET['id']) {
     $billAmout      = $stockOut[0]['amount'];
     $pMode          = $stockOut[0]['payment_mode'];
     $billdate       = $stockOut[0]['bill_date'];
-    
+
 
     $details = $StockOut->stockOutDetailsDisplayById($billId);
     $countStockOut = count($details);
-    
+
     $stockOutDetails = $StockOut->stockOutDetailsDisplayById($billId);
-    
+
     // =============== doctor data =================
     $doctor = $Doctors->showDoctors($adminId);
     $doctor = json_decode($doctor, true);
@@ -90,14 +92,14 @@ if ($_GET['id']) {
         <!-- Page Wrapper -->
         <div id="wrapper">
             <!-- sidebar -->
-            <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+            <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
             <!-- end sidebar -->
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
                 <!-- Main Content -->
                 <div id="content">
                     <!-- Topbar -->
-                    <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                    <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                     <!-- End of Topbar -->
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
@@ -152,12 +154,12 @@ if ($_GET['id']) {
                                                     <select class="doctor-select" id="doctor-select">
                                                         <option value="<?php echo $reffby; ?>" selected disabled><?php echo $reffby; ?></option>
                                                         <?php
-                                                        if($doctor && $doctor['status'] == 1 && !empty($doctor))
-                                                        foreach ($doctor['data'] as $doc) {
-                                                            // print_r($row);
-                                                            echo $doctorName = $doc['doctor_name'];
-                                                            echo '<option value="' . $doctorName . '" style="color: black;">' . $doctorName . '</option>';
-                                                        }
+                                                        if ($doctor && $doctor['status'] == 1 && !empty($doctor))
+                                                            foreach ($doctor['data'] as $doc) {
+                                                                // print_r($row);
+                                                                echo $doctorName = $doc['doctor_name'];
+                                                                echo '<option value="' . $doctorName . '" style="color: black;">' . $doctorName . '</option>';
+                                                            }
                                                         ?>
                                                     </select>
 
@@ -268,7 +270,7 @@ if ($_GET['id']) {
                                             <input class="sale-inp" type="number" id="qty" onkeyup="onQty(this.value)" onfocusout="checkQty(this)">
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Typ Chk.</label><br>
                                             <input class="sale-inp" type="text" id="type-check" disabled>
                                         </div>
@@ -317,7 +319,7 @@ if ($_GET['id']) {
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="  sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly >
+                                                        <input class="sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly >
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
                                                 </div>
@@ -333,11 +335,11 @@ if ($_GET['id']) {
                                             <div class="col-md-6">
                                                 <div class="  row mt-3">
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
-                                                        <label for="" >Loose Stock:</label>
+                                                        <label for="">Loose Stock:</label>
                                                         <input class="sale-inp" type="any" id="loose-stock" style="border-width: 0px;" readonly>
                                                     </div>
-                                                    <div class="col-md-4 col-6 mb-4 d-flex" >
-                                                        <label for="" >Loose Price:</label>
+                                                    <div class="col-md-4 col-6 mb-4 d-flex">
+                                                        <label for="">Loose Price:</label>
                                                         <input class="sale-inp" type="any" id="loose-price" style="border-width: 0px;" readonly>
                                                     </div>
                                                 </div>
@@ -446,9 +448,9 @@ if ($_GET['id']) {
 
                                                             // print_r($productData);
                                                             //=======================
-                                                            if(isset($productData[0]->manufacturer_id)){
+                                                            if (isset($productData[0]->manufacturer_id)) {
                                                                 $manufId = $productData[0]->manufacturer_id;
-                                                            }else{
+                                                            } else {
                                                                 $manufId = '';
                                                             }
 
@@ -457,7 +459,7 @@ if ($_GET['id']) {
                                                             $slno = $slno + 1;
                                                             // echo $slno;
                                                             $discPercetn = $details[$i]['discount'];
-                                                            $discPrice = (floatval($mrp) - (floatval($mrp) * floatval($discPercetn)/100));
+                                                            $discPrice = (floatval($mrp) - (floatval($mrp) * floatval($discPercetn) / 100));
                                                             $discPrice = number_format($discPrice, 2);
                                                         ?>
 
@@ -467,12 +469,12 @@ if ($_GET['id']) {
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
-                                                                <?php echo $slno; ?>
+                                                                    <?php echo $slno; ?>
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
 
-                                                                    <input class="summary-items" type="text" name="product-name[]" value="<?php echo $productData[0]->name; ?>" readonly style="width: 12rem;"> 
+                                                                    <input class="summary-items" type="text" name="product-name[]" value="<?php echo $productData[0]->name; ?>" readonly style="width: 12rem;">
 
                                                                     <input type="text" name="product-id[]" value="<?php echo $stockOutDetails[$i]['product_id']; ?>" class="d-none">
 
@@ -493,7 +495,7 @@ if ($_GET['id']) {
 
                                                                 <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
 
-                                                                    <input class="summary-items" type="text" name="weightage[]" value="<?php echo $details[$i]['weightage'].$itemUnit ; ?>" readonly>
+                                                                    <input class="summary-items" type="text" name="weightage[]" value="<?php echo $details[$i]['weightage'] . $itemUnit; ?>" readonly>
 
                                                                     <input class="d-none summary-items" type="text" name="ItemUnit[]" value="<?php echo $itemUnit; ?>" readonly>
 
@@ -511,7 +513,7 @@ if ($_GET['id']) {
                                                                 <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
                                                                     <input class="summary-items" type="text" name="disc[]" value="<?php echo $details[$i]['discount']; ?>" readonly>
 
-                                                                    <input class="d-none summary-items" type="text" name="dPrice[]" value="<?php echo $discPrice; ?>" readonly >
+                                                                    <input class="d-none summary-items" type="text" name="dPrice[]" value="<?php echo $discPrice; ?>" readonly>
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
@@ -523,7 +525,7 @@ if ($_GET['id']) {
                                                                 <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
                                                                     <input class="summary-items" type="text" name="qty[]" value="<?php echo $qty; ?>" readonly>
 
-                                                                    <input class="d-none summary-items" type="text" name="qty-type[]" value="<?php echo $qtyType; ?>" readonly  >
+                                                                    <input class="d-none summary-items" type="text" name="qty-type[]" value="<?php echo $qtyType; ?>" readonly>
                                                                 </td>
 
                                                                 <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)">
@@ -536,19 +538,19 @@ if ($_GET['id']) {
 
                                                                 <!-------- extra data --------->
 
-                                                                <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)"  class="d-none">
+                                                                <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)" class="d-none">
                                                                     <input class="summary-items" type="text" name="extra1[]" value="" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)"  class="d-none">
+                                                                <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)" class="d-none">
                                                                     <input class="summary-items" type="text" name="extra2[]" value="" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)"  class="d-none">
+                                                                <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)" class="d-none">
                                                                     <input class="summary-items" type="text" name="ptr[]" value="<?php echo $stockOutDetails[$i]['ptr']; ?>" readonly>
                                                                 </td>
 
-                                                                <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)"  class="d-none">
+                                                                <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)" class="d-none">
                                                                     <input class="summary-items" type="text" name="margin[]" value="<?php echo $stockOutDetails[$i]['margin']; ?>" readonly>
                                                                 </td>
 
@@ -639,7 +641,7 @@ if ($_GET['id']) {
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
-                <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+                <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>
@@ -651,13 +653,13 @@ if ($_GET['id']) {
 
         <!--============= Add New Customer Modal =============-->
         <!-- Modal -->
-        <div class="modal fade" id="add-customer-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria- ="true">
+        <div class="modal fade" id="add-customer-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria- ="true">&times;</span>
+                            <span aria-="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body add-customer-modal">
@@ -671,10 +673,7 @@ if ($_GET['id']) {
         </div>
         <!--============= End Add New Customer Modal =============-->
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+        <?php echo '<script>const LOOSEUNITS = ' . json_encode(LOOSEUNITS) . ';</script>'; ?>
 
         <!-- Bootstrap core JavaScript-->
         <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>

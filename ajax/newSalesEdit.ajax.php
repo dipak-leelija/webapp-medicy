@@ -1,5 +1,7 @@
 <?php
 require_once dirname(__DIR__) . '/config/constant.php';
+require_once dirname(__DIR__) . '/config/service.const.php';
+
 require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . "doctors.class.php";
@@ -23,28 +25,34 @@ $table = 'id';
 // // //==================== ITEM DETAILS FROM STOK OUT DETAILS TABLE =====================
 $stockOutItemDetails = $StockOut->stokOutDetailsDataOnTable($table, $StockOutDetaislId);
 foreach ($stockOutItemDetails as $selsItemData) {
-    $stockOutDetailsId = $selsItemData['id'];
-    $stockOutDetailsInvoiceId = $selsItemData['invoice_id'];
-    $stockOutDetailsItemId = $selsItemData['item_id'];
-    $stockOutDetailsProductId = $selsItemData['product_id'];
-    $stockOutDetailsItemName = $selsItemData['item_name'];
-    $stockOutDetailsBatchNo = $selsItemData['batch_no'];
-    $stockOutDetailsExpDate = $selsItemData['exp_date'];
-    $stockOutDetailsItemWeatage = $selsItemData['weightage'];
-    $stockOutDetailsItemUnit = $selsItemData['unit'];
-    $stockOutDetailsItemQty = $selsItemData['qty'];
-    $stockOutDetailsLooselyCount = $selsItemData['loosely_count'];
-    $stockOutDetailsMrp = $selsItemData['mrp'];
-    $stockOutDetailsPtr = $selsItemData['ptr'];
-    $stockOutDetailsDiscount = $selsItemData['discount'];
-    $stockOutDetailsGst = $selsItemData['gst'];
-    $stockOutDetailsGstAmount = $selsItemData['gst_amount'];
-    $stockOutDetailsMargin = $selsItemData['margin'];
+    $stockOutDetailsId                = $selsItemData['id'];
+    $stockOutDetailsInvoiceId         = $selsItemData['invoice_id'];
+    $stockOutDetailsItemId            = $selsItemData['item_id'];
+    $stockOutDetailsProductId         = $selsItemData['product_id'];
+    $stockOutDetailsItemName          = $selsItemData['item_name'];
+    $stockOutDetailsBatchNo           = $selsItemData['batch_no'];
+    $stockOutDetailsExpDate           = $selsItemData['exp_date'];
+    $stockOutDetailsItemWeatage       = $selsItemData['weightage'];
+    $stockOutDetailsItemUnit          = $selsItemData['unit'];
+    $stockOutDetailsItemQty           = $selsItemData['qty'];
+    $stockOutDetailsLooselyCount      = $selsItemData['loosely_count'];
+    $stockOutDetailsMrp               = $selsItemData['mrp'];
+    $stockOutDetailsPtr               = $selsItemData['ptr'];
+    $stockOutDetailsDiscount          = $selsItemData['discount'];
+    $stockOutDetailsGst               = $selsItemData['gst'];
+    $stockOutDetailsGstAmount         = $selsItemData['gst_amount'];
+    $stockOutDetailsMargin            = $selsItemData['margin'];
     $stockOutDetailsItemTaxableAmount = $selsItemData['taxable'];
-    $stockOutDetailsamount = $selsItemData['amount'];
+    $stockOutDetailsamount            = $selsItemData['amount'];
 
 
-    if ($stockOutDetailsItemUnit == 'tab' || $stockOutDetailsItemUnit == 'cap') {
+    // if ($stockOutDetailsItemUnit == 'tab' || $stockOutDetailsItemUnit == 'cap') {
+    //     $sellQty = $stockOutDetailsLooselyCount;
+    // } else {
+    //     $sellQty = $stockOutDetailsItemQty;
+    // }
+
+    if (in_array(strtolower(trim($stockOutDetailsItemUnit)), LOOSEUNITS)) {
         $sellQty = $stockOutDetailsLooselyCount;
     } else {
         $sellQty = $stockOutDetailsItemQty;
@@ -54,9 +62,15 @@ foreach ($stockOutItemDetails as $selsItemData) {
 // // //================== AVAILIBILITY CHECK FROM CURRENT STOCK ====================
 $currentStockData = $CurrentStock->showCurrentStocById($stockOutDetailsItemId);
 foreach ($currentStockData as $currenStock) {
-    $currentStockUnit = $currenStock['unit'];
+    // $currentStockUnit = $currenStock['unit'];
 
-    if ($currentStockUnit == 'Tablets' || $currentStockUnit == 'Capsules') {
+    // if ($currentStockUnit == 'Tablets' || $currentStockUnit == 'Capsules') {
+    //     $currentStockAvailibility = $currenStock['loosely_count'];
+    // } else {
+    //     $currentStockAvailibility = $currenStock['qty'];
+    // }
+
+    if (in_array(strtolower(trim($currenStock['unit'])), LOOSEUNITS)) {
         $currentStockAvailibility = $currenStock['loosely_count'];
     } else {
         $currentStockAvailibility = $currenStock['qty'];

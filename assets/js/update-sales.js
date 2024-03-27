@@ -1,7 +1,11 @@
+
+/**
+ * LOOSEUNITS is a constant decleared in service.const.php
+*/
+
+
 var updateSalesBtn = document.getElementById("update-sales-btn");
 
-//============= constant data declaretion =============
-const allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
 
 /////////////////////////////// edit item from table select \\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -20,10 +24,12 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 // alert(dataObject.itemWeatage);
 
                 var dataObject = JSON.parse(data);
+                console.log(dataObject);
 
                 var mrp = parseFloat(dataObject.Mrp);
                 var itemUnit = dataObject.itemUnit;
                 var itemWeatage = parseInt(dataObject.itemWeatage);
+                // console.log(itemWeatage);
                 var discPercent = parseFloat(dataObject.dicPercent);
                 var looseStock = '';
                 var loosePrice = '';
@@ -31,7 +37,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
 
                 var sellQty = 0;
 
-                if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
+                if (LOOSEUNITS.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
                     looseStock = dataObject.availableQty;
                     loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
                     if (sellQty % itemWeatage == 0) {
@@ -40,7 +46,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                         typeCheck = 'Loose';
                     }
 
-                    sellQty = parseInt(dataObject.sellQty) * parseInt(dataObject.itemWeatage);
+                    sellQty = parseInt(dataObject.qantity) * parseInt(dataObject.itemWeatage);
                 } else {
                     looseStock = '';
                     loosePrice = '';
@@ -69,7 +75,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 document.getElementById('aqty').value = dataObject.availableQty;
                 document.getElementById('loose-stock').value = looseStock;
                 document.getElementById('crs-qty').value = sellQty;
-                document.getElementById('qty').value = sellQty;
+                document.getElementById('qty').value = dataObject.sellQty;
                 document.getElementById('type-check').value = typeCheck;
                 document.getElementById('disc').value = dataObject.dicPercent;
                 document.getElementById('dPrice').value = discPrice;
@@ -491,7 +497,7 @@ const onQty = (qty) => {
     let itemUnit = document.getElementById('item-unit').value;
     let loosePrice = "";
 
-    if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
+    if (LOOSEUNITS.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
@@ -524,7 +530,7 @@ const onQty = (qty) => {
     let checkSum = '';
     let itemPackType = '';
 
-    if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
+    if (LOOSEUNITS.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
         checkSum = parseInt(qty) % parseInt(itemWeightage);
         
         if (checkSum == 0) {
@@ -609,7 +615,7 @@ const ondDisc = (disc) => {
     let itemUnit = document.getElementById('item-unit').value;
     let loosePrice = "";
 
-    if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())){
+    if (LOOSEUNITS.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())){
         loosePrice = parseFloat(mrp) / parseInt(itemWeatage);
     } else {
         loosePrice = '';
@@ -843,7 +849,7 @@ const addSummary = () => {
     var itemMrp = parseFloat(mrp);
     itemQty = parseFloat(qty);
 
-    if (allowedUnits.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
+    if (LOOSEUNITS.map(unit => unit.toLowerCase()).includes(itemUnit.toLowerCase())) {
         itemMrp = itemQty * (itemMrp / parseFloat(itemPower));
     } else {
         itemMrp = itemQty * itemMrp;
@@ -1120,7 +1126,7 @@ const itemEditOption = (tuple) => {
         let gstPerItem = parseFloat(tData.amount) - parseFloat(tData.taxable);
         let MRP = '';
 
-        if(allowedUnits.map(unit => unit.toLowerCase()).includes(tData.itemUnit.toLowerCase())){
+        if(LOOSEUNITS.map(unit => unit.toLowerCase()).includes(tData.itemUnit.toLowerCase())){
             MRP = tData.loosePrice;
         }else{
             MRP = tData.mrp;

@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
+require_once dirname(__DIR__) . '/config/service.const.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR."dbconnect.php";
@@ -112,18 +113,26 @@ if (isset($_GET['invoice'])) {
                             // print_r($details);
                             foreach ($details as $detail) {
                                 // print_r($detail);
-                                $weatage = $detail['weightage'];
-                                $itemUnit = preg_replace('/[0-9]/','',$weatage);
-                                echo $itemUnit;
+                                $weightage = $detail['weightage'];
 
-                                if($itemUnit == 'tab' || $itemUnit == 'cap'){
-                                    $qty = $detail['loosely_count'];
-                                    $suffix = " (L)";
-                                }else{
+                                if (in_array(strtolower(trim($detail['unit'])), LOOSEUNITS)) {
+
+                                    $LQty   = $detail['loosely_count'];
+                                    $result = $LQty / $weightage;
+                                    
+                                    if(is_int($result)){
+                                        $qty = $detail['qty'];
+                                        $suffix = "";
+                                    }else {
+                                        $qty = $detail['loosely_count'];
+                                        $suffix = " (L)";
+                                    }
+
+                                } else {
                                     $qty = $detail['qty'];
                                     $suffix = "";
                                 }
-                            
+
                                 echo'<tr>
                                         <td>'.$detail['item_name'].'</td>
                                         <td>'.$detail['weightage'].$detail['unit'].'</td>
