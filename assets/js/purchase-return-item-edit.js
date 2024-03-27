@@ -136,7 +136,7 @@ const freeReturnCheck = () => {
     let prevReturnFreeQty = document.getElementById('prev-ret-free-qty').value;
 
     if((parseInt(editFreeRetunr) - parseInt(prevReturnFreeQty)) >  currentFreeQty){
-        swal("Error", "Return Quantity Must Less Then Avilable Quantity", "error");
+        swal("Error", "Return Quantity Must Lesser Than Avilable Free Quantity", "error");
         document.getElementById('ret-free-qty').value = prevReturnFreeQty;
     }
 }
