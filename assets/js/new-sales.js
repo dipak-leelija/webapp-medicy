@@ -199,7 +199,7 @@ const itemsBatchDetails = (prodcutId, name, stock) => {
         document.getElementById("exta-details").style.display = "none";
         document.getElementById("searched-items").style.display = "none";
 
-        swal({
+        Swal.fire({
             title: "Want Add This Item?",
             text: "This Item is not avilable in your stock, do you want to add?",
             // icon: "warning",
@@ -270,7 +270,7 @@ const stockDetails = (productId, batchNo, itemId) => {
                     document.getElementById("batch_no").value = '';
                     document.getElementById("searched-batchNo").style.display = "none";
 
-                    swal("Failed!", "You have added this item previously.", "error");
+                    Swal.fire("Failed!", "You have added this item previously.", "error");
 
                 } else {
                     document.getElementById("product-id").value = productId;
@@ -480,7 +480,7 @@ const stockDetails = (productId, batchNo, itemId) => {
 const checkQty = (t) =>{
     if(t.value <= 0){
         document.getElementById('add-button').setAttribute("disabled", "true");
-        swal('Alert','Enter valid qantity.','info');
+        Swal.fire('Alert','Enter valid qantity.','info');
     }else{
         document.getElementById('add-button').removeAttribute("disabled");
     }
@@ -520,7 +520,7 @@ const onQty = (qty) => {
         string_3 = " as qantity.";
         string_4 = string_1.concat(string_2).concat(string_3);
         window.alert(string_4);
-        // swal("Failed!", "Please Select Bill Date!", "error");
+        // Swal.fire("Failed!", "Please Select Bill Date!", "error");
         // return;
     }
 
@@ -598,10 +598,49 @@ const onQty = (qty) => {
 
     /// console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
     //==================== Margin on an Item ====================
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
+    var currentItemId = document.getElementById('crnt-stck-itm-id').value;
+
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&currentItemId=${currentItemId}`;
     request.open("GET", marginUrl, false);
     request.send(null);
     document.getElementById("margin").value = request.responseText;
+
+    // check margine amount alert
+    if(parseFloat(document.getElementById("margin").value) < 0){
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-success",
+              cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+          });
+          swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "Check discount percent. This returns negative margine.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              swalWithBootstrapButtons.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your imaginary file is safe :)",
+                icon: "error"
+              });
+            }
+          });
+    }
+    
 }
 
 
@@ -700,10 +739,49 @@ const onDisc = (disc) => {
     }
 
     //==================== Margin on an Item ====================
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
+    var currentItemId = document.getElementById('crnt-stck-itm-id').value;
+
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&currentItemId=${currentItemId}`;
     xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
+
+    // check margine amount alert
+    if (parseFloat(document.getElementById("margin").value) < 0) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success", 
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: true
+        });
+        swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "Check discount percent. This returns negative margine.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire({
+                    title: "Check Margin",
+                    text: "Margin value is now negative",
+                    icon: "info"
+                });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                document.getElementById('disc').value = 0;
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelled",
+                    text: "Discout percent set as 0",
+                    icon: "info"
+                });
+            }
+        });
+    }
 }
 
 
@@ -760,63 +838,63 @@ const addSummary = () => {
     //===========================================
 
     if (billDAte == '') {
-        swal("Failed!", "Please Select Bill Date!", "error");
+        Swal.fire("Failed!", "Please Select Bill Date!", "error");
         return;
     }
     if (customer == '') {
-        swal("Failed!", "Please Select Customer Name!", "error");
+        Swal.fire("Failed!", "Please Select Customer Name!", "error");
         return;
     }
     if (doctorName == '') {
-        swal("Failed!", "Please Select/Enter Doctor Name!", "error");
+        Swal.fire("Failed!", "Please Select/Enter Doctor Name!", "error");
         return;
     }
     if (paymentMode == '') {
-        swal("Failed!", "Please Select a Payment Mode!", "error");
+        Swal.fire("Failed!", "Please Select a Payment Mode!", "error");
         return;
     }
     if (productId == '') {
-        swal("Failed!", "Product ID Not Found!", "error");
+        Swal.fire("Failed!", "Product ID Not Found!", "error");
         return;
     }
     if (productName == '') {
-        swal("Failed!", "Product Name Not Found!", "error");
+        Swal.fire("Failed!", "Product Name Not Found!", "error");
         return;
     }
     if (batchNo == '') {
-        swal("Failed!", "Batch No Not Found!", "error");
+        Swal.fire("Failed!", "Batch No Not Found!", "error");
         return;
     }
     if (weightage == '') {
-        swal("Failed!", "Product Weatage/Unit Not Found!", "error");
+        Swal.fire("Failed!", "Product Weatage/Unit Not Found!", "error");
         return;
     }
     if (expDate == '') {
-        swal("Failed!", "Expiry Date Not Found!", "error");
+        Swal.fire("Failed!", "Expiry Date Not Found!", "error");
         return;
     }
     if (mrp == '') {
-        swal("Failed!", "MRP Not Found!", "error");
+        Swal.fire("Failed!", "MRP Not Found!", "error");
         return;
     }
     if (qty == '') {
-        swal("Failed!", "Please Enter Quantity:", "error");
+        Swal.fire("Failed!", "Please Enter Quantity:", "error");
         return;
     }
     if (discPercent == '') {
-        swal("Failed!", "Please Enter Discount Minimum: 0", "error");
+        Swal.fire("Failed!", "Please Enter Discount Minimum: 0", "error");
         return;
     }
     if (discPrice == '') {
-        swal("Failed!", "Discounted Price Not Found!", "error");
+        Swal.fire("Failed!", "Discounted Price Not Found!", "error");
         return;
     }
     if (gst == '') {
-        swal("Failed!", "GST Not Found!", "error");
+        Swal.fire("Failed!", "GST Not Found!", "error");
         return;
     }
     if (amount == '') {
-        swal("Failed!", "Total Amount Not Found!", "error");
+        Swal.fire("Failed!", "Total Amount Not Found!", "error");
         return;
     }
 
@@ -1177,7 +1255,7 @@ const editItem = (tuple) => {
         newSellGenerateBill.setAttribute("disabled", "true");
 
     } else {
-        swal("Can't Edit", "Please add/edit previous item first.", "error");
+        Swal.fire("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("qty").focus();
     }
 }

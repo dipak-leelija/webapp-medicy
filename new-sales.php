@@ -32,6 +32,8 @@ $doctor = json_decode($doctor , true);
     <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
     <!-- Custom CSS  -->
     <link href="<?= CSS_PATH ?>new-sales.css" rel="stylesheet">
+    <!-- sweetalert2 css -->
+    <link href="<?= CSS_PATH ?>sweetalert2/sweetalert2.min.css" rel="stylesheet">
 
 </head>
 
@@ -459,6 +461,7 @@ $doctor = json_decode($doctor , true);
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
+    <script src="<?= JS_PATH ?>sweetalert2/sweetalert2.all.min.js"></script>
     <script src="<?= JS_PATH ?>new-sales.js"></script>
 
 
