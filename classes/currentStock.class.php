@@ -197,7 +197,11 @@ class CurrentStock extends DatabaseConnection
         try {
             $data = array();
             if (!empty($adminId)) {
-                $select = "SELECT * FROM `current_stock` WHERE (`qty` > 0 OR `loosely_count` > 0) AND `admin_id` = ? ORDER BY added_on ASC";
+                $select = "SELECT * 
+                            FROM `current_stock` 
+                            WHERE (`qty` > 0 OR `loosely_count` > 0) AND `admin_id` = ? 
+                            GROUP BY `product_id` 
+                            ORDER BY added_on ASC";
                 $stmt = $this->conn->prepare($select);
                 $stmt->bind_param("s", $adminId);
             } else {
@@ -412,7 +416,7 @@ class CurrentStock extends DatabaseConnection
 
 
 
-
+    
 
     function showCurrentStockGroupByProductId($productId, $adminId)
     {
