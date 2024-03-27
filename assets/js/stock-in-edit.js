@@ -206,6 +206,8 @@ const customClick = (rowNo, pId, billNo, btchNo) => {
                 //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
 
                 deleteData(slno, itemQty, gstPerItem, total, 0);
+
+                document.getElementById('add-button').removeAttribute("disabled");
             }
         })
     } else {
@@ -1037,7 +1039,6 @@ function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
             let slVal = document.getElementById("dynamic-id").value;
             document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
-
             //minus item
             let items = document.getElementById("items-val");
             let finalItem = parseInt(items.value) - 1;
@@ -1047,7 +1048,6 @@ function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
             let qty = document.getElementById("qty-val");
             let finalQty = qty.value - itemQty;
             qty.value = finalQty;
-
 
             // minus gst
             let gst = document.getElementById("gst-val");
