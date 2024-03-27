@@ -1032,7 +1032,7 @@ function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
         // let currentQty = document.getElementById('current-qty').value;
 
         if (parseInt(pQty) == parseInt(cQty)) {
-            alert('hello');
+            
             let delRow = slno;
 
             jQuery(`#table-row-${slno}`).remove();
