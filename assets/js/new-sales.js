@@ -515,13 +515,11 @@ const onQty = (qty) => {
     if (qty > availibility) {
         qty = '';
         document.getElementById("qty").value = qty;
-        string_1 = "Please selet another batch or input ";
+        string_1 = "Unable to input this value. Available qantity is";
         string_2 = availibility;
-        string_3 = " as qantity.";
+        string_3 = " in this batch.";
         string_4 = string_1.concat(string_2).concat(string_3);
         window.alert(string_4);
-        // Swal.fire("Failed!", "Please Select Bill Date!", "error");
-        // return;
     }
 
     // =============================== Item pack type calculation ======================
