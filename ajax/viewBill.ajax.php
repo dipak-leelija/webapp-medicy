@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
+require_once dirname(__DIR__) . '/config/service.const.php';
 require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 
 require_once CLASS_DIR."dbconnect.php";
@@ -111,18 +112,25 @@ if (isset($_GET['invoice'])) {
                             $details = $StockOut->stockOutDetailsDisplayById($_GET['invoice']);
                             // print_r($details);
                             foreach ($details as $detail) {
-                                // print_r($detail);
-                                $weatage = $detail['weightage'];
-                                $itemUnit = preg_replace('/[0-9]/','',$weatage);
+                                $itemUnit = $detail['unit'];
                                 echo $itemUnit;
 
-                                if($itemUnit == 'tab' || $itemUnit == 'cap'){
+
+                                if (in_array(strtolower(trim($itemUnit)), LOOSEUNITS)) {
                                     $qty = $detail['loosely_count'];
                                     $suffix = " (L)";
-                                }else{
+                                } else {
                                     $qty = $detail['qty'];
                                     $suffix = "";
                                 }
+
+                                // if($itemUnit == 'tab' || $itemUnit == 'cap'){
+                                //     $qty = $detail['loosely_count'];
+                                //     $suffix = " (L)";
+                                // }else{
+                                //     $qty = $detail['qty'];
+                                //     $suffix = "";
+                                // }
                             
                                 echo'<tr>
                                         <td>'.$detail['item_name'].'</td>
