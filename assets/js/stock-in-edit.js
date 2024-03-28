@@ -206,6 +206,8 @@ const customClick = (rowNo, pId, billNo, btchNo) => {
                 //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
 
                 deleteData(slno, itemQty, gstPerItem, total, 0);
+
+                document.getElementById('add-button').removeAttribute("disabled");
             }
         })
     } else {
@@ -431,6 +433,20 @@ const getDtls = (value) => {
     }
     document.getElementById("product-select").style.display = "none";
 }
+
+
+firstInput.addEventListener('keydown',function(event){
+    if(firstInput.value != ''){
+        if(document.getElementById('del-flag').value == 1){
+            if (event.key === 'Backspace' || event.key === 'Delete') {
+                Swal.fire('error','You can only edit its transactional value.','info');
+            }
+        }
+    }
+});
+
+
+
 
 const getBillAmount = () => {
 
@@ -1030,13 +1046,12 @@ function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
         // let currentQty = document.getElementById('current-qty').value;
 
         if (parseInt(pQty) == parseInt(cQty)) {
-            alert('hello');
+            
             let delRow = slno;
 
             jQuery(`#table-row-${slno}`).remove();
             let slVal = document.getElementById("dynamic-id").value;
             document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
-
 
             //minus item
             let items = document.getElementById("items-val");
@@ -1047,7 +1062,6 @@ function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
             let qty = document.getElementById("qty-val");
             let finalQty = qty.value - itemQty;
             qty.value = finalQty;
-
 
             // minus gst
             let gst = document.getElementById("gst-val");

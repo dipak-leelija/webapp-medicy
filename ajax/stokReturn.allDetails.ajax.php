@@ -19,10 +19,15 @@ if (isset($_GET['current-stock-qty'])) {
     // echo $stockInDetailsId;
     $stokInDetails = $StokInDetails->showStockInDetailsByStokinId($stockInDetailsId);
     $purchaseQty = $stokInDetails[0]['qty'];
+    $purchaseFreeQty = $stokInDetails[0]['free_qty'];
+    
+    $currentData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
+    // print_r($currentData);
     
     $totalRtnQty = 0;
     $stockReturnDetails = json_decode($StokReturn->showStockReturnDataByStokinId($stockInDetailsId));
     // echo $stockInDetailsId;
+
     if ($stockReturnDetails->status == 1) {
         $stockReturnDetails = $stockReturnDetails->data;
 
@@ -44,11 +49,9 @@ if (isset($_GET['current-stock-qty'])) {
             $totalRtnQty = intval($totalRtnQty) + intval($returnQty);
         }
 
-        $currentData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stockInDetailsId));
-        // print_r($currentData);
-        echo ($currentData->qty - $totalRtnQty);
+        echo (intval($currentData->qty) - intval($totalRtnQty));
     } else {
-        echo $currentData->qty;
+        echo intval($currentData->qty) - intval($purchaseFreeQty);
     }
 }
 

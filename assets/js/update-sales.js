@@ -599,10 +599,48 @@ const onQty = (qty) => {
     // console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
 
     //==================== Margin on an Item ====================
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
+    var currentItemId = document.getElementById('item-id').value;
+
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&currentItemId=${currentItemId}`;
     xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
+
+    // check margine amount alert
+    if(parseFloat(document.getElementById("margin").value) < 0){
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-success",
+              cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+          });
+          swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "Check discount percent. This returns negative margine.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              swalWithBootstrapButtons.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your imaginary file is safe :)",
+                icon: "error"
+              });
+            }
+          });
+    }
 }
 
 
@@ -682,10 +720,53 @@ const ondDisc = (disc) => {
     }
 
     //==================== Margin on an Item ====================
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
+    // marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
+    // xmlhttp.open("GET", marginUrl, false);
+    // xmlhttp.send(null);
+    // document.getElementById("margin").value = xmlhttp.responseText;
+
+    var currentItemId = document.getElementById('item-id').value;
+
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&currentItemId=${currentItemId}`;
     xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
+
+    // check margine amount alert
+    if(parseFloat(document.getElementById("margin").value) < 0){
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-success",
+              cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+          });
+          swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "Check discount percent. This returns negative margine.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              swalWithBootstrapButtons.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your imaginary file is safe :)",
+                icon: "error"
+              });
+            }
+          });
+    }
 }
 
 

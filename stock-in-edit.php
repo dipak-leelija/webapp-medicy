@@ -262,16 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="col-md-12 ">
                                                     <input class="upr-inp mt-2" list="datalistOptions" id="product-name" name="product-name" placeholder="Search Product" onkeyup="searchItem(this.value);" onkeydown="chekForm()" autocomplete="off">
-                                                    <!-- <datalist id="datalistOptions">
-                                                        <?php
-                                                        foreach ($showProducts as $rowProducts) {
-                                                            $productId   = $rowProducts['product_id'];
-                                                            $productName = $rowProducts['name'];
-                                                            echo '<option value="' . $productId . '">' . $productName . '</option>';
-                                                        }
-                                                        ?>
-                                                    </datalist> -->
-
+                                                    
                                                     <div class="p-2 bg-light" id="product-select" style="max-height: 20rem; max-width: 100%;">
                                                     </div>
                                                 </div>
@@ -377,17 +368,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <input type="number" class="upr-inp" name="free-qty" id="free-qty" onkeyup="editQTY()">
                                                 </div>
 
-                                                <div class="col-sm-4 col-md-4 mt-2">
+                                                <div class="d-none col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="purchsed-qty">Buy Qty</label>
                                                     <input type="number" class="upr-inp" name="purchsed-qty" id="purchsed-qty" readonly>
                                                 </div>
 
-                                                <div class="col-sm-4 col-md-4 mt-2">
+                                                <div class="d-none col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="current-qty">Current Qty</label>
                                                     <input type="number" class="upr-inp" name="current-qty" id="current-qty" readonly>
                                                 </div>
 
-                                                <div class="col-sm-4 col-md-4 mt-2">
+                                                <div class="d-none col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="current-qty">Delete Flag</label>
                                                     <input type="number" class="upr-inp" name="del-flag" id="del-flag" readonly>
                                                 </div>
