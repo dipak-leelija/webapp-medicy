@@ -434,6 +434,20 @@ const getDtls = (value) => {
     document.getElementById("product-select").style.display = "none";
 }
 
+
+firstInput.addEventListener('keydown',function(event){
+    if(firstInput.value != ''){
+        if(document.getElementById('del-flag').value == 1){
+            if (event.key === 'Backspace' || event.key === 'Delete') {
+                Swal.fire('error','You can only edit its transactional value.','info');
+            }
+        }
+    }
+});
+
+
+
+
 const getBillAmount = () => {
 
     let mrp = document.getElementById('mrp').value;
