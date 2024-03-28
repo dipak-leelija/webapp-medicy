@@ -266,8 +266,8 @@ $doctor = json_decode($doctor , true);
 
                                                 <div class="row mt-3">
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
-                                                        <label for="" style="margin-top: 6px;">PTR:</label>
-                                                        <input class="sale-inp" type="any" id="ptr" style="border-width: 0px;" readonly>
+                                                        <label for="" style="margin-top: 6px;">Purchased:</label>
+                                                        <input class="sale-inp" type="any" id="purchased-cost" style="border-width: 0px;" readonly>
                                                     </div>
 
                                                     <div class="col-md-4 col-6 mb-4 d-flex">
