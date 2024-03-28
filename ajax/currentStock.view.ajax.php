@@ -188,7 +188,7 @@ if (isset($_GET['currentStockId'])) {
                 </div>
 
                 <div class="col-sm-2 justify-content-center">
-                    <button class="button btn-danger" id="<?php echo $productId ?>" value1="<?php echo $overallStockInQTY ?>" value2="<?php echo $overallCurrentStock ?>" onclick="delAll('<?php echo $productId ?>', '<?php echo $overallStockInQTY ?>', '<?php echo $overallCurrentStock ?>', this.id, this.value1, this.value2)">Delete All</button>
+                    <!-- <button class="button btn-danger" id="<?php echo $productId ?>" value1="<?php echo $overallStockInQTY ?>" value2="<?php echo $overallCurrentStock ?>" onclick="delAll('<?php echo $productId ?>', '<?php echo $overallStockInQTY ?>', '<?php echo $overallCurrentStock ?>', this.id, this.value1, this.value2)">Delete All</button> -->
                 </div>
 
             </div>
@@ -305,7 +305,7 @@ if (isset($_GET['currentStockId'])) {
                             </div>
 
                             <div class="col-1">
-                                <button class="button btn-danger" onclick="customDelete('<?php echo $stokInID ?>', '<?php echo $currentStock ?>','<?php echo 'table-row-' . $slNo ?>','<?php echo $totalStockinQty ?>')">Delete</button>
+                                <!-- <button class="button btn-danger" onclick="customDelete('<?php echo $stokInID ?>', '<?php echo $currentStock ?>','<?php echo 'table-row-' . $slNo ?>','<?php echo $totalStockinQty ?>')">Delete</button> -->
                             </div>
 
                         </div>
