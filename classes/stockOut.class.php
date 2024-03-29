@@ -637,7 +637,7 @@ class StockOut extends DatabaseConnection
     function overallMostPurchaseCustomer($admin = '') // overall most purchase customer fucntion
     {
         try {
-            if (!empty($adminId)) {
+            if (!empty($admin)) {
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales'
@@ -665,6 +665,7 @@ class StockOut extends DatabaseConnection
 
                 $stmt = $this->conn->prepare($selectQuery);
             }
+
             if ($stmt) {
                 // $stmt->bind_param("ss", $admin, $admin);
 
@@ -836,10 +837,11 @@ class StockOut extends DatabaseConnection
 
     function mostPurchaseCustomerByMonth($admin='') // most purchase customer last 30 days fucntion
     {
-        echo $admin;
+        echo "before if : $admin<br>";
         try {
             if (!empty($admin)) {
-                echo '<br>1';
+                echo $admin;
+                // echo '<br>1';
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales' 
@@ -856,7 +858,7 @@ class StockOut extends DatabaseConnection
                 $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("ss", $admin, $admin);
             } else {
-                echo '2';
+                // echo '2';
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                 FROM stock_out
                 WHERE customer_id = 'Cash Sales' 
@@ -872,6 +874,9 @@ class StockOut extends DatabaseConnection
 
                 $stmt = $this->conn->prepare($selectQuery);
             }
+
+            echo $stmt;
+
             if ($stmt) {
                 // $stmt->bind_param("ss", $admin, $admin);
 
