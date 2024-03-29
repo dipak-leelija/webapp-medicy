@@ -14,7 +14,7 @@ $highestPurchaseCustomerByWeek = $StockOut->mostPurchaseCustomerByWeek($adminId)
 
 $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminId);
 
-// print_r($highestPurchaseCustomerByMonth);
+print_r($highestPurchaseCustomerByMonth);
 
 ?>
 
