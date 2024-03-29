@@ -839,6 +839,7 @@ class StockOut extends DatabaseConnection
         echo $admin;
         try {
             if (!empty($admin)) {
+                echo '1';
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales' 
@@ -855,6 +856,7 @@ class StockOut extends DatabaseConnection
                 $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("ss", $admin, $admin);
             } else {
+                echo '2';
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                 FROM stock_out
                 WHERE customer_id = 'Cash Sales' 
