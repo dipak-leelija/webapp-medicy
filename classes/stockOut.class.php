@@ -836,6 +836,7 @@ class StockOut extends DatabaseConnection
 
     function mostPurchaseCustomerByMonth($admin) // most purchase customer last 30 days fucntion
     {
+        echo $admin;
         try {
             if (!empty($admin)) {
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
