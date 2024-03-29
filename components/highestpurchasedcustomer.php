@@ -171,7 +171,7 @@ print_r($highestPurchaseCustomerByMonth);
 
     // ============== primary chart data area ==============
     let highestPurchaseCustomerFromStart = <?php echo json_encode($highestPurchaseCustomerAllTime); ?>;
-
+    console.log(highestPurchaseCustomerFromStart);
     if (highestPurchaseCustomerFromStart != null) {
         var customerId = highestPurchaseCustomerFromStart.map(item => item.customer_id);
         customerId = JSON.stringify(customerId);
