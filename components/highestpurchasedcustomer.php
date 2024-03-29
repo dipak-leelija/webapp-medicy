@@ -183,9 +183,9 @@ print_r($highestPurchaseCustomerByMonth);
         var customerNameArray = request.responseText;
 
         customerNameArray = JSON.parse(customerNameArray);
-
+        console.log(customerNameArray);
         var purchaseAmount = highestPurchaseCustomerFromStart.map(item => item.total_purchase);
-
+        console.log(purchaseAmount);
     } else {
         document.getElementById("highestPurchaseCustomerChartDiv").style.display = 'none';
         document.getElementById('most-purchase-no-data-found-div').style.display = 'block';
