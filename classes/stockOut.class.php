@@ -839,7 +839,7 @@ class StockOut extends DatabaseConnection
         echo $admin;
         try {
             if (!empty($admin)) {
-                echo '1';
+                echo '<br>1';
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales' 
