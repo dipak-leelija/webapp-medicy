@@ -4,6 +4,8 @@ $includePath = get_include_path();
 
 $today = NOW;
 
+echo "$adminId<br>";
+
 $highestPurchaseCustomerAllTime = $StockOut->overallMostPurchaseCustomer($adminId);
 
 $highestPurchaseCustomerByDay = $StockOut->mostPurchaseCustomerByDay($adminId);
