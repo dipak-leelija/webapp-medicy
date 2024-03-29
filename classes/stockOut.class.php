@@ -834,7 +834,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByMonth($admin) // most purchase customer last 30 days fucntion
+    function mostPurchaseCustomerByMonth($admin='') // most purchase customer last 30 days fucntion
     {
         echo $admin;
         try {
