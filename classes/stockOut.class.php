@@ -636,8 +636,10 @@ class StockOut extends DatabaseConnection
 
     function overallMostPurchaseCustomer($admin = '') // overall most purchase customer fucntion
     {
+        echo "$admin";
         try {
             if (!empty($admin)) {
+                echo "<br>inside if : $admin";
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales'
@@ -652,6 +654,7 @@ class StockOut extends DatabaseConnection
                 $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("ss", $admin, $admin);
             } else {
+                echo "<br>inside else : $admin";
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE  customer_id = 'Cash Sales'
