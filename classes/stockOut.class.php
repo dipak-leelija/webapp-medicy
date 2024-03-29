@@ -636,10 +636,10 @@ class StockOut extends DatabaseConnection
 
     function overallMostPurchaseCustomer($admin = '') // overall most purchase customer fucntion
     {
-        echo "$admin";
+        // echo "$admin";
         try {
             if (!empty($admin)) {
-                echo "<br>inside if : $admin";
+                // echo "<br>inside if : $admin";
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE admin_id = ? AND customer_id = 'Cash Sales'
@@ -654,7 +654,7 @@ class StockOut extends DatabaseConnection
                 $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("ss", $admin, $admin);
             } else {
-                echo "<br>inside else : $admin";
+                // echo "<br>inside else : $admin";
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
                             WHERE  customer_id = 'Cash Sales'
@@ -840,10 +840,10 @@ class StockOut extends DatabaseConnection
 
     function mostPurchaseCustomerByMonth($admin='') // most purchase customer last 30 days fucntion
     {
-        echo "before if : $admin<br>";
+        // echo "before if : $admin<br>";
         try {
             if (!empty($admin)) {
-                echo $admin;
+                // echo $admin;
                 // echo '<br>1';
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                             FROM stock_out
@@ -861,7 +861,7 @@ class StockOut extends DatabaseConnection
                 $stmt = $this->conn->prepare($selectQuery);
                 $stmt->bind_param("ss", $admin, $admin);
             } else {
-                echo "else admin id : $admin";
+                // echo "else admin id : $admin";
                 $selectQuery = "SELECT customer_id, amount AS total_purchase
                 FROM stock_out
                 WHERE customer_id = 'Cash Sales' 
@@ -878,8 +878,8 @@ class StockOut extends DatabaseConnection
                 $stmt = $this->conn->prepare($selectQuery);
             }
 
-            print_r($stmt);
-            echo "<br>select query : $selectQuery";
+            // print_r($stmt);
+            // echo "<br>select query : $selectQuery";
             if ($stmt) {
                 // $stmt->bind_param("ss", $admin, $admin);
 
