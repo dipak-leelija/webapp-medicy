@@ -375,12 +375,12 @@ const stockDetails = (productId, batchNo, itemId) => {
         // alert(xmlhttp.responseText);
 
         //==================== PTR ====================
-        ptrUrl = `ajax/getProductDetails.ajax.php?stockptr=${productId}&batchNo=${batchNo}`;
+        ptrUrl = `ajax/getProductDetails.ajax.php?stockptr=${productId}&currentStockId=${itemId}`;
         // alert(ptrUrl);
         // window.location.href = unitUrl;
         xmlhttp.open("GET", ptrUrl, false);
         xmlhttp.send(null);
-        document.getElementById("ptr").value = xmlhttp.responseText;
+        document.getElementById("purchased-cost").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
         //==================== Loose Stock ====================
@@ -593,15 +593,33 @@ const onQty = (qty) => {
         document.getElementById("type-check").value = '0';
     }
     
-
-    /// console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
-    //==================== Margin on an Item ====================
+    // console.log(itemPackType);
     var currentItemId = document.getElementById('crnt-stck-itm-id').value;
+    // if (itemPackType == "Pack") {
+        //==================== purchased-cost on an Item ====================
 
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&currentItemId=${currentItemId}`;
-    request.open("GET", marginUrl, false);
-    request.send(null);
-    document.getElementById("margin").value = request.responseText;
+        purchased_cost_url = `ajax/getPurchasedCost.ajax.php?qtype=${itemPackType}&Qty=${qty}&currentItemId=${currentItemId}`;
+        request.open("GET", purchased_cost_url, false);
+        request.send(null);
+        document.getElementById("purchased-cost").value = request.responseText;
+        console.info(request.responseText);
+    // }else if(itemPackType == "Loose"){
+        
+    //     let eachQty = parseFloat(mrp) / parseInt(itemWeightage);
+
+    //     purchased_cost_url = `ajax/getPurchasedCost.ajax.php?qtype=${itemPackType}&Qty=${qty}&currentItemId=${currentItemId}`;
+    //     request.open("GET", purchased_cost_url, false);
+    //     request.send(null);
+    //     document.getElementById("purchased-cost").value = request.responseText;
+    //     console.info(request.responseText);
+
+    // }
+
+        //==================== Margin on an Item ====================
+        marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&currentItemId=${currentItemId}`;
+        request.open("GET", marginUrl, false);
+        request.send(null);
+        document.getElementById("margin").value = request.responseText;   
 
     // check margine amount alert
     if(parseFloat(document.getElementById("margin").value) < 0){
@@ -771,7 +789,7 @@ const onDisc = (disc) => {
             } else if (
                 result.dismiss === Swal.DismissReason.cancel
             ) {
-                document.getElementById('disc').value = 0;
+                document.getElementById('disc').value = '';
                 swalWithBootstrapButtons.fire({
                     title: "Cancelled",
                     text: "Discout percent set as 0",
@@ -817,7 +835,7 @@ const addSummary = () => {
     // let amnt = amount.toFixed(2);
     let looseStock = document.getElementById("loose-stock").value;
     let loosePrice = document.getElementById("loose-price").value;
-    let ptr = document.getElementById("ptr").value;
+    let purchasedCost = document.getElementById("purchased-cost").value;
     let marginAmount = document.getElementById("margin").value;
 
 
@@ -989,8 +1007,8 @@ const addSummary = () => {
             <input class="summary-items" type="text" name="mrp[]" value="${mrp}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
         </td>
 
-        <td class="d-none" id="${ptr}">
-            <input class="summary-items" type="text" name="itemPtr[]" value="${ptr}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
+        <td class="d-none" id="${purchasedCost}">
+            <input class="summary-items" type="text" name="itemPtr[]" value="${purchasedCost}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
         </td>
 
         <td class="d-none" id="${slno}">
@@ -1070,7 +1088,7 @@ const addSummary = () => {
         unitType: unitType,
         expDate: expDate,
         mrp: mrp,
-        ptr: ptr,
+        purchasedCost: purchasedCost,
         qtyTypeCheck: qtyTypeCheck,
         qty: qty,
         discPercent: discPercent,
@@ -1214,7 +1232,7 @@ const editItem = (tuple) => {
 
         document.getElementById("exp-date").value = Tupledata.expDate;
         document.getElementById("mrp").value = Tupledata.mrp;
-        document.getElementById("ptr").value = Tupledata.ptr;
+        document.getElementById("purchased-cost").value = Tupledata.purchasedCost;
 
         document.getElementById("qty").value = Tupledata.qty;
         document.getElementById("type-check").value = Tupledata.qtyTypeCheck;

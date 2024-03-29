@@ -335,7 +335,10 @@ class StockInDetails extends DatabaseConnection
         return $data;
     } // eof stockInDelete
 
-    function stockDistributorBillNo($batchNo, $productId)
+    /**
+     * stockDistributorBillNo name replaced
+     */
+    function stocInByPidAndBatch($batchNo, $productId)
     {
 
         $data = array();

@@ -6,11 +6,14 @@ require_once CLASS_DIR."dbconnect.php";
 require_once CLASS_DIR.'products.class.php';
 require_once CLASS_DIR.'itemUnit.class.php';
 require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR.'stockInDetails.class.php';
+
 
 
 $Products       = new Products();
 $ItemUnit       = new itemUnit();
 $CurrentStock   = new CurrentStock();
+$StockInDetails = new StockInDetails();
 
 
 
@@ -118,9 +121,24 @@ if (isset($_GET["stockmrp"])) {
 // ======================= PTR ACCESS FROM CURRENT STOCK =====================
 
 if (isset($_GET["stockptr"])) {
-    $stock = $CurrentStock->showCurrentStocByProductIdandBatchNo($_GET["stockptr"], $_GET["batchNo"]);
-    echo $stock[0]['ptr'];
-    // print_r($stock);
+    $stock = $CurrentStock->showCurrentStocById($_GET["currentStockId"]);
+    $stockIn = $StockInDetails->showStockInDetailsByStokinId($stock[0]['stock_in_details_id']);
+
+    // Calculate the amount to subtract based on the percentage
+    $discountAmount = $stock[0]['ptr'] * ($stockIn[0]['discount'] / 100);
+    
+    // Subtract the amount from the original number
+    $result1 = $stock[0]['ptr'] - $discountAmount;
+    
+    $result1;
+
+    // Calculate the amount to add based on the percentage
+    $addAmount = $result1 * ($stockIn[0]['gst'] / 100);
+    
+    // Add the amount to the original number
+    $result = $result1 + $addAmount;
+    
+    echo number_format($result, 2);
 }
 
 // ============ CURRENT STOCK ITEM LOOSE STOCK CHEK BLOCK ===============
