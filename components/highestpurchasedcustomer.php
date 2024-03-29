@@ -14,8 +14,9 @@ $highestPurchaseCustomerByWeek = $StockOut->mostPurchaseCustomerByWeek($adminId)
 
 $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminId);
 
+echo "<br>check 1";
 print_r($highestPurchaseCustomerByMonth);
-
+echo "check 2";
 ?>
 
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
