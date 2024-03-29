@@ -15,7 +15,7 @@ $highestPurchaseCustomerByWeek = $StockOut->mostPurchaseCustomerByWeek($adminId)
 $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminId);
 
 echo "<br>check 1";
-print_r($highestPurchaseCustomerByMonth);
+print_r($highestPurchaseCustomerAllTime);
 echo "check 2";
 ?>
 
