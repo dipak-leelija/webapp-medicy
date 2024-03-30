@@ -85,6 +85,7 @@ class SuperAdmin extends DatabaseConnection{
         try{
 
             $response = json_decode($this->getSupAdminPassword($SUPER_ADMINID));
+            print_r($response);
             if ($response->status == 1) {
                 $superadmin    = $response->data;
                 print_r($superadmin);
