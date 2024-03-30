@@ -4,7 +4,7 @@ $includePath = get_include_path();
 
 $today = NOW;
 
-echo "$adminId<br>";
+// echo "$adminId<br>";
 
 $highestPurchaseCustomerAllTime = $StockOut->overallMostPurchaseCustomer($adminId);
 
@@ -171,7 +171,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
     // ============== primary chart data area ==============
     let highestPurchaseCustomerFromStart = <?php echo json_encode($highestPurchaseCustomerAllTime); ?>;
-    console.log(highestPurchaseCustomerFromStart);
+    // console.log(highestPurchaseCustomerFromStart);
     if (highestPurchaseCustomerFromStart != null) {
         var customerId = highestPurchaseCustomerFromStart.map(item => item.customer_id);
         customerId = JSON.stringify(customerId);
@@ -183,9 +183,9 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         var customerNameArray = request.responseText;
 
         customerNameArray = JSON.parse(customerNameArray);
-        console.log(customerNameArray);
+        // console.log(customerNameArray);
         var purchaseAmount = highestPurchaseCustomerFromStart.map(item => item.total_purchase);
-        console.log(purchaseAmount);
+        // console.log(purchaseAmount);
     } else {
         document.getElementById("highestPurchaseCustomerChartDiv").style.display = 'none';
         document.getElementById('most-purchase-no-data-found-div').style.display = 'block';
