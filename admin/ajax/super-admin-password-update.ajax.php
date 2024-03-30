@@ -3,13 +3,10 @@ require_once realpath(dirname(dirname(__DIR__))) . '/config/constant.php';
 require_once SUP_ADM_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
-require_once CLASS_DIR . 'admin.class.php';
-require_once CLASS_DIR . 'employee.class.php';
+require_once CLASS_DIR . 'supAdmin.class.php';
 require_once CLASS_DIR . 'encrypt.inc.php';
 
-$Admin = new Admin;
-$Employees = new Employees;
-
+$SuperAdmin = new SuperAdmin();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -17,67 +14,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newPassword = $_POST['new-password'];
     $cnfPassword = $_POST['cnf-password'];
 
-
-    if ($_SESSION['ADMIN']) {
-        $oldAdminPass = $adminPass;
-        $x_password = pass_dec($oldAdminPass, ADMIN_PASS);
-
-        if ($oldPassword === $x_password) {
-            if ($newPassword === $cnfPassword) {
-                $adminPassUpdate = $Admin->updateAdminPassword($newPassword, $adminId);
-
-                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> password changed successfully!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>';
-            } else {
-                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Failed!</strong> Inputed password dosenot matched!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>';
-            }
-        } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Failed!</strong> Wrong Old password inputed!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>';
-        }
+    if ($newPassword === $cnfPassword) {
+        $adminPassUpdate = $SuperAdmin->updateSuperAdminPass($oldPassword, $newPassword, $SUPER_ADMINID);
+        print_r($adminPassUpdate);
+        // echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        //                     <strong>Succcess!</strong> password changed successfully!
+        //                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        //                 </div>';
     } else {
-
-        $oldEmpPass = $empPass;
-        $x_password = pass_dec($oldEmpPass, EMP_PASS);
-
-        if ($oldPassword === $x_password) {
-
-            if ($newPassword === $cnfPassword) {
-
-                $empPassUpdate = $Employees->updateEmployeePassword($newPassword, $employeeId, $adminId);
-                // print_r($empPassUpdate);
-
-                if ($empPassUpdate['result']) {
-                    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> password changed successfully!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>';
-                } else {
-                    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> Update fail! Internal server error.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>';
-                }
-            } else {
-                echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> Inputed password dosenot matched!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>';
-            }
-        } else {
-            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Failed!</strong> Password Updation Failed!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-        }
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Failed!</strong> New Password and Confirm Password Must be Same!!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
     }
+    // } else {
+    //     echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    //                 <strong>Failed!</strong> Wrong Old password inputed!
+    //                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    //             </div>';
+    // }
 }
 
 ?>
@@ -103,24 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        <!-- <div class="form-group mb-3">
-            <input type="password" class="form-control " id="old-password" name="old-password" maxlength="12" placeholder="Current Password" required oninput="showToggleBtn1()">
-            <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem" onclick="togglePassword1()"></i>
-        </div>
-        <div class="form-group  mb-3">
-            <input type="password" class="form-control " id="new-password" name="new-password" maxlength="12" placeholder="Enter New Password" required oninput="showToggleBtn2()">
-            <i class="fas fa-eye " id="toggleBtn2" style="display:none;font-size:1.2rem" onclick="togglePassword2()"></i>
-        </div>
-        <div class="form-group mb-3 ">
-            <input type="password" class="form-control " id="cnf-password" name="cnf-password" maxlength="12" placeholder="Confirm Password" required oninput="showToggleBtn3()">
-            <i class="fas fa-eye " id="toggleBtn3" style="display:none;font-size:1.2rem" onclick="togglePassword3()"></i>
-            <small>
-                <p id="cpasserror" class="text-danger" style="display: none;"></p>
-            </small>
-        </div>
-        <div class="mt-2 d-flex justify-content-end">
-            <button type="submit" name="submit" id="change-password" class="btn btn-sm btn-primary">Save Changes</button>
-        </div> -->
+
         <div class="form-group mb-3">
             <input type="password" class="form-control " id="old-password" name="old-password" maxlength="12" placeholder="Current Password" required oninput="showToggleBtn('old-password', 'toggleBtn1')">
             <i class="fas fa-eye " id="toggleBtn1" style="display:none;font-size:1.2rem" onclick="togglePassword('old-password', 'toggleBtn1')"></i>
