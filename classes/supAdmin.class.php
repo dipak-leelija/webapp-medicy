@@ -89,7 +89,7 @@ class SuperAdmin extends DatabaseConnection{
                 $superadmin    = $response->data;
                 print_r($superadmin);
                 // $DBPassword   = $superadmin->password;
-                // $DBPassword   = '';
+                $DBPassword   = '';
             }else {
                 throw new Exception($response->message);
             }
