@@ -60,7 +60,7 @@ class SuperAdmin extends DatabaseConnection{
     function getSupAdminPassword($superAdminId){
         try {
             // Prepare and execute the SQL query with a placeholder for the superAdminId
-            $stmt = $this->conn->prepare("SELECT `password` FROM `super_admin` WHERE id = ?");
+            $stmt = $this->conn->prepare("SELECT * FROM `super_admin` WHERE id = '?'");
             
             if (!$stmt) {
                 throw new Exception("Failed to prepare statement.");
@@ -79,13 +79,13 @@ class SuperAdmin extends DatabaseConnection{
             if ($res->num_rows > 0) {
                 $result = $res->fetch_object();
                 $stmt->close();
-                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$result]);
+                return json_encode(['status'=>1, 'message'=>'success', 'data'=>$result]);
             } else {
                 $stmt->close();
-                return json_encode(['status'=>'0', 'message'=>'no data']);
+                return json_encode(['status'=>0, 'message'=>'no data']);
             }
         } catch (Exception $e) {
-            return json_encode(['status'=>'', 'message'=>$e->getMessage()]);
+            return json_encode(['status'=>0, 'message'=>$e->getMessage()]);
         }
     }
     
