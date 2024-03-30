@@ -15,24 +15,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cnfPassword = $_POST['cnf-password'];
 
     if ($newPassword === $cnfPassword) {
-        $adminPassUpdate = $SuperAdmin->updateSuperAdminPass($oldPassword, $newPassword, $SUPER_ADMINID);
-        print_r($adminPassUpdate);
-        // echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-        //                     <strong>Succcess!</strong> password changed successfully!
-        //                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        //                 </div>';
+        $passResponse = json_decode($SuperAdmin->updateSuperAdminPass($oldPassword, $newPassword, $SUPER_ADMINID));
+
+        if ($passResponse->status == 1) {
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Succcess!</strong>'.$passResponse->message.'
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+        }else {
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Failed!</strong>'.$passResponse->message.'
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+        }
+        
     } else {
         echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <strong>Failed!</strong> New Password and Confirm Password Must be Same!!
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
     }
-    // } else {
-    //     echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    //                 <strong>Failed!</strong> Wrong Old password inputed!
-    //                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    //             </div>';
-    // }
 }
 
 ?>

@@ -109,7 +109,7 @@ class SuperAdmin extends DatabaseConnection{
                     throw new Exception($stmt->error);
                 }
                 $stmt->close();
-                return json_encode(['status'=> 1, 'message'=> 'success']);
+                return json_encode(['status'=> 1, 'message'=> 'Password Updated!']);
 
             }else {
                 return json_encode(['status'=> 0, 'message'=> 'Current Password  is incorrect!']);
