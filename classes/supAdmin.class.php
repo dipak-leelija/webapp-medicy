@@ -32,30 +32,63 @@ class SuperAdmin extends DatabaseConnection{
 
 
 
-    function getSupAdminPassword($superId){
-        try{
-            $chkUser = "SELECT `password` FROM `super_admin` WHERE id = '$superId'";
+    // function getSupAdminPassword($superAdminId){
+    //     try{
+    //         $chkUser = "SELECT `password` FROM `super_admin` WHERE id = '$superAdminId'";
 
-            $stmt = $this->conn->prepare($chkUser);
+    //         $stmt = $this->conn->prepare($chkUser);
 
+    //         $stmt->execute();
+
+    //         $res = $stmt->get_result();
+
+    //         if ($res->num_rows > 0) {
+    //             $result = $res->fetch_object();
+    //             print_r($result);
+    //             $stmt->close();
+    //             return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$result]);
+    //         } else {
+    //             $stmt->close();
+    //             return json_encode(['status'=>'0', 'message'=>'no data', 'data'=> '']);
+    //         }
+    //     } catch (Exception $e) {
+    //         return json_encode(['status'=>'', 'message'=>$e->getMessage(), 'data'=> '']);
+    //     }
+    // } //eof getSupAdminPassword
+
+
+    function getSupAdminPassword($superAdminId){
+        try {
+            // Prepare and execute the SQL query with a placeholder for the superAdminId
+            $stmt = $this->conn->prepare("SELECT `password` FROM `super_admin` WHERE id = ?");
+            
+            if (!$stmt) {
+                throw new Exception("Failed to prepare statement.");
+            }
+    
+            $stmt->bind_param("s", $superAdminId);
             $stmt->execute();
-
+    
+            // Check for errors
+            if ($stmt->errno) {
+                throw new Exception("Error executing statement: " . $stmt->error);
+            }
+    
             $res = $stmt->get_result();
-
-            // if ($res->num_rows > 0) {
+    
+            if ($res->num_rows > 0) {
                 $result = $res->fetch_object();
-                print_r($result);
                 $stmt->close();
                 return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$result]);
-            // } else {
-            //     $stmt->close();
-            //     return json_encode(['status'=>'0', 'message'=>'no data', 'data'=> '']);
-            // }
+            } else {
+                $stmt->close();
+                return json_encode(['status'=>'0', 'message'=>'no data']);
+            }
         } catch (Exception $e) {
-            return json_encode(['status'=>'', 'message'=>$e->getMessage(), 'data'=> '']);
+            return json_encode(['status'=>'', 'message'=>$e->getMessage()]);
         }
-        return 0;
-    } //eof CheckEmail
+    }
+    
 
 
 
@@ -84,7 +117,7 @@ class SuperAdmin extends DatabaseConnection{
         try{
 
             $response = json_decode($this->getSupAdminPassword($SUPER_ADMINID));
-            echo '<br>'; print_r($response);
+            echo '<br>Response: <br>'; print_r($response);
             if ($response->status == 1) {
                 $superadmin    = $response->data;
                 print_r($superadmin);
