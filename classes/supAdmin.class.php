@@ -60,7 +60,7 @@ class SuperAdmin extends DatabaseConnection{
     function getSupAdminPassword($superAdminId){
         try {
             // Prepare and execute the SQL query with a placeholder for the superAdminId
-            $stmt = $this->conn->prepare("SELECT * FROM `super_admin` WHERE id = '?'");
+            $stmt = $this->conn->prepare("SELECT * FROM `super_admin` WHERE id = ?");
             
             if (!$stmt) {
                 throw new Exception("Failed to prepare statement.");
