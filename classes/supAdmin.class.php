@@ -114,7 +114,7 @@ class SuperAdmin extends DatabaseConnection{
 
 
     function updateSuperAdminPass($oldPassword, $newPass, $SUPER_ADMINID){
-
+        echo $SUPER_ADMINID;
         try{
 
             $response = json_decode($this->getSupAdminPassword($SUPER_ADMINID));
