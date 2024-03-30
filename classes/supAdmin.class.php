@@ -61,7 +61,7 @@ class SuperAdmin extends DatabaseConnection{
 
     function updateSupAdminDetails($fname, $lname, $img, $email, $mobNo, $address, $updatedOn, $supadminid) {
         try {
-            $updateQuery = "UPDATE `super_admin` SET `fname`=?, `lname`=?, `adm_img`=?, `email`=?, `mobile_no`=?, `address`=?, `updated_on`=? WHERE `admin_id`=?";
+            $updateQuery = "UPDATE `super_admin` SET `fname`=?, `lname`=?, `adm_img`=?, `email`=?, `mobile_no`=?, `address`=?, `updated_on`=? WHERE `id`=?";
             
             $stmt = $this->conn->prepare($updateQuery);
     
