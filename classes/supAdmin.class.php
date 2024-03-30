@@ -58,6 +58,7 @@ class SuperAdmin extends DatabaseConnection{
 
 
     function getSupAdminPassword($superAdminId){
+        echo $superAdminId;
         try {
             // Prepare and execute the SQL query with a placeholder for the superAdminId
             $stmt = $this->conn->prepare("SELECT * FROM `super_admin` WHERE id = ?");
