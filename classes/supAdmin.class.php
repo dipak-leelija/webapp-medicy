@@ -41,7 +41,6 @@ class SuperAdmin extends DatabaseConnection{
             $stmt->execute();
 
             $res = $stmt->get_result();
-            print_r($res);
 
             // if ($res->num_rows > 0) {
                 $result = $res->fetch_object();
