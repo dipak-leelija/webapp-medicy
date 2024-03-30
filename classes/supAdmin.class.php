@@ -41,10 +41,11 @@ class SuperAdmin extends DatabaseConnection{
             $stmt->execute();
 
             $res = $stmt->get_result();
-
+            print_r($res);
+            
             if ($res->num_rows > 0) {
-                $adminData = array();
                 $result = $res->fetch_object();
+                print_r($result);
                 $stmt->close();
                 return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$result]);
             } else {
