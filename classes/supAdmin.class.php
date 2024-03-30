@@ -34,7 +34,7 @@ class SuperAdmin extends DatabaseConnection{
 
     function getSupAdminPassword($superId){
         try{
-            $chkUser = "SELECT password FROM `super_admin` WHERE id = '$superId'";
+            $chkUser = "SELECT `password` FROM `super_admin` WHERE id = '$superId'";
 
             $stmt = $this->conn->prepare($chkUser);
 
