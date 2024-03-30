@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Ajax Update Reporet Goes Here -->
     </div>
 
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <form class="px-2" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
         <div class="form-group mb-3">
             <input type="password" class="form-control " id="old-password" name="old-password" maxlength="12" placeholder="Current Password" required oninput="showToggleBtn('old-password', 'toggleBtn1')">
