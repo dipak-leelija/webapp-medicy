@@ -42,16 +42,16 @@ class SuperAdmin extends DatabaseConnection{
 
             $res = $stmt->get_result();
             print_r($res);
-            
-            if ($res->num_rows > 0) {
+
+            // if ($res->num_rows > 0) {
                 $result = $res->fetch_object();
                 print_r($result);
                 $stmt->close();
                 return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$result]);
-            } else {
-                $stmt->close();
-                return json_encode(['status'=>'0', 'message'=>'no data', 'data'=> '']);
-            }
+            // } else {
+            //     $stmt->close();
+            //     return json_encode(['status'=>'0', 'message'=>'no data', 'data'=> '']);
+            // }
         } catch (Exception $e) {
             return json_encode(['status'=>'', 'message'=>$e->getMessage(), 'data'=> '']);
         }
