@@ -336,7 +336,7 @@ if ($_SESSION['SUPER_ADMIN']) {
             let url = "ajax/super-admin-password-update.ajax.php";
             $('.exampleModalCenter').html(
                 '<iframe id="passwordUpdateFrame" style="width: 100%; border: none; overflow: auto; display: block;" frameborder="0" allowtransparency="true" src="' +
-                url + '" scrolling="no" onload="resizeIframeHeight(450)"></iframe>');
+                url + '" scrolling="no" onload="resizeIframeHeight(230)"></iframe>');
         }
 
         function updateButtonContent() {
