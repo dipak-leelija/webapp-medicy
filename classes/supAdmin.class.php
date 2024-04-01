@@ -30,35 +30,7 @@ class SuperAdmin extends DatabaseConnection{
     } //eof CheckEmail
 
 
-
-
-    // function getSupAdminPassword($superAdminId){
-    //     try{
-    //         $chkUser = "SELECT `password` FROM `super_admin` WHERE id = '$superAdminId'";
-
-    //         $stmt = $this->conn->prepare($chkUser);
-
-    //         $stmt->execute();
-
-    //         $res = $stmt->get_result();
-
-    //         if ($res->num_rows > 0) {
-    //             $result = $res->fetch_object();
-    //             print_r($result);
-    //             $stmt->close();
-    //             return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$result]);
-    //         } else {
-    //             $stmt->close();
-    //             return json_encode(['status'=>'0', 'message'=>'no data', 'data'=> '']);
-    //         }
-    //     } catch (Exception $e) {
-    //         return json_encode(['status'=>'', 'message'=>$e->getMessage(), 'data'=> '']);
-    //     }
-    // } //eof getSupAdminPassword
-
-
     function getSupAdminPassword($superAdminId){
-        echo $superAdminId;
         try {
             // Prepare and execute the SQL query with a placeholder for the superAdminId
             $stmt = $this->conn->prepare("SELECT `password` FROM `super_admin` WHERE id = ?");
@@ -117,19 +89,14 @@ class SuperAdmin extends DatabaseConnection{
         try{
 
             $response = json_decode($this->getSupAdminPassword($SUPER_ADMINID));
-            echo '<br>Response: <br>'; print_r($response);
             if ($response->status == 1) {
                 $superadmin    = $response->data;
-                // print_r($superadmin);
                 $DBPassword   = $superadmin->password;
-                // echo '<br>Password: '.$superadmin->password.'<br>';
-
-                // $DBPassword   = '';
             }else {
                 throw new Exception($response->message);
             }
 
-            echo $x_password = pass_dec($DBPassword, ADMIN_PASS);
+            $x_password = pass_dec($DBPassword, ADMIN_PASS);
             $password = pass_enc($newPass, ADMIN_PASS);
             
             $strong = isStrongPassword($password);
