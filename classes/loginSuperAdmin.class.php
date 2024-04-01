@@ -28,11 +28,10 @@ class SuperAdminLoginForm extends DatabaseConnection{
                     $_SESSION['SUPER_ADMIN_IMG']          = $data->adm_img;    
                     $_SESSION['SUPER_ADMIN_CONTACT_NO']   = $data->mobile_no;
                     $_SESSION['SUPER_ADMIN_USERNAME']     = $data->username;
-                    $_SESSION['SUPER_ADMIN_PASSWORD']     = $data->password;
                     $_SESSION['SUPER_ADMIN_ADDRESS']      = $data->address;
-                    $_SESSION['SUPER_ADMINID']            = $data->admin_id;
+                    $_SESSION['SUPER_ADMINID']            = $data->id;
                     
-                        
+                    
                     header("Location:". ADM_URL);
                     exit;
 

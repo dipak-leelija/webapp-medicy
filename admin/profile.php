@@ -324,7 +324,7 @@ if ($_SESSION['SUPER_ADMIN']) {
     <!-- password modal open -->
     <script>
         passwordUpdate = () => {
-            let url = "ajax/updateProfile-password.ajax.php";
+            let url = "ajax/super-admin-password-update.ajax.php";
             $('.exampleModalCenter').html(
                 '<iframe width="100%" height="220px" frameborder="0" allowtransparency="true" src="' +
                 url + '" scrolling="no"></iframe>');
