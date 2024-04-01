@@ -121,15 +121,15 @@ class SuperAdmin extends DatabaseConnection{
             if ($response->status == 1) {
                 $superadmin    = $response->data;
                 // print_r($superadmin);
-                // $DBPassword   = $superadmin->password;
-                echo '<br>Password: '.$superadmin->password.'<br>';
+                $DBPassword   = $superadmin->password;
+                // echo '<br>Password: '.$superadmin->password.'<br>';
 
-                $DBPassword   = '';
+                // $DBPassword   = '';
             }else {
                 throw new Exception($response->message);
             }
 
-            $x_password = pass_dec($DBPassword, ADMIN_PASS);
+            echo $x_password = pass_dec($DBPassword, ADMIN_PASS);
             $password = pass_enc($newPass, ADMIN_PASS);
             
             $strong = isStrongPassword($password);
