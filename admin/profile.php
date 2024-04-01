@@ -145,7 +145,7 @@ if ($_SESSION['SUPER_ADMIN']) {
                                             <div class="position-absolute translate-middle ml-5">
                                                 <input type="file" style="display:none;" id="img-uv-input" accept=".jpg,.jpeg,.png" name="profile-image" onchange="validateFileType()">
                                                 <label for="img-uv-input" class="btn btn-sm btn-success ml-5 mt-n5 rounded-circle border-white"><i class="fas fa-camera"></i></label>
-                                                <div class="alert alert-danger d-none" id="err-show" role="alert" >
+                                                <div class="alert alert-danger d-none" id="err-show" role="alert">
                                                     Only jpg/jpeg and png files are allowed!
                                                 </div>
                                             </div>
@@ -323,13 +323,21 @@ if ($_SESSION['SUPER_ADMIN']) {
 
     <!-- password modal open -->
     <script>
+
+        const resizeIframeHeight = (defaultHeightPX) => {
+            let iframe = document.getElementById('passwordUpdateFrame');
+            let contentHeight = iframe.contentWindow.document.body.scrollHeight + 'px';
+            // Set default height to 400px
+            let newHeight = Math.max(defaultHeightPX, parseInt(contentHeight));
+            iframe.style.height = newHeight + 'px';
+        }
+
         passwordUpdate = () => {
             let url = "ajax/super-admin-password-update.ajax.php";
             $('.exampleModalCenter').html(
-                '<iframe width="100%" height="220px" frameborder="0" allowtransparency="true" src="' +
-                url + '" scrolling="no"></iframe>');
+                '<iframe id="passwordUpdateFrame" style="width: 100%; border: none; overflow: auto; display: block;" frameborder="0" allowtransparency="true" src="' +
+                url + '" scrolling="no" onload="resizeIframeHeight(450)"></iframe>');
         }
-
 
         function updateButtonContent() {
             var button = document.getElementById("passwordChangeBtn");
