@@ -97,6 +97,10 @@ const setDistBillNo = (t) => {
 }
 
 //////////////////// set bill date \\\\\\\\\\\\\\\\\\\\
+var setBillDate = new Date();
+document.getElementById('bill-date').value = setBillDate.toISOString().slice(0, 10);
+
+
 var todayDate = new Date();
 
 var date = todayDate.getDate();
@@ -126,12 +130,16 @@ const getbillDate = (billDate) => {
 }
 
 //////////////////// set due date /////////////////////
+var setDueDate = new Date();
+document.getElementById('due-date').value = setDueDate.toISOString().slice(0, 10);
+
 const getDueDate = (t) => {
     // console.log(t.value);
     document.getElementById("due-date-val").value = t.value;
 }
 
 /////////////////////// SET PAYMENT MODE \\\\\\\\\\\\\\\\\\\\\\
+document.getElementById('payment-mode').value = 'Cash';
 const setPaymentMode = (pMode) => {
     document.getElementById("payment-mode-val").value = pMode.value;
 }
@@ -236,7 +244,6 @@ function searchItem(input) {
 }
 
 const getDtls = (productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag) => {
-
 
     // console.log(productId, prodReqStatus, oldProdReqStatus, edtiRequestFlag);
 
@@ -486,7 +493,7 @@ const getBillAmount = () => {
                 text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
                 icon: "error",
                 // button: false, // Hide the "OK" button
-                timer: 1000 // Auto-close the alert after 2 seconds
+                // timer: 1000 // Auto-close the alert after 2 seconds
             });
 
             document.getElementById("ptr").value = maxPtr;
