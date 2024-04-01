@@ -61,7 +61,7 @@ class SuperAdmin extends DatabaseConnection{
         echo $superAdminId;
         try {
             // Prepare and execute the SQL query with a placeholder for the superAdminId
-            $stmt = $this->conn->prepare("SELECT * FROM `super_admin` WHERE id = ?");
+            $stmt = $this->conn->prepare("SELECT `password` FROM `super_admin` WHERE id = ?");
             
             if (!$stmt) {
                 throw new Exception("Failed to prepare statement.");
@@ -114,15 +114,16 @@ class SuperAdmin extends DatabaseConnection{
 
 
     function updateSuperAdminPass($oldPassword, $newPass, $SUPER_ADMINID){
-        echo $SUPER_ADMINID;
         try{
 
             $response = json_decode($this->getSupAdminPassword($SUPER_ADMINID));
             echo '<br>Response: <br>'; print_r($response);
             if ($response->status == 1) {
                 $superadmin    = $response->data;
-                print_r($superadmin);
+                // print_r($superadmin);
                 // $DBPassword   = $superadmin->password;
+                echo '<br>Password: '.$superadmin->password.'<br>';
+
                 $DBPassword   = '';
             }else {
                 throw new Exception($response->message);

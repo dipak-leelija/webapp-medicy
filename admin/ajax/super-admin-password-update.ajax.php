@@ -8,9 +8,9 @@ require_once CLASS_DIR . 'encrypt.inc.php';
 
 $SuperAdmin = new SuperAdmin();
 
-print_r($_SESSION);
-echo '<br>';
-echo '1st : '.$SUPER_ADMINID.'<br>';
+// print_r($_SESSION);
+// echo '<br>';
+// echo '1st : '.$SUPER_ADMINID.'<br>';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
