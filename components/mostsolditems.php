@@ -1,21 +1,3 @@
-<?php
-// require_once dirname(__DIR__) . '/config/constant.php';
-$includePath = get_include_path();
-
-$strtDt = date('Y-m-d');
-$lst7 = date('Y-m-d', strtotime($strtDt . ' - 7 days'));
-$lst30 = date('Y-m-d', strtotime($strtDt . ' - 30 days'));
-
-$mostStoldItemsFromStart = $StockOut->mostSoldStockOutDataFromStart($adminId);
-
-$dailyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDay($adminId);
-
-$weeklyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst7, $strtDt, $adminId);
-
-$monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $strtDt, $adminId);
-// print_r($mostStoldItemsFromStart);
-?>
-
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-between align-items-center">
         <div class="col ml-2 mt-3">
@@ -34,10 +16,16 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
                 <input type="date" id="mostSoldEndDate">
                 <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDateRng()" style="height: 2rem;">Find</button>
             </div>
+            <div class="">
+                <!-- <label class="d-none" id="asc-dsc-val">asc</label> -->
+                <select class="upr-inp" name="sold-item-order" id="sold-item-order" onchange="soldItemOrder(this)">
+                    <option value="" selected disabled>Order</option>
+                    <option value="asc">ASC</option>
+                    <option value="dsc">DSC</option>
+                </select>
+            </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <!-- <img src=" IMG_PATH./arrow-down-sign-to-navigate.jpg" alt=""> -->
-
                     <b>...</b>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
@@ -64,7 +52,51 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
 <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
+
+<?php
+
+$strtDt = date('Y-m-d');
+$lst7 = date('Y-m-d', strtotime($strtDt . ' - 7 days'));
+$lst30 = date('Y-m-d', strtotime($strtDt . ' - 30 days'));
+
+if ($_GET['searchSold'] == 'asc') {
+    $stoldItemsFromStart = $StockOut->mostSoldStockOutDataFromStart($adminId);
+
+    $dailySoldItems = $StockOut->mostSoldStockOutDataGroupByDay($adminId);
+
+    $weeklSoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst7, $strtDt, $adminId);
+
+    $monthlySoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $strtDt, $adminId);
+} else {
+    $stoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
+
+    $dailySoldItems = $StockOut->leastSoldStockOutDataGroupByDay($adminId);
+
+    $weeklSoldItems = $StockOut->leastSoldStockOutDataGroupByWeek($adminId);
+
+    $monthlySoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId);
+}
+
+?>
+
 <script>
+    const soldItemOrder = (t) => {
+        if (t.value == 'asc') {
+            var currentURL = window.location.href;
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            var filter = 'asc';
+            var newURL = `${currentURLWithoutQuery}?searchSold=${filter}`;
+            window.location.replace(newURL);
+        } else {
+            var currentURL = window.location.href;
+            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
+            var filter = 'dsc';
+            var newURL = `${currentURLWithoutQuery}?searchSold=${filter}`;
+            window.location.replace(newURL);
+        }
+    }
+    // console.log("current value : "+document.getElementById('asc-dsc-val').innerHTML);
+
     // ====== most sold chart data override function =========
     function updateMostSoldData(mostSold) {
 
@@ -97,7 +129,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
     }
 
 
-
+    
     function mostSoldItemsChkDate() {
         var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
 
@@ -113,8 +145,6 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
         document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
         document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
     }
-
-
 
 
     function mostSoldItemsChkDateRng() {
@@ -137,25 +167,24 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
 
 
-
     function mostStoldItemCheck(id) {
         if (id == 'mostSoldLst24hrs') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
             document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
-            updateMostSoldData(<?php echo json_encode($dailyMostStoldItems); ?>);
+            updateMostSoldData(<?php echo json_encode($dailySoldItems); ?>);
         }
 
 
         if (id == 'mostSoldLst7') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
             document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
-            updateMostSoldData(<?php echo json_encode($weeklyMostStoldItems); ?>);
+            updateMostSoldData(<?php echo json_encode($weeklSoldItems); ?>);
         }
 
         if (id == 'mostSoldLst30') {
             document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
             document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
-            updateMostSoldData(<?php echo json_encode($monthlyMostStoldItems); ?>);
+            updateMostSoldData(<?php echo json_encode($monthlySoldItems); ?>);
         }
 
         if (id == 'mostSoldOnDt') {
@@ -171,7 +200,7 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
 
     // ========= most sold item primary data area ============= \\
-    var mostSoldDataFromStart = <?php echo json_encode($mostStoldItemsFromStart); ?>;
+    var mostSoldDataFromStart = <?php echo json_encode($stoldItemsFromStart); ?>;
 
     if (mostSoldDataFromStart != null) {
 
@@ -191,7 +220,6 @@ $monthlyMostStoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $st
 
         document.getElementById('mostsolditemchartDiv').style.display = 'block'
         document.getElementById('mostsolditemNDFDiv').style.display = 'none'
-
     } else {
         document.getElementById('mostsolditemchartDiv').style.display = 'none'
         document.getElementById('mostsolditemNDFDiv').style.display = 'block'
