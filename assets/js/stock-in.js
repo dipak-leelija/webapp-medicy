@@ -99,7 +99,7 @@ const setDistBillNo = (t) => {
 //////////////////// set bill date \\\\\\\\\\\\\\\\\\\\
 var setBillDate = new Date();
 document.getElementById('bill-date').value = setBillDate.toISOString().slice(0, 10);
-
+document.getElementById("bill-date-val").value = setBillDate.toISOString().slice(0, 10);
 
 var todayDate = new Date();
 
@@ -129,9 +129,11 @@ const getbillDate = (billDate) => {
     document.getElementById("due-date").setAttribute("max", todayFullDate2);
 }
 
+
 //////////////////// set due date /////////////////////
 var setDueDate = new Date();
 document.getElementById('due-date').value = setDueDate.toISOString().slice(0, 10);
+document.getElementById('due-date-val').value = setDueDate.toISOString().slice(0, 10);
 
 const getDueDate = (t) => {
     // console.log(t.value);
@@ -586,7 +588,7 @@ const addData = () => {
     let billAmount = document.getElementById("bill-amount");
 
     if (distId.value == "" && distId2.value == "") {
-        swal("Blank Field", "Please Selet Distributor First!", "error")
+        Swal.fire("Blank Field", "Please Selet Distributor First!", "error")
             .then((value) => {
                 distId.focus();
             });
@@ -594,7 +596,7 @@ const addData = () => {
     }
 
     if (distBillid.value == "") {
-        swal("Blank Field", "Please Enter Distributor Bill Number!", "error")
+        Swal.fire("Blank Field", "Please Enter Distributor Bill Number!", "error")
             .then((value) => {
                 distBillid.focus();
             });
@@ -603,7 +605,7 @@ const addData = () => {
 
 
     if (billDate.value == "") {
-        swal("Blank Field", "Please Select Bill Date!", "error")
+        Swal.fire("Blank Field", "Please Select Bill Date!", "error")
             .then((value) => {
                 billDate.focus();
             });
@@ -611,7 +613,7 @@ const addData = () => {
     }
 
     if (dueDate.value == "") {
-        swal("Blank Field", "Please Select Bill Payment Date!", "error")
+        Swal.fire("Blank Field", "Please Select Bill Payment Date!", "error")
             .then((value) => {
                 dueDate.focus();
             });
@@ -619,21 +621,21 @@ const addData = () => {
     }
 
     if (paymentMode.value == "") {
-        swal("Blank Field", "Please Select Payment Mode!", "error")
+        Swal.fire("Blank Field", "Please Select Payment Mode!", "error")
             .then((value) => {
                 paymentMode.focus();
             });
         return;
     }
     if (productName.value == "") {
-        swal("Blank Field", "Please Search & Select Product!", "error")
+        Swal.fire("Blank Field", "Please Search & Select Product!", "error")
             .then((value) => {
                 productName.focus();
             });
         return;
     }
     if (batch.value == "") {
-        swal("Blank Field", "Please Enter Product Batch Number!", "error")
+        Swal.fire("Blank Field", "Please Enter Product Batch Number!", "error")
             .then((value) => {
                 batch.focus();
             });
@@ -649,7 +651,7 @@ const addData = () => {
     // }
 
     if (expMonth.value == "") {
-        swal("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
+        Swal.fire("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
             .then((value) => {
                 expMonth.focus();
             });
@@ -674,7 +676,7 @@ const addData = () => {
             return;
         }
     if (ptr.value == "") {
-        swal("Blank Field", "Please enter PTR value", "error")
+        Swal.fire("Blank Field", "Please enter PTR value", "error")
             .then((value) => {
                 ptr.focus();
             });
@@ -685,14 +687,14 @@ const addData = () => {
     var Mrp = parseFloat(mrp.value);
 
     if (Ptr > Mrp) {
-        swal("Blank Field", "Please check PTR value", "error")
+        Swal.fire("Blank Field", "Please check PTR value", "error")
             .then((value) => {
                 ptr.focus();
             });
         return;
     }
     if (qty.value == "" || qty.value == 0) {
-        swal("Blank Field",
+        Swal.fire("Blank Field",
             "Please Enter Quantity",
             "error")
             .then((value) => {
@@ -701,7 +703,7 @@ const addData = () => {
         return;
     }
     if (freeQty.value == "") {
-        swal("Free Qantity value is null",
+        Swal.fire("Free Qantity value is null",
             "Free Qantity Cannot be null. Minimum value 0",
             "error")
             .then((value) => {
@@ -710,7 +712,7 @@ const addData = () => {
         return;
     }
     if (discount.value == "") {
-        swal("Blank Field",
+        Swal.fire("Blank Field",
             "Please Enter Discount at least 0",
             "error")
             .then((value) => {
@@ -719,7 +721,7 @@ const addData = () => {
         return;
     }
     if (gst.value == "") {
-        swal("Blank Field",
+        Swal.fire("Blank Field",
             "GST should be a number",
             "error")
             .then((value) => {
@@ -728,7 +730,7 @@ const addData = () => {
         return;
     }
     if (base.value == "") {
-        swal("Blank Field",
+        Swal.fire("Blank Field",
             "Base Amount can not be blank",
             "error")
             .then((value) => {
@@ -737,7 +739,7 @@ const addData = () => {
         return;
     }
     if (billAmount.value == "") {
-        swal("Blank Field",
+        Swal.fire("Blank Field",
             "Bil Amount can nit be blank",
             "error")
             .then((value) => {
@@ -1003,7 +1005,7 @@ const editItem = (tupleData) => {
 
         stockInSave.setAttribute("disabled", "true");
     } else {
-        swal("Can't Edit", "Please add/edit previous item first.", "error");
+        Swal.fire("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("ptr").focus();
     }
 }
