@@ -461,41 +461,26 @@ const getBillAmount = () => {
     if (isNaN(qty)) {
         qty = 0;
     }
-    // console.log(qty);
-
-    // if (qty <= 0) {
-    //     document.getElementById('add-product-details').setAttribute('disabled','true');
-    // } else {
-    //     document.getElementById('add-product-details').removeAttribute('disabled');
-
+    
         let disc = parseFloat(document.getElementById('discount').value);
         if (isNaN(disc)) {
             disc = 0;
         }
-        // console.log(disc);
 
         let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
         maxPtr = maxPtr.toFixed(2);
         maxPtr = parseFloat(maxPtr);
-
-        // console.log("max ptr "+ maxPtr);
-        // console.log("change ptr "+ ptr);
 
         if (gst != prevGst) {
             document.getElementById('ptr').value = maxPtr;
             document.getElementById("gst-check").value = gst;
         }
 
-        // console.log(typeof(ptr) + " " + ptr);
-        // console.log(typeof(maxPtr)+ " " + maxPtr);
-
         if (ptr > maxPtr) {
             Swal.fire({
                 title: "Error Input",
-                text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
+                text: "PTR must be lower than MRP with GST Calculated Price!",
                 icon: "error",
-                // button: false, // Hide the "OK" button
-                // timer: 1000 // Auto-close the alert after 2 seconds
             });
 
             document.getElementById("ptr").value = maxPtr;
@@ -570,11 +555,6 @@ const addData = () => {
     let expYear = document.getElementById("exp-year");
     let expDate = `${expMonth.value}/${expYear.value}`;
     expDate = expDate.toString();
-    // let mfdMonth = document.getElementById("mfd-month");
-    // let mfdYear = document.getElementById("mfd-year");
-    // let mfdDate = `${mfdMonth.value}/${mfdYear.value}`;
-    // mfdDate = mfdDate.toString()
-    // var producDsc       = document.getElementById("product-descreption");
     let weightage = document.getElementById("weightage");
     let unit = document.getElementById("unit");
     let packagingIn = document.getElementById("packaging-in");
@@ -642,13 +622,6 @@ const addData = () => {
         return;
     }
 
-    // if (mfdMonth.value == "") {
-    //     swal("Blank field", "Please Enter Manufacturing Date as MM/YY", "error")
-    //         .then((value) => {
-    //             mfdMonth.focus();
-    //         });
-    //     return;
-    // }
 
     if (expMonth.value == "") {
         Swal.fire("Blank Field", "Please Enter Expiry Date as MM/YY", "error")
@@ -661,11 +634,6 @@ const addData = () => {
         weightage.focus();
         return;
     }
-
-    // if (unit.value == "") {
-    //     unit.focus();
-    //     return;
-    // }
 
     if (packagingIn.value == "") {
         packagingIn.focus();
@@ -778,10 +746,6 @@ const addData = () => {
     let totalMrp = parseFloat(mrp.value) * ((parseFloat(qty.value) + parseFloat(freeQty.value)));
     let payble = (((parseFloat(base.value)) + (parseFloat(base.value) * (parseInt(gst.value) / 100))) * parseInt(qty.value)).toFixed(2);
 
-    // console.log("total mrp : "+totalMrp);
-    // console.log("payble : "+payble);
-    // console.log("bill amount : "+billAmount.value);
-
     let marginP = 0;
     if (parseFloat(totalMrp) > parseFloat(payble)) {
         let marginAmount = parseFloat(totalMrp) - parseFloat(billAmount.value);
@@ -789,8 +753,6 @@ const addData = () => {
     } else {
         marginP = 0;
     }
-
-    // console.log("discount percent check : ", discount.value);
 
     jQuery("#dataBody")
         .append(`<tr id="table-row-${slControl}" style="cursor: pointer;">
@@ -884,8 +846,6 @@ const addData = () => {
         ManufId: manufId.value,
         manufName: manufName.value,
         medPower: medicinePower.value,
-        // mfdMnth: mfdMonth.value,
-        // mfdYr: mfdYear.value,
         expMnth: expMonth.value,
         expYr: expYear.value,
         itemWeightage: weightage.value,
@@ -914,9 +874,7 @@ const addData = () => {
     document.getElementById(`row-${slControl}-col-4`).onclick = function () {
         editItem(tupleData);
     };
-    // document.getElementById(`row-${slControl}-col-5`).onclick = function () {
-    //     editItem(tupleData);
-    // };
+    
     document.getElementById(`row-${slControl}-col-6`).onclick = function () {
         editItem(tupleData);
     };
@@ -979,8 +937,6 @@ const editItem = (tupleData) => {
         document.getElementById("manufacturer-name").value = TupleData.manufName;
         document.getElementById("medicine-power").value = TupleData.medPower;
 
-        // document.getElementById("mfd-month").value = TupleData.mfdMnth;
-        // document.getElementById("mfd-year").value = TupleData.mfdYr;
         document.getElementById("exp-month").value = TupleData.expMnth;
         document.getElementById("exp-year").value = TupleData.expYr;
 
