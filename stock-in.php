@@ -28,11 +28,6 @@ $showDistributors      = $showDistributor->data;
 $gstData = json_decode($Gst->seletGst());
 $gstData = $gstData->data;
 
-// foreach($gstData as $gstData){
-//     print_r($gstData);
-//     echo $gstData->id;
-// }
-
 $showMeasureOfUnits    = $MeasureOfUnits->showMeasureOfUnits();
 $showPackagingUnits    = $PackagingUnits->showPackagingUnits();
 
@@ -228,11 +223,6 @@ $todayYr = date("y");
         </div>
     </div>
     <!--/end Distributor Add Modal -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
