@@ -99,7 +99,7 @@ $Products       = new Products();
                             <th>Disc.</th>
                             <th>Base</th>
                             <th>GST</th>
-                            <th>Margin</th>
+                            <th>Margin%</th>
                             <th>Rate</th>
                             <th>Amount</th>
 
@@ -111,21 +111,32 @@ $Products       = new Products();
                         $sl = 0;
                         $qty = 0;
                         $gst = 0;
-                        $amount = 0;
+                        $disc = 0;
+                        $ptr = 0;
+                        $itemAmount = 0;
+
 
                         $items = $StockInDetails->showStockInDetailsById($_GET['distBill']);
                         // print_r($items);
                         foreach ($items as $item) {
                             $sl     += 1;
                             $qty    += $item['qty'];
-                            $gst    += $item['gst'];
-                            $amount += $item['ptr'];
+                            $gst    = $item['gst'];
+                            $disc   = $item['discount'];
+                            $ptr    = $item['ptr'];
 
-                            $rate = round(floatval($item['ptr']) + (floatval($item['ptr']) * (intval($item['gst']) / 100)),2);
+                            // echo "<br>qty : $qty";
 
-                            $rate = floatval($rate) - (floatval($rate) * floatval($item['discount'])/100);
+                            $rate = floatval($ptr) - (floatval($ptr)*floatval($disc)/100);
+                            $rate = floatval($rate) + (floatval($rate)*floatval($gst)/100);
+                
+                            // echo "<br>rate : $rate";
 
                             $showRate = round($rate,2);
+                            // echo "<br>showRate : $showRate";
+
+                            $itemAmount = floatval($rate)*intval($item['qty']);
+                            $itemAmount = round($itemAmount,2);
 
                             // =========== edit req flag key check ==========
                             $prodCheck = json_decode($Products->productExistanceCheck($item['product_id']));
@@ -159,10 +170,8 @@ $Products       = new Products();
                            
                             <td>" . $item['margin'] . "</td>
                             <td>" .  $showRate . "</td>
-                            <td>" .  floatval($rate)*intval($item['qty']). "</td>
-                           
-                            
-                            
+                            <td>" .  $itemAmount. "</td>
+
                           </tr>";
                         }
                         ?>
