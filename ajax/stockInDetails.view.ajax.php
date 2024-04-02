@@ -123,6 +123,9 @@ $Products       = new Products();
 
                             $rate = round(floatval($item['ptr']) + (floatval($item['ptr']) * (intval($item['gst']) / 100)),2);
 
+                            $rate = floatval($rate) - (floatval($rate) * floatval($item['discount'])/100);
+
+                            $showRate = round($rate,2);
 
                             // =========== edit req flag key check ==========
                             $prodCheck = json_decode($Products->productExistanceCheck($item['product_id']));
@@ -155,7 +158,7 @@ $Products       = new Products();
                             <td>" . $item['gst'] . "</td>
                            
                             <td>" . $item['margin'] . "</td>
-                            <td>" .  $rate . "</td>
+                            <td>" .  $showRate . "</td>
                             <td>" .  floatval($rate)*intval($item['qty']). "</td>
                            
                             
