@@ -77,38 +77,38 @@ $IdsGeneration    = new IdsGeneration();
     <div>
         <div class="row d-flex justify-content-center">
             <div class="col-xl-12 col-lg-12 col-md-12 text-center">
-                <div class="card mt-0">
-                    <h4 class="text-center mb-4 mt-0"><b>Fill The Patient Details</b></h4>
+                <div class="card shadow-sm p-4">
+                    <!-- <h4 class="text-center mb-4 mt-0"><b>Fill The Patient Details</b></h4> -->
                     <form class="form-card" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientName">Patient Name<span
+                                <label class="form-control-label px-3 h6" for="patientName">Patient Name<span
                                         class="text-danger"> *</span></label>
                                 <input type="text" id="patientName" name="patientName" placeholder="Enter Patient Name"
-                                    value="" required>
+                                    value="" required autocomplete="off">
                             </div>
 
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientGurdianName">Patient's
+                                <label class="form-control-label px-3 h6" for="patientGurdianName">Patient's
                                     Gurdian Name<span class="text-danger"> *</span></label>
                                 <input type="text" id="patientGurdianName" name="patientGurdianName"
-                                    placeholder="Enter Patient's Gurdian Name" value="" required>
+                                    placeholder="Enter Patient's Gurdian Name" value="" required autocomplete="off">
                             </div>
                         </div>
 
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientEmail">Patient
+                                <label class="form-control-label px-3 h6" for="patientEmail">Patient
                                     Email</label>
                                 <input type="text" id="patientEmail" name="patientEmail" placeholder="Patient Email"
-                                    value="">
+                                    value="" autocomplete="off">
                             </div>
 
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientPhoneNumber">Phone
+                                <label class="form-control-label px-3 h6" for="patientPhoneNumber">Phone
                                     number<span class="text-danger"> *</span></label>
                                 <input type="text" id="patientPhoneNumber" name="patientPhoneNumber"
-                                    placeholder="Phone Number" maxlength="10" minlength="10" value="" required>
+                                    placeholder="Phone Number" maxlength="10" minlength="10" value="" required autocomplete="off">
                             </div>
 
                         </div>
@@ -117,14 +117,14 @@ $IdsGeneration    = new IdsGeneration();
 
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientAge">Age<span class="text-danger">
+                                <label class="form-control-label px-3 h6" for="patientAge">Age<span class="text-danger">
                                         *</span></label>
                                 <input type="text" id="patientAge" name="patientAge" placeholder="Age" maxlength="3"
-                                    minlength="1" required>
+                                    minlength="1" required autocomplete="off">
                             </div>
 
                             <div class="col-sm-6 mt-4">
-                                <label class="mb-3 mr-1" for="gender">Gender: </label>
+                                <label class="mb-3 mr-1 h6" for="gender">Gender: </label>
 
                                 <input type="radio" class="btn-check" name="gender" id="male" value="Male"
                                     autocomplete="off" required>
@@ -151,47 +151,47 @@ $IdsGeneration    = new IdsGeneration();
                         <h5 class="text-center mb-4 mt-5">Patient Address</h5>
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientAddress1">Address Line
+                                <label class="form-control-label px-3 h6" for="patientAddress1">Address Line
                                     1<span class="text-danger"> *</span></label>
                                 <input type="text" id="patientAddress1" name="patientAddress1"
-                                    placeholder="Address Line 1" value="" required>
+                                    placeholder="Address Line 1" value="" required autocomplete="off">
                             </div>
 
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientAddress2">Address Line
+                                <label class="form-control-label px-3 h6" for="patientAddress2">Address Line
                                     2<span class="text-danger"> *</span></label>
                                 <input type="text" id="patientAddress2" name="patientAddress2" value=""
-                                    placeholder="Address Line 2">
+                                    placeholder="Address Line 2" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientPS">Police Station<span
+                                <label class="form-control-label px-3 h6" for="patientPS">Police Station<span
                                         class="text-danger"> *</span></label>
                                 <input type="text" id="patientPS" name="patientPS" placeholder="Police Station" value=""
-                                    required>
+                                    required autocomplete="off">
                             </div>
 
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientDist">District<span
+                                <label class="form-control-label px-3 h6" for="patientDist">District<span
                                         class="text-danger"> *</span></label>
                                 <input type="text" id="patientDist" name="patientDist" placeholder="District" value=""
-                                    required>
+                                    required autocomplete="off">
                             </div>
                         </div>
 
 
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientPIN">PIN Code<span
+                                <label class="form-control-label px-3 h6" for="patientPIN">PIN Code<span
                                         class="text-danger"> *</span></label>
                                 <input type="text" id="patientPIN" name="patientPIN" placeholder="Pin Code"
-                                    maxlength="7" value="" required>
+                                    maxlength="7" value="" required autocomplete="off">
                             </div>
 
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3" for="patientState">State<span
+                                <label class="form-control-label px-3 h6" for="patientState">State<span
                                         class="text-danger"> *</span></label>
                                 <select id="dropSelection" name="patientState" required>
                                     <option disabled>Select State</option>
