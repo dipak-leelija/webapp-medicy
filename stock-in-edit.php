@@ -359,7 +359,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                                                 <div class="col-sm-4 col-md-4 mt-2">
                                                     <label class="mb-0" for="qty">Quantity</label>
-                                                    <input type="number" class="upr-inp" name="qty" id="qty" onkeyup="getBillAmount()" onfocusout="qtyCheck(this)" required>
+                                                    <input type="number" class="upr-inp" name="qty" id="qty" onkeyup="getBillAmount()" onfocusout="qtyCheck(this)">
 
                                                 </div>
 
@@ -448,7 +448,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                             <!--/End Quantity Row  -->
 
                                             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3 me-md-2">
-                                                <button class="btn btn-primary me-md-2" id="add-button" onclick="addData()">Add
+                                                <button type="button" class="btn btn-primary me-md-2" id="add-button" onclick="addData()">Add
                                                     <i class="fas fa-plus"></i></button>
                                             </div>
 

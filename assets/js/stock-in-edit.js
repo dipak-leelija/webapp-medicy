@@ -4,241 +4,238 @@ const distributorInput = document.getElementById("distributor-id");
 const dropdown = document.getElementsByClassName("c-dropdown")[0];
 
 distributorInput.addEventListener("focus", () => {
-    dropdown.style.display = "block";
+  dropdown.style.display = "block";
 });
 
 document.addEventListener("click", (event) => {
-    if (!distributorInput.contains(event.target) && !dropdown.contains(event.target)) {
-        dropdown.style.display = "none";
-    }
+  if (
+    !distributorInput.contains(event.target) &&
+    !dropdown.contains(event.target)
+  ) {
+    dropdown.style.display = "none";
+  }
 });
 
 document.addEventListener("blur", (event) => {
-    if (!dropdown.contains(event.relatedTarget)) {
-        setTimeout(() => {
-            dropdown.style.display = "none";
-        }, 100);
-    }
+  if (!dropdown.contains(event.relatedTarget)) {
+    setTimeout(() => {
+      dropdown.style.display = "none";
+    }, 100);
+  }
 });
 
-
-
 distributorInput.addEventListener("keyup", () => {
-    let list = document.getElementsByClassName('lists')[0];
+  let list = document.getElementsByClassName("lists")[0];
 
-    if (distributorInput.value.length > 2) {
-
-        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=' + distributorInput.value;
-        request.open("GET", distributorURL, false);
-        request.send(null);
-        list.innerHTML = request.responseText
-    } else if (distributorInput.value == '') {
-
-        let distributorURL = 'ajax/distributor.list-view.ajax.php?match=all';
-        request.open("GET", distributorURL, false);
-        request.send(null);
-        list.innerHTML = request.responseText
-    } else {
-
-        list.innerHTML = '';
-    }
+  if (distributorInput.value.length > 2) {
+    let distributorURL =
+      "ajax/distributor.list-view.ajax.php?match=" + distributorInput.value;
+    request.open("GET", distributorURL, false);
+    request.send(null);
+    list.innerHTML = request.responseText;
+  } else if (distributorInput.value == "") {
+    let distributorURL = "ajax/distributor.list-view.ajax.php?match=all";
+    request.open("GET", distributorURL, false);
+    request.send(null);
+    list.innerHTML = request.responseText;
+  } else {
+    list.innerHTML = "";
+  }
 });
 
 const setDistributor = (t) => {
-    let distributirId = t.id.trim();
-    let distributirName = t.innerHTML.trim();
+  let distributirId = t.id.trim();
+  let distributirName = t.innerHTML.trim();
 
-    document.getElementById("updated-dist-id").value = distributirId;
-    document.getElementById("distributor-name").value = distributirName;
-    document.getElementById("distributor-id").value = distributirName;
+  document.getElementById("updated-dist-id").value = distributirId;
+  document.getElementById("distributor-name").value = distributirName;
+  document.getElementById("distributor-id").value = distributirName;
 
-    document.getElementsByClassName("c-dropdown")[0].style.display = "none";
-}
+  document.getElementsByClassName("c-dropdown")[0].style.display = "none";
+};
 
 const addDistributor = () => {
-   
-    var parentLocation = window.location.origin + window.location.pathname;
-    
-    $.ajax({
-        url: "components/distributor-add.php",
-        type: "POST",
-        data: { urlData: parentLocation },
-        success: function (response) {
-            let body = document.querySelector('.add-distributor');
-            body.innerHTML = response;
-        },
-        error: function (error) {
-            console.error("Error: ", error);
-        }
-    });
-}
+  var parentLocation = window.location.origin + window.location.pathname;
 
+  $.ajax({
+    url: "components/distributor-add.php",
+    type: "POST",
+    data: { urlData: parentLocation },
+    success: function (response) {
+      let body = document.querySelector(".add-distributor");
+      body.innerHTML = response;
+    },
+    error: function (error) {
+      console.error("Error: ", error);
+    },
+  });
+};
 
 ///////////////// STOCK IN EDIT UPDATE BUTTON CONTROL \\\\\\\\\\
-const stockInSave = document.getElementById('stockInEdit-update-btn');
+const stockInSave = document.getElementById("stockInEdit-update-btn");
 
 const chekForm = () => {
-    var tableBody = document.getElementById('dataBody');
+  var tableBody = document.getElementById("dataBody");
 
-    if (document.getElementById('product-name').value == '' && tableBody.getElementsByTagName('tr').length > 0) {
-        stockInSave.removeAttribute("disabled");
-
-    } else {
-        stockInSave.setAttribute("disabled", "true");
-    }
-}
+  if (
+    document.getElementById("product-name").value == "" &&
+    tableBody.getElementsByTagName("tr").length > 0
+  ) {
+    stockInSave.removeAttribute("disabled");
+  } else {
+    stockInSave.setAttribute("disabled", "true");
+  }
+};
 
 //////// QANTITY AND FREE QANTITY VALUE CONTROL //////////
-const Qty = document.getElementById('qty');
-Qty.addEventListener('input', function (event) {
-    this.value = this.value.replace('.', '');
+const Qty = document.getElementById("qty");
+Qty.addEventListener("input", function (event) {
+  this.value = this.value.replace(".", "");
 });
 
-const FreeQty = document.getElementById('free-qty');
-FreeQty.addEventListener('input', function (event) {
-    this.value = this.value.replace('.', '');
+const FreeQty = document.getElementById("free-qty");
+FreeQty.addEventListener("input", function (event) {
+  this.value = this.value.replace(".", "");
 });
 
 //////// batch number input contorl \\\\\\\\\\
-const batchNumber = document.getElementById('batch-no');
-batchNumber.addEventListener('input', function (event) {
-    this.value = this.value.replace('.', '');
-    this.value = this.value.replace('*', '');
+const batchNumber = document.getElementById("batch-no");
+batchNumber.addEventListener("input", function (event) {
+  this.value = this.value.replace(".", "");
+  this.value = this.value.replace("*", "");
 });
-
-
-
-
 
 const customClick = (rowNo, pId, billNo, btchNo) => {
+  stockInSave.setAttribute("disabled", "true");
 
-    stockInSave.setAttribute("disabled", "true");
+  var prodId = pId;
+  var billNo = billNo;
+  var batchNo = btchNo;
 
-    var prodId = pId;
-    var billNo = billNo;
-    var batchNo = btchNo;
+  var checkFieldBlank = document.getElementById("product-id");
+  // var row = document.getElementById(id);
 
-    var checkFieldBlank = document.getElementById('product-id');
-    // var row = document.getElementById(id);
+  if (checkFieldBlank.value == "") {
+    $.ajax({
+      url: "ajax/stokInEditAll.ajax.php",
+      type: "POST",
+      data: {
+        pId: prodId,
+        blNo: billNo,
+        bhNo: batchNo,
+      },
+      success: function (data) {
+        // console.log(data);
+        var dataObject = JSON.parse(data);
 
-    if (checkFieldBlank.value == '') {
-        $.ajax({
-            url: "ajax/stokInEditAll.ajax.php",
-            type: "POST",
-            data: {
-                pId: prodId,
-                blNo: billNo,
-                bhNo: batchNo
-            },
-            success: function (data) {
-                // console.log(data);
-                var dataObject = JSON.parse(data);
+        var totalItmQty =
+          parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
+        var gstPerItem = parseFloat(dataObject.GstAmount);
+        var totalAmnt = parseFloat(dataObject.amnt);
 
-                var totalItmQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
-                var gstPerItem = parseFloat(dataObject.GstAmount);
-                var totalAmnt = parseFloat(dataObject.amnt);
+        var slno = rowNo;
+        slno = slno.replace(/\D/g, "");
+        var itemQty = totalItmQty;
+        gstPerItem = gstPerItem.toFixed(2);
+        var total = totalAmnt.toFixed(2);
 
-                var slno = rowNo;
-                slno = slno.replace(/\D/g, '');
-                var itemQty = totalItmQty;
-                gstPerItem = gstPerItem.toFixed(2);
-                var total = totalAmnt.toFixed(2);
+        var purchaseDetailsExpDate = dataObject.expDate;
+        var expMonth = purchaseDetailsExpDate.slice(0, 2);
+        var expYear = purchaseDetailsExpDate.slice(3, 7);
+        var manuf = dataObject.manufacturer;
 
-                var purchaseDetailsExpDate = dataObject.expDate;
-                var expMonth = purchaseDetailsExpDate.slice(0, 2);
-                var expYear = purchaseDetailsExpDate.slice(3, 7);
-                var manuf = dataObject.manufacturer;
+        manuf = manuf.replace(/&#39/g, "'");
+        manuf = manuf.replace(/&lt/g, "<");
+        manuf = manuf.replace(/&gt/g, ">");
 
-                manuf = manuf.replace(/&#39/g, "'");
-                manuf = manuf.replace(/&lt/g, "<");
-                manuf = manuf.replace(/&gt/g, ">");
+        var totalQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
 
-                var totalQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
+        ///////////////////////////////// check ptr set ///////////////////////////////////
+        let mrp = dataObject.mrp;
+        let gst = dataObject.gst;
+        let chkptr = (parseFloat(mrp) * 100) / (parseFloat(gst) + 100);
+        chkptr = chkptr.toFixed(2);
+        // //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
 
-                ///////////////////////////////// check ptr set ///////////////////////////////////
-                let mrp = dataObject.mrp;
-                let gst = dataObject.gst;
-                let chkptr = (parseFloat(mrp) * 100) / (parseFloat(gst) + 100);
-                chkptr = chkptr.toFixed(2);
-                // //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
+        document.getElementById("purchase-id").value = dataObject.purchaseId;
+        document.getElementById("product-id").value = dataObject.productId;
+        document.getElementById("batch-no").value = dataObject.batchNo;
 
-                document.getElementById("purchase-id").value = dataObject.purchaseId;
-                document.getElementById("product-id").value = dataObject.productId;
-                document.getElementById("batch-no").value = dataObject.batchNo;
+        document.getElementById("product-name").value = dataObject.productName;
+        document.getElementById("manufacturer-id").value = dataObject.manufId;
+        document.getElementById("manufacturer-name").value = manuf;
 
-                document.getElementById("product-name").value = dataObject.productName;
-                document.getElementById("manufacturer-id").value = dataObject.manufId;
-                document.getElementById("manufacturer-name").value = manuf;
+        document.getElementById("weightage").value = dataObject.weightage;
+        document.getElementById("unit").value = dataObject.unit;
 
-                document.getElementById("weightage").value = dataObject.weightage;
-                document.getElementById("unit").value = dataObject.unit;
+        document.getElementById("packaging-in").value = dataObject.packageType;
 
-                document.getElementById("packaging-in").value = dataObject.packageType;
+        document.getElementById("medicine-power").value = dataObject.power;
 
-                document.getElementById("medicine-power").value = dataObject.power;
+        document.getElementById("exp-month").value = expMonth;
+        document.getElementById("exp-year").value = expYear;
 
-                document.getElementById("exp-month").value = expMonth;
-                document.getElementById("exp-year").value = expYear;
+        document.getElementById("mrp").value = dataObject.mrp;
+        document.getElementById("ptr").value = dataObject.ptr;
+        document.getElementById("chk-ptr").value = chkptr;
+        document.getElementById("qty").value = dataObject.qty;
+        document.getElementById("free-qty").value = dataObject.FreeQty;
+        document.getElementById("updtQTYS").value = totalQty;
 
-                document.getElementById("mrp").value = dataObject.mrp;
-                document.getElementById("ptr").value = dataObject.ptr;
-                document.getElementById("chk-ptr").value = chkptr;
-                document.getElementById("qty").value = dataObject.qty;
-                document.getElementById("free-qty").value = dataObject.FreeQty;
-                document.getElementById("updtQTYS").value = totalQty;
+        document.getElementById("purchsed-qty").value = dataObject.purchasedQty;
+        document.getElementById("current-qty").value =
+          dataObject.currentStockQty;
 
-                document.getElementById("purchsed-qty").value = dataObject.purchasedQty;
-                document.getElementById("current-qty").value = dataObject.currentStockQty;
+        document.getElementById("packaging-type").value =
+          dataObject.packageType;
+        document.getElementById("packaging-type-edit").value =
+          dataObject.packageType;
 
-                document.getElementById("packaging-type").value = dataObject.packageType;
-                document.getElementById("packaging-type-edit").value = dataObject.packageType;
+        document.getElementById("discount").value = dataObject.disc;
+        document.getElementById("gst-check").value = dataObject.gst;
+        document.getElementById("gst").value = dataObject.gst;
+        document.getElementById("crntGstAmnt").value = dataObject.GstAmount;
+        document.getElementById("base").value = dataObject.baseAmount;
+        document.getElementById("bill-amount").value = dataObject.amnt;
+        document.getElementById("temp-bill-amount").value = dataObject.amnt;
 
-                document.getElementById("discount").value = dataObject.disc;
-                document.getElementById("gst-check").value = dataObject.gst;
-                document.getElementById("gst").value = dataObject.gst;
-                document.getElementById("crntGstAmnt").value = dataObject.GstAmount;
-                document.getElementById('base').value = dataObject.baseAmount;
-                document.getElementById("bill-amount").value = dataObject.amnt;
-                document.getElementById("temp-bill-amount").value = dataObject.amnt;
+        document.getElementById("del-flag").value = dataObject.delflag;
 
-                document.getElementById("del-flag").value = dataObject.delflag;
+        //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
 
-                //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
+        deleteData(slno, itemQty, gstPerItem, total, 0);
 
-                deleteData(slno, itemQty, gstPerItem, total, 0);
+        document.getElementById("add-button").removeAttribute("disabled");
+      },
+    });
+  } else {
+    Swal.fire("Error", "Add previous data first!", "error");
+  }
 
-                document.getElementById('add-button').removeAttribute("disabled");
-            }
-        })
-    } else {
-        Swal.fire("Error", "Add previous data first!", "error");
-    }
-
-    return false;
-}
+  return false;
+};
 
 //========================================================================================================
-const firstInput = document.getElementById('product-name');
+const firstInput = document.getElementById("product-name");
 
-window.addEventListener('load', function () {
-    firstInput.focus();
+window.addEventListener("load", function () {
+  firstInput.focus();
 });
 
-firstInput.addEventListener('input', function (event) {
-    const inputValue = this.value;
+firstInput.addEventListener("input", function (event) {
+  const inputValue = this.value;
 
-    if (inputValue.length > 0 && inputValue[0] === ' ') {
-        this.value = inputValue.slice(1);
-    }
+  if (inputValue.length > 0 && inputValue[0] === " ") {
+    this.value = inputValue.slice(1);
+  }
 });
-
 
 ///////////// set distributo bill no \\\\\\\\\\\\
 const setDistBillNo = (t) => {
-    let val = t.value.toUpperCase();
-    // console.log(val);
-    document.getElementById("distributor-bill-no").value = val;
-}
+  let val = t.value.toUpperCase();
+  // console.log(val);
+  document.getElementById("distributor-bill-no").value = val;
+};
 
 ///////////// set purchse date \\\\\\\\\\\\\\\\
 var todayDate = new Date();
@@ -247,373 +244,364 @@ var month = todayDate.getMonth() + 1;
 var year = todayDate.getFullYear();
 
 if (date < 10) {
-    date = '0' + date;
+  date = "0" + date;
 }
 if (month < 10) {
-    month = '0' + month;
+  month = "0" + month;
 }
 var todayFullDate = year + "-" + month + "-" + date;
 // console.log(todayFullDate);
 document.getElementById("bill-date").setAttribute("max", todayFullDate);
 // ========== set purchse date ===========
 const getbillDate = (billDate) => {
-    billDate = billDate.value;
+  billDate = billDate.value;
 
-    document.getElementById("bill-date-val").value = billDate;
+  document.getElementById("bill-date-val").value = billDate;
 
-    document.getElementById("due-date").setAttribute("min", billDate);
+  document.getElementById("due-date").setAttribute("min", billDate);
 
-    var date2 = todayDate.getDate() + 7;
-    // // console.log(date2);
-    var todayFullDate2 = year + "-" + month + "-" + date2;
-    document.getElementById("due-date").setAttribute("max", todayFullDate2);
-
-}
+  var date2 = todayDate.getDate() + 7;
+  // // console.log(date2);
+  var todayFullDate2 = year + "-" + month + "-" + date2;
+  document.getElementById("due-date").setAttribute("max", todayFullDate2);
+};
 
 ////////////// set payment date \\\\\\\\\\\\\\\
 const getDueDate = (t) => {
-    // console.log(t.value);
-    document.getElementById("due-date-val").value = t.value;
-}
+  // console.log(t.value);
+  document.getElementById("due-date-val").value = t.value;
+};
 
 //////////// set payment mode \\\\\\\\\\\\\\\\\
 const setPaymentMode = (pMode) => {
-    document.getElementById("payment-mode-val").value = pMode.value;
-}
-
+  document.getElementById("payment-mode-val").value = pMode.value;
+};
 
 function searchItem(input) {
-    // console.log(input);
-    // alert(value);
-    let xmlhttp = new XMLHttpRequest();
+  // console.log(input);
+  // alert(value);
+  let xmlhttp = new XMLHttpRequest();
 
-    let searchReult = document.getElementById('product-select');
+  let searchReult = document.getElementById("product-select");
 
-    if (input == "") {
-        document.getElementById("product-select").style.display = "none";
+  if (input == "") {
+    document.getElementById("product-select").style.display = "none";
 
-        document.getElementById("data-details").reset();
-        event.preventDefault();
+    document.getElementById("data-details").reset();
+    event.preventDefault();
+  }
+
+  if (input.length > 2) {
+    if (input != "") {
+      document.getElementById("product-select").style.display = "block";
     }
+  } else {
+    document.getElementById("product-select").style.display = "none";
+  }
 
-    if (input.length > 2) {
-        if (input != "") {
-            document.getElementById("product-select").style.display = "block";
-        }
-    } else {
-        document.getElementById("product-select").style.display = "none";
+  xmlhttp.onreadystatechange = function () {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      searchReult.innerHTML = xmlhttp.responseText;
     }
-
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            searchReult.innerHTML = xmlhttp.responseText;
-        }
-    };
-    xmlhttp.open('GET', 'ajax/purchase-item-list.ajax.php?data=' + input, true);
-    xmlhttp.send();
+  };
+  xmlhttp.open("GET", "ajax/purchase-item-list.ajax.php?data=" + input, true);
+  xmlhttp.send();
 }
 
 const getDtls = (value) => {
-    // console.log(value);
-    // alert(value);
-    var xmlhttp = new XMLHttpRequest();
-    if (value != "") {
+  // console.log(value);
+  // alert(value);
+  var xmlhttp = new XMLHttpRequest();
+  if (value != "") {
+    //==================== Product Id ====================
+    manufacturerurl = "ajax/product.getManufacturer.ajax.php?id=" + value;
+    // alert(url);
+    xmlhttp.open("GET", manufacturerurl, false);
+    xmlhttp.send(null);
+    document.getElementById("manufacturer-id").value = xmlhttp.responseText;
 
-        //==================== Product Id ====================
-        manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + value;
-        // alert(url);
-        xmlhttp.open("GET", manufacturerurl, false);
-        xmlhttp.send(null);
-        document.getElementById("manufacturer-id").value = xmlhttp.responseText;
+    //==================== Manufacturere List ====================
+    manufacturerurl = "ajax/product.getManufacturer.ajax.php?id=" + value;
+    // alert(url);
+    xmlhttp.open("GET", manufacturerurl, false);
+    xmlhttp.send(null);
+    document.getElementById("manufacturer-id").value = xmlhttp.responseText;
 
-        //==================== Manufacturere List ====================
-        manufacturerurl = 'ajax/product.getManufacturer.ajax.php?id=' + value;
-        // alert(url);
-        xmlhttp.open("GET", manufacturerurl, false);
-        xmlhttp.send(null);
-        document.getElementById("manufacturer-id").value = xmlhttp.responseText;
+    manufacturerName = "ajax/product.getManufacturer.ajax.php?name=" + value;
+    // alert(url);
+    xmlhttp.open("GET", manufacturerName, false);
+    xmlhttp.send(null);
+    document.getElementById("manufacturer-name").value = xmlhttp.responseText;
 
-        manufacturerName = 'ajax/product.getManufacturer.ajax.php?name=' + value;
-        // alert(url);
-        xmlhttp.open("GET", manufacturerName, false);
-        xmlhttp.send(null);
-        document.getElementById("manufacturer-name").value = xmlhttp.responseText;
+    //==================== Medicine Power ====================
+    powerurl = "ajax/product.getMedicineDetails.ajax.php?power=" + value;
+    // alert(url);
+    xmlhttp.open("GET", powerurl, false);
+    xmlhttp.send(null);
+    document.getElementById("medicine-power").value = xmlhttp.responseText;
+    // alert(xmlhttp.responseText);
 
-        //==================== Medicine Power ====================
-        powerurl = 'ajax/product.getMedicineDetails.ajax.php?power=' + value;
-        // alert(url);
-        xmlhttp.open("GET", powerurl, false);
-        xmlhttp.send(null);
-        document.getElementById("medicine-power").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
+    //==================== Packaging Type ====================
+    packTypeUrl = "ajax/product.getMedicineDetails.ajax.php?pType=" + value;
+    // alert(url);
+    xmlhttp.open("GET", packTypeUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("packaging-type").innerHTML = xmlhttp.responseText;
 
-        //==================== Packaging Type ====================
-        packTypeUrl = 'ajax/product.getMedicineDetails.ajax.php?pType=' + value;
-        // alert(url);
-        xmlhttp.open("GET", packTypeUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("packaging-type").innerHTML = xmlhttp.responseText;
+    packTypeFieldUrl =
+      "ajax/product.getMedicineDetails.ajax.php?packegeIn=" + value;
+    // // alert(url);
+    xmlhttp.open("GET", packTypeFieldUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("packaging-in").value = xmlhttp.responseText;
 
-        packTypeFieldUrl = 'ajax/product.getMedicineDetails.ajax.php?packegeIn=' + value;
-        // // alert(url);
-        xmlhttp.open("GET", packTypeFieldUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("packaging-in").value = xmlhttp.responseText;
+    // alert(xmlhttp.responseText);
 
-        // alert(xmlhttp.responseText);
+    //==================== Weightage ====================
+    weightage = "ajax/product.getMedicineDetails.ajax.php?weightage=" + value;
+    // alert(url);
+    xmlhttp.open("GET", weightage, false);
+    xmlhttp.send(null);
+    document.getElementById("weightage").value = xmlhttp.responseText;
+    // alert(xmlhttp.responseText);
 
-        //==================== Weightage ====================
-        weightage = 'ajax/product.getMedicineDetails.ajax.php?weightage=' + value;
-        // alert(url);
-        xmlhttp.open("GET", weightage, false);
-        xmlhttp.send(null);
-        document.getElementById("weightage").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
+    //==================== Unit ====================
+    unitUrl = "ajax/product.getMedicineDetails.ajax.php?unit=" + value;
+    // alert(unitUrl);
+    // window.location.href = unitUrl;
+    xmlhttp.open("GET", unitUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("unit").value = xmlhttp.responseText;
+    // alert(xmlhttp.responseText);
 
-        //==================== Unit ====================
-        unitUrl = 'ajax/product.getMedicineDetails.ajax.php?unit=' + value;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
-        xmlhttp.open("GET", unitUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("unit").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
+    //==================== MRP ====================
+    mrpUrl = "ajax/product.getMrp.ajax.php?id=" + value;
+    // alert(unitUrl);
+    // window.location.href = unitUrl;
+    xmlhttp.open("GET", mrpUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("mrp").value = xmlhttp.responseText;
+    // alert(xmlhttp.responseText);
 
-        //==================== MRP ====================
-        mrpUrl = 'ajax/product.getMrp.ajax.php?id=' + value;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
-        xmlhttp.open("GET", mrpUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("mrp").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
+    //==================== ptr check url ===================
 
-        //==================== ptr check url ===================
+    chkPtr = "ajax/product.getMrp.ajax.php?ptrChk=" + value;
+    // alert(unitUrl);
+    // window.location.href = unitUrl;
+    xmlhttp.open("GET", chkPtr, false);
+    xmlhttp.send(null);
+    // alert(xmlhttp.responseText);
+    document.getElementById("chk-ptr").value = xmlhttp.responseText;
+    document.getElementById("ptr").value = xmlhttp.responseText;
 
-        chkPtr = 'ajax/product.getMrp.ajax.php?ptrChk=' + value;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
-        xmlhttp.open("GET", chkPtr, false);
-        xmlhttp.send(null);
-        // alert(xmlhttp.responseText);
-        document.getElementById("chk-ptr").value = xmlhttp.responseText;
-        document.getElementById("ptr").value = xmlhttp.responseText;
+    //==================== GST ====================
+    gstUrl = "ajax/product.getGst.ajax.php?id=" + value;
+    // alert(unitUrl);
+    // window.location.href = unitUrl;
+    xmlhttp.open("GET", gstUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("gst").value = xmlhttp.responseText;
+    // alert(xmlhttp.responseText);
 
-        //==================== GST ====================
-        gstUrl = 'ajax/product.getGst.ajax.php?id=' + value;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
-        xmlhttp.open("GET", gstUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("gst").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
+    //==================== Product Id ====================
+    document.getElementById("product-id").value = value;
 
-        //==================== Product Id ====================
-        document.getElementById("product-id").value = value;
+    //==================== Product Name ====================
+    nameUrl = "ajax/product.getMedicineDetails.ajax.php?pName=" + value;
+    // alert(unitUrl);
+    xmlhttp.open("GET", nameUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("product-name").value = xmlhttp.responseText;
+    // alert(xmlhttp.responseText);
+  } else {
+    document.getElementById("manufacturer-id").innerHTML = "";
+    document.getElementById("medicine-power").value = "";
+    document.getElementById("packaging-type").innerHTML = "";
+    document.getElementById("packaging-in").value = "";
+    document.getElementById("weightage").value = "";
+    document.getElementById("unit").value = "";
+    document.getElementById("mrp").value = "";
+    document.getElementById("gst").value = "";
+    document.getElementById("product-id").value = "";
+    document.getElementById("product-name").value = "";
+  }
+  document.getElementById("product-select").style.display = "none";
+};
 
-        //==================== Product Name ====================
-        nameUrl = 'ajax/product.getMedicineDetails.ajax.php?pName=' + value;
-        // alert(unitUrl);
-        xmlhttp.open("GET", nameUrl, false);
-        xmlhttp.send(null);
-        document.getElementById("product-name").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
-
-    } else {
-        document.getElementById("manufacturer-id").innerHTML = "";
-        document.getElementById("medicine-power").value = "";
-        document.getElementById("packaging-type").innerHTML = "";
-        document.getElementById("packaging-in").value = "";
-        document.getElementById("weightage").value = "";
-        document.getElementById("unit").value = "";
-        document.getElementById("mrp").value = "";
-        document.getElementById("gst").value = "";
-        document.getElementById("product-id").value = "";
-        document.getElementById("product-name").value = "";
+firstInput.addEventListener("keydown", function (event) {
+  if (firstInput.value != "") {
+    if (document.getElementById("del-flag").value == 1) {
+      if (event.key === "Backspace" || event.key === "Delete") {
+        Swal.fire(
+          "error",
+          "You can only edit its transactional value.",
+          "info"
+        );
+      }
     }
-    document.getElementById("product-select").style.display = "none";
-}
-
-
-firstInput.addEventListener('keydown',function(event){
-    if(firstInput.value != ''){
-        if(document.getElementById('del-flag').value == 1){
-            if (event.key === 'Backspace' || event.key === 'Delete') {
-                Swal.fire('error','You can only edit its transactional value.','info');
-            }
-        }
-    }
+  }
 });
 
-
-
-
 const getBillAmount = () => {
+  let mrp = document.getElementById("mrp").value;
 
-    let mrp = document.getElementById('mrp').value;
+  let ptr = document.getElementById("ptr").value;
 
-    let ptr = document.getElementById('ptr').value;
+  let gst = document.getElementById("gst").value;
+  // console.log("change gst : "+gst);
 
-    let gst = document.getElementById('gst').value;
-    // console.log("change gst : "+gst);
+  let prevGst = document.getElementById("gst-check").value;
+  // console.log("prev gst : "+prevGst);
 
-    let prevGst = document.getElementById("gst-check").value;
-    // console.log("prev gst : "+prevGst);
+  let qty = document.getElementById("qty").value;
+  if (qty == "") {
+    qty = 0;
+  }
 
-    let qty = document.getElementById('qty').value;
-    if (qty == '') {
-        qty = 0;
-    }
+  let disc = document.getElementById("discount").value;
+  if (disc == "") {
+    disc = 0;
+  }
 
-    let disc = document.getElementById('discount').value;
-    if (disc == '') {
-        disc = 0;
-    }
+  let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
+  maxPtr = maxPtr.toFixed(2);
 
+  if (gst != prevGst) {
+    document.getElementById("ptr").value = maxPtr;
+    document.getElementById("gst-check").value = gst;
+  }
 
-    let maxPtr = (parseFloat(mrp) * 100) / (parseInt(gst) + 100);
-    maxPtr = maxPtr.toFixed(2);
+  if (parseFloat(ptr) > parseFloat(maxPtr)) {
+    // console.log("max ptr "+ maxPtr);
+    // console.log("change ptr "+ ptr);
 
-    if (gst != prevGst) {
-        document.getElementById('ptr').value = maxPtr;
-        document.getElementById("gst-check").value = gst;
-    }
-
-    if (parseFloat(ptr) > parseFloat(maxPtr)) {
-        // console.log("max ptr "+ maxPtr);
-        // console.log("change ptr "+ ptr);
-
-        Swal.fire({
-            title: "Error Input",
-            text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
-            icon: "error",
-            button: false, // Hide the "OK" button
-            timer: 1000 // Auto-close the alert after 2 seconds
-        });
-
-        document.getElementById("ptr").value = maxPtr;
-
-        maxPtr = maxPtr;
-
-        document.getElementById("bill-amount").value = " ";
-
-        document.getElementById("ptr").focus();
-    }
-
-    let modifiedPtr = document.getElementById("ptr").value;
-
-    let base = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
-    // base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
-   
-    let totalAmount = (parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100))) * parseInt(qty);
-    totalAmount = totalAmount.toFixed(2);
-
-    base = base.toFixed(2);
-    
-    document.getElementById("base").value = base;
-    document.getElementById("bill-amount").value = totalAmount;
-
-
-    //=============================================
-    //======= UPDATE GST ON PRODUCT SECTION =======
-    let prodId = document.getElementById("product-id").value;
-
-    $.ajax({
-        url: 'ajax/update-product-gst.ajax.php',
-        type: 'POST',
-        data: {
-            gstPercetn: gst,
-            prodId: prodId
-        },
-        success: function (response) {
-            // console.log(response);
-        },
-        error: function (error) {
-            // console.error('Error removing image:', error);
-        }
+    Swal.fire({
+      title: "Error Input",
+      text: "PTR must be lesser than Calculated Value. Please enter proper PTR value!",
+      icon: "error",
+      button: false, // Hide the "OK" button
+      timer: 1000, // Auto-close the alert after 2 seconds
     });
-} //eof getBillAmount function
 
+    document.getElementById("ptr").value = maxPtr;
+
+    maxPtr = maxPtr;
+
+    document.getElementById("bill-amount").value = " ";
+
+    document.getElementById("ptr").focus();
+  }
+
+  let modifiedPtr = document.getElementById("ptr").value;
+
+  let base =
+    parseFloat(modifiedPtr) -
+    parseFloat(modifiedPtr) * (parseFloat(disc) / 100);
+  // base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
+
+  let totalAmount =
+    (parseFloat(base) + parseFloat(base) * (parseFloat(gst) / 100)) *
+    parseInt(qty);
+  totalAmount = totalAmount.toFixed(2);
+
+  base = base.toFixed(2);
+
+  document.getElementById("base").value = base;
+  document.getElementById("bill-amount").value = totalAmount;
+
+  //=============================================
+  //======= UPDATE GST ON PRODUCT SECTION =======
+  let prodId = document.getElementById("product-id").value;
+
+  $.ajax({
+    url: "ajax/update-product-gst.ajax.php",
+    type: "POST",
+    data: {
+      gstPercetn: gst,
+      prodId: prodId,
+    },
+    success: function (response) {
+      // console.log(response);
+    },
+    error: function (error) {
+      // console.error('Error removing image:', error);
+    },
+  });
+}; //eof getBillAmount function
 
 // ============= QTY CALCULETION ON FREE QTY UPDATE ==================
 const editQTY = () => {
-    var crntQTY = document.getElementById("qty").value;
-    var crntFreeQTY = document.getElementById("free-qty").value;
-    document.getElementById("updtQTYS").value = Number(crntQTY) + Number(crntFreeQTY);
-    
-}
+  var crntQTY = document.getElementById("qty").value;
+  var crntFreeQTY = document.getElementById("free-qty").value;
+  document.getElementById("updtQTYS").value =
+    Number(crntQTY) + Number(crntFreeQTY);
+};
 // ##################################################################################
 
 // ====== qty check control ======
-const qtyCheck = (t) =>{
-    editQTY();
-    if(t.value == 0){
-        document.getElementById('add-button').setAttribute("disabled", "true");
-        Swal.fire('Alert','Enter valid qantity','info')
-    }else{
-        document.getElementById('add-button').removeAttribute("disabled");
-    }
-}
+const qtyCheck = (t) => {
+  editQTY();
+  if (t.value == 0) {
+    // document.getElementById('add-button').setAttribute("disabled", "true");
+    // Swal.fire('Alert','Enter valid qantity','info')
+  } else {
+    // document.getElementById('add-button').removeAttribute("disabled");
+  }
+};
 // ##################################################################################
 
 //geeting bills by clicking on add button
-const addData = () => {
+// const addData = () => {
+/*
     var distId = document.getElementById("distributor-id");
-    // var selectedOption = distId.options[distId.selectedIndex];
-    // var customAttributeValue = selectedOption.getAttribute("dist-nm");
+    //     var distBillid = document.getElementById("distributor-bill");
+    //     var prevdisbillNo = document.getElementById("prev-distributor-bill-no");
+    //     var billDate = document.getElementById("bill-date");
+    //     var dueDate = document.getElementById("due-date");
+    //     var paymentMode = document.getElementById("payment-mode");
+*/
+//     var distBill = distBillid.value.toUpperCase();
+//     var prevDistBill = prevdisbillNo.value.toUpperCase();
 
-    var distBillid = document.getElementById("distributor-bill");
-    var distBill = distBillid.value.toUpperCase();
-    var prevdisbillNo = document.getElementById("prev-distributor-bill-no");
-    var prevDistBill = prevdisbillNo.value.toUpperCase();
-    var billDate = document.getElementById("bill-date");
-    var dueDate = document.getElementById("due-date");
-    var paymentMode = document.getElementById("payment-mode");
+//     var productName = document.getElementById("product-name");
+//     var productId = document.getElementById("product-id");
+//     var batch = document.getElementById("batch-no");
+//     var batchNo = batch.value.toUpperCase();
+//     var manufId = document.getElementById("manufacturer-id");
+//     var manufName = document.getElementById('manufacturer-name');
+//     var medicinePower = document.getElementById("medicine-power");
+//     var expMonth = document.getElementById("exp-month");
+//     var expYear = document.getElementById("exp-year");
+//     var expDate = `${expMonth.value}/${expYear.value}`;
+//     expDate = expDate.toString()
+//     var weightage = document.getElementById("weightage");
+//     var unit = document.getElementById("unit");
+//     var packagingIn = document.getElementById("packaging-in");
+//     var mrp = document.getElementById("mrp");
+//     var ptr = document.getElementById("ptr");
+//     var qty = document.getElementById("qty");
+//     var freeQty = document.getElementById("free-qty");
 
-    var productName = document.getElementById("product-name");
-    var productId = document.getElementById("product-id");
-    var batch = document.getElementById("batch-no");
-    var batchNo = batch.value.toUpperCase();
-    var manufId = document.getElementById("manufacturer-id");
-    var manufName = document.getElementById('manufacturer-name');
-    var medicinePower = document.getElementById("medicine-power");
-    // var mfdMonth = document.getElementById("mfd-month");
-    // var mfdYear = document.getElementById("mfd-year");
-    // var mfdDate = `${mfdMonth.value}/${mfdYear.value}`;
-    // mfdDate = mfdDate.toString()
-    var expMonth = document.getElementById("exp-month");
-    var expYear = document.getElementById("exp-year");
-    var expDate = `${expMonth.value}/${expYear.value}`;
-    expDate = expDate.toString()
-    // var producDsc       = document.getElementById("product-descreption");
-    var weightage = document.getElementById("weightage");
-    var unit = document.getElementById("unit");
-    var packagingIn = document.getElementById("packaging-in");
-    var mrp = document.getElementById("mrp");
-    var ptr = document.getElementById("ptr");
-    var qty = document.getElementById("qty");
-    var freeQty = document.getElementById("free-qty");
+//     var discount = document.getElementById("discount");
+//     var gst = document.getElementById("gst");
+//     var base = document.getElementById("base");
+//     var billAmount = document.getElementById("bill-amount");
+//     var prevAmount = document.getElementById("temp-bill-amount");
+//     var purchaseId = document.getElementById("purchase-id");
+//     var crntGstAmount = document.getElementById("crntGstAmnt");
+//     var itemQty = document.getElementById("updtQTYS").value;
 
-    var discount = document.getElementById("discount");
-    var gst = document.getElementById("gst");
-    var base = document.getElementById("base");
-    var billAmount = document.getElementById("bill-amount");
-    var prevAmount = document.getElementById("temp-bill-amount");
-    var purchaseId = document.getElementById("purchase-id");
-    var crntGstAmount = document.getElementById("crntGstAmnt");
-    var itemQty = document.getElementById("updtQTYS").value;
+//     var byuQty = document.getElementById("purchsed-qty").value;
+//     if(byuQty == ''){
+//         byuQty = 0;
+//     }
+//     var curQty = document.getElementById("current-qty").value;
+//     if(curQty == ''){
+//         curQty = 0;
+//     }
+//     var delflag = document.getElementById('del-flag').value;
 
-    var byuQty = document.getElementById("purchsed-qty").value;
-    if(byuQty == ''){
-        byuQty = 0;
-    }
-    var curQty = document.getElementById("current-qty").value;
-    if(curQty == ''){
-        curQty = 0;
-    }
-    var delflag = document.getElementById('del-flag').value;
-
-
+/*
     if (distId.value == "") {
         Swal.fire("Blank Field", "Please Selet Distributor First!", "error")
             .then((value) => {
@@ -719,21 +707,6 @@ const addData = () => {
         return;
     }
 
-    // if (qty.value == 0) {
-    //     Swal.fire({
-    //         title: "Wrong Input",
-    //         text: "Please Enter Valid Quantity",
-    //         icon: "warning",
-    //         showCancelButton: false,
-    //         confirmButtonColor: "#3085d6",
-    //         confirmButtonText: "Ok"
-    //       }).then((result) => {
-    //         if (result.isConfirmed) {
-    //           qty.focus();
-    //         }
-    //       });
-    //     return;
-    // }
 
     if (freeQty.value == "") {
         Swal.fire("Blank Field", "Please Enter Free Quantity", "error")
@@ -765,68 +738,389 @@ const addData = () => {
         billAmount.focus();
         return;
     }
+*/
+//     //// sl control for row
+//     let slno = document.getElementById("dynamic-id").value;
+//     let slControl = document.getElementById("serial-control").value;
+//     slno++;
+//     slControl++;
+//     document.getElementById("dynamic-id").value = slno;
+//     document.getElementById("serial-control").value = slControl;
 
-    //// sl control for row 
-    let slno = document.getElementById("dynamic-id").value;
-    let slControl = document.getElementById("serial-control").value;
-    slno++;
-    slControl++;
-    document.getElementById("dynamic-id").value = slno;
-    document.getElementById("serial-control").value = slControl;
+//     // item qantity
+//     var qtyVal = document.getElementById("qty-val").value;
+//     totalQty = parseInt(qty.value)+parseInt(freeQty.value) + parseInt(qtyVal);
+//     // console.log('total qty check : '+totalQty);
 
-    // item qantity
-    var qtyVal = document.getElementById("qty-val").value;
-    totalQty = parseInt(qty.value)+parseInt(freeQty.value) + parseInt(qtyVal);
-    // console.log('total qty check : '+totalQty);
+//     // net amount calculation
+//     var net = document.getElementById("net-amount").value;
+//     var addAmount = parseFloat(billAmount.value);
+//     netAmount = parseFloat(net) + parseFloat(addAmount);
 
-    // net amount calculation
-    var net = document.getElementById("net-amount").value;
-    var addAmount = parseFloat(billAmount.value);
-    netAmount = parseFloat(net) + parseFloat(addAmount);
+//     //////////////// GST AMOUNT CALCULATION \\\\\\\\\\\\\\\\\\
 
+//     let baseAmt = base.value;
+//     let gstPerItem = ((parseFloat(baseAmt)*parseInt(gst.value))/100);
+//     let totalItemGstAmt = parseFloat(gstPerItem) * parseInt(qty.value);
+//     gstPerItem = totalItemGstAmt.toFixed(2);
+//     // console.log("gst amount : "+totalItemGstAmt);
+//     let gstVal = document.getElementById("gst-val").value;
 
-    //////////////// GST AMOUNT CALCULATION \\\\\\\\\\\\\\\\\\
+//     let onlyGst = totalItemGstAmt.toFixed(2);
+//     // console.log("nnly gst : "+onlyGst);
+//     // onlyGst = onlyGst.toFixed(2);
+//     gstVal = parseFloat(gstVal)+parseFloat(onlyGst);
+//     onlyGst = gstVal.toFixed(2);
 
-    let baseAmt = base.value;
-    let gstPerItem = ((parseFloat(baseAmt)*parseInt(gst.value))/100);
-    let totalItemGstAmt = parseFloat(gstPerItem) * parseInt(qty.value);
-    gstPerItem = totalItemGstAmt.toFixed(2);
-    // console.log("gst amount : "+totalItemGstAmt);
-    let gstVal = document.getElementById("gst-val").value;
+//     ////////////////////// marging amount calculation
+//     // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
+//     let totalMrp = parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
+//     let margin = totalMrp - billAmount.value;
+//     let marginP = (margin / totalMrp) * 100;
 
-    let onlyGst = totalItemGstAmt.toFixed(2);
-    // console.log("nnly gst : "+onlyGst);
-    // onlyGst = onlyGst.toFixed(2);
-    gstVal = parseFloat(gstVal)+parseFloat(onlyGst);
-    onlyGst = gstVal.toFixed(2);
+//     // del falg checking ===
+//     if(delflag == ''){
+//         delflag = 0;
+//     }else{
+//         delflag = delflag;
+//     }
+//     // console.log('del flag val check : '+delflag);
 
-    ////////////////////// marging amount calculation
-    // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
-    let totalMrp = parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
-    let margin = totalMrp - billAmount.value;
-    let marginP = (margin / totalMrp) * 100;
+//     jQuery("#dataBody")
+//         .append(`<tr id="table-row-${slControl}" style="cursor: pointer;">
+//             <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value}, ${byuQty}, ${curQty}, ${delflag})"></i></td>
 
-    // del falg checking ===
-    if(delflag == ''){
-        delflag = 0;
-    }else{
-        delflag = delflag;
-    }
-    // console.log('del flag val check : '+delflag);
+//             <td class="p-0 pt-3" id="row-${slControl}-col-1" style="font-size:.75rem ; padding-top:1rem; width: .75rem">${slno}</td>
 
-    jQuery("#dataBody")
-        .append(`<tr id="table-row-${slControl}" style="cursor: pointer;">
-            <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value}, ${byuQty}, ${curQty}, ${delflag})"></i></td>
+//             <td class="d-none p-0 pt-3">
+//                 <input class="table-data w-6r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-3">
+//                 <input class="col table-data w-.65r" type="text" name="productNm[]" value="${productName.value}" readonly style="text-align: start; font-size:0.65rem;">
+//                 <input class="d-none col table-data w-.75r" type="text" name="productId[]" value="${productId.value}">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-4">
+//                 <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNo}" readonly style="font-size:0.65rem;">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-6">
+//                 <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.65rem;">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-8">
+//                 <input class="col table-data w-4r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly style="font-size:0.65rem;">
+//                 <input class="d-none col table-data w-4r" type="text" name="weightage[]" value="${weightage.value}">
+//                 <input class="d-none col table-data w-4r" type="text" name="unit[]" value="${unit.value}">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-9">
+//                 <input class="col table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.65rem; text-align:end;">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-10">
+//                 <input class="col table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size:0.65rem; text-align:end;">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-11">
+//                 <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size:0.65rem; text-align:end;">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-12">
+//                 <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.65rem; text-align:end;">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-15">
+//                 <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size:0.65rem; text-align:end;">
+//                 <input class="d-none col table-data w-3r" type="text" name="gstPerItem[]" value="${gstPerItem}">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-13">
+//                 <input class="d-none col table-data w-4r" type="text" name="base[]" value="${base.value}" style="text-align: end;">
+//                 <input  class="col table-data w-3r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.65rem; text-align:end;">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-14">
+//                 <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size:0.65rem; text-align:end;">
+//             </td>
+
+//             <td class="p-0 pt-3" id="row-${slControl}-col-16">
+//                 <input class="col table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="font-size:0.65rem; text-align:end;">
+//             </td>
+
+//         </tr>`);
+
+//     stockInSave.removeAttribute("disabled");
+
+//     //item-table
+
+//     if (slno > 1) {
+//         let id = document.getElementById("items-val");
+//         let newId = parseFloat(id.value) + 1;
+//         document.getElementById("items-val").value = newId;
+
+//     } else {
+//         document.getElementById("items-val").value = slno;
+//     }
+
+//     document.getElementById("qty-val").value = totalQty;
+//     document.getElementById("gst-val").value = onlyGst;
+//     document.getElementById("net-amount").value = netAmount.toFixed(2);
+
+//     ///////////////////////////////////////////////////////////////////////////////////
+
+//     const dataTuple = {
+
+//         slno: slControl,
+//         productName: productName.value,
+//         productId: productId.value,
+//         batchNo: batchNo,
+//         ManufId: manufId.value,
+//         manufName: manufName.value,
+
+//         expMnth: expMonth.value,
+//         expYr: expYear.value,
+//         weightage: weightage.value,
+//         unitType: unit.value,
+//         packaging: packagingIn.value,
+//         medPower: medicinePower.value,
+
+//         mrp: mrp.value,
+//         ptr: ptr.value,
+//         qty: qty.value,
+//         freeQty: freeQty.value,
+
+//         discPercent: discount.value,
+//         gst: gst.value,
+//         base: base.value,
+//         billAMNT: billAmount.value,
+//         prevAmount: prevAmount.value,
+//         purchaseId: purchaseId.value,
+//         crntGstAmount: crntGstAmount.value,
+//         itemQty: itemQty,
+
+//         byuQty : byuQty,
+//         curQty : curQty,
+//         delflag: delflag
+//     };
+
+//     let tupleData = JSON.stringify(dataTuple);
+
+//     document.getElementById(`row-${slControl}-col-3`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-4`).onclick = function () {
+//         editItem(tupleData);
+//     };
+
+//     document.getElementById(`row-${slControl}-col-6`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-8`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-9`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-10`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-11`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-12`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-13`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-14`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-15`).onclick = function () {
+//         editItem(tupleData);
+//     };
+//     document.getElementById(`row-${slControl}-col-16`).onclick = function () {
+//         editItem(tupleData);
+//     };
+
+//     ///////////////////////////////////////////////////////////////////////////////////
+
+//     document.getElementById("data-details").reset();
+//     event.preventDefault();
+// }//addData
+
+const validateField = (fieldId, message) => {
+  let field = document.getElementById(fieldId);
+  if (field.value === "") {
+    Swal.fire("Blank Field", message, "error").then((value) => {
+      field.focus();
+    });
+    return false;
+  }
+  return true;
+};
+
+const addData = () => {
+  const fieldsToValidate = [
+    { field: "distributor-id", message: "Please Select Distributor First!" },
+    {
+      field: "distributor-bill",
+      message: "Please Enter Distributor Bill Number!",
+    },
+    {
+      field: "prev-distributor-bill-no",
+      message: "Previous Distributor Bill is empty!",
+    },
+    { field: "bill-date", message: "Please Select Bill Date!" },
+    { field: "due-date", message: "Please Select Bill Due Date!" },
+    { field: "payment-mode", message: "Please Select Payment Mode!" },
+    { field: "product-name", message: "Please Search & Select an item!" },
+    {
+      field: "product-id",
+      message: "Invalid Product ID, Please Search & Select an item!",
+    },
+    { field: "batch-no", message: "Please Enter Product Batch Number!" },
+    { field: "exp-month", message: "Please Enter Complete Expiry Date!" },
+    { field: "exp-year", message: "Please Enter Complete Expiry Date!" },
+    { field: "mrp", message: "Enter  MRP of the item!" },
+    { field: "ptr", message: "Enter Valid PTR!" },
+    { field: "qty", message: "Please Enter Valid Quantity!" },
+    { field: "free-qty", message: "Please enter free quantity at least 0!" },
+    { field: "discount", message: "Please enter discount at least 0" },
+    { field: "gst", message: "Select GST!" },
+    { field: "bill-amount", message: "Invalid Bill Amount" },
+    { field: "base", message: "Base Amount Invalid!" },
+  ];
+
+  // ==============================================
+  const allFieldsValid = fieldsToValidate.every(({ field, message }) =>
+    validateField(field, message)
+  );
+  if (!allFieldsValid) return;
+
+  // Rest of the code for adding data
+
+  var productName = document.getElementById("product-name");
+  var productId = document.getElementById("product-id");
+  var batch = document.getElementById("batch-no");
+  var batchNo = batch.value.toUpperCase();
+  var manufId = document.getElementById("manufacturer-id");
+  var manufName = document.getElementById("manufacturer-name");
+  var medicinePower = document.getElementById("medicine-power");
+  var expMonth = document.getElementById("exp-month");
+  var expYear = document.getElementById("exp-year");
+  var expDate = `${expMonth.value}/${expYear.value}`;
+  expDate = expDate.toString();
+  var weightage = document.getElementById("weightage");
+  var unit = document.getElementById("unit");
+  var packagingIn = document.getElementById("packaging-in");
+  var mrp = document.getElementById("mrp");
+  var ptr = document.getElementById("ptr");
+  var qty = document.getElementById("qty");
+  var freeQty = document.getElementById("free-qty");
+
+  var discount = document.getElementById("discount");
+  var gst = document.getElementById("gst");
+  var base = document.getElementById("base");
+  var billAmount = document.getElementById("bill-amount");
+  var prevAmount = document.getElementById("temp-bill-amount");
+  var purchaseId = document.getElementById("purchase-id");
+  var crntGstAmount = document.getElementById("crntGstAmnt");
+  var itemQty = document.getElementById("updtQTYS").value;
+
+  var byuQty = document.getElementById("purchsed-qty").value;
+  if (byuQty == "") {
+    byuQty = 0;
+  }
+  var curQty = document.getElementById("current-qty").value;
+  if (curQty == "") {
+    curQty = 0;
+  }
+  var delflag = document.getElementById("del-flag").value;
+
+  var Ptr = parseFloat(ptr.value);
+  var Mrp = parseFloat(mrp.value);
+  
+  if (Ptr > Mrp) {
+    Swal.fire("Blank Field", "Please check PTR value", "error").then(
+      (value) => {
+        ptr.focus();
+      }
+    );
+    return;
+  }
+
+  //// sl control for row
+  let slno = document.getElementById("dynamic-id").value;
+  let slControl = document.getElementById("serial-control").value;
+  slno++;
+  slControl++;
+  document.getElementById("dynamic-id").value = slno;
+  document.getElementById("serial-control").value = slControl;
+
+  // item qantity
+  var qtyVal = document.getElementById("qty-val").value;
+  totalQty = parseInt(qty.value) + parseInt(freeQty.value) + parseInt(qtyVal);
+  // console.log('total qty check : '+totalQty);
+
+  // net amount calculation
+  var net = document.getElementById("net-amount").value;
+  var addAmount = parseFloat(billAmount.value);
+  netAmount = parseFloat(net) + parseFloat(addAmount);
+
+  //////////////// GST AMOUNT CALCULATION \\\\\\\\\\\\\\\\\\
+
+  let baseAmt = base.value;
+  let gstPerItem = (parseFloat(baseAmt) * parseInt(gst.value)) / 100;
+  let totalItemGstAmt = parseFloat(gstPerItem) * parseInt(qty.value);
+  gstPerItem = totalItemGstAmt.toFixed(2);
+  // console.log("gst amount : "+totalItemGstAmt);
+  let gstVal = document.getElementById("gst-val").value;
+
+  let onlyGst = totalItemGstAmt.toFixed(2);
+  // console.log("nnly gst : "+onlyGst);
+  // onlyGst = onlyGst.toFixed(2);
+  gstVal = parseFloat(gstVal) + parseFloat(onlyGst);
+  onlyGst = gstVal.toFixed(2);
+
+  ////////////////////// marging amount calculation
+  // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
+  let totalMrp =
+    parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
+  let margin = totalMrp - billAmount.value;
+  let marginP = (margin / totalMrp) * 100;
+
+  // del falg checking ===
+  if (delflag == "") {
+    delflag = 0;
+  } else {
+    delflag = delflag;
+  }
+  // console.log('del flag val check : '+delflag);
+
+  jQuery("#dataBody")
+    .append(`<tr id="table-row-${slControl}" style="cursor: pointer;">
+            <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${
+    billAmount.value
+  }, ${byuQty}, ${curQty}, ${delflag})"></i></td>
            
             <td class="p-0 pt-3" id="row-${slControl}-col-1" style="font-size:.75rem ; padding-top:1rem; width: .75rem">${slno}</td>
 
             <td class="d-none p-0 pt-3">
-                <input class="table-data w-6r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
+                <input class="table-data w-6r" type="text" name="purchaseId[]" value="${
+                  purchaseId.value
+                }" readonly>
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-3">
-                <input class="col table-data w-.65r" type="text" name="productNm[]" value="${productName.value}" readonly style="text-align: start; font-size:0.65rem;">
-                <input class="d-none col table-data w-.75r" type="text" name="productId[]" value="${productId.value}">
+                <input class="col table-data w-.65r" type="text" name="productNm[]" value="${
+                  productName.value
+                }" readonly style="text-align: start; font-size:0.65rem;">
+                <input class="d-none col table-data w-.75r" type="text" name="productId[]" value="${
+                  productId.value
+                }">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-4">
@@ -838,400 +1132,411 @@ const addData = () => {
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-8">
-                <input class="col table-data w-4r" type="text" name="setof[]" value="${weightage.value}${unit.value}" readonly style="font-size:0.65rem;">
-                <input class="d-none col table-data w-4r" type="text" name="weightage[]" value="${weightage.value}">
-                <input class="d-none col table-data w-4r" type="text" name="unit[]" value="${unit.value}">
+                <input class="col table-data w-4r" type="text" name="setof[]" value="${
+                  weightage.value
+                }${unit.value}" readonly style="font-size:0.65rem;">
+                <input class="d-none col table-data w-4r" type="text" name="weightage[]" value="${
+                  weightage.value
+                }">
+                <input class="d-none col table-data w-4r" type="text" name="unit[]" value="${
+                  unit.value
+                }">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-9">
-                <input class="col table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="qty[]" value="${
+                  qty.value
+                }" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-10">
-                <input class="col table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="freeQty[]" value="${
+                  freeQty.value
+                }" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-11">
-                <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="mrp[]" value="${
+                  mrp.value
+                }" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-12">
-                <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="ptr[]" value="${
+                  ptr.value
+                }" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-15">
-                <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="gst[]" value="${
+                  gst.value
+                }%" readonly style="font-size:0.65rem; text-align:end;">
                 <input class="d-none col table-data w-3r" type="text" name="gstPerItem[]" value="${gstPerItem}">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-13">
-                <input class="d-none col table-data w-4r" type="text" name="base[]" value="${base.value}" style="text-align: end;">
-                <input  class="col table-data w-3r" type="text" name="discount[]" value="${discount.value}%" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="d-none col table-data w-4r" type="text" name="base[]" value="${
+                  base.value
+                }" style="text-align: end;">
+                <input  class="col table-data w-3r" type="text" name="discount[]" value="${
+                  discount.value
+                }%" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-14">
-                <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(
+                  2
+                )}%" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-16">
-                <input class="col table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${
+                  billAmount.value
+                }" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
         </tr>`);
 
+  stockInSave.removeAttribute("disabled");
 
-    stockInSave.removeAttribute("disabled");
+  //item-table
 
-    //item-table
+  if (slno > 1) {
+    let id = document.getElementById("items-val");
+    let newId = parseFloat(id.value) + 1;
+    document.getElementById("items-val").value = newId;
+  } else {
+    document.getElementById("items-val").value = slno;
+  }
 
-    if (slno > 1) {
-        let id = document.getElementById("items-val");
-        let newId = parseFloat(id.value) + 1;
-        document.getElementById("items-val").value = newId;
+  document.getElementById("qty-val").value = totalQty;
+  document.getElementById("gst-val").value = onlyGst;
+  document.getElementById("net-amount").value = netAmount.toFixed(2);
 
-    } else {
-        document.getElementById("items-val").value = slno;
-    }
+  ///////////////////////////////////////////////////////////////////////////////////
 
-    document.getElementById("qty-val").value = totalQty;
-    document.getElementById("gst-val").value = onlyGst;
-    document.getElementById("net-amount").value = netAmount.toFixed(2);
+  const dataTuple = {
+    slno: slControl,
+    productName: productName.value,
+    productId: productId.value,
+    batchNo: batchNo,
+    ManufId: manufId.value,
+    manufName: manufName.value,
 
-    ///////////////////////////////////////////////////////////////////////////////////
+    expMnth: expMonth.value,
+    expYr: expYear.value,
+    weightage: weightage.value,
+    unitType: unit.value,
+    packaging: packagingIn.value,
+    medPower: medicinePower.value,
 
-    const dataTuple = {
+    mrp: mrp.value,
+    ptr: ptr.value,
+    qty: qty.value,
+    freeQty: freeQty.value,
 
-        slno: slControl,
-        productName: productName.value,
-        productId: productId.value,
-        batchNo: batchNo,
-        ManufId: manufId.value,
-        manufName: manufName.value,
-        
-        expMnth: expMonth.value,
-        expYr: expYear.value,
-        weightage: weightage.value,
-        unitType: unit.value,
-        packaging: packagingIn.value,
-        medPower: medicinePower.value,
+    discPercent: discount.value,
+    gst: gst.value,
+    base: base.value,
+    billAMNT: billAmount.value,
+    prevAmount: prevAmount.value,
+    purchaseId: purchaseId.value,
+    crntGstAmount: crntGstAmount.value,
+    itemQty: itemQty,
 
-        mrp: mrp.value,
-        ptr: ptr.value,
-        qty: qty.value,
-        freeQty: freeQty.value,
+    byuQty: byuQty,
+    curQty: curQty,
+    delflag: delflag,
+  };
 
-        discPercent: discount.value,
-        gst: gst.value,
-        base: base.value,
-        billAMNT: billAmount.value,
-        prevAmount: prevAmount.value,
-        purchaseId: purchaseId.value,
-        crntGstAmount: crntGstAmount.value,
-        itemQty: itemQty,
+  let tupleData = JSON.stringify(dataTuple);
 
-        byuQty : byuQty,    
-        curQty : curQty,        
-        delflag: delflag
-    };
+  document.getElementById(`row-${slControl}-col-3`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-4`).onclick = function () {
+    editItem(tupleData);
+  };
 
-    let tupleData = JSON.stringify(dataTuple);
+  document.getElementById(`row-${slControl}-col-6`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-8`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-9`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-10`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-11`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-12`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-13`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-14`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-15`).onclick = function () {
+    editItem(tupleData);
+  };
+  document.getElementById(`row-${slControl}-col-16`).onclick = function () {
+    editItem(tupleData);
+  };
 
-    document.getElementById(`row-${slControl}-col-3`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-4`).onclick = function () {
-        editItem(tupleData);
-    };
-    // document.getElementById(`row-${slControl}-col-5`).onclick = function () {
-    //     editItem(tupleData);
-    // };
-    document.getElementById(`row-${slControl}-col-6`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-8`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-9`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-10`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-11`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-12`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-13`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-14`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-15`).onclick = function () {
-        editItem(tupleData);
-    };
-    document.getElementById(`row-${slControl}-col-16`).onclick = function () {
-        editItem(tupleData);
-    };
+  ///////////////////////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////////////////////
-
-    document.getElementById("data-details").reset();
-    event.preventDefault();
-}
+  document.getElementById("data-details").reset();
+  event.preventDefault();
+};
 
 //=============================== ADDED ITEM EDIT FUNCTION ==============================
 const editItem = (tData) => {
-    // console.log(tData);
-    let checkFild = document.getElementById("product-id").value;
+  // console.log(tData);
+  let checkFild = document.getElementById("product-id").value;
 
-    if (checkFild == '') {
-        let tuple = JSON.parse(tData);
+  if (checkFild == "") {
+    let tuple = JSON.parse(tData);
 
-        document.getElementById("product-name").value = tuple.productName;
-        document.getElementById("product-id").value = tuple.productId;
-        document.getElementById("batch-no").value = tuple.batchNo;
-        document.getElementById("manufacturer-id").value = tuple.ManufId;
-        document.getElementById('manufacturer-name').value = tuple.manufName;
-        // document.getElementById("mfd-month").value = tuple.mfdMnth;
-        // document.getElementById("mfd-year").value = tuple.mfdYr;
-        document.getElementById("exp-month").value = tuple.expMnth;
-        document.getElementById("exp-year").value = tuple.expYr;
+    document.getElementById("product-name").value = tuple.productName;
+    document.getElementById("product-id").value = tuple.productId;
+    document.getElementById("batch-no").value = tuple.batchNo;
+    document.getElementById("manufacturer-id").value = tuple.ManufId;
+    document.getElementById("manufacturer-name").value = tuple.manufName;
+    // document.getElementById("mfd-month").value = tuple.mfdMnth;
+    // document.getElementById("mfd-year").value = tuple.mfdYr;
+    document.getElementById("exp-month").value = tuple.expMnth;
+    document.getElementById("exp-year").value = tuple.expYr;
 
-        document.getElementById("medicine-power").value = tuple.medPower;
-        document.getElementById("weightage").value = tuple.weightage;
-        document.getElementById("unit").value = tuple.unitType;
-        document.getElementById("packaging-in").value = tuple.packaging;
-        document.getElementById('packaging-type-edit').value = tuple.packaging;
+    document.getElementById("medicine-power").value = tuple.medPower;
+    document.getElementById("weightage").value = tuple.weightage;
+    document.getElementById("unit").value = tuple.unitType;
+    document.getElementById("packaging-in").value = tuple.packaging;
+    document.getElementById("packaging-type-edit").value = tuple.packaging;
 
-        document.getElementById("mrp").value = tuple.mrp;
-        document.getElementById("ptr").value = tuple.ptr;
-        document.getElementById("qty").value = tuple.qty;
-        document.getElementById("free-qty").value = tuple.freeQty;
+    document.getElementById("mrp").value = tuple.mrp;
+    document.getElementById("ptr").value = tuple.ptr;
+    document.getElementById("qty").value = tuple.qty;
+    document.getElementById("free-qty").value = tuple.freeQty;
 
-        document.getElementById("purchsed-qty").value = tuple.byuQty;
-        document.getElementById("current-qty").value = tuple.curQty;
+    document.getElementById("purchsed-qty").value = tuple.byuQty;
+    document.getElementById("current-qty").value = tuple.curQty;
 
-        document.getElementById("discount").value = tuple.discPercent;
-        document.getElementById("gst").value = tuple.gst;
-        document.getElementById("base").value = tuple.base;
-        document.getElementById("bill-amount").value = tuple.billAMNT;
-        document.getElementById("temp-bill-amount").value = tuple.prevAmount;
+    document.getElementById("discount").value = tuple.discPercent;
+    document.getElementById("gst").value = tuple.gst;
+    document.getElementById("base").value = tuple.base;
+    document.getElementById("bill-amount").value = tuple.billAMNT;
+    document.getElementById("temp-bill-amount").value = tuple.prevAmount;
 
-        document.getElementById("purchase-id").value = tuple.purchaseId;
-        document.getElementById("crntGstAmnt").value = tuple.crntGstAmount;
-        document.getElementById("updtQTYS").value = tuple.itemQty;
+    document.getElementById("purchase-id").value = tuple.purchaseId;
+    document.getElementById("crntGstAmnt").value = tuple.crntGstAmount;
+    document.getElementById("updtQTYS").value = tuple.itemQty;
 
-        document.getElementById("del-flag").value = tuple.delflag;
+    document.getElementById("del-flag").value = tuple.delflag;
 
-        let gstPerItem = (parseFloat(tuple.billAMNT)) - (parseFloat(tuple.base) * parseInt(tuple.qty));
-        gstPerItem = gstPerItem.toFixed(2);
+    let gstPerItem =
+      parseFloat(tuple.billAMNT) - parseFloat(tuple.base) * parseInt(tuple.qty);
+    gstPerItem = gstPerItem.toFixed(2);
 
-        deleteData(tuple.slno, tuple.itemQty, gstPerItem, tuple.billAMNT, tuple.delflag);
-    } else {
-        Swal.fire("Can't Edit", "Please add/edit previous item first.", "error");
-        document.getElementById("ptr").focus();
-    }
-}
-
+    deleteData(
+      tuple.slno,
+      tuple.itemQty,
+      gstPerItem,
+      tuple.billAMNT,
+      tuple.delflag
+    );
+  } else {
+    Swal.fire("Can't Edit", "Please add/edit previous item first.", "error");
+    document.getElementById("ptr").focus();
+  }
+};
 
 // ================================ Delet Data ================================
 
 function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
+  if (delflag == 1) {
+    // let purchaedQty = document.getElementById('purchsed-qty').value;
+    // let currentQty = document.getElementById('current-qty').value;
 
-    if (delflag == 1) {
-        // let purchaedQty = document.getElementById('purchsed-qty').value;
-        // let currentQty = document.getElementById('current-qty').value;
+    if (parseInt(pQty) == parseInt(cQty)) {
+      let delRow = slno;
 
-        if (parseInt(pQty) == parseInt(cQty)) {
-            
-            let delRow = slno;
+      jQuery(`#table-row-${slno}`).remove();
+      let slVal = document.getElementById("dynamic-id").value;
+      document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
 
-            jQuery(`#table-row-${slno}`).remove();
-            let slVal = document.getElementById("dynamic-id").value;
-            document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
+      //minus item
+      let items = document.getElementById("items-val");
+      let finalItem = parseInt(items.value) - 1;
+      items.value = finalItem;
 
-            //minus item
-            let items = document.getElementById("items-val");
-            let finalItem = parseInt(items.value) - 1;
-            items.value = finalItem;
+      // minus quantity
+      let qty = document.getElementById("qty-val");
+      let finalQty = qty.value - itemQty;
+      qty.value = finalQty;
 
-            // minus quantity
-            let qty = document.getElementById("qty-val");
-            let finalQty = qty.value - itemQty;
-            qty.value = finalQty;
+      // minus gst
+      let gst = document.getElementById("gst-val");
+      let finalGst = gst.value - gstPerItem;
+      gst.value = finalGst.toFixed(2);
 
-            // minus gst
-            let gst = document.getElementById("gst-val");
-            let finalGst = gst.value - gstPerItem;
-            gst.value = finalGst.toFixed(2);
+      // minus netAmount
+      let net = document.getElementById("net-amount");
+      let finalAmount = net.value - total;
+      net.value = finalAmount.toFixed(2);
 
-            // minus netAmount
-            let net = document.getElementById("net-amount");
-            let finalAmount = net.value - total;
-            net.value = finalAmount.toFixed(2);
+      rowAdjustment(delRow);
 
-            rowAdjustment(delRow);
-
-            if (document.getElementById('items-val').value == 0) {
-                stockInSave.setAttribute("disabled", "true");
-            }
-
-        } else {
-            Swal.fire('error', 'not possible', 'error');
-        }
-
+      if (document.getElementById("items-val").value == 0) {
+        stockInSave.setAttribute("disabled", "true");
+      }
     } else {
-
-        let delRow = slno;
-
-        jQuery(`#table-row-${slno}`).remove();
-        let slVal = document.getElementById("dynamic-id").value;
-        document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
-
-
-        //minus item
-        let items = document.getElementById("items-val");
-        let finalItem = parseInt(items.value) - 1;
-        items.value = finalItem;
-
-        // minus quantity
-        let qty = document.getElementById("qty-val");
-        let finalQty = qty.value - itemQty;
-        qty.value = finalQty;
-
-
-        // minus gst
-        let gst = document.getElementById("gst-val");
-        let finalGst = gst.value - gstPerItem;
-        gst.value = finalGst.toFixed(2);
-
-        // minus netAmount
-        let net = document.getElementById("net-amount");
-        let finalAmount = net.value - total;
-        net.value = finalAmount.toFixed(2);
-
-        rowAdjustment(delRow);
-
-        if (document.getElementById('items-val').value == 0) {
-            stockInSave.setAttribute("disabled", "true");
-        }
+      Swal.fire("error", "not possible", "error");
     }
+  } else {
+    let delRow = slno;
+
+    jQuery(`#table-row-${slno}`).remove();
+    let slVal = document.getElementById("dynamic-id").value;
+    document.getElementById("dynamic-id").value = parseInt(slVal) - 1;
+
+    //minus item
+    let items = document.getElementById("items-val");
+    let finalItem = parseInt(items.value) - 1;
+    items.value = finalItem;
+
+    // minus quantity
+    let qty = document.getElementById("qty-val");
+    let finalQty = qty.value - itemQty;
+    qty.value = finalQty;
+
+    // minus gst
+    let gst = document.getElementById("gst-val");
+    let finalGst = gst.value - gstPerItem;
+    gst.value = finalGst.toFixed(2);
+
+    // minus netAmount
+    let net = document.getElementById("net-amount");
+    let finalAmount = net.value - total;
+    net.value = finalAmount.toFixed(2);
+
+    rowAdjustment(delRow);
+
+    if (document.getElementById("items-val").value == 0) {
+      stockInSave.setAttribute("disabled", "true");
+    }
+  }
 }
 
-
 function rowAdjustment(delRow) {
-    let tableId = document.getElementById("dataBody");
-    let j = 0;
-    let colIndex = 1;
+  let tableId = document.getElementById("dataBody");
+  let j = 0;
+  let colIndex = 1;
 
-    for (let i = 0; i < tableId.rows.length; i++) {
-        j++;
-        let row = tableId.rows[i];
-        let cell = row.cells[colIndex];
-        cell.innerHTML = j;
-    }
+  for (let i = 0; i < tableId.rows.length; i++) {
+    j++;
+    let row = tableId.rows[i];
+    let cell = row.cells[colIndex];
+    cell.innerHTML = j;
+  }
 }
 
 // ======================= Manufacturing date setting ===================
-let expMonthInput = document.getElementById('exp-month');
-let expYearInput = document.getElementById('exp-year');
+let expMonthInput = document.getElementById("exp-month");
+let expYearInput = document.getElementById("exp-year");
 let today = new Date();
 let currentMonth = today.getMonth();
 let currentYear = today.getFullYear();
 
-expMonthInput.addEventListener('keydown', function (event) {
-    if (event.keyCode === 9) {
-        if (expMonthInput.value.trim() === '') {
-            event.preventDefault();
-        }
+expMonthInput.addEventListener("keydown", function (event) {
+  if (event.keyCode === 9) {
+    if (expMonthInput.value.trim() === "") {
+      event.preventDefault();
     }
+  }
 });
 
-expMonthInput.addEventListener('input', function (event) {
-    // Remove dots from the input value
-    this.value = this.value.replace('.', '');
+expMonthInput.addEventListener("input", function (event) {
+  // Remove dots from the input value
+  this.value = this.value.replace(".", "");
 });
 
-expYearInput.addEventListener('keydown', function (event) {
-    if (event.keyCode === 9) {
-        if (expMonthInput.value.trim() === '') {
-            event.preventDefault();
-        }
+expYearInput.addEventListener("keydown", function (event) {
+  if (event.keyCode === 9) {
+    if (expMonthInput.value.trim() === "") {
+      event.preventDefault();
     }
+  }
 });
 
-expYearInput.addEventListener('input', function (event) {
-    // Remove dots from the input value
-    this.value = this.value.replace('.', '');
+expYearInput.addEventListener("input", function (event) {
+  // Remove dots from the input value
+  this.value = this.value.replace(".", "");
 });
-
-
 
 // set exp month control
 const setexpMonth = (mnth) => {
-    if (mnth.value.length != 2) {
-        mnth.value = '';
-        mnth.focus();
-        Swal.fire('Alert','Month must be two digit.','info');
-    }
-}
+  if (mnth.value.length != 2) {
+    mnth.value = "";
+    mnth.focus();
+    Swal.fire("Alert", "Month must be two digit.", "info");
+  }
+};
 
 const setExpMonth = (month) => {
-
-    if (month.value <= 12) {
-        if (month.value.length > 2) {
-            month.value = '';
-            month.focus();
-        } else if (month.value.length < 2) {
-            month.focus();
-        } else if (month.value.length == 2) {
-            if (month.value == 0) {
-                month.value = '';
-                month.focus();
-            } else {
-                document.getElementById("exp-year").focus();
-            }
-        } else {
-            month.value = '';
-            month.focus();
-        }
-    } else if (month.value == '') {
+  if (month.value <= 12) {
+    if (month.value.length > 2) {
+      month.value = "";
+      month.focus();
+    } else if (month.value.length < 2) {
+      month.focus();
+    } else if (month.value.length == 2) {
+      if (month.value == 0) {
+        month.value = "";
         month.focus();
-        Swal.fire('Alert','Month must be less or equal 12.','info');
+      } else {
+        document.getElementById("exp-year").focus();
+      }
     } else {
-        month.value = '';
-        month.focus();
+      month.value = "";
+      month.focus();
     }
-}
-
-
+  } else if (month.value == "") {
+    month.focus();
+    Swal.fire("Alert", "Month must be less or equal 12.", "info");
+  } else {
+    month.value = "";
+    month.focus();
+  }
+};
 
 const setExpYEAR = (year) => {
-    expMnth = document.getElementById("exp-month").value;
-    
-    let today = new Date();
-    let currentMnth = today.getMonth();
-    let curretnYr = today.getFullYear();
+  expMnth = document.getElementById("exp-month").value;
 
-    if(year.value.length == 4){
-        if (year.value < curretnYr) {
-            document.getElementById('exp-year').value = '';
-            document.getElementById('exp-year').focus();
-        }else if(year.value == curretnYr){
-            if(expMnth < currentMnth){
-                document.getElementById('exp-month').value = '';
-                document.getElementById('exp-year').value = '';
-                document.getElementById('exp-month').focus();
-            }
-        }else{
-            document.getElementById('ptr').focus();
-        }
-    }else{
-        document.getElementById('exp-year').value = '';
-        document.getElementById('exp-year').focus();
+  let today = new Date();
+  let currentMnth = today.getMonth();
+  let curretnYr = today.getFullYear();
+
+  if (year.value.length == 4) {
+    if (year.value < curretnYr) {
+      document.getElementById("exp-year").value = "";
+      document.getElementById("exp-year").focus();
+    } else if (year.value == curretnYr) {
+      if (expMnth < currentMnth) {
+        document.getElementById("exp-month").value = "";
+        document.getElementById("exp-year").value = "";
+        document.getElementById("exp-month").focus();
+      }
+    } else {
+      document.getElementById("ptr").focus();
     }
-    
-}
+  } else {
+    document.getElementById("exp-year").value = "";
+    document.getElementById("exp-year").focus();
+  }
+};
