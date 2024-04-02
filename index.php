@@ -100,22 +100,22 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
 
                     <!-- CONTENT USER DATA ROW -->
-                    
+
 
                     <!-- Content Row -->
-                        <div class="row">
-                            <!-- Earnings (Monthly) Card Example -->
-                            <?php
-                            if ($userRole != 2 || $userRole == 'ADMIN') : ?>
-                                <!-- Sold By Card  -->
-                                <div class="col-xl-3 col-md-6 mb-4">
-                                    <?php require_once ROOT_COMPONENT . "soldby.php"; ?>
-                                </div>
-                            <?php endif; ?>
-                                
-                            <?php if ($userRole != 1 || $userRole == 'ADMIN') : ?>
+                    <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                        <?php
+                        if ($userRole != 2 || $userRole == 'ADMIN') : ?>
+                            <!-- Sold By Card  -->
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <?php require_once ROOT_COMPONENT . "soldby.php"; ?>
+                            </div>
+                        <?php endif; ?>
 
-                                <!-- Earnings (Monthly) Card Example -->
+                        <?php if ($userRole != 1 || $userRole == 'ADMIN') : ?>
+
+                            <!-- Earnings (Monthly) Card Example -->
                             <div class="col-xl-3 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "appointment-nos.php"; ?>
                             </div>
@@ -127,10 +127,10 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
                             <!-- Pending Requests Card Example -->
                             <div class="col-xl-3 col-md-6 mb-4">
-                                
+
                             </div>
-                            <?php endif; ?>
-                        </div>
+                        <?php endif; ?>
+                    </div>
 
                     <?php
                     if ($userRole != 2 || $userRole == 'ADMIN') : ?>
@@ -154,9 +154,9 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
                         </div>
 
+
                         <!-- ================ FORTH ROW ROW ================ -->
                         <div class="row">
-
                             <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "mostsolditems.php"; ?>
                             </div>
@@ -171,7 +171,6 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                             <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "highestpurchasedcustomer.php"; ?>
                             </div>
-
                         </div>
 
                         <div class="row">

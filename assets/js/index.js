@@ -1,3 +1,4 @@
+// const xmlhttp = new XMLHttpRequest();
 // const searchFor = () => {
 //     let searchForData = document.getElementById("search-all");
 
@@ -37,7 +38,6 @@ const searchFor = () => {
 
     if (searchForData.value.length > 2) {
         let searchAllUrl = `ajax/search-for-all.ajax.php?searchKey=${searchForData.value}`;
-        let xmlhttp = new XMLHttpRequest();
 
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -80,4 +80,49 @@ const getDtls = (key, id) =>{
     }
 
 
+}
+
+/*
+
+// php file require control ===============================
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Load the initial PHP file on page load
+    // var adminId = document.getElementById('admin-id').value;
+    includePhpFile("components/mostsolditems.php");
+
+    // Add event listener to the button
+    document.getElementById("changePhpFileButton").addEventListener("click", function() {
+        // Remove the previously included PHP file
+        removeIncludedPhpFile();
+
+        // Include the new PHP file
+        includePhpFile("new.php");
+    });
+});
+
+
+
+function includePhpFile(filePath) {
+    
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            console.log(xmlhttp.responseText);
+            document.getElementById("phpContentContainer").innerHTML = xmlhttp.responseText;
+        }
+    };
+    xmlhttp.open("GET", filePath, true);
+    xmlhttp.send();
+}
+
+
+function removeIncludedPhpFile() {
+    // Clear the content of the container
+    document.getElementById("phpContentContainer").innerHTML = "";
+}
+*/
+//============================================================================================
+
+const changeMLV = (t) =>{
+    document.getElementById('most-less-sold').value = 'less';
 }
