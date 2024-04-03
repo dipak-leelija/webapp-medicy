@@ -29,7 +29,7 @@ if (isset($_GET["currentItemId"])) {
         $totalPurchaseCost = $purchaseCost * $currentQty;
         echo number_format($totalPurchaseCost,2);
     }else {
-        $totalPurchaseCost = $qty*$purchaseCost;
+        $totalPurchaseCost = intval($qty)*floatval($purchaseCost);
         echo number_format($totalPurchaseCost,2);
     }
 }

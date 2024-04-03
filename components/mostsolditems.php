@@ -1,3 +1,40 @@
+<?php
+
+$strtDt = date('Y-m-d');
+$lst7 = date('Y-m-d', strtotime($strtDt . ' - 7 days'));
+$lst30 = date('Y-m-d', strtotime($strtDt . ' - 30 days'));
+
+
+
+
+$dailyMostSoldItems = $StockOut->mostSoldStockOutDataGroupByDay($adminId);
+
+$weeklyMostSoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst7, $strtDt, $adminId);
+
+$monthlyMostSoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $strtDt, $adminId);
+
+$mostSoldItemsFromStart = $StockOut->mostSoldStockOutDataFromStart($adminId);
+
+
+
+//================================================================================
+
+
+
+$lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
+
+$dailyLessSoldItems = $StockOut->leastSoldStockOutDataGroupByDay($adminId);
+
+$weeklyLessSoldItems = $StockOut->leastSoldStockOutDataGroupByWeek($adminId);
+
+$monthlyLessSoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId);
+
+
+
+// print_r($stoldItemsFromStart);
+?>
+
+
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-between align-items-center">
         <div class="col ml-2 mt-3">
@@ -16,24 +53,29 @@
                 <input type="date" id="mostSoldEndDate">
                 <button class="btn btn-sm btn-primary" onclick="mostSoldItemsChkDateRng()" style="height: 2rem;">Find</button>
             </div>
-            <div class="">
-                <!-- <label class="d-none" id="asc-dsc-val">asc</label> -->
-                <select class="upr-inp" name="sold-item-order" id="sold-item-order" onchange="soldItemOrder(this)">
-                    <option value="" selected disabled>Order</option>
-                    <option value="asc">ASC</option>
-                    <option value="dsc">DSC</option>
-                </select>
+            <div class="mr-2">
+                <label id='primary-filter' class="d-none">asc</label>
+                <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <i class="fa-solid fa-sort-up"></i> Sort
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(200, 200, 200, 0.3);">
+                    <button class="dropdown-item  dropdown" type="button" id="asc" value="asc" onclick="dataSort(this)">Ascending</button>
+                    <button class="dropdown-item  dropdown" type="button" id="dsc" value="dsc" onclick="dataSort(this)">Descending</button>
+                </div>
             </div>
             <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <b>...</b>
+                <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <i class="fas fa-filter"></i> Filter
                 </button>
+
+                <label id='secondary-filter' class="d-none"></label>
                 <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
-                    <button class="dropdown-item" type="button" id="mostSoldLst24hrs" onclick="mostStoldItemCheck(this.id)">Last 24 hrs</button>
-                    <button class="dropdown-item" type="button" id="mostSoldLst7" onclick="mostStoldItemCheck(this.id)">Last 7 Days</button>
-                    <button class="dropdown-item" type="button" id="mostSoldLst30" onclick="mostStoldItemCheck(this.id)">Last 30 DAYS</button>
-                    <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDt" onclick="mostStoldItemCheck(this.id)">By Date</button>
-                    <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDtRng" onclick="mostStoldItemCheck(this.id)">By Range</button>
+                    <button class="dropdown-item" type="button" id="mostSoldLst24hrs" onclick="dataFilter(this.id)">Last 24 hrs</button>
+                    <button class="dropdown-item" type="button" id="mostSoldLst7" onclick="dataFilter(this.id)">Last 7 Days</button>
+                    <button class="dropdown-item" type="button" id="mostSoldLst30" onclick="dataFilter(this.id)">Last 30 DAYS</button>
+                    <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDt" onclick="dataFilter(this.id)">By Date</button>
+                    <button class="dropdown-item  dropdown" type="button" id="mostSoldOnDtRng" onclick="dataFilter(this.id)">By Range</button>
                 </div>
             </div>
         </div>
@@ -52,54 +94,14 @@
 
 <script src="<?php echo PLUGIN_PATH; ?>chartjs-4.4.0/updatedChart.js"></script>
 
-
-<?php
-
-$strtDt = date('Y-m-d');
-$lst7 = date('Y-m-d', strtotime($strtDt . ' - 7 days'));
-$lst30 = date('Y-m-d', strtotime($strtDt . ' - 30 days'));
-
-if ($_GET['searchSold'] == 'asc') {
-    $stoldItemsFromStart = $StockOut->mostSoldStockOutDataFromStart($adminId);
-
-    $dailySoldItems = $StockOut->mostSoldStockOutDataGroupByDay($adminId);
-
-    $weeklSoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst7, $strtDt, $adminId);
-
-    $monthlySoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $strtDt, $adminId);
-} else {
-    $stoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
-
-    $dailySoldItems = $StockOut->leastSoldStockOutDataGroupByDay($adminId);
-
-    $weeklSoldItems = $StockOut->leastSoldStockOutDataGroupByWeek($adminId);
-
-    $monthlySoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId);
-}
-
-?>
-
 <script>
-    const soldItemOrder = (t) => {
-        if (t.value == 'asc') {
-            var currentURL = window.location.href;
-            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            var filter = 'asc';
-            var newURL = `${currentURLWithoutQuery}?searchSold=${filter}`;
-            window.location.replace(newURL);
-        } else {
-            var currentURL = window.location.href;
-            var currentURLWithoutQuery = window.location.origin + window.location.pathname;
-            var filter = 'dsc';
-            var newURL = `${currentURLWithoutQuery}?searchSold=${filter}`;
-            window.location.replace(newURL);
-        }
-    }
-    // console.log("current value : "+document.getElementById('asc-dsc-val').innerHTML);
+    let flag = 0;
 
     // ====== most sold chart data override function =========
     function updateMostSoldData(mostSold) {
-
+        let soldData = mostSold;
+        console.log(soldData);
+        console.log(mostSold);
         if (mostSold != null) {
 
             mostSoldChart.data.datasets[0].data = mostSold.map(item => item.total_sold);
@@ -129,7 +131,7 @@ if ($_GET['searchSold'] == 'asc') {
     }
 
 
-    
+
     function mostSoldItemsChkDate() {
         var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
 
@@ -166,41 +168,93 @@ if ($_GET['searchSold'] == 'asc') {
     }
 
 
+    /// ================== filter area =====================
 
-    function mostStoldItemCheck(id) {
-        if (id == 'mostSoldLst24hrs') {
-            document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
-            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
-            updateMostSoldData(<?php echo json_encode($dailySoldItems); ?>);
-        }
+    let filterVal = document.getElementById("primary-filter").innerHTML;
 
-
-        if (id == 'mostSoldLst7') {
-            document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
-            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
-            updateMostSoldData(<?php echo json_encode($weeklSoldItems); ?>);
-        }
-
-        if (id == 'mostSoldLst30') {
-            document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
-            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
-            updateMostSoldData(<?php echo json_encode($monthlySoldItems); ?>);
-        }
-
-        if (id == 'mostSoldOnDt') {
-            document.getElementById('mostSoldDtPickerDiv').style.display = 'block';
-            // document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
-        }
-
-        if (id == 'mostSoldOnDtRng') {
-            // document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
-            document.getElementById('mostSoldDtRngPickerDiv').style.display = 'block';
+    const dataSort = (t) => {
+        if (t.value == 'asc') {
+            var secondaryFilterVal = document.getElementById("secondary-filter").innerHTML;
+            document.getElementById("primary-filter").innerHTML = t.value;
+            dataFilter(secondaryFilterVal);
+        } else if (t.value == 'dsc') {
+            var secondaryFilterVal = document.getElementById("secondary-filter").innerHTML;
+            document.getElementById("primary-filter").innerHTML = t.value;
+            dataFilter(secondaryFilterVal);
         }
     }
 
 
+    function dataFilter(id) {
+        if (document.getElementById("primary-filter").innerHTML == 'asc') {
+            if (id == 'mostSoldLst24hrs') {
+                document.getElementById('secondary-filter').innerHTML = id;
+                document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+                document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+                updateMostSoldData(<?php echo json_encode($dailyMostSoldItems); ?>);
+            }
+
+            if (id == 'mostSoldLst7') {
+                document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+                document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+                updateMostSoldData(<?php echo json_encode($weeklyMostSoldItems); ?>);
+            }
+
+            if (id == 'mostSoldLst30') {
+                document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+                document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+                updateMostSoldData(<?php echo json_encode($monthlyMostSoldItems); ?>);
+            }
+
+            if (id == 'mostSoldOnDt') {
+                document.getElementById('mostSoldDtPickerDiv').style.display = 'block';
+                // document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+            }
+
+            if (id == 'mostSoldOnDtRng') {
+                // document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+                document.getElementById('mostSoldDtRngPickerDiv').style.display = 'block';
+            }
+
+        } else if (document.getElementById("primary-filter").innerHTML == 'dsc') {
+            if (id == 'mostSoldLst24hrs') {
+                document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+                document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+                updateMostSoldData(<?php echo json_encode($dailyLessSoldItems); ?>);
+            }
+
+
+            if (id == 'mostSoldLst7') {
+                document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+                document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+                updateMostSoldData(<?php echo json_encode($weeklyLessSoldItems); ?>);
+            }
+
+            if (id == 'mostSoldLst30') {
+                document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+                document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+                updateMostSoldData(<?php echo json_encode($monthlyLessSoldItems); ?>);
+            }
+
+            if (id == 'mostSoldOnDt') {
+                document.getElementById('mostSoldDtPickerDiv').style.display = 'block';
+                // document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
+            }
+
+            if (id == 'mostSoldOnDtRng') {
+                // document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
+                document.getElementById('mostSoldDtRngPickerDiv').style.display = 'block';
+            }
+        }
+    }
+
+
+
+    
+
     // ========= most sold item primary data area ============= \\
-    var mostSoldDataFromStart = <?php echo json_encode($stoldItemsFromStart); ?>;
+
+    var mostSoldDataFromStart = <?php echo json_encode($mostSoldItemsFromStart); ?>;
 
     if (mostSoldDataFromStart != null) {
 
