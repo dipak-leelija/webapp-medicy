@@ -192,7 +192,7 @@ const addToForm = (rowNo, prodId, billNo, batchNo) => {
 
       //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
 
-        deleteData(slno, itemQty, gstPerItem, total, 0);
+      deleteData(slno, itemQty, gstPerItem, total, 0);
 
       document.getElementById("add-button").removeAttribute("disabled");
     },
@@ -226,13 +226,13 @@ const customClick = (event, rowNo, prodId, distBillid, batchNo) => {
     addToForm(rowNo, prodId, distBillid, batchNo);
   } else {
     // document.getElementById("data-details").reset();
-    
+
     let mainElement = event.target.parentNode.parentNode;
     let newRowNo = mainElement.id;
     let newProduct = mainElement.getAttribute("productid");
     let newBatchNo = mainElement.getAttribute("me-batch-no");
     addToForm(newRowNo, newProduct, distBillid, newBatchNo); // Passed new variables to addToForm function
-    addData()
+    addData();
   }
 };
 
@@ -1094,16 +1094,6 @@ const addData = () => {
   document.getElementById("dynamic-id").value = slno;
   document.getElementById("serial-control").value = slControl;
 
-  // item qantity
-  var qtyVal = document.getElementById("qty-val").value;
-  totalQty = parseInt(qty.value) + parseInt(freeQty.value) + parseInt(qtyVal);
-  // console.log('total qty check : '+totalQty);
-
-  // net amount calculation
-  var net = document.getElementById("net-amount").value;
-  var addAmount = parseFloat(billAmount.value);
-  netAmount = parseFloat(net) + parseFloat(addAmount);
-
   //////////////// GST AMOUNT CALCULATION \\\\\\\\\\\\\\\\\\
 
   let baseAmt = base.value;
@@ -1235,6 +1225,8 @@ const addData = () => {
 
   //item-table
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   if (slno > 1) {
     let id = document.getElementById("items-val");
     let newId = parseFloat(id.value) + 1;
@@ -1243,11 +1235,17 @@ const addData = () => {
     document.getElementById("items-val").value = slno;
   }
 
-  document.getElementById("qty-val").value = totalQty;
   document.getElementById("gst-val").value = onlyGst;
-  document.getElementById("net-amount").value = netAmount.toFixed(2);
+  
+  // item qantity
+  // var qtyVal = document.getElementById("qty-val").value;
+  // totalQty = parseInt(qty.value) + parseInt(freeQty.value) + parseInt(qtyVal);
+  // document.getElementById("qty-val").value = totalQty;
 
-  ///////////////////////////////////////////////////////////////////////////////////
+  // net amount calculation
+  calculateSummary(parseFloat(billAmount.value));
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const dataTuple = {
     slno: slControl,
@@ -1329,11 +1327,54 @@ const addData = () => {
   event.preventDefault();
 };
 
+// const calculateSummary = (addAmount) => {
+//   var billAmount = 0;
+//   const billAmounts = document.querySelectorAll('input[name="billAmount[]"]');
+//   billAmounts.forEach(cell => {
+//     var eachAmount = cell.value;
+//   });
+// }
+
+const calculateSummary = (addAmount) => {
+
+  var billAmount = 0;
+  var totalQty = 0;
+  var totalFQty = 0;
+
+  const billAmounts = document.querySelectorAll('input[name="billAmount[]"]');
+  billAmounts.forEach(cell => {
+    var eachAmount = parseFloat(cell.value);
+    if (!isNaN(eachAmount)) {
+      billAmount += eachAmount;
+    }
+  });
+  document.getElementById("net-amount").value = billAmount;
+
+  const eachQtys = document.querySelectorAll('input[name="qty[]"]');
+  eachQtys.forEach(cell => {
+    var eachQty = parseFloat(cell.value);
+    if (!isNaN(eachQty)) {
+      totalQty += eachQty;
+    }
+  });
+
+  const freeQtys = document.querySelectorAll('input[name="freeQty[]"]');
+  freeQtys.forEach(cell => {
+    var eachFQty = parseFloat(cell.value);
+    if (!isNaN(eachFQty)) {
+      totalFQty += eachFQty;
+    }
+  });
+
+  document.getElementById("qty-val").value = (totalQty+totalFQty);
+
+}
+
 //=============================== ADDED ITEM EDIT FUNCTION ==============================
 const editItem = (tData) => {
   // console.log(tData);
   let checkFild = document.getElementById("product-id").value;
-console.log(checkFild)
+  // console.log(checkFild);
 
   if (checkFild == "") {
     let tuple = JSON.parse(tData);
