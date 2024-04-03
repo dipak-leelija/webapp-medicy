@@ -31,7 +31,9 @@ if (isset($_POST['blNo'])) {
     $billNo = $_POST['blNo'];
     $batchNo = $_POST['bhNo'];
 
+    // echo "$prodId $billNo $batchNo";
     $purchaseDetail = $StockInDetails->stokInDetials($prodId, $billNo, $batchNo);
+    // print_r($purchaseDetail);
 
     foreach ($purchaseDetail as $purchase) {
         $purchaseId = $purchase['id'];

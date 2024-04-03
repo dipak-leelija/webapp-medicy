@@ -105,114 +105,135 @@ batchNumber.addEventListener("input", function (event) {
   this.value = this.value.replace("*", "");
 });
 
-const customClick = (rowNo, pId, billNo, btchNo) => {
-  stockInSave.setAttribute("disabled", "true");
+const addToForm = (rowNo, prodId, billNo, batchNo) => {
+  // console.log(rowNo + ' ' + prodId + ' ' + billNo + ' ' + batchNo);
 
-  var prodId = pId;
-  var billNo = billNo;
-  var batchNo = btchNo;
+  $.ajax({
+    url: "ajax/stokInEditAll.ajax.php",
+    type: "POST",
+    data: {
+      pId: prodId,
+      blNo: billNo,
+      bhNo: batchNo,
+    },
+    success: function (respones) {
+      var dataObject = JSON.parse(respones);
+      // return;
 
-  var checkFieldBlank = document.getElementById("product-id");
-  // var row = document.getElementById(id);
+      var totalItmQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
+      var gstPerItem = parseFloat(dataObject.GstAmount);
+      var totalAmnt = parseFloat(dataObject.amnt);
 
-  if (checkFieldBlank.value == "") {
-    $.ajax({
-      url: "ajax/stokInEditAll.ajax.php",
-      type: "POST",
-      data: {
-        pId: prodId,
-        blNo: billNo,
-        bhNo: batchNo,
-      },
-      success: function (data) {
-        // console.log(data);
-        var dataObject = JSON.parse(data);
+      var slno = rowNo;
+      slno = slno.replace(/\D/g, "");
+      var itemQty = totalItmQty;
+      gstPerItem = gstPerItem.toFixed(2);
+      var total = totalAmnt.toFixed(2);
 
-        var totalItmQty =
-          parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
-        var gstPerItem = parseFloat(dataObject.GstAmount);
-        var totalAmnt = parseFloat(dataObject.amnt);
+      var purchaseDetailsExpDate = dataObject.expDate;
+      var expMonth = purchaseDetailsExpDate.slice(0, 2);
+      var expYear = purchaseDetailsExpDate.slice(3, 7);
+      var manuf = dataObject.manufacturer;
 
-        var slno = rowNo;
-        slno = slno.replace(/\D/g, "");
-        var itemQty = totalItmQty;
-        gstPerItem = gstPerItem.toFixed(2);
-        var total = totalAmnt.toFixed(2);
+      manuf = manuf.replace(/&#39/g, "'");
+      manuf = manuf.replace(/&lt/g, "<");
+      manuf = manuf.replace(/&gt/g, ">");
 
-        var purchaseDetailsExpDate = dataObject.expDate;
-        var expMonth = purchaseDetailsExpDate.slice(0, 2);
-        var expYear = purchaseDetailsExpDate.slice(3, 7);
-        var manuf = dataObject.manufacturer;
+      var totalQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
 
-        manuf = manuf.replace(/&#39/g, "'");
-        manuf = manuf.replace(/&lt/g, "<");
-        manuf = manuf.replace(/&gt/g, ">");
+      ///////////////////////////////// check ptr set ///////////////////////////////////
+      let mrp = dataObject.mrp;
+      let gst = dataObject.gst;
+      let chkptr = (parseFloat(mrp) * 100) / (parseFloat(gst) + 100);
+      chkptr = chkptr.toFixed(2);
+      // //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
 
-        var totalQty = parseInt(dataObject.qty) + parseInt(dataObject.FreeQty);
+      document.getElementById("purchase-id").value = dataObject.purchaseId;
+      document.getElementById("product-id").value = dataObject.productId;
+      document.getElementById("batch-no").value = dataObject.batchNo;
 
-        ///////////////////////////////// check ptr set ///////////////////////////////////
-        let mrp = dataObject.mrp;
-        let gst = dataObject.gst;
-        let chkptr = (parseFloat(mrp) * 100) / (parseFloat(gst) + 100);
-        chkptr = chkptr.toFixed(2);
-        // //+++++++------  Adding data to is subsequent form body  ---------++++++++++++++++
+      document.getElementById("product-name").value = dataObject.productName;
+      document.getElementById("manufacturer-id").value = dataObject.manufId;
+      document.getElementById("manufacturer-name").value = manuf;
 
-        document.getElementById("purchase-id").value = dataObject.purchaseId;
-        document.getElementById("product-id").value = dataObject.productId;
-        document.getElementById("batch-no").value = dataObject.batchNo;
+      document.getElementById("weightage").value = dataObject.weightage;
+      document.getElementById("unit").value = dataObject.unit;
 
-        document.getElementById("product-name").value = dataObject.productName;
-        document.getElementById("manufacturer-id").value = dataObject.manufId;
-        document.getElementById("manufacturer-name").value = manuf;
+      document.getElementById("packaging-in").value = dataObject.packageType;
 
-        document.getElementById("weightage").value = dataObject.weightage;
-        document.getElementById("unit").value = dataObject.unit;
+      document.getElementById("medicine-power").value = dataObject.power;
 
-        document.getElementById("packaging-in").value = dataObject.packageType;
+      document.getElementById("exp-month").value = expMonth;
+      document.getElementById("exp-year").value = expYear;
 
-        document.getElementById("medicine-power").value = dataObject.power;
+      document.getElementById("mrp").value = dataObject.mrp;
+      document.getElementById("ptr").value = dataObject.ptr;
+      document.getElementById("chk-ptr").value = chkptr;
+      document.getElementById("qty").value = dataObject.qty;
+      document.getElementById("free-qty").value = dataObject.FreeQty;
+      document.getElementById("updtQTYS").value = totalQty;
 
-        document.getElementById("exp-month").value = expMonth;
-        document.getElementById("exp-year").value = expYear;
+      document.getElementById("purchsed-qty").value = dataObject.purchasedQty;
+      document.getElementById("current-qty").value = dataObject.currentStockQty;
 
-        document.getElementById("mrp").value = dataObject.mrp;
-        document.getElementById("ptr").value = dataObject.ptr;
-        document.getElementById("chk-ptr").value = chkptr;
-        document.getElementById("qty").value = dataObject.qty;
-        document.getElementById("free-qty").value = dataObject.FreeQty;
-        document.getElementById("updtQTYS").value = totalQty;
+      document.getElementById("packaging-type").value = dataObject.packageType;
+      document.getElementById("packaging-type-edit").value =
+        dataObject.packageType;
 
-        document.getElementById("purchsed-qty").value = dataObject.purchasedQty;
-        document.getElementById("current-qty").value =
-          dataObject.currentStockQty;
+      document.getElementById("discount").value = dataObject.disc;
+      document.getElementById("gst-check").value = dataObject.gst;
+      document.getElementById("gst").value = dataObject.gst;
+      document.getElementById("crntGstAmnt").value = dataObject.GstAmount;
+      document.getElementById("base").value = dataObject.baseAmount;
+      document.getElementById("bill-amount").value = dataObject.amnt;
+      document.getElementById("temp-bill-amount").value = dataObject.amnt;
 
-        document.getElementById("packaging-type").value =
-          dataObject.packageType;
-        document.getElementById("packaging-type-edit").value =
-          dataObject.packageType;
+      document.getElementById("del-flag").value = dataObject.delflag;
 
-        document.getElementById("discount").value = dataObject.disc;
-        document.getElementById("gst-check").value = dataObject.gst;
-        document.getElementById("gst").value = dataObject.gst;
-        document.getElementById("crntGstAmnt").value = dataObject.GstAmount;
-        document.getElementById("base").value = dataObject.baseAmount;
-        document.getElementById("bill-amount").value = dataObject.amnt;
-        document.getElementById("temp-bill-amount").value = dataObject.amnt;
-
-        document.getElementById("del-flag").value = dataObject.delflag;
-
-        //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
+      //++++++++++++++++++---  removing selected row  -----+++++++++++++++++++
 
         deleteData(slno, itemQty, gstPerItem, total, 0);
 
-        document.getElementById("add-button").removeAttribute("disabled");
-      },
-    });
-  } else {
-    Swal.fire("Error", "Add previous data first!", "error");
-  }
+      document.getElementById("add-button").removeAttribute("disabled");
+    },
+  });
+};
 
-  return false;
+// const customClick = (event, rowNo, prodId, billNo, batchNo) => {
+//   stockInSave.setAttribute("disabled", "true");
+
+//   var checkFieldBlank = document.getElementById("product-id");
+
+//   if (checkFieldBlank.value.trim() === "") {
+//     addToForm(rowNo, prodId, billNo, batchNo);
+//   } else {
+//     document.getElementById("data-details").reset();
+//     let rowNo = event.target.parentNode.parentNode.id;
+//     let productId = document.getElementById("product-id");
+//     let distBillid = document.getElementById("distributor-bill");
+//     let batchNo = document.getElementById("batch-no");
+
+//     addToForm(rowNo, productId, distBillid, batchNo);
+//   }
+// }
+
+const customClick = (event, rowNo, prodId, distBillid, batchNo) => {
+  stockInSave.setAttribute("disabled", "true");
+
+  var checkFieldBlank = document.getElementById("product-id");
+
+  if (checkFieldBlank.value.trim() === "") {
+    addToForm(rowNo, prodId, distBillid, batchNo);
+  } else {
+    // document.getElementById("data-details").reset();
+    
+    let mainElement = event.target.parentNode.parentNode;
+    let newRowNo = mainElement.id;
+    let newProduct = mainElement.getAttribute("productid");
+    let newBatchNo = mainElement.getAttribute("me-batch-no");
+    addToForm(newRowNo, newProduct, distBillid, newBatchNo); // Passed new variables to addToForm function
+    addData()
+  }
 };
 
 //========================================================================================================
@@ -963,6 +984,47 @@ const validateField = (fieldId, message) => {
 };
 
 const addData = () => {
+  var productName = document.getElementById("product-name");
+  var productId = document.getElementById("product-id");
+  var batch = document.getElementById("batch-no");
+  var batchNo = batch.value.toUpperCase();
+  var manufId = document.getElementById("manufacturer-id");
+  var manufName = document.getElementById("manufacturer-name");
+  var medicinePower = document.getElementById("medicine-power");
+  var expMonth = document.getElementById("exp-month");
+  var expYear = document.getElementById("exp-year");
+  var expDate = `${expMonth.value}/${expYear.value}`;
+  expDate = expDate.toString();
+  var weightage = document.getElementById("weightage");
+  var unit = document.getElementById("unit");
+  var packagingIn = document.getElementById("packaging-in");
+  var mrp = document.getElementById("mrp");
+  var ptr = document.getElementById("ptr");
+  var qty = document.getElementById("qty");
+  var freeQty = document.getElementById("free-qty");
+
+  var discount = document.getElementById("discount");
+  var gst = document.getElementById("gst");
+  var base = document.getElementById("base");
+  var billAmount = document.getElementById("bill-amount");
+  var prevAmount = document.getElementById("temp-bill-amount");
+  var purchaseId = document.getElementById("purchase-id");
+  var crntGstAmount = document.getElementById("crntGstAmnt");
+  var itemQty = document.getElementById("updtQTYS").value;
+
+  var rows = document.querySelectorAll("#dataBody tr");
+
+  rows.forEach(function (row) {
+    var existingProductId = row.getAttribute("productId");
+    if (existingProductId) {
+      if (productId.value === existingProductId) {
+        let deleteItem = row.firstElementChild;
+        deleteItem.click();
+        // console.log(deleteItem)
+      }
+    }
+  });
+
   const fieldsToValidate = [
     { field: "distributor-id", message: "Please Select Distributor First!" },
     {
@@ -1002,34 +1064,6 @@ const addData = () => {
 
   // Rest of the code for adding data
 
-  var productName = document.getElementById("product-name");
-  var productId = document.getElementById("product-id");
-  var batch = document.getElementById("batch-no");
-  var batchNo = batch.value.toUpperCase();
-  var manufId = document.getElementById("manufacturer-id");
-  var manufName = document.getElementById("manufacturer-name");
-  var medicinePower = document.getElementById("medicine-power");
-  var expMonth = document.getElementById("exp-month");
-  var expYear = document.getElementById("exp-year");
-  var expDate = `${expMonth.value}/${expYear.value}`;
-  expDate = expDate.toString();
-  var weightage = document.getElementById("weightage");
-  var unit = document.getElementById("unit");
-  var packagingIn = document.getElementById("packaging-in");
-  var mrp = document.getElementById("mrp");
-  var ptr = document.getElementById("ptr");
-  var qty = document.getElementById("qty");
-  var freeQty = document.getElementById("free-qty");
-
-  var discount = document.getElementById("discount");
-  var gst = document.getElementById("gst");
-  var base = document.getElementById("base");
-  var billAmount = document.getElementById("bill-amount");
-  var prevAmount = document.getElementById("temp-bill-amount");
-  var purchaseId = document.getElementById("purchase-id");
-  var crntGstAmount = document.getElementById("crntGstAmnt");
-  var itemQty = document.getElementById("updtQTYS").value;
-
   var byuQty = document.getElementById("purchsed-qty").value;
   if (byuQty == "") {
     byuQty = 0;
@@ -1042,7 +1076,7 @@ const addData = () => {
 
   var Ptr = parseFloat(ptr.value);
   var Mrp = parseFloat(mrp.value);
-  
+
   if (Ptr > Mrp) {
     Swal.fire("Blank Field", "Please check PTR value", "error").then(
       (value) => {
@@ -1299,6 +1333,7 @@ const addData = () => {
 const editItem = (tData) => {
   // console.log(tData);
   let checkFild = document.getElementById("product-id").value;
+console.log(checkFild)
 
   if (checkFild == "") {
     let tuple = JSON.parse(tData);
@@ -1351,8 +1386,9 @@ const editItem = (tData) => {
       tuple.delflag
     );
   } else {
-    Swal.fire("Can't Edit", "Please add/edit previous item first.", "error");
-    document.getElementById("ptr").focus();
+    // Swal.fire("Can't Edit", "Please add/edit previous item first.", "error");
+    addData();
+    // document.getElementById("ptr").focus();
   }
 };
 
