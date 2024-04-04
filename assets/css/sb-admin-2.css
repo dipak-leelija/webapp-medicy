@@ -10329,9 +10329,9 @@ a:focus {
 .sidebar {
   width: 6.5rem;
   /* min-height: 100vh; */
-  height: fit-content;
-  position: sticky;
-  top: 0;
+  /* height: fit-content; */
+  /* position: sticky; */
+  /* top: 0; */
 }
 
 .sidebar .nav-item {
