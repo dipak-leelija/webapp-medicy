@@ -98,7 +98,7 @@
                         <div class="d-flex data-field">
                             <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                             <span class="date-divider">&#47;</span>
-                            <input class="year " type="number" id="exp-year" /*onkeyup="setExpYear(this)"*/ onfocusout="setExpYEAR(this)">
+                            <input class="year " type="number" id="exp-year" /*onkeyup="setExpYear(this)" */ onfocusout="setExpYEAR(this)">
                         </div>
                     </div>
                     <div class="d-none col-md-4 mt-2">
@@ -172,9 +172,16 @@
 
                 </div>
 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 me-md-2">
-                    <button type="button" class="btn btn-primary me-md-2" id="add-product-details" onclick="addData()">Add
-                        <i class="fas fa-plus"></i></button>
+                <div class="row d-flex">
+                    <div class="col-9 mt-3 d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary me-md-2" id="add-product-details" onclick="resetData()">Reset
+                            <i class="fas fa-arrow-left"></i></button>
+                    </div>
+
+                    <div class="col-3 mt-3 d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary me-md-2" id="add-product-details" onclick="addData()">Add
+                            <i class="fas fa-plus"></i></button>
+                    </div>
                 </div>
 
             </div>

@@ -142,6 +142,8 @@ const getDueDate = (t) => {
 
 /////////////////////// SET PAYMENT MODE \\\\\\\\\\\\\\\\\\\\\\
 document.getElementById('payment-mode').value = 'Cash';
+document.getElementById("payment-mode-val").value = 'Cash';
+
 const setPaymentMode = (pMode) => {
     document.getElementById("payment-mode-val").value = pMode.value;
 }
@@ -916,7 +918,7 @@ const addData = () => {
 
     stockInSave.removeAttribute("disabled");
 
-    document.getElementById("stock-in-data").reset();
+    resetData();
     event.preventDefault();
 }
 
@@ -1026,20 +1028,6 @@ function rowAdjustment(delRow) {
 
 // ========================= Mfd and Expiry Date Setting =========================
 
-// let mfdMonthInput = document.getElementById('mfd-month');
-// mfdMonthInput.addEventListener('keydown', function (event) {
-//     if (event.keyCode === 9) {
-//         if (mfdMonthInput.value.trim() === '') {
-//             event.preventDefault();
-//         }
-//     }
-// });
-// mfdMonthInput.addEventListener('input', function (event) {
-//     // Remove dots from the input value
-//     this.value = this.value.replace('.', '');
-// });
-
-
 let expMonthInput = document.getElementById('exp-month');
 expMonthInput.addEventListener('keydown', function (event) {
     if (event.keyCode === 9) {
@@ -1053,35 +1041,6 @@ expMonthInput.addEventListener('input', function (event) {
     this.value = this.value.replace('.', '');
 });
 
-// // set mfd month control
-// const setmfdMonth = (mnth) => {
-//     if (mnth.value.length != 2) {
-//         mnth.value = '';
-//         mnth.focus();
-//     }
-// }
-
-// const setMfdMonth = (month) => {
-//     let yr = new Date();
-//     let thisMonth = yr.getMonth();
-
-//     if (month.value.length > 2) {
-//         month.value = '';
-//         month.focus();
-//     } else if (month.value.length < 2) {
-//         month.focus();
-//     } else if (month.value.length == 2) {
-//         if (month.value > 12) {
-//             month.value = '';
-//             month.focus();
-//         } else {
-//             document.getElementById("mfd-year").focus();
-//         }
-//     } else {
-//         month.value = '';
-//         month.focus();
-//     }
-// }
 
 // ===set exp month control
 const setexpMonth = (mnth) => {
@@ -1161,3 +1120,10 @@ const setExpYEAR = (year) => {
 }
 
 ///////////////// ===== product select arrow key effect ===== \\\\\\\\\\\\\\\\\\\\\\\
+
+
+// reset data field =========================
+const resetData = () =>{
+    document.getElementById("stock-in-data").reset();
+    event.preventDefault();
+}
