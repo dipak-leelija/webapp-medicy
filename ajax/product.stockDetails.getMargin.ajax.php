@@ -43,16 +43,23 @@ if (isset($_GET["Pid"])) {
     //echo "<br>$mrp<br>$qty<br>$discPrice<br><br>";
 
     if($qtyTyp == 'others'){
-        $base = $stockInData[0]['base'];
-        $ptr = floatval($base) + (floatval($base)*($currentStockData[0]['gst']/100));
-        $margin = ($discPrice * $qty) - ($ptr * $qty);
+
+        $stockInQty =  intval($stockInData[0]['qty']) + intval($stockInData[0]['free_qty']);
+        $stockInAmount = $stockInData[0]['amount'];
+        $perQtyStockInAmount = number_format(floatval($stockInAmount) / intval($stockInQty), 2);
+
+        $sellAmount = (floatval($mrp) * intval($qty)) - ((floatval($mrp) * intval($qty)) * (intval($discPercent)/100));
+        $margin = floatval($sellAmount) - (floatval($perQtyStockInAmount) * intval($qty));
+
     }else{
-        $base = $stockInData[0]['base'];
-        $ptr = floatval($base) + (floatval($base)*($currentStockData[0]['gst']/100));
-        $ptr = floatval($ptr) / intval($currentStockData[0]['weightage']);
-        $discPrice = $discPrice / intval($currentStockData[0]['weightage']);
-        $margin = ($discPrice * $qty) - ($ptr * $qty);
-        // echo $margin;
+
+        $stockInQty =  $stockInData[0]['loosely_count'];
+        $stockInAmount = $stockInData[0]['amount'];
+        $perQtyStockInAmount = floatval($stockInAmount)/ intval($stockInQty);
+
+        $sellAmount = ((floatval($mrp) / intval($stockInData[0]['weightage'])) * intval($qty)) - (((floatval($mrp) / intval($stockInData[0]['weightage'])) * intval($qty)) * (intval($discPercent)/100));
+        $margin = floatval($sellAmount) - (floatval($perQtyStockInAmount) * intval($qty));
+        
     }
     echo number_format($margin,2);
 }
