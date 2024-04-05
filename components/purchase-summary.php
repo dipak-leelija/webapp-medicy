@@ -22,7 +22,7 @@
                         <th scope="col">MRP</th>
                         <th scope="col">PTR</th>
                         <th scope="col">Base</th>
-                        <th scope="col">Margin%</th>
+                        <th scope="col" hidden>Margin%</th>
                         <th scope="col">DISC%</th>
                         <th scope="col">GST%</th>
                         <th scope="col">Amount</th>

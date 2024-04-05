@@ -801,7 +801,7 @@ const addData = () => {
             <td class="p-0 pt-3 w-3r" id="row-${slControl}-col-12a">
                 <input type="text" class="table-data w-3r" name="base[]" value="${base.value}" style="text-align: end;">
             </td>
-            <td class="ps-0 pt-3 w-2r" id="row-${slControl}-col-12b">
+            <td class="ps-0 pt-3 w-2r d-none" id="row-${slControl}-col-12b">
                 <input class="table-data w-3r" type="text" name="margin[]" value="${marginP.toFixed(2)}%" readonly style="font-size: .7rem; text-align: end">
             </td>
 

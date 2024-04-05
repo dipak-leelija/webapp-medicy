@@ -175,7 +175,7 @@
                 <div class="row d-flex">
                     <div class="col-9 mt-3 d-flex justify-content-end">
                         <button type="button" class="btn btn-primary me-md-2" id="add-product-details" onclick="resetData()">Reset
-                            <i class="fas fa-arrow-left"></i></button>
+                            <i class="fas fa-undo"></i></button>
                     </div>
 
                     <div class="col-3 mt-3 d-flex justify-content-end">

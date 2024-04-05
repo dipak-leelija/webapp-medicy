@@ -277,7 +277,7 @@ $doctor = json_decode($doctor , true);
                                                     </div>
 
                                                     <div class="col-md-2 col-6 mb-4 d-flex justify-content-end">
-                                                        <button type="button" class="btn btn-sm btn-info w-100" id="reset-button" onclick="reset()"><i class="fas fa-undo"></i>
+                                                        <button type="button" class="btn btn-sm btn-primary w-100" id="reset-button" onclick="reset()"><i class="fas fa-undo"></i>
                                                             Reset</button>
                                                     </div>
 
