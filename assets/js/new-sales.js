@@ -1,3 +1,4 @@
+// document.getElementById("exta-details").style.display = "block";
 //============= constant data declaretion =============
 const allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
 
@@ -7,11 +8,15 @@ var newSellGenerateBill = document.getElementById('new-sell-bill-generate');
 newSellGenerateBill.setAttribute("disabled", "true");
 
 //======================================================================================
+var setDate = new Date();
+document.getElementById("bill-date").value = setDate.toISOString().slice(0, 10);
+document.getElementById('final-bill-date').value = setDate.toISOString().slice(0, 10);
 
 const getDate = (date) => {
     document.getElementById("final-bill-date").value = date;
 }
-// ADD NEW CUSTOMER 
+
+// ADD NEW CUSTOMER =======================================================================
 const addCustomerModal = () => {
     let url = "ajax/customer.addNew.ajax.php";
     $(".add-customer-modal").html(
@@ -59,15 +64,20 @@ const counterBill = () => {
     document.getElementById("customer").value = "Cash Sales";
     document.getElementById("customer-id").value = "Cash Sales";
     document.getElementById("customer-name").value = "Cash Sales";
+    document.getElementById("final-doctor-name").value = 'Cash Sales';
 
     let selectElement = document.getElementById("doctor-select");
     selectElement.value = 'Cash Sales';
 }
 
+//======= payment meode =========
+document.getElementById("payment-mode").value = 'Cash';
+document.getElementById("final-payment").value = 'Cash';
 
 const getPaymentMode = (mode) => {
     document.getElementById("final-payment").value = mode;
 }
+
 
 /////////////// making search item focused fist value not a space \\\\\\\\\\\\\\\\\\
 const firstInput = document.getElementById('product-name');
@@ -1274,4 +1284,13 @@ const editItem = (tuple) => {
         Swal.fire("Can't Edit", "Please add/edit previous item first.", "error");
         document.getElementById("qty").focus();
     }
+}
+
+
+// reset button function ---------------
+const reset = () =>{
+    document.getElementById("aqty").value = "";
+    // document.getElementById("exta-details").style.display = "none";
+    document.getElementById("add-item-details").reset();
+    event.preventDefault();
 }

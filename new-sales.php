@@ -26,6 +26,7 @@ $doctor = json_decode($doctor , true);
 
     <!-- Custom fonts for this template-->
     <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>font-asesome-5/font-awesome-5.15.4-all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
@@ -252,7 +253,7 @@ $doctor = json_decode($doctor , true);
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="sale-inp" type="hidden" id="manuf" style="border-width: 0px;" readonly>
+                                                        <input class="sale-inp" type="" id="manuf" style="border-width: 0px;" readonly>
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
 
@@ -275,7 +276,12 @@ $doctor = json_decode($doctor , true);
                                                         <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
                                                     </div>
 
-                                                    <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
+                                                    <div class="col-md-2 col-6 mb-4 d-flex justify-content-end">
+                                                        <button type="button" class="btn btn-sm btn-info w-100" id="reset-button" onclick="reset()"><i class="fas fa-undo"></i>
+                                                            Reset</button>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-6 mb-4 d-flex justify-content-end">
                                                         <button type="button" class="btn btn-sm btn-primary w-100" id="add-button" onclick="addSummary()"><i class="fas fa-check-circle"></i>
                                                             Add</button>
                                                     </div>
@@ -302,7 +308,7 @@ $doctor = json_decode($doctor , true);
 
                     <div class="card mb-4 mt-md-5 summary">
                         <div class="card-body fisrt-card-body">
-                            <h3 class="text-center font-weight-bolder listed-heading">Listed Items For sale</h3>
+                            <!-- <h3 class="text-center font-weight-bolder listed-heading">Listed Items For sale</h3> -->
                             <form action="_config/form-submission/item-invoice.php" method="post">
                                 <div>
                                     <div class="table-responsive">
