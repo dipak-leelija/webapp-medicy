@@ -425,7 +425,7 @@ $pharmacyContact    = $selectClinicInfo->data->hospital_phno;
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
         <button class="btn btn-secondary shadow mx-2" style="background-color: #e7e7e7; color: black;" onclick="goBack('<?php echo $stockIn_Id ?>','<?php echo $itemBillNo ?>')">Go Back</button>
-        <button class="btn btn-primary shadow mx-2"> <a class="text-light text-decoration-none" href="<?= URL . 'stock-in-details.php'; ?>">See Details</a></button>
+        <button class="btn btn-primary shadow mx-2"> <a class="text-light text-decoration-none" href="<?= URL . 'purchase-details.php'; ?>">See Details</a></button>
         <button class="btn btn-primary shadow mx-2" onclick="back()">Add New</button>
         <button class="btn btn-primary shadow mx-2" style="background-color: #4CAF50;" onclick="window.print()">Print Bill</button>
     </div>
