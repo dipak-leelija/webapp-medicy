@@ -1078,6 +1078,21 @@ const setExpMonth = (month) => {
 }
 
 
+
+// ===set exp YEAR control
+const setExpYear = (year) => {
+    if (year.value.length == 4) {
+        document.getElementById("ptr").focus();
+        console.log('length 4');
+    }
+
+    if(year.value.length != 4){
+        year.focus();
+        console.log('length not 4');
+    }
+}
+
+
 const setExpYEAR = (year) => {
     let expMnth = document.getElementById("exp-month").value;
     expMnth = Number(expMnth);
