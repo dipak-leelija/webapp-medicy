@@ -119,7 +119,7 @@ $allowedItemUnits = ["tablet", "tablets", "syrup", "capsules", "capsule", "sofle
                                             <div class="col-sm-12">
                                                 <label for="product-name">Product Name</label>
                                                 <span class="text-danger">*</span>
-                                                <input class="c-inp w-100 p-1" id="product-name" name="product-name" required>
+                                                <input class="c-inp w-100 p-1" id="product-name" name="product-name" required autocomplete="off">
                                             </div>
                                         </div>
 

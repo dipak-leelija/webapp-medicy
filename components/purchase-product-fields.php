@@ -98,7 +98,7 @@
                         <div class="d-flex data-field">
                             <input class="month " type="number" id="exp-month" onkeyup="setExpMonth(this);" onfocusout="setexpMonth(this);">
                             <span class="date-divider">&#47;</span>
-                            <input class="year " type="number" id="exp-year" /*onkeyup="setExpYear(this)" */ onfocusout="setExpYEAR(this)">
+                            <input class="year " type="number" id="exp-year" onkeyup="setExpYear(this)" onfocusout="setExpYEAR(this)">
                         </div>
                     </div>
                     <div class="d-none col-md-4 mt-2">
