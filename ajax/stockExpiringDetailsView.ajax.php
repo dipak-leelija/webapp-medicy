@@ -164,7 +164,7 @@ if (isset($_GET['stokInDetialId'])) {
                     $discountParcent = $stockData['discount'];
                     $discountAmount = ($PTR * $discountParcent) / 100;
                     $discount = $discountAmount . $customString1 . $discountParcent . $customString2;
-                    $basePrice = $stockData['base'];
+                    $basePrice = $stockData['d_price'];
                     $purchaseAmount = $basePrice * $stockData['qty'];
 
                     $ProductWeightage = $stockData['weightage'];

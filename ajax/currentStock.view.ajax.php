@@ -243,7 +243,7 @@ if (isset($_GET['currentStockId'])) {
                     $discountParcent = $stockData['discount'];
                     $discountAmount = ($PTR * $discountParcent) / 100;
                     $discount = $discountAmount . $customString1 . $discountParcent . $customString2;
-                    $rate = round(floatval($stockData['base'])+(floatval($stockData['base'])*intval($gstParecent)/100),2);
+                    $rate = round(floatval($stockData['d_price'])+(floatval($stockData['d_price'])*intval($gstParecent)/100),2);
                     $purchaseAmount = floatval($rate) * intval($stockData['qty']);
 
                     $ProductWeightage = $stockData['weightage'];

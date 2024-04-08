@@ -50,7 +50,7 @@ if (isset($_GET["Pid"])) {
         $stockInQty =  intval($stockInData[0]['qty']) + intval($stockInData[0]['free_qty']);
         $stockInAmount = $stockInData[0]['amount'];
         $ptrPerItem = $stockInData[0]['ptr'];
-        $perItemBasePrice = $stockInData[0]['base'];
+        $perItemBasePrice = $stockInData[0]['d_price'];
         $purchasedGstPaid = $stockInData[0]['gst_amount'];
 
         // per qantity stock in amount
@@ -75,7 +75,7 @@ if (isset($_GET["Pid"])) {
         $stockInQty =  $stockInData[0]['loosely_count'];
         $stockInAmount = $stockInData[0]['amount'];
         $ptrPerItem = $stockInData[0]['ptr'];
-        $perItemBasePrice = $stockInData[0]['base'];
+        $perItemBasePrice = $stockInData[0]['d_price'];
         $purchasedGstPaid = $stockInData[0]['gst_amount'];
         
         $perQtyStockInAmount = floatval($stockInAmount)/ intval($stockInQty);
