@@ -3,27 +3,24 @@
         <div class="table-responsive">
 
             <table class="table item-table" id="stock-in-data-table" style="font-size: .7rem;">
-                <thead class="thead-light">
+                <thead class="thead-light text-right">
                     <tr>
                         <th scope="col" style="width: 2rem;"></th>
                         <th scope="col">
                             <input type="number" value="0" id="dynamic-id" class="d-none">
                         </th>
-                        <th scope="col" class="d-none"><input type="number" value="0" id="serial-control"
-                                style="width:2rem;"></th>
-                        <th scope="col">Items</th>
+                        <th scope="col" class="d-none">
+                            <input type="number" value="0" id="serial-control" style="width:2rem;">
+                        </th>
+                        <th scope="col" class="text-left">Items</th>
                         <th scope="col">Batch</th>
-                        <!-- <th scope="col">MFD.</th> -->
                         <th scope="col">Exp.</th>
-                        <th scope="col" hidden>Power</th>
-                        <th scope="col">Unit</th>
                         <th scope="col">Qty.</th>
                         <th scope="col">Free</th>
                         <th scope="col">MRP</th>
                         <th scope="col">PTR</th>
-                        <th scope="col">Base</th>
-                        <th scope="col" hidden>Margin%</th>
-                        <th scope="col">DISC%</th>
+                        <th scope="col">D.Price</th>
+                        <th scope="col" hidden>DISC%</th>
                         <th scope="col">GST%</th>
                         <th scope="col">Amount</th>
                     </tr>
@@ -44,10 +41,6 @@
 
                     <input class="d-none summary-inp w-60" name="distributor-id" id="dist-id" type="text" value=""
                         readonly>
-
-                    <!-- <input  class="summary-inp w-60" name="distributor-id"
-                                                    id="distributor-id" value="" type="text"
-                                                    readonly style="word-wrap: break-word;"> -->
                 </p>
             </div>
             <div class="col-md-3 d-flex justify-content-start">

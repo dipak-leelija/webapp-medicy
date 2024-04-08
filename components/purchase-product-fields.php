@@ -161,8 +161,8 @@
                     </div>
 
                     <div class="col-sm-4 col-md-4 mt-2">
-                        <label class="mb-0" for="base">Base</label>
-                        <input type="number" class="upr-inp" name="base" id="base" readonly>
+                        <label class="mb-0" for="dprice">D Price</label>
+                        <input type="number" class="upr-inp" name="dprice" id="dprice" readonly>
                     </div>
 
                     <div class="col-sm-4 col-md-4 mt-2">

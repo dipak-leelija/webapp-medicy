@@ -93,13 +93,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mrp                = array_shift($_POST['mrp']);
                 $ptr                = array_shift($_POST['ptr']);
                 $discount           = array_shift($_POST['discount']);
-                $base               = array_shift($_POST['base']);
+                $dprice               = array_shift($_POST['dprice']);
                 $gst                = array_shift($_POST['gst']);
                 $gstPerItem         = array_shift($_POST['gstPerItem']);
-                $margin             = array_shift($_POST['margin']);
+                $margin             = '';
                 $amount             = array_shift($_POST['billAmount']);
                 $looselyPrice       = '';
                 
+                $base = ($dprice*$qty)/($qty+$freeQty);
 
 
                 $looselyPrice = '';
@@ -112,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 
-                $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), trim($unit), intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
+                $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), trim($unit), intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($dprice), floatval($base), intval($gst), floatval($gstPerItem), floatval($margin), floatval($amount));
                 // stockIn_Details_id
 
                 if ($addStockInDetails["result"]) {

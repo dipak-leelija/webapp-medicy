@@ -3,10 +3,10 @@
 class StockInDetails extends DatabaseConnection
 {
 
-    function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount)
+    function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $d_price, $base, $gst, $gstPerItem, $margin, $amount)
     {
         try {
-            $insertStockInDetails = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `base`, `gst`, `gst_amount`, `margin`, `amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertStockInDetails = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `d_price`, `base`, `gst`, `gst_amount`, `margin`, `amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $responce = $this->conn->prepare($insertStockInDetails);
@@ -16,7 +16,7 @@ class StockInDetails extends DatabaseConnection
             }
 
             // Binding parameters
-            $responce->bind_param("issssisiiiddididdd", $stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstPerItem, $margin, $amount);
+            $responce->bind_param("issssisiiiddiddiddd", $stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $d_price, $base, $gst, $gstPerItem, $margin, $amount);
 
             // Execute the prepared statement
             if ($responce->execute()) {
@@ -85,16 +85,16 @@ class StockInDetails extends DatabaseConnection
 
     //======================================== UPDATE TABEL ==============================================
 
-    function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn)
+    function updateStockInDetailsById($id, $productId, $distBillNo, $BatchNo, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $d_price, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn)
     {
 
         try {
-            $update = "UPDATE `stock_in_details` SET `product_id`=?, `distributor_bill`=?, `batch_no`=?, `exp_date`=?, `weightage`=?, `unit`=?, `qty`=?, `free_qty`=?, `loosely_count`=?, `mrp`=?, `ptr`=?, `discount`=?, `base`=?, `gst`=?, `gst_amount`=?, `margin`=?, `amount`=?, `update_emp_id`=?, `updated_on`=? WHERE `id`=?";
+            $update = "UPDATE `stock_in_details` SET `product_id`=?, `distributor_bill`=?, `batch_no`=?, `exp_date`=?, `weightage`=?, `unit`=?, `qty`=?, `free_qty`=?, `loosely_count`=?, `mrp`=?, `ptr`=?, `discount`=?, `d_price`=?, `gst`=?, `gst_amount`=?, `margin`=?, `amount`=?, `update_emp_id`=?, `updated_on`=? WHERE `id`=?";
 
 
             $stmt = $this->conn->prepare($update);
 
-            $stmt->bind_param("ssssisiiiddididddssi", $productId, $distBillNo, $BatchNo, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $base, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn, $id);
+            $stmt->bind_param("ssssisiiiddididddssi", $productId, $distBillNo, $BatchNo, $exp, $weightage, $unit, $qty, $freeQTY, $looselyCount, $mrp, $ptr, $discount, $d_price, $gst, $gstAmount, $margin, $amount, $updatedBy, $updatedOn, $id);
 
             // return var_dump($stmt);
 
