@@ -601,7 +601,7 @@ const onQty = (qty) => {
     //==================== Margin on an Item ====================
     var currentItemId = document.getElementById('item-id').value;
 
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&currentItemId=${currentItemId}`;
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
     xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
@@ -727,8 +727,7 @@ const ondDisc = (disc) => {
 
     var currentItemId = document.getElementById('item-id').value;
 
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&currentItemId=${currentItemId}`;
-    xmlhttp.open("GET", marginUrl, false);
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
 
