@@ -51,13 +51,14 @@ if (isset($_GET["Pid"])) {
         $stockInAmount = $stockInData[0]['amount'];
         $ptrPerItem = $stockInData[0]['ptr'];
         $perItemBasePrice = $stockInData[0]['base'];
+        $purchasedGstPaid = $stockInData[0]['gst_amount'];
 
         // per qantity stock in amount
         $perQtyStockInAmount = floatval($stockInAmount) / intval($stockInQty);
 
-        // purchased gst amount
-        $purchasedGstAmount = floatval($perItemBasePrice) * (floatval($stockInData[0]['gst'])/100);
-
+        // paid purchased gst amount
+        $paidPurchasedGstAmountPerItem = floatval($purchasedGstPaid) / intval($stockInQty);
+        
         // sell gst calculation 
         $sellGstAmount =  floatval($taxableAmount) * (floatval($stockInData[0]['gst'])/100);
 
@@ -67,7 +68,7 @@ if (isset($_GET["Pid"])) {
 
         // $margin = floatval($sellAmount) - (floatval($perQtyStockInAmount) * intval($qty)) - floatval($sellGstAmount);
 
-        $margin = (floatval($sellAmount) - floatval($pAmntOnSellQty)) - (floatval($sellGstAmount) - floatval($purchasedGstAmount));
+        $margin = (floatval($sellAmount) - floatval($pAmntOnSellQty)) - (floatval($sellGstAmount) - (floatval($paidPurchasedGstAmountPerItem) * $qty));
 
     }else{
 
@@ -75,11 +76,12 @@ if (isset($_GET["Pid"])) {
         $stockInAmount = $stockInData[0]['amount'];
         $ptrPerItem = $stockInData[0]['ptr'];
         $perItemBasePrice = $stockInData[0]['base'];
+        $purchasedGstPaid = $stockInData[0]['gst_amount'];
         
         $perQtyStockInAmount = floatval($stockInAmount)/ intval($stockInQty);
         
-        // purchased gst amount
-        $purchasedGstAmount = floatval($perItemBasePrice) * (floatval($stockInData[0]['gst'])/100);
+        // paid purchased gst amount
+        $paidPurchasedGstAmountPerItem = floatval($purchasedGstPaid) / intval($stockInQty);
 
         // sell gst calculation 
         $sellGstAmount =  floatval($taxableAmount) * (floatval($stockInData[0]['gst'])/100);
@@ -90,7 +92,7 @@ if (isset($_GET["Pid"])) {
 
         // $margin = floatval($sellAmount) - ((floatval($perQtyStockInAmount) / intval(intval($stockInData[0]['weightage']))) * intval($qty)) - floatval($sellGstAmount);
 
-        $margin = (floatval($sellAmount) - floatval($pAmntOnSellQty)) - (floatval($sellGstAmount) - floatval($purchasedGstAmount));
+        $margin = (floatval($sellAmount) - floatval($pAmntOnSellQty)) - (floatval($sellGstAmount) - (floatval($paidPurchasedGstAmountPerItem) * $qty));
 
     }
     echo number_format($margin,2);
