@@ -166,17 +166,18 @@
 
 
             <!-- Purchase Management  -->
-            <li class="nav-item <?php if ($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item") { echo "active"; } ?>">
-                <a active class="nav-link <?php if ($page !=  "stock-in") { echo "collapsed";} ?>" 
-                href="#" data-toggle="collapse" data-target="#collapsePurchaseManagement" aria-expanded="<?php if ($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item") {
+            <li class="nav-item <?php if ($page ==  "stock-in" || $page ==  "purchase-details" || $page == "stock-in-edit" || $page == "stock-return" || $page == "stock-return-item") { echo "active"; } ?>">
+                <a active class="nav-link <?php if ($page !=  "stock-in" || $page !=  "purchase-details") { echo "collapsed";} ?>" 
+                href="#" data-toggle="collapse" data-target="#collapsePurchaseManagement" aria-expanded="<?php if ($page ==  "stock-in" || $page ==  "purchase-details" || $page == "stock-in-edit" || $page == "stock-return" || $page == "stock-return-item") {
                 echo "true";} ?>" aria-controls="collapsePurchaseManagement">
                     <i class="fas fa-store-alt"></i>
                     <span>Purchase Management</span>
                 </a>
-                <div id="collapsePurchaseManagement" class="collapse <?php if ($page ==  "stock-in" || $page == "stock-return" || $page == "stock-return-item") { echo "show"; } ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="collapsePurchaseManagement" class="collapse <?php if ($page ==  "stock-in" || $page ==  "purchase-details" || $page == "stock-in-edit" || $page == "stock-return" || $page == "stock-return-item") { echo "show"; } ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Purchase Management:</h6>
-                        <a class="collapse-item <?php if ($page ==  "stock-in") { echo "active"; } ?>" href="stock-in.php ">Purchase </a>
+                        <a class="collapse-item <?php if ($page ==  "stock-in") { echo "active"; } ?>" href="stock-in.php ">New </a>
+                        <a class="collapse-item <?php if ($page ==  "purchase-details" || $page == "stock-in-edit") { echo "active"; } ?>" href="purchase-details.php ">Purchase </a>
                         <a class="collapse-item <?php if ($page ==  "stock-return" || $page == "stock-return-item") { echo "active"; } ?>" href="
                         stock-return.php">Purchase Return</a>
                     </div>
@@ -186,31 +187,16 @@
 
 
             <!-- Product Management collapsed Menu  -->
-            <li class="nav-item <?php if ($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" || $page == "stock-in-edit") {
-                                    echo "active";
-                                } ?>">
-                <a class="nav-link <?php if ($page !=  "current-stock") {
-                                        echo "collapsed";
-                                    } ?>" href="#" data-toggle="collapse" data-target="#collapseStock" aria-expanded="<?php if ($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" || $page == "stock-in-edit") {
-                                                                                                                                                                                echo "true";
-                                                                                                                                                                            } ?>" aria-controls="collapseStock">
+            <li class="nav-item <?php if ($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details") { echo "active"; } ?>">
+                <a class="nav-link <?php if ($page !=  "current-stock") { echo "collapsed"; } ?>" href="#" data-toggle="collapse" data-target="#collapseStock" aria-expanded="<?php if ($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details") { echo "true"; } ?>" aria-controls="collapseStock">
                     <i class="fas fa-store-alt"></i>
                     <span>Stock Details</span>
                 </a>
-                <div id="collapseStock" class="collapse <?php if ($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details" || $page == "stock-in-edit") {
-                                                            echo "show";
-                                                        } ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="collapseStock" class="collapse <?php if ($page ==  "current-stock" || $page ==  "stock-expiring" || $page ==  "stock-in-details") { echo "show"; } ?>" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Purchase Master:</h6>
-                        <a class="collapse-item <?php if ($page ==  "current-stock") {
-                                                    echo "active";
-                                                } ?>" href="current-stock.php">Current Stock </a>
-                        <a class="collapse-item <?php if ($page ==  "stock-in-details" || $page == "stock-in-edit") {
-                                                    echo "active";
-                                                } ?>" href="stock-in-details.php">StockIn Details </a>
-                        <a class="collapse-item <?php if ($page ==  "stock-expiring") {
-                                                    echo "active";
-                                                } ?>" href="stock-expiring.php">Stock Expiring </a>
+                        <a class="collapse-item <?php if ($page ==  "current-stock") { echo "active"; } ?>" href="current-stock.php">Current Stock </a>
+                        <a class="collapse-item <?php if ($page ==  "stock-expiring") { echo "active"; } ?>" href="stock-expiring.php">Stock Expiring </a>
                     </div>
                 </div>
             </li>

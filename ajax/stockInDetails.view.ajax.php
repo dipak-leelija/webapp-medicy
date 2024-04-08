@@ -113,19 +113,18 @@ $Products       = new Products();
                         $gst = 0;
                         $disc = 0;
                         $ptr = 0;
+                        $totalQty = 0;
                         $itemAmount = 0;
-
 
                         $items = $StockInDetails->showStockInDetailsById($_GET['distBill']);
                         // print_r($items);
                         foreach ($items as $item) {
-                            $sl     += 1;
-                            $qty    += $item['qty'];
-                            $gst    = $item['gst'];
-                            $disc   = $item['discount'];
-                            $ptr    = $item['ptr'];
-
-                            // echo "<br>qty : $qty";
+                            $sl         += 1;
+                            $qty        += $item['qty'];
+                            $gst        = $item['gst'];
+                            $disc       = $item['discount'];
+                            $ptr        = $item['ptr'];
+                            $totalQty   += ($item['qty']+$item['free_qty']);
 
                             $rate = floatval($ptr) - (floatval($ptr)*floatval($disc)/100);
                             $rate = floatval($rate) + (floatval($rate)*floatval($gst)/100);
@@ -181,7 +180,7 @@ $Products       = new Products();
 
             <div class="row summary rounded align-middle">
                 <div class="col-6 col-sm-3">Items: <?php echo count($items); ?></div>
-                <div class="col-6 col-sm-3">Quantity: <?php echo $qty; ?></div>
+                <div class="col-6 col-sm-3">Quantity: <?php echo $totalQty; ?></div>
                 <div class="col-6 col-sm-3">GST: <?php echo $StockIn[0]['gst']; ?></div>
                 <div class="col-6 col-sm-3">Sub Total: <?php echo $StockIn[0]['amount']; ?></div>
 
