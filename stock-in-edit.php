@@ -254,7 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                     <input type="text" class="upr-inp" name="purchase-id" id="purchase-id" value="" readonly>
                                                 </div>
 
-                                                <div class=" col-md-4 mt-2">
+                                                <div class="d-none col-md-4 mt-2">
                                                     <label class="mb-0" for="product-id">Product Id</label>
                                                     <input class="upr-inp" id="product-id" name="product-id" readonly>
                                                 </div>

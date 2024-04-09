@@ -240,7 +240,7 @@ $doctor = json_decode($doctor , true);
                                             <div class="p-2 bg-light col-md-6" id="searched-items" style="display: none;">
                                             </div>
 
-                                            <div class="p-2 bg-light col-md-3" id="searched-batchNo" style="display: none;">
+                                            <div class="p-2 bg-light col-md-3" id="searched-batchNo" style="display: none; max-width:20rem;">
                                             </div>
                                         </div>
                                     </div>
