@@ -51,7 +51,7 @@ if (isset($_POST['blNo'])) {
         $MRP = $purchase['mrp'];
         $PTR = $purchase['ptr'];
         $discunt = $purchase['discount'];
-        $base = $purchase['base'];
+        $dPrice = $purchase['d_price'];
         $GST = $purchase['gst'];
         $gstAmount = $purchase['gst_amount'];
         $margin = $purchase['margin'];
@@ -157,7 +157,7 @@ if (isset($_POST['blNo'])) {
         "mrp"               => $MRP,
         "ptr"               => $PTR,
         "disc"              => $discunt,
-        "baseAmount"        => $base,
+        "dPrice"        => $dPrice,
         "gst"               => $GST,
         "GstAmount"         => $gstAmount,
         "mrgn"              => $margin,
