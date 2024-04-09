@@ -117,6 +117,8 @@ const addToForm = (rowNo, prodId, billNo, batchNo) => {
       bhNo: batchNo,
     },
     success: function (respones) {
+      // console.log(respones);
+      // return;
       var dataObject = JSON.parse(respones);
       // return;
 

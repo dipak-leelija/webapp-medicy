@@ -54,7 +54,6 @@ if (isset($_POST['blNo'])) {
         $dPrice         = $purchase['d_price'];
         $GST            = $purchase['gst'];
         $gstAmount      = $purchase['gst_amount'];
-        $margin         = $purchase['margin'];
         $amount         = $purchase['amount'];
 
         if (in_array(strtolower(trim($purchase['unit'])), LOOSEUNITS)) {
@@ -160,7 +159,6 @@ if (isset($_POST['blNo'])) {
         "dPrice"        => $dPrice,
         "gst"               => $GST,
         "GstAmount"         => $gstAmount,
-        "mrgn"              => $margin,
         "amnt"              => $amount,
         "delflag"           => $delFlag
     );

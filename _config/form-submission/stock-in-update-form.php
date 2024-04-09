@@ -35,6 +35,9 @@ $ClinicInfo     = new HealthCare;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['update'])) {
 
+        // print_r($_POST);
+        // exit;
+
         $stockIn_Id         = $_POST['stok-in-id'];
         $prevDistId         = $_POST['prev-distributor-id'];
         $distributorId      = $_POST['updated-distributor-id'];
@@ -91,8 +94,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $discountPercent        = $_POST['discount'];
         $billAmount_perItem     = $_POST['billAmount'];
 
-        $baseAmount     = (intval($item_qty) * floatval($dPrice)) / (intval($item_qty) + intval($item_free_qty));
+        // print_r($item_qty );
+        // echo  "<br>";
+        // echo floatval($dPrice) . "<br>";
+        // echo intval($item_qty) . "<br>";
+        // echo intval($item_free_qty) . "<br>";
 
+        // echo $baseAmount     = (intval($item_qty) * floatval($dPrice)) / (intval($item_qty) + intval($item_free_qty));
+        // exit;
         // ================ check data ================
         $stockInAttrib = 'id';
         $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttrib, $stockIn_Id);
@@ -211,6 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $item_loose_qty = 0;
                     $item_loose_price = 0;
                 }
+                $baseAmount     = (intval($item_qty[$i]) * floatval($dPrice[$i])) / $item_total_qty;
 
                 // echo $item_loose_qty;
 
@@ -233,7 +243,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $itemQty = $item_qty[$i];
                 $itemFreeQty = $item_free_qty[$i];
-                $updatedQty = (intval($itemQty) + intval($itemFreeQty)) - intval($prevStockInItemQty);
+                // $updatedQty = (intval($itemQty) + intval($itemFreeQty)) - intval($prevStockInItemQty);
+                $updatedQty = intval($itemQty) + intval($itemFreeQty);
+
+
+                $baseAmount     = (intval($item_qty[$i]) * floatval($dPrice[$i])) / $updatedQty;
 
                 if (in_array(strtolower(trim($item_unit[$i])), LOOSEUNITS)) {
                     $updatedStockInLooseQty = intval($updatedQty) * intval($item_weightage[$i]);

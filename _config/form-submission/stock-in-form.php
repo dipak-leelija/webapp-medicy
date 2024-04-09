@@ -100,7 +100,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $amount             = array_shift($_POST['billAmount']);
                 $looselyPrice       = '';
                 
-                $base = ($dprice*$qty)/($qty+$freeQty);
+                echo $base = ($dprice*$qty)/($qty+$freeQty);
+                exit;
 
                 $looselyPrice = '';
 
