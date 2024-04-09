@@ -59,6 +59,7 @@ const setCustomer = (id) => {
     document.getElementById("customer-list").style.display = "none";
 }
 
+
 const counterBill = () => {
     document.getElementById("contact").innerHTML = "";
     document.getElementById("customer").value = "Cash Sales";
@@ -69,6 +70,7 @@ const counterBill = () => {
     let selectElement = document.getElementById("doctor-select");
     selectElement.value = 'Cash Sales';
 }
+
 
 //======= payment meode =========
 document.getElementById("payment-mode").value = 'Cash';
@@ -95,6 +97,9 @@ firstInput.addEventListener('input', function (event) {
         this.value = inputValue.slice(1);
     }
 });
+
+
+
 //==========================================================
 const searchItem = (searchFor) => {
 
@@ -626,7 +631,7 @@ const onQty = (qty) => {
     // }
 
         //==================== Margin on an Item ====================
-        marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
+        marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
         request.open("GET", marginUrl, false);
         request.send(null);
         document.getElementById("margin").value = request.responseText;   
@@ -732,11 +737,6 @@ const onDisc = (disc) => {
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
             taxableAmount = parseFloat(taxableAmount).toFixed(2);
 
-
-            // console.log("disc price on disc  : "+discPrice);
-            // console.log("taxable on disc  : "+taxableAmount);
-            // console.log("amount on disc  : "+netPayble);
-
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
             document.getElementById('amount').value = netPayble;
@@ -748,10 +748,6 @@ const onDisc = (disc) => {
 
             taxableAmount = (parseFloat(netPayble) * 100) / (parseFloat(gst) + 100);
             taxableAmount = parseFloat(taxableAmount).toFixed(2);
-
-            // console.log("disc price on disc loose or pack on disc : "+discPrice);
-            // console.log("taxable on disc loose or pack on disc : "+taxableAmount);
-            // console.log("amount on disc loose or pack on disc : "+netPayble);
 
             document.getElementById('dPrice').value = discPrice;
             document.getElementById('taxable').value = taxableAmount;
@@ -923,8 +919,6 @@ const addSummary = () => {
         Swal.fire("Failed!", "Total Amount Not Found!", "error");
         return;
     }
-
-    // console.log("Working Fine");
 
     document.getElementById("no-item").style.display = "none";
 
@@ -1220,7 +1214,6 @@ function rowAdjustment(delRow) {
 }
 
 //////////////////////// ITEM EDIT FUNCTION /////////////////////////
-
 const editItem = (tuple) => {
     
     let checkEditOption = document.getElementById("product-id").value;
@@ -1228,7 +1221,7 @@ const editItem = (tuple) => {
     if (checkEditOption == '') {
 
         Tupledata = JSON.parse(tuple);
-        console.log(Tupledata);
+        // console.log(Tupledata);
 
         document.getElementById("product-id").value = Tupledata.productId;
         document.getElementById("product-name").value = Tupledata.productName;
