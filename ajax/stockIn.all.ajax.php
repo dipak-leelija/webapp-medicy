@@ -90,7 +90,7 @@ if (isset($_GET["base"])) {
     $id = $_GET["base"];
     $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
-        echo $stock[0]['base'];
+        echo $stock[0]['d_price'];
     }
 }
 
