@@ -387,12 +387,42 @@ class CurrentStock extends DatabaseConnection
 
 
 
-    // =========== batch number fetch function for new sales pagge ============
     function showCurrentStocByProductId($productId, $adminId)
     {
         $data = array();
         try {
             $select = "SELECT * FROM current_stock WHERE product_id = ? AND admin_id = ?";
+            $stmt = $this->conn->prepare($select);
+
+            if ($stmt) {
+                $stmt->bind_param("ss", $productId, $adminId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $stmt->close();
+            } else {
+                echo "Statement preparation failed: " . $this->conn->error;
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return json_encode($data);
+    }
+
+
+
+
+
+
+    // =========== batch number fetch function for new sales pagge ============
+    function selectBatch($productId, $adminId)
+    {
+        $data = array();
+        try {
+            $select = "SELECT `id`, `product_id`, `batch_no`, `qty`, `loosely_count`, `weightage`, `unit`  FROM current_stock WHERE (product_id = ? AND admin_id = ?) AND qty > 0 LIMIT 3";
             $stmt = $this->conn->prepare($select);
 
             if ($stmt) {
