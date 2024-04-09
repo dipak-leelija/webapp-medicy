@@ -422,7 +422,7 @@ class CurrentStock extends DatabaseConnection
     {
         $data = array();
         try {
-            $select = "SELECT `id`, `product_id`, `batch_no`, `qty`, `loosely_count`, `weightage`, `unit`  FROM current_stock WHERE (product_id = ? AND admin_id = ?) AND qty > 0 LIMIT 3";
+            $select = "SELECT `id`, `product_id`, `batch_no`, `qty`, `loosely_count`, `weightage`, `unit`  FROM current_stock WHERE (product_id = ? AND admin_id = ?) AND qty > 0";
             $stmt = $this->conn->prepare($select);
 
             if ($stmt) {
