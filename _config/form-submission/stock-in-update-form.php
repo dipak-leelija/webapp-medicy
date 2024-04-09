@@ -89,9 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $gstAmount_perItem      = $_POST['gstPerItem'];
         $dPrice                 = $_POST['d_price'];
         $discountPercent        = $_POST['discount'];
-        $marginAmount_perItem   = '';
         $billAmount_perItem     = $_POST['billAmount'];
-        
+
         $baseAmount     = (intval($item_qty) * floatval($dPrice)) / (intval($item_qty) + intval($item_free_qty));
 
         // ================ check data ================
@@ -216,7 +215,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // echo $item_loose_qty;
 
                 /* add new data to Stock in Details */
-                $addToStockInDetails = $StockInDetails->addStockInDetails($stockIn_Id, $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], $item_weightage[$i], trim($item_unit[$i]), $item_qty[$i], $item_free_qty[$i], $item_loose_qty, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $dPrice[$i], $item_gst[$i], $gstAmount_perItem[$i], $marginAmount_perItem, $billAmount_perItem[$i], $employeeId, NOW, $adminId);
+                $addToStockInDetails = $StockInDetails->addStockInDetails($stockIn_Id, $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], $item_weightage[$i], trim($item_unit[$i]), $item_qty[$i], $item_free_qty[$i], $item_loose_qty, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $dPrice[$i], $item_gst[$i], $gstAmount_perItem[$i], $baseAmount, $billAmount_perItem[$i], $employeeId, NOW);
 
                 $stockInDetailsId = $addToStockInDetails['stockIn_Details_id'];
 
@@ -271,7 +270,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // ======= need to check this data ============
 
-                $updatedStockInDetails = $StockInDetails->updateStockInDetailsById(intval($updatedItemIdsArray[$i]), $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], intval($item_weightage[$i]), trim($item_unit[$i]), intval($item_qty[$i]), intval($item_free_qty[$i]), intval($stockInLooseCount), floatval($item_mrp[$i]), floatval($item_ptr[$i]), intval($discountPercent[$i]), floatval($dPrice[$i]), intval($item_gst[$i]), floatval($gstAmount_perItem[$i]), floatval($marginAmount_perItem), floatval($billAmount_perItem[$i]), $addedBy, NOW);
+                $updatedStockInDetails = $StockInDetails->updateStockInDetailsById(intval($updatedItemIdsArray[$i]), $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], intval($item_weightage[$i]), trim($item_unit[$i]), intval($item_qty[$i]), intval($item_free_qty[$i]), intval($stockInLooseCount), floatval($item_mrp[$i]), floatval($item_ptr[$i]), intval($discountPercent[$i]), floatval($dPrice[$i]), intval($item_gst[$i]), floatval($gstAmount_perItem[$i]), floatval($baseAmount), floatval($billAmount_perItem[$i]), $addedBy, NOW);
 
 
                 /* multiple table update area as bellow data are contain multiple row of same item ids. */
