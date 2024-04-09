@@ -83,7 +83,7 @@ $Products       = new Products();
                 </div>
             </div>
             <hr>
-            <div class="table-responsive my-3">
+            <div class="table-responsive">
 
                 <table class="table table-sm table-hover" style="font-size:0.9rem;">
                     <thead class="bg-primary text-light">
@@ -92,18 +92,14 @@ $Products       = new Products();
                             <th>Item Name</th>
                             <th>Batch</th>
                             <th>Exp.</th>
-                            <th>Pack Of</th>
                             <th>Qty.</th>
                             <th>F.Qty</th>
                             <th>MRP</th>
-                            <th>Disc.</th>
-                            <th>Base</th>
+                            <th>PTR</th>
+                            <th>D.Price</th>
                             <th>GST</th>
-                            <th>Margin%</th>
-                            <th>Rate</th>
+                            <th>Base</th>
                             <th>Amount</th>
-
-
                         </tr>
                     </thead>
                     <tbody>
@@ -120,22 +116,7 @@ $Products       = new Products();
                         // print_r($items);
                         foreach ($items as $item) {
                             $sl         += 1;
-                            $qty        += $item['qty'];
-                            $gst        = $item['gst'];
-                            $disc       = $item['discount'];
-                            $ptr        = $item['ptr'];
-                            $totalQty   += ($item['qty']+$item['free_qty']);
-
-                            $rate = floatval($ptr) - (floatval($ptr)*floatval($disc)/100);
-                            $rate = floatval($rate) + (floatval($rate)*floatval($gst)/100);
-                
-                            // echo "<br>rate : $rate";
-
-                            $showRate = round($rate,2);
-                            // echo "<br>showRate : $showRate";
-
-                            $itemAmount = floatval($rate)*intval($item['qty']);
-                            $itemAmount = round($itemAmount,2);
+                            $totalQty   += ($item['qty'] + $item['free_qty']);
 
                             // =========== edit req flag key check ==========
                             $prodCheck = json_decode($Products->productExistanceCheck($item['product_id']));
@@ -144,34 +125,26 @@ $Products       = new Products();
                             } else {
                                 $editReqFlag = '';
                             }
-                            //========================
+                            //===============================================
 
                             $product = json_decode($Products->showProductsByIdOnUser($item['product_id'], $adminId, $editReqFlag));
                             $product = $product->data;
-                            // print_r($product);
-
                             $pName = $product[0]->name;
 
                             echo "<tr>
                             <th scope='row'>" . $sl . "</th>
-                            <td>" . $pName . "</td>
+                            <td>" . $pName . "<br><small>" . $item['weightage'] . " " . $item['unit'] . "</small></td>
                             <td>" . $item['batch_no'] . "</td>
                             <td>" . $item['exp_date'] . "</td>
-                            <td>" . $item['weightage'] . $item['unit'] . "</td>
-                            
                             <td>" . $item['qty'] . "</td>
                             <td>" . $item['free_qty'] . "</td>
-
                             <td>" . $item['mrp'] . "</td>
-                            <td>" . $item['discount'] . "%</td>
                             <td>" . $item['ptr'] . "</td>
+                            <td>" . $item['d_price'] . " <small><span class='badge rounded-pill bg-primary'>".$item['discount']."%</span></small></td>
                             <td>" . $item['gst'] . "</td>
-                           
-                            <td>" . $item['margin'] . "</td>
-                            <td>" .  $showRate . "</td>
-                            <td>" .  $itemAmount. "</td>
-
-                          </tr>";
+                            <td>" . $item['base'] . "</td>
+                            <td>" . $item['amount'] . "</td>
+                        </tr>";
                         }
                         ?>
                     </tbody>

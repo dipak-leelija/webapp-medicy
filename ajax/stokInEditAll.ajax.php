@@ -36,26 +36,25 @@ if (isset($_POST['blNo'])) {
     // print_r($purchaseDetail);
 
     foreach ($purchaseDetail as $purchase) {
-        $purchaseId = $purchase['id'];
-        $productId = $purchase['product_id'];
-        $distBillNo = $purchase['distributor_bill'];
-        $prodBatchNo = $purchase['batch_no'];
-        $prodMfdDate = $purchase['mfd_date'];
-        $prodExpDate = $purchase['exp_date'];
+        $purchaseId     = $purchase['id'];
+        $productId      = $purchase['product_id'];
+        $distBillNo     = $purchase['distributor_bill'];
+        $prodBatchNo    = $purchase['batch_no'];
+        $prodMfdDate    = $purchase['mfd_date'];
+        $prodExpDate    = $purchase['exp_date'];
 
-        $prodWeightage = $purchase['weightage'];
-        $prodUnit = $purchase['unit'];
-        $QTY = $purchase['qty'];
-        $freeQTY = $purchase['free_qty'];
-        $looseCount = $purchase['loosely_count'];
-        $MRP = $purchase['mrp'];
-        $PTR = $purchase['ptr'];
-        $discunt = $purchase['discount'];
-        $base = $purchase['d_price'];
-        $GST = $purchase['gst'];
-        $gstAmount = $purchase['gst_amount'];
-        $margin = $purchase['margin'];
-        $amount = $purchase['amount'];
+        $prodWeightage  = $purchase['weightage'];
+        $prodUnit       = $purchase['unit'];
+        $QTY            = $purchase['qty'];
+        $freeQTY        = $purchase['free_qty'];
+        $looseCount     = $purchase['loosely_count'];
+        $MRP            = $purchase['mrp'];
+        $PTR            = $purchase['ptr'];
+        $discunt        = $purchase['discount'];
+        $dPrice         = $purchase['d_price'];
+        $GST            = $purchase['gst'];
+        $gstAmount      = $purchase['gst_amount'];
+        $amount         = $purchase['amount'];
 
         if (in_array(strtolower(trim($purchase['unit'])), LOOSEUNITS)) {
             $purchasedQty = $purchase['loosely_count'];
@@ -157,10 +156,9 @@ if (isset($_POST['blNo'])) {
         "mrp"               => $MRP,
         "ptr"               => $PTR,
         "disc"              => $discunt,
-        "baseAmount"        => $base,
+        "dPrice"        => $dPrice,
         "gst"               => $GST,
         "GstAmount"         => $gstAmount,
-        "mrgn"              => $margin,
         "amnt"              => $amount,
         "delflag"           => $delFlag
     );
@@ -170,3 +168,5 @@ if (isset($_POST['blNo'])) {
 
     echo $purchaseDetialArray;
 }
+
+?>

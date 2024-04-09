@@ -117,6 +117,8 @@ const addToForm = (rowNo, prodId, billNo, batchNo) => {
       bhNo: batchNo,
     },
     success: function (respones) {
+      // console.log(respones);
+      // return;
       var dataObject = JSON.parse(respones);
       // return;
 
@@ -184,7 +186,7 @@ const addToForm = (rowNo, prodId, billNo, batchNo) => {
       document.getElementById("gst-check").value = dataObject.gst;
       document.getElementById("gst").value = dataObject.gst;
       document.getElementById("crntGstAmnt").value = dataObject.GstAmount;
-      document.getElementById("base").value = dataObject.baseAmount;
+      document.getElementById("d_price").value = dataObject.dPrice;
       document.getElementById("bill-amount").value = dataObject.amnt;
       document.getElementById("temp-bill-amount").value = dataObject.amnt;
 
@@ -515,19 +517,19 @@ const getBillAmount = () => {
 
   let modifiedPtr = document.getElementById("ptr").value;
 
-  let base =
+  let d_price =
     parseFloat(modifiedPtr) -
     parseFloat(modifiedPtr) * (parseFloat(disc) / 100);
   // base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
 
   let totalAmount =
-    (parseFloat(base) + parseFloat(base) * (parseFloat(gst) / 100)) *
+    (parseFloat(d_price) + parseFloat(d_price) * (parseFloat(gst) / 100)) *
     parseInt(qty);
   totalAmount = totalAmount.toFixed(2);
 
-  base = base.toFixed(2);
+  d_price = d_price.toFixed(2);
 
-  document.getElementById("base").value = base;
+  document.getElementById("d_price").value = d_price;
   document.getElementById("bill-amount").value = totalAmount;
 
   //=============================================
@@ -604,7 +606,7 @@ const addData = () => {
 
   var discount = document.getElementById("discount");
   var gst = document.getElementById("gst");
-  var base = document.getElementById("base");
+  var d_price = document.getElementById("d_price");
   var billAmount = document.getElementById("bill-amount");
   var prevAmount = document.getElementById("temp-bill-amount");
   var purchaseId = document.getElementById("purchase-id");
@@ -652,7 +654,7 @@ const addData = () => {
     { field: "discount", message: "Please enter discount at least 0" },
     { field: "gst", message: "Select GST!" },
     { field: "bill-amount", message: "Invalid Bill Amount" },
-    { field: "base", message: "Base Amount Invalid!" },
+    { field: "d_price", message: "Discount Price Invalid!" },
   ];
 
   // ==============================================
@@ -693,28 +695,16 @@ const addData = () => {
   document.getElementById("dynamic-id").value = slno;
   document.getElementById("serial-control").value = slControl;
 
-  //////////////// GST AMOUNT CALCULATION \\\\\\\\\\\\\\\\\\
 
-  let baseAmt = base.value;
-  let gstPerItem = (parseFloat(baseAmt) * parseInt(gst.value)) / 100;
-  let totalItemGstAmt = parseFloat(gstPerItem) * parseInt(qty.value);
-  gstPerItem = totalItemGstAmt.toFixed(2);
-  // console.log("gst amount : "+totalItemGstAmt);
+  // ====================== GST AMOUNT CALCULATION ======================
+  let dpriceAmt = d_price.value;
+  let gstPerItem = (((parseInt(gst.value) / 100) * parseFloat(dpriceAmt)) * qty.value).toFixed(2);
   let gstVal = document.getElementById("gst-val").value;
-
-  let onlyGst = totalItemGstAmt.toFixed(2);
-  // console.log("nnly gst : "+onlyGst);
-  // onlyGst = onlyGst.toFixed(2);
-  gstVal = parseFloat(gstVal) + parseFloat(onlyGst);
+  gstVal = parseFloat(gstVal) + parseFloat(gstPerItem);
+  console.log('Total GST GST: '+gstVal);
   onlyGst = gstVal.toFixed(2);
-
-  ////////////////////// marging amount calculation
-  // let totalQty = (parseFloat(qty.value) + parseFloat(freeQty.value));
-  let totalMrp =
-    parseFloat(mrp.value) * (parseFloat(qty.value) + parseFloat(freeQty.value));
-  let margin = totalMrp - billAmount.value;
-  let marginP = (margin / totalMrp) * 100;
-
+  
+  
   // del falg checking ===
   if (delflag == "") {
     delflag = 0;
@@ -725,25 +715,24 @@ const addData = () => {
 
   jQuery("#dataBody")
     .append(`<tr id="table-row-${slControl}" style="cursor: pointer;">
-            <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${
-    billAmount.value
-  }, ${byuQty}, ${curQty}, ${delflag})"></i></td>
+            <td style="color: red; width: 1rem;"><i class="fas fa-trash" style="padding-top: .5rem;" onclick="deleteData(${slControl}, ${itemQty}, ${gstPerItem}, ${billAmount.value}, ${byuQty}, ${curQty}, ${delflag})"></i></td>
            
             <td class="p-0 pt-3" id="row-${slControl}-col-1" style="font-size:.75rem ; padding-top:1rem; width: .75rem">${slno}</td>
 
             <td class="d-none p-0 pt-3">
-                <input class="table-data w-6r" type="text" name="purchaseId[]" value="${
-                  purchaseId.value
-                }" readonly>
+                <input class="table-data w-6r" type="text" name="purchaseId[]" value="${purchaseId.value}" readonly>
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-3">
-                <input class="col table-data w-.65r" type="text" name="productNm[]" value="${
-                  productName.value
-                }" readonly style="text-align: start; font-size:0.65rem;">
-                <input class="d-none col table-data w-.75r" type="text" name="productId[]" value="${
-                  productId.value
-                }">
+                <input class="col table-data w-.65r" type="text" name="productNm[]" value="${productName.value}" readonly style="text-align: start; font-size:0.65rem;">
+
+                <input class="col table-data w-4r" type="text" name="setof[]" value="${weightage.value} ${unit.value}" readonly style="font-size:0.65rem;">
+                <input class="d-none col table-data w-4r" type="text" name="weightage[]" value="${weightage.value}">
+                <input class="d-none col table-data w-4r" type="text" name="unit[]" value="${unit.value}">
+
+                <input class="d-none" type="text" name="productId[]" value="${productId.value}">
+                <input class="d-none" type="text" name="discount[]" value="${discount.value}">
+                
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-4">
@@ -754,68 +743,34 @@ const addData = () => {
                 <input class="col table-data w-4r" type="text" name="expDate[]" value="${expDate}" readonly style="font-size:0.65rem;">
             </td>
 
-            <td class="p-0 pt-3" id="row-${slControl}-col-8">
-                <input class="col table-data w-4r" type="text" name="setof[]" value="${
-                  weightage.value
-                }${unit.value}" readonly style="font-size:0.65rem;">
-                <input class="d-none col table-data w-4r" type="text" name="weightage[]" value="${
-                  weightage.value
-                }">
-                <input class="d-none col table-data w-4r" type="text" name="unit[]" value="${
-                  unit.value
-                }">
-            </td>
-
             <td class="p-0 pt-3" id="row-${slControl}-col-9">
-                <input class="col table-data w-3r" type="text" name="qty[]" value="${
-                  qty.value
-                }" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="qty[]" value="${qty.value}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-10">
-                <input class="col table-data w-3r" type="text" name="freeQty[]" value="${
-                  freeQty.value
-                }" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-11">
-                <input class="col table-data w-4r" type="text" name="mrp[]" value="${
-                  mrp.value
-                }" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-12">
-                <input class="col table-data w-4r" type="text" name="ptr[]" value="${
-                  ptr.value
-                }" readonly style="font-size:0.65rem; text-align:end;">
-            </td>
-
-            <td class="p-0 pt-3" id="row-${slControl}-col-15">
-                <input class="col table-data w-3r" type="text" name="gst[]" value="${
-                  gst.value
-                }%" readonly style="font-size:0.65rem; text-align:end;">
-                <input class="d-none col table-data w-3r" type="text" name="gstPerItem[]" value="${gstPerItem}">
+                <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-13">
-                <input class="d-none col table-data w-4r" type="text" name="base[]" value="${
-                  base.value
-                }" style="text-align: end;">
-                <input  class="col table-data w-3r" type="text" name="discount[]" value="${
-                  discount.value
-                }%" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data text-right w-4r" type="text" name="d_price[]" value="${d_price.value}" style="font-size:0.65rem; text-align: end;">
+                <span class="badge badge-pill badge-primary">${discount.value}%</span>
             </td>
 
-            <td class="p-0 pt-3" id="row-${slControl}-col-14">
-                <input class="col table-data w-4r" type="text" name="margin[]" value="${marginP.toFixed(
-                  2
-                )}%" readonly style="font-size:0.65rem; text-align:end;">
+            <td class="p-0 pt-3" id="row-${slControl}-col-15">
+                <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="d-none col table-data w-3r" type="text" name="gstPerItem[]" value="${gstPerItem}">
             </td>
 
             <td class="p-0 pt-3" id="row-${slControl}-col-16">
-                <input class="col table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${
-                  billAmount.value
-                }" readonly style="font-size:0.65rem; text-align:end;">
+                <input class="col table-data w-5r amnt-inp" type="text" name="billAmount[]" value="${billAmount.value}" readonly style="font-size:0.65rem; text-align:end;">
             </td>
 
         </tr>`);
@@ -835,7 +790,7 @@ const addData = () => {
   }
 
   document.getElementById("gst-val").value = onlyGst;
-  
+
   // item qantity
   // var qtyVal = document.getElementById("qty-val").value;
   // totalQty = parseInt(qty.value) + parseInt(freeQty.value) + parseInt(qtyVal);
@@ -868,7 +823,7 @@ const addData = () => {
 
     discPercent: discount.value,
     gst: gst.value,
-    base: base.value,
+    d_price: d_price.value,
     billAMNT: billAmount.value,
     prevAmount: prevAmount.value,
     purchaseId: purchaseId.value,
@@ -892,9 +847,6 @@ const addData = () => {
   document.getElementById(`row-${slControl}-col-6`).onclick = function () {
     editItem(tupleData);
   };
-  document.getElementById(`row-${slControl}-col-8`).onclick = function () {
-    editItem(tupleData);
-  };
   document.getElementById(`row-${slControl}-col-9`).onclick = function () {
     editItem(tupleData);
   };
@@ -908,9 +860,6 @@ const addData = () => {
     editItem(tupleData);
   };
   document.getElementById(`row-${slControl}-col-13`).onclick = function () {
-    editItem(tupleData);
-  };
-  document.getElementById(`row-${slControl}-col-14`).onclick = function () {
     editItem(tupleData);
   };
   document.getElementById(`row-${slControl}-col-15`).onclick = function () {
@@ -935,13 +884,12 @@ const addData = () => {
 // }
 
 const calculateSummary = (addAmount) => {
-
   var billAmount = 0;
   var totalQty = 0;
   var totalFQty = 0;
 
   const billAmounts = document.querySelectorAll('input[name="billAmount[]"]');
-  billAmounts.forEach(cell => {
+  billAmounts.forEach((cell) => {
     var eachAmount = parseFloat(cell.value);
     if (!isNaN(eachAmount)) {
       billAmount += eachAmount;
@@ -950,7 +898,7 @@ const calculateSummary = (addAmount) => {
   document.getElementById("net-amount").value = billAmount;
 
   const eachQtys = document.querySelectorAll('input[name="qty[]"]');
-  eachQtys.forEach(cell => {
+  eachQtys.forEach((cell) => {
     var eachQty = parseFloat(cell.value);
     if (!isNaN(eachQty)) {
       totalQty += eachQty;
@@ -958,16 +906,15 @@ const calculateSummary = (addAmount) => {
   });
 
   const freeQtys = document.querySelectorAll('input[name="freeQty[]"]');
-  freeQtys.forEach(cell => {
+  freeQtys.forEach((cell) => {
     var eachFQty = parseFloat(cell.value);
     if (!isNaN(eachFQty)) {
       totalFQty += eachFQty;
     }
   });
 
-  document.getElementById("qty-val").value = (totalQty+totalFQty);
-
-}
+  document.getElementById("qty-val").value = totalQty + totalFQty;
+};
 
 //=============================== ADDED ITEM EDIT FUNCTION ==============================
 const editItem = (tData) => {
@@ -1004,7 +951,7 @@ const editItem = (tData) => {
 
     document.getElementById("discount").value = tuple.discPercent;
     document.getElementById("gst").value = tuple.gst;
-    document.getElementById("base").value = tuple.base;
+    document.getElementById("d_price").value = tuple.d_price;
     document.getElementById("bill-amount").value = tuple.billAMNT;
     document.getElementById("temp-bill-amount").value = tuple.prevAmount;
 
@@ -1015,7 +962,8 @@ const editItem = (tData) => {
     document.getElementById("del-flag").value = tuple.delflag;
 
     let gstPerItem =
-      parseFloat(tuple.billAMNT) - parseFloat(tuple.base) * parseInt(tuple.qty);
+      parseFloat(tuple.billAMNT) -
+      parseFloat(tuple.d_price) * parseInt(tuple.qty);
     gstPerItem = gstPerItem.toFixed(2);
 
     deleteData(
