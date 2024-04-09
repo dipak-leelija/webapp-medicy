@@ -65,14 +65,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // $MFDCHECK           = $_POST['mfdDate'];
         $expDate            = $_POST['expDate'];
 
-        $addedBy            = $employeeId;
-        $addedOn            = NOW;
-        $adminId            = $adminId;
-
         $editReqFlag        = $_POST['edit-req-flag'];
         // print_r($editReqFlag);
         
-        $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $addedBy, $addedOn, $adminId);
+        $addStockIn = $StockIn->addStockIn($distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $employeeId, NOW, $adminId);
         // print_r($addStockIn);
         // exit;
         if ($addStockIn["result"]) {
@@ -123,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $totalQty = intval($qty) + intval($freeQty);   // buy qantity + free qty
 
                     // ============ ADD TO CURRENT STOCK ============ 
-                    $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, intval($looselyCount), floatval($looselyPrice), intval($weightage), trim($unit), intval($totalQty), floatval($mrp), floatval($ptr), intval($gst), $addedBy, $addedOn, $adminId);
+                    $addCurrentStock = $CurrentStock->addCurrentStock($stokInDetailsId, $productId, $batchNo, $expDate, $distributorId, intval($looselyCount), floatval($looselyPrice), intval($weightage), trim($unit), intval($totalQty), floatval($mrp), floatval($ptr), intval($gst), $employeeId, NOW, $adminId);
                 }
 
             } //eof foreach
