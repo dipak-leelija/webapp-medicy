@@ -6,7 +6,7 @@ class StockInDetails extends DatabaseConnection
     function addStockInDetails($stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $d_price, $gst, $gstPerItem, $base, $amount, $ADDEDBY, $ADDEDON)
     {
         try {
-            $insertStockInDetails = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `d_price`, `gst`, `gst_amount`, `base`, `amount`, `update_emp_id`, `updated_on`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertStockInDetails = "INSERT INTO `stock_in_details` (`stokIn_id`, `product_id`, `distributor_bill`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `free_qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `d_price`, `gst`, `gst_amount`, `base`, `amount`, `update_emp_id`, `updated_on`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the SQL statement
             $responce = $this->conn->prepare($insertStockInDetails);
@@ -16,7 +16,7 @@ class StockInDetails extends DatabaseConnection
             }
 
             // Binding parameters
-            $responce->bind_param("issssisiiddddidddss", $stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $d_price, $base, $gst, $gstPerItem, $amount, $ADDEDBY, $ADDEDON);
+            $responce->bind_param("issssisiiddddddissss", $stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $d_price, $base, $gst, $gstPerItem, $amount, $ADDEDBY, $ADDEDON);
 
             // Execute the prepared statement
             if ($responce->execute()) {
@@ -35,14 +35,7 @@ class StockInDetails extends DatabaseConnection
     }
 
 
-
-
-
-    // ==================== select query section ===============================
-
-    // ====== select by stockInid =========
-    function showStockInDetailsByStokId($stockId)
-    {
+    function showStockInDetailsByStokId($stockId){
         try {
             $select = "SELECT * FROM `stock_in_details` WHERE `stokIn_id` = ?";
             $stmt = $this->conn->prepare($select);
@@ -51,7 +44,7 @@ class StockInDetails extends DatabaseConnection
                 throw new Exception("Error preparing statement: " . $this->conn->error);
             }
 
-            $stmt->bind_param("i", $stockId);
+            $stmt->bind_param("s", $stockId);
 
             if (!$stmt->execute()) {
                 throw new Exception("Error executing statement: " . $stmt->error);
@@ -69,18 +62,18 @@ class StockInDetails extends DatabaseConnection
                 while ($row = $result->fetch_array()) {
                     $data[] = $row;
                 }
+                $stmt->close(); // Close the statement here
                 return $data;
-                $stmt->close();
             } else {
+                $stmt->close(); // Close the statement here as well
                 return null;
             }
         } catch (Exception $e) {
-            if ($e) {
-                echo $e;
-            }
+            echo "Error: " . $e->getMessage(); // Use $e->getMessage() to get the error message
+            return 0;
         }
-        return 0;
     }
+
 
 
     //======================================== UPDATE TABEL ==============================================
@@ -232,37 +225,38 @@ class StockInDetails extends DatabaseConnection
                 JOIN stock_in_details ON stock_in.id = stock_in_details.stokIn_id
                 WHERE stock_in.distributor_id = ?
                 AND stock_in_details.qty > '0'");
-    
+
             $stmt->bind_param('i', $distId);
-    
+
             $stmt->execute();
-    
+
             $result = $stmt->get_result();
-            
-            if($result->num_rows > 0){
+
+            if ($result->num_rows > 0) {
                 $data = array();
                 while ($row = $result->fetch_object()) {
                     $data[] = $row;
                 }
-                
-                return json_encode(['status'=>'1', 'message'=>'success', 'data'=>$data]);
+
+                return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
             } else {
-                return json_encode(['status'=>'0', 'message'=>'fails', 'data'=>'']);
+                return json_encode(['status' => '0', 'message' => 'fails', 'data' => '']);
             }
             $stmt->close();
         } catch (Exception $e) {
-            return json_encode(['status'=>' ', 'message'=>$e->getMessage(), 'data'=>'']);
+            return json_encode(['status' => ' ', 'message' => $e->getMessage(), 'data' => '']);
             // echo "Error: " . $e->getMessage();
         }
         return 0;
     }
-    
 
 
 
 
 
-    function showStockInDetailsByTable($table1, $table2, $data1, $data2){
+
+    function showStockInDetailsByTable($table1, $table2, $data1, $data2)
+    {
         try {
             $data   = array();
             $select = "SELECT * FROM `stock_in_details` WHERE `$table1`= '$data1' AND `$table2`= '$data2'";
@@ -279,7 +273,6 @@ class StockInDetails extends DatabaseConnection
             return $data;
         } catch (Exception $e) {
             return "Error: " . $e->getMessage();
-
         }
     }
 
