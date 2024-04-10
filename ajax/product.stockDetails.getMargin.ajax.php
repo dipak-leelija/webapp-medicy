@@ -45,7 +45,34 @@ if (isset($_GET["Pid"])) {
 
     $discPrice = $mrp - ($mrp * $discPercent/100);
 
-    if($qtyTyp == 'others'){
+    // Common assignments
+    $stockInQty = ($qtyTyp == 'others') ? intval($stockInData[0]['qty']) + intval($stockInData[0]['free_qty'])  : $stockInData[0]['loosely_count'];
+    $stockInAmount = $stockInData[0]['amount'];
+    $ptrPerItem = $stockInData[0]['ptr'];
+    $perItemBasePrice = $stockInData[0]['d_price'];
+    $purchasedGstPaid = $stockInData[0]['gst_amount'];
+    $perQtyStockInAmount = floatval($stockInAmount) / $stockInQty;
+
+    // Sell GST calculation
+    $sellGstAmount = floatval($taxableAmount) * (floatval($stockInData[0]['gst']) / 100);
+
+    // Purchased amount on sell qty
+    $pAmntOnSellQty = ($stockInAmount / $stockInQty) * intval($qty);
+
+    // Paid purchased GST amount per item
+    $paidPurchasedGstAmountPerItem = $purchasedGstPaid / $stockInQty;
+
+    // Margin calculation
+    $margin = (floatval($sellAmount) - $pAmntOnSellQty) - ($sellGstAmount - ($paidPurchasedGstAmountPerItem *   $qty));
+
+    // Output formatted margin
+    echo number_format($margin, 2);
+
+}
+
+
+/*
+if($qtyTyp == 'others'){
 
         $stockInQty =  intval($stockInData[0]['qty']) + intval($stockInData[0]['free_qty']);
         $stockInAmount = $stockInData[0]['amount'];
@@ -97,5 +124,7 @@ if (isset($_GET["Pid"])) {
     }
     echo number_format($margin,2);
 }
+*/
+
 
 ?>

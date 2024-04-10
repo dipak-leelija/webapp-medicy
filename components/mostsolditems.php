@@ -16,12 +16,9 @@ $monthlyMostSoldItems = $StockOut->mostSoldStockOutDataGroupByDtRng($lst30, $str
 $mostSoldItemsFromStart = $StockOut->mostSoldStockOutDataFromStart($adminId);
 
 
-
+// print_r($mostSoldItemsFromStart);
 //================================================================================
 
-
-
-$lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
 
 $dailyLessSoldItems = $StockOut->leastSoldStockOutDataGroupByDay($adminId);
 
@@ -29,6 +26,7 @@ $weeklyLessSoldItems = $StockOut->leastSoldStockOutDataGroupByWeek($adminId);
 
 $monthlyLessSoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId);
 
+$lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
 
 
 // print_r($stoldItemsFromStart);
@@ -217,6 +215,7 @@ $monthlyLessSoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId);
             }
 
         } else if (document.getElementById("primary-filter").innerHTML == 'dsc') {
+
             if (id == 'mostSoldLst24hrs') {
                 document.getElementById('mostSoldDtPickerDiv').style.display = 'none';
                 document.getElementById('mostSoldDtRngPickerDiv').style.display = 'none';
@@ -261,13 +260,13 @@ $monthlyLessSoldItems = $StockOut->leastSoldStockOutDataGroupByMonth($adminId);
         var productIds = mostSoldDataFromStart.map(item => item.product_id);
         productIds = JSON.stringify(productIds);
         var dataToSend = `mostSoldProdId=${productIds}`;
-
         // var xmlhttp = new XMLHttpRequest();
         mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}`;
         request.open("GET", mostSoldProdNameUrl, false);
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         request.send(null);
         var prodNameArray = request.responseText;
+    
         prodNameArray = JSON.parse(prodNameArray);
 
         var totalSold = mostSoldDataFromStart.map(item => item.total_sold);

@@ -444,8 +444,32 @@ class Products extends DatabaseConnection
             $result = $stmt->get_result();
 
             if ($result->num_rows == 0) {
-                $stmt->close();
-                return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => null]);
+
+                $selectProduct = "SELECT * FROM product_request WHERE product_id = ?";
+                $stmt = $this->conn->prepare($selectProduct);
+
+                if (!$stmt) {
+                    throw new Exception("Statement preparation failed: " . $this->conn->error);
+                }
+
+                $stmt->bind_param("s", $productId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows == 0) {
+                    $stmt->close();
+                    return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => null]);
+                } else {
+                    $data = array();
+                    while ($row = $result->fetch_assoc()) {
+                        $data = $row;
+                    }
+
+                    $stmt->close();
+
+                    return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
+                }
+
             } else {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
@@ -456,6 +480,7 @@ class Products extends DatabaseConnection
 
                 return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
             }
+            
         } catch (Exception $e) {
             // error_log("Error in showProductsById: " . $e->getMessage());
             return json_encode(['status' => 'error', 'message' => $e->getMessage(), 'data' => null]);
@@ -493,7 +518,7 @@ class Products extends DatabaseConnection
                 $stmt2->execute();
                 $result = $stmt2->get_result();
 
-                if($result->num_rows == 0){
+                if ($result->num_rows == 0) {
                     $stmt->close();
                     return json_encode(['status' => '0', 'message' => 'Product not found', 'data' => null]);
                 } else {
@@ -504,7 +529,6 @@ class Products extends DatabaseConnection
                     $stmt->close();
                     return json_encode(['status' => '1', 'message' => 'success', 'data' => $data]);
                 }
-
             } else {
                 $data = array();
                 while ($row = $result->fetch_assoc()) {
