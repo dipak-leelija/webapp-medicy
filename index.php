@@ -160,9 +160,9 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                             <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "mostsolditems.php"; ?>
                             </div>
-                            <div class="col-xl-6 col-md-6 mb-4">
-                                <?php require_once ROOT_COMPONENT . "lesssolditems.php"; ?>
-                            </div>
+                            <!-- <div class="col-xl-6 col-md-6 mb-4"> -->
+                                
+                            <!-- </div> -->
                             <br>
                             <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "mostvisitedcustomer.php"; ?>
@@ -174,11 +174,11 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                         </div>
 
                         <div class="row">
-                            <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "mopdByAmount.php"; ?>
                             </div>
 
-                            <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "mopdByItems.php"; ?>
                             </div>
 
