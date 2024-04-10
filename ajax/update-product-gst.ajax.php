@@ -12,7 +12,7 @@ $Gst = new Gst;
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
 
-    $gstPercent = $_POST['gstPercetn'];
+    $gstPercent = $_POST['gstPercent'];
     $prodId = $_POST['prodId'];
 
     $colParcent = 'percentage';
@@ -25,12 +25,12 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
     $updateProductGst = json_decode($updateProductGst);
 
-    print_r($updateProductGst);
-    // if($updateProductGst->status){
-    //     echo '0';
-    // } else {
-    //     echo '1';
-    // }
+    // print_r($updateProductGst);
+    if($updateProductGst->status){
+        echo '0';
+    } else {
+        echo '1';
+    }
 }
 
 

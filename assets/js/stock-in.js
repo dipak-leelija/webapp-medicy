@@ -438,10 +438,6 @@ ptrInput.addEventListener('keydown', function (event) {
     }
 });
 
-//=========================================================================================
-// const updateGst = () =>{
-//     
-// }
 
 
 
@@ -517,7 +513,7 @@ const getBillAmount = () => {
             url: 'ajax/update-product-gst.ajax.php',
             type: 'POST',
             data: {
-                gstPercetn: gst,
+                gstPercent: gst,
                 prodId: prodId
             },
             success: function (response) {
