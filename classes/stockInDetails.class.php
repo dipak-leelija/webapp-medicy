@@ -16,7 +16,7 @@ class StockInDetails extends DatabaseConnection
             }
 
             // Binding parameters
-            $responce->bind_param("issssisiiddddddissss", $stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $d_price, $base, $gst, $gstPerItem, $amount, $ADDEDBY, $ADDEDON);
+            $responce->bind_param("issssisiidddddidssss", $stokInid, $productId, $distBill, $batchNo, $expDate, $weightage, $unit, $qty, $freeQty, $looselyCount, $mrp, $ptr, $discount, $d_price, $gst, $gstPerItem, $base, $amount, $ADDEDBY, $ADDEDON);
 
             // Execute the prepared statement
             if ($responce->execute()) {
@@ -35,7 +35,9 @@ class StockInDetails extends DatabaseConnection
     }
 
 
-    function showStockInDetailsByStokId($stockId){
+
+    function showStockInDetailsByStokId($stockId)
+    {
         try {
             $select = "SELECT * FROM `stock_in_details` WHERE `stokIn_id` = ?";
             $stmt = $this->conn->prepare($select);
