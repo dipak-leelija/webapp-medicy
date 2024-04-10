@@ -96,10 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $amount             = array_shift($_POST['billAmount']);
                 $looselyPrice       = '';
                 
-                echo $base = ($dprice*$qty)/($qty+$freeQty);
-                exit;
-
-                $looselyPrice = '';
+                $base = ($dprice*$qty)/($qty+$freeQty);
 
                 if (in_array(strtolower(trim($unit)), LOOSEUNITS)) {
                     $looselyCount = $weightage * ($qty + $freeQty);
