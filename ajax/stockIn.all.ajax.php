@@ -86,8 +86,8 @@ if (isset($_GET["discount"])) {
 }
 
 //get base price per item
-if (isset($_GET["base"])) {
-    $id = $_GET["base"];
+if (isset($_GET["dprice"])) {
+    $id = $_GET["dprice"];
     $stock = $StockInDetails->showStockInDetailsByStokinId($id);
     if ($stock > 0) {
         echo $stock[0]['d_price'];

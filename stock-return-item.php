@@ -180,53 +180,62 @@ $showDistributor = $showDistributor->data;
                                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                         </div>
 
+                                        <input type="any" class="upr-inp" name="weatage" id="weatage" readonly>
+                                        <input type="text" class="upr-inp" name="gst" id="gst" readonly>
+                                        <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
+                                        <input type="text" class="upr-inp" name="net-buy-qty" id="net-buy-qty">
+                                        <input type="text" class="upr-inp" name="gstAmountPerQty" id="gstAmountPerQty" readonly>
+
                                     </div>
 
                                     <div class="col-md-7 col-12 mt-3">
                                         <!-- first row  -->
                                         <div class="row">
                                             
-                                            <div class="col-md-3 col-12">
-                                                <label class="mb-0 mt-1" for="scheme">Weatage</label>
-                                                <input type="any" class="upr-inp" name="weatage" id="weatage" readonly>
-                                            </div>
-
                                             <div class="col-md-3 col-7">
-                                                <label class="mb-0 mt-1" for="mrp">MRP</label>
-                                                <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
+                                                <label class="mb-0 mt-1" for="purchased-qty">Purchased Qty</label>
+                                                <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
                                             </div>
 
+                                            <div class="col-md-2 col-7">
+                                                <label class="mb-0 mt-1" for="free-qty">Free Qty</label>
+                                                <input type="text" class="upr-inp" name="free-qty" id="free-qty">
+                                            </div>
+
+                                            <div class="col-md-2 col-7">
+                                                <label class="mb-0 mt-1" for="current-purchase-qty">Current P.Qty</label>
+                                                <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
+                                            </div>
+
+                                            <div class="  col-md-2 col-6">
+                                                <label class="mb-0 mt-1" for="current-free-qty">Current F.Qty:</label>
+                                                <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
+                                            </div>
+
+                                            <div class="col-md-2 col-7">
+                                                <label class="mb-0 mt-1" for="current-qty">Current Qty:</label>
+                                                <input type="text" class="upr-inp" name="current-qty" id="current-qty">
+                                            </div>
+
+                                        </div>
+                                        <!-- first row end  -->
+
+                                        <!-- second row  -->
+                                        <div class="row mt-md-2">
+                                            
                                             <div class="col-md-3 col-7">
                                                 <label class="mb-0 mt-1" for="ptr">PTR</label>
                                                 <input type="text" class="upr-inp" name="ptr" id="ptr" onkeyup="getBillAmount()" readonly>
                                             </div>
-
-                                            <div class="col-md-3 col-7">
-                                                <label class="mb-0 mt-1" for="amount">Amount</label>
-                                                <input type="any" class="upr-inp" name="amount" id="amount" readonly>
-                                            </div>
-                                        </div>
-                                        <!-- first row end  -->
-                                        <!-- second row  -->
-                                        <div class="row mt-3">
+                                            
                                             <div class="col-md-3 col-7">
                                                 <label class="mb-0 mt-1" for="discount">Disc% </label>
                                                 <input type="text" class="upr-inp" name="discount" id="discount" value="" readonly>
                                             </div>
 
                                             <div class="col-md-3 col-7">
-                                                <label class="mb-0 mt-1" for="gst">GST%</label>
-                                                <input type="text" class="upr-inp" name="gst" id="gst" readonly>
-                                            </div>
-
-                                            <div class="d-none col-md-3 col-7">
-                                                <label class="mb-0 mt-1" for="gstAmountPerQty">GST Amount Per Quantity</label>
-                                                <input type="text" class="upr-inp" name="gstAmountPerQty" id="gstAmountPerQty" readonly>
-                                            </div>
-
-                                            <div class="col-md-3 col-7">
-                                                <label class="mb-0 mt-1" for="taxable">Base Price</label>
-                                                <input type="any" class="upr-inp" name="base" id="base" readonly>
+                                                <label class="mb-0 mt-1" for="taxable">D.Price</label>
+                                                <input type="any" class="upr-inp" name="dprice" id="dprice" readonly>
                                             </div>
 
                                             <div class="col-md-3 col-7">
@@ -234,49 +243,16 @@ $showDistributor = $showDistributor->data;
                                                 <input type="any" class="upr-inp" name="taxable" id="taxable" readonly>
                                             </div>
 
-                                            <!-- <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="mrp">MRP</label>
-                                            <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
-                                        </div> -->
-
-
+                                            <div class="col-md-3 col-7">
+                                                <label class="mb-0 mt-1" for="amount">Amount</label>
+                                                <input type="any" class="upr-inp" name="amount" id="amount" readonly>
+                                            </div>
+                                            
                                         </div>
                                         <!-- end second row  -->
 
                                         <!-- third row  -->
-                                        <div class="row mt-md-2">
-                                            
-                                            <div class="col-md-2 col-7">
-                                                <label class="mb-0 mt-1" for="purchased-qty">Buy Qty: </label>
-                                                <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
-                                            </div>
-
-                                            <div class="col-md-2 col-7">
-                                                <label class="mb-0 mt-1" for="free-qty">Free Qty:</label>
-                                                <input type="text" class="upr-inp" name="free-qty" id="free-qty">
-                                            </div>
-
-                                            <div class="  col-md-2 col-7">
-                                                <label class="mb-0 mt-1" for="net-buy-qty">Net Qty:</label>
-                                                <input type="text" class="upr-inp" name="net-buy-qty" id="net-buy-qty">
-                                            </div>
-
-                                            <div class="col-md-2 col-7">
-                                                <label class="mb-0 mt-1" for="current-purchase-qty">Live P Qty:</label>
-                                                <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
-                                            </div>
-
-                                            <div class="  col-md-2 col-6">
-                                                <label class="mb-0 mt-1" for="current-free-qty">Live F Qty:</label>
-                                                <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
-                                            </div>
-
-                                            <div class="col-md-2 col-7">
-                                                <label class="mb-0 mt-1" for="current-qty">Live Qty:</label>
-                                                <input type="text" class="upr-inp" name="current-qty" id="current-qty">
-                                            </div>
-
-                                        </div>
+                                        
                                         <!-- ent fo third row -->
 
                                         <!-- Fourth row 
@@ -349,22 +325,16 @@ $showDistributor = $showDistributor->data;
                                                 <th scope="col" class="">
                                                     <input type="number" value="0" id="serial-control" style="width: 1rem;" hidden>
                                                 </th>
-                                                <th scope="col" hidden></th>
-                                                <th scope="col" hidden></th>
-                                                <th scope="col" hidden>StockInDetailsId</th>
                                                 <th scope="col">Items</th>
-                                                <th scope="col">Batch</th>
-                                                <th scope="col">Exp</th>
-                                                <th scope="col">Unit</th>
-                                                <th scope="col">P.Qty.</th>
-                                                <th scope="col">Free</th>
-                                                <th scope="col">MRP</th>
-                                                <th scope="col">PTR</th>
-                                                <th scope="col">Disc%</th>
-                                                <th scope="col">GST%</th>
-                                                <th scope="col">Ret Qty</th>
-                                                <th scope="col">Ret F.Qty</th>
-                                                <th scope="col">Refund</th>
+                                                <th scope="col" class="text-right">Batch</th>
+                                                <th scope="col" class="text-right">Exp</th>
+                                                <th scope="col" class="text-right">MRP</th>
+                                                <th scope="col" class="text-right">PTR</th>
+                                                <th scope="col" class="text-right">Disc%</th>
+                                                <th scope="col" class="text-right">GST%</th>
+                                                <th scope="col" class="text-right">Return Qty</th>
+                                                <th scope="col" class="text-right">Ret F.Qty</th>
+                                                <th scope="col" class="text-right">Refund</th>
 
                                             </tr>
                                         </thead>

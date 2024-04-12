@@ -171,14 +171,6 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
 
         document.getElementById("product-id").value = productId;
 
-        // //==================== MFD Date ====================
-        // let mfdUrl = `ajax/stockIn.all.ajax.php?stock-mfd=${stokInDetialsId}`;
-        // // alert(expUrl);
-        // xmlhttp.open("GET", mfdUrl, false);
-        // xmlhttp.send(null);
-        // document.getElementById("mfd-date").value = xmlhttp.responseText;
-        // // alert(xmlhttp.responseText);
-
         //==================== Expiry Date ====================
         let expUrl = `ajax/stockIn.all.ajax.php?stock-exp=${stokInDetialsId}`;
         // alert(expUrl);
@@ -195,17 +187,8 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
         document.getElementById("weatage").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
-        //==================== Unit ====================
-        // let unitUrl = `ajax/stockIn.all.ajax.php?unit=${stokInDetialsId}`;
-        // xmlhttp.open("GET", unitUrl, false);
-        // xmlhttp.send(null);
-        // document.getElementById("unit").value = xmlhttp.responseText;
-        // alert(xmlhttp.responseText);
-
         //==================== PTR ====================
         let ptrUrl = `ajax/stockIn.all.ajax.php?ptr=${stokInDetialsId}`;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
         xmlhttp.open("GET", ptrUrl, false);
         xmlhttp.send(null);
         document.getElementById("ptr").value = xmlhttp.responseText;
@@ -238,15 +221,6 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
         document.getElementById("gstAmountPerQty").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
-        // //==================== gstAmount ====================
-        // let gstAmountUrl = `ajax/stockIn.all.ajax.php?gstAmountUrl=${stokInDetialsId}`;
-        // // alert(unitUrl);
-        // // window.location.href = unitUrl;
-        // xmlhttp.open("GET", gstAmountUrl, false);
-        // xmlhttp.send(null);
-        // document.getElementById("gst-amount").value = xmlhttp.responseText;
-        // // alert(xmlhttp.responseText);
-
         //==================== taxable ====================
         let taxableUrl = `ajax/stockIn.all.ajax.php?taxable=${stokInDetialsId}`;
         // alert(unitUrl);
@@ -256,13 +230,11 @@ const getDtls = (stockInId, stokInDetialsId, batchNo, productId, productName, bi
         document.getElementById("taxable").value = parseFloat(xmlhttp.responseText).toFixed(2);
         // alert(xmlhttp.responseText);
 
-        //==================== base price ====================
-        let baseUrl = `ajax/stockIn.all.ajax.php?base=${stokInDetialsId}`;
-        // alert(unitUrl);
-        // window.location.href = unitUrl;
-        xmlhttp.open("GET", baseUrl, false);
+        //==================== dprice price ====================
+        let dpriceURL = `ajax/stockIn.all.ajax.php?dprice=${stokInDetialsId}`;
+        xmlhttp.open("GET", dpriceURL, false);
         xmlhttp.send(null);
-        document.getElementById("base").value = parseFloat(xmlhttp.responseText).toFixed(2);
+        document.getElementById("dprice").value = parseFloat(xmlhttp.responseText).toFixed(2);
 
         //==================== MRP ====================
         let mrpUrl = `ajax/stockIn.all.ajax.php?mrp=${stokInDetialsId}`;
@@ -470,7 +442,7 @@ function addData() {
     var returnQty = document.getElementById("return-qty");
     var returnFreeQty = document.getElementById("return-free-qty");
 
-    var basePrice = document.getElementById("base");
+    var dprice = document.getElementById("dprice");
     var taxableOnPurchase = document.getElementById("taxable");
     var crntPrchsQty = document.getElementById("current-purchase-qty");
     var crntFreeQty = document.getElementById("current-free-qty");
@@ -523,11 +495,7 @@ function addData() {
         Swal.fire("Oops", "Unable to get product weatage!", "error");
         return;
     }
-    // if (unit.value == "") {
-    //     unit.focus();
-    //     swal("Oops", "Unable to get product unit!", "error");
-    //     return;
-    // }
+
     if (ptr.value == "") {
         ptr.focus();
         Swal.fire("Oops", "Unable to get product ptr!", "error");
@@ -632,49 +600,42 @@ function addData() {
                         <i class="fas fa-trash pt-3" onclick='deleteData(${slControl}, ${returnQty.value}, ${taxAmount}, ${refundAmount.value}, ${seletedItemDiv}, ${originalClickHandler})'></i>
                     </td>
                     <td id="row-${slControl}-col-2" style="font-size:.8rem ; padding-top:1.5rem"scope="row">${slno}</td>
-                    <td class="d-none p-0 pt-3">
-                        <input class="  col table-data w-6r" type="text" name="stok-in-details-id[]" value="${stokInDetailsId.value}" readonly>
+                    <td class="pt-3" id="row-${slControl}-col-4">
+                        <input class="td-item" type="text" name="productName[]" value="${productName}" readonly>
+                        <input class="td-item" type="text" name="setof[]" value="${weatage.value}" readonly>
+                        <input class="" type="text" name="productId[]" value="${productId.value}" readonly>
+                        <input class="" type="number" name="purchasedQty[]" value="${purchasedQty.value}" readonly>
+                        <input class="d-none" type="number" name="freeQty[]" value="${freeQty.value}" readonly>
+                        <input class="d-none" type="text" name="stok-in-details-id[]" value="${stokInDetailsId.value}" readonly>
+                        <input class="d-none" type="text" name="distBillNo[]" value="${billNumber.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-4">
-                        <input class="col table-data w-10r" type="text" name="productName[]" value="${productName}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
-                        <input class="col table-data w-10r" type="text" name="productId[]" value="${productId.value}" readonly style="text-align: start;" hidden>
+                    <td class="pt-3" id="row-${slControl}-col-5">
+                        <input class="td-input" type="text" name="batchNo[]" value="${batchNumber.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-5">
-                        <input class="col table-data w-6r" type="text" name="batchNo[]" value="${batchNumber.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
-                        <input class="d-none col table-data w-6r" type="text" name="distBillNo[]" value="${billNumber.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
+                    <td class="pt-3" id="row-${slControl}-col-6">
+                        <input class="td-input" type="text" name="expDate[]" value="${expDate.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-6">
-                        <input class="col table-data w-5r" type="text" name="expDate[]" value="${expDate.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
+                    <td class="pt-3" id="row-${slControl}-col-10">
+                        <input class="td-input" type="text" name="mrp[]" value="${mrp.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-7">
-                        <input class="col table-data w-4r" type="text" name="setof[]" value="${weatage.value}" readonly  style="text-align: start; font-size:0.7rem;; padding-top: 0.7rem;">
+                    <td class="pt-3" id="row-${slControl}-col-11">
+                        <input class="td-input" type="text" name="ptr[]" value="${ptr.value}" readonly>
                     </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-8">
-                        <input class="col table-data w-3r" type="text" name="purchasedQty[]" value="${purchasedQty.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
+                    <td class="pt-3"id="row-${slControl}-col-12">
+                        <input class="td-input" type="text" name="disc-percent[]" value="${discount.value}%" readonly>
                     </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-9">
-                        <input class="col table-data w-3r" type="text" name="freeQty[]" value="${freeQty.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
+                    <td class="ps-1 pt-3" id="row-${slControl}-col-13">
+                        <input class="td-input" type="text" name="gst[]" value="${gst.value}%" readonly>
                     </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-10">
-                        <input class="col table-data w-4r" type="text" name="mrp[]" value="${mrp.value}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
+                    <td class="pt-3" id="row-${slControl}-col-14">
+                        <input class="td-input" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly>
                     </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-11">
-                        <input class="col table-data w-4r" type="text" name="ptr[]" value="${ptr.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
+                    <td class="pt-3" id="row-${slControl}-col-15">
+                        <input class="td-input" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly>
                     </td>
-                    <td class="p-0 pt-3"  id="row-${slControl}-col-12">
-                        <input class="col table-data w-3r" type="text" name="disc-percent[]" value="${discount.value}%" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
+                    <td class="amnt-td pt-3" id="row-${slControl}-col-16">
+                        <input class="td-input" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly>
                     </td>
-                    <td class="p-0 ps-1 pt-3" id="row-${slControl}-col-13">
-                        <input class="col table-data w-3r" type="text" name="gst[]" value="${gst.value}%" readonly style="border-radius: 30%; font-size: .7rem; text-align:center; padding-top: 0.7rem;">
-                    </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-14">
-                        <input class="col table-data w-3r" type="text" name="return-qty[]" value="${parseFloat(returnQty.value)}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
-                    </td>
-                    <td class="p-0 pt-3" id="row-${slControl}-col-15">
-                        <input class="col table-data w-3r" type="text" name="return-free-qty[]" value="${parseFloat(returnFreeQty.value)}" readonly  style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;">
-                    </td>
-                    <td class=" amnt-td p-0 pt-3" id="row-${slControl}-col-16">
-                        <input class="col table-data W-4r" type="text" name="refund-amount[]" value="${refundAmount.value}" readonly style="text-align: start; font-size:0.7rem; padding-top: 0.7rem;"></td>
                 </tr>`);
 
         return true;
@@ -726,7 +687,7 @@ function addData() {
             gst: gst.value,
             gstAmountPerQty: gstAmntPrQty.value,
 
-            basePrice: basePrice.value,
+            basePrice: dprice.value,
             taxableOnPurchase: taxableOnPurchase.value,
             RtrnGstAmount: RtrnGstAmount.value,
             crntPrchsQty: crntPrchsQty.value,
@@ -756,15 +717,15 @@ function addData() {
         document.getElementById(`row-${slControl}-col-6`).onclick = function () {
             editItem(tupleData, originalClickHandler);
         };
-        document.getElementById(`row-${slControl}-col-7`).onclick = function () {
-            editItem(tupleData, originalClickHandler);
-        };
-        document.getElementById(`row-${slControl}-col-8`).onclick = function () {
-            editItem(tupleData, originalClickHandler);
-        };
-        document.getElementById(`row-${slControl}-col-9`).onclick = function () {
-            editItem(tupleData, originalClickHandler);
-        };
+        // document.getElementById(`row-${slControl}-col-7`).onclick = function () {
+        //     editItem(tupleData, originalClickHandler);
+        // };
+        // document.getElementById(`row-${slControl}-col-8`).onclick = function () {
+        //     editItem(tupleData, originalClickHandler);
+        // };
+        // document.getElementById(`row-${slControl}-col-9`).onclick = function () {
+        //     editItem(tupleData, originalClickHandler);
+        // };
         document.getElementById(`row-${slControl}-col-10`).onclick = function () {
             editItem(tupleData, originalClickHandler);
         };

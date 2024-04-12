@@ -102,7 +102,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     </div>
                     <div class="col-sm-3 border-start border-dark">
                         <p class="my-0"><b>Return Bill</b></p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Bill id:
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Return ID:
                                 #<?php echo $stockReturnId; ?></small></p>
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Refund Mode:
                                 <?php echo $refundMode;?></small>
