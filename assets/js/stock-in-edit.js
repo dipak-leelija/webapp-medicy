@@ -895,7 +895,7 @@ const calculateSummary = (addAmount) => {
       billAmount += eachAmount;
     }
   });
-  document.getElementById("net-amount").value = billAmount;
+  document.getElementById("net-amount").value = billAmount.toFixed(2);
 
   const eachQtys = document.querySelectorAll('input[name="qty[]"]');
   eachQtys.forEach((cell) => {
