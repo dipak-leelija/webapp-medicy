@@ -61,6 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $paymentMode        = $_POST['payment-mode-val'];
         $pMode              = $paymentMode;
         $totalGst           = $_POST['totalGst'];
+        echo $totalGst;
         $amount             = $_POST['netAmount'];
         $addedBy            = $employeeId;
 
@@ -329,7 +330,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($stockReturnDetailsData->status == 1) {
                     $stockReturnDetailsData = $stockReturnDetailsData->data;
-                    
+
                     for ($m = 0; $m < count($stockReturnDetailsData); $m++) {
                         // update stock return details by $stockReturnTabelData[0]['id'] and $itemId,
                         $updateStockReturn = $StcokReturn->stockReturnDetailsEditByStockInDetailsId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $item_weightage[$i] . $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $item_gst[$i], $addedBy);
