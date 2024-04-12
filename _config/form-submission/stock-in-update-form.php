@@ -67,11 +67,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $amount             = $_POST['netAmount'];
         $addedBy            = $employeeId;
 
-
-
         $BatchNo            = $_POST['batchNo'];
         $purchaseId         = $_POST['purchaseId'];
-        // $mfdDate            = $_POST['mfdDate'];
         $expDate            = $_POST['expDate'];
 
         $crrntDt = date("d-m-Y");
@@ -79,7 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // =========== array data ===============
         $product_ids            = $_POST['productId'];
         $batch_no               = $_POST['batchNo'];
-        // $mfd_date = $_POST['mfdDate'];
         $exp_date               = $_POST['expDate'];
         $set_of                 = $_POST['setof'];
         $item_weightage         = $_POST['weightage'];
@@ -94,14 +90,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $discountPercent        = $_POST['discount'];
         $billAmount_perItem     = $_POST['billAmount'];
 
-        // print_r($item_qty );
-        // echo  "<br>";
-        // echo floatval($dPrice) . "<br>";
-        // echo intval($item_qty) . "<br>";
-        // echo intval($item_free_qty) . "<br>";
-
-        // echo $baseAmount     = (intval($item_qty) * floatval($dPrice)) / (intval($item_qty) + intval($item_free_qty));
-        // exit;
         // ================ check data ================
         $stockInAttrib = 'id';
         $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttrib, $stockIn_Id);
