@@ -491,19 +491,15 @@ const getBillAmount = () => {
         }
 
         let modifiedPtr = document.getElementById("ptr").value;
-        // console.log(modifiedPtr);
 
-        let dprice = parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100));
-        // base = parseFloat(base) + (parseFloat(base) * (parseFloat(gst) / 100));
+        let dprice = (parseFloat(modifiedPtr) - (parseFloat(modifiedPtr) * (parseFloat(disc) / 100))).toFixed(2);
 
         let totalAmount = (parseFloat(dprice) + (parseFloat(dprice) * (parseFloat(gst) / 100))) * parseInt(qty);
-        totalAmount = totalAmount.toFixed(2);
 
-        dprice = dprice.toFixed(2);
+        totalAmount = totalAmount.toFixed(2);
 
         document.getElementById("dprice").value = dprice;
         document.getElementById("bill-amount").value = totalAmount;
-
 
         //=============================================
         //======= UPDATE GST ON PRODUCT SECTION =======
@@ -563,6 +559,7 @@ const addData = () => {
     let discount = document.getElementById("discount");
     let gst = document.getElementById("gst");
     let dprice = document.getElementById("dprice");
+    
     let billAmount = document.getElementById("bill-amount");
 
     if (distId.value == "" && distId2.value == "") {
@@ -733,9 +730,13 @@ const addData = () => {
 
     ///////// gst amount calculation \\\\\\\\\\\\\\\\\\\\\
     let withoutGstAmount = parseFloat(dprice.value) * parseInt(qty.value);
+    console.log('bill amount : '+billAmount.value);
+    console.log('without gst amount : '+withoutGstAmount);
     let gstPerItem = parseFloat(billAmount.value) - parseFloat(withoutGstAmount);
+    console.log('gst per item : '+gstPerItem);
     gstPerItem = parseFloat(gstPerItem);
     gstPerItem = gstPerItem.toFixed(2);
+    // console.log('gst per item : '+gstPerItem);
     let gstVal = document.getElementById("gst-val").value;
     let onlyGst = parseFloat(gstVal) + parseFloat(gstPerItem);
 
