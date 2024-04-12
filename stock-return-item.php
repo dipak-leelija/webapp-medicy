@@ -163,11 +163,6 @@ $showDistributor = $showDistributor->data;
                                                 <input class="upr-inp" id="bill-date" readonly>
                                             </div>
 
-                                            <!-- <div class="col-md-4 col-12">
-                                                <label class="mb-1 mt-3" for="mfd-date">MFD</label>
-                                                <input class="upr-inp mb-1" type="text" id="mfd-date" readonly>
-                                            </div> -->
-
                                             <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="exp-date">Expiry</label>
                                                 <input class="upr-inp mb-1" type="text" id="exp-date" readonly>
@@ -180,11 +175,12 @@ $showDistributor = $showDistributor->data;
                                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                         </div>
 
-                                        <input type="any" class="upr-inp" name="weatage" id="weatage" readonly>
-                                        <input type="text" class="upr-inp" name="gst" id="gst" readonly>
-                                        <input type="text" class="upr-inp" name="mrp" id="mrp" readonly>
-                                        <input type="text" class="upr-inp" name="net-buy-qty" id="net-buy-qty">
-                                        <input type="text" class="upr-inp" name="gstAmountPerQty" id="gstAmountPerQty" readonly>
+                                        <input class="d-none" type="any" name="weatage" id="weatage" readonly>
+                                        <input class="d-none" type="text" name="gst" id="gst" readonly>
+                                        <input class="d-none" type="text" name="mrp" id="mrp" readonly>
+                                        <input class="d-none" type="text" name="net-buy-qty" id="net-buy-qty">
+                                        <input class="d-none" type="text" name="gstAmountPerQty" id="gstAmountPerQty" readonly>
+                                        <input class="d-none" type="any" name="taxable" id="taxable" readonly>
 
                                     </div>
 
@@ -239,38 +235,12 @@ $showDistributor = $showDistributor->data;
                                             </div>
 
                                             <div class="col-md-3 col-7">
-                                                <label class="mb-0 mt-1" for="taxable">Taxable</label>
-                                                <input type="any" class="upr-inp" name="taxable" id="taxable" readonly>
-                                            </div>
-
-                                            <div class="col-md-3 col-7">
                                                 <label class="mb-0 mt-1" for="amount">Amount</label>
                                                 <input type="any" class="upr-inp" name="amount" id="amount" readonly>
                                             </div>
                                             
                                         </div>
                                         <!-- end second row  -->
-
-                                        <!-- third row  -->
-                                        
-                                        <!-- ent fo third row -->
-
-                                        <!-- Fourth row 
-                                    <div class="row mt-md-2">
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-purchase-qty">Live Qty:</label>
-                                            <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
-                                        </div>
-                                        <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-free-qty">Live Free Qty:</label>
-                                            <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
-                                        </div>
-                                            <div class="col-md-3 col-6">
-                                            <label class="mb-0 mt-1" for="current-qty">Live Net Qty:</label>
-                                            <input type="text" class="upr-inp" name="current-qty" id="current-qty">
-                                        </div> 
-                                    </div> -->
-                                        <!-- end fourth row  -->
 
                                         <!-- fifth row  -->
                                         <div class="row mt-md-2">
