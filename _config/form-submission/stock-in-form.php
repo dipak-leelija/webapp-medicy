@@ -129,8 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } // post request method entered
 
-exit;
-
 $preparedData = url_enc(json_encode(['stockIn_Id' => $addStockIn['stockIn_id']]));
 header('Location: purchase-invoice.php?data='.$preparedData);
 exit;
