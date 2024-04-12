@@ -698,10 +698,14 @@ const addData = () => {
 
   // ====================== GST AMOUNT CALCULATION ======================
   let dpriceAmt = d_price.value;
+  console.log('dpriceAmt : '+dpriceAmt);
   let gstPerItem = (((parseInt(gst.value) / 100) * parseFloat(dpriceAmt)) * qty.value).toFixed(2);
+  // let gstPerItem = ((parseFloat(dpriceAmt) * (parseFloat(gst.value) / 100)) * parseInt(qty.value)).toFixed(2);
+
+  console.log('gstPerItem : '+gstPerItem);
+
   let gstVal = document.getElementById("gst-val").value;
   gstVal = parseFloat(gstVal) + parseFloat(gstPerItem);
-  // console.log('Total GST GST: '+gstVal);
   onlyGst = gstVal.toFixed(2);
   
   
