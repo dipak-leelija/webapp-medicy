@@ -102,10 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         $updatedQty = intval($wholeQty) - $perItemTotalReturnQty;
                     }
                 
-                    // echo "<br>Updated qty : $updatedQty<br>";
-                    // echo "Updated Loose qty : $updatedLooseQty";
-                    // echo "<br><br>";
-
                     $updatedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
 
                     // ============== update current stock function =================
