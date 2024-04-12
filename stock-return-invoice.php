@@ -37,7 +37,7 @@ if (isset($_GET['data'])) {
             $refund         = $returnData->refund_amount;
             $itemQty        = $returnData->items;
             $distributorId  = $returnData->distributor_id;
-            // $billNo         = $returnData->bill_no;
+            $retuenAdmin    = $returnData->admin_id;
 
             $distributorResponse = json_decode($Distributor->showDistributorById($distributorId));
 
@@ -60,10 +60,11 @@ if (isset($_GET['data'])) {
 }
 
 
-$selectClinicInfo = json_decode($HelthCare->showHealthCare($adminId));
+$selectClinicInfo = json_decode($HelthCare->showHealthCare($ADMINID));
 // print_r($selectClinicInfo->data);
 $pharmacyLogo = $selectClinicInfo->data->logo;
 $pharmacyName = $selectClinicInfo->data->hospital_name;
+$pharmacyContact = $selectClinicInfo->data->hospital_phno;
 
 ?>
 
@@ -113,18 +114,6 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 </div>
             </div>
             <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
-            <div class="row my-0">
-                <div class="col-sm-6 my-0">
-                    <p ><small><b>Distributor: </b>
-                            <?= $distributorName; ?></small></p>
-                </div>
-                <div class="col-sm-6 my-0 text-end">
-                    <p style="margin-top: -3px; margin-bottom: 0px;"><small><b>Bill Date: </b>
-                            <?php echo $returnDate; ?></small></p>
-                </div>
-
-            </div>
-            <hr class="my-0" style="height:1px;">
 
             <div class="row">
                 <!-- table heading -->
@@ -134,9 +123,6 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 </div>
                 <div class="col-sm-1">
                     <small><b>Batch</b></small>
-                </div>
-                <div class="col-sm-1">
-                    <small><b>Packing</b></small>
                 </div>
                 <div class="col-sm-1">
                     <small><b>Exp.</b></small>
@@ -161,6 +147,9 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 </div>
                 <div class="col-sm-1" style="width: 7%;">
                     <small><b>Return</b></small>
+                </div>
+                <div class="col-sm-1" style="width: 7%;">
+                    <small><b>F.Return</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
                     <small><b>Refund</b></small>
@@ -200,14 +189,13 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                         }
                         
                 echo '
-                    <div class="col-sm-2 ">
-                        <small>'.substr($productName, 0, 15).'</small>
+                    <div class="col-sm-2 lh-1">
+                        <small>'.substr($productName, 0, 20).'</small>
+                        <br>
+                        <small>'.$setof.'</small>
                     </div>
                     <div class="col-sm-1">
                         <small>'.strtoupper($batchNo).'</small>
-                    </div>
-                    <div class="col-sm-1">
-                        <small>'.$setof.'</small>
                     </div>
                     <div class="col-sm-1">
                         <small>'.$expDate.'</small>
@@ -227,11 +215,14 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     <div class="col-sm-1 text-end" style="width: 7%;">
                         <small>'.$gstPercent.'</small>
                     </div>
-                    <div class="col-sm-1" style="width: 7%;">
+                    <div class="col-sm-1 text-end" style="width: 7%;">
                         <small>'.$discParcent.'</small>
                     </div>
-                    <div class="col-sm-1" style="width: 7%;">
-                        <small>'.$returnQty.'('.$returnFQty.'F'.')'.'</small>
+                    <div class="col-sm-1 text-end" style="width: 7%;">
+                        <small>'.$returnQty.'</small>
+                    </div>
+                    <div class="col-sm-1 text-end" style="width: 7%;">
+                        <small>'.$returnFQty.'</small>
                     </div>
                     <div class="col-sm-1 text-end">
                         <small>'.$refundAmount.'</small>
@@ -250,8 +241,20 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
                 <!-- table total calculation -->
                 <div class="row my-0">
-                    <div class="col-4"></div>
-                    <div class="col-4">
+                    <div class="col-4 border-end text-end">
+                        <div class="row">
+                            <div class="col-4">
+                                <small><b>Customer:</b></small>
+                            </div>
+                            <div class="col-8 text-end">
+                                <small><?= $pharmacyName; ?></small>
+                                <br>
+                                <small><?= $pharmacyContact; ?></small>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 border-end">
                         <div class="row">
                             <div class="col-8 text-end">
                                 <p style="margin-top: -5px; margin-bottom: 0px;"><small>CGST:</small></p>
@@ -300,7 +303,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
 
             </div>
-            <hr style="height: 1px; margin-top: 2px;">
+            <hr style="height: 1px;">
         </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
