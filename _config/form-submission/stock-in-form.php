@@ -105,8 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $looselyCount = $looselyPrice = 0;
                 }
 
-                
                 $addStockInDetails = $StockInDetails->addStockInDetails($stokInid, $productId, $distributorBill, $batchNo, $expDate, intval($weightage), trim($unit), intval($qty), intval($freeQty), intval($looselyCount), floatval($mrp), floatval($ptr), intval($discount), floatval($dprice), intval($gst), floatval($gstPerItem), floatval($base), floatval($amount), $employeeId, NOW);
+
                 // stockIn_Details_id
 
                 if ($addStockInDetails["result"]) {
