@@ -701,7 +701,7 @@ const addData = () => {
   let gstPerItem = (((parseInt(gst.value) / 100) * parseFloat(dpriceAmt)) * qty.value).toFixed(2);
   let gstVal = document.getElementById("gst-val").value;
   gstVal = parseFloat(gstVal) + parseFloat(gstPerItem);
-  console.log('Total GST GST: '+gstVal);
+  // console.log('Total GST GST: '+gstVal);
   onlyGst = gstVal.toFixed(2);
   
   
@@ -895,7 +895,9 @@ const calculateSummary = (addAmount) => {
       billAmount += eachAmount;
     }
   });
-  document.getElementById("net-amount").value = billAmount;
+
+  let netBillAmount = billAmount.toFixed(2);
+  document.getElementById("net-amount").value = netBillAmount;
 
   const eachQtys = document.querySelectorAll('input[name="qty[]"]');
   eachQtys.forEach((cell) => {
@@ -1012,7 +1014,8 @@ function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
       // minus netAmount
       let net = document.getElementById("net-amount");
       let finalAmount = net.value - total;
-      net.value = finalAmount.toFixed(2);
+      net = finalAmount.toFixed(2);
+      document.getElementById("net-amount").value = net;
 
       rowAdjustment(delRow);
 
@@ -1047,7 +1050,8 @@ function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
     // minus netAmount
     let net = document.getElementById("net-amount");
     let finalAmount = net.value - total;
-    net.value = finalAmount.toFixed(2);
+    net = finalAmount.toFixed(2);
+    document.getElementById("net-amount").value = net;
 
     rowAdjustment(delRow);
 

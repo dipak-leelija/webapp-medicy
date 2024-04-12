@@ -35,9 +35,6 @@ $ClinicInfo     = new HealthCare;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['update'])) {
 
-        // print_r($_POST);
-        // exit;
-
         $stockIn_Id         = $_POST['stok-in-id'];
         $prevDistId         = $_POST['prev-distributor-id'];
         $distributorId      = $_POST['updated-distributor-id'];
@@ -64,6 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $paymentMode        = $_POST['payment-mode-val'];
         $pMode              = $paymentMode;
         $totalGst           = $_POST['totalGst'];
+        echo $totalGst;
         $amount             = $_POST['netAmount'];
         $addedBy            = $employeeId;
 
@@ -86,16 +84,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $item_ptr               = $_POST['ptr'];
         $item_gst               = $_POST['gst'];
         $gstAmount_perItem      = $_POST['gstPerItem'];
-        $dPrice                 = $_POST['d_price'];
+        $baseAmount_perItem     = $_POST['base'];
         $discountPercent        = $_POST['discount'];
+        $marginAmount_perItem   = $_POST['margin'];
         $billAmount_perItem     = $_POST['billAmount'];
 
-        // ================ check data ================
+
+        $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+
+        // print_r($item_qty);
+        // echo "<br>"; print_r($item_weightage);
+
+        // ==== check data =====
         $stockInAttrib = 'id';
         $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttrib, $stockIn_Id);
+        // print_r($seleteStockinData);
         if ($seleteStockinData[0]['distributor_bill'] != $distributorBill) {
             foreach ($seleteStockinData as $seleteStockinData) {
-                $updateBillNumber = $StockInDetails->updateStockInDetailsByTableData('distributor_bill', 'id', $distributorBill, $seleteStockinData['id']);
+                $table1 = 'distributor_bill';
+                $table2 = 'id';
+                $updateBillNumber = $StockInDetails->updateStockInDetailsByTableData($table1, $table2, $distributorBill, $seleteStockinData['id']);
             }
         }
 
@@ -118,8 +126,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         /* checking difference between two array to point deleted items */
         $ItemArrayIdsDiff = array_diff($prevStokInItemIdArray, $updatedItemIdsArray);
-        
-        if (!empty($ItemArrayIdsDiff)) {
+
+
+        if ($ItemArrayIdsDiff != '') {
             $ItemNotDeleteCount = 0;
             $WholeNotDeletedQty = 0;
             $WholeNotDeletedGstAmount = 0;
@@ -194,31 +203,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // =========== add of updated stock in details and current stock data ==============
         $count = count($updatedItemIdsArray);
         for ($i = 0; $i < count($updatedItemIdsArray); $i++) {
-            // echo "<br>check : $updatedItemIdsArray[$i]";
             if ($updatedItemIdsArray[$i] == '') {
 
 
                 $item_total_qty = intval($item_qty[$i]) + intval($item_free_qty[$i]);
                 // echo "<br>item total qty check : $item_total_qty";
 
-                if (in_array(strtolower(trim($item_unit[$i])), LOOSEUNITS)) {
+                // if ($item_unit[$i] == 'Tablets' || $item_unit[$i] == 'Capsules')
+                if (in_array(strtolower($item_unit[$i]), $allowedUnits)) {
                     $item_loose_qty = intval($item_total_qty) * intval($item_weightage[$i]);
                     $item_loose_price = floatval($item_mrp[$i]) / intval($item_weightage[$i]);
                 } else {
                     $item_loose_qty = 0;
                     $item_loose_price = 0;
                 }
-                $baseAmount     = (intval($item_qty[$i]) * floatval($dPrice[$i])) / $item_total_qty;
 
                 // echo $item_loose_qty;
 
                 /* add new data to Stock in Details */
-                $addToStockInDetails = $StockInDetails->addStockInDetails($stockIn_Id, $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], $item_weightage[$i], trim($item_unit[$i]), $item_qty[$i], $item_free_qty[$i], $item_loose_qty, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $dPrice[$i], $item_gst[$i], $gstAmount_perItem[$i], $baseAmount, $billAmount_perItem[$i], $employeeId, NOW);
+                $addToStockInDetails = $StockInDetails->addStockInDetails($stockIn_Id, $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], $item_weightage[$i], $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_loose_qty, $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $baseAmount_perItem[$i], $item_gst[$i], $gstAmount_perItem[$i], $marginAmount_perItem[$i], $billAmount_perItem[$i], $employeeId, NOW, $adminId);
 
                 $stockInDetailsId = $addToStockInDetails['stockIn_Details_id'];
 
                 /* add new data to current stock */
-                $addToCurrentStock = $CurrentStock->addCurrentStock($stockInDetailsId, $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $item_loose_qty, $item_loose_price, $item_weightage[$i], trim($item_unit[$i]), $item_total_qty, $item_mrp[$i], $item_ptr[$i], $item_gst[$i], $addedBy, NOW, $adminId);
+                $addToCurrentStock = $CurrentStock->addCurrentStock($stockInDetailsId, $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $item_loose_qty, $item_loose_price, $item_weightage[$i], $item_unit[$i], $item_total_qty, $item_mrp[$i], $item_ptr[$i], $item_gst[$i], $addedBy, NOW, $adminId);
             } else {
 
                 /* update old item data */
@@ -231,13 +239,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $itemQty = $item_qty[$i];
                 $itemFreeQty = $item_free_qty[$i];
-                // $updatedQty = (intval($itemQty) + intval($itemFreeQty)) - intval($prevStockInItemQty);
-                $updatedQty = intval($itemQty) + intval($itemFreeQty);
+                $updatedQty = (intval($itemQty) + intval($itemFreeQty)) - intval($prevStockInItemQty);
 
-
-                $baseAmount     = (intval($item_qty[$i]) * floatval($dPrice[$i])) / $updatedQty;
-
-                if (in_array(strtolower(trim($item_unit[$i])), LOOSEUNITS)) {
+                if (in_array(strtolower($item_unit[$i]), $allowedUnits)) {
                     $updatedStockInLooseQty = intval($updatedQty) * intval($item_weightage[$i]);
                 } else {
                     $updatedStockInLooseQty = 0;
@@ -253,7 +257,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
 
-                if (in_array(strtolower(trim($item_unit[$i])), LOOSEUNITS)) {
+                if (in_array(strtolower($item_unit[$i]), $allowedUnits)) {
                     $updated_Loose_Qty = intval($Loose_Qty) + intval($updatedStockInLooseQty);
                     $updated_item_qty = intdiv($updated_Loose_Qty, $item_weightage[$i]);
                 } else {
@@ -261,10 +265,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updated_item_qty = intval($item_Qty) + intval($updatedQty);
                 }
 
+
                 /* update to current stock */
                 $updateCurrentStockItemData = $CurrentStock->updateCurrentStockByStockInId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $updated_Loose_Qty, $updated_item_qty, $item_ptr[$i], $addedBy);
 
-                if (in_array(strtolower(trim($item_unit[$i])), LOOSEUNITS)) {
+                if (in_array(strtolower($item_unit[$i]), $allowedUnits)) {
                     $stockInLooseCount = (intval($item_qty[$i]) + intval($item_free_qty[$i])) * intval($item_weightage[$i]);
                 } else {
                     $stockInLooseCount = 0;
@@ -272,7 +277,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // ======= need to check this data ============
 
-                $updatedStockInDetails = $StockInDetails->updateStockInDetailsById(intval($updatedItemIdsArray[$i]), $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], intval($item_weightage[$i]), trim($item_unit[$i]), intval($item_qty[$i]), intval($item_free_qty[$i]), intval($stockInLooseCount), floatval($item_mrp[$i]), floatval($item_ptr[$i]), intval($discountPercent[$i]), floatval($dPrice[$i]), intval($item_gst[$i]), floatval($gstAmount_perItem[$i]), floatval($baseAmount), floatval($billAmount_perItem[$i]), $addedBy, NOW);
+                //===========
+
+                $updatedStockInDetails = $StockInDetails->updateStockInDetailsById(intval($updatedItemIdsArray[$i]), $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], intval($item_weightage[$i]), $item_unit[$i], intval($item_qty[$i]), intval($item_free_qty[$i]), intval($stockInLooseCount), floatval($item_mrp[$i]), floatval($item_ptr[$i]), intval($discountPercent[$i]), floatval($baseAmount_perItem[$i]), intval($item_gst[$i]), floatval($gstAmount_perItem[$i]), floatval($marginAmount_perItem[$i]), floatval($billAmount_perItem[$i]), $addedBy, NOW);
 
 
                 /* multiple table update area as bellow data are contain multiple row of same item ids. */
@@ -315,18 +322,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 // update stock return details table
-                $stockReturnDetailsData = $StcokReturn->showStockReturnDataByStokinIdasArray($updatedItemIdsArray[$i]);
+                $stockReturnDetailsData = json_decode($StcokReturn->showStockReturnDataByStokinId($updatedItemIdsArray[$i]));
 
-                if (!empty($stockReturnDetailsData)) {
+                if ($stockReturnDetailsData->status == 1) {
+                    $stockReturnDetailsData = $stockReturnDetailsData->data;
+
                     for ($m = 0; $m < count($stockReturnDetailsData); $m++) {
                         // update stock return details by $stockReturnTabelData[0]['id'] and $itemId,
-                        $updateStockReturn = $StcokReturn->stockReturnDetailsEditByStockInDetailsId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $item_weightage[$i] . trim($item_unit[$i]), $item_qty[$i], $item_free_qty[$i], $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $item_gst[$i], $addedBy);
+                        $updateStockReturn = $StcokReturn->stockReturnDetailsEditByStockInDetailsId($updatedItemIdsArray[$i], $product_ids[$i], $batch_no[$i], $exp_date[$i], $item_weightage[$i] . $item_unit[$i], $item_qty[$i], $item_free_qty[$i], $item_mrp[$i], $item_ptr[$i], $discountPercent[$i], $item_gst[$i], $addedBy);
                     }
                 }
             }
         }
     }
 }
+
 
 
 
