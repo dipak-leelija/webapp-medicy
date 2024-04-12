@@ -1012,7 +1012,8 @@ function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
       // minus netAmount
       let net = document.getElementById("net-amount");
       let finalAmount = net.value - total;
-      net.value = finalAmount.toFixed(2);
+      net = finalAmount.toFixed(2);
+      document.getElementById("net-amount").value = net;
 
       rowAdjustment(delRow);
 
@@ -1047,7 +1048,8 @@ function deleteData(slno, itemQty, gstPerItem, total, pQty, cQty, delflag) {
     // minus netAmount
     let net = document.getElementById("net-amount");
     let finalAmount = net.value - total;
-    net.value = finalAmount.toFixed(2);
+    net = finalAmount.toFixed(2);
+    document.getElementById("net-amount").value = net;
 
     rowAdjustment(delRow);
 
