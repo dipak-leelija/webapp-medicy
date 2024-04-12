@@ -60,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $paymentMode        = $_POST['payment-mode-val'];
         $pMode              = $paymentMode;
         $totalGst           = $_POST['totalGst'];
+        echo $totalGst;
         $amount             = $_POST['netAmount'];
         $BatchNo            = $_POST['batchNo'];
         // $MFDCHECK           = $_POST['mfdDate'];
@@ -127,6 +128,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 } // post request method entered
+
+exit;
 
 $preparedData = url_enc(json_encode(['stockIn_Id' => $addStockIn['stockIn_id']]));
 header('Location: purchase-invoice.php?data='.$preparedData);
