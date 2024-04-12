@@ -35,10 +35,11 @@ $ClinicInfo     = new HealthCare;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['update'])) {
 
-        $stockIn_Id         = $_POST['stok-in-id'];
-        $prevDistId         = $_POST['prev-distributor-id'];
-        $distributorId      = $_POST['updated-distributor-id'];
+        $stockIn_Id         = $_POST['stok-in-id'];                 // stock in id
+        $prevDistId         = $_POST['prev-distributor-id'];        // previous distributor id fetched from database        
+        $distributorId      = $_POST['updated-distributor-id'];     // updated distributo id 
 
+        // distribut details fetched-----
         $distributorDetial = json_decode($distributor->showDistributorById($distributorId));
         $distributorDetial = $distributorDetial->data;
         // print_r($distributorDetial);
@@ -48,75 +49,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $distContact          = $distributorDetial->phno;
 
 
-        $distPrevBillNo     = $_POST['prev-distributor-bill'];
-        $distributorBill    = $_POST['distributor-bill'];
+        $distPrevBillNo     = $_POST['prev-distributor-bill'];      // previous distributor bill no
+        $distributorBill    = $_POST['distributor-bill'];           // updated bill number
 
-        $Items              = $_POST['items'];
-        $items              = count($_POST['productId']);
-        $totalQty           = $_POST['total-qty'];
-        $billDate           = date_create($_POST['bill-date-val']);
-        $billDate           = date_format($billDate, "d-m-Y");
-        $dueDate            = date_create($_POST['due-date-val']);
-        $dueDate            = date_format($dueDate, "d-m-Y");
-        $paymentMode        = $_POST['payment-mode-val'];
-        $pMode              = $paymentMode;
-        $totalGst           = $_POST['totalGst'];
-        echo $totalGst;
-        $amount             = $_POST['netAmount'];
-        $addedBy            = $employeeId;
+        $Items              = $_POST['items'];                      // updated ites array
+        $items              = count($_POST['productId']);           // count of items from array
+        $totalQty           = $_POST['total-qty'];                  // totar qantity of items
+        $billDate           = date_create($_POST['bill-date-val']); 
+        $billDate           = date_format($billDate, "d-m-Y");      // bill date
+        $dueDate            = date_create($_POST['due-date-val']);  
+        $dueDate            = date_format($dueDate, "d-m-Y");       // due date
+        $paymentMode        = $_POST['payment-mode-val'];           // payment mode
+        $pMode              = $paymentMode; 
+        $totalGst           = $_POST['totalGst'];                   // total gst amount
+        $amount             = $_POST['netAmount'];                  // net payble amount                   
 
-        $BatchNo            = $_POST['batchNo'];
-        $purchaseId         = $_POST['purchaseId'];
-        $expDate            = $_POST['expDate'];
-
-        $crrntDt = date("d-m-Y");
 
         // =========== array data ===============
-        $product_ids            = $_POST['productId'];
-        $batch_no               = $_POST['batchNo'];
-        $exp_date               = $_POST['expDate'];
-        $set_of                 = $_POST['setof'];
-        $item_weightage         = $_POST['weightage'];
-        $item_unit              = $_POST['unit'];
-        $item_qty               = $_POST['qty'];
-        $item_free_qty          = $_POST['freeQty'];
-        $item_mrp               = $_POST['mrp'];
-        $item_ptr               = $_POST['ptr'];
-        $item_gst               = $_POST['gst'];
-        $gstAmount_perItem      = $_POST['gstPerItem'];
-        $discPrice              = $_POST['d_price'];
-        $discountPercent        = $_POST['discount'];
-        $marginAmount_perItem   = $_POST['margin'];
-        $billAmount_perItem     = $_POST['billAmount'];
+        $product_ids            = $_POST['productId'];          // product id array
+        $batch_no               = $_POST['batchNo'];            // products batch number array
+        $exp_date               = $_POST['expDate'];            // items expiary date array
+        $set_of                 = $_POST['setof'];              // item setof array (weitage / type)
+        $item_weightage         = $_POST['weightage'];          // item weightage array
+        $item_unit              = $_POST['unit'];               // item unit array
+        $item_qty               = $_POST['qty'];                // item qantity array
+        $item_free_qty          = $_POST['freeQty'];            // item free qantity array
+        $item_mrp               = $_POST['mrp'];                // item mrp array
+        $item_ptr               = $_POST['ptr'];                // item ptr array
+        $item_gst               = $_POST['gst'];                // item gst percentage array
+        $gstAmount_perItem      = $_POST['gstPerItem'];         // per item gst amount array
+        $discountPercent        = $_POST['discount'];           // per item discout percent array
+        $discPrice              = $_POST['d_price'];            // per item discoutned price array
+        // $marginAmount_perItem   = $_POST['margin'];             // per item margin percent array
+        $billAmount_perItem     = $_POST['billAmount'];         // per item net amount array 
 
-
-        // exit;
 
         // ==== check data =====
         $stockInAttrib = 'id';
-        $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttrib, $stockIn_Id);
-        // print_r($seleteStockinData);
+        $seleteStockinData = $StockIn->stockInByAttributeByTable($stockInAttrib, $stockIn_Id); // fetching stock in data by previous stockin id
         if ($seleteStockinData[0]['distributor_bill'] != $distributorBill) {
             foreach ($seleteStockinData as $seleteStockinData) {
                 $table1 = 'distributor_bill';
                 $table2 = 'id';
-                $updateBillNumber = $StockInDetails->updateStockInDetailsByTableData($table1, $table2, $distributorBill, $seleteStockinData['id']);
+                $updateBillNumber = $StockInDetails->updateStockInDetailsByTableData($table1, $table2, $distributorBill, $seleteStockinData['id']);  // updating distributor bill number whether it is changed or not
             }
         }
 
 
         //========== updating stock in table data ===============
-        $updateStockIn = $StockIn->updateStockIn($stockIn_Id, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $employeeId, NOW);
-
+        $updateStockIn = $StockIn->updateStockIn($stockIn_Id, $distributorId, $distributorBill, $items, $totalQty, $billDate, $dueDate, $paymentMode, $totalGst, $amount, $employeeId, NOW);   // updating stock in data whethe it is edited or not
 
         /* updated iitem id array */
-        $updatedItemIdsArray = $_POST['purchaseId'];
+        $updatedItemIdsArray = $_POST['purchaseId'];        // item id array after stok in edit update.
 
-        /* previous added items details array */
-        $PrevStockInDetailsCheck = $StockInDetails->showStockInDetailsByStokId($stockIn_Id);
+        /* previous added items details array */ // fetching previous stock in details id by stock in id
+        $PrevStockInDetailsCheck = $StockInDetails->showStockInDetailsByStokId($stockIn_Id);  
 
         /* storing ids of previous added items in a empty array */
-        $prevStokInItemIdArray = [];
+        $prevStokInItemIdArray = [];   // empty array for storing previous purchased item ids
         foreach ($PrevStockInDetailsCheck as $StokInids) {
             array_push($prevStokInItemIdArray, $StokInids['id']);
         }
@@ -124,17 +114,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         /* checking difference between two array to point deleted items */
         $ItemArrayIdsDiff = array_diff($prevStokInItemIdArray, $updatedItemIdsArray);
 
+        
+        if (!empty($ItemArrayIdsDiff)) {
 
-        if ($ItemArrayIdsDiff != '') {
             $ItemNotDeleteCount = 0;
             $WholeNotDeletedQty = 0;
             $WholeNotDeletedGstAmount = 0;
             $WholeNotDeletedPrice = 0;
+
             foreach ($ItemArrayIdsDiff as $deleteItemId) {
 
                 // === **** $deleteItemId => StockInDetailsItemId **** === 
-                $currentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($deleteItemId));
-                // print_r($currentStockData);
+                // fetching current stock in data using stock in details id
+                $currentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($deleteItemId)); 
                 $currentStockItemId = $currentStockData->id;
 
                 // 1. first check stock out data, if stock out != item id, delete data else show alert massage
@@ -162,9 +154,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     icon: "warning",
                                     });';
                     echo '</script>';
+
                 } else {
 
                     /// deleting from current stock \\\\==============
+                    // if stock out data null, then delete data from current stock
                     $CurrentStockTable = 'stock_in_details_id';
                     $deleteFromCurrentStock = $CurrentStock->deleteByTabelData($CurrentStockTable, $deleteItemId);
 
@@ -200,7 +194,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // =========== add of updated stock in details and current stock data ==============
         $count = count($updatedItemIdsArray);
         for ($i = 0; $i < count($updatedItemIdsArray); $i++) {
-            if ($updatedItemIdsArray[$i] == '') {
+            if ($updatedItemIdsArray[$i] == '') {     // if updated item id array is blank
+
 
 
                 $item_total_qty = intval($item_qty[$i]) + intval($item_free_qty[$i]);
@@ -227,12 +222,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 /* add new data to current stock */
                 $addToCurrentStock = $CurrentStock->addCurrentStock($stockInDetailsId, $product_ids[$i], $batch_no[$i], $exp_date[$i], $distributorId, $item_loose_qty, $item_loose_price, $item_weightage[$i], $item_unit[$i], $item_total_qty, $item_mrp[$i], $item_ptr[$i], $item_gst[$i], $addedBy, NOW, $adminId);
+
             } else {
 
                 /* update old item data */
 
                 // check data difference by id;
-                $stockInDetailsById = $StockInDetails->showStockInDetailsByStokinId($updatedItemIdsArray[$i]);
+                $stockInDetailsById = $StockInDetails->showStockInDetailsByStokinId($updatedItemIdsArray[$i]); // fetching previous stock in detaisl data
                 foreach ($stockInDetailsById as $stockInDetaislData) {
                     $prevStockInItemQty = intval($stockInDetaislData['qty']) + intval($stockInDetaislData['free_qty']);
                 }
@@ -247,7 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updatedStockInLooseQty = 0;
                 }
 
-                // update to current stock data
+                // fetching current stock data
                 $currentStockItmeDetails = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($updatedItemIdsArray[$i]));
 
                 if ($currentStockItmeDetails != null) {
@@ -277,7 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 
 
-                //======================================
+                // update to stock in details ======================================
                 $base = (floatval($discPrice[$i]) * intval($item_qty[$i])) / (intval($item_qty[$i]) + intval($item_free_qty[$i]));
 
                 $updatedStockInDetails = $StockInDetails->updateStockInDetailsById(intval($updatedItemIdsArray[$i]), $product_ids[$i], $distributorBill, $batch_no[$i], $exp_date[$i], intval($item_weightage[$i]), $item_unit[$i], intval($item_qty[$i]), intval($item_free_qty[$i]), intval($stockInLooseCount), floatval($item_mrp[$i]), floatval($item_ptr[$i]), intval($discountPercent[$i]), floatval($discPrice[$i]), intval($item_gst[$i]), floatval($gstAmount_perItem[$i]), floatval($base), floatval($billAmount_perItem[$i]), $addedBy, NOW);
