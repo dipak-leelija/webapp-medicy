@@ -730,13 +730,8 @@ const addData = () => {
 
     ///////// gst amount calculation \\\\\\\\\\\\\\\\\\\\\
     let withoutGstAmount = parseFloat(dprice.value) * parseInt(qty.value);
-    console.log('bill amount : '+billAmount.value);
-    console.log('without gst amount : '+withoutGstAmount);
-    let gstPerItem = parseFloat(billAmount.value) - parseFloat(withoutGstAmount);
-    console.log('gst per item : '+gstPerItem);
-    gstPerItem = parseFloat(gstPerItem);
-    gstPerItem = gstPerItem.toFixed(2);
-    // console.log('gst per item : '+gstPerItem);
+    let gstPerItem = (parseFloat(billAmount.value) - parseFloat(withoutGstAmount)).toFixed(2);
+    
     let gstVal = document.getElementById("gst-val").value;
     let onlyGst = parseFloat(gstVal) + parseFloat(gstPerItem);
 
