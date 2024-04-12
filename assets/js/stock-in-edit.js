@@ -701,7 +701,7 @@ const addData = () => {
   let gstPerItem = (((parseInt(gst.value) / 100) * parseFloat(dpriceAmt)) * qty.value).toFixed(2);
   let gstVal = document.getElementById("gst-val").value;
   gstVal = parseFloat(gstVal) + parseFloat(gstPerItem);
-  console.log('Total GST GST: '+gstVal);
+  // console.log('Total GST GST: '+gstVal);
   onlyGst = gstVal.toFixed(2);
   
   
@@ -895,7 +895,9 @@ const calculateSummary = (addAmount) => {
       billAmount += eachAmount;
     }
   });
-  document.getElementById("net-amount").value = billAmount.toFixed(2);
+
+  let netBillAmount = billAmount.toFixed(2);
+  document.getElementById("net-amount").value = netBillAmount;
 
   const eachQtys = document.querySelectorAll('input[name="qty[]"]');
   eachQtys.forEach((cell) => {
