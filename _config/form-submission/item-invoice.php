@@ -1,5 +1,6 @@
 <?php
 require_once dirname(dirname(__DIR__)) . '/config/constant.php';
+require_once dirname(dirname(__DIR__)) . '/config/service.const.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR.'encrypt.inc.php';
 
@@ -78,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $amount             = $_POST['amount'];
 
 
-    $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+    // $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
 
     // ===================== STOCK OUT AND SALES ITEM BILL GENERATION AREA =========================
     if (isset($_POST['submit'])) {
@@ -93,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $ItemUnit = preg_replace("/[^a-z-A-Z]/", '', $weightage[$i]);
                 $ItemWeightage = preg_replace("/[^0-9]/", '', $weightage[$i]);
 
-                if (in_array(strtolower($ItemUnit), $allowedUnits)){
+                if (in_array(strtolower($ItemUnit), LOOSEUNITS)){
 
                     $itemSellQty = $qty[$i];
 
@@ -131,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // =========== AFTER SELL CURREN STOCK CALCULATION AND UPDATE AREA ============= 
 
-                if (in_array(strtolower($ItemUnit), $allowedUnits)){
+                if (in_array(strtolower($ItemUnit), LOOSEUNITS)){
                     $updatedLooseCount     = intval($itemLooseQty) - intval($itemSellQty);
                     $UpdatedNewQuantity   = intval($updatedLooseCount / $ItemWeightage);
                 } else {
