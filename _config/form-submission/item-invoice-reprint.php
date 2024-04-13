@@ -401,11 +401,17 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
         </div>
     </div>
     <div class="justify-content-center print-sec d-flex my-5">
-        <button class="btn btn-primary shadow mx-2" onclick="history.back()">Go Back</button>
+        <button class="btn btn-primary shadow mx-2" onclick="bactoNewSell()">Go Back</button>
         <button class="btn btn-primary shadow mx-2" onclick="window.print()">Print Bill</button>
     </div>
     </div>
 </body>
 <script src="<?php echo JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
+
+<script>
+    const bactoNewSell = () =>{
+        window.location = "<?php echo LOCAL_DIR ?>new-sales.php";
+    }
+</script>
 
 </html>
