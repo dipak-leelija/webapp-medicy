@@ -24,7 +24,6 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 // alert(dataObject.itemWeatage);
 
                 var dataObject = JSON.parse(data);
-                console.log(dataObject);
 
                 var mrp = parseFloat(dataObject.Mrp);
                 var itemUnit = dataObject.itemUnit;
@@ -55,6 +54,8 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 }
 
                 var discPrice = parseFloat(mrp) - (parseFloat(mrp) * parseFloat(discPercent) / 100);
+
+                var itemPerchaseCost = parseFloat(dataObject.purchaseCost) * parseInt(dataObject.sellQty);
                 //==============================================================
                 document.getElementById('invoice-id').value = dataObject.invoiceId;
                 document.getElementById('stock-out-details-id').value = dataObject.stockOutDetailsId;
@@ -80,6 +81,9 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 document.getElementById('disc').value = dataObject.dicPercent;
                 document.getElementById('dPrice').value = discPrice;
                 document.getElementById('gst').value = dataObject.gstPercent;
+                document.getElementById('per-item-purchased-cost').value = parseFloat(dataObject.purchaseCost).toFixed(2)
+                document.getElementById("purchased-cost").value = itemPerchaseCost.toFixed(2);
+                document.getElementById('s-margin').value = dataObject.saleMargin;
                 document.getElementById('margin').value = dataObject.margin;
                 document.getElementById('taxable').value = dataObject.taxable;
                 document.getElementById('amount').value = dataObject.paybleAmount;
@@ -348,7 +352,7 @@ const stockDetails = (productId, batchNo, itemId) => {
         xmlhttp.open("GET", weightageUrl, false);
         xmlhttp.send(null);
         let packWeightage = xmlhttp.responseText;
-        console.log(packWeightage);
+        // console.log(packWeightage);
         document.getElementById("item-weightage").value = xmlhttp.responseText;
         // alert(xmlhttp.responseText);
 
@@ -467,6 +471,7 @@ const stockDetails = (productId, batchNo, itemId) => {
         document.getElementById("disc").value = '';
         document.getElementById("dPrice").value = '';
         document.getElementById("taxable").value = '';
+        document.getElementById('per-item-purchased-cost').value = '';
         document.getElementById("amount").value = '';
 
         // document.getElementById("qty-type").setAttribute("disabled", true);
@@ -597,14 +602,19 @@ const onQty = (qty) => {
         document.getElementById("type-check").value = '';
     }
     // console.log("DISCOUNT PRICE CHECK ON MARGINE  : ", discPrice);
-
-    //==================== Margin on an Item ====================
     var currentItemId = document.getElementById('item-id').value;
 
+    //==================== purchased-cost on an Item ====================
+    var peritemPerchaseCost = document.getElementById('per-item-purchased-cost').value;
+    var modifiedPerchaseCost = parseFloat(peritemPerchaseCost) * parseInt(qty);
+    document.getElementById('purchased-cost').value = modifiedPerchaseCost.toFixed(2);
+
+    //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
     xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
+
 
     // check margine amount alert
     if(parseFloat(document.getElementById("margin").value) < 0){
@@ -641,6 +651,20 @@ const onQty = (qty) => {
             }
           });
     }
+
+
+    // =============== sales margin calculation area ==============
+
+    // sellMarginUrl = `ajax/product.stockDetails.getMargin.ajax.php?smPid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
+    // xmlhttp.open("GET", sellMarginUrl, false);
+    // xmlhttp.send(null);
+    // document.getElementById("s-margin").value = xmlhttp.responseText;
+
+    var payble = document.getElementById("amount").value;
+    var pAmount = document.getElementById("ptr").value; // purchased cost
+    var salesMargin = parseFloat(payble) - parseFloat(pAmount);
+    document.getElementById("s-margin").value = salesMargin;
+
 }
 
 
@@ -727,7 +751,8 @@ const ondDisc = (disc) => {
 
     var currentItemId = document.getElementById('item-id').value;
 
-    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
+    marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
+    xmlhttp.open("GET", marginUrl, false);
     xmlhttp.send(null);
     document.getElementById("margin").value = xmlhttp.responseText;
 
@@ -766,6 +791,18 @@ const ondDisc = (disc) => {
             }
           });
     }
+
+    // ================ sales margin calculation area ==================
+
+    // sellMarginUrl = `ajax/product.stockDetails.getMargin.ajax.php?smPid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
+    // xmlhttp.open("GET", sellMarginUrl, false);
+    // xmlhttp.send(null);
+    // document.getElementById("s-margin").value = xmlhttp.responseText;
+
+    var payble = document.getElementById("amount").value;
+    var pAmount = document.getElementById("ptr").value; // purchased cost
+    var salesMargin = parseFloat(payble) - parseFloat(pAmount);
+    document.getElementById("s-margin").value = salesMargin;
 }
 
 
@@ -810,7 +847,11 @@ const addSummary = () => {
     let looseStock = document.getElementById("loose-stock").value;
     let loosePrice = document.getElementById("loose-price").value;
     let itemPtr = document.getElementById("ptr").value;
+    let peritemPerchaseCost = document.getElementById("per-item-purchased-cost").value;
+    let itemPerchaseCost = document.getElementById("purchased-cost").value;
     let margin = document.getElementById("margin").value;
+    let saleMargin = document.getElementById("s-margin").value;
+
 
     // console.log("item ptr check : ",itemPtr);
     // console.log("item margin check : ",margin);
@@ -1016,6 +1057,10 @@ const addSummary = () => {
             </td>
 
             <td class="d-none">
+                <input class="summary-items" type="text" name="saleMargin[]" value="${saleMargin}" readonly>
+            </td>
+
+            <td class="d-none">
                 <input class="summary-items" type="text" name="ptr[]" value="${itemPtr}" readonly>
             </td>
             <td class="d-none">
@@ -1052,7 +1097,10 @@ const addSummary = () => {
         looseStock: looseStock,
         loosePrice: loosePrice,
         itemPtr: itemPtr,
+        peritemPerchaseCost: peritemPerchaseCost,
+        itemPerchaseCost: itemPerchaseCost,
         margin: margin,
+        saleMargin: saleMargin,
     };
 
     let tupleData = JSON.stringify(dataTuple);
@@ -1164,7 +1212,7 @@ function rowAdjustment(delRow) {
 
 
 const itemEditOption = (tuple) => {
-    console.log(tuple);
+    // console.log(tuple);
 
     if (document.getElementById('product-id').value == '') {
         let tData = JSON.parse(tuple);
@@ -1200,7 +1248,10 @@ const itemEditOption = (tuple) => {
 
         document.getElementById('loose-stock').value = tData.looseStock;
         document.getElementById('loose-price').value = tData.loosePrice;
+        document.getElementById('per-item-purchased-cost').value = tData.peritemPerchaseCost;
+        document.getElementById('purchased-cost').value = tData.itemPerchaseCost;
         document.getElementById('margin').value = tData.margin;
+        document.getElementById('s-margin').value = tData.saleMargin;
 
         //----------------------------------------------------
         let gstPerItem = parseFloat(tData.amount) - parseFloat(tData.taxable);

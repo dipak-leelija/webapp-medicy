@@ -5,6 +5,7 @@ require_once dirname(__DIR__) . '/config/service.const.php';
 require_once ROOT_DIR . '_config/sessionCheck.php';
 require_once CLASS_DIR . 'dbconnect.php';
 require_once CLASS_DIR . "doctors.class.php";
+require_once CLASS_DIR . 'stockInDetails.class.php';
 require_once CLASS_DIR . 'stockOut.class.php';
 require_once CLASS_DIR . 'products.class.php';
 require_once CLASS_DIR . 'currentStock.class.php';
@@ -14,6 +15,7 @@ $StockOut = new StockOut();
 $Products = new Products();
 $CurrentStock = new CurrentStock();
 $Manufacturer = new Manufacturer();
+$StockInDetails = new StockInDetails;
 
 
 $StockOutDetaislId = $_POST['stock_out_details_id'];
@@ -41,7 +43,8 @@ foreach ($stockOutItemDetails as $selsItemData) {
     $stockOutDetailsDiscount          = $selsItemData['discount'];
     $stockOutDetailsGst               = $selsItemData['gst'];
     $stockOutDetailsGstAmount         = $selsItemData['gst_amount'];
-    $stockOutDetailsMargin            = $selsItemData['margin'];
+    $stockOutSellMargin               = $selsItemData['sales_margin'];
+    $stockOutDetailsMargin            = $selsItemData['profit_margin'];
     $stockOutDetailsItemTaxableAmount = $selsItemData['taxable'];
     $stockOutDetailsamount            = $selsItemData['amount'];
 
@@ -62,6 +65,8 @@ foreach ($stockOutItemDetails as $selsItemData) {
 // // //================== AVAILIBILITY CHECK FROM CURRENT STOCK ====================
 $currentStockData = $CurrentStock->showCurrentStocById($stockOutDetailsItemId);
 foreach ($currentStockData as $currenStock) {
+
+    $stockInDetailsId = $currenStock['stock_in_details_id'];
     // $currentStockUnit = $currenStock['unit'];
 
     // if ($currentStockUnit == 'Tablets' || $currentStockUnit == 'Capsules') {
@@ -114,6 +119,34 @@ foreach ($currentStockData as $currenStock) {
     }
 
 
+
+// ============= stock out purchase cost calculation area ==================
+$stockInDetailsData = $StockInDetails->showStockInDetailsByStokinId($stockInDetailsId);
+
+foreach($stockInDetailsData as $stockInDetailsData){
+    $stockInAmount = $stockInDetailsData['amount'];
+    $stockInQty = $stockInDetailsData['qty'];
+    $stockInFreeQty = $stockInDetailsData['free_qty'];
+    $itemWeightage = $stockInDetailsData['weightage'];
+
+    if (in_array(strtolower($stockInDetailsData['unit']), LOOSEUNITS)) {
+        $perItemCost = floatval($stockInAmount) / ((intval($stockInQty) + intval($stockInFreeQty)) * intval($itemWeightage));
+
+        // $purchaseCost = floatval($perItemCost) * intval($sellQty);
+        // $purchaseCost = round($purchaseCost, 2);
+        
+    } else {
+
+        $perItemCost = floatval($stockInAmount) / (intval($stockInQty) + intval($stockInFreeQty));
+
+        // $purchaseCost = floatval($perItemCost) * intval($sellQty);
+        // $purchaseCost = round($purchaseCost, 2);
+        
+    }
+
+}
+
+
 // // //////////////////////\\\\\\\\\\\\\\\\\\\\\\\\================///////////////////////\\\\\\\\\\\\\\\\\\\\\\
 $stockOutDetailsDataArry = array(
     "stockOutDetailsId"         =>  $stockOutDetailsId,
@@ -138,6 +171,8 @@ $stockOutDetailsDataArry = array(
     "dicPercent"                =>  $stockOutDetailsDiscount,
     "gstPercent"                =>  $stockOutDetailsGst,
     "gstAmount"                 =>  $stockOutDetailsGstAmount,
+    "purchaseCost"              =>  $perItemCost,
+    "saleMargin"                =>  $stockOutSellMargin,
     "margin"                    =>  $stockOutDetailsMargin,
     "taxable"                   =>  $stockOutDetailsItemTaxableAmount,
     "paybleAmount"              =>  $stockOutDetailsamount
@@ -148,8 +183,6 @@ $stockOutDetailsDataArry = json_encode($stockOutDetailsDataArry);
 
 if ($itemId == true) {
     echo $stockOutDetailsDataArry;
-    // echo $StockOutDetaislId;
-    // echo $itemId;
 } else {
     echo 0;
 }

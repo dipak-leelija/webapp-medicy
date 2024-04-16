@@ -22,15 +22,15 @@ if (isset($_GET["currentItemId"])) {
     if ($qtyTyp == "Loose") {
         $eachPurchaseCost = $purchaseCost / $stockInData[0]['weightage'];
         $totalPurchaseCost = $eachPurchaseCost * $qty;
-        echo number_format($totalPurchaseCost,2);
+        echo round($totalPurchaseCost,2);
 
     }elseif($qtyTyp == "Pack"){
         $currentQty = $qty / $stockInData[0]['weightage'];
         $totalPurchaseCost = $purchaseCost * $currentQty;
-        echo number_format($totalPurchaseCost,2);
+        echo round($totalPurchaseCost,2);
     }else {
         $totalPurchaseCost = intval($qty)*floatval($purchaseCost);
-        echo number_format($totalPurchaseCost,2);
+        echo round($totalPurchaseCost,2);
     }
 }
 

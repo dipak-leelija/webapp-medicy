@@ -319,7 +319,7 @@ if ($_GET['id']) {
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly >
+                                                        <input class="d-none sale-inp" type="any" id="manuf" style="border-width: 0px;" readonly>
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
                                                 </div>
@@ -344,18 +344,40 @@ if ($_GET['id']) {
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
-                                                    <div class="col-md-4 col-6 mb-4 d-flex">
-                                                        <label for="" style="margin-top: 6px;">PTR:</label>
-                                                        <input class="sale-inp" type="any" id="ptr" style="border-width: 0px;" readonly>
+                                                    <div class="col-md-3 col-6 mb-4">
+                                                        <div class="row">
+                                                            <label for="" style="margin-top: 6px;">Purchased Cost:</label>
+                                                        </div>
+                                                        <div class="row">
+                                                            <input class="d-none sale-inp" type="any" id="ptr" style="border-width: 0px;" readonly>
+                                                            <input class="d-none sale-inp" type="any" id="per-item-purchased-cost" style="border-width: 0px;" readonly>
+                                                            <input class="sale-inp" type="any" id="purchased-cost" style="border-width: 0px;" readonly>
+                                                        </div>
                                                     </div>
 
-                                                    <div class="col-md-4 col-6 mb-4 d-flex">
-                                                        <label for="" style="margin-top: 6px;">Margin:</label>
-                                                        <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
+                                                    <div class="col-md-3 col-6 mb-4">
+                                                        <div class="row">
+                                                            <label for="" style="margin-top: 6px;">Sales Margin:</label>
+                                                        </div>
+                                                        <div class="row">
+                                                            <input class="sale-inp" type="any" id="s-margin" style="border-width: 0px;" readonly>
+                                                        </div>
                                                     </div>
 
-                                                    <div class="col-md-4 col-6 mb-4 d-flex justify-content-end">
-                                                        <button type='button' class="btn btn-sm btn-primary w-100" id="add-edit-data" onclick="addSummary()"><i class="fas fa-check-circle"></i>Add</button>
+                                                    <div class="col-md-3 col-6 mb-4">
+                                                        <div class="row">
+                                                            <label for="" style="margin-top: 6px;">Profit Margin:</label>
+                                                        </div>
+                                                        <div class="row">
+                                                            <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 col-6 mb-4 d-flex">
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-9">
+                                                            <button type='button' class="btn btn-sm btn-primary w-100" id="add-edit-data" onclick="addSummary()"><i class="fas fa-check-circle"></i>Add</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -482,7 +504,7 @@ if ($_GET['id']) {
 
                                                                     <input type="text" name="Manuf[]" value="<?php echo $manufId; ?>" class="d-none">
                                                                 </td>
-                                                                
+
                                                                 <td onclick="editItem(<?php echo $stockOutDetails[$i]['id']; ?>, <?php echo $details[$i]['item_id']; ?>, <?php echo $slno ?>, <?php echo $qty ?>, <?php echo $details[$i]['gst_amount'] ?>, <?php echo $billAmountPerItem ?>, <?php echo $details[$i]['amount'] ?>)" class="d-none">
 
                                                                     <input class="summary-items" type="text" name="stockOut-details-id[]" value="<?php echo $stockOutDetails[$i]['id']; ?>" readonly>

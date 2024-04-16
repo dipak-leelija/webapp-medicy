@@ -1125,16 +1125,16 @@ class StockOut extends DatabaseConnection
     ###########################################################################################################
 
 
-    function addStockOutDetails($invoiceId, $itemId, $productId, $productName, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $gstAmount, $margin, $taxable, $amount)
+    function addStockOutDetails($invoiceId, $itemId, $productId, $productName, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $gstAmount, $sMargin, $margin, $taxable, $amount)
     {
         try {
-            $addStockOutDetails = $this->conn->prepare("INSERT INTO `stock_out_details`(`invoice_id`, `item_id`, `product_id`, `item_name`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `gst_amount`, `margin`, `taxable`, `amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $addStockOutDetails = $this->conn->prepare("INSERT INTO `stock_out_details`(`invoice_id`, `item_id`, `product_id`, `item_name`, `batch_no`, `exp_date`, `weightage`, `unit`, `qty`, `loosely_count`, `mrp`, `ptr`, `discount`, `gst`, `gst_amount`, `sales_margin`, `profit_margin`, `taxable`, `amount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             if (!$addStockOutDetails) {
                 return false; // Return false on query failure
             }
 
-            $addStockOutDetails->bind_param("iissssssssddssdddd", $invoiceId, $itemId, $productId, $productName, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $gstAmount, $margin, $taxable, $amount);
+            $addStockOutDetails->bind_param("iissssssssddssddddd", $invoiceId, $itemId, $productId, $productName, $batchNo, $expDate, $weightage, $unit, $qty, $looselyCount, $mrp, $ptr, $discount, $gst, $gstAmount, $sMargin, $margin, $taxable, $amount);
 
             if ($addStockOutDetails->execute()) {
                 $addStockOutDetails->close();
@@ -1152,14 +1152,14 @@ class StockOut extends DatabaseConnection
 
 
 
-    function updateStockOutDetaislById($id, $qty, $looseQty, $disc, $margin, $taxable, $gstAmount, $amount, $updatedBy, $updatedOn)
+    function updateStockOutDetaislById($id, $qty, $looseQty, $disc, $sellMargin, $margin, $taxable, $gstAmount, $amount, $updatedBy, $updatedOn)
     {
         try {
-            $updateQuery = "UPDATE `stock_out_details` SET `qty`=?, `loosely_count`=?, `discount`=?, `margin`=?, `taxable`=?, `gst_amount`=?, `amount`=?, `updated_by`=?, `updated_on`=? WHERE `id`=?";
+            $updateQuery = "UPDATE `stock_out_details` SET `qty`=?, `loosely_count`=?, `discount`=?, `sales_margin`=?, `profit_margin`=?, `taxable`=?, `gst_amount`=?, `amount`=?, `updated_by`=?, `updated_on`=? WHERE `id`=?";
             $stmt = $this->conn->prepare($updateQuery);
 
             if ($stmt) {
-                $stmt->bind_param("iiiddddssi", $qty, $looseQty, $disc, $margin, $taxable, $gstAmount, $amount, $updatedBy, $updatedOn, $id);
+                $stmt->bind_param("iiidddddssi", $qty, $looseQty, $disc, $sellMargin, $margin, $taxable, $gstAmount, $amount, $updatedBy, $updatedOn, $id);
 
                 if ($stmt->execute()) {
                     $stmt->close();
