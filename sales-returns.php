@@ -1,15 +1,15 @@
 <?php
 $page = "sales-returns";
-require_once __DIR__.'/config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once __DIR__ . '/config/constant.php';
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 // require_once ROOT_DIR . '_config/accessPermission.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR.'salesReturn.class.php';
-require_once CLASS_DIR.'patients.class.php';
-require_once CLASS_DIR.'stockOut.class.php';
-require_once CLASS_DIR.'currentStock.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'salesReturn.class.php';
+require_once CLASS_DIR . 'patients.class.php';
+require_once CLASS_DIR . 'stockOut.class.php';
+require_once CLASS_DIR . 'currentStock.class.php';
 
 $SalesReturn   = new SalesReturn();
 $Patients      = new Patients();
@@ -49,7 +49,7 @@ $currentStock  = new CurrentStock();
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -59,7 +59,7 @@ $currentStock  = new CurrentStock();
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -73,7 +73,7 @@ $currentStock  = new CurrentStock();
                     <!-- Showing Sell Items  -->
                     <div class="card shadow mb-2">
                         <div class="card-body">
-                            
+
                             <div class="table-responsive">
                                 <table class="table item-table table-sm text-dark" id="dataTable" style="width: 100%;">
                                     <thead class="thead-white bg-primary text-light">
@@ -93,41 +93,43 @@ $currentStock  = new CurrentStock();
                                         <?php
 
                                         $table1 = 'admin_id';
-                                        $table2 = "status";  # fetching those data whose STATUS are 
-                                        $data2 = "1";   #  ACTIVE FROM SALES RETURN TABLE
+                                        // $table2 = "status";  # fetching those data whose STATUS are 
+                                        // $data2 = "1";   #  ACTIVE FROM SALES RETURN TABLE
 
-                                        $returns = $SalesReturn->selectSalesReturnByAttribs($table1, $table2, $adminId, $data2);
-                                        
+                                        $returns = $SalesReturn->selectSalesReturn($table1, $adminId);
+
+
                                         if (count($returns) > 0) {
+                                            
                                             foreach ($returns as $item) {
-                                                //print_r($item); echo "<br><br>"; 
                                                 $invoiceId = $item['invoice_id'];
                                                 $salesReturnId = $item['id'];
-                                                // echo $invoiceId,"<br>";
-                                                // echo $salesReturnId;
-                                                if ($item['patient_id'] == "Cash Sales") {
-                                                    $patientName = "Cash Sales";
-                                                } else {
-                                                    $patient = json_decode($Patients->patientsDisplayByPId($item['patient_id']));
-                                                    //print_r($patient); echo "<br><br>";
-                                                    $patientName = $patient->name;
+                                                $patientName = ($item['patient_id'] == "Cash Sales") ? "Cash Sales" : json_decode($Patients->patientsDisplayByPId($item['patient_id']))->name;
+                                                $rowStyle = ($item['status'] == 0) ? 'style="color: white; background-color: red;"' : '';
+                                            
+                                                echo '<tr ' . $rowStyle . '>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $invoiceId . '</td>
+                                                        <td hidden>' . $salesReturnId . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $patientName . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['items'] . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['bill_date'])) . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['return_date'])) . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['added_by'] . '</td>
+                                                        <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['refund_amount'] . '</td>
+                                                        <td>';
+                                            
+                                                if ($item['status'] != 0) {
+                                                    echo '<a class="text-primary ml-4" onclick="editSalesReturn(' . $invoiceId . ',' . $salesReturnId . ')"><i class="fas fa-edit"></i></a>
+                                                          <a class="text-danger ml-2" onclick="cancelSalesReturn(this)" id="' . $salesReturnId . '"><i class="fas fa-window-close"></i></a>';
+                                                }else{
+                                                    echo '</td>
+                                                      </tr>';
                                                 }
-                                                echo '<tr>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $invoiceId . '</td>
-                                                    <td hidden>' . $salesReturnId . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $patientName . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['items'] . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['bill_date'])) . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . date('d-m-Y', strtotime($item['return_date'])) . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' . $invoiceId . ',' . $salesReturnId . ')">' . $item['added_by'] . '</td>
-                                                    <td data-toggle="modal" data-target="#viewReturnModal" onclick="viewReturnItem(' .$invoiceId . ',' . $salesReturnId . ')">' . $item['refund_amount'] . '</td>
-                                                    <td>
-                                                        <a href="sales-return-edit.php?invoice=' . $invoiceId . '&salesReturnId=' . $salesReturnId . '" class="text-primary ml-4"><i class="fas fa-edit"></i></a>
-                                                        <a class="text-danger ml-2" onclick="cancelSalesReturn(this)" id="'.$salesReturnId.'" ><i class="fas fa-window-close"></i></a>
-                                                    </td> 
-                                                </tr>';
+                                            
                                             }
+                                            
                                         }
+
                                         ?>
                                     </tbody>
                                 </table>
@@ -144,7 +146,7 @@ $currentStock  = new CurrentStock();
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -198,21 +200,26 @@ $currentStock  = new CurrentStock();
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
 
     <script>
+        const xmlhttp = new XMLHttpRequest();
+
         const viewReturnItem = (invoice, id) => {
-            // alert(invoice);
-            // alert(id);
-            var xmlhttp = new XMLHttpRequest();
             let url = `ajax/viewSalesReturn.ajax.php?invoice=${invoice}&id=${id}`;
             xmlhttp.open("GET", url, false);
             xmlhttp.send(null);
             document.getElementById('viewReturnModalBody').innerHTML = xmlhttp.responseText
         }
-    </script>
 
-    <script>
+
+        const editSalesReturn = (invoiceId, salesReturnId) => {
+            let editUrl = `sales-return-edit.php?invoice=${invoiceId}&salesReturnId=${salesReturnId}`;
+            window.location.href = editUrl;
+        };
+
+
         const cancelSalesReturn = (t) => {
-            // alert(t.id);
+           
             cancelId = t.id;
+           
             swal({
                     title: "Are you sure?",
                     text: "Do you really cancel theis transaction?",
@@ -220,39 +227,42 @@ $currentStock  = new CurrentStock();
                     buttons: true,
                     dangerMode: true,
                 })
-            .then((willDelete) => {
-                if (willDelete) {
+                .then((willDelete) => {
+                    if (willDelete) {
 
-                    $.ajax({
-                        url: "ajax/salesReturnCancle.ajax.php?",
-                        type: "POST",
-                        data:{
-                            id: cancelId
-                        },
-                        success: function(response) {
-                            // alert(response);
-                            if (response.includes('1')) {
-                                swal(
-                                    "Canceled",
-                                    "Transaction Has Been Canceled",
-                                    "success"
-                                ).then(function() {
-                                    $(t).closest("tr").fadeOut()
-                                    // window.location.reload();
-                                });
+                        $.ajax({
+                            url: "ajax/salesReturnCancle.ajax.php?",
+                            type: "POST",
+                            data: {
+                                id: cancelId
+                            },
+                            success: function(response) {
+                                console.log(response);
+                                if (response.includes('1')) {
+                                    swal(
+                                        "Canceled",
+                                        "Transaction Has Been Canceled",
+                                        "success"
+                                    ).then(function() {
+                                        $(t).closest("tr").css({
+                                            "background-color": "red",
+                                            "color": "white"
+                                        });
+                                        window.location.reload();
+                                    });
 
-                            } else {
-                                swal("Failed", "Transaction Deletion Failed!",
-                                    "error");
-                                $("#error-message").html("Deletion Field !!!")
-                                    .slideDown();
-                                $("success-message").slideUp();
+                                } else {
+                                    swal("Failed", "Transaction Deletion Failed!",
+                                        "error");
+                                    $("#error-message").html("Deletion Field !!!")
+                                        .slideDown();
+                                    $("success-message").slideUp();
+                                }
                             }
-                        }
-                    });
-                }
-                return false;
-            });
+                        });
+                    }
+                    return false;
+                });
         }
     </script>
     <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>

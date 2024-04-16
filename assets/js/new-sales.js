@@ -671,6 +671,12 @@ const onQty = (qty) => {
             }
           });
     }
+
+
+    salesMarginUrl = `ajax/product.stockDetails.getMargin.ajax.php?smPid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
+        request.open("GET", salesMarginUrl, false);
+        request.send(null);
+        document.getElementById("s-margin").value = request.responseText;
     
 }
 
@@ -804,6 +810,13 @@ const onDisc = (disc) => {
             }
         });
     }
+
+
+    salesMarginUrl = `ajax/product.stockDetails.getMargin.ajax.php?smPid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
+    xmlhttp.open("GET", salesMarginUrl, false);
+    xmlhttp.send(null);
+    document.getElementById("s-margin").value = xmlhttp.responseText;
+    
 }
 
 

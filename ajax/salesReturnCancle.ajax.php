@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__).'/config/constant.php';
+require_once dirname(__DIR__).'/config/service.const.php';
 require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR.'dbconnect.php';
@@ -17,7 +18,7 @@ $products       = new Products();
 $stockOut       = new StockOut();
 $currentStock   = new CurrentStock();
 
-$allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
+// $allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
 
 if($_SESSION['ADMIN']){
     $addedBy = $adminId;
@@ -45,8 +46,8 @@ if (isset($_POST['id'])) {
 
         //fetch data from sales return details table
         $selectReturnDetails = $SalesReturn->selectSalesReturnList($attribute, $data);
-
         foreach ($selectReturnDetails as $selectReturnDetails) {
+            // print_r($selectReturnDetails);
 
             $salesReturnDetailsId = $selectReturnDetails['id'];
             $curretnStockItemId = $selectReturnDetails['item_id'];
@@ -70,13 +71,13 @@ if (isset($_POST['id'])) {
                 $returnsQty = $salesReturnDetailsData['return_qty'];
 
                 
-                if (in_array(strtolower($itemUnit), $allowedUnits)) {
+                if (in_array(strtolower($itemUnit), LOOSEUNITS)) {
                     $looselyCount = $returnsQty;
                 } else {
                     $wholeCount = $returnsQty;
                 }
 
-                if (in_array(strtolower($itemUnit), $allowedUnits)) {
+                if (in_array(strtolower($itemUnit), LOOSEUNITS)) {
                     $updatedLooselyCount = intval($currentStockLooselyCount) - intval($looselyCount);
                     $updatedQty = intdiv($updatedLooselyCount, $itemWeatage);
                 }else{
@@ -93,7 +94,7 @@ if (isset($_POST['id'])) {
                 $setRefundAmount = 0;
                 $updateSalesRetunDetails = $SalesReturn->updateSalesReturnOnReturnCancel($salesReturnDetailsId, $setReturnQty, $setRefundAmount);
 
-                $deleteReturnDetails = $SalesReturn->deleteSalesReturnDetaislById($salesReturnDetailsId); //*********** 
+                // $deleteReturnDetails = $SalesReturn->deleteSalesReturnDetaislById($salesReturnDetailsId); //*********** 
             }
         }
     }
