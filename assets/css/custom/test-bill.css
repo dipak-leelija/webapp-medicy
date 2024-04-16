@@ -1,6 +1,10 @@
 .custom-container {
-    padding-left: 15rem;
-    padding-right: 15rem;
+    /* padding-left: 15rem;
+    padding-right: 15rem; */
+    width: 20cm;
+    min-width: 20cm;
+    max-width: 20cm;
+    margin: auto;
 }
 
 .custom-body {
@@ -17,26 +21,6 @@
     background-position-y: 150px;
 }
 
-
-/* 
-@media (min-width: 992px){
-    .custom-container {
-        max-width: 960px;
-    }
-}
-
-@media (min-width: 768px){
-    .custom-container {
-        max-width: 720px;
-    }
-}
-
-@media (min-width: 576px){
-    .custom-container {
-        max-width: 540px;
-    }
-} */
-
 @media print {
     @page {
         margin: 5px 5px 5px;
@@ -49,8 +33,8 @@
         overflow: hidden;
     }
     .custom-container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding-left: 4px;
+        padding-right: 4px;
     }
     .custom-body {
         margin-top: 0;
