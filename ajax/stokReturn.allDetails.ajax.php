@@ -16,7 +16,6 @@ $CurrentStock = new CurrentStock();
 if (isset($_GET['current-stock-qty'])) {
 
     $stockInDetailsId = $_GET['current-stock-qty'];
-    // echo $stockInDetailsId;
     $stokInDetails = $StokInDetails->showStockInDetailsByStokinId($stockInDetailsId);
     $purchaseQty = $stokInDetails[0]['qty'];
     $purchaseFreeQty = $stokInDetails[0]['free_qty'];
