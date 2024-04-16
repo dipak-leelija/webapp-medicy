@@ -71,60 +71,69 @@ if (isset($_GET["Pid"])) {
 }
 
 
-/*
-if($qtyTyp == 'others'){
 
-        $stockInQty =  intval($stockInData[0]['qty']) + intval($stockInData[0]['free_qty']);
-        $stockInAmount = $stockInData[0]['amount'];
-        $ptrPerItem = $stockInData[0]['ptr'];
-        $perItemBasePrice = $stockInData[0]['d_price'];
-        $purchasedGstPaid = $stockInData[0]['gst_amount'];
 
-        // per qantity stock in amount
-        $perQtyStockInAmount = floatval($stockInAmount) / intval($stockInQty);
 
-        // paid purchased gst amount
-        $paidPurchasedGstAmountPerItem = floatval($purchasedGstPaid) / intval($stockInQty);
-        
-        // sell gst calculation 
-        $sellGstAmount =  floatval($taxableAmount) * (floatval($stockInData[0]['gst'])/100);
+if (isset($_GET["smPid"])) {
 
-        // purchased amount on sell qty 
-        $pAmntOnSellQty = (floatval($stockInAmount) / floatval($stockInQty)) * intval($qty);
-        // echo $pAmntOnSellQty;
+    $productId      = $_GET["smPid"];
+    $batchNo        = $_GET["Bid"];
+    $qtyTyp         = $_GET["qtype"];
+    
+    $mrp            = $_GET["Mrp"];
+    $qty            = $_GET["Qty"];
+    $discPercent    = $_GET["disc"];
 
-        // $margin = floatval($sellAmount) - (floatval($perQtyStockInAmount) * intval($qty)) - floatval($sellGstAmount);
+    $taxableAmount  = $_GET["taxable"];
+    $sellAmount     = $_GET['sellAmount'];
 
-        $margin = (floatval($sellAmount) - floatval($pAmntOnSellQty)) - (floatval($sellGstAmount) - (floatval($paidPurchasedGstAmountPerItem) * $qty));
+    $currentStockId = $_GET['currentItemId'];
 
-    }else{
 
-        $stockInQty =  $stockInData[0]['loosely_count'];
-        $stockInAmount = $stockInData[0]['amount'];
-        $ptrPerItem = $stockInData[0]['ptr'];
-        $perItemBasePrice = $stockInData[0]['d_price'];
-        $purchasedGstPaid = $stockInData[0]['gst_amount'];
-        
-        $perQtyStockInAmount = floatval($stockInAmount)/ intval($stockInQty);
-        
-        // paid purchased gst amount
-        $paidPurchasedGstAmountPerItem = floatval($purchasedGstPaid) / intval($stockInQty);
+    // echo "<br>Product id : $productId<br>Batch no : $batchNo<br>Qantity Type : $qtyTyp<br>MRP : $mrp<br>Qantity : $qty<br>Discounted Price : $discPrice<br>";
+    $col = 'id';
+    $currentStockData = $CurrentStock->selectByColAndData($col, $currentStockId);
+    // print_r($currentStockData);
+    
+    $stockInData = $StockInDetails->showStockInDetailsByStokinId($currentStockData[0]['stock_in_details_id']);
+    // print_r($stockInData);
+     
 
-        // sell gst calculation 
-        $sellGstAmount =  floatval($taxableAmount) * (floatval($stockInData[0]['gst'])/100);
-
-        // purchased amount on sell qty 
-        $pAmntOnSellQty = (floatval($stockInAmount) / floatval($stockInQty)) * intval($qty);
-        // echo $purchasedGstAmount;
-
-        // $margin = floatval($sellAmount) - ((floatval($perQtyStockInAmount) / intval(intval($stockInData[0]['weightage']))) * intval($qty)) - floatval($sellGstAmount);
-
-        $margin = (floatval($sellAmount) - floatval($pAmntOnSellQty)) - (floatval($sellGstAmount) - (floatval($paidPurchasedGstAmountPerItem) * $qty));
-
+    if($mrp == null || $qty == null || $discPercent == null){
+        $mrp = 0;
+        $qty = 0;
+        $disc = 0;
     }
-    echo number_format($margin,2);
-}
-*/
 
+    $mrp = floatval($mrp);
+    $qty = intval($qty);
+    $discPercent = floatval($discPercent);
+
+    $discPrice = $mrp - ($mrp * $discPercent/100);
+
+    // Common assignments
+    $stockInQty = ($qtyTyp == 'others') ? intval($stockInData[0]['qty']) + intval($stockInData[0]['free_qty'])  : $stockInData[0]['loosely_count'];
+    $stockInAmount = $stockInData[0]['amount'];
+    $ptrPerItem = $stockInData[0]['ptr'];
+    $perItemBasePrice = $stockInData[0]['d_price'];
+    $purchasedGstPaid = $stockInData[0]['gst_amount'];
+    $perQtyStockInAmount = floatval($stockInAmount) / $stockInQty;
+
+    // Sell GST calculation
+    $sellGstAmount = floatval($taxableAmount) * (floatval($stockInData[0]['gst']) / 100);
+
+    // Purchased amount on sell qty
+    $pAmntOnSellQty = ($stockInAmount / $stockInQty) * intval($qty);
+
+    // Paid purchased GST amount per item
+    $paidPurchasedGstAmountPerItem = $purchasedGstPaid / $stockInQty;
+
+    // Margin calculation
+    $margin = (floatval($sellAmount) - $pAmntOnSellQty) ;
+
+    // Output formatted margin
+    echo number_format($margin, 2);
+
+}
 
 ?>

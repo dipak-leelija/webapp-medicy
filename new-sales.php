@@ -1,15 +1,15 @@
 <?php
 $page = "sales";
 require_once 'config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php';
+require_once ROOT_DIR . '_config/sessionCheck.php';
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once CLASS_DIR."doctors.class.php";
+require_once CLASS_DIR . 'dbconnect.php';
+require_once CLASS_DIR . "doctors.class.php";
 
 $Doctors = new Doctors();
 
 $doctor = $Doctors->showDoctors($adminId);
-$doctor = json_decode($doctor , true);
+$doctor = json_decode($doctor, true);
 // print_r($doctor);
 ?>
 <!DOCTYPE html>
@@ -44,7 +44,7 @@ $doctor = json_decode($doctor , true);
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -54,7 +54,7 @@ $doctor = json_decode($doctor , true);
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -119,12 +119,12 @@ $doctor = json_decode($doctor , true);
                                                     <option value="" selected disabled>Select Doctor</option>
                                                     <option value="Cash Sales" style="color: black;">Cash Sales</option>
                                                     <?php
-                                                    if($doctor && $doctor['status'] == 1 && !empty($doctor))
-                                                    foreach ($doctor['data'] as $doc) {
-                                                        // print_r($row);
-                                                        echo $doctorName = $doc['doctor_name'];
-                                                        echo '<option value="' . $doctorName . '" style="color: black;">' . $doctorName . '</option>';
-                                                    }
+                                                    if ($doctor && $doctor['status'] == 1 && !empty($doctor))
+                                                        foreach ($doctor['data'] as $doc) {
+                                                            // print_r($row);
+                                                            echo $doctorName = $doc['doctor_name'];
+                                                            echo '<option value="' . $doctorName . '" style="color: black;">' . $doctorName . '</option>';
+                                                        }
                                                     ?>
                                                 </select>
 
@@ -230,7 +230,7 @@ $doctor = json_decode($doctor , true);
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable</label><br>
                                             <input class="sale-inp" type="text" id="taxable" readonly>
                                         </div>
-                                        
+
                                         <div class="col-md-1 mt-3 col-12">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Nt Amt.</label><br>
                                             <input class="sale-inp" type="text" id="amount" readonly>
@@ -248,12 +248,12 @@ $doctor = json_decode($doctor , true);
 
 
                                     <div id="exta-details">
-                                        <div class=" row mt-4">
+                                        <div class="row mt-4">
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12 col-12 d-flex">
                                                         <label for="">Manf:</label><br>
-                                                        <input class="sale-inp" type="" id="manuf" style="border-width: 0px;" readonly>
+                                                        <input class="d-none sale-inp" type="" id="manuf" style="border-width: 0px;" readonly>
                                                         <input class="sale-inp" type="any" id="manufName" style="border-width: 0px; width:30rem; margin-top: -.6rem; word-wrap: break-word;" readonly>
                                                     </div>
 
@@ -263,27 +263,45 @@ $doctor = json_decode($doctor , true);
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
-
                                                 <div class="row mt-3">
-                                                    <div class="col-md-4 col-6 mb-4 d-flex">
-                                                        <label for="" style="margin-top: 6px;">Purchased:</label>
-                                                        <input class="sale-inp" type="any" id="purchased-cost" style="border-width: 0px;" readonly>
+                                                    <div class="col-md-3 col-6 mb-4">
+                                                        <div class="row">
+                                                            <label for="" style="margin-top: 6px;">Purchased:</label>
+                                                        </div>
+                                                        <div class="row">
+                                                            <input class="sale-inp" type="any" id="purchased-cost" style="border-width: 0px;" readonly>
+                                                        </div>
                                                     </div>
 
-                                                    <div class="col-md-4 col-6 mb-4 d-flex">
-                                                        <label for="" style="margin-top: 6px;">Margin:</label>
-                                                        <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
+                                                    <div class="col-md-3 col-6 mb-4">
+                                                        <div class="row">
+                                                            <label for="" style="margin-top: 6px;">Sales Margin:</label>
+                                                        </div>
+                                                        <div class="row">
+                                                            <input class="sale-inp" type="any" id="s-margin" style="border-width: 0px;" readonly>
+                                                        </div>
                                                     </div>
 
-                                                    <div class="col-md-2 col-6 mb-4 d-flex justify-content-end">
-                                                        <button type="button" class="btn btn-sm btn-primary w-100" id="reset-button" onclick="reset()"><i class="fas fa-undo"></i>
-                                                            Reset</button>
+                                                    <div class="col-md-3 col-6 mb-4">
+                                                        <div class="row">
+                                                            <label for="" style="margin-top: 6px;">Profit Margin:</label>
+                                                        </div>
+                                                        <div class="row">
+                                                            <input class="sale-inp" type="any" id="margin" style="border-width: 0px;" readonly>
+                                                        </div>
                                                     </div>
 
-                                                    <div class="col-md-2 col-6 mb-4 d-flex justify-content-end">
-                                                        <button type="button" class="btn btn-sm btn-primary w-100" id="add-button" onclick="addSummary()"><i class="fas fa-check-circle"></i>
-                                                            Add</button>
+                                                    <div class="col-md-3 col-6 mb-4 d-flex">
+                                                        <div class="col-6">
+                                                            <button type="button" class="btn btn-sm btn-primary w-100" id="reset-button" onclick="reset()"><i class="fas fa-undo"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <button type="button" class="btn btn-sm btn-primary w-100" id="add-button" onclick="addSummary()"><i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -419,7 +437,7 @@ $doctor = json_decode($doctor , true);
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+            <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
 
         </div>
@@ -462,7 +480,7 @@ $doctor = json_decode($doctor , true);
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= JS_PATH ?>bootstrap-js-4/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Custom scripts for all pages-->
     <script src="<?= JS_PATH ?>sb-admin-2.min.js"></script>
     <script src="<?= JS_PATH ?>ajax.custom-lib.js"></script>
