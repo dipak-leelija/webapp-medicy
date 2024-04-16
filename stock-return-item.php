@@ -1,10 +1,10 @@
 <?php
 $page = "stock-return";
 require_once __DIR__ . '/config/constant.php';
-require_once ROOT_DIR . '_config/sessionCheck.php'; 
+require_once ROOT_DIR . '_config/sessionCheck.php';
 
 require_once CLASS_DIR . 'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
 
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'packagingUnit.class.php';
@@ -41,7 +41,7 @@ $showDistributor = $showDistributor->data;
     <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom/stock-return-item.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>custom-dropdown.css">
-    
+
 </head>
 
 <body id="page-top">
@@ -50,7 +50,7 @@ $showDistributor = $showDistributor->data;
     <div id="wrapper">
 
         <!-- sidebar -->
-        <?php include ROOT_COMPONENT.'sidebar.php'; ?>
+        <?php include ROOT_COMPONENT . 'sidebar.php'; ?>
         <!-- end sidebar -->
 
         <!-- Content Wrapper -->
@@ -60,7 +60,7 @@ $showDistributor = $showDistributor->data;
             <div id="content">
 
                 <!-- Topbar -->
-                <?php include ROOT_COMPONENT.'topbar.php'; ?>
+                <?php include ROOT_COMPONENT . 'topbar.php'; ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -78,19 +78,18 @@ $showDistributor = $showDistributor->data;
                                     <label class="mb-1 mt-3" for="distributor-name">Distributor :</label>
                                     <span class="text-danger">*</span>
                                     <input type="text" name="" id="distributor-name" class="upr-inp" placeholder="Select Distributor" autocomplete="off">
-                                    
+
 
 
                                     <div class="p-2 bg-light col-md-6 c-dropdown" id="distributor-list">
-                                        <?php if (!empty($showDistributor)): ?>
-                                        <div class="lists" id="lists">
-                                            <?php foreach ($showDistributor as $eachDistributor) {?>
-                                            <div class="p-1 border-bottom list" id="<?= $eachDistributor->id ?>"
-                                                onclick="setDistributor(this)">
-                                                <?= $eachDistributor->name ?>
+                                        <?php if (!empty($showDistributor)) : ?>
+                                            <div class="lists" id="lists">
+                                                <?php foreach ($showDistributor as $eachDistributor) { ?>
+                                                    <div class="p-1 border-bottom list" id="<?= $eachDistributor->id ?>" onclick="setDistributor(this)">
+                                                        <?= $eachDistributor->name ?>
+                                                    </div>
+                                                <?php } ?>
                                             </div>
-                                            <?php } ?>
-                                        </div>
                                         <?php endif; ?>
                                     </div>
 
@@ -149,7 +148,7 @@ $showDistributor = $showDistributor->data;
                                                 <label class="mb-1 mt-3" for="stokInDetailsId">Stock In Detaisl Id :</label>
                                                 <input class="upr-inp" id="stokInDetailsId" readonly>
                                             </div>
-                                           
+
                                             <div class="col-md-6 col-12">
                                                 <label class="mb-1 mt-3" for="bill-number">Bill Number :</label>
                                                 <input class="upr-inp" id="bill-number" readonly>
@@ -167,7 +166,7 @@ $showDistributor = $showDistributor->data;
                                                 <label class="mb-1 mt-3" for="exp-date">Expiry</label>
                                                 <input class="upr-inp mb-1" type="text" id="exp-date" readonly>
                                             </div>
-                                            
+
                                         </div>
 
                                         <div class="col-12 mt-3">
@@ -187,43 +186,12 @@ $showDistributor = $showDistributor->data;
                                     <div class="col-md-7 col-12 mt-3">
                                         <!-- first row  -->
                                         <div class="row">
-                                            
-                                            <div class="col-md-3 col-7">
-                                                <label class="mb-0 mt-1" for="purchased-qty">Purchased Qty</label>
-                                                <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
-                                            </div>
 
-                                            <div class="col-md-2 col-7">
-                                                <label class="mb-0 mt-1" for="free-qty">Free Qty</label>
-                                                <input type="text" class="upr-inp" name="free-qty" id="free-qty">
-                                            </div>
-
-                                            <div class="col-md-2 col-7">
-                                                <label class="mb-0 mt-1" for="current-purchase-qty">Current P.Qty</label>
-                                                <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
-                                            </div>
-
-                                            <div class="  col-md-2 col-6">
-                                                <label class="mb-0 mt-1" for="current-free-qty">Current F.Qty:</label>
-                                                <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
-                                            </div>
-
-                                            <div class="col-md-2 col-7">
-                                                <label class="mb-0 mt-1" for="current-qty">Current Qty:</label>
-                                                <input type="text" class="upr-inp" name="current-qty" id="current-qty">
-                                            </div>
-
-                                        </div>
-                                        <!-- first row end  -->
-
-                                        <!-- second row  -->
-                                        <div class="row mt-md-2">
-                                            
                                             <div class="col-md-3 col-7">
                                                 <label class="mb-0 mt-1" for="ptr">PTR</label>
                                                 <input type="text" class="upr-inp" name="ptr" id="ptr" onkeyup="getBillAmount()" readonly>
                                             </div>
-                                            
+
                                             <div class="col-md-3 col-7">
                                                 <label class="mb-0 mt-1" for="discount">Disc% </label>
                                                 <input type="text" class="upr-inp" name="discount" id="discount" value="" readonly>
@@ -238,7 +206,39 @@ $showDistributor = $showDistributor->data;
                                                 <label class="mb-0 mt-1" for="amount">Amount</label>
                                                 <input type="any" class="upr-inp" name="amount" id="amount" readonly>
                                             </div>
-                                            
+
+
+                                        </div>
+                                        <!-- first row end  -->
+
+                                        <!-- second row  -->
+                                        <div class="row mt-md-2">
+
+                                            <div class="col-md-3 col-7">
+                                                <label class="mb-0 mt-1" for="purchased-qty">Purchased Qty</label>
+                                                <input type="text" class="upr-inp" name="purchased-qty" id="purchased-qty">
+                                            </div>
+
+                                            <div class="col-md-2 col-7">
+                                                <label class="mb-0 mt-1" for="free-qty">Free Qty</label>
+                                                <input type="text" class="upr-inp" name="free-qty" id="free-qty">
+                                            </div>
+
+                                            <!-- <div class="col-md-2 col-7">
+                                                <label class="mb-0 mt-1" for="current-purchase-qty">Current P.Qty</label>
+                                                <input type="text" class="upr-inp" name="current-purchase-qty" id="current-purchase-qty">
+                                            </div>
+
+                                            <div class="  col-md-2 col-6">
+                                                <label class="mb-0 mt-1" for="current-free-qty">Current F.Qty:</label>
+                                                <input type="text" class="upr-inp" name="current-free-qty" id="current-free-qty">
+                                            </div> -->
+
+                                            <div class="col-md-2 col-7">
+                                                <label class="mb-0 mt-1" for="current-qty">Current Qty:</label>
+                                                <input type="text" class="upr-inp" name="current-qty" id="current-qty">
+                                            </div>
+
                                         </div>
                                         <!-- end second row  -->
 
@@ -247,14 +247,14 @@ $showDistributor = $showDistributor->data;
                                             <div class="col-md-3 col-7">
                                                 <label class="mb-0 mt-1" for="return-qty">Return Qty:</label>
                                                 <span class="text-danger">*</span>
-                                                <input type="text" class="upr-inp focus-border" id="return-qty" value="" name="return-qty" onkeyup="getRefund(this.value);">
+                                                <input type="number" class="upr-inp focus-border" id="return-qty" value=""  onkeyup="getRefund(this.value);">
                                             </div>
 
-                                            <div class="col-md-3 col-7">
+                                            <!-- <div class="col-md-3 col-7">
                                                 <label class="mb-0 mt-1" for="return-free-qty">Return F.Qty:</label>
                                                 <span class="text-danger">*</span>
                                                 <input type="text" class="upr-inp focus-border" name="return-free-qty" id="return-free-qty" value="" onkeyup="checkFQty(this.value);">
-                                            </div>
+                                            </div> -->
 
                                             <div class="d-none col-md-3 col-7">
                                                 <label class="mb-0 mt-1" for="return-gst-amount">Return GST Amount </label>
@@ -303,7 +303,6 @@ $showDistributor = $showDistributor->data;
                                                 <th scope="col" class="text-right">Disc%</th>
                                                 <th scope="col" class="text-right">GST%</th>
                                                 <th scope="col" class="text-right">Return Qty</th>
-                                                <th scope="col" class="text-right">Ret F.Qty</th>
                                                 <th scope="col" class="text-right">Refund</th>
 
                                             </tr>
@@ -322,11 +321,11 @@ $showDistributor = $showDistributor->data;
                                         <p>Distributor :
                                             <input class="summary-inp w-60" type="text" id="dist-name" name="dist-name" readonly style="margin-left: 0rem;">
                                             <input class="summary-inp w-60" name="dist-id" id="dist-id" type="text" hidden readonly>
-                                            <input class="  summary-inp w-60" name="dist-bill-no" id="dist-bill-no" type="text" readonly>
+                                            <input class="summary-inp w-60" name="dist-bill-no" id="dist-bill-no" type="text" readonly>
                                         </p>
                                     </div>
                                     <div class="col-md-3 col-6 mb-3 d-flex justify-content-start">
-                                        <p>Return Date : <input class="summary-inp w-6r" name="return-date" id="return-date" type="text" value="<?=  date("d-m-Y") ?>" readonly>
+                                        <p>Return Date : <input class="summary-inp w-6r" name="return-date" id="return-date" type="text" value="<?= date("d-m-Y") ?>" readonly>
                                         </p>
                                     </div>
 
@@ -366,7 +365,7 @@ $showDistributor = $showDistributor->data;
                 <!-- End of Main Content -->
 
                 <!-- Footer -->
-                <?php include_once ROOT_COMPONENT.'footer-text.php'; ?>
+                <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
                 <!-- End of Footer -->
 
             </div>

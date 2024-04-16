@@ -1,15 +1,15 @@
 <?php
 
 require_once './config/constant.php';
-require_once ROOT_DIR.'_config/sessionCheck.php'; //check admin loggedin or not
+require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
-require_once CLASS_DIR.'dbconnect.php';
-require_once ROOT_DIR.'_config/healthcare.inc.php';
-require_once CLASS_DIR .'encrypt.inc.php';
-require_once CLASS_DIR.'hospital.class.php';
-require_once CLASS_DIR.'stockReturn.class.php';
-require_once CLASS_DIR.'distributor.class.php';
-require_once CLASS_DIR.'products.class.php';
+require_once CLASS_DIR . 'dbconnect.php';
+require_once ROOT_DIR . '_config/healthcare.inc.php';
+require_once CLASS_DIR . 'encrypt.inc.php';
+require_once CLASS_DIR . 'hospital.class.php';
+require_once CLASS_DIR . 'stockReturn.class.php';
+require_once CLASS_DIR . 'distributor.class.php';
+require_once CLASS_DIR . 'products.class.php';
 
 
 //  INSTANTIATING CLASS
@@ -21,10 +21,10 @@ $Products        = new Products;
 
 if (isset($_GET['data'])) {
 
-   $reponse = json_decode(url_dec($_GET['data']));
-    
-   $stockReturnId   = $reponse->stock_return_id;
-    if($stockReturnId) {
+    $reponse = json_decode(url_dec($_GET['data']));
+
+    $stockReturnId   = $reponse->stock_return_id;
+    if ($stockReturnId) {
         $returnResponse = json_decode($StockReturn->showStockReturnById($stockReturnId));
         // print_r($returnResponse);
         if ($returnResponse->status == 1) {
@@ -48,14 +48,10 @@ if (isset($_GET['data'])) {
                 $distContact = $distributorData->phno;
                 $distAddress = $distributorData->address;
                 $distPIN = $distributorData->area_pin_code;
-
             }
 
             $returnDetails = $StockReturn->showStockReturnDetails($stockReturnId);
-
         }
-
-
     }
 }
 
@@ -84,158 +80,143 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
 
 <body>
     <div class="custom-container">
-        <div class="custom-body <?php if($refundMode != 'Credit'){ echo "paid-bg";} ?>">
+    <div class="custom-body <?= $refundMode != 'Credit' ? "paid-bg" : ''; ?>">
             <div class="card-body ">
                 <div class="row">
-                    <div class="col-sm-1">
-                        <img class="float-end" style="height: 55px; width: 58px;" src="<?= LOCAL_DIR.$pharmacyLogo ?>" alt="Medicy">
+                    <div class="col-1 pe-0">
+                        <img class="float-end" style="height: 55px; width: 55px; object-fit: cover;" src="<?= LOCAL_DIR . $pharmacyLogo ?>" alt="Medicy">
                     </div>
-                    
-                    <div class="col-sm-8">
+
+                    <div class="col-8">
                         <h4 class="text-start my-0"><?php echo $distributorName; ?></h4>
                         <p class="text-start" style="margin-top: -5px; margin-bottom: 0px;">
-                            <small><?php echo $distAddress .', '. $distPIN; ?></small>
+                            <small><?php echo $distAddress . ', ' . $distPIN; ?></small>
                         </p>
                         <p class="text-start" style="margin-top: -8px; margin-bottom: 0px;">
-                            <small><?php echo 'M: '.$distContact; ?></small>
+                            <small><?php echo 'M: ' . $distContact; ?></small>
                         </p>
 
                     </div>
-                    <div class="col-sm-3 border-start border-dark">
+                    <div class="col-3 border-start border-dark">
                         <p class="my-0"><b>Return Bill</b></p>
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Return ID:
                                 #<?php echo $stockReturnId; ?></small></p>
                         <p style="margin-top: -5px; margin-bottom: 0px;"><small>Refund Mode:
-                                <?php echo $refundMode;?></small>
+                                <?php echo $refundMode; ?></small>
                         </p>
-                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Return Date: <?php echo $returnDate;?></small>
+                        <p style="margin-top: -5px; margin-bottom: 0px;"><small>Return Date: <?php echo $returnDate; ?></small>
                         </p>
                     </div>
                 </div>
             </div>
             <hr class="my-0" style="height:1px; background: #000000; border: #000000;">
 
-            <div class="row">
-                <!-- table heading -->
+            <!-- ===================================================== -->
 
-                <div class="col-sm-2">
-                    <small><b>Name</b></small>
+            <div>
+                <div class="row">
+                    <!-- table heading -->
+                    <div class="col-2">
+                        <small><b>Name</b></small>
+                    </div>
+                    <div class="col-1 text-end pe-0">
+                        <small><b>Batch</b></small>
+                    </div>
+                    <div class="col-1 text-end pe-0">
+                        <small><b>Exp.</b></small>
+                    </div>
+                    <div class="col-1 text-end pe-0">
+                        <small><b>P.Qty</b></small>
+                    </div>
+                    <div class="col-1 text-end">
+                        <small><b>Free</b></small>
+                    </div>
+                    <div class="col-1 text-end">
+                        <small><b>MRP</b></small>
+                    </div>
+                    <div class="col-1 text-end">
+                        <small><b>PTR</b></small>
+                    </div>
+                    <div class="col-1 text-end pe-0">
+                        <small><b>GST%</b></small>
+                    </div>
+                    <div class="col-1 text-end pe-0">
+                        <small><b>DIS%</b></small>
+                    </div>
+                    <div class="col-1 text-end pe-0">
+                        <small><b>Return</b></small>
+                    </div>
+                    <div class="col-1 text-end">
+                        <small><b>Refund</b></small>
+                    </div>
+                    <!--/end table heading -->
                 </div>
-                <div class="col-sm-1">
-                    <small><b>Batch</b></small>
-                </div>
-                <div class="col-sm-1">
-                    <small><b>Exp.</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 7%;">
-                    <small><b>P.Qty</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 5%;">
-                    <small><b>Free</b></small>
-                </div>
-                <div class="col-sm-1 text-end">
-                    <small><b>MRP</b></small>
-                </div>
-                <div class="col-sm-1 text-end">
-                    <small><b>PTR</b></small>
-                </div>
-                <div class="col-sm-1 text-end" style="width: 7%;">
-                    <small><b>GST%</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 7%;">
-                    <small><b>DISC%</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 7%;">
-                    <small><b>Return</b></small>
-                </div>
-                <div class="col-sm-1" style="width: 7%;">
-                    <small><b>F.Return</b></small>
-                </div>
-                <div class="col-sm-1 text-end">
-                    <small><b>Refund</b></small>
-                </div>
-                <!--/end table heading -->
-            </div>
 
-            <hr class="my-0" style="height:1px;">
+                <hr class="my-0" style="height:1px;">
 
-            <div class="row">
-                <?php
-                foreach ($returnDetails as $eachDetail) {
+                <div class="row">
+                    <?php
+                    foreach ($returnDetails as $eachDetail) {
 
-                    $productNameResponse = json_decode($Products->showProductNameById($eachDetail['product_id']));
-                    if($productNameResponse->status){
-                        $productName = $productNameResponse->data->name;
-                    }
-
-
-
-                    $batchNo        = $eachDetail['batch_no'];
-                    $expDate        = $eachDetail['exp_date'];
-                    $setof          = $eachDetail['unit'];
-                    $purchasedQty   = $eachDetail['purchase_qty'];
-                    $freeQty        = $eachDetail['free_qty'];
-                    $mrp            = $eachDetail['mrp'];
-                    $ptr            = $eachDetail['ptr'];
-                    $gstPercent     = $eachDetail['gst'];
-                    $discParcent    = $eachDetail['disc'];
-                    $returnQty      = $eachDetail['return_qty'];
-                    $returnFQty     = $eachDetail['return_free_qty'];
-                    $refundAmount   = $eachDetail['refund_amount'];
-                
-
-                        if (count($returnDetails) >1) {
-                            echo '<hr style="width: 98%; border-top: 1px dashed #8c8b8b; margin: 0 10px 0; align-items: center;">';
+                        $productNameResponse = json_decode($Products->showProductNameById($eachDetail['product_id']));
+                        if ($productNameResponse->status) {
+                            $productName = $productNameResponse->data->name;
                         }
-                        
-                echo '
-                    <div class="col-sm-2 lh-1">
-                        <small>'.substr($productName, 0, 20).'</small>
-                        <br>
-                        <small>'.$setof.'</small>
-                    </div>
-                    <div class="col-sm-1">
-                        <small>'.strtoupper($batchNo).'</small>
-                    </div>
-                    <div class="col-sm-1">
-                        <small>'.$expDate.'</small>
-                    </div>
-                    <div class="col-sm-1" style="width: 7%;">
-                        <small>'.$purchasedQty.'</small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 5%;">
-                        <small>'.$freeQty.'</small>
-                    </div>
-                    <div class="col-sm-1 text-end">
-                        <small>'.$mrp.'</small>
-                    </div>
-                    <div class="col-sm-1 text-end">
-                        <small>'.$ptr.'</small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small>'.$gstPercent.'</small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small>'.$discParcent.'</small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small>'.$returnQty.'</small>
-                    </div>
-                    <div class="col-sm-1 text-end" style="width: 7%;">
-                        <small>'.$returnFQty.'</small>
-                    </div>
-                    <div class="col-sm-1 text-end">
-                        <small>'.$refundAmount.'</small>
-                    </div>';
-            
+
+                        $batchNo        = $eachDetail['batch_no'];
+                        $expDate        = $eachDetail['exp_date'];
+                        $setof          = $eachDetail['unit'];
+                        $purchasedQty   = $eachDetail['purchase_qty'];
+                        $freeQty        = $eachDetail['free_qty'];
+                        $mrp            = $eachDetail['mrp'];
+                        $ptr            = $eachDetail['ptr'];
+                        $gstPercent     = $eachDetail['gst'];
+                        $discParcent    = $eachDetail['disc'];
+                        $returnQty      = $eachDetail['return_qty'];
+                        $refundAmount   = $eachDetail['refund_amount'];
+
+                        echo '
+                            <div class="col-2 lh-1">
+                                <small>' . substr($productName, 0, 20) . '</small>
+                                <br>
+                                <small>' . $setof . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . strtoupper($batchNo) . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . $expDate . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . $purchasedQty . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . $freeQty . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . $mrp . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . $ptr . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . $gstPercent . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . $discParcent . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . $returnQty . '</small>
+                            </div>
+                            <div class="col-1 text-end">
+                                <small>' . $refundAmount . '</small>
+                            </div>';
                     }
-                
-                ?>
-
+                    ?>
+                </div>
             </div>
-            <!-- </div> -->
 
-            <!-- </div> -->
+            <!-- ===================================================== -->
             <div class="footer">
                 <hr calss="my-0" style="height: 1px;">
 
@@ -288,7 +269,7 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
                     </div>
                     <div class="col-4">
                         <div class="row text-end">
-                            <small class="pt-0 mt-0">Total Items <b><?php echo $itemQty;?></b> & Total Units
+                            <small class="pt-0 mt-0">Total Items <b><?php echo $itemQty; ?></b> & Total Units
                                 <b><?php echo $totalReturnQty; ?></b></small>
                         </div>
                         <div class="row text-end mt-1">
@@ -315,8 +296,9 @@ $pharmacyContact = $selectClinicInfo->data->hospital_phno;
 <script src="<?= JS_PATH ?>bootstrap-js-5/bootstrap.js"></script>
 
 <script>
-    const goBack = () =>{
+    const goBack = () => {
         window.location.href = '<?= URL ?>stock-return.php';
     }
 </script>
+
 </html>

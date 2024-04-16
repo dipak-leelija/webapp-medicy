@@ -170,5 +170,15 @@ if (isset($_GET["net-buy-qty"])) {
     }
 }
 
+
+if (isset($_GET["refund-amount"])) {
+    $stock = $StockInDetails->showStockInDetailsByStokinId($_GET["refund-amount"]);
+    if ($stock > 0) {
+        $amount =  $stock[0]['amount'];
+        $totalQty = $stock[0]['qty'] + $stock[0]['free_qty'];
+        echo $eachCost = $amount / $totalQty;
+    }
+}
+
 ?>
 
