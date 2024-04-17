@@ -20,15 +20,11 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 Stock_out_item_id: itemId
             },
             success: function (data) {
-                // alert(data);
-                // alert(dataObject.itemWeatage);
-
                 var dataObject = JSON.parse(data);
 
                 var mrp = parseFloat(dataObject.Mrp);
                 var itemUnit = dataObject.itemUnit;
                 var itemWeatage = parseInt(dataObject.itemWeatage);
-                // console.log(itemWeatage);
                 var discPercent = parseFloat(dataObject.dicPercent);
                 var looseStock = '';
                 var loosePrice = '';
@@ -83,7 +79,6 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 document.getElementById('gst').value = dataObject.gstPercent;
                 document.getElementById('per-item-purchased-cost').value = parseFloat(dataObject.purchaseCost).toFixed(2)
                 document.getElementById("purchased-cost").value = itemPerchaseCost.toFixed(2);
-                console.log('item total purchased cost : '+itemPerchaseCost);
                 document.getElementById('s-margin').value = dataObject.saleMargin;
                 document.getElementById('margin').value = dataObject.margin;
                 document.getElementById('taxable').value = dataObject.taxable;
@@ -655,14 +650,8 @@ const onQty = (qty) => {
 
 
     // =============== sales margin calculation area ==============
-
-    // sellMarginUrl = `ajax/product.stockDetails.getMargin.ajax.php?smPid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
-    // xmlhttp.open("GET", sellMarginUrl, false);
-    // xmlhttp.send(null);
-    // document.getElementById("s-margin").value = xmlhttp.responseText;
-
     var payble = document.getElementById("amount").value;
-    var pAmount = document.getElementById("ptr").value; // purchased cost
+    var pAmount = document.getElementById("purchased-cost").value; // purchased cost
     var salesMargin = parseFloat(payble) - parseFloat(pAmount);
     document.getElementById("s-margin").value = salesMargin;
 
@@ -795,13 +784,8 @@ const ondDisc = (disc) => {
 
     // ================ sales margin calculation area ==================
 
-    // sellMarginUrl = `ajax/product.stockDetails.getMargin.ajax.php?smPid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
-    // xmlhttp.open("GET", sellMarginUrl, false);
-    // xmlhttp.send(null);
-    // document.getElementById("s-margin").value = xmlhttp.responseText;
-
     var payble = document.getElementById("amount").value;
-    var pAmount = document.getElementById("ptr").value; // purchased cost
+    var pAmount = document.getElementById("purchased-cost").value; // purchased cost
     var salesMargin = parseFloat(payble) - parseFloat(pAmount);
     document.getElementById("s-margin").value = salesMargin;
 }
