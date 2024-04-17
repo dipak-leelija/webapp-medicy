@@ -2,7 +2,7 @@
 /**
  * LOOSEUNITS is a constant decleared in service.const.php
 */
-
+const xmlhttp = new XMLHttpRequest();
 
 var updateSalesBtn = document.getElementById("update-sales-btn");
 
@@ -113,7 +113,7 @@ const addCustomerModal = () => {
 
 const getCustomer = (customer) => {
     if (customer.length > 0) {
-        let xmlhttp = new XMLHttpRequest();
+        
         xmlhttp.onreadystatechange = function () {
             // console.log(customer);
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -606,10 +606,10 @@ const onQty = (qty) => {
     // document.getElementById('purchased-cost').value = modifiedPerchaseCost.toFixed(2);
 
     purchased_cost_url = `ajax/getPurchasedCost.ajax.php?qtype=${itemPackType}&Qty=${qty}&currentItemId=${currentItemId}`;
-    request.open("GET", purchased_cost_url, false);
-    request.send(null);
-    document.getElementById("purchased-cost").value = request.responseText;
-    console.info(request.responseText);
+    xmlhttp.open("GET", purchased_cost_url, false);
+    xmlhttp.send(null);
+    document.getElementById("purchased-cost").value = xmlhttp.responseText;
+    console.info(xmlhttp.responseText);
 
     //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
@@ -743,11 +743,11 @@ const ondDisc = (disc) => {
 
     // ================= purchased cost on item =====================
     purchased_cost_url = `ajax/getPurchasedCost.ajax.php?qtype=${itemTypeCheck}&Qty=${qty}&currentItemId=${currentItemId}`;
-    request.open("GET", purchased_cost_url, false);
-    request.send(null);
-    document.getElementById("purchased-cost").value = request.responseText;
-    console.info(request.responseText);
-    
+    xmlhttp.open("GET", purchased_cost_url, false);
+    xmlhttp.send(null);
+    document.getElementById("purchased-cost").value = xmlhttp.responseText;
+    console.info(xmlhttp.responseText);
+
     //==================== Margin on an Item ====================
 
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
