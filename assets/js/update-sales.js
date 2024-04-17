@@ -83,6 +83,7 @@ const editItem = (stockOutId, itemId, slno, itemQty, gstamnt, mrpPerItem, payble
                 document.getElementById('gst').value = dataObject.gstPercent;
                 document.getElementById('per-item-purchased-cost').value = parseFloat(dataObject.purchaseCost).toFixed(2)
                 document.getElementById("purchased-cost").value = itemPerchaseCost.toFixed(2);
+                console.log('item total purchased cost : '+itemPerchaseCost);
                 document.getElementById('s-margin').value = dataObject.saleMargin;
                 document.getElementById('margin').value = dataObject.margin;
                 document.getElementById('taxable').value = dataObject.taxable;

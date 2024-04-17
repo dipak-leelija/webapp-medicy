@@ -280,7 +280,7 @@ if ($_GET['id']) {
                                             <input class="sale-inp" type="any" id="disc" onkeyup="ondDisc(this.value)">
 
                                         </div>
-                                        <div class="col-md-1 mt-3 col-6">
+                                        <div class="d-none col-md-1 mt-3 col-6">
                                             <label for="">D.Price</label><br>
                                             <input class="sale-inp" type="any" id="dPrice" readonly>
 
@@ -290,7 +290,7 @@ if ($_GET['id']) {
                                             <input class="sale-inp" type="text" id="gst" readonly>
                                         </div>
 
-                                        <div class="d-none col-md-1 mt-3 col-6">
+                                        <div class="col-md-1 mt-3 col-6">
                                             <label for="" style="font-size: 0.96rem; font-weight: bold;">Taxable</label><br>
                                             <input class="sale-inp" type="text" id="taxable" readonly>
                                         </div>
