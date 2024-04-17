@@ -84,7 +84,7 @@ if (isset($_POST['resendOtp'])) {
 		} else {
 			echo '1';
 			?>
-			<script>console.log('mail sent');</script>
+			<script>console.log('mail sent 2');</script>
 			<?php
 		}
 		$PHPMailer->clearAllRecipients();

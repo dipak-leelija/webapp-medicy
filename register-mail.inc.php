@@ -77,7 +77,7 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 		} else {
 			echo 'mail sent';
 			?>
-			<script>console.log('mail sent');</script>
+			<script>console.log('mail sent 1');</script>
 			<?php
 			header("location: verification-sent.php");
 		}
