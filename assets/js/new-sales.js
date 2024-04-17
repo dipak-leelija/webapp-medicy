@@ -618,18 +618,6 @@ const onQty = (qty) => {
         request.send(null);
         document.getElementById("purchased-cost").value = request.responseText;
         console.info(request.responseText);
-        
-    // }else if(itemPackType == "Loose"){
-        
-    //     let eachQty = parseFloat(mrp) / parseInt(itemWeightage);
-
-    //     purchased_cost_url = `ajax/getPurchasedCost.ajax.php?qtype=${itemPackType}&Qty=${qty}&currentItemId=${currentItemId}`;
-    //     request.open("GET", purchased_cost_url, false);
-    //     request.send(null);
-    //     document.getElementById("purchased-cost").value = request.responseText;
-    //     console.info(request.responseText);
-
-    // }
 
         //==================== Margin on an Item ====================
         marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;

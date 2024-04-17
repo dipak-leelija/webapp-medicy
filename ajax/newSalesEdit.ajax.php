@@ -131,16 +131,10 @@ foreach($stockInDetailsData as $stockInDetailsData){
 
     if (in_array(strtolower($stockInDetailsData['unit']), LOOSEUNITS)) {
         $perItemCost = floatval($stockInAmount) / ((intval($stockInQty) + intval($stockInFreeQty)) * intval($itemWeightage));
-
-        // $purchaseCost = floatval($perItemCost) * intval($sellQty);
-        // $purchaseCost = round($purchaseCost, 2);
         
     } else {
 
         $perItemCost = floatval($stockInAmount) / (intval($stockInQty) + intval($stockInFreeQty));
-
-        // $purchaseCost = floatval($perItemCost) * intval($sellQty);
-        // $purchaseCost = round($purchaseCost, 2);
         
     }
 

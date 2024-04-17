@@ -601,9 +601,15 @@ const onQty = (qty) => {
     var currentItemId = document.getElementById('item-id').value;
 
     //==================== purchased-cost on an Item ====================
-    var peritemPerchaseCost = document.getElementById('per-item-purchased-cost').value;
-    var modifiedPerchaseCost = parseFloat(peritemPerchaseCost) * parseInt(qty);
-    document.getElementById('purchased-cost').value = modifiedPerchaseCost.toFixed(2);
+    // var peritemPerchaseCost = document.getElementById('per-item-purchased-cost').value;
+    // var modifiedPerchaseCost = parseFloat(peritemPerchaseCost) * parseInt(qty);
+    // document.getElementById('purchased-cost').value = modifiedPerchaseCost.toFixed(2);
+
+    purchased_cost_url = `ajax/getPurchasedCost.ajax.php?qtype=${itemPackType}&Qty=${qty}&currentItemId=${currentItemId}`;
+    request.open("GET", purchased_cost_url, false);
+    request.send(null);
+    document.getElementById("purchased-cost").value = request.responseText;
+    console.info(request.responseText);
 
     //==================== Margin on an Item ====================
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
@@ -733,13 +739,16 @@ const ondDisc = (disc) => {
         document.getElementById('dPrice').value = '0';
     }
 
-    //==================== Margin on an Item ====================
-    // marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}`;
-    // xmlhttp.open("GET", marginUrl, false);
-    // xmlhttp.send(null);
-    // document.getElementById("margin").value = xmlhttp.responseText;
-
     var currentItemId = document.getElementById('item-id').value;
+
+    // ================= purchased cost on item =====================
+    purchased_cost_url = `ajax/getPurchasedCost.ajax.php?qtype=${itemTypeCheck}&Qty=${qty}&currentItemId=${currentItemId}`;
+    request.open("GET", purchased_cost_url, false);
+    request.send(null);
+    document.getElementById("purchased-cost").value = request.responseText;
+    console.info(request.responseText);
+    
+    //==================== Margin on an Item ====================
 
     marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
     xmlhttp.open("GET", marginUrl, false);
