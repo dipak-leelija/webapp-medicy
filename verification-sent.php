@@ -307,7 +307,7 @@ $Admin          = new Admin;
                         console.log(data);
                     } else {
                         // messageResentAlert();
-                        alert(data);
+                        // alert(data);
                         console.log(data);
                     }
                 }
