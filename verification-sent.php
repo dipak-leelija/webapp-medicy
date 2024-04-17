@@ -142,10 +142,6 @@ $Admin          = new Admin;
 
 
     <script>
-        // //============== otp input action ==================
-        // function formatInput(input) {
-        //     input.value = input.value.replace(/\D/g, '').slice(0, 6); // Remove non-digit characters and limit to 6 input
-        // }
 
         // ============ otp submit button action ===============
         const submitOtp = () => {
@@ -308,9 +304,11 @@ $Admin          = new Admin;
                     console.log("ajax return data : " + data);
                     if (data == 1) {
                         messageResentAlert();
+                        console.log(data);
                     } else {
                         // messageResentAlert();
                         alert(data);
+                        console.log(data);
                     }
                 }
             });

@@ -83,6 +83,9 @@ if (isset($_POST['resendOtp'])) {
 			echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
 		} else {
 			echo '1';
+			?>
+			<script>console.log('mail sent');</script>
+			<?php
 		}
 		$PHPMailer->clearAllRecipients();
 	} catch (Exception $e) {
