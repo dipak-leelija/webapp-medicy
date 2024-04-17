@@ -659,7 +659,7 @@ const onQty = (qty) => {
     var payble = document.getElementById("amount").value;
     var pAmount = document.getElementById("purchased-cost").value; // purchased cost
     var salesMargin = parseFloat(payble) - parseFloat(pAmount);
-    document.getElementById("s-margin").value = salesMargin;
+    document.getElementById("s-margin").value = salesMargin.toFixed(2);
 
 }
 
@@ -796,7 +796,7 @@ const ondDisc = (disc) => {
     var payble = document.getElementById("amount").value;
     var pAmount = document.getElementById("purchased-cost").value; // purchased cost
     var salesMargin = parseFloat(payble) - parseFloat(pAmount);
-    document.getElementById("s-margin").value = salesMargin;
+    document.getElementById("s-margin").value = salesMargin.toFixed(2);
 }
 
 
