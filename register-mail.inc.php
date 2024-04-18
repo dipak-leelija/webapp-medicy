@@ -5,7 +5,7 @@ require_once __DIR__ . '/PHPMailer/PHPMailer.php';
 require_once CLASS_DIR . 'utility.class.php';
 
 
-$PHPMailer		= new PHPMailer(true);
+$PHPMailer		= new PHPMailer();
 $Utility        = new Utility;
 
 
@@ -59,9 +59,8 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 	====================================================================================================*/
 
 	try {
-		$PHPMailer->isSendmail();
-		$PHPMailer->isHTML(true);
-		// $PHPMailer->isSMTP(true);
+		$PHPMailer->IsSendmail();
+		$PHPMailer->IsHTML(true);
 		$PHPMailer->Host        = gethostname();
 		$PHPMailer->SMTPAuth    = true;
 		$PHPMailer->Username    = SITE_EMAIL;
@@ -77,14 +76,12 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 			echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
 		} else {
 			echo 'mail sent';
-			// header("location: verification-sent.php");
-			// echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
-			exit;
+			header("location: verification-sent.php");
 		}
 
 		$PHPMailer->clearAllRecipients();
 	} catch (Exception $e) {
-		echo "Message could not be sent. Mailer Error 2:-> {$PHPMailer->ErrorInfo}";
+		echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
 	}
 } else {
 	session_destroy();
