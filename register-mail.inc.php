@@ -76,9 +76,9 @@ if (isset($_SESSION['verify_key']) && isset($_SESSION['first-name']) && isset($_
 		if (!$PHPMailer->send()) {
 			echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
 		} else {
-			// echo 'mail sent';
+			echo 'mail sent';
 			// header("location: verification-sent.php");
-			echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
+			// echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
 			exit;
 		}
 
