@@ -54,18 +54,21 @@ if (isset($_SESSION['verify_key'], $_SESSION['first-name'], $_SESSION['email'], 
         $PHPMailer->Body        = $msgBody;
 
         if (!$PHPMailer->send()) {
-            // echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
-			echo 'mail sent';
-			header("location: verification-sent.php");
-        } else {
-			echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
-            // echo 'mail sent';
+            echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
+			// echo 'mail sent';
 			// header("location: verification-sent.php");
+        } else {
+			// echo "Message could not be sent to customer. Mailer Error:-> {$PHPMailer->ErrorInfo}<br>";
+            echo 'mail sent';
+			header("location: verification-sent.php");
         }
 
         $PHPMailer->clearAllRecipients();
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}";
+		?>
+		<script>console.log("Message could not be sent. Mailer Error:-> {$PHPMailer->ErrorInfo}");</script>
+		<?php
     }
 } else {
     session_destroy();
