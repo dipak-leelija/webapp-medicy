@@ -79,8 +79,8 @@ session_start();
 	
 	define('SITE_BILLING_EMAIL', 				"");
 	define('SITE_BILLING_NAME',  				"");
-	define('SITE_EMAIL', 						"no-reply@medicy.in");
-	define('SITE_EMAIL_P', 						"@wZh%TZkN~B?");
+	define('SITE_EMAIL', 						"admin@leelija.com");
+	define('SITE_EMAIL_P', 						"xw@iH06cV16m");
 	
 	define('CONTACT_MAIL', 						"");
 	define('INFO_MAIL', 						"");
