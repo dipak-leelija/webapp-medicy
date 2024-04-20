@@ -8,14 +8,33 @@ $weeklyMostVistiCustomerData = $StockOut->mostVisitCustomersByWeek($adminId);
 
 $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 
+//========================================================================================
+
+$highestPurchaseCustomerAllTime = $StockOut->overallMostPurchaseCustomer($adminId);
+
+$highestPurchaseCustomerByDay = $StockOut->mostPurchaseCustomerByDay($adminId);
+
+$highestPurchaseCustomerByWeek = $StockOut->mostPurchaseCustomerByWeek($adminId);
+
+$highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminId);
 // print_r($mostVistedCustomerFromStart);exit;
 ?>
 
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-between align-items-center">
         <div class="col ml-2 mt-3">
-            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                most visited 10 customer</div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item" style="font-size: medium;">
+                    <button id="mostVisitedLink" class="nav-link active" onclick="changeTab('mostVisited')" style="color: rebeccapurple; font-size: small;">Most Visited Customer</button>
+                </li>
+                <li class="nav-item">
+                    <button id="highestPurchasedLink" class="nav-link" onclick="changeTab('highestPurchased')" style="font-size: small;">Highest Purchased Customer</button>
+                </li>
+            </ul>
+
+            <label id='customer-sort' class="d-none" value='mostVisited'>mostVisited</label>
+            <lebel class="d-none" id="chart-label">Visit Count</lebel>
+
         </div>
         <div class="d-flex justify-content-end px-2">
             <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostVistedCustomerDtPkr" style="display: none; ">
@@ -30,8 +49,8 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
                 <button class="btn btn-sm btn-primary" onclick="mostVistedCustomerDateRange()" style="height: 2rem;">Find</button>
             </div>
             <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <b>...</b>
+                <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <i class="fas fa-filter"></i> Filter
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
                     <button class="dropdown-item" type="button" id="mostVisitCustomerLst24hrs" onclick="mostvisitCustomer(this.id)">Last 24 hrs</button>
@@ -40,6 +59,8 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
                     <button class="dropdown-item dropdown" type="button" id="mostVisitCustomerOnDt" onclick="mostvisitCustomer(this.id)">By Date</button>
                     <button class="dropdown-item dropdown" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button>
                 </div>
+
+                <lebel class="d-none" id="customer-purchse-filter-val">allData</lebel>
             </div>
         </div>
     </div>
@@ -61,11 +82,44 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 
 
 <script>
+    function changeTab(tab) {
+        document.getElementById('mostVisitedLink').classList.remove('active');
+        document.getElementById('highestPurchasedLink').classList.remove('active');
+        let customerSort = tab;
+
+        if (tab === 'mostVisited') {
+
+            document.getElementById('mostVisitedLink').classList.add('active');
+            document.getElementById('mostVisitedLink').style.color = 'rebeccapurple';
+            document.getElementById('highestPurchasedLink').style.color = 'black';
+            document.getElementById('customer-sort').innerHTML = customerSort;
+            document.getElementById('chart-label').innerHTML = 'Visit Count';
+
+            mostvisitCustomer(document.getElementById('customer-purchse-filter-val').innerHTML);
+
+        } else if (tab === 'highestPurchased') {
+
+            document.getElementById('highestPurchasedLink').classList.add('active');
+            document.getElementById('mostVisitedLink').style.color = 'black';
+            document.getElementById('highestPurchasedLink').style.color = 'rebeccapurple';
+            document.getElementById('customer-sort').innerHTML = customerSort;
+            document.getElementById('chart-label').innerHTML = 'Purchase Amount';
+
+            mostvisitCustomer(document.getElementById('customer-purchse-filter-val').innerHTML);
+
+        }
+    }
+
     // =========== most visit customer chart override function body ==========
-    function mostVisitCustomerDataFunction(mostVisitCustomerData) {
+    function mostVisitCustomerDataFunction(mostVisitCustomerData, flag) {
 
         if (mostVisitCustomerData != null) {
-            mostVistedCustomerChart.data.datasets[0].data = mostVisitCustomerData.map(item => item.visit_count);
+
+            if (flag == 0) {
+                mostVistedCustomerChart.data.datasets[0].data = mostVisitCustomerData.map(item => item.visit_count);
+            } else {
+                mostVistedCustomerChart.data.datasets[0].data = mostVisitCustomerData.map(item => item.total_purchase);
+            }
 
             var customerId = mostVisitCustomerData.map(item => item.customer_id);
             customerId = JSON.stringify(customerId);
@@ -83,6 +137,9 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
             document.getElementById("mostVisitCustomerCharDiv").style.display = 'block';
             document.getElementById('most-visited-no-data-found-div').style.display = 'none';
 
+            var sticker = document.getElementById('chart-label').innerHTML;
+            console.log(sticker);
+            mostVistedCustomerChart.label = sticker;
             mostVistedCustomerChart.update();
 
         } else {
@@ -97,13 +154,21 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
     // ============= most visit customer by specific date function body ==============
     function mostVistedCustomerByDt() {
         var mostVistedCustomerDt = document.getElementById('mostVisiteCustomerDt').value;
+        console.log(mostVistedCustomerDt);
 
-        mostVstCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostVstCstmrByDt=${mostVistedCustomerDt}`;
+        if(document.getElementById('customer-sort').innerHTML == 'mostVisited'){
+            var customerFilterByDate = 'mostVstCstmrByDt';
+        }else if(document.getElementById('customer-sort').innerHTML == 'highestPurchased'){
+            var customerFilterByDate = 'mostPrchsCstmrByDt';
+        }
+        console.log(document.getElementById('customer-sort').innerHTML);
+        console.log(customerFilterByDate);
+
+        mostVstCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?${customerFilterByDate}=${mostVistedCustomerDt}`;
         request.open("GET", mostVstCstmrDtUrl, false);
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         request.send(null);
         var mostVistiCustomerDataByDate = request.responseText;
-        console.log(mostVistiCustomerDataByDate);
         // mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDate));
 
         document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
@@ -132,34 +197,86 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 
     // ============ button onclick function call area ===============
     const mostvisitCustomer = (id) => {
-        if (id == 'mostVisitCustomerLst24hrs') {
-            document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
-            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
-            console.log(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
-            mostVisitCustomerDataFunction(<?php echo json_encode($dailyMostVistiCustomerData); ?>);
+        let filter1 = document.getElementById('customer-sort');
+        document.getElementById('customer-purchse-filter-val').innerHTML = filter2 = id;
+
+        if (filter1.innerHTML == 'mostVisited') {
+            var flag = 0;
+
+            if (filter2 == 'allData') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                mostVisitCustomerDataFunction(<?php echo json_encode($mostVistedCustomerFromStart); ?>, flag);
+            }
+
+            if (filter2 == 'mostVisitCustomerLst24hrs') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                mostVisitCustomerDataFunction(<?php echo json_encode($dailyMostVistiCustomerData); ?>, flag);
+            }
+
+            if (filter2 == 'mostVisitCustomerLst7') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                mostVisitCustomerDataFunction(<?php echo json_encode($weeklyMostVistiCustomerData); ?>, flag);
+            }
+
+            if (filter2 == 'mostVisitCustomerLst30') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                mostVisitCustomerDataFunction(<?php echo json_encode($monthlyMostVistiCustomerData); ?>, flag);
+            }
+
+            if (id == 'mostVisitCustomerOnDt') {
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'block';
+
+            }
+
+            if (filter2 == 'mostVisitCustomerDtRng') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'block';
+            }
         }
 
-        if (id == 'mostVisitCustomerLst7') {
-            document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
-            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
-            mostVisitCustomerDataFunction(<?php echo json_encode($weeklyMostVistiCustomerData); ?>);
-        }
 
-        if (id == 'mostVisitCustomerLst30') {
-            document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
-            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
-            mostVisitCustomerDataFunction(<?php echo json_encode($monthlyMostVistiCustomerData); ?>);
-        }
+        if (filter1.innerHTML == 'highestPurchased') {
+            var flag = 1;
 
-        if (id == 'mostVisitCustomerOnDt') {
-            // document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
-            document.getElementById('mostVistedCustomerDtPkr').style.display = 'block';
+            if (filter2 == 'allData') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                mostVisitCustomerDataFunction(<?php echo json_encode($highestPurchaseCustomerAllTime); ?>, flag);
+            }
 
-        }
+            if (filter2 == 'mostVisitCustomerLst24hrs') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                mostVisitCustomerDataFunction(<?php echo json_encode($highestPurchaseCustomerByDay); ?>, flag);
+            }
 
-        if (id == 'mostVisitCustomerDtRng') {
-            // document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
-            document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'block';
+            if (filter2 == 'mostVisitCustomerLst7') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                mostVisitCustomerDataFunction(<?php echo json_encode($highestPurchaseCustomerByWeek); ?>, flag);
+            }
+
+            if (filter2 == 'mostVisitCustomerLst30') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                mostVisitCustomerDataFunction(<?php echo json_encode($highestPurchaseCustomerByMonth); ?>, flag);
+            }
+
+            if (id == 'mostVisitCustomerOnDt') {
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'block';
+
+            }
+
+            if (filter2 == 'mostVisitCustomerDtRng') {
+                document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
+                document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'block';
+            }
         }
     }
 
@@ -167,7 +284,7 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 
 
     // ============== primary chart data area ==============
-    let mostVstCutmrData = <?php echo json_encode($mostVistedCustomerFromStart); ?>;
+    var mostVstCutmrData = <?php echo json_encode($mostVistedCustomerFromStart); ?>;
 
     if (mostVstCutmrData != null) {
         var customerId = mostVstCutmrData.map(item => item.customer_id);
@@ -190,13 +307,15 @@ $monthlyMostVistiCustomerData = $StockOut->mostVisitCustomersByMonth($adminId);
 
 
     // ========= chart control area ============= \\
+    var sticker = document.getElementById('chart-label').innerHTML;
     var mstVstCstmrCtx = document.getElementById('mostVisitCustomerChart').getContext('2d');
+
     var mostVistedCustomerChart = new Chart(mstVstCstmrCtx, {
         type: 'bar',
         data: {
             labels: customerNameArray,
             datasets: [{
-                label: 'Visit Count',
+                label: sticker,
                 data: totalVisit,
                 backgroundColor: 'rgba(176, 110, 96, 0.8)',
                 // borderColor: 'rgba(75, 192, 192, 1)',
