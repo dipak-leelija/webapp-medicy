@@ -10,6 +10,7 @@ require_once CLASS_DIR . 'doctors.class.php';
 require_once CLASS_DIR . 'patients.class.php';
 require_once CLASS_DIR . 'idsgeneration.class.php';
 require_once CLASS_DIR . 'utility.class.php';
+require_once CLASS_DIR . 'hospital.class.php';
 
 
 //Classes Initilizing
@@ -17,6 +18,7 @@ $appointments   = new Appointments;
 $IdsGeneration  = new IdsGeneration;
 $Patients       = new Patients;
 $Utility        = new Utility;
+$HealthCare     = new HealthCare;
 $doctors = new Doctors();
 
 
@@ -34,6 +36,18 @@ if (isset($_GET['test'])) {
 $showDoctors = $doctors->showDoctors($adminId);
 $showDoctors = json_decode($showDoctors);
 $allDoctors  = $showDoctors->data;
+
+$clinicInfo  = $HealthCare -> showHealthCare($adminId);
+$clinicInfo  = json_decode($clinicInfo, true);
+
+if ($clinicInfo['status'] == 1) {
+    $data = $clinicInfo['data'];
+     $district = $data['dist'];
+     $pin      = $data['pin'];
+     $state    = $data['health_care_state'];
+} else {
+    echo "Error: " . $clinicInfo['msg'];
+}
 
 ?>
 
@@ -78,7 +92,7 @@ $allDoctors  = $showDoctors->data;
         $patientWeight      = $_POST["patientWeight"];
         $gender             = $_POST["gender"];
         $patientAddress1    = $_POST["patientAddress1"];
-        $patientAddress2    = $_POST["patientAddress2"];
+        // $patientAddress2    = $_POST["patientAddress2"];
         $patientPS          = $_POST["patientPS"];
         $patientDist        = $_POST["patientDist"];
         $patientPIN         = $_POST["patientPIN"];
@@ -93,7 +107,7 @@ $allDoctors  = $showDoctors->data;
         $visited = 1;
 
         // Inserting Into Patients Database
-        $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientAddress2, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, NOW, $adminId);
+        $addPatients = $Patients->addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId,$appointmentDate, NOW, $adminId);
 
         if ($addPatients) {
 
@@ -209,7 +223,7 @@ $allDoctors  = $showDoctors->data;
                                         <div class="form-group col-sm-6 flex-column d-flex">
                                             <label class="form-control-label px-3" for="appointmentDate">Appointment
                                                 Date<span class="text-danger"> *</span></label>
-                                            <input type="date" id="appointmentDate" name="appointmentDate" required>
+                                            <input type="date" id="appointmentDate" value="<?php print(date("Y-m-d")) ?>" name="appointmentDate" required>
                                         </div>
                                     
                                     </div>
@@ -247,14 +261,14 @@ $allDoctors  = $showDoctors->data;
 
                                         </div>
 
-                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                        <!-- <div class="form-group col-sm-6 flex-column d-flex">
 
                                             <label class="form-control-label px-3" for="patientAddress2">Address Line
                                                 2<span class="text-danger"> *</span></label>
 
                                             <input type="text" id="patientAddress2" name="patientAddress2" placeholder="Address Line 2" autocomplete="off">
 
-                                        </div>
+                                        </div> -->
 
                                     </div>
 
@@ -272,7 +286,7 @@ $allDoctors  = $showDoctors->data;
 
                                             <label class="form-control-label px-3" for="patientDist">District<span class="text-danger"> *</span></label>
 
-                                            <input type="text" id="patientDist" name="patientDist" placeholder="District" required autocomplete="off">
+                                            <input type="text" id="patientDist" Value="<?= $district; ?>" name="patientDist" placeholder="District" required autocomplete="off">
 
                                         </div>
 
@@ -286,7 +300,7 @@ $allDoctors  = $showDoctors->data;
 
                                             <label class="form-control-label px-3" for="patientPIN">PIN Code<span class="text-danger"> *</span></label>
 
-                                            <input type="number" id="patientPIN" name="patientPIN" placeholder="Pin Code" onfocusout="checkPin(this)" required autocomplete="off">
+                                            <input type="number" id="patientPIN" Value="<?= $pin ?>" name="patientPIN" placeholder="Pin Code" onfocusout="checkPin(this)" required autocomplete="off">
 
                                         </div>
 
@@ -296,7 +310,7 @@ $allDoctors  = $showDoctors->data;
 
                                             <select id="dropSelection" name="patientState" required>
 
-                                                <option value="" disabled selected>Select State</option>
+                                                <option Value="<?= $state ?>" selected><?= $state ?></option>
 
                                                 <option value="West bengal">West Bengal</option>
 
@@ -382,7 +396,7 @@ $allDoctors  = $showDoctors->data;
                 <script src="<?php echo JS_PATH ?>add-patient.js"></script>
 
 
-                <script type="text/javascript">
+                <!-- <script type="text/javascript">
                     var todayDate = new Date();
 
                     var date = todayDate.getDate();
@@ -397,7 +411,7 @@ $allDoctors  = $showDoctors->data;
                     }
                     var todayFullDate = year + "-" + month + "-" + date;
                     document.getElementById("appointmentDate").setAttribute("min", todayFullDate);
-                </script>
+                </script> -->
 
 
 </body>
