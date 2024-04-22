@@ -125,10 +125,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             customerId = JSON.stringify(customerId);
 
             mostVisitedCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
-            request.open("GET", mostVisitedCustomerDataUrl, false);
-            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            request.send(null);
-            var mostVistiCustomerNameArray = request.responseText;
+            xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(null);
+            var mostVistiCustomerNameArray = xmlhttp.responseText;
 
             mostVistiCustomerNameArray = JSON.parse(mostVistiCustomerNameArray);
 
@@ -137,9 +137,6 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             document.getElementById("mostVisitCustomerCharDiv").style.display = 'block';
             document.getElementById('most-visited-no-data-found-div').style.display = 'none';
 
-            var sticker = document.getElementById('chart-label').innerHTML;
-            console.log(sticker);
-            mostVistedCustomerChart.label = sticker;
             mostVistedCustomerChart.update();
 
         } else {
@@ -154,22 +151,21 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
     // ============= most visit customer by specific date function body ==============
     function mostVistedCustomerByDt() {
         var mostVistedCustomerDt = document.getElementById('mostVisiteCustomerDt').value;
-        console.log(mostVistedCustomerDt);
-
+        
         if(document.getElementById('customer-sort').innerHTML == 'mostVisited'){
             var customerFilterByDate = 'mostVstCstmrByDt';
+            var flag = 0;
         }else if(document.getElementById('customer-sort').innerHTML == 'highestPurchased'){
+            var flag = 1;
             var customerFilterByDate = 'mostPrchsCstmrByDt';
         }
-        console.log(document.getElementById('customer-sort').innerHTML);
-        console.log(customerFilterByDate);
 
         mostVstCstmrDtUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?${customerFilterByDate}=${mostVistedCustomerDt}`;
-        request.open("GET", mostVstCstmrDtUrl, false);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.send(null);
-        var mostVistiCustomerDataByDate = request.responseText;
-        // mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDate));
+        xmlhttp.open("GET", mostVstCstmrDtUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+        
+        mostVisitCustomerDataFunction(JSON.parse(xmlhttp.responseText), flag);
 
         document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
         document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
@@ -178,17 +174,25 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
     // ============= most visit customer by date range function body ==============
     function mostVistedCustomerDateRange() {
-        var mostVistedCustomerStartDt = document.getElementById('mostVisiteCustomerStartDate').value;
-        var mostVistedCustomerEndtDt = document.getElementById('mostVisiteCustomerEndDate').value;
+        var purchaseVisitStartDt = document.getElementById('mostVisiteCustomerStartDate').value;
+        var purchaseVisitEndDt = document.getElementById('mostVisiteCustomerEndDate').value;
 
-        mostVstCstmrDtRngUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?mostVisitStartDt=${mostVistedCustomerStartDt}&mostVisitEndDt=${mostVistedCustomerEndtDt}`;
-        request.open("GET", mostVstCstmrDtRngUrl, false);
-        request.send(null);
+        if(document.getElementById('customer-sort').innerHTML == 'mostVisited'){
+            var flag = 0;
+            var customFilterByStartDt = 'mostVisitStartDt';
+            var customFilterByEndDt = 'mostVisitEndDt';
+            
+        }else if(document.getElementById('customer-sort').innerHTML == 'highestPurchased'){
+            var flag = 1;
+            var customFilterByStartDt = 'mostPurchaseStartDt';
+            var customFilterByEndDt = 'mostPurchaseEndDt';
+        }
 
-        var mostVistiCustomerDataByDateRange = request.responseText;
+        mostVstCstmrDtRngUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?${customFilterByStartDt}=${purchaseVisitStartDt}&${customFilterByEndDt}=${purchaseVisitEndDt}`;
+        xmlhttp.open("GET", mostVstCstmrDtRngUrl, false);
+        xmlhttp.send(null);
 
-        mostVisitCustomerDataFunction(JSON.parse(mostVistiCustomerDataByDateRange));
-
+        mostVisitCustomerDataFunction(JSON.parse(xmlhttp.responseText), flag);
 
         document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
         document.getElementById('mostVistedCustomerDtPkrRng').style.display = 'none';
@@ -291,10 +295,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         customerId = JSON.stringify(customerId);
 
         mostVisitedCustomerDataUrl = `<?php echo URL ?>ajax/most-visit-and-purchase-customer.ajax.php?customerId=${customerId}`;
-        request.open("GET", mostVisitedCustomerDataUrl, false);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.send(null);
-        var customerNameArray = request.responseText;
+        xmlhttp.open("GET", mostVisitedCustomerDataUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+        var customerNameArray = xmlhttp.responseText;
 
         customerNameArray = JSON.parse(customerNameArray);
 

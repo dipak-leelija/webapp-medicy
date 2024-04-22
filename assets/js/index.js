@@ -1,4 +1,4 @@
-// const xmlhttp = new XMLHttpRequest();
+const xmlhttp = new XMLHttpRequest();
 // const searchFor = () => {
 //     let searchForData = document.getElementById("search-all");
 
