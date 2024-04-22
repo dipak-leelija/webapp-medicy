@@ -252,10 +252,9 @@ if ($clinicInfo['status'] == 1) {
 
                                     <div class="row justify-content-between text-left">
 
-                                        <div class="form-group col-sm-6 flex-column d-flex">
+                                        <div class="form-group col-sm-12 flex-column d-flex">
 
-                                            <label class="form-control-label px-3" for="patientAddress1">Address Line
-                                                1<span class="text-danger"> *</span></label>
+                                            <label class="form-control-label px-3" for="patientAddress1">Address <span class="text-danger"> *</span></label>
 
                                             <input type="text" id="patientAddress1" name="patientAddress1" placeholder="Address Line 1" required autocomplete="off">
 

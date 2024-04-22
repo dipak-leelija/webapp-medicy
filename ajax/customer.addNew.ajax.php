@@ -5,13 +5,28 @@ require_once ROOT_DIR.'_config/sessionCheck.php';//check admin loggedin or not
 require_once CLASS_DIR.'dbconnect.php';
 require_once CLASS_DIR.'patients.class.php';
 require_once CLASS_DIR.'idsgeneration.class.php';
+require_once CLASS_DIR . 'hospital.class.php';
 
 
 //Classes Initilizing
 $Patients        = new Patients();
-$IdsGeneration    = new IdsGeneration();
+$IdsGeneration   = new IdsGeneration();
+$HealthCare      = new HealthCare;
 
 
+
+$clinicInfo  = $HealthCare -> showHealthCare($adminId);
+$clinicInfo  = json_decode($clinicInfo, true);
+
+if ($clinicInfo['status'] == 1) {
+    $data = $clinicInfo['data'];
+     $email    = $data['hospital_name'];
+     $district = $data['dist'];
+     $pin      = $data['pin'];
+     $state    = $data['health_care_state'];
+} else {
+    echo "Error: " . $clinicInfo['msg'];
+}
 ?>
 
 <!doctype html>
@@ -49,7 +64,7 @@ $IdsGeneration    = new IdsGeneration();
         
         $visited = 0;
     
-        $added = $Patients->addPatients($patientId, $_POST['patientName'], '', '', $_POST['patientPhoneNumber'], '', '', $_POST['patientAddress1'], '', '', '', '', $visited, $employeeId, '', NOW, $adminId);
+        $added = $Patients->addPatients($patientId, $_POST['patientName'], '', $email, $_POST['patientPhoneNumber'], '', '', $_POST['patientAddress1'], '', $district, $pin, $state, $visited, $employeeId, '', NOW, $adminId);
 
         if ($added == TRUE) {
             ?>
@@ -88,6 +103,13 @@ $IdsGeneration    = new IdsGeneration();
                                     value="" required autocomplete="off">
                             </div>
 
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3 h6" for="patientPhoneNumber">Phone
+                                    number<span class="text-danger"> *</span></label>
+                                <input type="text" id="patientPhoneNumber" name="patientPhoneNumber"
+                                    placeholder="Phone Number" maxlength="10" minlength="10" value="" required autocomplete="off">
+                            </div>
+
                             <!-- <div class="form-group col-sm-6 flex-column d-flex">
                                 <label class="form-control-label px-3 h6" for="patientGurdianName">Patient's
                                     Gurdian Name<span class="text-danger"> *</span></label>
@@ -104,12 +126,12 @@ $IdsGeneration    = new IdsGeneration();
                                     value="" autocomplete="off">
                             </div> -->
 
-                            <div class="form-group col-sm-6 flex-column d-flex">
+                            <!-- <div class="form-group col-sm-6 flex-column d-flex">
                                 <label class="form-control-label px-3 h6" for="patientPhoneNumber">Phone
                                     number<span class="text-danger"> *</span></label>
                                 <input type="text" id="patientPhoneNumber" name="patientPhoneNumber"
                                     placeholder="Phone Number" maxlength="10" minlength="10" value="" required autocomplete="off">
-                            </div>
+                            </div> -->
 
                         </div>
 
@@ -150,11 +172,11 @@ $IdsGeneration    = new IdsGeneration();
 
                         <!-- <h5 class="text-center mb-4 mt-5">Patient Address</h5> -->
                         <div class="row justify-content-between text-left">
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientAddress1">Address Line
-                                    1<span class="text-danger"> *</span></label>
+                            <div class="form-group col-sm-12 flex-column d-flex">
+                                <label class="form-control-label px-3 h6" for="patientAddress1">Address
+                                    <span class="text-danger"> *</span></label>
                                 <input type="text" id="patientAddress1" name="patientAddress1"
-                                    placeholder="Address Line 1" value="" required autocomplete="off">
+                                    placeholder="Address Line " value="" required autocomplete="off">
                             </div>
 
                             <!-- <div class="form-group col-sm-6 flex-column d-flex">
@@ -201,7 +223,7 @@ $IdsGeneration    = new IdsGeneration();
                             </div>
                         </div> -->
 
-                        <div class="row justify-content-end">
+                        <div class="row justify-content-center">
                             <div class="form-group col-sm-4">
                                 <button type="submit" name="submit" class="btn-block btn-primary">Submit</button>
                             </div>
