@@ -25,10 +25,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         <div class="col ml-2 mt-3">
             <ul class="nav nav-tabs">
                 <li class="nav-item" style="font-size: medium;">
-                    <button id="mostVisitedLink" class="nav-link active" onclick="changeTab('mostVisited')" style="color: rebeccapurple; font-size: small;">Most Visited Customer</button>
+                    <button id="mostVisitedLink" class="nav-link active" onclick="changeTab('mostVisited')" style="color: rebeccapurple; font-size: small; background-color: white;">Most Visited Customer</button>
                 </li>
                 <li class="nav-item">
-                    <button id="highestPurchasedLink" class="nav-link" onclick="changeTab('highestPurchased')" style="font-size: small;">Highest Purchased Customer</button>
+                    <button id="highestPurchasedLink" class="nav-link" onclick="changeTab('highestPurchased')" style="font-size: small; background-color: white; border-bottom: 1px;">Highest Purchased Customer</button>
                 </li>
             </ul>
 
@@ -91,6 +91,8 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
             document.getElementById('mostVisitedLink').classList.add('active');
             document.getElementById('mostVisitedLink').style.color = 'rebeccapurple';
+            document.getElementById('mostVisitedLink').style.borderBottom = 'none';
+            document.getElementById('highestPurchasedLink').style.borderBottom = '1px';
             document.getElementById('highestPurchasedLink').style.color = 'black';
             document.getElementById('customer-sort').innerHTML = customerSort;
             document.getElementById('chart-label').innerHTML = 'Visit Count';
@@ -102,6 +104,8 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             document.getElementById('highestPurchasedLink').classList.add('active');
             document.getElementById('mostVisitedLink').style.color = 'black';
             document.getElementById('highestPurchasedLink').style.color = 'rebeccapurple';
+            document.getElementById('highestPurchasedLink').style.borderBottom = 'none';
+            document.getElementById('mostVisitedLink').style.borderBottom = '1px';
             document.getElementById('customer-sort').innerHTML = customerSort;
             document.getElementById('chart-label').innerHTML = 'Purchase Amount';
 
@@ -322,8 +326,10 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
                 label: sticker,
                 data: totalVisit,
                 backgroundColor: 'rgba(176, 110, 96, 0.8)',
-                // borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
+                borderColor: 'rgba(255, 255, 255, 0)',
+                borderWidth: 1,
+                barThickness: 5,
+                maxBarThickness: 5,
             }]
         },
         options: {

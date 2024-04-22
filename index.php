@@ -159,7 +159,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
 
                             </div>
                             <div class="col-md-7 mb-4">
-
+                                <?php require_once ROOT_COMPONENT . "sales-purchase.php"; ?>
                             </div>
                         </div>
                         <!-- ================ FORTH ROW ROW ================ -->
