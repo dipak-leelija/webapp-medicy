@@ -5,62 +5,7 @@ require_once 'dbconnect.php';
 
 
 
-class Patients extends DatabaseConnection
-{
-
-
-    // function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $appointmentDate, $addedOn, $adminId)
-    // {
-    //     echo $patientId . "<br>" .gettype($patientId)."<br>";
-    //     echo $patientName . "<br>".gettype($patientName)."<br>";
-    //     echo $patientGurdianName . "<br>".gettype($patientGurdianName)."<br>";
-    //     echo $patientEmail . "<br>".gettype($patientEmail)."<br>";
-    //     echo $patientPhoneNumber . "<br>".gettype($patientPhoneNumber)."<br>";
-    //     echo $patientAge . "<br>".gettype($patientAge)."<br>";
-    //     echo $gender . "<br>" .gettype($gender)."<br>";
-    //     echo $patientAddress1 . "<br>".gettype($patientAddress1)."<br>";
-    //     echo $patientPS . "<br>".gettype($patientPS)."<br>";
-    //     echo $patientDist . "<br>".gettype($patientDist)."<br>";
-    //     echo $patientPIN . "<br>".gettype($patientPIN)."<br>";
-    //     echo $patientState . "<br>".gettype($patientState)."<br>";
-    //     echo $visited . "<br>".gettype($visited)."<br>";
-    //     echo $employeeId . "<br>".gettype($employeeId)."<br>";
-    //     echo $appointmentDate . "<br>".gettype($appointmentDate)."<br>";
-    //     echo $addedOn . "<br>".gettype($addedOn)."<br>";
-    //     echo $adminId . "<br>".gettype($adminId)."<br>";
-    
-    //     try {
-    //         // $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`,`appointment_date`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    //         $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`,`appointment_date`, `added_on`, `admin_id`) 
-    //         VALUES 
-    //         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-
-    //         // echo $insertPatients;
-    //         // print_r($insertPatients);
-
-    //         $stmt = $this->conn->prepare($insertPatients);
-
-    //         // if(!$stmt){
-    //         //     throw new Exception("bind param problem");
-    //         // }
-
-    //         $stmt->bind_param("ssssssssssssissss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId,$appointmentDate, $addedOn, $adminId);
-
-    //         if ($stmt->execute()) {
-    //             $stmt->close();
-    //             return true;
-    //         } else {
-    //             $stmt->close();
-    //             return false;
-    //         }
-    //     } catch (Exception $e) {
-    //         echo "Error: " . $e->getMessage();
-    //         return false;
-    //     }
-    // }
-
+class Patients extends DatabaseConnection{
 
     function addPatients($patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId, $appointmentDate, $addedOn, $adminId){
 
