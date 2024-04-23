@@ -26,7 +26,7 @@ if(isset($_POST['update'])){
     $patientDOB          = $_POST['patientDOB'];
     $gender              = $_POST['gender'];
     $patientAddress1     = $_POST['patientAddress1'];
-    $patientAddress2     = $_POST['patientAddress2'];
+    $patientAddress2     = '';
     $patientPS           = $_POST['patientPS'];
     $patientDist         = $_POST['patientDist'];
     $patientPIN          = $_POST['patientPIN'];
@@ -165,10 +165,10 @@ foreach ($showAppointments as $appointment) {
                     <input class="form-control" type="text" id="patientAddress1" name="patientAddress1" placeholder="Enater Patient's Address 1" value="<?php echo $PatientAddress1; ?>">
                 </div>
 
-                <div class="form-group col-sm-6 flex-column d-flex">
+                <!-- <div class="form-group col-sm-6 flex-column d-flex">
                     <label class="form-label px-3" for="patientAddress2">Address Line 2<span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="patientAddress2" name="patientAddress2" placeholder="Enater Patient's Address 2" value="<?php echo $PatientAddress2; ?>">
-                </div>
+                </div> -->
             </div>
             <div class="row justify-content-between text-left">
                 <div class="form-group col-sm-6 flex-column d-flex">
