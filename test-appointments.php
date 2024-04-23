@@ -128,7 +128,7 @@ if (isset($_GET['search'])) {
 }
 
 $labBillDisplay = json_decode($labBillDisplay);
-// print_r($labBillDisplay);
+print_r($labBillDisplay);
 $slicedLabBills = '';
 if ($labBillDisplay->status) {
     if ($labBillDisplay->data != '') {
