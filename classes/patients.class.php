@@ -32,6 +32,8 @@ class Patients extends DatabaseConnection
         try {
             $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`,`appointment_date`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+            print_r($insertPatients);
+            
             $stmt = $this->conn->prepare($insertPatients);
 
             if(!$stmt){
