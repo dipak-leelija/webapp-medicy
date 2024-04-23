@@ -34,12 +34,12 @@ class Patients extends DatabaseConnection
 
             $stmt = $this->conn->prepare($insertPatients);
 
-            $stmt->bind_param("sssssssssssssssss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId,$appointmentDate, $addedOn, $adminId);
-
             if(!$stmt){
                 throw new Exception("bind param problem");
             }
             
+            $stmt->bind_param("sssssssssssssssss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId,$appointmentDate, $addedOn, $adminId);
+
             if ($stmt->execute()) {
                 $stmt->close();
                 return true;

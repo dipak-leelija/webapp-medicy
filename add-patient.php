@@ -353,8 +353,10 @@ if ($clinicInfo['status'] == 1) {
                                             <!-- <label id="shiftValue"></label> -->
 
                                         </div>
+                                    <?php else: ?>
+                                        <input class="d-none" type="text" value=" " name="patientDoctor">
                                     <?php endif; ?>
-
+                                                    
                                     <div class="row justify-content-end">
 
                                         <div class="form-group col-sm-4">
