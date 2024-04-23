@@ -41,8 +41,12 @@ if ($clinicInfo['status'] == 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?= CSS_PATH ?>bootstrap 5/bootstrap.css">
     <link rel="stylesheet" href="<?= CSS_PATH ?>patient-style.css">
+    
+    <link href="<?= CSS_PATH ?>new-sales.css" rel="stylesheet">
     <title>Enter Patient Details</title>
 
+    <link href="<?= PLUGIN_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= PLUGIN_PATH ?>font-asesome-5/font-awesome-5.15.4-all.min.css" rel="stylesheet" type="text/css">
     <link href="<?= ASSETS_PATH ?>fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <link
@@ -92,138 +96,37 @@ if ($clinicInfo['status'] == 1) {
     <div>
         <div class="row d-flex justify-content-center">
             <div class="col-xl-12 col-lg-12 col-md-12 text-center">
-                <div class="card shadow-sm p-4">
+                <div class="bg-light p-4 pb-0">
                     <!-- <h4 class="text-center mb-4 mt-0"><b>Fill The Patient Details</b></h4> -->
                     <form class="form-card" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientName">Patient Name<span
+                                <label class="form-control-label h6" for="patientName"><i class="fas fa-user" style="color: #8584e9; margin-right: 8px;"></i> Patient Name<span
                                         class="text-danger"> *</span></label>
-                                <input type="text" id="patientName" name="patientName" placeholder="Enter Patient Name"
+                                <input class="newsalesAdd" type="text" id="patientName" name="patientName" placeholder="Enter Patient Name"
                                     value="" required autocomplete="off">
                             </div>
 
                             <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientPhoneNumber">Phone
+                                <label class="form-control-label h6" for="patientPhoneNumber"><i class="fas fa-phone" style="color: #8584e9; margin-right: 8px;"></i>Phone
                                     number<span class="text-danger"> *</span></label>
-                                <input type="text" id="patientPhoneNumber" name="patientPhoneNumber"
+                                <input class="newsalesAdd" type="text" id="patientPhoneNumber" name="patientPhoneNumber"
                                     placeholder="Phone Number" maxlength="10" minlength="10" value="" required autocomplete="off">
                             </div>
-
-                            <!-- <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientGurdianName">Patient's
-                                    Gurdian Name<span class="text-danger"> *</span></label>
-                                <input type="text" id="patientGurdianName" name="patientGurdianName"
-                                    placeholder="Enter Patient's Gurdian Name" value="" required autocomplete="off">
-                            </div> -->
-                        </div>
-
-                        <div class="row justify-content-between text-left">
-                            <!-- <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientEmail">Patient
-                                    Email</label>
-                                <input type="text" id="patientEmail" name="patientEmail" placeholder="Patient Email"
-                                    value="" autocomplete="off">
-                            </div> -->
-
-                            <!-- <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientPhoneNumber">Phone
-                                    number<span class="text-danger"> *</span></label>
-                                <input type="text" id="patientPhoneNumber" name="patientPhoneNumber"
-                                    placeholder="Phone Number" maxlength="10" minlength="10" value="" required autocomplete="off">
-                            </div> -->
-
                         </div>
 
 
 
-                        <!-- <div class="row justify-content-between text-left">
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientAge">Age<span class="text-danger">
-                                        *</span></label>
-                                <input type="text" id="patientAge" name="patientAge" placeholder="Age" maxlength="3"
-                                    minlength="1" required autocomplete="off">
-                            </div>
-
-                            <div class="col-sm-6 mt-4">
-                                <label class="mb-3 mr-1 h6" for="gender">Gender: </label>
-
-                                <input type="radio" class="btn-check" name="gender" id="male" value="Male"
-                                    autocomplete="off" required>
-                                <label class="btn btn-sm btn-outline-secondary" for="male" value="Male">Male</label>
-
-
-                                <input type="radio" class="btn-check" name="gender" id="female" value="Female"
-                                    autocomplete="off" required>
-                                <label class="btn btn-sm btn-outline-secondary" for="female"
-                                    value="Female">Female</label>
-
-
-                                <input type="radio" class="btn-check" name="gender" id="secret" value="Others"
-                                    autocomplete="off" required>
-                                <label class="btn btn-sm btn-outline-secondary" for="secret"
-                                    value="Secret">Others</label>
-
-                            </div>
-
-                        </div> -->
-
-
-
-                        <!-- <h5 class="text-center mb-4 mt-5">Patient Address</h5> -->
+                        <!-- <h6 class="text-center mb-4 mt-5">Patient Address</h6> -->
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-12 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientAddress1">Address
+                                <label class="form-control-label h6" for="patientAddress1"><i class="fas fa-home" style="color: #8584e9; margin-right: 8px;"></i>Address
                                     <span class="text-danger"> *</span></label>
-                                <input type="text" id="patientAddress1" name="patientAddress1"
+                                <input class="newsalesAdd" type="text" id="patientAddress1" name="patientAddress1"
                                     placeholder="Address Line " value="" required autocomplete="off">
                             </div>
-
-                            <!-- <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientAddress2">Address Line
-                                    2<span class="text-danger"> *</span></label>
-                                <input type="text" id="patientAddress2" name="patientAddress2" value=""
-                                    placeholder="Address Line 2" autocomplete="off">
-                            </div> -->
                         </div>
-
-                        <!-- <div class="row justify-content-between text-left">
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientPS">Police Station<span
-                                        class="text-danger"> *</span></label>
-                                <input type="text" id="patientPS" name="patientPS" placeholder="Police Station" value=""
-                                    required autocomplete="off">
-                            </div>
-
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientDist">District<span
-                                        class="text-danger"> *</span></label>
-                                <input type="text" id="patientDist" name="patientDist" placeholder="District" value=""
-                                    required autocomplete="off">
-                            </div>
-                        </div> -->
-
-
-                        <!-- <div class="row justify-content-between text-left">
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientPIN">PIN Code<span
-                                        class="text-danger"> *</span></label>
-                                <input type="text" id="patientPIN" name="patientPIN" placeholder="Pin Code"
-                                    maxlength="7" value="" required autocomplete="off">
-                            </div>
-
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3 h6" for="patientState">State<span
-                                        class="text-danger"> *</span></label>
-                                <select id="dropSelection" name="patientState" required>
-                                    <option disabled>Select State</option>
-                                    <option value="West bengal">West Bengal</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                        </div> -->
-
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center mt-5">
                             <div class="form-group col-sm-4">
                                 <button type="submit" name="submit" class="btn-block btn-primary">Submit</button>
                             </div>
