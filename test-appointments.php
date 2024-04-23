@@ -318,7 +318,7 @@ if ($labBillDisplay->status) {
                                                 $paidAmount    = $rowlabBill->paid_amount;
                                                 $status        = $rowlabBill->status;
 
-
+                                                $test = 0;
                                                 $billDetails = $LabBillDetails->billDetailsById($billId);
                                                 if (is_array($billDetails))
                                                     $test = count($billDetails);
