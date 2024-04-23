@@ -15,7 +15,7 @@ class StockOut extends DatabaseConnection
                 $stmt->close();
                 return array("success" => true);
             } else {
-                
+
                 throw new Exception("Error inserting data into the database: " . $stmt->error);
             }
         } catch (Exception $e) {
@@ -838,7 +838,7 @@ class StockOut extends DatabaseConnection
 
 
 
-    function mostPurchaseCustomerByMonth($admin='') // most purchase customer last 30 days fucntion
+    function mostPurchaseCustomerByMonth($admin = '') // most purchase customer last 30 days fucntion
     {
         // echo "before if : $admin<br>";
         try {
@@ -1103,15 +1103,53 @@ class StockOut extends DatabaseConnection
 
 
 
+
+    function selectStockOutDataOnDateFilter($startDate, $endDate, $adminId)
+    {
+        try {
+            $selectSalesData = "SELECT invoice_id, amount, bill_date FROM stock_out 
+                                WHERE `bill_date` BETWEEN ? AND ? 
+                                AND `admin_id` = ?";
+
+            $stmt = $this->conn->prepare($selectSalesData);
+            
+            if (!$stmt) {
+                throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("sss", $startDate, $endDate, $adminId);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                $data = array();
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $stmt->close();
+                return json_encode(['status'=>'1', 'data'=>$data]);
+            }else{
+                $stmt->close();
+                return json_encode(['status'=>'0', 'data'=>'']);
+            }
+        } catch (Exception $e) {
+            echo "error". $e->getMessage();
+        }
+    }
+
+
+
+
+
+
+
+
     function cancelLabBill($billId, $status)
     {
-
         $cancelBill = "UPDATE `stock_out` SET `status` = '$status' WHERE `stock_out`.`bill_id` = '$billId'";
-        // echo $cancelBill.$this->conn->error;
-        // exit;
         $cancelBillQuery = $this->conn->query($cancelBill);
-        // echo $cancelBillQuery.$this->conn->error;
-        // exit;
         return $cancelBillQuery;
     } //end cancelLabBill function
 
