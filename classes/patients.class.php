@@ -30,7 +30,12 @@ class Patients extends DatabaseConnection
         echo $adminId . "<br>".gettype($adminId)."<br>";
     
         try {
-            $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`,`appointment_date`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            // $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`,`appointment_date`, `added_on`, `admin_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $insertPatients = "INSERT INTO `patient_details` (`patient_id`, `name`, `gurdian_name`, `email`, `phno`, `age`, `gender`, `address_1`, `patient_ps`, `patient_dist`, `patient_pin`, `patient_state`, `visited`, `added_by`,`appointment_date`, `added_on`, `admin_id`) 
+            VALUES 
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 
             // echo $insertPatients;
             // print_r($insertPatients);
