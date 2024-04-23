@@ -62,7 +62,7 @@ if ($clinicInfo['status'] == 1) {
         //Patient Id Generate
         $patientId = $IdsGeneration->patientidGenerate();
         
-        $visited = '0';
+        $visited = 0;
         
         $added = $Patients->addPatients($patientId, $_POST['patientName'], ' ', $email, $_POST['patientPhoneNumber'], ' ', ' ', $_POST['patientAddress1'], ' ', $district, $pin, $state, $visited, $employeeId, ' ', NOW, $adminId);
 

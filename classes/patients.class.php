@@ -37,8 +37,8 @@ class Patients extends DatabaseConnection
             if(!$stmt){
                 throw new Exception("bind param problem");
             }
-            
-            $stmt->bind_param("sssssssssssssssss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId,$appointmentDate, $addedOn, $adminId);
+
+            $stmt->bind_param("ssssssssssssissss", $patientId, $patientName, $patientGurdianName, $patientEmail, $patientPhoneNumber, $patientAge, $gender, $patientAddress1, $patientPS, $patientDist, $patientPIN, $patientState, $visited, $employeeId,$appointmentDate, $addedOn, $adminId);
 
             if ($stmt->execute()) {
                 $stmt->close();
