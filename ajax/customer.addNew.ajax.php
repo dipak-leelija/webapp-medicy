@@ -64,7 +64,7 @@ if ($clinicInfo['status'] == 1) {
         
         $visited = 0;
     
-        $added = $Patients->addPatients($patientId, $_POST['patientName'], '', $email, $_POST['patientPhoneNumber'], '', '', $_POST['patientAddress1'], '', $district, $pin, $state, $visited, $employeeId, '', NOW, $adminId);
+        $added = $Patients->addPatients($patientId, $_POST['patientName'], ' ', $email, $_POST['patientPhoneNumber'], ' ', ' ', $_POST['patientAddress1'], ' ', $district, $pin, $state, $visited, $employeeId, ' ', NOW, $adminId);
 
         if ($added == TRUE) {
             ?>
