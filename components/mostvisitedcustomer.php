@@ -325,11 +325,11 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             datasets: [{
                 label: sticker,
                 data: totalVisit,
-                backgroundColor: 'rgba(176, 110, 96, 0.8)',
-                borderColor: 'rgba(255, 255, 255, 0)',
+                // backgroundColor: 'rgba(176, 110, 96, 0.8)',
+                // borderColor: 'rgba(255, 255, 255, 0)',
                 borderWidth: 1,
-                barThickness: 5,
-                maxBarThickness: 5,
+                barThickness: 10,
+                maxBarThickness: 10,
             }]
         },
         options: {

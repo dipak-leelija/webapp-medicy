@@ -316,11 +316,11 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
             datasets: [{
                 label: 'Total Sold',
                 data: totalSold,
-                backgroundColor: 'rgba(64, 156, 71, 0.8)',
-                borderColor: 'rgba(255, 255, 255, 255)',
+                // backgroundColor: 'rgba(64, 156, 71, 0.8)',
+                // borderColor: 'rgba(255, 255, 255, 255)',
                 borderWidth: 1,
-                barThickness: 5,
-                maxBarThickness: 5,
+                barThickness: 10,
+                maxBarThickness: 10,
             }]
         },
         options: {
