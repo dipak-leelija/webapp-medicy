@@ -21,7 +21,7 @@ const getDate = (date) => {
 const addCustomerModal = () => {
     let url = "ajax/customer.addNew.ajax.php";
     $(".add-customer-modal").html(
-        '<iframe width="99%" height="500px" frameborder="0" allowtransparency="true" src="' +
+        '<iframe width="99%" height="330px" frameborder="0" allowtransparency="true" src="' +
         url + '"></iframe>');
 }
 // GET CUSTOMER DETAILS

@@ -20,6 +20,25 @@
     display: none;
 } */
 
+.newsalesAdd{
+    outline: none;
+    border: none;
+    background: transparent;
+    /* text-transform: uppercase; */
+    border-bottom: 0.1rem solid #000000;
+    border-radius:0px !important;
+}
+.newsalesAdd:focus{
+   border:none;
+   border-bottom: 0.1rem solid #6c9aee;
+}
+
+/* .newi{
+    color: #033fb0;
+    padding: 8px;
+    border: 1px solid #033fb0;
+    border-radius: 50%;
+} */
 .bill-date {
     outline: none;
     border: none;
