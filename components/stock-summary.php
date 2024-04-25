@@ -2,31 +2,43 @@
 $checkDt = date('Y-m');
 
 $currentStockData = $CurrentStock->showCurrentStockbyAdminId($adminId);
-
 $currentStockDataForJS = json_encode($currentStockData);
-// print_r($currentStockData);
+
 
 $netCurrentMrp = 0;
 $netCurrentPtr = 0;
-$netCurrentMargin = 0;
+$netSalesMargin = 0;
+
 if ($currentStockData != null) {
     foreach ($currentStockData as $currentItemData) {
         $currentItemMrp = $currentItemData['mrp'];
-        $currentItemMrp = floatval($currentItemMrp) * $currentItemData['qty']; // calculating total mrp in curnt stock
-        // echo "MRP : ".$currentItemMrp."<br>";
-        $currentItemPtr = $currentItemData['ptr'];
-        $currentItemPtr = floatval($currentItemPtr) * $currentItemData['qty']; // calculating total ptr in curnt stock
-        // echo "PTR : ".$currentItemPtr."<br>";
+        
+        if(in_array(strtolower($currentItemData['unit']), LOOSEUNITS)){
+            $perQtyMrp = floatval($currentItemData['mrp']) / floatval($currentItemData['weightage']);
+            $currentItemMrp = floatval($perQtyMrp) * intval($currentItemData['loosely_count']);
+        }else{
+            $currentItemMrp = floatval($currentItemData['mrp']) * intval($currentItemData['qty']);
+        }
 
-        $netAmountPerItem = floatval($currentItemPtr) + ((floatval($currentItemPtr)) * intval($currentItemData['gst']) / 100);
-        // echo "Item price : ".$netAmountPerItem."<br>";
+        $netCurrentMrp = floatval($netCurrentMrp) + floatval($currentItemMrp); // calculating total mrp in curnt stock
 
-        $perItemMargin = floatval($currentItemMrp) - floatval($netAmountPerItem);
-        // echo "Item margin : ".$perItemMargin."<br><br>";
+        $itemStockIndetailsData = $StockInDetails->showStockInDetailsByStokinId($currentItemData['stock_in_details_id']);
 
-        $netCurrentMrp = floatval($netCurrentMrp) + floatval($currentItemMrp); // calculating total mrp all over
-        $netCurrentPtr = floatval($netCurrentPtr) + floatval($currentItemPtr); // calculating total ptr all over
-        $netCurrentMargin = floatval($netCurrentMargin) + floatval($perItemMargin); // calculating total margin all over
+        foreach($itemStockIndetailsData as $itemStockIndetailsData){
+            $itemBasePrice = $itemStockIndetailsData['base'];
+            $itemGst = $itemStockIndetailsData['gst'];
+            $itemPtr = floatval($itemBasePrice) + (floatval($itemBasePrice) * (floatval($itemGst)/100));
+
+            if (in_array(strtolower($itemStockIndetailsData['unit']), LOOSEUNITS)) {
+                $perQtyPtr = floatval($itemPtr) / intval($itemStockIndetailsData['weightage']);
+                $perItemPtr = floatval($perQtyPtr) * intval($currentItemData['loosely_count']);
+            } else {
+                $perItemPtr = floatval($itemPtr) * intval($currentItemData['qty']);
+            }
+
+            $netCurrentPtr = floatval($netCurrentPtr) + floatval($perItemPtr);  // calculating total ptr in curnt stock
+        }
+        $netSalesMargin = floatval($netCurrentMrp) - floatval($netCurrentPtr);  // calculating total margin
     }
 }
 
@@ -39,22 +51,33 @@ $netCurrentPtrOfExpItems = 0;
 $netCurrentMarginOfExpItems = 0;
 if ($currentStockExpItemData != null) {
     foreach ($currentStockExpItemData as $currentExpItemData) {
-        $currentExpItemMrp = $currentExpItemData['mrp'];
-        $currentExpItemMrp = floatval($currentExpItemMrp) * $currentExpItemData['qty']; // calculating total mrp in curnt stock
-        // echo "MRP : ".$currentExpItemMrp."<br>";
-        $currentExpItemPtr = $currentExpItemData['ptr'];
-        $currentExpItemPtr = floatval($currentExpItemPtr) * $currentExpItemData['qty']; // calculating total ptr in curnt stock
-        // echo "PTR : ".$currentExpItemPtr."<br>";
 
-        $netExpItemAmountPerItem = floatval($currentExpItemPtr) + ((floatval($currentExpItemPtr)) * intval($currentExpItemData['gst']) / 100);
-        // echo "Item price : ".$netExpItemAmountPerItem."<br>";
+        if(in_array(strtolower($currentExpItemData['unit']), LOOSEUNITS)){
+            $perQtyMrp = floatval($currentExpItemData['mrp']) / floatval($currentExpItemData['weightage']);
+            $expItemMrp = floatval($perQtyMrp) * intval($currentExpItemData['loosely_count']);
+        }else{
+            $expItemMrp = floatval($currentItemData['mrp']) * intval($currentItemData['qty']);
+        }
 
-        $perExpItemMargin = floatval($currentExpItemMrp) - floatval($netExpItemAmountPerItem);
-        // echo "Item margin : ".$perExpItemMargin."<br><br>";
+        $netCurrentMrpOfExpItems = floatval($netCurrentMrpOfExpItems) + floatval($expItemMrp); // calculating total mrp in curnt stock
 
-        $netCurrentMrpOfExpItems = floatval($netCurrentMrpOfExpItems) + floatval($currentExpItemMrp); // calculating total mrp all over
-        $netCurrentPtrOfExpItems = floatval($netCurrentPtrOfExpItems) + floatval($currentExpItemPtr); // calculating total ptr all over
-        $netCurrentMarginOfExpItems = floatval($netCurrentMarginOfExpItems) + floatval($perExpItemMargin); // calculating total margin all over
+        $itemStockIndetailsData = $StockInDetails->showStockInDetailsByStokinId($currentExpItemData['stock_in_details_id']);
+
+        foreach($itemStockIndetailsData as $itemStockIndetailsData){
+            $itemBasePrice = $itemStockIndetailsData['base'];
+            $itemGst = $itemStockIndetailsData['gst'];
+            $itemPtr = floatval($itemBasePrice) + (floatval($itemBasePrice) * (floatval($itemGst)/100));
+
+            if (in_array(strtolower($itemStockIndetailsData['unit']), LOOSEUNITS)) {
+                $perQtyPtr = floatval($itemPtr) / intval($itemStockIndetailsData['weightage']);
+                $perItemPtr = floatval($perQtyPtr) * intval($currentItemData['loosely_count']);
+            } else {
+                $perItemPtr = floatval($itemPtr) * intval($currentItemData['qty']);
+            }
+
+            $netCurrentPtrOfExpItems = floatval($netCurrentPtrOfExpItems) + floatval($perItemPtr);  // calculating total ptr in curnt stock
+        }
+        $netCurrentMarginOfExpItems = floatval($netCurrentMrpOfExpItems) - floatval($netCurrentPtrOfExpItems);  // calculating total margin
     }
 }
 
@@ -78,17 +101,17 @@ if ($currentStockExpItemData != null) {
                                 <thead>
                                     <tr>
                                         <th scope="col">Stock</th>
-                                        <th scope="col">By PTR</th>
                                         <th scope="col">By MRP</th>
-                                        <th scope="col">Margin</th>
+                                        <th scope="col">By PTR</th>
+                                        <th scope="col">Sales Margin</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <th scope="row">Current</th>
                                         <td><?php echo number_format($netCurrentMrp, 2); ?></td>
-                                        <td><?php echo number_format($netCurrentMrp, 2); ?></td>
-                                        <td><?php echo number_format($netCurrentMargin, 2); ?></td>
+                                        <td><?php echo number_format($netCurrentPtr, 2); ?></td>
+                                        <td><?php echo number_format($netSalesMargin, 2); ?></td>
 
                                     </tr>
                                     <tr>
@@ -111,13 +134,11 @@ if ($currentStockExpItemData != null) {
     </div>
 </div>
 
+
 <script>
     var chkCurrentStockData = JSON.stringify(<?php echo $currentStockDataForJS; ?>);
 
     var chkCurrentStockExpData = JSON.stringify(<?php echo json_encode($currentStockExpItemData) ?>);
-
-    // console.log(chkCurrentStockData);
-    // console.log(chkCurrentStockExpData);
 
     if (chkCurrentStockData != null && chkCurrentStockExpData != null) {
         document.getElementById('stocksummary-data-table').style.display = 'block';

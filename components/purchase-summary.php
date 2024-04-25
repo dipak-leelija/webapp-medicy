@@ -64,7 +64,7 @@
             </div>
 
         </div>
-
+        <hr class="sidebar-devider">
         <div class="row">
             <div class="col-sm-6 col-md-3 d-flex justify-content-start">
                 <span>Payment :
@@ -79,7 +79,7 @@
                         style="margin-left: 0rem;">
                 </p>
             </div>
-            <div class="col-sm-6 col-md-2 d-flex justify-content-start">
+            <!-- <div class="col-sm-6 col-md-2 d-flex justify-content-start">
                 <p>Qty :
                     <input class="summary-inp w-65" name="total-qty" id="qty-val" type="text" value="0" readonly
                         style="margin-left: 0rem;">
@@ -90,6 +90,21 @@
                     <input class="summary-inp w-65" name="totalGst" id="gst-val" type="text" value="0" readonly
                         style="margin-left: 0rem;">
                 </p>
+            </div> -->
+
+            <div class="col-8 col-md-4 d-flex justify-content-center">
+            <div class="col-sm-4 col-md-3 d-flex justify-content-start">
+                <p>Qty :
+                    <input class="summary-inp w-65" name="total-qty" id="qty-val" type="text" value="0" readonly
+                        style="margin-left: 0rem;">
+                </p>
+            </div>
+            <div class="col-sm-4 col-md-4 d-flex justify-content-start">
+                <p>GST :
+                    <input class="summary-inp w-65" name="totalGst" id="gst-val" type="text" value="0" readonly
+                        style="margin-left: 0rem;">
+                </p>
+            </div>
             </div>
             <div class="col-sm-6 col-md-3  d-flex justify-content-start">
                 <p>Net :

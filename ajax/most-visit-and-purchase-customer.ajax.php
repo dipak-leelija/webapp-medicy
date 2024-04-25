@@ -60,8 +60,8 @@ if (isset($_GET['mostVisitStartDt']) && isset($_GET['mostVisitEndDt'])) {
 
 if (isset($_GET['mostPrchsCstmrByDt'])) {
     $dtPicker=  $_GET['mostPrchsCstmrByDt'];
+
     $mostPurchaseCustomerOnDate = $StockOut->mostPurchaseCustomerByDate($adminId, $dtPicker);
-    // print_r($mostVisitedCustomerOnDate);
     echo json_encode($mostPurchaseCustomerOnDate);  
 }
 

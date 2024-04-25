@@ -104,7 +104,6 @@ if (isset($newPatientLast30Days) && is_array($newPatientLast30Days)) {
 <script>
     const xmlhttp = new XMLHttpRequest();
 
-
     ///find new patient by selected date ///
     function newPatientDataOverride(patientOverrideData) {
         // console.log(patientOverrideData);

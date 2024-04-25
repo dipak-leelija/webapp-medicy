@@ -36,9 +36,14 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-between align-items-center">
         <div class="col ml-2 mt-3">
-            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                most sold 10 items</div>
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1" id="most-sold-header" style="display: block;">
+                Most sold 10 items
+            </div>
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1" id="less-sold-header" style="display: none;">
+                Less sold 10 items
+            </div>
         </div>
+
         <div class="d-flex justify-content-end px-2">
             <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="soldDtPickerDiv" style="display: none; margin-right:1rem;">
                 <input type="date" id="mostSoldDateInput">
@@ -51,6 +56,7 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
                 <input type="date" id="mostSoldEndDate">
                 <button class="btn btn-sm btn-primary" onclick="soldItemsChkDateRng()" style="height: 2rem;">Find</button>
             </div>
+
             <div class="mr-2">
                 <label id='data-sort' class="d-none" value='asc'>Sort</label>
                 <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -62,6 +68,7 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
                     <button class="dropdown-item  dropdown" type="button" id="dsc" value="dsc" onclick="dataFilter(this)">Descending</button>
                 </div>
             </div>
+            
             <div class="btn-group">
                 <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <i class="fas fa-filter"></i> Filter
@@ -108,12 +115,11 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
             var productIds = mostSold.map(item => item.product_id);
             productIds = JSON.stringify(productIds);
 
-            // var xmlhttp = new XMLHttpRequest();
             mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}   `;
-            request.open("GET", mostSoldProdNameUrl, false);
-            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            request.send(null);
-            var prodNameArray = request.responseText;
+            xmlhttp.open("GET", mostSoldProdNameUrl, false);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(null);
+            var prodNameArray = xmlhttp.responseText;
             prodNameArray = JSON.parse(prodNameArray);
 
             mostSoldChart.data.labels = prodNameArray;
@@ -134,12 +140,11 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
     function soldItemsChkDate() {
         var mostSolddatePicker = document.getElementById('mostSoldDateInput').value;
 
-        // var xmlhttp = new XMLHttpRequest();
         mostSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldByDt=${mostSolddatePicker}`;
-        request.open("GET", mostSoldDtPkrUrl, false);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.send(null);
-        var mostSoldDataByDate = request.responseText;
+        xmlhttp.open("GET", mostSoldDtPkrUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+        var mostSoldDataByDate = xmlhttp.responseText;
 
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
 
@@ -152,13 +157,12 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
         var mostSoldStarDate = document.getElementById('mostSoldStarDate').value;
         var mostSoldEndDate = document.getElementById('mostSoldEndDate').value;
 
-        // var xmlhttp = new XMLHttpRequest();
         mostSoldDtPkrUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldStarDate=${mostSoldStarDate}&mostSoldEndDate=${mostSoldEndDate}`;
-        request.open("GET", mostSoldDtPkrUrl, false);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.send(null);
+        xmlhttp.open("GET", mostSoldDtPkrUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
 
-        var mostSoldDataByDate = request.responseText;
+        var mostSoldDataByDate = xmlhttp.responseText;
 
         updateMostSoldData(JSON.parse(mostSoldDataByDate));
 
@@ -189,6 +193,9 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
         // console.log(document.getElementById("data-sort").innerHTML);
 
         if (document.getElementById("data-sort").value == 'asc') {
+
+            document.getElementById('most-sold-header').style.display='block';
+            document.getElementById('less-sold-header').style.display='none';
 
             if (document.getElementById("current-filter-val").innerHTML == 'allData') {
                 document.getElementById('secondary-filter').innerHTML = id;
@@ -227,6 +234,9 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
             }
 
         } else if (document.getElementById("data-sort").value == 'dsc') {
+
+            document.getElementById('most-sold-header').style.display='none';
+            document.getElementById('less-sold-header').style.display='block';
 
             if (document.getElementById("current-filter-val").innerHTML == 'allData') {
                 document.getElementById('soldDtPickerDiv').style.display = 'none';
@@ -278,12 +288,12 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
         var productIds = mostSoldDataFromStart.map(item => item.product_id);
         productIds = JSON.stringify(productIds);
         var dataToSend = `mostSoldProdId=${productIds}`;
-        // var xmlhttp = new XMLHttpRequest();
+        
         mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}`;
-        request.open("GET", mostSoldProdNameUrl, false);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.send(null);
-        var prodNameArray = request.responseText;
+        xmlhttp.open("GET", mostSoldProdNameUrl, false);
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(null);
+        var prodNameArray = xmlhttp.responseText;
 
         prodNameArray = JSON.parse(prodNameArray);
 
@@ -298,17 +308,18 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
 
 
     // =============  most sold item bar chart area =============
-    var mostSoldChartCtx = document.getElementById('mostsolditemchart').getContext('2d');
-    var mostSoldChart = new Chart(mostSoldChartCtx, {
+    var soldCharCtx = document.getElementById('mostsolditemchart').getContext('2d');
+    var mostSoldChart = new Chart(soldCharCtx, {
         type: 'bar',
         data: {
             labels: prodNameArray,
             datasets: [{
                 label: 'Total Sold',
                 data: totalSold,
-                backgroundColor: 'rgba(64, 156, 71, 0.8)',
-                // borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
+                backgroundColor: 'rgb(179, 217, 255)',
+                borderWidth: 0,
+                barThickness: 10,
+                maxBarThickness: 10,
             }]
         },
         options: {

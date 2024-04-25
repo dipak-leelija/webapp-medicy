@@ -18,7 +18,7 @@ if($_SESSION['ADMIN']){
   $username     = $_SESSION['ADMIN_USERNAME'];
   // $adminPass    = $_SESSION['ADMIN_PASSWORD'];
   $adminId      = $_SESSION['ADMINID'];
-  $employeeId   = '';
+  $employeeId   = $_SESSION['ADMINID'];
   $addedBy      = $adminId;
 
   $USEREMAIL    = $_SESSION['ADMIN_EMAIL'];

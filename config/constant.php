@@ -79,8 +79,8 @@ session_start();
 	
 	define('SITE_BILLING_EMAIL', 				"");
 	define('SITE_BILLING_NAME',  				"");
-	define('SITE_EMAIL', 						"admin@fastlinky.com");
-	define('SITE_EMAIL_P', 						"=CnBV7Zu)YV}");
+	define('SITE_EMAIL', 						"admin@leelija.com");
+	define('SITE_EMAIL_P', 						"xw@iH06cV16m");
 	
 	define('CONTACT_MAIL', 						"");
 	define('INFO_MAIL', 						"");

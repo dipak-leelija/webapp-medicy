@@ -1,5 +1,6 @@
 // document.getElementById("exta-details").style.display = "block";
 //============= constant data declaretion =============
+const xmlhttp = new XMLHttpRequest();
 const allowedUnits = ["tablets", "tablet", "capsules", "capsule"];
 
 //======================= new sell generate bill button disable and enable control ===================
@@ -26,7 +27,7 @@ const addCustomerModal = () => {
 // GET CUSTOMER DETAILS
 const getCustomer = (customer) => {
     if (customer.length > 0) {
-        let xmlhttp = new XMLHttpRequest();
+        
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("customer-list").style.display = "block";
@@ -614,27 +615,16 @@ const onQty = (qty) => {
         //==================== purchased-cost on an Item ====================
 
         purchased_cost_url = `ajax/getPurchasedCost.ajax.php?qtype=${itemPackType}&Qty=${qty}&currentItemId=${currentItemId}`;
-        request.open("GET", purchased_cost_url, false);
-        request.send(null);
-        document.getElementById("purchased-cost").value = request.responseText;
-        console.info(request.responseText);
-    // }else if(itemPackType == "Loose"){
-        
-    //     let eachQty = parseFloat(mrp) / parseInt(itemWeightage);
-
-    //     purchased_cost_url = `ajax/getPurchasedCost.ajax.php?qtype=${itemPackType}&Qty=${qty}&currentItemId=${currentItemId}`;
-    //     request.open("GET", purchased_cost_url, false);
-    //     request.send(null);
-    //     document.getElementById("purchased-cost").value = request.responseText;
-    //     console.info(request.responseText);
-
-    // }
+        xmlhttp.open("GET", purchased_cost_url, false);
+        xmlhttp.send(null);
+        document.getElementById("purchased-cost").value = xmlhttp.responseText;
+        console.info(xmlhttp.responseText);
 
         //==================== Margin on an Item ====================
         marginUrl = `ajax/product.stockDetails.getMargin.ajax.php?Pid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
-        request.open("GET", marginUrl, false);
-        request.send(null);
-        document.getElementById("margin").value = request.responseText;   
+        xmlhttp.open("GET", marginUrl, false);
+        xmlhttp.send(null);
+        document.getElementById("margin").value = xmlhttp.responseText;   
 
     // check margine amount alert
     if(parseFloat(document.getElementById("margin").value) < 0){
@@ -671,7 +661,18 @@ const onQty = (qty) => {
             }
           });
     }
+
+    // ================ sales margin calculation area ==============
+
+    // salesMarginUrl = `ajax/product.stockDetails.getMargin.ajax.php?smPid=${pid}&Bid=${bno}&qtype=${itemPackType}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
+    //     xmlhttp.open("GET", salesMarginUrl, false);
+    //     xmlhttp.send(null);
+    //     document.getElementById("s-margin").value = xmlhttp.responseText;
     
+    var payble = document.getElementById("amount").value;
+    var pAmount = document.getElementById("purchased-cost").value; // purchased cost
+    var salesMargin = parseFloat(payble) - parseFloat(pAmount);
+    document.getElementById("s-margin").value = salesMargin.toFixed(2);
 }
 
 
@@ -804,6 +805,20 @@ const onDisc = (disc) => {
             }
         });
     }
+
+
+    // ================ sales margin calculation area ==============
+
+    // salesMarginUrl = `ajax/product.stockDetails.getMargin.ajax.php?smPid=${pid}&Bid=${bno}&qtype=${itemTypeCheck}&Mrp=${mrp}&Qty=${qty}&disc=${disc}&taxable=${taxableAmount}&sellAmount=${netPayble}&currentItemId=${currentItemId}`;
+    // xmlhttp.open("GET", salesMarginUrl, false);
+    // xmlhttp.send(null);
+    // document.getElementById("s-margin").value = xmlhttp.responseText;
+
+    var payble = document.getElementById("amount").value;
+    var pAmount = document.getElementById("purchased-cost").value; // purchased cost
+    var salesMargin = parseFloat(payble) - parseFloat(pAmount);
+    document.getElementById("s-margin").value = salesMargin.toFixed(2);
+    
 }
 
 
@@ -843,6 +858,8 @@ const addSummary = () => {
     let loosePrice = document.getElementById("loose-price").value;
     let purchasedCost = document.getElementById("purchased-cost").value;
     let marginAmount = document.getElementById("margin").value;
+    let salesMarginAmount = document.getElementById("s-margin").value;
+
 
 
     // ============== per item gst amount calculation ============
@@ -1055,6 +1072,10 @@ const addSummary = () => {
 
         /////////////////////\\\\\\\\\\\\\\\\\\\ EXTRA DATA /////////////////////\\\\\\\\\\\\\\\\\\\\
 
+        <td class="d-none" id="${salesMarginAmount}">
+            <input class="d-none summary-items" type="text" name="salesMargin[]" value="${salesMarginAmount}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: end;" readonly>
+        </td>
+
         <td class="d-none" id="${slno}">
             <input class="summary-items" type="text" name="LooseStock[]" value="${looseStock}" style="word-wrap: break-word; width:3rem; font-size: .7rem; text-align: right;" readonly>
         </td>
@@ -1101,6 +1122,7 @@ const addSummary = () => {
         gst: gst,
         gstAmountPerItem: netGst,
         marginAmount: marginAmount,
+        salesMarginAmount: salesMarginAmount,
         amount: amount,
         looseStock: looseStock,
         loosePrice: loosePrice,
@@ -1248,6 +1270,7 @@ const editItem = (tuple) => {
 
         document.getElementById("taxable").value = Tupledata.taxable;
         document.getElementById("margin").value = Tupledata.marginAmount;
+        document.getElementById("s-margin").value = Tupledata.salesMarginAmount;
         document.getElementById("amount").value = Tupledata.amount;
 
         document.getElementById("loose-stock").value = Tupledata.looseStock;

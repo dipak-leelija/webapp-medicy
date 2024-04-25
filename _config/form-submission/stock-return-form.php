@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         $stockInId          = $_POST['stockInId'];
         $stockInDetailsId   = $_POST['stok-in-details-id'];
-        $distributorId      = $_POST['dist-id'];
+        $distributorId      = intval($_POST['dist-id']);
         $distributorName    = $_POST['dist-name'];
         
         $distData = json_decode($Distributor->showDistributorById($distributorId));
@@ -38,19 +38,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $distContact    = $distData->data->phno;
 
         $returnDate      = date("Y-m-d", strtotime($_POST['return-date']));
-        $itemQty         = $_POST['items-qty'];
-        $totalReturnQty  = $_POST['total-return-qty'];
-        $returnGst       = $_POST['return-gst-val'];
+        $itemQty         = intval($_POST['items-qty']);
+        $totalReturnQty  = intval($_POST['total-return-qty']);
+        $returnGst       = floatval($_POST['return-gst-val']);
+        $refund          = floatval($_POST['refund']);
         $refundMode      = $_POST['refund-mode'];
-        $refund          = $_POST['refund'];
         $status          = 1;
-    
-        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, intval($distributorId), $returnDate, intval($itemQty), intval($totalReturnQty), floatval($returnGst), $refundMode, floatval($refund), $status, $employeeId, NOW, $adminId);
-        
-        // $returnResult = $returned['result'];
 
-        $returnResult = true;
-        if($returnResult == true){
+        $returned = $StockReturn->addStockReturn($stockReturnId, $stockInId, $distributorId, $returnDate, $itemQty, $totalReturnQty, $returnGst, $refundMode, $refund, $status, $EMPID, NOW, $ADMINID);
+
+        if(is_array($returned) && $returned['result'] == 1){
 
             //arrays
             $stokInDetailsId = $_POST['stok-in-details-id'];
@@ -70,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $weightage      = preg_replace('/[a-z-A-Z]/','',$setof);
 
             $purchasedQty   = $_POST['purchasedQty'];
-            $freeQty        = $_POST['freeQty'];
+            $freeQty        = $_POST['free-qty'];
             $mrp            = $_POST['mrp'];
             $ptr            = $_POST['ptr'];
             
@@ -78,37 +75,37 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $discParcent    = preg_replace('/[%]/','',$_POST['disc-percent']);
 
             $returnQty      = $_POST['return-qty'];
-            $returnFQty     = $_POST['return-free-qty'];
+            // $returnFQty     = $_POST['return-free-qty'];
             $refundAmount   = $_POST['refund-amount'];
+
+            // exit;
 
             // print_r($productId);
             for ($i=0; $i < $ids; $i++) { 
                 $currentStockData = json_decode($CurrentStock->showCurrentStocByStokInDetialsId($stokInDetailsId[$i]));
 
-                $wholeQty = $currentStockData->qty;
-                $looseQty = $currentStockData->loosely_count;
+                $wholeQty = intval($currentStockData->qty);
+                $looseQty = intval($currentStockData->loosely_count);
 
-                // peritem toral return qty (return qantity + free return qantity)
-                $perItemTotalReturnQty = intval($returnQty[$i]) + intval($returnFQty[$i]);
-                // echo "<br><br<br>totoal return qty : $perItemTotalReturnQty";
-
-                if ($wholeQty >= $perItemTotalReturnQty) {
+                if ($wholeQty >= intval($returnQty[$i])) {
                 
                     if (in_array(strtolower(trim($unit[$i])), LOOSEUNITS)){
-                        $updatedLooseQty = intval($looseQty) - ($perItemTotalReturnQty * $weightage[$i]);
+                        $updatedLooseQty = $looseQty - (intval($returnQty[$i]) * $weightage[$i]);
                         $updatedQty = intdiv($updatedLooseQty, $weightage[$i]);
                     }else{
                         $updatedLooseQty = 0;
-                        $updatedQty = intval($wholeQty) - $perItemTotalReturnQty;
+                        $updatedQty = intval($wholeQty) - intval($returnQty[$i]);
                     }
                 
-                    $updatedBy = ($_SESSION['ADMIN']) ? $adminId : $employeeId;
+                    $updatedBy = ($_SESSION['ADMIN']) ? $ADMINID : $EMPID;
 
                     // ============== update current stock function =================
                     $updateCurrentStock = $CurrentStock->updateStockByReturnEdit(intval($stokInDetailsId[$i]), intval($updatedQty), intval($updatedLooseQty), $updatedBy, NOW);
 
                     // ====== add stock return function =============
-                    $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, intval($stokInDetailsId[$i]), $productId[$i], $distBillNo[$i], $batchNo[$i], $expDate[$i], $setof[$i], intval($purchasedQty[$i]), intval($freeQty[$i]), floatval($mrp[$i]), floatval($ptr[$i]), intval($gstPercent[$i]), intval($discParcent[$i]), intval($returnQty[$i]), intval($returnFQty[$i]), floatval($refundAmount[$i]));
+                    $detailesReturned = $StockReturn->addStockReturnDetails($stockReturnId, intval($stokInDetailsId[$i]), $productId[$i], $distBillNo[$i], $batchNo[$i], $expDate[$i], $setof[$i], intval($purchasedQty[$i]), intval($freeQty[$i]), floatval($mrp[$i]), floatval($ptr[$i]), intval($gstPercent[$i]), intval($discParcent[$i]), intval($returnQty[$i]), floatval($refundAmount[$i]));
+                    
+                    print_r($detailesReturned);
                 }else {
                     echo 'Return quantity is more then current stock quantity of this item!';
                     exit;
@@ -120,8 +117,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
 // exit;
-$response = url_enc(json_encode(['stock_return_id' => $stockReturnId]));
-header("Location: ".URL."stock-return-invoice.php?data=".$response);
-exit;
+if (isset($detailesReturned) && ($detailesReturned == true)) {
+    $response = url_enc(json_encode(['stock_return_id' => $stockReturnId]));
+    header("Location: ".URL."stock-return-invoice.php?data=".$response);
+    exit;
+}
 
 ?>

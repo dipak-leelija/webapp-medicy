@@ -34,76 +34,69 @@ class StockIn extends DatabaseConnection
 
 
 
-    function showStockIn($adminId='')
-    {   
-        try{
+    function showStockIn($adminId = '')
+    {
+        try {
             $data   = array();
-            if(empty($adminId)){
+            if (empty($adminId)) {
                 $select = "SELECT * FROM stock_in";
-            }else{
+            } else {
                 $select = "SELECT * FROM `stock_in` WHERE `admin_id`  = '$adminId' ";
             }
-           
+
             $selectQuery = $this->conn->query($select);
             while ($result = $selectQuery->fetch_array()) {
                 $data[] = $result;
             }
             return $data;
-        }catch(Exception $e){
+        } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
-       
     } //eof showStockIn function
 
 
 
 
 
-    function showStockInDecendingOrder($adminId='')
+    function showStockInDecendingOrder($adminId = '')
     {
         try {
             $data = array();
 
             // Define the SQL query using a prepared statement
-            if(!empty($adminId)){
-            $select = "SELECT * FROM stock_in WHERE `admin_id` = ? ORDER BY id ASC";
-            $stmt = $this->conn->prepare($select);
-            $stmt->bind_param("s", $adminId);
-            }else{
+            if (!empty($adminId)) {
+                $select = "SELECT * FROM stock_in WHERE `admin_id` = ? ORDER BY id ASC";
+                $stmt = $this->conn->prepare($select);
+                $stmt->bind_param("s", $adminId);
+            } else {
                 $select = "SELECT * FROM stock_in  ORDER BY id ASC";
                 $stmt = $this->conn->prepare($select);
             }
 
-            // Prepare the SQL statement
-            // $stmt = $this->conn->prepare($select);
-
             if ($stmt) {
-                // Bind the parameter
-                // $stmt->bind_param("s", $adminId);
-            // $stmt = $this->conn->prepare($select);
 
-            if ($stmt) {
-                // $stmt->bind_param("s", $adminId);
+                if ($stmt) {
 
-                $stmt->execute();
+                    $stmt->execute();
 
-                $result = $stmt->get_result();
+                    $result = $stmt->get_result();
 
-                if ($result) {
-                    while ($row = $result->fetch_array()) {
-                        $data[] = $row;
+                    if ($result) {
+                        while ($row = $result->fetch_array()) {
+                            $data[] = $row;
+                        }
+                    } else {
+                        echo "Query failed: " . $this->conn->error;
                     }
+
+                    $stmt->close();
                 } else {
-                    echo "Query failed: " . $this->conn->error;
+                    echo "Statement preparation failed: " . $this->conn->error;
                 }
 
-                $stmt->close();
-            } else {
-                echo "Statement preparation failed: " . $this->conn->error;
+                return $data;
             }
-
-            return $data;
-        } }catch (Exception $e) {
+        } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
             return array();
         }
@@ -137,7 +130,6 @@ class StockIn extends DatabaseConnection
                 $stmt = $this->conn->prepare($selectQuery);
             }
             if ($stmt) {
-                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -186,7 +178,6 @@ class StockIn extends DatabaseConnection
                 $stmt = $this->conn->prepare($selectQuery);
             }
             if ($stmt) {
-                // $stmt->bind_param("s", $adminId);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -276,36 +267,44 @@ class StockIn extends DatabaseConnection
     }
     // ============================================================
 
-    // =========== stock in select query for purchase return ================
-    // function stockInDataOnQtyFilter($table, $data)
-    // {
-    //     try {
-    //         $ShowData = array();
-    //         $select = "SELECT * FROM stock_in WHERE `` = ?"
-    //         $stmt = $this->conn->prepare($select);
+    // =================== stock in data fetch by date range ===================
 
-    //         $stmt->bind_param("s", $data);
+    function purchaseDatafetchByDateRange($startDt, $endDt, $adminId)
+    {
+        $data = array();
+        try {
+            $selectStockIn = "SELECT COUNT(id) AS id, SUM(amount) AS stockin_amount,
+                                DATE(added_on) AS purchase_date
+                              FROM stock_in
+                              WHERE admin_id = ?
+                              AND DATE(added_on) BETWEEN ? AND ? GROUP BY DATE(added_on)";
 
-    //         $stmt->execute();
+            $stmt = $this->conn->prepare($selectStockIn);
 
-    //         $result = $stmt->get_result();
+            if (!$stmt) {
+                throw new Exception("Error in preparing SQL statement: " . $this->conn->error);
+            }
 
-    //         while ($row = $result->fetch_assoc()) {
-    //             $ShowData[] = $row;
-    //         }
+            $stmt->bind_param("iss", $adminId, $startDt, $endDt);
 
-    //         $stmt->close();
+            $stmt->execute();
 
-    //         return $ShowData;
-    //     } catch (Exception $e) {
-    //         if ($e) {
-    //             echo "Error: " . $e->getMessage();
-    //         } else {
-    //             return null;
-    //         }
-    //     }
-    // }
+            $result = $stmt->get_result();
 
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_object()) {
+                    $data[] = $row;
+                }
+                $stmt->close();
+                return $data;
+            } else {
+                $stmt->close();
+                return null;
+            }
+        } catch (Exception $e) {
+            error_log("Error: " . $e->getMessage());      
+        }
+    }
 
 
 
@@ -315,7 +314,6 @@ class StockIn extends DatabaseConnection
     // salse of the day in a specific date function
     function purchaseTodayByDateRange($startDate, $endDate, $adminId)
     {
-
         try {
             $select = "SELECT SUM(amount) AS purchase_amount, SUM(items) AS purchase_item_count 
             FROM stock_in
@@ -335,6 +333,8 @@ class StockIn extends DatabaseConnection
             echo "Error: " . $e->getMessage();
         }
     }
+
+
 
     function customerPurchDayRange($startDate, $endDate, $adminId)
     {

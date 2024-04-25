@@ -1,6 +1,7 @@
 <?php
 $page = "dashboard";
 require_once __DIR__ . '/config/constant.php';
+require_once __DIR__ . '/config/service.const.php';
 require_once ROOT_DIR . '_config/sessionCheck.php'; //check admin loggedin or not
 
 require_once CLASS_DIR . 'dbconnect.php';
@@ -108,7 +109,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                         <?php
                         if ($userRole != 2 || $userRole == 'ADMIN') : ?>
                             <!-- Sold By Card  -->
-                            <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="col-xl-4 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "soldby.php"; ?>
                             </div>
                         <?php endif; ?>
@@ -116,60 +117,59 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                         <?php if ($userRole != 1 || $userRole == 'ADMIN') : ?>
 
                             <!-- Earnings (Monthly) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="col-xl-4 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "appointment-nos.php"; ?>
                             </div>
 
                             <!-- Earnings (Monthly) Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="col-xl-4 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "newPatient.php"; ?>
                             </div>
 
-                            <!-- Pending Requests Card Example -->
-                            <div class="col-xl-3 col-md-6 mb-4">
 
-                            </div>
                         <?php endif; ?>
                     </div>
 
                     <?php
                     if ($userRole != 2 || $userRole == 'ADMIN') : ?>
                         <!-- ================ THIRD ROW ================ -->
-                        <div class="row">
+                        <div class="row d-flex">
+                            <div class="col-md-5 mb-4">
+                                <div class="row">
+                                    <!-- Expiring in 3 Months Card -->
+                                    <div class="col-xl-12 col-md-12 mb-4">
+                                        <?php require_once ROOT_COMPONENT . "expiring.php"; ?>
+                                    </div>
 
-                            <!-- Expiring in 3 Months Card -->
-                            <div class="col-xl-4 col-md-4 mb-4">
-                                <?php require_once ROOT_COMPONENT . "expiring.php"; ?>
+                                </div>
+                                <div class="row">
+
+                                    <!----------- Sales of the day card ----------->
+                                    <div class="col-xl-12 col-md-12 mb-4">
+                                        <?php require_once ROOT_COMPONENT . "salesoftheday.php"; ?>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <!----------- Purchase today card ----------->
+                                    <div class="col-xl-12 col-md-12 mb-4">
+                                        <?php require_once ROOT_COMPONENT . "purchasedToday.php"; ?>
+                                    </div>
+                                </div>
+
                             </div>
-
-                            <!----------- Sales of the day card ----------->
-                            <div class="col-xl-4 col-md-4 mb-4">
-                                <?php require_once ROOT_COMPONENT . "salesoftheday.php"; ?>
+                            <div class="col-md-7 mb-4">
+                                <?php require_once ROOT_COMPONENT . "sales-purchase.php"; ?>
                             </div>
-
-                            <!----------- Purchase today card ----------->
-                            <div class="col-xl-4 col-md-4 mb-4">
-                                <?php require_once ROOT_COMPONENT . "purchasedToday.php"; ?>
-                            </div>
-
                         </div>
-
-
                         <!-- ================ FORTH ROW ROW ================ -->
                         <div class="row">
                             <div class="col-xl-6 col-md-6 mb-4">
-                                <?php require_once ROOT_COMPONENT . "mostsolditems.php"; ?>
+                                <?php require_once ROOT_COMPONENT . "soldItems.php"; ?>
                             </div>
-                            <!-- <div class="col-xl-6 col-md-6 mb-4"> -->
-                                
-                            <!-- </div> -->
-                            <br>
+
                             <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "mostvisitedcustomer.php"; ?>
-                            </div>
-                            <br>
-                            <div class="col-xl-6 col-md-6 mb-4">
-                                <?php require_once ROOT_COMPONENT . "highestpurchasedcustomer.php"; ?>
                             </div>
                         </div>
 

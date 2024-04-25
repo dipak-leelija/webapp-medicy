@@ -92,6 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $gstAmountPerItem   = $_POST['gst-amount'];
 
     $marginPerItem      = $_POST['margin'];
+    $sellMarginPerItem  = $_POST['saleMargin'];
     $taxable            = $_POST['taxable'];
     $amount             = $_POST['amount'];
 
@@ -184,11 +185,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $newItemTaxable = $taxable[$i];
                     $newItemAmount = $amount[$i];
                     $newItemPtr = $ptrPerItem[$i];
+                    $newSellMargin = $sellMarginPerItem[$i];
                     $newItemMargin = $marginPerItem[$i];
-
+                    
 
                     // =========== ADD NEW DATA ON STOCK OUT DETAILS TABLE =============\
-                    $addStockOutDetails = $StockOut->addStockOutDetails(intval($invoiceNo), intval($newItemId), $newProductId, $newProductName, $newItemBatchNo, $newItemExpDate, $newItemWeatage, $newItemUnit, intval($newItemQty), intval($newItemLooseQty), floatval($newItemMrp), floatval($newItemPtr), intval($newItemDiscParcent), intval($newItemGstPercent), floatval($newItemGstAmount), floatval($newItemMargin), floatval($newItemTaxable), floatval($newItemAmount));
+                    $addStockOutDetails = $StockOut->addStockOutDetails(intval($invoiceNo), intval($newItemId), $newProductId, $newProductName, $newItemBatchNo, $newItemExpDate, $newItemWeatage, $newItemUnit, intval($newItemQty), intval($newItemLooseQty), floatval($newItemMrp), floatval($newItemPtr), intval($newItemDiscParcent), intval($newItemGstPercent), floatval($newItemGstAmount), floatval($newSellMargin), floatval($newItemMargin), floatval($newItemTaxable), floatval($newItemAmount));
 
                     //========== update current stock ==========
                     $currentStockData = $CurrentStock->showCurrentStocById($newItemId);
@@ -240,7 +242,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $updatedTaxableAmount = $taxable[$i];
                     $updatedPaybleAmount = $amount[$i];
                     $updatedItemPtr = $ptrPerItem[$i];
+                    $updateSellMargin = $sellMarginPerItem[$i];
                     $updatedMargin = $marginPerItem[$i];
+                    
                     // echo "<br>OLD ITEMS=====";
 
                     // ======================== UPDATE DATA start ==========================
@@ -275,7 +279,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                     // ====== update stock out details =======
-                    $updateStockOutData = $StockOut->updateStockOutDetaislById(intval($stockOutDetialsId), intval($updatedItemQty), intval($updatedItemLooseQty), intval($updatedDiscPercent), floatval($updatedMargin), floatval($updatedTaxableAmount), floatval($updatedGstAmount), floatval($updatedPaybleAmount), $updatedBy, $updatedOn);
+                    $updateStockOutData = $StockOut->updateStockOutDetaislById(intval($stockOutDetialsId), intval($updatedItemQty), intval($updatedItemLooseQty), intval($updatedDiscPercent), floatval($updateSellMargin), floatval($updatedMargin), floatval($updatedTaxableAmount), floatval($updatedGstAmount), floatval($updatedPaybleAmount), $updatedBy, $updatedOn);
 
                     if ($updateStockOutData) {
                         // ====== update current stock data ===========
