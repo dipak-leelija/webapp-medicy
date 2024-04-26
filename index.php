@@ -134,7 +134,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                     if ($userRole != 2 || $userRole == 'ADMIN') : ?>
                         <!-- ================ THIRD ROW ================ -->
                         <div class="row d-flex">
-                            <div class="col-md-5 mb-4">
+                            <div class="col-md-4 mb-4">
                                 <div class="row">
                                     <!-- Expiring in 3 Months Card -->
                                     <div class="col-xl-12 col-md-12 mb-4">
@@ -142,6 +142,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                     </div>
 
                                 </div>
+
                                 <div class="row">
 
                                     <!----------- Sales of the day card ----------->
@@ -150,15 +151,16 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                     </div>
 
                                 </div>
+
                                 <div class="row">
                                     <!----------- Purchase today card ----------->
                                     <div class="col-xl-12 col-md-12 mb-4">
                                         <?php require_once ROOT_COMPONENT . "purchasedToday.php"; ?>
                                     </div>
                                 </div>
-
                             </div>
-                            <div class="col-md-7 mb-4">
+
+                            <div class="col-md-8 mb-4">
                                 <?php require_once ROOT_COMPONENT . "sales-purchase.php"; ?>
                             </div>
                         </div>
