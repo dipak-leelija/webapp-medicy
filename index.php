@@ -126,7 +126,6 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                 <?php require_once ROOT_COMPONENT . "newPatient.php"; ?>
                             </div>
 
-
                         <?php endif; ?>
                     </div>
 

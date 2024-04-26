@@ -13,10 +13,10 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
     <div class="row mt-1">
         <div class="col-7">
-            <div class="container-fluid" style="margin-left: -15px;">
+            <div class="container-fluid">
                 <ul class="nav nav-tabs" style="size: small;">
                     <li class="nav-item" style="font-size: medium;">
-                        <button id="sellPurchaseToday" class="nav-link active" onclick="sellPurchseDataFilter(this.id)" style="color: blue; font-size: small; background-color: white;">Today</button>
+                        <button id="sellPurchaseToday" class="nav-link" onclick="sellPurchseDataFilter(this.id)" style="color: blue; font-size: small; background-color: white;">Today</button>
                     </li>
                     <li class="nav-item">
                         <button id="sellPurchaseToday7days" class="nav-link" onclick="sellPurchseDataFilter(this.id)" style="font-size: small; background-color: white; border-bottom: 1px;">7 days</button>
@@ -60,34 +60,35 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
     </div>
 
     <div class="row d-flex mt-2">
-            <div class="col-3 ml-3">
-                <label for="">
-                    <samll>Sales <p>&#x20b9;</p>
-                    </samll>
-                </label>
-                <label id="sales-amount">0</label>
-            </div>
-            <div class="col-2">
-                <label class="ml-3" id="sales-count">0</label>
-                <label class="ml-3" id="sales-count-text">Items</label>
-            </div>
-
-            <div class="col-3">
-                <label for="">Purchase : <p>&#x20b9;</p></label>
-                <label id="purchae-amount">0</label>
-            </div>
-            <div class="col-2">
-                <label class="ml-3" id="purchase-count">0</label>
-                <label class="ml-3" id="purchase-count-text">Items</label>
-            </div>
-        
+        <div class="col-6 d-flex justify-content-center">
+            <label for=""><b>Sales</b></label>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <label for=""><b>Purchase</b></label>
+        </div>
+    </div>
+    <div class="row d-flex">
+        <div class="col-6 d-flex justify-content-center" style="font-size: x-large; color: #9ae5e5;">
+            <b><p>&#x20b9;</p></b>&nbsp;<b><label id="sales-amount">0</label></b>
+        </div>
+        <div class="col-6 d-flex justify-content-center" style="font-size: x-large; color: #34cbcb;">
+            <b><p>&#x20b9;</p></b>&nbsp;<b><label id="purchae-amount">0</label></b>
+        </div>
+    </div>
+    <div class="row d-flex">
+        <div class="col-6 d-flex justify-content-center">
+            <b><label id="sales-count">0</label><label>&nbsp;Orders</label></b>
+        </div>
+        <div class="col-6 d-flex justify-content-center">
+            <b><label id="purchase-count">0</label><label>&nbsp;Orders</label></b>
+        </div>
     </div>
 
     <div class="d-flex justify-content-between align-items-center">
         <div class="card-body mt-n2 pb-0">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                    <div style="width: 100%; margin: 0 auto; height: 75%" id="salesPurchaseDataChartDiv">
+                    <div style="width: 75%; margin: 0 auto; height: 75%" id="salesPurchaseDataChartDiv">
                         <canvas id="salesPurchaseDataChart"></canvas>
                     </div>
                     <div style="width: 100%; margin: 0 auto; display:none" id="sales-purchase-no-data-found-div">
@@ -152,6 +153,25 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
         document.getElementById('sales-purchase-dt-picker').style.display = 'none';
         document.getElementById('sales-purchase-dt-picker-range').style.display = 'none';
 
+        //================================================================
+        const ids = ['sellPurchaseToday', 'sellPurchaseToday7days', 'sellPurchaseToday30days', 'sellPurchaseToday60days'];
+
+        ids.forEach(ids => {
+            document.getElementById(ids).style.color = 'black';
+            document.getElementById(ids).style.border = 'none';
+            document.getElementById(ids).style.borderBottom = '1px solid #e6e6e6';
+        });
+
+        //=================================================
+        document.getElementById(id).classList.add('active');
+        document.getElementById(id).style.color = 'blue';
+        document.getElementById(id).style.borderBottom = '1px solid white';
+        document.getElementById(id).style.borderTop = '1px solid #e6e6e6';
+        document.getElementById(id).style.borderLeft = '1px solid #e6e6e6';
+        document.getElementById(id).style.borderRight = '1px solid #e6e6e6';
+
+
+
         if (id == "sellPurchaseToday") {
             salesPurchaseDataCall('<?php echo $today; ?>', '<?php echo $today; ?>');
         }
@@ -168,28 +188,27 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
             salesPurchaseDataCall('<?php echo $before60day; ?>', '<?php echo $today; ?>');
         }
 
-        if(id == "sales-purchase-dt-picker-input"){
+        if (id == "sales-purchase-dt-picker-input") {
             var dtPickerStartDt = document.getElementById('sales-purchase-dt-input').value;
             salesPurchaseDataCall(dtPickerStartDt, dtPickerStartDt);
-        }   
+        }
 
-        if(id == "sales-purchase-dt-picker-range-input"){
+        if (id == "sales-purchase-dt-picker-range-input") {
             var dtPickerStartDt = document.getElementById('sales-purchase-rng-start-dt').value;
             var dtPickerEndDt = document.getElementById('sales-purchase-rng-end-dt').value;
             salesPurchaseDataCall(dtPickerStartDt, dtPickerEndDt);
-        }                
-
+        }
     }
 
 
 
     const dateFilter = (id) => {
-        if(id == 'sold-purchase-OnDt'){
+        if (id == 'sold-purchase-OnDt') {
             document.getElementById('sales-purchase-dt-picker').style.display = 'block';
             document.getElementById('sales-purchase-dt-picker-range').style.display = 'none';
         }
 
-        if(id == 'sold-purchase-OnDtRng'){
+        if (id == 'sold-purchase-OnDtRng') {
             document.getElementById('sales-purchase-dt-picker').style.display = 'none';
             document.getElementById('sales-purchase-dt-picker-range').style.display = 'block';
         }
@@ -204,17 +223,17 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
                     label: "Sales",
                     data: [],
                     borderWidth: 0,
-                    backgroundColor: 'rgb(179, 230, 204)',
-                    minBarThickness: 3,
-                    maxBarThickness: 9,
+                    backgroundColor: 'rgb(154, 229, 229)',
+                    minBarThickness: 2,
+                    maxBarThickness: 5,
                 },
                 {
                     label: "Purchase",
                     data: [],
                     borderWidth: 0,
-                    backgroundColor: 'rgb(83, 198, 138)',
-                    minBarThickness: 3,
-                    maxBarThickness: 9,
+                    backgroundColor: 'rgb(52, 203, 203)',
+                    minBarThickness: 2,
+                    maxBarThickness: 5,
                 }
             ]
         },

@@ -91,8 +91,6 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
             document.getElementById('mostVisitedLink').classList.add('active');
             document.getElementById('mostVisitedLink').style.color = 'rebeccapurple';
-            document.getElementById('mostVisitedLink').style.borderBottom = 'none';
-            document.getElementById('highestPurchasedLink').style.borderBottom = '1px';
             document.getElementById('highestPurchasedLink').style.color = 'black';
             document.getElementById('customer-sort').innerHTML = customerSort;
             document.getElementById('chart-label').innerHTML = 'Visit Count';
@@ -104,8 +102,6 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             document.getElementById('highestPurchasedLink').classList.add('active');
             document.getElementById('mostVisitedLink').style.color = 'black';
             document.getElementById('highestPurchasedLink').style.color = 'rebeccapurple';
-            document.getElementById('highestPurchasedLink').style.borderBottom = 'none';
-            document.getElementById('mostVisitedLink').style.borderBottom = '1px';
             document.getElementById('customer-sort').innerHTML = customerSort;
             document.getElementById('chart-label').innerHTML = 'Purchase Amount';
 
