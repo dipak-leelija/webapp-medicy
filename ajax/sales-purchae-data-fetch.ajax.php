@@ -25,7 +25,7 @@ if (isset($_GET['startDt']) && isset($_GET['endDt'])) {
         if ($salesData != null) {
             $maxSellAmount = 0;
             foreach ($salesData as $item) {
-                if(floatval($item->sell_amount) > floatval($maxSellAmount)){
+                if (floatval($item->sell_amount) > floatval($maxSellAmount)) {
                     $maxSellAmount = $item->sell_amount;
                 }
                 $totalSalesCount += intval($item->invoice_count);
@@ -49,7 +49,7 @@ if (isset($_GET['startDt']) && isset($_GET['endDt'])) {
         $maxPurchaseAmount = 0;
         if ($purchaseData != null) {
             foreach ($purchaseData as $item) {
-                if(floatval($item->stockin_amount) > floatval($maxPurchaseAmount)){
+                if (floatval($item->stockin_amount) > floatval($maxPurchaseAmount)) {
                     $maxPurchaseAmount = $item->stockin_amount;
                 }
                 $totalPurchseCount += intval($item->id);
@@ -70,15 +70,15 @@ if (isset($_GET['startDt']) && isset($_GET['endDt'])) {
 
 
         // ===== y axis max val finding ======
-        if(floatval($maxSellAmount) > floatval($maxPurchaseAmount)){
+        if (floatval($maxSellAmount) > floatval($maxPurchaseAmount)) {
             $maxVal = ceil($maxSellAmount);
-        }else{
+        } else {
             $maxVal = ceil($maxPurchaseAmount);
         }
         $maxVal = round($maxVal, 0);
         $checkLength1 = strlen((string)$maxVal);
         $checkLength2 = intval($checkLength1 - 2);
-        if(intval($checkLength2)<0){
+        if (intval($checkLength2) < 0) {
             $checkLength2 = 0;
         }
         $power = pow(10, $checkLength2);
@@ -105,16 +105,29 @@ if (isset($_GET['startDt']) && isset($_GET['endDt'])) {
 
         // modify dates
         $updatedDataArray = [];
+        $filterDate = [];
         foreach ($mergedArray as $date => $values) {
             $formattedDate = date('M d', strtotime($date));
             $updatedDataArray[$formattedDate] = $values;
+            $filterDate[] = $formattedDate;
         }
 
 
-        $returnData = json_encode(['totalSellCount' => $totalSalesCount, 'totalSellAmount' => $totalSalesAmount, 'totalPurchaseCount' => $totalPurchseCount, 'totalPurchaseAmount' => $totalPurchaseAmount, 'sellPurchaseDataArray' => $updatedDataArray, 'yAxisVal'=>$maxVal]);
+        $returnData = json_encode(['status' => '1', 'totalSellCount' => $totalSalesCount, 'totalSellAmount' => $totalSalesAmount, 'totalPurchaseCount' => $totalPurchseCount, 'totalPurchaseAmount' => $totalPurchaseAmount, 'sellPurchaseDataArray' => $updatedDataArray, 'yAxisVal' => $maxVal]);
 
-        print_r($returnData);
-    }else{
-        print_r('null');
+    } else {
+
+        $startDate = $_GET['startDt'];
+        $endDate = $_GET['startDt'];
+
+        $currentDate = $startDate;
+
+        while ($currentDate <= $endDate) {
+            $dateArray[] = date('M d',strtotime($currentDate));
+            $currentDate = date('Y-m-d', strtotime($currentDate . ' +1 day'));
+        }
+
+        $returnData = json_encode(['status' => '0', 'filterDate'=>$dateArray]);
     }
+    print_r($returnData);
 }

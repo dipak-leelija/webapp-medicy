@@ -69,10 +69,14 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
     </div>
     <div class="row d-flex">
         <div class="col-6 d-flex justify-content-center" style="font-size: x-large; color: #9ae5e5;">
-            <b><p>&#x20b9;</p></b>&nbsp;<b><label id="sales-amount">0</label></b>
+            <b>
+                <p>&#x20b9;</p>
+            </b>&nbsp;<b><label id="sales-amount">0</label></b>
         </div>
         <div class="col-6 d-flex justify-content-center" style="font-size: x-large; color: #34cbcb;">
-            <b><p>&#x20b9;</p></b>&nbsp;<b><label id="purchae-amount">0</label></b>
+            <b>
+                <p>&#x20b9;</p>
+            </b>&nbsp;<b><label id="purchae-amount">0</label></b>
         </div>
     </div>
     <div class="row d-flex">
@@ -88,7 +92,7 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
         <div class="card-body mt-n2 pb-0">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                    <div style="width: 75%; margin: 0 auto; height: 75%" id="salesPurchaseDataChartDiv">
+                    <div style="width: 100%; margin: 0 auto; height: 75%" id="salesPurchaseDataChartDiv">
                         <canvas id="salesPurchaseDataChart"></canvas>
                     </div>
                     <div style="width: 100%; margin: 0 auto; display:none" id="sales-purchase-no-data-found-div">
@@ -118,6 +122,21 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
     }
 
 
+    function resetChart(filterDateArray) {
+
+        console.log(filterDateArray);
+
+        salesPurchaseDataChart.data.labels = filterDateArray;
+        salesPurchaseDataChart.data.datasets[0].data = [];
+        salesPurchaseDataChart.data.datasets[1].data = [];
+        salesPurchaseDataChart.options.scales.y.max = 5;
+        salesPurchaseDataChart.options.scales.y.min = -5;
+
+        salesPurchaseDataChart.update();
+
+    }
+
+
     // sales purchase data call function --------------
     const salesPurchaseDataCall = (startDate, endDate) => {
 
@@ -125,12 +144,10 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
         xmlhttp.open("GET", salesPurchaseDataFetchUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
+        var salesPurchseData = JSON.parse(xmlhttp.responseText);
 
-        if (xmlhttp.responseText != 'null') {
-            var salesPurchseData = JSON.parse(xmlhttp.responseText);
+        if (salesPurchseData.status == '1') {
 
-
-            // total sell purchse data display
             document.getElementById('sales-amount').innerHTML = salesPurchseData.totalSellAmount;
             document.getElementById('sales-count').innerHTML = salesPurchseData.totalSellCount;
 
@@ -140,11 +157,14 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
             salesPurchaseDataChartShow(salesPurchseData.sellPurchaseDataArray, salesPurchseData.yAxisVal);
 
         } else {
+
             document.getElementById('sales-amount').innerHTML = '0';
             document.getElementById('sales-count').innerHTML = '0';
 
             document.getElementById('purchae-amount').innerHTML = '0';
             document.getElementById('purchase-count').innerHTML = '0';
+
+            resetChart(salesPurchseData.filterDate);
         }
     }
 
@@ -241,11 +261,11 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 1,
-                    min: -1,
-                    // ticks: {
-                    //     stepSize: .5
-                    // }
+                    ticks: {
+                        callback: function(value, index, values) {
+                            return Math.round(value); // Round off values here
+                        }
+                    }
                 }
             }
         }
