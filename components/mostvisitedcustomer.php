@@ -23,12 +23,12 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
     <div class="d-flex justify-content-between align-items-center">
         <div class="col ml-2 mt-3">
-            <ul class="nav nav-tabs">
-                <li class="nav-item" style="font-size: medium;">
-                    <button id="mostVisitedLink" class="nav-link active" onclick="changeTab('mostVisited')" style="color: rebeccapurple; font-size: small; background-color: white;">Most Visited Customer</button>
+            <ul class="nav nav-tabs" style="size: small;">
+                <li class="nav-item" style="font-size: samll;">
+                    <button id="mostVisitedLink" class="nav-link" onclick="changeTab('mostVisited')" style="color: blue; font-size: small; background-color: white;">Most Visited</button>
                 </li>
                 <li class="nav-item">
-                    <button id="highestPurchasedLink" class="nav-link" onclick="changeTab('highestPurchased')" style="font-size: small; background-color: white; border-bottom: 1px;">Highest Purchased Customer</button>
+                    <button id="highestPurchasedLink" class="nav-link" onclick="changeTab('highestPurchased')" style="font-size: small; background-color: white; border-bottom: 1px;">Highest Purchased</button>
                 </li>
             </ul>
 
@@ -83,32 +83,44 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
 <script>
     function changeTab(tab) {
-        document.getElementById('mostVisitedLink').classList.remove('active');
-        document.getElementById('highestPurchasedLink').classList.remove('active');
-        let customerSort = tab;
+        
+        const ids = ['mostVisitedLink', 'highestPurchasedLink'];
+
+        ids.forEach(id => {
+            document.getElementById(id).classList.remove('active');
+            document.getElementById(id).style.color = 'black';
+            document.getElementById(id).style.border = 'none';
+            document.getElementById(id).style.borderBottom = '1px solid #e6e6e6';
+        });
+
+        document.getElementById(tab + 'Link').classList.add('active');
+        document.getElementById(tab + 'Link').style.color = 'blue';
+        document.getElementById(tab + 'Link').style.borderBottom = '1px solid white';
+        document.getElementById(tab + 'Link').style.borderTop = '1px solid #e6e6e6';
+        document.getElementById(tab + 'Link').style.borderLeft = '1px solid #e6e6e6';
+        document.getElementById(tab + 'Link').style.borderRight = '1px solid #e6e6e6';
 
         if (tab === 'mostVisited') {
 
-            document.getElementById('mostVisitedLink').classList.add('active');
-            document.getElementById('mostVisitedLink').style.color = 'rebeccapurple';
-            document.getElementById('highestPurchasedLink').style.color = 'black';
-            document.getElementById('customer-sort').innerHTML = customerSort;
             document.getElementById('chart-label').innerHTML = 'Visit Count';
+
+            document.getElementById('customer-sort').innerHTML = tab;
 
             mostvisitCustomer(document.getElementById('customer-purchse-filter-val').innerHTML);
 
         } else if (tab === 'highestPurchased') {
 
-            document.getElementById('highestPurchasedLink').classList.add('active');
-            document.getElementById('mostVisitedLink').style.color = 'black';
-            document.getElementById('highestPurchasedLink').style.color = 'rebeccapurple';
-            document.getElementById('customer-sort').innerHTML = customerSort;
+            document.getElementById('customer-sort').innerHTML = tab;
+
             document.getElementById('chart-label').innerHTML = 'Purchase Amount';
 
             mostvisitCustomer(document.getElementById('customer-purchse-filter-val').innerHTML);
 
         }
     }
+
+
+
 
     // =========== most visit customer chart override function body ==========
     function mostVisitCustomerDataFunction(mostVisitCustomerData, flag) {
@@ -151,11 +163,11 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
     // ============= most visit customer by specific date function body ==============
     function mostVistedCustomerByDt() {
         var mostVistedCustomerDt = document.getElementById('mostVisiteCustomerDt').value;
-        
-        if(document.getElementById('customer-sort').innerHTML == 'mostVisited'){
+
+        if (document.getElementById('customer-sort').innerHTML == 'mostVisited') {
             var customerFilterByDate = 'mostVstCstmrByDt';
             var flag = 0;
-        }else if(document.getElementById('customer-sort').innerHTML == 'highestPurchased'){
+        } else if (document.getElementById('customer-sort').innerHTML == 'highestPurchased') {
             var flag = 1;
             var customerFilterByDate = 'mostPrchsCstmrByDt';
         }
@@ -164,7 +176,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         xmlhttp.open("GET", mostVstCstmrDtUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send(null);
-        
+
         mostVisitCustomerDataFunction(JSON.parse(xmlhttp.responseText), flag);
 
         document.getElementById('mostVistedCustomerDtPkr').style.display = 'none';
@@ -177,12 +189,12 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
         var purchaseVisitStartDt = document.getElementById('mostVisiteCustomerStartDate').value;
         var purchaseVisitEndDt = document.getElementById('mostVisiteCustomerEndDate').value;
 
-        if(document.getElementById('customer-sort').innerHTML == 'mostVisited'){
+        if (document.getElementById('customer-sort').innerHTML == 'mostVisited') {
             var flag = 0;
             var customFilterByStartDt = 'mostVisitStartDt';
             var customFilterByEndDt = 'mostVisitEndDt';
-            
-        }else if(document.getElementById('customer-sort').innerHTML == 'highestPurchased'){
+
+        } else if (document.getElementById('customer-sort').innerHTML == 'highestPurchased') {
             var flag = 1;
             var customFilterByStartDt = 'mostPurchaseStartDt';
             var customFilterByEndDt = 'mostPurchaseEndDt';
@@ -335,4 +347,6 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
             }
         }
     });
+
+    changeTab('mostVisited');
 </script>
