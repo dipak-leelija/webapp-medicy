@@ -81,10 +81,10 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
     </div>
     <div class="row d-flex">
         <div class="col-6 d-flex justify-content-center">
-            <b><label id="sales-count">0</label><label>&nbsp;Orders</label></b>
+            <b><label id="sales-count">0</label></b><label>&nbsp;Orders</label>
         </div>
         <div class="col-6 d-flex justify-content-center">
-            <b><label id="purchase-count">0</label><label>&nbsp;Orders</label></b>
+            <b><label id="purchase-count">0</label></b><label>&nbsp;Orders</label>
         </div>
     </div>
 
