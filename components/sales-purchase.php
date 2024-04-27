@@ -245,15 +245,15 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
                     borderWidth: 0,
                     backgroundColor: 'rgb(154, 229, 229)',
                     minBarThickness: 2,
-                    maxBarThickness: 5,
+                    maxBarThickness: 15,
                 },
                 {
                     label: "Purchase",
                     data: [],
                     borderWidth: 0,
                     backgroundColor: 'rgb(52, 203, 203)',
-                    minBarThickness: 2,
-                    maxBarThickness: 5,
+                    minBarThickness: 5,
+                    maxBarThickness: 12,
                 }
             ]
         },

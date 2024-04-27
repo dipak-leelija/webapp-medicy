@@ -21,22 +21,23 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 ?>
 
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-between align-items-center">
-        <div class="col ml-2 mt-3">
-            <ul class="nav nav-tabs" style="size: small;">
-                <li class="nav-item" style="font-size: samll;">
-                    <button id="mostVisitedLink" class="nav-link" onclick="changeTab('mostVisited')" style="color: blue; font-size: small; background-color: white;">Most Visited</button>
-                </li>
-                <li class="nav-item">
-                    <button id="highestPurchasedLink" class="nav-link" onclick="changeTab('highestPurchased')" style="font-size: small; background-color: white; border-bottom: 1px;">Highest Purchased</button>
-                </li>
-            </ul>
+    <div class="row mt-1">
+        <div class="col-md-8">
+            <div class="container-fluid">
+                <ul class="nav nav-tabs" style="size: small;">
+                    <li class="nav-item" style="font-size: samll;">
+                        <button id="mostVisitedLink" class="nav-link" onclick="changeTab('mostVisited')" style="color: blue; font-size: small; background-color: white;">Most Visited</button>
+                    </li>
+                    <li class="nav-item">
+                        <button id="highestPurchasedLink" class="nav-link" onclick="changeTab('highestPurchased')" style="font-size: small; background-color: white; border-bottom: 1px;">Highest Perchased</button>
+                    </li>
+                </ul>
 
-            <label id='customer-sort' class="d-none" value='mostVisited'>mostVisited</label>
-            <lebel class="d-none" id="chart-label">Visit Count</lebel>
-
+                <label id='customer-sort' class="d-none" value='mostVisited'>mostVisited</label>
+                <lebel class="d-none" id="chart-label">Visit Count</lebel>
+            </div>
         </div>
-        <div class="d-flex justify-content-end px-2">
+        <div class="col-md-2 d-flex justify-content-end px-2">
             <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="mostVistedCustomerDtPkr" style="display: none; ">
                 <input type="date" id="mostVisiteCustomerDt">
                 <button class="btn btn-sm btn-primary" onclick="mostVistedCustomerByDt()" style="height: 2rem;">Find</button>
@@ -48,30 +49,33 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
                 <input type="date" id="mostVisiteCustomerEndDate">
                 <button class="btn btn-sm btn-primary" onclick="mostVistedCustomerDateRange()" style="height: 2rem;">Find</button>
             </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <i class="fas fa-filter"></i> Filter
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
-                    <button class="dropdown-item" type="button" id="mostVisitCustomerLst24hrs" onclick="mostvisitCustomer(this.id)">Last 24 hrs</button>
-                    <button class="dropdown-item" type="button" id="mostVisitCustomerLst7" onclick="mostvisitCustomer(this.id)">Last 7 Days</button>
-                    <button class="dropdown-item" type="button" id="mostVisitCustomerLst30" onclick="mostvisitCustomer(this.id)">Last 30 DAYS</button>
-                    <button class="dropdown-item dropdown" type="button" id="mostVisitCustomerOnDt" onclick="mostvisitCustomer(this.id)">By Date</button>
-                    <button class="dropdown-item dropdown" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button>
-                </div>
-
-                <lebel class="d-none" id="customer-purchse-filter-val">allData</lebel>
+        </div>
+        <div class="col-md-2 btn-group ml-n2">
+            <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="fas fa-filter"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" style="background-color: rgba(255, 255, 255, 0.8);">
+                <button class="dropdown-item" type="button" id="mostVisitCustomerLst24hrs" onclick="mostvisitCustomer(this.id)">Last 24 hrs</button>
+                <button class="dropdown-item" type="button" id="mostVisitCustomerLst7" onclick="mostvisitCustomer(this.id)">Last 7 Days</button>
+                <button class="dropdown-item" type="button" id="mostVisitCustomerLst30" onclick="mostvisitCustomer(this.id)">Last 30 DAYS</button>
+                <button class="dropdown-item dropdown" type="button" id="mostVisitCustomerOnDt" onclick="mostvisitCustomer(this.id)">By Date</button>
+                <button class="dropdown-item dropdown" type="button" id="mostVisitCustomerDtRng" onclick="mostvisitCustomer(this.id)">By Range</button>
             </div>
+
+            <lebel class="d-none" id="customer-purchse-filter-val">allData</lebel>
         </div>
     </div>
-    <div class="card-body mt-n2 pb-0">
-        <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-                <div style="width: 100%; margin: 0 auto;" id="mostVisitCustomerCharDiv">
-                    <canvas id="mostVisitCustomerChart"></canvas>
-                </div>
-                <div style="width: 100%; margin: 0 auto; display:none" id="most-visited-no-data-found-div">
-                    <p class="text-warning">Oops!, the requested data isn't in our records.</p>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="card-body mt-n2 pb-0">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div style="width: 100%; margin: 0 auto;" id="mostVisitCustomerCharDiv">
+                        <canvas id="mostVisitCustomerChart"></canvas>
+                    </div>
+                    <div style="width: 100%; margin: 0 auto; display:none" id="most-visited-no-data-found-div">
+                        <p class="text-warning">Oops!, the requested data isn't in our records.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,7 +87,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
 
 <script>
     function changeTab(tab) {
-        
+
         const ids = ['mostVisitedLink', 'highestPurchasedLink'];
 
         ids.forEach(id => {
