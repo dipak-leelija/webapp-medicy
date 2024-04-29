@@ -31,7 +31,7 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
             </div>
         </div>
 
-        <div class="col-4">
+        <div class="col-3">
             <div class="d-flex justify-content-end px-2">
                 <div class="dropdown-menu dropdown-menu-right p-3 mt-n5 p-3 mt-n5" id="sales-purchase-dt-picker" style="display: none;">
                     <input type="date" class="small-date-input" id="sales-purchase-dt-input">
@@ -47,8 +47,8 @@ $before60day = $date->modify('-60 days')->format('Y-m-d');
             </div>
         </div>
 
-        <div class="col-1">
-            <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-left: -10px;">
+        <div class="col-2 d-flex justify-content-center">
+            <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <i class="fas fa-filter"></i>
             </button>
 

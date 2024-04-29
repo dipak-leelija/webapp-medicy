@@ -36,6 +36,9 @@ if ($maxItemPurchase->status != 0) {
         </div>
         <div class="row">
             <div class="col-md-6 card-body shadow-sm mb-3">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                    by amount
+                </div>
                 <div class="mb-0 font-weight-bold text-gray-800" id="mopdByAmount-info-div">
                     <i class="fas fa-rupee-sign"></i>
                     <label type="text" id="salesAmount" name="salesAmount"><?= $totalAmount; ?></label>
@@ -47,6 +50,9 @@ if ($maxItemPurchase->status != 0) {
                 </div>
             </div>
             <div class="col-md-6 card-body shadow-sm mb-3">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                    by items
+                </div>
                 <div class="mb-0 font-weight-bold text-gray-800" id="mopdByItems-info-div">
                     <label type="text" id="itemCount" name="itemCount"><?= $NosOfPurchased; ?> Times</label><br>
                     <label type="text" id="distName" name="distName"><?= $distNameOnMaxItem; ?></label>

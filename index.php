@@ -157,6 +157,13 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                         <?php require_once ROOT_COMPONENT . "purchasedToday.php"; ?>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <!----------- Purchase today card ----------->
+                                    <div class="col-xl-12 col-md-12 mb-4">
+                                        <?php require_once ROOT_COMPONENT. "most-purchased.php"; ?>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-8 mb-4">
@@ -174,7 +181,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                             </div>
                         </div>
 
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "mopdByAmount.php"; ?>
                             </div>
@@ -183,7 +190,7 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                                 <?php require_once ROOT_COMPONENT . "mopdByItems.php"; ?>
                             </div>
 
-                        </div>
+                        </div> -->
 
                         <!-- ================== SECOND ROW ================== -->
                         <div class="row">

@@ -23,39 +23,43 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
 ?>
 
 <div class="card border-left-info shadow border-right-info h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-between align-items-center px-3 mt-2">
-        <div class="row no-gutters align-items-center">
-            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                sales of the day</div>
-        </div>
-        <div class="d-flex justify-content-end">
-            <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDatePikDiv" style="display: none; margin-right:1rem;">
-                <input type="date" id="salesOfTheDayDate">
-                <button class="btn btn-sm btn-primary" onclick="sodOnDate()" style="height: 2rem;">Find</button>
+    <div class="px-3 mt-2">
+        <div class="row d-flex">
+            <div class="col-md-6">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                    sales of the day</div>
             </div>
-            <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDtPikRngDiv" style="display: none; margin-right:1rem;">
-                <div class="d-flex d-flex justify-content-start">
-                    <div>
-                        <label>Start Date</label>&nbsp<input type="date" id="sodStartDt"><br>
-                        <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="sodEndDt">
-                    </div>&nbsp
-                    <div>
-                        <br>
-                        <button class="btn btn-sm btn-primary" onclick="sodDtRange()" style="height: 2rem;">Find</button>
+            <div class="col-md-4 d-flex justify-content-end">
+                <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDatePikDiv" style="display: none; margin-right:1rem;">
+                    <input type="date" id="salesOfTheDayDate">
+                    <button class="btn btn-sm btn-primary" onclick="sodOnDate()" style="height: 2rem;">Find</button>
+                </div>
+                <div class="dropdown-menu dropdown-menu-right p-2 mt-n5" id="sodDtPikRngDiv" style="display: none; margin-right:1rem;">
+                    <div class="d-flex d-flex justify-content-start">
+                        <div>
+                            <label>Start Date</label>&nbsp<input type="date" id="sodStartDt"><br>
+                            <label>End Date</label>&nbsp&nbsp&nbsp<input type="date" id="sodEndDt">
+                        </div>&nbsp
+                        <div>
+                            <br>
+                            <button class="btn btn-sm btn-primary" onclick="sodDtRange()" style="height: 2rem;">Find</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-light text-dark card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <b>...</b>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkSod(this.id)">Today</button>
-                    <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkSod(this.id)">Last 24 hrs</button>
-                    <button class="dropdown-item" type="button" id="sodLst7" onclick="chkSod(this.id)">Last 7 Days</button>
-                    <button class="dropdown-item" type="button" id="sodLst30" onclick="chkSod(this.id)">Last 30 Days</button>
-                    <button class="dropdown-item dropdown" type="button" id="sodGvnDt" onclick="chkSod(this.id)">By Date</button>
-                    <button class="dropdown-item dropdown" type="button" id="sodDtRng" onclick="chkSod(this.id)">By Date Range</button>
+            <div class="col-md-2 d-flex justify-content-end">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <button class="dropdown-item" type="button" id="sodCurrentDt" onclick="chkSod(this.id)">Today</button>
+                        <button class="dropdown-item" type="button" id="sodLst24hrs" onclick="chkSod(this.id)">Last 24 hrs</button>
+                        <button class="dropdown-item" type="button" id="sodLst7" onclick="chkSod(this.id)">Last 7 Days</button>
+                        <button class="dropdown-item" type="button" id="sodLst30" onclick="chkSod(this.id)">Last 30 Days</button>
+                        <button class="dropdown-item dropdown" type="button" id="sodGvnDt" onclick="chkSod(this.id)">By Date</button>
+                        <button class="dropdown-item dropdown" type="button" id="sodDtRng" onclick="chkSod(this.id)">By Date Range</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,7 +83,7 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
             </div>
         </div>
     </div>
-    
+
 </div>
 
 <script>
@@ -176,11 +180,11 @@ $sodLst30Days = $StockOut->salesOfTheDayRange($lst30, $strtDt, $adminId);
 
         if (id == 'sodGvnDt') {
             document.getElementById('sodDatePikDiv').style.display = 'block';
-            // document.getElementById('sodDtPikRngDiv').style.display = 'none';
+            document.getElementById('sodDtPikRngDiv').style.display = 'none';
         }
 
         if (id == 'sodDtRng') {
-            // document.getElementById('sodDatePikDiv').style.display = 'none';
+            document.getElementById('sodDatePikDiv').style.display = 'none';
             document.getElementById('sodDtPikRngDiv').style.display = 'block';
         }
     }

@@ -34,8 +34,8 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
 
 
 <div class="card border-left-primary shadow h-100 py-2 pending_border animated--grow-in">
-    <div class="d-flex justify-content-between align-items-center">
-        <div class="col ml-2 mt-3">
+    <div class="row mt-3">
+        <div class="col-md-5 ml-3">
             <div class="text-xs font-weight-bold text-info text-uppercase mb-1" id="most-sold-header" style="display: block;">
                 Most sold 10 items
             </div>
@@ -43,8 +43,7 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
                 Less sold 10 items
             </div>
         </div>
-
-        <div class="d-flex justify-content-end px-2">
+        <div class="col-md-3">
             <div class="dropdown-menu dropdown-menu-right p-3 mt-n5" id="soldDtPickerDiv" style="display: none; margin-right:1rem;">
                 <input type="date" id="mostSoldDateInput">
                 <button class="btn btn-sm btn-primary" onclick="soldItemsChkDate()" style="height: 2rem;">Find</button>
@@ -56,9 +55,10 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
                 <input type="date" id="mostSoldEndDate">
                 <button class="btn btn-sm btn-primary" onclick="soldItemsChkDateRng()" style="height: 2rem;">Find</button>
             </div>
-
+        </div>
+        <div class="col-md-3 d-flex justify-content-end">
             <div class="mr-2">
-                <label id='data-sort' class="d-none" value='asc'>Sort</label>
+                <label id='data-sort' class="d-none">asc</label>
                 <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <i class="fas fa-sort"></i> Sort
                 </button>
@@ -68,10 +68,10 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
                     <button class="dropdown-item  dropdown" type="button" id="dsc" value="dsc" onclick="dataFilter(this)">Descending</button>
                 </div>
             </div>
-            
+
             <div class="btn-group">
                 <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <i class="fas fa-filter"></i> Filter
+                    <i class="fas fa-filter"></i>
                 </button>
 
                 <label id='secondary-filter' class="d-none"></label>
@@ -87,6 +87,7 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
             </div>
         </div>
     </div>
+
     <div class="card-body mt-n2 pb-0">
         <div class="row no-gutters align-items-center">
             <div style="width: 100%; margin: 0 auto;" id='mostsolditemchartDiv'>
@@ -175,27 +176,26 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
 
     function dataFilter(id) {
 
+        console.log(id);
         var currentFilterVal = document.getElementById("current-filter-val");
-        var dataSort = document.getElementById("data-sort");
+        var dataSort = document.getElementById("data-sort").innerHTML;
 
         // Update data sort value based on id
         if (id.id === 'asc' || id.id === 'dsc') {
-            dataSort.value = id.id;
+            dataSort.innerHTML = id.id;
         }
 
-        if(id == '[object HTMLButtonElement]'){
+        if (id == '[object HTMLButtonElement]') {
             currentFilterVal.innerHTML = document.getElementById("current-filter-val").innerHTML;
-        }else{
+        } else {
             currentFilterVal.innerHTML = id;
         }
 
-        // console.log(document.getElementById("current-filter-val").value);
-        // console.log(document.getElementById("data-sort").innerHTML);
 
-        if (document.getElementById("data-sort").value == 'asc') {
-
-            document.getElementById('most-sold-header').style.display='block';
-            document.getElementById('less-sold-header').style.display='none';
+        if (document.getElementById("data-sort").innerHTML == 'asc') {
+            console.log(document.getElementById("data-sort").innerHTML);
+            document.getElementById('most-sold-header').style.display = 'block';
+            document.getElementById('less-sold-header').style.display = 'none';
 
             if (document.getElementById("current-filter-val").innerHTML == 'allData') {
                 document.getElementById('secondary-filter').innerHTML = id;
@@ -225,18 +225,18 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
 
             if (document.getElementById("current-filter-val").innerHTML == 'soldOnDt') {
                 document.getElementById('soldDtPickerDiv').style.display = 'block';
-                // document.getElementById('soldDtRngPickerDiv').style.display = 'none';
+                document.getElementById('soldDtRngPickerDiv').style.display = 'none';
             }
 
             if (document.getElementById("current-filter-val").innerHTML == 'soldOnDtRng') {
-                // document.getElementById('soldDtPickerDiv').style.display = 'none';
+                document.getElementById('soldDtPickerDiv').style.display = 'none';
                 document.getElementById('soldDtRngPickerDiv').style.display = 'block';
             }
 
-        } else if (document.getElementById("data-sort").value == 'dsc') {
-
-            document.getElementById('most-sold-header').style.display='none';
-            document.getElementById('less-sold-header').style.display='block';
+        } else if (document.getElementById("data-sort").innerHTML == 'dsc') {
+            console.log(document.getElementById("data-sort").innerHTML);
+            document.getElementById('most-sold-header').style.display = 'none';
+            document.getElementById('less-sold-header').style.display = 'block';
 
             if (document.getElementById("current-filter-val").innerHTML == 'allData') {
                 document.getElementById('soldDtPickerDiv').style.display = 'none';
@@ -265,11 +265,11 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
 
             if (document.getElementById("current-filter-val").innerHTML == 'soldOnDt') {
                 document.getElementById('soldDtPickerDiv').style.display = 'block';
-                // document.getElementById('soldDtRngPickerDiv').style.display = 'none';
+                document.getElementById('soldDtRngPickerDiv').style.display = 'none';
             }
 
             if (document.getElementById("current-filter-val").innerHTML == 'soldOnDtRng') {
-                // document.getElementById('soldDtPickerDiv').style.display = 'none';
+                document.getElementById('soldDtPickerDiv').style.display = 'none';
                 document.getElementById('soldDtRngPickerDiv').style.display = 'block';
             }
         }
@@ -288,7 +288,7 @@ $lessSoldItemsFromStart = $StockOut->leastSoldStockOutDataFromStart($adminId);
         var productIds = mostSoldDataFromStart.map(item => item.product_id);
         productIds = JSON.stringify(productIds);
         var dataToSend = `mostSoldProdId=${productIds}`;
-        
+
         mostSoldProdNameUrl = `<?php echo URL ?>ajax/components-most-sold-items.ajax.php?mostSoldProdId=${productIds}`;
         xmlhttp.open("GET", mostSoldProdNameUrl, false);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
