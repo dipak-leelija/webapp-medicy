@@ -50,7 +50,7 @@ $highestPurchaseCustomerByMonth = $StockOut->mostPurchaseCustomerByMonth($adminI
                 <button class="btn btn-sm btn-primary" onclick="mostVistedCustomerDateRange()" style="height: 2rem;">Find</button>
             </div>
         </div>
-        <div class="col-md-2 btn-group ml-n2">
+        <div class="col-md-1 btn-group">
             <button type="button" class="btn btn-sm btn-outline-primary card-btn dropdown font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <i class="fas fa-filter"></i>
             </button>
