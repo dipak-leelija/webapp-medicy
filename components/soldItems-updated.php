@@ -56,9 +56,9 @@
             <div style="width: 100%; margin: 0 auto;" id='soldItemsChartDiv'>
                 <canvas id="soldItemsChart"></canvas>
             </div>
-            <!-- <div style="width: 100%; margin: 0 auto;" id='solditemNDFDiv'>
+            <div style="width: 100%; margin: 0 auto;" id='solditemNDFDiv'>
                 <p class="text-warning">Oops!, the requested data isn't in our records.</p>
-            </div> -->
+            </div>
         </div>
     </div>
 </div>
@@ -70,19 +70,18 @@
 
     // upload chart data
     const soldItemsDataChartShow = (soldItemsDataArray)=>{
+        document.getElementById('soldItemsChartDiv').style.display = 'block';
+        document.getElementById('solditemNDFDiv').style.display = 'none';
+        
         soldItemsDataChart.data.labels = Object.keys(soldItemsDataArray);
         soldItemsDataChart.data.datasets[0].data = Object.values(soldItemsDataArray);
-
         soldItemsDataChart.update();
     }
 
     // reset chart on no data
     const soldItemsDataChartReset = ()=>{
-        soldItemsDataChart.data.labels = [];
-        soldItemsDataChart.data.datasets[0].data = [];
-        soldItemsDataChart.options.scales.y.max = 1;
-        soldItemsDataChart.options.scales.y.min = -1;
-        soldItemsDataChart.update();
+        document.getElementById('soldItemsChartDiv').style.display = 'none';
+        document.getElementById('solditemNDFDiv').style.display = 'block';
     }
 
     // data fetch on filter
