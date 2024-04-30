@@ -70,7 +70,6 @@
 
     // upload chart data
     const soldItemsDataChartShow = (soldItemsDataArray)=>{
-        console.log(soldItemsDataArray);
         soldItemsDataChart.data.labels = Object.keys(soldItemsDataArray);
         soldItemsDataChart.data.datasets[0].data = Object.values(soldItemsDataArray);
 
@@ -97,7 +96,6 @@
         if(soldItemsData.status == '1'){
             soldItemsDataChartShow(soldItemsData.data);
         }else{
-            console.log(soldItemsData.status);
             soldItemsDataChartReset();
         }
     }
