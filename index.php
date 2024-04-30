@@ -172,8 +172,12 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                         </div>
                         <!-- ================ FORTH ROW ROW ================ -->
                         <div class="row">
-                            <div class="col-xl-6 col-md-6 mb-4">
+                            <!-- <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "soldItems.php"; ?>
+                            </div> -->
+
+                            <div class="col-xl-6 col-md-6 mb-4">
+                                <?php require_once ROOT_COMPONENT . "soldItems-updated.php"; ?>
                             </div>
 
                             <div class="col-xl-6 col-md-6 mb-4">
@@ -181,16 +185,16 @@ $labAppointment     = $LabAppointments->showLabAppointmentsByAdminId($adminId);
                             </div>
                         </div>
 
-                        <!-- <div class="row">
+                        <div class="row">
                             <div class="col-xl-6 col-md-6 mb-4">
-                                <?php require_once ROOT_COMPONENT . "mopdByAmount.php"; ?>
+                                <?php require_once ROOT_COMPONENT . "soldItems-updated.php"; ?>
                             </div>
 
-                            <div class="col-xl-6 col-md-6 mb-4">
+                            <!-- <div class="col-xl-6 col-md-6 mb-4">
                                 <?php require_once ROOT_COMPONENT . "mopdByItems.php"; ?>
-                            </div>
+                            </div> -->
 
-                        </div> -->
+                        </div> 
 
                         <!-- ================== SECOND ROW ================== -->
                         <div class="row">
