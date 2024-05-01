@@ -7,6 +7,7 @@ require_once CLASS_DIR . 'dbconnect.php';
 require_once ROOT_DIR . '_config/healthcare.inc.php';
 require_once CLASS_DIR . 'distributor.class.php';
 require_once CLASS_DIR . 'stockIn.class.php';
+require_once CLASS_DIR . 'UtilityFiles.class.php';
 
 
 $page = "purchase-details";
@@ -14,7 +15,7 @@ $page = "purchase-details";
 //objects Initilization
 $Distributor        = new Distributor();
 $StockIn            = new StockIn();
-
+$UtilityFiles       = new UtilityFiles;
 
 
 if (isset($_GET['searchKey'])) {
@@ -28,6 +29,17 @@ if (isset($_GET['searchKey'])) {
 }
 
 $showDistributor       = $Distributor->showDistributor();
+
+if (isset($_POST) && isset($_FILES['import-file'])) {
+    print_r($_FILES);
+
+    $filename = $_FILES["import-file"]["tmp_name"];
+    if ($_FILES["import-file"]["size"] > 0) {
+        
+        $UtilityFiles->purchaseImport($filename);
+        
+    }
+}
 
 ?>
 
@@ -51,16 +63,15 @@ $showDistributor       = $Distributor->showDistributor();
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<?= CSS_PATH ?>sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>main.css" rel="stylesheet">
+    <link href="<?= CSS_PATH ?>sb-admin-2.css" rel="stylesheet">
 
     <!-- Datatable Style CSS -->
     <link href="<?= PLUGIN_PATH ?>product-table/dataTables.bootstrap4.css" rel="stylesheet">
 
-
 </head>
 
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -86,7 +97,10 @@ $showDistributor       = $Distributor->showDistributor();
                         <div class="card-header booked_btn">
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="m-0 font-weight-bold text-primary">Number of Stock in :<?php echo count($showStockIn); ?></h6>
-                                <a class="btn btn-sm btn-primary" href="<?= URL ?>stock-in.php">New + </a>
+                                <div>
+                                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#staticBackdrop">Import </button>
+                                    <a class="btn btn-sm btn-primary" href="<?= URL ?>stock-in.php">New + </a>
+                                </div>
                             </div>
                         </div>
 
@@ -170,22 +184,6 @@ $showDistributor       = $Distributor->showDistributor();
             <!-- /.container-fluid -->
             <!-- End of Main Content -->
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Purchase Details</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body stockDetails">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Footer -->
             <?php include_once ROOT_COMPONENT . 'footer-text.php'; ?>
             <!-- End of Footer -->
@@ -201,6 +199,45 @@ $showDistributor       = $Distributor->showDistributor();
         <i class="fas fa-angle-up"></i>
     </a>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Purchase Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body stockDetails">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title" id="staticBackdropLabel">Import CSV File of Your Purchase Records </span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="import-body">
+                    <form id="importPurchaseForm" action="<?php CURRENT_URL ?>" method="post" enctype="multipart/form-data">
+                        <div class="px-2">
+                            <input type="file" class="form-control" id="chooseFile" name="import-file" accept=".csv">
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="submit" id="importPurchaseBtn" class="btn btn-sm btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="<?= PLUGIN_PATH ?>jquery/jquery.min.js"></script>
@@ -217,6 +254,7 @@ $showDistributor       = $Distributor->showDistributor();
 
     <!-- Page level custom scripts -->
     <script src="<?= JS_PATH ?>demo/datatables-demo.js"></script>
+    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
     <script>
         const stockDetails = (distBill, id) => {
@@ -227,17 +265,101 @@ $showDistributor       = $Distributor->showDistributor();
                 '<iframe width="99%" height="350px" frameborder="0" overflow-x: hidden; overflow-y: scroll; allowtransparency="true"  src="' +
                 url + '"></iframe>');
 
-        } // end of viewAndEdit function
-        // 
+        } //end of viewAndEdit
+
+        // const showImportModal = () => {
+        //     url = "ajax/import-purchase.ajax.php";
+        //     let frameBody = document.getElementById("import-body");
+
+        //     // Fetch content from the specified URL
+        //     fetch(url)
+        //         .then(response => response.text())
+        //         .then(htmlContent => {
+        //             // Inject fetched HTML content into the frameBody element
+        //             frameBody.innerHTML = htmlContent;
+        //         })
+        //         .catch(error => {
+        //             console.error('Error fetching content:', error);
+        //         });
+        // }
+
+        // const purchaseImport = (e) => {
+
+        //     // Serialize the form data
+        //     var formData = new FormData($('#importPurchaseForm')[0]);
+        //     console.log(formData);
+        //     // Perform AJAX request
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: 'ajax/import-purchase.ajax.php',
+        //         data: formData,
+        //         processData: false,
+        //         contentType: false,
+        //         success: function(response) {
+        //             // Handle success response here
+        //             console.log('Success:', response);
+        //         },
+        //         error: function(xhr, status, error) {
+        //             // Handle error response here
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // }
+
+        // const purchaseImport = (e) => {
+        //     // Prevent the default form submission behavior
+        //     e.preventDefault();
+
+        //     // Get all input elements within the form
+        //     const inputs = document.querySelectorAll('#importPurchaseForm input');
+
+        //     // Create a FormData object to serialize the form data
+        //     var formData = new FormData();
+
+        //     // Iterate over each input element and append its data to the FormData object
+        //     inputs.forEach(input => {
+        //         // Check if the input element is a file input
+        //         if (input.type === 'file') {
+        //             // Append each file separately if multiple files are allowed
+        //             const files = input.files;
+        //             for (let i = 0; i < files.length; i++) {
+        //                 formData.append(input.name, files[i]);
+        //             }
+        //         } else {
+        //             // For non-file inputs, append their name and value to the FormData object
+        //             formData.append(input.name, input.value);
+        //         }
+        //     });
+
+        //     // Perform AJAX request
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: 'ajax/import-purchase.ajax.php', // Specify your endpoint URL here
+        //         data: formData,
+        //         processData: false,
+        //         contentType: false,
+        //         success: function(response) {
+        //             // Handle success response here
+        //             console.log('Success:', response);
+        //         },
+        //         error: function(xhr, status, error) {
+        //             // Handle error response here
+        //             console.error('Error:', error);
+        //         }
+        //     });
+        // }
+
+
+
+        // document.getElementById("importPurchaseBtn").addEventListener("click", purchaseImport);
+
+
+
         function resizeIframe(obj) {
             obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 
         }
-    </script>
-    <!-- Sweet Alert Js  -->
-    <script src="<?= JS_PATH ?>sweetAlert.min.js"></script>
 
-    <script>
         //=================delete stock in delete=======================
 
         const deleteStock = (id) => {
