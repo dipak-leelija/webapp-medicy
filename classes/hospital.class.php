@@ -101,6 +101,31 @@ class HealthCare extends DatabaseConnection
 
 
 
+    function updateDrugPermissionData($imgFolderForm20, $imgFolderForm21, $gstin, $pan, $adminId){
+        try {
+            $updateHealthCare = "UPDATE clinic_info SET form_20 = ?, form_21 = ?, gstin = ?, pan   = ? WHERE admin_id = ?";
+
+            $stmt = $this->conn->prepare($updateHealthCare);
+
+            $stmt->bind_param("sssss", $imgFolderForm20, $imgFolderForm21, $gstin, $pan, $adminId);
+
+            $stmt->execute();
+
+            $updateHealthCareQuery = $stmt->affected_rows;
+
+            $stmt->close();
+
+            return $updateHealthCareQuery;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        return 0; // sql fail.
+    }
+
+
+
+
+
     // used in text update
     function updateHealthCareDesc($WhatWeDoText, $appointmentBookText, $subscribeText, $footerText)
     {
