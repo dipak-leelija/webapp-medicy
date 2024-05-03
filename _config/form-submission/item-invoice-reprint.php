@@ -250,7 +250,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                             max-width: 8rem; width: auto;">
                                 <small>' . $detail['batch_no'] . '</small>
                             </div>
-                            <div class="col-sm-1 text-end ps-2 p-0">
+                            <div class="col-sm-1 ">
                                 <small>' . $detail['exp_date'] . '</small>
                             </div>
                             <div class="col-sm-1 text-center" >
