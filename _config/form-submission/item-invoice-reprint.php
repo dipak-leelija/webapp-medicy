@@ -247,7 +247,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                                 <small>' . $manufacturerName . '</small>
                             </div>
                             <div class="col-sm-1 text-center p-0" style="
-                            max-width: 5rem; width: auto;">
+                            max-width: 8rem; width: auto;">
                                 <small>' . $detail['batch_no'] . '</small>
                             </div>
                             <div class="col-sm-1 text-end ps-2 p-0">
