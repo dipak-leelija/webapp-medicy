@@ -192,8 +192,10 @@ if (isset($_POST['submit'])) {
 
                 <div class="container-fluid">
                     <div class="card p-0">
-                        <div class="card-header">
-
+                    <div class="card-header">
+                            <h5><b>
+                                    <p class="text-primary">Lab Test</p>
+                                </b></h5>
                         </div>
                         <div class="card-body my-5 my-md-1 p-md-5">
 
