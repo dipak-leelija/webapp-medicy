@@ -131,25 +131,29 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
             </div>
             <hr class="my-0" style="height:2px;">
 
-            <div class="row">
+            <div class="row justify-content-around">
                 <!-- table heading -->
 
-                <div class="col-sm-1 text-center" style="width: 5rem;">
+                <div class="col-sm-1 text-center" >
+                <!-- style="width: 5rem;" -->
                     <small><b>SL.</b></small>
                 </div>
-                <div class="col-sm-2" style="width: 12rem;">
+                <div class="col-sm-2 " >
+                <!-- style="width: 12rem;" -->
                     <small><b>Name</b></small>
                 </div>
                 <div class="col-sm-1">
                     <small><b>Manuf.</b></small>
                 </div>
-                <div class="col-sm-1" style="width: 7rem;">
+                <div class="col-sm-1" >  
+                <!-- style="width: 7rem;" -->
                     <small><b>Batch</b></small>
                 </div>
                 <div class="col-sm-1">
                     <small><b>Exp.</b></small>
                 </div>
-                <div class="col-sm-1 text-end" style="width: 7rem;">
+                <div class="col-sm-1 text-end" >
+                <!-- style="width: 7rem;" -->
                     <small><b>QTY</b></small>
                 </div>
                 <div class="col-sm-1 text-end">
@@ -161,7 +165,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                 <div class="col-sm-1 text-end">
                     <small><b>GST(%)</b></small>
                 </div>
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-1 text-start p-0">
                     <small><b>Amount</b></small>
                 </div>
 
@@ -170,7 +174,7 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
 
             <hr class="my-0" style="height:1px;">
 
-            <div class="row">
+            <div class="row justify-content-around">
                 <?php
                 $slno = 0;
                 $subTotal = floatval(00.00);
@@ -232,34 +236,34 @@ $pharmacyName = $selectClinicInfo->data->hospital_name;
                     // ===================================================
 
 
-                    echo '<div class="col-sm-1 text-center" style="width: 5rem;">
+                    echo '<div class="col-sm-1 text-center">
                                 <small>' . $slno . '</small>
                             </div>
-                            <div class="col-sm-2" style="width: 12rem;">
+                            <div class="col-sm-1" style="max-width: 9rem;width:auto;">
                                 <small>' . substr($detail['item_name'], 0, 15) . '</small>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-sm-1 text-center p-0">
                                 <small>' . $manufacturerName . '</small>
                             </div>
-                            <div class="col-sm-1" style="width: 7rem;">
+                            <div class="col-sm-1 text-center p-0">
                                 <small>' . $detail['batch_no'] . '</small>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-sm-1 text-center p-0">
                                 <small>' . $detail['exp_date'] . '</small>
                             </div>
-                            <div class="col-sm-1 text-end" style="width: 7rem;">
+                            <div class="col-sm-1 text-center" >
                                 <small>' . $itemSellQty . '</small>
                             </div>
-                            <div class="col-sm-1 text-end">
+                            <div class="col-sm-1 ">
                                 <small>' . $detail['mrp'] . '</small>
                             </div>
-                            <div class="col-sm-1 text-end">
+                            <div class="col-sm-1 ">
                             <small>' . (isset($detail['discount']) ? $detail['discount'] : '') . '</small>
                             </div>
-                            <div class="col-sm-1 text-end">
+                            <div class="col-sm-1 ">
                                 <small>' . $detail['gst'] . '</small>
                             </div>
-                            <div class="col-sm-1 text-end">
+                            <div class="col-sm-1 text-start p-0">
                                 <small>' . $detail['amount'] . '</small>
                             </div>';
                 }
